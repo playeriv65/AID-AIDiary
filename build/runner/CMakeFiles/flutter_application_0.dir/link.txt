@@ -1,3 +1,0 @@
-"D:\visual studio\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E rm -f CMakeFiles\flutter_application_0.dir/objects.a
-D:\mingw64\bin\ar.exe qc CMakeFiles\flutter_application_0.dir/objects.a @CMakeFiles\flutter_application_0.dir\objects1.rsp
-D:\mingw64\bin\g++.exe -g -mwindows -Wl,--whole-archive CMakeFiles\flutter_application_0.dir/objects.a -Wl,--no-whole-archive -o flutter_application_0.exe -Wl,--out-implib,libflutter_application_0.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\flutter_application_0.dir\linkLibs.rsp

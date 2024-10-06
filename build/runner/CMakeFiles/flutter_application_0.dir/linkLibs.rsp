@@ -1,1 +1,0 @@
- ../flutter/libflutter_wrapper_app.a -ldwmapi F:/AID/flutter/flutter_application_0/windows/flutter/ephemeral/flutter_windows.dll.lib -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 
