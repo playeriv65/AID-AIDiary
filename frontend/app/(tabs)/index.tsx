@@ -1,21 +1,22 @@
-import { StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, Animated, View, ImageBackground } from 'react-native';
+// Trigger recompile
+import { StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, Animated, View, Alert } from 'react-native';
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { useFocusEffect, useRouter } from 'expo-router';
 import { format } from 'date-fns';
-import axios from 'axios';
+import { getDateLocale } from '@/constants/i18n';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Colors } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
+import { useAppContext } from '@/context/AppContext';
 import { IconSymbol } from '@/components/ui/icon-symbol';
-
-const API_URL = 'http://127.0.0.1:8000/api';
 
 const AnimatedThemedView = Animated.createAnimatedComponent(ThemedView);
 
 function EntryCard({ item, index }: { item: any; index: number }) {
-  const theme = useColorScheme() ?? 'dark';
+  const { resolvedTheme, accentColor, language, i18n } = useAppContext();
+  const theme = resolvedTheme;
+  const dateLocale = getDateLocale(language);
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(10)).current;
 
@@ -37,54 +38,42 @@ function EntryCard({ item, index }: { item: any; index: number }) {
   }, [fadeAnim, slideAnim, index]);
 
   return (
-    <AnimatedThemedView style={[styles.entryCard, { backgroundColor: Colors[theme].cardBackground, opacity: fadeAnim, transform: [{ translateY: slideAnim }] }]}>
-      <ThemedText style={[styles.entryDate, { color: Colors[theme].tint }]}>
-        {format(new Date(item.created_at), "MMMM d, yyyy 'at' h:mm a - EEE")}
-      </ThemedText>
-      {item.title ? (
-        <ThemedText style={[styles.entryTitle, { color: Colors[theme].text }]} type="defaultSemiBold">{item.title}</ThemedText>
-      ) : null}
-      <ThemedText style={[styles.entryContent, { color: Colors[theme].text }]} numberOfLines={2}>{item.content}</ThemedText>
-    </AnimatedThemedView>
+    <TouchableOpacity activeOpacity={0.8} onPress={() => Alert.alert(item.title || i18n.hint, item.content)}>
+      <AnimatedThemedView style={[styles.entryCard, { backgroundColor: Colors[theme].cardBackground, opacity: fadeAnim, transform: [{ translateY: slideAnim }] }]}>
+        <ThemedText style={[styles.entryDate, { color: accentColor }]}>
+          {format(new Date(item.created_at), 'PPP p - EEE', { locale: dateLocale })}
+        </ThemedText>
+        {item.title ? (
+          <ThemedText style={[styles.entryTitle, { color: Colors[theme].text }]} type="defaultSemiBold">{item.title}</ThemedText>
+        ) : null}
+        <ThemedText style={[styles.entryContent, { color: Colors[theme].text }]} numberOfLines={2}>{item.content}</ThemedText>
+      </AnimatedThemedView>
+    </TouchableOpacity>
   );
 }
 
 export default function JournalTimelineScreen() {
-  const [entries, setEntries] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
   const router = useRouter();
-  const theme = useColorScheme() ?? 'dark';
+  const { resolvedTheme, accentColor, i18n, entries, entriesLoading, fetchEntries } = useAppContext();
+  const theme = resolvedTheme;
 
-  const fetchEntries = async () => {
-    try {
-      setLoading(true);
-      const response = await axios.get(`${API_URL}/entries`);
-      // Sort newest first
-      const sorted = response.data.sort((a: any, b: any) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
-      setEntries(sorted);
-    } catch (error) {
-      console.error('Failed to fetch entries:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  // Silently refresh when page gains focus (data already cached in context)
   useFocusEffect(
     useCallback(() => {
       fetchEntries();
-    }, [])
+    }, [fetchEntries])
   );
 
   const renderHeader = () => (
     <View style={styles.listHeader}>
       <View style={styles.entriesSectionHeader}>
-        <ThemedText style={[styles.sectionTitle, { color: Colors[theme].text }]}>Entries</ThemedText>
+        <ThemedText style={[styles.sectionTitle, { color: Colors[theme].text }]}>{i18n.entries}</ThemedText>
         <View style={styles.entriesActions}>
           <TouchableOpacity onPress={fetchEntries} style={{ marginRight: 16 }}>
-            <IconSymbol name="arrow.clockwise" size={16} color={Colors[theme].icon} />
+            <IconSymbol name="arrow-clockwise" size={16} color={Colors[theme].icon} />
           </TouchableOpacity>
-          <TouchableOpacity>
-            <IconSymbol name="line.3.horizontal.decrease" size={16} color={Colors[theme].icon} />
+          <TouchableOpacity onPress={() => Alert.alert(i18n.hint, i18n.filteringSoon)}>
+            <IconSymbol name="sliders" size={16} color={Colors[theme].icon} />
           </TouchableOpacity>
         </View>
       </View>
@@ -93,31 +82,26 @@ export default function JournalTimelineScreen() {
 
   return (
     <ThemedView style={[styles.container, { backgroundColor: Colors[theme].background }]}>
-      {loading ? (
-        <ActivityIndicator size="large" color={Colors[theme].tint} style={styles.loader} />
-      ) : (
-        <FlatList
-          data={entries}
-          keyExtractor={(item) => item.id.toString()}
-          ListHeaderComponent={renderHeader}
-          renderItem={({ item, index }) => <EntryCard item={item} index={index} />}
-          contentContainerStyle={styles.listContent}
-          showsVerticalScrollIndicator={false}
-          ListEmptyComponent={
-            <ThemedView style={styles.emptyContainer}>
-              <ThemedText style={styles.emptyText}>No entries to display.</ThemedText>
-            </ThemedView>
-          }
-        />
-      )}
+      <FlatList
+        data={entries}
+        keyExtractor={(item) => item.id.toString()}
+        ListHeaderComponent={renderHeader}
+        renderItem={({ item, index }) => <EntryCard item={item} index={index} />}
+        contentContainerStyle={styles.listContent}
+        showsVerticalScrollIndicator={false}
+        ListEmptyComponent={
+          <ThemedView style={styles.emptyContainer}>
+            {entriesLoading ? null : <ThemedText style={styles.emptyText}>{i18n.noEntries}</ThemedText>}
+          </ThemedView>
+        }
+      />
 
       <TouchableOpacity
-        style={[styles.fab, { backgroundColor: Colors[theme].tint }]}
+        style={[styles.fab, { backgroundColor: accentColor }]}
         onPress={() => router.push('/write')}
         activeOpacity={0.8}
       >
-        <IconSymbol size={20} name="plus" color="#000" />
-        <ThemedText style={styles.fabText}>NEW</ThemedText>
+        <ThemedText style={styles.fabText}>{i18n.newEntry}</ThemedText>
       </TouchableOpacity>
     </ThemedView>
   );
@@ -133,7 +117,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   listContent: {
-    paddingHorizontal: '15%', // Gives it the narrow desktop feel like the screenshot
+    paddingHorizontal: '15%',
     paddingTop: 30,
     paddingBottom: 100,
     width: '100%',
@@ -192,10 +176,10 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 30,
     right: 30,
-    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     paddingVertical: 14,
-    paddingHorizontal: 24,
+    paddingHorizontal: 28,
     borderRadius: 30,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
@@ -205,9 +189,9 @@ const styles = StyleSheet.create({
   },
   fabText: {
     color: '#000',
-    fontWeight: 'bold',
-    marginLeft: 8,
+    fontWeight: '700',
     fontSize: 15,
-    letterSpacing: 1,
+    textAlign: 'center',
+    includeFontPadding: false,
   }
 });

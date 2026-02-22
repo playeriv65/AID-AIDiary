@@ -22,7 +22,7 @@ def update_entry(db: Session, entry_id: int, entry: schemas.JournalEntryUpdate):
             db_entry.title = entry.title
         if entry.content is not None:
             db_entry.content = entry.content
-        db_entry.updated_at = datetime.datetime.utcnow()
+        db_entry.updated_at = datetime.datetime.now(datetime.timezone.utc)
         db.commit()
         db.refresh(db_entry)
     return db_entry

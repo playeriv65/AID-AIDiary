@@ -1,11 +1,10 @@
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy.orm import Session
 from database import SessionLocal, engine, get_db
 import models, schemas, crud
 from ai_service import generate_polished_entry
 from auth import verify_password, hash_password, create_access_token
-from fastapi import FastAPI, Depends, HTTPException
-from sqlalchemy.orm import Session
 
 
 models.Base.metadata.create_all(bind=engine)

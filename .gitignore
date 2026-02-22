@@ -4,6 +4,7 @@ backend/__pycache__/
 *.pyc
 *.pyo
 *.pyd
+backend/hello.py
 
 # Secrets / Environment
 backend/.env

@@ -1,6 +1,14 @@
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, useMemo, useSyncExternalStore } from 'react';
 import { Platform, Appearance } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import { t as getTranslations } from '@/constants/i18n';
+import { CONFIG } from '@/constants/config';
+
+const API_URL = CONFIG.API_URL;
+
+// Short timeout so UI doesn't hang when backend is down
+axios.defaults.timeout = CONFIG.AXIOS_TIMEOUT;
 
 // Storage Keys
 const STORAGE_KEYS = {
@@ -39,30 +47,49 @@ interface User {
 interface AppContextType {
     themeMode: ThemeMode;
     setThemeMode: (t: ThemeMode) => void;
-    resolvedTheme: 'light' | 'dark'; // the actual computed theme
+    resolvedTheme: 'light' | 'dark';
     accentColor: string;
     setAccentColor: (c: string) => void;
     language: string;
     setLanguage: (l: string) => void;
+    i18n: ReturnType<typeof getTranslations>;
     user: User | null;
     authToken: string | null;
     login: (user: User, token: string) => void;
     logout: () => void;
+    // Global entries cache
+    entries: any[];
+    entriesLoading: boolean;
+    fetchEntries: () => Promise<void>;
+    addEntry: (title: string | null, content: string) => Promise<void>;
 }
 
-const AppContext = createContext<AppContextType>({
-    themeMode: 'dark',
-    setThemeMode: () => { },
-    resolvedTheme: 'dark',
-    accentColor: '#02BFB8',
-    setAccentColor: () => { },
-    language: 'zh',
-    setLanguage: () => { },
-    user: null,
-    authToken: null,
-    login: () => { },
-    logout: () => { },
-});
+const AppContext = createContext<AppContextType>({} as AppContextType);
+
+// Robust system color scheme detection that works across SSR hydration
+function useSystemColorScheme(): 'light' | 'dark' {
+    const getSnapshot = useCallback(() => {
+        if (Platform.OS === 'web' && typeof window !== 'undefined' && window.matchMedia) {
+            return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        return (Appearance.getColorScheme() as 'light' | 'dark') ?? 'dark';
+    }, []);
+
+    const subscribe = useCallback((callback: () => void) => {
+        if (Platform.OS === 'web' && typeof window !== 'undefined' && window.matchMedia) {
+            const mql = window.matchMedia('(prefers-color-scheme: dark)');
+            mql.addEventListener('change', callback);
+            return () => mql.removeEventListener('change', callback);
+        } else {
+            const sub = Appearance.addChangeListener(callback);
+            return () => sub.remove();
+        }
+    }, []);
+
+    const getServerSnapshot = useCallback(() => 'dark' as const, []);
+
+    return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+}
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
     const [themeMode, _setThemeMode] = useState<ThemeMode>('dark');
@@ -70,75 +97,129 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     const [language, _setLanguage] = useState('zh');
     const [user, setUser] = useState<User | null>(null);
     const [authToken, setAuthToken] = useState<string | null>(null);
-    const [systemScheme, setSystemScheme] = useState<'light' | 'dark'>(
-        Appearance.getColorScheme() === 'light' ? 'light' : 'dark'
-    );
+    const systemScheme = useSystemColorScheme();
+    const [entries, setEntries] = useState<any[]>([]);
+    const [entriesLoading, setEntriesLoading] = useState(true);
+    const [ready, setReady] = useState(false);
 
     // Load persisted prefs on mount
     useEffect(() => {
         (async () => {
             try {
-                const [t, a, l, tok, u] = await Promise.all([
+                const [savedTheme, savedAccent, savedLang, savedToken, savedUser] = await Promise.all([
                     AsyncStorage.getItem(STORAGE_KEYS.THEME),
                     AsyncStorage.getItem(STORAGE_KEYS.ACCENT),
                     AsyncStorage.getItem(STORAGE_KEYS.LANGUAGE),
                     AsyncStorage.getItem(STORAGE_KEYS.TOKEN),
                     AsyncStorage.getItem(STORAGE_KEYS.USER),
                 ]);
-                if (t) _setThemeMode(t as ThemeMode);
-                if (a) _setAccentColor(a);
-                if (l) _setLanguage(l);
-                if (tok) setAuthToken(tok);
-                if (u) setUser(JSON.parse(u));
-            } catch (_) { }
+                if (savedTheme) _setThemeMode(savedTheme as ThemeMode);
+                if (savedAccent) _setAccentColor(savedAccent);
+                if (savedLang) _setLanguage(savedLang);
+                if (savedToken) setAuthToken(savedToken);
+                if (savedUser) setUser(JSON.parse(savedUser));
+            } catch (err) {
+                console.error('Failed to load persisted app state:', err);
+            }
+            setReady(true);
         })();
-
-        // Listen to system color scheme changes
-        const sub = Appearance.addChangeListener(({ colorScheme }) => {
-            setSystemScheme(colorScheme === 'light' ? 'light' : 'dark');
-        });
-        return () => sub.remove();
     }, []);
+
+    // Global entries fetch (cached across navigations)
+    const fetchEntries = useCallback(async () => {
+        try {
+            const response = await axios.get(`${API_URL}/entries`);
+            const sorted = response.data.sort((a: any, b: any) =>
+                new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+            setEntries(sorted);
+        } catch (err) {
+            console.error('Failed to fetch entries:', err);
+            // Silently fail for UI — keep existing cached entries
+        } finally {
+            setEntriesLoading(false);
+        }
+    }, []);
+
+    // Optimistic add: immediately add to cache, then sync with backend
+    const addEntry = useCallback(async (title: string | null, content: string) => {
+        const optimisticEntry = {
+            id: Date.now(), // temp id
+            title,
+            content,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+        };
+        // Immediately prepend to cache
+        setEntries(prev => [optimisticEntry, ...prev]);
+        // Post to backend in background, then reconcile
+        try {
+            const res = await axios.post(`${API_URL}/entries`, {
+                title: title || null,
+                content,
+            });
+            // Replace optimistic entry with real one from server
+            setEntries(prev => prev.map(e => e.id === optimisticEntry.id ? res.data : e));
+        } catch (err) {
+            console.error('Failed to sync new entry to backend:', err);
+            // Keep optimistic entry even if backend fails
+        }
+    }, []);
+
+    // Fetch entries on mount
+    useEffect(() => {
+        fetchEntries();
+    }, [fetchEntries]);
+
+    // System color scheme is now handled by useSystemColorScheme() hook above
 
     const resolvedTheme: 'light' | 'dark' =
         themeMode === 'system' ? systemScheme : themeMode;
 
-    const setThemeMode = useCallback(async (t: ThemeMode) => {
-        _setThemeMode(t);
-        await AsyncStorage.setItem(STORAGE_KEYS.THEME, t);
+    const i18n = useMemo(() => getTranslations(language), [language]);
+
+    const setThemeMode = useCallback(async (val: ThemeMode) => {
+        _setThemeMode(val);
+        AsyncStorage.setItem(STORAGE_KEYS.THEME, val);
     }, []);
 
-    const setAccentColor = useCallback(async (c: string) => {
-        _setAccentColor(c);
-        await AsyncStorage.setItem(STORAGE_KEYS.ACCENT, c);
+    const setAccentColor = useCallback(async (val: string) => {
+        _setAccentColor(val);
+        AsyncStorage.setItem(STORAGE_KEYS.ACCENT, val);
     }, []);
 
-    const setLanguage = useCallback(async (l: string) => {
-        _setLanguage(l);
-        await AsyncStorage.setItem(STORAGE_KEYS.LANGUAGE, l);
+    const setLanguage = useCallback(async (val: string) => {
+        _setLanguage(val);
+        AsyncStorage.setItem(STORAGE_KEYS.LANGUAGE, val);
     }, []);
 
     const login = useCallback(async (u: User, token: string) => {
         setUser(u);
         setAuthToken(token);
-        await AsyncStorage.setItem(STORAGE_KEYS.TOKEN, token);
-        await AsyncStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(u));
+        AsyncStorage.setItem(STORAGE_KEYS.TOKEN, token);
+        AsyncStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(u));
     }, []);
 
     const logout = useCallback(async () => {
         setUser(null);
         setAuthToken(null);
-        await AsyncStorage.removeItem(STORAGE_KEYS.TOKEN);
-        await AsyncStorage.removeItem(STORAGE_KEYS.USER);
+        AsyncStorage.removeItem(STORAGE_KEYS.TOKEN);
+        AsyncStorage.removeItem(STORAGE_KEYS.USER);
     }, []);
 
+    const value = useMemo(() => ({
+        themeMode, setThemeMode, resolvedTheme,
+        accentColor, setAccentColor,
+        language, setLanguage, i18n,
+        user, authToken, login, logout,
+        entries, entriesLoading, fetchEntries, addEntry,
+    }), [themeMode, resolvedTheme, accentColor, language, i18n, user, authToken,
+        setThemeMode, setAccentColor, setLanguage, login, logout,
+        entries, entriesLoading, fetchEntries, addEntry]);
+
+    if (!ready) return null; // avoid flash of wrong theme
+
     return (
-        <AppContext.Provider value={{
-            themeMode, setThemeMode, resolvedTheme,
-            accentColor, setAccentColor,
-            language, setLanguage,
-            user, authToken, login, logout,
-        }}>
+        <AppContext.Provider value={value}>
             {children}
         </AppContext.Provider>
     );

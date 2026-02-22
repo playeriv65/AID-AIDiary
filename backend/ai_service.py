@@ -8,7 +8,7 @@ load_dotenv()
 # Initialize the OpenAI async client
 # You can change the base_url here if you want to use a compatible provider like DeepSeek
 client = AsyncOpenAI(
-    api_key=os.getenv("OPENAI_API_KEY", "your-fallback-key-here"),
+    api_key=os.getenv("OPENAI_API_KEY"),
     # base_url="https://api.deepseek.com/v1" # Uncomment and change if needed
 )
 

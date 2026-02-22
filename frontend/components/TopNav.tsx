@@ -1,29 +1,35 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+// Trigger recompile to fix stale import cache
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import { useRouter } from 'expo-router';
 import { ThemedText } from './themed-text';
 import { Colors } from '@/constants/theme';
 import { useAppContext } from '@/context/AppContext';
 import { IconSymbol } from './ui/icon-symbol';
 
 export function TopNav() {
-    const { resolvedTheme, accentColor, user } = useAppContext();
-    const theme = resolvedTheme;
+    const router = useRouter();
+    const { resolvedTheme, accentColor, user, i18n } = useAppContext();
+    const c = Colors[resolvedTheme];
 
     return (
-        <View style={[styles.container, { backgroundColor: Colors[theme].topNav, borderBottomColor: theme === 'dark' ? '#1A1C1E' : '#D0D0D5' }]}>
+        <View style={[styles.container, { backgroundColor: c.topNav, borderBottomColor: resolvedTheme === 'dark' ? '#1A1C1E' : '#D0D0D5' }]}>
             <View style={styles.headerRow}>
                 <View style={styles.logoContainer}>
-                    <IconSymbol name="book.pages.fill" size={20} color={accentColor} style={{ marginRight: 8 }} />
-                    <ThemedText style={[styles.logoText, { color: Colors[theme].text }]}>JOURNEY®</ThemedText>
+                    <IconSymbol name="book-open" size={20} color={accentColor} weight="fill" style={{ marginRight: 8 }} />
+                    <ThemedText style={[styles.logoText, { color: c.text }]}>{i18n.appName}</ThemedText>
                 </View>
-
-                <View style={styles.profileContainer}>
+                <TouchableOpacity
+                    style={styles.profileContainer}
+                    onPress={() => router.push('/settings')}
+                    activeOpacity={0.7}
+                >
                     <View style={[styles.avatar, { backgroundColor: accentColor }]}>
                         <ThemedText style={styles.avatarText}>
                             {user ? user.username.charAt(0).toUpperCase() : 'U'}
                         </ThemedText>
                     </View>
-                </View>
+                </TouchableOpacity>
             </View>
         </View>
     );
@@ -33,11 +39,10 @@ const styles = StyleSheet.create({
     container: {
         width: '100%',
         borderBottomWidth: 1,
-        borderBottomColor: '#1A1C1E',
     },
     headerRow: {
         flexDirection: 'row',
-        justifyContent: 'center', // Center logo as in screenshot
+        justifyContent: 'center',
         alignItems: 'center',
         height: 60,
         paddingHorizontal: 24,
@@ -48,10 +53,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     logoText: {
-        fontSize: 16,
-        fontWeight: '700',
-        letterSpacing: 2,
-        color: '#DFE1E3',
+        fontSize: 18,
+        fontWeight: '800',
+        letterSpacing: 3,
     },
     profileContainer: {
         position: 'absolute',
@@ -63,12 +67,12 @@ const styles = StyleSheet.create({
         width: 32,
         height: 32,
         borderRadius: 16,
-        backgroundColor: '#2A2E33',
         alignItems: 'center',
         justifyContent: 'center',
     },
     avatarText: {
         fontSize: 14,
         fontWeight: '600',
+        color: '#000',
     }
 });

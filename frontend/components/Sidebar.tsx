@@ -1,5 +1,5 @@
-import React from 'react';
-import { StyleSheet, View, TouchableOpacity, ScrollView, Platform } from 'react-native';
+import React, { useState, useRef } from 'react';
+import { StyleSheet, View, TouchableOpacity, ScrollView, Platform, Animated } from 'react-native';
 import { useRouter, usePathname } from 'expo-router';
 import { IconSymbol } from './ui/icon-symbol';
 import { ThemedText } from './themed-text';
@@ -7,95 +7,149 @@ import { Colors } from '@/constants/theme';
 import { useAppContext } from '@/context/AppContext';
 
 const SIDEBAR_ITEMS = [
-    { name: 'Timeline', icon: 'book.fill', route: '/' },
-    { name: 'Calendar', icon: 'calendar', route: '/calendar' },
-    { name: 'Media', icon: 'photo', route: '/media' },
-    { name: 'Atlas', icon: 'map', route: '/atlas' },
-    { name: 'Coach', icon: 'heart', route: '/coach' },
-    { name: 'Search', icon: 'magnifyingglass', route: '/search' },
-    { name: 'Odyssey AI', icon: 'sparkles', route: '/ai' },
-    { name: 'Settings', icon: 'gear', route: '/settings' },
-];
+    { key: 'timeline', icon: 'book-open', route: '/' },
+    { key: 'calendar', icon: 'calendar', route: '/calendar' },
+    { key: 'search', icon: 'magnifying-glass', route: '/search' },
+    { key: 'settings', icon: 'gear', route: '/settings' },
+] as const;
+
+const ICON_AREA = 68;     // fixed icon column width
+const TEXT_AREA = 152;    // max text area when expanded
+const EXPANDED_WIDTH = ICON_AREA + TEXT_AREA;
 
 export function Sidebar() {
     const router = useRouter();
     const pathname = usePathname();
-    const { resolvedTheme, accentColor } = useAppContext();
-    const theme = resolvedTheme;
+    const { resolvedTheme, accentColor, i18n } = useAppContext();
+    const c = Colors[resolvedTheme];
+
+    const [collapsed, setCollapsed] = useState(false);
+
+    // Animated value: 0 = expanded, 1 = collapsed
+    const anim = useRef(new Animated.Value(0)).current;
+
+    const toggle = () => {
+        const toValue = collapsed ? 0 : 1;
+        Animated.timing(anim, {
+            toValue,
+            duration: 220,
+            useNativeDriver: false, // width animation needs non-native
+        }).start();
+        setCollapsed(!collapsed);
+    };
+
+    // Interpolated sidebar width
+    const sidebarWidth = anim.interpolate({
+        inputRange: [0, 1],
+        outputRange: [EXPANDED_WIDTH, ICON_AREA],
+    });
+
+    // Text fades out when collapsing
+    const textOpacity = anim.interpolate({
+        inputRange: [0, 0.4, 1],
+        outputRange: [1, 0, 0],
+    });
+
+    // Text slides left when collapsing
+    const textTranslateX = anim.interpolate({
+        inputRange: [0, 1],
+        outputRange: [0, -16],
+    });
 
     return (
-        <View style={[styles.container, { backgroundColor: Colors[theme].sidebar }]}>
+        <Animated.View style={[styles.container, {
+            width: sidebarWidth,
+            backgroundColor: c.sidebar,
+            borderRightColor: resolvedTheme === 'dark' ? '#1A1C1E' : '#D0D0D5',
+        }]}>
+            {/* Hamburger toggle */}
+            <TouchableOpacity
+                style={styles.toggleBtn}
+                onPress={toggle}
+                activeOpacity={0.7}
+            >
+                <IconSymbol name="list" size={22} color={c.icon} />
+            </TouchableOpacity>
+
             <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
                 {SIDEBAR_ITEMS.map((item) => {
                     const isActive = pathname === item.route;
+                    const label = i18n[item.key as keyof typeof i18n] as string;
                     return (
                         <TouchableOpacity
-                            key={item.name}
+                            key={item.key}
                             style={[
                                 styles.itemContent,
-                                isActive && { backgroundColor: Colors[theme].sidebarActive }
+                                isActive && { backgroundColor: c.sidebarActive },
                             ]}
                             onPress={() => router.push(item.route as any)}
                             activeOpacity={0.7}
                         >
-                            <IconSymbol
-                                name={item.icon as any}
-                                size={20}
-                                color={isActive ? accentColor : Colors[theme].icon}
-                                style={styles.icon}
-                            />
-                            <ThemedText style={[styles.itemText, { color: isActive ? Colors[theme].text : Colors[theme].icon }]}>
-                                {item.name}
-                            </ThemedText>
+                            {/* Icon — always fixed in the same spot */}
+                            <View style={styles.iconSlot}>
+                                <IconSymbol
+                                    name={item.icon as any}
+                                    size={22}
+                                    color={isActive ? accentColor : c.icon}
+                                    weight={isActive ? 'fill' : 'regular'}
+                                />
+                            </View>
+
+                            {/* Text — fades & slides */}
+                            <Animated.View style={{
+                                opacity: textOpacity,
+                                transform: [{ translateX: textTranslateX }],
+                                overflow: 'hidden',
+                            }}>
+                                <ThemedText style={[styles.itemText, { color: isActive ? c.text : c.icon }]}>
+                                    {label}
+                                </ThemedText>
+                            </Animated.View>
                         </TouchableOpacity>
                     );
                 })}
             </ScrollView>
-        </View>
+        </Animated.View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        width: 260,
         borderRightWidth: 1,
-        borderRightColor: '#1A1C1E', // Very dark subtle border
         height: '100%',
         paddingVertical: 10,
-        // Hide sidebar completely on very small mobile screens (optional but good practice)
-        ...(Platform.OS !== 'web' && { display: 'none' })
+        overflow: 'hidden',
+        ...(Platform.OS !== 'web' && { display: 'none' }),
+    },
+    toggleBtn: {
+        width: ICON_AREA,
+        height: 46,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 8,
+        marginBottom: 4,
     },
     scrollContent: {
         flexGrow: 1,
-        paddingTop: 40,
+        paddingTop: 8,
     },
     itemContent: {
         flexDirection: 'row',
         alignItems: 'center',
-        paddingVertical: 12,
-        paddingHorizontal: 24,
         marginHorizontal: 8,
-        borderRadius: 8,
-        marginBottom: 4,
+        borderRadius: 10,
+        marginBottom: 2,
+        height: 46,
+        overflow: 'hidden',
     },
-    icon: {
-        marginRight: 16,
-        width: 24, // Fixed width to align icons
-        textAlign: 'center',
+    iconSlot: {
+        width: ICON_AREA - 16,  // icon column minus margins
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexShrink: 0,
     },
     itemText: {
         fontSize: 14,
-        color: '#8A8D91',
         fontWeight: '500',
     },
-    itemTextActive: {
-        color: '#DFE1E3',
-        fontWeight: '600',
-    },
-    divider: {
-        height: 1,
-        backgroundColor: '#1A1C1E',
-        marginVertical: 16,
-        marginHorizontal: 24,
-    }
 });

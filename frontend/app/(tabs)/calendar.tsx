@@ -2,21 +2,21 @@ import { StyleSheet, View, FlatList, TouchableOpacity, ActivityIndicator } from 
 import { useState, useCallback, useMemo } from 'react';
 import { useFocusEffect, useRouter } from 'expo-router';
 import { format, startOfMonth, startOfWeek, endOfMonth, endOfWeek, eachDayOfInterval, isSameMonth, subMonths, addMonths } from 'date-fns';
-import axios from 'axios';
+import { getDateLocale } from '@/constants/i18n';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Colors } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
+import { useAppContext } from '@/context/AppContext';
 
 const API_URL = 'http://127.0.0.1:8000/api';
 
 export default function CalendarScreen() {
-    const [entries, setEntries] = useState<any[]>([]);
-    const [loading, setLoading] = useState(true);
     const router = useRouter();
-    const theme = useColorScheme() ?? 'dark';
+    const { resolvedTheme, accentColor, i18n, entries, entriesLoading, fetchEntries, language } = useAppContext();
+    const theme = resolvedTheme;
+    const dateLocale = getDateLocale(language);
 
     // Generate recent months (e.g., past 6 months + current)
     const months = useMemo(() => {
@@ -29,22 +29,11 @@ export default function CalendarScreen() {
         return result.reverse(); // oldest to newest
     }, []);
 
-    const fetchEntries = async () => {
-        try {
-            setLoading(true);
-            const response = await axios.get(`${API_URL}/entries`);
-            setEntries(response.data);
-        } catch (error) {
-            console.error('Failed to fetch entries:', error);
-        } finally {
-            setLoading(false);
-        }
-    };
-
+    // Silently refresh when page gains focus
     useFocusEffect(
         useCallback(() => {
             fetchEntries();
-        }, [])
+        }, [fetchEntries])
     );
 
     // Create a Set of dates (YYYY-MM-DD) that have entries
@@ -64,42 +53,53 @@ export default function CalendarScreen() {
 
         return (
             <View style={styles.monthContainer}>
-                <ThemedText style={styles.monthTitle}>{format(monthDate, 'MMMM yyyy')}</ThemedText>
+                <ThemedText style={[styles.monthTitle, { color: Colors[theme].text }]}>{format(monthDate, 'LLLL yyyy', { locale: dateLocale })}</ThemedText>
 
                 <View style={styles.daysHeader}>
-                    {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
-                        <ThemedText key={`day-header-${day}`} style={styles.dayHeaderText}>{day}</ThemedText>
+                    {[i18n.sun, i18n.mon, i18n.tue, i18n.wed, i18n.thu, i18n.fri, i18n.sat].map((day, idx) => (
+                        <ThemedText key={`day-header-${idx}`} style={[styles.dayHeaderText, { color: Colors[theme].icon }]}>{day}</ThemedText>
                     ))}
                 </View>
 
-                <View style={styles.gridContainer}>
+                <View style={[styles.gridContainer, {
+                    backgroundColor: Colors[theme].cardBackground,
+                    borderWidth: 1,
+                    borderColor: theme === 'dark' ? '#2A2C2E' : '#EAEAEA'
+                }]}>
                     {daysInView.map((date, index) => {
                         const dateStr = format(date, 'yyyy-MM-dd');
                         const isCurrentMonth = isSameMonth(date, monthDate);
                         const hasEntry = entryDates.has(dateStr);
+                        const isToday = format(date, 'yyyy-MM-dd') === format(new Date(), 'yyyy-MM-dd');
 
                         return (
                             <TouchableOpacity
                                 key={`date-${index}`}
                                 style={[
                                     styles.gridCell,
-                                    { backgroundColor: isCurrentMonth ? '#1E2023' : '#141618' },
-                                    isCurrentMonth && styles.gridCellActive,
+                                    {
+                                        borderColor: theme === 'dark' ? '#2A2C2E' : '#EAEAEA',
+                                        backgroundColor: isToday ? (theme === 'dark' ? '#2A2C30' : '#F4F4F6') : 'transparent'
+                                    }
                                 ]}
                                 activeOpacity={hasEntry ? 0.7 : 1}
                                 onPress={() => {
                                     if (hasEntry) {
-                                        // Highlight or scroll to entry
                                         router.push('/');
                                     }
                                 }}
                             >
-                                {isCurrentMonth ? (
-                                    <>
-                                        <ThemedText style={styles.dateText}>{format(date, 'd')}</ThemedText>
-                                        {hasEntry && <View style={styles.entryDot} />}
-                                    </>
-                                ) : null}
+                                <ThemedText style={[
+                                    styles.dateText,
+                                    {
+                                        color: isToday ? accentColor : Colors[theme].text,
+                                        opacity: isCurrentMonth ? 1 : 0.2,
+                                        fontWeight: isToday ? '800' : 'bold'
+                                    }
+                                ]}>
+                                    {format(date, 'd')}
+                                </ThemedText>
+                                {hasEntry && <View style={[styles.entryDot, { opacity: isCurrentMonth ? 1 : 0.2 }]} />}
                             </TouchableOpacity>
                         );
                     })}
@@ -110,38 +110,35 @@ export default function CalendarScreen() {
 
     return (
         <ThemedView style={[styles.container, { backgroundColor: Colors[theme].background }]}>
-            {loading ? (
-                <ActivityIndicator size="large" color={Colors[theme].tint} style={styles.loader} />
-            ) : (
-                <FlatList
-                    data={months}
-                    keyExtractor={(item) => item.toISOString()}
-                    renderItem={renderMonth}
-                    contentContainerStyle={styles.listContent}
-                    showsVerticalScrollIndicator={false}
-                    initialScrollIndex={months.length - 2} // Scroll to current month roughly
-                    getItemLayout={(data, index) => (
-                        // Approximate height of month block (header + 6 rows of 60px)
-                        { length: 480, offset: 480 * index, index }
-                    )}
-                />
-            )}
+            <FlatList
+                data={months}
+                keyExtractor={(item) => item.toISOString()}
+                renderItem={renderMonth}
+                contentContainerStyle={styles.listContent}
+                showsVerticalScrollIndicator={false}
+                initialScrollIndex={months.length - 2} // Scroll to current month roughly
+                getItemLayout={(data, index) => (
+                    // Approximate height of month block (header + 6 rows of 60px)
+                    { length: 480, offset: 480 * index, index }
+                )}
+            />
 
             <View style={styles.fabContainer}>
                 <TouchableOpacity
-                    style={styles.calendarFab}
+                    style={[styles.calendarFab, { backgroundColor: theme === 'dark' ? '#353347' : '#FFFFFF' }]}
                     activeOpacity={0.8}
+                    onPress={() => router.push('/write')}
                 >
-                    <IconSymbol size={20} name="calendar.badge.plus" color="#E0E0FF" />
+                    <IconSymbol size={20} name="calendar-plus" color={theme === 'dark' ? '#E0E0FF' : accentColor} />
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                    style={[styles.fab, { backgroundColor: Colors[theme].tint }]}
+                    style={[styles.fab, { backgroundColor: accentColor }]}
                     onPress={() => router.push('/write')}
                     activeOpacity={0.8}
                 >
                     <IconSymbol size={20} name="plus" color="#000" />
-                    <ThemedText style={styles.fabText}>NEW</ThemedText>
+                    <ThemedText style={styles.fabText}>{i18n.newEntry}</ThemedText>
                 </TouchableOpacity>
             </View>
         </ThemedView>
@@ -170,7 +167,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
         marginBottom: 20,
-        color: '#FFFFFF',
+        color: '#888',
     },
     daysHeader: {
         flexDirection: 'row',

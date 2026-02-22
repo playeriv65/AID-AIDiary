@@ -5,25 +5,25 @@ A Brand New Form of Journaling.
 ## 功能特性 (Features)
 - 📝 **日记时间线** — 极简深色风格，支持创建、浏览日记
 - 📅 **日历视图** — 按月展示日期，有日记的天显示小红点
-- ⚙️ **设置页面** — 深/浅色切换、6色主题色、多语言选择
+- 🔍 **搜索页面** — 快速检索历史日记
+- ⚙️ **设置页面** — 深/浅色切换、6色主题色、中/英/日三语选择
 - 👤 **账号系统** — 账密注册/登录，JWT Token 鉴权（bcrypt 加密）
 - 🎨 **主题联动** — 所有设置全局生效，持久化存储
+- 🪶 **Phosphor Icons** — 全站使用 Phosphor 图标（Web + Native 兼容）
 
 ## 项目架构 (Architecture)
-- **Frontend**: 基于 [Expo](https://expo.dev/) (React Native Web) 构建的跨平台极简日记界面，风格参考 Journey。全局状态通过 `AppContext` 管理。
-- **Backend**: 基于 [FastAPI](https://fastapi.tiangolo.com/) 构建，SQLite 存储日记数据，支持用户注册/登录（JWT）。
+- **Frontend**: 基于 [Expo](https://expo.dev/) (React Native Web) 构建的跨平台极简日记界面。全局状态通过 `AppContext` 管理；`constants/i18n.ts` 统一管理三语翻译，`constants/config.ts` 管理 API 地址等配置。
+- **Backend**: 基于 [FastAPI](https://fastapi.tiangolo.com/) 构建，SQLite 存储日记数据，支持用户注册/登录（JWT）；使用 `uv` 管理 Python 依赖。
 
 ## 快速启动 (Getting Started)
 
 ### 1. 后端 (Backend)
 ```bash
 cd backend
-# 激活虚拟环境
-.\.venv\Scripts\activate
-# 安装依赖
-pip install -r requirements.txt
+# 安装依赖 (需要 uv: https://docs.astral.sh/uv/)
+uv sync
 # 启动服务
-uvicorn main:app --reload
+uv run uvicorn main:app --reload
 ```
 后端服务运行在 `http://localhost:8000`
 
