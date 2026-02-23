@@ -1,17 +1,26 @@
+import json
+import os
+import uuid
+from pathlib import Path
+from typing import List, Optional
+
 from fastapi import FastAPI, Depends, HTTPException, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
-from database import SessionLocal, engine, get_db
-import models, schemas, crud
+
+import crud
+import models
+import schemas
 from ai_service import generate_polished_entry
-from auth import verify_password, hash_password, create_access_token
-import json
-import os
-from pathlib import Path
+from auth import (
+    create_access_token,
+    get_current_user,
+    hash_password,
+    verify_password,
+)
+from database import SessionLocal, engine, get_db
 
-
-# Create uploads directory
 UPLOAD_DIR = Path(__file__).parent / "static" / "uploads"
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -19,12 +28,11 @@ models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="AID-AIDiary Backend")
 
-# Mount static files
 app.mount("/static", StaticFiles(directory=str(UPLOAD_DIR.parent)), name="static")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["http://localhost:8081", "http://127.0.0.1:8081"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -51,23 +59,33 @@ def read_root():
     return {"message": "Welcome to the AID-AIDiary API"}
 
 
-# --- Journal Entry Endpoints ---
-
-
 @app.get("/api/entries")
-def read_entries(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+def read_entries(
+    skip: int = 0,
+    limit: int = 100,
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(get_current_user),
+):
     entries = crud.get_entries(db, skip=skip, limit=limit)
     return [serialize_entry(e) for e in entries]
 
 
 @app.post("/api/entries")
-def create_entry(entry: schemas.JournalEntryCreate, db: Session = Depends(get_db)):
-    db_entry = crud.create_entry(db=db, entry=entry)
+def create_entry(
+    entry: schemas.JournalEntryCreate,
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(get_current_user),
+):
+    db_entry = crud.create_entry(db=db, entry=entry, user_id=int(current_user.id))
     return serialize_entry(db_entry)
 
 
 @app.get("/api/entries/{entry_id}")
-def read_entry(entry_id: int, db: Session = Depends(get_db)):
+def read_entry(
+    entry_id: int,
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(get_current_user),
+):
     db_entry = crud.get_entry(db, entry_id=entry_id)
     if db_entry is None:
         raise HTTPException(status_code=404, detail="Entry not found")
@@ -76,7 +94,10 @@ def read_entry(entry_id: int, db: Session = Depends(get_db)):
 
 @app.put("/api/entries/{entry_id}")
 def update_entry(
-    entry_id: int, entry: schemas.JournalEntryUpdate, db: Session = Depends(get_db)
+    entry_id: int,
+    entry: schemas.JournalEntryUpdate,
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(get_current_user),
 ):
     db_entry = crud.update_entry(db, entry_id=entry_id, entry=entry)
     if db_entry is None:
@@ -85,7 +106,11 @@ def update_entry(
 
 
 @app.delete("/api/entries/{entry_id}")
-def delete_entry(entry_id: int, db: Session = Depends(get_db)):
+def delete_entry(
+    entry_id: int,
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(get_current_user),
+):
     db_entry = crud.delete_entry(db, entry_id=entry_id)
     if db_entry is None:
         raise HTTPException(status_code=404, detail="Entry not found")
@@ -93,29 +118,32 @@ def delete_entry(entry_id: int, db: Session = Depends(get_db)):
 
 
 @app.post("/api/upload")
-async def upload_image(file: UploadFile = File(...)):
-    # Generate unique filename
-    import uuid
+async def upload_image(
+    file: UploadFile = File(...),
+    current_user: models.User = Depends(get_current_user),
+):
+    filename = file.filename or "photo.jpg"
+    ext = filename.split(".")[-1] if "." in filename else "jpg"
+    unique_filename = f"{uuid.uuid4()}.{ext}"
+    filepath = UPLOAD_DIR / unique_filename
 
-    ext = file.filename.split(".")[-1] if "." in file.filename else "jpg"
-    filename = f"{uuid.uuid4()}.{ext}"
-    filepath = UPLOAD_DIR / filename
-
-    # Save file
     content = await file.read()
     with open(filepath, "wb") as f:
         f.write(content)
 
-    return {"filename": f"uploads/{filename}", "url": f"/static/uploads/{filename}"}
+    return {
+        "filename": f"uploads/{unique_filename}",
+        "url": f"/static/uploads/{unique_filename}",
+    }
 
 
 @app.post("/api/ai/polish", response_model=schemas.AIPolishResponse)
-async def ai_polish(request: schemas.AIPolishRequest):
+async def ai_polish(
+    request: schemas.AIPolishRequest,
+    current_user: models.User = Depends(get_current_user),
+):
     result = await generate_polished_entry(request.content)
     return result
-
-
-# --- Auth Endpoints ---
 
 
 @app.post("/api/auth/register", response_model=schemas.TokenResponse)

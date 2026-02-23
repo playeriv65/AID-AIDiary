@@ -1,6 +1,6 @@
+from datetime import datetime, timezone
 from sqlalchemy.orm import Session
 import models, schemas
-import datetime
 import json
 
 
@@ -20,8 +20,9 @@ def get_entries(db: Session, skip: int = 0, limit: int = 100):
     )
 
 
-def create_entry(db: Session, entry: schemas.JournalEntryCreate):
+def create_entry(db: Session, entry: schemas.JournalEntryCreate, user_id: int):
     db_entry = models.JournalEntry(
+        user_id=user_id,
         title=entry.title,
         content=entry.content,
         category=entry.category,
@@ -53,7 +54,7 @@ def update_entry(db: Session, entry_id: int, entry: schemas.JournalEntryUpdate):
             db_entry.tags = json.dumps(entry.tags)
         if entry.image is not None:
             db_entry.image = entry.image
-        db_entry.updated_at = datetime.datetime.now(datetime.timezone.utc)
+        db_entry.updated_at = datetime.now(timezone.utc)
         db.commit()
         db.refresh(db_entry)
     return db_entry

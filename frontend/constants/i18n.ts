@@ -1,4 +1,9 @@
 // ─── Internationalization ─────────────────────────────────────────────────────
+import { zhCN } from 'date-fns/locale/zh-CN';
+import { ja as jaLocale } from 'date-fns/locale/ja';
+import { enUS } from 'date-fns/locale/en-US';
+import type { Locale } from 'date-fns';
+
 export type LangKey = 'zh' | 'en' | 'ja';
 
 interface Translations {
@@ -80,6 +85,7 @@ interface Translations {
     authFailed: string;
     filteringSoon: string;
     backendOffline: string;
+    uploadFailed: string;
 }
 
 const zh: Translations = {
@@ -151,6 +157,7 @@ const zh: Translations = {
     authFailed: '操作失败，请重试',
     filteringSoon: '筛选功能即将推出！',
     backendOffline: '后端未连接，点击重试',
+    uploadFailed: '图片上传失败',
 };
 
 const en: Translations = {
@@ -222,6 +229,7 @@ const en: Translations = {
     authFailed: 'Operation failed, please try again',
     filteringSoon: 'Filtering feature coming soon!',
     backendOffline: 'Backend offline, tap to retry',
+    uploadFailed: 'Image upload failed',
 };
 
 const ja: Translations = {
@@ -293,6 +301,7 @@ const ja: Translations = {
     authFailed: '操作に失敗しました。もう一度お試しください',
     filteringSoon: 'フィルタリング機能は近日公開予定です！',
     backendOffline: 'バックエンドがオフライン、タップして再試行',
+    uploadFailed: '画像のアップロードに失敗しました',
 };
 
 const translations: Record<LangKey, Translations> = { zh, en, ja };
@@ -300,12 +309,6 @@ const translations: Record<LangKey, Translations> = { zh, en, ja };
 export function t(lang: string): Translations {
     return translations[lang as LangKey] || translations.zh;
 }
-
-// date-fns locale mapping
-import { zhCN } from 'date-fns/locale/zh-CN';
-import { ja as jaLocale } from 'date-fns/locale/ja';
-import { enUS } from 'date-fns/locale/en-US';
-import type { Locale } from 'date-fns';
 
 const dateLocales: Record<LangKey, Locale> = { zh: zhCN, en: enUS, ja: jaLocale };
 

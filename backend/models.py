@@ -7,6 +7,7 @@ class JournalEntry(Base):
     __tablename__ = "journal_entries"
 
     id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, index=True, nullable=False)
     title = Column(String(200), index=True, nullable=True)
     content = Column(Text, nullable=False)
     category = Column(String(50), nullable=True)

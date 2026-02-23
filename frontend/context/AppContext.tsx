@@ -1,16 +1,17 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, useMemo, useSyncExternalStore } from 'react';
 import { Platform, Appearance } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { t as getTranslations } from '@/constants/i18n';
 import { CONFIG } from '@/constants/config';
 
 const API_URL = CONFIG.API_URL;
 
-// Short timeout so UI doesn't hang when backend is down
-axios.defaults.timeout = CONFIG.AXIOS_TIMEOUT;
+const api = axios.create({
+    baseURL: API_URL,
+    timeout: CONFIG.AXIOS_TIMEOUT,
+});
 
-// Storage Keys
 const STORAGE_KEYS = {
     THEME: '@app_theme',
     ACCENT: '@app_accent',
@@ -147,16 +148,28 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         })();
     }, []);
 
+    // Add auth token to requests
+    useEffect(() => {
+        const interceptor = api.interceptors.request.use((config) => {
+            if (authToken) {
+                config.headers.Authorization = `Bearer ${authToken}`;
+            }
+            return config;
+        });
+        return () => {
+            api.interceptors.request.eject(interceptor);
+        };
+    }, [authToken]);
+
     // Global entries fetch (cached across navigations)
     const fetchEntries = useCallback(async () => {
         try {
-            const response = await axios.get(`${API_URL}/entries`);
+            const response = await api.get('/entries');
             const sorted = response.data.sort((a: any, b: any) =>
                 new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
             setEntries(sorted);
         } catch (err) {
             console.error('Failed to fetch entries:', err);
-            // Silently fail for UI — keep existing cached entries
         } finally {
             setEntriesLoading(false);
         }
@@ -175,7 +188,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         setEntries(prev => [optimisticEntry, ...prev]);
         // Post to backend in background, then reconcile
         try {
-            const res = await axios.post(`${API_URL}/entries`, {
+            const res = await api.post('/entries', {
                 title: title || null,
                 content,
             });
@@ -189,8 +202,10 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
     // Fetch entries on mount
     useEffect(() => {
-        fetchEntries();
-    }, [fetchEntries]);
+        if (authToken) {
+            fetchEntries();
+        }
+    }, [fetchEntries, authToken]);
 
     // System color scheme is now handled by useSystemColorScheme() hook above
 

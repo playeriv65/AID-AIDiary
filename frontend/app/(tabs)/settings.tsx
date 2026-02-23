@@ -26,7 +26,7 @@ function Section({ label }: { label: string }) {
 
 // ─── Login Panel ─────────────────────────────────────────────────────────────
 function LoginPanel({ onClose }: { onClose: () => void }) {
-    const { resolvedTheme, login, accentColor, i18n } = useAppContext();
+    const { resolvedTheme, login, accentColor, i18n, fetchEntries } = useAppContext();
     const c = Colors[resolvedTheme];
     const [isRegister, setIsRegister] = useState(false);
     const [username, setUsername] = useState('');
@@ -43,6 +43,7 @@ function LoginPanel({ onClose }: { onClose: () => void }) {
             const endpoint = isRegister ? '/auth/register' : '/auth/login';
             const res = await axios.post(`${API_URL}${endpoint}`, { username, password });
             await login(res.data.user, res.data.access_token);
+            await fetchEntries();
             Alert.alert(i18n.success, isRegister ? i18n.registerSuccess : `${i18n.welcomeBack}, ${res.data.user.username}!`);
             onClose();
         } catch (e: any) {

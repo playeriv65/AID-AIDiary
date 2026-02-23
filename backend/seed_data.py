@@ -1,11 +1,28 @@
 from datetime import datetime, timedelta
 from database import SessionLocal, engine, Base
-from models import JournalEntry
+from models import JournalEntry, User
 import json
 
 Base.metadata.create_all(bind=engine)
 
 db = SessionLocal()
+
+USERNAME = "playeriv65"
+user = db.query(User).filter(User.username == USERNAME).first()
+if not user:
+    from auth import hash_password
+
+    user = User(
+        username=USERNAME,
+        email="playeriv65@example.com",
+        hashed_password=hash_password("password123"),
+    )
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+    print(f"Created user: {USERNAME}")
+else:
+    print(f"User already exists: {USERNAME}")
 
 entries_data = [
     {
@@ -16,7 +33,6 @@ entries_data = [
         "location": "家中",
         "tags": ["春节", "家庭", "美食"],
         "days_ago": 0,
-        "image": "uploads/蛇.jpg",
     },
     {
         "title": "春日散步",
@@ -129,6 +145,9 @@ entries_data = [
 ]
 
 try:
+    db.query(JournalEntry).delete()
+    db.commit()
+
     for data in entries_data:
         entry_time = datetime.now() - timedelta(days=data["days_ago"])
         entry = JournalEntry(
@@ -138,14 +157,14 @@ try:
             weather=data["weather"],
             location=data["location"],
             tags=json.dumps(data["tags"], ensure_ascii=False),
-            image=data.get("image"),
             created_at=entry_time,
             updated_at=entry_time,
+            user_id=user.id,
         )
         db.add(entry)
 
     db.commit()
-    print(f"Created {len(entries_data)} entries")
+    print(f"Created {len(entries_data)} entries for user: {USERNAME}")
 
     print("\nTime range:")
     print(f"  Latest: 1 day ago")

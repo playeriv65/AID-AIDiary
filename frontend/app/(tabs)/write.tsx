@@ -4,6 +4,7 @@ import { useRouter, useLocalSearchParams } from 'expo-router';
 import { format, parseISO } from 'date-fns';
 import { getDateLocale } from '@/constants/i18n';
 import axios from 'axios';
+import * as ImagePicker from 'expo-image-picker';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
@@ -12,8 +13,6 @@ import { Colors, FontSizes, FontWeights } from '@/constants/theme';
 import { CONFIG } from '@/constants/config';
 import { useAppContext } from '@/context/AppContext';
 import { Picker } from '@/components/picker';
-
-const API_URL = CONFIG.API_URL;
 
 const CATEGORIES = [
     { value: 'work', label: 'catWork', icon: 'briefcase' },
@@ -62,7 +61,7 @@ export default function WriteEntryScreen() {
     const [newTag, setNewTag] = useState('');
     
     const router = useRouter();
-    const { resolvedTheme, accentColor, i18n, language, fetchEntries } = useAppContext();
+    const { resolvedTheme, accentColor, i18n, language, fetchEntries, authToken } = useAppContext();
     const theme = resolvedTheme;
     const dateLocale = getDateLocale(language);
 
@@ -96,8 +95,9 @@ export default function WriteEntryScreen() {
         }
         setSaving(true);
         try {
+            const headers = { Authorization: `Bearer ${authToken}` };
             if (isEditing && entryId) {
-                await axios.put(`${API_URL}/entries/${entryId}`, {
+                await axios.put(`${CONFIG.API_URL}/entries/${entryId}`, {
                     title: title.trim() || null,
                     content: content.trim(),
                     category,
@@ -105,10 +105,10 @@ export default function WriteEntryScreen() {
                     location: location.trim() || null,
                     tags: tags.length > 0 ? tags : null,
                     image,
-                });
+                }, { headers });
                 await fetchEntries();
             } else {
-                await axios.post(`${API_URL}/entries`, {
+                await axios.post(`${CONFIG.API_URL}/entries`, {
                     title: title.trim() || null,
                     content: content.trim(),
                     category,
@@ -116,15 +116,15 @@ export default function WriteEntryScreen() {
                     location: location.trim() || null,
                     tags: tags.length > 0 ? tags : null,
                     image,
-                });
+                }, { headers });
                 await fetchEntries();
             }
             setTitle('');
             setContent('');
             router.back();
-        } catch (error) {
-            console.error('Save failed:', error);
-            Alert.alert(i18n.error, 'Failed to save entry');
+        } catch (error: any) {
+            console.error('Save failed:', error.message, error.response?.status, error.response?.data);
+            Alert.alert(i18n.error, error.response?.data?.detail || i18n.authFailed);
         } finally {
             setSaving(false);
         }
@@ -137,7 +137,9 @@ export default function WriteEntryScreen() {
         }
         try {
             setAiPolishing(true);
-            const response = await axios.post(`${API_URL}/ai/polish`, { content });
+            const response = await axios.post(`${CONFIG.API_URL}/ai/polish`, { content }, {
+                headers: { Authorization: `Bearer ${authToken}` },
+            });
             let newContent = response.data.polished_text;
             if (response.data.tags && response.data.tags.length > 0) {
                 newContent += '\n\n🏷️ ' + response.data.tags.join(', ');
@@ -182,30 +184,44 @@ export default function WriteEntryScreen() {
     };
 
     const handleImageUpload = async () => {
-        const input = document.createElement('input');
-        input.type = 'file';
-        input.accept = 'image/*';
-        input.onchange = async (e: any) => {
-            const file = e.target.files?.[0];
-            if (!file) return;
+        const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (!permissionResult.granted) {
+            Alert.alert(i18n.error, 'Permission required to access photos');
+            return;
+        }
+        
+        const result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ['images'],
+            allowsEditing: true,
+            quality: 0.8,
+        });
+
+        if (result.canceled || !result.assets?.[0]) return;
+        
+        const asset = result.assets[0];
+        setUploading(true);
+        try {
+            const response = await fetch(asset.uri);
+            const blob = await response.blob();
             
-            setUploading(true);
-            try {
-                const formData = new FormData();
-                formData.append('file', file);
-                
-                const response = await axios.post(`${API_URL}/upload`, formData, {
-                    headers: { 'Content-Type': 'multipart/form-data' },
-                });
-                setImage(response.data.filename);
-            } catch (error) {
-                console.error('Upload failed:', error);
-                Alert.alert(i18n.error, 'Failed to upload image');
-            } finally {
-                setUploading(false);
-            }
-        };
-        input.click();
+            const formData = new FormData();
+            formData.append('file', blob, {
+                filename: asset.fileName || 'photo.jpg',
+                type: asset.mimeType || 'image/jpeg',
+            } as any);
+            
+            const uploadResponse = await axios.post(`${CONFIG.API_URL}/upload`, formData, {
+                headers: { 
+                    'Authorization': `Bearer ${authToken}`,
+                },
+            });
+            setImage(uploadResponse.data.filename);
+        } catch (error: any) {
+            console.error('Upload error:', error.message, error.response?.status, error.response?.data);
+            Alert.alert(i18n.error, i18n.uploadFailed || 'Failed to upload image');
+        } finally {
+            setUploading(false);
+        }
     };
 
     const c = Colors[theme];
