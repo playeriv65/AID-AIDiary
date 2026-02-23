@@ -82,6 +82,7 @@ export default function JournalTimelineScreen() {
         category: entry.category || '',
         weather: entry.weather || '',
         location: entry.location || '',
+        image: entry.image || '',
       },
     });
   };

@@ -1,4 +1,4 @@
-import { StyleSheet, TextInput, Platform, TouchableOpacity, Alert, Animated, View, ScrollView, ActivityIndicator } from 'react-native';
+import { StyleSheet, TextInput, Platform, TouchableOpacity, Alert, Animated, View, ScrollView, ActivityIndicator, Image } from 'react-native';
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { format, parseISO } from 'date-fns';
@@ -42,6 +42,7 @@ export default function WriteEntryScreen() {
         category?: string;
         weather?: string;
         location?: string;
+        image?: string;
     }>();
     const isEditing = !!params.id;
     const entryId = params.id ? parseInt(params.id) : null;
@@ -52,14 +53,16 @@ export default function WriteEntryScreen() {
     const [weather, setWeather] = useState<string | null>(params.weather || null);
     const [location, setLocation] = useState(params.location || '');
     const [tags, setTags] = useState<string[]>([]);
+    const [image, setImage] = useState<string | null>(params.image || null);
     const [saving, setSaving] = useState(false);
     const [aiPolishing, setAiPolishing] = useState(false);
+    const [uploading, setUploading] = useState(false);
     const [showLocationInput, setShowLocationInput] = useState(false);
     const [showTagInput, setShowTagInput] = useState(false);
     const [newTag, setNewTag] = useState('');
     
     const router = useRouter();
-    const { resolvedTheme, accentColor, i18n, addEntry, language, fetchEntries } = useAppContext();
+    const { resolvedTheme, accentColor, i18n, language, fetchEntries } = useAppContext();
     const theme = resolvedTheme;
     const dateLocale = getDateLocale(language);
 
@@ -101,10 +104,20 @@ export default function WriteEntryScreen() {
                     weather,
                     location: location.trim() || null,
                     tags: tags.length > 0 ? tags : null,
+                    image,
                 });
                 await fetchEntries();
             } else {
-                await addEntry(title.trim() || null, content.trim());
+                await axios.post(`${API_URL}/entries`, {
+                    title: title.trim() || null,
+                    content: content.trim(),
+                    category,
+                    weather,
+                    location: location.trim() || null,
+                    tags: tags.length > 0 ? tags : null,
+                    image,
+                });
+                await fetchEntries();
             }
             setTitle('');
             setContent('');
@@ -166,6 +179,33 @@ export default function WriteEntryScreen() {
 
     const removeTag = (tag: string) => {
         setTags(prev => prev.filter(t => t !== tag));
+    };
+
+    const handleImageUpload = async () => {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'image/*';
+        input.onchange = async (e: any) => {
+            const file = e.target.files?.[0];
+            if (!file) return;
+            
+            setUploading(true);
+            try {
+                const formData = new FormData();
+                formData.append('file', file);
+                
+                const response = await axios.post(`${API_URL}/upload`, formData, {
+                    headers: { 'Content-Type': 'multipart/form-data' },
+                });
+                setImage(response.data.filename);
+            } catch (error) {
+                console.error('Upload failed:', error);
+                Alert.alert(i18n.error, 'Failed to upload image');
+            } finally {
+                setUploading(false);
+            }
+        };
+        input.click();
     };
 
     const c = Colors[theme];
@@ -232,13 +272,34 @@ export default function WriteEntryScreen() {
                         autoFocus={!isEditing}
                     />
 
-                    <TouchableOpacity
-                        style={[styles.imageUpload, { backgroundColor: theme === 'dark' ? '#2A2C30' : '#F0F0F2' }]}
-                        activeOpacity={0.7}
-                        onPress={() => Alert.alert(i18n.hint, 'Image upload coming soon!')}
-                    >
-                        <IconSymbol name="plus" size={24} color={mutedColor} />
-                    </TouchableOpacity>
+                    {image ? (
+                        <View style={[styles.imagePreview, { backgroundColor: theme === 'dark' ? '#2A2C30' : '#F0F0F2' }]}>
+                            <Image
+                                source={{ uri: `${CONFIG.STATIC_URL}/${image}` }}
+                                style={styles.previewImage}
+                                resizeMode="cover"
+                            />
+                            <TouchableOpacity
+                                style={styles.removeImageBtn}
+                                onPress={() => setImage(null)}
+                            >
+                                <IconSymbol name="x" size={16} color="#fff" />
+                            </TouchableOpacity>
+                        </View>
+                    ) : (
+                        <TouchableOpacity
+                            style={[styles.imageUpload, { backgroundColor: theme === 'dark' ? '#2A2C30' : '#F0F0F2' }]}
+                            activeOpacity={0.7}
+                            onPress={handleImageUpload}
+                            disabled={uploading}
+                        >
+                            {uploading ? (
+                                <ActivityIndicator size="small" color={accentColor} />
+                            ) : (
+                                <IconSymbol name="plus" size={24} color={mutedColor} />
+                            )}
+                        </TouchableOpacity>
+                    )}
                 </ScrollView>
             </Animated.View>
 
@@ -410,6 +471,28 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: 40,
+    },
+    imagePreview: {
+        width: 200,
+        height: 150,
+        borderRadius: 10,
+        marginTop: 40,
+        overflow: 'hidden',
+    },
+    previewImage: {
+        width: '100%',
+        height: '100%',
+    },
+    removeImageBtn: {
+        position: 'absolute',
+        top: 8,
+        right: 8,
+        width: 24,
+        height: 24,
+        borderRadius: 12,
+        backgroundColor: 'rgba(0,0,0,0.6)',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     metaArea: {
         paddingHorizontal: '15%',

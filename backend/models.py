@@ -13,6 +13,7 @@ class JournalEntry(Base):
     weather = Column(String(30), nullable=True)
     location = Column(String(100), nullable=True)
     tags = Column(String(500), nullable=True)
+    image = Column(String(500), nullable=True)
     created_at = Column(
         DateTime, default=lambda: datetime.datetime.now(datetime.timezone.utc)
     )

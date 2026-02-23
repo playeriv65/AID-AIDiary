@@ -14,6 +14,9 @@ backend/.env
 backend/*.db
 backend/*.sqlite3
 
+# Uploaded files
+backend/static/uploads/
+
 # Node/Expo
 frontend/node_modules/
 frontend/.expo/
@@ -27,3 +30,8 @@ frontend/.env
 
 # Windows reserved names
 nul
+
+# Test files
+*.jpg
+*.png
+test_*.py

@@ -10,6 +10,7 @@ class JournalEntryBase(BaseModel):
     weather: Optional[str] = None
     location: Optional[str] = None
     tags: Optional[List[str]] = None
+    image: Optional[str] = None
 
 
 class JournalEntryCreate(JournalEntryBase):
@@ -23,6 +24,7 @@ class JournalEntryUpdate(BaseModel):
     weather: Optional[str] = None
     location: Optional[str] = None
     tags: Optional[List[str]] = None
+    image: Optional[str] = None
 
 
 class JournalEntry(BaseModel):
@@ -33,6 +35,7 @@ class JournalEntry(BaseModel):
     weather: Optional[str] = None
     location: Optional[str] = None
     tags: Optional[List[str]] = None
+    image: Optional[str] = None
     created_at: datetime
     updated_at: datetime
 

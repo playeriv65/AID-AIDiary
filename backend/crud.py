@@ -28,6 +28,7 @@ def create_entry(db: Session, entry: schemas.JournalEntryCreate):
         weather=entry.weather,
         location=entry.location,
         tags=json.dumps(entry.tags) if entry.tags else None,
+        image=entry.image,
     )
     db.add(db_entry)
     db.commit()
@@ -50,6 +51,8 @@ def update_entry(db: Session, entry_id: int, entry: schemas.JournalEntryUpdate):
             db_entry.location = entry.location
         if entry.tags is not None:
             db_entry.tags = json.dumps(entry.tags)
+        if entry.image is not None:
+            db_entry.image = entry.image
         db_entry.updated_at = datetime.datetime.now(datetime.timezone.utc)
         db.commit()
         db.refresh(db_entry)

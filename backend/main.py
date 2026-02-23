@@ -1,16 +1,26 @@
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends, HTTPException, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
 from database import SessionLocal, engine, get_db
 import models, schemas, crud
 from ai_service import generate_polished_entry
 from auth import verify_password, hash_password, create_access_token
 import json
+import os
+from pathlib import Path
 
+
+# Create uploads directory
+UPLOAD_DIR = Path(__file__).parent / "static" / "uploads"
+UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="AID-AIDiary Backend")
+
+# Mount static files
+app.mount("/static", StaticFiles(directory=str(UPLOAD_DIR.parent)), name="static")
 
 app.add_middleware(
     CORSMiddleware,
@@ -22,6 +32,9 @@ app.add_middleware(
 
 
 def serialize_entry(entry: models.JournalEntry) -> dict:
+    image_url = None
+    if entry.image:
+        image_url = f"/static/{entry.image}"
     return {
         "id": entry.id,
         "title": entry.title,
@@ -30,6 +43,7 @@ def serialize_entry(entry: models.JournalEntry) -> dict:
         "weather": entry.weather,
         "location": entry.location,
         "tags": json.loads(entry.tags) if entry.tags else None,
+        "image": image_url,
         "created_at": entry.created_at,
         "updated_at": entry.updated_at,
     }
@@ -79,6 +93,23 @@ def delete_entry(entry_id: int, db: Session = Depends(get_db)):
     if db_entry is None:
         raise HTTPException(status_code=404, detail="Entry not found")
     return db_entry
+
+
+@app.post("/api/upload")
+async def upload_image(file: UploadFile = File(...)):
+    # Generate unique filename
+    import uuid
+
+    ext = file.filename.split(".")[-1] if "." in file.filename else "jpg"
+    filename = f"{uuid.uuid4()}.{ext}"
+    filepath = UPLOAD_DIR / filename
+
+    # Save file
+    content = await file.read()
+    with open(filepath, "wb") as f:
+        f.write(content)
+
+    return {"filename": filename, "url": f"/static/{filename}"}
 
 
 @app.post("/api/ai/polish", response_model=schemas.AIPolishResponse)

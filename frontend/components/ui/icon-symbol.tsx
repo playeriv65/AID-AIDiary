@@ -5,6 +5,7 @@ import {
   List,
   CaretLeft,
   CaretRight,
+  X,
   XCircle,
   BookOpen,
   Calendar,
@@ -26,8 +27,20 @@ import {
   House,
   ArrowClockwise,
   SlidersHorizontal,
+  Funnel,
   User,
   Info,
+  Cloud,
+  CloudRain,
+  CloudSnow,
+  Wind,
+  CloudFog,
+  Briefcase,
+  Heart,
+  Airplane,
+  Heartbeat,
+  Folder,
+  WifiSlash,
 } from 'phosphor-react-native';
 import { OpaqueColorValue, type StyleProp, type TextStyle } from 'react-native';
 
@@ -37,6 +50,7 @@ const ICON_MAP: Record<string, any> = {
   'list': List,
   'caret-left': CaretLeft,
   'caret-right': CaretRight,
+  'x': X,
   'x-circle': XCircle,
   'house': House,
   // Sidebar
@@ -51,8 +65,14 @@ const ICON_MAP: Record<string, any> = {
   'paper-plane': PaperPlaneTilt,
   'sparkle': Sparkle,
   'bookmark': BookmarkSimple,
-  // Write page
+  // Weather
   'sun': Sun,
+  'cloud': Cloud,
+  'cloud-rain': CloudRain,
+  'snowflake': CloudSnow,
+  'wind': Wind,
+  'fog': CloudFog,
+  // Write page
   'map-pin': MapPin,
   'text-aa': TextAa,
   'hash': Hash,
@@ -62,8 +82,16 @@ const ICON_MAP: Record<string, any> = {
   // Utilities
   'arrow-clockwise': ArrowClockwise,
   'sliders': SlidersHorizontal,
+  'funnel': Funnel,
+  'wifi-slash': WifiSlash,
   'user': User,
   'info': Info,
+  // Categories
+  'briefcase': Briefcase,
+  'heart': Heart,
+  'airplane': Airplane,
+  'heartbeat': Heartbeat,
+  'folder': Folder,
 };
 
 export type PhosphorIconName = keyof typeof ICON_MAP;
