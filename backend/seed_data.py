@@ -1,11 +1,23 @@
 from datetime import datetime, timedelta
-from database import SessionLocal
+from database import SessionLocal, engine, Base
 from models import JournalEntry
 import json
+
+Base.metadata.create_all(bind=engine)
 
 db = SessionLocal()
 
 entries_data = [
+    {
+        "title": "年夜饭",
+        "content": "今天是大年三十，全家人一起吃年夜饭。这是我最期待的时刻，一大家子人围坐在一起，分享着一年来的大小事。妈妈的厨艺依旧那么棒，满满一桌子菜：红烧鱼、狮子头、白切鸡、还有各种海鲜。大家有说有笑，气氛温馨极了！",
+        "category": "life",
+        "weather": "sunny",
+        "location": "家中",
+        "tags": ["春节", "家庭", "美食"],
+        "days_ago": 0,
+        "image": "uploads/蛇.jpg",
+    },
     {
         "title": "春日散步",
         "content": "今天阳光明媚，去公园散步。樱花开了，粉色的花瓣随风飘落，非常美丽。在湖边看到几只天鹅在游泳，心情很愉快。",
@@ -126,6 +138,7 @@ try:
             weather=data["weather"],
             location=data["location"],
             tags=json.dumps(data["tags"], ensure_ascii=False),
+            image=data.get("image"),
             created_at=entry_time,
             updated_at=entry_time,
         )

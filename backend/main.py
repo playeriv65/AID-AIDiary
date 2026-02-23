@@ -32,9 +32,6 @@ app.add_middleware(
 
 
 def serialize_entry(entry: models.JournalEntry) -> dict:
-    image_url = None
-    if entry.image:
-        image_url = f"/static/{entry.image}"
     return {
         "id": entry.id,
         "title": entry.title,
@@ -43,7 +40,7 @@ def serialize_entry(entry: models.JournalEntry) -> dict:
         "weather": entry.weather,
         "location": entry.location,
         "tags": json.loads(entry.tags) if entry.tags else None,
-        "image": image_url,
+        "image": entry.image,
         "created_at": entry.created_at,
         "updated_at": entry.updated_at,
     }
@@ -109,7 +106,7 @@ async def upload_image(file: UploadFile = File(...)):
     with open(filepath, "wb") as f:
         f.write(content)
 
-    return {"filename": filename, "url": f"/static/{filename}"}
+    return {"filename": f"uploads/{filename}", "url": f"/static/uploads/{filename}"}
 
 
 @app.post("/api/ai/polish", response_model=schemas.AIPolishResponse)

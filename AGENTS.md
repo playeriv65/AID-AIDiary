@@ -50,6 +50,15 @@ backend/
 - **禁止未使用的 import**: 提交前必须运行 lint 检查，清除警告
 - **组件统一**: 使用 ThemedText 而非 Text，保持字体风格一致
 - **API 地址**: 使用 `constants/config.ts` 中的 CONFIG.API_URL，不要硬编码
+- **图片 URL 规范**: 
+  - 后端：存储/返回纯文件名（如 `uploads/xxx.jpg`），不加 `/static/` 前缀
+  - 前端：统一拼接 `CONFIG.STATIC_URL + '/' + image`，不加特判
+
+## 测试规范
+- 后端使用 pytest
+- 测试文件：`backend/test_main.py`
+- 运行测试：`cd backend && uv run pytest`
+- 覆盖场景：CRUD、日记图片、上传图片 URL 格式、AI 润色、认证
 
 ## UI 规范
 - **字体统一**: 使用 `constants/theme.ts` 中的 `FontSizes`, `FontWeights`, `LineHeights`

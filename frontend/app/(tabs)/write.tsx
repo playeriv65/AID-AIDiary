@@ -278,6 +278,8 @@ export default function WriteEntryScreen() {
                                 source={{ uri: `${CONFIG.STATIC_URL}/${image}` }}
                                 style={styles.previewImage}
                                 resizeMode="cover"
+                                onLoadStart={() => console.log('Loading:', `${CONFIG.STATIC_URL}/${image}`)}
+                                onError={(e) => console.log('Image error:', e.nativeEvent.error)}
                             />
                             <TouchableOpacity
                                 style={styles.removeImageBtn}

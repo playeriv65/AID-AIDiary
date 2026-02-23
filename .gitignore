@@ -35,3 +35,4 @@ nul
 *.jpg
 *.png
 test_*.py
+test_data/

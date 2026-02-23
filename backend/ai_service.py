@@ -1,22 +1,16 @@
 import os
-from openai import AsyncOpenAI
+from openai import OpenAI
 from dotenv import load_dotenv
 
-# Load environment variables, particularly OPENAI_API_KEY
 load_dotenv()
 
-# Initialize the OpenAI async client
-# You can change the base_url here if you want to use a compatible provider like DeepSeek
-client = AsyncOpenAI(
+client = OpenAI(
     api_key=os.getenv("OPENAI_API_KEY"),
-    # base_url="https://api.deepseek.com/v1" # Uncomment and change if needed
+    base_url="https://open.bigmodel.cn/api/paas/v4/",
 )
 
+
 async def generate_polished_entry(content: str) -> dict:
-    """
-    Takes the raw user journal content and uses an LLM to polish the text and extract mood tags.
-    Returns a dictionary containing the polished_text and tags.
-    """
     system_prompt = """
     You are an exquisite, empathetic journaling assistant. 
     The user is providing a rough draft of their diary entry. 
@@ -30,30 +24,27 @@ async def generate_polished_entry(content: str) -> dict:
         "tags": ["Tag1", "Tag2"]
     }
     """
-    
+
     try:
-        response = await client.chat.completions.create(
-            model="gpt-4o-mini", # You can change this to your preferred model
+        response = client.chat.completions.create(
+            model="glm-4-flash",
             messages=[
                 {"role": "system", "content": system_prompt},
-                {"role": "user", "content": f"Here is my rough draft:\n\n{content}"}
+                {"role": "user", "content": f"Here is my rough draft:\n\n{content}"},
             ],
-            response_format={ "type": "json_object" }
+            response_format={"type": "json_object"},
         )
-        
+
         result_content = response.choices[0].message.content
         import json
+
         parsed_result = json.loads(result_content)
-        
+
         return {
             "polished_text": parsed_result.get("polished_text", content),
-            "tags": parsed_result.get("tags", [])
+            "tags": parsed_result.get("tags", []),
         }
-        
+
     except Exception as e:
         print(f"Error during AI generation: {e}")
-        # Fallback in case of failure
-        return {
-            "polished_text": content,
-            "tags": ["Error"]
-        }
+        return {"polished_text": content, "tags": ["Error"]}
