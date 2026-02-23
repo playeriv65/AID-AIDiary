@@ -37,13 +37,9 @@ export const Colors = {
 
 export const Fonts = Platform.select({
   ios: {
-    /** iOS `UIFontDescriptorSystemDesignDefault` */
     sans: 'system-ui',
-    /** iOS `UIFontDescriptorSystemDesignSerif` */
     serif: 'ui-serif',
-    /** iOS `UIFontDescriptorSystemDesignRounded` */
     rounded: 'ui-rounded',
-    /** iOS `UIFontDescriptorSystemDesignMonospaced` */
     mono: 'ui-monospace',
   },
   default: {
@@ -59,3 +55,27 @@ export const Fonts = Platform.select({
     mono: "SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
   },
 });
+
+export const FontSizes = {
+  xs: 11,
+  sm: 12,
+  md: 14,
+  lg: 16,
+  xl: 18,
+  xxl: 22,
+  xxxl: 28,
+};
+
+export const LineHeights = {
+  tight: 1.2,
+  normal: 1.5,
+  relaxed: 1.75,
+};
+
+export const FontWeights = {
+  light: '300' as const,
+  normal: '400' as const,
+  medium: '500' as const,
+  semibold: '600' as const,
+  bold: '700' as const,
+};

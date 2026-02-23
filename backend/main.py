@@ -5,6 +5,7 @@ from database import SessionLocal, engine, get_db
 import models, schemas, crud
 from ai_service import generate_polished_entry
 from auth import verify_password, hash_password, create_access_token
+import json
 
 
 models.Base.metadata.create_all(bind=engine)
@@ -19,34 +20,58 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+def serialize_entry(entry: models.JournalEntry) -> dict:
+    return {
+        "id": entry.id,
+        "title": entry.title,
+        "content": entry.content,
+        "category": entry.category,
+        "weather": entry.weather,
+        "location": entry.location,
+        "tags": json.loads(entry.tags) if entry.tags else None,
+        "created_at": entry.created_at,
+        "updated_at": entry.updated_at,
+    }
+
+
 @app.get("/")
 def read_root():
     return {"message": "Welcome to the AID-AIDiary API"}
 
+
 # --- Journal Entry Endpoints ---
 
-@app.get("/api/entries", response_model=list[schemas.JournalEntry])
+
+@app.get("/api/entries")
 def read_entries(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     entries = crud.get_entries(db, skip=skip, limit=limit)
-    return entries
+    return [serialize_entry(e) for e in entries]
 
-@app.post("/api/entries", response_model=schemas.JournalEntry)
+
+@app.post("/api/entries")
 def create_entry(entry: schemas.JournalEntryCreate, db: Session = Depends(get_db)):
-    return crud.create_entry(db=db, entry=entry)
+    db_entry = crud.create_entry(db=db, entry=entry)
+    return serialize_entry(db_entry)
 
-@app.get("/api/entries/{entry_id}", response_model=schemas.JournalEntry)
+
+@app.get("/api/entries/{entry_id}")
 def read_entry(entry_id: int, db: Session = Depends(get_db)):
     db_entry = crud.get_entry(db, entry_id=entry_id)
     if db_entry is None:
         raise HTTPException(status_code=404, detail="Entry not found")
-    return db_entry
+    return serialize_entry(db_entry)
 
-@app.put("/api/entries/{entry_id}", response_model=schemas.JournalEntry)
-def update_entry(entry_id: int, entry: schemas.JournalEntryUpdate, db: Session = Depends(get_db)):
+
+@app.put("/api/entries/{entry_id}")
+def update_entry(
+    entry_id: int, entry: schemas.JournalEntryUpdate, db: Session = Depends(get_db)
+):
     db_entry = crud.update_entry(db, entry_id=entry_id, entry=entry)
     if db_entry is None:
         raise HTTPException(status_code=404, detail="Entry not found")
-    return db_entry
+    return serialize_entry(db_entry)
+
 
 @app.delete("/api/entries/{entry_id}")
 def delete_entry(entry_id: int, db: Session = Depends(get_db)):
@@ -55,28 +80,34 @@ def delete_entry(entry_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Entry not found")
     return db_entry
 
+
 @app.post("/api/ai/polish", response_model=schemas.AIPolishResponse)
 async def ai_polish(request: schemas.AIPolishRequest):
     result = await generate_polished_entry(request.content)
     return result
 
+
 # --- Auth Endpoints ---
+
 
 @app.post("/api/auth/register", response_model=schemas.TokenResponse)
 def register(data: schemas.UserRegister, db: Session = Depends(get_db)):
-    existing = db.query(models.User).filter(models.User.username == data.username).first()
+    existing = (
+        db.query(models.User).filter(models.User.username == data.username).first()
+    )
     if existing:
         raise HTTPException(status_code=400, detail="Username already taken")
     user = models.User(
         username=data.username,
         email=data.email,
-        hashed_password=hash_password(data.password)
+        hashed_password=hash_password(data.password),
     )
     db.add(user)
     db.commit()
     db.refresh(user)
     token = create_access_token({"sub": str(user.id), "username": user.username})
     return {"access_token": token, "token_type": "bearer", "user": user}
+
 
 @app.post("/api/auth/login", response_model=schemas.TokenResponse)
 def login(data: schemas.UserLogin, db: Session = Depends(get_db)):

@@ -44,6 +44,8 @@ interface User {
     email?: string;
 }
 
+export type BackendStatus = 'checking' | 'online' | 'offline';
+
 interface AppContextType {
     themeMode: ThemeMode;
     setThemeMode: (t: ThemeMode) => void;
@@ -57,7 +59,10 @@ interface AppContextType {
     authToken: string | null;
     login: (user: User, token: string) => void;
     logout: () => void;
-    // Global entries cache
+    backendStatus: BackendStatus;
+    checkBackendHealth: () => Promise<void>;
+    offlineShown: boolean;
+    setOfflineShown: (shown: boolean) => void;
     entries: any[];
     entriesLoading: boolean;
     fetchEntries: () => Promise<void>;
@@ -101,6 +106,23 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     const [entries, setEntries] = useState<any[]>([]);
     const [entriesLoading, setEntriesLoading] = useState(true);
     const [ready, setReady] = useState(false);
+    const [backendStatus, setBackendStatus] = useState<BackendStatus>('checking');
+    const [offlineShown, setOfflineShown] = useState(false);
+
+    const checkBackendHealth = useCallback(async () => {
+        setBackendStatus('checking');
+        try {
+            await axios.get(`${API_URL.replace('/api', '')}/`, { timeout: 3000 });
+            setBackendStatus('online');
+        } catch (err) {
+            setBackendStatus('offline');
+            console.error('Backend health check failed:', err);
+        }
+    }, []);
+
+    useEffect(() => {
+        checkBackendHealth();
+    }, [checkBackendHealth]);
 
     // Load persisted prefs on mount
     useEffect(() => {
@@ -211,9 +233,11 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         accentColor, setAccentColor,
         language, setLanguage, i18n,
         user, authToken, login, logout,
+        backendStatus, checkBackendHealth, offlineShown, setOfflineShown,
         entries, entriesLoading, fetchEntries, addEntry,
     }), [themeMode, resolvedTheme, accentColor, language, i18n, user, authToken,
         setThemeMode, setAccentColor, setLanguage, login, logout,
+        backendStatus, checkBackendHealth, offlineShown,
         entries, entriesLoading, fetchEntries, addEntry]);
 
     if (!ready) return null; // avoid flash of wrong theme

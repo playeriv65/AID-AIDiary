@@ -1,5 +1,5 @@
-import { StyleSheet, View, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { useState, useCallback, useMemo } from 'react';
+import { StyleSheet, View, FlatList, TouchableOpacity } from 'react-native';
+import { useCallback, useMemo } from 'react';
 import { useFocusEffect, useRouter } from 'expo-router';
 import { format, startOfMonth, startOfWeek, endOfMonth, endOfWeek, eachDayOfInterval, isSameMonth, subMonths, addMonths } from 'date-fns';
 import { getDateLocale } from '@/constants/i18n';
@@ -10,11 +10,9 @@ import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Colors } from '@/constants/theme';
 import { useAppContext } from '@/context/AppContext';
 
-const API_URL = 'http://127.0.0.1:8000/api';
-
 export default function CalendarScreen() {
     const router = useRouter();
-    const { resolvedTheme, accentColor, i18n, entries, entriesLoading, fetchEntries, language } = useAppContext();
+    const { resolvedTheme, accentColor, i18n, entries, fetchEntries, language } = useAppContext();
     const theme = resolvedTheme;
     const dateLocale = getDateLocale(language);
 

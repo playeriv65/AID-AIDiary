@@ -1,12 +1,13 @@
-import { StyleSheet, TextInput, FlatList, TouchableOpacity, View, Animated, Alert } from 'react-native';
+import { StyleSheet, TextInput, FlatList, TouchableOpacity, View, Animated } from 'react-native';
 import { useState, useCallback, useRef, useEffect } from 'react';
+import { useRouter } from 'expo-router';
 import { format } from 'date-fns';
 import { getDateLocale } from '@/constants/i18n';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Colors } from '@/constants/theme';
+import { Colors, FontSizes, FontWeights } from '@/constants/theme';
 import { useAppContext } from '@/context/AppContext';
 
 export default function SearchScreen() {
@@ -14,6 +15,7 @@ export default function SearchScreen() {
     const theme = resolvedTheme;
     const c = Colors[theme];
     const dateLocale = getDateLocale(language);
+    const router = useRouter();
 
     const [query, setQuery] = useState('');
     const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -42,13 +44,27 @@ export default function SearchScreen() {
         const idx = text.toLowerCase().indexOf(q);
         if (idx === -1) return text.slice(0, maxLen);
 
-        // Show context around match
         const start = Math.max(0, idx - 30);
         const end = Math.min(text.length, idx + query.length + 60);
         let snippet = text.slice(start, end);
         if (start > 0) snippet = '...' + snippet;
         if (end < text.length) snippet = snippet + '...';
         return snippet;
+    };
+
+    const handleEntryPress = (entry: any) => {
+        router.push({
+            pathname: '/write',
+            params: {
+                id: entry.id.toString(),
+                title: entry.title || '',
+                content: entry.content,
+                created_at: entry.created_at,
+                category: entry.category || '',
+                weather: entry.weather || '',
+                location: entry.location || '',
+            },
+        });
     };
 
     return (
@@ -87,7 +103,7 @@ export default function SearchScreen() {
                     renderItem={({ item }) => (
                         <TouchableOpacity
                             activeOpacity={0.7}
-                            onPress={() => Alert.alert(item.title || i18n.hint, item.content)}
+                            onPress={() => handleEntryPress(item)}
                         >
                             <View style={[styles.resultCard, { backgroundColor: c.cardBackground }]}>
                                 <ThemedText style={[styles.resultDate, { color: accentColor }]}>
@@ -145,8 +161,8 @@ const styles = StyleSheet.create({
     },
     searchInput: {
         flex: 1,
-        fontSize: 16,
-        fontWeight: '400',
+        fontSize: FontSizes.lg,
+        fontWeight: FontWeights.normal,
     },
     listContent: {
         paddingHorizontal: '15%',
@@ -159,18 +175,18 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     resultDate: {
-        fontSize: 12,
-        fontWeight: '600',
+        fontSize: FontSizes.sm,
+        fontWeight: FontWeights.semibold,
         marginBottom: 6,
     },
     resultTitle: {
-        fontSize: 16,
-        fontWeight: '600',
+        fontSize: FontSizes.lg,
+        fontWeight: FontWeights.semibold,
         marginBottom: 4,
     },
     resultSnippet: {
-        fontSize: 14,
-        lineHeight: 20,
+        fontSize: FontSizes.md,
+        lineHeight: FontSizes.md * 1.5,
     },
     emptyContainer: {
         flex: 1,

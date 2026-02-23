@@ -24,3 +24,6 @@ frontend/.env
 
 # IDE
 .vscode/
+
+# Windows reserved names
+nul

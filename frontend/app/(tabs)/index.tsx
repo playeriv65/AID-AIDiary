@@ -1,20 +1,20 @@
 // Trigger recompile
-import { StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, Animated, View, Alert } from 'react-native';
-import { useState, useCallback, useRef, useEffect } from 'react';
+import { StyleSheet, FlatList, TouchableOpacity, Animated, View, Alert } from 'react-native';
+import { useCallback, useRef, useEffect } from 'react';
 import { useFocusEffect, useRouter } from 'expo-router';
 import { format } from 'date-fns';
 import { getDateLocale } from '@/constants/i18n';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import { Colors } from '@/constants/theme';
+import { Colors, FontSizes, FontWeights } from '@/constants/theme';
 import { useAppContext } from '@/context/AppContext';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 
 const AnimatedThemedView = Animated.createAnimatedComponent(ThemedView);
 
-function EntryCard({ item, index }: { item: any; index: number }) {
-  const { resolvedTheme, accentColor, language, i18n } = useAppContext();
+function EntryCard({ item, index, onPress }: { item: any; index: number; onPress: () => void }) {
+  const { resolvedTheme, accentColor, language } = useAppContext();
   const theme = resolvedTheme;
   const dateLocale = getDateLocale(language);
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -38,7 +38,7 @@ function EntryCard({ item, index }: { item: any; index: number }) {
   }, [fadeAnim, slideAnim, index]);
 
   return (
-    <TouchableOpacity activeOpacity={0.8} onPress={() => Alert.alert(item.title || i18n.hint, item.content)}>
+    <TouchableOpacity activeOpacity={0.8} onPress={onPress}>
       <AnimatedThemedView style={[styles.entryCard, { backgroundColor: Colors[theme].cardBackground, opacity: fadeAnim, transform: [{ translateY: slideAnim }] }]}>
         <ThemedText style={[styles.entryDate, { color: accentColor }]}>
           {format(new Date(item.created_at), 'PPP p - EEE', { locale: dateLocale })}
@@ -54,8 +54,15 @@ function EntryCard({ item, index }: { item: any; index: number }) {
 
 export default function JournalTimelineScreen() {
   const router = useRouter();
-  const { resolvedTheme, accentColor, i18n, entries, entriesLoading, fetchEntries } = useAppContext();
+  const { resolvedTheme, accentColor, i18n, entries, entriesLoading, fetchEntries, backendStatus, checkBackendHealth, offlineShown, setOfflineShown } = useAppContext();
   const theme = resolvedTheme;
+
+  useEffect(() => {
+    if (backendStatus === 'offline' && !offlineShown) {
+      Alert.alert(i18n.hint, i18n.backendOffline || '后端未连接，点击重试');
+      setOfflineShown(true);
+    }
+  }, [backendStatus, offlineShown, setOfflineShown, i18n]);
 
   // Silently refresh when page gains focus (data already cached in context)
   useFocusEffect(
@@ -64,18 +71,35 @@ export default function JournalTimelineScreen() {
     }, [fetchEntries])
   );
 
+  const handleEntryPress = (entry: any) => {
+    router.push({
+      pathname: '/write',
+      params: {
+        id: entry.id.toString(),
+        title: entry.title || '',
+        content: entry.content,
+        created_at: entry.created_at,
+        category: entry.category || '',
+        weather: entry.weather || '',
+        location: entry.location || '',
+      },
+    });
+  };
+
   const renderHeader = () => (
     <View style={styles.listHeader}>
-      <View style={styles.entriesSectionHeader}>
-        <ThemedText style={[styles.sectionTitle, { color: Colors[theme].text }]}>{i18n.entries}</ThemedText>
-        <View style={styles.entriesActions}>
-          <TouchableOpacity onPress={fetchEntries} style={{ marginRight: 16 }}>
-            <IconSymbol name="arrow-clockwise" size={16} color={Colors[theme].icon} />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => Alert.alert(i18n.hint, i18n.filteringSoon)}>
-            <IconSymbol name="sliders" size={16} color={Colors[theme].icon} />
-          </TouchableOpacity>
-        </View>
+      {backendStatus === 'offline' && (
+        <TouchableOpacity onPress={checkBackendHealth} style={styles.offlineIcon}>
+          <IconSymbol name="wifi-slash" size={20} color="#F43F5E" />
+        </TouchableOpacity>
+      )}
+      <View style={styles.headerActions}>
+        <TouchableOpacity onPress={fetchEntries} style={styles.headerBtn}>
+          <IconSymbol name="arrow-clockwise" size={18} color={Colors[theme].icon} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => Alert.alert(i18n.hint, i18n.filteringSoon)} style={styles.headerBtn}>
+          <IconSymbol name="funnel" size={18} color={Colors[theme].icon} />
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -86,7 +110,7 @@ export default function JournalTimelineScreen() {
         data={entries}
         keyExtractor={(item) => item.id.toString()}
         ListHeaderComponent={renderHeader}
-        renderItem={({ item, index }) => <EntryCard item={item} index={index} />}
+        renderItem={({ item, index }) => <EntryCard item={item} index={index} onPress={() => handleEntryPress(item)} />}
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={
@@ -123,23 +147,22 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   listHeader: {
-    marginBottom: 8,
-  },
-  sectionTitle: {
-    fontSize: 16,
-    fontWeight: '700',
-    marginBottom: 8,
-    letterSpacing: 0.5,
-  },
-  entriesSectionHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
     marginBottom: 16,
-  },
-  entriesActions: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'flex-end',
+  },
+  offlineIcon: {
+    marginRight: 12,
+  },
+  headerActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  headerBtn: {
+    padding: 8,
+    borderRadius: 8,
   },
   entryCard: {
     padding: 20,
@@ -147,19 +170,19 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   entryDate: {
-    fontSize: 13,
+    fontSize: FontSizes.sm,
     marginBottom: 8,
-    fontWeight: '600',
+    fontWeight: FontWeights.semibold,
   },
   entryTitle: {
-    fontSize: 16,
+    fontSize: FontSizes.lg,
     marginBottom: 6,
-    lineHeight: 24,
+    lineHeight: FontSizes.lg * 1.5,
   },
   entryContent: {
     opacity: 0.7,
-    lineHeight: 22,
-    fontSize: 14,
+    lineHeight: FontSizes.md * 1.6,
+    fontSize: FontSizes.md,
   },
   emptyContainer: {
     flex: 1,
@@ -169,7 +192,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   emptyText: {
-    fontSize: 14,
+    fontSize: FontSizes.md,
     color: '#8A8D91',
   },
   fab: {
@@ -189,8 +212,8 @@ const styles = StyleSheet.create({
   },
   fabText: {
     color: '#000',
-    fontWeight: '700',
-    fontSize: 15,
+    fontWeight: FontWeights.bold,
+    fontSize: FontSizes.lg,
     textAlign: 'center',
     includeFontPadding: false,
   }

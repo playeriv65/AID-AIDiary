@@ -29,6 +29,26 @@ interface Translations {
     setLocation: string;
     wordCount: string;
     setCategory: string;
+    // Categories
+    catWork: string;
+    catLife: string;
+    catStudy: string;
+    catTravel: string;
+    catHealth: string;
+    catOther: string;
+    // Weather
+    weatherSunny: string;
+    weatherCloudy: string;
+    weatherRainy: string;
+    weatherSnowy: string;
+    weatherWindy: string;
+    weatherFoggy: string;
+    // Toolbar
+    addTag: string;
+    addList: string;
+    addTask: string;
+    insertTime: string;
+    linkCalendar: string;
     // Settings
     appearance: string;
     colorScheme: string;
@@ -59,6 +79,7 @@ interface Translations {
     welcomeBack: string;
     authFailed: string;
     filteringSoon: string;
+    backendOffline: string;
 }
 
 const zh: Translations = {
@@ -84,6 +105,23 @@ const zh: Translations = {
     setLocation: '设置地点',
     wordCount: '字',
     setCategory: '设置分类',
+    catWork: '工作',
+    catLife: '生活',
+    catStudy: '学习',
+    catTravel: '旅行',
+    catHealth: '健康',
+    catOther: '其他',
+    weatherSunny: '晴天',
+    weatherCloudy: '多云',
+    weatherRainy: '雨天',
+    weatherSnowy: '雪天',
+    weatherWindy: '大风',
+    weatherFoggy: '雾霾',
+    addTag: '添加标签',
+    addList: '添加列表',
+    addTask: '添加任务',
+    insertTime: '插入时间',
+    linkCalendar: '日历链接',
     appearance: '外观',
     colorScheme: '配色方案',
     dark: '深色',
@@ -112,6 +150,7 @@ const zh: Translations = {
     welcomeBack: '欢迎回来',
     authFailed: '操作失败，请重试',
     filteringSoon: '筛选功能即将推出！',
+    backendOffline: '后端未连接，点击重试',
 };
 
 const en: Translations = {
@@ -137,6 +176,23 @@ const en: Translations = {
     setLocation: 'Location',
     wordCount: 'words',
     setCategory: 'Category',
+    catWork: 'Work',
+    catLife: 'Life',
+    catStudy: 'Study',
+    catTravel: 'Travel',
+    catHealth: 'Health',
+    catOther: 'Other',
+    weatherSunny: 'Sunny',
+    weatherCloudy: 'Cloudy',
+    weatherRainy: 'Rainy',
+    weatherSnowy: 'Snowy',
+    weatherWindy: 'Windy',
+    weatherFoggy: 'Foggy',
+    addTag: 'Add Tag',
+    addList: 'Add List',
+    addTask: 'Add Task',
+    insertTime: 'Insert Time',
+    linkCalendar: 'Calendar Link',
     appearance: 'Appearance',
     colorScheme: 'Color Scheme',
     dark: 'Dark',
@@ -165,6 +221,7 @@ const en: Translations = {
     welcomeBack: 'Welcome back',
     authFailed: 'Operation failed, please try again',
     filteringSoon: 'Filtering feature coming soon!',
+    backendOffline: 'Backend offline, tap to retry',
 };
 
 const ja: Translations = {
@@ -190,6 +247,23 @@ const ja: Translations = {
     setLocation: '場所',
     wordCount: '文字',
     setCategory: 'カテゴリ',
+    catWork: '仕事',
+    catLife: '生活',
+    catStudy: '勉強',
+    catTravel: '旅行',
+    catHealth: '健康',
+    catOther: 'その他',
+    weatherSunny: '晴れ',
+    weatherCloudy: '曇り',
+    weatherRainy: '雨',
+    weatherSnowy: '雪',
+    weatherWindy: '風',
+    weatherFoggy: '霧',
+    addTag: 'タグ追加',
+    addList: 'リスト追加',
+    addTask: 'タスク追加',
+    insertTime: '時間挿入',
+    linkCalendar: 'カレンダー',
     appearance: '外観',
     colorScheme: '配色',
     dark: 'ダーク',
@@ -218,6 +292,7 @@ const ja: Translations = {
     welcomeBack: 'おかえりなさい',
     authFailed: '操作に失敗しました。もう一度お試しください',
     filteringSoon: 'フィルタリング機能は近日公開予定です！',
+    backendOffline: 'バックエンドがオフライン、タップして再試行',
 };
 
 const translations: Record<LangKey, Translations> = { zh, en, ja };

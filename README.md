@@ -3,13 +3,16 @@ A Brand New Form of Journaling.
 作为一个喜欢玩AI和写日记的人，能把它们结合起来作为人生中的第一个项目，是一件多么激动人心的事情！
 
 ## 功能特性 (Features)
-- 📝 **日记时间线** — 极简深色风格，支持创建、浏览日记
+- 📝 **日记时间线** — 极简深色风格，支持创建、浏览、编辑日记
 - 📅 **日历视图** — 按月展示日期，有日记的天显示小红点
-- 🔍 **搜索页面** — 快速检索历史日记
+- 🔍 **搜索页面** — 快速检索历史日记，点击跳转编辑
 - ⚙️ **设置页面** — 深/浅色切换、6色主题色、中/英/日三语选择
 - 👤 **账号系统** — 账密注册/登录，JWT Token 鉴权（bcrypt 加密）
 - 🎨 **主题联动** — 所有设置全局生效，持久化存储
 - 🪶 **Phosphor Icons** — 全站使用 Phosphor 图标（Web + Native 兼容）
+- 🏷️ **分类/天气/地点** — 日记支持分类、天气、地点标记
+- 🤖 **AI 润色** — OpenAI API 智能润色日记内容
+- ✅ **快捷工具** — 列表模板、任务模板、时间插入
 
 ## 项目架构 (Architecture)
 - **Frontend**: 基于 [Expo](https://expo.dev/) (React Native Web) 构建的跨平台极简日记界面。全局状态通过 `AppContext` 管理；`constants/i18n.ts` 统一管理三语翻译，`constants/config.ts` 管理 API 地址等配置。
@@ -17,23 +20,30 @@ A Brand New Form of Journaling.
 
 ## 快速启动 (Getting Started)
 
+> Windows 用户建议使用 PowerShell 启动，避免 bash 兼容性问题
+
 ### 1. 后端 (Backend)
-```bash
+```powershell
 cd backend
-# 安装依赖 (需要 uv: https://docs.astral.sh/uv/)
 uv sync
-# 启动服务
 uv run uvicorn main:app --reload
 ```
 后端服务运行在 `http://localhost:8000`
 
 ### 2. 前端 (Frontend)
-```bash
+```powershell
 cd frontend
 npm install
 npm run web
 ```
 在浏览器打开 `http://localhost:8081`
+
+### 3. 测试数据 (可选)
+```powershell
+cd backend
+uv run python seed_data.py
+```
+生成 12 篇测试日记，时间跨度 4 个月
 
 ## 环境变量
 复制 `backend/.env.example` 为 `backend/.env` 并填入：

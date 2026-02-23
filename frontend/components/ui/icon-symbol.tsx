@@ -29,7 +29,6 @@ import {
   User,
   Info,
 } from 'phosphor-react-native';
-import { ComponentProps } from 'react';
 import { OpaqueColorValue, type StyleProp, type TextStyle } from 'react-native';
 
 // Map our internal icon names to Phosphor components
