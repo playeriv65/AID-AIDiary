@@ -43,7 +43,7 @@ npm run web
 cd backend
 uv run python seed_data.py
 ```
-生成 12 篇测试日记，时间跨度 4 个月
+生成 13 篇测试日记，默认用户 `playeriv65`，时间跨度 4 个月
 
 ## 环境变量
 复制 `backend/.env.example` 为 `backend/.env` 并填入：

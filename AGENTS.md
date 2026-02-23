@@ -6,6 +6,7 @@
 ## 提交规范
 - 提交之前必须向用户报告
 - 提交之前维护配置文件：.gitignore、README.md、AGENTS.md
+- **经验教训**：遇到的问题和解决方案要及时更新到 AGENTS.md 和 README.md
 
 ## 运行规范
 - Windows 环境使用 PowerShell 命令（bash 工具在 Windows 上有兼容性问题）
@@ -74,6 +75,18 @@ backend/
 
 ### 中文编码问题
 - curl 发送中文会有编码问题，使用 Python 脚本代替
+
+### React Native Web 图片上传
+- `expo-image-picker` 在 Web 上返回特殊 URI 格式
+- 必须先 fetch 获取 blob，再传给 FormData：
+  ```typescript
+  const blob = await fetch(asset.uri).then(r => r.blob())
+  formData.append('file', blob, { filename: 'photo.jpg' })
+  ```
+
+### CORS 问题
+- 前端 `localhost` 和 `127.0.0.1` 被视为不同来源
+- 后端 CORS 要同时允许两个地址
 
 ### 数据库修改
 - 修改 models.py 后需删除 aidiary.db 重建数据库
