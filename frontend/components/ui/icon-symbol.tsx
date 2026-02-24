@@ -41,6 +41,9 @@ import {
   Heartbeat,
   Folder,
   WifiSlash,
+  ChatCircle,
+  Note,
+  Trash,
 } from 'phosphor-react-native';
 import { OpaqueColorValue, type StyleProp, type TextStyle } from 'react-native';
 
@@ -92,6 +95,10 @@ const ICON_MAP: Record<string, any> = {
   'airplane': Airplane,
   'heartbeat': Heartbeat,
   'folder': Folder,
+  // Chat
+  'chat-circle': ChatCircle,
+  'note': Note,
+  'trash': Trash,
 };
 
 export type PhosphorIconName = keyof typeof ICON_MAP;

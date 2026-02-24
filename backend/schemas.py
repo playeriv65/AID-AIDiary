@@ -80,3 +80,31 @@ class TokenResponse(BaseModel):
     access_token: str
     token_type: str
     user: UserOut
+
+
+# AI Chat Schemas
+
+
+class ChatMessage(BaseModel):
+    role: str
+    content: str
+
+
+class ChatRequest(BaseModel):
+    messages: List[ChatMessage]
+
+
+class ChatResponse(BaseModel):
+    response: str
+    success: bool
+
+
+class GenerateEntryRequest(BaseModel):
+    messages: List[ChatMessage]
+
+
+class GenerateEntryResponse(BaseModel):
+    title: str
+    content: str
+    tags: List[str]
+    success: bool

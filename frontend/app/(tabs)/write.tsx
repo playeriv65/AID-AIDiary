@@ -42,6 +42,7 @@ export default function WriteEntryScreen() {
         weather?: string;
         location?: string;
         image?: string;
+        tags?: string;
     }>();
     const isEditing = !!params.id;
     const entryId = params.id ? parseInt(params.id) : null;
@@ -51,7 +52,7 @@ export default function WriteEntryScreen() {
     const [category, setCategory] = useState<string | null>(params.category || null);
     const [weather, setWeather] = useState<string | null>(params.weather || null);
     const [location, setLocation] = useState(params.location || '');
-    const [tags, setTags] = useState<string[]>([]);
+    const [tags, setTags] = useState<string[]>(params.tags ? params.tags.split(',') : []);
     const [image, setImage] = useState<string | null>(params.image || null);
     const [saving, setSaving] = useState(false);
     const [aiPolishing, setAiPolishing] = useState(false);

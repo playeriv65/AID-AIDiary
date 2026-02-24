@@ -8,6 +8,7 @@ import { useAppContext } from '@/context/AppContext';
 
 const SIDEBAR_ITEMS = [
     { key: 'timeline', icon: 'book-open', route: '/' },
+    { key: 'chat', icon: 'chat-circle', route: '/chat' },
     { key: 'calendar', icon: 'calendar', route: '/calendar' },
     { key: 'search', icon: 'magnifying-glass', route: '/search' },
     { key: 'settings', icon: 'gear', route: '/settings' },

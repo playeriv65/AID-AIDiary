@@ -15,6 +15,7 @@ interface Translations {
     media: string;
     atlas: string;
     coach: string;
+    chat: string;
     search: string;
     ai: string;
     settings: string;
@@ -24,6 +25,14 @@ interface Translations {
     newEntry: string;
     // Calendar
     sun: string; mon: string; tue: string; wed: string; thu: string; fri: string; sat: string;
+    // Chat
+    aiChat: string;
+    aiWelcome: string;
+    aiHint: string;
+    chatPlaceholder: string;
+    generateDiary: string;
+    clearChat: string;
+    confirm: string;
     // Write
     titlePlaceholder: string;
     contentPlaceholder: string;
@@ -91,6 +100,7 @@ interface Translations {
 const zh: Translations = {
     appName: 'AID',
     timeline: '时间线',
+    chat: '聊天',
     calendar: '日历',
     media: '媒体',
     atlas: '地图',
@@ -102,6 +112,13 @@ const zh: Translations = {
     noEntries: '暂无日记',
     newEntry: '新建',
     sun: '日', mon: '一', tue: '二', wed: '三', thu: '四', fri: '五', sat: '六',
+    aiChat: 'AI 聊天',
+    aiWelcome: '你好！我是你的日记助手',
+    aiHint: '和我聊聊今天发生了什么，我可以帮你记录成日记',
+    chatPlaceholder: '分享今天的故事...',
+    generateDiary: '生成日记',
+    clearChat: '清空对话',
+    confirm: '确定',
     titlePlaceholder: '标题',
     contentPlaceholder: '记录今日...',
     save: '保存',
@@ -163,6 +180,7 @@ const zh: Translations = {
 const en: Translations = {
     appName: 'AID',
     timeline: 'Timeline',
+    chat: 'Chat',
     calendar: 'Calendar',
     media: 'Media',
     atlas: 'Atlas',
@@ -174,6 +192,13 @@ const en: Translations = {
     noEntries: 'No entries yet',
     newEntry: 'NEW',
     sun: 'Sun', mon: 'Mon', tue: 'Tue', wed: 'Wed', thu: 'Thu', fri: 'Fri', sat: 'Sat',
+    aiChat: 'AI Chat',
+    aiWelcome: 'Hello! I am your diary assistant',
+    aiHint: 'Tell me about your day, and I can help you write it as a diary',
+    chatPlaceholder: 'Share your story today...',
+    generateDiary: 'Generate Diary',
+    clearChat: 'Clear Chat',
+    confirm: 'Confirm',
     titlePlaceholder: 'Title',
     contentPlaceholder: 'Record today...',
     save: 'Save',
@@ -235,6 +260,7 @@ const en: Translations = {
 const ja: Translations = {
     appName: 'AID',
     timeline: 'タイムライン',
+    chat: 'チャット',
     calendar: 'カレンダー',
     media: 'メディア',
     atlas: 'アトラス',
@@ -246,6 +272,13 @@ const ja: Translations = {
     noEntries: 'エントリーがありません',
     newEntry: '新規',
     sun: '日', mon: '月', tue: '火', wed: '水', thu: '木', fri: '金', sat: '土',
+    aiChat: 'AI チャット',
+    aiWelcome: 'こんにちは！あなたの日記アシスタントです',
+    aiHint: '今日起きたことを教えてください。日記として帮助你記録します',
+    chatPlaceholder: '今日の話をしよう...',
+    generateDiary: '日記生成',
+    clearChat: 'チャットクリア',
+    confirm: '確認',
     titlePlaceholder: 'タイトル',
     contentPlaceholder: '今日を記録...',
     save: '保存',

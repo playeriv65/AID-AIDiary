@@ -5,14 +5,22 @@ from pathlib import Path
 from typing import List, Optional
 
 from fastapi import FastAPI, Depends, HTTPException, UploadFile, File
+from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
+import json
+import asyncio
 
 import crud
 import models
 import schemas
-from ai_service import generate_polished_entry
+from ai_service import (
+    generate_polished_entry,
+    chat_with_ai,
+    generate_entry_from_chat,
+    stream_chat_with_ai,
+)
 from auth import (
     create_access_token,
     get_current_user,
@@ -143,6 +151,42 @@ async def ai_polish(
     current_user: models.User = Depends(get_current_user),
 ):
     result = await generate_polished_entry(request.content)
+    return result
+
+
+@app.post("/api/ai/chat", response_model=schemas.ChatResponse)
+async def ai_chat(
+    request: schemas.ChatRequest,
+    current_user: models.User = Depends(get_current_user),
+):
+    messages = [{"role": msg.role, "content": msg.content} for msg in request.messages]
+    result = await chat_with_ai(messages)
+    return result
+
+
+@app.post("/api/ai/chat/stream")
+async def ai_chat_stream(
+    request: schemas.ChatRequest,
+    current_user: models.User = Depends(get_current_user),
+):
+    messages = [{"role": msg.role, "content": msg.content} for msg in request.messages]
+    return StreamingResponse(
+        stream_chat_with_ai(messages),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache",
+            "Connection": "keep-alive",
+        },
+    )
+
+
+@app.post("/api/ai/generate-entry", response_model=schemas.GenerateEntryResponse)
+async def ai_generate_entry(
+    request: schemas.GenerateEntryRequest,
+    current_user: models.User = Depends(get_current_user),
+):
+    messages = [{"role": msg.role, "content": msg.content} for msg in request.messages]
+    result = await generate_entry_from_chat(messages)
     return result
 
 
