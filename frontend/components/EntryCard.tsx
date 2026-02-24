@@ -1,11 +1,11 @@
 import { useRef, useEffect } from 'react';
-import { StyleSheet, TouchableOpacity, Animated } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, Animated } from 'react-native';
 import { format } from 'date-fns';
 import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
 import { Colors, FontSizes, FontWeights } from '@/constants/theme';
 import { useAppContext } from '@/context/AppContext';
 import { getDateLocale } from '@/constants/i18n';
+import { IconSymbol } from './ui/icon-symbol';
 
 export interface JournalEntry {
     id: number;
@@ -25,6 +25,24 @@ interface EntryCardProps {
     index: number;
     onPress: () => void;
 }
+
+const WEATHER_ICONS: Record<string, string> = {
+    'sunny': 'sun',
+    'cloudy': 'cloud',
+    'rainy': 'cloud-rain',
+    'snowy': 'snowflake',
+    'windy': 'wind',
+    'foggy': 'fog',
+};
+
+const CATEGORY_ICONS: Record<string, string> = {
+    'work': 'briefcase',
+    'life': 'heart',
+    'study': 'book-open',
+    'travel': 'airplane',
+    'health': 'heartbeat',
+    'other': 'folder',
+};
 
 export function EntryCard({ item, index, onPress }: EntryCardProps) {
     const { resolvedTheme, accentColor, language } = useAppContext();
@@ -50,6 +68,11 @@ export function EntryCard({ item, index, onPress }: EntryCardProps) {
         ]).start();
     }, [fadeAnim, slideAnim, index]);
 
+    const weatherKey = item.weather?.toLowerCase() || '';
+    const weatherIcon = WEATHER_ICONS[weatherKey] || 'sun';
+    const categoryKey = item.category?.toLowerCase() || '';
+    const categoryIcon = CATEGORY_ICONS[categoryKey] || 'folder';
+
     return (
         <TouchableOpacity activeOpacity={0.8} onPress={onPress}>
             <Animated.View style={[
@@ -60,9 +83,25 @@ export function EntryCard({ item, index, onPress }: EntryCardProps) {
                     transform: [{ translateY: slideAnim }]
                 }
             ]}>
-                <ThemedText style={[styles.entryDate, { color: accentColor }]}>
-                    {format(new Date(item.created_at), 'PPP p - EEE', { locale: dateLocale })}
-                </ThemedText>
+                <View style={styles.metaRow}>
+                    <ThemedText style={[styles.entryDate, { color: accentColor }]}>
+                        {format(new Date(item.created_at), 'PPP p - EEE', { locale: dateLocale })}
+                    </ThemedText>
+                    <View style={styles.badges}>
+                        {item.category && (
+                            <View style={[styles.badge, { backgroundColor: accentColor + '20' }]}>
+                                <IconSymbol name={categoryIcon as any} size={12} color={accentColor} />
+                                <ThemedText style={[styles.badgeText, { color: accentColor }]}>{item.category}</ThemedText>
+                            </View>
+                        )}
+                        {item.weather && (
+                            <View style={[styles.badge, { backgroundColor: '#3B82F620' }]}>
+                                <IconSymbol name={weatherIcon as any} size={12} color="#3B82F6" />
+                                <ThemedText style={[styles.badgeText, { color: '#3B82F6' }]}>{item.weather}</ThemedText>
+                            </View>
+                        )}
+                    </View>
+                </View>
                 {item.title ? (
                     <ThemedText
                         style={[styles.entryTitle, { color: Colors[theme].text }]}
@@ -102,5 +141,27 @@ const styles = StyleSheet.create({
         opacity: 0.7,
         lineHeight: FontSizes.md * 1.6,
         fontSize: FontSizes.md,
+    },
+    metaRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 8,
+    },
+    badges: {
+        flexDirection: 'row',
+        gap: 6,
+    },
+    badge: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 4,
+        paddingHorizontal: 8,
+        paddingVertical: 3,
+        borderRadius: 4,
+    },
+    badgeText: {
+        fontSize: FontSizes.xs,
+        fontWeight: FontWeights.medium,
     },
 });

@@ -36,3 +36,4 @@ nul
 *.png
 test_*.py
 test_data/
+opencode.json

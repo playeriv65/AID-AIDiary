@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { StyleSheet, View, TextInput, TouchableOpacity, ScrollView, ActivityIndicator, KeyboardAvoidingView, Platform, Alert } from 'react-native';
+import { StyleSheet, View, TextInput, TouchableOpacity, ScrollView, ActivityIndicator, KeyboardAvoidingView, Platform, Alert, Modal } from 'react-native';
 import { useRouter } from 'expo-router';
 import axios from 'axios';
 import { ThemedText } from '@/components/themed-text';
@@ -24,12 +24,31 @@ export default function ChatScreen() {
     const [inputText, setInputText] = useState('');
     const [loading, setLoading] = useState(false);
     const [streaming, setStreaming] = useState(false);
+    const [showGenerateModal, setShowGenerateModal] = useState(false);
     const [generating, setGenerating] = useState(false);
     const scrollViewRef = useRef<ScrollView>(null);
 
-    // 同步 messages 到 ref
+    // 从 localStorage 加载聊天记录
     useEffect(() => {
-        messagesRef.current = messages;
+        if (Platform.OS === 'web') {
+            const saved = localStorage.getItem('chat_messages');
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    setMessages(parsed);
+                    messagesRef.current = parsed;
+                } catch {
+                    // ignore
+                }
+            }
+        }
+    }, []);
+
+    // 保存聊天记录到 localStorage
+    useEffect(() => {
+        if (Platform.OS === 'web' && messages.length > 0) {
+            localStorage.setItem('chat_messages', JSON.stringify(messages));
+        }
     }, [messages]);
 
     const handleKeyPress = (e: any) => {
@@ -124,44 +143,54 @@ export default function ChatScreen() {
         }
     };
 
-    const handleGenerateDiary = async () => {
+    const handleGenerateDiary = () => {
         if (messages.length === 0) {
             Alert.alert(i18n.hint, '请先和我聊聊今天的故事');
             return;
         }
-        
-        Alert.alert(
-            i18n.generateDiary,
-            '根据我们的对话生成今天的日记？',
-            [
-                { text: i18n.cancel, style: 'cancel' },
-                { 
-                    text: i18n.confirm, 
-                    onPress: async () => {
-                        setGenerating(true);
-                        try {
-                            const chatMessages = messages.map(m => ({ role: m.role, content: m.content }));
-                            const response = await axios.post(`${CONFIG.API_URL}/ai/generate-entry`, { messages: chatMessages }, {
-                                headers: { Authorization: `Bearer ${authToken}` },
-                            });
-                            
-                            const { title, content, tags } = response.data;
-                            
-                            await fetchEntries();
-                            router.push({
-                                pathname: '/write',
-                                params: { title, content, tags: tags?.join(',') }
-                            });
-                        } catch (error) {
-                            console.error('Generate diary error:', error);
-                            Alert.alert(i18n.error, '生成日记失败，请重试');
-                        } finally {
-                            setGenerating(false);
-                        }
-                    }
-                },
-            ]
-        );
+        setShowGenerateModal(true);
+    };
+
+    const confirmGenerateDiary = async () => {
+        setShowGenerateModal(false);
+        setGenerating(true);
+        try {
+            const chatMessages = messages.map(m => ({ role: m.role, content: m.content }));
+            
+            // 获取用户当前时区
+            const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            const now = new Date();
+            const currentTime = now.toLocaleString('zh-CN', { 
+                timeZone: userTimezone,
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false
+            });
+            
+            const response = await axios.post(`${CONFIG.API_URL}/ai/generate-entry`, { 
+                messages: chatMessages,
+                timezone: userTimezone,
+                current_time: currentTime
+            }, {
+                headers: { Authorization: `Bearer ${authToken}` },
+            });
+            
+            const { title, content, tags } = response.data;
+            
+            await fetchEntries();
+            router.push({
+                pathname: '/write',
+                params: { title, content, tags: tags?.join(',') }
+            });
+        } catch (error) {
+            console.error('Generate diary error:', error);
+            Alert.alert(i18n.error, '生成日记失败，请重试');
+        } finally {
+            setGenerating(false);
+        }
     };
 
     const handleClear = () => {
@@ -171,7 +200,15 @@ export default function ChatScreen() {
             '确定要清空对话吗？',
             [
                 { text: i18n.cancel, style: 'cancel' },
-                { text: i18n.confirm, onPress: () => setMessages([]) },
+                { 
+                    text: i18n.confirm, 
+                    onPress: () => {
+                        setMessages([]);
+                        if (Platform.OS === 'web') {
+                            localStorage.removeItem('chat_messages');
+                        }
+                    }
+                },
             ]
         );
     };
@@ -191,7 +228,7 @@ export default function ChatScreen() {
                         </TouchableOpacity>
                     )}
                     <TouchableOpacity 
-                        onPress={handleGenerateDiary} 
+                        onPress={() => handleGenerateDiary()} 
                         style={[styles.generateBtn, { backgroundColor: accentColor }]}
                         disabled={generating}
                     >
@@ -282,6 +319,29 @@ export default function ChatScreen() {
                     </TouchableOpacity>
                 </View>
             </KeyboardAvoidingView>
+
+            <Modal visible={showGenerateModal} transparent animationType="fade">
+                <View style={styles.modalOverlay}>
+                    <View style={[styles.modalContent, { backgroundColor: c.background }]}>
+                        <ThemedText style={[styles.modalTitle, { color: c.text }]}>{i18n.generateDiary}</ThemedText>
+                        <ThemedText style={[styles.modalText, { color: c.icon }]}>根据我们的对话生成今天的日记？</ThemedText>
+                        <View style={styles.modalButtons}>
+                            <TouchableOpacity 
+                                style={[styles.modalBtn, { backgroundColor: resolvedTheme === 'dark' ? '#2A2C30' : '#F0F0F2' }]}
+                                onPress={() => setShowGenerateModal(false)}
+                            >
+                                <ThemedText style={{ color: c.text }}>{i18n.cancel}</ThemedText>
+                            </TouchableOpacity>
+                            <TouchableOpacity 
+                                style={[styles.modalBtn, { backgroundColor: accentColor }]}
+                                onPress={confirmGenerateDiary}
+                            >
+                                <ThemedText style={{ color: '#000', fontWeight: FontWeights.semibold }}>{i18n.confirm}</ThemedText>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
         </ThemedView>
     );
 }
@@ -397,5 +457,36 @@ const styles = StyleSheet.create({
         borderRadius: 22,
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    modalOverlay: {
+        flex: 1,
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    modalContent: {
+        width: '80%',
+        maxWidth: 320,
+        borderRadius: 16,
+        padding: 24,
+    },
+    modalTitle: {
+        fontSize: FontSizes.xl,
+        fontWeight: FontWeights.semibold,
+        marginBottom: 12,
+    },
+    modalText: {
+        fontSize: FontSizes.md,
+        marginBottom: 24,
+    },
+    modalButtons: {
+        flexDirection: 'row',
+        gap: 12,
+        justifyContent: 'flex-end',
+    },
+    modalBtn: {
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        borderRadius: 8,
     },
 });

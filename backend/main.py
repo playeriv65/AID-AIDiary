@@ -16,7 +16,6 @@ import crud
 import models
 import schemas
 from ai_service import (
-    generate_polished_entry,
     chat_with_ai,
     generate_entry_from_chat,
     stream_chat_with_ai,
@@ -186,7 +185,9 @@ async def ai_generate_entry(
     current_user: models.User = Depends(get_current_user),
 ):
     messages = [{"role": msg.role, "content": msg.content} for msg in request.messages]
-    result = await generate_entry_from_chat(messages)
+    result = await generate_entry_from_chat(
+        messages, timezone=request.timezone, current_time=request.current_time
+    )
     return result
 
 

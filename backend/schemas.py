@@ -101,6 +101,8 @@ class ChatResponse(BaseModel):
 
 class GenerateEntryRequest(BaseModel):
     messages: List[ChatMessage]
+    timezone: Optional[str] = None
+    current_time: Optional[str] = None
 
 
 class GenerateEntryResponse(BaseModel):

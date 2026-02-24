@@ -23,6 +23,11 @@ interface Translations {
     entries: string;
     noEntries: string;
     newEntry: string;
+    filter: string;
+    filterByCategory: string;
+    filterByWeather: string;
+    all: string;
+    clear: string;
     // Calendar
     sun: string; mon: string; tue: string; wed: string; thu: string; fri: string; sat: string;
     // Chat
@@ -172,6 +177,11 @@ const zh: Translations = {
     registerSuccess: '注册成功！',
     welcomeBack: '欢迎回来',
     authFailed: '操作失败，请重试',
+    filter: '筛选',
+    filterByCategory: '按分类筛选',
+    filterByWeather: '按天气筛选',
+    all: '全部',
+    clear: '清除',
     filteringSoon: '筛选功能即将推出！',
     backendOffline: '后端未连接，点击重试',
     uploadFailed: '图片上传失败',
@@ -252,6 +262,11 @@ const en: Translations = {
     registerSuccess: 'Account created!',
     welcomeBack: 'Welcome back',
     authFailed: 'Operation failed, please try again',
+    filter: 'Filter',
+    filterByCategory: 'Filter by category',
+    filterByWeather: 'Filter by weather',
+    all: 'All',
+    clear: 'Clear',
     filteringSoon: 'Filtering feature coming soon!',
     backendOffline: 'Backend offline, tap to retry',
     uploadFailed: 'Image upload failed',
@@ -332,6 +347,11 @@ const ja: Translations = {
     registerSuccess: 'アカウント作成完了！',
     welcomeBack: 'おかえりなさい',
     authFailed: '操作に失敗しました。もう一度お試しください',
+    filter: 'フィルター',
+    filterByCategory: 'カテゴリー別',
+    filterByWeather: '天気別',
+    all: 'すべて',
+    clear: 'クリア',
     filteringSoon: 'フィルタリング機能は近日公開予定です！',
     backendOffline: 'バックエンドがオフライン、タップして再試行',
     uploadFailed: '画像のアップロードに失敗しました',
