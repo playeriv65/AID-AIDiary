@@ -38,6 +38,8 @@ export interface UseJournalEntryProps {
     initialTags?: string[];
     onSuccess?: () => void;
     alert?: (title: string, message: string) => void;
+    apiClient?: typeof import('@/api/client').apiClient;
+    fetchEntries?: () => Promise<void>;
 }
 
 export interface UseJournalEntryReturn {
@@ -67,6 +69,9 @@ export interface UseJournalEntryReturn {
     insertTemplate: (type: 'list' | 'task' | 'time') => void;
 }
 
+// Import real apiClient for default
+import { apiClient as defaultApiClient } from '@/api/client';
+
 export function useJournalEntry({
     entryId,
     initialTitle = '',
@@ -77,9 +82,16 @@ export function useJournalEntry({
     initialImage,
     initialTags = [],
     onSuccess,
-    alert: alertFn = defaultAlert,
+    alert: alertFn,
+    apiClient: customApiClient,
+    fetchEntries: customFetchEntries,
 }: UseJournalEntryProps = {}): UseJournalEntryReturn {
-    const { authToken, fetchEntries, i18n } = useAppContext();
+    const { authToken, fetchEntries: contextFetchEntries, i18n } = useAppContext();
+    
+    // Use injected dependencies or fall back to context / defaults
+    const apiClientInstance = customApiClient || defaultApiClient;
+    const fetchEntriesFn = customFetchEntries || contextFetchEntries;
+    const alertFn_ = alertFn || defaultAlert;
 
     const [title, setTitle] = useState(initialTitle);
     const [content, setContent] = useState(initialContent);
@@ -106,12 +118,12 @@ export function useJournalEntry({
 
     const handleSave = useCallback(async () => {
         if (!content.trim()) {
-            alertFn(i18n.hint, i18n.enterCredentials);
+            alertFn_(i18n.hint, i18n.enterCredentials);
             return;
         }
 
         if (!authToken) {
-            alertFn('Error', i18n.authRequired);
+            alertFn_('Error', i18n.authRequired);
             return;
         }
 
@@ -128,30 +140,30 @@ export function useJournalEntry({
             };
 
             if (entryId) {
-                await apiClient.put<JournalEntry>(`/entries/${entryId}`, payload);
+                await apiClientInstance.put<JournalEntry>(`/entries/${entryId}`, payload);
             } else {
-                await apiClient.post<JournalEntry>('/entries', payload);
+                await apiClientInstance.post<JournalEntry>('/entries', payload);
             }
 
-            await fetchEntries();
+            await fetchEntriesFn();
             onSuccess?.();
         } catch (error) {
             console.error('Save failed:', error);
-            alertFn('Error', i18n.saveFailed || i18n.authFailed);
+            alertFn_('Error', i18n.saveFailed || i18n.authFailed);
         } finally {
             setSaving(false);
         }
-    }, [content, title, category, weather, location, tags, image, entryId, authToken, fetchEntries, onSuccess, i18n, alertFn]);
+    }, [content, title, category, weather, location, tags, image, entryId, authToken, fetchEntriesFn, onSuccess, i18n, alertFn_, apiClientInstance]);
 
     const handleAIPolish = useCallback(async () => {
         if (!content.trim()) {
-            alertFn(i18n.hint, i18n.enterCredentials);
+            alertFn_(i18n.hint, i18n.enterCredentials);
             return;
         }
 
         try {
             setAiPolishing(true);
-            const response = await apiClient.post<{ polished_text: string; tags: string[] }>('/ai/polish', { content });
+            const response = await apiClientInstance.post<{ polished_text: string; tags: string[] }>('/ai/polish', { content });
             let newContent = response.polished_text;
             if (response.tags && response.tags.length > 0) {
                 newContent += '\n\n🏷️ ' + response.tags.join(', ');
@@ -159,16 +171,16 @@ export function useJournalEntry({
             setContent(newContent);
         } catch (error) {
             console.error('AI Polish Failed:', error);
-            alertFn('Error', i18n.aiPolishFailed || 'AI polish failed');
+            alertFn_('Error', i18n.aiPolishFailed || 'AI polish failed');
         } finally {
             setAiPolishing(false);
         }
-    }, [content, i18n, alertFn]);
+    }, [content, i18n, alertFn_, apiClientInstance]);
 
     const handleImageUpload = useCallback(async () => {
         const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (!permissionResult.granted) {
-            alertFn('Error', 'Permission required to access photos');
+            alertFn_('Error', 'Permission required to access photos');
             return;
         }
 
@@ -192,15 +204,15 @@ export function useJournalEntry({
                 type: asset.mimeType || 'image/jpeg',
             } as any);
 
-            const uploadResponse = await apiClient.uploadFile('/upload', formData);
+            const uploadResponse = await apiClientInstance.uploadFile('/upload', formData);
             setImage(uploadResponse.filename);
         } catch (error) {
             console.error('Upload error:', error);
-            alertFn('Error', i18n.uploadFailed || 'Failed to upload image');
+            alertFn_('Error', i18n.uploadFailed || 'Failed to upload image');
         } finally {
             setUploading(false);
         }
-    }, [i18n, alertFn]);
+    }, [i18n, alertFn_, apiClientInstance]);
 
     const insertTemplate = useCallback((type: 'list' | 'task' | 'time') => {
         const now = new Date();

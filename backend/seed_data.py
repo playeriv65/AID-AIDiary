@@ -24,7 +24,7 @@ if not user:
 else:
     print(f"User already exists: {USERNAME}")
 
-entries_data = [
+entries_data: list[dict] = [
     {
         "title": "年夜饭",
         "content": "今天是大年三十，全家人一起吃年夜饭。这是我最期待的时刻，一大家子人围坐在一起，分享着一年来的大小事。妈妈的厨艺依旧那么棒，满满一桌子菜：红烧鱼、狮子头、白切鸡、还有各种海鲜。大家有说有笑，气氛温馨极了！",

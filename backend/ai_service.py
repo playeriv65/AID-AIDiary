@@ -156,9 +156,9 @@ async def stream_chat_with_ai(
             stream=True,
         )
 
-        for chunk in response:
-            if chunk.choices and len(chunk.choices) > 0:
-                delta = chunk.choices[0].delta
+        for chunk in response:  # type: ignore[union-attr]
+            if chunk.choices and len(chunk.choices) > 0:  # type: ignore[union-attr]
+                delta = chunk.choices[0].delta  # type: ignore[union-attr]
                 if delta and delta.content:
                     content = delta.content
                     yield f"data: {json.dumps({'content': content})}\n\n"

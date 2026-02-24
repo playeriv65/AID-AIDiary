@@ -127,6 +127,42 @@ class TestJournalEntries:
         assert response.status_code == 200
         assert response.json()["title"] == "更新后的标题"
 
+    def test_update_entry_multiple_fields(
+        self, client, sample_entry_data, auth_headers
+    ):
+        """测试更新多个字段"""
+        create_resp = client.post(
+            "/api/entries", json=sample_entry_data, headers=auth_headers
+        )
+        entry_id = create_resp.json()["id"]
+
+        update_data = {
+            "category": "work",
+            "weather": "sunny",
+            "location": "Beijing",
+            "tags": ["tag1", "tag2"],
+        }
+        response = client.put(
+            f"/api/entries/{entry_id}", json=update_data, headers=auth_headers
+        )
+        assert response.status_code == 200
+        data = response.json()
+        assert data["category"] == "work"
+        assert data["weather"] == "sunny"
+        assert data["location"] == "Beijing"
+
+    def test_update_nonexistent_entry(self, client, auth_headers):
+        """测试更新不存在的日记"""
+        response = client.put(
+            "/api/entries/99999", json={"title": "Test"}, headers=auth_headers
+        )
+        assert response.status_code == 404
+
+    def test_delete_nonexistent_entry(self, client, auth_headers):
+        """测试删除不存在的日记"""
+        response = client.delete("/api/entries/99999", headers=auth_headers)
+        assert response.status_code == 404
+
     def test_delete_entry(self, client, sample_entry_data, auth_headers):
         create_resp = client.post(
             "/api/entries", json=sample_entry_data, headers=auth_headers

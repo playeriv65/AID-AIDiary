@@ -3,6 +3,30 @@ import { render, screen } from '@testing-library/react-native';
 import { EntryCard } from '@/components/EntryCard';
 import { JournalEntry } from '@/api/client';
 
+// Mock AppContext
+jest.mock('@/context/AppContext', () => ({
+  useAppContext: () => ({
+    resolvedTheme: 'dark',
+    accentColor: '#02BFB8',
+    i18n: {
+      catWork: 'Work',
+      catLife: 'Life',
+      catStudy: 'Study',
+      catTravel: 'Travel',
+      catHealth: 'Health',
+      catOther: 'Other',
+      weatherSunny: 'Sunny',
+      weatherCloudy: 'Cloudy',
+      weatherRainy: 'Rainy',
+      weatherSnowy: 'Snowy',
+      weatherWindy: 'Windy',
+      weatherFoggy: 'Foggy',
+    },
+    authToken: 'mock-token',
+    fetchEntries: jest.fn(),
+  }),
+}));
+
 describe('EntryCard', () => {
   const mockEntry: JournalEntry = {
     id: 1,

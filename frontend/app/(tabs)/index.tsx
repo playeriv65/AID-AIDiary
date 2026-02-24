@@ -3,31 +3,16 @@ import { useCallback, useEffect, useState, useRef } from 'react';
 import { useFocusEffect, useRouter } from 'expo-router';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import { Colors, FontSizes, FontWeights } from '@/constants/theme';
+import { Colors, FontSizes } from '@/constants/theme';
 import { useAppContext } from '@/context/AppContext';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { EntryCard } from '@/components/EntryCard';
+import { FilterPopover } from '@/components/journal/FilterPopover';
 import { JournalEntry } from '@/api/client';
-
-const CATEGORIES = ['work', 'life', 'study', 'travel', 'health', 'other'];
-const WEATHERS = ['sunny', 'cloudy', 'rainy', 'snowy', 'windy', 'foggy'];
-const WEATHER_FILTER_ACTIVE_BG = '#3B82F630';
-const WEATHER_FILTER_ACTIVE_TEXT = '#3B82F6';
 
 export default function JournalTimelineScreen() {
     const router = useRouter();
-    const {
-        resolvedTheme,
-        accentColor,
-        i18n,
-        entries,
-        entriesLoading,
-        fetchEntries,
-        backendStatus,
-        checkBackendHealth,
-        offlineShown,
-        setOfflineShown
-    } = useAppContext();
+    const { resolvedTheme, accentColor, i18n, entries, entriesLoading, fetchEntries, backendStatus, checkBackendHealth, offlineShown, setOfflineShown } = useAppContext();
     const theme = resolvedTheme;
     
     const [showFilter, setShowFilter] = useState(false);
@@ -36,7 +21,6 @@ export default function JournalTimelineScreen() {
     const filterBtnRef = useRef<View>(null);
     const [filterPosition, setFilterPosition] = useState({ x: 0, y: 0, width: 0, height: 0 });
 
-    // 筛选后的日记
     const filteredEntries = entries.filter(entry => {
         if (filterCategory && entry.category?.toLowerCase() !== filterCategory) return false;
         if (filterWeather && entry.weather?.toLowerCase() !== filterWeather) return false;
@@ -52,10 +36,7 @@ export default function JournalTimelineScreen() {
 
     const hasFilters = filterCategory || filterWeather;
 
-    const clearFilters = () => {
-        setFilterCategory(null);
-        setFilterWeather(null);
-    };
+    const clearFilters = () => { setFilterCategory(null); setFilterWeather(null); };
 
     useEffect(() => {
         if (backendStatus === 'offline' && !offlineShown) {
@@ -64,26 +45,10 @@ export default function JournalTimelineScreen() {
         }
     }, [backendStatus, offlineShown, setOfflineShown, i18n]);
 
-    useFocusEffect(
-        useCallback(() => {
-            fetchEntries();
-        }, [fetchEntries])
-    );
+    useFocusEffect(useCallback(() => { fetchEntries(); }, [fetchEntries]));
 
     const handleEntryPress = (entry: JournalEntry) => {
-        router.push({
-            pathname: '/write',
-            params: {
-                id: entry.id.toString(),
-                title: entry.title || '',
-                content: entry.content,
-                created_at: entry.created_at,
-                category: entry.category || '',
-                weather: entry.weather || '',
-                location: entry.location || '',
-                image: entry.image || '',
-            },
-        });
+        router.push({ pathname: '/write', params: { id: entry.id.toString(), title: entry.title || '', content: entry.content, created_at: entry.created_at, category: entry.category || '', weather: entry.weather || '', location: entry.location || '', image: entry.image || '' } });
     };
 
     const renderHeader = () => (
@@ -98,15 +63,8 @@ export default function JournalTimelineScreen() {
                     <IconSymbol name="arrow-clockwise" size={18} color={Colors[theme].icon} />
                 </TouchableOpacity>
                 <View ref={filterBtnRef} collapsable={false}>
-                    <TouchableOpacity
-                        onPress={openFilter}
-                        style={styles.headerBtn}
-                    >
-                        <IconSymbol 
-                            name="funnel" 
-                            size={18} 
-                            color={hasFilters ? accentColor : Colors[theme].icon} 
-                        />
+                    <TouchableOpacity onPress={openFilter} style={styles.headerBtn}>
+                        <IconSymbol name="funnel" size={18} color={hasFilters ? accentColor : Colors[theme].icon} />
                     </TouchableOpacity>
                 </View>
             </View>
@@ -119,205 +77,44 @@ export default function JournalTimelineScreen() {
                 data={filteredEntries as JournalEntry[]}
                 keyExtractor={(item) => item.id.toString()}
                 ListHeaderComponent={renderHeader}
-                renderItem={({ item, index }) => (
-                    <EntryCard
-                        item={item}
-                        index={index}
-                        onPress={() => handleEntryPress(item)}
-                    />
-                )}
+                renderItem={({ item, index }) => <EntryCard item={item} index={index} onPress={() => handleEntryPress(item)} />}
                 contentContainerStyle={styles.listContent}
                 showsVerticalScrollIndicator={false}
-                ListEmptyComponent={
-                    <ThemedView style={styles.emptyContainer}>
-                        {entriesLoading ? null : (
-                            <ThemedText style={styles.emptyText}>{i18n.noEntries}</ThemedText>
-                        )}
-                    </ThemedView>
-                }
+                ListEmptyComponent={<ThemedView style={styles.emptyContainer}>{entriesLoading ? null : <ThemedText style={styles.emptyText}>{i18n.noEntries}</ThemedText>}</ThemedView>}
             />
 
-            <TouchableOpacity
-                style={[styles.fab, { backgroundColor: accentColor }]}
-                onPress={() => router.push('/write')}
-                activeOpacity={0.8}
-            >
+            <TouchableOpacity style={[styles.fab, { backgroundColor: accentColor }]} onPress={() => router.push('/write')} activeOpacity={0.8}>
                 <ThemedText style={styles.fabText}>{i18n.newEntry}</ThemedText>
             </TouchableOpacity>
 
             {showFilter && (
-                <>
-                    <TouchableOpacity 
-                        style={styles.filterOverlay} 
-                        activeOpacity={1} 
-                        onPress={() => setShowFilter(false)}
-                    />
-                    <View 
-                        style={[
-                            styles.filterPopover, 
-                            { 
-                                backgroundColor: Colors[theme].cardBackground,
-                                top: filterPosition.y + filterPosition.height + 8,
-                                right: 20,
-                            }
-                        ]}
-                    >
-                        <ThemedText style={[styles.filterLabel, { color: Colors[theme].text }]}>{i18n.filterByCategory}</ThemedText>
-                        <View style={styles.filterOptions}>
-                            <TouchableOpacity 
-                                style={[styles.filterChip, filterCategory === null && { backgroundColor: accentColor + '30' }]}
-                                onPress={() => setFilterCategory(null)}
-                            >
-                                <ThemedText style={{ color: filterCategory === null ? accentColor : Colors[theme].text }}>{i18n.all}</ThemedText>
-                            </TouchableOpacity>
-                            {CATEGORIES.map(cat => (
-                                <TouchableOpacity 
-                                    key={cat}
-                                    style={[styles.filterChip, filterCategory === cat && { backgroundColor: accentColor + '30' }]}
-                                    onPress={() => setFilterCategory(cat)}
-                                >
-                                    <ThemedText style={{ color: filterCategory === cat ? accentColor : Colors[theme].text }}>
-                                        {i18n[`cat${cat.charAt(0).toUpperCase() + cat.slice(1)}` as keyof typeof i18n] || cat}
-                                    </ThemedText>
-                                </TouchableOpacity>
-                            ))}
-                        </View>
-
-                        <ThemedText style={[styles.filterLabel, { color: Colors[theme].text }]}>{i18n.filterByWeather}</ThemedText>
-                        <View style={styles.filterOptions}>
-                            <TouchableOpacity
-                                style={[styles.filterChip, filterWeather === null && { backgroundColor: WEATHER_FILTER_ACTIVE_BG }]}
-                                onPress={() => setFilterWeather(null)}
-                            >
-                                <ThemedText style={{ color: filterWeather === null ? WEATHER_FILTER_ACTIVE_TEXT : Colors[theme].text }}>{i18n.all}</ThemedText>
-                            </TouchableOpacity>
-                            {WEATHERS.map(w => (
-                                <TouchableOpacity
-                                    key={w}
-                                    style={[styles.filterChip, filterWeather === w && { backgroundColor: WEATHER_FILTER_ACTIVE_BG }]}
-                                    onPress={() => setFilterWeather(w)}
-                                >
-                                    <ThemedText style={{ color: filterWeather === w ? WEATHER_FILTER_ACTIVE_TEXT : Colors[theme].text }}>
-                                        {i18n[`weather${w.charAt(0).toUpperCase() + w.slice(1)}` as keyof typeof i18n] || w}
-                                    </ThemedText>
-                                </TouchableOpacity>
-                            ))}
-                        </View>
-
-                        {hasFilters && (
-                            <TouchableOpacity 
-                                style={[styles.clearBtn, { borderColor: Colors[theme].icon }]}
-                                onPress={clearFilters}
-                            >
-                                <ThemedText style={{ color: Colors[theme].text, fontSize: FontSizes.sm }}>{i18n.clear}</ThemedText>
-                            </TouchableOpacity>
-                        )}
-                    </View>
-                </>
+                <FilterPopover
+                    filterCategory={filterCategory}
+                    filterWeather={filterWeather}
+                    hasFilters={hasFilters}
+                    accentColor={accentColor}
+                    theme={theme}
+                    i18n={i18n}
+                    filterPosition={filterPosition}
+                    onSetCategory={setFilterCategory}
+                    onSetWeather={setFilterWeather}
+                    onClear={clearFilters}
+                    onClose={() => setShowFilter(false)}
+                />
             )}
         </ThemedView>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    listContent: {
-        paddingHorizontal: '15%',
-        paddingTop: 30,
-        paddingBottom: 100,
-        width: '100%',
-    },
-    listHeader: {
-        marginBottom: 16,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'flex-end',
-    },
-    offlineIcon: {
-        marginRight: 12,
-    },
-    headerActions: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: 4,
-    },
-    headerBtn: {
-        padding: 8,
-        borderRadius: 8,
-    },
-    emptyContainer: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: 200,
-        backgroundColor: 'transparent',
-    },
-    emptyText: {
-        fontSize: FontSizes.md,
-        color: '#8A8D91',
-    },
-    fab: {
-        position: 'absolute',
-        bottom: 30,
-        right: 30,
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingVertical: 14,
-        paddingHorizontal: 28,
-        borderRadius: 30,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 8,
-        elevation: 5,
-    },
-    fabText: {
-        color: '#000',
-        fontWeight: 'bold',
-        fontSize: FontSizes.lg,
-        textAlign: 'center',
-        includeFontPadding: false,
-    },
-    filterLabel: {
-        fontSize: FontSizes.md,
-        fontWeight: FontWeights.medium,
-        marginBottom: 10,
-        marginTop: 16,
-    },
-    filterOptions: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        gap: 8,
-    },
-    filterChip: {
-        paddingHorizontal: 14,
-        paddingVertical: 8,
-        borderRadius: 20,
-        backgroundColor: 'rgba(128,128,128,0.1)',
-    },
-    filterOverlay: {
-        ...StyleSheet.absoluteFillObject,
-        zIndex: 99,
-    },
-    filterPopover: {
-        position: 'absolute',
-        zIndex: 100,
-        width: 280,
-        padding: 16,
-        borderRadius: 12,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.15,
-        shadowRadius: 12,
-        elevation: 8,
-    },
-    clearBtn: {
-        marginTop: 16,
-        paddingVertical: 8,
-        borderTopWidth: 1,
-        borderTopColor: '#ccc',
-        alignItems: 'center',
-    },
+    container: { flex: 1 },
+    listContent: { paddingHorizontal: '15%', paddingTop: 30, paddingBottom: 100, width: '100%' },
+    listHeader: { marginBottom: 16, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end' },
+    offlineIcon: { marginRight: 12 },
+    headerActions: { flexDirection: 'row', alignItems: 'center', gap: 4 },
+    headerBtn: { padding: 8, borderRadius: 8 },
+    emptyContainer: { flex: 1, alignItems: 'center', justifyContent: 'center', minHeight: 200, backgroundColor: 'transparent' },
+    emptyText: { fontSize: FontSizes.md, color: '#8A8D91' },
+    fab: { position: 'absolute', bottom: 30, right: 30, alignItems: 'center', justifyContent: 'center', paddingVertical: 14, paddingHorizontal: 28, borderRadius: 30, shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.3, shadowRadius: 8, elevation: 5 },
+    fabText: { color: '#000', fontWeight: 'bold', fontSize: FontSizes.lg, textAlign: 'center', includeFontPadding: false },
 });

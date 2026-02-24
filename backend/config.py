@@ -5,9 +5,9 @@ from typing import Optional
 class Settings(BaseSettings):
     """应用配置，从环境变量加载"""
 
-    # API Keys
-    openai_api_key: str
-    secret_key: str
+    # API Keys - 从环境变量加载，运行时必须设置
+    openai_api_key: str = ""
+    secret_key: str = ""
 
     # Optional with defaults
     openai_base_url: str = "https://open.bigmodel.cn/api/paas/v4/"
@@ -24,6 +24,7 @@ class Settings(BaseSettings):
         env_file=".env",
         env_file_encoding="utf-8",
         case_sensitive=False,
+        extra="ignore",
     )
 
 

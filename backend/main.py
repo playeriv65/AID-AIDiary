@@ -220,7 +220,7 @@ def register(data: schemas.UserRegister, db: Session = Depends(get_db)):
 @app.post("/api/auth/login", response_model=schemas.TokenResponse)
 def login(data: schemas.UserLogin, db: Session = Depends(get_db)):
     user = db.query(models.User).filter(models.User.username == data.username).first()
-    if not user or not verify_password(data.password, user.hashed_password):
+    if not user or not verify_password(data.password, str(user.hashed_password)):
         raise HTTPException(status_code=401, detail="Invalid username or password")
     token = create_access_token({"sub": str(user.id), "username": user.username})
     return {"access_token": token, "token_type": "bearer", "user": user}

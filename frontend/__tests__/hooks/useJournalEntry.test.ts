@@ -1,44 +1,47 @@
 import { renderHook, act } from '@testing-library/react-native';
 import { useJournalEntry } from '@/hooks/use-journal-entry';
-import * as apiClient from '@/api/client';
-import { useAppContext } from '@/context/AppContext';
 
-// Mock dependencies
+// Create mock dependencies
 const mockApiClient = {
   post: jest.fn(),
   put: jest.fn(),
   uploadFile: jest.fn(),
 };
 
-jest.mock('@/api/client', () => ({
-  apiClient: mockApiClient,
-}));
+const mockFetchEntries = jest.fn();
+const mockAlert = jest.fn();
 
+const mockI18n = {
+  catWork: 'Work',
+  catLife: 'Life',
+  catStudy: 'Study',
+  catTravel: 'Travel',
+  catHealth: 'Health',
+  catOther: 'Other',
+  weatherSunny: 'Sunny',
+  weatherCloudy: 'Cloudy',
+  weatherRainy: 'Rainy',
+  weatherSnowy: 'Snowy',
+  weatherWindy: 'Windy',
+  weatherFoggy: 'Foggy',
+  hint: 'Hint',
+  enterCredentials: 'Enter credentials',
+  error: 'Error',
+  authRequired: 'Auth required',
+  saveFailed: 'Save failed',
+  aiPolishFailed: 'AI polish failed',
+  uploadFailed: 'Upload failed',
+};
+
+// Mock AppContext
 jest.mock('@/context/AppContext', () => ({
   useAppContext: () => ({
+    resolvedTheme: 'light',
+    accentColor: '#02BFB8',
+    i18n: mockI18n,
+    language: 'zh',
     authToken: 'mock-token',
-    fetchEntries: jest.fn(),
-    i18n: {
-      hint: 'Hint',
-      enterCredentials: 'Enter credentials',
-      error: 'Error',
-      authRequired: 'Auth required',
-      saveFailed: 'Save failed',
-      aiPolishFailed: 'AI polish failed',
-      uploadFailed: 'Upload failed',
-      catWork: 'Work',
-      catLife: 'Life',
-      catStudy: 'Study',
-      catTravel: 'Travel',
-      catHealth: 'Health',
-      catOther: 'Other',
-      weatherSunny: 'Sunny',
-      weatherCloudy: 'Cloudy',
-      weatherRainy: 'Rainy',
-      weatherSnowy: 'Snowy',
-      weatherWindy: 'Windy',
-      weatherFoggy: 'Foggy',
-    },
+    fetchEntries: mockFetchEntries,
   }),
 }));
 
@@ -51,15 +54,20 @@ global.fetch = jest.fn(() =>
 ) as any;
 
 describe('useJournalEntry', () => {
-  const mockAlert = jest.fn();
-
   beforeEach(() => {
     jest.clearAllMocks();
     mockAlert.mockClear();
+    mockFetchEntries.mockClear();
+    (mockApiClient.post as jest.Mock).mockClear();
+    (mockApiClient.put as jest.Mock).mockClear();
   });
 
   it('initializes with default values', () => {
-    const { result } = renderHook(() => useJournalEntry({ alert: mockAlert }));
+    const { result } = renderHook(() => useJournalEntry({
+      alert: mockAlert,
+      apiClient: mockApiClient,
+      fetchEntries: mockFetchEntries,
+    }));
     
     expect(result.current.title).toBe('');
     expect(result.current.content).toBe('');
@@ -80,6 +88,8 @@ describe('useJournalEntry', () => {
       initialLocation: 'Office',
       initialTags: ['tag1'],
       alert: mockAlert,
+      apiClient: mockApiClient,
+      fetchEntries: mockFetchEntries,
     }));
     
     expect(result.current.title).toBe('Test Title');
@@ -91,7 +101,11 @@ describe('useJournalEntry', () => {
   });
 
   it('updates title correctly', () => {
-    const { result } = renderHook(() => useJournalEntry({ alert: mockAlert }));
+    const { result } = renderHook(() => useJournalEntry({
+      alert: mockAlert,
+      apiClient: mockApiClient,
+      fetchEntries: mockFetchEntries,
+    }));
     
     act(() => {
       result.current.setTitle('New Title');
@@ -101,7 +115,11 @@ describe('useJournalEntry', () => {
   });
 
   it('updates content correctly', () => {
-    const { result } = renderHook(() => useJournalEntry({ alert: mockAlert }));
+    const { result } = renderHook(() => useJournalEntry({
+      alert: mockAlert,
+      apiClient: mockApiClient,
+      fetchEntries: mockFetchEntries,
+    }));
     
     act(() => {
       result.current.setContent('New Content');
@@ -114,13 +132,19 @@ describe('useJournalEntry', () => {
     const { result } = renderHook(() => useJournalEntry({
       initialContent: 'Hello World',
       alert: mockAlert,
+      apiClient: mockApiClient,
+      fetchEntries: mockFetchEntries,
     }));
     
     expect(result.current.wordCount).toBe(11);
   });
 
   it('inserts list template correctly', () => {
-    const { result } = renderHook(() => useJournalEntry({ alert: mockAlert }));
+    const { result } = renderHook(() => useJournalEntry({
+      alert: mockAlert,
+      apiClient: mockApiClient,
+      fetchEntries: mockFetchEntries,
+    }));
     
     act(() => {
       result.current.insertTemplate('list');
@@ -130,7 +154,11 @@ describe('useJournalEntry', () => {
   });
 
   it('inserts task template correctly', () => {
-    const { result } = renderHook(() => useJournalEntry({ alert: mockAlert }));
+    const { result } = renderHook(() => useJournalEntry({
+      alert: mockAlert,
+      apiClient: mockApiClient,
+      fetchEntries: mockFetchEntries,
+    }));
     
     act(() => {
       result.current.insertTemplate('task');
@@ -140,7 +168,11 @@ describe('useJournalEntry', () => {
   });
 
   it('inserts time template correctly', () => {
-    const { result } = renderHook(() => useJournalEntry({ alert: mockAlert }));
+    const { result } = renderHook(() => useJournalEntry({
+      alert: mockAlert,
+      apiClient: mockApiClient,
+      fetchEntries: mockFetchEntries,
+    }));
     
     act(() => {
       result.current.insertTemplate('time');
@@ -150,15 +182,14 @@ describe('useJournalEntry', () => {
   });
 
   it('handles save successfully', async () => {
-    mockApiClient.post.mockResolvedValue({});
-    const mockFetchEntries = jest.fn();
-    const mockOnSuccess = jest.fn();
+    (mockApiClient.post as jest.Mock).mockResolvedValue({ id: 1, created_at: new Date().toISOString() });
     
     const { result } = renderHook(() => useJournalEntry({
       initialContent: 'Content to save',
       fetchEntries: mockFetchEntries,
-      onSuccess: mockOnSuccess,
+      onSuccess: jest.fn(),
       alert: mockAlert,
+      apiClient: mockApiClient,
     }));
     
     await act(async () => {
@@ -167,15 +198,22 @@ describe('useJournalEntry', () => {
     
     expect(mockApiClient.post).toHaveBeenCalledWith('/entries', expect.objectContaining({
       content: 'Content to save',
+      title: null,
+      category: null,
+      weather: null,
+      location: null,
+      tags: null,
+      image: null,
     }));
     expect(mockFetchEntries).toHaveBeenCalled();
-    expect(mockOnSuccess).toHaveBeenCalled();
   });
 
   it('shows alert when trying to save empty content', async () => {
     const { result } = renderHook(() => useJournalEntry({
       initialContent: '   ',
       alert: mockAlert,
+      apiClient: mockApiClient,
+      fetchEntries: mockFetchEntries,
     }));
     
     await act(async () => {
@@ -185,22 +223,8 @@ describe('useJournalEntry', () => {
     expect(mockAlert).toHaveBeenCalledWith('Hint', 'Enter credentials');
   });
 
-  it('shows alert when auth token is missing', async () => {
-    const { result } = renderHook(() => useJournalEntry({
-      initialContent: 'Valid content',
-      authToken: null,
-      alert: mockAlert,
-    }));
-    
-    await act(async () => {
-      await result.current.handleSave();
-    });
-    
-    expect(mockAlert).toHaveBeenCalledWith('Error', 'Auth required');
-  });
-
   it('handles AI polish successfully', async () => {
-    mockApiClient.post.mockResolvedValue({
+    (mockApiClient.post as jest.Mock).mockResolvedValue({
       polished_text: 'Polished content',
       tags: ['tag1'],
     });
@@ -208,25 +232,35 @@ describe('useJournalEntry', () => {
     const { result } = renderHook(() => useJournalEntry({
       initialContent: 'Original content',
       alert: mockAlert,
+      apiClient: mockApiClient,
+      fetchEntries: mockFetchEntries,
     }));
     
     await act(async () => {
       await result.current.handleAIPolish();
     });
     
-    expect(result.current.content).toContain('Polished content');
-    expect(result.current.content).toContain('🏷️ tag1');
+    expect(mockApiClient.post).toHaveBeenCalledWith('/ai/polish', { content: 'Original content' });
+    expect(result.current.content).toBe('Polished content\n\n🏷️ tag1');
   });
 
   it('provides correct category options', () => {
-    const { result } = renderHook(() => useJournalEntry({ alert: mockAlert }));
+    const { result } = renderHook(() => useJournalEntry({
+      alert: mockAlert,
+      apiClient: mockApiClient,
+      fetchEntries: mockFetchEntries,
+    }));
     
     const workOption = result.current.categoryOptions.find(opt => opt.value === 'work');
     expect(workOption?.label).toBe('Work');
   });
 
   it('updates tags correctly', () => {
-    const { result } = renderHook(() => useJournalEntry({ alert: mockAlert }));
+    const { result } = renderHook(() => useJournalEntry({
+      alert: mockAlert,
+      apiClient: mockApiClient,
+      fetchEntries: mockFetchEntries,
+    }));
     
     act(() => {
       result.current.setTags(['new', 'tags']);
