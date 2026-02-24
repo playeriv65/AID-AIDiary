@@ -1,16 +1,11 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, useMemo, useSyncExternalStore } from 'react';
 import { Platform, Appearance } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios, { AxiosError } from 'axios';
 import { t as getTranslations } from '@/constants/i18n';
 import { CONFIG } from '@/constants/config';
+import { apiClient, type JournalEntry } from '@/api/client';
 
 const API_URL = CONFIG.API_URL;
-
-const api = axios.create({
-    baseURL: API_URL,
-    timeout: CONFIG.AXIOS_TIMEOUT,
-});
 
 const STORAGE_KEYS = {
     THEME: '@app_theme',
@@ -104,7 +99,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     const [user, setUser] = useState<User | null>(null);
     const [authToken, setAuthToken] = useState<string | null>(null);
     const systemScheme = useSystemColorScheme();
-    const [entries, setEntries] = useState<any[]>([]);
+    const [entries, setEntries] = useState<JournalEntry[]>([]);
     const [entriesLoading, setEntriesLoading] = useState(true);
     const [ready, setReady] = useState(false);
     const [backendStatus, setBackendStatus] = useState<BackendStatus>('checking');
@@ -113,7 +108,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     const checkBackendHealth = useCallback(async () => {
         setBackendStatus('checking');
         try {
-            await axios.get(`${API_URL.replace('/api', '')}/`, { timeout: 3000 });
+            await fetch(`${API_URL.replace('/api', '')}/`, { method: 'GET', signal: AbortSignal.timeout(3000) });
             setBackendStatus('online');
         } catch (err) {
             setBackendStatus('offline');
@@ -148,24 +143,16 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         })();
     }, []);
 
-    // Add auth token to requests
+    // Add auth token to apiClient
     useEffect(() => {
-        const interceptor = api.interceptors.request.use((config) => {
-            if (authToken) {
-                config.headers.Authorization = `Bearer ${authToken}`;
-            }
-            return config;
-        });
-        return () => {
-            api.interceptors.request.eject(interceptor);
-        };
+        apiClient.setAuthToken(authToken);
     }, [authToken]);
 
     // Global entries fetch (cached across navigations)
     const fetchEntries = useCallback(async () => {
         try {
-            const response = await api.get('/entries');
-            const sorted = response.data.sort((a: any, b: any) =>
+            const response = await apiClient.get<JournalEntry[]>('/entries');
+            const sorted = response.sort((a, b) =>
                 new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
             setEntries(sorted);
         } catch (err) {
@@ -177,10 +164,15 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
     // Optimistic add: immediately add to cache, then sync with backend
     const addEntry = useCallback(async (title: string | null, content: string) => {
-        const optimisticEntry = {
+        const optimisticEntry: JournalEntry = {
             id: Date.now(), // temp id
             title,
             content,
+            category: null,
+            weather: null,
+            location: null,
+            tags: null,
+            image: null,
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString(),
         };
@@ -188,12 +180,12 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         setEntries(prev => [optimisticEntry, ...prev]);
         // Post to backend in background, then reconcile
         try {
-            const res = await api.post('/entries', {
+            const res = await apiClient.post<JournalEntry>('/entries', {
                 title: title || null,
                 content,
             });
             // Replace optimistic entry with real one from server
-            setEntries(prev => prev.map(e => e.id === optimisticEntry.id ? res.data : e));
+            setEntries(prev => prev.map(e => e.id === optimisticEntry.id ? res : e));
         } catch (err) {
             console.error('Failed to sync new entry to backend:', err);
             // Keep optimistic entry even if backend fails

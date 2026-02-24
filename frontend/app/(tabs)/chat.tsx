@@ -85,7 +85,7 @@ export default function ChatScreen() {
                 throw new Error('Stream failed');
             }
 
-            const reader = response.body.getReader();
+            const reader = response.body!.getReader();
             const decoder = new TextDecoder();
             let assistantContent = '';
             let buffer = '';
@@ -140,6 +140,7 @@ export default function ChatScreen() {
             }
         } finally {
             setLoading(false);
+            setStreaming(false);
         }
     };
 

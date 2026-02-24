@@ -56,10 +56,36 @@ backend/
   - 前端：统一拼接 `CONFIG.STATIC_URL + '/' + image`，不加特判
 
 ## 测试规范
-- 后端使用 pytest
-- 测试文件：`backend/test_main.py`
-- 运行测试：`cd backend && uv run pytest`
-- 覆盖场景：CRUD、日记图片、上传图片 URL 格式、AI 润色、认证
+### 后端（Python/FastAPI）
+- **测试框架**: `pytest` + FastAPI `TestClient`
+- **测试文件**: `backend/test_main.py`
+- **运行测试**: `cd backend && uv run pytest`
+- **覆盖场景**: CRUD、图片上传、AI润色、认证
+- **数据库**: 使用 SQLite 内存数据库进行隔离测试
+
+### 前端（Expo/React Native）
+- **测试框架**: `Jest` + `@testing-library/react-native`
+- **预设**: `jest-expo`（与 Expo SDK 版本严格对齐）
+- **测试目录**: `frontend/__tests__/`
+  - `components/` - 组件测试（TagManager, EntryMetadata, EntryCard）
+  - `hooks/` - Hook 测试（useJournalEntry, useImageUpload）
+- **运行测试**: `cd frontend && npm test`
+- **覆盖率**: `npm run test:coverage`
+
+### 测试设计原则（重要）
+1. **避免过度 Mock**: 原生模块（Alert, AsyncStorage）依赖 jest-expo 自动 mock，不手动 mock
+2. **依赖注入**: Hook 通过参数接收副作用函数（如 `alertFn`），便于测试时替换
+3. **纯函数优先**: 业务逻辑集中在 Hook，组件仅负责渲染
+4. **隔离性**: 每个测试独立，不依赖全局状态
+
+### 版本对齐要求
+- `jest-expo` 版本必须与 `expo` SDK 主版本一致（如 SDK 54 → `jest-expo@^54.0.0`）
+- `react-test-renderer` 版本必须与 `react` 版本完全一致
+- 使用 `npx expo install` 自动安装兼容版本
+
+### 当前测试状态
+- ✅ 后端：12/12 测试通过（~60% 覆盖率）
+- ⚠️ 前端：框架已就绪，组件测试 21/21 通过，Hook 测试待完善
 
 ## UI 规范
 - **字体统一**: 使用 `constants/theme.ts` 中的 `FontSizes`, `FontWeights`, `LineHeights`

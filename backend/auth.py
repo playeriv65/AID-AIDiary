@@ -1,5 +1,4 @@
 import bcrypt
-import os
 from jose import jwt, JWTError
 from datetime import datetime, timedelta, timezone
 from fastapi import Depends, HTTPException, status
@@ -7,10 +6,14 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
 from database import SessionLocal, get_db
 import models
+from config import settings
 
 SECURITY_ALGORITHM = "HS256"
 
-SECRET_KEY = os.getenv("SECRET_KEY", "aidiary-secret-change-in-prod-9f8g3k2j1l0m")
+if not settings.secret_key:
+    raise ValueError("SECRET_KEY environment variable is required")
+
+SECRET_KEY = settings.secret_key
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7
 

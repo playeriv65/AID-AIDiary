@@ -9,7 +9,6 @@ from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
-import json
 import asyncio
 
 import crud
@@ -18,6 +17,7 @@ import schemas
 from ai_service import (
     chat_with_ai,
     generate_entry_from_chat,
+    generate_polished_entry,
     stream_chat_with_ai,
 )
 from auth import (
@@ -27,8 +27,9 @@ from auth import (
     verify_password,
 )
 from database import SessionLocal, engine, get_db
+from config import settings
 
-UPLOAD_DIR = Path(__file__).parent / "static" / "uploads"
+UPLOAD_DIR = Path(settings.upload_dir)
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
 models.Base.metadata.create_all(bind=engine)
@@ -39,7 +40,7 @@ app.mount("/static", StaticFiles(directory=str(UPLOAD_DIR.parent)), name="static
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:8081", "http://127.0.0.1:8081"],
+    allow_origins=settings.cors_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -47,6 +48,12 @@ app.add_middleware(
 
 
 def serialize_entry(entry: models.JournalEntry) -> dict:
+    tags = None
+    if entry.tags:
+        if isinstance(entry.tags, str):
+            tags = json.loads(entry.tags)
+        else:
+            tags = entry.tags
     return {
         "id": entry.id,
         "title": entry.title,
@@ -54,7 +61,7 @@ def serialize_entry(entry: models.JournalEntry) -> dict:
         "category": entry.category,
         "weather": entry.weather,
         "location": entry.location,
-        "tags": json.loads(entry.tags) if entry.tags else None,
+        "tags": tags,
         "image": entry.image,
         "created_at": entry.created_at,
         "updated_at": entry.updated_at,

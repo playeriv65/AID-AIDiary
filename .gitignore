@@ -1,39 +1,157 @@
-# Python
+# ==================== Python / Backend ====================
+# Virtual environments
 backend/.venv/
-backend/__pycache__/
-*.pyc
-*.pyo
-*.pyd
-backend/hello.py
+venv/
+env/
+.venv
 
-# Secrets / Environment
+# Python cache
+backend/__pycache__/
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Secrets & Environment
 backend/.env
 .env
+.env.local
+.env.*.local
 
 # Database
 backend/*.db
 backend/*.sqlite3
+backend/*.db-journal
 
-# Uploaded files
-backend/static/uploads/
+# Uploads (should be stored in static/uploads but ignore if accidentally created elsewhere)
+**/uploads/
+**/static/uploads/
+static/uploads/
 
-# Node/Expo
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# FastAPI / Pydantic
+backend/.python-version
+runtime.txt
+
+#uv
+.uv/
+
+# ==================== Node / Frontend ====================
+# Dependencies
 frontend/node_modules/
+node_modules/
+
+# Expo / React Native
 frontend/.expo/
-frontend/web-build/
-frontend/dist/
+.expo/
+.expo-shared/
+web-build/
+dist/
+build/
+*.tsbuildinfo
+
+# Metro
+frontend/metro-bundler-cache-*
+frontend/.metro/
+
+# npm / yarn / pnpm
+frontend/npm-debug.*
+frontend/yarn-debug.*
+frontend/yarn-error.*
+frontend/pnpm-debug.log
+frontend/.npm
+frontend/.yarn
+
+# Env
 frontend/.env
+frontend/.env.local
+frontend/.env.*.local
+
+# Test coverage
+frontend/coverage/
+coverage/
+
+# Logs
+frontend/*.log
 *.log
+
+# Misc
+frontend/.pnp/
+.pnp.js
+
+# ==================== Testing ====================
+# Jest
+frontend/jest-results.json
+frontend/jest_*.xml
+
+# MSW (Mock Service Worker)
+frontend/msw-worker.js
+frontend/msw-worker.js.map
+
+# ==================== CI/CD ====================
+.github/
+.gitlab-ci.yml
+.travis.yml
+
+# ==================== Project root ====================
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+
+# OS generated files
+ehthumbs.db
+Thumbs.db
+.DS_Store
+
+# Lock files (optional - keep for reproducibility)
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+# uv.lock
+# poetry.lock
 
 # IDE
 .vscode/
+.idea/
+*.code-workspace
 
-# Windows reserved names
-nul
+# Misc
+*.local
+*.local.*
 
-# Test files
-*.jpg
-*.png
-test_*.py
 test_data/
-opencode.json

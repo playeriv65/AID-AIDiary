@@ -6,19 +6,7 @@ import { Colors, FontSizes, FontWeights } from '@/constants/theme';
 import { useAppContext } from '@/context/AppContext';
 import { getDateLocale } from '@/constants/i18n';
 import { IconSymbol } from './ui/icon-symbol';
-
-export interface JournalEntry {
-    id: number;
-    title: string | null;
-    content: string;
-    category: string | null;
-    weather: string | null;
-    location: string | null;
-    tags: string[] | null;
-    image: string | null;
-    created_at: string;
-    updated_at: string;
-}
+import { JournalEntry } from '@/api/client';
 
 interface EntryCardProps {
     item: JournalEntry;
@@ -90,13 +78,13 @@ export function EntryCard({ item, index, onPress }: EntryCardProps) {
                     <View style={styles.badges}>
                         {item.category && (
                             <View style={[styles.badge, { backgroundColor: accentColor + '20' }]}>
-                                <IconSymbol name={categoryIcon as any} size={12} color={accentColor} />
+                                <IconSymbol name={categoryIcon} size={12} color={accentColor} />
                                 <ThemedText style={[styles.badgeText, { color: accentColor }]}>{item.category}</ThemedText>
                             </View>
                         )}
                         {item.weather && (
                             <View style={[styles.badge, { backgroundColor: '#3B82F620' }]}>
-                                <IconSymbol name={weatherIcon as any} size={12} color="#3B82F6" />
+                                <IconSymbol name={weatherIcon} size={12} color="#3B82F6" />
                                 <ThemedText style={[styles.badgeText, { color: '#3B82F6' }]}>{item.weather}</ThemedText>
                             </View>
                         )}

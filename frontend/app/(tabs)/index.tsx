@@ -6,10 +6,13 @@ import { ThemedView } from '@/components/themed-view';
 import { Colors, FontSizes, FontWeights } from '@/constants/theme';
 import { useAppContext } from '@/context/AppContext';
 import { IconSymbol } from '@/components/ui/icon-symbol';
-import { EntryCard, JournalEntry } from '@/components/EntryCard';
+import { EntryCard } from '@/components/EntryCard';
+import { JournalEntry } from '@/api/client';
 
 const CATEGORIES = ['work', 'life', 'study', 'travel', 'health', 'other'];
 const WEATHERS = ['sunny', 'cloudy', 'rainy', 'snowy', 'windy', 'foggy'];
+const WEATHER_FILTER_ACTIVE_BG = '#3B82F630';
+const WEATHER_FILTER_ACTIVE_TEXT = '#3B82F6';
 
 export default function JournalTimelineScreen() {
     const router = useRouter();
@@ -48,6 +51,11 @@ export default function JournalTimelineScreen() {
     };
 
     const hasFilters = filterCategory || filterWeather;
+
+    const clearFilters = () => {
+        setFilterCategory(null);
+        setFilterWeather(null);
+    };
 
     useEffect(() => {
         if (backendStatus === 'offline' && !offlineShown) {
@@ -177,19 +185,19 @@ export default function JournalTimelineScreen() {
 
                         <ThemedText style={[styles.filterLabel, { color: Colors[theme].text }]}>{i18n.filterByWeather}</ThemedText>
                         <View style={styles.filterOptions}>
-                            <TouchableOpacity 
-                                style={[styles.filterChip, filterWeather === null && { backgroundColor: '#3B82F630' }]}
+                            <TouchableOpacity
+                                style={[styles.filterChip, filterWeather === null && { backgroundColor: WEATHER_FILTER_ACTIVE_BG }]}
                                 onPress={() => setFilterWeather(null)}
                             >
-                                <ThemedText style={{ color: filterWeather === null ? '#3B82F6' : Colors[theme].text }}>{i18n.all}</ThemedText>
+                                <ThemedText style={{ color: filterWeather === null ? WEATHER_FILTER_ACTIVE_TEXT : Colors[theme].text }}>{i18n.all}</ThemedText>
                             </TouchableOpacity>
                             {WEATHERS.map(w => (
-                                <TouchableOpacity 
+                                <TouchableOpacity
                                     key={w}
-                                    style={[styles.filterChip, filterWeather === w && { backgroundColor: '#3B82F630' }]}
+                                    style={[styles.filterChip, filterWeather === w && { backgroundColor: WEATHER_FILTER_ACTIVE_BG }]}
                                     onPress={() => setFilterWeather(w)}
                                 >
-                                    <ThemedText style={{ color: filterWeather === w ? '#3B82F6' : Colors[theme].text }}>
+                                    <ThemedText style={{ color: filterWeather === w ? WEATHER_FILTER_ACTIVE_TEXT : Colors[theme].text }}>
                                         {i18n[`weather${w.charAt(0).toUpperCase() + w.slice(1)}` as keyof typeof i18n] || w}
                                     </ThemedText>
                                 </TouchableOpacity>
@@ -272,33 +280,6 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         includeFontPadding: false,
     },
-    modalOverlay: {
-        flex: 1,
-        justifyContent: 'flex-end',
-    },
-    modalBackdrop: {
-        ...StyleSheet.absoluteFillObject,
-    },
-    modalContent: {
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
-        padding: 20,
-        paddingBottom: 40,
-    },
-    modalHandle: {
-        width: 36,
-        height: 4,
-        backgroundColor: '#ccc',
-        borderRadius: 2,
-        alignSelf: 'center',
-        marginBottom: 16,
-    },
-    modalTitle: {
-        fontSize: FontSizes.xl,
-        fontWeight: FontWeights.semibold,
-        marginBottom: 12,
-        textAlign: 'center',
-    },
     filterLabel: {
         fontSize: FontSizes.md,
         fontWeight: FontWeights.medium,
@@ -315,17 +296,6 @@ const styles = StyleSheet.create({
         paddingVertical: 8,
         borderRadius: 20,
         backgroundColor: 'rgba(128,128,128,0.1)',
-    },
-    modalButtons: {
-        flexDirection: 'row',
-        justifyContent: 'flex-end',
-        gap: 12,
-        marginTop: 24,
-    },
-    modalBtn: {
-        paddingHorizontal: 24,
-        paddingVertical: 12,
-        borderRadius: 8,
     },
     filterOverlay: {
         ...StyleSheet.absoluteFillObject,

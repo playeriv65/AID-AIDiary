@@ -97,6 +97,9 @@ interface Translations {
     registerSuccess: string;
     welcomeBack: string;
     authFailed: string;
+    authRequired: string;
+    saveFailed: string;
+    aiPolishFailed: string;
     filteringSoon: string;
     backendOffline: string;
     uploadFailed: string;
@@ -185,6 +188,9 @@ const zh: Translations = {
     filteringSoon: '筛选功能即将推出！',
     backendOffline: '后端未连接，点击重试',
     uploadFailed: '图片上传失败',
+    authRequired: '需要登录',
+    saveFailed: '保存失败',
+    aiPolishFailed: 'AI 润色失败',
 };
 
 const en: Translations = {
@@ -262,6 +268,9 @@ const en: Translations = {
     registerSuccess: 'Account created!',
     welcomeBack: 'Welcome back',
     authFailed: 'Operation failed, please try again',
+    authRequired: 'Authentication required',
+    saveFailed: 'Save failed, please try again',
+    aiPolishFailed: 'AI polish failed',
     filter: 'Filter',
     filterByCategory: 'Filter by category',
     filterByWeather: 'Filter by weather',
@@ -347,6 +356,9 @@ const ja: Translations = {
     registerSuccess: 'アカウント作成完了！',
     welcomeBack: 'おかえりなさい',
     authFailed: '操作に失敗しました。もう一度お試しください',
+    authRequired: '認証が必要です',
+    saveFailed: '保存に失敗しました',
+    aiPolishFailed: 'AI 添削に失敗しました',
     filter: 'フィルター',
     filterByCategory: 'カテゴリー別',
     filterByWeather: '天気別',

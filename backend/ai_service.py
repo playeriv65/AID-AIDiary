@@ -5,7 +5,6 @@ from datetime import datetime
 from openai import OpenAI
 from dotenv import load_dotenv
 from typing import List, Dict, AsyncGenerator, Any
-import sys
 
 load_dotenv()
 
@@ -15,6 +14,46 @@ client = OpenAI(
 )
 
 MODEL_NAME = "glm-4.5-flash"
+
+
+async def generate_polished_entry(content: str) -> dict:
+    """AI 润色日记内容"""
+    system_prompt = """
+    You are an exquisite, empathetic journaling assistant. 
+    The user is providing a rough draft of their diary entry. 
+    Your job is to:
+    1. Beautifully polish their text without changing the original meaning or facts. Fix grammar, enhance vocabulary slightly to make it flow better. Keep the tone intimate and personal.
+    2. Suggest 1 to 3 relevant mood or topic tags based on the entry (e.g., 'Grateful', 'Anxious', 'Work', 'Family').
+
+    Respond STRICTLY in JSON format as follows:
+    {
+        "polished_text": "The beautifully rewritten diary entry.",
+        "tags": ["Tag1", "Tag2"]
+    }
+    """
+
+    try:
+        response = client.chat.completions.create(
+            model=MODEL_NAME,
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": f"Here is my rough draft:\n\n{content}"},
+            ],
+            response_format={"type": "json_object"},
+        )
+
+        result_content = response.choices[0].message.content
+
+        parsed_result: dict = json.loads(result_content) if result_content else {}
+
+        return {
+            "polished_text": parsed_result.get("polished_text", content),
+            "tags": parsed_result.get("tags", []),
+        }
+
+    except Exception as e:
+        print(f"Error during AI generation: {e}")
+        return {"polished_text": content, "tags": ["Error"]}
 
 
 async def generate_entry_from_chat(

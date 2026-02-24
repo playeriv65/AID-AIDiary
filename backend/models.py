@@ -1,6 +1,6 @@
-from sqlalchemy import Column, Integer, String, Text, DateTime, Boolean
+from sqlalchemy import Column, Integer, String, Text, DateTime, Boolean, Index, desc
 from database import Base
-import datetime
+from datetime import datetime, timezone
 
 
 class JournalEntry(Base):
@@ -8,20 +8,24 @@ class JournalEntry(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, index=True, nullable=False)
-    title = Column(String(200), index=True, nullable=True)
+    title = Column(String(200), nullable=True)
     content = Column(Text, nullable=False)
-    category = Column(String(50), nullable=True)
-    weather = Column(String(30), nullable=True)
+    category = Column(String(50), nullable=True, index=True)
+    weather = Column(String(30), nullable=True, index=True)
     location = Column(String(100), nullable=True)
     tags = Column(String(500), nullable=True)
     image = Column(String(500), nullable=True)
     created_at = Column(
-        DateTime, default=lambda: datetime.datetime.now(datetime.timezone.utc)
+        DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), index=True
     )
     updated_at = Column(
-        DateTime,
-        default=lambda: datetime.datetime.now(datetime.timezone.utc),
-        onupdate=lambda: datetime.datetime.now(datetime.timezone.utc),
+        DateTime(timezone=True),
+        default=lambda: datetime.now(timezone.utc),
+        onupdate=lambda: datetime.now(timezone.utc),
+    )
+
+    __table_args__ = (
+        Index("ix_journal_entries_user_created", "user_id", desc("created_at")),
     )
 
 
@@ -34,5 +38,5 @@ class User(Base):
     hashed_password = Column(String(255), nullable=False)
     is_active = Column(Boolean, default=True)
     created_at = Column(
-        DateTime, default=lambda: datetime.datetime.now(datetime.timezone.utc)
+        DateTime(timezone=True), default=lambda: datetime.now(timezone.utc)
     )
