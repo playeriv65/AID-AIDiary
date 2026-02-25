@@ -44,6 +44,16 @@ import {
   ChatCircle,
   Note,
   Trash,
+  ChatsCircle,
+  PencilSimple,
+  ArrowULeftTop,
+  ArrowULeft,
+  Image,
+  Camera,
+  Robot,
+  ArrowDown,
+  Copy,
+  Prohibit,
 } from 'phosphor-react-native';
 import { OpaqueColorValue, type StyleProp, type TextStyle } from 'react-native';
 
@@ -97,8 +107,20 @@ const ICON_MAP: Record<string, any> = {
   'folder': Folder,
   // Chat
   'chat-circle': ChatCircle,
+  'chat-bubble-left-right': ChatsCircle,
   'note': Note,
   'trash': Trash,
+  'doc-on-doc': Copy,
+  'pencil': PencilSimple,
+  'arrow-counterclockwise': ArrowULeftTop,
+  'arrow-triclo': ArrowULeft,
+  'photo': Image,
+  'camera': Camera,
+  'stop': Prohibit,
+  'robot': Robot,
+  'arrow-down': ArrowDown,
+  'checkmark': Check,
+  'xmark': X,
 };
 
 export type PhosphorIconName = keyof typeof ICON_MAP;

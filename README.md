@@ -20,10 +20,8 @@ A Brand New Form of Journaling.
 
 ## 快速启动 (Getting Started)
 
-> Windows 用户建议使用 PowerShell 启动，避免 bash 兼容性问题
-
 ### 1. 后端 (Backend)
-```powershell
+```bash
 cd backend
 uv sync
 uv run uvicorn main:app --reload
@@ -31,7 +29,7 @@ uv run uvicorn main:app --reload
 后端服务运行在 `http://localhost:8000`
 
 ### 2. 前端 (Frontend)
-```powershell
+```bash
 cd frontend
 npm install
 npm run web
@@ -39,7 +37,7 @@ npm run web
 在浏览器打开 `http://localhost:8081`
 
 ### 3. 测试数据 (可选)
-```powershell
+```bash
 cd backend
 uv run python seed_data.py
 ```

@@ -4,13 +4,12 @@
 - 保持使用中文回答
 
 ## 提交规范
-- 提交之前必须向用户报告,未经允许绝对不能自己提交。用户的习惯是让你写好commit message(英文，简洁)，然后手动提交。
+- 提交之前必须向用户报告,未经允许绝对不能自己提交(本地提交也不行)。用户的习惯是让你写好commit message(英文，简洁)，然后手动提交。
 - 提交之前维护配置文件：.gitignore、README.md、AGENTS.md
 - **经验教训**：遇到的问题和解决方案要及时更新到 AGENTS.md 和 README.md
 
 ## 运行规范
-- Windows 环境使用 PowerShell 命令（bash 工具在 Windows 上有兼容性问题）
-- 运行前杀掉无用进程：`powershell -Command "Stop-Process -Name 'node','python' -Force -ErrorAction SilentlyContinue"`
+- 运行前杀掉无用进程
 - 运行前检查端口占用，有旧进程直接杀掉
 - 运行后检查是否成功运行（curl 测试 API 或检查端口）
 - 使用内置浏览器调试 UI
@@ -43,6 +42,7 @@ backend/
   ai_service.py # OpenAI 集成
   seed_data.py # 测试数据生成
 ```
+chatbox作为参考代码，不被git跟踪，放在那里就好
 
 ## 代码规范
 - TypeScript/TSX: 遵循 ESLint (expo config)
@@ -93,11 +93,37 @@ backend/
 - **组件复用**: 使用 `ThemedText`, `ThemedView`, `Picker` 等组件
 - **弹窗选择**: 使用 Modal 组件，避免下拉菜单被父容器裁剪
 - **图标**: 使用 Phosphor Icons (IconSymbol 组件)
+- **聊天框**: 使用 `components/chat/ChatContainer` 组件，支持 Markdown 渲染、图片附件
+
+### 聊天框组件 (components/chat/)
+- **ChatContainer**: 主容器，包含消息列表和输入框
+- **ChatMessage**: 单条消息气泡，支持 Markdown 渲染
+- **ChatInput**: 输入框，支持图片附件上传
+- **MarkdownRenderer**: Markdown/代码渲染
+- **MessageActions**: 消息操作按钮（复制、编辑、重试）
+- 使用方式:
+  ```tsx
+  import { ChatContainer } from '@/components/chat';
+  <ChatContainer
+    messages={messages}
+    loading={loading}
+    generating={loading}
+    inputText={inputText}
+    onInputChange={setInputText}
+    onSend={handleSend}
+    onStopGenerating={handleStopGenerating}
+    onEditMessage={handleEditMessage}
+    onRetryMessage={handleRetryMessage}
+    theme={resolvedTheme}
+    accentColor={accentColor}
+    placeholder={i18n.chatPlaceholder}
+  />
+  ```
 
 ## 常见问题
-### Windows bash 兼容性
-- `taskkill /F /PID xxx` 会被解析成路径，使用 PowerShell 代替
-- bash 超时 120 秒会终止进程，后台服务用 `Start-Process`
+### WSL/Linux 环境
+- 杀掉进程用 `pkill -f "pattern"` 或 `kill PID`
+- 后台服务用 `nohup command &` 或 `command &`
 
 ### 中文编码问题
 - curl 发送中文会有编码问题，使用 Python 脚本代替

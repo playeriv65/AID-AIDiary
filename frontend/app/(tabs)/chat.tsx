@@ -1,34 +1,25 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { StyleSheet, ScrollView, Platform, Alert } from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
+import { StyleSheet, Platform, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import axios from 'axios';
 import { ThemedView } from '@/components/themed-view';
 import { ChatHeader } from '@/components/journal/ChatHeader';
-import { ChatMessageList } from '@/components/journal/ChatMessageList';
-import { ChatInput } from '@/components/journal/ChatInput';
+import { ChatContainer, ChatMessageType } from '@/components/chat';
 import { GenerateDiaryModal } from '@/components/journal/GenerateDiaryModal';
 import { Colors } from '@/constants/theme';
 import { CONFIG } from '@/constants/config';
 import { useAppContext } from '@/context/AppContext';
-
-interface Message {
-    role: 'user' | 'assistant';
-    content: string;
-}
 
 export default function ChatScreen() {
     const router = useRouter();
     const { resolvedTheme, accentColor, i18n, authToken, fetchEntries } = useAppContext();
     const c = Colors[resolvedTheme];
     
-    const messagesRef = useRef<Message[]>([]);
-    const [messages, setMessages] = useState<Message[]>([]);
+    const [messages, setMessages] = useState<ChatMessageType[]>([]);
     const [inputText, setInputText] = useState('');
     const [loading, setLoading] = useState(false);
-    const [streaming, setStreaming] = useState(false);
-    const [showGenerateModal, setShowGenerateModal] = useState(false);
     const [generating, setGenerating] = useState(false);
-    const scrollViewRef = useRef<ScrollView>(null);
+    const [showGenerateModal, setShowGenerateModal] = useState(false);
 
     useEffect(() => {
         if (Platform.OS === 'web') {
@@ -36,8 +27,12 @@ export default function ChatScreen() {
             if (saved) {
                 try {
                     const parsed = JSON.parse(saved);
-                    setMessages(parsed);
-                    messagesRef.current = parsed;
+                    setMessages(parsed.map((m: any, i: number) => ({
+                        id: m.id || `msg_${i}`,
+                        role: m.role,
+                        content: m.content,
+                        timestamp: m.timestamp || Date.now(),
+                    })));
                 } catch {}
             }
         }
@@ -49,25 +44,18 @@ export default function ChatScreen() {
         }
     }, [messages]);
 
-    useEffect(() => {
-        setTimeout(() => scrollViewRef.current?.scrollToEnd({ animated: true }), 100);
-    }, [messages]);
-
-    const handleKeyPress = (e: any) => {
-        if (Platform.OS === 'web' && e.nativeEvent.key === 'Enter' && !e.nativeEvent.shiftKey) {
-            e.preventDefault?.();
-            handleSend();
-        }
-    };
-
-    const handleSend = async () => {
+    const handleSend = useCallback(async () => {
         if (!inputText.trim() || loading) return;
         
-        const userMessage: Message = { role: 'user', content: inputText.trim() };
+        const userMessage: ChatMessageType = { 
+            id: `msg_${Date.now()}`,
+            role: 'user', 
+            content: inputText.trim(),
+            timestamp: Date.now(),
+        };
         setMessages(prev => [...prev, userMessage]);
         setInputText('');
         setLoading(true);
-        setStreaming(true);
         
         try {
             const chatMessages = [...messages, userMessage].map(m => ({ role: m.role, content: m.content }));
@@ -94,7 +82,6 @@ export default function ChatScreen() {
             while (true) {
                 const { done, value } = await reader.read();
                 if (done) {
-                    setStreaming(false);
                     break;
                 }
                 
@@ -111,12 +98,19 @@ export default function ChatScreen() {
                                 assistantContent += data.content;
                                 if (firstContent) {
                                     firstContent = false;
-                                    setStreaming(false);
-                                    setMessages(prev => [...prev, { role: 'assistant', content: assistantContent }]);
+                                    setMessages(prev => [...prev, { 
+                                        id: `msg_${Date.now()}`,
+                                        role: 'assistant', 
+                                        content: assistantContent,
+                                        timestamp: Date.now(),
+                                    }]);
                                 } else {
                                     setMessages(prev => {
                                         const newMessages = [...prev];
-                                        newMessages[newMessages.length - 1] = { role: 'assistant', content: assistantContent };
+                                        newMessages[newMessages.length - 1] = { 
+                                            ...newMessages[newMessages.length - 1], 
+                                            content: assistantContent 
+                                        };
                                         return newMessages;
                                     });
                                 }
@@ -135,9 +129,12 @@ export default function ChatScreen() {
             }
         } finally {
             setLoading(false);
-            setStreaming(false);
         }
-    };
+    }, [inputText, loading, messages, authToken, i18n]);
+
+    const handleStopGenerating = useCallback(() => {
+        setLoading(false);
+    }, []);
 
     const handleGenerateDiary = () => {
         if (messages.length === 0) {
@@ -186,6 +183,25 @@ export default function ChatScreen() {
         ]);
     };
 
+    const handleEditMessage = (messageId: string, newContent: string) => {
+        setMessages(prev => prev.map(msg => 
+            msg.id === messageId ? { ...msg, content: newContent } : msg
+        ));
+    };
+
+    const handleRetryMessage = (messageId: string) => {
+        const msgIndex = messages.findIndex(m => m.id === messageId);
+        if (msgIndex === -1 || msgIndex >= messages.length - 1) return;
+        
+        const userMsg = messages[msgIndex - 1];
+        if (userMsg?.role !== 'user') return;
+        
+        const newMessages = messages.slice(0, msgIndex);
+        setMessages(newMessages);
+        
+        setTimeout(() => handleSend(), 100);
+    };
+
     return (
         <ThemedView style={[styles.container, { backgroundColor: c.background }]}>
             <ChatHeader
@@ -197,23 +213,23 @@ export default function ChatScreen() {
                 onClear={handleClear}
                 onGenerateDiary={handleGenerateDiary}
             />
-            <ChatMessageList
+            <ChatContainer
                 messages={messages}
-                streaming={streaming}
-                accentColor={accentColor}
-                resolvedTheme={resolvedTheme}
-                i18n={i18n}
-                scrollViewRef={scrollViewRef}
-            />
-            <ChatInput
-                inputText={inputText}
                 loading={loading}
-                accentColor={accentColor}
-                resolvedTheme={resolvedTheme}
-                i18n={i18n}
+                generating={loading}
+                inputText={inputText}
                 onInputChange={setInputText}
                 onSend={handleSend}
-                onKeyPress={handleKeyPress}
+                onStopGenerating={handleStopGenerating}
+                onEditMessage={handleEditMessage}
+                onRetryMessage={handleRetryMessage}
+                theme={resolvedTheme}
+                accentColor={accentColor}
+                placeholder={i18n.chatPlaceholder}
+                emptyState={{
+                    title: i18n.aiWelcome,
+                    subtitle: i18n.aiHint,
+                }}
             />
             <GenerateDiaryModal
                 visible={showGenerateModal}
