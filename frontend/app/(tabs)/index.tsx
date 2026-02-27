@@ -48,7 +48,7 @@ export default function JournalTimelineScreen() {
     useFocusEffect(useCallback(() => { fetchEntries(); }, [fetchEntries]));
 
     const handleEntryPress = (entry: JournalEntry) => {
-        router.push({ pathname: '/write', params: { id: entry.id.toString(), title: entry.title || '', content: entry.content, created_at: entry.created_at, category: entry.category || '', weather: entry.weather || '', location: entry.location || '', image: entry.image || '' } });
+        router.push({ pathname: '/write', params: { id: entry.uuid } });
     };
 
     const renderHeader = () => (

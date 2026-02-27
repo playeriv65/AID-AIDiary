@@ -49,13 +49,15 @@ app.add_middleware(
 
 def serialize_entry(entry: models.JournalEntry) -> dict:
     tags = None
-    if entry.tags:
-        if isinstance(entry.tags, str):
-            tags = json.loads(entry.tags)
-        else:
-            tags = entry.tags
+    entry_tags = getattr(entry, "tags", None)
+    if entry_tags:
+        if isinstance(entry_tags, str):
+            tags = json.loads(entry_tags)
+        elif isinstance(entry_tags, list):
+            tags = entry_tags
     return {
         "id": entry.id,
+        "uuid": entry.uuid,
         "title": entry.title,
         "content": entry.content,
         "category": entry.category,
@@ -90,17 +92,21 @@ def create_entry(
     db: Session = Depends(get_db),
     current_user: models.User = Depends(get_current_user),
 ):
-    db_entry = crud.create_entry(db=db, entry=entry, user_id=int(current_user.id))
+    user_id_val = int(current_user.id)  # type: ignore
+    db_entry = crud.create_entry(db=db, entry=entry, user_id=user_id_val)
     return serialize_entry(db_entry)
 
 
 @app.get("/api/entries/{entry_id}")
 def read_entry(
-    entry_id: int,
+    entry_id: str,
     db: Session = Depends(get_db),
     current_user: models.User = Depends(get_current_user),
 ):
-    db_entry = crud.get_entry(db, entry_id=entry_id)
+    if entry_id.isdigit():
+        db_entry = crud.get_entry(db, entry_id=int(entry_id))
+    else:
+        db_entry = crud.get_entry_by_uuid(db, entry_uuid=entry_id)
     if db_entry is None:
         raise HTTPException(status_code=404, detail="Entry not found")
     return serialize_entry(db_entry)

@@ -4,6 +4,7 @@ import { CONFIG } from '../constants/config';
 
 export interface JournalEntry {
     id: number;
+    uuid: string;
     title: string | null;
     content: string;
     category: string | null;
@@ -100,6 +101,11 @@ class ApiClient {
 
   async put<T>(url: string, data?: any): Promise<T> {
     const response = await this.client.put<T>(url, data);
+    return response.data;
+  }
+
+  async getById<T>(url: string, id: number | string): Promise<T> {
+    const response = await this.client.get<T>(`${url}/${id}`);
     return response.data;
   }
 

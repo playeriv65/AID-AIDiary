@@ -10,6 +10,14 @@ def get_entry(db: Session, entry_id: int):
     )
 
 
+def get_entry_by_uuid(db: Session, entry_uuid: str):
+    return (
+        db.query(models.JournalEntry)
+        .filter(models.JournalEntry.uuid == entry_uuid)
+        .first()
+    )
+
+
 def get_entries(db: Session, skip: int = 0, limit: int = 100):
     return (
         db.query(models.JournalEntry)

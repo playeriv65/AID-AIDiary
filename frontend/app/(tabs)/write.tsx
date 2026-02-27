@@ -1,5 +1,5 @@
-import { StyleSheet, TextInput, Platform, TouchableOpacity, Animated, View, ScrollView, ActivityIndicator } from 'react-native';
-import { useEffect, useRef, useMemo } from 'react';
+import { StyleSheet, TextInput, Platform, TouchableOpacity, View, ScrollView, ActivityIndicator } from 'react-native';
+import { useMemo } from 'react';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { format, parseISO } from 'date-fns';
 import { getDateLocale } from '@/constants/i18n';
@@ -21,14 +21,6 @@ import { ImageUploadPreview } from '@/components/journal/ImageUploadPreview';
 export default function WriteEntryScreen() {
     const params = useLocalSearchParams<{
         id?: string;
-        title?: string;
-        content?: string;
-        created_at?: string;
-        category?: string;
-        weather?: string;
-        location?: string;
-        image?: string;
-        tags?: string;
     }>();
 
     const router = useRouter();
@@ -36,10 +28,7 @@ export default function WriteEntryScreen() {
     const theme = resolvedTheme;
     const dateLocale = getDateLocale(i18n.language);
 
-    const fadeAnim = useRef(new Animated.Value(0)).current;
-
     const {
-        // State
         title,
         content,
         category,
@@ -50,11 +39,11 @@ export default function WriteEntryScreen() {
         saving,
         aiPolishing,
         uploading,
-        // Computed
+        loading,
+        createdAt,
         wordCount,
         categoryOptions,
         weatherOptions,
-        // Actions
         setTitle,
         setContent,
         setCategory,
@@ -62,46 +51,40 @@ export default function WriteEntryScreen() {
         setLocation,
         setTags,
         setImage,
-        // Handlers
         handleSave,
         handleAIPolish,
         handleImageUpload,
         insertTemplate,
     } = useJournalEntry({
-        entryId: params.id ? parseInt(params.id) : undefined,
-        initialTitle: params.title,
-        initialContent: params.content,
-        initialCategory: params.category,
-        initialWeather: params.weather,
-        initialLocation: params.location,
-        initialImage: params.image,
-        initialTags: params.tags ? params.tags.split(',') : undefined,
+        entryId: params.id,
         onSuccess: () => router.back(),
     });
 
     const entryDate = useMemo(() => {
-        if (params.created_at) {
-            return parseISO(params.created_at);
+        if (createdAt) {
+            return parseISO(createdAt);
         }
         return new Date();
-    }, [params.created_at]);
+    }, [createdAt]);
 
     const dateStr = useMemo(() => format(entryDate, 'MM月dd日 HH:mm', { locale: dateLocale }), [entryDate, dateLocale]);
 
     const c = Colors[theme];
     const mutedColor = c.icon;
 
-    useEffect(() => {
-        Animated.timing(fadeAnim, {
-            toValue: 1,
-            duration: 400,
-            useNativeDriver: true,
-        }).start();
-    }, [fadeAnim]);
-
     const handleOpenCalendar = () => {
         router.push('/calendar');
     };
+
+    if (loading) {
+        return (
+            <ThemedView style={[styles.container, { backgroundColor: c.background }]}>
+                <View style={styles.loadingContainer}>
+                    <ActivityIndicator size="large" color={accentColor} />
+                </View>
+            </ThemedView>
+        );
+    }
 
     return (
         <ThemedView style={[styles.container, { backgroundColor: c.background }]}>
@@ -137,7 +120,7 @@ export default function WriteEntryScreen() {
                 </TouchableOpacity>
             </View>
 
-            <Animated.View style={[styles.editorArea, { opacity: fadeAnim }]}>
+            <View style={styles.editorArea}>
                 <ScrollView
                     style={styles.scrollContent}
                     contentContainerStyle={styles.scrollInner}
@@ -174,7 +157,7 @@ export default function WriteEntryScreen() {
                         apiStaticUrl={CONFIG.STATIC_URL}
                     />
                 </ScrollView>
-            </Animated.View>
+            </View>
 
             <EntryMetadata
                 category={category}
@@ -221,6 +204,11 @@ export default function WriteEntryScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+    },
+    loadingContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     topBar: {
         flexDirection: 'row',

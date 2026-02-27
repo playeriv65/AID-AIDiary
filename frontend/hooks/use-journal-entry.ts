@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import { apiClient, type JournalEntry } from '@/api/client';
 import { useAppContext } from '@/context/AppContext';
@@ -28,7 +28,7 @@ const WEATHERS = [
 ];
 
 export interface UseJournalEntryProps {
-    entryId?: number;
+    entryId?: number | string;
     initialTitle?: string;
     initialContent?: string;
     initialCategory?: string;
@@ -53,6 +53,8 @@ export interface UseJournalEntryReturn {
     saving: boolean;
     aiPolishing: boolean;
     uploading: boolean;
+    loading: boolean;
+    createdAt: string | null;
     wordCount: number;
     categoryOptions: { value: string; label: string; icon: string }[];
     weatherOptions: { value: string; label: string; icon: string }[];
@@ -88,7 +90,6 @@ export function useJournalEntry({
 }: UseJournalEntryProps = {}): UseJournalEntryReturn {
     const { authToken, fetchEntries: contextFetchEntries, i18n } = useAppContext();
     
-    // Use injected dependencies or fall back to context / defaults
     const apiClientInstance = customApiClient || defaultApiClient;
     const fetchEntriesFn = customFetchEntries || contextFetchEntries;
     const alertFn_ = alertFn || defaultAlert;
@@ -103,6 +104,32 @@ export function useJournalEntry({
     const [saving, setSaving] = useState(false);
     const [aiPolishing, setAiPolishing] = useState(false);
     const [uploading, setUploading] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [createdAt, setCreatedAt] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (entryId) {
+            setLoading(true);
+            apiClientInstance.getById<JournalEntry>('/entries', entryId)
+                .then(entry => {
+                    setTitle(entry.title || '');
+                    setContent(entry.content);
+                    setCategory(entry.category);
+                    setWeather(entry.weather);
+                    setLocation(entry.location || '');
+                    setTags(entry.tags || []);
+                    setImage(entry.image);
+                    setCreatedAt(entry.created_at);
+                })
+                .catch(error => {
+                    console.error('Failed to load entry:', error);
+                    alertFn_('Error', 'Failed to load entry');
+                })
+                .finally(() => {
+                    setLoading(false);
+                });
+        }
+    }, [entryId]);
 
     const wordCount = content.trim().length;
 
@@ -243,6 +270,8 @@ export function useJournalEntry({
         saving,
         aiPolishing,
         uploading,
+        loading,
+        createdAt,
         wordCount,
         categoryOptions,
         weatherOptions,

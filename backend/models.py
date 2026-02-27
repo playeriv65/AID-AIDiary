@@ -1,12 +1,16 @@
 from sqlalchemy import Column, Integer, String, Text, DateTime, Boolean, Index, desc
 from database import Base
 from datetime import datetime, timezone
+import uuid
 
 
 class JournalEntry(Base):
     __tablename__ = "journal_entries"
 
     id = Column(Integer, primary_key=True, index=True)
+    uuid = Column(
+        String(36), unique=True, default=lambda: str(uuid.uuid4()), index=True
+    )
     user_id = Column(Integer, index=True, nullable=False)
     title = Column(String(200), nullable=True)
     content = Column(Text, nullable=False)
