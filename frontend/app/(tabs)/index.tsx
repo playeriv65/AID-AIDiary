@@ -108,13 +108,13 @@ export default function JournalTimelineScreen() {
 
 const styles = StyleSheet.create({
     container: { flex: 1 },
-    listContent: { paddingHorizontal: '15%', paddingTop: 30, paddingBottom: 100, width: '100%' },
+    listContent: { paddingHorizontal: '15%', paddingTop: 20, paddingBottom: 120, width: '100%' },
     listHeader: { marginBottom: 16, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end' },
     offlineIcon: { marginRight: 12 },
     headerActions: { flexDirection: 'row', alignItems: 'center', gap: 4 },
     headerBtn: { padding: 8, borderRadius: 8 },
     emptyContainer: { flex: 1, alignItems: 'center', justifyContent: 'center', minHeight: 200, backgroundColor: 'transparent' },
     emptyText: { fontSize: FontSizes.md, color: '#8A8D91' },
-    fab: { position: 'absolute', bottom: 30, right: 30, alignItems: 'center', justifyContent: 'center', paddingVertical: 14, paddingHorizontal: 28, borderRadius: 30, shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.3, shadowRadius: 8, elevation: 5 },
+    fab: { position: 'absolute', bottom: 48, right: 40, alignItems: 'center', justifyContent: 'center', paddingVertical: 14, paddingHorizontal: 28, borderRadius: 30, shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.3, shadowRadius: 8, elevation: 5 },
     fabText: { color: '#000', fontWeight: 'bold', fontSize: FontSizes.lg, textAlign: 'center', includeFontPadding: false },
 });

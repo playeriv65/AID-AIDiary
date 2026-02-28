@@ -83,25 +83,27 @@ function ToolButton({ icon, onPress, disabled = false, active = false, color }: 
 }
 
 const styles = StyleSheet.create({
-    toolbar: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingHorizontal: 16,
-        paddingVertical: 12,
-        borderTopWidth: StyleSheet.hairlineWidth,
-        gap: 16,
-    },
-    toolBtn: {
-        width: 36,
-        height: 36,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    toolBtnDisabled: {
-        opacity: 0.5,
-    },
-    divider: {
-        width: StyleSheet.hairlineWidth,
-        height: 24,
-    },
+  toolbar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    gap: 8,
+  },
+  toolBtn: {
+    width: 40,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 8,
+  },
+  toolBtnDisabled: {
+    opacity: 0.5,
+  },
+  divider: {
+    width: StyleSheet.hairlineWidth,
+    height: 20,
+    marginHorizontal: 4,
+  },
 });

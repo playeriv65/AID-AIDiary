@@ -128,14 +128,15 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         gap: 4,
     },
-    selectedText: {
-        fontSize: FontSizes.sm,
-        fontWeight: FontWeights.semibold,
-    },
-    placeholder: {
-        fontSize: FontSizes.sm,
-        fontWeight: FontWeights.medium,
-    },
+  selectedText: {
+    fontSize: FontSizes.sm,
+    fontWeight: FontWeights.medium,
+  },
+  placeholder: {
+    fontSize: FontSizes.sm,
+    fontWeight: FontWeights.normal,
+    opacity: 0.7,
+  },
     overlay: {
         flex: 1,
         backgroundColor: 'rgba(0,0,0,0.5)',
