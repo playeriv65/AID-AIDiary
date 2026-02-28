@@ -28,7 +28,7 @@ const WEATHERS = [
 ];
 
 export interface UseJournalEntryProps {
-    entryId?: number | string;
+    entryId?: string;
     initialTitle?: string;
     initialContent?: string;
     initialCategory?: string;

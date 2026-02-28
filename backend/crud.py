@@ -4,17 +4,9 @@ import models, schemas
 import json
 
 
-def get_entry(db: Session, entry_id: int):
+def get_entry(db: Session, entry_id: str):
     return (
         db.query(models.JournalEntry).filter(models.JournalEntry.id == entry_id).first()
-    )
-
-
-def get_entry_by_uuid(db: Session, entry_uuid: str):
-    return (
-        db.query(models.JournalEntry)
-        .filter(models.JournalEntry.uuid == entry_uuid)
-        .first()
     )
 
 
@@ -45,7 +37,7 @@ def create_entry(db: Session, entry: schemas.JournalEntryCreate, user_id: int):
     return db_entry
 
 
-def update_entry(db: Session, entry_id: int, entry: schemas.JournalEntryUpdate):
+def update_entry(db: Session, entry_id: str, entry: schemas.JournalEntryUpdate):
     db_entry = get_entry(db, entry_id)
     if db_entry:
         if entry.title is not None:
@@ -68,7 +60,7 @@ def update_entry(db: Session, entry_id: int, entry: schemas.JournalEntryUpdate):
     return db_entry
 
 
-def delete_entry(db: Session, entry_id: int):
+def delete_entry(db: Session, entry_id: str):
     db_entry = get_entry(db, entry_id)
     if db_entry:
         db.delete(db_entry)

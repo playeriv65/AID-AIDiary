@@ -165,7 +165,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     // Optimistic add: immediately add to cache, then sync with backend
     const addEntry = useCallback(async (title: string | null, content: string) => {
         const optimisticEntry: JournalEntry = {
-            id: Date.now(), // temp id
+            id: crypto.randomUUID(),
             title,
             content,
             category: null,

@@ -45,13 +45,13 @@ export function EntryCard({ item, index, onPress }: EntryCardProps) {
                 toValue: 1,
                 duration: 300,
                 delay: index * 50,
-                useNativeDriver: true,
+                useNativeDriver: false,
             }),
             Animated.timing(slideAnim, {
                 toValue: 0,
                 duration: 300,
                 delay: index * 50,
-                useNativeDriver: true,
+                useNativeDriver: false,
             }),
         ]).start();
     }, [fadeAnim, slideAnim, index]);

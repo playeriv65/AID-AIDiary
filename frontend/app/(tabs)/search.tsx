@@ -24,7 +24,7 @@ export default function SearchScreen() {
         Animated.timing(fadeAnim, {
             toValue: 1,
             duration: 300,
-            useNativeDriver: true,
+            useNativeDriver: false,
         }).start();
     }, [fadeAnim]);
 
@@ -56,7 +56,7 @@ export default function SearchScreen() {
         router.push({
             pathname: '/write',
             params: {
-                id: entry.id.toString(),
+                id: entry.id,
                 title: entry.title || '',
                 content: entry.content,
                 created_at: entry.created_at,
@@ -84,6 +84,8 @@ export default function SearchScreen() {
                         onChangeText={setQuery}
                         autoFocus={true}
                         returnKeyType="search"
+                        name="search"
+                        id="search"
                     />
                     {query.length > 0 && (
                         <TouchableOpacity onPress={() => setQuery('')} activeOpacity={0.7}>
@@ -97,7 +99,7 @@ export default function SearchScreen() {
             {query.trim() ? (
                 <FlatList
                     data={filteredEntries}
-                    keyExtractor={(item) => item.id.toString()}
+                    keyExtractor={(item) => item.id}
                     contentContainerStyle={styles.listContent}
                     showsVerticalScrollIndicator={false}
                     renderItem={({ item }) => (

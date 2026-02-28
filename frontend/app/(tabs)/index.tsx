@@ -48,7 +48,7 @@ export default function JournalTimelineScreen() {
     useFocusEffect(useCallback(() => { fetchEntries(); }, [fetchEntries]));
 
     const handleEntryPress = (entry: JournalEntry) => {
-        router.push({ pathname: '/write', params: { id: entry.uuid } });
+        router.push({ pathname: '/write', params: { id: entry.id } });
     };
 
     const renderHeader = () => (
@@ -75,7 +75,7 @@ export default function JournalTimelineScreen() {
         <ThemedView style={[styles.container, { backgroundColor: Colors[theme].background }]}>
             <FlatList
                 data={filteredEntries as JournalEntry[]}
-                keyExtractor={(item) => item.id.toString()}
+                keyExtractor={(item) => item.id}
                 ListHeaderComponent={renderHeader}
                 renderItem={({ item, index }) => <EntryCard item={item} index={index} onPress={() => handleEntryPress(item)} />}
                 contentContainerStyle={styles.listContent}

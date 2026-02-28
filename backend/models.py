@@ -7,9 +7,8 @@ import uuid
 class JournalEntry(Base):
     __tablename__ = "journal_entries"
 
-    id = Column(Integer, primary_key=True, index=True)
-    uuid = Column(
-        String(36), unique=True, default=lambda: str(uuid.uuid4()), index=True
+    id = Column(
+        String(36), primary_key=True, index=True, default=lambda: str(uuid.uuid4())
     )
     user_id = Column(Integer, index=True, nullable=False)
     title = Column(String(200), nullable=True)

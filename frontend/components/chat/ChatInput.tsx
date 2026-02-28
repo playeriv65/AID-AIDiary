@@ -206,6 +206,8 @@ export function ChatInput({
                             scrollEnabled={false}
                             onKeyPress={handleKeyPress}
                             editable={!loading}
+                            name="chat-input"
+                            id="chat-input"
                         />
                     </View>
 

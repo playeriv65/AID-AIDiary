@@ -28,7 +28,7 @@ class JournalEntryUpdate(BaseModel):
 
 
 class JournalEntry(BaseModel):
-    id: int
+    id: str
     title: Optional[str] = None
     content: str
     category: Optional[str] = None

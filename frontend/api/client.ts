@@ -3,8 +3,7 @@ import { Alert } from 'react-native';
 import { CONFIG } from '../constants/config';
 
 export interface JournalEntry {
-    id: number;
-    uuid: string;
+    id: string;
     title: string | null;
     content: string;
     category: string | null;

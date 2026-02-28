@@ -9,20 +9,20 @@
 - **经验教训**：遇到的问题和解决方案要及时更新到 AGENTS.md 和 README.md
 
 ## 运行规范
-- 运行前杀掉无用进程
+- 运行前杀掉无用进程：`pkill -f "pattern"` 或 `kill PID`
 - 运行前检查端口占用，有旧进程直接杀掉
-- 运行后检查是否成功运行（curl 测试 API 或检查端口）
-- 使用内置浏览器调试 UI
-- **后台启动服务**: 使用 `Start-Process` 避免 bash 超时终止进程
+- 运行后检查是否成功运行（curl 测试 API）
+- **后台启动服务**: 使用 `nohup command &`
 
 ## 项目架构
 - Frontend: Expo (React Native Web) + TypeScript
-- Backend: FastAPI + SQLite + uv 包管理
+- Backend: FastAPI + SQLite + uv
 
 ## 运行命令
 - **后端**: `cd backend && uv run uvicorn main:app --reload` (端口 8000)
-- **前端**: `cd frontend && npm run web` (端口 8081)
-- **前端 lint**: `cd frontend && npm run lint`
+- **前端**: `cd frontend && npm run web` (端口 8081，--no-open 不自动打开浏览器)
+- **后端测试**: `cd backend && uv run pytest`
+- **前端测试**: `cd frontend && npm test`
 - **测试数据**: `cd backend && uv run python seed_data.py`
 
 ## 目录结构
@@ -42,108 +42,40 @@ backend/
   ai_service.py # OpenAI 集成
   seed_data.py # 测试数据生成
 ```
-chatbox作为参考代码，不被git跟踪，放在那里就好
 
 ## 代码规范
-- TypeScript/TSX: 遵循 ESLint (expo config)
+- TypeScript/TSX: 遵循 ESLint
 - Python: 遵循 PEP 8
-- 不添加不必要的注释
-- **禁止未使用的 import**: 提交前必须运行 lint 检查，清除警告
-- **组件统一**: 使用 ThemedText 而非 Text，保持字体风格一致
-- **API 地址**: 使用 `constants/config.ts` 中的 CONFIG.API_URL，不要硬编码
-- **图片 URL 规范**: 
-  - 后端：存储/返回纯文件名（如 `uploads/xxx.jpg`），不加 `/static/` 前缀
-  - 前端：统一拼接 `CONFIG.STATIC_URL + '/' + image`，不加特判
+- **禁止未使用的 import**: 提交前必须运行 lint 检查
+- **组件统一**: 使用 ThemedText 而非 Text
+- **API 地址**: 使用 `constants/config.ts` 中的 CONFIG.API_URL
+- **图片 URL**: 后端返回纯文件名，前端拼接 `CONFIG.STATIC_URL + '/' + image`
 
 ## 测试规范
-### 后端（Python/FastAPI）
-- **测试框架**: `pytest` + FastAPI `TestClient`
-- **测试文件**: `backend/test_main.py`
-- **运行测试**: `cd backend && uv run pytest`
-- **覆盖场景**: CRUD、图片上传、AI润色、认证
-- **数据库**: 使用 SQLite 内存数据库进行隔离测试
-
-### 前端（Expo/React Native）
-- **测试框架**: `Jest` + `@testing-library/react-native`
-- **预设**: `jest-expo`（与 Expo SDK 版本严格对齐）
-- **测试目录**: `frontend/__tests__/`
-  - `components/` - 组件测试（TagManager, EntryMetadata, EntryCard）
-  - `hooks/` - Hook 测试（useJournalEntry, useImageUpload）
-- **运行测试**: `cd frontend && npm test`
-- **覆盖率**: `npm run test:coverage`
-
-### 测试设计原则（重要）
-1. **避免过度 Mock**: 原生模块（Alert, AsyncStorage）依赖 jest-expo 自动 mock，不手动 mock
-2. **依赖注入**: Hook 通过参数接收副作用函数（如 `alertFn`），便于测试时替换
-3. **纯函数优先**: 业务逻辑集中在 Hook，组件仅负责渲染
-4. **隔离性**: 每个测试独立，不依赖全局状态
-
-### 版本对齐要求
-- `jest-expo` 版本必须与 `expo` SDK 主版本一致（如 SDK 54 → `jest-expo@^54.0.0`）
-- `react-test-renderer` 版本必须与 `react` 版本完全一致
-- 使用 `npx expo install` 自动安装兼容版本
-
-### 当前测试状态
-- ✅ 后端：12/12 测试通过（~60% 覆盖率）
-- ⚠️ 前端：框架已就绪，组件测试 21/21 通过，Hook 测试待完善
+- 后端: `pytest` + FastAPI TestClient，使用 SQLite 内存数据库隔离
+- 前端: `Jest` + `@testing-library/react-native`，使用 `jest-expo`
+- **版本对齐**: jest-expo 必须与 expo SDK 主版本一致
 
 ## UI 规范
-- **字体统一**: 使用 `constants/theme.ts` 中的 `FontSizes`, `FontWeights`, `LineHeights`
-- **颜色统一**: 使用 `constants/theme.ts` 中的 `Colors` 对象
-- **组件复用**: 使用 `ThemedText`, `ThemedView`, `Picker` 等组件
-- **弹窗选择**: 使用 Modal 组件，避免下拉菜单被父容器裁剪
-- **图标**: 使用 Phosphor Icons (IconSymbol 组件)
-- **聊天框**: 使用 `components/chat/ChatContainer` 组件，支持 Markdown 渲染、图片附件
-
-### 聊天框组件 (components/chat/)
-- **ChatContainer**: 主容器，包含消息列表和输入框
-- **ChatMessage**: 单条消息气泡，支持 Markdown 渲染
-- **ChatInput**: 输入框，支持图片附件上传
-- **MarkdownRenderer**: Markdown/代码渲染
-- **MessageActions**: 消息操作按钮（复制、编辑、重试）
-- 使用方式:
-  ```tsx
-  import { ChatContainer } from '@/components/chat';
-  <ChatContainer
-    messages={messages}
-    loading={loading}
-    generating={loading}
-    inputText={inputText}
-    onInputChange={setInputText}
-    onSend={handleSend}
-    onStopGenerating={handleStopGenerating}
-    onEditMessage={handleEditMessage}
-    onRetryMessage={handleRetryMessage}
-    theme={resolvedTheme}
-    accentColor={accentColor}
-    placeholder={i18n.chatPlaceholder}
-  />
-  ```
+- 字体/颜色: 使用 `constants/theme.ts`
+- 图标: 使用 Phosphor Icons (IconSymbol 组件)
+- 弹窗选择: 使用 Modal 组件
 
 ## 常见问题
-### WSL/Linux 环境
-- 杀掉进程用 `pkill -f "pattern"` 或 `kill PID`
-- 后台服务用 `nohup command &` 或 `command &`
-
-### 中文编码问题
-- curl 发送中文会有编码问题，使用 Python 脚本代替
-
-### React Native Web 图片上传
-- `expo-image-picker` 在 Web 上返回特殊 URI 格式
-- 必须先 fetch 获取 blob，再传给 FormData：
-  ```typescript
-  const blob = await fetch(asset.uri).then(r => r.blob())
-  formData.append('file', blob, { filename: 'photo.jpg' })
-  ```
-
-### CORS 问题
-- 前端 `localhost` 和 `127.0.0.1` 被视为不同来源
-- 后端 CORS 要同时允许两个地址
-
-### 数据库修改
-- 修改 models.py 后需删除 aidiary.db 重建数据库
-- 或使用 Alembic 进行迁移
+- **数据库修改**: 修改 models.py 后需删除 aidiary.db 重建
+- **图片上传**: Web 端需 fetch blob 后再传 FormData
+- **CORS**: 前端 localhost 和 127.0.0.1 视为不同来源
 
 ## 环境变量
-- 复制 backend/.env.example 为 backend/.env
+- 复制 `backend/.env.example` 为 `backend/.env`
 - 必填: OPENAI_API_KEY, SECRET_KEY
+
+## 经验教训
+### ID 系统统一改造 (2026-02)
+- **问题**: 数据库同时存在整数 `id` 和字符串 `uuid` 两个字段
+- **解决**: 
+  1. `JournalEntry.id` 改为 UUID 字符串主键
+  2. 前后端类型统一为 `id: string`
+  3. 乐观更新使用 `crypto.randomUUID()`
+  4. 删除所有 `.id.toString()` 和 `.uuid` 引用
+- **验证**: pytest 通过 + Chrome DevTools 无报错

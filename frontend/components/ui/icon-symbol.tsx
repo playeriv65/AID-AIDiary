@@ -77,6 +77,7 @@ const ICON_MAP: Record<string, any> = {
   'check': Check,
   'paper-plane': PaperPlaneTilt,
   'sparkle': Sparkle,
+  'sparkles': Sparkle,
   'bookmark': BookmarkSimple,
   // Weather
   'sun': Sun,

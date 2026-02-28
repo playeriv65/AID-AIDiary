@@ -57,7 +57,6 @@ def serialize_entry(entry: models.JournalEntry) -> dict:
             tags = entry_tags
     return {
         "id": entry.id,
-        "uuid": entry.uuid,
         "title": entry.title,
         "content": entry.content,
         "category": entry.category,
@@ -103,10 +102,7 @@ def read_entry(
     db: Session = Depends(get_db),
     current_user: models.User = Depends(get_current_user),
 ):
-    if entry_id.isdigit():
-        db_entry = crud.get_entry(db, entry_id=int(entry_id))
-    else:
-        db_entry = crud.get_entry_by_uuid(db, entry_uuid=entry_id)
+    db_entry = crud.get_entry(db, entry_id)
     if db_entry is None:
         raise HTTPException(status_code=404, detail="Entry not found")
     return serialize_entry(db_entry)
@@ -114,7 +110,7 @@ def read_entry(
 
 @app.put("/api/entries/{entry_id}")
 def update_entry(
-    entry_id: int,
+    entry_id: str,
     entry: schemas.JournalEntryUpdate,
     db: Session = Depends(get_db),
     current_user: models.User = Depends(get_current_user),
@@ -127,7 +123,7 @@ def update_entry(
 
 @app.delete("/api/entries/{entry_id}")
 def delete_entry(
-    entry_id: int,
+    entry_id: str,
     db: Session = Depends(get_db),
     current_user: models.User = Depends(get_current_user),
 ):
