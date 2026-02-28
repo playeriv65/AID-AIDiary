@@ -4,15 +4,20 @@ import models, schemas
 import json
 
 
-def get_entry(db: Session, entry_id: str):
+def get_entry(db: Session, entry_id: str, user_id: int):
     return (
-        db.query(models.JournalEntry).filter(models.JournalEntry.id == entry_id).first()
+        db.query(models.JournalEntry)
+        .filter(
+            models.JournalEntry.id == entry_id, models.JournalEntry.user_id == user_id
+        )
+        .first()
     )
 
 
-def get_entries(db: Session, skip: int = 0, limit: int = 100):
+def get_entries(db: Session, user_id: int, skip: int = 0, limit: int = 100):
     return (
         db.query(models.JournalEntry)
+        .filter(models.JournalEntry.user_id == user_id)
         .order_by(models.JournalEntry.created_at.desc())
         .offset(skip)
         .limit(limit)
@@ -22,6 +27,7 @@ def get_entries(db: Session, skip: int = 0, limit: int = 100):
 
 def create_entry(db: Session, entry: schemas.JournalEntryCreate, user_id: int):
     db_entry = models.JournalEntry(
+        id=entry.id,
         user_id=user_id,
         title=entry.title,
         content=entry.content,
@@ -37,8 +43,10 @@ def create_entry(db: Session, entry: schemas.JournalEntryCreate, user_id: int):
     return db_entry
 
 
-def update_entry(db: Session, entry_id: str, entry: schemas.JournalEntryUpdate):
-    db_entry = get_entry(db, entry_id)
+def update_entry(
+    db: Session, entry_id: str, entry: schemas.JournalEntryUpdate, user_id: int
+):
+    db_entry = get_entry(db, entry_id, user_id)
     if db_entry:
         if entry.title is not None:
             db_entry.title = entry.title
@@ -60,8 +68,8 @@ def update_entry(db: Session, entry_id: str, entry: schemas.JournalEntryUpdate):
     return db_entry
 
 
-def delete_entry(db: Session, entry_id: str):
-    db_entry = get_entry(db, entry_id)
+def delete_entry(db: Session, entry_id: str, user_id: int):
+    db_entry = get_entry(db, entry_id, user_id)
     if db_entry:
         db.delete(db_entry)
         db.commit()

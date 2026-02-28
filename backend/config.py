@@ -18,7 +18,12 @@ class Settings(BaseSettings):
     upload_dir: str = "./static/uploads"
     log_level: str = "INFO"
 
-    cors_origins: list[str] = ["http://localhost:8081", "http://127.0.0.1:8081"]
+    cors_origins: list[str] = [
+        "http://localhost:8081",
+        "http://127.0.0.1:8081",
+        "http://localhost:8085",
+        "http://127.0.0.1:8085",
+    ]
 
     model_config = SettingsConfigDict(
         env_file=".env",

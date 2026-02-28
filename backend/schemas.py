@@ -14,7 +14,7 @@ class JournalEntryBase(BaseModel):
 
 
 class JournalEntryCreate(JournalEntryBase):
-    pass
+    id: str
 
 
 class JournalEntryUpdate(BaseModel):

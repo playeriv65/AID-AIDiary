@@ -20,7 +20,7 @@
 
 ## 运行命令
 - **后端**: `cd backend && uv run uvicorn main:app --reload` (端口 8000)
-- **前端**: `cd frontend && npm run web` (端口 8081，--no-open 不自动打开浏览器)
+- **前端**: `cd frontend && npm run web --no-open` (端口 8081，--no-open 不自动打开浏览器)
 - **后端测试**: `cd backend && uv run pytest`
 - **前端测试**: `cd frontend && npm test`
 - **测试数据**: `cd backend && uv run python seed_data.py`

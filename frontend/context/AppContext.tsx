@@ -1,9 +1,10 @@
-import React, { createContext, useContext, useState, useEffect, useCallback, useMemo, useSyncExternalStore } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, useMemo, useSyncExternalStore, useRef } from 'react';
 import { Platform, Appearance } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { t as getTranslations } from '@/constants/i18n';
 import { CONFIG } from '@/constants/config';
 import { apiClient, type JournalEntry } from '@/api/client';
+import { getStorageAdapter, initStorage, syncWithBackend, type SyncResult } from '@/lib/storage';
 
 const API_URL = CONFIG.API_URL;
 
@@ -59,10 +60,14 @@ interface AppContextType {
     checkBackendHealth: () => Promise<void>;
     offlineShown: boolean;
     setOfflineShown: (shown: boolean) => void;
-    entries: any[];
+    entries: JournalEntry[];
     entriesLoading: boolean;
     fetchEntries: () => Promise<void>;
     addEntry: (title: string | null, content: string) => Promise<void>;
+    updateEntry: (id: string, updates: Partial<JournalEntry>) => Promise<void>;
+    deleteEntry: (id: string) => Promise<void>;
+    syncResult: SyncResult | null;
+    manualSync: () => Promise<void>;
 }
 
 const AppContext = createContext<AppContextType>({} as AppContextType);
@@ -104,6 +109,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     const [ready, setReady] = useState(false);
     const [backendStatus, setBackendStatus] = useState<BackendStatus>('checking');
     const [offlineShown, setOfflineShown] = useState(false);
+    const [syncResult, setSyncResult] = useState<SyncResult | null>(null);
+    const syncIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+    const isMountedRef = useRef(true);
 
     const checkBackendHealth = useCallback(async () => {
         setBackendStatus('checking');
@@ -122,8 +130,12 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
     // Load persisted prefs on mount
     useEffect(() => {
+        isMountedRef.current = true;
         (async () => {
             try {
+                // Initialize storage adapter
+                await initStorage();
+                
                 const [savedTheme, savedAccent, savedLang, savedToken, savedUser] = await Promise.all([
                     AsyncStorage.getItem(STORAGE_KEYS.THEME),
                     AsyncStorage.getItem(STORAGE_KEYS.ACCENT),
@@ -139,8 +151,14 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
             } catch (err) {
                 console.error('Failed to load persisted app state:', err);
             }
-            setReady(true);
+            if (isMountedRef.current) {
+                setReady(true);
+            }
         })();
+        
+        return () => {
+            isMountedRef.current = false;
+        };
     }, []);
 
     // Add auth token to apiClient
@@ -148,23 +166,31 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         apiClient.setAuthToken(authToken);
     }, [authToken]);
 
-    // Global entries fetch (cached across navigations)
     const fetchEntries = useCallback(async () => {
+        if (!isMountedRef.current) return;
+        setEntriesLoading(true);
         try {
-            const response = await apiClient.get<JournalEntry[]>('/entries');
-            const sorted = response.sort((a, b) =>
-                new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
-            setEntries(sorted);
+            const storage = await getStorageAdapter();
+            const localEntries = await storage.entries.getAll();
+            if (isMountedRef.current) {
+                setEntries(localEntries);
+            }
         } catch (err) {
             console.error('Failed to fetch entries:', err);
         } finally {
-            setEntriesLoading(false);
+            if (isMountedRef.current) {
+                setEntriesLoading(false);
+            }
         }
     }, []);
 
-    // Optimistic add: immediately add to cache, then sync with backend
     const addEntry = useCallback(async (title: string | null, content: string) => {
-        const optimisticEntry: JournalEntry = {
+        if (!user) {
+          console.error('Cannot add entry: user not authenticated');
+          return;
+        }
+
+        const newEntry: JournalEntry = {
             id: crypto.randomUUID(),
             title,
             content,
@@ -175,29 +201,153 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
             image: null,
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString(),
+            user_id: user.id,
+            sync_status: 'pending',
+            deleted: 0,
         };
-        // Immediately prepend to cache
-        setEntries(prev => [optimisticEntry, ...prev]);
-        // Post to backend in background, then reconcile
-        try {
-            const res = await apiClient.post<JournalEntry>('/entries', {
-                title: title || null,
-                content,
-            });
-            // Replace optimistic entry with real one from server
-            setEntries(prev => prev.map(e => e.id === optimisticEntry.id ? res : e));
-        } catch (err) {
-            console.error('Failed to sync new entry to backend:', err);
-            // Keep optimistic entry even if backend fails
-        }
-    }, []);
 
-    // Fetch entries on mount
-    useEffect(() => {
-        if (authToken) {
-            fetchEntries();
+        try {
+          const storage = await getStorageAdapter();
+          await storage.entries.insert(newEntry);
+          
+          if (isMountedRef.current) {
+            setEntries(prev => [newEntry, ...prev]);
+          }
+
+          if (backendStatus === 'online') {
+            try {
+              await syncWithBackend();
+              if (isMountedRef.current) {
+                setSyncResult(null);
+                await fetchEntries();
+              }
+            } catch (syncError) {
+              console.error('Sync failed after add:', syncError);
+              // 保持已写入本地，无需回滚
+            }
+          }
+        } catch (error) {
+          console.error('Failed to add entry locally:', error);
         }
-    }, [fetchEntries, authToken]);
+    }, [backendStatus, user, fetchEntries]);
+
+    const updateEntry = useCallback(async (id: string, updates: Partial<JournalEntry>) => {
+        try {
+          const storage = await getStorageAdapter();
+          const currentEntry = await storage.entries.getById(id);
+          if (!currentEntry) {
+            console.error('Entry not found for update:', id);
+            return;
+          }
+
+          const entryWithPending = { 
+            ...updates, 
+            sync_status: 'pending' as const 
+          };
+          
+          await storage.entries.update(id, entryWithPending);
+          
+          if (isMountedRef.current) {
+            setEntries(prev => prev.map(e => e.id === id ? { ...e, ...updates, sync_status: 'pending' } : e));
+          }
+
+          if (backendStatus === 'online') {
+            try {
+              await syncWithBackend();
+              await fetchEntries();
+            } catch (syncError) {
+              console.error('Sync failed after update:', syncError);
+            }
+          }
+        } catch (error) {
+          console.error('Failed to update entry:', error);
+        }
+    }, [backendStatus, fetchEntries]);
+
+    const deleteEntry = useCallback(async (id: string) => {
+        try {
+          const storage = await getStorageAdapter();
+          await storage.entries.delete(id);
+          
+          if (isMountedRef.current) {
+            setEntries(prev => prev.filter(e => e.id !== id));
+          }
+
+          if (backendStatus === 'online') {
+            try {
+              await syncWithBackend();
+            } catch (syncError) {
+              console.error('Sync failed after delete:', syncError);
+            }
+          }
+        } catch (error) {
+          console.error('Failed to delete entry:', error);
+        }
+    }, [backendStatus]);
+
+    const manualSync = useCallback(async () => {
+        if (backendStatus !== 'online') return;
+        try {
+          const result = await syncWithBackend();
+          if (isMountedRef.current) {
+            setSyncResult(result);
+          }
+          await fetchEntries();
+        } catch (error) {
+          console.error('Manual sync failed:', error);
+          if (isMountedRef.current) {
+            setSyncResult({ success: false, uploaded: 0, downloaded: 0, errors: 1 });
+          }
+        }
+    }, [backendStatus, fetchEntries]);
+
+    // Fetch entries on mount and start sync
+    useEffect(() => {
+      if (!authToken) return;
+
+      const loadData = async () => {
+        try {
+          if (backendStatus === 'online') {
+            const result = await syncWithBackend();
+            if (isMountedRef.current) {
+              setSyncResult(result);
+            }
+          }
+          await fetchEntries();
+        } catch (error) {
+          console.error('Initial data load failed:', error);
+        }
+      };
+
+      loadData();
+    }, [authToken, backendStatus, fetchEntries]);
+
+    // Auto sync every 30 seconds when online
+    useEffect(() => {
+        if (backendStatus === 'online' && authToken) {
+            syncIntervalRef.current = setInterval(() => {
+                syncWithBackend().then(result => {
+                    if (isMountedRef.current) {
+                        setSyncResult(result);
+                    }
+                    return fetchEntries();
+                }).catch(error => {
+                    console.error('Auto-sync failed:', error);
+                });
+            }, 30000);
+        } else {
+            if (syncIntervalRef.current) {
+                clearInterval(syncIntervalRef.current);
+                syncIntervalRef.current = null;
+            }
+        }
+
+        return () => {
+            if (syncIntervalRef.current) {
+                clearInterval(syncIntervalRef.current);
+            }
+        };
+    }, [backendStatus, authToken, fetchEntries]);
 
     // System color scheme is now handled by useSystemColorScheme() hook above
 
@@ -242,10 +392,12 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         user, authToken, login, logout,
         backendStatus, checkBackendHealth, offlineShown, setOfflineShown,
         entries, entriesLoading, fetchEntries, addEntry,
+        updateEntry, deleteEntry, syncResult, manualSync,
     }), [themeMode, resolvedTheme, accentColor, language, i18n, user, authToken,
         setThemeMode, setAccentColor, setLanguage, login, logout,
         backendStatus, checkBackendHealth, offlineShown,
-        entries, entriesLoading, fetchEntries, addEntry]);
+        entries, entriesLoading, fetchEntries, addEntry,
+        updateEntry, deleteEntry, syncResult, manualSync]);
 
     if (!ready) return null; // avoid flash of wrong theme
 

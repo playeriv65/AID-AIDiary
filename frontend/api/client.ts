@@ -4,6 +4,7 @@ import { CONFIG } from '../constants/config';
 
 export interface JournalEntry {
     id: string;
+    user_id?: number;
     title: string | null;
     content: string;
     category: string | null;
@@ -13,6 +14,8 @@ export interface JournalEntry {
     image: string | null;
     created_at: string;
     updated_at: string;
+    sync_status?: 'synced' | 'pending' | 'error';
+    deleted?: number;
 }
 
 export interface ApiError {

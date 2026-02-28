@@ -57,6 +57,7 @@ def serialize_entry(entry: models.JournalEntry) -> dict:
             tags = entry_tags
     return {
         "id": entry.id,
+        "user_id": entry.user_id,
         "title": entry.title,
         "content": entry.content,
         "category": entry.category,
@@ -81,7 +82,8 @@ def read_entries(
     db: Session = Depends(get_db),
     current_user: models.User = Depends(get_current_user),
 ):
-    entries = crud.get_entries(db, skip=skip, limit=limit)
+    user_id_val = int(current_user.id)  # type: ignore
+    entries = crud.get_entries(db, user_id=user_id_val, skip=skip, limit=limit)
     return [serialize_entry(e) for e in entries]
 
 
@@ -102,7 +104,8 @@ def read_entry(
     db: Session = Depends(get_db),
     current_user: models.User = Depends(get_current_user),
 ):
-    db_entry = crud.get_entry(db, entry_id)
+    user_id_val = int(current_user.id)  # type: ignore
+    db_entry = crud.get_entry(db, entry_id, user_id=user_id_val)
     if db_entry is None:
         raise HTTPException(status_code=404, detail="Entry not found")
     return serialize_entry(db_entry)
@@ -115,7 +118,10 @@ def update_entry(
     db: Session = Depends(get_db),
     current_user: models.User = Depends(get_current_user),
 ):
-    db_entry = crud.update_entry(db, entry_id=entry_id, entry=entry)
+    user_id_val = int(current_user.id)  # type: ignore
+    db_entry = crud.update_entry(
+        db, entry_id=entry_id, entry=entry, user_id=user_id_val
+    )
     if db_entry is None:
         raise HTTPException(status_code=404, detail="Entry not found")
     return serialize_entry(db_entry)
@@ -127,7 +133,8 @@ def delete_entry(
     db: Session = Depends(get_db),
     current_user: models.User = Depends(get_current_user),
 ):
-    db_entry = crud.delete_entry(db, entry_id=entry_id)
+    user_id_val = int(current_user.id)  # type: ignore
+    db_entry = crud.delete_entry(db, entry_id=entry_id, user_id=user_id_val)
     if db_entry is None:
         raise HTTPException(status_code=404, detail="Entry not found")
     return db_entry
@@ -170,59 +177,3 @@ async def ai_chat(
     messages = [{"role": msg.role, "content": msg.content} for msg in request.messages]
     result = await chat_with_ai(messages)
     return result
-
-
-@app.post("/api/ai/chat/stream")
-async def ai_chat_stream(
-    request: schemas.ChatRequest,
-    current_user: models.User = Depends(get_current_user),
-):
-    messages = [{"role": msg.role, "content": msg.content} for msg in request.messages]
-    return StreamingResponse(
-        stream_chat_with_ai(messages),
-        media_type="text/event-stream",
-        headers={
-            "Cache-Control": "no-cache",
-            "Connection": "keep-alive",
-        },
-    )
-
-
-@app.post("/api/ai/generate-entry", response_model=schemas.GenerateEntryResponse)
-async def ai_generate_entry(
-    request: schemas.GenerateEntryRequest,
-    current_user: models.User = Depends(get_current_user),
-):
-    messages = [{"role": msg.role, "content": msg.content} for msg in request.messages]
-    result = await generate_entry_from_chat(
-        messages, timezone=request.timezone, current_time=request.current_time
-    )
-    return result
-
-
-@app.post("/api/auth/register", response_model=schemas.TokenResponse)
-def register(data: schemas.UserRegister, db: Session = Depends(get_db)):
-    existing = (
-        db.query(models.User).filter(models.User.username == data.username).first()
-    )
-    if existing:
-        raise HTTPException(status_code=400, detail="Username already taken")
-    user = models.User(
-        username=data.username,
-        email=data.email,
-        hashed_password=hash_password(data.password),
-    )
-    db.add(user)
-    db.commit()
-    db.refresh(user)
-    token = create_access_token({"sub": str(user.id), "username": user.username})
-    return {"access_token": token, "token_type": "bearer", "user": user}
-
-
-@app.post("/api/auth/login", response_model=schemas.TokenResponse)
-def login(data: schemas.UserLogin, db: Session = Depends(get_db)):
-    user = db.query(models.User).filter(models.User.username == data.username).first()
-    if not user or not verify_password(data.password, str(user.hashed_password)):
-        raise HTTPException(status_code=401, detail="Invalid username or password")
-    token = create_access_token({"sub": str(user.id), "username": user.username})
-    return {"access_token": token, "token_type": "bearer", "user": user}
