@@ -145,11 +145,11 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
-    searchBarWrapper: {
-        paddingHorizontal: '15%',
-        paddingTop: 20,
-        paddingBottom: 10,
-    },
+  searchBarWrapper: {
+    paddingHorizontal: 40,
+    paddingTop: 20,
+    paddingBottom: 10,
+  },
     searchBar: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -166,11 +166,11 @@ const styles = StyleSheet.create({
         fontSize: FontSizes.lg,
         fontWeight: FontWeights.normal,
     },
-    listContent: {
-        paddingHorizontal: '15%',
-        paddingTop: 10,
-        paddingBottom: 40,
-    },
+  listContent: {
+    paddingHorizontal: 40,
+    paddingTop: 10,
+    paddingBottom: 40,
+  },
     resultCard: {
         borderRadius: 12,
         padding: 18,

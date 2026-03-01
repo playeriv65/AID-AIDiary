@@ -232,7 +232,7 @@ export default function SettingsScreen() {
 
 const styles = StyleSheet.create({
     container: { flex: 1 },
-    scrollContent: { paddingHorizontal: '20%', paddingTop: 40, paddingBottom: 80 },
+    scrollContent: { paddingHorizontal: 40, paddingTop: 40, paddingBottom: 80 },
     sectionHeader: { fontSize: 11, fontWeight: '700', letterSpacing: 1.4, marginBottom: 10, marginTop: 32, marginLeft: 4 },
     card: { borderRadius: 14, padding: 18, marginBottom: 10 },
     cardLabel: { fontSize: 11, fontWeight: '600', letterSpacing: 0.5, marginBottom: 14 },

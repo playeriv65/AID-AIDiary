@@ -137,12 +137,15 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'flex-start',
     marginBottom: 8,
+    flexWrap: 'wrap',
+    gap: 8,
   },
   badges: {
     flexDirection: 'row',
     gap: 6,
     flexShrink: 0,
     alignItems: 'center',
+    marginLeft: 'auto',
   },
   badge: {
     flexDirection: 'row',

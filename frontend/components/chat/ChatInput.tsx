@@ -252,11 +252,11 @@ const styles = StyleSheet.create({
         paddingTop: 8,
         paddingBottom: 8,
     },
-    attachmentsContainer: {
-        maxHeight: 80,
-        marginBottom: 8,
-        paddingHorizontal: 12,
-    },
+  attachmentsContainer: {
+    maxHeight: 80,
+    marginBottom: 8,
+    paddingHorizontal: 40,
+  },
     attachmentsContent: {
         gap: 8,
         alignItems: 'center',
@@ -281,12 +281,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    inputRow: {
-        flexDirection: 'row',
-        alignItems: 'flex-end',
-        paddingHorizontal: 12,
-        gap: 8,
-    },
+  inputRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    paddingHorizontal: 40,
+    gap: 4,
+  },
     attachButton: {
         width: 40,
         height: 40,
@@ -314,10 +314,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    charCount: {
-        fontSize: FontSizes.xs,
-        textAlign: 'right',
-        paddingHorizontal: 16,
-        marginTop: 4,
-    },
+  charCount: {
+    fontSize: FontSizes.xs,
+    textAlign: 'right',
+    paddingHorizontal: 40,
+    marginTop: 4,
+  },
 });

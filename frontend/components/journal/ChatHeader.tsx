@@ -55,10 +55,11 @@ const styles = StyleSheet.create({
         paddingBottom: 12,
         borderBottomWidth: StyleSheet.hairlineWidth,
     },
-    headerTitle: {
-        fontSize: FontSizes.xl,
-        fontWeight: FontWeights.semibold,
-    },
+  headerTitle: {
+    fontSize: FontSizes.xl,
+    fontWeight: FontWeights.semibold,
+    lineHeight: FontSizes.xl * 1.2,
+  },
     headerActions: {
         flexDirection: 'row',
         alignItems: 'center',

@@ -73,9 +73,10 @@ backend/
 ## 经验教训
 ### ID 系统统一改造 (2026-02)
 - **问题**: 数据库同时存在整数 `id` 和字符串 `uuid` 两个字段
-- **解决**: 
+- **解决**:
   1. `JournalEntry.id` 改为 UUID 字符串主键
   2. 前后端类型统一为 `id: string`
   3. 乐观更新使用 `crypto.randomUUID()`
   4. 删除所有 `.id.toString()` 和 `.uuid` 引用
 - **验证**: pytest 通过 + Chrome DevTools 无报错
+

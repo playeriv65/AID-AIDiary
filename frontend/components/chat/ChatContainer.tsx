@@ -189,10 +189,11 @@ const styles = StyleSheet.create({
     messageList: {
         flex: 1,
     },
-    messageListContent: {
-        paddingVertical: 16,
-        flexGrow: 1,
-    },
+  messageListContent: {
+    paddingVertical: 16,
+    paddingHorizontal: 40,
+    flexGrow: 1,
+  },
     emptyContent: {
         justifyContent: 'center',
         alignItems: 'center',

@@ -7,7 +7,7 @@ import { getDateLocale } from '@/constants/i18n';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Colors, FontSizes, FontWeights } from '@/constants/theme';
+import { Colors, FontSizes, FontWeights, Spacing } from '@/constants/theme';
 import { CONFIG } from '@/constants/config';
 import { useAppContext } from '@/context/AppContext';
 
@@ -253,8 +253,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
   backBtn: {
-    width: 36,
-    height: 36,
+    width: 40,
+    height: 40,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -280,7 +280,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollInner: {
-    paddingHorizontal: '15%',
+    paddingHorizontal: Spacing.contentHorizontal,
     paddingTop: 32,
     paddingBottom: 24,
   },

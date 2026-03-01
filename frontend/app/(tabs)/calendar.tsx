@@ -75,7 +75,7 @@ export default function CalendarScreen() {
 
 const styles = StyleSheet.create({
     container: { flex: 1 },
-    listContent: { paddingHorizontal: '20%', paddingTop: 40, paddingBottom: 150, width: '100%' },
+    listContent: { paddingHorizontal: 40, paddingTop: 40, paddingBottom: 150, width: '100%' },
     fabContainer: { position: 'absolute', bottom: 30, right: 30, alignItems: 'flex-end' },
     calendarFab: { width: 44, height: 44, borderRadius: 22, alignItems: 'center', justifyContent: 'center', marginBottom: 16, shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.3, shadowRadius: 8, elevation: 5 },
     fab: { flexDirection: 'row', alignItems: 'center', paddingVertical: 14, paddingHorizontal: 24, borderRadius: 30, shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.3, shadowRadius: 8, elevation: 5 },

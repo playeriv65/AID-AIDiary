@@ -156,12 +156,12 @@ function formatTimestamp(timestamp: number): string {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flexDirection: 'row',
-        alignItems: 'flex-start',
-        marginBottom: 12,
-        paddingHorizontal: 16,
-    },
+  container: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginBottom: 12,
+    paddingHorizontal: 0,
+  },
     userContainer: {
         justifyContent: 'flex-end',
     },

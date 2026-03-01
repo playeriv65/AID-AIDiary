@@ -69,12 +69,12 @@ export function ImageUploadPreview({
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 32,
-    marginBottom: 8,
+    marginTop: 24,
+    marginBottom: 0,
+    paddingBottom: 8,
   },
   previewContainer: {
     width: '100%',
-    maxWidth: 480,
     height: 280,
     borderRadius: 16,
     overflow: 'hidden',
@@ -110,6 +110,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderStyle: 'dashed',
     alignSelf: 'flex-start',
+    maxWidth: '100%',
   },
   uploadTextContainer: {
     flexDirection: 'row',

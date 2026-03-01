@@ -36,33 +36,31 @@ export function TopNav() {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        width: '100%',
-        borderBottomWidth: 1,
-    },
-    headerRow: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: 60,
-        paddingHorizontal: 24,
-        position: 'relative',
-    },
-    logoContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    logoText: {
-        fontSize: 18,
-        fontWeight: '800',
-        letterSpacing: 3,
-    },
-    profileContainer: {
-        position: 'absolute',
-        right: 24,
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
+  container: {
+    width: '100%',
+    borderBottomWidth: 1,
+  },
+  headerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    height: 60,
+    paddingHorizontal: 24,
+  },
+  logoContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  logoText: {
+    fontSize: 18,
+    fontWeight: '800',
+    letterSpacing: 3,
+  },
+  profileContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
     avatar: {
         width: 32,
         height: 32,

@@ -71,18 +71,20 @@ export function TagManager({ tags, onTagsChange, theme, accentColor, i18n }: Tag
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 16,
-    marginBottom: 8,
+    marginTop: 8,
+    marginBottom: 0,
+    paddingBottom: 8,
   },
   tagList: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 10,
+    alignItems: 'center',
   },
   addBtn: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -90,6 +92,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: FontSizes.lg,
     fontWeight: '500' as const,
+    lineHeight: FontSizes.lg * 1.2,
   },
   tagChip: {
     flexDirection: 'row',
@@ -103,11 +106,13 @@ const styles = StyleSheet.create({
   tagChipText: {
     fontSize: FontSizes.sm,
     fontWeight: '500' as const,
+    lineHeight: FontSizes.sm * 1.2,
   },
   tagRemoveBtn: {
     fontSize: FontSizes.sm,
     fontWeight: '500' as const,
     opacity: 0.8,
+    lineHeight: FontSizes.sm * 1.2,
   },
   inputRow: {
     flexDirection: 'row',

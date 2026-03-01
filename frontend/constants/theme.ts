@@ -76,3 +76,11 @@ export const FontWeights = {
   semibold: '600' as const,
   bold: '700' as const,
 };
+
+export const Spacing = {
+  contentHorizontal: 40,
+  contentHorizontalMobile: 16,
+  cardPadding: 16,
+  sectionGap: 24,
+  elementGap: 12,
+};

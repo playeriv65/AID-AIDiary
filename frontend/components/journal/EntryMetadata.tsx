@@ -102,12 +102,13 @@ export function EntryMetadata({
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 20,
+    marginBottom: 0,
+    paddingBottom: 20,
   },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 16,
+    gap: 12,
   },
   divider: {
     width: 4,
