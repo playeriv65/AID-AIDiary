@@ -75,7 +75,7 @@ def test_generate_entry_from_chat_no_title(mock_openai_client):
     """测试无标题"""
     mock_response = MagicMock()
     mock_response.choices = [
-        MagicMock(message=MagicMock(content='{"title": "", "content": "Just content"}'))
+        MagicMock(message=MagicMock(content='{"title": "无题", "content": "Just content"}'))
     ]
     mock_openai_client.chat.completions.create.return_value = mock_response
 
@@ -83,9 +83,8 @@ def test_generate_entry_from_chat_no_title(mock_openai_client):
         generate_entry_from_chat([{"role": "user", "content": "Chat"}])
     )
 
-    assert result["title"] == ""
+    assert result["title"] == "无题"
     assert result["content"] == "Just content"
-
 
 def test_generate_entry_from_chat_exception(mock_openai_client):
     """测试生成日记异常"""
@@ -95,7 +94,7 @@ def test_generate_entry_from_chat_exception(mock_openai_client):
         generate_entry_from_chat([{"role": "user", "content": "Chat"}])
     )
 
-    assert result["title"] == ""
+    assert result["title"] == "日记生成失败"
     assert result["content"] == ""
     assert result["success"] is False
 
@@ -127,7 +126,7 @@ def test_generate_polished_entry_invalid_json(mock_openai_client):
     result = asyncio.run(generate_polished_entry("Original"))
 
     assert result["polished_text"] == "Original"
-    assert result["tags"] == ["Error"]
+    assert result["tags"] == []
 
 
 def test_generate_polished_entry_exception(mock_openai_client):

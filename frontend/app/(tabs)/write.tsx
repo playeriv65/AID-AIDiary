@@ -1,5 +1,5 @@
 import { StyleSheet, TextInput, Platform, TouchableOpacity, View, ScrollView, ActivityIndicator } from 'react-native';
-import { useMemo, useEffect } from 'react';
+import { useMemo, useEffect, useCallback } from 'react';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { format, parseISO } from 'date-fns';
 import { getDateLocale } from '@/constants/i18n';
@@ -44,6 +44,14 @@ export default function WriteEntryScreen() {
   const theme = resolvedTheme;
   const dateLocale = getDateLocale(i18n.language);
 
+  const safeGoBack = useCallback(() => {
+    if (router.canGoBack()) {
+      router.back();
+    } else {
+      router.replace('/');
+    }
+  }, [router]);
+
   const {
     title,
     content,
@@ -73,7 +81,7 @@ export default function WriteEntryScreen() {
     insertTemplate,
   } = useJournalEntry({
     entryId: params.id,
-    onSuccess: () => router.back(),
+    onSuccess: safeGoBack,
   });
 
   const entryDate = useMemo(() => {
@@ -124,7 +132,7 @@ export default function WriteEntryScreen() {
     <ThemedView style={[styles.container, { backgroundColor: c.background }]}>
       {/* 顶部导航栏 - 简洁 */}
       <View style={[styles.topBar, { borderBottomColor: theme === 'dark' ? '#1A1C1E' : '#E8E8EA' }]}>
-        <TouchableOpacity onPress={() => router.back()} style={styles.backBtn} activeOpacity={0.7}>
+        <TouchableOpacity onPress={safeGoBack} style={styles.backBtn} activeOpacity={0.7}>
           <IconSymbol name="caret-left" size={18} color={c.text} />
         </TouchableOpacity>
 

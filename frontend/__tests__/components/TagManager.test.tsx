@@ -21,7 +21,7 @@ describe('TagManager', () => {
 
   it('renders without crashing', () => {
     render(<TagManager {...defaultProps} />);
-    expect(screen.getByText('Tags')).toBeTruthy();
+    expect(screen.getByText('+')).toBeTruthy();
   });
 
   it('displays existing tags', () => {

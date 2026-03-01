@@ -5,10 +5,13 @@ from typing import Optional
 class Settings(BaseSettings):
     """应用配置，从环境变量加载"""
 
-    # API Keys - 从环境变量加载，运行时必须设置
-    openai_api_key: str = ""
+    # AI API Configuration
+    api_key: str = ""  # OpenAI or NVIDIA API key
+    base_url: str = "https://integrate.api.nvidia.com/v1"
+    model_name: str = "moonshotai/kimi-k2-instruct-0905"
+    
+    # App Security
     secret_key: str = ""
-
     # Optional with defaults
     openai_base_url: str = "https://open.bigmodel.cn/api/paas/v4/"
     model_name: str = "glm-4.5-flash"

@@ -1,5 +1,5 @@
-from pydantic import BaseModel, ConfigDict
-from typing import Optional, List
+from pydantic import BaseModel, ConfigDict, Field
+from typing import Optional, List, Literal
 from datetime import datetime
 
 
@@ -86,13 +86,14 @@ class TokenResponse(BaseModel):
 
 
 class ChatMessage(BaseModel):
-    role: str
-    content: str
+    role: Literal["user", "assistant"]
+    content: str = Field(..., max_length=10000)
 
 
 class ChatRequest(BaseModel):
-    messages: List[ChatMessage]
-
+    messages: List[ChatMessage] = Field(..., max_length=50)
+    timezone: Optional[str] = None
+    current_time: Optional[str] = None
 
 class ChatResponse(BaseModel):
     response: str
@@ -106,7 +107,21 @@ class GenerateEntryRequest(BaseModel):
 
 
 class GenerateEntryResponse(BaseModel):
+    id: str
     title: str
     content: str
     tags: List[str]
-    success: bool
+
+
+# AI Service Response Validation Schemas
+
+
+class AIPolishResult(BaseModel):
+    polished_text: str = ""
+    tags: List[str] = []
+
+
+class AIGenerateResult(BaseModel):
+    title: str = "无题"
+    content: str = ""
+    tags: List[str] = []

@@ -161,9 +161,9 @@ export default function ChatScreen() {
                 messages: chatMessages, timezone: userTimezone, current_time: currentTime
             }, { headers: { Authorization: `Bearer ${authToken}` }});
             
-            const { title, content, tags } = response.data;
+            const { id } = response.data;
             await fetchEntries();
-            router.push({ pathname: '/write', params: { title, content, tags: tags?.join(',') } });
+            router.push({ pathname: '/write', params: { id } });
         } catch (error) {
             console.error('Generate diary error:', error);
             Alert.alert(i18n.error, '生成日记失败，请重试');

@@ -1,4 +1,5 @@
 import pytest
+import uuid
 import json
 import os
 from pathlib import Path
@@ -69,6 +70,7 @@ def auth_headers(client):
 @pytest.fixture
 def sample_entry_data():
     return {
+        "id": str(uuid.uuid4()),
         "title": "测试日记",
         "content": "这是测试内容",
         "category": "life",
