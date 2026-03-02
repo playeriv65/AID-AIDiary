@@ -1,6 +1,6 @@
 import React from 'react';
 // Trigger recompile to fix stale import cache
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { ThemedText } from './themed-text';
 import { Colors } from '@/constants/theme';
@@ -8,31 +8,45 @@ import { useAppContext } from '@/context/AppContext';
 import { IconSymbol } from './ui/icon-symbol';
 
 export function TopNav() {
-    const router = useRouter();
-    const { resolvedTheme, accentColor, user, i18n } = useAppContext();
-    const c = Colors[resolvedTheme];
+  const router = useRouter();
+  const { resolvedTheme, accentColor, user, i18n } = useAppContext();
+  const c = Colors[resolvedTheme];
 
-    return (
-        <View style={[styles.container, { backgroundColor: c.topNav, borderBottomColor: resolvedTheme === 'dark' ? '#1A1C1E' : '#D0D0D5' }]}>
-            <View style={styles.headerRow}>
-                <View style={styles.logoContainer}>
-                    <IconSymbol name="book-open" size={20} color={accentColor} weight="fill" style={{ marginRight: 8 }} />
-                    <ThemedText style={[styles.logoText, { color: c.text }]}>{i18n.appName}</ThemedText>
-                </View>
-                <TouchableOpacity
-                    style={styles.profileContainer}
-                    onPress={() => router.push('/settings')}
-                    activeOpacity={0.7}
-                >
-                    <View style={[styles.avatar, { backgroundColor: accentColor }]}>
-                        <ThemedText style={styles.avatarText}>
-                            {user ? user.username.charAt(0).toUpperCase() : 'U'}
-                        </ThemedText>
-                    </View>
-                </TouchableOpacity>
-            </View>
+  return (
+    <View
+      style={[
+        styles.container,
+        {
+          backgroundColor: c.topNav,
+          borderBottomColor: resolvedTheme === 'dark' ? '#1A1C1E' : '#D0D0D5',
+        },
+      ]}
+    >
+      <View style={styles.headerRow}>
+        <View style={styles.logoContainer}>
+          <IconSymbol
+            name="book-open"
+            size={20}
+            color={accentColor}
+            weight="fill"
+            style={{ marginRight: 8 }}
+          />
+          <ThemedText style={[styles.logoText, { color: c.text }]}>{i18n.appName}</ThemedText>
         </View>
-    );
+        <TouchableOpacity
+          style={styles.profileContainer}
+          onPress={() => router.push('/settings')}
+          activeOpacity={0.7}
+        >
+          <View style={[styles.avatar, { backgroundColor: accentColor }]}>
+            <ThemedText style={styles.avatarText}>
+              {user ? user.username.charAt(0).toUpperCase() : 'U'}
+            </ThemedText>
+          </View>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -61,16 +75,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-    avatar: {
-        width: 32,
-        height: 32,
-        borderRadius: 16,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    avatarText: {
-        fontSize: 14,
-        fontWeight: '600',
-        color: '#000',
-    }
+  avatar: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  avatarText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#000',
+  },
 });

@@ -1,6 +1,14 @@
-import { StyleSheet, TextInput, Platform, TouchableOpacity, View, ScrollView, ActivityIndicator } from 'react-native';
-import { useMemo, useEffect, useCallback } from 'react';
-import { useRouter, useLocalSearchParams } from 'expo-router';
+import {
+  ActivityIndicator,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import { useCallback, useEffect, useMemo } from 'react';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { format, parseISO } from 'date-fns';
 import { getDateLocale } from '@/constants/i18n';
 
@@ -61,7 +69,6 @@ export default function WriteEntryScreen() {
     tags,
     image,
     saving,
-    aiPolishing,
     uploading,
     loading,
     createdAt,
@@ -76,7 +83,6 @@ export default function WriteEntryScreen() {
     setTags,
     setImage,
     handleSave,
-    handleAIPolish,
     handleImageUpload,
     insertTemplate,
   } = useJournalEntry({
@@ -91,7 +97,10 @@ export default function WriteEntryScreen() {
     return new Date();
   }, [createdAt]);
 
-  const dateStr = useMemo(() => format(entryDate, 'MM月dd日 HH:mm', { locale: dateLocale }), [entryDate, dateLocale]);
+  const dateStr = useMemo(
+    () => format(entryDate, 'MM月dd日 HH:mm', { locale: dateLocale }),
+    [entryDate, dateLocale]
+  );
 
   const c = Colors[theme];
   const mutedColor = c.icon;
@@ -131,7 +140,9 @@ export default function WriteEntryScreen() {
   return (
     <ThemedView style={[styles.container, { backgroundColor: c.background }]}>
       {/* 顶部导航栏 - 简洁 */}
-      <View style={[styles.topBar, { borderBottomColor: theme === 'dark' ? '#1A1C1E' : '#E8E8EA' }]}>
+      <View
+        style={[styles.topBar, { borderBottomColor: theme === 'dark' ? '#1A1C1E' : '#E8E8EA' }]}
+      >
         <TouchableOpacity onPress={safeGoBack} style={styles.backBtn} activeOpacity={0.7}>
           <IconSymbol name="caret-left" size={18} color={c.text} />
         </TouchableOpacity>
@@ -141,9 +152,12 @@ export default function WriteEntryScreen() {
         </View>
 
         <TouchableOpacity
-          style={[styles.saveCircle, { backgroundColor: saving ? Colors[theme].icon : accentColor }]}
+          style={[
+            styles.saveCircle,
+            { backgroundColor: saving ? Colors[theme].icon : accentColor },
+          ]}
           onPress={handleSave}
-          disabled={saving || aiPolishing}
+          disabled={saving}
           activeOpacity={0.8}
         >
           {saving ? (
@@ -231,10 +245,8 @@ export default function WriteEntryScreen() {
 
       {/* 底部工具栏 */}
       <EditorToolbar
-        onAIPolish={handleAIPolish}
         onInsertTemplate={insertTemplate}
         onOpenCalendar={handleOpenCalendar}
-        aiPolishing={aiPolishing}
         tagsCount={tags.length}
         theme={theme}
         accentColor={accentColor}

@@ -1,4 +1,4 @@
-import { TouchableOpacity, View, Image, ActivityIndicator, StyleSheet } from 'react-native';
+import { ActivityIndicator, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Colors } from '@/constants/theme';
 
@@ -27,7 +27,12 @@ export function ImageUploadPreview({
   if (image) {
     return (
       <View style={styles.container}>
-        <View style={[styles.previewContainer, { backgroundColor: theme === 'dark' ? '#2A2C30' : '#F0F0F2' }]}>
+        <View
+          style={[
+            styles.previewContainer,
+            { backgroundColor: theme === 'dark' ? '#2A2C30' : '#F0F0F2' },
+          ]}
+        >
           <Image
             source={{ uri: `${apiStaticUrl}/${image}` }}
             style={styles.previewImage}

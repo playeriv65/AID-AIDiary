@@ -1,5 +1,4 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from typing import Optional
 
 
 class Settings(BaseSettings):
@@ -9,7 +8,7 @@ class Settings(BaseSettings):
     api_key: str = ""  # OpenAI or NVIDIA API key
     base_url: str = "https://integrate.api.nvidia.com/v1"
     model_name: str = "moonshotai/kimi-k2-instruct-0905"
-    
+
     # App Security
     secret_key: str = ""
     # Optional with defaults

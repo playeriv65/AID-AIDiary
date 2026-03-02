@@ -3,22 +3,22 @@ import katex from 'katex';
 import { KaTeXAutoHeightWebView } from '@adheil_gupta/react-native-latex-renderer';
 
 interface LaTeXRendererProps {
-    formula: string;
-    displayMode?: boolean;
-    theme: 'light' | 'dark';
+  formula: string;
+  displayMode?: boolean;
+  theme: 'light' | 'dark';
 }
 
 export function LaTeXRenderer({ formula, displayMode = false, theme }: LaTeXRendererProps) {
-    const textColor = theme === 'dark' ? '#DFE1E3' : '#1A1C1E';
-    const bgColor = theme === 'dark' ? '#2A2C30' : '#F0F0F2';
+  const textColor = theme === 'dark' ? '#DFE1E3' : '#1A1C1E';
+  const bgColor = theme === 'dark' ? '#2A2C30' : '#F0F0F2';
 
-    try {
-        const html = katex.renderToString(formula, {
-            displayMode,
-            throwOnError: false,
-            output: 'html',
-        });
-        const katexHtml = `
+  try {
+    const html = katex.renderToString(formula, {
+      displayMode,
+      throwOnError: false,
+      output: 'html',
+    });
+    const katexHtml = `
 <!DOCTYPE html>
 <html>
 <head>
@@ -28,21 +28,21 @@ export function LaTeXRenderer({ formula, displayMode = false, theme }: LaTeXRend
 ${html}
 </body>
 </html>`;
-        return (
-            <KaTeXAutoHeightWebView
-                source={{ html: katexHtml }}
-                minHeight={displayMode ? 60 : 30}
-                onError={() => console.warn('KaTeX render error:', formula)}
-            />
-        );
-    } catch {
-        return (
-            <KaTeXAutoHeightWebView
-                source={{
-                    html: `<!DOCTYPE html><html><body style="margin:0;padding:8px;background:${bgColor};color:${textColor};font-family:monospace;">${formula}</body></html>`,
-                }}
-                minHeight={30}
-            />
-        );
-    }
+    return (
+      <KaTeXAutoHeightWebView
+        source={{ html: katexHtml }}
+        minHeight={displayMode ? 60 : 30}
+        onError={() => console.warn('KaTeX render error:', formula)}
+      />
+    );
+  } catch {
+    return (
+      <KaTeXAutoHeightWebView
+        source={{
+          html: `<!DOCTYPE html><html><body style="margin:0;padding:8px;background:${bgColor};color:${textColor};font-family:monospace;">${formula}</body></html>`,
+        }}
+        minHeight={30}
+      />
+    );
+  }
 }

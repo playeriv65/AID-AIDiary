@@ -1,8 +1,7 @@
-import pytest
-import uuid
-import json
 import os
-from pathlib import Path
+import uuid
+
+import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -11,9 +10,8 @@ from sqlalchemy.pool import StaticPool
 os.environ["OPENAI_API_KEY"] = "test-key"
 os.environ["SECRET_KEY"] = "test-secret"
 
-from main import app, UPLOAD_DIR
 from database import Base, get_db
-from models import JournalEntry, User
+from main import UPLOAD_DIR, app
 
 SQLALCHEMY_DATABASE_URL = "sqlite:///:memory:"
 
@@ -89,9 +87,7 @@ class TestRootEndpoint:
 
 class TestJournalEntries:
     def test_create_entry(self, client, sample_entry_data, auth_headers):
-        response = client.post(
-            "/api/entries", json=sample_entry_data, headers=auth_headers
-        )
+        response = client.post("/api/entries", json=sample_entry_data, headers=auth_headers)
         assert response.status_code == 200
         data = response.json()
         assert data["title"] == "测试日记"
@@ -107,9 +103,7 @@ class TestJournalEntries:
         assert data[0]["title"] == "测试日记"
 
     def test_get_entry_by_id(self, client, sample_entry_data, auth_headers):
-        create_resp = client.post(
-            "/api/entries", json=sample_entry_data, headers=auth_headers
-        )
+        create_resp = client.post("/api/entries", json=sample_entry_data, headers=auth_headers)
         entry_id = create_resp.json()["id"]
 
         response = client.get(f"/api/entries/{entry_id}", headers=auth_headers)
@@ -117,25 +111,17 @@ class TestJournalEntries:
         assert response.json()["title"] == "测试日记"
 
     def test_update_entry(self, client, sample_entry_data, auth_headers):
-        create_resp = client.post(
-            "/api/entries", json=sample_entry_data, headers=auth_headers
-        )
+        create_resp = client.post("/api/entries", json=sample_entry_data, headers=auth_headers)
         entry_id = create_resp.json()["id"]
 
         update_data = {"title": "更新后的标题"}
-        response = client.put(
-            f"/api/entries/{entry_id}", json=update_data, headers=auth_headers
-        )
+        response = client.put(f"/api/entries/{entry_id}", json=update_data, headers=auth_headers)
         assert response.status_code == 200
         assert response.json()["title"] == "更新后的标题"
 
-    def test_update_entry_multiple_fields(
-        self, client, sample_entry_data, auth_headers
-    ):
+    def test_update_entry_multiple_fields(self, client, sample_entry_data, auth_headers):
         """测试更新多个字段"""
-        create_resp = client.post(
-            "/api/entries", json=sample_entry_data, headers=auth_headers
-        )
+        create_resp = client.post("/api/entries", json=sample_entry_data, headers=auth_headers)
         entry_id = create_resp.json()["id"]
 
         update_data = {
@@ -144,9 +130,7 @@ class TestJournalEntries:
             "location": "Beijing",
             "tags": ["tag1", "tag2"],
         }
-        response = client.put(
-            f"/api/entries/{entry_id}", json=update_data, headers=auth_headers
-        )
+        response = client.put(f"/api/entries/{entry_id}", json=update_data, headers=auth_headers)
         assert response.status_code == 200
         data = response.json()
         assert data["category"] == "work"
@@ -155,9 +139,7 @@ class TestJournalEntries:
 
     def test_update_nonexistent_entry(self, client, auth_headers):
         """测试更新不存在的日记"""
-        response = client.put(
-            "/api/entries/99999", json={"title": "Test"}, headers=auth_headers
-        )
+        response = client.put("/api/entries/99999", json={"title": "Test"}, headers=auth_headers)
         assert response.status_code == 404
 
     def test_delete_nonexistent_entry(self, client, auth_headers):
@@ -166,9 +148,7 @@ class TestJournalEntries:
         assert response.status_code == 404
 
     def test_delete_entry(self, client, sample_entry_data, auth_headers):
-        create_resp = client.post(
-            "/api/entries", json=sample_entry_data, headers=auth_headers
-        )
+        create_resp = client.post("/api/entries", json=sample_entry_data, headers=auth_headers)
         entry_id = create_resp.json()["id"]
 
         response = client.delete(f"/api/entries/{entry_id}", headers=auth_headers)
@@ -206,9 +186,7 @@ class TestImageUpload:
         assert data["filename"].startswith("uploads/")
         assert data["url"].startswith("/static/uploads/")
 
-    def test_upload_image_saves_to_uploads_directory(
-        self, client, tmp_path, auth_headers
-    ):
+    def test_upload_image_saves_to_uploads_directory(self, client, tmp_path, auth_headers):
         test_file = tmp_path / "test.jpg"
         test_file.write_bytes(b"fake image content")
 
@@ -224,31 +202,20 @@ class TestImageUpload:
         assert file_path.exists()
 
 
-class TestAIPolish:
-    def test_ai_polish_returns_polished_text(self, client, auth_headers):
-        response = client.post(
-            "/api/ai/polish", json={"content": "i am happy today"}, headers=auth_headers
-        )
-        assert response.status_code == 200
-        data = response.json()
-        assert "polished_text" in data
-        assert "tags" in data
-
-
 class TestAuth:
     def test_register_user(self, client):
         response = client.post(
             "/api/auth/register",
             json={
-                "username": "testuser",
-                "email": "test@example.com",
+                "username": "testuser2",
+                "email": "test2@example.com",
                 "password": "testpass123",
             },
         )
         assert response.status_code == 200
         data = response.json()
         assert "access_token" in data
-        assert data["user"]["username"] == "testuser"
+        assert data["user"]["username"] == "testuser2"
 
     def test_login_user(self, client):
         client.post(

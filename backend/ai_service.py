@@ -1,19 +1,18 @@
-import json
 import asyncio
+import json
 import logging
-from datetime import datetime
-from typing import List, Dict, AsyncGenerator, Any
+from collections.abc import AsyncGenerator
 
 from openai import (
-    OpenAI,
     APIConnectionError,
-    RateLimitError,
-    AuthenticationError,
     APIStatusError,
+    AuthenticationError,
+    OpenAI,
+    RateLimitError,
 )
 
 from config import settings
-from schemas import AIPolishResult, AIGenerateResult
+from schemas import AIGenerateResult
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -28,6 +27,7 @@ ERROR_MSG_UNKNOWN = "AI 服务异常，请稍后再试"
 # Lazy client initialization - validates on first use
 _client = None
 
+
 def get_client():
     global _client
     if _client is None:
@@ -40,24 +40,24 @@ def get_client():
         )
     return _client
 
+
 # For backward compatibility with tests that patch 'ai_service.client'
 class _ClientProxy:
     def __getattr__(self, name):
         return getattr(get_client(), name)
+
     def __setattr__(self, name, value):
         global _client
         _client = value
+
 
 client = _ClientProxy()
 MODEL_NAME = settings.model_name
 
 
 # AI Model Configuration
-AI_TEMPERATURE = (
-    0.6  # Controls randomness: lower = more focused, higher = more creative
-)
+AI_TEMPERATURE = 0.6  # Controls randomness: lower = more focused, higher = more creative
 AI_TOP_P = 0.9  # Nucleus sampling threshold for token selection
-AI_MAX_TOKENS_POLISH = 2048  # Max tokens for polishing diary entries
 AI_MAX_TOKENS_CHAT = 1024  # Max tokens for regular chat interactions
 AI_MAX_TOKENS_GENERATE = 4096  # Max tokens for generating entries from chat
 AI_MAX_TOKENS_STREAM = 4096  # Max tokens for streaming chat responses
@@ -80,62 +80,8 @@ def _clean_json_string(text: str) -> dict:
         return {}
 
 
-async def generate_polished_entry(content: str) -> dict:
-    """AI 润色日记内容：保留情绪与人情味，拒绝机械AI感"""
-    system_prompt = """你是一个懂心理学、共情能力极强的日记润色助手。
-    用户会提供一篇他们写的日记草稿。你的任务是：
-    1. 优化语句的流畅度，但**绝对保留用户的原始情绪、事实和个人口吻**。不要把它改写成华丽空洞的AI散文。
-    2. 像一个真实的人在写日记一样，保留那种真实的、带有烟火气或脆弱感的表达。避免"深刻感悟"、"受益匪浅"之类的套话。
-    3. 根据内容提取 1-3 个贴切的标签（例如：'疲惫', '小确幸', '家庭', '自我内耗'）。
-
-    请严格且仅返回以下格式的 JSON，不要包含任何额外的解释文本或 Markdown 代码块标记：
-    {
-    "polished_text": "润色后的日记内容（第一人称口吻）",
-    "tags": ["标签1", "标签2"]
-    }"""
-    try:
-        response = client.chat.completions.create(
-            model=MODEL_NAME,
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": f"Here is my rough draft:\n\n{content}"},
-            ],
-            temperature=AI_TEMPERATURE,
-            top_p=AI_TOP_P,
-            max_tokens=AI_MAX_TOKENS_POLISH,
-        )
-
-        result_content = response.choices[0].message.content or "{}"
-        parsed_result = AIPolishResult.model_validate(
-            _clean_json_string(result_content)
-        )
-
-        return {
-            "polished_text": parsed_result.polished_text
-            if parsed_result.polished_text
-            else content,
-            "tags": parsed_result.tags,
-        }
-
-    except APIConnectionError as e:
-        logger.warning("AI service connection failed: %s", str(e)[:100])
-        return {"polished_text": content, "tags": ["Error"]}
-    except AuthenticationError as e:
-        logger.error("AI service authentication failed: %s", str(e)[:100])
-        return {"polished_text": content, "tags": ["Error"]}
-    except RateLimitError as e:
-        logger.warning("AI service rate limited: %s", str(e)[:100])
-        return {"polished_text": content, "tags": ["Error"]}
-    except APIStatusError as e:
-        logger.error("AI service error: status=%d", e.status_code)
-        return {"polished_text": content, "tags": ["Error"]}
-    except Exception as e:
-        logger.exception("Unexpected error in AI polish")
-        return {"polished_text": content, "tags": ["Error"]}
-
-
 async def generate_entry_from_chat(
-    chat_history: List[Dict[str, str]],
+    chat_history: list[dict[str, str]],
     timezone: str | None = None,
     current_time: str | None = None,
 ) -> dict:
@@ -170,9 +116,7 @@ async def generate_entry_from_chat(
         messages = [{"role": "system", "content": system_prompt}]
         for msg in chat_history:
             messages.append(msg)
-        messages.append(
-            {"role": "user", "content": "请根据以上对话内容，帮我生成今天的日记。"}
-        )
+        messages.append({"role": "user", "content": "请根据以上对话内容，帮我生成今天的日记。"})
 
         response = client.chat.completions.create(
             model=MODEL_NAME,
@@ -183,9 +127,7 @@ async def generate_entry_from_chat(
         )
 
         result_content = response.choices[0].message.content or "{}"
-        parsed_result = AIGenerateResult.model_validate(
-            _clean_json_string(result_content)
-        )
+        parsed_result = AIGenerateResult.model_validate(_clean_json_string(result_content))
 
         return {
             "title": parsed_result.title,
@@ -205,7 +147,7 @@ async def generate_entry_from_chat(
     except APIStatusError as e:
         logger.error("AI service error: status=%d", e.status_code)
         return {"title": "日记生成失败", "content": "", "tags": ["Error"], "success": False}
-    except Exception as e:
+    except Exception:
         logger.exception("Unexpected error in generate_entry_from_chat")
         return {"title": "日记生成失败", "content": "", "tags": ["Error"], "success": False}
 
@@ -221,7 +163,7 @@ SYSTEM_PROMPT = """你现在不是一个AI助手，而是用户最亲密、最�
 """
 
 
-async def chat_with_ai(messages: List[Dict[str, str]]) -> dict:
+async def chat_with_ai(messages: list[dict[str, str]]) -> dict:
     """与 AI 进行对话"""
     try:
         full_messages = [{"role": "system", "content": SYSTEM_PROMPT}] + messages
@@ -259,7 +201,7 @@ async def chat_with_ai(messages: List[Dict[str, str]]) -> dict:
             "response": "抱歉，我现在脑瓜有点嗡嗡的，过会再跟我聊吧...",
             "success": False,
         }
-    except Exception as e:
+    except Exception:
         logger.exception("Unexpected error in chat_with_ai")
         return {
             "response": "抱歉，我现在脑瓜有点嗡嗡的，过会再跟我聊吧...",
@@ -268,8 +210,8 @@ async def chat_with_ai(messages: List[Dict[str, str]]) -> dict:
 
 
 async def stream_chat_with_ai(
-    messages: List[Dict[str, str]],
-) -> AsyncGenerator[str, None]:
+    messages: list[dict[str, str]],
+) -> AsyncGenerator[str]:
     """与 AI 进行流式对话"""
     try:
         full_messages = [{"role": "system", "content": SYSTEM_PROMPT}] + messages
@@ -307,6 +249,6 @@ async def stream_chat_with_ai(
     except APIStatusError as e:
         logger.error("AI stream error: status=%d", e.status_code)
         yield f"data: {json.dumps({'error': '抱歉，我现在有点走神了，等会再跟我说好吗...'})}\n\n"
-    except Exception as e:
+    except Exception:
         logger.exception("Unexpected error in stream_chat_with_ai")
         yield f"data: {json.dumps({'error': '抱歉，我现在有点走神了，等会再跟我说好吗...'})}\n\n"

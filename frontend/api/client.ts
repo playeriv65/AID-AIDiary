@@ -1,32 +1,32 @@
-import axios, { AxiosInstance, AxiosError, InternalAxiosRequestConfig } from 'axios';
+import axios, { AxiosError, AxiosInstance, InternalAxiosRequestConfig } from 'axios';
 import { Alert } from 'react-native';
 import { CONFIG } from '../constants/config';
 
 export interface JournalEntry {
-    id: string;
-    user_id?: number;
-    title: string | null;
-    content: string;
-    category: string | null;
-    weather: string | null;
-    location: string | null;
-    tags: string[] | null;
-    image: string | null;
-    created_at: string;
-    updated_at: string;
-    sync_status?: 'synced' | 'pending' | 'error';
-    deleted?: number;
+  id: string;
+  user_id?: number;
+  title: string | null;
+  content: string;
+  category: string | null;
+  weather: string | null;
+  location: string | null;
+  tags: string[] | null;
+  image: string | null;
+  created_at: string;
+  updated_at: string;
+  sync_status?: 'synced' | 'pending' | 'error';
+  deleted?: number;
 }
 
 export interface ApiError {
-    detail?: string;
-    code?: string;
+  detail?: string;
+  code?: string;
 }
 
 export interface ApiResponse<T = any> {
-    success: boolean;
-    data?: T;
-    error?: ApiError;
+  success: boolean;
+  data?: T;
+  error?: ApiError;
 }
 
 class ApiClient {
@@ -50,7 +50,7 @@ class ApiClient {
     this.authToken = token;
   }
 
-    private setupInterceptors() {
+  private setupInterceptors() {
     // Request interceptor
     this.client.interceptors.request.use(
       (config: InternalAxiosRequestConfig) => {
@@ -67,8 +67,8 @@ class ApiClient {
       (response) => response,
       (error: AxiosError) => {
         if (error.response) {
-            const { status, data } = error.response as any;
-          
+          const { status, data } = error.response as any;
+
           if (status === 401) {
             Alert.alert('Error', 'Authentication failed');
           } else if (status === 422) {
@@ -85,7 +85,7 @@ class ApiClient {
         } else {
           Alert.alert('Error', 'Unexpected error');
         }
-        
+
         return Promise.reject(error);
       }
     );
@@ -111,12 +111,12 @@ class ApiClient {
     return response.data;
   }
 
-   async delete<T>(url: string): Promise<T> {
-     const response = await this.client.delete<T>(url);
-     return response.data;
-   }
+  async delete<T>(url: string): Promise<T> {
+    const response = await this.client.delete<T>(url);
+    return response.data;
+  }
 
-   async uploadFile(
+  async uploadFile(
     url: string,
     formData: FormData,
     onUploadProgress?: (progress: number) => void
@@ -147,8 +147,8 @@ class ApiClient {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this.authToken}`,
-          'Accept': 'text/event-stream',
+          Authorization: `Bearer ${this.authToken}`,
+          Accept: 'text/event-stream',
         },
         body: JSON.stringify(data),
       });

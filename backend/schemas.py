@@ -1,16 +1,17 @@
-from pydantic import BaseModel, ConfigDict, Field
-from typing import Optional, List, Literal
 from datetime import datetime
+from typing import Literal
+
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class JournalEntryBase(BaseModel):
-    title: Optional[str] = None
+    title: str | None = None
     content: str
-    category: Optional[str] = None
-    weather: Optional[str] = None
-    location: Optional[str] = None
-    tags: Optional[List[str]] = None
-    image: Optional[str] = None
+    category: str | None = None
+    weather: str | None = None
+    location: str | None = None
+    tags: list[str] | None = None
+    image: str | None = None
 
 
 class JournalEntryCreate(JournalEntryBase):
@@ -18,40 +19,28 @@ class JournalEntryCreate(JournalEntryBase):
 
 
 class JournalEntryUpdate(BaseModel):
-    title: Optional[str] = None
-    content: Optional[str] = None
-    category: Optional[str] = None
-    weather: Optional[str] = None
-    location: Optional[str] = None
-    tags: Optional[List[str]] = None
-    image: Optional[str] = None
+    title: str | None = None
+    content: str | None = None
+    category: str | None = None
+    weather: str | None = None
+    location: str | None = None
+    tags: list[str] | None = None
+    image: str | None = None
 
 
 class JournalEntry(BaseModel):
     id: str
-    title: Optional[str] = None
+    title: str | None = None
     content: str
-    category: Optional[str] = None
-    weather: Optional[str] = None
-    location: Optional[str] = None
-    tags: Optional[List[str]] = None
-    image: Optional[str] = None
+    category: str | None = None
+    weather: str | None = None
+    location: str | None = None
+    tags: list[str] | None = None
+    image: str | None = None
     created_at: datetime
     updated_at: datetime
 
     model_config = ConfigDict(from_attributes=True)
-
-
-# AI Features
-
-
-class AIPolishRequest(BaseModel):
-    content: str
-
-
-class AIPolishResponse(BaseModel):
-    polished_text: str
-    tags: List[str]
 
 
 # Auth Schemas
@@ -60,7 +49,7 @@ class AIPolishResponse(BaseModel):
 class UserRegister(BaseModel):
     username: str
     password: str
-    email: Optional[str] = None
+    email: str | None = None
 
 
 class UserLogin(BaseModel):
@@ -71,7 +60,7 @@ class UserLogin(BaseModel):
 class UserOut(BaseModel):
     id: int
     username: str
-    email: Optional[str] = None
+    email: str | None = None
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -91,9 +80,10 @@ class ChatMessage(BaseModel):
 
 
 class ChatRequest(BaseModel):
-    messages: List[ChatMessage] = Field(..., max_length=50)
-    timezone: Optional[str] = None
-    current_time: Optional[str] = None
+    messages: list[ChatMessage] = Field(..., max_length=50)
+    timezone: str | None = None
+    current_time: str | None = None
+
 
 class ChatResponse(BaseModel):
     response: str
@@ -101,27 +91,19 @@ class ChatResponse(BaseModel):
 
 
 class GenerateEntryRequest(BaseModel):
-    messages: List[ChatMessage]
-    timezone: Optional[str] = None
-    current_time: Optional[str] = None
+    messages: list[ChatMessage]
+    timezone: str | None = None
+    current_time: str | None = None
 
 
 class GenerateEntryResponse(BaseModel):
     id: str
     title: str
     content: str
-    tags: List[str]
-
-
-# AI Service Response Validation Schemas
-
-
-class AIPolishResult(BaseModel):
-    polished_text: str = ""
-    tags: List[str] = []
+    tags: list[str]
 
 
 class AIGenerateResult(BaseModel):
     title: str = "无题"
     content: str = ""
-    tags: List[str] = []
+    tags: list[str] = []

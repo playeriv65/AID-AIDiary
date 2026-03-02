@@ -1,5 +1,5 @@
 import { Slot } from 'expo-router';
-import { View, StyleSheet, useWindowDimensions } from 'react-native';
+import { StyleSheet, View, useWindowDimensions } from 'react-native';
 import { Sidebar } from '@/components/Sidebar';
 import { TopNav } from '@/components/TopNav';
 import { Colors } from '@/constants/theme';
@@ -38,6 +38,5 @@ const styles = StyleSheet.create({
   contentArea: {
     flex: 1,
     position: 'relative',
-  }
+  },
 });
-

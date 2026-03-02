@@ -1,15 +1,16 @@
-from datetime import datetime, timezone
-from sqlalchemy.orm import Session
-import models, schemas
 import json
+from datetime import UTC, datetime
+
+from sqlalchemy.orm import Session
+
+import models
+import schemas
 
 
 def get_entry(db: Session, entry_id: str, user_id: int):
     return (
         db.query(models.JournalEntry)
-        .filter(
-            models.JournalEntry.id == entry_id, models.JournalEntry.user_id == user_id
-        )
+        .filter(models.JournalEntry.id == entry_id, models.JournalEntry.user_id == user_id)
         .first()
     )
 
@@ -43,9 +44,7 @@ def create_entry(db: Session, entry: schemas.JournalEntryCreate, user_id: int):
     return db_entry
 
 
-def update_entry(
-    db: Session, entry_id: str, entry: schemas.JournalEntryUpdate, user_id: int
-):
+def update_entry(db: Session, entry_id: str, entry: schemas.JournalEntryUpdate, user_id: int):
     db_entry = get_entry(db, entry_id, user_id)
     if db_entry:
         if entry.title is not None:
@@ -62,7 +61,7 @@ def update_entry(
             db_entry.tags = json.dumps(entry.tags)
         if entry.image is not None:
             db_entry.image = entry.image
-        db_entry.updated_at = datetime.now(timezone.utc)
+        db_entry.updated_at = datetime.now(UTC)
         db.commit()
         db.refresh(db_entry)
     return db_entry

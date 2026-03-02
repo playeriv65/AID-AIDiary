@@ -1,40 +1,49 @@
-import { useState, useCallback } from 'react';
-import { View, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { useCallback, useState } from 'react';
+import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import { ThemedText } from '@/components/themed-text';
 import { Colors, FontSizes } from '@/constants/theme';
 
 interface TagManagerProps {
-    tags: string[];
-    onTagsChange: (tags: string[]) => void;
-    theme: 'light' | 'dark';
-    accentColor: string;
-    i18n: any;
+  tags: string[];
+  onTagsChange: (tags: string[]) => void;
+  theme: 'light' | 'dark';
+  accentColor: string;
+  i18n: any;
 }
 
 export function TagManager({ tags, onTagsChange, theme, accentColor, i18n }: TagManagerProps) {
-    const [showInput, setShowInput] = useState(false);
-    const [newTag, setNewTag] = useState('');
+  const [showInput, setShowInput] = useState(false);
+  const [newTag, setNewTag] = useState('');
 
-    const handleAddTag = useCallback(() => {
-        const trimmed = newTag.trim();
-        if (trimmed && !tags.includes(trimmed)) {
-            onTagsChange([...tags, trimmed]);
-        }
-        setNewTag('');
-        setShowInput(false);
-    }, [newTag, tags, onTagsChange]);
+  const handleAddTag = useCallback(() => {
+    const trimmed = newTag.trim();
+    if (trimmed && !tags.includes(trimmed)) {
+      onTagsChange([...tags, trimmed]);
+    }
+    setNewTag('');
+    setShowInput(false);
+  }, [newTag, tags, onTagsChange]);
 
-    const handleRemoveTag = useCallback((tagToRemove: string) => {
-        onTagsChange(tags.filter(tag => tag !== tagToRemove));
-    }, [tags, onTagsChange]);
+  const handleRemoveTag = useCallback(
+    (tagToRemove: string) => {
+      onTagsChange(tags.filter((tag) => tag !== tagToRemove));
+    },
+    [tags, onTagsChange]
+  );
 
-    const c = Colors[theme];
+  const c = Colors[theme];
 
   return (
     <View style={styles.container}>
       <View style={styles.tagList}>
-        {tags.map(tag => (
-          <View key={tag} style={[styles.tagChip, { backgroundColor: accentColor + '20', borderColor: accentColor + '40' }]}>
+        {tags.map((tag) => (
+          <View
+            key={tag}
+            style={[
+              styles.tagChip,
+              { backgroundColor: accentColor + '20', borderColor: accentColor + '40' },
+            ]}
+          >
             <ThemedText style={[styles.tagChipText, { color: accentColor }]}>#{tag}</ThemedText>
             <TouchableOpacity onPress={() => handleRemoveTag(tag)}>
               <ThemedText style={[styles.tagRemoveBtn, { color: accentColor }]}>✕</ThemedText>
@@ -49,24 +58,27 @@ export function TagManager({ tags, onTagsChange, theme, accentColor, i18n }: Tag
         </TouchableOpacity>
       </View>
 
-            {showInput && (
-                <View style={styles.inputRow}>
-                    <TextInput
-                        style={[styles.input, { color: c.text, borderColor: accentColor + '40' }]}
-                        placeholder={i18n.addTag}
-                        placeholderTextColor={c.icon}
-                        value={newTag}
-                        onChangeText={setNewTag}
-                        onSubmitEditing={handleAddTag}
-                        autoFocus
-                    />
-                    <TouchableOpacity style={[styles.saveBtn, { backgroundColor: accentColor }]} onPress={handleAddTag}>
-                        <ThemedText style={styles.saveBtnText}>{i18n.save}</ThemedText>
-                    </TouchableOpacity>
-                </View>
-            )}
+      {showInput && (
+        <View style={styles.inputRow}>
+          <TextInput
+            style={[styles.input, { color: c.text, borderColor: accentColor + '40' }]}
+            placeholder={i18n.addTag}
+            placeholderTextColor={c.icon}
+            value={newTag}
+            onChangeText={setNewTag}
+            onSubmitEditing={handleAddTag}
+            autoFocus
+          />
+          <TouchableOpacity
+            style={[styles.saveBtn, { backgroundColor: accentColor }]}
+            onPress={handleAddTag}
+          >
+            <ThemedText style={styles.saveBtnText}>{i18n.save}</ThemedText>
+          </TouchableOpacity>
         </View>
-    );
+      )}
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({

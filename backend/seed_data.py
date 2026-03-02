@@ -1,7 +1,8 @@
-from datetime import datetime, timedelta
-from database import SessionLocal, engine, Base
-from models import JournalEntry, User
 import json
+from datetime import datetime, timedelta
+
+from database import Base, SessionLocal, engine
+from models import JournalEntry, User
 
 Base.metadata.create_all(bind=engine)
 
@@ -167,8 +168,8 @@ try:
     print(f"Created {len(entries_data)} entries for user: {USERNAME}")
 
     print("\nTime range:")
-    print(f"  Latest: 1 day ago")
-    print(f"  Oldest: 120 days ago (4 months)")
+    print("  Latest: 1 day ago")
+    print("  Oldest: 120 days ago (4 months)")
 
 finally:
     db.close()

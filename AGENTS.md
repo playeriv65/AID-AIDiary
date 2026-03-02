@@ -7,25 +7,33 @@
 - 提交之前必须向用户报告,未经允许绝对不能自己提交(本地提交也不行)。用户的习惯是让你写好commit message(英文，简洁)，然后手动提交。
 - 提交之前维护配置文件：.gitignore、README.md、AGENTS.md
 - **经验教训**：遇到的问题和解决方案要及时更新到 AGENTS.md 和 README.md
+### 提交前检查清单
+请你创建todo list，确保以下内容都完成了再提交
+注意，以下内容必须同时通过，而不是只按照顺序做一遍
+- [ ] 代码格式化完成 (Prettier/Ruff)，代码规范检查通过 (ESLint/Ruff)
+- [ ] 相关文档更新与整理 (AGENTS.md/README.md)
+- [ ] 自动测试项目更新 (Jest/Pytest)，并测试全部通过
+- [ ] 启动网页使用chrome devtools测试，如果用户没有要求，禁止使用截屏工具
+- [ ] 使用/code-review-expert审查代码
+- [ ] 提交信息清晰简洁，符合规范 (英文，50 字以内)
 
 ## 运行规范
 - 运行前杀掉无用进程：`pkill -f "pattern"` 或 `kill PID`
 - 运行前检查端口占用，有旧进程直接杀掉
-- 运行后检查是否成功运行（curl 测试 API）
+- 运行后检查是否成功运行，进行前后端自动测试
 - **后台启动服务**: 使用 `nohup command &`
 
 ## 项目架构
-- Frontend: Expo (React Native Web) + TypeScript
+- Frontend: Expo (React Native Web) + Type
 - Backend: FastAPI + SQLite + uv
 
 ## 运行命令
 - **后端**: `cd backend && uv run uvicorn main:app --reload` (端口 8000)
-- **前端**: `cd frontend && npm run web --no-open` (端口 8081，--no-open 不自动打开浏览器)
-- **后端测试**: `cd backend && uv run pytest`
+- **前端**: `cd frontend && npx expo start --web --port 8081` (端口 8081)
 - **前端测试**: `cd frontend && npm test`
 - **测试数据**: `cd backend && uv run python seed_data.py`
 
-## 目录结构
+## 目录结构(随时更新)
 ```
 frontend/
   app/        # 页面路由（expo-router）
@@ -51,7 +59,16 @@ backend/
 - **API 地址**: 使用 `constants/config.ts` 中的 CONFIG.API_URL
 - **图片 URL**: 后端返回纯文件名，前端拼接 `CONFIG.STATIC_URL + '/' + image`
 
-## 测试规范
+## 代码格式化
+- **前端**: Prettier + ESLint
+  - 格式化: `cd frontend && npx prettier --write .`
+  - 检查: `cd frontend && npx eslint .`
+- **后端**: Ruff
+  - 格式化: `cd backend && uv run ruff format .`
+  - 检查: `cd backend && uv run ruff check .`
+- **提交前必须运行格式化**，确保代码风格统一
+
+## 测试规范（测试项目随开发进度随时更新）
 - 后端: `pytest` + FastAPI TestClient，使用 SQLite 内存数据库隔离
 - 前端: `Jest` + `@testing-library/react-native`，使用 `jest-expo`
 - **版本对齐**: jest-expo 必须与 expo SDK 主版本一致

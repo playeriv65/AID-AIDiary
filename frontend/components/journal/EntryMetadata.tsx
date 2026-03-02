@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import { ThemedText } from '@/components/themed-text';
 import { Picker } from '@/components/picker';
 import { IconSymbol } from '@/components/ui/icon-symbol';
@@ -90,7 +90,9 @@ export function EntryMetadata({
             activeOpacity={0.7}
           >
             <IconSymbol name="map-pin" size={14} color={location ? accentColor : mutedColor} />
-            <ThemedText style={[styles.locationText, { color: location ? accentColor : mutedColor }]}>
+            <ThemedText
+              style={[styles.locationText, { color: location ? accentColor : mutedColor }]}
+            >
               {location || i18n.setLocation}
             </ThemedText>
           </TouchableOpacity>

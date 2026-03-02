@@ -11,7 +11,6 @@ A Brand New Form of Journaling.
 - 🎨 **主题联动** — 所有设置全局生效，持久化存储
 - 🪶 **Phosphor Icons** — 全站使用 Phosphor 图标（Web + Native 兼容）
 - 🏷️ **分类/天气/地点** — 日记支持分类、天气、地点标记
-- 🤖 **AI 润色** — OpenAI API 智能润色日记内容
 - ✅ **快捷工具** — 列表模板、任务模板、时间插入
 
 ## 项目架构 (Architecture)
@@ -48,4 +47,20 @@ uv run python seed_data.py
 ```
 OPENAI_API_KEY=sk-...
 SECRET_KEY=your-jwt-secret
+```
+
+## 代码格式化 (Code Formatting)
+
+### 前端 (Frontend)
+```bash
+cd frontend
+npx prettier --write .   # 格式化
+npx eslint .             # 检查
+```
+
+### 后端 (Backend)
+```bash
+cd backend
+uv run ruff format .     # 格式化
+uv run ruff check .      # 检查
 ```
