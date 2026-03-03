@@ -29,6 +29,7 @@ from auth import (
 )
 from config import settings
 from database import engine, get_db
+from mem0_client import cleanup_mem0_client, get_mem0_client
 
 SECRET_KEY = settings.secret_key
 logger = logging.getLogger(__name__)
@@ -73,6 +74,14 @@ app.state.limiter = limiter
 app.add_middleware(SlowAPIMiddleware)
 
 
+@app.on_event("shutdown")
+async def shutdown_event():
+    """应用关闭时清理资源"""
+    logger.info("Shutting down application...")
+    await cleanup_mem0_client()
+    logger.info("Cleanup complete")
+
+
 def serialize_entry(entry: models.JournalEntry) -> dict:
     tags = None
     entry_tags = getattr(entry, "tags", None)
@@ -99,6 +108,23 @@ def serialize_entry(entry: models.JournalEntry) -> dict:
 @app.get("/")
 def read_root():
     return {"message": "Welcome to the AID-AIDiary API"}
+
+
+@app.get("/health")
+async def health_check():
+    """基本健康检查端点"""
+    return {"status": "healthy", "service": "AID-AIDiary Backend"}
+
+
+@app.get("/health/mem0")
+async def check_mem0_health():
+    """检查 mem0 服务健康状态"""
+    try:
+        mem0_client = get_mem0_client()
+        await mem0_client.get_all_memories("health_check")  # 尝试获取任意用户的记忆来测试连接
+    except Exception as e:
+        logger.warning("mem0 health check failed: %s", str(e)[:100])
+        raise HTTPException(status_code=503, detail="mem0 service unavailable")
 
 
 @app.get("/api/entries")
@@ -178,8 +204,6 @@ async def upload_image(
     with open(filepath, "wb") as f:
         f.write(content)
 
-    # Note: Using synchronous file write is acceptable for small uploads
-    # ASYNC230 is ignored here as aiofiles would add complexity for minimal benefit
     return {
         "filename": f"uploads/{unique_filename}",
         "url": f"/static/uploads/{unique_filename}",
@@ -194,7 +218,8 @@ async def ai_chat(
     current_user: models.User = Depends(get_current_user),
 ):
     messages = [{"role": msg.role, "content": msg.content} for msg in chat_request.messages]
-    result = await chat_with_ai(messages)
+    user_id = int(current_user.id)  # type: ignore
+    result = await chat_with_ai(messages, user_id)
     return result
 
 
@@ -206,8 +231,9 @@ async def ai_chat_stream(
     current_user: models.User = Depends(get_current_user),
 ):
     messages = [{"role": msg.role, "content": msg.content} for msg in chat_request.messages]
+    user_id = int(current_user.id)  # type: ignore
     return StreamingResponse(
-        stream_chat_with_ai(messages),
+        stream_chat_with_ai(messages, user_id),
         media_type="text/event-stream",
         headers={
             "Cache-Control": "no-cache",
@@ -229,12 +255,10 @@ async def ai_generate_entry(
         messages, timezone=entry_request.timezone, current_time=entry_request.current_time
     )
 
-    # Check if AI generation succeeded
     if not result.get("content"):
         logger.error("AI failed to generate entry content")
         raise HTTPException(status_code=502, detail="AI 生成失败，请重试")
 
-    # Store in database with error handling
     try:
         entry_id = str(uuid.uuid4())
         user_id_val = int(current_user.id)  # type: ignore

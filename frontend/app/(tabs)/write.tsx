@@ -28,13 +28,11 @@ import { ImageUploadPreview } from '@/components/journal/ImageUploadPreview';
 // 全局 CSS 注入：移除输入框 focus 高亮
 const globalStyles = `
   textarea, input {
-    outline: none !important;
     box-shadow: none !important;
     -webkit-box-shadow: none !important;
     -moz-box-shadow: none !important;
   }
   textarea:focus, input:focus {
-    outline: none !important;
     box-shadow: none !important;
     -webkit-box-shadow: none !important;
     -moz-box-shadow: none !important;

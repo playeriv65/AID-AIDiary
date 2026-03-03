@@ -135,6 +135,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 0,
     paddingVertical: 4,
     fontSize: FontSizes.sm,
-    outline: 'none',
   },
 });

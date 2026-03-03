@@ -138,7 +138,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 0,
     paddingVertical: 8,
     fontSize: FontSizes.md,
-    outline: 'none',
   },
   saveBtn: {
     paddingHorizontal: 16,

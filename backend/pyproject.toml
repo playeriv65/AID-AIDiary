@@ -1,11 +1,12 @@
 [project]
 name = "backend"
 version = "0.1.0"
-description = "Add your description here"
+description = "AID-AIDiary Backend API"
 requires-python = ">=3.13"
 dependencies = [
     "bcrypt>=5.0.0",
     "fastapi>=0.129.2",
+    "httpx>=0.28.1",
     "openai>=2.21.0",
     "passlib>=1.7.4",
     "pydantic-settings>=2.9.1",

@@ -12,6 +12,7 @@ from openai import (
 )
 
 from config import settings
+from mem0_client import get_mem0_client
 from schemas import AIGenerateResult
 
 # Configure logging
@@ -23,6 +24,10 @@ ERROR_MSG_AUTH = "AI 服务认证失败，请联系管理员"
 ERROR_MSG_RATE_LIMIT = "AI 请求过于频繁，请稍后再试"
 ERROR_MSG_PARSE = "AI 响应解析失败"
 ERROR_MSG_UNKNOWN = "AI 服务异常，请稍后再试"
+
+# Memory settings
+MEMORY_SEARCH_LIMIT = 3  # 每次检索返回的记忆数量
+
 
 # Lazy client initialization - validates on first use
 _client = None
@@ -163,10 +168,110 @@ SYSTEM_PROMPT = """你现在不是一个AI助手，而是用户最亲密、最�
 """
 
 
-async def chat_with_ai(messages: list[dict[str, str]]) -> dict:
-    """与 AI 进行对话"""
+async def _get_memory_context(messages: list[dict[str, str]], user_id: str | int) -> str:
+    """从历史对话和记忆中获取上下文信息
+
+    Args:
+        messages: 对话消息列表
+        user_id: 用户 ID
+
+    Returns:
+        记忆上下文字符串
+    """
+    # 获取最新的用户消息用于搜索相关记忆
+    latest_user_msg = ""
+    for msg in reversed(messages):
+        if msg.get("role") == "user":
+            latest_user_msg = msg.get("content", "")
+            break
+
+    if not latest_user_msg:
+        return ""
+
     try:
-        full_messages = [{"role": "system", "content": SYSTEM_PROMPT}] + messages
+        mem0_client = get_mem0_client()
+        memories = await mem0_client.search_memories(
+            latest_user_msg, user_id, limit=MEMORY_SEARCH_LIMIT
+        )
+
+        if memories:
+            memory_text = "\n".join([f"- {m}" for m in memories if m.strip()])
+            logger.debug("Retrieved %d memories for context", len(memories))
+            return memory_text
+
+    except Exception as e:
+        logger.warning("Failed to retrieve memories: %s", str(e)[:100])
+
+    return ""
+
+
+async def _store_conversation_to_memory(messages: list[dict[str, str]], user_id: str | int) -> None:
+    """存储对话到记忆中
+
+    Args:
+        messages: 对话消息列表
+        user_id: 用户 ID
+    """
+    if not messages:
+        return
+
+    try:
+        mem0_client = get_mem0_client()
+        await mem0_client.store_memory(messages, user_id)
+        logger.debug("Stored %d messages to memory for user %s", len(messages), user_id)
+    except Exception as e:
+        logger.warning("Failed to store conversation to memory: %s", str(e)[:100])
+    except Exception as e:
+        logger.warning("Failed to store conversation to memory: %s", str(e)[:100])
+
+
+async def _build_system_prompt(
+    messages: list[dict[str, str]], user_id: str | int | None = None
+) -> str:
+    """构建系统提示词，包含记忆上下文
+
+    Args:
+        messages: 对话消息列表
+        user_id: 用户 ID（可选，用于记忆功能）
+
+    Returns:
+        系统提示词
+    """
+    # 获取记忆上下文
+    memory_context = ""
+    if user_id:
+        memory_context = await _get_memory_context(messages, user_id)
+
+    # 构建系统提示词
+    system_prompt = SYSTEM_PROMPT
+    if memory_context:
+        system_prompt = f"""{SYSTEM_PROMPT}
+
+【以下是我们之前对话中的一些重要记忆，供你参考】：
+{memory_context}
+"""
+    return system_prompt
+
+
+async def chat_with_ai(messages: list[dict[str, str]], user_id: str | int | None = None) -> dict:
+    """与 AI 进行对话
+
+    Args:
+        messages: 对话消息列表
+        user_id: 用户 ID（可选，用于记忆功能）
+
+    Returns:
+        AI 响应字典
+    """
+    # 存储当前对话到记忆
+    if user_id:
+        await _store_conversation_to_memory(messages, user_id)
+
+    # 构建系统提示词
+    system_prompt = await _build_system_prompt(messages, user_id)
+
+    try:
+        full_messages = [{"role": "system", "content": system_prompt}] + messages
 
         response = client.chat.completions.create(
             model=MODEL_NAME,
@@ -210,11 +315,26 @@ async def chat_with_ai(messages: list[dict[str, str]]) -> dict:
 
 
 async def stream_chat_with_ai(
-    messages: list[dict[str, str]],
+    messages: list[dict[str, str]], user_id: str | int | None = None
 ) -> AsyncGenerator[str]:
-    """与 AI 进行流式对话"""
+    """与 AI 进行流式对话
+
+    Args:
+        messages: 对话消息列表
+        user_id: 用户 ID（可选，用于记忆功能）
+
+    Yields:
+        SSE 格式的响应流
+    """
+    # 存储当前对话到记忆
+    if user_id:
+        await _store_conversation_to_memory(messages, user_id)
+
+    # 构建系统提示词
+    system_prompt = await _build_system_prompt(messages, user_id)
+
     try:
-        full_messages = [{"role": "system", "content": SYSTEM_PROMPT}] + messages
+        full_messages = [{"role": "system", "content": system_prompt}] + messages
 
         response = client.chat.completions.create(
             model=MODEL_NAME,

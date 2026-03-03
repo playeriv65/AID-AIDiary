@@ -1,0 +1,42 @@
+version: '3.8'
+services:
+  mem0:
+    image: ghcr.io/playeriv65/mem0-server:Google
+    ports:
+      - "8888:8000"
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_HOST=postgres
+      - NEO4J_URI=bolt://neo4j:7687
+    networks:
+      - mem0_net
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  postgres:
+    image: ankane/pgvector:v0.5.1
+    networks:
+      - mem0_net
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    healthcheck:
+      test: ["CMD", "pg_isready", "-d", "postgres", "-U", "postgres"]
+      interval: 5s
+
+  neo4j:
+    image: neo4j:5.26.4
+    networks:
+      - mem0_net
+    environment:
+      - NEO4J_AUTH=neo4j/mem0graph
+    healthcheck:
+      test: wget http://localhost:7687 || exit 1
+      interval: 5s
+
+networks:
+  mem0_net:
+    driver: bridge
