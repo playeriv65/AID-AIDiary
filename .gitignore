@@ -155,3 +155,4 @@ Thumbs.db
 *.local.*
 
 test_data/
+.sisyphus

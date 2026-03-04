@@ -103,20 +103,33 @@ frontend/
     index.ts
 
 backend/
-  main.py                  # FastAPI 入口
-  auth.py                  # JWT 认证
-  crud.py                  # 数据库操作
+  main.py                  # FastAPI 入口（lifespan + include_router）
+  auth.py                  # JWT 认证（re-export 层，向后兼容）
+  crud.py                  # 数据库操作（含用户CRUD）
   models.py                # SQLAlchemy 模型
   schemas.py               # Pydantic schemas
-  ai_service.py            # OpenAI + mem0 集成
+  ai_service.py            # AI 服务（re-export 层）
   mem0_client.py           # mem0 记忆客户端
   config.py                # 配置管理
   database.py              # 数据库连接
   seed_data.py             # 测试数据生成
   docker-compose.yml       # mem0 服务编排
-  test_ai_service.py       # AI 服务测试
-  test_main.py             # API 端点测试
-  test_mem0_client.py      # mem0 客户端测试
+  routers/                 # 路由层（按功能拆分）
+    health.py              # 健康检查端点
+    upload.py              # 图片上传端点
+    auth.py                # 注册/登录端点
+    entries.py             # 日记 CRUD 端点
+    ai.py                  # AI 聊天/生成端点（含限流）
+  services/                # 服务层（业务逻辑）
+    auth_service.py        # JWT认证、密码哈希
+    ai_client.py           # OpenAI 客户端封装
+    memory_service.py      # mem0 记忆存储/检索
+    ai_chat_service.py     # AI 对话服务
+    ai_diary_service.py    # AI 日记生成服务
+  tests/                   # 自动测试
+    test_ai_service.py     # AI 服务测试（9 tests）
+    test_main.py           # API 端点测试（14 tests）
+    test_mem0_client.py    # mem0 客户端测试（13 tests）
 ```
 
 ## 代码规范
@@ -144,7 +157,7 @@ backend/
 - **前端**: `Jest` + `@testing-library/react-native`，使用 `jest-expo`
 - **版本对齐**: jest-expo 必须与 expo SDK 主版本一致
 - **测试覆盖**: 总计 94 个测试
-  - 后端: 36 个测试 (test_mem0_client.py: 13, test_ai_service.py: 9, test_main.py: 14)
+  - 后端: 36 个测试 (tests/test_mem0_client.py: 13, tests/test_ai_service.py: 9, tests/test_main.py: 14)
   - 前端: 58 个测试 (组件/钩子测试)
 ## UI 规范
 
@@ -253,9 +266,9 @@ backend/
 
 ### 后端测试（36个测试）
 
-- **test_mem0_client.py** (13个): 记忆存储/检索/搜索/降级处理测试
-- **test_ai_service.py** (9个): AI对话/日记生成/流式响应测试
-- **test_main.py** (14个): API端点/认证/CRUD/图片上传测试
+- **tests/test_mem0_client.py** (13个): 记忆存储/检索/搜索/降级处理测试
+- **tests/test_ai_service.py** (9个): AI对话/日记生成/流式响应测试
+- **tests/test_main.py** (14个): API端点/认证/CRUD/图片上传测试
 
 ### 前端测试（58个测试）
 

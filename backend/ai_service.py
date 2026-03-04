@@ -1,374 +1,70 @@
-import asyncio
-import json
-import logging
-from collections.abc import AsyncGenerator
+"""AI service - re-export layer for backward compatibility.
 
-from openai import (
-    APIConnectionError,
-    APIStatusError,
-    AuthenticationError,
-    OpenAI,
-    RateLimitError,
+This file serves as a thin re-export layer to maintain backward compatibility
+with existing imports and test patches. The actual implementation has been moved
+to the services/ subdirectory.
+"""
+
+# Re-export AI client components
+# Re-export mem0 client for test compatibility
+from mem0_client import get_mem0_client
+
+# Re-export chat service
+from services.ai_chat_service import chat_with_ai, stream_chat_with_ai
+from services.ai_client import (
+    AI_MAX_TOKENS_CHAT,
+    AI_MAX_TOKENS_GENERATE,
+    AI_MAX_TOKENS_STREAM,
+    AI_TEMPERATURE,
+    AI_TOP_P,
+    ERROR_MSG_AUTH,
+    ERROR_MSG_NETWORK,
+    ERROR_MSG_PARSE,
+    ERROR_MSG_RATE_LIMIT,
+    ERROR_MSG_UNKNOWN,
+    MODEL_NAME,
+    _ClientProxy,
+    get_client,
 )
 
-from config import settings
-from mem0_client import get_mem0_client
-from schemas import AIGenerateResult
+# Re-export diary service
+from services.ai_diary_service import generate_entry_from_chat
 
-# Configure logging
-logger = logging.getLogger(__name__)
+# Re-export memory service components
+from services.memory_service import (
+    MEMORY_SEARCH_LIMIT,
+    SYSTEM_PROMPT,
+    _build_system_prompt,
+    _get_memory_context,
+    _store_conversation_to_memory,
+)
 
-# Error message constants
-ERROR_MSG_NETWORK = "AI 服务暂时无法连接，请稍后再试"
-ERROR_MSG_AUTH = "AI 服务认证失败，请联系管理员"
-ERROR_MSG_RATE_LIMIT = "AI 请求过于频繁，请稍后再试"
-ERROR_MSG_PARSE = "AI 响应解析失败"
-ERROR_MSG_UNKNOWN = "AI 服务异常，请稍后再试"
-
-# Memory settings
-MEMORY_SEARCH_LIMIT = 3  # 每次检索返回的记忆数量
-
-
-# Lazy client initialization - validates on first use
-_client = None
-
-
-def get_client():
-    global _client
-    if _client is None:
-        api_key = settings.api_key
-        if not api_key:
-            api_key = "test-key"  # Allow tests to run without API key
-        _client = OpenAI(
-            api_key=api_key,
-            base_url=settings.base_url,
-        )
-    return _client
-
-
-# For backward compatibility with tests that patch 'ai_service.client'
-class _ClientProxy:
-    def __getattr__(self, name):
-        return getattr(get_client(), name)
-
-    def __setattr__(self, name, value):
-        global _client
-        _client = value
-
-
+# Create client proxy instance at module level for test patching
+# This ensures patch("ai_service.client") continues to work
 client = _ClientProxy()
-MODEL_NAME = settings.model_name
 
-
-# AI Model Configuration
-AI_TEMPERATURE = 0.6  # Controls randomness: lower = more focused, higher = more creative
-AI_TOP_P = 0.9  # Nucleus sampling threshold for token selection
-AI_MAX_TOKENS_CHAT = 1024  # Max tokens for regular chat interactions
-AI_MAX_TOKENS_GENERATE = 4096  # Max tokens for generating entries from chat
-AI_MAX_TOKENS_STREAM = 4096  # Max tokens for streaming chat responses
-
-
-def _clean_json_string(text: str) -> dict:
-    """清理并解析可能包含 Markdown 标记的 JSON 字符串"""
-    try:
-        text = text.strip()
-        if text.startswith("```json"):
-            text = text[7:]
-        elif text.startswith("```"):
-            text = text[3:]
-        if text.endswith("```"):
-            text = text[:-3]
-        text = text.strip()
-        return json.loads(text)
-    except Exception as e:
-        logger.warning("JSON parsing error: %s", str(e)[:100])
-        return {}
-
-
-async def generate_entry_from_chat(
-    chat_history: list[dict[str, str]],
-    timezone: str | None = None,
-    current_time: str | None = None,
-) -> dict:
-    """根据聊天内容生成日记：带有人情味的睡前碎碎念"""
-
-    if current_time and timezone:
-        time_info = f"当前时间：{current_time}（{timezone}）"
-    elif current_time:
-        time_info = f"当前时间：{current_time}"
-    else:
-        time_info = ""
-
-    system_prompt = f"""
-    你需要将我们刚才的对话，整理成一篇用户的第一人称日记。
-    {time_info}
-
-    【核心要求 - 告别机械的AI味】：
-    1. **口吻与视角**：完全使用第一人称（"我"），想象你是一个在深夜回想今天经历了什么的普通现代人。
-    2. **极其自然**：用词要生活化、口语化。不要用"今天阳光明媚"、"我深刻地感悟到"、"让我受益匪浅"这种小学生作文式的陈词滥调。
-    3. **情绪真实**：保留对话中流露的喜怒哀乐、吐槽、疲惫或开心，适当加入一些内心OS（独白）。可以有点随意的碎碎念。
-    4. **不过度升华**：不需要在日记结尾强行总结人生哲理，真实的生活往往是没有哲理的。
-    5. 根据内容提取 1-3 个合适的标签。
-
-    请严格且仅返回以下格式的 JSON，不要包含任何额外的解释文本或 Markdown 代码块标记：
-    {{
-    "title": "一个有灵魂的短标题，不要太呆板",
-    "content": "整理后的第一人称日记正文，可以使用自然的分段",
-    "tags": ["标签1", "标签2"]
-    }}
-    """
-    try:
-        messages = [{"role": "system", "content": system_prompt}]
-        for msg in chat_history:
-            messages.append(msg)
-        messages.append({"role": "user", "content": "请根据以上对话内容，帮我生成今天的日记。"})
-
-        response = client.chat.completions.create(
-            model=MODEL_NAME,
-            messages=messages,  # type: ignore
-            temperature=AI_TEMPERATURE,
-            top_p=AI_TOP_P,
-            max_tokens=AI_MAX_TOKENS_GENERATE,
-        )
-
-        result_content = response.choices[0].message.content or "{}"
-        parsed_result = AIGenerateResult.model_validate(_clean_json_string(result_content))
-
-        return {
-            "title": parsed_result.title,
-            "content": parsed_result.content,
-            "tags": parsed_result.tags,
-            "success": True,
-        }
-    except APIConnectionError as e:
-        logger.warning("AI service connection failed: %s", str(e)[:100])
-        return {"title": "日记生成失败", "content": "", "tags": ["Error"], "success": False}
-    except AuthenticationError as e:
-        logger.error("AI service authentication failed: %s", str(e)[:100])
-        return {"title": "日记生成失败", "content": "", "tags": ["Error"], "success": False}
-    except RateLimitError as e:
-        logger.warning("AI service rate limited: %s", str(e)[:100])
-        return {"title": "日记生成失败", "content": "", "tags": ["Error"], "success": False}
-    except APIStatusError as e:
-        logger.error("AI service error: status=%d", e.status_code)
-        return {"title": "日记生成失败", "content": "", "tags": ["Error"], "success": False}
-    except Exception:
-        logger.exception("Unexpected error in generate_entry_from_chat")
-        return {"title": "日记生成失败", "content": "", "tags": ["Error"], "success": False}
-
-
-SYSTEM_PROMPT = """你现在不是一个AI助手，而是用户最亲密、最懂倾听的"树洞"朋友。用户找你聊天是为了记录今天发生的事、宣泄情绪或者分享开心。
-
-【请严格遵循以下聊天准则】：
-1. **情绪共鸣优先**：不要急于提问，不要像机器一样说"请告诉我更多"。如果用户开心，你就比他更开心；如果用户难过，你要先接纳并安抚他的情绪（例如"啊，那确实太让人崩溃了"、"换我我也会生气的"）。
-2. **去AI化口吻**：使用简短、自然的微信聊天语气。多用"呢"、"啊"、"哈"等语气词，偶尔用个叹号，不要每句话都那么端庄。不要说"我是AI"或者"很高兴为你服务"。
-3. **极其克制地引导**：绝对不要连续问问题（禁止出现类似"然后呢？你感觉怎么样？"的组合连问），一次只提供一个轻量级的回应或好奇的点。
-4. **学会留白**：有时候只需要一句简单的共情（比如"抱抱你，今天辛苦啦"），把表达的空间留给用户。
-5. **极简回复**：每次的回复控制在 1-3 句话之内。绝对不要像写小作文一样长篇大论。
-"""
-
-
-async def _get_memory_context(messages: list[dict[str, str]], user_id: str | int) -> str:
-    """从历史对话和记忆中获取上下文信息
-
-    Args:
-        messages: 对话消息列表
-        user_id: 用户 ID
-
-    Returns:
-        记忆上下文字符串
-    """
-    # 获取最新的用户消息用于搜索相关记忆
-    latest_user_msg = ""
-    for msg in reversed(messages):
-        if msg.get("role") == "user":
-            latest_user_msg = msg.get("content", "")
-            break
-
-    if not latest_user_msg:
-        return ""
-
-    try:
-        mem0_client = get_mem0_client()
-        memories = await mem0_client.search_memories(
-            latest_user_msg, user_id, limit=MEMORY_SEARCH_LIMIT
-        )
-
-        if memories:
-            memory_text = "\n".join([f"- {m}" for m in memories if m.strip()])
-            logger.debug("Retrieved %d memories for context", len(memories))
-            return memory_text
-
-    except Exception as e:
-        logger.warning("Failed to retrieve memories: %s", str(e)[:100])
-
-    return ""
-
-
-async def _store_conversation_to_memory(messages: list[dict[str, str]], user_id: str | int) -> None:
-    """存储对话到记忆中
-
-    Args:
-        messages: 对话消息列表
-        user_id: 用户 ID
-    """
-    if not messages:
-        return
-
-    try:
-        mem0_client = get_mem0_client()
-        await mem0_client.store_memory(messages, user_id)
-        logger.debug("Stored %d messages to memory for user %s", len(messages), user_id)
-    except Exception as e:
-        logger.warning("Failed to store conversation to memory: %s", str(e)[:100])
-    except Exception as e:
-        logger.warning("Failed to store conversation to memory: %s", str(e)[:100])
-
-
-async def _build_system_prompt(
-    messages: list[dict[str, str]], user_id: str | int | None = None
-) -> str:
-    """构建系统提示词，包含记忆上下文
-
-    Args:
-        messages: 对话消息列表
-        user_id: 用户 ID（可选，用于记忆功能）
-
-    Returns:
-        系统提示词
-    """
-    # 获取记忆上下文
-    memory_context = ""
-    if user_id:
-        memory_context = await _get_memory_context(messages, user_id)
-
-    # 构建系统提示词
-    system_prompt = SYSTEM_PROMPT
-    if memory_context:
-        system_prompt = f"""{SYSTEM_PROMPT}
-
-【以下是我们之前对话中的一些重要记忆，供你参考】：
-{memory_context}
-"""
-    return system_prompt
-
-
-async def chat_with_ai(messages: list[dict[str, str]], user_id: str | int | None = None) -> dict:
-    """与 AI 进行对话
-
-    Args:
-        messages: 对话消息列表
-        user_id: 用户 ID（可选，用于记忆功能）
-
-    Returns:
-        AI 响应字典
-    """
-    # 存储当前对话到记忆
-    if user_id:
-        await _store_conversation_to_memory(messages, user_id)
-
-    # 构建系统提示词
-    system_prompt = await _build_system_prompt(messages, user_id)
-
-    try:
-        full_messages = [{"role": "system", "content": system_prompt}] + messages
-
-        response = client.chat.completions.create(
-            model=MODEL_NAME,
-            messages=full_messages,  # type: ignore
-            temperature=AI_TEMPERATURE,
-            top_p=AI_TOP_P,
-            max_tokens=AI_MAX_TOKENS_CHAT,
-        )
-
-        return {"response": response.choices[0].message.content, "success": True}
-    except APIConnectionError as e:
-        logger.warning("AI service connection failed: %s", str(e)[:100])
-        return {
-            "response": "抱歉，我现在脑瓜有点嗡嗡的，过会再跟我聊吧...",
-            "success": False,
-        }
-    except AuthenticationError as e:
-        logger.error("AI service authentication failed: %s", str(e)[:100])
-        return {
-            "response": "抱歉，我现在脑瓜有点嗡嗡的，过会再跟我聊吧...",
-            "success": False,
-        }
-    except RateLimitError as e:
-        logger.warning("AI service rate limited: %s", str(e)[:100])
-        return {
-            "response": "抱歉，我现在脑瓜有点嗡嗡的，过会再跟我聊吧...",
-            "success": False,
-        }
-    except APIStatusError as e:
-        logger.error("AI service error: status=%d", e.status_code)
-        return {
-            "response": "抱歉，我现在脑瓜有点嗡嗡的，过会再跟我聊吧...",
-            "success": False,
-        }
-    except Exception:
-        logger.exception("Unexpected error in chat_with_ai")
-        return {
-            "response": "抱歉，我现在脑瓜有点嗡嗡的，过会再跟我聊吧...",
-            "success": False,
-        }
-
-
-async def stream_chat_with_ai(
-    messages: list[dict[str, str]], user_id: str | int | None = None
-) -> AsyncGenerator[str]:
-    """与 AI 进行流式对话
-
-    Args:
-        messages: 对话消息列表
-        user_id: 用户 ID（可选，用于记忆功能）
-
-    Yields:
-        SSE 格式的响应流
-    """
-    # 存储当前对话到记忆
-    if user_id:
-        await _store_conversation_to_memory(messages, user_id)
-
-    # 构建系统提示词
-    system_prompt = await _build_system_prompt(messages, user_id)
-
-    try:
-        full_messages = [{"role": "system", "content": system_prompt}] + messages
-
-        response = client.chat.completions.create(
-            model=MODEL_NAME,
-            messages=full_messages,  # type: ignore
-            temperature=AI_TEMPERATURE,
-            top_p=AI_TOP_P,
-            max_tokens=AI_MAX_TOKENS_STREAM,
-            stream=True,
-        )
-
-        for chunk in response:  # type: ignore[union-attr]
-            if not getattr(chunk, "choices", None):
-                continue
-            if chunk.choices and len(chunk.choices) > 0:  # type: ignore[union-attr]
-                delta = chunk.choices[0].delta  # type: ignore[union-attr]
-                if delta and delta.content:
-                    content = delta.content
-                    yield f"data: {json.dumps({'content': content})}\n\n"
-        # 刷新输出缓冲，确保立即发送
-        await asyncio.sleep(0)
-
-        yield f"data: {json.dumps({'done': True})}\n\n"
-    except APIConnectionError as e:
-        logger.warning("AI stream connection failed: %s", str(e)[:100])
-        yield f"data: {json.dumps({'error': '抱歉，我现在有点走神了，等会再跟我说好吗...'})}\n\n"
-    except AuthenticationError as e:
-        logger.error("AI stream authentication failed: %s", str(e)[:100])
-        yield f"data: {json.dumps({'error': '抱歉，我现在有点走神了，等会再跟我说好吗...'})}\n\n"
-    except RateLimitError as e:
-        logger.warning("AI stream rate limited: %s", str(e)[:100])
-        yield f"data: {json.dumps({'error': '抱歉，我现在有点走神了，等会再跟我说好吗...'})}\n\n"
-    except APIStatusError as e:
-        logger.error("AI stream error: status=%d", e.status_code)
-        yield f"data: {json.dumps({'error': '抱歉，我现在有点走神了，等会再跟我说好吗...'})}\n\n"
-    except Exception:
-        logger.exception("Unexpected error in stream_chat_with_ai")
-        yield f"data: {json.dumps({'error': '抱歉，我现在有点走神了，等会再跟我说好吗...'})}\n\n"
+__all__ = [
+    "MODEL_NAME",
+    "_ClientProxy",
+    "client",
+    "get_client",
+    "AI_TEMPERATURE",
+    "AI_TOP_P",
+    "AI_MAX_TOKENS_CHAT",
+    "AI_MAX_TOKENS_GENERATE",
+    "AI_MAX_TOKENS_STREAM",
+    "ERROR_MSG_NETWORK",
+    "ERROR_MSG_AUTH",
+    "ERROR_MSG_RATE_LIMIT",
+    "ERROR_MSG_PARSE",
+    "ERROR_MSG_UNKNOWN",
+    "MEMORY_SEARCH_LIMIT",
+    "SYSTEM_PROMPT",
+    "_build_system_prompt",
+    "_get_memory_context",
+    "_store_conversation_to_memory",
+    "chat_with_ai",
+    "stream_chat_with_ai",
+    "generate_entry_from_chat",
+    "get_mem0_client",
+]

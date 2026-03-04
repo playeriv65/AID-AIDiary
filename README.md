@@ -74,21 +74,15 @@ cd backend
 uv run ruff format .     # 格式化
 uv run ruff check .      # 检查
 ```
-### 后端 (Backend)
-```bash
-cd backend
-uv run ruff format .     # 格式化
-uv run ruff check .      # 检查
-```
 
 ## 测试规范
 
 ### 后端测试
 - **运行测试**: `cd backend && uv run pytest -v`
 - **测试文件**:
-  - `test_ai_service.py` - AI 服务测试（9 tests）
-  - `test_main.py` - API 端点测试（14 tests）
-  - `test_mem0_client.py` - mem0 记忆集成测试（13 tests）
+  - `tests/test_ai_service.py` - AI 服务测试（9 tests）
+  - `tests/test_main.py` - API 端点测试（14 tests）
+  - `tests/test_mem0_client.py` - mem0 记忆集成测试（13 tests）
 - **测试覆盖**:
   - AI 对话功能（正常/异常/空响应）
   - 日记生成（含标签处理）
