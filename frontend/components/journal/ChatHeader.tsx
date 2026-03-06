@@ -12,6 +12,7 @@ interface ChatHeaderProps {
   generating: boolean;
   onClear: () => void;
   onGenerateDiary: () => void;
+  onToggleSidebar?: () => void;
 }
 
 export function ChatHeader({
@@ -22,6 +23,7 @@ export function ChatHeader({
   generating,
   onClear,
   onGenerateDiary,
+  onToggleSidebar,
 }: ChatHeaderProps) {
   const c = Colors[resolvedTheme];
 
@@ -32,7 +34,14 @@ export function ChatHeader({
         { borderBottomColor: resolvedTheme === 'dark' ? '#1A1C1E' : '#E8E8EA' },
       ]}
     >
-      <ThemedText style={[styles.headerTitle, { color: c.text }]}>{i18n.aiChat}</ThemedText>
+      <View style={styles.headerLeft}>
+        {onToggleSidebar && (
+          <TouchableOpacity onPress={onToggleSidebar} style={styles.headerBtn}>
+            <IconSymbol name="sidebar" size={24} color={c.text} />
+          </TouchableOpacity>
+        )}
+        <ThemedText style={[styles.headerTitle, { color: c.text }]}>{i18n.aiChat}</ThemedText>
+      </View>
       <View style={styles.headerActions}>
         {hasMessages && (
           <TouchableOpacity onPress={onClear} style={styles.headerBtn}>
@@ -67,6 +76,11 @@ const styles = StyleSheet.create({
     paddingTop: 16,
     paddingBottom: 12,
     borderBottomWidth: StyleSheet.hairlineWidth,
+  },
+  headerLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
   },
   headerTitle: {
     fontSize: FontSizes.xl,

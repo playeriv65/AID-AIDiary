@@ -54,6 +54,7 @@ import {
   Wind,
   X,
   XCircle,
+  ListDashes,
 } from 'phosphor-react-native';
 import { OpaqueColorValue, type StyleProp, type TextStyle } from 'react-native';
 
@@ -72,6 +73,7 @@ const ICON_MAP: Record<string, any> = {
   'calendar-plus': CalendarPlus,
   'magnifying-glass': MagnifyingGlass,
   gear: Gear,
+  sidebar: ListDashes,
   // Actions
   plus: Plus,
   check: Check,

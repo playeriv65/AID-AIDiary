@@ -1,18 +1,31 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { Alert, Platform, StyleSheet } from 'react-native';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { Alert, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
 import axios from 'axios';
 import { ThemedView } from '@/components/themed-view';
 import { ChatHeader } from '@/components/journal/ChatHeader';
 import { ChatContainer, ChatMessageType } from '@/components/chat';
+import { ConversationSidebar } from '@/components/chat/ConversationSidebar';
 import { GenerateDiaryModal } from '@/components/journal/GenerateDiaryModal';
 import { Colors } from '@/constants/theme';
 import { CONFIG } from '@/constants/config';
 import { useAppContext } from '@/context/AppContext';
+import { useConversation } from '@/context/ConversationContext';
 
 export default function ChatScreen() {
   const router = useRouter();
   const { resolvedTheme, accentColor, i18n, authToken, fetchEntries } = useAppContext();
+  const {
+    conversations,
+    currentConversation,
+    loading: convLoading,
+    createConversation,
+    switchConversation,
+    deleteConversation,
+    addMessage,
+    refreshConversations,
+  } = useConversation();
+
   const c = Colors[resolvedTheme];
 
   const [messages, setMessages] = useState<ChatMessageType[]>([]);
@@ -20,47 +33,72 @@ export default function ChatScreen() {
   const [loading, setLoading] = useState(false);
   const [generating, setGenerating] = useState(false);
   const [showGenerateModal, setShowGenerateModal] = useState(false);
+  const [sidebarVisible, setSidebarVisible] = useState(false);
+  const [isInitializing, setIsInitializing] = useState(false);
 
-  useEffect(() => {
-    if (Platform.OS === 'web') {
-      const saved = localStorage.getItem('chat_messages');
-      if (saved) {
-        try {
-          const parsed = JSON.parse(saved);
-          setMessages(
-            parsed.map((m: any, i: number) => ({
-              id: m.id || `msg_${i}`,
-              role: m.role,
-              content: m.content,
-              timestamp: m.timestamp || Date.now(),
-            }))
-          );
-        } catch {}
-      }
-    }
-  }, []);
+  // 使用 ref 追踪最新的 messages，避免 useCallback 依赖项问题
+  const messagesRef = useRef<ChatMessageType[]>([]);
+  messagesRef.current = messages;
 
+  // 从当前对话加载消息
   useEffect(() => {
-    if (Platform.OS === 'web' && messages.length > 0) {
-      localStorage.setItem('chat_messages', JSON.stringify(messages));
+    if (currentConversation?.messages) {
+      const formattedMessages = currentConversation.messages.map((m) => ({
+        id: m.id,
+        role: m.role as 'user' | 'assistant',
+        content: m.content,
+        timestamp: new Date(m.created_at).getTime(),
+      }));
+      setMessages(formattedMessages);
+    } else if (!currentConversation && conversations.length === 0 && !isInitializing) {
+      // 首次访问且无对话，自动创建新对话
+      setIsInitializing(true);
+      createConversation().then((newId) => {
+        switchConversation(newId);
+      }).finally(() => {
+        setIsInitializing(false);
+      });
+    } else {
+      setMessages([]);
     }
-  }, [messages]);
+  }, [currentConversation, conversations.length, isInitializing, createConversation, switchConversation]);
+
+  // 初始加载时获取对话列表
+  useEffect(() => {
+    refreshConversations();
+  }, [refreshConversations]);
 
   const handleSend = useCallback(async () => {
-    if (!inputText.trim() || loading) return;
+    const text = inputText.trim();
+    if (!text || loading || convLoading || isInitializing) return;
+
+    // 如果没有当前对话，先创建一个
+    let conversationId = currentConversation?.id;
+    if (!conversationId) {
+      try {
+        conversationId = await createConversation();
+        await switchConversation(conversationId);
+      } catch {
+        Alert.alert(i18n.error, '创建对话失败，请重试');
+        return;
+      }
+    }
 
     const userMessage: ChatMessageType = {
       id: `msg_${Date.now()}`,
       role: 'user',
-      content: inputText.trim(),
+      content: text,
       timestamp: Date.now(),
     };
+
     setMessages((prev) => [...prev, userMessage]);
     setInputText('');
     setLoading(true);
 
     try {
-      const chatMessages = [...messages, userMessage].map((m) => ({
+      await addMessage(conversationId, 'user', userMessage.content);
+
+      const chatMessages = [...messagesRef.current, userMessage].map((m) => ({
         role: m.role,
         content: m.content,
       }));
@@ -76,7 +114,21 @@ export default function ChatScreen() {
         body: JSON.stringify({ messages: chatMessages }),
       });
 
-      if (!response.ok) throw new Error('Stream failed');
+      if (!response.ok) {
+        if (response.status === 401) {
+          throw new Error('AI 服务认证失败，请检查 API Key 配置');
+        } else if (response.status === 429) {
+          throw new Error('请求过于频繁，请稍后再试');
+        } else if (response.status === 503) {
+          throw new Error('AI 服务暂时不可用，请稍后再试');
+        } else if (response.status === 504) {
+          throw new Error('AI 服务响应超时，请重试');
+        } else if (response.status >= 500) {
+          throw new Error('服务器错误，请稍后再试');
+        } else {
+          throw new Error(`网络错误：${response.status}`);
+        }
+      }
 
       const reader = response.body!.getReader();
       const decoder = new TextDecoder();
@@ -99,6 +151,9 @@ export default function ChatScreen() {
             const dataStr = line.slice(6);
             try {
               const data = JSON.parse(dataStr);
+              if (data.error) {
+                throw new Error(data.error);
+              }
               if (data.content) {
                 assistantContent += data.content;
                 if (firstContent) {
@@ -123,9 +178,17 @@ export default function ChatScreen() {
                   });
                 }
               }
-            } catch {}
+            } catch (parseError: any) {
+              if (parseError.message && !parseError.message.includes('JSON')) {
+                throw parseError;
+              }
+            }
           }
         }
+      }
+
+      if (assistantContent) {
+        await addMessage(conversationId, 'assistant', assistantContent);
       }
     } catch (error: any) {
       console.error('Chat error:', error);
@@ -138,7 +201,7 @@ export default function ChatScreen() {
     } finally {
       setLoading(false);
     }
-  }, [inputText, loading, messages, authToken, i18n]);
+  }, [inputText, loading, convLoading, isInitializing, authToken, i18n, currentConversation, createConversation, switchConversation, addMessage]);
 
   const handleStopGenerating = useCallback(() => {
     setLoading(false);
@@ -191,14 +254,17 @@ export default function ChatScreen() {
   };
 
   const handleClear = () => {
-    if (messages.length === 0) return;
-    Alert.alert(i18n.clearChat, '确定要清空对话吗？', [
+    if (!currentConversation) return;
+    Alert.alert(i18n.clearChat, '确定要清空当前对话吗？', [
       { text: i18n.cancel, style: 'cancel' },
       {
         text: i18n.confirm,
-        onPress: () => {
+        onPress: async () => {
+          await deleteConversation(currentConversation.id);
           setMessages([]);
-          if (Platform.OS === 'web') localStorage.removeItem('chat_messages');
+          // 创建新对话
+          const newId = await createConversation();
+          await switchConversation(newId);
         },
       },
     ]);
@@ -223,8 +289,27 @@ export default function ChatScreen() {
     setTimeout(() => handleSend(), 100);
   };
 
+  const handleSelectConversation = async (conversationId: string) => {
+    await switchConversation(conversationId);
+    setSidebarVisible(false);
+  };
+
+  const handleNewConversation = async () => {
+    const newId = await createConversation();
+    await switchConversation(newId);
+    setSidebarVisible(false);
+  };
+
   return (
     <ThemedView style={[styles.container, { backgroundColor: c.background }]}>
+      <ConversationSidebar
+        visible={sidebarVisible}
+        currentConversationId={currentConversation?.id || null}
+        onSelectConversation={handleSelectConversation}
+        onNewConversation={handleNewConversation}
+        onClose={() => setSidebarVisible(false)}
+        theme={resolvedTheme}
+      />
       <ChatHeader
         hasMessages={messages.length > 0}
         accentColor={accentColor}
@@ -233,6 +318,7 @@ export default function ChatScreen() {
         generating={generating}
         onClear={handleClear}
         onGenerateDiary={handleGenerateDiary}
+        onToggleSidebar={() => setSidebarVisible(!sidebarVisible)}
       />
       <ChatContainer
         messages={messages}

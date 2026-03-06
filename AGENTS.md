@@ -6,20 +6,20 @@
 
 ## 提交规范
 
-- 提交之前必须向用户报告,未经允许绝对不能自己提交(本地提交也不行)。用户的习惯是让你写好commit message(英文，简洁)，然后手动提交。
+- 提交之前必须向用户报告，未经允许绝对不能自己提交 (本地提交也不行)。用户的习惯是让你写好 commit message(英文，简洁)，然后手动提交。
 - 提交之前维护配置文件：.gitignore、README.md、AGENTS.md
 - **经验教训**：遇到的问题和解决方案要及时更新到 AGENTS.md 和 README.md
 
 ### 提交前检查清单
 
-请你创建todo list，确保以下内容都完成了再提交
+请你创建 todo list，确保以下内容都完成了再提交
 注意，以下内容必须同时通过，而不是只按照顺序做一遍
 
 - [ ] 代码格式化完成 (Prettier/Ruff)，代码规范检查通过 (ESLint/Ruff)
 - [ ] 相关文档更新与整理 (AGENTS.md/README.md)
 - [ ] 自动测试项目更新 (Jest/Pytest)，并测试全部通过
-- [ ] 启动网页使用chrome devtools测试，如果用户没有要求，禁止使用截屏工具
-- [ ] 使用/code-review-expert审查代码
+- [ ] 启动网页使用 chrome devtools 测试，如果用户没有要求，禁止使用截屏工具
+- [ ] 使用/code-review-expert 审查代码
 - [ ] 提交信息清晰简洁，符合规范 (英文，50 字以内)
 
 ## 运行规范
@@ -98,6 +98,7 @@ frontend/
   lib/storage/             # 存储适配器
     indexeddb-adapter.ts   # IndexedDB 适配
     types.ts
+    index.ts
   services/                # API 服务
     client.ts              # API 客户端
     index.ts
@@ -105,7 +106,7 @@ frontend/
 backend/
   main.py                  # FastAPI 入口（lifespan + include_router）
   auth.py                  # JWT 认证（re-export 层，向后兼容）
-  crud.py                  # 数据库操作（含用户CRUD）
+  crud.py                  # 数据库操作（含用户 CRUD）
   models.py                # SQLAlchemy 模型
   schemas.py               # Pydantic schemas
   ai_service.py            # AI 服务（re-export 层）
@@ -121,7 +122,7 @@ backend/
     entries.py             # 日记 CRUD 端点
     ai.py                  # AI 聊天/生成端点（含限流）
   services/                # 服务层（业务逻辑）
-    auth_service.py        # JWT认证、密码哈希
+    auth_service.py        # JWT 认证、密码哈希
     ai_client.py           # OpenAI 客户端封装
     memory_service.py      # mem0 记忆存储/检索
     ai_chat_service.py     # AI 对话服务
@@ -144,11 +145,11 @@ backend/
 ## 代码格式化
 
 - **前端**: Prettier + ESLint
-  - 格式化: `cd frontend && npx prettier --write .`
-  - 检查: `cd frontend && npx eslint .`
+  - 格式化：`cd frontend && npx prettier --write .`
+  - 检查：`cd frontend && npx eslint .`
 - **后端**: Ruff
-  - 格式化: `cd backend && uv run ruff format .`
-  - 检查: `cd backend && uv run ruff check .`
+  - 格式化：`cd backend && uv run ruff format .`
+  - 检查：`cd backend && uv run ruff check .`
 - **提交前必须运行格式化**，确保代码风格统一
 
 ## 测试规范
@@ -157,13 +158,14 @@ backend/
 - **前端**: `Jest` + `@testing-library/react-native`，使用 `jest-expo`
 - **版本对齐**: jest-expo 必须与 expo SDK 主版本一致
 - **测试覆盖**: 总计 94 个测试
-  - 后端: 36 个测试 (tests/test_mem0_client.py: 13, tests/test_ai_service.py: 9, tests/test_main.py: 14)
-  - 前端: 58 个测试 (组件/钩子测试)
+  - 后端：36 个测试 (tests/test_mem0_client.py: 13, tests/test_ai_service.py: 9, tests/test_main.py: 14)
+  - 前端：58 个测试 (组件/钩子测试)
+
 ## UI 规范
 
-- 字体/颜色: 使用 `constants/theme.ts`
-- 图标: 使用 Phosphor Icons (IconSymbol 组件)
-- 弹窗选择: 使用 Modal 组件
+- 字体/颜色：使用 `constants/theme.ts`
+- 图标：使用 Phosphor Icons (IconSymbol 组件)
+- 弹窗选择：使用 Modal 组件
 
 ## 常见问题
 
@@ -180,107 +182,71 @@ backend/
   - MODEL_NAME (AI 模型名称，默认 moonshotai/kimi-k2-instruct-0905)
   - SECRET_KEY (JWT Token 签名密钥)
   - MEM0_API_URL (mem0 记忆服务地址，默认 http://localhost:8888)
-- 可选:
-  - GOOGLE_API_KEY (Google API 密钥，用于地图或搜索功能)
-
-## 项目依赖
-
-### 后端 Python 依赖
-
-核心依赖：
-
-- **httpx>=0.28.1**: HTTP 客户端，用于 mem0 API 调用
-- **openai>=2.21.0**: OpenAI 兼容 API 客户端
-- **fastapi>=0.129.2**: Web 框架
-- **sqlalchemy>=2.0.46**: ORM 数据库操作
-- **bcrypt>=5.0.0**: 密码加密
-- **python-jose[cryptography]>=3.5.0**: JWT 处理
-- **pydantic-settings>=2.9.1**: 配置管理
-- **slowapi>=0.1.9**: API 限流
-
-### 前端 npm 依赖
-
-核心依赖：
-
-- **expo (~54.0.33)**: React Native 框架
-- **react (19.1.0)**: React 核心
-- **react-native (0.81.5)**: React Native 核心
-- **axios**: HTTP 客户端
-- **date-fns**: 日期处理
-- **dexie**: IndexedDB 数据库
-- **@react-navigation/native**: 导航
-- **phosphor-react-native**: 图标库
-- **jest**: 测试框架
+  - GOOGLE_API_KEY (Google Gemini API Key，用于 mem0 记忆提取)
 
 ## 经验教训
 
-### ID 系统统一改造 (2026-02)
+### mem0 服务部署
 
-- **问题**: 数据库同时存在整数 `id` 和字符串 `uuid` 两个字段
-- **解决**:
-  1. `JournalEntry.id` 改为 UUID 字符串主键
-  2. 前后端类型统一为 `id: string`
-  3. 乐观更新使用 `crypto.randomUUID()`
-  4. 删除所有 `.id.toString()` 和 `.uuid` 引用
-- **验证**: pytest 通过 + Chrome DevTools 无报错
+- **启动**: `cd backend && docker compose up -d`
+- **服务状态**:
+  - mem0: http://localhost:8888 (记忆存储服务)
+  - Postgres: 5432 (向量数据库)
+  - Neo4j: 7687 (知识图谱)
+- **配置要求**:
+  - `GOOGLE_API_KEY`: 有效的 Google Gemini API Key（必需，用于记忆提取）
+  - 获取地址：https://aistudio.google.com/apikey
+- **降级处理**: 无有效 API Key 时，mem0 功能不可用，但不影响 AI 聊天基本功能
+- **验证命令**:
+  ```bash
+  docker compose ps  # 检查容器状态
+  curl http://localhost:8888/memories?user_id=test  # 测试 mem0 API
+  ```
+- **注意**: 修改 .env 后需要 `docker compose down && docker compose up -d` 完全重启才能生效
 
-### mem0 记忆框架集成 (2026-03)
+### lib/storage 模块架构
 
-- **功能**: 为 AI 聊天添加长期记忆存储和检索能力
-- **实现**:
-  1. 新增 `backend/mem0_client.py`: 封装 mem0 API 调用（存储/搜索/获取记忆）
-  2. 修改 `ai_service.py`:
-     - `_get_memory_context()`: 根据当前消息搜索相关记忆
-     - `_store_conversation_to_memory()`: 存储对话到 mem0
-     - `chat_with_ai()` 和 `stream_chat_with_ai()` 接受可选 `user_id` 参数
-     - 记忆注入到系统提示词：`【以下是我们之前对话中的一些重要记忆，供你参考】`
-  3. 修改 `main.py`: 从 JWT token 获取 user_id 并传递给 AI 服务
-  4. 新增配置 `config.py` 中的 `mem0_api_url`（默认 http://localhost:8888）
-  5. 新增 `docker-compose.yml`: mem0 + postgres + neo4j 服务编排
-- **依赖**: 新增 `httpx>=0.28.1`, `openai>=2.21.0`
-- **降级处理**: mem0 不可用时静默失败，不影响聊天功能
-- **向后兼容**: API 接口无变化，前端无需修改
-- **环境变量**: `.env` 需配置 `MEM0_API_URL`
-- **验证**: pytest 36 tests passed + jest 58 tests passed = 94 tests passed + Ruff/Prettier 通过 + 功能测试验证记忆存储检索正常（包括 AI 回忆 pizzas 测试）
+- **离线优先**: 所有 CRUD 操作先写本地 IndexedDB，再异步同步到后端
+- **Server-wins**: 同步时后端数据覆盖本地（简化冲突处理）
+- **Pending 状态**: 本地修改标记为 `sync_status='pending'`，同步成功后标记为`'synced'`
+- **软删除**: 使用 `deleted` 字段标记删除，前端过滤 `deleted !== 1` 的条目
+- **文件结构**:
+  ```
+  frontend/lib/storage/
+    types.ts              # 类型定义 (LocalJournalEntry, SyncResult, StorageAdapter)
+    indexeddb-adapter.ts  # Dexie 实现 (initStorage, getStorageAdapter, syncWithBackend)
+    index.ts              # 模块导出
+  ```
 
-### outline 样式错误修复 (2026-03)
+### 项目启动注意事项
 
-- **问题**: React Native Web 不支持 outline 简写属性，导致控制台警告
-- **解决**:
-  1. 移除 write.tsx 全局 CSS 中的 `outline: none !important`
-  2. 移除 EntryMetadata.tsx 中的 `outline: 'none'`
-  3. 移除 TagManager.tsx 中的 `outline: 'none'`
-  4. React Native Web 已正确处理输入框焦点样式
-- **验证**: Chrome DevTools 无 outline 相关警告
-
-### 前端依赖版本更新 (2026-03)
-
-- **变更**:
-  - @expo/vector-icons: ^15.0.3
-  - expo: ~54.0.33
-  - react: 19.1.0
-  - react-native: 0.81.5
-- **版本对齐**: jest-expo (~54.0.17) 与 expo SDK 主版本一致
+1. 配置环境变量：`cp backend/.env.example backend/.env` 并修改 `SECRET_KEY` 和 `GOOGLE_API_KEY`
+2. 启动 mem0 服务：`cd backend && docker compose up -d`（需要先安装 Docker）
+3. 启动后端：`cd backend && uv run uvicorn main:app --reload`
+4. 启动前端：`cd frontend && npx expo start --web --port 8081`
+5. 访问 http://localhost:8081
 
 ## 测试覆盖说明
 
-### 后端测试（36个测试）
+### 后端测试（36 个测试）
 
-- **tests/test_mem0_client.py** (13个): 记忆存储/检索/搜索/降级处理测试
-- **tests/test_ai_service.py** (9个): AI对话/日记生成/流式响应测试
-- **tests/test_main.py** (14个): API端点/认证/CRUD/图片上传测试
+- **tests/test_mem0_client.py** (13 个): 记忆存储/检索/搜索/降级处理测试
+- **tests/test_ai_service.py** (9 个): AI 对话/日记生成/流式响应测试
+- **tests/test_main.py** (14 个): API 端点/认证/CRUD/图片上传测试
 
-### 前端测试（58个测试）
+### 前端测试（58 个测试）
 
-- **hooks/useJournalEntry.test.ts** (12个): 编辑/保存/模板功能测试
-- **components/TagManager.test.tsx** (7个): 标签增删改/重复检查
-- **components/EntryMetadata.test.tsx** (5个): 分类/天气/位置输入测试
-- **components/EntryCard.test.tsx** (8个): 显示/格式化/交互测试
-- **components/ChatMessageList.test.tsx** (8个): 消息渲染/Markdown/流式测试
-- **components/ChatInput.test.tsx** (9个): 输入/发送/附件/字符计数测试
-- **components/ChatContainer.test.tsx** (9个): 容器/主题/回调传递测试
+- **hooks/useJournalEntry.test.ts** (12 个): 编辑/保存/模板功能测试
+- **components/TagManager.test.tsx** (7 个): 标签增删改/重复检查
+- **components/EntryMetadata.test.tsx** (5 个): 分类/天气/位置输入测试
+- **components/EntryCard.test.tsx** (8 个): 显示/格式化/交互测试
+- **components/ChatMessageList.test.tsx** (8 个): 消息渲染/Markdown/流式测试
+- **components/ChatInput.test.tsx** (9 个): 输入/发送/附件/字符计数测试
+- **components/ChatContainer.test.tsx** (9 个): 容器/主题/回调传递测试
+
 ### 测试运行
 
-- 后端: `cd backend && uv run pytest -v`
-- 前端: `cd frontend && npm test`
-- 前端覆盖率: `cd frontend && npm run test:coverage`
+- 后端：`cd backend && uv run pytest -v`
+- 前端：`cd frontend && npm test`
+- 前端覆盖率：`cd frontend && npm run test:coverage`
+- frontend下面有一个.env文件，里面有测试用户名和密码

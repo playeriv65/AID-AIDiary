@@ -11,7 +11,7 @@ import models
 from config import settings
 from database import engine
 from mem0_client import cleanup_mem0_client
-from routers import ai, auth, entries, health, upload
+from routers import ai, auth, conversations, entries, health, upload
 from routers.ai import limiter
 
 logger = logging.getLogger(__name__)
@@ -58,3 +58,4 @@ app.include_router(upload.router)
 app.include_router(auth.router)
 app.include_router(entries.router)
 app.include_router(ai.router)
+app.include_router(conversations.router)

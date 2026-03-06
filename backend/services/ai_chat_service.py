@@ -89,57 +89,84 @@ async def stream_chat_with_ai(
 
     Yields:
         SSE 格式的响应流
+
+    Raises:
+        HTTPException: 连接级错误（认证失败、连接失败等）
     """
-    # Import at runtime to allow test patching
+    from fastapi import HTTPException
+
     import ai_service
 
-    # 存储当前对话到记忆
     if user_id:
         from services.memory_service import _store_conversation_to_memory
 
         await _store_conversation_to_memory(messages, user_id)
 
-    # 构建系统提示词
     from services.memory_service import _build_system_prompt
 
     system_prompt = await _build_system_prompt(messages, user_id)
+
+    first_chunk_sent = False
+    response = None
 
     try:
         full_messages = [{"role": "system", "content": system_prompt}] + messages
 
         response = ai_service.client.chat.completions.create(
             model=ai_service.MODEL_NAME,
-            messages=full_messages,  # type: ignore
+            messages=full_messages,
             temperature=ai_service.AI_TEMPERATURE,
             top_p=ai_service.AI_TOP_P,
             max_tokens=ai_service.AI_MAX_TOKENS_STREAM,
             stream=True,
         )
 
-        for chunk in response:  # type: ignore[union-attr]
+        for chunk in response:
             if not getattr(chunk, "choices", None):
                 continue
-            if chunk.choices and len(chunk.choices) > 0:  # type: ignore[union-attr]
-                delta = chunk.choices[0].delta  # type: ignore[union-attr]
+            if chunk.choices and len(chunk.choices) > 0:
+                delta = chunk.choices[0].delta
                 if delta and delta.content:
                     content = delta.content
+                    first_chunk_sent = True
                     yield f"data: {json.dumps({'content': content})}\n\n"
-        # 刷新输出缓冲，确保立即发送
-        await asyncio.sleep(0)
 
+        await asyncio.sleep(0)
         yield f"data: {json.dumps({'done': True})}\n\n"
-    except APIConnectionError as e:
-        logger.warning("AI stream connection failed: %s", str(e)[:100])
-        yield f"data: {json.dumps({'error': '抱歉，我现在有点走神了，等会再跟我说好吗...'})}\n\n"
+
+    except asyncio.TimeoutError as e:
+        logger.error("AI stream timeout: %s", str(e)[:100])
+        if not first_chunk_sent:
+            raise HTTPException(status_code=504, detail="AI 服务响应超时，请重试")
+        else:
+            yield f"data: {json.dumps({'error': 'AI 服务响应超时，请重试'})}\n\n"
     except AuthenticationError as e:
         logger.error("AI stream authentication failed: %s", str(e)[:100])
-        yield f"data: {json.dumps({'error': '抱歉，我现在有点走神了，等会再跟我说好吗...'})}\n\n"
+        if not first_chunk_sent:
+            raise HTTPException(status_code=401, detail="AI service authentication failed")
+        else:
+            yield f"data: {json.dumps({'error': '认证失败，请检查 API 配置'})}\n\n"
+    except APIConnectionError as e:
+        logger.warning("AI stream connection failed: %s", str(e)[:100])
+        if not first_chunk_sent:
+            raise HTTPException(status_code=503, detail="AI service unavailable")
+        else:
+            yield f"data: {json.dumps({'error': 'AI 服务连接失败'})}\n\n"
     except RateLimitError as e:
         logger.warning("AI stream rate limited: %s", str(e)[:100])
-        yield f"data: {json.dumps({'error': '抱歉，我现在有点走神了，等会再跟我说好吗...'})}\n\n"
+        if not first_chunk_sent:
+            raise HTTPException(status_code=429, detail="AI service rate limit exceeded")
+        else:
+            yield f"data: {json.dumps({'error': '请求过于频繁，请稍后再试'})}\n\n"
     except APIStatusError as e:
         logger.error("AI stream error: status=%d", e.status_code)
-        yield f"data: {json.dumps({'error': '抱歉，我现在有点走神了，等会再跟我说好吗...'})}\n\n"
+        if not first_chunk_sent:
+            raise HTTPException(status_code=502, detail="AI service error")
+        else:
+            yield f"data: {json.dumps({'error': 'AI 服务异常'})}\n\n"
     except Exception:
         logger.exception("Unexpected error in stream_chat_with_ai")
-        yield f"data: {json.dumps({'error': '抱歉，我现在有点走神了，等会再跟我说好吗...'})}\n\n"
+        if not first_chunk_sent:
+            raise HTTPException(status_code=500, detail="Internal server error")
+        else:
+            yield f"data: {json.dumps({'error': '服务器内部错误'})}\n\n"

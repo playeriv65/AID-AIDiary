@@ -4,6 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
 
 import { AppProvider, useAppContext } from '@/context/AppContext';
+import { ConversationProvider } from '@/context/ConversationContext';
 
 // Web 端加载 KaTeX CSS
 if (typeof window !== 'undefined') {
@@ -33,7 +34,9 @@ function InnerLayout() {
 export default function RootLayout() {
   return (
     <AppProvider>
-      <InnerLayout />
+      <ConversationProvider>
+        <InnerLayout />
+      </ConversationProvider>
     </AppProvider>
   );
 }

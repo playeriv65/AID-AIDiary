@@ -93,3 +93,99 @@ def create_user(db: Session, user: schemas.UserRegister, hashed_password: str):
     db.commit()
     db.refresh(db_user)
     return db_user
+
+
+# Conversation CRUD
+
+
+def get_conversation(db: Session, conversation_id: str):
+    return db.query(models.Conversation).filter(models.Conversation.id == conversation_id).first()
+
+
+def get_conversation_with_messages(db: Session, conversation_id: str, user_id: int):
+    conversation = (
+        db.query(models.Conversation)
+        .filter(models.Conversation.id == conversation_id, models.Conversation.user_id == user_id)
+        .first()
+    )
+    if conversation:
+        messages = db.query(models.Message).filter(
+            models.Message.conversation_id == conversation_id
+        ).order_by(models.Message.created_at.asc()).all()
+        conversation.messages = messages
+    return conversation
+
+
+def get_user_conversations(db: Session, user_id: int, skip: int = 0, limit: int = 50):
+    return (
+        db.query(models.Conversation)
+        .filter(models.Conversation.user_id == user_id, models.Conversation.is_archived == False)
+        .order_by(models.Conversation.updated_at.desc())
+        .offset(skip)
+        .limit(limit)
+        .all()
+    )
+
+
+def create_conversation(db: Session, user_id: int, title: str | None = None):
+    db_conversation = models.Conversation(user_id=user_id, title=title)
+    db.add(db_conversation)
+    db.commit()
+    db.refresh(db_conversation)
+    return db_conversation
+
+
+def update_conversation(
+    db: Session, conversation_id: str, title: str | None = None, is_archived: bool | None = None
+):
+    db_conversation = get_conversation(db, conversation_id)
+    if db_conversation:
+        if title is not None:
+            db_conversation.title = title
+        if is_archived is not None:
+            db_conversation.is_archived = is_archived
+        db_conversation.updated_at = datetime.now(UTC)
+        db.commit()
+        db.refresh(db_conversation)
+    return db_conversation
+
+
+def delete_conversation(db: Session, conversation_id: str):
+    db_conversation = get_conversation(db, conversation_id)
+    if db_conversation:
+        db_conversation.is_archived = True
+        db_conversation.updated_at = datetime.now(UTC)
+        db.commit()
+    return db_conversation
+
+
+# Message CRUD
+
+
+def get_messages(db: Session, conversation_id: str, skip: int = 0, limit: int = 100):
+    return (
+        db.query(models.Message)
+        .filter(models.Message.conversation_id == conversation_id)
+        .order_by(models.Message.created_at.asc())
+        .offset(skip)
+        .limit(limit)
+        .all()
+    )
+
+
+def get_messages_count(db: Session, conversation_id: int):
+    return (
+        db.query(models.Message).filter(models.Message.conversation_id == conversation_id).count()
+    )
+
+
+def create_message(db: Session, conversation_id: str, role: str, content: str):
+    db_message = models.Message(
+        conversation_id=conversation_id,
+        role=role,
+        content=content,
+    )
+    db.add(db_message)
+    db.commit()
+    db.refresh(db_message)
+    return db_message

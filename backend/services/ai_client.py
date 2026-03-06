@@ -17,6 +17,7 @@ def get_client():
         _client = OpenAI(
             api_key=api_key,
             base_url=settings.base_url,
+            timeout=15.0,  # Gemini API 响应较快，15 秒足够
         )
     return _client
 

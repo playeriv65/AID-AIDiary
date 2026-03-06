@@ -79,6 +79,60 @@ class ChatMessage(BaseModel):
     content: str = Field(..., max_length=10000)
 
 
+# Conversation Schemas
+
+
+class MessageBase(BaseModel):
+    role: str
+    content: str
+
+
+class MessageCreate(MessageBase):
+    pass
+
+
+class MessageResponse(MessageBase):
+    id: str
+    conversation_id: str
+    created_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class ConversationBase(BaseModel):
+    title: str | None = None
+
+
+class ConversationCreate(BaseModel):
+    title: str | None = None
+
+
+class ConversationUpdate(BaseModel):
+    title: str | None = None
+    is_archived: bool | None = None
+
+
+class ConversationResponse(BaseModel):
+    id: str
+    user_id: int
+    title: str | None = None
+    is_archived: bool
+    created_at: datetime
+    updated_at: datetime
+    messages: list[MessageResponse] = []
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class ConversationListItem(BaseModel):
+    id: str
+    user_id: int
+    title: str | None = None
+    updated_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)
+
+
 class ChatRequest(BaseModel):
     messages: list[ChatMessage] = Field(..., max_length=50)
     timezone: str | None = None

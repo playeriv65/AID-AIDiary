@@ -12,6 +12,18 @@ export interface ChatMessage {
   };
 }
 
+export interface Conversation {
+  id: string;
+  title: string | null;
+  updated_at: string;
+  created_at?: string;
+  is_archived?: boolean;
+}
+
+export interface ConversationDetail extends Conversation {
+  messages: ChatMessage[];
+}
+
 export interface Attachment {
   id: string;
   type: 'image' | 'file';
