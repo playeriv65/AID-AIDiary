@@ -1,7 +1,7 @@
-import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { CONFIG } from '@/constants/config';
 import { useAppContext } from './AppContext';
-import type { Conversation, ConversationDetail, ChatMessage } from '@/components/chat/types';
+import type { Conversation, ConversationDetail } from '@/components/chat/types';
 
 interface ConversationContextType {
   conversations: Conversation[];
@@ -37,21 +37,24 @@ export function ConversationProvider({ children }: { children: React.ReactNode }
     }
   }, [authToken]);
 
-  const fetchConversationDetail = useCallback(async (conversationId: string) => {
-    if (!authToken) return null;
-    try {
-      const response = await fetch(`${CONFIG.API_URL}/conversations/${conversationId}`, {
-        headers: { Authorization: `Bearer ${authToken}` },
-      });
-      if (response.ok) {
-        const data = await response.json();
-        return data as ConversationDetail;
+  const fetchConversationDetail = useCallback(
+    async (conversationId: string) => {
+      if (!authToken) return null;
+      try {
+        const response = await fetch(`${CONFIG.API_URL}/conversations/${conversationId}`, {
+          headers: { Authorization: `Bearer ${authToken}` },
+        });
+        if (response.ok) {
+          const data = await response.json();
+          return data as ConversationDetail;
+        }
+      } catch (error) {
+        console.error('Failed to fetch conversation detail:', error);
       }
-    } catch (error) {
-      console.error('Failed to fetch conversation detail:', error);
-    }
-    return null;
-  }, [authToken]);
+      return null;
+    },
+    [authToken]
+  );
 
   const createConversation = useCallback(async (): Promise<string> => {
     if (!authToken) throw new Error('Not authenticated');
@@ -76,51 +79,51 @@ export function ConversationProvider({ children }: { children: React.ReactNode }
     }
   }, [authToken, fetchConversations]);
 
-  const switchConversation = useCallback(async (conversationId: string) => {
-    setLoading(true);
-    const detail = await fetchConversationDetail(conversationId);
-    if (detail) {
-      setCurrentConversation(detail);
-    }
-    setLoading(false);
-  }, [fetchConversationDetail]);
+  const switchConversation = useCallback(
+    async (conversationId: string) => {
+      setLoading(true);
+      const detail = await fetchConversationDetail(conversationId);
+      if (detail) {
+        setCurrentConversation(detail);
+      }
+      setLoading(false);
+    },
+    [fetchConversationDetail]
+  );
 
-  const deleteConversation = useCallback(async (conversationId: string) => {
-    if (!authToken) return;
-    try {
-      const response = await fetch(
-        `${CONFIG.API_URL}/conversations/${conversationId}`,
-        {
+  const deleteConversation = useCallback(
+    async (conversationId: string) => {
+      if (!authToken) return;
+      try {
+        const response = await fetch(`${CONFIG.API_URL}/conversations/${conversationId}`, {
           method: 'DELETE',
           headers: { Authorization: `Bearer ${authToken}` },
+        });
+        if (response.ok) {
+          await fetchConversations();
+          if (currentConversation?.id === conversationId) {
+            setCurrentConversation(null);
+          }
         }
-      );
-      if (response.ok) {
-        await fetchConversations();
-        if (currentConversation?.id === conversationId) {
-          setCurrentConversation(null);
-        }
+      } catch (error) {
+        console.error('Failed to delete conversation:', error);
       }
-    } catch (error) {
-      console.error('Failed to delete conversation:', error);
-    }
-  }, [authToken, fetchConversations, currentConversation]);
+    },
+    [authToken, fetchConversations, currentConversation]
+  );
 
   const addMessage = useCallback(
     async (conversationId: string, role: string, content: string) => {
       if (!authToken) return;
       try {
-        const response = await fetch(
-          `${CONFIG.API_URL}/conversations/${conversationId}/messages`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${authToken}`,
-            },
-            body: JSON.stringify({ role, content }),
-          }
-        );
+        const response = await fetch(`${CONFIG.API_URL}/conversations/${conversationId}/messages`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${authToken}`,
+          },
+          body: JSON.stringify({ role, content }),
+        });
         if (response.ok) {
           await fetchConversationDetail(conversationId);
           await fetchConversations();

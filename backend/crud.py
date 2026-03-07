@@ -109,9 +109,12 @@ def get_conversation_with_messages(db: Session, conversation_id: str, user_id: i
         .first()
     )
     if conversation:
-        messages = db.query(models.Message).filter(
-            models.Message.conversation_id == conversation_id
-        ).order_by(models.Message.created_at.asc()).all()
+        messages = (
+            db.query(models.Message)
+            .filter(models.Message.conversation_id == conversation_id)
+            .order_by(models.Message.created_at.asc())
+            .all()
+        )
         conversation.messages = messages
     return conversation
 
@@ -119,7 +122,10 @@ def get_conversation_with_messages(db: Session, conversation_id: str, user_id: i
 def get_user_conversations(db: Session, user_id: int, skip: int = 0, limit: int = 50):
     return (
         db.query(models.Conversation)
-        .filter(models.Conversation.user_id == user_id, models.Conversation.is_archived == False)
+        .filter(
+            models.Conversation.user_id == user_id,
+            models.Conversation.is_archived.is_(False),
+        )
         .order_by(models.Conversation.updated_at.desc())
         .offset(skip)
         .limit(limit)

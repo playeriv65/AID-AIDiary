@@ -11,6 +11,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 import pytest
+
 from mem0_client import Mem0Client, get_mem0_client, has_exceeded_memory_limit
 
 # 获取配置的 mem0 API URL
@@ -49,7 +50,11 @@ async def test_e2e_mem0_store_and_search():
     # 验证找到了关联的至少一条记忆
     found_memory = False
     for memory in search_result:
-        if TEST_USER_ID in memory or "connected successfully" in memory.lower() or "Got your message" in memory.lower():
+        if (
+            TEST_USER_ID in memory
+            or "connected successfully" in memory.lower()
+            or "Got your message" in memory.lower()
+        ):
             found_memory = True
             break
 
@@ -171,7 +176,7 @@ async def test_e2e_error_handling_with_real_mem0():
         )
         # 应该优雅地返回 False 而非抛出异常
         assert store_result is False, "Should return False on connection failure"
-    except Exception as e:
+    except Exception:
         # 如果仍有异常，验证我们至少获得了 HTTP 相关的异常而不直接崩溃
         # 记录错误但不中断测试
         pass
@@ -182,7 +187,7 @@ async def test_e2e_error_handling_with_real_mem0():
     healthy_client = Mem0Client(TEST_MEM0_URL)
     await asyncio.sleep(0.1)
     # 执行健康验证
-    final_test = await healthy_client.search_memories("test", TEST_USER_ID)
+    await healthy_client.search_memories("test", TEST_USER_ID)
     await healthy_client.close()
 
 

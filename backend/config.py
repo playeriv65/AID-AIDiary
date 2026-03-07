@@ -9,6 +9,9 @@ class Settings(BaseSettings):
     base_url: str = "https://integrate.api.nvidia.com/v1"
     model_name: str = "glm-4.5-flash"
 
+    # Google Gemini API Key (for Mem0 memory extraction)
+    google_api_key: str = ""
+
     # App Security
     secret_key: str = ""
 

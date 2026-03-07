@@ -135,7 +135,7 @@ class ApiClient {
     return response.data;
   }
 
-  async stream<T>(
+  async stream(
     url: string,
     data: any,
     onChunk: (chunk: string) => void,

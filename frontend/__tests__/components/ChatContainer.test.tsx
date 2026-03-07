@@ -28,7 +28,7 @@ describe('ChatContainer', () => {
     render(<ChatContainer {...defaultProps} />);
     // Empty state should show something like welcome message
     // Currently it shows IconSymbol - we can test that it renders without crash
-    expect(screen.getByTestId).toBeDefined; // placeholder
+    expect(screen.getByTestId).toBeDefined(); // placeholder
   });
 
   it('renders messages when provided', () => {

@@ -24,7 +24,22 @@ models.Base.metadata.create_all(bind=engine)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # startup (nothing to do currently)
+    # startup
+    logger.info("Initializing application...")
+
+    # 尝试初始化 mem0 客户端（如果配置了 Google API Key）
+    if settings.google_api_key:
+        try:
+            from mem0_client import get_mem0_client
+
+            get_mem0_client()
+            logger.info("Mem0 client initialized successfully")
+        except Exception as e:
+            logger.warning(f"Failed to initialize Mem0 client: {e}")
+            logger.info("Continuing without Mem0 functionality")
+    else:
+        logger.info("Google API Key not configured, skipping Mem0 initialization")
+
     yield
     # shutdown
     logger.info("Shutting down application...")

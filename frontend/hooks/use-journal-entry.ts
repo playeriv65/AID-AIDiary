@@ -128,6 +128,7 @@ export function useJournalEntry({
           setLoading(false);
         });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [entryId]);
 
   const wordCount = content.trim().length;

@@ -11,7 +11,11 @@
     "lint": "expo lint",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:debug": "playwright test --debug",
+    "playwright:install": "playwright install chromium"
   },
   "dependencies": {
     "@adheil_gupta/react-native-latex-renderer": "1.0.1",
@@ -59,6 +63,7 @@
     "react-native-worklets": "0.5.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.58.2",
     "@testing-library/react-native": "^13.3.3",
     "@types/react": "~19.1.0",
     "babel-jest": "^30.2.0",

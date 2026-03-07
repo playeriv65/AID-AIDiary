@@ -36,6 +36,7 @@ import {
   Info,
   List,
   ListBullets,
+  ListDashes,
   MagnifyingGlass,
   MapPin,
   Note,
@@ -54,7 +55,6 @@ import {
   Wind,
   X,
   XCircle,
-  ListDashes,
 } from 'phosphor-react-native';
 import { OpaqueColorValue, type StyleProp, type TextStyle } from 'react-native';
 

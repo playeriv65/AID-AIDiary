@@ -50,18 +50,46 @@ export default function ChatScreen() {
         timestamp: new Date(m.created_at).getTime(),
       }));
       setMessages(formattedMessages);
-    } else if (!currentConversation && conversations.length === 0 && !isInitializing) {
-      // 首次访问且无对话，自动创建新对话
-      setIsInitializing(true);
-      createConversation().then((newId) => {
-        switchConversation(newId);
-      }).finally(() => {
-        setIsInitializing(false);
-      });
     } else {
+      // 当前对话不存在时清空消息列表
       setMessages([]);
     }
-  }, [currentConversation, conversations.length, isInitializing, createConversation, switchConversation]);
+  }, [currentConversation]);
+
+  // 初始化：首次访问且无对话时自动创建新对话
+  useEffect(() => {
+    if (convLoading || isInitializing) return;
+
+    if (conversations.length === 0 && !currentConversation) {
+      setIsInitializing(true);
+      (async () => {
+        try {
+          const newId = await createConversation();
+          await switchConversation(newId);
+        } catch (error) {
+          console.error('Failed to initialize conversation:', error);
+        } finally {
+          setIsInitializing(false);
+        }
+      })();
+    } else if (conversations.length > 0 && !currentConversation) {
+      (async () => {
+        try {
+          await switchConversation(conversations[0].id);
+        } catch (error) {
+          console.error('Failed to switch to fallback conversation:', error);
+        }
+      })();
+    }
+  }, [
+    conversations,
+    conversations.length,
+    currentConversation,
+    convLoading,
+    isInitializing,
+    createConversation,
+    switchConversation,
+  ]);
 
   // 初始加载时获取对话列表
   useEffect(() => {
@@ -201,7 +229,18 @@ export default function ChatScreen() {
     } finally {
       setLoading(false);
     }
-  }, [inputText, loading, convLoading, isInitializing, authToken, i18n, currentConversation, createConversation, switchConversation, addMessage]);
+  }, [
+    inputText,
+    loading,
+    convLoading,
+    isInitializing,
+    authToken,
+    i18n,
+    currentConversation,
+    createConversation,
+    switchConversation,
+    addMessage,
+  ]);
 
   const handleStopGenerating = useCallback(() => {
     setLoading(false);

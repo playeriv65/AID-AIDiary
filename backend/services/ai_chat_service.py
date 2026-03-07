@@ -134,7 +134,7 @@ async def stream_chat_with_ai(
         await asyncio.sleep(0)
         yield f"data: {json.dumps({'done': True})}\n\n"
 
-    except asyncio.TimeoutError as e:
+    except TimeoutError as e:
         logger.error("AI stream timeout: %s", str(e)[:100])
         if not first_chunk_sent:
             raise HTTPException(status_code=504, detail="AI 服务响应超时，请重试")

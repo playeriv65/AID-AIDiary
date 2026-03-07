@@ -138,11 +138,13 @@ async def test_stream_chat_with_ai_success(mock_openai_client):
 @pytest.mark.asyncio
 async def test_stream_chat_with_ai_exception(mock_openai_client):
     """测试流式对话 - 异常"""
+    from fastapi import HTTPException
+
     mock_openai_client.chat.completions.create.side_effect = Exception("API Error")
 
-    chunks = []
-    async for chunk in stream_chat_with_ai([{"role": "user", "content": "Hi"}]):
-        chunks.append(chunk)
+    with pytest.raises(HTTPException) as exc_info:
+        chunks = []
+        async for chunk in stream_chat_with_ai([{"role": "user", "content": "Hi"}]):
+            chunks.append(chunk)
 
-    assert len(chunks) == 1
-    assert "error" in chunks[0]
+    assert exc_info.value.status_code == 500

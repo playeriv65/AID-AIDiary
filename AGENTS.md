@@ -156,10 +156,12 @@ backend/
 
 - **后端**: `pytest` + FastAPI TestClient，使用 SQLite 内存数据库隔离
 - **前端**: `Jest` + `@testing-library/react-native`，使用 `jest-expo`
+- **E2E**: `Playwright` + Chromium，测试 AI 聊天核心功能
 - **版本对齐**: jest-expo 必须与 expo SDK 主版本一致
-- **测试覆盖**: 总计 94 个测试
+- **测试覆盖**: 总计 94 个单元测试 + 4 个 E2E 测试
   - 后端：36 个测试 (tests/test_mem0_client.py: 13, tests/test_ai_service.py: 9, tests/test_main.py: 14)
   - 前端：58 个测试 (组件/钩子测试)
+  - E2E：4 个测试 (首条消息发送、多对话创建、对话删除、日期显示)
 
 ## UI 规范
 
@@ -221,10 +223,23 @@ backend/
 ### 项目启动注意事项
 
 1. 配置环境变量：`cp backend/.env.example backend/.env` 并修改 `SECRET_KEY` 和 `GOOGLE_API_KEY`
-2. 启动 mem0 服务：`cd backend && docker compose up -d`（需要先安装 Docker）
-3. 启动后端：`cd backend && uv run uvicorn main:app --reload`
-4. 启动前端：`cd frontend && npx expo start --web --port 8081`
-5. 访问 http://localhost:8081
+2. **Docker Compose 启动（推荐）**：`cd backend && docker compose up -d`
+   - 自动启动所有服务：Postgres、Neo4j、mem0、FastAPI 后端
+   - 服务按依赖顺序启动，带健康检查
+   - 后端服务会等待 mem0 就绪后才启动
+3. 启动前端：`cd frontend && npx expo start --web --port 8081`
+4. 访问 http://localhost:8081
+
+### 开发环境启动（备选）
+
+如果不使用 Docker：
+```bash
+cd backend
+# 启动 mem0 及依赖服务
+docker compose up -d postgres neo4j mem0
+# 等待 mem0 就绪后启动后端
+uv run uvicorn main:app --reload --port 8000
+```
 
 ## 测试覆盖说明
 
@@ -249,4 +264,20 @@ backend/
 - 后端：`cd backend && uv run pytest -v`
 - 前端：`cd frontend && npm test`
 - 前端覆盖率：`cd frontend && npm run test:coverage`
+- E2E 测试：`cd frontend && npm run test:e2e`
+- E2E 测试 (UI 模式)：`cd frontend && npm run test:e2e:ui`
+- Playwright 浏览器安装：`cd frontend && npm run playwright:install`
 - frontend下面有一个.env文件，里面有测试用户名和密码
+
+### E2E 测试说明
+
+- **测试框架**: Playwright + Chromium
+- **测试文件**: `frontend/e2e/chat.spec.ts`
+- **辅助函数**: `frontend/e2e/helpers/auth.ts` (登录、导航等)
+- **配置文件**: `frontend/playwright.config.ts`
+- **测试场景**:
+  1. 首次进入聊天界面发送第一条消息 (验证竞态修复)
+  2. 创建多个对话
+  3. 删除对话
+  4. 对话历史日期显示
+- **运行前提**: 后端服务 (8000) 和前端服务 (8081) 需要运行

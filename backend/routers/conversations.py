@@ -1,5 +1,3 @@
-from datetime import UTC, datetime
-from typing import Literal
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
@@ -7,7 +5,6 @@ from sqlalchemy.orm import Session
 import crud
 from database import get_db
 from schemas import (
-    ChatMessage,
     ConversationCreate,
     ConversationListItem,
     ConversationResponse,
