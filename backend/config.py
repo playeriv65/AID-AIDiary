@@ -15,8 +15,8 @@ class Settings(BaseSettings):
     # App Security
     secret_key: str = ""
 
-    # Database
-    database_url: str = "sqlite:///./aidiary.db"
+    # Database (PostgreSQL)
+    database_url: str = "postgresql://postgres:postgres@localhost:5432/postgres"
 
     # Mem0 Memory Service
     mem0_api_url: str = "http://localhost:8888"

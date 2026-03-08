@@ -9,7 +9,7 @@ services:
       - .env
     environment:
       - MEM0_API_URL=http://mem0:8000
-      - DATABASE_URL=sqlite:///./data/aidiary.db
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/postgres
       - UPLOAD_DIR=/app/static/uploads
     volumes:
       - ./data:/app/data
@@ -64,6 +64,8 @@ services:
 
   postgres:
     image: ankane/pgvector:v0.5.1
+    ports:
+      - "5432:5432"
     networks:
       - mem0_net
     environment:

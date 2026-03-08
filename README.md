@@ -16,7 +16,7 @@ A Brand New Form of Journaling.
 
 ## 项目架构 (Architecture)
 - **Frontend**: 基于 [Expo](https://expo.dev/) (React Native Web) 构建的跨平台极简日记界面。全局状态通过 `AppContext` 管理；`constants/i18n.ts` 统一管理三语翻译，`constants/config.ts` 管理 API 地址等配置。
-- **Backend**: 基于 [FastAPI](https://fastapi.tiangolo.com/) 构建，SQLite 存储日记数据，支持用户注册/登录（JWT）；使用 `uv` 管理 Python 依赖。
+- **Backend**: 基于 [FastAPI](https://fastapi.tiangolo.com/) 构建，PostgreSQL 存储日记数据，支持用户注册/登录（JWT）；使用 `uv` 管理 Python 依赖。
 - **mem0**: 记忆服务，为 AI 聊天提供长期记忆存储和检索能力。
 
 ## 快速启动 (Getting Started)
@@ -54,7 +54,8 @@ mem0 服务运行在 `http://localhost:8888`
 ## 环境变量
 复制 `backend/.env.example` 为 `backend/.env` 并填入：
 ```
-OPENAI_API_KEY=sk-...
+DATABASE_URL=postgresql://postgres:postgres@localhost:5432/postgres  # Docker: postgresql://postgres:postgres@postgres:5432/postgres
+API_KEY=sk-...
 SECRET_KEY=your-jwt-secret
 MEM0_API_URL=http://localhost:8888  # 可选，默认 localhost:8888
 ```

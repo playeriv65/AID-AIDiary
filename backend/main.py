@@ -19,13 +19,14 @@ logger = logging.getLogger(__name__)
 UPLOAD_DIR = Path(settings.upload_dir)
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
-models.Base.metadata.create_all(bind=engine)
-
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # startup
     logger.info("Initializing application...")
+
+    # 创建数据库表
+    models.Base.metadata.create_all(bind=engine)
 
     # 尝试初始化 mem0 客户端（如果配置了 Google API Key）
     if settings.google_api_key:

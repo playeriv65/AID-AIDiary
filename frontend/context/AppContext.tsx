@@ -269,7 +269,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
           );
         }
 
-        if (backendStatus === 'online') {
+        if (backendStatus === 'online' && authToken) {
           try {
             await syncWithBackend();
             await fetchEntries();
@@ -281,7 +281,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         console.error('Failed to update entry:', error);
       }
     },
-    [backendStatus, fetchEntries]
+    [backendStatus, fetchEntries, authToken]
   );
 
   const deleteEntry = useCallback(
@@ -294,7 +294,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
           setEntries((prev) => prev.filter((e) => e.id !== id));
         }
 
-        if (backendStatus === 'online') {
+        if (backendStatus === 'online' && authToken) {
           try {
             await syncWithBackend();
           } catch (syncError) {
@@ -305,11 +305,12 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         console.error('Failed to delete entry:', error);
       }
     },
-    [backendStatus]
+    [backendStatus, authToken]
   );
 
   const manualSync = useCallback(async () => {
     if (backendStatus !== 'online') return;
+    if (!authToken) return; // Skip sync if not logged in
     try {
       const result = await syncWithBackend();
       if (isMountedRef.current) {
@@ -322,7 +323,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         setSyncResult({ success: false, uploaded: 0, downloaded: 0, errors: 1 });
       }
     }
-  }, [backendStatus, fetchEntries]);
+  }, [backendStatus, fetchEntries, authToken]);
 
   // Fetch entries on mount and start sync
   useEffect(() => {

@@ -32,7 +32,7 @@
 ## 项目架构
 
 - Frontend: Expo (React Native Web) + TypeScript
-- Backend: FastAPI + SQLite + uv
+- Backend: FastAPI + PostgreSQL + uv
 
 ## 运行命令
 
@@ -171,7 +171,7 @@ backend/
 
 ## 常见问题
 
-- **数据库修改**: 修改 models.py 后需删除 aidiary.db 重建
+- **数据库修改**: 修改 models.py 后 PostgreSQL 会自动同步表结构
 - **图片上传**: Web 端需 fetch blob 后再传 FormData
 - **CORS**: 前端 localhost 和 127.0.0.1 视为不同来源
 
@@ -179,6 +179,7 @@ backend/
 
 - 复制 `backend/.env.example` 为 `backend/.env`
 - 必填:
+  - DATABASE_URL (PostgreSQL 连接字符串，默认 postgresql://postgres:postgres@localhost:5432/postgres)
   - API_KEY (OpenAI 兼容 API 密钥，默认使用 NVIDIA)
   - BASE_URL (API 端点，默认 https://integrate.api.nvidia.com/v1)
   - MODEL_NAME (AI 模型名称，默认 moonshotai/kimi-k2-instruct-0905)
@@ -198,7 +199,7 @@ backend/
 - **启动**: `cd backend && docker compose up -d`
 - **服务状态**:
   - mem0: http://localhost:8888 (记忆存储服务)
-  - Postgres: 5432 (向量数据库)
+  - PostgreSQL: 5432 (向量数据库 + 主数据库)
   - Neo4j: 7687 (知识图谱)
 - **配置要求**:
   - `GOOGLE_API_KEY`: 有效的 Google Gemini API Key（必需，用于记忆提取）

@@ -10,6 +10,39 @@ import { EntryCard } from '@/components/EntryCard';
 import { FilterPopover } from '@/components/journal/FilterPopover';
 import { JournalEntry } from '@/api/client';
 
+function LoginPromptBanner({
+  onPress,
+  accentColor,
+  theme,
+  i18n,
+}: {
+  onPress: () => void;
+  accentColor: string;
+  theme: 'light' | 'dark';
+  i18n: ReturnType<typeof import('@/constants/i18n').t>;
+}) {
+  const c = Colors[theme];
+
+  return (
+    <TouchableOpacity
+      style={[
+        styles.loginBanner,
+        { backgroundColor: accentColor + '20', borderColor: accentColor },
+      ]}
+      onPress={onPress}
+      activeOpacity={0.8}
+    >
+      <IconSymbol name="user" size={20} color={accentColor} />
+      <ThemedText style={[styles.loginBannerText, { color: c.text }]}>
+        {i18n.loginPrompt || '请登录以同步数据'}
+      </ThemedText>
+      <View style={[styles.loginBannerBtn, { backgroundColor: accentColor }]}>
+        <ThemedText style={styles.loginBannerBtnText}>{i18n.login || '登录'}</ThemedText>
+      </View>
+    </TouchableOpacity>
+  );
+}
+
 export default function JournalTimelineScreen() {
   const router = useRouter();
   const {
@@ -23,6 +56,7 @@ export default function JournalTimelineScreen() {
     checkBackendHealth,
     offlineShown,
     setOfflineShown,
+    authToken,
   } = useAppContext();
   const theme = resolvedTheme;
 
@@ -71,6 +105,15 @@ export default function JournalTimelineScreen() {
 
   const renderHeader = () => (
     <View style={styles.listHeader}>
+      {/* 登录提示条 */}
+      {!authToken && backendStatus === 'online' && (
+        <LoginPromptBanner
+          onPress={() => router.push('/settings')}
+          accentColor={accentColor}
+          theme={theme}
+          i18n={i18n}
+        />
+      )}
       {backendStatus === 'offline' && (
         <TouchableOpacity onPress={checkBackendHealth} style={styles.offlineIcon}>
           <IconSymbol name="wifi-slash" size={20} color="#F43F5E" />
@@ -181,5 +224,30 @@ const styles = StyleSheet.create({
     fontSize: FontSizes.lg,
     textAlign: 'center',
     includeFontPadding: false,
+  },
+  loginBanner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderRadius: 12,
+    borderWidth: 1,
+    marginBottom: 12,
+    gap: 10,
+    flex: 1,
+  },
+  loginBannerText: {
+    flex: 1,
+    fontSize: FontSizes.sm,
+  },
+  loginBannerBtn: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 20,
+  },
+  loginBannerBtnText: {
+    color: '#000',
+    fontWeight: '600',
+    fontSize: FontSizes.sm,
   },
 });

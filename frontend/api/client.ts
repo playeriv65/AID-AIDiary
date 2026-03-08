@@ -1,5 +1,6 @@
 import axios, { AxiosError, AxiosInstance, InternalAxiosRequestConfig } from 'axios';
 import { Alert } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { CONFIG } from '../constants/config';
 
 export interface JournalEntry {
@@ -70,7 +71,10 @@ class ApiClient {
           const { status, data } = error.response as any;
 
           if (status === 401) {
-            Alert.alert('Error', 'Authentication failed');
+            // Clear expired auth credentials
+            AsyncStorage.removeItem('@app_token');
+            AsyncStorage.removeItem('@app_user');
+            Alert.alert('Session Expired', 'Please log in again');
           } else if (status === 422) {
             Alert.alert('Error', 'Validation error');
           } else if (status >= 500) {
