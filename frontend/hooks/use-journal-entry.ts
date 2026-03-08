@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import { type JournalEntry } from '@/api/client';
 import { useAppContext } from '@/context/AppContext';
+import { getStorageAdapter } from '@/lib/storage';
 
 // Import real apiClient for default
 import { apiClient as defaultApiClient } from '@/api/client';
@@ -108,24 +109,66 @@ export function useJournalEntry({
   useEffect(() => {
     if (entryId) {
       setLoading(true);
-      apiClientInstance
-        .getById<JournalEntry>('/entries', entryId)
-        .then((entry) => {
-          setTitle(entry.title || '');
-          setContent(entry.content);
-          setCategory(entry.category);
-          setWeather(entry.weather);
-          setLocation(entry.location || '');
-          setTags(entry.tags || []);
-          setImage(entry.image);
-          setCreatedAt(entry.created_at);
+
+      // Try to load from local storage first
+      getStorageAdapter()
+        .then((storage) => storage.entries.getById(entryId))
+        .then((localEntry) => {
+          if (localEntry && localEntry.deleted !== 1) {
+            // Use local data immediately
+            setTitle(localEntry.title || '');
+            setContent(localEntry.content);
+            setCategory(localEntry.category);
+            setWeather(localEntry.weather);
+            setLocation(localEntry.location || '');
+            setTags(localEntry.tags || []);
+            setImage(localEntry.image);
+            setCreatedAt(localEntry.created_at);
+          }
+          setLoading(false);
+
+          // Sync with backend in background
+          apiClientInstance
+            .getById<JournalEntry>('/entries', entryId)
+            .then((entry) => {
+              setTitle(entry.title || '');
+              setContent(entry.content);
+              setCategory(entry.category);
+              setWeather(entry.weather);
+              setLocation(entry.location || '');
+              setTags(entry.tags || []);
+              setImage(entry.image);
+              setCreatedAt(entry.created_at);
+            })
+            .catch((error) => {
+              // Only show error if we don't have local data
+              if (!localEntry) {
+                console.error('Failed to load entry:', error);
+                alertFn_('Error', 'Failed to load entry');
+              }
+            });
         })
         .catch((error) => {
-          console.error('Failed to load entry:', error);
-          alertFn_('Error', 'Failed to load entry');
-        })
-        .finally(() => {
+          console.error('Failed to load from local storage:', error);
           setLoading(false);
+
+          // Fallback to API
+          apiClientInstance
+            .getById<JournalEntry>('/entries', entryId)
+            .then((entry) => {
+              setTitle(entry.title || '');
+              setContent(entry.content);
+              setCategory(entry.category);
+              setWeather(entry.weather);
+              setLocation(entry.location || '');
+              setTags(entry.tags || []);
+              setImage(entry.image);
+              setCreatedAt(entry.created_at);
+            })
+            .catch((error) => {
+              console.error('Failed to load entry:', error);
+              alertFn_('Error', 'Failed to load entry');
+            });
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

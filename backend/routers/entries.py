@@ -30,6 +30,7 @@ def serialize_entry(entry: models.JournalEntry) -> dict:
         "location": entry.location,
         "tags": tags,
         "image": entry.image,
+        "deleted": entry.deleted,
         "created_at": entry.created_at,
         "updated_at": entry.updated_at,
     }

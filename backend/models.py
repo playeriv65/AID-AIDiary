@@ -18,6 +18,7 @@ class JournalEntry(Base):
     location = Column(String(100), nullable=True)
     tags = Column(String(500), nullable=True)
     image = Column(String(500), nullable=True)
+    deleted = Column(Boolean, default=False, index=True)
     created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(UTC), index=True)
     updated_at = Column(
         DateTime(timezone=True),

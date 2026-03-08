@@ -10,7 +10,11 @@ import schemas
 def get_entry(db: Session, entry_id: str, user_id: int):
     return (
         db.query(models.JournalEntry)
-        .filter(models.JournalEntry.id == entry_id, models.JournalEntry.user_id == user_id)
+        .filter(
+            models.JournalEntry.id == entry_id,
+            models.JournalEntry.user_id == user_id,
+            models.JournalEntry.deleted.is_(False),
+        )
         .first()
     )
 
@@ -18,7 +22,10 @@ def get_entry(db: Session, entry_id: str, user_id: int):
 def get_entries(db: Session, user_id: int, skip: int = 0, limit: int = 100):
     return (
         db.query(models.JournalEntry)
-        .filter(models.JournalEntry.user_id == user_id)
+        .filter(
+            models.JournalEntry.user_id == user_id,
+            models.JournalEntry.deleted.is_(False),
+        )
         .order_by(models.JournalEntry.created_at.desc())
         .offset(skip)
         .limit(limit)
@@ -70,7 +77,8 @@ def update_entry(db: Session, entry_id: str, entry: schemas.JournalEntryUpdate, 
 def delete_entry(db: Session, entry_id: str, user_id: int):
     db_entry = get_entry(db, entry_id, user_id)
     if db_entry:
-        db.delete(db_entry)
+        db_entry.deleted = True
+        db_entry.updated_at = datetime.now(UTC)
         db.commit()
     return db_entry
 
