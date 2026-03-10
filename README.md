@@ -97,3 +97,49 @@ uv run ruff check .      # 检查
 - **运行测试**: `cd frontend && npm test`
 - **技术栈**: Jest + @testing-library/react-native + jest-expo
 - **版本对齐**: jest-expo 必须与 expo SDK 主版本一致
+
+### 工业级测试环境 (Docker Integration Tests)
+
+用于需要真实 PostgreSQL/mem0/Neo4j 的集成测试和 E2E 测试。
+
+#### 快速启动
+
+```bash
+cd backend
+
+# 1. 配置测试环境变量（复制模板并填入真实 API Key）
+cp .env.test.example .env.test
+nano .env.test  # 填入你的真实 API_KEY 和 GOOGLE_API_KEY
+
+# 2. 运行集成测试（自动启动/清理 Docker 环境）
+./run-integration-tests.sh
+```
+
+#### 测试环境特点
+
+- **tmpfs 内存存储**: PostgreSQL 和 Neo4j 数据存储在内存中，测试速度提升 2-5 倍
+- **完全隔离**: 使用独立的 `test_net` 网络，与生产环境隔离
+- **自动清理**: 测试结束自动销毁容器和数据，无残留
+- **健康检查**: 自动等待所有服务就绪后才开始测试
+
+#### 文件说明
+
+| 文件 | 用途 | 提交到 Git |
+|------|------|-----------|
+| `docker-compose.test.yml` | 测试专用 Docker 配置 | ✅ 可提交 |
+| `.env.test.example` | 测试配置模板 | ✅ 可提交 |
+| `.env.test` | 测试环境变量（含真实 API Key） | ❌ 不提交 |
+| `run-integration-tests.sh` | 自动化测试脚本 | ✅ 可提交 |
+
+#### 手动操作
+
+```bash
+# 启动测试环境
+docker compose -f docker-compose.test.yml --env-file .env.test up -d --wait
+
+# 运行测试
+docker compose -f docker-compose.test.yml exec -T backend uv run pytest -v
+
+# 清理环境
+docker compose -f docker-compose.test.yml down -v --remove-orphans
+```

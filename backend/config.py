@@ -4,6 +4,9 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     """应用配置，从环境变量加载"""
 
+    # Server Configuration
+    port: int = 8000  # 服务器端口，可通过环境变量覆盖
+
     # AI API Configuration
     api_key: str = ""  # OpenAI or NVIDIA API key
     base_url: str = "https://integrate.api.nvidia.com/v1"

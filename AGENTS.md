@@ -287,3 +287,51 @@ uv run uvicorn main:app --reload --port 8000
   3. 删除对话
   4. 对话历史日期显示
 - **运行前提**: 后端服务 (8000) 和前端服务 (8081) 需要运行
+
+### 工业级测试环境配置
+
+**目的**: 创建与生产环境隔离的 Docker 测试环境，支持集成测试和 E2E 测试
+
+**核心特性**:
+- **tmpfs 内存存储**: PostgreSQL 和 Neo4j 数据在 RAM 中，测试速度提升 2-5 倍
+- **完全隔离**: 使用独立的 `test_net` 网络，与生产环境隔离
+- **自动清理**: 测试结束自动销毁容器和数据，无残留
+- **健康检查**: 自动等待所有服务就绪后才开始测试
+- **端口可配置**: 通过 `PORT` 和 `EXPOSED_PORT` 环境变量配置
+
+**文件结构**:
+```
+backend/
+├── docker-compose.test.yml    # 测试专用 Docker 配置
+├── .env.test                  # 测试环境变量（含真实 API Key，不提交）
+├── .env.test.example          # 测试配置模板（可提交）
+├── run-integration-tests.sh   # 自动化测试脚本
+└── tests/
+    └── test_integration_verify.py  # 17 个集成验证测试
+```
+
+**使用方法**:
+```bash
+# 1. 配置测试环境变量
+cp .env.test.example .env.test
+# 编辑 .env.test，填入真实 API Key
+
+# 2. 运行集成测试
+./run-integration-tests.sh
+
+# 3. 或手动运行
+docker compose -f docker-compose.test.yml --env-file .env.test up -d --wait
+docker compose -f docker-compose.test.yml exec -T backend uv run pytest -v
+```
+
+**测试覆盖**:
+- ✅ 服务器可访问性（根路由、/health、/docs、OpenAPI）
+- ✅ mem0 生命周期（POST/GET/DELETE）
+- ✅ 环境变量加载验证
+- ✅ 服务启动日志检查
+- ✅ 容器重启稳定性
+
+**注意事项**:
+- `.env.test` 包含敏感信息，已加入 `.gitignore`，请勿提交
+- 测试环境使用内存存储，数据在容器停止后自动丢失
+- 健康检查使用 `depends_on: condition: service_healthy` 确保服务启动顺序

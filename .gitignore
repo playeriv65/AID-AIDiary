@@ -30,6 +30,7 @@ wheels/
 
 # Secrets & Environment
 backend/.env
+backend/.env.test
 .env
 .env.local
 .env.*.local
