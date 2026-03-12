@@ -1,4 +1,5 @@
 import json
+import os
 from datetime import datetime, timedelta
 
 from database import Base, SessionLocal, engine
@@ -8,15 +9,19 @@ Base.metadata.create_all(bind=engine)
 
 db = SessionLocal()
 
-USERNAME = "playeriv65"
+# 测试模式使用 testuser，生产模式使用 playeriv65
+TEST_MODE = os.getenv("TEST_MODE", "false").lower() == "true"
+USERNAME = "testuser" if TEST_MODE else "playeriv65"
+TEST_PASSWORD = "testpass123"
+PROD_PASSWORD = "password123"
 user = db.query(User).filter(User.username == USERNAME).first()
 if not user:
     from auth import hash_password
 
     user = User(
         username=USERNAME,
-        email="playeriv65@example.com",
-        hashed_password=hash_password("password123"),
+        email=f"{USERNAME}@example.com",
+        hashed_password=hash_password(TEST_PASSWORD if TEST_MODE else PROD_PASSWORD),
     )
     db.add(user)
     db.commit()

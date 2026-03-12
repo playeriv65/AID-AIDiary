@@ -84,19 +84,32 @@ cd frontend && npx expo start --web --port 8081
 # 5. 访问 http://localhost:8081
 ```
 
-**测试环境：**
+**测试环境（纯净模式）：**
 
 ```bash
 # 1. 配置测试环境变量
 cd backend && cp .env.test.example .env.test
 cd frontend && echo "EXPO_PUBLIC_ENV=test" > .env
 
-# 2. 启动测试环境
+# 2. 启动测试后端（内存模式，纯净数据）
 cd backend && docker compose -f docker-compose.test.yml up -d
 
-# 3. 运行测试
-cd backend && sudo docker compose -f docker-compose.test.yml exec -T backend uv run pytest -v
+# 5. 测试账号
+# 用户名: testuser
+# 密码: testpass123
 ```
+
+**⚠️ 测试环境已自动注入数据**: 启动时 `docker-entrypoint.sh` 会自动为 testuser 创建 13 条测试日记。
+
+**测试模式要求：**
+
+| 组件 | 要求 | 目的 |
+|------|------|------|
+| 后端 | `docker-compose.test.yml` (tmpfs 内存存储) | 数据隔离，每次重启自动清理 |
+| 前端 | 无痕/隐私模式浏览器 | 无缓存、无 localStorage 残留 |
+| 数据 | 注入到 `testuser` 而非 `playeriv65` | 测试数据与生产数据分离 |
+
+**⚠️ 重要：测试时必须使用无痕模式浏览器，否则 localStorage 中可能残留生产环境的登录状态。**
 
 ## 目录结构
 
@@ -123,6 +136,9 @@ backend/
   main.py              # FastAPI 入口
   auth.py, crud.py, models.py, schemas.py
   config.py, database.py, seed_data.py
+  prompts.yaml         # AI 提示词配置（集中管理）
+  prompts.py           # 提示词加载模块
+  docker-entrypoint.sh # Docker 启动脚本（测试环境自动注入数据）
   mem0_client.py, ai_service.py
   routers/             # auth, entries, ai, health, upload, conversations
   services/            # auth_service, ai_client, memory_service, ai_chat_service, ai_diary_service
@@ -202,10 +218,20 @@ curl http://localhost:8888/memories?user_id=test     # 测试 API
 
 ## 经验教训
 
+### AI 提示词集中管理
+
+- **位置**: `backend/prompts.yaml`
+- **目的**: 所有 AI 系统提示词集中管理，便于维护和调整
+- **使用**: 通过 `prompts.py` 模块加载，服务层调用 `prompts.get_xxx()` 方法
+- **日记生成原则**: 只记录用户明确提到的内容，不添加、不猜测、不杜撰
+
 ### 固定 UUID 种子数据
 
 - **目的**: 每次运行产生相同的测试数据
 - **实现**: seed_data.py 中使用固定 UUID
+- **环境区分**: 
+  - 生产模式：数据注入 `playeriv65`
+  - 测试模式（`TEST_MODE=true`）：数据注入 `testuser`
 
 ### lib/storage 离线优先架构
 
