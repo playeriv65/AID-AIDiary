@@ -25,7 +25,7 @@ class Mem0Client:
     def client(self) -> httpx.AsyncClient:
         """获取 HTTP 客户端（懒加载）"""
         if self._client is None:
-            self._client = httpx.AsyncClient(timeout=10.0)
+            self._client = httpx.AsyncClient(timeout=30.0)
         return self._client
 
     async def close(self) -> None:

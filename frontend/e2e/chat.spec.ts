@@ -32,20 +32,24 @@ test.describe('AI Chat E2E Tests', () => {
     await input.press('Enter');
     await page.waitForTimeout(5000);
 
-    await page.getByTestId('phosphor-react-native-list-dashes-regular').click();
+    const openSidebarButton = page.getByRole('button').filter({ has: page.locator('svg') }).first();
+    await openSidebarButton.click();
     await page.waitForTimeout(1000);
 
-    await page.getByTestId('phosphor-react-native-x-regular').click();
+    await page.locator('text=对话历史').waitFor({ state: 'visible' });
+    
+    const closeSidebarButton = page.getByRole('button').filter({ has: page.locator('svg') }).nth(1);
+    await closeSidebarButton.click();
     await page.waitForTimeout(1000);
 
     await input.fill('第二个对话的消息');
     await input.press('Enter');
     await page.waitForTimeout(5000);
 
-    await page.getByTestId('phosphor-react-native-list-dashes-regular').click();
+    await openSidebarButton.click();
     await page.waitForTimeout(1000);
 
-    const trashIcons = await page.getByTestId('phosphor-react-native-trash-regular').count();
+    const trashIcons = await page.getByRole('button', { name: /删除|Delete|削除/ }).count();
     expect(trashIcons).toBeGreaterThanOrEqual(1);
   });
 
@@ -57,10 +61,11 @@ test.describe('AI Chat E2E Tests', () => {
     await input.press('Enter');
     await page.waitForTimeout(5000);
 
-    await page.getByTestId('phosphor-react-native-list-dashes-regular').click();
+    const openSidebarButton = page.getByRole('button').filter({ has: page.locator('svg') }).first();
+    await openSidebarButton.click();
     await page.waitForTimeout(1000);
 
-    const deleteButton = page.getByTestId('phosphor-react-native-trash-regular').first();
+    const deleteButton = page.getByRole('button', { name: /删除|Delete|削除/ }).first();
     await deleteButton.waitFor({ state: 'visible', timeout: 10000 });
     await deleteButton.click();
 
@@ -78,7 +83,8 @@ test.describe('AI Chat E2E Tests', () => {
     await input.press('Enter');
     await page.waitForTimeout(5000);
 
-    await page.getByTestId('phosphor-react-native-list-dashes-regular').click();
+    const openSidebarButton = page.getByRole('button').filter({ has: page.locator('svg') }).first();
+    await openSidebarButton.click();
     await page.waitForTimeout(1000);
 
     const todayText = page.locator('text=今天');

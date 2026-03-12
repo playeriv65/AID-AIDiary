@@ -2,9 +2,14 @@ import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
   testDir: './e2e',
+  testIgnore: ['**/*.helper.ts'],
+  timeout: 120000,
+  expect: {
+    timeout: 10000,
+  },
   fullyParallel: false,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
+  retries: 0,
   workers: 1,
   reporter: 'html',
   use: {
@@ -23,16 +28,13 @@ export default defineConfig({
   ],
   webServer: [
     {
-      command: 'cd ../backend && uv run uvicorn main:app --port 8000',
-      url: 'http://localhost:8000/health',
-      reuseExistingServer: true,
-      timeout: 60000,
-    },
-    {
       command: 'npx expo start --web --port 8081',
       url: 'http://localhost:8081',
       reuseExistingServer: true,
       timeout: 120000,
+      env: {
+        EXPO_PUBLIC_ENV: 'test',
+      },
     },
   ],
 });

@@ -21,44 +21,78 @@ A Brand New Form of Journaling.
 
 ## 快速启动 (Getting Started)
 
-### 1. 后端 (Backend)
+### 生产环境
+
 ```bash
+# 1. 配置环境变量
+cd backend && cp .env.example .env
+cd frontend && cp .env.example .env
+# 编辑 backend/.env，填入 SECRET_KEY 和 GOOGLE_API_KEY
+
+# 2. Docker 启动
+cd backend && docker compose up -d
+
+# 3. 启动前端
+cd frontend && npx expo start --web --port 8081
+
+# 4. 访问 http://localhost:8081
+```
+
+### 测试环境
+
+```bash
+# 1. 配置测试环境变量
+cd backend && cp .env.test.example .env.test
+cd frontend && echo "EXPO_PUBLIC_ENV=test" > .env
+
+# 2. 启动测试环境
+cd backend && docker compose -f docker-compose.test.yml up -d
+
+# 3. 运行测试
+cd backend && sudo docker compose -f docker-compose.test.yml exec -T backend uv run pytest -v
+```
+
+### 本地开发（无 Docker）
+
+```bash
+# 后端
 cd backend
 uv sync
-uv run uvicorn main:app --reload
-```
-后端服务运行在 `http://localhost:8000`
+uv run uvicorn main:app --reload --port 8000
 
-### 2. 前端 (Frontend)
-```bash
+# 前端
 cd frontend
 npm install
 npm run web
 ```
-在浏览器打开 `http://localhost:8081`
 
-### 3. 测试数据 (可选)
+## 环境配置
+
+项目支持**生产环境**和**测试环境**两种模式。
+
+### 后端环境
+
+| 环境 | 配置文件 | Docker Compose | 后端端口 |
+|------|---------|---------------|---------|
+| 生产 | `backend/.env` | `docker-compose.yml` | 8000 |
+| 测试 | `backend/.env.test` | `docker-compose.test.yml` | 8001 |
+
+### 前端环境
+
+前端通过 `frontend/.env` 配置环境：
+
 ```bash
-cd backend
-uv run python seed_data.py
-```
-生成 13 篇测试日记，默认用户 `playeriv65`，时间跨度 4 个月
+# 生产环境
+EXPO_PUBLIC_ENV=production
 
-### 4. 启动 mem0 服务（可选，用于 AI 记忆功能）
-```bash
-cd backend
-docker-compose up -d
+# 测试环境
+EXPO_PUBLIC_ENV=test
 ```
-mem0 服务运行在 `http://localhost:8888`
 
-## 环境变量
-复制 `backend/.env.example` 为 `backend/.env` 并填入：
-```
-DATABASE_URL=postgresql://postgres:postgres@localhost:5432/postgres  # Docker: postgresql://postgres:postgres@postgres:5432/postgres
-API_KEY=sk-...
-SECRET_KEY=your-jwt-secret
-MEM0_API_URL=http://localhost:8888  # 可选，默认 localhost:8888
-```
+| 环境 | EXPO_PUBLIC_ENV | API 地址 |
+|------|-----------------|---------|
+| 生产 | `production` | `127.0.0.1:8000` |
+| 测试 | `test` | `127.0.0.1:8001` |
 
 ## 代码格式化 (Code Formatting)
 

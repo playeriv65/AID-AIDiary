@@ -45,6 +45,7 @@ services:
       - NEO4J_USER=neo4j
       - NEO4J_PASSWORD=mem0graph
       - GOOGLE_API_KEY=${GOOGLE_API_KEY:-test-google-api-key}
+      - LLM_MODEL=${LLM_MODEL:-gemini-3.1-flash-lite-preview}
     networks:
       - test_net
     depends_on:
