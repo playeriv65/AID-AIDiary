@@ -22,12 +22,20 @@ async def chat_with_ai(messages: list[dict[str, str]], user_id: str | int | None
     """
     # Import at runtime to allow test patching
     import ai_service
+    from services.memory_service import SEARCH_MEMORIES_TOOL, _get_memory_context
 
-    # 存储当前对话到记忆
+    # 存储当前对话到记忆（异步执行，不阻塞响应）
     if user_id:
         from services.memory_service import _store_conversation_to_memory
 
-        await _store_conversation_to_memory(messages, user_id)
+        # 异步存储记忆，捕获可能的异常但不阻塞主流程
+        async def store_memory_safely():
+            try:
+                await _store_conversation_to_memory(messages, user_id)
+            except Exception as e:
+                logger.warning("Failed to store conversation to memory: %s", str(e)[:100])
+
+        asyncio.create_task(store_memory_safely())
 
     # 构建系统提示词
     from services.memory_service import _build_system_prompt
@@ -37,15 +45,41 @@ async def chat_with_ai(messages: list[dict[str, str]], user_id: str | int | None
     try:
         full_messages = [{"role": "system", "content": system_prompt}] + messages
 
+        # 第一次调用：带工具调用支持
+        tools = [SEARCH_MEMORIES_TOOL] if user_id else None
         response = ai_service.client.chat.completions.create(
             model=ai_service.MODEL_NAME,
             messages=full_messages,  # type: ignore
             temperature=ai_service.AI_TEMPERATURE,
             top_p=ai_service.AI_TOP_P,
             max_tokens=ai_service.AI_MAX_TOKENS_CHAT,
+            tools=tools,  # type: ignore
         )
 
-        return {"response": response.choices[0].message.content, "success": True}
+        # 检查是否需要调用工具
+        message = response.choices[0].message
+        if message.tool_calls:
+            for tool_call in message.tool_calls:
+                if tool_call.function.name == "search_memories" and user_id:
+                    # 执行记忆检索
+                    memories = await _get_memory_context(messages, user_id)
+
+                    # 构建带记忆的 messages，重新调用 AI
+                    if memories:
+                        memory_system_prompt = f"{system_prompt}\n\n以下是相关记忆：\n{memories}"
+                        full_messages_with_memory = [
+                            {"role": "system", "content": memory_system_prompt}
+                        ] + messages
+
+                        response = ai_service.client.chat.completions.create(
+                            model=ai_service.MODEL_NAME,
+                            messages=full_messages_with_memory,  # type: ignore
+                            temperature=ai_service.AI_TEMPERATURE,
+                            top_p=ai_service.AI_TOP_P,
+                            max_tokens=ai_service.AI_MAX_TOKENS_CHAT,
+                        )
+
+        return {"response": message.content or "", "success": True}
     except APIConnectionError as e:
         logger.warning("AI service connection failed: %s", str(e)[:100])
         return {
@@ -97,10 +131,18 @@ async def stream_chat_with_ai(
 
     import ai_service
 
+    # 存储当前对话到记忆（异步执行，不阻塞响应）
     if user_id:
         from services.memory_service import _store_conversation_to_memory
 
-        await _store_conversation_to_memory(messages, user_id)
+        # 异步存储记忆，捕获可能的异常但不阻塞主流程
+        async def store_memory_safely():
+            try:
+                await _store_conversation_to_memory(messages, user_id)
+            except Exception as e:
+                logger.warning("Failed to store conversation to memory: %s", str(e)[:100])
+
+        asyncio.create_task(store_memory_safely())
 
     from services.memory_service import _build_system_prompt
 

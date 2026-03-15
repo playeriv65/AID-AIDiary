@@ -8,6 +8,23 @@ logger = logging.getLogger(__name__)
 
 MEMORY_SEARCH_LIMIT = 3
 
+# OpenAI Function Calling schema for search_memories
+SEARCH_MEMORIES_TOOL = {
+    "type": "function",
+    "function": {
+        "name": "search_memories",
+        "description": "搜索用户记忆，当用户提及过往内容或需要历史信息时调用",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "query": {"type": "string", "description": "搜索查询，用于匹配记忆内容"},
+                "limit": {"type": "integer", "description": "返回的记忆数量", "default": 3},
+            },
+            "required": ["query"],
+        },
+    },
+}
+
 
 async def _get_memory_context(messages: list[dict[str, str]], user_id: str | int) -> str:
     """从历史对话和记忆中获取上下文信息

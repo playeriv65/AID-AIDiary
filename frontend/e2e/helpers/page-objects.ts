@@ -23,16 +23,29 @@ export class TimelinePage {
   async filterByCategory(category: string): Promise<void> {
     // Click filter button
     await this.page.getByRole('button', { name: /筛选|Filter|フィルター/ }).click();
-    
+
     // Select category from filter dropdown
     await this.page.getByRole('combobox', { name: /分类|Category|カテゴリ/ }).click();
-    await this.page.locator(`role=option[name=/${category === 'work' ? '工作|Work|仕事' : 
-      category === 'life' ? '生活|Life|生活' : 
-      category === 'travel' ? '旅行|Travel|旅行' : 
-      category === 'study' ? '学习|Study|勉強' : 
-      category === 'other' ? '其他|Other|その他' : 
-      category === 'health' ? '健康|Health|健康' : ''}/i]`).click();
-    
+    await this.page
+      .locator(
+        `role=option[name=/${
+          category === 'work'
+            ? '工作|Work|仕事'
+            : category === 'life'
+              ? '生活|Life|生活'
+              : category === 'travel'
+                ? '旅行|Travel|旅行'
+                : category === 'study'
+                  ? '学习|Study|勉強'
+                  : category === 'other'
+                    ? '其他|Other|その他'
+                    : category === 'health'
+                      ? '健康|Health|健康'
+                      : ''
+        }/i]`
+      )
+      .click();
+
     // Apply filter
     await this.page.getByRole('button', { name: /应用|Apply|適用/ }).click();
   }
@@ -43,16 +56,29 @@ export class TimelinePage {
   async filterByWeather(weather: string): Promise<void> {
     // Click filter button
     await this.page.getByRole('button', { name: /筛选|Filter|フィルター/ }).click();
-    
+
     // Select weather from filter dropdown
     await this.page.getByRole('combobox', { name: /天气|Weather|天気/ }).click();
-    await this.page.locator(`role=option[name=/${weather === 'sunny' ? '晴天|Sunny|晴れ' : 
-      weather === 'rainy' ? '雨天|Rainy|雨' : 
-      weather === 'cloudy' ? '多云|Cloudy|曇り' : 
-      weather === 'snowy' ? '下雪|Snowy|雪' : 
-      weather === 'foggy' ? '雾|Foggy|霧' : 
-      weather === 'windy' ? '大风|Windy|風' : ''}/i]`).click();
-    
+    await this.page
+      .locator(
+        `role=option[name=/${
+          weather === 'sunny'
+            ? '晴天|Sunny|晴れ'
+            : weather === 'rainy'
+              ? '雨天|Rainy|雨'
+              : weather === 'cloudy'
+                ? '多云|Cloudy|曇り'
+                : weather === 'snowy'
+                  ? '下雪|Snowy|雪'
+                  : weather === 'foggy'
+                    ? '雾|Foggy|霧'
+                    : weather === 'windy'
+                      ? '大风|Windy|風'
+                      : ''
+        }/i]`
+      )
+      .click();
+
     // Apply filter
     await this.page.getByRole('button', { name: /应用|Apply|適用/ }).click();
   }
@@ -78,7 +104,10 @@ export class TimelinePage {
    * Click refresh button to reload entries
    */
   async refresh(): Promise<void> {
-    await this.page.getByRole('button').filter({ has: this.page.locator('img[alt*="refresh" i]') }).click();
+    await this.page
+      .getByRole('button')
+      .filter({ has: this.page.locator('img[alt*="refresh" i]') })
+      .click();
   }
 
   /**
@@ -126,17 +155,17 @@ export class WritePage {
   async selectCategory(category: string): Promise<void> {
     await this.page.getByRole('combobox', { name: /设置分类|Category|カテゴリ/ }).click();
     await this.page.waitForTimeout(500);
-    
+
     // Map category value to its localized text
     const categoryMap: Record<string, RegExp> = {
-      'work': /工作|Work|仕事/,
-      'life': /生活|Life|生活/,
-      'travel': /旅行|Travel|旅行/,
-      'study': /学习|Study|勉強/,
-      'other': /其他|Other|その他/,
-      'health': /健康|Health|健康/
+      work: /工作|Work|仕事/,
+      life: /生活|Life|生活/,
+      travel: /旅行|Travel|旅行/,
+      study: /学习|Study|勉強/,
+      other: /其他|Other|その他/,
+      health: /健康|Health|健康/,
     };
-    
+
     await this.page.locator('role=option').filter({ hasText: categoryMap[category] }).click();
   }
 
@@ -146,17 +175,17 @@ export class WritePage {
   async selectWeather(weather: string): Promise<void> {
     await this.page.getByRole('combobox', { name: /选择天气|Weather|天気/ }).click();
     await this.page.waitForTimeout(500);
-    
+
     // Map weather value to its localized text
     const weatherMap: Record<string, RegExp> = {
-      'sunny': /晴天|Sunny|晴れ/,
-      'rainy': /雨天|Rainy|雨/,
-      'cloudy': /多云|Cloudy|曇り/,
-      'snowy': /下雪|Snowy|雪/,
-      'foggy': /雾|Foggy|霧/,
-      'windy': /大风|Windy|風/
+      sunny: /晴天|Sunny|晴れ/,
+      rainy: /雨天|Rainy|雨/,
+      cloudy: /多云|Cloudy|曇り/,
+      snowy: /下雪|Snowy|雪/,
+      foggy: /雾|Foggy|霧/,
+      windy: /大风|Windy|風/,
     };
-    
+
     await this.page.locator('role=option').filter({ hasText: weatherMap[weather] }).click();
   }
 
@@ -172,8 +201,8 @@ export class WritePage {
    * Add a tag
    */
   async addTag(tag: string): Promise<void> {
-    await this.page.locator('text=+').click();
-    await this.page.getByPlaceholder(/添加标签|Add Tag|タグ追加/).fill(tag);
+    await this.page.getByRole('button', { name: /Add tag|添加标签/ }).click();
+    await this.page.getByRole('textbox', { name: /New tag input|添加标签/ }).fill(tag);
     await this.page.getByRole('button', { name: /保存|Save|保存/ }).click();
   }
 
@@ -181,7 +210,7 @@ export class WritePage {
    * Remove a tag
    */
   async removeTag(tag: string): Promise<void> {
-    await this.page.locator(`text=#${tag}`).locator('+ svg').click();
+    await this.page.getByRole('button', { name: `Remove tag ${tag}` }).click();
   }
 
   /**
@@ -195,7 +224,7 @@ export class WritePage {
    * Delete diary entry
    */
   async delete(): Promise<void> {
-    await this.page.getByRole('button', { name: /删除|Delete|削除/ }).click();  
+    await this.page.getByRole('button', { name: /删除|Delete|削除/ }).click();
   }
 }
 
@@ -227,7 +256,9 @@ export class SearchPage {
    * Get search placeholder text element
    */
   getSearchPlaceholder() {
-    return this.page.locator('.search-input, input[placeholder*="搜索|Search|検索" i], input[type="search"]').first();
+    return this.page
+      .locator('.search-input, input[placeholder*="搜索|Search|検索" i], input[type="search"]')
+      .first();
   }
 
   /**
@@ -244,11 +275,11 @@ export class SearchPage {
     const resultElements = this.page.locator('[cursor=pointer]');
     const resultCount = await resultElements.count();
     const results = [];
-    
+
     for (let i = 0; i < resultCount; i++) {
       results.push(await resultElements.nth(i).textContent());
     }
-    
+
     return results;
   }
 
@@ -326,7 +357,9 @@ export class SettingsPage {
    * Select accent color
    */
   async selectAccentColor(color: string): Promise<void> {
-    await this.page.getByRole('combobox', { name: /主题颜色|Accent Color|アクセントカラー/ }).click();
+    await this.page
+      .getByRole('combobox', { name: /主题颜色|Accent Color|アクセントカラー/ })
+      .click();
     await this.page.locator(`role=option[name="${color}" i]`).click();
   }
 
@@ -376,18 +409,20 @@ export class ChatPage {
    * Send a message to the AI
    */
   async sendMessage(text: string): Promise<void> {
-    await this.page.getByPlaceholder(/输入消息|Type message|メッセージ入力/).fill(text);
-    await this.page.getByRole('button', { name: /发送|Send|送信/ }).click();
+    await this.page.getByRole('textbox', { name: /Chat message input|消息|message/i }).fill(text);
+    await this.page.getByRole('button', { name: /Send message|发送|Send|送信/ }).click();
   }
 
   /**
    * Get last AI message
    */
   async getLastMessage(): Promise<string> {
-    const messageElements = this.page.locator('[data-message-type="response"], [class*="message"] div');
+    const messageElements = this.page.locator(
+      '[data-message-type="response"], [class*="message"] div'
+    );
     const count = await messageElements.count();
     if (count === 0) return '';
-    
+
     const lastMessage = await messageElements.last().textContent();
     return lastMessage || '';
   }
@@ -403,7 +438,9 @@ export class ChatPage {
    * Switch to a conversation at specified index
    */
   async switchConversation(index: number): Promise<void> {
-    const conversationElements = this.page.locator('[data-conversation-id], [class*="conversation"]');
+    const conversationElements = this.page.locator(
+      '[data-conversation-id], [class*="conversation"]'
+    );
     const conversation = await conversationElements.nth(index);
     await conversation.click();
   }
@@ -412,9 +449,11 @@ export class ChatPage {
    * Delete conversation at specified index
    */
   async deleteConversation(index: number): Promise<void> {
-    const conversationElements = this.page.locator('[data-conversation-id], [class*="conversation"]');
+    const conversationElements = this.page.locator(
+      '[data-conversation-id], [class*="conversation"]'
+    );
     const conversationElement = await conversationElements.nth(index);
-    
+
     // Find and click the delete button inside the conversation item
     await conversationElement.getByRole('button', { name: /删除|Delete|削除/ }).click();
   }

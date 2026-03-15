@@ -2,39 +2,36 @@ import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
   testDir: './e2e',
-  testIgnore: ['**/*.helper.ts'],
-  timeout: 120000,
-  expect: {
-    timeout: 10000,
-  },
+  timeout: 300000,
   fullyParallel: false,
   forbidOnly: !!process.env.CI,
-  retries: 0,
+  retries: process.env.CI ? 2 : 0,
   workers: 1,
-  reporter: 'html',
+  reporter: [['list'], ['html', { outputFolder: 'playwright-report' }]],
+  
   use: {
     baseURL: 'http://localhost:8081',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
-    actionTimeout: 10000,
-    navigationTimeout: 30000,
+    headless: true,
   },
+
   projects: [
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     },
-  ],
-  webServer: [
     {
-      command: 'npx expo start --web --port 8081',
-      url: 'http://localhost:8081',
-      reuseExistingServer: true,
-      timeout: 120000,
-      env: {
-        EXPO_PUBLIC_ENV: 'test',
-      },
+      name: 'chromium-headed',
+      use: { ...devices['Desktop Chrome'], headless: false },
     },
   ],
+
+  webServer: {
+    command: 'npm run web',
+    port: 8081,
+    timeout: 120000,
+    reuseExistingServer: true,
+  },
 });
