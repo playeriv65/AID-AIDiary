@@ -38,7 +38,7 @@ describe('ChatInput', () => {
       />
     );
 
-    expect(screen.getByPlaceholderText('Type a message...')).toBeTruthy();
+    expect(screen.getByRole('textbox', { name: 'Chat message input' })).toBeTruthy();
   });
 
   it('calls onInputChange when text changes', () => {
@@ -54,7 +54,7 @@ describe('ChatInput', () => {
       />
     );
 
-    const input = screen.getByPlaceholderText('Type a message...');
+    const input = screen.getByRole('textbox', { name: 'Chat message input' });
     fireEvent.changeText(input, 'Hello World');
 
     expect(mockOnInputChange).toHaveBeenCalledWith('Hello World');
@@ -73,7 +73,7 @@ describe('ChatInput', () => {
       />
     );
 
-    const sendButton = screen.getByTestId('send-button');
+    const sendButton = screen.getByRole('button', { name: 'Send message' });
     fireEvent.press(sendButton);
 
     expect(mockOnSend).toHaveBeenCalled();
@@ -92,7 +92,7 @@ describe('ChatInput', () => {
       />
     );
 
-    const sendButton = screen.getByTestId('send-button');
+    const sendButton = screen.getByRole('button', { name: 'Send message' });
     expect(sendButton.props.accessibilityState?.disabled).toBe(true);
   });
 
@@ -110,7 +110,7 @@ describe('ChatInput', () => {
       />
     );
 
-    expect(screen.getByTestId('stop-button')).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'Stop generating' })).toBeTruthy();
   });
 
   it('calls onStopGenerating when stop button is pressed', () => {
@@ -127,7 +127,7 @@ describe('ChatInput', () => {
       />
     );
 
-    const stopButton = screen.getByTestId('stop-button');
+    const stopButton = screen.getByRole('button', { name: 'Stop generating' });
     fireEvent.press(stopButton);
 
     expect(mockOnStopGenerating).toHaveBeenCalled();
@@ -164,8 +164,8 @@ describe('ChatInput', () => {
       />
     );
 
-    expect(screen.getByTestId('attach-image-button')).toBeTruthy();
-    expect(screen.getByTestId('camera-button')).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'Attach image' })).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'Take photo' })).toBeTruthy();
   });
 
   it('applies correct theme styles', () => {
@@ -193,6 +193,6 @@ describe('ChatInput', () => {
       />
     );
 
-    expect(screen.getByPlaceholderText('Type a message...')).toBeTruthy();
+    expect(screen.getByRole('textbox', { name: 'Chat message input' })).toBeTruthy();
   });
 });

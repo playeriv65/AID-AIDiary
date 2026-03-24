@@ -153,6 +153,7 @@ backend/
 - **组件统一**: 使用 ThemedText 而非 Text
 - **API 地址**: 使用 `constants/config.ts` 中的 CONFIG.API_URL
 - **图片 URL**: 后端返回纯文件名，前端拼接 `CONFIG.STATIC_URL + '/' + image`
+- **TDD 开发范式**: 测试先行，新功能/Bug 修复必须先写测试
 
 ## 代码格式化
 
@@ -165,6 +166,22 @@ cd backend && uv run ruff format . && uv run ruff check .
 ```
 
 ## 测试规范
+
+### TDD 开发流程
+
+所有功能开发遵循「红 → 绿 → 重构」循环：
+
+1. **红**：先写失败的测试（定义预期行为）
+2. **绿**：写最少代码让测试通过
+3. **重构**：优化代码结构，保持测试通过
+
+### 测试覆盖要求
+
+| 范围 | 要求 |
+|------|------|
+| 后端 | 业务逻辑（services/）、API 端点（routers/）必须有单元测试 |
+| 前端 | 组件（components/）、hooks、工具函数必须有测试 |
+| Bug 修复 | 必须先写复现 Bug 的测试 |
 
 ### 运行测试
 

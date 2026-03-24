@@ -59,6 +59,7 @@ export function MessageActions({
   return (
     <View style={styles.container}>
       <TouchableOpacity
+        testID="message-action-copy"
         style={styles.button}
         onPress={handleCopy}
         hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
@@ -68,6 +69,7 @@ export function MessageActions({
 
       {role === 'assistant' && (
         <TouchableOpacity
+          testID="message-action-retry"
           style={styles.button}
           onPress={handleRetry}
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
@@ -78,6 +80,7 @@ export function MessageActions({
 
       {role === 'user' && onEdit && (
         <TouchableOpacity
+          testID="message-action-edit"
           style={styles.button}
           onPress={handleEdit}
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
@@ -88,6 +91,7 @@ export function MessageActions({
 
       {role === 'assistant' && onRegenerate && (
         <TouchableOpacity
+          testID="message-action-regenerate"
           style={styles.button}
           onPress={handleRegenerate}
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}

@@ -1,20 +1,31 @@
 import { defineConfig, devices } from '@playwright/test';
+import * as dotenv from 'dotenv';
+import path from 'path';
+
+// Load .env file
+dotenv.config({ path: path.resolve(__dirname, '.env') });
+
+// Set Playwright test flag for config.ts detection
+process.env.PLAYWRIGHT_TEST = 'true';
 
 export default defineConfig({
   testDir: './e2e',
-  timeout: 300000,
+  timeout: 60000,
   fullyParallel: false,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
+  retries: 0,
   workers: 1,
-  reporter: [['list'], ['html', { outputFolder: 'playwright-report' }]],
-  
+  reporter: [['list']],
+  globalSetup: require.resolve('./e2e/global-setup'),
+
   use: {
-    baseURL: 'http://localhost:8081',
+    baseURL: 'http://127.0.0.1:8081',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
     headless: true,
+    actionTimeout: 10000,
+    navigationTimeout: 30000,
   },
 
   projects: [
@@ -22,16 +33,5 @@ export default defineConfig({
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     },
-    {
-      name: 'chromium-headed',
-      use: { ...devices['Desktop Chrome'], headless: false },
-    },
   ],
-
-  webServer: {
-    command: 'npm run web',
-    port: 8081,
-    timeout: 120000,
-    reuseExistingServer: true,
-  },
 });

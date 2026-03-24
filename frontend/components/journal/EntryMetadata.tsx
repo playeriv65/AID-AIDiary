@@ -82,12 +82,16 @@ export function EntryMetadata({
             onChangeText={onLocationChange}
             onBlur={handleLocationBlur}
             autoFocus
+            accessibilityRole="textbox"
+            accessibilityLabel="Location input"
           />
         ) : (
           <TouchableOpacity
             style={styles.locationBtn}
             onPress={() => setShowLocationInput(true)}
             activeOpacity={0.7}
+            accessibilityRole="button"
+            accessibilityLabel={location ? `Location: ${location}` : 'Set location'}
           >
             <IconSymbol name="map-pin" size={14} color={location ? accentColor : mutedColor} />
             <ThemedText

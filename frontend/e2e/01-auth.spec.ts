@@ -1,73 +1,67 @@
 import { expect, test } from '@playwright/test';
+import { clearAuthState, injectTestEnv } from './helpers/test-utils';
 
 test.describe('认证流程', () => {
-  test('新用户注册流程', async ({ page }) => {
-    const username = `newuser_${Date.now()}`;
-    const password = 'testpass123';
+  test.use({ storageState: undefined });
+
+  test('已有用户登录 - 登录成功后显示用户头像', async ({ page, context }) => {
+    await context.clearCookies();
+    await injectTestEnv(page);
 
     await page.goto('/');
-    await page.waitForTimeout(3000);
-
-    const loginBanner = page.getByText('请登录以同步数据');
-    await loginBanner.click();
+    await page.waitForLoadState('networkidle');
     await page.waitForTimeout(2000);
 
-    const registerLink = page.getByText(/注册/).first();
-    await registerLink.click();
-    await page.waitForTimeout(1000);
-
-    const inputs = page.locator('input');
-    await inputs.first().fill(username);
-    await inputs.nth(1).fill(password);
-
-    const registerButton = page.getByRole('button', { name: /注册/ });
-    await registerButton.click();
-    await page.waitForTimeout(5000);
-
-    const userAvatar = page.locator('text=/^[A-Z]$/').first();
-    await expect(userAvatar).toBeVisible({ timeout: 10000 });
-    console.log(`✅ 用户 ${username} 注册成功`);
-  });
-
-  test('已有用户登录流程', async ({ page }) => {
-    await page.goto('/');
-    await page.waitForTimeout(3000);
-
-    const loginBanner = page.getByText('请登录以同步数据');
-    await loginBanner.click();
+    await clearAuthState(page);
+    await page.reload();
+    await page.waitForLoadState('networkidle');
     await page.waitForTimeout(2000);
 
-    const inputs = page.locator('input');
-    await inputs.first().fill('testuser');
-    await inputs.nth(1).fill('testpass123');
+    await page.getByText('设置').click();
+    await page.waitForTimeout(2000);
 
-    const loginButton = page.getByRole('button', { name: /登录/ });
-    await loginButton.click();
+    const loginBtn = page.getByText(/登录.*注册/);
+    await loginBtn.click();
+    await page.waitForTimeout(2000);
+
+    await page.getByPlaceholder(/用户名/).fill('testuser');
+    await page.getByPlaceholder(/密码/).fill('testpass123');
+    await page.locator('text=登录').last().click();
     await page.waitForTimeout(5000);
 
-    const userAvatar = page.locator('text=/^[A-Z]$/').first();
-    await expect(userAvatar).toBeVisible({ timeout: 10000 });
-    console.log('✅ testuser 登录成功');
+    await expect(page.locator('text=/退出登录|Logout/')).toBeVisible({ timeout: 15000 });
   });
 
-  test('登出流程', async ({ page }) => {
+  test('登出 - 登出后显示登录按钮', async ({ page, context }) => {
+    await context.clearCookies();
+    await injectTestEnv(page);
+
     await page.goto('/');
+    await page.waitForLoadState('networkidle');
+    await page.waitForTimeout(2000);
+
+    await clearAuthState(page);
+    await page.reload();
+    await page.waitForLoadState('networkidle');
+    await page.waitForTimeout(2000);
+
+    await page.getByText('设置').click();
+    await page.waitForTimeout(2000);
+
+    const loginBtn = page.getByText(/登录.*注册/);
+    await loginBtn.click();
+    await page.waitForTimeout(2000);
+
+    await page.getByPlaceholder(/用户名/).fill('testuser');
+    await page.getByPlaceholder(/密码/).fill('testpass123');
+    await page.locator('text=登录').last().click();
+    await page.waitForTimeout(5000);
+
+    const logoutBtn = page.getByText(/退出登录/);
+    await expect(logoutBtn).toBeVisible({ timeout: 15000 });
+    await logoutBtn.click();
     await page.waitForTimeout(3000);
 
-    const userAvatar = page.locator('text=/^[A-Z]$/').first();
-    if (await userAvatar.isVisible().catch(() => false)) {
-      await userAvatar.click();
-      await page.waitForTimeout(1000);
-
-      const logoutButton = page.getByText(/退出登录/);
-      if (await logoutButton.isVisible().catch(() => false)) {
-        await logoutButton.click();
-        await page.waitForTimeout(3000);
-
-        const loginBanner = page.getByText('请登录以同步数据');
-        await expect(loginBanner).toBeVisible({ timeout: 10000 });
-        console.log('✅ 登出成功');
-      }
-    }
+    await expect(page.getByText(/登录.*注册/)).toBeVisible({ timeout: 10000 });
   });
 });

@@ -21,7 +21,7 @@ describe('TagManager', () => {
 
   it('renders without crashing', () => {
     render(<TagManager {...defaultProps} />);
-    expect(screen.getByText('+')).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'Add tag' })).toBeTruthy();
   });
 
   it('displays existing tags', () => {
@@ -35,21 +35,21 @@ describe('TagManager', () => {
   it('shows add button and opens input when pressed', () => {
     render(<TagManager {...defaultProps} />);
 
-    const addButton = screen.getByText('+');
+    const addButton = screen.getByRole('button', { name: 'Add tag' });
     fireEvent.press(addButton);
 
-    expect(screen.getByPlaceholderText('Add Tag')).toBeTruthy();
+    expect(screen.getByRole('textbox', { name: 'New tag input' })).toBeTruthy();
   });
 
   it('calls onTagsChange when adding a new tag', () => {
     const onTagsChange = jest.fn();
     render(<TagManager {...defaultProps} onTagsChange={onTagsChange} />);
 
-    fireEvent.press(screen.getByText('+'));
+    fireEvent.press(screen.getByRole('button', { name: 'Add tag' }));
 
-    const input = screen.getByPlaceholderText('Add Tag');
+    const input = screen.getByRole('textbox', { name: 'New tag input' });
     fireEvent.changeText(input, 'newtag');
-    fireEvent.press(screen.getByText('Save'));
+    fireEvent.press(screen.getByRole('button', { name: 'Save tag' }));
 
     expect(onTagsChange).toHaveBeenCalledWith(['newtag']);
   });
@@ -58,10 +58,10 @@ describe('TagManager', () => {
     const onTagsChange = jest.fn();
     render(<TagManager {...defaultProps} tags={['existing']} onTagsChange={onTagsChange} />);
 
-    fireEvent.press(screen.getByText('+'));
-    const input = screen.getByPlaceholderText('Add Tag');
+    fireEvent.press(screen.getByRole('button', { name: 'Add tag' }));
+    const input = screen.getByRole('textbox', { name: 'New tag input' });
     fireEvent.changeText(input, 'existing');
-    fireEvent.press(screen.getByText('Save'));
+    fireEvent.press(screen.getByRole('button', { name: 'Save tag' }));
 
     expect(onTagsChange).not.toHaveBeenCalled();
   });
@@ -70,7 +70,7 @@ describe('TagManager', () => {
     const onTagsChange = jest.fn();
     render(<TagManager {...defaultProps} tags={['tag1']} onTagsChange={onTagsChange} />);
 
-    const deleteButton = screen.getByText('✕');
+    const deleteButton = screen.getByRole('button', { name: 'Remove tag tag1' });
     fireEvent.press(deleteButton);
 
     expect(onTagsChange).toHaveBeenCalledWith([]);
@@ -80,8 +80,8 @@ describe('TagManager', () => {
     const onTagsChange = jest.fn();
     render(<TagManager {...defaultProps} onTagsChange={onTagsChange} />);
 
-    fireEvent.press(screen.getByText('+'));
-    fireEvent.press(screen.getByText('Save'));
+    fireEvent.press(screen.getByRole('button', { name: 'Add tag' }));
+    fireEvent.press(screen.getByRole('button', { name: 'Save tag' }));
 
     expect(onTagsChange).not.toHaveBeenCalled();
   });

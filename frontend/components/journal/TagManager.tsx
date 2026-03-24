@@ -45,7 +45,11 @@ export function TagManager({ tags, onTagsChange, theme, accentColor, i18n }: Tag
             ]}
           >
             <ThemedText style={[styles.tagChipText, { color: accentColor }]}>#{tag}</ThemedText>
-            <TouchableOpacity onPress={() => handleRemoveTag(tag)}>
+            <TouchableOpacity
+              onPress={() => handleRemoveTag(tag)}
+              accessibilityRole="button"
+              accessibilityLabel={`Remove tag ${tag}`}
+            >
               <ThemedText style={[styles.tagRemoveBtn, { color: accentColor }]}>✕</ThemedText>
             </TouchableOpacity>
           </View>
@@ -53,6 +57,8 @@ export function TagManager({ tags, onTagsChange, theme, accentColor, i18n }: Tag
         <TouchableOpacity
           style={[styles.addBtn, { backgroundColor: accentColor }]}
           onPress={() => setShowInput(!showInput)}
+          accessibilityRole="button"
+          accessibilityLabel="Add tag"
         >
           <ThemedText style={styles.addBtnText}>+</ThemedText>
         </TouchableOpacity>
@@ -68,10 +74,14 @@ export function TagManager({ tags, onTagsChange, theme, accentColor, i18n }: Tag
             onChangeText={setNewTag}
             onSubmitEditing={handleAddTag}
             autoFocus
+            accessibilityRole="textbox"
+            accessibilityLabel="New tag input"
           />
           <TouchableOpacity
             style={[styles.saveBtn, { backgroundColor: accentColor }]}
             onPress={handleAddTag}
+            accessibilityRole="button"
+            accessibilityLabel="Save tag"
           >
             <ThemedText style={styles.saveBtnText}>{i18n.save}</ThemedText>
           </TouchableOpacity>

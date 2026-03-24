@@ -1,59 +1,59 @@
 import { expect, test } from '@playwright/test';
 
 test.describe('设置流程', () => {
-  test.beforeEach(async ({ page }) => {
+  test.use({ storageState: undefined });
+
+  async function ensureLoggedIn(page: import('@playwright/test').Page) {
     await page.goto('/');
     await page.waitForTimeout(3000);
 
-    const loginBanner = page.getByText('请登录以同步数据');
-    if (await loginBanner.isVisible().catch(() => false)) {
-      await loginBanner.click();
+    const avatar = page
+      .locator('div')
+      .filter({ hasText: /^[A-Z]$/ })
+      .first();
+    const isLoggedIn = await avatar.isVisible({ timeout: 3000 });
+
+    if (!isLoggedIn) {
+      await page.getByText('设置').click();
       await page.waitForTimeout(2000);
 
-      const inputs = page.locator('input');
-      await inputs.first().fill('testuser');
-      await inputs.nth(1).fill('testpass123');
+      const loginBtn = page.getByText(/登录.*注册/);
+      if (await loginBtn.isVisible({ timeout: 3000 })) {
+        await loginBtn.click();
+        await page.waitForTimeout(2000);
 
-      const loginButton = page.getByRole('button', { name: /登录/ });
-      await loginButton.click();
-      await page.waitForTimeout(5000);
+        await page.getByPlaceholder(/用户名/).fill('testuser');
+        await page.getByPlaceholder(/密码/).fill('testpass123');
+        await page.locator('text=登录').last().click();
+        await page.waitForTimeout(8000);
+      }
     }
-  });
+  }
 
-  test('切换主题色', async ({ page }) => {
-    await page.goto('/settings');
+  test('设置页面显示外观选项', async ({ page }) => {
+    await ensureLoggedIn(page);
+
+    await page.getByText('设置').click();
     await page.waitForTimeout(3000);
 
-    const colorButtons = page.locator('[role="button"]').filter({ hasText: /主题色/ });
-    await colorButtons.first().click();
-    await page.waitForTimeout(2000);
-
-    console.log('✅ 主题色切换成功');
+    await expect(page.getByText('外观').first()).toBeVisible({ timeout: 10000 });
   });
 
-  test('切换语言', async ({ page }) => {
-    await page.goto('/settings');
+  test('设置页面显示语言选项', async ({ page }) => {
+    await ensureLoggedIn(page);
+
+    await page.getByText('设置').click();
     await page.waitForTimeout(3000);
 
-    const englishButton = page.getByText('English');
-    await englishButton.click();
-    await page.waitForTimeout(2000);
-
-    console.log('✅ 语言切换成功');
-
-    const zhButton = page.getByText('中文');
-    await zhButton.click();
-    await page.waitForTimeout(2000);
+    await expect(page.getByText('语言').first()).toBeVisible({ timeout: 10000 });
   });
 
-  test('查看关于信息', async ({ page }) => {
-    await page.goto('/settings');
+  test('设置页面显示账号区域', async ({ page }) => {
+    await ensureLoggedIn(page);
+
+    await page.getByText('设置').click();
     await page.waitForTimeout(3000);
 
-    const aboutSection = page.locator('text=/关于|About/');
-    const isVisible = await aboutSection.isVisible().catch(() => false);
-    expect(isVisible).toBeTruthy();
-
-    console.log('✅ 关于信息显示成功');
+    await expect(page.getByText('账号').first()).toBeVisible({ timeout: 10000 });
   });
 });

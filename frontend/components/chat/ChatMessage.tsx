@@ -92,6 +92,8 @@ export function ChatMessage({
                 <TouchableOpacity
                   style={[styles.editButton, { backgroundColor: accentColor }]}
                   onPress={handleEdit}
+                  accessibilityRole="button"
+                  accessibilityLabel="Send edited message"
                 >
                   <Text style={styles.editButtonText}>发送</Text>
                 </TouchableOpacity>
@@ -101,6 +103,8 @@ export function ChatMessage({
                     setIsEditing(false);
                     setEditContent(message.content);
                   }}
+                  accessibilityRole="button"
+                  accessibilityLabel="Cancel edit"
                 >
                   <Text style={[styles.editButtonText, { color: c.text }]}>取消</Text>
                 </TouchableOpacity>

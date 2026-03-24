@@ -126,6 +126,8 @@ export function ConversationSidebar({
               <TouchableOpacity
                 onPress={(e) => handleDelete(e as any, conversation.id)}
                 style={styles.deleteButton}
+                accessibilityRole="button"
+                accessibilityLabel={`Delete conversation: ${conversation.title || 'New conversation'}`}
               >
                 <IconSymbol name="trash" size={16} color={c.textSecondary} />
               </TouchableOpacity>

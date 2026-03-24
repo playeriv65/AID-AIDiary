@@ -66,11 +66,13 @@ export default function JournalTimelineScreen() {
   const filterBtnRef = useRef<View>(null);
   const [filterPosition, setFilterPosition] = useState({ x: 0, y: 0, width: 0, height: 0 });
 
-  const filteredEntries = entries.filter((entry) => {
-    if (filterCategory && entry.category?.toLowerCase() !== filterCategory) return false;
-    if (filterWeather && entry.weather?.toLowerCase() !== filterWeather) return false;
-    return true;
-  });
+  const filteredEntries = entries
+    .filter((entry) => {
+      if (filterCategory && entry.category?.toLowerCase() !== filterCategory) return false;
+      if (filterWeather && entry.weather?.toLowerCase() !== filterWeather) return false;
+      return true;
+    })
+    .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
 
   const openFilter = () => {
     filterBtnRef.current?.measureInWindow((x, y, width, height) => {

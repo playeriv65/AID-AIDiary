@@ -87,7 +87,13 @@ export function useJournalEntry({
   apiClient: customApiClient,
   fetchEntries: customFetchEntries,
 }: UseJournalEntryProps = {}): UseJournalEntryReturn {
-  const { authToken, fetchEntries: contextFetchEntries, i18n } = useAppContext();
+  const {
+    authToken,
+    fetchEntries: contextFetchEntries,
+    i18n,
+    addEntry,
+    updateEntry,
+  } = useAppContext();
 
   const apiClientInstance = customApiClient || defaultApiClient;
   const fetchEntriesFn = customFetchEntries || contextFetchEntries;
@@ -199,7 +205,7 @@ export function useJournalEntry({
 
     setSaving(true);
     try {
-      const payload = {
+      const entryData = {
         title: title.trim() || null,
         content: content.trim(),
         category,
@@ -210,9 +216,9 @@ export function useJournalEntry({
       };
 
       if (entryId) {
-        await apiClientInstance.put<JournalEntry>(`/entries/${entryId}`, payload);
+        await updateEntry(entryId, entryData);
       } else {
-        await apiClientInstance.post<JournalEntry>('/entries', payload);
+        await addEntry(entryData);
       }
 
       await fetchEntriesFn();
@@ -237,7 +243,8 @@ export function useJournalEntry({
     onSuccess,
     i18n,
     alertFn_,
-    apiClientInstance,
+    addEntry,
+    updateEntry,
   ]);
 
   const handleImageUpload = useCallback(async () => {

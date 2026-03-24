@@ -62,7 +62,12 @@ export function EntryCard({ item, index, onPress }: EntryCardProps) {
   const categoryIcon = CATEGORY_ICONS[categoryKey] || 'folder';
 
   return (
-    <TouchableOpacity activeOpacity={0.8} onPress={onPress}>
+    <TouchableOpacity
+      activeOpacity={0.8}
+      onPress={onPress}
+      accessibilityRole="button"
+      accessibilityLabel={item.title || item.content?.slice(0, 50) || 'Diary entry'}
+    >
       <Animated.View
         style={[
           styles.entryCard,

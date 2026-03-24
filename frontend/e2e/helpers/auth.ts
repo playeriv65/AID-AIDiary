@@ -10,43 +10,27 @@ export async function register(page: Page, username: string, password: string) {
   const uniqueUsername = `${username}_${Date.now()}`;
 
   try {
-    await page.goto('/auth/register'); // Or wherever the register page is
-    await page.waitForLoadState('networkidle');
-
-    // Multi-language placeholders for registration form
-    const usernameInput = page
-      .locator(
-        'input[placeholder*="用户名"], input[placeholder*="Username"], input[placeholder*="ユーザーネーム"], input[name="username"]'
-      )
-      .first();
-    const passwordInput = page
-      .locator(
-        'input[placeholder*="密码"], input[placeholder*="Password"], input[placeholder*="パスワード"], input[name="password"], input[type="password"]'
-      )
-      .first();
-
-    await usernameInput.fill(uniqueUsername);
-    await passwordInput.fill(password);
-
-    // Multi-language register button text
-    await page
-      .locator(
-        'button:has-text("注册"), button:has-text("Register"), button:has-text("登録"), button[type="submit"]'
-      )
-      .first()
-      .click();
-
-    // Wait for registration to complete
+    await page.goto('/');
     await page.waitForLoadState('networkidle');
     await page.waitForTimeout(2000);
 
-    // Verify registration success - navigate to home or profile to confirm
-    const userButton = page.locator('text=/^[A-Z]$/').first();
-    const isLoggedIn = await userButton.isVisible({ timeout: 10000 });
+    await page.getByText('设置').click();
+    await page.waitForTimeout(2000);
 
-    if (!isLoggedIn) {
-      throw new Error(`Registration failed for user ${uniqueUsername}. Not logged in.`);
-    }
+    const loginBtn = page.getByText(/登录.*注册/);
+    await loginBtn.click();
+    await page.waitForTimeout(2000);
+
+    await page.getByText(/没有账号/).click();
+    await page.waitForTimeout(1000);
+
+    await page.getByPlaceholder(/用户名/).fill(uniqueUsername);
+    await page.getByPlaceholder(/密码/).fill(password);
+
+    await page.locator('text=注册').last().click();
+    await page.waitForTimeout(5000);
+
+    await page.locator('text=/退出登录|Logout/').waitFor({ timeout: 15000 });
 
     return uniqueUsername;
   } catch (error) {
@@ -58,35 +42,21 @@ export async function register(page: Page, username: string, password: string) {
 // Logout function that handles multi-language logout buttons
 export async function logout(page: Page) {
   try {
-    // Navigate to a page where the user menu is visible
     await page.goto('/');
     await page.waitForLoadState('networkidle');
+    await page.waitForTimeout(2000);
 
-    const userButton = page.locator('text=/^[A-Z]$/').first();
+    await page.getByText('设置').click();
+    await page.waitForTimeout(2000);
 
-    // Click the user menu button to open the dropdown
-    if (await userButton.isVisible()) {
-      await userButton.click();
-
-      // Multi-language logout buttons: 退出登录, Logout, ログアウト
-      await page.getByRole('button', { name: /退出登录|Logout|ログアウト/ }).click();
-
-      // Wait for logout to complete
+    const logoutBtn = page.getByText(/退出登录|Logout|ログアウト/);
+    if (await logoutBtn.isVisible()) {
+      await logoutBtn.click();
       await page.waitForLoadState('networkidle');
       await page.waitForTimeout(2000);
-
-      // Verify logout by checking that user button is gone or state has changed
-      await page.waitForTimeout(1000);
-
-      // Refresh the page to ensure logout state is applied
-      await page.goto('/');
-      await page.waitForLoadState('networkidle');
-
-      return true;
-    } else {
-      // Already logged out
-      return true;
     }
+
+    return true;
   } catch (error) {
     console.error('Logout failed:', error);
     throw error;
@@ -98,21 +68,20 @@ export async function ensureAuthenticated(page: Page) {
   try {
     await page.goto('/');
     await page.waitForLoadState('networkidle');
+    await page.waitForTimeout(2000);
 
-    const userButton = page.locator('text=/^[A-Z]$/').first();
-    const isVisible = await userButton.isVisible({ timeout: 5000 });
+    await page.getByText('设置').click();
+    await page.waitForTimeout(2000);
 
-    if (!isVisible) {
-      // User is not authenticated, need to log in
+    const loginBtn = page.getByText(/登录.*注册/);
+    const needsLogin = await loginBtn.isVisible().catch(() => false);
+
+    if (needsLogin) {
+      await loginBtn.click();
+      await page.waitForTimeout(2000);
       await performLogin(page);
 
-      // Verify login was successful
-      await page.waitForTimeout(2000);
-      const isLoggedIn = await userButton.isVisible({ timeout: 10000 });
-
-      if (!isLoggedIn) {
-        throw new Error('Failed to authenticate user');
-      }
+      await page.locator('text=/退出登录|Logout/').waitFor({ timeout: 30000 });
     }
   } catch (error) {
     console.error('Authentication check failed:', error);
@@ -123,18 +92,11 @@ export async function ensureAuthenticated(page: Page) {
 // Navigates to the settings page with multi-language support
 export async function navigateToSettings(page: Page) {
   try {
-    // Go to base URL first
     await page.goto('/');
     await page.waitForLoadState('networkidle');
+    await page.waitForTimeout(2000);
 
-    // Click user menu
-    const userButton = page.locator('text=/^[A-Z]$/').first();
-    await userButton.click();
-
-    // Multi-language selector for settings menu item: 设置, Settings, 設定
-    await page.getByText(/设置|Settings|設定/).click();
-
-    // Wait for navigation to complete
+    await page.getByText('设置').click();
     await page.waitForLoadState('networkidle');
     await page.waitForTimeout(1000);
 
@@ -151,7 +113,6 @@ export { TEST_USER };
 async function performLogin(page: Page) {
   await page.waitForTimeout(1000);
 
-  // Multi-language placeholders and selectors for login form
   const usernameInput = page
     .locator(
       'input[placeholder*="用户名"], input[placeholder*="Username"], input[placeholder*="ユーザーネーム"], input[name="username"]'
@@ -168,10 +129,9 @@ async function performLogin(page: Page) {
       .first()
       .fill(TEST_USER.password);
 
-    // Multi-language login button: Chinese login, Login, ログイン
     await page.getByRole('button', { name: /登录|Login|ログイン/ }).click();
     await page.waitForLoadState('networkidle');
-    await page.waitForTimeout(2000);
+    await page.waitForTimeout(3000);
   }
 }
 
@@ -211,25 +171,20 @@ export async function deleteAllConversations(page: Page) {
 
 export async function login(page: Page) {
   await page.goto('/');
+  await page.waitForLoadState('networkidle');
+  await page.waitForTimeout(2000);
 
-  const userButton = page.locator('text=/^[A-Z]$/').first();
-  const isVisible = await userButton.isVisible().catch(() => false);
+  await page.getByText('设置').click();
+  await page.waitForTimeout(2000);
 
-  if (isVisible) {
-    await userButton.click();
-    await page.waitForTimeout(500);
+  const loginBtn = page.getByText(/登录.*注册/);
+  const needsLogin = await loginBtn.isVisible().catch(() => false);
 
-    const logoutButton = page.getByText(/退出登录|Logout|ログアウト/);
-    const isLoggedOut = !(await logoutButton.isVisible().catch(() => false));
-
-    if (isLoggedOut) {
-      await page.goto('/');
-      await page.waitForTimeout(1000);
-      await performLogin(page);
-    } else {
-      await page.goto('/');
-    }
-  } else {
+  if (needsLogin) {
+    await loginBtn.click();
+    await page.waitForTimeout(2000);
     await performLogin(page);
+
+    await page.locator('text=/退出登录|Logout/').waitFor({ timeout: 30000 });
   }
 }

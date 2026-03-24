@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react-native';
+import { fireEvent, render, screen } from '@testing-library/react-native';
 import { EntryCard } from '@/components/EntryCard';
 import { JournalEntry } from '@/api/client';
 
@@ -85,9 +85,10 @@ describe('EntryCard', () => {
   it('handles press events', () => {
     render(<EntryCard item={mockEntry} index={0} onPress={mockOnPress} />);
 
-    // Find the card container and press it
-    // In real test we'd use getByTestId or queryByRole
-    expect(mockOnPress).not.toHaveBeenCalled();
+    const card = screen.getByRole('button', { name: 'Test Entry' });
+    fireEvent.press(card);
+
+    expect(mockOnPress).toHaveBeenCalled();
   });
 
   it('renders without crashing when entry has no optional fields', () => {

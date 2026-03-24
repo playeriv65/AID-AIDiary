@@ -118,6 +118,12 @@ frontend/.pnp/
 frontend/jest-results.json
 frontend/jest_*.xml
 
+# Playwright E2E
+frontend/test-results/
+frontend/playwright-report/
+frontend/E2E_TEST_REPORT.md
+frontend/E2E_COVERAGE_REPORT.md
+
 # MSW (Mock Service Worker)
 frontend/msw-worker.js
 frontend/msw-worker.js.map

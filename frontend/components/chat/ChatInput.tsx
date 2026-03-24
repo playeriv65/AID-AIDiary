@@ -161,6 +161,9 @@ export function ChatInput({
             style={styles.attachButton}
             onPress={handlePickImage}
             disabled={loading}
+            accessibilityRole="button"
+            accessibilityLabel="Attach image"
+            accessibilityState={{ disabled: loading }}
           >
             <IconSymbol name="photo" size={22} color={c.icon} />
           </TouchableOpacity>
@@ -169,6 +172,9 @@ export function ChatInput({
             style={styles.attachButton}
             onPress={handleTakePhoto}
             disabled={loading}
+            accessibilityRole="button"
+            accessibilityLabel="Take photo"
+            accessibilityState={{ disabled: loading }}
           >
             <IconSymbol name="camera" size={22} color={c.icon} />
           </TouchableOpacity>
@@ -205,6 +211,9 @@ export function ChatInput({
               editable={!loading}
               name="chat-input"
               id="chat-input"
+              accessibilityRole="textbox"
+              accessibilityLabel="Chat message input"
+              accessibilityHint="Type your message here"
             />
           </View>
 
@@ -212,6 +221,8 @@ export function ChatInput({
             <TouchableOpacity
               style={[styles.sendButton, { backgroundColor: '#FF4444' }]}
               onPress={onStopGenerating}
+              accessibilityRole="button"
+              accessibilityLabel="Stop generating"
             >
               <IconSymbol name="stop" size={20} color="#fff" />
             </TouchableOpacity>
@@ -223,6 +234,9 @@ export function ChatInput({
               ]}
               onPress={handleSend}
               disabled={!canSend}
+              accessibilityRole="button"
+              accessibilityLabel="Send message"
+              accessibilityState={{ disabled: !canSend }}
             >
               <IconSymbol name="paper-plane" size={20} color={canSend ? '#000' : c.icon} />
             </TouchableOpacity>

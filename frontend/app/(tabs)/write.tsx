@@ -157,6 +157,8 @@ export default function WriteEntryScreen() {
           onPress={handleSave}
           disabled={saving}
           activeOpacity={0.8}
+          accessibilityRole="button"
+          accessibilityLabel="Save diary"
         >
           {saving ? (
             <ActivityIndicator size="small" color="#000" />

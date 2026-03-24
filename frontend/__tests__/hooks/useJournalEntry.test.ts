@@ -9,6 +9,8 @@ const mockApiClient = {
 };
 
 const mockFetchEntries = jest.fn();
+const mockAddEntry = jest.fn();
+const mockUpdateEntry = jest.fn();
 const mockAlert = jest.fn();
 
 const mockI18n = {
@@ -41,6 +43,8 @@ jest.mock('@/context/AppContext', () => ({
     language: 'zh',
     authToken: 'mock-token',
     fetchEntries: mockFetchEntries,
+    addEntry: mockAddEntry,
+    updateEntry: mockUpdateEntry,
   }),
 }));
 
@@ -57,6 +61,8 @@ describe('useJournalEntry', () => {
     jest.clearAllMocks();
     mockAlert.mockClear();
     mockFetchEntries.mockClear();
+    mockAddEntry.mockClear();
+    mockUpdateEntry.mockClear();
     (mockApiClient.post as jest.Mock).mockClear();
     (mockApiClient.put as jest.Mock).mockClear();
   });
@@ -196,7 +202,7 @@ describe('useJournalEntry', () => {
   });
 
   it('handles save successfully', async () => {
-    (mockApiClient.post as jest.Mock).mockResolvedValue({
+    mockAddEntry.mockResolvedValue({
       id: 1,
       created_at: new Date().toISOString(),
     });
@@ -215,8 +221,7 @@ describe('useJournalEntry', () => {
       await result.current.handleSave();
     });
 
-    expect(mockApiClient.post).toHaveBeenCalledWith(
-      '/entries',
+    expect(mockAddEntry).toHaveBeenCalledWith(
       expect.objectContaining({
         content: 'Content to save',
         title: null,

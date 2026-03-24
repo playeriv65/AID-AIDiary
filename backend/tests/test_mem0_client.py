@@ -158,6 +158,8 @@ class TestMemoryIntegration:
     @pytest.mark.asyncio
     async def test_chat_with_ai_with_memory(self):
         """测试带记忆的 AI 对话"""
+        import asyncio
+
         with (
             patch("ai_service.get_mem0_client") as mock_get_client,
             patch("ai_service.client") as mock_openai,
@@ -179,6 +181,9 @@ class TestMemoryIntegration:
 
             assert result["success"] is True
             assert "Python" in result["response"]
+
+            # 等待异步存储任务完成
+            await asyncio.sleep(0.1)
 
             # Verify memory was stored and searched
             mock_mem0.store_memory.assert_called_once()
