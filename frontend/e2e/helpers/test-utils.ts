@@ -74,32 +74,24 @@ export async function loginViaUI(
 ): Promise<void> {
   await page.goto('/');
   await page.waitForLoadState('networkidle');
-  await page.waitForTimeout(2000);
 
   await clearAuthState(page);
   await page.reload();
   await page.waitForLoadState('networkidle');
-  await page.waitForTimeout(2000);
 
   await page.getByText('设置').click();
-  await page.waitForTimeout(2000);
 
-  const loginBtn = page.getByText(/登录.*注册/);
-  const needsLogin = await loginBtn.isVisible().catch(() => false);
+  const loginBtn = page.locator('text=/登录.*注册/');
+  await loginBtn.waitFor({ state: 'visible', timeout: 5000 });
+  await loginBtn.click();
 
-  if (needsLogin) {
-    await loginBtn.click();
-    await page.waitForTimeout(2000);
+  await page.getByPlaceholder(/用户名/).waitFor({ state: 'visible', timeout: 5000 });
+  await page.getByPlaceholder(/用户名/).fill(username);
+  await page.getByPlaceholder(/密码/).fill(password);
 
-    await page.getByPlaceholder(/用户名/).fill(username);
-    await page.getByPlaceholder(/密码/).fill(password);
+  await page.locator('text=登录').last().click();
 
-    await page.locator('text=登录').last().click();
-    await page.waitForTimeout(5000);
-
-    await expect(page.locator('text=/退出登录|Logout/')).toBeVisible({ timeout: 30000 });
-    await page.waitForTimeout(3000);
-  }
+  await expect(page.locator('text=/退出登录|Logout/')).toBeVisible({ timeout: 10000 });
 }
 
 export async function loginAndVerify(

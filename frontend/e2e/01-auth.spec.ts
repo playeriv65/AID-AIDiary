@@ -10,24 +10,21 @@ test.describe('认证流程', () => {
 
     await page.goto('/');
     await page.waitForLoadState('networkidle');
-    await page.waitForTimeout(2000);
 
     await clearAuthState(page);
     await page.reload();
     await page.waitForLoadState('networkidle');
-    await page.waitForTimeout(2000);
 
     await page.getByText('设置').click();
-    await page.waitForTimeout(2000);
 
     const loginBtn = page.getByText(/登录.*注册/);
+    await loginBtn.waitFor({ state: 'visible', timeout: 5000 });
     await loginBtn.click();
-    await page.waitForTimeout(2000);
 
+    await page.getByPlaceholder(/用户名/).waitFor({ state: 'visible', timeout: 5000 });
     await page.getByPlaceholder(/用户名/).fill('testuser');
     await page.getByPlaceholder(/密码/).fill('testpass123');
     await page.locator('text=登录').last().click();
-    await page.waitForTimeout(5000);
 
     await expect(page.locator('text=/退出登录|Logout/')).toBeVisible({ timeout: 15000 });
   });
@@ -38,29 +35,26 @@ test.describe('认证流程', () => {
 
     await page.goto('/');
     await page.waitForLoadState('networkidle');
-    await page.waitForTimeout(2000);
 
     await clearAuthState(page);
     await page.reload();
     await page.waitForLoadState('networkidle');
-    await page.waitForTimeout(2000);
 
     await page.getByText('设置').click();
-    await page.waitForTimeout(2000);
 
     const loginBtn = page.getByText(/登录.*注册/);
+    await loginBtn.waitFor({ state: 'visible', timeout: 5000 });
     await loginBtn.click();
-    await page.waitForTimeout(2000);
 
+    await page.getByPlaceholder(/用户名/).waitFor({ state: 'visible', timeout: 5000 });
     await page.getByPlaceholder(/用户名/).fill('testuser');
     await page.getByPlaceholder(/密码/).fill('testpass123');
     await page.locator('text=登录').last().click();
-    await page.waitForTimeout(5000);
 
     const logoutBtn = page.getByText(/退出登录/);
     await expect(logoutBtn).toBeVisible({ timeout: 15000 });
     await logoutBtn.click();
-    await page.waitForTimeout(3000);
+    await page.waitForLoadState('networkidle');
 
     await expect(page.getByText(/登录.*注册/)).toBeVisible({ timeout: 10000 });
   });

@@ -7,32 +7,51 @@ test.describe('AI 聊天流程', () => {
     await loginAndVerify(page);
   });
 
-  test('AI 回复显示', async ({ page }) => {
+  test('AI 回复显示 - 验证聊天功能可用', async ({ page }) => {
     await page.goto('/chat');
-    await page.waitForTimeout(8000);
+    await page.waitForLoadState('networkidle');
 
-    // 查找输入框 - 使用更宽松的选择器
-    const input = await page
-      .locator('input, textarea')
-      .filter({ hasText: /输入|message|chat/i })
-      .first();
+    const chatInput = page.locator('input, textarea').first();
+    await chatInput.waitFor({ state: 'visible', timeout: 10000 });
 
-    if (await input.isVisible().catch(() => false)) {
-      await input.fill('你好');
-      await page.waitForTimeout(1000);
-      await input.press('Enter');
-    } else {
-      // 备用：查找任何输入框
-      const anyInput = page.locator('input[type="text"], input:not([type]), textarea').first();
-      await anyInput.fill('你好');
-      await page.waitForTimeout(1000);
-      await anyInput.press('Enter');
-    }
+    const userMessage = `测试消息_${Date.now()}`;
+    await chatInput.fill(userMessage);
+    await chatInput.press('Enter');
 
     await page.waitForTimeout(25000);
 
-    // 验证有 AI 回复
-    const bodyText = await page.locator('body').innerText();
-    expect(bodyText.length).toBeGreaterThan(50);
+    const pageContent = await page.locator('body').innerText();
+    const contentLength = pageContent.length;
+    expect(contentLength).toBeGreaterThan(50);
+
+    const hasUserMessage = pageContent.includes(userMessage) || pageContent.includes('测试');
+    expect(hasUserMessage || contentLength > 100).toBe(true);
+  });
+
+  test('聊天输入框可交互', async ({ page }) => {
+    await page.goto('/chat');
+    await page.waitForLoadState('networkidle');
+
+    const chatInput = page.locator('input, textarea').first();
+    await expect(chatInput).toBeVisible({ timeout: 10000 });
+
+    const testText = '测试输入';
+    await chatInput.fill(testText);
+    await expect(chatInput).toHaveValue(testText);
+
+    await chatInput.clear();
+    await expect(chatInput).toHaveValue('');
+  });
+
+  test('聊天页面核心功能验证', async ({ page }) => {
+    await page.goto('/chat');
+    await page.waitForLoadState('networkidle');
+
+    const chatInput = page.locator('input, textarea').first();
+    await expect(chatInput).toBeEnabled({ timeout: 10000 });
+
+    await chatInput.fill('你好，请自我介绍');
+    const value = await chatInput.inputValue();
+    expect(value).toBe('你好，请自我介绍');
   });
 });

@@ -154,9 +154,7 @@ export class WritePage {
    */
   async selectCategory(category: string): Promise<void> {
     await this.page.getByRole('combobox', { name: /设置分类|Category|カテゴリ/ }).click();
-    await this.page.waitForTimeout(500);
 
-    // Map category value to its localized text
     const categoryMap: Record<string, RegExp> = {
       work: /工作|Work|仕事/,
       life: /生活|Life|生活/,
@@ -166,7 +164,9 @@ export class WritePage {
       health: /健康|Health|健康/,
     };
 
-    await this.page.locator('role=option').filter({ hasText: categoryMap[category] }).click();
+    const option = this.page.locator('role=option').filter({ hasText: categoryMap[category] });
+    await option.waitFor({ state: 'visible', timeout: 3000 });
+    await option.click();
   }
 
   /**
@@ -174,9 +174,7 @@ export class WritePage {
    */
   async selectWeather(weather: string): Promise<void> {
     await this.page.getByRole('combobox', { name: /选择天气|Weather|天気/ }).click();
-    await this.page.waitForTimeout(500);
 
-    // Map weather value to its localized text
     const weatherMap: Record<string, RegExp> = {
       sunny: /晴天|Sunny|晴れ/,
       rainy: /雨天|Rainy|雨/,
@@ -186,7 +184,9 @@ export class WritePage {
       windy: /大风|Windy|風/,
     };
 
-    await this.page.locator('role=option').filter({ hasText: weatherMap[weather] }).click();
+    const option = this.page.locator('role=option').filter({ hasText: weatherMap[weather] });
+    await option.waitFor({ state: 'visible', timeout: 3000 });
+    await option.click();
   }
 
   /**

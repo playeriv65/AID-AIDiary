@@ -1,56 +1,62 @@
 import { expect, test } from '@playwright/test';
+import { injectTestEnv, loginAndVerify } from './helpers/test-utils';
 
 test.describe('完整用户旅程', () => {
   test.use({ storageState: undefined });
 
-  async function ensureLoggedIn(page: import('@playwright/test').Page) {
+  test.beforeEach(async ({ page, context }) => {
+    await context.clearCookies();
+    await injectTestEnv(page);
+    await loginAndVerify(page);
+  });
+
+  test('用户完成日常使用全流程 - 验证每个页面核心功能', async ({ page }) => {
     await page.goto('/');
-    await page.waitForTimeout(3000);
+    await page.waitForLoadState('networkidle');
 
-    const avatar = page
-      .locator('div')
-      .filter({ hasText: /^[A-Z]$/ })
-      .first();
-    const isLoggedIn = await avatar.isVisible({ timeout: 3000 });
+    await page.getByText('时间线').first().click();
+    await page.waitForLoadState('networkidle');
+    await expect(page.getByText(/新建|NEW|新規/).first()).toBeVisible({ timeout: 10000 });
 
-    if (!isLoggedIn) {
-      await page.getByText('设置').click();
-      await page.waitForTimeout(2000);
+    await page.getByText('聊天').first().click();
+    await page.waitForLoadState('networkidle');
+    const chatInput = page.locator('input, textarea').first();
+    await expect(chatInput).toBeVisible({ timeout: 10000 });
 
-      const loginBtn = page.getByText(/登录.*注册/);
-      if (await loginBtn.isVisible({ timeout: 3000 })) {
-        await loginBtn.click();
-        await page.waitForTimeout(2000);
+    await page.getByText('日历').first().click();
+    await page.waitForLoadState('networkidle');
+    const today = new Date().getDate();
+    const dateElement = page.getByText(String(today)).first();
+    await expect(dateElement).toBeVisible({ timeout: 10000 });
 
-        await page.getByPlaceholder(/用户名/).fill('testuser');
-        await page.getByPlaceholder(/密码/).fill('testpass123');
-        await page.locator('text=登录').last().click();
-        await page.waitForTimeout(8000);
+    await page.getByText('搜索').first().click();
+    await page.waitForLoadState('networkidle');
+    const searchInput = page.locator('input[type="text"], input:not([type])').first();
+    await expect(searchInput).toBeVisible({ timeout: 10000 });
+
+    await page.getByText('设置').first().click();
+    await page.waitForLoadState('networkidle');
+    await expect(page.getByText(/外观|Appearance|テーマ/i).first()).toBeVisible({ timeout: 10000 });
+  });
+
+  test('导航持久性验证 - 确保页面切换后状态保持', async ({ page }) => {
+    await page.goto('/');
+    await page.waitForLoadState('networkidle');
+
+    const navItems = ['时间线', '聊天', '日历', '搜索', '设置'];
+
+    for (const item of navItems) {
+      await page.getByText(item).first().click();
+      await page.waitForLoadState('networkidle');
+
+      for (const navItem of navItems) {
+        const isVisible = await page
+          .getByText(navItem)
+          .first()
+          .isVisible({ timeout: 3000 })
+          .catch(() => false);
+        expect(isVisible).toBe(true);
       }
     }
-  }
-
-  test('用户完成日常使用全流程', async ({ page }) => {
-    await ensureLoggedIn(page);
-
-    await page.getByText('时间线').click();
-    await page.waitForTimeout(3000);
-    await expect(page.getByText('新建')).toBeVisible({ timeout: 10000 });
-
-    await page.getByText('聊天').click();
-    await page.waitForTimeout(3000);
-    await expect(page.locator('input, textarea').first()).toBeVisible({ timeout: 10000 });
-
-    await page.getByText('日历').click();
-    await page.waitForTimeout(3000);
-    await expect(page.locator('body')).toBeVisible();
-
-    await page.getByText('搜索').click();
-    await page.waitForTimeout(3000);
-    await expect(page.locator('input').first()).toBeVisible({ timeout: 10000 });
-
-    await page.getByText('设置').click();
-    await page.waitForTimeout(3000);
-    await expect(page.getByText('外观').first()).toBeVisible({ timeout: 10000 });
   });
 });

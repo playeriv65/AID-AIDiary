@@ -7,21 +7,18 @@ test.describe('New User Flow', () => {
     const username = `newuser_${Date.now()}`;
 
     await page.goto('/');
-    await page.waitForTimeout(5000);
+    await page.waitForLoadState('networkidle');
 
     await page.getByText('设置').click();
-    await page.waitForTimeout(2000);
 
     await page.getByText(/登录.*注册/).click();
-    await page.waitForTimeout(2000);
 
     await page.getByText(/没有账号/).click();
-    await page.waitForTimeout(1000);
 
+    await page.getByPlaceholder(/用户名/).waitFor({ state: 'visible', timeout: 5000 });
     await page.getByPlaceholder(/用户名/).fill(username);
     await page.getByPlaceholder(/密码/).fill('TestPass123!');
     await page.locator('text=注册').last().click();
-    await page.waitForTimeout(10000);
 
     const avatar = page
       .locator('div')

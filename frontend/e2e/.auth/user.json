@@ -1,0 +1,18 @@
+{
+  "cookies": [],
+  "origins": [
+    {
+      "origin": "http://localhost:8081",
+      "localStorage": [
+        {
+          "name": "@app_token",
+          "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwidXNlcm5hbWUiOiJ0ZXN0dXNlciIsImV4cCI6MTc3NDk3MTA2OH0.q4YFfYqWSIj_YNcOiY2qOckuSD-8KpDhaSj_z6g_0P4"
+        },
+        {
+          "name": "@app_user",
+          "value": "{\"id\":1,\"username\":\"testuser\",\"email\":\"testuser@example.com\"}"
+        }
+      ]
+    }
+  ]
+}
