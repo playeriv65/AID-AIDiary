@@ -203,9 +203,9 @@ cd backend && ./run-integration-tests.sh
 
 | 位置 | 数量 | 内容 |
 |------|------|------|
-| 后端 | 36+ | AI 服务、API 端点、mem0 集成 |
-| 前端 | 58 | 组件、hooks 测试 |
-| E2E | 4 | 聊天核心功能 |
+| 后端 | 58 | AI 服务、API 端点、mem0 集成、认证 |
+| 前端 | 1030 | 组件、hooks 测试 |
+| E2E | 41 | 完整用户流程测试 |
 
 ## 环境变量
 
@@ -218,6 +218,8 @@ cd backend && ./run-integration-tests.sh
 | BASE_URL | API 端点 | https://integrate.api.nvidia.com/v1 |
 | MODEL_NAME | AI 模型名称 | moonshotai/kimi-k2-instruct-0905 |
 | SECRET_KEY | JWT 签名密钥 | **必须设置** |
+| ACCESS_TOKEN_EXPIRE_MINUTES | 访问令牌过期时间（分钟） | 60 |
+| REFRESH_TOKEN_EXPIRE_DAYS | 刷新令牌过期时间（天） | 7 |
 | MEM0_API_URL | mem0 服务地址 | http://localhost:8888 |
 | GOOGLE_API_KEY | Google Gemini API Key | **必须设置** (用于 mem0) |
 
@@ -241,6 +243,22 @@ curl http://localhost:8888/memories?user_id=test     # 测试 API
 - **目的**: 所有 AI 系统提示词集中管理，便于维护和调整
 - **使用**: 通过 `prompts.py` 模块加载，服务层调用 `prompts.get_xxx()` 方法
 - **日记生成原则**: 只记录用户明确提到的内容，不添加、不猜测、不杜撰
+
+### JWT 安全增强
+
+- **Refresh Token**: 支持刷新访问令牌，access token 60分钟，refresh token 7天
+- **Token 黑名单**: 登出后 token 立即失效，防止重复使用
+- **Token 类型区分**: access/refresh token 有明确的 type 字段
+- **配置化**: 过期时间通过环境变量配置
+- **API 端点**: `/api/auth/refresh` 刷新令牌，`/api/auth/logout` 登出
+- **注意**: 黑名单使用内存实现，重启后清空，单实例部署适用
+
+### Playwright E2E 测试（WSL 环境）
+
+- **禁止浏览器弹窗**: 使用 `BROWSER=none` 环境变量启动前端
+- **无头模式**: `playwright.config.ts` 中设置 `headless: true` 和 `launchOptions.headless: true`
+- **启动命令**: `BROWSER=none HEADLESS=true npm run test:e2e`
+- **安装浏览器**: `npx playwright install --with-deps chromium` 在 WSL 内安装
 
 ### 固定 UUID 种子数据
 

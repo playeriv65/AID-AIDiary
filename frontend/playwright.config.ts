@@ -2,10 +2,8 @@ import { defineConfig, devices } from '@playwright/test';
 import * as dotenv from 'dotenv';
 import path from 'path';
 
-// Load .env file
 dotenv.config({ path: path.resolve(__dirname, '.env') });
 
-// Set Playwright test flag for config.ts detection
 process.env.PLAYWRIGHT_TEST = 'true';
 
 export default defineConfig({
@@ -26,6 +24,9 @@ export default defineConfig({
     headless: true,
     actionTimeout: 10000,
     navigationTimeout: 30000,
+    launchOptions: {
+      headless: true,
+    },
   },
 
   projects: [
