@@ -1,0 +1,91 @@
+// Copyright (C) 2026 Demizo and contributors
+// SPDX-License-Identifier: GPL-3.0-only
+// Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
+
+import 'package:daily_you/database/image_storage.dart';
+import 'package:daily_you/models/entry.dart';
+import 'package:daily_you/models/image.dart';
+import 'package:daily_you/providers/entries_provider.dart';
+import 'package:daily_you/providers/entry_images_provider.dart';
+import 'package:daily_you/utils/operation_outcome.dart';
+
+/// An entry decoded from an import file, before it reaches the database. Its
+/// images carry no entry id until the entry is added.
+class ImportedEntry {
+  const ImportedEntry(this.entry, {this.images = const []});
+
+  final Entry entry;
+  final List<EntryImage> images;
+}
+
+Future<void> addImportedEntries(
+    List<ImportedEntry> importedEntries, Function(String) updateStatus) async {
+  final totalEntries = importedEntries.length;
+  var processedEntries = 0;
+
+  for (final imported in importedEntries) {
+    if (!EntriesProvider.instance
+        .hasEntryAtTimestamp(imported.entry.timeCreate)) {
+      final addedEntry =
+          await EntriesProvider.instance.add(imported.entry, skipUpdate: true);
+      for (final image in imported.images) {
+        await EntryImagesProvider.instance
+            .add(image.copy(entryId: addedEntry.id), skipUpdate: true);
+      }
+    }
+    processedEntries += 1;
+    updateStatus("${((processedEntries / totalEntries) * 100).round()}%");
+  }
+}
+
+Future<OperationOutcome> finishImport(
+    Function(String) updateStatus, OperationOutcome outcome) async {
+  await EntriesProvider.instance.load();
+  await EntryImagesProvider.instance.load();
+  if (ImageStorage.instance.usingExternalLocation()) {
+    try {
+      await ImageStorage.instance
+          .syncImageFolder(true, updateStatus: updateStatus);
+    } catch (error) {
+      return outcome.failed ? outcome : OperationOutcome.failed(error);
+    }
+  }
+  return outcome;
+}
+
+DateTime diariumIdToDateTime(int ticks) {
+  const int ticksAtUnixEpoch = 621355968000000000;
+  final usSinceEpoch = ((ticks - ticksAtUnixEpoch) / 10).round();
+  return DateTime.fromMicrosecondsSinceEpoch(usSinceEpoch, isUtc: false);
+}
+
+DateTime convertWithOffset(int millisUtc, String tzOffset) {
+  final utc = DateTime.fromMillisecondsSinceEpoch(millisUtc, isUtc: true);
+  final sign = tzOffset.startsWith('-') ? -1 : 1;
+  final parts = tzOffset.substring(1).split(':');
+  final hours = int.parse(parts[0]);
+  final minutes = int.parse(parts[1]);
+  final offsetDuration = Duration(
+    hours: hours * sign,
+    minutes: minutes * sign,
+  );
+  return utc.add(offsetDuration);
+}
+
+DateTime parseDaybookLocal(String s) {
+  final match = RegExp(
+    r'^(\d{4})-(\d{2})-(\d{2})-(\d{2}):(\d{2})$',
+  ).firstMatch(s);
+
+  if (match == null) {
+    throw FormatException("Invalid Daybook date: $s");
+  }
+
+  return DateTime(
+    int.parse(match[1]!),
+    int.parse(match[2]!),
+    int.parse(match[3]!),
+    int.parse(match[4]!),
+    int.parse(match[5]!),
+  );
+}

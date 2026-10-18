@@ -1,0 +1,158 @@
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    id "dev.flutter.flutter-gradle-plugin"
+}
+
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader('UTF-8') { reader ->
+        localProperties.load(reader)
+    }
+}
+
+def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
+if (flutterVersionCode == null) {
+    flutterVersionCode = '1'
+}
+
+def flutterVersionName = localProperties.getProperty('flutter.versionName')
+if (flutterVersionName == null) {
+    flutterVersionName = '0.1.0'
+}
+
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
+android {
+    namespace = "com.demizo.daily_you"
+    compileSdkVersion 37
+    ndkVersion = flutter.ndkVersion
+
+    compileOptions {
+        coreLibraryDesugaringEnabled = true
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    aaptOptions {
+        cruncherEnabled = false
+    }
+
+    buildFeatures {
+        resValues = true
+    }
+
+    defaultConfig {
+        applicationId "dev.aid.diary"
+        // You can update the following values to match your application needs.
+        // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
+        minSdkVersion flutter.minSdkVersion
+        multiDexEnabled = true
+        targetSdkVersion flutter.targetSdkVersion
+        versionCode flutterVersionCode.toInteger()
+        versionName flutterVersionName
+	vectorDrawables.generatedDensities = []
+        resValue "string", "app_name", "AID Diary"
+    }
+
+    signingConfigs {
+        release {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+            storePassword keystoreProperties['storePassword']
+	}
+    }
+
+    flavorDimensions "default"
+
+    productFlavors {
+	independent {
+            dimension "default"
+            signingConfig = signingConfigs.release
+	}
+        fdroid {
+            dimension "default"
+        }
+        dev {
+            dimension "default"
+            applicationIdSuffix ".dev"
+            versionNameSuffix "-dev"
+            resValue "string", "app_name", "AID Diary Dev"
+            signingConfig = signingConfigs.release
+        }
+    }
+
+    buildTypes {
+        release {
+            vcsInfo.include = false
+        }
+        profile {
+            signingConfig = signingConfigs.release
+        }
+    }
+
+    dependenciesInfo {
+        // Disables dependency metadata when building APKs.
+        includeInApk = false
+        // Disables dependency metadata when building Android App Bundles.
+        includeInBundle = false
+    }
+
+    // TODO: Temporary fix to address: https://github.com/flutter/flutter/issues/169496
+    packaging {
+       jniLibs {
+            useLegacyPackaging = true
+       }
+    }
+}
+
+// R8's ArtProfile rewriting is non-deterministic (https://issuetracker.google.com/issues/231837768)
+tasks.whenTaskAdded { task ->
+    if (task.name.contains("ArtProfile")) {
+        task.enabled = false
+    }
+}
+
+// See: https://developer.android.com/build/configure-apk-splits
+import com.android.build.OutputFile
+
+// Map for the version code that gives each ABI a value.
+ext.abiCodes = ['armeabi-v7a': 1, 'arm64-v8a': 2, 'x86_64': 3]
+
+android.applicationVariants.all { variant ->
+    // Assigns a different version code for each output APK
+    // other than the universal APK.
+    variant.outputs.each { output ->
+	// Determines the ABI for this variant and returns the mapped value.
+	def baseAbiVersionCode = project.ext.abiCodes.get(output.getFilter(OutputFile.ABI))
+
+	// Because abiCodes.get() returns null for ABIs that are not mapped by ext.abiCodes,
+	// the following code doesn't override the version code for universal APKs.
+	// However, because you want universal APKs to have the lowest version code,
+	// this outcome is desirable.
+	if (baseAbiVersionCode != null) {
+
+	  // Assigns the new version code to versionCodeOverride, which changes the
+	  // version code for only the output APK, not for the variant itself. Skipping
+	  // this step causes Gradle to use the value of variant.versionCode for the APK.
+	  output.versionCodeOverride =
+		10 * flutterVersionCode.toInteger() + baseAbiVersionCode
+	}
+    }
+}
+
+flutter {
+    source = '../..'
+}
+
+dependencies {
+    implementation 'androidx.window:window:1.0.0'
+    implementation 'androidx.window:window-java:1.0.0'
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.4'
+}

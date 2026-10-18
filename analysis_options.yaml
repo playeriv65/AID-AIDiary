@@ -1,0 +1,13 @@
+include: package:flutter_lints/flutter.yaml
+analyzer:
+  exclude:
+    - submodules/**
+    - /nix/store/**
+    - build/**
+    - android/**
+    - ios/**
+    - web/**
+    - windows/**
+    - macos/**
+    - linux/**
+    - integration_test/**

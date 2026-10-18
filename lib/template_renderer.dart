@@ -1,0 +1,65 @@
+// Copyright (C) 2026 Demizo and contributors
+// SPDX-License-Identifier: GPL-3.0-only
+// Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
+
+import 'package:daily_you/time_manager.dart';
+import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
+import 'package:logging/logging.dart';
+
+class TemplateRenderer {
+  static final Logger _logger = Logger('TemplateRenderer');
+
+  static final RegExp _variablePattern = RegExp(r"\{\{(\w+)(?::([^}]+))?\}\}");
+
+  /// Populates template variables: {{date}}, {{time}}
+  /// Variables can have optional formatting like so, {{date:yyyy-MM-dd}} or {{time:HH:mm}}
+  static String populate(BuildContext context, String template) {
+    final locale = Localizations.localeOf(context);
+    final now = DateTime.now();
+
+    return template.replaceAllMapped(_variablePattern, (match) {
+      final variable = match.group(1);
+      final format = match.group(2);
+
+      switch (variable) {
+        case "date":
+          return _formatDate(now, locale, format);
+
+        case "time":
+          return _formatTime(context, now, locale, format);
+
+        default:
+          return match.group(0)!; // leave unknown variables unchanged
+      }
+    });
+  }
+
+  static String _formatDate(DateTime dt, Locale locale, String? format) {
+    try {
+      if (format != null && format.isNotEmpty) {
+        return DateFormat(format, locale.toString()).format(dt);
+      }
+    } catch (error) {
+      _logger.warning(
+          'Template date format "$format" could not be applied', error);
+    }
+
+    return DateFormat.yMd(locale.toString()).format(dt);
+  }
+
+  static String _formatTime(
+      BuildContext context, DateTime dt, Locale locale, String? format) {
+    try {
+      if (format != null && format.isNotEmpty) {
+        return DateFormat(format, locale.toString()).format(dt);
+      }
+    } catch (error) {
+      _logger.warning(
+          'Template time format "$format" could not be applied', error);
+    }
+
+    return TimeManager.localizedTimeFormat(context, locale.toString())
+        .format(dt);
+  }
+}

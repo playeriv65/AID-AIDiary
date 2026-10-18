@@ -1,0 +1,95 @@
+// Copyright (C) 2026 Demizo and contributors
+// SPDX-License-Identifier: GPL-3.0-only
+// Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
+
+import 'package:daily_you/database/image_storage.dart';
+import 'package:daily_you/widgets/local_image_cache.dart';
+import 'package:flutter/foundation.dart';
+import 'package:material_ui/material_ui.dart';
+
+class LocalImageLoader extends StatefulWidget {
+  final String imagePath;
+  final int cacheSize;
+
+  const LocalImageLoader({
+    super.key,
+    required this.imagePath,
+    this.cacheSize = 500,
+  });
+
+  @override
+  State<LocalImageLoader> createState() => _LocalImageLoaderState();
+}
+
+class _LocalImageLoaderState extends State<LocalImageLoader> {
+  Uint8List? _bytes;
+  bool _imageNotFound = false;
+  int _cacheVersion = ImageStorage.instance.cacheVersion.value;
+
+  @override
+  void initState() {
+    super.initState();
+    _load();
+  }
+
+  @override
+  void didUpdateWidget(covariant LocalImageLoader oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    final cacheVersion = ImageStorage.instance.cacheVersion.value;
+    if (oldWidget.imagePath != widget.imagePath ||
+        oldWidget.cacheSize != widget.cacheSize ||
+        cacheVersion != _cacheVersion) {
+      _cacheVersion = cacheVersion;
+      _bytes = null;
+      _imageNotFound = false;
+      _load();
+    }
+  }
+
+  Future<void> _load() async {
+    final bytes = await LocalImageCache.instance
+        .getResizedImageBytes(widget.imagePath, widget.cacheSize);
+    if (mounted) {
+      if (bytes != null) {
+        setState(() => _bytes = bytes);
+      } else {
+        setState(() => _imageNotFound = true);
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_bytes != null) {
+      return Image.memory(
+        _bytes!,
+        fit: BoxFit.cover,
+        width: double.infinity,
+        height: double.infinity,
+        cacheWidth: widget.cacheSize,
+        errorBuilder: (_, __, ___) {
+          return const Center(
+            child: Icon(
+              Icons.broken_image_rounded,
+              size: 36,
+            ),
+          );
+        },
+      );
+    } else {
+      if (_imageNotFound) {
+        // Image not found
+        return const Center(
+          child: Icon(
+            Icons.image_search_rounded,
+            size: 36,
+          ),
+        );
+      } else {
+        // Placeholder while image loads
+        return const SizedBox.expand();
+      }
+    }
+  }
+}

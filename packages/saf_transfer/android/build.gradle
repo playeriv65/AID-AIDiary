@@ -1,0 +1,28 @@
+group = 'com.demizo.daily_you.saf_transfer'
+version = '1.0'
+
+apply plugin: 'com.android.library'
+
+if (project.findProperty("android.builtInKotlin")?.toString() != "true") {
+    apply plugin: "kotlin-android"
+}
+
+android {
+    namespace = 'com.demizo.daily_you.saf_transfer'
+    compileSdkVersion 36
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    defaultConfig {
+        minSdkVersion 24
+    }
+}
+
+dependencies {
+    implementation 'androidx.documentfile:documentfile:1.1.0'
+    implementation 'androidx.core:core-ktx:1.13.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0'
+}

@@ -1,0 +1,1148 @@
+// ignore: unused_import
+import 'package:intl/intl.dart' as intl;
+import 'app_localizations.dart';
+
+// ignore_for_file: type=lint
+
+/// The translations for Danish (`da`).
+class AppLocalizationsDa extends AppLocalizations {
+  AppLocalizationsDa([String locale = 'da']) : super(locale);
+
+  @override
+  String get appTitle => 'AID Diary';
+
+  @override
+  String get themeColorTitle => 'Theme color';
+
+  @override
+  String get themeColorHint =>
+      'Pick a color to stop following the system accent. Applies to light and dark themes.';
+
+  @override
+  String get themeColorBlue => 'Sky blue';
+
+  @override
+  String get themeColorGreen => 'Forest green';
+
+  @override
+  String get themeColorBrown => 'Warm coffee';
+
+  @override
+  String get themeColorPurple => 'Lavender';
+
+  @override
+  String get themeColorRose => 'Dusty rose';
+
+  @override
+  String get themeColorAmber => 'Amber';
+
+  @override
+  String get themeColorPreview => 'A little every day';
+
+  @override
+  String get themeTintBackgroundTitle => 'Tint backgrounds with theme color';
+
+  @override
+  String get themeTintBackgroundHint =>
+      'Turn off for neutral gray backgrounds; buttons keep your chosen color.';
+
+  @override
+  String get dailyReminderTitle => 'Log i dag!';
+
+  @override
+  String get dailyReminderDescription => 'Skriv din daglige log…';
+
+  @override
+  String get actionTakePhoto => 'Take photo';
+
+  @override
+  String get actionToday => 'Today';
+
+  @override
+  String get actionOtherDay => 'Other day';
+
+  @override
+  String get pageHomeTitle => 'Hjem';
+
+  @override
+  String get jumpToMonthTitle => 'Jump to month';
+
+  @override
+  String get jumpToLogTitle => 'Jump to log';
+
+  @override
+  String get flashbacksTitle => 'Minder';
+
+  @override
+  String get settingsFlashbacksExcludeBadDays => 'Ekskluder dårlige dage';
+
+  @override
+  String get flaskbacksEmpty => 'Ingen minder endnu…';
+
+  @override
+  String get flashbackGoodDay => 'En god dag';
+
+  @override
+  String get flashbackRandomDay => 'En tilfældig dag';
+
+  @override
+  String flashbackWeek(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count uger siden',
+      one: '$count uge siden',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String flashbackMonth(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count måneder siden',
+      one: '$count måned siden',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String flashbackYear(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count år siden',
+      one: '$count år siden',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get flashbackOnThisDay => 'On This Day';
+
+  @override
+  String get pageGalleryTitle => 'Galleri';
+
+  @override
+  String get searchLogsHint => 'Søg i logs…';
+
+  @override
+  String logCount(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count logs',
+      one: '$count log',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String dayCount(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count days',
+      one: '$count day',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String wordCount(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ord',
+      one: '$count ord',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get noLogs => 'Ingen logs…';
+
+  @override
+  String get noResults => 'No Results…';
+
+  @override
+  String get sortDateTitle => 'Dato';
+
+  @override
+  String get sortOrderAscendingTitle => 'Stigende';
+
+  @override
+  String get sortOrderDescendingTitle => 'Faldende';
+
+  @override
+  String get pageStatisticsTitle => 'Statistikker';
+
+  @override
+  String get statisticsNotEnoughData => 'Ikke nok data…';
+
+  @override
+  String get statisticsRangeOneMonth => '1 måned';
+
+  @override
+  String get statisticsRangeSixMonths => '6 måneder';
+
+  @override
+  String get statisticsRangeOneYear => '1 år';
+
+  @override
+  String get statisticsRangeAllTime => 'Altid';
+
+  @override
+  String chartSummaryTitle(Object tag) {
+    return '$tag oversigt';
+  }
+
+  @override
+  String chartByDayTitle(Object tag) {
+    return '$tag efter dag';
+  }
+
+  @override
+  String chartOverTimeTitle(Object tag) {
+    return '$tag Over Time';
+  }
+
+  @override
+  String get chartGroupingLabel => 'Group by';
+
+  @override
+  String get chartGroupingDay => 'Day';
+
+  @override
+  String get chartGroupingWeek => 'Week';
+
+  @override
+  String get chartGroupingMonth => 'Month';
+
+  @override
+  String get chartGroupingYear => 'Year';
+
+  @override
+  String get chartSmoothingLabel => 'Smoothing';
+
+  @override
+  String streakCurrent(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Nuværende stribe $count',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String streakLongest(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Længste stribe $count',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String streakGreatDays(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Great Days $count',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String streakSinceBadDay(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Dage siden en dårlig dag $count',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get errorExternalStorageAccessTitle => 'Kan ikke tilgå eksternt lager';
+
+  @override
+  String get errorExternalStorageAccessDescription =>
+      'Hvis du bruger netværkslagring, skal du sikre, at tjenesten er online, og at du har netværksadgang.\n\nEllers kan appen have mistet tilladelser til den eksterne mappe. Gå til indstillinger og vælg den igen for at gendanne adgang.\n\nAdvarsel: Ændringer synkroniseres ikke, før adgangen til lagringsplaceringen er gendannet!';
+
+  @override
+  String get errorExternalStorageAccessContinue => 'Fortsæt med lokal database';
+
+  @override
+  String get databaseMigrationErrorTitle => 'Couldn\'t Move Your Data';
+
+  @override
+  String get databaseMigrationErrorDescription =>
+      'Your entries are safe but couldn\'t be moved to the app\'s storage.\n\nTry again, and report the issue if it keeps happening.';
+
+  @override
+  String get databaseMigrationErrorRetry => 'Retry';
+
+  @override
+  String get errorReport => 'Report Issue';
+
+  @override
+  String get lastModified => 'Ændret';
+
+  @override
+  String get writeSomethingHint => 'Skriv noget…';
+
+  @override
+  String get titleHint => 'Titel…';
+
+  @override
+  String get deleteLogTitle => 'Slet log';
+
+  @override
+  String get deleteLogDescription => 'Vil du slette denne log?';
+
+  @override
+  String get deletePhotoTitle => 'Slet foto';
+
+  @override
+  String get deletePhotoDescription => 'Vil du slette dette foto?';
+
+  @override
+  String get pageSettingsTitle => 'Indstillinger';
+
+  @override
+  String get settingsAppearanceTitle => 'Udseende';
+
+  @override
+  String get settingsTheme => 'Tema';
+
+  @override
+  String get themeSystem => 'System';
+
+  @override
+  String get themeLight => 'Lys';
+
+  @override
+  String get themeDark => 'Mørk';
+
+  @override
+  String get themeAmoled => 'AMOLED';
+
+  @override
+  String get settingsFirstDayOfWeek => 'Ugens første dag';
+
+  @override
+  String get settingsCalendarSystem => 'Calendar System';
+
+  @override
+  String get calendarSystemGregorian => 'Gregorian';
+
+  @override
+  String get calendarSystemJalali => 'Jalali';
+
+  @override
+  String get settingsUseSystemAccentColor => 'Brug systemets accentfarve';
+
+  @override
+  String get settingsCustomAccentColor => 'Brugerdefineret accentfarve';
+
+  @override
+  String get settingsShowMarkdownToolbar => 'Vis markdown-værktøjslinje';
+
+  @override
+  String get settingsShowFlashbacks => 'Vis minder';
+
+  @override
+  String get settingsChangeMoodIcons => 'Skift humør-ikoner';
+
+  @override
+  String get moodIconPrompt => 'Angiv et ikon';
+
+  @override
+  String get settingsFlashbacksViewLayout => 'Flashbacks View Layout';
+
+  @override
+  String get settingsGalleryViewLayout => 'Journal View Layout';
+
+  @override
+  String get settingsHideImagesInGallery => 'Hide Images In Gallery';
+
+  @override
+  String get settingsHideImages => 'Hide Images';
+
+  @override
+  String get pageCalendarTitle => 'Calendar';
+
+  @override
+  String get viewLayoutList => 'List';
+
+  @override
+  String get viewLayoutGrid => 'Grid';
+
+  @override
+  String get settingsNotificationsTitle => 'Meddelelser';
+
+  @override
+  String get settingsDailyReminderOnboarding =>
+      'Aktivér daglige påmindelser for at forblive konsekvent!';
+
+  @override
+  String get settingsNotificationsPermissionsPrompt =>
+      'The \'schedule alarms\' permission will be requested to send the reminder at a random moment or at your preferred time.';
+
+  @override
+  String get settingsDailyReminderTitle => 'Daglig påmindelse';
+
+  @override
+  String get settingsOnThisDayDescription => 'Revisit past memories';
+
+  @override
+  String get settingsDailyReminderDescription =>
+      'Lad appen køre i baggrunden for bedste resultater';
+
+  @override
+  String get settingsReminderTime => 'Påmindelsestid';
+
+  @override
+  String get settingsFixedReminderTimeTitle => 'Fast påmindelsestid';
+
+  @override
+  String get settingsFixedReminderTimeDescription =>
+      'Vælg et fast tidspunkt for påmindelsen';
+
+  @override
+  String get settingsAlwaysSendReminderTitle => 'Send altid påmindelse';
+
+  @override
+  String get settingsAlwaysSendReminderDescription =>
+      'Send påmindelse, selvom en log allerede er startet';
+
+  @override
+  String get settingsCustomizeNotificationTitle => 'Tilpas meddelelser';
+
+  @override
+  String get settingsTemplatesTitle => 'Skabeloner';
+
+  @override
+  String get settingsDefaultTemplate => 'Standardskabelon';
+
+  @override
+  String get manageTemplates => 'Administrer skabeloner';
+
+  @override
+  String get addTemplate => 'Tilføj en skabelon';
+
+  @override
+  String get newTemplate => 'Ny skabelon';
+
+  @override
+  String get noTemplateTitle => 'Ingen';
+
+  @override
+  String get noTemplatesDescription => 'Ingen skabeloner oprettet endnu…';
+
+  @override
+  String get templateVariableTime => 'Time';
+
+  @override
+  String get templateDefaultTimestampTitle => 'Timestamp';
+
+  @override
+  String templateDefaultTimestampBody(Object date, Object time) {
+    return '$date - $time:';
+  }
+
+  @override
+  String get templateDefaultSummaryTitle => 'Day Summary';
+
+  @override
+  String get templateDefaultSummaryBody => '### Summary\n- \n\n### Quote\n> ';
+
+  @override
+  String get templateDefaultReflectionTitle => 'Reflection';
+
+  @override
+  String get templateDefaultReflectionBody =>
+      '### What did you enjoy about today?\n- \n\n### What are you thankful for?\n- \n\n### What are you looking forward to?\n- ';
+
+  @override
+  String get settingsTagsTitle => 'Tags';
+
+  @override
+  String get manageTags => 'Manage Tags';
+
+  @override
+  String get tagTypeLabelTitle => 'Label';
+
+  @override
+  String get tagTypeTrackerTitle => 'Tracker';
+
+  @override
+  String get nameHint => 'Name';
+
+  @override
+  String get tagColorLabel => 'Color';
+
+  @override
+  String get iconPickerTitle => 'Choose Icon';
+
+  @override
+  String get iconPickerIconsTab => 'Icons';
+
+  @override
+  String get iconPickerCustomTab => 'Custom';
+
+  @override
+  String get iconPickerSearchHint => 'Search icons…';
+
+  @override
+  String get colorPickerTitle => 'Choose Color';
+
+  @override
+  String get colorPickerPaletteTab => 'Colors';
+
+  @override
+  String get iconGroupMoodPeople => 'Mood & People';
+
+  @override
+  String get iconGroupHealth => 'Health';
+
+  @override
+  String get iconGroupWorkFinance => 'Work & Finance';
+
+  @override
+  String get iconGroupHabitsGoals => 'Habits & Goals';
+
+  @override
+  String get iconGroupNature => 'Nature';
+
+  @override
+  String get iconGroupFoodDrink => 'Food & Drink';
+
+  @override
+  String get iconGroupHome => 'Home';
+
+  @override
+  String get iconGroupTravel => 'Travel';
+
+  @override
+  String get iconGroupSymbols => 'Symbols';
+
+  @override
+  String get tagCategoryLabel => 'Category';
+
+  @override
+  String get tagLabel => 'Tag';
+
+  @override
+  String get tagCategoryUncategorized => 'Uncategorized';
+
+  @override
+  String get newCategoryTitle => 'New Category';
+
+  @override
+  String get shareButtonLabel => 'Share';
+
+  @override
+  String get importErrorDescription => 'Failed to import file!';
+
+  @override
+  String get exportErrorDescription => 'Failed to export file!';
+
+  @override
+  String get deleteTitle => 'Delete';
+
+  @override
+  String deleteTagMessage(num count, Object name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: ' It is used in $count logs.',
+      one: ' It is used in 1 log.',
+      zero: '',
+    );
+    return 'Delete \"$name\"?$_temp0';
+  }
+
+  @override
+  String deleteCategoryMessage(num count, Object name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: ' Its $count tags will also be deleted.',
+      one: ' Its 1 tag will also be deleted.',
+      zero: '',
+    );
+    return 'Delete \"$name\"?$_temp0';
+  }
+
+  @override
+  String deleteTemplateMessage(Object name) {
+    return 'Delete \"$name\"?';
+  }
+
+  @override
+  String get filterTagsTitle => 'Filter';
+
+  @override
+  String get tagFilterModeAny => 'Any Tag';
+
+  @override
+  String get tagFilterModeAll => 'All Tags';
+
+  @override
+  String get clearAllFilters => 'Clear All';
+
+  @override
+  String get noTagsFilterLabel => 'No Tags';
+
+  @override
+  String get addTagsTitle => 'Add Tags';
+
+  @override
+  String get addTagsSearchHint => 'Search tags…';
+
+  @override
+  String get tagPickerSortManualLabel => 'Manual order';
+
+  @override
+  String get tagPickerSortUsageLabel => 'Sort by usage';
+
+  @override
+  String get tagFavoriteName => 'Favorite';
+
+  @override
+  String get tagEnergyName => 'Energy';
+
+  @override
+  String get tagCategoryActivitiesName => 'Activities';
+
+  @override
+  String get tagExerciseName => 'Exercise';
+
+  @override
+  String get tagSocializingName => 'Socializing';
+
+  @override
+  String get tagHobbyName => 'Hobby';
+
+  @override
+  String get tagEntertainmentName => 'Entertainment';
+
+  @override
+  String get tagDiningName => 'Dining';
+
+  @override
+  String get tagChoresName => 'Chores';
+
+  @override
+  String get tagCategoryEmotionsName => 'Emotions';
+
+  @override
+  String get tagExcitedName => 'Excited';
+
+  @override
+  String get tagGratefulName => 'Grateful';
+
+  @override
+  String get tagCalmName => 'Calm';
+
+  @override
+  String get tagTiredName => 'Tired';
+
+  @override
+  String get tagAnxiousName => 'Anxious';
+
+  @override
+  String get tagAnnoyedName => 'Annoyed';
+
+  @override
+  String get welcomeLogBodyText =>
+      '## Welcome to Daily You\n\n> Every day is worth remembering, capture it!\n\n**Daily You** is free, [open source](https://github.com/Demizo/Daily_You), and community supported. Built around the belief that your diary should be yours, not a product:\n\n- No ads\n- No locked features\n- No tracking or data collection\n\nWhether you\'re journaling, reflecting, or just noting what made you smile, **Daily You** gives you a private space that\'s _truly your own_.';
+
+  @override
+  String get settingsStorageTitle => 'Lager';
+
+  @override
+  String get settingsImageQuality => 'Billedkvalitet';
+
+  @override
+  String get imageQualityHigh => 'Høj';
+
+  @override
+  String get imageQualityMedium => 'Middel';
+
+  @override
+  String get imageQualityLow => 'Lav';
+
+  @override
+  String get imageQualityNoCompression => 'Ingen komprimering';
+
+  @override
+  String get settingsLogFolder => 'Logmappe';
+
+  @override
+  String get settingsImageFolder => 'Billedmappe';
+
+  @override
+  String get warningTitle => 'Advarsel';
+
+  @override
+  String get logFolderWarningDescription =>
+      'Hvis den valgte mappe allerede indeholder en \'daily_you.db\'-fil, bruges den til at overskrive dine eksisterende logs!';
+
+  @override
+  String get errorTitle => 'Fejl';
+
+  @override
+  String get logFolderErrorDescription => 'Kunne ikke ændre logmappe!';
+
+  @override
+  String get imageFolderErrorDescription => 'Kunne ikke ændre billedmappe!';
+
+  @override
+  String get backupErrorDescription => 'Kunne ikke oprette sikkerhedskopi!';
+
+  @override
+  String get restoreErrorDescription => 'Kunne ikke gendanne sikkerhedskopi!';
+
+  @override
+  String get settingsBackupRestoreTitle => 'Sikkerhedskopiering og gendannelse';
+
+  @override
+  String get settingsBackup => 'Sikkerhedskopiér';
+
+  @override
+  String get settingsRestore => 'Gendan';
+
+  @override
+  String get settingsRestorePromptDescription =>
+      'Gendannelse af en sikkerhedskopi overskriver dine eksisterende data!';
+
+  @override
+  String get settingsBackupPasswordProtect => 'Password Protect Backups';
+
+  @override
+  String get backupEncryptedTitle => 'Encrypted Backup';
+
+  @override
+  String get backupEncryptedContent => 'This backup is password protected.';
+
+  @override
+  String get settingsAutoBackup => 'Automatic Backups';
+
+  @override
+  String get settingsAutoBackupLocation => 'Backup Location';
+
+  @override
+  String get settingsAutoBackupInterval => 'Backup Interval';
+
+  @override
+  String get settingsAutoBackupIntervalDaily => 'Daily';
+
+  @override
+  String get settingsAutoBackupIntervalWeekly => 'Weekly';
+
+  @override
+  String get settingsAutoBackupIntervalMonthly => 'Monthly';
+
+  @override
+  String get settingsAutoBackupMaxCount => 'Backups To Keep';
+
+  @override
+  String get settingsAutoBackupRequireCharging => 'Only While Charging';
+
+  @override
+  String settingsBackupLast(Object time) {
+    return 'Last backup $time';
+  }
+
+  @override
+  String get settingsBackupNever => 'Never backed up';
+
+  @override
+  String settingsAutoBackupNext(Object time) {
+    return 'Next backup $time';
+  }
+
+  @override
+  String get settingsAutoBackupKeepAll => 'All';
+
+  @override
+  String get autoBackupFailedTitle => 'Backup Failed';
+
+  @override
+  String tranferStatus(Object percent) {
+    return 'Overfører… $percent%';
+  }
+
+  @override
+  String creatingBackupStatus(Object percent) {
+    return 'Opretter sikkerhedskopi… $percent%';
+  }
+
+  @override
+  String restoringBackupStatus(Object percent) {
+    return 'Gendanner sikkerhedskopi… $percent%';
+  }
+
+  @override
+  String encryptingBackupStatus(Object percent) {
+    return 'Encrypting Backup… $percent%';
+  }
+
+  @override
+  String decryptingBackupStatus(Object percent) {
+    return 'Decrypting Backup… $percent%';
+  }
+
+  @override
+  String get cleanUpStatus => 'Rydder op…';
+
+  @override
+  String migratingImagesStatus(Object current, Object total) {
+    return 'Migrating photos… $current/$total';
+  }
+
+  @override
+  String get settingsExport => 'Eksportér';
+
+  @override
+  String get settingsExportToAnotherFormat => 'Export To Another Format';
+
+  @override
+  String get settingsExportFormatDescription =>
+      'This should not be used as a backup!';
+
+  @override
+  String get exportLogs => 'Eksportér logs';
+
+  @override
+  String get exportImages => 'Eksportér billeder';
+
+  @override
+  String get settingsImport => 'Importér';
+
+  @override
+  String get settingsImportFromAnotherApp => 'Importér fra en anden app';
+
+  @override
+  String get settingsTranslateCallToAction =>
+      'Alle burde have adgang til en dagbog!';
+
+  @override
+  String get settingsHelpTranslate => 'Hjælp med at oversætte';
+
+  @override
+  String get importLogs => 'Importér logs';
+
+  @override
+  String get importImages => 'Importér billeder';
+
+  @override
+  String get logFormatTitle => 'Vælg format';
+
+  @override
+  String get logFormatDescription =>
+      'En anden apps format understøtter muligvis ikke alle funktioner. Dette påvirker ikke eksisterende logs!';
+
+  @override
+  String get formatDailyYouJson => 'Daily You (JSON)';
+
+  @override
+  String get formatDaybook => 'Daybook';
+
+  @override
+  String get formatDaylio => 'Daylio';
+
+  @override
+  String get formatDiarium => 'Diarium';
+
+  @override
+  String get formatDiaro => 'Diaro';
+
+  @override
+  String get formatMyBrain => 'My Brain';
+
+  @override
+  String get formatOneShot => 'OneShot';
+
+  @override
+  String get formatPixels => 'Pixels';
+
+  @override
+  String get formatMarkdown => 'Markdown';
+
+  @override
+  String get settingsDeleteAllLogsTitle => 'Slet alle logs';
+
+  @override
+  String get settingsDeleteAllLogsDescription =>
+      'Vil du slette alle dine logs?';
+
+  @override
+  String settingsDeleteAllLogsPrompt(Object prompt) {
+    return 'Indtast \'$prompt\' for at bekræfte. Dette kan ikke fortrydes!';
+  }
+
+  @override
+  String get settingsLanguageTitle => 'Sprog';
+
+  @override
+  String get settingsAppLanguageTitle => 'App Language';
+
+  @override
+  String get settingsOverrideAppLanguageTitle => 'Override App Language';
+
+  @override
+  String get settingsSecurityTitle => 'Security';
+
+  @override
+  String get settingsSecurityRequirePassword => 'Require Password';
+
+  @override
+  String get settingsSecurityEnterPassword => 'Enter Password';
+
+  @override
+  String get settingsSecuritySetPassword => 'Set Password';
+
+  @override
+  String get settingsSecurityChangePassword => 'Change Password';
+
+  @override
+  String get settingsSecurityPassword => 'Password';
+
+  @override
+  String get settingsSecurityConfirmPassword => 'Confirm Password';
+
+  @override
+  String get settingsSecurityOldPassword => 'Old Password';
+
+  @override
+  String get settingsSecurityIncorrectPassword => 'Incorrect Password';
+
+  @override
+  String get settingsSecurityPasswordsDoNotMatch => 'Passwords do not match';
+
+  @override
+  String get requiredPrompt => 'Required';
+
+  @override
+  String get settingsSecurityBiometricUnlock => 'Biometric Unlock';
+
+  @override
+  String get unlockAppPrompt => 'Unlock the app';
+
+  @override
+  String get settingsAboutTitle => 'Om';
+
+  @override
+  String get settingsVersion => 'Version';
+
+  @override
+  String get settingsLicense => 'Licens';
+
+  @override
+  String get licenseGPLv3 => 'GPL-3.0';
+
+  @override
+  String get settingsSourceCode => 'Kildekode';
+
+  @override
+  String get settingsOpenSourceLicenses => 'Open Source Licenses';
+
+  @override
+  String get settingsMadeWithLove => 'Lavet med ❤️';
+
+  @override
+  String get settingsConsiderSupporting => 'overvej at støtte';
+
+  @override
+  String get imagesTitle => 'Images';
+
+  @override
+  String get tagMoodTitle => 'Humør';
+
+  @override
+  String get calendarTagDisplayLabel => 'Tag';
+
+  @override
+  String get selectTagTitle => 'Select Tag';
+
+  @override
+  String get labelPresentLabel => 'Present';
+
+  @override
+  String get labelAbsentLabel => 'Absent';
+
+  @override
+  String get labelCoverageLabel => 'Coverage';
+
+  @override
+  String chartDistributionTitle(Object tag) {
+    return '$tag Distribution';
+  }
+
+  @override
+  String get shareAddToLogPickerTitle => 'Choose a log';
+
+  @override
+  String get adaptiveEmptyDay => 'No entries for this day yet';
+
+  @override
+  String get adaptiveNewEntry => 'Write an entry';
+
+  @override
+  String get pageTodayTitle => 'Today';
+
+  @override
+  String get pageJournalTitle => 'Journal';
+
+  @override
+  String get todayGreetingMorning => 'Good morning';
+
+  @override
+  String get todayGreetingAfternoon => 'Good afternoon';
+
+  @override
+  String get todayGreetingEvening => 'Good evening';
+
+  @override
+  String get todayGreetingNight => 'Good night';
+
+  @override
+  String get todayHowWasDay => 'How is your day going?';
+
+  @override
+  String get todayWrite => 'Write today';
+
+  @override
+  String get todayContinue => 'Keep writing';
+
+  @override
+  String get todayAddAnother => 'New entry';
+
+  @override
+  String todayWrittenCount(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count entries today',
+      one: '1 entry today',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String todayEntryCount(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count entries',
+      one: '1 entry',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String todayStreakDays(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count days',
+      one: '1 day',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get todayStatStreak => 'Streak';
+
+  @override
+  String get todayStatLongest => 'Best streak';
+
+  @override
+  String get todayStatThisMonth => 'This month';
+
+  @override
+  String get todayStatWords => 'Words';
+
+  @override
+  String get todayPromptTitle => 'Writing prompt';
+
+  @override
+  String get todayPromptAnother => 'Another';
+
+  @override
+  String get todayPromptWrite => 'Write about it';
+
+  @override
+  String get todayPrompt1 => 'What made you smile today?';
+
+  @override
+  String get todayPrompt2 => 'What is one thing you learned today?';
+
+  @override
+  String get todayPrompt3 => 'Who did you talk to today, and how did it feel?';
+
+  @override
+  String get todayPrompt4 => 'What are you grateful for right now?';
+
+  @override
+  String get todayPrompt5 => 'What took most of your energy today?';
+
+  @override
+  String get todayPrompt6 => 'Describe a small moment you want to remember.';
+
+  @override
+  String get todayPrompt7 => 'What would make tomorrow a good day?';
+
+  @override
+  String get todayPrompt8 => 'What has been on your mind lately?';
+
+  @override
+  String get todayPrompt9 => 'What did you do today just for yourself?';
+
+  @override
+  String get todayPrompt10 => 'If today had a title, what would it be?';
+
+  @override
+  String get todayActivityTitle => 'Writing activity';
+
+  @override
+  String get todayActivityLess => 'Less';
+
+  @override
+  String get todayActivityMore => 'More';
+
+  @override
+  String get todayRecentTitle => 'Recent entries';
+
+  @override
+  String get todaySeeAll => 'See all';
+
+  @override
+  String get todayRecentPhotos => 'Recent photos';
+
+  @override
+  String journalActiveDays(int days, int total) {
+    return '$days/$total days';
+  }
+
+  @override
+  String get viewLayoutTimeline => 'Timeline';
+
+  @override
+  String entryReadingTime(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count min read',
+      one: '1 min read',
+    );
+    return '$_temp0';
+  }
+}

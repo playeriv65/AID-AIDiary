@@ -1,0 +1,203 @@
+// Copyright (C) 2026 Demizo and contributors
+// SPDX-License-Identifier: GPL-3.0-only
+// Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
+
+import 'dart:async';
+import 'dart:io';
+import 'dart:isolate';
+
+import 'package:daily_you/database/image_storage.dart';
+import 'package:daily_you/file_bytes_cache.dart';
+import 'package:daily_you/storage/file_store.dart';
+import 'package:daily_you/storage/local_file_store.dart';
+import 'package:daily_you/utils/exif_orientation.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:logging/logging.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:pool/pool.dart';
+import 'package:image/image.dart' as img;
+
+class ResizeRequest {
+  final String key;
+  final String originalPath;
+  final int width;
+
+  ResizeRequest(this.key, this.originalPath, this.width);
+}
+
+class ResizeResponse {
+  final String key;
+  final String? error;
+
+  ResizeResponse(this.key, {this.error});
+}
+
+class LocalImageCache {
+  static final LocalImageCache instance = LocalImageCache._internal();
+
+  final Logger _logger = Logger('LocalImageCache');
+
+  final CacheManager _diskCache;
+  String? tempImgFolderPath;
+  FileStore? _temporaryImageStore;
+  final _pending = <String>{};
+  final FileBytesCache imageCache =
+      FileBytesCache(maxCacheSize: 10 * 1024 * 1024);
+  final Pool imgFetchPool = Pool(5);
+
+  SendPort? _resizeSendPort;
+
+  LocalImageCache._internal()
+      : _diskCache = CacheManager(
+          Config(
+            'resizedImages',
+            stalePeriod: const Duration(days: 7),
+            maxNrOfCacheObjects: 2000,
+          ),
+        ) {
+    _initResizeIsolate();
+    ImageStorage.instance.cacheVersion.addListener(_onImagesInvalidated);
+  }
+
+  void _onImagesInvalidated() {
+    imageCache.clear();
+    unawaited(_diskCache.emptyCache());
+  }
+
+  Future<void> _initResizeIsolate() async {
+    final imgFolderPath = await ImageStorage.instance.getInternalFolder();
+    tempImgFolderPath = (await getTemporaryDirectory()).path;
+    _temporaryImageStore = LocalFileStore(tempImgFolderPath!);
+
+    final responsePort = ReceivePort();
+    responsePort.listen(_listenForResults);
+    RootIsolateToken isolateToken = RootIsolateToken.instance!;
+    await Isolate.spawn(imageResizerIsolate, {
+      "token": isolateToken,
+      "port": responsePort.sendPort,
+      "imgFolderPath": imgFolderPath,
+      "tempImgFolderPath": tempImgFolderPath
+    });
+  }
+
+  void _listenForResults(dynamic message) async {
+    if (message is SendPort) {
+      _resizeSendPort = message;
+    } else if (message is ResizeResponse) {
+      final key = message.key;
+      if (message.error != null) {
+        _logger.warning('Resizing $key failed', message.error);
+      }
+      final resizedName = "$key.jpg";
+      final bytes = await _temporaryImageStore?.read(resizedName);
+
+      if (bytes != null) {
+        imageCache.put(key, bytes);
+        await _diskCache.putFile(key, bytes, fileExtension: 'jpg');
+        await _temporaryImageStore?.delete(resizedName);
+      }
+
+      _pending.remove(key);
+    }
+  }
+
+  Future<void> primeCache(String originalPath, int width) async {
+    final key = '${originalPath}_w$width';
+
+    if (_resizeSendPort == null ||
+        _pending.contains(key) ||
+        _pending.length >= 30) {
+      return;
+    }
+
+    _pending.add(key);
+    final request = ResizeRequest(key, originalPath, width);
+    _resizeSendPort!.send(request);
+  }
+
+  Future<Uint8List?> getResizedImageBytes(
+      String originalPath, int width) async {
+    // Skip GIFs
+    if (extension(originalPath).toLowerCase() == ".gif") {
+      return await ImageStorage.instance.getBytes(originalPath);
+    }
+
+    final key = '${originalPath}_w$width';
+
+    // Memory cache
+    final bytes = imageCache.get(key);
+    if (bytes != null) {
+      return bytes;
+    }
+
+    // Disk cache
+    final fileInfo =
+        await imgFetchPool.withResource(() => _diskCache.getFileFromCache(key));
+    if (fileInfo != null) {
+      final bytes = await fileInfo.file.readAsBytes();
+      imageCache.put(key, bytes);
+      return bytes;
+    }
+
+    // Prime cache in the background
+    primeCache(originalPath, width);
+
+    final originalBytes = await ImageStorage.instance.getBytes(originalPath);
+    if (originalBytes == null) return null;
+
+    return originalBytes;
+  }
+}
+
+void imageResizerIsolate(Map<String, dynamic> args) async {
+  // Allow for plugin usage in isolate
+  BackgroundIsolateBinaryMessenger.ensureInitialized(args["token"]);
+
+  final receivePort = ReceivePort();
+  SendPort mainSendPort = args["port"];
+  String imgFolderPath = args["imgFolderPath"];
+  String tempImgFolderPath = args["tempImgFolderPath"];
+  mainSendPort.send(receivePort.sendPort);
+
+  await for (final dynamic message in receivePort) {
+    if (message is ResizeRequest) {
+      final key = message.key;
+      try {
+        final originalPath = message.originalPath;
+        final width = message.width;
+
+        if (Platform.isAndroid) {
+          final sourcePath = join(imgFolderPath, originalPath);
+          final targetPath = join(tempImgFolderPath, "$key.jpg");
+          final orientation =
+              ExifOrientation.read(await File(sourcePath).readAsBytes());
+          final mirrored = ExifOrientation.isMirrored(orientation);
+          await FlutterImageCompress.compressAndGetFile(sourcePath, targetPath,
+              quality: 85,
+              minWidth: width,
+              minHeight: width,
+              autoCorrectionAngle: !mirrored);
+          if (mirrored) {
+            final target = File(targetPath);
+            await target.writeAsBytes(ExifOrientation.bake(
+                await target.readAsBytes(), orientation!,
+                quality: 85));
+          }
+        } else {
+          final cmd = img.Command()
+            ..decodeImageFile(join(imgFolderPath, originalPath))
+            ..copyResize(width: width, interpolation: img.Interpolation.average)
+            ..encodeJpgFile(join(tempImgFolderPath, "$key.jpg"), quality: 85);
+          await cmd.executeThread();
+        }
+
+        mainSendPort.send(ResizeResponse(key));
+      } catch (error) {
+        mainSendPort.send(ResizeResponse(key, error: "$error"));
+      }
+    }
+  }
+}
