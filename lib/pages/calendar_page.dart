@@ -11,7 +11,8 @@ import 'package:daily_you/utils/entry_navigation.dart';
 import 'package:daily_you/widgets/journal_entry_row.dart';
 import 'package:daily_you/widgets/list_detail_layout.dart';
 import 'package:daily_you/widgets/top_search_card.dart';
-import 'package:daily_you/widgets/vertical_calendar.dart';
+import 'package:daily_you/widgets/month_calendar.dart';
+import 'package:daily_you/pages/entry_timeline_page.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
@@ -25,7 +26,6 @@ class CalendarPage extends StatefulWidget {
 
 class _CalendarPageState extends State<CalendarPage>
     with AutomaticKeepAliveClientMixin {
-  final ScrollController _scrollController = ScrollController();
   final _calendarKey = GlobalKey();
   DateTime _selectedDate = DateTime.now();
   int? _selectedEntryId;
@@ -33,10 +33,16 @@ class _CalendarPageState extends State<CalendarPage>
   @override
   bool get wantKeepAlive => true;
 
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
+  /// Phones open the day directly: its entry, its list, or a new entry.
+  void _openDay(BuildContext context, DateTime day) {
+    final entries = EntriesProvider.instance.getEntriesForDate(day);
+    if (entries.length == 1) {
+      EntryNavigation.view(context, entries.single);
+    } else if (entries.length > 1) {
+      EntryTimelinePage.pushForDay(context, day);
+    } else if (!day.isAfter(DateTime.now())) {
+      EntryNavigation.addForDay(context, day);
+    }
   }
 
   @override
@@ -51,17 +57,17 @@ class _CalendarPageState extends State<CalendarPage>
           child: TopSearchCard(),
         ),
         Expanded(
-          child: VerticalCalendar(
+          child: MonthCalendar(
             key: _calendarKey,
-            scrollController: _scrollController,
-            showControlsWithSelection: split,
             selectedDate: split ? _selectedDate : null,
-            onDaySelected: split
+            // Phones keep the new-entry button in the corner below.
+            todayButtonBottom: split ? 16 : 88,
+            onDayTap: split
                 ? (_, date) => setState(() {
                       _selectedDate = date;
                       _selectedEntryId = null;
                     })
-                : null,
+                : _openDay,
           ),
         ),
       ]),

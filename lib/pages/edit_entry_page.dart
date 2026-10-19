@@ -408,9 +408,6 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
 
   /// The entry date as the page title; tapping it changes date and time.
   Widget _buildDateTitle(BuildContext context, ThemeData theme) {
-    final time = TimeManager.localizedTimeFormat(
-            context, TimeManager.currentLocale(context))
-        .format(entryDate!);
     return TextButton(
       key: const ValueKey('editor-date'),
       onPressed: () async {
@@ -419,8 +416,7 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
       child: Row(mainAxisSize: MainAxisSize.min, children: [
         Flexible(
           child: Text(
-            '${TimeManager.formatDate(entryDate!, context)} $time'
-                .toUpperCase(),
+            TimeManager.formatDate(entryDate!, context).toUpperCase(),
             overflow: TextOverflow.ellipsis,
             style: theme.textTheme.titleSmall?.copyWith(
                 color: theme.colorScheme.primary,

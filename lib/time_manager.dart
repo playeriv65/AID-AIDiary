@@ -282,7 +282,7 @@ class TimeManager {
 
   static String _formatMonthYear(DateTime date, String locale,
       {bool isJalali = false}) {
-    if (!isJalali) return DateFormat('MMMM y', locale).format(date);
+    if (!isJalali) return DateFormat.yMMMM(locale).format(date);
     final j = Jalali.fromDateTime(date);
     return '${jalaliMonthName(j.month, locale)} ${j.formatter.yyyy}';
   }

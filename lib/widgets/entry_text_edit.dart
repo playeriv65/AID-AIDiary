@@ -50,22 +50,19 @@ class _EntryTextEditorState extends State<EntryTextEditor> {
 
     return Stack(
       children: [
-        Card.filled(
-          color: Theme.of(context).colorScheme.surfaceContainer,
-          child: Padding(
-            padding: const EdgeInsets.only(top: 2),
-            child: EntryTextField(
-              controller: widget.textEditingController,
-              undoController: widget.undoHistoryController,
-              focusNode: widget.focusNode,
-              scrollController: _scrollController,
-              // Add padding so cursor avoids action bar
-              scrollPadding: EdgeInsets.only(
-                left: 20.0,
-                top: 20.0,
-                right: 20.0,
-                bottom: 20.0 + EditorActionBar.reservedHeight(context),
-              ),
+        Padding(
+          padding: const EdgeInsets.only(top: 2),
+          child: EntryTextField(
+            controller: widget.textEditingController,
+            undoController: widget.undoHistoryController,
+            focusNode: widget.focusNode,
+            scrollController: _scrollController,
+            // Add padding so cursor avoids action bar
+            scrollPadding: EdgeInsets.only(
+              left: 20.0,
+              top: 20.0,
+              right: 20.0,
+              bottom: 20.0 + EditorActionBar.reservedHeight(context),
             ),
           ),
         ),

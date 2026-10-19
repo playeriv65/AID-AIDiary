@@ -1155,6 +1155,9 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get locationUnavailable => '无法获取当前位置。';
+
+  @override
+  String get calendarJumpToToday => '回到今天';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -2291,4 +2294,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get locationUnavailable => '無法取得目前位置。';
+
+  @override
+  String get calendarJumpToToday => '回到今天';
 }

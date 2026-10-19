@@ -115,72 +115,6 @@ class _AppearanceSettingsPageState extends State<AppearanceSettings> {
     );
   }
 
-  void _showHideImagesDialog(
-      BuildContext context, ConfigProvider configProvider) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(AppLocalizations.of(context)!.settingsHideImages),
-          content: StatefulBuilder(
-            builder: (context, setDialogState) {
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  _hideImagesToggleRow(
-                    context,
-                    AppLocalizations.of(context)!.flashbacksTitle,
-                    configProvider.get(Settings.hideImagesInFlashbacks),
-                    (value) {
-                      configProvider.set(
-                          Settings.hideImagesInFlashbacks, value);
-                      setDialogState(() {});
-                    },
-                  ),
-                  _hideImagesToggleRow(
-                    context,
-                    AppLocalizations.of(context)!.pageCalendarTitle,
-                    configProvider.get(Settings.hideImagesInCalendar),
-                    (value) {
-                      configProvider.set(Settings.hideImagesInCalendar, value);
-                      setDialogState(() {});
-                    },
-                  ),
-                  _hideImagesToggleRow(
-                    context,
-                    AppLocalizations.of(context)!.pageGalleryTitle,
-                    configProvider.get(Settings.hideImagesInGallery),
-                    (value) {
-                      configProvider.set(Settings.hideImagesInGallery, value);
-                      setDialogState(() {});
-                    },
-                  ),
-                ],
-              );
-            },
-          ),
-          actions: [
-            TextButton(
-              child: Text(MaterialLocalizations.of(context).okButtonLabel),
-              onPressed: () => Navigator.pop(context),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Widget _hideImagesToggleRow(BuildContext context, String label, bool value,
-      ValueChanged<bool> onChanged) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(label, style: const TextStyle(fontSize: 16)),
-        Switch(value: value, onChanged: onChanged),
-      ],
-    );
-  }
-
   Future _resetMoodIcons() async {
     for (final setting in Settings.moodIcons.values) {
       await ConfigProvider.instance.set(setting, setting.defaultValue);
@@ -345,11 +279,11 @@ class _AppearanceSettingsPageState extends State<AppearanceSettings> {
                               Settings.calendarSystem, newValue);
                         }),
                   ),
-                  SettingsIconAction(
+                  SettingsToggle(
                     title: AppLocalizations.of(context)!.settingsHideImages,
-                    icon: const Icon(Icons.chevron_right_rounded),
-                    onPressed: () =>
-                        _showHideImagesDialog(context, configProvider),
+                    setting: Settings.hideImagesInGallery,
+                    onChanged: (value) =>
+                        configProvider.set(Settings.hideImagesInGallery, value),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(

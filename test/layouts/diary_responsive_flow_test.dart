@@ -2,7 +2,7 @@ import 'package:daily_you/database/entry_store.dart';
 import 'package:daily_you/layouts/mobile_scaffold.dart';
 import 'package:daily_you/pages/entries_list_page.dart';
 import 'package:daily_you/providers/entries_provider.dart';
-import 'package:daily_you/widgets/vertical_calendar.dart';
+import 'package:daily_you/widgets/month_calendar.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -24,7 +24,7 @@ void main() {
     expect(find.byKey(const ValueKey('list-detail-split')), findsOneWidget);
     expect(find.byKey(const ValueKey('detail-empty')), findsOneWidget);
     await tapKey(tester, 'diary-destination-1');
-    final calendarState = tester.state(find.byType(VerticalCalendar));
+    final calendarState = tester.state(find.byType(MonthCalendar));
     for (final dimensions in [
       const Size(844, 390),
       const Size(390, 844),
@@ -33,7 +33,7 @@ void main() {
     ]) {
       tester.view.physicalSize = dimensions;
       await tester.pumpAndSettle();
-      expect(tester.state(find.byType(VerticalCalendar)), same(calendarState));
+      expect(tester.state(find.byType(MonthCalendar)), same(calendarState));
       expect(tester.takeException(), isNull);
     }
     await tapKey(tester, 'journal-profile');

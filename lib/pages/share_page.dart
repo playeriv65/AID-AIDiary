@@ -15,7 +15,7 @@ import 'package:daily_you/widgets/day_menu.dart';
 import 'package:daily_you/widgets/entry_image_actions.dart';
 import 'package:daily_you/widgets/image_grid.dart';
 import 'package:daily_you/widgets/large_card.dart';
-import 'package:daily_you/widgets/vertical_calendar.dart';
+import 'package:daily_you/widgets/month_calendar.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:share_receiver/share_receiver.dart';
 
@@ -29,13 +29,11 @@ class SharePage extends StatefulWidget {
 }
 
 class _SharePageState extends State<SharePage> {
-  final ScrollController _scrollController = ScrollController();
   bool _opening = false;
 
   @override
   void dispose() {
     widget.payload.deleteImages();
-    _scrollController.dispose();
     super.dispose();
   }
 
@@ -138,10 +136,7 @@ class _SharePageState extends State<SharePage> {
 
   @override
   Widget build(BuildContext context) {
-    final calendar = VerticalCalendar(
-      scrollController: _scrollController,
-      onDaySelected: _selectDay,
-    );
+    final calendar = MonthCalendar(onDayTap: _selectDay);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,

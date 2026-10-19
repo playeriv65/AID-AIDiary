@@ -329,5 +329,6 @@
     "locationRemove": "移除",
     "locationServiceDisabled": "定位服務已關閉。",
     "locationPermissionDenied": "沒有定位權限。",
-    "locationUnavailable": "無法取得目前位置。"
+    "locationUnavailable": "無法取得目前位置。",
+    "calendarJumpToToday": "回到今天"
 }

@@ -659,5 +659,7 @@
   "locationPermissionDenied": "Location permission was denied.",
   "@locationPermissionDenied": {},
   "locationUnavailable": "Could not get the current location.",
-  "@locationUnavailable": {}
+  "@locationUnavailable": {},
+  "calendarJumpToToday": "Jump to today",
+  "@calendarJumpToToday": {}
 }

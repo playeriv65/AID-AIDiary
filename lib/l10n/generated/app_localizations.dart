@@ -2183,6 +2183,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Could not get the current location.'**
   String get locationUnavailable;
+
+  /// No description provided for @calendarJumpToToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Jump to today'**
+  String get calendarJumpToToday;
 }
 
 class _AppLocalizationsDelegate

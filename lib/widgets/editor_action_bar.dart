@@ -282,12 +282,7 @@ class _EditorActionBarState extends State<EditorActionBar> {
 
             return Stack(
               children: [
-                DockSurface(
-                  metrics: metrics,
-                  alignment: pillAlignment,
-                  barWidth: constraints.maxWidth,
-                  pillWidth: split.pillWidth,
-                ),
+                DockSurface(metrics: metrics, barWidth: constraints.maxWidth),
                 Padding(
                   padding:
                       EdgeInsets.symmetric(horizontal: metrics.contentInset),
@@ -342,7 +337,6 @@ class _EditorActionBarState extends State<EditorActionBar> {
               opacity: visible ? 1.0 : 0.0,
               child: ActionBarToggle(
                 size: metrics.toggleSize,
-                dockProgress: metrics.progress,
                 visible: visible,
                 isShowingMainActions: _showMainActionsWhileFocused,
                 onPressed: () {

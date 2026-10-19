@@ -1177,4 +1177,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get locationUnavailable => 'Could not get the current location.';
+
+  @override
+  String get calendarJumpToToday => 'Jump to today';
 }

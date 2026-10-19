@@ -86,14 +86,8 @@ class Settings {
       Setting<bool>("showflashbackRandomDay", true);
   static const hideImagesInGallery =
       Setting<bool>("hideImagesInGallery", false);
-  static const hideImagesInCalendar =
-      Setting<bool>("hideImagesInCalendar", false);
-  static const hideImagesInFlashbacks =
-      Setting<bool>("hideImagesInFlashbacks", false);
   static const lastDismissedSupportBannerDate =
       Setting<String?>("lastDismissedSupportBannerDate", null);
-  static const calendarShowMood = Setting<bool>("calendarShowMood", true);
-  static const calendarTagOverlay = Setting<int?>("calendarTagOverlay", null);
   static const calendarSystem = Setting<String>("calendarSystem", "system");
   static const moodOverTimeGrouping =
       Setting<String?>("moodOverTimeGrouping", null);
@@ -168,11 +162,7 @@ class Settings {
     showflashbackGoodDay,
     showflashbackRandomDay,
     hideImagesInGallery,
-    hideImagesInCalendar,
-    hideImagesInFlashbacks,
     lastDismissedSupportBannerDate,
-    calendarShowMood,
-    calendarTagOverlay,
     calendarSystem,
     moodOverTimeGrouping,
     moodOverTimeSmoothing,

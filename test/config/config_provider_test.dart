@@ -61,19 +61,19 @@ void main() {
     expect(configProvider.get(Settings.theme), 'system');
     expect(configProvider.get(Settings.accentColor), 0xff62A0EA);
     expect(configProvider.get(Settings.showFlashbacks), isTrue);
-    expect(configProvider.get(Settings.calendarTagOverlay), isNull);
+    expect(configProvider.get(Settings.moodOverTimeGrouping), isNull);
   });
 
   test('a setting round-trips with its declared type', () async {
     await configProvider.set(Settings.theme, 'amoled');
     await configProvider.set(Settings.accentColor, 0xff112233);
     await configProvider.set(Settings.showFlashbacks, false);
-    await configProvider.set(Settings.calendarTagOverlay, 7);
+    await configProvider.set(Settings.moodOverTimeGrouping, 'week');
 
     expect(configProvider.get(Settings.theme), 'amoled');
     expect(configProvider.get(Settings.accentColor), 0xff112233);
     expect(configProvider.get(Settings.showFlashbacks), isFalse);
-    expect(configProvider.get(Settings.calendarTagOverlay), 7);
+    expect(configProvider.get(Settings.moodOverTimeGrouping), 'week');
   });
 
   test('a setting survives a write and read of the config file', () async {

@@ -233,11 +233,15 @@ class _Stories extends StatelessWidget {
     final now = DateTime.now();
     final today = EntriesProvider.instance.getEntriesForDate(now);
     final flashback = flashbacks.firstOrNull;
+    // Two cards fit side by side on a phone; wider panes keep a fixed width.
+    final cardWidth =
+        ((MediaQuery.sizeOf(context).width - 32 - 8) / 2).clamp(120.0, 200.0);
     return SizedBox(
       height: 128,
       child: ListView(scrollDirection: Axis.horizontal, children: [
         _StoryCard(
           key: const ValueKey('story-today'),
+          width: cardWidth,
           icon: Icons.bookmark_rounded,
           title: l10n.storyToday,
           subtitle: TimeManager.formatDate(now, context),
@@ -256,6 +260,7 @@ class _Stories extends StatelessWidget {
         const SizedBox(width: 8),
         _StoryCard(
           key: const ValueKey('story-throwback'),
+          width: cardWidth,
           icon: Icons.history_rounded,
           title: l10n.storyThrowback,
           subtitle: flashback?.title ?? l10n.storyNoThrowback,
@@ -268,6 +273,7 @@ class _Stories extends StatelessWidget {
         for (final extra in flashbacks.skip(1)) ...[
           const SizedBox(width: 8),
           _StoryCard(
+            width: cardWidth,
             icon: Icons.auto_awesome_rounded,
             title: extra.title,
             subtitle:
@@ -290,9 +296,11 @@ class _StoryCard extends StatelessWidget {
     required this.subtitle,
     required this.background,
     required this.foreground,
+    required this.width,
     this.onTap,
   });
 
+  final double width;
   final IconData icon;
   final String title;
   final String subtitle;
@@ -304,7 +312,7 @@ class _StoryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return SizedBox(
-      width: 200,
+      width: width,
       child: Material(
         color: background,
         borderRadius: BorderRadius.circular(12),

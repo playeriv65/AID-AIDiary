@@ -86,20 +86,25 @@ class _CoachPageState extends State<CoachPage>
     final l10n = AppLocalizations.of(context)!;
     final templates = context.watch<TemplatesProvider>().templates;
     final programs = CoachProgram.all(l10n);
-    final cards = <({Object key, Widget card, Widget Function() detail})>[];
+    final cards = <({
+      Object key,
+      Widget Function(double) card,
+      Widget Function() detail
+    })>[];
     if (_filter != _CoachFilter.templates) {
       for (final program in programs) {
         Widget detail() => _ProgramDetail(program: program);
         cards.add((
           key: program.id,
           detail: detail,
-          card: _CoachCard(
-            key: ValueKey('coach-program-${program.id}'),
-            icon: Icons.lightbulb_outline_rounded,
-            kind: l10n.coachKindProgram,
-            title: program.title,
-            description: program.description,
-          ),
+          card: (headerHeight) => _CoachCard(
+                key: ValueKey('coach-program-${program.id}'),
+                headerHeight: headerHeight,
+                icon: Icons.lightbulb_outline_rounded,
+                kind: l10n.coachKindProgram,
+                title: program.title,
+                description: program.description,
+              ),
         ));
       }
     }
@@ -109,13 +114,14 @@ class _CoachPageState extends State<CoachPage>
         cards.add((
           key: template,
           detail: detail,
-          card: _CoachCard(
-            key: ValueKey('coach-template-${template.id}'),
-            icon: Icons.description_outlined,
-            kind: l10n.coachKindTemplate,
-            title: template.name,
-            description: (template.text ?? '').replaceAll('\n', ' '),
-          ),
+          card: (headerHeight) => _CoachCard(
+                key: ValueKey('coach-template-${template.id}'),
+                headerHeight: headerHeight,
+                icon: Icons.description_outlined,
+                kind: l10n.coachKindTemplate,
+                title: template.name,
+                description: (template.text ?? '').replaceAll('\n', ' '),
+              ),
         ));
       }
     }
@@ -160,9 +166,10 @@ class _CoachPageState extends State<CoachPage>
           SliverPadding(
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 96),
             sliver: SliverGrid.builder(
-              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 320,
-                  mainAxisExtent: 260,
+              // Phones show one full-width card per row.
+              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: split ? 320 : 640,
+                  mainAxisExtent: split ? 260 : 300,
                   mainAxisSpacing: 12,
                   crossAxisSpacing: 12),
               itemCount: cards.length,
@@ -170,7 +177,7 @@ class _CoachPageState extends State<CoachPage>
                 final card = cards[index];
                 return GestureDetector(
                   onTap: () => _open(context, card.detail, card.key, split),
-                  child: card.card,
+                  child: card.card(split ? 110 : 150),
                 );
               },
             ),
@@ -187,8 +194,10 @@ class _CoachCard extends StatelessWidget {
     required this.kind,
     required this.title,
     required this.description,
+    required this.headerHeight,
   });
 
+  final double headerHeight;
   final IconData icon;
   final String kind;
   final String title;
@@ -205,7 +214,7 @@ class _CoachCard extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         Container(
-          height: 110,
+          height: headerHeight,
           color: cs.primaryContainer,
           child: Icon(icon, size: 48, color: cs.onPrimaryContainer),
         ),
