@@ -28,7 +28,7 @@ class _FlashbackSettingsPageState extends State<FlashbackSettings> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.flashbacksTitle),
+        title: Text(AppLocalizations.of(context)!.settingsStoriesTitle),
         centerTitle: true,
       ),
       body: ListView(

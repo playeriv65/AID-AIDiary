@@ -13,6 +13,7 @@ import 'package:daily_you/providers/entries_provider.dart';
 import 'package:daily_you/providers/entry_images_provider.dart';
 import 'package:daily_you/providers/tags_provider.dart';
 import 'package:daily_you/time_manager.dart';
+import 'package:daily_you/utils/entry_actions.dart';
 import 'package:daily_you/widgets/delete_confirm_dialog.dart';
 import 'package:daily_you/widgets/entry_tag_chips.dart';
 import 'package:daily_you/widgets/local_image_loader.dart';
@@ -84,10 +85,24 @@ class EntryViewPage extends StatelessWidget {
           ),
           PopupMenuButton<String>(
             key: const ValueKey('entry-more'),
-            onSelected: (value) {
-              if (value == 'delete') _delete(context, entry);
+            onSelected: (value) => switch (value) {
+              'duplicate' => _duplicate(context, entry),
+              'template' => _saveAsTemplate(context, entry),
+              _ => _delete(context, entry),
             },
             itemBuilder: (context) => [
+              PopupMenuItem(
+                  key: const ValueKey('entry-duplicate'),
+                  value: 'duplicate',
+                  child: ListTile(
+                      leading: const Icon(Icons.copy_rounded),
+                      title: Text(l10n.entryDuplicate))),
+              PopupMenuItem(
+                  key: const ValueKey('entry-save-template'),
+                  value: 'template',
+                  child: ListTile(
+                      leading: const Icon(Icons.note_add_outlined),
+                      title: Text(l10n.entrySaveAsTemplate))),
               PopupMenuItem(
                   value: 'delete',
                   child: ListTile(
@@ -160,6 +175,21 @@ class EntryViewPage extends StatelessWidget {
       transitionDuration: const Duration(milliseconds: 200),
     ));
     onEntryEdited?.call(entry.id!);
+  }
+
+  Future<void> _duplicate(BuildContext context, Entry entry) async {
+    final messenger = ScaffoldMessenger.of(context);
+    final message = AppLocalizations.of(context)!.entryDuplicated;
+    await EntryActions.duplicate(entry);
+    messenger.showSnackBar(SnackBar(content: Text(message)));
+  }
+
+  Future<void> _saveAsTemplate(BuildContext context, Entry entry) async {
+    final messenger = ScaffoldMessenger.of(context);
+    final l10n = AppLocalizations.of(context)!;
+    final fallback = TimeManager.formatDate(entry.timeCreate, context);
+    await EntryActions.saveAsTemplate(entry, fallback);
+    messenger.showSnackBar(SnackBar(content: Text(l10n.entrySavedAsTemplate)));
   }
 
   Future<void> _delete(BuildContext context, Entry entry) async {

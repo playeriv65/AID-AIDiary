@@ -3,6 +3,7 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'package:daily_you/l10n/generated/app_localizations.dart';
+import 'package:daily_you/models/builtin_templates.dart';
 import 'package:daily_you/models/template.dart';
 import 'package:daily_you/providers/templates_provider.dart';
 import 'package:daily_you/utils/entry_navigation.dart';
@@ -109,6 +110,22 @@ class _CoachPageState extends State<CoachPage>
       }
     }
     if (_filter != _CoachFilter.programs) {
+      for (final builtin in BuiltinTemplate.all(l10n)) {
+        final template = builtin.toTemplate();
+        Widget detail() => _TemplateDetail(template: template);
+        cards.add((
+          key: 'builtin-${builtin.id}',
+          detail: detail,
+          card: (headerHeight) => _CoachCard(
+                key: ValueKey('coach-builtin-${builtin.id}'),
+                headerHeight: headerHeight,
+                icon: Icons.auto_awesome_outlined,
+                kind: l10n.templateFeatured,
+                title: builtin.name,
+                description: builtin.description,
+              ),
+        ));
+      }
       for (final template in templates) {
         Widget detail() => _TemplateDetail(template: template);
         cards.add((

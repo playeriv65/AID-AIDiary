@@ -32,6 +32,7 @@ import 'package:daily_you/widgets/entry_mood_picker.dart';
 import 'package:daily_you/widgets/location_dialog.dart';
 import 'package:daily_you/widgets/mood_icon.dart';
 import 'package:daily_you/widgets/entry_text_edit.dart';
+import 'package:daily_you/widgets/template_select_popup.dart';
 import 'package:daily_you/widgets/markdown_preview_controller.dart';
 
 class AddEditEntryPage extends StatefulWidget {
@@ -110,9 +111,12 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
       final defaultTagIds = <int>[];
       if (defaultTemplate != null) {
         templateText = defaultTemplate.text ?? "";
-        defaultTagIds.addAll(TagsProvider.instance
-            .getTemplateTagsForTemplate(defaultTemplate.id!)
-            .map((templateTag) => templateTag.tagId));
+        // Built-in templates are not stored, so they carry no tags.
+        if (defaultTemplate.id != null) {
+          defaultTagIds.addAll(TagsProvider.instance
+              .getTemplateTagsForTemplate(defaultTemplate.id!)
+              .map((templateTag) => templateTag.tagId));
+        }
       }
       if (widget.initialPrompt != null) {
         templateText = templateText.isEmpty
@@ -524,6 +528,10 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
                       textEditingController: _textEditingController,
                       undoHistoryController: _undoController,
                       onExpand: _openFullScreenEditor,
+                      onChooseTemplate: () => showTemplateSelectPopup(
+                          context, _textEditingController,
+                          hasFocus: _focusNode.hasFocus,
+                          onTemplateSelected: _applyInsertedTemplateTags),
                     ),
                   ),
                 ),

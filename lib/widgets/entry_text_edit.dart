@@ -13,6 +13,7 @@ class EntryTextEditor extends StatefulWidget {
   final MarkdownPreviewController textEditingController;
   final UndoHistoryController undoHistoryController;
   final VoidCallback? onExpand;
+  final VoidCallback? onChooseTemplate;
 
   const EntryTextEditor({
     super.key,
@@ -21,6 +22,7 @@ class EntryTextEditor extends StatefulWidget {
     required this.textEditingController,
     required this.undoHistoryController,
     this.onExpand,
+    this.onChooseTemplate,
   });
 
   @override
@@ -57,6 +59,7 @@ class _EntryTextEditorState extends State<EntryTextEditor> {
             undoController: widget.undoHistoryController,
             focusNode: widget.focusNode,
             scrollController: _scrollController,
+            onChooseTemplate: widget.onChooseTemplate,
             // Add padding so cursor avoids action bar
             scrollPadding: EdgeInsets.only(
               left: 20.0,

@@ -13,7 +13,7 @@ import 'package:daily_you/launch_intent.dart';
 import 'package:daily_you/models/entry.dart';
 import 'package:daily_you/models/flashback.dart';
 import 'package:daily_you/notification_manager.dart';
-import 'package:daily_you/pages/entry_timeline_page.dart';
+import 'package:daily_you/pages/today_story_page.dart';
 import 'package:daily_you/pages/entry_view_page.dart';
 import 'package:daily_you/pages/share_page.dart';
 import 'package:daily_you/providers/entries_provider.dart';
@@ -167,7 +167,6 @@ class _JournalPageState extends State<JournalPage>
                   children: [
                     SectionLabel(l10n.journalStories),
                     _Stories(
-                        onOpenEntry: (entry) => _open(entry, split),
                         flashbacks: config.get(Settings.showFlashbacks)
                             ? FlashbackManager.getFlashbacks(
                                 context, EntriesProvider.instance.entries)
@@ -222,8 +221,7 @@ class _JournalPageState extends State<JournalPage>
 }
 
 class _Stories extends StatelessWidget {
-  const _Stories({required this.onOpenEntry, required this.flashbacks});
-  final ValueChanged<Entry> onOpenEntry;
+  const _Stories({required this.flashbacks});
   final List<Flashback> flashbacks;
 
   @override
@@ -231,7 +229,6 @@ class _Stories extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final cs = Theme.of(context).colorScheme;
     final now = DateTime.now();
-    final today = EntriesProvider.instance.getEntriesForDate(now);
     final flashback = flashbacks.firstOrNull;
     // Two cards fit side by side on a phone; wider panes keep a fixed width.
     final cardWidth =
@@ -247,15 +244,7 @@ class _Stories extends StatelessWidget {
           subtitle: TimeManager.formatDate(now, context),
           background: cs.tertiaryContainer,
           foreground: cs.onTertiaryContainer,
-          onTap: () {
-            if (today.isEmpty) {
-              EntryNavigation.edit(context, null);
-            } else if (today.length == 1) {
-              onOpenEntry(today.single);
-            } else {
-              EntryTimelinePage.pushForDay(context, now);
-            }
-          },
+          onTap: () => TodayStoryPage.open(context),
         ),
         const SizedBox(width: 8),
         _StoryCard(

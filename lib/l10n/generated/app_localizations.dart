@@ -2189,6 +2189,198 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Jump to today'**
   String get calendarJumpToToday;
+
+  /// No description provided for @editorStartWriting.
+  ///
+  /// In en, this message translates to:
+  /// **'Start writing or choose a '**
+  String get editorStartWriting;
+
+  /// No description provided for @editorTemplateLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Template'**
+  String get editorTemplateLink;
+
+  /// No description provided for @editorStartWritingEnd.
+  ///
+  /// In en, this message translates to:
+  /// **'.'**
+  String get editorStartWritingEnd;
+
+  /// No description provided for @templatePickerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a template'**
+  String get templatePickerTitle;
+
+  /// No description provided for @templateFeatured.
+  ///
+  /// In en, this message translates to:
+  /// **'Featured templates'**
+  String get templateFeatured;
+
+  /// No description provided for @templateMine.
+  ///
+  /// In en, this message translates to:
+  /// **'My templates'**
+  String get templateMine;
+
+  /// No description provided for @templateDailyName.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily review'**
+  String get templateDailyName;
+
+  /// No description provided for @templateDailyDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'What happened, how it felt, and what comes next.'**
+  String get templateDailyDescription;
+
+  /// No description provided for @templateDailyText.
+  ///
+  /// In en, this message translates to:
+  /// **'## What happened today\n\n\n## How I felt\n\n\n## Three things I\'m grateful for\n1. \n2. \n3. \n\n## Tomorrow\n'**
+  String get templateDailyText;
+
+  /// No description provided for @templateTravelName.
+  ///
+  /// In en, this message translates to:
+  /// **'Travel log'**
+  String get templateTravelName;
+
+  /// No description provided for @templateTravelDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Places, moments and food from the road.'**
+  String get templateTravelDescription;
+
+  /// No description provided for @templateTravelText.
+  ///
+  /// In en, this message translates to:
+  /// **'## Where I went\n\n\n## The moment I remember most\n\n\n## What I ate\n\n\n## Plans for tomorrow\n'**
+  String get templateTravelText;
+
+  /// No description provided for @templateReadingName.
+  ///
+  /// In en, this message translates to:
+  /// **'Reading notes'**
+  String get templateReadingName;
+
+  /// No description provided for @templateReadingDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Quotes and thoughts from what you read.'**
+  String get templateReadingDescription;
+
+  /// No description provided for @templateReadingText.
+  ///
+  /// In en, this message translates to:
+  /// **'## Book\n\n\n## Where I am\n\n\n## Quotes\n> \n\n## My thoughts\n'**
+  String get templateReadingText;
+
+  /// No description provided for @templateWeeklyName.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly review'**
+  String get templateWeeklyName;
+
+  /// No description provided for @templateWeeklyDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Highlights, struggles and next week\'s focus.'**
+  String get templateWeeklyDescription;
+
+  /// No description provided for @templateWeeklyText.
+  ///
+  /// In en, this message translates to:
+  /// **'## Highlights\n\n\n## What was hard\n\n\n## What I learned\n\n\n## Focus for next week\n'**
+  String get templateWeeklyText;
+
+  /// No description provided for @entryDuplicate.
+  ///
+  /// In en, this message translates to:
+  /// **'Duplicate'**
+  String get entryDuplicate;
+
+  /// No description provided for @entryDuplicated.
+  ///
+  /// In en, this message translates to:
+  /// **'Entry duplicated'**
+  String get entryDuplicated;
+
+  /// No description provided for @entrySaveAsTemplate.
+  ///
+  /// In en, this message translates to:
+  /// **'Save as template'**
+  String get entrySaveAsTemplate;
+
+  /// No description provided for @entrySavedAsTemplate.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved as a template'**
+  String get entrySavedAsTemplate;
+
+  /// No description provided for @storyStatistics.
+  ///
+  /// In en, this message translates to:
+  /// **'Statistics'**
+  String get storyStatistics;
+
+  /// No description provided for @storyMoodChart.
+  ///
+  /// In en, this message translates to:
+  /// **'Mood chart'**
+  String get storyMoodChart;
+
+  /// No description provided for @storyEntriesAndDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{entries} entries · {days} days'**
+  String storyEntriesAndDays(Object days, Object entries);
+
+  /// No description provided for @storyThisYear.
+  ///
+  /// In en, this message translates to:
+  /// **'This year'**
+  String get storyThisYear;
+
+  /// No description provided for @storyLastYear.
+  ///
+  /// In en, this message translates to:
+  /// **'Last year'**
+  String get storyLastYear;
+
+  /// No description provided for @storyTapToOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap a day to open it'**
+  String get storyTapToOpen;
+
+  /// No description provided for @settingsGeneralTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'General'**
+  String get settingsGeneralTitle;
+
+  /// No description provided for @settingsDataTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Data & storage'**
+  String get settingsDataTitle;
+
+  /// No description provided for @settingsStoriesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Stories'**
+  String get settingsStoriesTitle;
+
+  /// No description provided for @settingsHelpTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Help & about'**
+  String get settingsHelpTitle;
 }
 
 class _AppLocalizationsDelegate

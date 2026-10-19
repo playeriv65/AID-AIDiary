@@ -39,7 +39,7 @@ void main() {
     await tapKey(tester, 'journal-profile');
     await tapKey(tester, 'diary-settings');
     expect(find.byKey(const ValueKey('diary-rail')), findsOneWidget);
-    await tester.tap(find.text('外观'));
+    await tester.tap(find.text('通用'));
     await tester.pumpAndSettle();
     for (final dimensions in [const Size(844, 390), const Size(390, 844)]) {
       tester.view.physicalSize = dimensions;

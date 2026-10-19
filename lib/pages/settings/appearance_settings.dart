@@ -15,6 +15,10 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:daily_you/theme_mode_provider.dart';
 import 'package:daily_you/widgets/theme_color_presets.dart';
+import 'package:daily_you/pages/settings/language_settings.dart';
+import 'package:daily_you/pages/settings/tags_settings.dart';
+import 'package:daily_you/pages/settings/templates_page.dart';
+import 'package:daily_you/widgets/settings_category.dart';
 
 class AppearanceSettings extends StatefulWidget {
   const AppearanceSettings({super.key});
@@ -163,7 +167,7 @@ class _AppearanceSettingsPageState extends State<AppearanceSettings> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.settingsAppearanceTitle),
+        title: Text(AppLocalizations.of(context)!.settingsGeneralTitle),
         centerTitle: true,
       ),
       body: Align(
@@ -314,6 +318,21 @@ class _AppearanceSettingsPageState extends State<AppearanceSettings> {
                       ],
                     ),
                   ),
+                  const Divider(height: 32),
+                  SettingsCategory(
+                      title:
+                          AppLocalizations.of(context)!.settingsLanguageTitle,
+                      icon: Icons.language_rounded,
+                      page: const LanguageSettings()),
+                  SettingsCategory(
+                      title: AppLocalizations.of(context)!.settingsTagsTitle,
+                      icon: Icons.local_offer_rounded,
+                      page: const TagsSettings()),
+                  SettingsCategory(
+                      title:
+                          AppLocalizations.of(context)!.settingsTemplatesTitle,
+                      icon: Icons.description_rounded,
+                      page: const TemplateSettings()),
                 ],
               ))),
     );

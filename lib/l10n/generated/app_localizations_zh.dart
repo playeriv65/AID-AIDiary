@@ -1158,6 +1158,108 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get calendarJumpToToday => '回到今天';
+
+  @override
+  String get editorStartWriting => '开始写，或选择一个';
+
+  @override
+  String get editorTemplateLink => '模板';
+
+  @override
+  String get editorStartWritingEnd => '。';
+
+  @override
+  String get templatePickerTitle => '选择模板';
+
+  @override
+  String get templateFeatured => '精选模板';
+
+  @override
+  String get templateMine => '我的模板';
+
+  @override
+  String get templateDailyName => '每日回顾';
+
+  @override
+  String get templateDailyDescription => '今天发生了什么、心情如何、明天做什么。';
+
+  @override
+  String get templateDailyText =>
+      '## 今天发生了什么\n\n\n## 我的心情\n\n\n## 值得感激的三件事\n1. \n2. \n3. \n\n## 明天想做的事\n';
+
+  @override
+  String get templateTravelName => '旅行日志';
+
+  @override
+  String get templateTravelDescription => '记下沿途的地点、瞬间和美食。';
+
+  @override
+  String get templateTravelText =>
+      '## 今天去了哪里\n\n\n## 印象最深的瞬间\n\n\n## 吃了什么\n\n\n## 明天的计划\n';
+
+  @override
+  String get templateReadingName => '读书笔记';
+
+  @override
+  String get templateReadingDescription => '摘录和读后的想法。';
+
+  @override
+  String get templateReadingText =>
+      '## 书名\n\n\n## 读到哪里\n\n\n## 摘录\n> \n\n## 我的想法\n';
+
+  @override
+  String get templateWeeklyName => '一周回顾';
+
+  @override
+  String get templateWeeklyDescription => '本周亮点、困难和下周重点。';
+
+  @override
+  String get templateWeeklyText =>
+      '## 本周亮点\n\n\n## 遇到的困难\n\n\n## 学到的东西\n\n\n## 下周重点\n';
+
+  @override
+  String get entryDuplicate => '复制一份';
+
+  @override
+  String get entryDuplicated => '已复制这篇日记';
+
+  @override
+  String get entrySaveAsTemplate => '存为模板';
+
+  @override
+  String get entrySavedAsTemplate => '已存为模板';
+
+  @override
+  String get storyStatistics => '统计';
+
+  @override
+  String get storyMoodChart => '心情图';
+
+  @override
+  String storyEntriesAndDays(Object days, Object entries) {
+    return '$entries 篇 · $days 天';
+  }
+
+  @override
+  String get storyThisYear => '今年';
+
+  @override
+  String get storyLastYear => '去年';
+
+  @override
+  String get storyTapToOpen => '点一天打开当天的日记';
+
+  @override
+  String get settingsGeneralTitle => '通用';
+
+  @override
+  String get settingsDataTitle => '数据与存储';
+
+  @override
+  String get settingsStoriesTitle => '故事';
+
+  @override
+  String get settingsHelpTitle => '帮助与关于';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -2297,4 +2399,106 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get calendarJumpToToday => '回到今天';
+
+  @override
+  String get editorStartWriting => '開始寫，或選擇一個';
+
+  @override
+  String get editorTemplateLink => '範本';
+
+  @override
+  String get editorStartWritingEnd => '。';
+
+  @override
+  String get templatePickerTitle => '選擇範本';
+
+  @override
+  String get templateFeatured => '精選範本';
+
+  @override
+  String get templateMine => '我的範本';
+
+  @override
+  String get templateDailyName => '每日回顧';
+
+  @override
+  String get templateDailyDescription => '今天發生了什麼、心情如何、明天做什麼。';
+
+  @override
+  String get templateDailyText =>
+      '## 今天發生了什麼\n\n\n## 我的心情\n\n\n## 值得感激的三件事\n1. \n2. \n3. \n\n## 明天想做的事\n';
+
+  @override
+  String get templateTravelName => '旅行日誌';
+
+  @override
+  String get templateTravelDescription => '記下沿途的地點、瞬間和美食。';
+
+  @override
+  String get templateTravelText =>
+      '## 今天去了哪裡\n\n\n## 印象最深的瞬間\n\n\n## 吃了什麼\n\n\n## 明天的計畫\n';
+
+  @override
+  String get templateReadingName => '讀書筆記';
+
+  @override
+  String get templateReadingDescription => '摘錄和讀後的想法。';
+
+  @override
+  String get templateReadingText =>
+      '## 書名\n\n\n## 讀到哪裡\n\n\n## 摘錄\n> \n\n## 我的想法\n';
+
+  @override
+  String get templateWeeklyName => '一週回顧';
+
+  @override
+  String get templateWeeklyDescription => '本週亮點、困難和下週重點。';
+
+  @override
+  String get templateWeeklyText =>
+      '## 本週亮點\n\n\n## 遇到的困難\n\n\n## 學到的東西\n\n\n## 下週重點\n';
+
+  @override
+  String get entryDuplicate => '複製一份';
+
+  @override
+  String get entryDuplicated => '已複製這篇日記';
+
+  @override
+  String get entrySaveAsTemplate => '存為範本';
+
+  @override
+  String get entrySavedAsTemplate => '已存為範本';
+
+  @override
+  String get storyStatistics => '統計';
+
+  @override
+  String get storyMoodChart => '心情圖';
+
+  @override
+  String storyEntriesAndDays(Object days, Object entries) {
+    return '$entries 篇 · $days 天';
+  }
+
+  @override
+  String get storyThisYear => '今年';
+
+  @override
+  String get storyLastYear => '去年';
+
+  @override
+  String get storyTapToOpen => '點一天打開當天的日記';
+
+  @override
+  String get settingsGeneralTitle => '一般';
+
+  @override
+  String get settingsDataTitle => '資料與儲存';
+
+  @override
+  String get settingsStoriesTitle => '故事';
+
+  @override
+  String get settingsHelpTitle => '說明與關於';
 }

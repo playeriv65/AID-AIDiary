@@ -20,6 +20,10 @@ class EntryTextField extends StatefulWidget {
   final EdgeInsets contentPadding;
   final TextAlignVertical? textAlignVertical;
 
+  /// When set, an empty field invites choosing a template instead of the
+  /// plain hint.
+  final VoidCallback? onChooseTemplate;
+
   const EntryTextField({
     super.key,
     required this.controller,
@@ -30,6 +34,7 @@ class EntryTextField extends StatefulWidget {
     this.contentPadding =
         const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
     this.textAlignVertical,
+    this.onChooseTemplate,
   });
 
   @override
@@ -92,16 +97,70 @@ class _EntryTextFieldState extends State<EntryTextField> {
       decoration: InputDecoration(
         border: InputBorder.none,
         contentPadding: widget.contentPadding,
-        hintText: AppLocalizations.of(context)!.writeSomethingHint,
+        hintText: widget.onChooseTemplate == null
+            ? AppLocalizations.of(context)!.writeSomethingHint
+            : null,
       ),
     );
 
-    return MarkdownPreviewDecorations(
+    final decorated = MarkdownPreviewDecorations(
       controller: widget.controller,
       scrollController: _scrollController,
       barColor: styles.quote,
       panelColor: styles.codeBackground,
       child: field,
     );
+    if (widget.onChooseTemplate == null) return decorated;
+    return Stack(children: [
+      decorated,
+      ValueListenableBuilder<TextEditingValue>(
+        valueListenable: widget.controller,
+        builder: (context, value, _) => value.text.isNotEmpty
+            ? const SizedBox.shrink()
+            : Padding(
+                padding: widget.contentPadding,
+                child: _TemplateHint(
+                    style: baseStyle, onChoose: widget.onChooseTemplate!),
+              ),
+      ),
+    ]);
+  }
+}
+
+/// "Start writing or choose a [Template]." Only the link takes taps; the
+/// words let them through to the field underneath.
+class _TemplateHint extends StatelessWidget {
+  const _TemplateHint({required this.style, required this.onChoose});
+  final TextStyle style;
+  final VoidCallback onChoose;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final cs = Theme.of(context).colorScheme;
+    final hint = style.copyWith(color: Theme.of(context).hintColor);
+    return Wrap(crossAxisAlignment: WrapCrossAlignment.center, children: [
+      IgnorePointer(child: Text(l10n.editorStartWriting, style: hint)),
+      Material(
+        color: cs.secondaryContainer,
+        borderRadius: BorderRadius.circular(16),
+        child: InkWell(
+          key: const ValueKey('editor-template-link'),
+          borderRadius: BorderRadius.circular(16),
+          onTap: onChoose,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+            child: Row(mainAxisSize: MainAxisSize.min, children: [
+              Icon(Icons.grid_view_rounded,
+                  size: 16, color: cs.onSecondaryContainer),
+              const SizedBox(width: 4),
+              Text(l10n.editorTemplateLink,
+                  style: style.copyWith(color: cs.onSecondaryContainer)),
+            ]),
+          ),
+        ),
+      ),
+      IgnorePointer(child: Text(l10n.editorStartWritingEnd, style: hint)),
+    ]);
   }
 }

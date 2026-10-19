@@ -1174,4 +1174,110 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get calendarJumpToToday => 'Jump to today';
+
+  @override
+  String get editorStartWriting => 'Start writing or choose a ';
+
+  @override
+  String get editorTemplateLink => 'Template';
+
+  @override
+  String get editorStartWritingEnd => '.';
+
+  @override
+  String get templatePickerTitle => 'Choose a template';
+
+  @override
+  String get templateFeatured => 'Featured templates';
+
+  @override
+  String get templateMine => 'My templates';
+
+  @override
+  String get templateDailyName => 'Daily review';
+
+  @override
+  String get templateDailyDescription =>
+      'What happened, how it felt, and what comes next.';
+
+  @override
+  String get templateDailyText =>
+      '## What happened today\n\n\n## How I felt\n\n\n## Three things I\'m grateful for\n1. \n2. \n3. \n\n## Tomorrow\n';
+
+  @override
+  String get templateTravelName => 'Travel log';
+
+  @override
+  String get templateTravelDescription =>
+      'Places, moments and food from the road.';
+
+  @override
+  String get templateTravelText =>
+      '## Where I went\n\n\n## The moment I remember most\n\n\n## What I ate\n\n\n## Plans for tomorrow\n';
+
+  @override
+  String get templateReadingName => 'Reading notes';
+
+  @override
+  String get templateReadingDescription =>
+      'Quotes and thoughts from what you read.';
+
+  @override
+  String get templateReadingText =>
+      '## Book\n\n\n## Where I am\n\n\n## Quotes\n> \n\n## My thoughts\n';
+
+  @override
+  String get templateWeeklyName => 'Weekly review';
+
+  @override
+  String get templateWeeklyDescription =>
+      'Highlights, struggles and next week\'s focus.';
+
+  @override
+  String get templateWeeklyText =>
+      '## Highlights\n\n\n## What was hard\n\n\n## What I learned\n\n\n## Focus for next week\n';
+
+  @override
+  String get entryDuplicate => 'Duplicate';
+
+  @override
+  String get entryDuplicated => 'Entry duplicated';
+
+  @override
+  String get entrySaveAsTemplate => 'Save as template';
+
+  @override
+  String get entrySavedAsTemplate => 'Saved as a template';
+
+  @override
+  String get storyStatistics => 'Statistics';
+
+  @override
+  String get storyMoodChart => 'Mood chart';
+
+  @override
+  String storyEntriesAndDays(Object days, Object entries) {
+    return '$entries entries · $days days';
+  }
+
+  @override
+  String get storyThisYear => 'This year';
+
+  @override
+  String get storyLastYear => 'Last year';
+
+  @override
+  String get storyTapToOpen => 'Tap a day to open it';
+
+  @override
+  String get settingsGeneralTitle => 'General';
+
+  @override
+  String get settingsDataTitle => 'Data & storage';
+
+  @override
+  String get settingsStoriesTitle => 'Stories';
+
+  @override
+  String get settingsHelpTitle => 'Help & about';
 }
