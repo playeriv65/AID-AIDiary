@@ -8,6 +8,7 @@ import 'package:daily_you/models/entry.dart';
 import 'package:daily_you/pages/entry_view_page.dart';
 import 'package:daily_you/providers/entries_provider.dart';
 import 'package:daily_you/utils/entry_navigation.dart';
+import 'package:daily_you/utils/map_clusters.dart';
 import 'package:daily_you/widgets/list_detail_layout.dart';
 import 'package:daily_you/widgets/top_search_card.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -57,6 +58,86 @@ class _AtlasPageState extends State<AtlasPage>
     ));
   }
 
+  void _open(BuildContext context, Entry entry,
+      {required bool split, List<Entry> Function()? entries}) {
+    if (split) {
+      setState(() => _selectedId = entry.id);
+    } else {
+      EntryNavigation.view(context, entry, entries: entries ?? geotagged);
+    }
+  }
+
+  /// Zooms into a cluster; one that cannot split further opens its entries.
+  void _openCluster(BuildContext context, List<Entry> cluster,
+      {required bool split}) {
+    final points = cluster.map(_point).toSet();
+    final maxZoom = AppConfig.instance.mapMaxZoom;
+    if (points.length == 1 || _controller.camera.zoom >= maxZoom) {
+      _open(context, cluster.first, split: split, entries: () => cluster);
+      return;
+    }
+    _controller.fitCamera(CameraFit.coordinates(
+      coordinates: points.toList(),
+      padding: const EdgeInsets.fromLTRB(48, 120, 48, 48),
+      maxZoom: maxZoom,
+    ));
+  }
+
+  Marker _entryMarker(BuildContext context, Entry entry,
+      {required bool split}) {
+    final cs = Theme.of(context).colorScheme;
+    return Marker(
+      point: _point(entry),
+      width: 44,
+      height: 44,
+      alignment: Alignment.topCenter,
+      child: GestureDetector(
+        key: ValueKey('atlas-marker-${entry.id}'),
+        onTap: () => _open(context, entry, split: split),
+        child: Icon(Icons.location_on_rounded,
+            size: 44,
+            color: entry.id == _selectedId ? cs.tertiary : cs.primary),
+      ),
+    );
+  }
+
+  Marker _clusterMarker(BuildContext context, List<Entry> cluster,
+      {required bool split}) {
+    final theme = Theme.of(context);
+    final cs = theme.colorScheme;
+    final points = cluster.map(_point);
+    final center = LatLng(
+        points.map((p) => p.latitude).reduce((a, b) => a + b) / cluster.length,
+        points.map((p) => p.longitude).reduce((a, b) => a + b) /
+            cluster.length);
+    final selected = cluster.any((e) => e.id == _selectedId);
+    return Marker(
+      point: center,
+      width: 48,
+      height: 48,
+      child: GestureDetector(
+        key: ValueKey('atlas-cluster-${cluster.first.id}'),
+        onTap: () => _openCluster(context, cluster, split: split),
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: selected ? cs.tertiary : cs.primary,
+            border: Border.all(color: cs.surface, width: 3),
+            boxShadow: [
+              BoxShadow(color: cs.shadow.withValues(alpha: .25), blurRadius: 6)
+            ],
+          ),
+          child: Center(
+            child: Text('${cluster.length}',
+                style: theme.textTheme.titleSmall?.copyWith(
+                    color: selected ? cs.onTertiary : cs.onPrimary,
+                    fontWeight: FontWeight.w700)),
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -97,26 +178,21 @@ class _AtlasPageState extends State<AtlasPage>
             userAgentPackageName: config.userAgentPackageName,
             tileProvider: widget.tileProvider,
           ),
-          MarkerLayer(markers: [
-            for (final entry in entries)
-              Marker(
-                point: _point(entry),
-                width: 44,
-                height: 44,
-                alignment: Alignment.topCenter,
-                child: GestureDetector(
-                  key: ValueKey('atlas-marker-${entry.id}'),
-                  onTap: () => split
-                      ? setState(() => _selectedId = entry.id)
-                      : EntryNavigation.view(context, entry,
-                          entries: geotagged),
-                  child: Icon(Icons.location_on_rounded,
-                      size: 44,
-                      color:
-                          entry.id == _selectedId ? cs.tertiary : cs.primary),
-                ),
-              ),
-          ]),
+          // Reads the camera, so clusters regroup as the map zooms.
+          Builder(builder: (context) {
+            final camera = MapCamera.of(context);
+            final clusters = clusterByDistance(
+                entries,
+                (entry) => camera.projectAtZoom(_point(entry)),
+                config.mapClusterRadius);
+            return MarkerLayer(markers: [
+              for (final cluster in clusters)
+                if (cluster.length == 1)
+                  _entryMarker(context, cluster.single, split: split)
+                else
+                  _clusterMarker(context, cluster, split: split),
+            ]);
+          }),
           RichAttributionWidget(attributions: [
             TextSourceAttribution(config.mapAttribution,
                 onTap: () => launchUrl(Uri.parse(config.mapAttributionUrl))),

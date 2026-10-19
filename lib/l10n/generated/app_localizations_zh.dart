@@ -1356,6 +1356,27 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get settingsFahrenheit => '华氏度 (°F)';
+
+  @override
+  String get moodGreat => '很好';
+
+  @override
+  String get moodGood => '好';
+
+  @override
+  String get moodOkay => '一般';
+
+  @override
+  String get moodBad => '差';
+
+  @override
+  String get moodAwful => '很差';
+
+  @override
+  String get locationSearchHint => '搜索地点';
+
+  @override
+  String get locationSearchEmpty => '没有找到地点';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -2693,4 +2714,25 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get settingsFahrenheit => '華氏度 (°F)';
+
+  @override
+  String get moodGreat => '很好';
+
+  @override
+  String get moodGood => '好';
+
+  @override
+  String get moodOkay => '一般';
+
+  @override
+  String get moodBad => '差';
+
+  @override
+  String get moodAwful => '很差';
+
+  @override
+  String get locationSearchHint => '搜尋地點';
+
+  @override
+  String get locationSearchEmpty => '沒有找到地點';
 }

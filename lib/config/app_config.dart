@@ -45,8 +45,15 @@ class AppConfig {
   double get mapEntryZoom => (_section('map')['entryZoom'] as num).toDouble();
   double get mapMaxZoom => (_section('map')['maxZoom'] as num).toDouble();
 
+  /// Markers closer than this many logical pixels merge into a cluster.
+  double get mapClusterRadius =>
+      (_section('map')['clusterRadius'] as num).toDouble();
+
   Uri get reverseGeocodeUrl =>
       Uri.parse(_section('geocoding')['reverseUrl'] as String);
+  Uri get placeSearchUrl =>
+      Uri.parse(_section('geocoding')['searchUrl'] as String);
+  int get placeSearchLimit => _section('geocoding')['searchLimit'] as int;
   String get geocodeUserAgent => _section('geocoding')['userAgent'] as String;
   Duration get geocodeTimeout =>
       Duration(seconds: _section('geocoding')['timeoutSeconds'] as int);

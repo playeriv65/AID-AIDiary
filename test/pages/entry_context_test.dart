@@ -2,9 +2,12 @@ import 'dart:convert';
 
 import 'package:daily_you/models/entry.dart';
 import 'package:daily_you/pages/entry_view_page.dart';
+import 'package:daily_you/services/location_service.dart';
 import 'package:daily_you/services/weather_service.dart';
+import 'package:daily_you/utils/map_clusters.dart';
 import 'package:daily_you/widgets/context_dialogs.dart';
 import 'package:daily_you/widgets/entry_draft_dirty_tracker.dart';
+import 'package:daily_you/widgets/location_dialog.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
@@ -110,6 +113,63 @@ void main() {
         context, null, const EntryLocation(name: '家'), DateTime.now());
     await tester.pumpAndSettle();
     expect(find.byKey(const ValueKey('weather-fetch')), findsNothing);
+  });
+
+  testWidgets('location dialog searches places by name', (tester) async {
+    late Uri requested;
+    final service = LocationService(client: MockClient((request) async {
+      requested = request.url;
+      return http.Response(
+          jsonEncode([
+            {
+              'lat': '48.8584',
+              'lon': '2.2945',
+              'display_name': 'Tour Eiffel, Paris, France',
+              'address': {'tourism': 'Tour Eiffel', 'city': 'Paris'}
+            },
+            {'lat': 'bad', 'lon': '1'},
+          ]),
+          200,
+          headers: {'content-type': 'application/json; charset=utf-8'});
+    }));
+    DiaryAppHarness.size(tester, const Size(390, 844));
+    await tester.pumpWidget(harness.app(const Scaffold(body: SizedBox())));
+    final context = tester.element(find.byType(SizedBox).first);
+    LocationChoice? choice;
+    showLocationDialog(context, null, service: service)
+        .then((value) => choice = value);
+    await tester.pumpAndSettle();
+    await tester.enterText(
+        find.byKey(const ValueKey('location-name')), 'eiffel');
+    await DiaryAppHarness.runUntil(
+        tester,
+        () => tester.tap(find.byKey(const ValueKey('location-search'))),
+        () => find
+            .byKey(const ValueKey('location-match-0'))
+            .evaluate()
+            .isNotEmpty);
+    expect(requested.queryParameters['q'], 'eiffel');
+    expect(find.byKey(const ValueKey('location-match-1')), findsNothing);
+    await tester.tap(find.byKey(const ValueKey('location-match-0')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const ValueKey('location-save')));
+    await tester.pumpAndSettle();
+    expect(
+        choice?.location,
+        const EntryLocation(
+            latitude: 48.8584, longitude: 2.2945, name: 'Tour Eiffel, Paris'));
+  });
+
+  test('clusterByDistance groups items near the first of each cluster', () {
+    final clusters = clusterByDistance(
+        const [Offset(0, 0), Offset(30, 0), Offset(70, 0), Offset(200, 0)],
+        (offset) => offset,
+        50);
+    expect(clusters, [
+      [const Offset(0, 0), const Offset(30, 0)],
+      [const Offset(70, 0)],
+      [const Offset(200, 0)],
+    ]);
   });
 
   testWidgets('activity dialog returns the chosen activity', (tester) async {

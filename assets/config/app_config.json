@@ -6,10 +6,13 @@
     "userAgentPackageName": "com.aiddiary.app",
     "defaultZoom": 3.0,
     "entryZoom": 13.0,
-    "maxZoom": 18.0
+    "maxZoom": 18.0,
+    "clusterRadius": 56
   },
   "geocoding": {
     "reverseUrl": "https://nominatim.openstreetmap.org/reverse",
+    "searchUrl": "https://nominatim.openstreetmap.org/search",
+    "searchLimit": 6,
     "userAgent": "AID-Diary/1.0 (personal diary app)",
     "timeoutSeconds": 8
   },

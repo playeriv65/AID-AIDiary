@@ -12,6 +12,9 @@ import 'package:logging/logging.dart';
 
 enum LocationFailure { serviceDisabled, permissionDenied, unavailable }
 
+/// A place search hit: the place to store and its full address to show.
+typedef PlaceMatch = ({EntryLocation location, String? detail});
+
 class LocationException implements Exception {
   const LocationException(this.reason);
   final LocationFailure reason;
@@ -77,6 +80,42 @@ class LocationService {
       return null;
     }
   }
+
+  /// Places matching [query], best first; empty when the lookup fails.
+  Future<List<PlaceMatch>> search(String query, {String? languageCode}) async {
+    final config = AppConfig.instance;
+    final uri = config.placeSearchUrl.replace(queryParameters: {
+      'format': 'jsonv2',
+      'q': query,
+      'addressdetails': '1',
+      'limit': '${config.placeSearchLimit}',
+      if (languageCode != null) 'accept-language': languageCode,
+    });
+    try {
+      final response = await _client.get(uri, headers: {
+        'User-Agent': config.geocodeUserAgent
+      }).timeout(config.geocodeTimeout);
+      if (response.statusCode != 200) return const [];
+      return parseSearch(jsonDecode(response.body) as List);
+    } catch (error, stackTrace) {
+      _logger.info('Place search failed', error, stackTrace);
+      return const [];
+    }
+  }
+
+  /// Turns Nominatim search results into named places.
+  static List<PlaceMatch> parseSearch(List results) => [
+        for (final result in results.whereType<Map>())
+          if (double.tryParse('${result['lat']}') case final lat?)
+            if (double.tryParse('${result['lon']}') case final lon?)
+              (
+                location: EntryLocation(
+                    latitude: lat,
+                    longitude: lon,
+                    name: shortName(result.cast<String, dynamic>())),
+                detail: result['display_name'] as String?,
+              ),
+      ];
 
   /// Picks the most specific readable parts of a reverse geocoding result.
   static String? shortName(Map<String, dynamic> result) {

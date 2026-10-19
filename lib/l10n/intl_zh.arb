@@ -200,11 +200,6 @@
     "tagCategoryUncategorized": "未分类",
     "newCategoryTitle": "新分类",
     "deleteTitle": "删除",
-    "filterTagsTitle": "过滤器",
-    "tagFilterModeAny": "任意标签",
-    "tagFilterModeAll": "所有标签",
-    "clearAllFilters": "清除全部",
-    "noTagsFilterLabel": "无标签",
     "addTagsTitle": "添加标签",
     "addTagsSearchHint": "搜索标签…",
     "iconGroupFoodDrink": "餐饮",
@@ -393,5 +388,12 @@
     "settingsAutoAddHint": "新建日记时自动填好这些信息。",
     "settingsTemperatureUnit": "温度单位",
     "settingsCelsius": "摄氏度 (°C)",
-    "settingsFahrenheit": "华氏度 (°F)"
+    "settingsFahrenheit": "华氏度 (°F)",
+    "moodGreat": "很好",
+    "moodGood": "好",
+    "moodOkay": "一般",
+    "moodBad": "差",
+    "moodAwful": "很差",
+    "locationSearchHint": "搜索地点",
+    "locationSearchEmpty": "没有找到地点"
 }

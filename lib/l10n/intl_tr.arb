@@ -192,10 +192,6 @@
     "tagCategoryUncategorized": "Kategori edilmemiş",
     "newCategoryTitle": "Yeni Kategori",
     "deleteTitle": "Sil",
-    "filterTagsTitle": "Filtre",
-    "tagFilterModeAny": "Herhangi Bir Etiket",
-    "tagFilterModeAll": "Bütün Etiketler",
-    "clearAllFilters": "Hepsini Temizle",
     "addTagsTitle": "Etiketler Ekle",
     "addTagsSearchHint": "Etiketleri ara…",
     "tagFavoriteName": "Favori",
@@ -222,6 +218,5 @@
     "iconGroupMoodPeople": "Ruh Hâli & İnsanlar",
     "tagPickerSortManualLabel": "Manuel sıralama",
     "tagPickerSortUsageLabel": "Kullanıma göre sırala",
-    "noTagsFilterLabel": "Etiket Yok",
     "migratingImagesStatus": "Fotoğraflar aktarılıyor… {current}/{total}"
 }

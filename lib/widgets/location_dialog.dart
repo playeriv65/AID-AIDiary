@@ -36,7 +36,33 @@ class _LocationDialogState extends State<_LocationDialog> {
   late double? _latitude = widget.current?.latitude;
   late double? _longitude = widget.current?.longitude;
   bool _locating = false;
+  bool _searching = false;
+  List<PlaceMatch>? _matches;
   String? _error;
+
+  String get _language => TimeManager.currentLocale(context).split('_').first;
+
+  Future<void> _search() async {
+    final query = _name.text.trim();
+    if (query.isEmpty) return;
+    setState(() {
+      _searching = true;
+      _error = null;
+    });
+    final matches = await widget.service.search(query, languageCode: _language);
+    if (!mounted) return;
+    setState(() {
+      _searching = false;
+      _matches = matches;
+    });
+  }
+
+  void _pick(PlaceMatch match) => setState(() {
+        _latitude = match.location.latitude;
+        _longitude = match.location.longitude;
+        _name.text = match.location.name ?? _name.text;
+        _matches = null;
+      });
 
   @override
   void dispose() {
@@ -46,13 +72,13 @@ class _LocationDialogState extends State<_LocationDialog> {
 
   Future<void> _locate() async {
     final l10n = AppLocalizations.of(context)!;
-    final language = TimeManager.currentLocale(context).split('_').first;
     setState(() {
       _locating = true;
       _error = null;
+      _matches = null;
     });
     try {
-      final found = await widget.service.current(languageCode: language);
+      final found = await widget.service.current(languageCode: _language);
       final name = found.name;
       if (!mounted) return;
       setState(() {
@@ -83,10 +109,54 @@ class _LocationDialogState extends State<_LocationDialog> {
         TextField(
           key: const ValueKey('location-name'),
           controller: _name,
+          textInputAction: TextInputAction.search,
+          onSubmitted: (_) => _search(),
           decoration: InputDecoration(
-              labelText: l10n.locationName,
-              prefixIcon: const Icon(Icons.place_outlined)),
+            labelText: l10n.locationName,
+            prefixIcon: const Icon(Icons.place_outlined),
+            suffixIcon: _searching
+                ? const Padding(
+                    padding: EdgeInsets.all(12),
+                    child: SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(strokeWidth: 2)))
+                : IconButton(
+                    key: const ValueKey('location-search'),
+                    tooltip: l10n.locationSearchHint,
+                    icon: const Icon(Icons.search_rounded),
+                    onPressed: _search,
+                  ),
+          ),
         ),
+        if (_matches case final matches?)
+          if (matches.isEmpty)
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Text(l10n.locationSearchEmpty,
+                  style: theme.textTheme.bodySmall),
+            )
+          else
+            ConstrainedBox(
+              constraints: const BoxConstraints(maxHeight: 240),
+              // AlertDialog sizes by intrinsic width, which lists lack.
+              child: SingleChildScrollView(
+                  child: Column(mainAxisSize: MainAxisSize.min, children: [
+                for (final (index, match) in matches.indexed)
+                  ListTile(
+                    key: ValueKey('location-match-$index'),
+                    dense: true,
+                    contentPadding: EdgeInsets.zero,
+                    leading: const Icon(Icons.place_rounded),
+                    title: Text(match.location.name ?? match.detail ?? ''),
+                    subtitle: match.detail == null
+                        ? null
+                        : Text(match.detail!,
+                            maxLines: 2, overflow: TextOverflow.ellipsis),
+                    onTap: () => _pick(match),
+                  ),
+              ])),
+            ),
         const SizedBox(height: 12),
         Row(children: [
           Expanded(

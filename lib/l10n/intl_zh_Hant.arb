@@ -204,11 +204,6 @@
     "tagCategoryUncategorized": "未分類",
     "newCategoryTitle": "新分類",
     "deleteTitle": "刪除",
-    "filterTagsTitle": "過濾器",
-    "tagFilterModeAny": "任意標籤",
-    "tagFilterModeAll": "所有標籤",
-    "clearAllFilters": "清除全部",
-    "noTagsFilterLabel": "無標籤",
     "addTagsTitle": "新增標籤",
     "addTagsSearchHint": "搜尋標籤…",
     "tagExerciseName": "鍛煉",
@@ -394,5 +389,12 @@
     "settingsAutoAddHint": "新增日記時自動填好這些資訊。",
     "settingsTemperatureUnit": "溫度單位",
     "settingsCelsius": "攝氏度 (°C)",
-    "settingsFahrenheit": "華氏度 (°F)"
+    "settingsFahrenheit": "華氏度 (°F)",
+    "moodGreat": "很好",
+    "moodGood": "好",
+    "moodOkay": "一般",
+    "moodBad": "差",
+    "moodAwful": "很差",
+    "locationSearchHint": "搜尋地點",
+    "locationSearchEmpty": "沒有找到地點"
 }

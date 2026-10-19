@@ -2573,6 +2573,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Fahrenheit (°F)'**
   String get settingsFahrenheit;
+
+  /// No description provided for @moodGreat.
+  ///
+  /// In en, this message translates to:
+  /// **'Great'**
+  String get moodGreat;
+
+  /// No description provided for @moodGood.
+  ///
+  /// In en, this message translates to:
+  /// **'Good'**
+  String get moodGood;
+
+  /// No description provided for @moodOkay.
+  ///
+  /// In en, this message translates to:
+  /// **'Okay'**
+  String get moodOkay;
+
+  /// No description provided for @moodBad.
+  ///
+  /// In en, this message translates to:
+  /// **'Bad'**
+  String get moodBad;
+
+  /// No description provided for @moodAwful.
+  ///
+  /// In en, this message translates to:
+  /// **'Awful'**
+  String get moodAwful;
+
+  /// No description provided for @locationSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search for a place'**
+  String get locationSearchHint;
+
+  /// No description provided for @locationSearchEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No places found'**
+  String get locationSearchEmpty;
 }
 
 class _AppLocalizationsDelegate

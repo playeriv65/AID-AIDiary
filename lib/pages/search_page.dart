@@ -7,15 +7,17 @@ import 'package:daily_you/models/entry.dart';
 import 'package:daily_you/providers/entries_provider.dart';
 import 'package:daily_you/providers/entry_images_provider.dart';
 import 'package:daily_you/providers/tags_provider.dart';
+import 'package:daily_you/utils/entry_context_display.dart';
 import 'package:daily_you/utils/entry_navigation.dart';
 import 'package:daily_you/widgets/journal_entry_row.dart';
 import 'package:daily_you/widgets/list_detail_layout.dart';
 import 'package:daily_you/widgets/mood_icon.dart';
-import 'package:daily_you/widgets/tag_picker_dialog.dart';
+import 'package:daily_you/widgets/tag_icon_glyph.dart';
+import 'package:daily_you/utils/tag_visuals.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
-/// Text search with tag, starred and mood filters.
+/// Text search with inline tag, starred, activity and mood filters.
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
 
@@ -25,17 +27,16 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   final _controller = TextEditingController();
-  List<int> _tagIds = [];
-  TagFilterMode _tagMode = TagFilterMode.any;
-  bool _noTags = false;
+  final Set<int> _tagIds = {};
   bool _starred = false;
+  final Set<EntryActivity> _activities = {};
   final Set<int> _moods = {};
 
   bool get _active =>
       _controller.text.trim().isNotEmpty ||
       _tagIds.isNotEmpty ||
-      _noTags ||
       _starred ||
+      _activities.isNotEmpty ||
       _moods.isNotEmpty;
 
   @override
@@ -55,35 +56,29 @@ class _SearchPageState extends State<SearchPage> {
       }
       if (_starred && !tags.isFavorite(entry.id!)) return false;
       if (_moods.isNotEmpty && !_moods.contains(entry.mood)) return false;
-      final entryTagIds =
-          tags.getEntryTagsForEntry(entry.id!).map((t) => t.tagId).toSet();
-      if (_noTags && entryTagIds.isNotEmpty) return false;
-      if (_tagIds.isNotEmpty) {
-        final matches = _tagMode == TagFilterMode.all
-            ? _tagIds.every(entryTagIds.contains)
-            : _tagIds.any(entryTagIds.contains);
-        if (!matches) return false;
+      if (_activities.isNotEmpty && !_activities.contains(entry.activity)) {
+        return false;
+      }
+      if (_tagIds.isNotEmpty &&
+          !tags
+              .getEntryTagsForEntry(entry.id!)
+              .any((t) => _tagIds.contains(t.tagId))) {
+        return false;
       }
       return true;
     }).toList();
   }
 
-  void _pickTags() {
-    showDialog(
-      context: context,
-      builder: (_) => TagPickerDialog(
-        mode: TagPickerMode.filter,
-        initialSelectedTagIds: List.of(_tagIds),
-        initialFilterMode: _tagMode,
-        initialNoTagsOnly: _noTags,
-        onFilterChanged: (ids, mode, noTags) => setState(() {
-          _tagIds = ids;
-          _tagMode = mode;
-          _noTags = noTags;
-        }),
-      ),
-    );
-  }
+  void _clear() => setState(() {
+        _controller.clear();
+        _tagIds.clear();
+        _starred = false;
+        _activities.clear();
+        _moods.clear();
+      });
+
+  void _toggle<T>(Set<T> set, T value, bool? on) =>
+      setState(() => on == true ? set.add(value) : set.remove(value));
 
   @override
   Widget build(BuildContext context) {
@@ -93,9 +88,8 @@ class _SearchPageState extends State<SearchPage> {
     final tags = context.watch<TagsProvider>();
     final images = context.watch<EntryImagesProvider>();
     final results = _active ? _results() : const <Entry>[];
-    final starredCount = EntriesProvider.instance.entries
-        .where((e) => tags.isFavorite(e.id!))
-        .length;
+    final favoriteId = tags.favoriteTag?.id;
+    final tagOptions = tags.tags.where((t) => t.id != favoriteId).toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -112,13 +106,7 @@ class _SearchPageState extends State<SearchPage> {
             IconButton(
               tooltip: MaterialLocalizations.of(context).clearButtonTooltip,
               icon: const Icon(Icons.close_rounded),
-              onPressed: () => setState(() {
-                _controller.clear();
-                _tagIds = [];
-                _noTags = false;
-                _starred = false;
-                _moods.clear();
-              }),
+              onPressed: _clear,
             ),
         ],
       ),
@@ -126,37 +114,69 @@ class _SearchPageState extends State<SearchPage> {
         padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
         children: [
           SectionLabel(l10n.searchFilters),
-          ListTile(
+          _FilterSection(
             key: const ValueKey('search-filter-tags'),
-            leading: const Icon(Icons.local_offer_outlined),
-            title: Text(l10n.searchFilterTags),
-            trailing: Text(_noTags ? '0' : '${_tagIds.length}'),
-            onTap: _pickTags,
+            icon: Icons.local_offer_outlined,
+            title: l10n.searchFilterTags,
+            options: tagOptions.length,
+            selected: _tagIds.length,
+            children: [
+              for (final tag in tagOptions)
+                CheckboxListTile(
+                  key: ValueKey('search-tag-${tag.id}'),
+                  secondary: TagIconGlyph(
+                      icon: tag.icon,
+                      iconType: tag.iconType,
+                      fallbackIcon: tag.typeIcon,
+                      color: tag.resolvedColor(context,
+                          fallback: theme.colorScheme.secondary),
+                      size: 20),
+                  title: Text(tag.name),
+                  value: _tagIds.contains(tag.id),
+                  onChanged: (on) => _toggle(_tagIds, tag.id!, on),
+                ),
+            ],
           ),
-          SwitchListTile(
+          CheckboxListTile(
             key: const ValueKey('search-filter-starred'),
             secondary: const Icon(Icons.star_outline_rounded),
             title: Text(l10n.searchFilterStarred),
-            subtitle: Text('$starredCount'),
             value: _starred,
-            onChanged: (value) => setState(() => _starred = value),
+            onChanged: (value) => setState(() => _starred = value ?? false),
           ),
-          ListTile(
-            leading: const Icon(Icons.mood_rounded),
-            title: Text(l10n.tagMoodTitle),
-            subtitle: Padding(
-              padding: const EdgeInsets.only(top: 8),
-              child: Wrap(spacing: 8, children: [
-                for (final mood in const [2, 1, 0, -1, -2])
-                  FilterChip(
-                    key: ValueKey('search-mood-$mood'),
-                    label: MoodIcon(moodValue: mood, size: 18),
-                    selected: _moods.contains(mood),
-                    onSelected: (on) => setState(
-                        () => on ? _moods.add(mood) : _moods.remove(mood)),
-                  ),
-              ]),
-            ),
+          _FilterSection(
+            key: const ValueKey('search-filter-activity'),
+            icon: Icons.directions_walk_rounded,
+            title: l10n.activityTitle,
+            options: EntryActivity.values.length,
+            selected: _activities.length,
+            children: [
+              for (final activity in EntryActivity.values)
+                CheckboxListTile(
+                  key: ValueKey('search-activity-${activity.name}'),
+                  secondary: Icon(activityIcon(activity)),
+                  title: Text(activityLabel(activity, l10n)),
+                  value: _activities.contains(activity),
+                  onChanged: (on) => _toggle(_activities, activity, on),
+                ),
+            ],
+          ),
+          _FilterSection(
+            key: const ValueKey('search-filter-mood'),
+            icon: Icons.mood_rounded,
+            title: l10n.tagMoodTitle,
+            options: 5,
+            selected: _moods.length,
+            children: [
+              for (final mood in const [2, 1, 0, -1, -2])
+                CheckboxListTile(
+                  key: ValueKey('search-mood-$mood'),
+                  secondary: MoodIcon(moodValue: mood, size: 22),
+                  title: Text(_moodName(mood, l10n)),
+                  value: _moods.contains(mood),
+                  onChanged: (on) => _toggle(_moods, mood, on),
+                ),
+            ],
           ),
           if (_active) ...[
             const SizedBox(height: 8),
@@ -184,6 +204,56 @@ class _SearchPageState extends State<SearchPage> {
             ),
         ],
       ),
+    );
+  }
+}
+
+String _moodName(int mood, AppLocalizations l10n) => switch (mood) {
+      2 => l10n.moodGreat,
+      1 => l10n.moodGood,
+      0 => l10n.moodOkay,
+      -1 => l10n.moodBad,
+      _ => l10n.moodAwful,
+    };
+
+/// A filter that expands its options inline. The trailing number is how
+/// many options it has, or how many are picked once some are.
+class _FilterSection extends StatelessWidget {
+  const _FilterSection({
+    super.key,
+    required this.icon,
+    required this.title,
+    required this.options,
+    required this.selected,
+    required this.children,
+  });
+
+  final IconData icon;
+  final String title;
+  final int options;
+  final int selected;
+  final List<Widget> children;
+
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    return ExpansionTile(
+      leading: Icon(icon),
+      title: Text(title),
+      shape: const Border(),
+      collapsedShape: const Border(),
+      trailing: Row(mainAxisSize: MainAxisSize.min, children: [
+        if (selected > 0)
+          Badge(
+              label: Text('$selected'),
+              backgroundColor: cs.primary,
+              textColor: cs.onPrimary)
+        else
+          Text('$options', style: TextStyle(color: cs.outline)),
+        const SizedBox(width: 4),
+        const Icon(Icons.expand_more_rounded),
+      ]),
+      children: children,
     );
   }
 }

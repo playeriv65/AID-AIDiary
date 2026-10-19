@@ -241,6 +241,61 @@ void main() {
     await tester.pumpWidget(const SizedBox.shrink());
   });
 
+  testWidgets('nearby atlas markers cluster and split when tapped',
+      (tester) async {
+    final a = await DiaryAppHarness.addEntry(tester, '外滩', DateTime.now(),
+        location: const EntryLocation(latitude: 31.230, longitude: 121.470));
+    final b = await DiaryAppHarness.addEntry(tester, '南京路', DateTime.now(),
+        location: const EntryLocation(latitude: 31.231, longitude: 121.471));
+    final far = await DiaryAppHarness.addEntry(tester, '北京', DateTime.now(),
+        location: const EntryLocation(latitude: 39.9, longitude: 116.4));
+    DiaryAppHarness.size(tester, const Size(1280, 800));
+    await tester.pumpWidget(
+        harness.app(Scaffold(body: AtlasPage(tileProvider: _BlankTiles()))));
+    await tester.pumpAndSettle();
+    final cluster = find.byKey(ValueKey('atlas-cluster-${a.id}'));
+    expect(cluster, findsOneWidget);
+    expect(
+        find.descendant(of: cluster, matching: find.text('2')), findsOneWidget);
+    expect(find.byKey(ValueKey('atlas-marker-${far.id}')), findsOneWidget);
+    await tester.tap(cluster);
+    await tester.pumpAndSettle();
+    expect(cluster, findsNothing);
+    expect(find.byKey(ValueKey('atlas-marker-${a.id}')), findsOneWidget);
+    expect(find.byKey(ValueKey('atlas-marker-${b.id}')), findsOneWidget);
+    await tester.pumpWidget(const SizedBox.shrink());
+  });
+
+  testWidgets('search filters expand inline and match activity and mood',
+      (tester) async {
+    final walk = await DiaryAppHarness.addEntry(tester, '散步', DateTime.now(),
+        mood: 1, activity: EntryActivity.walking);
+    await DiaryAppHarness.addEntry(tester, '开车', DateTime.now(),
+        mood: 1, activity: EntryActivity.vehicle);
+    await DiaryAppHarness.addEntry(tester, '走路但难过', DateTime.now(),
+        mood: -2, activity: EntryActivity.walking);
+    DiaryAppHarness.size(tester, const Size(390, 844));
+    await tester.pumpWidget(harness.app(const SearchPage()));
+    await tester.pumpAndSettle();
+    final activity = find.byKey(const ValueKey('search-filter-activity'));
+    expect(find.descendant(of: activity, matching: find.text('7')),
+        findsOneWidget);
+    await tapKey(tester, 'search-filter-activity');
+    await tapKey(tester, 'search-activity-walking');
+    expect(find.descendant(of: activity, matching: find.text('1')),
+        findsOneWidget);
+    expect(find.text('开车'), findsNothing);
+    expect(find.text('走路但难过'), findsOneWidget);
+    for (final key in ['search-filter-mood', 'search-mood-1']) {
+      await tester.ensureVisible(find.byKey(ValueKey(key)));
+      await tester.pumpAndSettle();
+      await tapKey(tester, key);
+    }
+    expect(find.byKey(ValueKey('journal-entry-${walk.id}')), findsOneWidget);
+    expect(find.text('走路但难过'), findsNothing);
+    await tester.pumpWidget(const SizedBox.shrink());
+  });
+
   testWidgets('editor saves a typed place and a mood', (tester) async {
     DiaryAppHarness.size(tester, const Size(1280, 800));
     await tester.pumpWidget(harness.app(const MobileScaffold()));

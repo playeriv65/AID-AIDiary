@@ -15,9 +15,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:daily_you/l10n/generated/app_localizations.dart';
 import 'package:provider/provider.dart';
 
-enum TagPickerMode { attach, selectSingle, filter }
-
-enum TagFilterMode { all, any }
+enum TagPickerMode { attach, selectSingle }
 
 class TagPickerDialog extends StatefulWidget {
   final TagPickerMode mode;
@@ -25,22 +23,12 @@ class TagPickerDialog extends StatefulWidget {
   // attach
   final TagAttachmentSource? source;
 
-  // filter
-  final List<int> initialSelectedTagIds;
-  final TagFilterMode initialFilterMode;
-  final bool initialNoTagsOnly;
-  final void Function(List<int>, TagFilterMode, bool)? onFilterChanged;
-
   final TagType? tagTypeFilter;
 
   const TagPickerDialog({
     super.key,
     required this.mode,
     this.source,
-    this.initialSelectedTagIds = const [],
-    this.initialFilterMode = TagFilterMode.any,
-    this.initialNoTagsOnly = false,
-    this.onFilterChanged,
     this.tagTypeFilter,
   });
 
@@ -53,17 +41,9 @@ class _TagPickerDialogState extends State<TagPickerDialog> {
   String _searchText = '';
   late String _sortMode;
 
-  // filter mode state
-  late List<int> _selectedTagIds;
-  late TagFilterMode _filterMode;
-  late bool _noTagsOnly;
-
   @override
   void initState() {
     super.initState();
-    _selectedTagIds = List.from(widget.initialSelectedTagIds);
-    _filterMode = widget.initialFilterMode;
-    _noTagsOnly = widget.initialNoTagsOnly;
     _sortMode = ConfigProvider.instance.get(Settings.tagPickerSortMode);
     _searchController.addListener(() {
       setState(() => _searchText = _searchController.text.toLowerCase());
@@ -106,43 +86,6 @@ class _TagPickerDialogState extends State<TagPickerDialog> {
     }
   }
 
-  // filter mode helpers
-
-  void _notifyFilter() {
-    widget.onFilterChanged?.call(_selectedTagIds, _filterMode, _noTagsOnly);
-  }
-
-  void _addFilterTag(int tagId) {
-    setState(() => _selectedTagIds.add(tagId));
-    _notifyFilter();
-  }
-
-  void _removeFilterTag(int tagId) {
-    setState(() => _selectedTagIds.remove(tagId));
-    _notifyFilter();
-  }
-
-  void _setNoTagsOnly(bool value) {
-    setState(() {
-      _noTagsOnly = value;
-      if (value) {
-        _selectedTagIds = [];
-        _filterMode = TagFilterMode.any;
-      }
-    });
-    _notifyFilter();
-  }
-
-  void _clearAllFilters() {
-    setState(() {
-      _selectedTagIds = [];
-      _filterMode = TagFilterMode.any;
-      _noTagsOnly = false;
-    });
-    _notifyFilter();
-    Navigator.of(context).pop();
-  }
-
   // builders
 
   Widget _buildAttachedChips(TagsProvider provider) {
@@ -166,70 +109,6 @@ class _TagPickerDialogState extends State<TagPickerDialog> {
           onRemove: () => source.detach(tag.id!),
         ),
       ),
-    );
-  }
-
-  Widget _buildFilterSelectedChips(TagsProvider provider) {
-    if (_selectedTagIds.isEmpty) return const SizedBox.shrink();
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: Wrap(
-        spacing: 6,
-        runSpacing: 6,
-        children: _selectedTagIds.map((tagId) {
-          final tag = provider.tags
-              .where((candidate) => candidate.id == tagId)
-              .firstOrNull;
-          if (tag == null) return const SizedBox.shrink();
-          return TagChip(tag: tag, onRemove: () => _removeFilterTag(tagId));
-        }).toList(),
-      ),
-    );
-  }
-
-  Widget _buildFilterModeToggle(BuildContext context) {
-    if (_selectedTagIds.length < 2) return const SizedBox.shrink();
-    final l10n = AppLocalizations.of(context)!;
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: SegmentedButton<TagFilterMode>(
-        segments: [
-          ButtonSegment(
-            value: TagFilterMode.any,
-            label: Text(l10n.tagFilterModeAny),
-          ),
-          ButtonSegment(
-            value: TagFilterMode.all,
-            label: Text(l10n.tagFilterModeAll),
-          ),
-        ],
-        selected: {_filterMode},
-        onSelectionChanged: (selected) {
-          setState(() => _filterMode = selected.first);
-          _notifyFilter();
-        },
-      ),
-    );
-  }
-
-  Widget _buildNoTagsToggle(AppLocalizations l10n) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(
-          l10n.noTagsFilterLabel,
-          style: Theme.of(context).textTheme.bodyMedium,
-        ),
-        const SizedBox(width: 4),
-        Transform.scale(
-          scale: 0.8,
-          child: Switch(
-            value: _noTagsOnly,
-            onChanged: _setNoTagsOnly,
-            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          ),
-        ),
-      ],
     );
   }
 
@@ -344,14 +223,9 @@ class _TagPickerDialogState extends State<TagPickerDialog> {
     return Consumer<TagsProvider>(
       builder: (context, provider, _) {
         // Available pool excludes tags already selected/attached
-        final List<int> excludedIds;
-        if (widget.mode == TagPickerMode.attach) {
-          excludedIds = widget.source!.attachedTagIds;
-        } else if (widget.mode == TagPickerMode.filter) {
-          excludedIds = _selectedTagIds;
-        } else {
-          excludedIds = [];
-        }
+        final List<int> excludedIds = widget.mode == TagPickerMode.attach
+            ? widget.source!.attachedTagIds
+            : const [];
 
         List<Tag> pool;
         bool typeMatch(Tag tag) =>
@@ -378,28 +252,13 @@ class _TagPickerDialogState extends State<TagPickerDialog> {
 
         final sections = provider.buildSections(_searchText, tagPool: pool);
 
-        final String title;
-        switch (widget.mode) {
-          case TagPickerMode.attach:
-            title = l10n.addTagsTitle;
-          case TagPickerMode.selectSingle:
-            title = l10n.selectTagTitle;
-          case TagPickerMode.filter:
-            title = l10n.filterTagsTitle;
-        }
-
-        final titleWidget = widget.mode == TagPickerMode.filter
-            ? Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Flexible(child: Text(title, overflow: TextOverflow.ellipsis)),
-                  _buildNoTagsToggle(l10n),
-                ],
-              )
-            : Text(title);
+        final title = switch (widget.mode) {
+          TagPickerMode.attach => l10n.addTagsTitle,
+          TagPickerMode.selectSingle => l10n.selectTagTitle,
+        };
 
         return AlertDialog(
-          title: titleWidget,
+          title: Text(title),
           contentPadding: widget.mode == TagPickerMode.selectSingle
               ? const EdgeInsets.fromLTRB(24, 16, 24, 0)
               : null,
@@ -448,39 +307,21 @@ class _TagPickerDialogState extends State<TagPickerDialog> {
     }
 
     return SingleChildScrollView(
-      child: AnimatedOpacity(
-        duration: const Duration(milliseconds: 200),
-        opacity: _noTagsOnly ? 0.3 : 1.0,
-        child: IgnorePointer(
-          ignoring: _noTagsOnly,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              if (widget.mode == TagPickerMode.attach)
-                _buildAttachedChips(provider),
-              if (widget.mode == TagPickerMode.filter) ...[
-                _buildFilterSelectedChips(provider),
-                _buildFilterModeToggle(context),
-              ],
-              _buildSearchField(l10n, provider),
-              const SizedBox(height: 8),
-              TagGroupedChipList(
-                sections: sections,
-                chipBuilder: (tag) => TagChip(
-                  tag: tag,
-                  onTap: () async {
-                    if (widget.mode == TagPickerMode.attach) {
-                      await widget.source!.attach(context, tag);
-                    } else {
-                      _addFilterTag(tag.id!);
-                    }
-                  },
-                ),
-              ),
-            ],
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _buildAttachedChips(provider),
+          _buildSearchField(l10n, provider),
+          const SizedBox(height: 8),
+          TagGroupedChipList(
+            sections: sections,
+            chipBuilder: (tag) => TagChip(
+              tag: tag,
+              onTap: () => widget.source!.attach(context, tag),
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -499,19 +340,9 @@ class _TagPickerDialogState extends State<TagPickerDialog> {
       child: Text(l10n.manageTags),
     );
 
-    switch (widget.mode) {
-      case TagPickerMode.attach:
-        return [manageTags, close];
-      case TagPickerMode.selectSingle:
-        return [close];
-      case TagPickerMode.filter:
-        return [
-          TextButton(
-            onPressed: _clearAllFilters,
-            child: Text(l10n.clearAllFilters),
-          ),
-          close,
-        ];
-    }
+    return switch (widget.mode) {
+      TagPickerMode.attach => [manageTags, close],
+      TagPickerMode.selectSingle => [close],
+    };
   }
 }

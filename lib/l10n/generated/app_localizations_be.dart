@@ -1377,4 +1377,25 @@ class AppLocalizationsBe extends AppLocalizations {
 
   @override
   String get settingsFahrenheit => 'Fahrenheit (°F)';
+
+  @override
+  String get moodGreat => 'Great';
+
+  @override
+  String get moodGood => 'Good';
+
+  @override
+  String get moodOkay => 'Okay';
+
+  @override
+  String get moodBad => 'Bad';
+
+  @override
+  String get moodAwful => 'Awful';
+
+  @override
+  String get locationSearchHint => 'Search for a place';
+
+  @override
+  String get locationSearchEmpty => 'No places found';
 }
