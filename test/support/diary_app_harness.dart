@@ -97,13 +97,18 @@ class DiaryAppHarness {
 
   /// Adds an entry through the store, outside fake async time.
   static Future<Entry> addEntry(WidgetTester tester, String text, DateTime time,
-      {int? mood, EntryLocation? location}) async {
+      {int? mood,
+      EntryLocation? location,
+      EntryWeather? weather,
+      EntryActivity? activity}) async {
     return (await tester.runAsync(() => EntryStore.instance.add(Entry(
         text: text,
         mood: mood,
         timeCreate: time,
         timeModified: time,
-        location: location))))!;
+        location: location,
+        weather: weather,
+        activity: activity))))!;
   }
 
   /// Runs a real async action and waits until [until] holds.

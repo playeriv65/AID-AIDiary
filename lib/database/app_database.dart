@@ -132,7 +132,7 @@ class AppDatabase {
 
   Future<void> open() async {
     _database = await openDatabase(_internalPath!,
-        version: 6, onCreate: _createDatabase, onUpgrade: _onUpgrade);
+        version: 7, onCreate: _createDatabase, onUpgrade: _onUpgrade);
 
     await EntriesProvider.instance.load();
     await EntryImagesProvider.instance.load();
@@ -347,7 +347,10 @@ CREATE TABLE $entriesTable (
   ${EntryFields.timeModified} DATETIME NOT NULL DEFAULT (DATETIME('now')),
   ${EntryFields.latitude} REAL,
   ${EntryFields.longitude} REAL,
-  ${EntryFields.locationName} TEXT
+  ${EntryFields.locationName} TEXT,
+  ${EntryFields.weatherCode} INTEGER,
+  ${EntryFields.temperature} REAL,
+  ${EntryFields.activity} TEXT
 )
 ''');
     await db.execute('''
@@ -576,6 +579,15 @@ DROP TABLE old_entries;
     }
     if (oldVersion <= 5) {
       await _addEntryLocationColumns(db);
+    }
+    if (oldVersion <= 6) {
+      for (final column in [
+        '${EntryFields.weatherCode} INTEGER',
+        '${EntryFields.temperature} REAL',
+        '${EntryFields.activity} TEXT',
+      ]) {
+        await db.execute('ALTER TABLE $entriesTable ADD COLUMN $column');
+      }
     }
   }
 

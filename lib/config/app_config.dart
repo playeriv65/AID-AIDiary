@@ -53,4 +53,21 @@ class AppConfig {
 
   Duration get locationTimeout =>
       Duration(seconds: _section('location')['timeoutSeconds'] as int);
+
+  Duration get activityTimeout =>
+      Duration(seconds: _section('activity')['timeoutSeconds'] as int);
+
+  Uri get weatherForecastUrl =>
+      Uri.parse(_section('weather')['forecastUrl'] as String);
+  Uri get weatherArchiveUrl =>
+      Uri.parse(_section('weather')['archiveUrl'] as String);
+
+  /// Dates within this many days use the forecast endpoint; older ones the
+  /// archive, which lags a few days behind.
+  int get weatherRecentDays => _section('weather')['recentDays'] as int;
+  Duration get weatherTimeout =>
+      Duration(seconds: _section('weather')['timeoutSeconds'] as int);
+  String get weatherAttribution => _section('weather')['attribution'] as String;
+  String get weatherAttributionUrl =>
+      _section('weather')['attributionUrl'] as String;
 }

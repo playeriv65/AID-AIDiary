@@ -14,6 +14,7 @@ import 'package:daily_you/providers/entry_images_provider.dart';
 import 'package:daily_you/providers/tags_provider.dart';
 import 'package:daily_you/time_manager.dart';
 import 'package:daily_you/utils/entry_actions.dart';
+import 'package:daily_you/utils/entry_context_display.dart';
 import 'package:daily_you/widgets/delete_confirm_dialog.dart';
 import 'package:daily_you/widgets/entry_tag_chips.dart';
 import 'package:daily_you/widgets/local_image_loader.dart';
@@ -312,8 +313,6 @@ class _Metadata extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final cs = theme.colorScheme;
     final hasMood = MoodIcon.getMoodIcon(entry.mood).isNotEmpty;
     final location = entry.location;
     return Padding(
@@ -325,13 +324,19 @@ class _Metadata extends StatelessWidget {
         children: [
           if (hasMood) MoodIcon(moodValue: entry.mood, size: 20),
           if (location != null)
-            Row(mainAxisSize: MainAxisSize.min, children: [
-              Icon(Icons.place_rounded, size: 16, color: cs.onSurfaceVariant),
-              const SizedBox(width: 2),
-              Text(location.label,
-                  style: theme.textTheme.labelMedium
-                      ?.copyWith(color: cs.onSurfaceVariant)),
-            ]),
+            _IconLabel(icon: Icons.place_rounded, label: location.label),
+          if (entry.weather != null)
+            _IconLabel(
+                key: const ValueKey('entry-weather'),
+                icon: weatherIcon(entry.weather!.code),
+                label: weatherSummary(
+                    entry.weather!, AppLocalizations.of(context)!)),
+          if (entry.activity != null)
+            _IconLabel(
+                key: const ValueKey('entry-activity'),
+                icon: activityIcon(entry.activity!),
+                label: activityLabel(
+                    entry.activity!, AppLocalizations.of(context)!)),
           EntryTagChips(
             entryId: entry.id!,
             chipBuilder: (tag, entryTag) =>
@@ -340,5 +345,22 @@ class _Metadata extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class _IconLabel extends StatelessWidget {
+  const _IconLabel({super.key, required this.icon, required this.label});
+  final IconData icon;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final color = theme.colorScheme.onSurfaceVariant;
+    return Row(mainAxisSize: MainAxisSize.min, children: [
+      Icon(icon, size: 16, color: color),
+      const SizedBox(width: 2),
+      Text(label, style: theme.textTheme.labelMedium?.copyWith(color: color)),
+    ]);
   }
 }

@@ -1279,4 +1279,102 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get settingsHelpTitle => 'Help & about';
+
+  @override
+  String get weatherTitle => 'Weather';
+
+  @override
+  String get weatherClear => 'Clear';
+
+  @override
+  String get weatherPartlyCloudy => 'Partly cloudy';
+
+  @override
+  String get weatherCloudy => 'Cloudy';
+
+  @override
+  String get weatherFog => 'Fog';
+
+  @override
+  String get weatherDrizzle => 'Drizzle';
+
+  @override
+  String get weatherRain => 'Rain';
+
+  @override
+  String get weatherSnow => 'Snow';
+
+  @override
+  String get weatherStorm => 'Thunderstorm';
+
+  @override
+  String get weatherFetch => 'Get weather for this entry';
+
+  @override
+  String get weatherNeedsLocation => 'Add a location with coordinates first.';
+
+  @override
+  String get weatherUnavailable =>
+      'Weather is unavailable for this place and time.';
+
+  @override
+  String get weatherRemove => 'Remove weather';
+
+  @override
+  String get activityTitle => 'Activity';
+
+  @override
+  String get activityStill => 'Still';
+
+  @override
+  String get activityWalking => 'Walking';
+
+  @override
+  String get activityRunning => 'Running';
+
+  @override
+  String get activityCycling => 'Cycling';
+
+  @override
+  String get activityVehicle => 'In a vehicle';
+
+  @override
+  String get activityFlying => 'Flying';
+
+  @override
+  String get activityExercise => 'Exercise';
+
+  @override
+  String get activityDetect => 'Detect current activity';
+
+  @override
+  String get activityDetectFailed => 'Couldn\'t detect an activity.';
+
+  @override
+  String get activityRemove => 'Remove activity';
+
+  @override
+  String get settingsAutoAddTitle => 'Add automatically';
+
+  @override
+  String get settingsAutoAddLocation => 'Location';
+
+  @override
+  String get settingsAutoAddWeather => 'Weather';
+
+  @override
+  String get settingsAutoAddActivity => 'Activity';
+
+  @override
+  String get settingsAutoAddHint =>
+      'New entries get these filled in when they are created.';
+
+  @override
+  String get settingsTemperatureUnit => 'Temperature unit';
+
+  @override
+  String get settingsCelsius => 'Celsius (°C)';
+
+  @override
+  String get settingsFahrenheit => 'Fahrenheit (°F)';
 }

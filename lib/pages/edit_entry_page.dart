@@ -30,6 +30,12 @@ import 'package:daily_you/models/entry.dart';
 import 'package:daily_you/widgets/entry_image_actions.dart';
 import 'package:daily_you/widgets/entry_mood_picker.dart';
 import 'package:daily_you/widgets/location_dialog.dart';
+import 'package:daily_you/widgets/context_dialogs.dart';
+import 'package:daily_you/utils/entry_context_display.dart';
+import 'package:daily_you/config_provider.dart';
+import 'package:daily_you/services/activity_service.dart';
+import 'package:daily_you/services/location_service.dart';
+import 'package:daily_you/services/weather_service.dart';
 import 'package:daily_you/widgets/mood_icon.dart';
 import 'package:daily_you/widgets/entry_text_edit.dart';
 import 'package:daily_you/widgets/template_select_popup.dart';
@@ -82,6 +88,8 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
   String text = "";
   int? mood;
   EntryLocation? location;
+  EntryWeather? weather;
+  EntryActivity? activity;
   DateTime? entryDate;
   late List<EntryImage> _currentImages;
   bool _loadingEntry = true;
@@ -154,11 +162,15 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
       mood: widget.entry == null ? null : _entry.mood,
       date: _entry.timeCreate,
       location: widget.entry == null ? null : _entry.location,
+      weather: widget.entry == null ? null : _entry.weather,
+      activity: widget.entry == null ? null : _entry.activity,
       seededTagIds: _tagSource.attachedTagIds.toSet(),
     );
     _tagSource.addListener(_onTagsChanged);
     mood = _entry.mood;
     location = _entry.location;
+    weather = _entry.weather;
+    activity = _entry.activity;
     entryDate = _entry.timeCreate;
     text = _entry.text;
     _textEditingController.addListener(() {
@@ -180,6 +192,50 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
     if (widget.openCamera && !_openedCamera) {
       _openedCamera = true;
       EntryImageActions.takePhoto(_addImage);
+    }
+
+    if (_newEntry && TimeManager.isToday(entryDate!)) _autoFillContext();
+  }
+
+  /// Fills place, weather and activity for a new entry when the settings
+  /// ask for it. Anything the user set meanwhile is left alone, and filled
+  /// values count as the untouched baseline.
+  Future<void> _autoFillContext() async {
+    final config = ConfigProvider.instance;
+    final wantLocation = config.get(Settings.autoAddLocation);
+    final wantWeather = config.get(Settings.autoAddWeather);
+    final wantActivity = config.get(Settings.autoAddActivity);
+    if (!wantLocation && !wantWeather && !wantActivity) return;
+
+    var place = location;
+    if ((wantLocation || wantWeather) && place == null) {
+      try {
+        final language = mounted
+            ? TimeManager.currentLocale(context).split('_').first
+            : null;
+        place = await LocationService().current(languageCode: language);
+      } on LocationException {
+        place = null;
+      }
+    }
+    EntryWeather? found;
+    if (wantWeather && weather == null && (place?.hasCoordinates ?? false)) {
+      found = await WeatherService()
+          .at(place!.latitude!, place.longitude!, entryDate!);
+    }
+    EntryActivity? detected;
+    if (wantActivity && activity == null && ActivityService.supported) {
+      detected = await ActivityService().current();
+    }
+    if (!mounted) return;
+    setState(() {
+      if (wantLocation && location == null) location = place;
+      weather ??= found;
+      activity ??= detected;
+    });
+    if (_newEntry) {
+      _dirtyTracker.adoptAutoFill(
+          location: location, weather: weather, activity: activity);
     }
   }
 
@@ -373,9 +429,14 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
         final tags =
             tagsProvider.tags.where((t) => attachedIds.contains(t.id)).toList();
         final hasMood = MoodIcon.getMoodIcon(mood).isNotEmpty;
-        if (!hasMood && location == null && tags.isEmpty) {
+        if (!hasMood &&
+            location == null &&
+            weather == null &&
+            activity == null &&
+            tags.isEmpty) {
           return const SizedBox(height: 8);
         }
+        final l10n = AppLocalizations.of(context)!;
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 8),
           child: Wrap(spacing: 8, runSpacing: 8, children: [
@@ -394,6 +455,22 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
                 label: Text(location!.label),
                 onPressed: _chooseLocation,
                 onDeleted: () => _setLocation(null),
+              ),
+            if (weather != null)
+              InputChip(
+                key: const ValueKey('editor-weather-chip'),
+                avatar: Icon(weatherIcon(weather!.code), size: 16),
+                label: Text(weatherSummary(weather!, l10n)),
+                onPressed: _chooseWeather,
+                onDeleted: () => _setWeather(null),
+              ),
+            if (activity != null)
+              InputChip(
+                key: const ValueKey('editor-activity-chip'),
+                avatar: Icon(activityIcon(activity!), size: 16),
+                label: Text(activityLabel(activity!, l10n)),
+                onPressed: _chooseActivity,
+                onDeleted: () => _setActivity(null),
               ),
             for (final tag in tags)
               TagChip(
@@ -473,11 +550,52 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
     if (choice != null) _setLocation(choice.location);
   }
 
+  void _setWeather(EntryWeather? value) {
+    setState(() => weather = value);
+    _scheduleSave();
+  }
+
+  Future<void> _chooseWeather() async {
+    final choice =
+        await showWeatherDialog(context, weather, location, entryDate!);
+    if (choice != null) _setWeather(choice.weather);
+  }
+
+  void _setActivity(EntryActivity? value) {
+    setState(() => activity = value);
+    _scheduleSave();
+  }
+
+  Future<void> _chooseActivity() async {
+    final choice = await showActivityDialog(context, activity);
+    if (choice != null) _setActivity(choice.activity);
+  }
+
   List<ToolbarAction> _buildMainActions(BuildContext context) {
+    // Same order as Journey: media, place, weather, activity, mood, tags.
     return [
+      ToolbarAction(
+        icon: const Icon(Icons.photo),
+        mayLeaveApp: true,
+        onPressed: () => EntryImageActions.pickFromGallery(_addImage),
+      ),
+      if (Platform.isAndroid)
+        ToolbarAction(
+          icon: const Icon(Icons.photo_camera_rounded),
+          mayLeaveApp: true,
+          onPressed: () => EntryImageActions.takePhoto(_addImage),
+        ),
       ToolbarAction(
         icon: const Icon(Icons.place_outlined),
         onPressed: _chooseLocation,
+      ),
+      ToolbarAction(
+        icon: const Icon(Icons.wb_sunny_outlined),
+        onPressed: _chooseWeather,
+      ),
+      ToolbarAction(
+        icon: const Icon(Icons.directions_walk_rounded),
+        onPressed: _chooseActivity,
       ),
       ToolbarAction(
         icon: const Icon(Icons.mood_rounded),
@@ -491,17 +609,6 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
               TagPickerDialog(mode: TagPickerMode.attach, source: _tagSource),
         ),
       ),
-      ToolbarAction(
-        icon: const Icon(Icons.photo),
-        mayLeaveApp: true,
-        onPressed: () => EntryImageActions.pickFromGallery(_addImage),
-      ),
-      if (Platform.isAndroid)
-        ToolbarAction(
-          icon: const Icon(Icons.photo_camera_rounded),
-          mayLeaveApp: true,
-          onPressed: () => EntryImageActions.takePhoto(_addImage),
-        ),
     ];
   }
 
@@ -617,6 +724,8 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
             timeCreate: entryDate,
             timeModified: DateTime.now(),
             location: location,
+            weather: weather,
+            activity: activity,
           )
         : _entry;
     return EntryDraft(
@@ -635,6 +744,8 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
       mood: saved.mood,
       date: saved.timeCreate,
       location: saved.location,
+      weather: saved.weather,
+      activity: saved.activity,
     );
   }
 
@@ -651,7 +762,12 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
 
   bool _hasEntryFieldChanges() {
     return _dirtyTracker.hasFieldChanges(
-        text: text, mood: mood, date: entryDate!, location: location);
+        text: text,
+        mood: mood,
+        date: entryDate!,
+        location: location,
+        weather: weather,
+        activity: activity);
   }
 
   void _onTagsChanged() {
@@ -666,6 +782,8 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
       tagSource: _tagSource,
       hasImages: _currentImages.isNotEmpty,
       location: location,
+      weather: weather,
+      activity: activity,
     );
   }
 

@@ -1260,6 +1260,102 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get settingsHelpTitle => '帮助与关于';
+
+  @override
+  String get weatherTitle => '天气';
+
+  @override
+  String get weatherClear => '晴';
+
+  @override
+  String get weatherPartlyCloudy => '多云';
+
+  @override
+  String get weatherCloudy => '阴';
+
+  @override
+  String get weatherFog => '雾';
+
+  @override
+  String get weatherDrizzle => '毛毛雨';
+
+  @override
+  String get weatherRain => '雨';
+
+  @override
+  String get weatherSnow => '雪';
+
+  @override
+  String get weatherStorm => '雷雨';
+
+  @override
+  String get weatherFetch => '获取这篇日记的天气';
+
+  @override
+  String get weatherNeedsLocation => '请先添加带坐标的位置。';
+
+  @override
+  String get weatherUnavailable => '无法获取这个地点和时间的天气。';
+
+  @override
+  String get weatherRemove => '移除天气';
+
+  @override
+  String get activityTitle => '活动';
+
+  @override
+  String get activityStill => '静止';
+
+  @override
+  String get activityWalking => '步行';
+
+  @override
+  String get activityRunning => '跑步';
+
+  @override
+  String get activityCycling => '骑行';
+
+  @override
+  String get activityVehicle => '乘车';
+
+  @override
+  String get activityFlying => '飞行';
+
+  @override
+  String get activityExercise => '运动';
+
+  @override
+  String get activityDetect => '识别当前活动';
+
+  @override
+  String get activityDetectFailed => '无法识别当前活动。';
+
+  @override
+  String get activityRemove => '移除活动';
+
+  @override
+  String get settingsAutoAddTitle => '自动添加';
+
+  @override
+  String get settingsAutoAddLocation => '位置';
+
+  @override
+  String get settingsAutoAddWeather => '天气';
+
+  @override
+  String get settingsAutoAddActivity => '活动';
+
+  @override
+  String get settingsAutoAddHint => '新建日记时自动填好这些信息。';
+
+  @override
+  String get settingsTemperatureUnit => '温度单位';
+
+  @override
+  String get settingsCelsius => '摄氏度 (°C)';
+
+  @override
+  String get settingsFahrenheit => '华氏度 (°F)';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -2501,4 +2597,100 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get settingsHelpTitle => '說明與關於';
+
+  @override
+  String get weatherTitle => '天氣';
+
+  @override
+  String get weatherClear => '晴';
+
+  @override
+  String get weatherPartlyCloudy => '多雲';
+
+  @override
+  String get weatherCloudy => '陰';
+
+  @override
+  String get weatherFog => '霧';
+
+  @override
+  String get weatherDrizzle => '毛毛雨';
+
+  @override
+  String get weatherRain => '雨';
+
+  @override
+  String get weatherSnow => '雪';
+
+  @override
+  String get weatherStorm => '雷雨';
+
+  @override
+  String get weatherFetch => '取得這篇日記的天氣';
+
+  @override
+  String get weatherNeedsLocation => '請先加入帶座標的位置。';
+
+  @override
+  String get weatherUnavailable => '無法取得這個地點和時間的天氣。';
+
+  @override
+  String get weatherRemove => '移除天氣';
+
+  @override
+  String get activityTitle => '活動';
+
+  @override
+  String get activityStill => '靜止';
+
+  @override
+  String get activityWalking => '步行';
+
+  @override
+  String get activityRunning => '跑步';
+
+  @override
+  String get activityCycling => '騎行';
+
+  @override
+  String get activityVehicle => '乘車';
+
+  @override
+  String get activityFlying => '飛行';
+
+  @override
+  String get activityExercise => '運動';
+
+  @override
+  String get activityDetect => '辨識目前活動';
+
+  @override
+  String get activityDetectFailed => '無法辨識目前活動。';
+
+  @override
+  String get activityRemove => '移除活動';
+
+  @override
+  String get settingsAutoAddTitle => '自動加入';
+
+  @override
+  String get settingsAutoAddLocation => '位置';
+
+  @override
+  String get settingsAutoAddWeather => '天氣';
+
+  @override
+  String get settingsAutoAddActivity => '活動';
+
+  @override
+  String get settingsAutoAddHint => '新增日記時自動填好這些資訊。';
+
+  @override
+  String get settingsTemperatureUnit => '溫度單位';
+
+  @override
+  String get settingsCelsius => '攝氏度 (°C)';
+
+  @override
+  String get settingsFahrenheit => '華氏度 (°F)';
 }

@@ -15,5 +15,16 @@
   },
   "location": {
     "timeoutSeconds": 15
+  },
+  "activity": {
+    "timeoutSeconds": 10
+  },
+  "weather": {
+    "forecastUrl": "https://api.open-meteo.com/v1/forecast",
+    "archiveUrl": "https://archive-api.open-meteo.com/v1/archive",
+    "recentDays": 60,
+    "timeoutSeconds": 8,
+    "attribution": "Weather data by Open-Meteo.com",
+    "attributionUrl": "https://open-meteo.com/"
   }
 }

@@ -70,6 +70,11 @@ class Settings {
   static const overrideLanguage =
       Setting<Map<String, dynamic>?>("overrideLanguage", null);
   static const showFlashbacks = Setting<bool>("showFlashbacks", true);
+  static const temperatureUnit = Setting<String>("temperatureUnit", "celsius");
+  // Off by default: each one asks for a permission or uses the network.
+  static const autoAddLocation = Setting<bool>("autoAddLocation", false);
+  static const autoAddWeather = Setting<bool>("autoAddWeather", false);
+  static const autoAddActivity = Setting<bool>("autoAddActivity", false);
   static const excludeBadDaysFromFlashbacks =
       Setting<bool>("excludeBadDaysFromFlashbacks", false);
   static const showflashbackYearsAgo =
@@ -154,6 +159,10 @@ class Settings {
     imageQualityLevel,
     overrideLanguage,
     showFlashbacks,
+    temperatureUnit,
+    autoAddLocation,
+    autoAddWeather,
+    autoAddActivity,
     excludeBadDaysFromFlashbacks,
     showflashbackYearsAgo,
     showflashback6MonthsAgo,

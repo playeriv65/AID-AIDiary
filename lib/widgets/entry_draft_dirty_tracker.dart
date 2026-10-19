@@ -13,16 +13,22 @@ class EntryDraftDirtyTracker {
     required DateTime date,
     required Set<int> seededTagIds,
     EntryLocation? location,
+    EntryWeather? weather,
+    EntryActivity? activity,
   })  : _lastText = text,
         _lastMood = mood,
         _lastDate = date,
         _lastLocation = location,
+        _lastWeather = weather,
+        _lastActivity = activity,
         _seededTagIds = seededTagIds;
 
   String _lastText;
   int? _lastMood;
   DateTime _lastDate;
   EntryLocation? _lastLocation;
+  EntryWeather? _lastWeather;
+  EntryActivity? _lastActivity;
 
   /// Tag ids seeded from the default template, or already on the entry
   final Set<int> _seededTagIds;
@@ -32,11 +38,27 @@ class EntryDraftDirtyTracker {
     required int? mood,
     required DateTime date,
     EntryLocation? location,
+    EntryWeather? weather,
+    EntryActivity? activity,
   }) {
     _lastText = text;
     _lastMood = mood;
     _lastDate = date;
     _lastLocation = location;
+    _lastWeather = weather;
+    _lastActivity = activity;
+  }
+
+  /// Takes values filled in automatically as the baseline, so a new entry
+  /// with nothing but auto-filled context is still untouched.
+  void adoptAutoFill({
+    EntryLocation? location,
+    EntryWeather? weather,
+    EntryActivity? activity,
+  }) {
+    _lastLocation = location;
+    _lastWeather = weather;
+    _lastActivity = activity;
   }
 
   bool hasFieldChanges({
@@ -44,11 +66,15 @@ class EntryDraftDirtyTracker {
     required int? mood,
     required DateTime date,
     EntryLocation? location,
+    EntryWeather? weather,
+    EntryActivity? activity,
   }) {
     return text != _lastText ||
         mood != _lastMood ||
         date != _lastDate ||
-        location != _lastLocation;
+        location != _lastLocation ||
+        weather != _lastWeather ||
+        activity != _lastActivity;
   }
 
   bool hasUnsavedChanges({
@@ -58,9 +84,16 @@ class EntryDraftDirtyTracker {
     required TagAttachmentSource tagSource,
     required bool hasImages,
     EntryLocation? location,
+    EntryWeather? weather,
+    EntryActivity? activity,
   }) {
     return hasFieldChanges(
-            text: text, mood: mood, date: date, location: location) ||
+            text: text,
+            mood: mood,
+            date: date,
+            location: location,
+            weather: weather,
+            activity: activity) ||
         _tagsExceedSeed(tagSource) ||
         hasImages;
   }

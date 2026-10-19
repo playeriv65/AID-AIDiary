@@ -2381,6 +2381,198 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Help & about'**
   String get settingsHelpTitle;
+
+  /// No description provided for @weatherTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Weather'**
+  String get weatherTitle;
+
+  /// No description provided for @weatherClear.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get weatherClear;
+
+  /// No description provided for @weatherPartlyCloudy.
+  ///
+  /// In en, this message translates to:
+  /// **'Partly cloudy'**
+  String get weatherPartlyCloudy;
+
+  /// No description provided for @weatherCloudy.
+  ///
+  /// In en, this message translates to:
+  /// **'Cloudy'**
+  String get weatherCloudy;
+
+  /// No description provided for @weatherFog.
+  ///
+  /// In en, this message translates to:
+  /// **'Fog'**
+  String get weatherFog;
+
+  /// No description provided for @weatherDrizzle.
+  ///
+  /// In en, this message translates to:
+  /// **'Drizzle'**
+  String get weatherDrizzle;
+
+  /// No description provided for @weatherRain.
+  ///
+  /// In en, this message translates to:
+  /// **'Rain'**
+  String get weatherRain;
+
+  /// No description provided for @weatherSnow.
+  ///
+  /// In en, this message translates to:
+  /// **'Snow'**
+  String get weatherSnow;
+
+  /// No description provided for @weatherStorm.
+  ///
+  /// In en, this message translates to:
+  /// **'Thunderstorm'**
+  String get weatherStorm;
+
+  /// No description provided for @weatherFetch.
+  ///
+  /// In en, this message translates to:
+  /// **'Get weather for this entry'**
+  String get weatherFetch;
+
+  /// No description provided for @weatherNeedsLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a location with coordinates first.'**
+  String get weatherNeedsLocation;
+
+  /// No description provided for @weatherUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Weather is unavailable for this place and time.'**
+  String get weatherUnavailable;
+
+  /// No description provided for @weatherRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove weather'**
+  String get weatherRemove;
+
+  /// No description provided for @activityTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity'**
+  String get activityTitle;
+
+  /// No description provided for @activityStill.
+  ///
+  /// In en, this message translates to:
+  /// **'Still'**
+  String get activityStill;
+
+  /// No description provided for @activityWalking.
+  ///
+  /// In en, this message translates to:
+  /// **'Walking'**
+  String get activityWalking;
+
+  /// No description provided for @activityRunning.
+  ///
+  /// In en, this message translates to:
+  /// **'Running'**
+  String get activityRunning;
+
+  /// No description provided for @activityCycling.
+  ///
+  /// In en, this message translates to:
+  /// **'Cycling'**
+  String get activityCycling;
+
+  /// No description provided for @activityVehicle.
+  ///
+  /// In en, this message translates to:
+  /// **'In a vehicle'**
+  String get activityVehicle;
+
+  /// No description provided for @activityFlying.
+  ///
+  /// In en, this message translates to:
+  /// **'Flying'**
+  String get activityFlying;
+
+  /// No description provided for @activityExercise.
+  ///
+  /// In en, this message translates to:
+  /// **'Exercise'**
+  String get activityExercise;
+
+  /// No description provided for @activityDetect.
+  ///
+  /// In en, this message translates to:
+  /// **'Detect current activity'**
+  String get activityDetect;
+
+  /// No description provided for @activityDetectFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t detect an activity.'**
+  String get activityDetectFailed;
+
+  /// No description provided for @activityRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove activity'**
+  String get activityRemove;
+
+  /// No description provided for @settingsAutoAddTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add automatically'**
+  String get settingsAutoAddTitle;
+
+  /// No description provided for @settingsAutoAddLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get settingsAutoAddLocation;
+
+  /// No description provided for @settingsAutoAddWeather.
+  ///
+  /// In en, this message translates to:
+  /// **'Weather'**
+  String get settingsAutoAddWeather;
+
+  /// No description provided for @settingsAutoAddActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity'**
+  String get settingsAutoAddActivity;
+
+  /// No description provided for @settingsAutoAddHint.
+  ///
+  /// In en, this message translates to:
+  /// **'New entries get these filled in when they are created.'**
+  String get settingsAutoAddHint;
+
+  /// No description provided for @settingsTemperatureUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'Temperature unit'**
+  String get settingsTemperatureUnit;
+
+  /// No description provided for @settingsCelsius.
+  ///
+  /// In en, this message translates to:
+  /// **'Celsius (°C)'**
+  String get settingsCelsius;
+
+  /// No description provided for @settingsFahrenheit.
+  ///
+  /// In en, this message translates to:
+  /// **'Fahrenheit (°F)'**
+  String get settingsFahrenheit;
 }
 
 class _AppLocalizationsDelegate

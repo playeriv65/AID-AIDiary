@@ -6,6 +6,7 @@ import 'package:daily_you/l10n/generated/app_localizations.dart';
 import 'package:daily_you/models/entry.dart';
 import 'package:daily_you/models/image.dart';
 import 'package:daily_you/time_manager.dart';
+import 'package:daily_you/utils/entry_context_display.dart';
 import 'package:daily_you/utils/entry_preview.dart';
 import 'package:daily_you/widgets/entry_tag_icon_preview.dart';
 import 'package:daily_you/widgets/local_image_loader.dart';
@@ -99,6 +100,16 @@ class JournalEntryRow extends StatelessWidget {
                                   style: theme.textTheme.labelSmall
                                       ?.copyWith(color: cs.onSurfaceVariant)),
                             ),
+                            const SizedBox(width: 6),
+                          ],
+                          if (entry.weather != null) ...[
+                            Icon(weatherIcon(entry.weather!.code),
+                                size: 14, color: cs.onSurfaceVariant),
+                            const SizedBox(width: 6),
+                          ],
+                          if (entry.activity != null) ...[
+                            Icon(activityIcon(entry.activity!),
+                                size: 14, color: cs.onSurfaceVariant),
                             const SizedBox(width: 6),
                           ],
                           Expanded(

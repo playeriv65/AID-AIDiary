@@ -7,6 +7,7 @@ import 'package:daily_you/time_manager.dart';
 import 'package:daily_you/widgets/color_picker_dialog.dart';
 import 'package:daily_you/widgets/mood_icon.dart';
 import 'package:daily_you/widgets/settings_dropdown.dart';
+import 'package:daily_you/widgets/settings_header.dart';
 import 'package:daily_you/widgets/settings_icon_action.dart';
 import 'package:daily_you/widgets/settings_toggle.dart';
 import 'package:material_ui/material_ui.dart';
@@ -318,6 +319,60 @@ class _AppearanceSettingsPageState extends State<AppearanceSettings> {
                       ],
                     ),
                   ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: SettingsDropdown<String>(
+                        title: AppLocalizations.of(context)!
+                            .settingsTemperatureUnit,
+                        value: configProvider.get(Settings.temperatureUnit),
+                        options: [
+                          DropdownMenuItem<String>(
+                              value: 'celsius',
+                              child: Text(AppLocalizations.of(context)!
+                                  .settingsCelsius)),
+                          DropdownMenuItem<String>(
+                              value: 'fahrenheit',
+                              child: Text(AppLocalizations.of(context)!
+                                  .settingsFahrenheit)),
+                        ],
+                        onChanged: (String? value) {
+                          if (value != null) {
+                            configProvider.set(Settings.temperatureUnit, value);
+                          }
+                        }),
+                  ),
+                  const Divider(height: 32),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: SettingsHeader(
+                        text:
+                            AppLocalizations.of(context)!.settingsAutoAddTitle),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 4, 16, 0),
+                    child: Text(
+                        AppLocalizations.of(context)!.settingsAutoAddHint,
+                        style: Theme.of(context).textTheme.bodySmall),
+                  ),
+                  for (final (setting, title) in [
+                    (
+                      Settings.autoAddLocation,
+                      AppLocalizations.of(context)!.settingsAutoAddLocation
+                    ),
+                    (
+                      Settings.autoAddWeather,
+                      AppLocalizations.of(context)!.settingsAutoAddWeather
+                    ),
+                    (
+                      Settings.autoAddActivity,
+                      AppLocalizations.of(context)!.settingsAutoAddActivity
+                    ),
+                  ])
+                    SettingsToggle(
+                      title: title,
+                      setting: setting,
+                      onChanged: (value) => configProvider.set(setting, value),
+                    ),
                   const Divider(height: 32),
                   SettingsCategory(
                       title:

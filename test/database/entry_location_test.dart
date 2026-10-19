@@ -8,7 +8,8 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 void main() {
   setUpAll(sqfliteFfiInit);
 
-  test('version 5 databases gain empty location columns', () async {
+  test('version 5 databases gain empty location, weather and activity',
+      () async {
     final db = await databaseFactoryFfi.openDatabase(inMemoryDatabasePath);
     addTearDown(() async {
       AppDatabase.instance.database = null;
@@ -28,23 +29,29 @@ CREATE TABLE entries (
       'time_modified': '2026-01-02T03:04:05.000',
     });
     AppDatabase.instance.database = db;
-    await AppDatabase.instance.upgradeSchema(db, 5, 6);
+    await AppDatabase.instance.upgradeSchema(db, 5, 7);
 
     final old = (await EntryDao.getAll()).single;
     expect(old.text, 'old entry');
     expect(old.location, isNull);
+    expect(old.weather, isNull);
+    expect(old.activity, isNull);
 
     final placed = await EntryDao.add(Entry(
         text: 'new entry',
         timeCreate: DateTime(2026, 10, 19),
         timeModified: DateTime(2026, 10, 19),
         location: const EntryLocation(
-            latitude: 31.23, longitude: 121.47, name: 'The Bund')));
+            latitude: 31.23, longitude: 121.47, name: 'The Bund'),
+        weather: const EntryWeather(code: 61, temperature: 14.5),
+        activity: EntryActivity.walking));
     final read = await EntryDao.get(placed.id!);
     expect(
         read!.location,
         const EntryLocation(
             latitude: 31.23, longitude: 121.47, name: 'The Bund'));
+    expect(read.weather, const EntryWeather(code: 61, temperature: 14.5));
+    expect(read.activity, EntryActivity.walking);
   });
 
   test('location label prefers the name over coordinates', () {
