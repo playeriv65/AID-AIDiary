@@ -132,7 +132,7 @@ class AppDatabase {
 
   Future<void> open() async {
     _database = await openDatabase(_internalPath!,
-        version: 5, onCreate: _createDatabase, onUpgrade: _onUpgrade);
+        version: 6, onCreate: _createDatabase, onUpgrade: _onUpgrade);
 
     await EntriesProvider.instance.load();
     await EntryImagesProvider.instance.load();
@@ -344,7 +344,10 @@ CREATE TABLE $entriesTable (
   ${EntryFields.text} TEXT NOT NULL,
   ${EntryFields.mood} INTEGER,
   ${EntryFields.timeCreate} DATETIME NOT NULL DEFAULT (DATETIME('now')),
-  ${EntryFields.timeModified} DATETIME NOT NULL DEFAULT (DATETIME('now'))
+  ${EntryFields.timeModified} DATETIME NOT NULL DEFAULT (DATETIME('now')),
+  ${EntryFields.latitude} REAL,
+  ${EntryFields.longitude} REAL,
+  ${EntryFields.locationName} TEXT
 )
 ''');
     await db.execute('''
@@ -566,6 +569,19 @@ DROP TABLE old_entries;
     }
     if (oldVersion <= 4) {
       await _createTemplateTagTable(db);
+    }
+    if (oldVersion <= 5) {
+      await _addEntryLocationColumns(db);
+    }
+  }
+
+  Future<void> _addEntryLocationColumns(Database db) async {
+    for (final column in [
+      '${EntryFields.latitude} REAL',
+      '${EntryFields.longitude} REAL',
+      '${EntryFields.locationName} TEXT',
+    ]) {
+      await db.execute('ALTER TABLE $entriesTable ADD COLUMN $column');
     }
   }
 }

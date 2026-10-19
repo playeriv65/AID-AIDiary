@@ -7,6 +7,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
+import 'package:daily_you/config/app_config.dart';
 import 'package:daily_you/config_provider.dart';
 import 'package:daily_you/custom_locale_delegates.dart';
 import 'package:daily_you/database/app_database.dart';
@@ -218,6 +219,7 @@ void main() async {
   await ConfigProvider.instance.init();
 
   // Load any cached flashbacks
+  await AppConfig.load();
   await FlashbackManager.init();
 
   final themeProvider = ThemeModeProvider();

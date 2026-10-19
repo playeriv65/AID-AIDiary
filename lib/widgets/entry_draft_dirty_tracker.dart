@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'package:daily_you/models/entry.dart';
 import 'package:daily_you/widgets/tag_attachment_source.dart';
 
 /// Tracks saved vs current entry fields and attachments
@@ -11,14 +12,17 @@ class EntryDraftDirtyTracker {
     required int? mood,
     required DateTime date,
     required Set<int> seededTagIds,
+    EntryLocation? location,
   })  : _lastText = text,
         _lastMood = mood,
         _lastDate = date,
+        _lastLocation = location,
         _seededTagIds = seededTagIds;
 
   String _lastText;
   int? _lastMood;
   DateTime _lastDate;
+  EntryLocation? _lastLocation;
 
   /// Tag ids seeded from the default template, or already on the entry
   final Set<int> _seededTagIds;
@@ -27,18 +31,24 @@ class EntryDraftDirtyTracker {
     required String text,
     required int? mood,
     required DateTime date,
+    EntryLocation? location,
   }) {
     _lastText = text;
     _lastMood = mood;
     _lastDate = date;
+    _lastLocation = location;
   }
 
   bool hasFieldChanges({
     required String text,
     required int? mood,
     required DateTime date,
+    EntryLocation? location,
   }) {
-    return text != _lastText || mood != _lastMood || date != _lastDate;
+    return text != _lastText ||
+        mood != _lastMood ||
+        date != _lastDate ||
+        location != _lastLocation;
   }
 
   bool hasUnsavedChanges({
@@ -47,8 +57,10 @@ class EntryDraftDirtyTracker {
     required DateTime date,
     required TagAttachmentSource tagSource,
     required bool hasImages,
+    EntryLocation? location,
   }) {
-    return hasFieldChanges(text: text, mood: mood, date: date) ||
+    return hasFieldChanges(
+            text: text, mood: mood, date: date, location: location) ||
         _tagsExceedSeed(tagSource) ||
         hasImages;
   }

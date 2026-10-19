@@ -74,6 +74,10 @@ dependencies:
   cryptography_flutter: ^2.3.4
   material_ui: ^1.5.0
   cupertino_ui: ^1.1.1
+  flutter_map: ^8.3.2
+  latlong2: ^0.10.1
+  geolocator: ^14.0.1
+  http: ^1.6.0
 dev_dependencies:
   flutter_driver:
     sdk: flutter
@@ -91,6 +95,7 @@ flutter:
   assets:
     - assets/daily_you_First_Steps.webp
     - assets/icons/
+    - assets/config/app_config.json
 
 icons_launcher:
   image_path: "assets/logo.png"

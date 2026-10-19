@@ -1,0 +1,19 @@
+{
+  "map": {
+    "tileUrlTemplate": "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+    "attribution": "© OpenStreetMap contributors",
+    "attributionUrl": "https://www.openstreetmap.org/copyright",
+    "userAgentPackageName": "com.aiddiary.app",
+    "defaultZoom": 3.0,
+    "entryZoom": 13.0,
+    "maxZoom": 18.0
+  },
+  "geocoding": {
+    "reverseUrl": "https://nominatim.openstreetmap.org/reverse",
+    "userAgent": "AID-Diary/1.0 (personal diary app)",
+    "timeoutSeconds": 8
+  },
+  "location": {
+    "timeoutSeconds": 15
+  }
+}
