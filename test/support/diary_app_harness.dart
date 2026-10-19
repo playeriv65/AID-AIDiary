@@ -53,7 +53,7 @@ class DiaryAppHarness {
     });
   }
 
-  Widget app(Widget child) => MultiProvider(
+  Widget app(Widget child, {ThemeData? themeData}) => MultiProvider(
           providers: [
             ChangeNotifierProvider.value(value: ConfigProvider.instance),
             ChangeNotifierProvider.value(value: EntriesProvider.instance),
@@ -63,6 +63,7 @@ class DiaryAppHarness {
             ChangeNotifierProvider.value(value: theme),
           ],
           child: MaterialApp(
+              theme: themeData,
               locale: const Locale('zh'),
               localizationsDelegates: [
                 AppLocalizations.delegate,

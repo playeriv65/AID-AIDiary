@@ -654,7 +654,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get welcomeLogBodyText =>
-      '## Selamat datang di Daily You\n\n> Setiap hari layak untuk dikenang, abadikanlah!\n\n**Daily You** gratis, [open source](https://github.com/Demizo/Daily_You), dan didukung oleh komunitas. Dibangun berdasarkan keyakinan bahwa buku harian Anda harus benar-benar menjadi milik Anda, bukan sebuah produk:\n\n- Tanpa iklan\n- Tanpa fitur terkunci\n- Tanpa pelacakan atau pengumpulan data\n\nBaik Anda menulis jurnal, berefleksi, atau sekadar mencatat hal yang membuat Anda tersenyum, **Daily You** memberi Anda ruang pribadi yang _benar-benar milik Anda sendiri_.';
+      '## Welcome to AID Diary\n\n> Every day is worth remembering.\n\nWrite what happened, how you felt, and where you were. Your entries stay on this device.\n\n- **Journal** lists every entry by day\n- **Calendar**, **Media** and **Atlas** look back by date, photo and place\n- **Coach** offers prompts and templates when you don\'t know what to write\n\nAID Diary is a modified version of [Daily You](https://github.com/Demizo/Daily_You) by Demizo and contributors, and not the official Daily You app.';
 
   @override
   String get settingsStorageTitle => 'Penyimpanan';

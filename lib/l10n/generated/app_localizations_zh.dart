@@ -645,7 +645,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get welcomeLogBodyText =>
-      '## 欢迎使用 Daily You\n\n> 每一天都值得被记住、捕捉下来！\n\n**Daily You** 是免费的、[开源](https://github.com/Demizo/Daily_You)的，并由社区支持。建立在「你的日记应该属于你，而不是某个产品」这样的理念之上：\n\n- 无广告\n- 无锁定功能\n- 无追踪或资料收集\n\n无论你是在写日记、反思，或者只是记录让你开心的瞬间，**Daily You** 都为你提供一个_真正属于你_的私密空间。';
+      '## 欢迎使用 AID Diary\n\n> 每一天都值得被记住。\n\n写下发生了什么、心情如何、在哪里。日记只保存在这台设备上。\n\n- **日记**：按天列出所有日记\n- **日历**、**媒体**、**地图**：按日期、照片和地点回顾\n- **引导**：不知道写什么时，给你题目和模板\n\nAID Diary 基于 Demizo 和贡献者开发的 [Daily You](https://github.com/Demizo/Daily_You) 修改，不是 Daily You 官方应用。';
 
   @override
   String get settingsStorageTitle => '存储';
@@ -1799,7 +1799,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get welcomeLogBodyText =>
-      '## 歡迎使用 Daily You\n\n> 每一天都值得被記住、被捕捉下來！\n\n**Daily You** 是免費的、[開源](https://github.com/Demizo/Daily_You)的，並由社群支援。建立在「你的日記應該屬於你，而不是某個產品」這樣的信念之上：\n\n- 無廣告\n- 無鎖定功能\n- 無追蹤或資料蒐集\n\n無論你是在寫日誌、反思，還是只是記錄讓你微笑的事，**Daily You** 都為你提供一個_真正屬於你_的私密空間。';
+      '## 歡迎使用 AID Diary\n\n> 每一天都值得被記住。\n\n寫下發生了什麼、心情如何、在哪裡。日記只保存在這台裝置上。\n\n- **日記**：按天列出所有日記\n- **日曆**、**媒體**、**地圖**：按日期、照片和地點回顧\n- **引導**：不知道寫什麼時，給你題目和範本\n\nAID Diary 基於 Demizo 和貢獻者開發的 [Daily You](https://github.com/Demizo/Daily_You) 修改，不是 Daily You 官方應用。';
 
   @override
   String get settingsStorageTitle => '存儲';

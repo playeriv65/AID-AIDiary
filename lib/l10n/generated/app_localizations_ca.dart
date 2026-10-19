@@ -656,7 +656,7 @@ class AppLocalizationsCa extends AppLocalizations {
 
   @override
   String get welcomeLogBodyText =>
-      '## Us donem la benvinguda al Daily You\n\n> Cada dia val la pena recordar-lo, captureu-lo!\n\nEl **Daily You** és gratuït, de [codi obert](https://github.com/Demizo/Daily_You), i el manté la comunitat. Es basa en la idea que el vostre diari ha de ser vós, no un producte:\n\n- Sense anuncis\n- Sense funcions bloquejades\n- Sense seguiment ni recollida de dades\n\nTant si porteu un diari, reflexioneu, com si simplement anoteu què us ha fet somriure, el **Daily You** us dona un espai privat que és _realment vostre_.';
+      '## Welcome to AID Diary\n\n> Every day is worth remembering.\n\nWrite what happened, how you felt, and where you were. Your entries stay on this device.\n\n- **Journal** lists every entry by day\n- **Calendar**, **Media** and **Atlas** look back by date, photo and place\n- **Coach** offers prompts and templates when you don\'t know what to write\n\nAID Diary is a modified version of [Daily You](https://github.com/Demizo/Daily_You) by Demizo and contributors, and not the official Daily You app.';
 
   @override
   String get settingsStorageTitle => 'Emmagatzematge';

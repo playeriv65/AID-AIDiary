@@ -653,7 +653,7 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get welcomeLogBodyText =>
-      '## به Daily You خوش آمدید\n\n> هر روز ارزش به خاطر سپردن دارد، آن را ثبت کنید!\n\n**Daily You** رایگان، [متن‌باز] (https://github.com/Demizo/Daily_You) و تحت حمایت جامعه است. بر اساس این باور ساخته شده است که دفتر خاطرات شما باید متعلق به خودتان باشد، نه یک محصول:\n\n- بدون تبلیغات\n- بدون ویژگی‌های قفل‌شده\n- بدون ردیابی یا جمع‌آوری داده‌ها\n\nچه در حال نوشتن خاطرات روزانه باشید، چه در حال تفکر، یا فقط یادداشت کردن آنچه که باعث لبخند شما شده است، **Daily You** به شما یک فضای خصوصی می‌دهد که _واقعاً متعلق به خودتان_ است.';
+      '## Welcome to AID Diary\n\n> Every day is worth remembering.\n\nWrite what happened, how you felt, and where you were. Your entries stay on this device.\n\n- **Journal** lists every entry by day\n- **Calendar**, **Media** and **Atlas** look back by date, photo and place\n- **Coach** offers prompts and templates when you don\'t know what to write\n\nAID Diary is a modified version of [Daily You](https://github.com/Demizo/Daily_You) by Demizo and contributors, and not the official Daily You app.';
 
   @override
   String get settingsStorageTitle => 'ذخیره سازی';

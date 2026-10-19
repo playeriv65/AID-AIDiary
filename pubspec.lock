@@ -646,14 +646,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.0"
-  golden_screenshot:
-    dependency: "direct dev"
-    description:
-      name: golden_screenshot
-      sha256: f1e894eb4d4f8c87a65b7d43ee95d84733f9e1e7980e3e0be5c3165b8b030792
-      url: "https://pub.dev"
-    source: hosted
-    version: "12.1.1"
   gsettings:
     dependency: transitive
     description:

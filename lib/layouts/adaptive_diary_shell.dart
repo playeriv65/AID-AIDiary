@@ -161,23 +161,25 @@ class _AdaptiveDiaryShellState extends State<AdaptiveDiaryShell> {
           resizeToAvoidBottomInset: false,
           body: Column(children: [
             Expanded(
-                child: Row(children: [
-              // Keep content in the same element slot to preserve drafts/routes.
-              if (!compact) _rail() else const SizedBox.shrink(),
-              Expanded(
-                  child: NavigatorPopHandler<Object?>(
-                      onPopWithResult: (result) =>
-                          widget.navigatorKey.currentState!.pop(result),
-                      child: Navigator(
-                          key: widget.navigatorKey,
-                          observers: [_observer],
-                          pages: [
-                            MaterialPage<void>(
-                                key: const ValueKey('diary-home-route'),
-                                child: widget.home)
-                          ],
-                          onDidRemovePage: (_) {}))),
-            ])),
+                child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                  // Keep content in the same element slot to preserve drafts/routes.
+                  if (!compact) _rail() else const SizedBox.shrink(),
+                  Expanded(
+                      child: NavigatorPopHandler<Object?>(
+                          onPopWithResult: (result) =>
+                              widget.navigatorKey.currentState!.pop(result),
+                          child: Navigator(
+                              key: widget.navigatorKey,
+                              observers: [_observer],
+                              pages: [
+                                MaterialPage<void>(
+                                    key: const ValueKey('diary-home-route'),
+                                    child: widget.home)
+                              ],
+                              onDidRemovePage: (_) {}))),
+                ])),
             if (compact && !_hasContentRoute)
               NavigationBar(
                   key: const ValueKey('diary-bottom-navigation'),

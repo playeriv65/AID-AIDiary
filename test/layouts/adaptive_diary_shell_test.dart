@@ -51,6 +51,9 @@ void main() {
         onNewEntry: () => created++));
     await tester.tap(find.byKey(const ValueKey('diary-new-entry')));
     expect(created, 1);
+    // The rail starts at the top, not centred in a tall window.
+    expect(tester.getTopLeft(find.byKey(const ValueKey('diary-new-entry'))).dy,
+        lessThan(40));
   });
 
   testWidgets(

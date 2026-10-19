@@ -649,7 +649,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String get welcomeLogBodyText =>
-      '## Vítejte v Daily You\n\n> Každý den si má cenu pamatovat, zapište si jej!\n\n**Daily You** je zdarma, [open source](https://github.com/Demizo/Daily_You), a podporovaný komunitou. Založenona myšlence, že deník by měl být soukromí a ne produkt:\n\n- Bez reklam\n- Žádný paywall\n- Žádné sledování a sběr dat\n\nAťuz si zapisujete každý den, vaše nápady, nebo co vás třeba rozesmálo, **Daily You** vám dává soukromí prostor, který _plně vlastníte_.';
+      '## Welcome to AID Diary\n\n> Every day is worth remembering.\n\nWrite what happened, how you felt, and where you were. Your entries stay on this device.\n\n- **Journal** lists every entry by day\n- **Calendar**, **Media** and **Atlas** look back by date, photo and place\n- **Coach** offers prompts and templates when you don\'t know what to write\n\nAID Diary is a modified version of [Daily You](https://github.com/Demizo/Daily_You) by Demizo and contributors, and not the official Daily You app.';
 
   @override
   String get settingsStorageTitle => 'Uložiště';

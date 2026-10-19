@@ -238,7 +238,7 @@
     "tagFavoriteName": "我的最愛",
     "tagEnergyName": "能量",
     "tagCategoryActivitiesName": "活動",
-    "welcomeLogBodyText": "## 歡迎使用 Daily You\n\n> 每一天都值得被記住、被捕捉下來！\n\n**Daily You** 是免費的、[開源](https://github.com/Demizo/Daily_You)的，並由社群支援。建立在「你的日記應該屬於你，而不是某個產品」這樣的信念之上：\n\n- 無廣告\n- 無鎖定功能\n- 無追蹤或資料蒐集\n\n無論你是在寫日誌、反思，還是只是記錄讓你微笑的事，**Daily You** 都為你提供一個_真正屬於你_的私密空間。",
+    "welcomeLogBodyText": "## 歡迎使用 AID Diary\n\n> 每一天都值得被記住。\n\n寫下發生了什麼、心情如何、在哪裡。日記只保存在這台裝置上。\n\n- **日記**：按天列出所有日記\n- **日曆**、**媒體**、**地圖**：按日期、照片和地點回顧\n- **引導**：不知道寫什麼時，給你題目和範本\n\nAID Diary 基於 Demizo 和貢獻者開發的 [Daily You](https://github.com/Demizo/Daily_You) 修改，不是 Daily You 官方應用。",
     "migratingImagesStatus": "正在移轉照片… {current}/{total}",
     "labelPresentLabel": "已設定",
     "labelAbsentLabel": "未設定",
