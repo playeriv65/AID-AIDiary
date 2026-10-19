@@ -1,0 +1,11 @@
+# Dart tooling writes LF; keep checkouts LF on Windows too.
+* text=auto eol=lf
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.png binary
+*.jpg binary
+*.webp binary
+*.ttf binary
+*.otf binary
+*.jar binary
+*.ico binary
