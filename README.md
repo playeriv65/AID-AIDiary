@@ -10,10 +10,10 @@ The layout follows the Journey diary app: a bottom bar on phones, a navigation r
 
 | Tablet / desktop | Phone |
 |---|---|
-| ![Journal](artifacts/ui-tablet-journal.png) | ![Journal](artifacts/ui-phone-journal.png) |
-| ![Calendar](artifacts/ui-tablet-calendar.png) | ![Entry](artifacts/ui-phone-entry.png) |
-| ![Media](artifacts/ui-tablet-media.png) | ![Editor](artifacts/ui-phone-editor.png) |
-| ![Coach](artifacts/ui-tablet-coach.png) | |
+| ![Journal](artifacts/ui-tablet-journal.png) | ![Journal](artifacts/ui-phone-journal.png) ![Entry](artifacts/ui-phone-entry.png) |
+| ![Calendar](artifacts/ui-tablet-calendar.png) | ![Calendar](artifacts/ui-phone-calendar.png) ![Media](artifacts/ui-phone-media.png) |
+| ![Media](artifacts/ui-tablet-media.png) | ![Coach](artifacts/ui-phone-coach.png) ![Search](artifacts/ui-phone-search.png) |
+| ![Coach](artifacts/ui-tablet-coach.png) | ![Editor](artifacts/ui-phone-editor.png) |
 
 - **Journal**: stories (today, throwbacks), then entries grouped by day with time, title, preview, mood, place, tags and a thumbnail.
 - **Calendar**: scrolling months; wide windows list the selected day beside them.
