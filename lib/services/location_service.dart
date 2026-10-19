@@ -27,7 +27,7 @@ class LocationService {
   static final _logger = Logger('LocationService');
   final http.Client _client;
 
-  Future<EntryLocation> current() async {
+  Future<EntryLocation> current({String? languageCode}) async {
     if (!await Geolocator.isLocationServiceEnabled()) {
       throw const LocationException(LocationFailure.serviceDisabled);
     }
@@ -49,7 +49,8 @@ class LocationService {
       _logger.warning('Position unavailable', error, stackTrace);
       throw const LocationException(LocationFailure.unavailable);
     }
-    final name = await placeName(position.latitude, position.longitude);
+    final name = await placeName(position.latitude, position.longitude,
+        languageCode: languageCode);
     return EntryLocation(
         latitude: position.latitude, longitude: position.longitude, name: name);
   }
@@ -79,7 +80,7 @@ class LocationService {
 
   /// Picks the most specific readable parts of a reverse geocoding result.
   static String? shortName(Map<String, dynamic> result) {
-    final address = result['address'] as Map<String, dynamic>?;
+    final address = (result['address'] as Map?)?.cast<String, dynamic>();
     if (address == null) return result['name'] as String?;
     String? first(List<String> keys) => keys
         .map((k) => address[k] as String?)

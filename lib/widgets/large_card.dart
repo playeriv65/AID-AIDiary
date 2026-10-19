@@ -2,14 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-import 'package:daily_you/models/image.dart';
-import 'package:daily_you/time_manager.dart';
-import 'package:daily_you/widgets/entry_card_header_row.dart';
-import 'package:daily_you/widgets/image_grid.dart';
 import 'package:daily_you/widgets/scaled_markdown.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:daily_you/l10n/generated/app_localizations.dart';
-import 'package:daily_you/models/entry.dart';
 
 class LargeCard extends StatelessWidget {
   const LargeCard({super.key, this.media, this.header, this.body});
@@ -86,43 +80,4 @@ class LargeCard extends StatelessWidget {
           scaleFactor: 0.95,
         ),
       );
-}
-
-class LargeEntryCardWidget extends StatelessWidget {
-  const LargeEntryCardWidget({
-    super.key,
-    this.title,
-    required this.entry,
-    required this.images,
-    this.hideImage = false,
-  });
-
-  final Entry entry;
-  final List<EntryImage> images;
-  final String? title;
-  final bool hideImage;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final time = TimeManager.formatDate(entry.timeCreate, context);
-    return LargeCard(
-      media: images.isNotEmpty && !hideImage ? ImageGrid(images: images) : null,
-      header: EntryCardHeaderRow(
-        entry: entry,
-        title: title == null ? time : title!,
-        titlePadding: const EdgeInsets.only(left: 4.0),
-        titleStyle: TextStyle(
-          color: theme.textTheme.labelSmall?.color,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-      body: entry.text.isNotEmpty
-          ? LargeCard.markdownBody(entry.text)
-          : Text(
-              AppLocalizations.of(context)!.writeSomethingHint,
-              style: TextStyle(color: theme.disabledColor, fontSize: 16),
-            ),
-    );
-  }
 }

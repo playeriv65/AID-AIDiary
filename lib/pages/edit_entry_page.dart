@@ -15,7 +15,6 @@ import 'package:daily_you/providers/tags_provider.dart';
 import 'package:daily_you/providers/templates_provider.dart';
 import 'package:daily_you/widgets/entry_draft_dirty_tracker.dart';
 import 'package:daily_you/widgets/tag_attachment_source.dart';
-import 'package:daily_you/widgets/tag_grouped_chip_list.dart';
 import 'package:daily_you/widgets/tag_picker_dialog.dart';
 import 'package:daily_you/widgets/tag_chip.dart';
 import 'package:daily_you/time_manager.dart';
@@ -30,6 +29,8 @@ import 'package:daily_you/l10n/generated/app_localizations.dart';
 import 'package:daily_you/models/entry.dart';
 import 'package:daily_you/widgets/entry_image_actions.dart';
 import 'package:daily_you/widgets/entry_mood_picker.dart';
+import 'package:daily_you/widgets/location_dialog.dart';
+import 'package:daily_you/widgets/mood_icon.dart';
 import 'package:daily_you/widgets/entry_text_edit.dart';
 import 'package:daily_you/widgets/markdown_preview_controller.dart';
 
@@ -47,6 +48,9 @@ class AddEditEntryPage extends StatefulWidget {
   /// the untouched draft, so an unanswered prompt is not saved.
   final String? initialPrompt;
 
+  /// Template for a new entry in place of the default one.
+  final Template? template;
+
   const AddEditEntryPage({
     super.key,
     this.entry,
@@ -56,6 +60,7 @@ class AddEditEntryPage extends StatefulWidget {
     this.sharedText,
     this.initialMood,
     this.initialPrompt,
+    this.template,
   });
 
   static String mergeSharedText(String baseText, String? sharedText) {
@@ -75,6 +80,7 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
   int id = -1;
   String text = "";
   int? mood;
+  EntryLocation? location;
   DateTime? entryDate;
   late List<EntryImage> _currentImages;
   bool _loadingEntry = true;
@@ -99,7 +105,8 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
               ? DateTime.now()
               : (widget.overrideCreateDate ?? DateTime.now());
       var templateText = "";
-      final defaultTemplate = TemplatesProvider.instance.getDefaultTemplate();
+      final defaultTemplate =
+          widget.template ?? TemplatesProvider.instance.getDefaultTemplate();
       final defaultTagIds = <int>[];
       if (defaultTemplate != null) {
         templateText = defaultTemplate.text ?? "";
@@ -142,10 +149,12 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
       // A preselected mood is a choice the user made, so it is a change.
       mood: widget.entry == null ? null : _entry.mood,
       date: _entry.timeCreate,
+      location: widget.entry == null ? null : _entry.location,
       seededTagIds: _tagSource.attachedTagIds.toSet(),
     );
     _tagSource.addListener(_onTagsChanged);
     mood = _entry.mood;
+    location = _entry.location;
     entryDate = _entry.timeCreate;
     text = _entry.text;
     _textEditingController.addListener(() {
@@ -279,7 +288,13 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
             },
             child: Scaffold(
               appBar: AppBar(
-                  leading: BackButton(
+                  centerTitle: true,
+                  title: _buildDateTitle(context, theme),
+                  leading: IconButton(
+                    key: const ValueKey('entry-close'),
+                    tooltip:
+                        MaterialLocalizations.of(context).closeButtonTooltip,
+                    icon: const Icon(Icons.close_rounded),
                     onPressed: () {
                       // Pop edit page
                       Navigator.of(context).pop();
@@ -318,11 +333,7 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
                                           _currentImages = images;
                                           await _saveEntry();
                                         }),
-                                  StatefulBuilder(
-                                    builder: (context, setLocalState) =>
-                                        _buildMetadataCard(
-                                            context, theme, setLocalState),
-                                  ),
+                                  _buildMetaStrip(context),
                                 ],
                               ),
                             ),
@@ -348,124 +359,130 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
           );
   }
 
-  // The card showing entry date/time, mood, and tags.
-  // setLocalState is the StatefulBuilder's setter, so a mood change only
-  // rebuilds this card instead of the whole scroll view.
-  Widget _buildMetadataCard(
-    BuildContext context,
-    ThemeData theme,
-    StateSetter setLocalState,
-  ) {
-    return Card.filled(
-      color: theme.colorScheme.surfaceContainer,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: double.infinity,
-            child: _buildDateTimeButtons(context, theme),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 4.0, bottom: 4.0),
-            child: EntryMoodPicker(
-                moodValue: mood,
-                onChangedMood: (mood) {
-                  setLocalState(() => this.mood = mood);
-                  _scheduleSave();
-                }),
-          ),
-          _buildTagChips(),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildTagChips() {
-    const padding = EdgeInsets.only(left: 8, right: 8, bottom: 8);
+  /// Mood, place and tags already set, as removable chips.
+  Widget _buildMetaStrip(BuildContext context) {
     return ListenableBuilder(
       listenable: _tagSource,
       builder: (context, _) {
-        final attachedIds = _tagSource.attachedTagIds;
-        if (attachedIds.isEmpty) return const SizedBox.shrink();
+        final attachedIds = _tagSource.attachedTagIds.toSet();
         final tagsProvider = Provider.of<TagsProvider>(context);
-        final attachedSet = attachedIds.toSet();
-        final tagPool = tagsProvider.tags
-            .where((tag) => attachedSet.contains(tag.id))
-            .toList();
-        final sections = tagsProvider.buildSections('', tagPool: tagPool);
+        final tags =
+            tagsProvider.tags.where((t) => attachedIds.contains(t.id)).toList();
+        final hasMood = MoodIcon.getMoodIcon(mood).isNotEmpty;
+        if (!hasMood && location == null && tags.isEmpty) {
+          return const SizedBox(height: 8);
+        }
         return Padding(
-          padding: padding,
-          child: TagGroupedChipList(
-            sections: sections,
-            chipBuilder: (tag) => TagChip(
-              tag: tag,
-              value: _tagSource.valueFor(tag.id!),
-              onTap: tag.tagType == TagType.tracker
-                  ? () => _tagSource.editValue(context, tag)
-                  : null,
-              onRemove: () => _tagSource.detach(tag.id!),
-            ),
-          ),
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          child: Wrap(spacing: 8, runSpacing: 8, children: [
+            if (hasMood)
+              InputChip(
+                key: const ValueKey('editor-mood-chip'),
+                avatar: MoodIcon(moodValue: mood, size: 16),
+                label: Text(AppLocalizations.of(context)!.tagMoodTitle),
+                onPressed: _chooseMood,
+                onDeleted: () => _setMood(null),
+              ),
+            if (location != null)
+              InputChip(
+                key: const ValueKey('editor-location-chip'),
+                avatar: const Icon(Icons.place_rounded, size: 16),
+                label: Text(location!.label),
+                onPressed: _chooseLocation,
+                onDeleted: () => _setLocation(null),
+              ),
+            for (final tag in tags)
+              TagChip(
+                tag: tag,
+                value: _tagSource.valueFor(tag.id!),
+                onTap: tag.tagType == TagType.tracker
+                    ? () => _tagSource.editValue(context, tag)
+                    : null,
+                onRemove: () => _tagSource.detach(tag.id!),
+              ),
+          ]),
         );
       },
     );
   }
 
-  Widget _buildDateTimeButtons(BuildContext context, ThemeData theme) {
-    return IntrinsicHeight(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 2.0),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextButton(
-              onPressed: () async {
-                _chooseDate();
-              },
-              style: TextButton.styleFrom(
-                  visualDensity: VisualDensity.compact,
-                  padding: EdgeInsets.all(6)),
-              child: Text(
-                TimeManager.formatDateWithWeekday(entryDate!, context),
-                style: TextStyle(
-                    color: theme.colorScheme.primary,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold),
-              ),
-            ),
-            VerticalDivider(
-              width: 6,
-              indent: 8,
-              endIndent: 8,
-              thickness: 2,
-              radius: BorderRadius.circular(4),
-            ),
-            TextButton(
-              onPressed: () async {
-                _chooseTime();
-              },
-              style: TextButton.styleFrom(
-                  visualDensity: VisualDensity.compact,
-                  padding: EdgeInsets.all(6)),
-              child: Text(
-                TimeManager.localizedTimeFormat(
-                        context, TimeManager.currentLocale(context))
-                    .format(entryDate!),
-                style: TextStyle(
-                  color: theme.colorScheme.primary,
-                  fontSize: 16,
-                ),
-              ),
-            ),
-          ],
+  /// The entry date as the page title; tapping it changes date and time.
+  Widget _buildDateTitle(BuildContext context, ThemeData theme) {
+    final time = TimeManager.localizedTimeFormat(
+            context, TimeManager.currentLocale(context))
+        .format(entryDate!);
+    return TextButton(
+      key: const ValueKey('editor-date'),
+      onPressed: () async {
+        if (await _chooseDate()) await _chooseTime();
+      },
+      child: Row(mainAxisSize: MainAxisSize.min, children: [
+        Flexible(
+          child: Text(
+            '${TimeManager.formatDate(entryDate!, context)} $time'
+                .toUpperCase(),
+            overflow: TextOverflow.ellipsis,
+            style: theme.textTheme.titleSmall?.copyWith(
+                color: theme.colorScheme.primary,
+                letterSpacing: 1.2,
+                fontWeight: FontWeight.w700),
+          ),
         ),
+        Icon(Icons.arrow_drop_down_rounded, color: theme.colorScheme.primary),
+      ]),
+    );
+  }
+
+  void _setMood(int? value) {
+    setState(() => mood = value);
+    _scheduleSave();
+  }
+
+  Future<void> _chooseMood() async {
+    var picked = mood;
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(AppLocalizations.of(context)!.tagMoodTitle),
+        content: SizedBox(
+          width: 320,
+          child: EntryMoodPicker(
+              moodValue: picked, onChangedMood: (value) => picked = value),
+        ),
+        actions: [
+          TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text(MaterialLocalizations.of(context).cancelButtonLabel)),
+          FilledButton(
+              key: const ValueKey('editor-mood-ok'),
+              onPressed: () => Navigator.of(context).pop(true),
+              child: Text(MaterialLocalizations.of(context).okButtonLabel)),
+        ],
       ),
     );
+    if (confirmed == true) _setMood(picked);
+  }
+
+  void _setLocation(EntryLocation? value) {
+    setState(() => location = value);
+    _scheduleSave();
+  }
+
+  Future<void> _chooseLocation() async {
+    final choice = await showLocationDialog(context, location);
+    if (choice != null) _setLocation(choice.location);
   }
 
   List<ToolbarAction> _buildMainActions(BuildContext context) {
     return [
+      ToolbarAction(
+        icon: const Icon(Icons.place_outlined),
+        onPressed: _chooseLocation,
+      ),
+      ToolbarAction(
+        icon: const Icon(Icons.mood_rounded),
+        onPressed: _chooseMood,
+      ),
       ToolbarAction(
         icon: const Icon(Icons.local_offer_rounded),
         onPressed: () => showDialog(
@@ -535,14 +552,14 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
         onPressed: () => Navigator.of(context).pop(),
       );
 
-  Future<void> _chooseDate() async {
+  Future<bool> _chooseDate() async {
     DateTime? pickedDate = await TimeManager.pickDate(
       context,
       initialDate: entryDate!,
       firstDate: DateTime(2000),
       lastDate: DateTime.now(),
     );
-    if (pickedDate == null) return;
+    if (pickedDate == null) return false;
 
     entryDate = entryDate!.copyWith(
       year: pickedDate.year,
@@ -550,9 +567,11 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
       day: pickedDate.day,
     );
     await _saveEntry();
+    return true;
   }
 
   Future<void> _chooseTime() async {
+    if (!mounted) return;
     final pickedTime = await showTimePicker(
         context: context, initialTime: TimeOfDay.fromDateTime(entryDate!));
     if (pickedTime == null) return;
@@ -593,6 +612,7 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
             mood: mood,
             timeCreate: entryDate,
             timeModified: DateTime.now(),
+            location: location,
           )
         : _entry;
     return EntryDraft(
@@ -610,6 +630,7 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
       text: saved.text,
       mood: saved.mood,
       date: saved.timeCreate,
+      location: saved.location,
     );
   }
 
@@ -626,7 +647,7 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
 
   bool _hasEntryFieldChanges() {
     return _dirtyTracker.hasFieldChanges(
-        text: text, mood: mood, date: entryDate!);
+        text: text, mood: mood, date: entryDate!, location: location);
   }
 
   void _onTagsChanged() {
@@ -640,6 +661,7 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
       date: entryDate!,
       tagSource: _tagSource,
       hasImages: _currentImages.isNotEmpty,
+      location: location,
     );
   }
 

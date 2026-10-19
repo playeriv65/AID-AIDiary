@@ -498,6 +498,10 @@ CREATE TABLE $templateTagsTable (
 ''');
   }
 
+  @visibleForTesting
+  Future<void> upgradeSchema(Database db, int oldVersion, int newVersion) =>
+      _onUpgrade(db, oldVersion, newVersion);
+
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
     _database = db;
     // In this case, oldVersion is 1, newVersion is 2

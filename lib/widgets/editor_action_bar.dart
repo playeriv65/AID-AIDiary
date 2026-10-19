@@ -232,11 +232,13 @@ class _EditorActionBarState extends State<EditorActionBar> {
   @override
   Widget build(BuildContext context) {
     final metrics = DockMetrics.of(context);
-    final showToggle = widget.mainActions != null && _isEditing;
-    final showingMainActions = widget.mainActions != null &&
-        (!_isEditing || _showMainActionsWhileFocused);
     final isWide =
         MediaQuery.sizeOf(context).width >= EditorActionBar.wideBreakpoint;
+    // Wide windows fit both groups in one bar, so nothing to toggle.
+    final combined = isWide && widget.mainActions != null;
+    final showToggle = !combined && widget.mainActions != null && _isEditing;
+    final showingMainActions = widget.mainActions != null &&
+        (combined || !_isEditing || _showMainActionsWhileFocused);
 
     return Padding(
       padding: EdgeInsets.fromLTRB(
@@ -264,9 +266,15 @@ class _EditorActionBarState extends State<EditorActionBar> {
                 : AlignmentDirectional.center;
 
             final split = ToolbarEntrySplit.fit(
-              showingMainActions
-                  ? _mainActionEntries(metrics)
-                  : _markdownEntries(context, metrics),
+              combined
+                  ? [
+                      ..._mainActionEntries(metrics),
+                      _dividerEntry(),
+                      ..._markdownEntries(context, metrics),
+                    ]
+                  : showingMainActions
+                      ? _mainActionEntries(metrics)
+                      : _markdownEntries(context, metrics),
               maxWidth: maxPillWidth,
               overflowButtonWidth: metrics.buttonSize,
               padding: metrics.pillPadding,

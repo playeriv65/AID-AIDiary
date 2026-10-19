@@ -4,22 +4,21 @@
 
 import 'package:material_ui/material_ui.dart';
 
-enum DiaryLayout { compact, rail, expanded }
+enum DiaryLayout { compact, rail }
 
-/// Use available logical pixels, including height, not the device name.
-DiaryLayout diaryLayoutFor(Size size) {
-  if (size.width < 600) return DiaryLayout.compact;
-  if (size.width >= 1200 && size.height >= 600) return DiaryLayout.expanded;
-  return DiaryLayout.rail;
-}
+/// Phones get a bottom bar; anything wider gets a navigation rail.
+DiaryLayout diaryLayoutFor(Size size) =>
+    size.width < 600 ? DiaryLayout.compact : DiaryLayout.rail;
 
+/// Whether a page has room for a list beside a detail pane.
 bool diarySupportsSplit(Size contentSize) =>
     contentSize.width >= 700 && contentSize.height >= 280;
 
 class DiaryDestination {
-  const DiaryDestination(this.label, this.icon);
+  const DiaryDestination(this.label, this.icon, this.selectedIcon);
   final String label;
   final IconData icon;
+  final IconData selectedIcon;
 }
 
 /// All ordinary routes share one Navigator, stable through window resizing.
@@ -28,20 +27,20 @@ class AdaptiveDiaryShell extends StatefulWidget {
       {super.key,
       required this.navigatorKey,
       required this.home,
-      required this.title,
       required this.destinations,
       required this.selectedIndex,
       required this.onDestinationSelected,
-      required this.settingsLabel,
-      required this.onSettings});
+      required this.newEntryLabel,
+      required this.onNewEntry});
   final GlobalKey<NavigatorState> navigatorKey;
   final Widget home;
-  final String title;
   final List<DiaryDestination> destinations;
   final int selectedIndex;
   final ValueChanged<int> onDestinationSelected;
-  final String settingsLabel;
-  final VoidCallback onSettings;
+  final String newEntryLabel;
+
+  /// Opens the editor; the rail shows it as its leading button.
+  final VoidCallback onNewEntry;
 
   @override
   State<AdaptiveDiaryShell> createState() => _AdaptiveDiaryShellState();
@@ -72,18 +71,6 @@ class _AdaptiveDiaryShellState extends State<AdaptiveDiaryShell> {
     }
   }
 
-  Future<void> _settings() async {
-    if (_navigating || _observer.currentRoute?.settings.name == 'settings') {
-      return;
-    }
-    _navigating = true;
-    try {
-      if (await _returnHome()) widget.onSettings();
-    } finally {
-      _navigating = false;
-    }
-  }
-
   @override
   void initState() {
     super.initState();
@@ -96,111 +83,87 @@ class _AdaptiveDiaryShellState extends State<AdaptiveDiaryShell> {
     });
   }
 
-  Widget _item(DiaryDestination destination,
-      {required bool expanded,
-      required bool selected,
-      required Key key,
-      required VoidCallback onTap}) {
+  Widget _railItem(int index) {
     final theme = Theme.of(context);
+    final destination = widget.destinations[index];
+    final selected = !_hasContentRoute && widget.selectedIndex == index;
     final foreground = selected
         ? theme.colorScheme.onSecondaryContainer
         : theme.colorScheme.onSurfaceVariant;
-    return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 4),
-        child: Tooltip(
-            message: destination.label,
-            child: Semantics(
-                selected: selected,
-                button: true,
-                label: destination.label,
-                excludeSemantics: true,
-                child: Material(
-                    borderRadius: BorderRadius.circular(24),
-                    color: selected
-                        ? theme.colorScheme.secondaryContainer
-                        : Colors.transparent,
-                    child: InkWell(
-                        key: key,
-                        borderRadius: BorderRadius.circular(24),
-                        onTap: onTap,
-                        child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: expanded ? 16 : 12, vertical: 12),
-                            child: Row(
-                                mainAxisAlignment: expanded
-                                    ? MainAxisAlignment.start
-                                    : MainAxisAlignment.center,
-                                children: [
-                                  Icon(destination.icon, color: foreground),
-                                  if (expanded) ...[
-                                    const SizedBox(width: 12),
-                                    Expanded(
-                                        child: Text(destination.label,
-                                            style: theme.textTheme.labelLarge
-                                                ?.copyWith(color: foreground)))
-                                  ],
-                                ])))))));
+    return Semantics(
+      selected: selected,
+      button: true,
+      label: destination.label,
+      excludeSemantics: true,
+      child: InkWell(
+        key: ValueKey('diary-destination-$index'),
+        borderRadius: BorderRadius.circular(16),
+        onTap: () => _select(index),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 6),
+          child: Column(children: [
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              width: 56,
+              height: 32,
+              decoration: BoxDecoration(
+                  color: selected
+                      ? theme.colorScheme.secondaryContainer
+                      : Colors.transparent,
+                  borderRadius: BorderRadius.circular(16)),
+              child: Icon(
+                  selected ? destination.selectedIcon : destination.icon,
+                  color: foreground),
+            ),
+            const SizedBox(height: 4),
+            Text(destination.label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style:
+                    theme.textTheme.labelMedium?.copyWith(color: foreground)),
+          ]),
+        ),
+      ),
+    );
   }
 
-  Widget _navigation(DiaryLayout layout) {
-    final expanded = layout == DiaryLayout.expanded;
+  Widget _rail() {
     return SizedBox(
-        key: ValueKey(expanded ? 'diary-sidebar' : 'diary-rail'),
-        width: expanded ? 240 : 80,
-        child: Material(
-            color: Theme.of(context).colorScheme.surfaceContainerLow,
-            child: SafeArea(
-                child: Column(children: [
-              if (expanded)
-                Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 24, 20, 20),
-                    child: Align(
-                        alignment: AlignmentDirectional.centerStart,
-                        child: Text(widget.title,
-                            style: Theme.of(context).textTheme.titleLarge))),
-              Expanded(
-                  child: SingleChildScrollView(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: expanded ? 12 : 8, vertical: 8),
-                      child: Column(children: [
-                        for (var i = 0; i < widget.destinations.length; i++)
-                          _item(widget.destinations[i],
-                              expanded: expanded,
-                              selected: !_hasContentRoute &&
-                                  widget.selectedIndex == i,
-                              key: ValueKey('diary-destination-$i'),
-                              onTap: () => _select(i))
-                      ]))),
-              const Divider(indent: 12, endIndent: 12),
-              Padding(
-                  padding: EdgeInsets.fromLTRB(
-                      expanded ? 12 : 8, 0, expanded ? 12 : 8, 8),
-                  child: _item(
-                      DiaryDestination(
-                          widget.settingsLabel, Icons.settings_rounded),
-                      expanded: expanded,
-                      selected: false,
-                      key: const ValueKey('diary-settings'),
-                      onTap: _settings)),
-            ]))));
+      key: const ValueKey('diary-rail'),
+      width: 80,
+      child: SafeArea(
+        right: false,
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 4),
+          child: Column(children: [
+            FloatingActionButton(
+              key: const ValueKey('diary-new-entry'),
+              heroTag: 'diary-rail-new-entry',
+              tooltip: widget.newEntryLabel,
+              elevation: 0,
+              onPressed: widget.onNewEntry,
+              child: const Icon(Icons.add_rounded),
+            ),
+            const SizedBox(height: 40),
+            for (var i = 0; i < widget.destinations.length; i++) _railItem(i),
+          ]),
+        ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
-      final layout = diaryLayoutFor(constraints.biggest);
-      final compact = layout == DiaryLayout.compact;
+      final compact =
+          diaryLayoutFor(constraints.biggest) == DiaryLayout.compact;
       return Scaffold(
           resizeToAvoidBottomInset: false,
           body: Column(children: [
             Expanded(
                 child: Row(children: [
               // Keep content in the same element slot to preserve drafts/routes.
-              if (!compact) _navigation(layout) else const SizedBox.shrink(),
-              if (!compact)
-                const VerticalDivider(width: 1)
-              else
-                const SizedBox.shrink(),
+              if (!compact) _rail() else const SizedBox.shrink(),
               Expanded(
                   child: NavigatorPopHandler<Object?>(
                       onPopWithResult: (result) =>
@@ -218,14 +181,14 @@ class _AdaptiveDiaryShellState extends State<AdaptiveDiaryShell> {
             if (compact && !_hasContentRoute)
               NavigationBar(
                   key: const ValueKey('diary-bottom-navigation'),
-                  height: 64,
                   selectedIndex: widget.selectedIndex,
-                  labelBehavior:
-                      NavigationDestinationLabelBehavior.onlyShowSelected,
                   onDestinationSelected: _select,
                   destinations: [
                     for (final d in widget.destinations)
-                      NavigationDestination(icon: Icon(d.icon), label: d.label)
+                      NavigationDestination(
+                          icon: Icon(d.icon),
+                          selectedIcon: Icon(d.selectedIcon),
+                          label: d.label)
                   ]),
           ]));
     });

@@ -6,6 +6,7 @@ import 'package:daily_you/l10n/generated/app_localizations.dart';
 import 'package:daily_you/models/entry.dart';
 import 'package:daily_you/models/flashback.dart';
 import 'package:daily_you/models/image.dart';
+import 'package:daily_you/models/template.dart';
 import 'package:daily_you/notification_manager.dart';
 import 'package:daily_you/pages/edit_entry_page.dart';
 import 'package:daily_you/pages/entries_list_page.dart';
@@ -22,7 +23,8 @@ class EntryNavigation {
       List<EntryImage>? images,
       DateTime? overrideCreateDate,
       int? initialMood,
-      String? initialPrompt}) {
+      String? initialPrompt,
+      Template? template}) {
     return Navigator.of(context).push(MaterialPageRoute(
       allowSnapshotting: false,
       builder: (context) => AddEditEntryPage(
@@ -35,6 +37,7 @@ class EntryNavigation {
         overrideCreateDate: overrideCreateDate,
         initialMood: initialMood,
         initialPrompt: initialPrompt,
+        template: template,
       ),
     ));
   }

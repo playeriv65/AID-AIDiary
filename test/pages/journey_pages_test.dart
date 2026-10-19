@@ -1,0 +1,273 @@
+import 'dart:typed_data';
+
+import 'package:daily_you/database/entry_store.dart';
+import 'package:daily_you/layouts/mobile_scaffold.dart';
+import 'package:daily_you/models/entry.dart';
+import 'package:daily_you/models/image.dart';
+import 'package:daily_you/pages/atlas_page.dart';
+import 'package:daily_you/pages/coach_page.dart';
+import 'package:daily_you/pages/journal_page.dart';
+import 'package:daily_you/pages/media_page.dart';
+import 'package:daily_you/pages/search_page.dart';
+import 'package:daily_you/providers/entry_images_provider.dart';
+import 'package:daily_you/providers/tags_provider.dart';
+import 'package:daily_you/widgets/mood_icon.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
+
+import '../support/diary_app_harness.dart';
+
+/// Serves a 1x1 transparent tile so map tests make no network calls.
+class _BlankTiles extends TileProvider {
+  static final _png = Uint8List.fromList([
+    0x89,
+    0x50,
+    0x4E,
+    0x47,
+    0x0D,
+    0x0A,
+    0x1A,
+    0x0A,
+    0x00,
+    0x00,
+    0x00,
+    0x0D,
+    0x49,
+    0x48,
+    0x44,
+    0x52,
+    0x00,
+    0x00,
+    0x00,
+    0x01,
+    0x00,
+    0x00,
+    0x00,
+    0x01,
+    0x08,
+    0x06,
+    0x00,
+    0x00,
+    0x00,
+    0x1F,
+    0x15,
+    0xC4,
+    0x89,
+    0x00,
+    0x00,
+    0x00,
+    0x0D,
+    0x49,
+    0x44,
+    0x41,
+    0x54,
+    0x78,
+    0x9C,
+    0x63,
+    0x00,
+    0x01,
+    0x00,
+    0x00,
+    0x05,
+    0x00,
+    0x01,
+    0x0D,
+    0x0A,
+    0x2D,
+    0xB4,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x49,
+    0x45,
+    0x4E,
+    0x44,
+    0xAE,
+    0x42,
+    0x60,
+    0x82,
+  ]);
+
+  @override
+  ImageProvider getImage(TileCoordinates coordinates, TileLayer options) =>
+      MemoryImage(_png);
+}
+
+void main() {
+  final harness = DiaryAppHarness()..register();
+
+  Future<void> tapKey(WidgetTester tester, String key) async {
+    await tester.tap(find.byKey(ValueKey(key)).hitTestable());
+    await tester.pumpAndSettle();
+  }
+
+  testWidgets('journal groups by day and shows the selection beside the list',
+      (tester) async {
+    final now = DateTime.now();
+    final today = await DiaryAppHarness.addEntry(tester, '# 早晨\n喝了咖啡', now,
+        mood: 1, location: const EntryLocation(name: '河边'));
+    await DiaryAppHarness.addEntry(
+        tester, '昨天的事', now.subtract(const Duration(days: 1)));
+    DiaryAppHarness.size(tester, const Size(1280, 800));
+    await tester.pumpWidget(harness.app(const Scaffold(body: JournalPage())));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const ValueKey('story-today')), findsOneWidget);
+    expect(find.text('早晨'), findsOneWidget);
+    expect(find.text('河边'), findsOneWidget);
+    await tapKey(tester, 'journal-entry-${today.id}');
+    expect(find.byKey(ValueKey('journal-detail-${today.id}')), findsOneWidget);
+    expect(find.text('${now.day}'), findsWidgets);
+
+    await tester.runAsync(() async {
+      tester
+          .widget<IconButton>(find.byKey(const ValueKey('entry-favorite')))
+          .onPressed!();
+      await Future<void>.delayed(const Duration(milliseconds: 200));
+    });
+    await tester.pumpAndSettle();
+    expect(TagsProvider.instance.isFavorite(today.id!), isTrue);
+    await tapKey(tester, 'entry-next');
+    expect(find.text('昨天的事'), findsWidgets);
+    expect(tester.takeException(), isNull);
+    await tester.pumpWidget(const SizedBox.shrink());
+  });
+
+  for (final dimensions in [
+    const Size(360, 800),
+    const Size(844, 390),
+    const Size(2560, 1600),
+  ]) {
+    testWidgets('every destination lays out at $dimensions', (tester) async {
+      await DiaryAppHarness.addEntry(tester, '一篇日记', DateTime.now());
+      DiaryAppHarness.size(tester, dimensions);
+      await tester.pumpWidget(harness.app(const MobileScaffold()));
+      await tester.pumpAndSettle();
+      // Skip the map here: it would fetch tiles. It has its own test.
+      for (final destination in [0, 1, 2, 4]) {
+        await DiaryAppHarness.goTo(tester, destination);
+        expect(tester.takeException(), isNull);
+      }
+      await tester.pumpWidget(const SizedBox.shrink());
+    });
+  }
+
+  testWidgets('phone opens an entry in its own page', (tester) async {
+    final entry =
+        await DiaryAppHarness.addEntry(tester, '手机上的日记', DateTime.now());
+    DiaryAppHarness.size(tester, const Size(390, 844));
+    await tester.pumpWidget(harness.app(const MobileScaffold()));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const ValueKey('diary-new-entry')), findsOneWidget);
+    await tapKey(tester, 'journal-entry-${entry.id}');
+    expect(find.byKey(const ValueKey('diary-entry-edit')), findsOneWidget);
+    expect(find.byKey(const ValueKey('diary-bottom-navigation')), findsNothing);
+    await tester.pumpWidget(const SizedBox.shrink());
+  });
+
+  testWidgets('media lists each attached photo', (tester) async {
+    final entry = await DiaryAppHarness.addEntry(tester, '有照片', DateTime.now());
+    await tester.runAsync(() => EntryImagesProvider.instance.add(EntryImage(
+        entryId: entry.id,
+        imgPath: 'missing.jpg',
+        imgRank: 0,
+        timeCreate: DateTime.now())));
+    DiaryAppHarness.size(tester, const Size(1280, 800));
+    await tester.pumpWidget(harness.app(const Scaffold(body: MediaPage())));
+    await tester.pumpAndSettle();
+    expect(find.text('媒体文件'.toUpperCase()), findsOneWidget);
+    final image = EntryImagesProvider.instance.images.single;
+    expect(find.byKey(ValueKey('media-${image.id}')), findsOneWidget);
+    expect(tester.takeException(), isNull);
+    await tester.pumpWidget(const SizedBox.shrink());
+  });
+
+  testWidgets('coach filters programs and starts a prompt', (tester) async {
+    DiaryAppHarness.size(tester, const Size(1280, 800));
+    await tester.pumpWidget(harness.app(const Scaffold(body: CoachPage())));
+    await tester.pumpAndSettle();
+    expect(
+        find.byKey(const ValueKey('coach-program-everyday')), findsOneWidget);
+    await tester.tap(find.text('模板').first);
+    await tester.pumpAndSettle();
+    expect(find.byKey(const ValueKey('coach-program-everyday')), findsNothing);
+    await tester.tap(find.text('全部'));
+    await tester.pumpAndSettle();
+    await tapKey(tester, 'coach-program-everyday');
+    await tapKey(tester, 'coach-prompt-0');
+    final text = tester
+        .widget<EditableText>(find.byType(EditableText).first)
+        .controller
+        .text;
+    expect(text, startsWith('## '));
+    await tester.pumpWidget(const SizedBox.shrink());
+  });
+
+  testWidgets('search matches text and the starred filter', (tester) async {
+    final kept =
+        await DiaryAppHarness.addEntry(tester, '去公园散步', DateTime.now());
+    await DiaryAppHarness.addEntry(tester, '在家看书', DateTime.now());
+    await tester
+        .runAsync(() => TagsProvider.instance.setFavorite(kept.id!, true));
+    DiaryAppHarness.size(tester, const Size(390, 844));
+    await tester.pumpWidget(harness.app(const SearchPage()));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byKey(const ValueKey('search-field')), '公园');
+    await tester.pumpAndSettle();
+    expect(find.byKey(ValueKey('journal-entry-${kept.id}')), findsOneWidget);
+    expect(find.text('在家看书'), findsNothing);
+    await tester.enterText(find.byKey(const ValueKey('search-field')), '');
+    await tapKey(tester, 'search-filter-starred');
+    expect(find.byKey(ValueKey('journal-entry-${kept.id}')), findsOneWidget);
+    expect(find.text('在家看书'), findsNothing);
+    await tester.pumpWidget(const SizedBox.shrink());
+  });
+
+  testWidgets('atlas shows geotagged entries as markers', (tester) async {
+    final placed = await DiaryAppHarness.addEntry(tester, '在河边', DateTime.now(),
+        location: const EntryLocation(
+            latitude: 31.23, longitude: 121.47, name: '外滩'));
+    await DiaryAppHarness.addEntry(tester, '没有位置', DateTime.now());
+    DiaryAppHarness.size(tester, const Size(1280, 800));
+    await tester.pumpWidget(
+        harness.app(Scaffold(body: AtlasPage(tileProvider: _BlankTiles()))));
+    await tester.pumpAndSettle();
+    expect(find.byKey(ValueKey('atlas-marker-${placed.id}')), findsOneWidget);
+    await tester.tap(find.byKey(ValueKey('atlas-marker-${placed.id}')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(ValueKey('atlas-detail-${placed.id}')), findsOneWidget);
+    expect(tester.takeException(), isNull);
+    await tester.pumpWidget(const SizedBox.shrink());
+  });
+
+  testWidgets('editor saves a typed place and a mood', (tester) async {
+    DiaryAppHarness.size(tester, const Size(1280, 800));
+    await tester.pumpWidget(harness.app(const MobileScaffold()));
+    await tester.pumpAndSettle();
+    await tapKey(tester, 'diary-new-entry');
+    await tester.enterText(find.byType(EditableText).first, '记一下地点');
+    await tester.tap(find.byIcon(Icons.place_outlined).hitTestable());
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byKey(const ValueKey('location-name')), '图书馆');
+    await tapKey(tester, 'location-save');
+    expect(find.byKey(const ValueKey('editor-location-chip')), findsOneWidget);
+    await tester.tap(find.byIcon(Icons.mood_rounded).hitTestable());
+    await tester.pumpAndSettle();
+    await tester.tap(
+        find.byWidgetPredicate((w) => w is MoodIcon && w.moodValue == 2).last);
+    await tester.pumpAndSettle();
+    await tapKey(tester, 'editor-mood-ok');
+    await DiaryAppHarness.runUntil(
+        tester,
+        () => tester
+            .widget<IconButton>(find.byKey(const ValueKey('entry-done')))
+            .onPressed!(),
+        () => EntryStore.instance.entries.isNotEmpty);
+    final saved = EntryStore.instance.entries.single;
+    expect(saved.location?.name, '图书馆');
+    expect(saved.location?.hasCoordinates, isFalse);
+    expect(saved.mood, 2);
+    await tester.pumpWidget(const SizedBox.shrink());
+  });
+}

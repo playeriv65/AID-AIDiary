@@ -3,15 +3,16 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'package:daily_you/models/entry.dart';
-import 'package:daily_you/pages/entries_list_page.dart';
 import 'package:daily_you/providers/entries_provider.dart';
 import 'package:daily_you/providers/entry_images_provider.dart';
 import 'package:daily_you/time_manager.dart';
-import 'package:daily_you/widgets/large_entry_card_widget.dart';
+import 'package:daily_you/utils/entry_navigation.dart';
+import 'package:daily_you/widgets/journal_entry_row.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
-class EntryTimelinePage extends StatefulWidget {
+/// A titled list of entries, such as one day or a throwback.
+class EntryTimelinePage extends StatelessWidget {
   const EntryTimelinePage({
     super.key,
     required this.header,
@@ -23,19 +24,13 @@ class EntryTimelinePage extends StatefulWidget {
   final List<Entry> Function() getEntries;
   final String Function(BuildContext, Entry) labelBuilder;
 
-  /// Pushes a timeline listing every entry created on [date], ordered
-  /// newest first, with each entry labeled by its time of day.
+  /// Pushes a list of every entry created on [date], newest first.
   static Future<void> pushForDay(BuildContext context, DateTime date) {
-    final title = TimeManager.formatDate(date, context);
     return Navigator.of(context).push(MaterialPageRoute(
       allowSnapshotting: false,
       builder: (context) => EntryTimelinePage(
-        header: title,
-        getEntries: () => EntriesProvider.instance.entries
-            .where((entry) => TimeManager.isSameDay(entry.timeCreate, date))
-            .toList()
-            .reversed
-            .toList(),
+        header: TimeManager.formatDate(date, context),
+        getEntries: () => EntriesProvider.instance.getEntriesForDate(date),
         labelBuilder: (context, entry) => TimeManager.localizedTimeFormat(
                 context, TimeManager.currentLocale(context))
             .format(entry.timeCreate),
@@ -44,94 +39,32 @@ class EntryTimelinePage extends StatefulWidget {
   }
 
   @override
-  State<EntryTimelinePage> createState() => _EntryTimelinePageState();
-}
-
-class _EntryTimelinePageState extends State<EntryTimelinePage> {
-  @override
   Widget build(BuildContext context) {
-    Provider.of<EntriesProvider>(context);
-    final entryImagesProvider = Provider.of<EntryImagesProvider>(context);
-
-    final entries = widget.getEntries();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (entries.isEmpty && mounted) {
-        Navigator.of(context).pop();
-      }
-    });
-
+    context.watch<EntriesProvider>();
+    final images = context.watch<EntryImagesProvider>();
+    final entries = getEntries();
+    if (entries.isEmpty) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (context.mounted) Navigator.of(context).maybePop();
+      });
+    }
     return Scaffold(
-      appBar: AppBar(title: Text(widget.header)),
-      body: ListView.builder(
-        padding: const EdgeInsets.only(top: 8, bottom: 16),
-        itemCount: entries.length,
-        itemBuilder: (context, index) {
-          final entry = entries[index];
-          final entryImages = entryImagesProvider.getForEntry(entry);
-          final label = widget.labelBuilder(context, entry);
-          return AspectRatio(
-            aspectRatio: 2.2,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                SizedBox(
-                  width: 36,
-                  child: Column(
-                    children: [
-                      Container(
-                        width: 3,
-                        height: 12,
-                        color: index == 0
-                            ? Colors.transparent
-                            : Theme.of(context).colorScheme.outlineVariant,
-                      ),
-                      Container(
-                        width: 14,
-                        height: 14,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Theme.of(context).colorScheme.outlineVariant,
-                        ),
-                      ),
-                      Expanded(
-                        child: Container(
-                          width: 3,
-                          color: index == entries.length - 1
-                              ? Colors.transparent
-                              : Theme.of(context).colorScheme.outlineVariant,
-                        ),
-                      ),
-                    ],
-                  ),
+      appBar: AppBar(title: Text(header)),
+      body: ListView(
+        padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+        children: [
+          for (final (day, dayEntries) in groupEntriesByDay(entries))
+            EntryDayGroup(day: day, rows: [
+              for (final entry in dayEntries)
+                JournalEntryRow(
+                  entry: entry,
+                  images: images.getForEntry(entry),
+                  label: labelBuilder(context, entry),
+                  onTap: () =>
+                      EntryNavigation.view(context, entry, entries: getEntries),
                 ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 8, bottom: 8),
-                    child: GestureDetector(
-                      onTap: () {
-                        final id = entry.id;
-                        if (id == null) return;
-                        Navigator.of(context).push(MaterialPageRoute(
-                          allowSnapshotting: false,
-                          builder: (context) => EntriesListPage(
-                            index: EntriesProvider.instance.getIndexOfEntry(id),
-                            getEntries: () => EntriesProvider.instance.entries,
-                          ),
-                        ));
-                      },
-                      child: LargeEntryCardWidget(
-                        title: label,
-                        entry: entry,
-                        images: entryImages,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
+            ]),
+        ],
       ),
     );
   }

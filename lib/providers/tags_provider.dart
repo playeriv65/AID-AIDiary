@@ -181,6 +181,30 @@ class TagsProvider with ChangeNotifier {
     return _entryTagsByEntry[entryId] ?? const [];
   }
 
+  /// The built-in favorite tag, which backs the star on an entry.
+  Tag? get favoriteTag =>
+      tags.where((tag) => tag.icon == TagIconKey.favorite).firstOrNull;
+
+  bool isFavorite(int entryId) {
+    final favoriteId = favoriteTag?.id;
+    return favoriteId != null &&
+        getEntryTagsForEntry(entryId).any((t) => t.tagId == favoriteId);
+  }
+
+  Future<void> setFavorite(int entryId, bool favorite) async {
+    final tag = favoriteTag;
+    if (tag == null) return;
+    final existing = getEntryTagsForEntry(entryId)
+        .where((t) => t.tagId == tag.id)
+        .firstOrNull;
+    if (favorite && existing == null) {
+      await addEntryTag(EntryTag(
+          entryId: entryId, tagId: tag.id!, timeCreate: DateTime.now()));
+    } else if (!favorite && existing != null) {
+      await removeEntryTag(existing);
+    }
+  }
+
   /// Replaces the cached tags for [entryId] with rows already written elsewhere.
   void applyEntryTags(int entryId, List<EntryTag> written) {
     final retained =

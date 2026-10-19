@@ -37,8 +37,6 @@ class Settings {
   static const externalImgUri = Setting<String>("externalImgUri", "");
   static const startingDayOfWeek =
       Setting<String>("startingDayOfWeek", "system");
-  static const galleryPageViewMode =
-      Setting<String>("galleryPageViewMode", "timeline");
   static const veryHappyIcon = Setting<String>("veryHappyIcon", "☺️");
   static const happyIcon = Setting<String>("happyIcon", "🙂");
   static const neutralIcon = Setting<String>("neutralIcon", "😐");
@@ -137,7 +135,6 @@ class Settings {
     useExternalImg,
     externalImgUri,
     startingDayOfWeek,
-    galleryPageViewMode,
     veryHappyIcon,
     happyIcon,
     neutralIcon,

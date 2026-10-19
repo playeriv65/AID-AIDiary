@@ -4,11 +4,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
 void main() {
-  test('layout uses width and height, not orientation alone', () {
+  test('phones get a bottom bar, wider windows a rail', () {
     expect(diaryLayoutFor(const Size(390, 844)), DiaryLayout.compact);
+    expect(diaryLayoutFor(const Size(599, 900)), DiaryLayout.compact);
     expect(diaryLayoutFor(const Size(844, 390)), DiaryLayout.rail);
-    expect(diaryLayoutFor(const Size(1280, 500)), DiaryLayout.rail);
-    expect(diaryLayoutFor(const Size(1280, 800)), DiaryLayout.expanded);
+    expect(diaryLayoutFor(const Size(2560, 1600)), DiaryLayout.rail);
     expect(diarySupportsSplit(const Size(763, 334)), isTrue);
     expect(diarySupportsSplit(const Size(640, 800)), isFalse);
     expect(diarySupportsSplit(const Size(1000, 250)), isFalse);
@@ -20,8 +20,7 @@ void main() {
     const Size(600, 360),
     const Size(844, 390),
     const Size(1024, 768),
-    const Size(1280, 500),
-    const Size(1440, 900),
+    const Size(1280, 800),
     const Size(1920, 1080)
   ]) {
     testWidgets('navigation has no overflow at $size', (tester) async {
@@ -32,15 +31,27 @@ void main() {
       final nav = GlobalKey<NavigatorState>();
       await tester.pumpWidget(_app(nav, const Scaffold(body: Text('Home'))));
       await tester.pumpAndSettle();
-      final expected = switch (diaryLayoutFor(size)) {
-        DiaryLayout.compact => 'diary-bottom-navigation',
-        DiaryLayout.rail => 'diary-rail',
-        DiaryLayout.expanded => 'diary-sidebar',
-      };
-      expect(find.byKey(ValueKey(expected)), findsOneWidget);
+      final compact = diaryLayoutFor(size) == DiaryLayout.compact;
+      expect(find.byKey(const ValueKey('diary-bottom-navigation')),
+          compact ? findsOneWidget : findsNothing);
+      expect(find.byKey(const ValueKey('diary-rail')),
+          compact ? findsNothing : findsOneWidget);
       expect(tester.takeException(), isNull);
     });
   }
+
+  testWidgets('rail new-entry button calls back', (tester) async {
+    tester.view.devicePixelRatio = 1;
+    tester.view.physicalSize = const Size(1280, 800);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    addTearDown(tester.view.resetPhysicalSize);
+    var created = 0;
+    await tester.pumpWidget(_app(
+        GlobalKey<NavigatorState>(), const Scaffold(body: Text('Home')),
+        onNewEntry: () => created++));
+    await tester.tap(find.byKey(const ValueKey('diary-new-entry')));
+    expect(created, 1);
+  });
 
   testWidgets(
       'pushed editor and draft survive portrait landscape desktop resize',
@@ -81,7 +92,7 @@ void main() {
     expect(find.text('Home'), findsOneWidget);
   });
 
-  testWidgets('wide navigation respects an editor pop guard', (tester) async {
+  testWidgets('rail navigation respects an editor pop guard', (tester) async {
     tester.view.devicePixelRatio = 1;
     tester.view.physicalSize = const Size(1200, 800);
     addTearDown(tester.view.resetDevicePixelRatio);
@@ -102,7 +113,7 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('wide navigation returns through nested routes then changes tab',
+  testWidgets('rail navigation returns through nested routes then changes tab',
       (tester) async {
     tester.view.devicePixelRatio = 1;
     tester.view.physicalSize = const Size(1200, 800);
@@ -127,22 +138,24 @@ void main() {
 }
 
 Widget _app(GlobalKey<NavigatorState> nav, Widget home,
-    {ValueChanged<int>? onSelect}) {
+    {ValueChanged<int>? onSelect, VoidCallback? onNewEntry}) {
   return MaterialApp(
       localizationsDelegates: appLocalizationsDelegates,
       home: AdaptiveDiaryShell(
           navigatorKey: nav,
           home: home,
-          title: 'AID Diary',
           destinations: const [
-            DiaryDestination('日记', Icons.home_rounded),
-            DiaryDestination('日记图库', Icons.photo_library_rounded),
-            DiaryDestination('统计', Icons.auto_graph_rounded)
+            DiaryDestination(
+                '日记', Icons.auto_stories_outlined, Icons.auto_stories_rounded),
+            DiaryDestination('日历', Icons.calendar_today_outlined,
+                Icons.calendar_today_rounded),
+            DiaryDestination('媒体', Icons.photo_outlined, Icons.photo_rounded),
+            DiaryDestination('地图', Icons.map_outlined, Icons.map_rounded),
+            DiaryDestination(
+                '引导', Icons.favorite_border_rounded, Icons.favorite_rounded),
           ],
           selectedIndex: 0,
           onDestinationSelected: onSelect ?? (_) {},
-          settingsLabel: '设置',
-          onSettings: () => nav.currentState!.push(MaterialPageRoute<void>(
-              settings: const RouteSettings(name: 'settings'),
-              builder: (_) => const Scaffold(body: Text('Settings'))))));
+          newEntryLabel: '写一篇日记',
+          onNewEntry: onNewEntry ?? () {}));
 }

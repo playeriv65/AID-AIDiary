@@ -380,9 +380,6 @@ class AppLocalizationsLt extends AppLocalizations {
   String get settingsFlashbacksViewLayout => 'Flashbacks View Layout';
 
   @override
-  String get settingsGalleryViewLayout => 'Galerijos rodinio išdėstymas';
-
-  @override
   String get settingsHideImagesInGallery => 'Slėpti paveikslus galerijoje';
 
   @override
@@ -390,12 +387,6 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String get pageCalendarTitle => 'Kalendorius';
-
-  @override
-  String get viewLayoutList => 'Sąrašas';
-
-  @override
-  String get viewLayoutGrid => 'Tinklelis';
 
   @override
   String get settingsNotificationsTitle => 'Pranešimai';
@@ -1015,144 +1006,40 @@ class AppLocalizationsLt extends AppLocalizations {
   String get adaptiveNewEntry => 'Write an entry';
 
   @override
-  String get pageTodayTitle => 'Today';
-
-  @override
   String get pageJournalTitle => 'Journal';
 
   @override
-  String get todayGreetingMorning => 'Good morning';
+  String get coachWritePrompt => 'Write about it';
 
   @override
-  String get todayGreetingAfternoon => 'Good afternoon';
+  String get coachPrompt1 => 'What made you smile today?';
 
   @override
-  String get todayGreetingEvening => 'Good evening';
+  String get coachPrompt2 => 'What is one thing you learned today?';
 
   @override
-  String get todayGreetingNight => 'Good night';
+  String get coachPrompt3 => 'Who did you talk to today, and how did it feel?';
 
   @override
-  String get todayHowWasDay => 'How is your day going?';
+  String get coachPrompt4 => 'What are you grateful for right now?';
 
   @override
-  String get todayWrite => 'Write today';
+  String get coachPrompt5 => 'What took most of your energy today?';
 
   @override
-  String get todayContinue => 'Keep writing';
+  String get coachPrompt6 => 'Describe a small moment you want to remember.';
 
   @override
-  String get todayAddAnother => 'New entry';
+  String get coachPrompt7 => 'What would make tomorrow a good day?';
 
   @override
-  String todayWrittenCount(num count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count entries today',
-      one: '1 entry today',
-    );
-    return '$_temp0';
-  }
+  String get coachPrompt8 => 'What has been on your mind lately?';
 
   @override
-  String todayEntryCount(num count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count entries',
-      one: '1 entry',
-    );
-    return '$_temp0';
-  }
+  String get coachPrompt9 => 'What did you do today just for yourself?';
 
   @override
-  String todayStreakDays(num count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count days',
-      one: '1 day',
-    );
-    return '$_temp0';
-  }
-
-  @override
-  String get todayStatStreak => 'Streak';
-
-  @override
-  String get todayStatLongest => 'Best streak';
-
-  @override
-  String get todayStatThisMonth => 'This month';
-
-  @override
-  String get todayStatWords => 'Words';
-
-  @override
-  String get todayPromptTitle => 'Writing prompt';
-
-  @override
-  String get todayPromptAnother => 'Another';
-
-  @override
-  String get todayPromptWrite => 'Write about it';
-
-  @override
-  String get todayPrompt1 => 'What made you smile today?';
-
-  @override
-  String get todayPrompt2 => 'What is one thing you learned today?';
-
-  @override
-  String get todayPrompt3 => 'Who did you talk to today, and how did it feel?';
-
-  @override
-  String get todayPrompt4 => 'What are you grateful for right now?';
-
-  @override
-  String get todayPrompt5 => 'What took most of your energy today?';
-
-  @override
-  String get todayPrompt6 => 'Describe a small moment you want to remember.';
-
-  @override
-  String get todayPrompt7 => 'What would make tomorrow a good day?';
-
-  @override
-  String get todayPrompt8 => 'What has been on your mind lately?';
-
-  @override
-  String get todayPrompt9 => 'What did you do today just for yourself?';
-
-  @override
-  String get todayPrompt10 => 'If today had a title, what would it be?';
-
-  @override
-  String get todayActivityTitle => 'Writing activity';
-
-  @override
-  String get todayActivityLess => 'Less';
-
-  @override
-  String get todayActivityMore => 'More';
-
-  @override
-  String get todayRecentTitle => 'Recent entries';
-
-  @override
-  String get todaySeeAll => 'See all';
-
-  @override
-  String get todayRecentPhotos => 'Recent photos';
-
-  @override
-  String journalActiveDays(int days, int total) {
-    return '$days/$total days';
-  }
-
-  @override
-  String get viewLayoutTimeline => 'Timeline';
+  String get coachPrompt10 => 'If today had a title, what would it be?';
 
   @override
   String entryReadingTime(num count) {
@@ -1164,4 +1051,141 @@ class AppLocalizationsLt extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get pageMediaTitle => 'Media';
+
+  @override
+  String get pageAtlasTitle => 'Atlas';
+
+  @override
+  String get pageCoachTitle => 'Coach';
+
+  @override
+  String get noEntrySelected => 'No entry selected.';
+
+  @override
+  String get profileLocalOnly => 'Your diary stays on this device';
+
+  @override
+  String get entryShare => 'Share';
+
+  @override
+  String get entryFavorite => 'Star';
+
+  @override
+  String get entryEdit => 'Edit';
+
+  @override
+  String get entryPrevious => 'Previous entry';
+
+  @override
+  String get entryNext => 'Next entry';
+
+  @override
+  String get journalStories => 'Stories';
+
+  @override
+  String get journalEntries => 'Entries';
+
+  @override
+  String get journalEmptyHint => 'Begin your diary by adding a new entry.';
+
+  @override
+  String get storyToday => 'Today';
+
+  @override
+  String get storyThrowback => 'Throwback';
+
+  @override
+  String get storyNoThrowback => 'No throwback today';
+
+  @override
+  String get mediaFiles => 'Media files';
+
+  @override
+  String get mediaEmpty => 'No photos yet.';
+
+  @override
+  String get mediaEmptyHint => 'Photos attached to entries will be shown here.';
+
+  @override
+  String get atlasEmpty => 'No entries with a location.';
+
+  @override
+  String get atlasEmptyHint => 'Entries with a location will be shown here.';
+
+  @override
+  String get atlasShowAll => 'Show all entries';
+
+  @override
+  String get coachAll => 'All';
+
+  @override
+  String get coachPrograms => 'Programs';
+
+  @override
+  String get coachTemplates => 'Templates';
+
+  @override
+  String get coachKindProgram => 'Program';
+
+  @override
+  String get coachKindTemplate => 'Template';
+
+  @override
+  String get coachNoTemplates => 'No programs or templates.';
+
+  @override
+  String get coachUseTemplate => 'Write with this template';
+
+  @override
+  String get coachProgramEverydayTitle => 'Everyday moments';
+
+  @override
+  String get coachProgramEverydayDescription =>
+      'Short questions that help you notice the small things in a day.';
+
+  @override
+  String get coachProgramReflectTitle => 'Looking inward';
+
+  @override
+  String get coachProgramReflectDescription =>
+      'Questions for slowing down and understanding how you feel.';
+
+  @override
+  String get searchFilters => 'Filters';
+
+  @override
+  String get searchFilterTags => 'Tags';
+
+  @override
+  String get searchFilterStarred => 'Starred';
+
+  @override
+  String get searchHint => 'Type to search, or pick a filter.';
+
+  @override
+  String get locationTitle => 'Location';
+
+  @override
+  String get locationName => 'Place name';
+
+  @override
+  String get locationNoCoordinates => 'No coordinates';
+
+  @override
+  String get locationUseCurrent => 'Use current location';
+
+  @override
+  String get locationRemove => 'Remove';
+
+  @override
+  String get locationServiceDisabled => 'Location services are turned off.';
+
+  @override
+  String get locationPermissionDenied => 'Location permission was denied.';
+
+  @override
+  String get locationUnavailable => 'Could not get the current location.';
 }

@@ -702,12 +702,6 @@ abstract class AppLocalizations {
   /// **'Flashbacks View Layout'**
   String get settingsFlashbacksViewLayout;
 
-  /// No description provided for @settingsGalleryViewLayout.
-  ///
-  /// In en, this message translates to:
-  /// **'Journal View Layout'**
-  String get settingsGalleryViewLayout;
-
   /// No description provided for @settingsHideImagesInGallery.
   ///
   /// In en, this message translates to:
@@ -725,18 +719,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Calendar'**
   String get pageCalendarTitle;
-
-  /// No description provided for @viewLayoutList.
-  ///
-  /// In en, this message translates to:
-  /// **'List'**
-  String get viewLayoutList;
-
-  /// No description provided for @viewLayoutGrid.
-  ///
-  /// In en, this message translates to:
-  /// **'Grid'**
-  String get viewLayoutGrid;
 
   /// No description provided for @settingsNotificationsTitle.
   ///
@@ -1854,239 +1836,353 @@ abstract class AppLocalizations {
   /// **'Write an entry'**
   String get adaptiveNewEntry;
 
-  /// No description provided for @pageTodayTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Today'**
-  String get pageTodayTitle;
-
   /// No description provided for @pageJournalTitle.
   ///
   /// In en, this message translates to:
   /// **'Journal'**
   String get pageJournalTitle;
 
-  /// No description provided for @todayGreetingMorning.
-  ///
-  /// In en, this message translates to:
-  /// **'Good morning'**
-  String get todayGreetingMorning;
-
-  /// No description provided for @todayGreetingAfternoon.
-  ///
-  /// In en, this message translates to:
-  /// **'Good afternoon'**
-  String get todayGreetingAfternoon;
-
-  /// No description provided for @todayGreetingEvening.
-  ///
-  /// In en, this message translates to:
-  /// **'Good evening'**
-  String get todayGreetingEvening;
-
-  /// No description provided for @todayGreetingNight.
-  ///
-  /// In en, this message translates to:
-  /// **'Good night'**
-  String get todayGreetingNight;
-
-  /// No description provided for @todayHowWasDay.
-  ///
-  /// In en, this message translates to:
-  /// **'How is your day going?'**
-  String get todayHowWasDay;
-
-  /// No description provided for @todayWrite.
-  ///
-  /// In en, this message translates to:
-  /// **'Write today'**
-  String get todayWrite;
-
-  /// No description provided for @todayContinue.
-  ///
-  /// In en, this message translates to:
-  /// **'Keep writing'**
-  String get todayContinue;
-
-  /// No description provided for @todayAddAnother.
-  ///
-  /// In en, this message translates to:
-  /// **'New entry'**
-  String get todayAddAnother;
-
-  /// No description provided for @todayWrittenCount.
-  ///
-  /// In en, this message translates to:
-  /// **'{count, plural, one{1 entry today} other{{count} entries today}}'**
-  String todayWrittenCount(num count);
-
-  /// No description provided for @todayEntryCount.
-  ///
-  /// In en, this message translates to:
-  /// **'{count, plural, one{1 entry} other{{count} entries}}'**
-  String todayEntryCount(num count);
-
-  /// No description provided for @todayStreakDays.
-  ///
-  /// In en, this message translates to:
-  /// **'{count, plural, one{1 day} other{{count} days}}'**
-  String todayStreakDays(num count);
-
-  /// No description provided for @todayStatStreak.
-  ///
-  /// In en, this message translates to:
-  /// **'Streak'**
-  String get todayStatStreak;
-
-  /// No description provided for @todayStatLongest.
-  ///
-  /// In en, this message translates to:
-  /// **'Best streak'**
-  String get todayStatLongest;
-
-  /// No description provided for @todayStatThisMonth.
-  ///
-  /// In en, this message translates to:
-  /// **'This month'**
-  String get todayStatThisMonth;
-
-  /// No description provided for @todayStatWords.
-  ///
-  /// In en, this message translates to:
-  /// **'Words'**
-  String get todayStatWords;
-
-  /// No description provided for @todayPromptTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Writing prompt'**
-  String get todayPromptTitle;
-
-  /// No description provided for @todayPromptAnother.
-  ///
-  /// In en, this message translates to:
-  /// **'Another'**
-  String get todayPromptAnother;
-
-  /// No description provided for @todayPromptWrite.
+  /// No description provided for @coachWritePrompt.
   ///
   /// In en, this message translates to:
   /// **'Write about it'**
-  String get todayPromptWrite;
+  String get coachWritePrompt;
 
-  /// No description provided for @todayPrompt1.
+  /// No description provided for @coachPrompt1.
   ///
   /// In en, this message translates to:
   /// **'What made you smile today?'**
-  String get todayPrompt1;
+  String get coachPrompt1;
 
-  /// No description provided for @todayPrompt2.
+  /// No description provided for @coachPrompt2.
   ///
   /// In en, this message translates to:
   /// **'What is one thing you learned today?'**
-  String get todayPrompt2;
+  String get coachPrompt2;
 
-  /// No description provided for @todayPrompt3.
+  /// No description provided for @coachPrompt3.
   ///
   /// In en, this message translates to:
   /// **'Who did you talk to today, and how did it feel?'**
-  String get todayPrompt3;
+  String get coachPrompt3;
 
-  /// No description provided for @todayPrompt4.
+  /// No description provided for @coachPrompt4.
   ///
   /// In en, this message translates to:
   /// **'What are you grateful for right now?'**
-  String get todayPrompt4;
+  String get coachPrompt4;
 
-  /// No description provided for @todayPrompt5.
+  /// No description provided for @coachPrompt5.
   ///
   /// In en, this message translates to:
   /// **'What took most of your energy today?'**
-  String get todayPrompt5;
+  String get coachPrompt5;
 
-  /// No description provided for @todayPrompt6.
+  /// No description provided for @coachPrompt6.
   ///
   /// In en, this message translates to:
   /// **'Describe a small moment you want to remember.'**
-  String get todayPrompt6;
+  String get coachPrompt6;
 
-  /// No description provided for @todayPrompt7.
+  /// No description provided for @coachPrompt7.
   ///
   /// In en, this message translates to:
   /// **'What would make tomorrow a good day?'**
-  String get todayPrompt7;
+  String get coachPrompt7;
 
-  /// No description provided for @todayPrompt8.
+  /// No description provided for @coachPrompt8.
   ///
   /// In en, this message translates to:
   /// **'What has been on your mind lately?'**
-  String get todayPrompt8;
+  String get coachPrompt8;
 
-  /// No description provided for @todayPrompt9.
+  /// No description provided for @coachPrompt9.
   ///
   /// In en, this message translates to:
   /// **'What did you do today just for yourself?'**
-  String get todayPrompt9;
+  String get coachPrompt9;
 
-  /// No description provided for @todayPrompt10.
+  /// No description provided for @coachPrompt10.
   ///
   /// In en, this message translates to:
   /// **'If today had a title, what would it be?'**
-  String get todayPrompt10;
-
-  /// No description provided for @todayActivityTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Writing activity'**
-  String get todayActivityTitle;
-
-  /// No description provided for @todayActivityLess.
-  ///
-  /// In en, this message translates to:
-  /// **'Less'**
-  String get todayActivityLess;
-
-  /// No description provided for @todayActivityMore.
-  ///
-  /// In en, this message translates to:
-  /// **'More'**
-  String get todayActivityMore;
-
-  /// No description provided for @todayRecentTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Recent entries'**
-  String get todayRecentTitle;
-
-  /// No description provided for @todaySeeAll.
-  ///
-  /// In en, this message translates to:
-  /// **'See all'**
-  String get todaySeeAll;
-
-  /// No description provided for @todayRecentPhotos.
-  ///
-  /// In en, this message translates to:
-  /// **'Recent photos'**
-  String get todayRecentPhotos;
-
-  /// No description provided for @journalActiveDays.
-  ///
-  /// In en, this message translates to:
-  /// **'{days}/{total} days'**
-  String journalActiveDays(int days, int total);
-
-  /// No description provided for @viewLayoutTimeline.
-  ///
-  /// In en, this message translates to:
-  /// **'Timeline'**
-  String get viewLayoutTimeline;
+  String get coachPrompt10;
 
   /// No description provided for @entryReadingTime.
   ///
   /// In en, this message translates to:
   /// **'{count, plural, one{1 min read} other{{count} min read}}'**
   String entryReadingTime(num count);
+
+  /// No description provided for @pageMediaTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Media'**
+  String get pageMediaTitle;
+
+  /// No description provided for @pageAtlasTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Atlas'**
+  String get pageAtlasTitle;
+
+  /// No description provided for @pageCoachTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Coach'**
+  String get pageCoachTitle;
+
+  /// No description provided for @noEntrySelected.
+  ///
+  /// In en, this message translates to:
+  /// **'No entry selected.'**
+  String get noEntrySelected;
+
+  /// No description provided for @profileLocalOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Your diary stays on this device'**
+  String get profileLocalOnly;
+
+  /// No description provided for @entryShare.
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get entryShare;
+
+  /// No description provided for @entryFavorite.
+  ///
+  /// In en, this message translates to:
+  /// **'Star'**
+  String get entryFavorite;
+
+  /// No description provided for @entryEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get entryEdit;
+
+  /// No description provided for @entryPrevious.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous entry'**
+  String get entryPrevious;
+
+  /// No description provided for @entryNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next entry'**
+  String get entryNext;
+
+  /// No description provided for @journalStories.
+  ///
+  /// In en, this message translates to:
+  /// **'Stories'**
+  String get journalStories;
+
+  /// No description provided for @journalEntries.
+  ///
+  /// In en, this message translates to:
+  /// **'Entries'**
+  String get journalEntries;
+
+  /// No description provided for @journalEmptyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Begin your diary by adding a new entry.'**
+  String get journalEmptyHint;
+
+  /// No description provided for @storyToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get storyToday;
+
+  /// No description provided for @storyThrowback.
+  ///
+  /// In en, this message translates to:
+  /// **'Throwback'**
+  String get storyThrowback;
+
+  /// No description provided for @storyNoThrowback.
+  ///
+  /// In en, this message translates to:
+  /// **'No throwback today'**
+  String get storyNoThrowback;
+
+  /// No description provided for @mediaFiles.
+  ///
+  /// In en, this message translates to:
+  /// **'Media files'**
+  String get mediaFiles;
+
+  /// No description provided for @mediaEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No photos yet.'**
+  String get mediaEmpty;
+
+  /// No description provided for @mediaEmptyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos attached to entries will be shown here.'**
+  String get mediaEmptyHint;
+
+  /// No description provided for @atlasEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No entries with a location.'**
+  String get atlasEmpty;
+
+  /// No description provided for @atlasEmptyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Entries with a location will be shown here.'**
+  String get atlasEmptyHint;
+
+  /// No description provided for @atlasShowAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Show all entries'**
+  String get atlasShowAll;
+
+  /// No description provided for @coachAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get coachAll;
+
+  /// No description provided for @coachPrograms.
+  ///
+  /// In en, this message translates to:
+  /// **'Programs'**
+  String get coachPrograms;
+
+  /// No description provided for @coachTemplates.
+  ///
+  /// In en, this message translates to:
+  /// **'Templates'**
+  String get coachTemplates;
+
+  /// No description provided for @coachKindProgram.
+  ///
+  /// In en, this message translates to:
+  /// **'Program'**
+  String get coachKindProgram;
+
+  /// No description provided for @coachKindTemplate.
+  ///
+  /// In en, this message translates to:
+  /// **'Template'**
+  String get coachKindTemplate;
+
+  /// No description provided for @coachNoTemplates.
+  ///
+  /// In en, this message translates to:
+  /// **'No programs or templates.'**
+  String get coachNoTemplates;
+
+  /// No description provided for @coachUseTemplate.
+  ///
+  /// In en, this message translates to:
+  /// **'Write with this template'**
+  String get coachUseTemplate;
+
+  /// No description provided for @coachProgramEverydayTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Everyday moments'**
+  String get coachProgramEverydayTitle;
+
+  /// No description provided for @coachProgramEverydayDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Short questions that help you notice the small things in a day.'**
+  String get coachProgramEverydayDescription;
+
+  /// No description provided for @coachProgramReflectTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Looking inward'**
+  String get coachProgramReflectTitle;
+
+  /// No description provided for @coachProgramReflectDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Questions for slowing down and understanding how you feel.'**
+  String get coachProgramReflectDescription;
+
+  /// No description provided for @searchFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Filters'**
+  String get searchFilters;
+
+  /// No description provided for @searchFilterTags.
+  ///
+  /// In en, this message translates to:
+  /// **'Tags'**
+  String get searchFilterTags;
+
+  /// No description provided for @searchFilterStarred.
+  ///
+  /// In en, this message translates to:
+  /// **'Starred'**
+  String get searchFilterStarred;
+
+  /// No description provided for @searchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Type to search, or pick a filter.'**
+  String get searchHint;
+
+  /// No description provided for @locationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get locationTitle;
+
+  /// No description provided for @locationName.
+  ///
+  /// In en, this message translates to:
+  /// **'Place name'**
+  String get locationName;
+
+  /// No description provided for @locationNoCoordinates.
+  ///
+  /// In en, this message translates to:
+  /// **'No coordinates'**
+  String get locationNoCoordinates;
+
+  /// No description provided for @locationUseCurrent.
+  ///
+  /// In en, this message translates to:
+  /// **'Use current location'**
+  String get locationUseCurrent;
+
+  /// No description provided for @locationRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get locationRemove;
+
+  /// No description provided for @locationServiceDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Location services are turned off.'**
+  String get locationServiceDisabled;
+
+  /// No description provided for @locationPermissionDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Location permission was denied.'**
+  String get locationPermissionDenied;
+
+  /// No description provided for @locationUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not get the current location.'**
+  String get locationUnavailable;
 }
 
 class _AppLocalizationsDelegate

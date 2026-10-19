@@ -51,22 +51,29 @@ class ActionBarPill extends StatelessWidget {
             child: MorphContent(
               child: KeyedSubtree(
                 key: ValueKey(showingMainActions),
-                child: IntrinsicHeight(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      for (final entry in split.visible)
-                        entry.build(context, null),
-                      if (split.hasOverflow)
-                        Builder(
-                          builder: (buttonContext) => ToolbarIconButton(
-                            size: metrics.buttonSize,
-                            icon: const Icon(Icons.more_horiz_rounded),
-                            onPressed: () => onShowOverflow(buttonContext),
+                // Content fading out after a resize may be wider than the new
+                // pill; let it overflow into the pill's clip for that moment.
+                child: UnconstrainedBox(
+                  constrainedAxis: Axis.vertical,
+                  clipBehavior: Clip.hardEdge,
+                  alignment: AlignmentDirectional.centerStart,
+                  child: IntrinsicHeight(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        for (final entry in split.visible)
+                          entry.build(context, null),
+                        if (split.hasOverflow)
+                          Builder(
+                            builder: (buttonContext) => ToolbarIconButton(
+                              size: metrics.buttonSize,
+                              icon: const Icon(Icons.more_horiz_rounded),
+                              onPressed: () => onShowOverflow(buttonContext),
+                            ),
                           ),
-                        ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),

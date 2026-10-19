@@ -345,33 +345,6 @@ class _AppearanceSettingsPageState extends State<AppearanceSettings> {
                               Settings.calendarSystem, newValue);
                         }),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: SettingsDropdown<String>(
-                        title: AppLocalizations.of(context)!
-                            .settingsGalleryViewLayout,
-                        value: configProvider.get(Settings.galleryPageViewMode),
-                        options: [
-                          DropdownMenuItem<String>(
-                              value: "timeline",
-                              child: Text(AppLocalizations.of(context)!
-                                  .viewLayoutTimeline)),
-                          DropdownMenuItem<String>(
-                              value: "list",
-                              child: Text(AppLocalizations.of(context)!
-                                  .viewLayoutList)),
-                          DropdownMenuItem<String>(
-                              value: "grid",
-                              child: Text(AppLocalizations.of(context)!
-                                  .viewLayoutGrid)),
-                        ],
-                        onChanged: (String? newValue) {
-                          if (newValue != null) {
-                            configProvider.set(
-                                Settings.galleryPageViewMode, newValue);
-                          }
-                        }),
-                  ),
                   SettingsIconAction(
                     title: AppLocalizations.of(context)!.settingsHideImages,
                     icon: const Icon(Icons.chevron_right_rounded),

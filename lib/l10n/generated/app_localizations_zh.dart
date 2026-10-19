@@ -363,22 +363,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settingsFlashbacksViewLayout => '往昔重现的视图布局';
 
   @override
-  String get settingsGalleryViewLayout => '日记页视图布局';
-
-  @override
   String get settingsHideImagesInGallery => '隐藏图库中的图片';
 
   @override
   String get settingsHideImages => '隐藏图片';
 
   @override
-  String get pageCalendarTitle => '月历';
-
-  @override
-  String get viewLayoutList => '列表';
-
-  @override
-  String get viewLayoutGrid => '网格';
+  String get pageCalendarTitle => '日历';
 
   @override
   String get settingsNotificationsTitle => '通知';
@@ -985,141 +976,40 @@ class AppLocalizationsZh extends AppLocalizations {
   String get adaptiveNewEntry => '写一篇日记';
 
   @override
-  String get pageTodayTitle => '今天';
-
-  @override
   String get pageJournalTitle => '日记';
 
   @override
-  String get todayGreetingMorning => '早上好';
+  String get coachWritePrompt => '就写这个';
 
   @override
-  String get todayGreetingAfternoon => '下午好';
+  String get coachPrompt1 => '今天有什么让你会心一笑的事？';
 
   @override
-  String get todayGreetingEvening => '晚上好';
+  String get coachPrompt2 => '今天学到了什么新东西？';
 
   @override
-  String get todayGreetingNight => '夜深了';
+  String get coachPrompt3 => '今天和谁聊了天？感觉怎么样？';
 
   @override
-  String get todayHowWasDay => '今天过得怎么样？';
+  String get coachPrompt4 => '此刻你最感激的是什么？';
 
   @override
-  String get todayWrite => '写下今天';
+  String get coachPrompt5 => '今天什么事最耗费你的精力？';
 
   @override
-  String get todayContinue => '继续写';
+  String get coachPrompt6 => '记下一个想留住的小瞬间。';
 
   @override
-  String get todayAddAnother => '再写一篇';
+  String get coachPrompt7 => '怎样能让明天成为美好的一天？';
 
   @override
-  String todayWrittenCount(num count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '今天已写 $count 篇',
-    );
-    return '$_temp0';
-  }
+  String get coachPrompt8 => '最近心里一直在想什么？';
 
   @override
-  String todayEntryCount(num count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count 篇',
-    );
-    return '$_temp0';
-  }
+  String get coachPrompt9 => '今天你为自己做了什么？';
 
   @override
-  String todayStreakDays(num count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '连续 $count 天',
-    );
-    return '$_temp0';
-  }
-
-  @override
-  String get todayStatStreak => '连续天数';
-
-  @override
-  String get todayStatLongest => '最长连续';
-
-  @override
-  String get todayStatThisMonth => '本月篇数';
-
-  @override
-  String get todayStatWords => '总字数';
-
-  @override
-  String get todayPromptTitle => '写作灵感';
-
-  @override
-  String get todayPromptAnother => '换一个';
-
-  @override
-  String get todayPromptWrite => '就写这个';
-
-  @override
-  String get todayPrompt1 => '今天有什么让你会心一笑的事？';
-
-  @override
-  String get todayPrompt2 => '今天学到了什么新东西？';
-
-  @override
-  String get todayPrompt3 => '今天和谁聊了天？感觉怎么样？';
-
-  @override
-  String get todayPrompt4 => '此刻你最感激的是什么？';
-
-  @override
-  String get todayPrompt5 => '今天什么事最耗费你的精力？';
-
-  @override
-  String get todayPrompt6 => '记下一个想留住的小瞬间。';
-
-  @override
-  String get todayPrompt7 => '怎样能让明天成为美好的一天？';
-
-  @override
-  String get todayPrompt8 => '最近心里一直在想什么？';
-
-  @override
-  String get todayPrompt9 => '今天你为自己做了什么？';
-
-  @override
-  String get todayPrompt10 => '如果给今天起个标题，会是什么？';
-
-  @override
-  String get todayActivityTitle => '记录足迹';
-
-  @override
-  String get todayActivityLess => '少';
-
-  @override
-  String get todayActivityMore => '多';
-
-  @override
-  String get todayRecentTitle => '最近的日记';
-
-  @override
-  String get todaySeeAll => '查看全部';
-
-  @override
-  String get todayRecentPhotos => '最近照片';
-
-  @override
-  String journalActiveDays(int days, int total) {
-    return '$days/$total 天有记录';
-  }
-
-  @override
-  String get viewLayoutTimeline => '时间线';
+  String get coachPrompt10 => '如果给今天起个标题，会是什么？';
 
   @override
   String entryReadingTime(num count) {
@@ -1130,6 +1020,141 @@ class AppLocalizationsZh extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get pageMediaTitle => '媒体';
+
+  @override
+  String get pageAtlasTitle => '地图';
+
+  @override
+  String get pageCoachTitle => '引导';
+
+  @override
+  String get noEntrySelected => '未选择日记。';
+
+  @override
+  String get profileLocalOnly => '日记只保存在这台设备上';
+
+  @override
+  String get entryShare => '分享';
+
+  @override
+  String get entryFavorite => '星标';
+
+  @override
+  String get entryEdit => '编辑';
+
+  @override
+  String get entryPrevious => '上一篇';
+
+  @override
+  String get entryNext => '下一篇';
+
+  @override
+  String get journalStories => '故事';
+
+  @override
+  String get journalEntries => '日记';
+
+  @override
+  String get journalEmptyHint => '写下第一篇日记，开始记录吧。';
+
+  @override
+  String get storyToday => '今天';
+
+  @override
+  String get storyThrowback => '往昔';
+
+  @override
+  String get storyNoThrowback => '今天没有往昔';
+
+  @override
+  String get mediaFiles => '媒体文件';
+
+  @override
+  String get mediaEmpty => '还没有照片。';
+
+  @override
+  String get mediaEmptyHint => '日记里添加的照片会显示在这里。';
+
+  @override
+  String get atlasEmpty => '还没有带位置的日记。';
+
+  @override
+  String get atlasEmptyHint => '记录了位置的日记会显示在地图上。';
+
+  @override
+  String get atlasShowAll => '显示全部日记';
+
+  @override
+  String get coachAll => '全部';
+
+  @override
+  String get coachPrograms => '计划';
+
+  @override
+  String get coachTemplates => '模板';
+
+  @override
+  String get coachKindProgram => '写作计划';
+
+  @override
+  String get coachKindTemplate => '模板';
+
+  @override
+  String get coachNoTemplates => '没有计划或模板。';
+
+  @override
+  String get coachUseTemplate => '用这个模板写';
+
+  @override
+  String get coachProgramEverydayTitle => '日常小记';
+
+  @override
+  String get coachProgramEverydayDescription => '几个简单的问题，帮你留意一天里的小事。';
+
+  @override
+  String get coachProgramReflectTitle => '向内看看';
+
+  @override
+  String get coachProgramReflectDescription => '慢下来，想想自己最近的感受。';
+
+  @override
+  String get searchFilters => '筛选';
+
+  @override
+  String get searchFilterTags => '标签';
+
+  @override
+  String get searchFilterStarred => '星标';
+
+  @override
+  String get searchHint => '输入文字搜索，或选择筛选条件。';
+
+  @override
+  String get locationTitle => '位置';
+
+  @override
+  String get locationName => '地点名称';
+
+  @override
+  String get locationNoCoordinates => '没有坐标';
+
+  @override
+  String get locationUseCurrent => '使用当前位置';
+
+  @override
+  String get locationRemove => '移除';
+
+  @override
+  String get locationServiceDisabled => '定位服务已关闭。';
+
+  @override
+  String get locationPermissionDenied => '没有定位权限。';
+
+  @override
+  String get locationUnavailable => '无法获取当前位置。';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -1491,9 +1516,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get settingsFlashbacksViewLayout => '往日重現檢視佈局';
 
   @override
-  String get settingsGalleryViewLayout => '日記頁檢視佈局';
-
-  @override
   String get settingsHideImagesInGallery => '隱藏紀錄頁中的圖片';
 
   @override
@@ -1501,12 +1523,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get pageCalendarTitle => '月曆';
-
-  @override
-  String get viewLayoutList => '清單';
-
-  @override
-  String get viewLayoutGrid => '網格';
 
   @override
   String get settingsNotificationsTitle => '通知';
@@ -2096,141 +2112,40 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get adaptiveNewEntry => '寫一篇日記';
 
   @override
-  String get pageTodayTitle => '今天';
-
-  @override
   String get pageJournalTitle => '日記';
 
   @override
-  String get todayGreetingMorning => '早安';
+  String get coachWritePrompt => '就寫這個';
 
   @override
-  String get todayGreetingAfternoon => '午安';
+  String get coachPrompt1 => '今天有什麼讓你會心一笑的事？';
 
   @override
-  String get todayGreetingEvening => '晚上好';
+  String get coachPrompt2 => '今天學到了什麼新東西？';
 
   @override
-  String get todayGreetingNight => '夜深了';
+  String get coachPrompt3 => '今天和誰聊了天？感覺怎麼樣？';
 
   @override
-  String get todayHowWasDay => '今天過得怎麼樣？';
+  String get coachPrompt4 => '此刻你最感激的是什麼？';
 
   @override
-  String get todayWrite => '寫下今天';
+  String get coachPrompt5 => '今天什麼事最耗費你的精力？';
 
   @override
-  String get todayContinue => '繼續寫';
+  String get coachPrompt6 => '記下一個想留住的小瞬間。';
 
   @override
-  String get todayAddAnother => '再寫一篇';
+  String get coachPrompt7 => '怎樣能讓明天成為美好的一天？';
 
   @override
-  String todayWrittenCount(num count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '今天已寫 $count 篇',
-    );
-    return '$_temp0';
-  }
+  String get coachPrompt8 => '最近心裡一直在想什麼？';
 
   @override
-  String todayEntryCount(num count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count 篇',
-    );
-    return '$_temp0';
-  }
+  String get coachPrompt9 => '今天你為自己做了什麼？';
 
   @override
-  String todayStreakDays(num count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '連續 $count 天',
-    );
-    return '$_temp0';
-  }
-
-  @override
-  String get todayStatStreak => '連續天數';
-
-  @override
-  String get todayStatLongest => '最長連續';
-
-  @override
-  String get todayStatThisMonth => '本月篇數';
-
-  @override
-  String get todayStatWords => '總字數';
-
-  @override
-  String get todayPromptTitle => '寫作靈感';
-
-  @override
-  String get todayPromptAnother => '換一個';
-
-  @override
-  String get todayPromptWrite => '就寫這個';
-
-  @override
-  String get todayPrompt1 => '今天有什麼讓你會心一笑的事？';
-
-  @override
-  String get todayPrompt2 => '今天學到了什麼新東西？';
-
-  @override
-  String get todayPrompt3 => '今天和誰聊了天？感覺怎麼樣？';
-
-  @override
-  String get todayPrompt4 => '此刻你最感激的是什麼？';
-
-  @override
-  String get todayPrompt5 => '今天什麼事最耗費你的精力？';
-
-  @override
-  String get todayPrompt6 => '記下一個想留住的小瞬間。';
-
-  @override
-  String get todayPrompt7 => '怎樣能讓明天成為美好的一天？';
-
-  @override
-  String get todayPrompt8 => '最近心裡一直在想什麼？';
-
-  @override
-  String get todayPrompt9 => '今天你為自己做了什麼？';
-
-  @override
-  String get todayPrompt10 => '如果給今天起個標題，會是什麼？';
-
-  @override
-  String get todayActivityTitle => '記錄足跡';
-
-  @override
-  String get todayActivityLess => '少';
-
-  @override
-  String get todayActivityMore => '多';
-
-  @override
-  String get todayRecentTitle => '最近的日記';
-
-  @override
-  String get todaySeeAll => '查看全部';
-
-  @override
-  String get todayRecentPhotos => '最近照片';
-
-  @override
-  String journalActiveDays(int days, int total) {
-    return '$days/$total 天有記錄';
-  }
-
-  @override
-  String get viewLayoutTimeline => '時間軸';
+  String get coachPrompt10 => '如果給今天起個標題，會是什麼？';
 
   @override
   String entryReadingTime(num count) {
@@ -2241,4 +2156,139 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
     );
     return '$_temp0';
   }
+
+  @override
+  String get pageMediaTitle => '媒體';
+
+  @override
+  String get pageAtlasTitle => '地圖';
+
+  @override
+  String get pageCoachTitle => '引導';
+
+  @override
+  String get noEntrySelected => '未選擇日記。';
+
+  @override
+  String get profileLocalOnly => '日記只保存在這台裝置上';
+
+  @override
+  String get entryShare => '分享';
+
+  @override
+  String get entryFavorite => '星號';
+
+  @override
+  String get entryEdit => '編輯';
+
+  @override
+  String get entryPrevious => '上一篇';
+
+  @override
+  String get entryNext => '下一篇';
+
+  @override
+  String get journalStories => '故事';
+
+  @override
+  String get journalEntries => '日記';
+
+  @override
+  String get journalEmptyHint => '寫下第一篇日記，開始記錄吧。';
+
+  @override
+  String get storyToday => '今天';
+
+  @override
+  String get storyThrowback => '往昔';
+
+  @override
+  String get storyNoThrowback => '今天沒有往昔';
+
+  @override
+  String get mediaFiles => '媒體檔案';
+
+  @override
+  String get mediaEmpty => '還沒有照片。';
+
+  @override
+  String get mediaEmptyHint => '日記裡加入的照片會顯示在這裡。';
+
+  @override
+  String get atlasEmpty => '還沒有帶位置的日記。';
+
+  @override
+  String get atlasEmptyHint => '記錄了位置的日記會顯示在地圖上。';
+
+  @override
+  String get atlasShowAll => '顯示全部日記';
+
+  @override
+  String get coachAll => '全部';
+
+  @override
+  String get coachPrograms => '計畫';
+
+  @override
+  String get coachTemplates => '範本';
+
+  @override
+  String get coachKindProgram => '寫作計畫';
+
+  @override
+  String get coachKindTemplate => '範本';
+
+  @override
+  String get coachNoTemplates => '沒有計畫或範本。';
+
+  @override
+  String get coachUseTemplate => '用這個範本寫';
+
+  @override
+  String get coachProgramEverydayTitle => '日常小記';
+
+  @override
+  String get coachProgramEverydayDescription => '幾個簡單的問題，幫你留意一天裡的小事。';
+
+  @override
+  String get coachProgramReflectTitle => '向內看看';
+
+  @override
+  String get coachProgramReflectDescription => '慢下來，想想自己最近的感受。';
+
+  @override
+  String get searchFilters => '篩選';
+
+  @override
+  String get searchFilterTags => '標籤';
+
+  @override
+  String get searchFilterStarred => '星號';
+
+  @override
+  String get searchHint => '輸入文字搜尋，或選擇篩選條件。';
+
+  @override
+  String get locationTitle => '位置';
+
+  @override
+  String get locationName => '地點名稱';
+
+  @override
+  String get locationNoCoordinates => '沒有座標';
+
+  @override
+  String get locationUseCurrent => '使用目前位置';
+
+  @override
+  String get locationRemove => '移除';
+
+  @override
+  String get locationServiceDisabled => '定位服務已關閉。';
+
+  @override
+  String get locationPermissionDenied => '沒有定位權限。';
+
+  @override
+  String get locationUnavailable => '無法取得目前位置。';
 }
