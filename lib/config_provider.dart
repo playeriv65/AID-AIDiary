@@ -62,8 +62,6 @@ class Settings {
       Setting<int>("onThisDayNotificationHour", 12);
   static const onThisDayNotificationMinute =
       Setting<int>("onThisDayNotificationMinute", 0);
-  static const dismissedNotificationOnboarding =
-      Setting<bool>("dismissedNotificationOnboarding", false);
   static const defaultTemplate = Setting<int>("defaultTemplate", -1);
   static const imageQualityLevel =
       Setting<String>("imageQualityLevel", ImageQuality.medium);
@@ -81,6 +79,8 @@ class Settings {
   static const coachAnsweredStep = Setting<int>("coachAnsweredStep", -1);
   // Starred places for the location picker: {name, latitude, longitude}.
   static const savedPlaces = Setting<List<dynamic>>("savedPlaces", []);
+  // The welcome pages have been seen.
+  static const onboardingDone = Setting<bool>("onboardingDone", false);
   // "newest", "oldest" or "updated".
   static const journalSort = Setting<String>("journalSort", "newest");
   // Weekdays (1 = Monday) the daily reminder fires on.
@@ -175,7 +175,6 @@ class Settings {
     onThisDayNotifications,
     onThisDayNotificationHour,
     onThisDayNotificationMinute,
-    dismissedNotificationOnboarding,
     defaultTemplate,
     imageQualityLevel,
     overrideLanguage,
@@ -183,6 +182,11 @@ class Settings {
     temperatureUnit,
     timeFormat,
     routinePrompts,
+    coachProgram,
+    coachStartDate,
+    coachAnsweredStep,
+    savedPlaces,
+    onboardingDone,
     journalSort,
     reminderWeekdays,
     entryFontFamily,

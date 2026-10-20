@@ -1850,4 +1850,105 @@ class AppLocalizationsOc extends AppLocalizations {
 
   @override
   String get shareAsHtml => 'HTML';
+
+  @override
+  String get onboardWelcomeTitle => 'Welcome to AID Diary';
+
+  @override
+  String get onboardWelcomeText =>
+      'A quiet place for your days. Tap Next to look around.';
+
+  @override
+  String get onboardIntroTitle => 'Write a little, remember a lot';
+
+  @override
+  String get onboardIntroText =>
+      'Photos, places, weather and moods sit beside your words. Stories bring old days back.';
+
+  @override
+  String get onboardPrivateTitle => 'Safe and private';
+
+  @override
+  String get onboardPrivateText =>
+      'Your diary stays on this device. Add a passcode to keep it to yourself.';
+
+  @override
+  String get onboardPrivateAction => 'Set a passcode';
+
+  @override
+  String get onboardNotifyTitle => 'A gentle reminder';
+
+  @override
+  String get onboardNotifyText =>
+      'Turn on reminders to build the habit; coach programs tell you when a new question is ready.';
+
+  @override
+  String get onboardNotifyAction => 'Turn on reminders';
+
+  @override
+  String get onboardNotifyOn => 'Reminders are on';
+
+  @override
+  String get onboardDoneTitle => 'All set';
+
+  @override
+  String get onboardDoneText =>
+      'Start with today: what is one thing you want to remember?';
+
+  @override
+  String get onboardNext => 'Next';
+
+  @override
+  String get onboardBack => 'Back';
+
+  @override
+  String get onboardStart => 'Start writing';
+
+  @override
+  String get onboardSkip => 'Skip';
+
+  @override
+  String get helpFaq => 'Frequently asked questions';
+
+  @override
+  String get helpFaq1Q => 'Where is my diary stored?';
+
+  @override
+  String get helpFaq1A =>
+      'Only on this device, in the app\'s own folder. Nothing is uploaded; there is no account.';
+
+  @override
+  String get helpFaq2Q => 'How do I keep a copy or move to a new device?';
+
+  @override
+  String get helpFaq2A =>
+      'Settings → Data & storage → Backup & Restore makes one file with entries, photos and settings, optionally with a password. Restore it on the new device. Backups can also run on a schedule.';
+
+  @override
+  String get helpFaq3Q => 'Can I bring in entries from other diary apps?';
+
+  @override
+  String get helpFaq3A =>
+      'Yes: in Settings → Data & storage, import exports from Daylio, Diarium, Diaro, DayBook, My Brain, OneShot and Pixels, or a Daily You JSON file.';
+
+  @override
+  String get helpFaq4Q => 'How do coach programs work?';
+
+  @override
+  String get helpFaq4A =>
+      'Enroll in a program on the Coach page. Each day or week a new question waits in Stories; your answer is saved as an entry.';
+
+  @override
+  String get helpFaq5Q => 'What if I forget my passcode?';
+
+  @override
+  String get helpFaq5A =>
+      'The passcode cannot be recovered, so keep a backup of your diary.';
+
+  @override
+  String get helpPrivacy => 'Privacy';
+
+  @override
+  String get helpPrivacyText =>
+      'Entries, photos and settings never leave this device unless you share or back them up. The app only goes online for map tiles and place names (OpenStreetMap, Nominatim, Overpass) and weather (Open-Meteo), sending coordinates or a place name, never your writing.';
 }

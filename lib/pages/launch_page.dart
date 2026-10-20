@@ -11,6 +11,7 @@ import 'package:daily_you/database/image_storage.dart';
 import 'package:daily_you/device_info_service.dart';
 import 'package:daily_you/launch_intent.dart';
 import 'package:daily_you/main.dart';
+import 'package:daily_you/pages/onboarding_page.dart';
 import 'package:daily_you/services/coach_service.dart';
 import 'package:daily_you/services/home_widget_service.dart';
 import 'package:daily_you/utils/auto_backup_schedule.dart';
@@ -242,8 +243,12 @@ class _LaunchPageState extends State<LaunchPage> {
   }
 
   Future<void> _nextPage() async {
+    // The welcome pages come first, once.
+    final onboarded = ConfigProvider.instance.get(Settings.onboardingDone);
     await Navigator.of(context).pushReplacement(MaterialPageRoute(
-        builder: (context) => widget.nextPage, allowSnapshotting: false));
+        builder: (context) =>
+            onboarded ? widget.nextPage : OnboardingPage(next: widget.nextPage),
+        allowSnapshotting: false));
   }
 
   Widget _buildErrorScaffold({

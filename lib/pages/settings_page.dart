@@ -3,7 +3,7 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'dart:io';
-import 'package:daily_you/pages/settings/about_settings.dart';
+import 'package:daily_you/pages/settings/help_page.dart';
 import 'package:daily_you/pages/settings/appearance_settings.dart';
 import 'package:daily_you/pages/settings/data_settings.dart';
 import 'package:daily_you/pages/settings/flashback_settings.dart';
@@ -116,7 +116,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   SettingsCategory(
                       title: AppLocalizations.of(context)!.settingsHelpTitle,
                       icon: Icons.help_outline_rounded,
-                      page: const AboutSettings()),
+                      page: const HelpPage()),
                 ],
               ))),
     );

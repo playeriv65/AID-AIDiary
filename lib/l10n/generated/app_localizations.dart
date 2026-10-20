@@ -3431,6 +3431,186 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'HTML'**
   String get shareAsHtml;
+
+  /// No description provided for @onboardWelcomeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to AID Diary'**
+  String get onboardWelcomeTitle;
+
+  /// No description provided for @onboardWelcomeText.
+  ///
+  /// In en, this message translates to:
+  /// **'A quiet place for your days. Tap Next to look around.'**
+  String get onboardWelcomeText;
+
+  /// No description provided for @onboardIntroTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Write a little, remember a lot'**
+  String get onboardIntroTitle;
+
+  /// No description provided for @onboardIntroText.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos, places, weather and moods sit beside your words. Stories bring old days back.'**
+  String get onboardIntroText;
+
+  /// No description provided for @onboardPrivateTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Safe and private'**
+  String get onboardPrivateTitle;
+
+  /// No description provided for @onboardPrivateText.
+  ///
+  /// In en, this message translates to:
+  /// **'Your diary stays on this device. Add a passcode to keep it to yourself.'**
+  String get onboardPrivateText;
+
+  /// No description provided for @onboardPrivateAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Set a passcode'**
+  String get onboardPrivateAction;
+
+  /// No description provided for @onboardNotifyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'A gentle reminder'**
+  String get onboardNotifyTitle;
+
+  /// No description provided for @onboardNotifyText.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on reminders to build the habit; coach programs tell you when a new question is ready.'**
+  String get onboardNotifyText;
+
+  /// No description provided for @onboardNotifyAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on reminders'**
+  String get onboardNotifyAction;
+
+  /// No description provided for @onboardNotifyOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders are on'**
+  String get onboardNotifyOn;
+
+  /// No description provided for @onboardDoneTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'All set'**
+  String get onboardDoneTitle;
+
+  /// No description provided for @onboardDoneText.
+  ///
+  /// In en, this message translates to:
+  /// **'Start with today: what is one thing you want to remember?'**
+  String get onboardDoneText;
+
+  /// No description provided for @onboardNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get onboardNext;
+
+  /// No description provided for @onboardBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get onboardBack;
+
+  /// No description provided for @onboardStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Start writing'**
+  String get onboardStart;
+
+  /// No description provided for @onboardSkip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get onboardSkip;
+
+  /// No description provided for @helpFaq.
+  ///
+  /// In en, this message translates to:
+  /// **'Frequently asked questions'**
+  String get helpFaq;
+
+  /// No description provided for @helpFaq1Q.
+  ///
+  /// In en, this message translates to:
+  /// **'Where is my diary stored?'**
+  String get helpFaq1Q;
+
+  /// No description provided for @helpFaq1A.
+  ///
+  /// In en, this message translates to:
+  /// **'Only on this device, in the app\'s own folder. Nothing is uploaded; there is no account.'**
+  String get helpFaq1A;
+
+  /// No description provided for @helpFaq2Q.
+  ///
+  /// In en, this message translates to:
+  /// **'How do I keep a copy or move to a new device?'**
+  String get helpFaq2Q;
+
+  /// No description provided for @helpFaq2A.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings → Data & storage → Backup & Restore makes one file with entries, photos and settings, optionally with a password. Restore it on the new device. Backups can also run on a schedule.'**
+  String get helpFaq2A;
+
+  /// No description provided for @helpFaq3Q.
+  ///
+  /// In en, this message translates to:
+  /// **'Can I bring in entries from other diary apps?'**
+  String get helpFaq3Q;
+
+  /// No description provided for @helpFaq3A.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes: in Settings → Data & storage, import exports from Daylio, Diarium, Diaro, DayBook, My Brain, OneShot and Pixels, or a Daily You JSON file.'**
+  String get helpFaq3A;
+
+  /// No description provided for @helpFaq4Q.
+  ///
+  /// In en, this message translates to:
+  /// **'How do coach programs work?'**
+  String get helpFaq4Q;
+
+  /// No description provided for @helpFaq4A.
+  ///
+  /// In en, this message translates to:
+  /// **'Enroll in a program on the Coach page. Each day or week a new question waits in Stories; your answer is saved as an entry.'**
+  String get helpFaq4A;
+
+  /// No description provided for @helpFaq5Q.
+  ///
+  /// In en, this message translates to:
+  /// **'What if I forget my passcode?'**
+  String get helpFaq5Q;
+
+  /// No description provided for @helpFaq5A.
+  ///
+  /// In en, this message translates to:
+  /// **'The passcode cannot be recovered, so keep a backup of your diary.'**
+  String get helpFaq5A;
+
+  /// No description provided for @helpPrivacy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy'**
+  String get helpPrivacy;
+
+  /// No description provided for @helpPrivacyText.
+  ///
+  /// In en, this message translates to:
+  /// **'Entries, photos and settings never leave this device unless you share or back them up. The app only goes online for map tiles and place names (OpenStreetMap, Nominatim, Overpass) and weather (Open-Meteo), sending coordinates or a place name, never your writing.'**
+  String get helpPrivacyText;
 }
 
 class _AppLocalizationsDelegate

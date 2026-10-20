@@ -1809,6 +1809,99 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get shareAsHtml => 'HTML';
+
+  @override
+  String get onboardWelcomeTitle => '欢迎使用 AID Diary';
+
+  @override
+  String get onboardWelcomeText => '一个安静记录日子的地方。点“下一步”看看。';
+
+  @override
+  String get onboardIntroTitle => '写一点，记住很多';
+
+  @override
+  String get onboardIntroText => '照片、地点、天气和心情都和文字放在一起，“故事”会把过去的日子带回来。';
+
+  @override
+  String get onboardPrivateTitle => '安全又私密';
+
+  @override
+  String get onboardPrivateText => '日记只保存在这台设备上。加一个密码，只给自己看。';
+
+  @override
+  String get onboardPrivateAction => '设置密码';
+
+  @override
+  String get onboardNotifyTitle => '温柔的提醒';
+
+  @override
+  String get onboardNotifyText => '打开提醒，慢慢养成习惯；参加写作计划后，新问题到了也会告诉你。';
+
+  @override
+  String get onboardNotifyAction => '打开提醒';
+
+  @override
+  String get onboardNotifyOn => '提醒已打开';
+
+  @override
+  String get onboardDoneTitle => '准备好了';
+
+  @override
+  String get onboardDoneText => '从今天开始：有什么一件事想记住？';
+
+  @override
+  String get onboardNext => '下一步';
+
+  @override
+  String get onboardBack => '上一步';
+
+  @override
+  String get onboardStart => '开始写';
+
+  @override
+  String get onboardSkip => '跳过';
+
+  @override
+  String get helpFaq => '常见问题';
+
+  @override
+  String get helpFaq1Q => '日记保存在哪里？';
+
+  @override
+  String get helpFaq1A => '只保存在这台设备上，在应用自己的文件夹里。不会上传，也没有账号。';
+
+  @override
+  String get helpFaq2Q => '怎样备份，或者换到新设备？';
+
+  @override
+  String get helpFaq2A =>
+      '设置 → 数据与存储 → 备份与恢复，会把日记、照片和设置打成一个文件，可以加密码。在新设备上恢复即可。也可以定时自动备份。';
+
+  @override
+  String get helpFaq3Q => '能导入其他日记应用的内容吗？';
+
+  @override
+  String get helpFaq3A =>
+      '可以：在 设置 → 数据与存储 里导入 Daylio、Diarium、Diaro、DayBook、My Brain、OneShot、Pixels 的导出文件，或 Daily You 的 JSON 文件。';
+
+  @override
+  String get helpFaq4Q => '写作计划怎么用？';
+
+  @override
+  String get helpFaq4A => '在“引导”页参加一个计划。每天或每周会有一个新问题出现在“故事”里，你的回答会存成一篇日记。';
+
+  @override
+  String get helpFaq5Q => '忘记密码怎么办？';
+
+  @override
+  String get helpFaq5A => '密码无法找回，所以请保留日记的备份。';
+
+  @override
+  String get helpPrivacy => '隐私';
+
+  @override
+  String get helpPrivacyText =>
+      '日记、照片和设置不会离开这台设备，除非你自己分享或备份。应用只在显示地图和查地名（OpenStreetMap、Nominatim、Overpass）以及天气（Open-Meteo）时联网，只发送坐标或地名，从不发送你写的内容。';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -3599,4 +3692,97 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get shareAsHtml => 'HTML';
+
+  @override
+  String get onboardWelcomeTitle => '歡迎使用 AID Diary';
+
+  @override
+  String get onboardWelcomeText => '一個安靜記錄日子的地方。點「下一步」看看。';
+
+  @override
+  String get onboardIntroTitle => '寫一點，記住很多';
+
+  @override
+  String get onboardIntroText => '照片、地點、天氣和心情都和文字放在一起，「故事」會把過去的日子帶回來。';
+
+  @override
+  String get onboardPrivateTitle => '安全又私密';
+
+  @override
+  String get onboardPrivateText => '日記只保存在這台裝置上。加一個密碼，只給自己看。';
+
+  @override
+  String get onboardPrivateAction => '設定密碼';
+
+  @override
+  String get onboardNotifyTitle => '溫柔的提醒';
+
+  @override
+  String get onboardNotifyText => '打開提醒，慢慢養成習慣；參加寫作計畫後，新問題到了也會告訴你。';
+
+  @override
+  String get onboardNotifyAction => '打開提醒';
+
+  @override
+  String get onboardNotifyOn => '提醒已打開';
+
+  @override
+  String get onboardDoneTitle => '準備好了';
+
+  @override
+  String get onboardDoneText => '從今天開始：有什麼一件事想記住？';
+
+  @override
+  String get onboardNext => '下一步';
+
+  @override
+  String get onboardBack => '上一步';
+
+  @override
+  String get onboardStart => '開始寫';
+
+  @override
+  String get onboardSkip => '跳過';
+
+  @override
+  String get helpFaq => '常見問題';
+
+  @override
+  String get helpFaq1Q => '日記保存在哪裡？';
+
+  @override
+  String get helpFaq1A => '只保存在這台裝置上，在應用自己的資料夾裡。不會上傳，也沒有帳號。';
+
+  @override
+  String get helpFaq2Q => '怎樣備份，或者換到新裝置？';
+
+  @override
+  String get helpFaq2A =>
+      '設定 → 資料與儲存 → 備份與還原，會把日記、照片和設定打包成一個檔案，可以加密碼。在新裝置上還原即可。也可以定時自動備份。';
+
+  @override
+  String get helpFaq3Q => '能匯入其他日記應用的內容嗎？';
+
+  @override
+  String get helpFaq3A =>
+      '可以：在 設定 → 資料與儲存 裡匯入 Daylio、Diarium、Diaro、DayBook、My Brain、OneShot、Pixels 的匯出檔，或 Daily You 的 JSON 檔。';
+
+  @override
+  String get helpFaq4Q => '寫作計畫怎麼用？';
+
+  @override
+  String get helpFaq4A => '在「引導」頁參加一個計畫。每天或每週會有一個新問題出現在「故事」裡，你的回答會存成一篇日記。';
+
+  @override
+  String get helpFaq5Q => '忘記密碼怎麼辦？';
+
+  @override
+  String get helpFaq5A => '密碼無法找回，所以請保留日記的備份。';
+
+  @override
+  String get helpPrivacy => '隱私';
+
+  @override
+  String get helpPrivacyText =>
+      '日記、照片和設定不會離開這台裝置，除非你自己分享或備份。應用只在顯示地圖和查地名（OpenStreetMap、Nominatim、Overpass）以及天氣（Open-Meteo）時連網，只傳送座標或地名，從不傳送你寫的內容。';
 }
