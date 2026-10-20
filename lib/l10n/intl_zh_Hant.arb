@@ -318,8 +318,6 @@
     "searchHint": "輸入文字搜尋，或選擇篩選條件。",
     "locationTitle": "位置",
     "locationName": "地點名稱",
-    "locationNoCoordinates": "沒有座標",
-    "locationUseCurrent": "使用目前位置",
     "locationRemove": "移除",
     "locationServiceDisabled": "定位服務已關閉。",
     "locationPermissionDenied": "沒有定位權限。",
@@ -524,5 +522,16 @@
     "storyTapToClose": "點一下關閉",
     "coachAnswerDone": "完成",
     "coachAnswered": "已寫進日記，點一下打開",
-    "coachAnsweredEarlier": "已回答"
+    "coachAnsweredEarlier": "已回答",
+    "locationLocating": "正在定位…",
+    "locationPickPlace": "選擇地點",
+    "locationPlacesHint": "地址或地點名稱",
+    "locationCustom": "自訂地點",
+    "locationCurrent": "目前位置",
+    "locationSaved": "收藏的地點",
+    "locationSearchResults": "搜尋結果",
+    "locationNearby": "附近的地點",
+    "locationRename": "重新命名",
+    "locationSavePlace": "收藏地點",
+    "locationUnsavePlace": "取消收藏"
 }

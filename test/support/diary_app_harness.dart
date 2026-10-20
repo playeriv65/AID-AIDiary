@@ -12,6 +12,7 @@ import 'package:daily_you/providers/tags_provider.dart';
 import 'package:daily_you/providers/templates_provider.dart';
 import 'package:daily_you/theme_mode_provider.dart';
 import 'package:easy_debounce/easy_debounce.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:material_ui/material_ui.dart';
@@ -34,6 +35,13 @@ class DiaryAppHarness {
       await AppConfig.load();
     });
     setUp(() async {
+      // No position in tests: location services read as off, so a lookup
+      // fails at once instead of waiting on a platform that never answers.
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(
+              const MethodChannel('flutter.baseflow.com/geolocator'),
+              (call) async =>
+                  call.method == 'isLocationServiceEnabled' ? false : null);
       databaseFactory = databaseFactoryFfi;
       database = await databaseFactory.openDatabase(inMemoryDatabasePath);
       AppDatabase.instance.database = database;

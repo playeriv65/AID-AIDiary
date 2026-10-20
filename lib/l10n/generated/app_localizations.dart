@@ -2112,18 +2112,6 @@ abstract class AppLocalizations {
   /// **'Place name'**
   String get locationName;
 
-  /// No description provided for @locationNoCoordinates.
-  ///
-  /// In en, this message translates to:
-  /// **'No coordinates'**
-  String get locationNoCoordinates;
-
-  /// No description provided for @locationUseCurrent.
-  ///
-  /// In en, this message translates to:
-  /// **'Use current location'**
-  String get locationUseCurrent;
-
   /// No description provided for @locationRemove.
   ///
   /// In en, this message translates to:
@@ -3353,6 +3341,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Answered'**
   String get coachAnsweredEarlier;
+
+  /// No description provided for @locationLocating.
+  ///
+  /// In en, this message translates to:
+  /// **'Locating…'**
+  String get locationLocating;
+
+  /// No description provided for @locationPickPlace.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a place'**
+  String get locationPickPlace;
+
+  /// No description provided for @locationPlacesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Address or name of the place'**
+  String get locationPlacesHint;
+
+  /// No description provided for @locationCustom.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom place'**
+  String get locationCustom;
+
+  /// No description provided for @locationCurrent.
+  ///
+  /// In en, this message translates to:
+  /// **'Current location'**
+  String get locationCurrent;
+
+  /// No description provided for @locationSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved places'**
+  String get locationSaved;
+
+  /// No description provided for @locationSearchResults.
+  ///
+  /// In en, this message translates to:
+  /// **'Search results'**
+  String get locationSearchResults;
+
+  /// No description provided for @locationNearby.
+  ///
+  /// In en, this message translates to:
+  /// **'Nearby places'**
+  String get locationNearby;
+
+  /// No description provided for @locationRename.
+  ///
+  /// In en, this message translates to:
+  /// **'Rename'**
+  String get locationRename;
+
+  /// No description provided for @locationSavePlace.
+  ///
+  /// In en, this message translates to:
+  /// **'Save place'**
+  String get locationSavePlace;
+
+  /// No description provided for @locationUnsavePlace.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from saved places'**
+  String get locationUnsavePlace;
 }
 
 class _AppLocalizationsDelegate

@@ -302,8 +302,11 @@ void main() {
     await tester.enterText(find.byType(EditableText).first, '记一下地点');
     await tester.tap(find.byIcon(Icons.place_outlined).hitTestable());
     await tester.pumpAndSettle();
+    // No position in tests: the sheet says so and offers the picker.
+    await tapKey(tester, 'location-pick');
     await tester.enterText(find.byKey(const ValueKey('location-name')), '图书馆');
-    await tapKey(tester, 'location-save');
+    await tester.pump();
+    await tapKey(tester, 'location-custom');
     expect(find.byKey(const ValueKey('editor-location-chip')), findsOneWidget);
     await tester.tap(find.byIcon(Icons.mood_rounded).hitTestable());
     await tester.pumpAndSettle();

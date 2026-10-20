@@ -1138,12 +1138,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get locationName => 'Place name';
 
   @override
-  String get locationNoCoordinates => 'No coordinates';
-
-  @override
-  String get locationUseCurrent => 'Use current location';
-
-  @override
   String get locationRemove => 'Remove';
 
   @override
@@ -1810,4 +1804,37 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get coachAnsweredEarlier => 'Answered';
+
+  @override
+  String get locationLocating => 'Locating…';
+
+  @override
+  String get locationPickPlace => 'Pick a place';
+
+  @override
+  String get locationPlacesHint => 'Address or name of the place';
+
+  @override
+  String get locationCustom => 'Custom place';
+
+  @override
+  String get locationCurrent => 'Current location';
+
+  @override
+  String get locationSaved => 'Saved places';
+
+  @override
+  String get locationSearchResults => 'Search results';
+
+  @override
+  String get locationNearby => 'Nearby places';
+
+  @override
+  String get locationRename => 'Rename';
+
+  @override
+  String get locationSavePlace => 'Save place';
+
+  @override
+  String get locationUnsavePlace => 'Remove from saved places';
 }

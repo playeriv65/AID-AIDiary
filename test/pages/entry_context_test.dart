@@ -86,6 +86,8 @@ void main() {
     showLocationDialog(context, null, service: service)
         .then((value) => choice = value);
     await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const ValueKey('location-pick')));
+    await tester.pumpAndSettle();
     await tester.enterText(
         find.byKey(const ValueKey('location-name')), 'eiffel');
     await DiaryAppHarness.runUntil(
@@ -99,12 +101,36 @@ void main() {
     expect(find.byKey(const ValueKey('location-match-1')), findsNothing);
     await tester.tap(find.byKey(const ValueKey('location-match-0')));
     await tester.pumpAndSettle();
-    await tester.tap(find.byKey(const ValueKey('location-save')));
-    await tester.pumpAndSettle();
     expect(
         choice?.location,
         const EntryLocation(
             latitude: 48.8584, longitude: 2.2945, name: 'Tour Eiffel, Paris'));
+  });
+
+  testWidgets('location sheet renames and removes the entry place',
+      (tester) async {
+    DiaryAppHarness.size(tester, const Size(390, 844));
+    await tester.pumpWidget(harness.app(const Scaffold(body: SizedBox())));
+    final context = tester.element(find.byType(SizedBox).first);
+    const place = EntryLocation(name: '家', latitude: 1, longitude: 2);
+    LocationChoice? choice;
+    showLocationDialog(context, place).then((value) => choice = value);
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const ValueKey('location-rename')));
+    await tester.pumpAndSettle();
+    await tester.enterText(
+        find.byKey(const ValueKey('location-rename-field')), '老家');
+    await tester.tap(find.byKey(const ValueKey('location-rename-ok')));
+    await tester.pumpAndSettle();
+    expect(choice?.location,
+        const EntryLocation(name: '老家', latitude: 1, longitude: 2));
+
+    showLocationDialog(context, place).then((value) => choice = value);
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const ValueKey('location-remove')));
+    await tester.pumpAndSettle();
+    expect(choice, isNotNull);
+    expect(choice!.location, isNull);
   });
 
   testWidgets('activity dialog returns the chosen activity', (tester) async {

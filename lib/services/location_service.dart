@@ -8,6 +8,7 @@ import 'package:daily_you/config/app_config.dart';
 import 'package:daily_you/models/entry.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
+import 'package:latlong2/latlong.dart';
 import 'package:logging/logging.dart';
 
 enum LocationFailure { serviceDisabled, permissionDenied, unavailable }
@@ -101,6 +102,60 @@ class LocationService {
       _logger.info('Place search failed', error, stackTrace);
       return const [];
     }
+  }
+
+  /// Named places around the coordinates from OpenStreetMap, nearest first;
+  /// empty when the lookup fails.
+  Future<List<PlaceMatch>> nearby(double latitude, double longitude,
+      {String? languageCode}) async {
+    final config = AppConfig.instance;
+    // Shops, cafés, parks, sights and the like: things people go to.
+    final query = '[out:json][timeout:${config.nearbyTimeout.inSeconds}];'
+        'nwr(around:${config.nearbyRadiusMeters},$latitude,$longitude)[name]'
+        '[~"^(amenity|shop|tourism|leisure|historic|office|craft)\$"~"."];'
+        'out center ${config.nearbyLimit * 4};';
+    try {
+      final response = await _client.post(config.nearbyUrl,
+          headers: {'User-Agent': config.geocodeUserAgent},
+          body: {'data': query}).timeout(config.nearbyTimeout);
+      if (response.statusCode != 200) return const [];
+      return parseNearby(jsonDecode(utf8.decode(response.bodyBytes)) as Map,
+          latitude, longitude,
+          limit: config.nearbyLimit, languageCode: languageCode);
+    } catch (error, stackTrace) {
+      _logger.info('Nearby places failed', error, stackTrace);
+      return const [];
+    }
+  }
+
+  /// Turns an Overpass answer into places, nearest first, each name once,
+  /// with the distance as detail.
+  static List<PlaceMatch> parseNearby(
+      Map body, double latitude, double longitude,
+      {required int limit, String? languageCode}) {
+    const distance = Distance();
+    final here = LatLng(latitude, longitude);
+    final found = <(double, EntryLocation)>[];
+    for (final element
+        in (body['elements'] as List? ?? const []).whereType<Map>()) {
+      final tags = (element['tags'] as Map?)?.cast<String, dynamic>() ?? {};
+      final name = (tags['name:$languageCode'] ?? tags['name']) as String?;
+      final point = (element['center'] as Map?) ?? element;
+      final lat = (point['lat'] as num?)?.toDouble();
+      final lon = (point['lon'] as num?)?.toDouble();
+      if (name == null || name.isEmpty || lat == null || lon == null) continue;
+      found.add((
+        distance.as(LengthUnit.Meter, here, LatLng(lat, lon)),
+        EntryLocation(latitude: lat, longitude: lon, name: name),
+      ));
+    }
+    found.sort((a, b) => a.$1.compareTo(b.$1));
+    final seen = <String>{};
+    return [
+      for (final (meters, place) in found)
+        if (seen.add(place.name!))
+          (location: place, detail: '${meters.round()} m'),
+    ].take(limit).toList();
   }
 
   /// Turns Nominatim search results into named places.

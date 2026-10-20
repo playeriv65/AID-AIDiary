@@ -1123,12 +1123,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get locationName => '地点名称';
 
   @override
-  String get locationNoCoordinates => '没有坐标';
-
-  @override
-  String get locationUseCurrent => '使用当前位置';
-
-  @override
   String get locationRemove => '移除';
 
   @override
@@ -1770,6 +1764,39 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get coachAnsweredEarlier => '已回答';
+
+  @override
+  String get locationLocating => '正在定位…';
+
+  @override
+  String get locationPickPlace => '选择地点';
+
+  @override
+  String get locationPlacesHint => '地址或地点名称';
+
+  @override
+  String get locationCustom => '自定义地点';
+
+  @override
+  String get locationCurrent => '当前位置';
+
+  @override
+  String get locationSaved => '收藏的地点';
+
+  @override
+  String get locationSearchResults => '搜索结果';
+
+  @override
+  String get locationNearby => '附近的地点';
+
+  @override
+  String get locationRename => '重命名';
+
+  @override
+  String get locationSavePlace => '收藏地点';
+
+  @override
+  String get locationUnsavePlace => '取消收藏';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -2874,12 +2901,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get locationName => '地點名稱';
 
   @override
-  String get locationNoCoordinates => '沒有座標';
-
-  @override
-  String get locationUseCurrent => '使用目前位置';
-
-  @override
   String get locationRemove => '移除';
 
   @override
@@ -3521,4 +3542,37 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get coachAnsweredEarlier => '已回答';
+
+  @override
+  String get locationLocating => '正在定位…';
+
+  @override
+  String get locationPickPlace => '選擇地點';
+
+  @override
+  String get locationPlacesHint => '地址或地點名稱';
+
+  @override
+  String get locationCustom => '自訂地點';
+
+  @override
+  String get locationCurrent => '目前位置';
+
+  @override
+  String get locationSaved => '收藏的地點';
+
+  @override
+  String get locationSearchResults => '搜尋結果';
+
+  @override
+  String get locationNearby => '附近的地點';
+
+  @override
+  String get locationRename => '重新命名';
+
+  @override
+  String get locationSavePlace => '收藏地點';
+
+  @override
+  String get locationUnsavePlace => '取消收藏';
 }

@@ -317,8 +317,6 @@
     "searchHint": "输入文字搜索，或选择筛选条件。",
     "locationTitle": "位置",
     "locationName": "地点名称",
-    "locationNoCoordinates": "没有坐标",
-    "locationUseCurrent": "使用当前位置",
     "locationRemove": "移除",
     "locationServiceDisabled": "定位服务已关闭。",
     "locationPermissionDenied": "没有定位权限。",
@@ -523,5 +521,16 @@
     "storyTapToClose": "点一下关闭",
     "coachAnswerDone": "完成",
     "coachAnswered": "已写进日记，点一下打开",
-    "coachAnsweredEarlier": "已回答"
+    "coachAnsweredEarlier": "已回答",
+    "locationLocating": "正在定位…",
+    "locationPickPlace": "选择地点",
+    "locationPlacesHint": "地址或地点名称",
+    "locationCustom": "自定义地点",
+    "locationCurrent": "当前位置",
+    "locationSaved": "收藏的地点",
+    "locationSearchResults": "搜索结果",
+    "locationNearby": "附近的地点",
+    "locationRename": "重命名",
+    "locationSavePlace": "收藏地点",
+    "locationUnsavePlace": "取消收藏"
 }

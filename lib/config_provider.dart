@@ -79,6 +79,8 @@ class Settings {
   static const coachProgram = Setting<String>("coachProgram", "");
   static const coachStartDate = Setting<String>("coachStartDate", "");
   static const coachAnsweredStep = Setting<int>("coachAnsweredStep", -1);
+  // Starred places for the location picker: {name, latitude, longitude}.
+  static const savedPlaces = Setting<List<dynamic>>("savedPlaces", []);
   // "newest", "oldest" or "updated".
   static const journalSort = Setting<String>("journalSort", "newest");
   // Weekdays (1 = Monday) the daily reminder fires on.

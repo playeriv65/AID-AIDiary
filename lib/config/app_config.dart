@@ -58,6 +58,13 @@ class AppConfig {
   Duration get geocodeTimeout =>
       Duration(seconds: _section('geocoding')['timeoutSeconds'] as int);
 
+  /// Overpass endpoint and bounds for named places around a position.
+  Uri get nearbyUrl => Uri.parse(_section('nearby')['url'] as String);
+  int get nearbyRadiusMeters => _section('nearby')['radiusMeters'] as int;
+  int get nearbyLimit => _section('nearby')['limit'] as int;
+  Duration get nearbyTimeout =>
+      Duration(seconds: _section('nearby')['timeoutSeconds'] as int);
+
   Map<String, double> get fontSizes => _numbers('typography', 'fontSizes');
   Map<String, double> get lineSpacings =>
       _numbers('typography', 'lineSpacings');

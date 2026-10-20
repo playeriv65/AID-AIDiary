@@ -20,6 +20,12 @@
     "timeoutSeconds": 15,
     "recentPlaces": 6
   },
+  "nearby": {
+    "url": "https://overpass-api.de/api/interpreter",
+    "radiusMeters": 300,
+    "limit": 12,
+    "timeoutSeconds": 10
+  },
   "activity": {
     "timeoutSeconds": 10
   },

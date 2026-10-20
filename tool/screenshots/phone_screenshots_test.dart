@@ -69,6 +69,11 @@ void main() {
     await DiaryAppHarness.goTo(tester, 0);
     await session.tapKey(tester, 'diary-new-entry');
     await session.capture(tester, 'phone-editor');
+    await tester.tap(find.byIcon(Icons.place_outlined).hitTestable());
+    await tester.pumpAndSettle();
+    await session.capture(tester, 'phone-location');
+    await session.tapKey(tester, 'location-pick');
+    await session.capture(tester, 'phone-location-picker');
     await session.finish(tester);
   });
 }

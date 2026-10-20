@@ -37,6 +37,7 @@ The layout follows the Journey diary app: a bottom bar on phones, a navigation r
 Entries, photos and coordinates stay on the device. Network use, all optional and configured in [assets/config/app_config.json](assets/config/app_config.json):
 
 - OpenStreetMap map tiles, and Nominatim for place names and place search.
+- Overpass (OpenStreetMap) for named places near the current position, only when the location picker opens with a position.
 - Open-Meteo for weather (forecast for recent days, the archive for older entries); only coordinates and a date are sent.
 
 Android permissions beyond storage and notifications: location (place), activity recognition (detecting walking, cycling and so on) and microphone (voice notes), each requested only when that feature is used.
