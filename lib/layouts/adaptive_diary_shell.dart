@@ -42,6 +42,14 @@ class AdaptiveDiaryShell extends StatefulWidget {
   /// Opens the editor; the rail shows it as its leading button.
   final VoidCallback onNewEntry;
 
+  /// Lets a page inside the shell switch destinations, as a tap on the rail
+  /// or bar would. Look it up while the page is mounted; the switch works
+  /// after the page has gone.
+  static ValueChanged<int>? selectorOf(BuildContext context) {
+    final state = context.findAncestorStateOfType<_AdaptiveDiaryShellState>();
+    return state == null ? null : (index) => state._select(index);
+  }
+
   @override
   State<AdaptiveDiaryShell> createState() => _AdaptiveDiaryShellState();
 }

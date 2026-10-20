@@ -9,6 +9,7 @@ import 'package:daily_you/pages/today_story_page.dart';
 import 'package:daily_you/providers/tags_provider.dart';
 import 'package:daily_you/providers/templates_provider.dart';
 import 'package:daily_you/utils/entry_actions.dart';
+import 'package:daily_you/widgets/story_player.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -70,7 +71,7 @@ void main() {
     DiaryAppHarness.size(tester, const Size(390, 844));
     await tester.pumpWidget(harness.app(const Scaffold(body: SizedBox())));
     final context = tester.element(find.byType(SizedBox).first);
-    TodayStoryPage.open(context);
+    TodayStory.open(context);
     // The progress bar animates, so settle would play the whole story.
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 500));
@@ -83,12 +84,13 @@ void main() {
     final now = DateTime.now();
     expect(find.byKey(ValueKey('story-mood-${now.month}-${now.day}')),
         findsOneWidget);
+    // No program and no throwback: the closing card follows.
     await tester.tapAt(next);
-    await tester.pump(const Duration(milliseconds: 300));
-    expect(find.text('今天没有往昔'), findsOneWidget);
+    await tester.pump(const Duration(milliseconds: 400));
+    expect(find.byKey(const ValueKey('story-wrap-up')), findsOneWidget);
     await tester.tapAt(next);
     await tester.pumpAndSettle();
-    expect(find.byType(TodayStoryPage), findsNothing);
+    expect(find.byType(StoryPlayer), findsNothing);
     expect(tester.takeException(), isNull);
   });
 

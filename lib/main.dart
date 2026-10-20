@@ -13,12 +13,14 @@ import 'package:daily_you/custom_locale_delegates.dart';
 import 'package:daily_you/database/app_database.dart';
 import 'package:daily_you/device_info_service.dart';
 import 'package:daily_you/flashback_manager.dart';
+import 'package:daily_you/models/coach_program.dart';
 import 'package:daily_you/notification_manager.dart';
 import 'package:daily_you/pages/launch_page.dart';
 import 'package:daily_you/providers/entries_provider.dart';
 import 'package:daily_you/providers/entry_images_provider.dart';
 import 'package:daily_you/providers/tags_provider.dart';
 import 'package:daily_you/providers/templates_provider.dart';
+import 'package:daily_you/services/coach_service.dart';
 import 'package:daily_you/time_manager.dart';
 import 'package:daily_you/utils/auto_backup_schedule.dart';
 import 'package:daily_you/utils/backup_restore_utils.dart';
@@ -149,6 +151,62 @@ void onThisDayCallbackDispatcher() async {
   }
 
   setOnThisDayAlarm(firstSet: false);
+}
+
+/// Alarm and notification id of the coach program's prompt.
+const int coachAlarmId = 3;
+
+@pragma('vm:entry-point')
+void coachCallbackDispatcher() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  configureLogging();
+  await ConfigProvider.instance.init();
+  await AppConfig.load();
+
+  // Localized program text is stored in SharedPreferences upon startup
+  final prefs = await SharedPreferences.getInstance();
+  final title = prefs.getString(CoachService.titleKey);
+  final prompts = prefs.getStringList(CoachService.promptsKey);
+  final days = prefs.getInt(CoachService.daysKey);
+  final start =
+      DateTime.tryParse(ConfigProvider.instance.get(Settings.coachStartDate));
+  if (title == null || prompts == null || days == null || start == null) {
+    return;
+  }
+  final schedule =
+      CoachSchedule(start: start, days: days, steps: prompts.length);
+  final now = DateTime.now();
+  if (schedule.newPromptOn(now)) {
+    final notifications = FlutterLocalNotificationsPlugin();
+    await notifications.initialize(
+        settings: const InitializationSettings(
+            android:
+                AndroidInitializationSettings('@drawable/ic_notification')));
+    await notifications.show(
+        id: coachAlarmId,
+        title: title,
+        body: prompts[schedule.stepOn(now)],
+        notificationDetails: NotificationDetails(
+            android: AndroidNotificationDetails('daily_you_coach', title,
+                icon: '@drawable/ic_notification')));
+  }
+  // Rearm daily until the last prompt has been announced.
+  if (!schedule.finishedOn(now.add(const Duration(days: 1)))) {
+    await setCoachAlarm(firstSet: false);
+  }
+}
+
+/// Arms the coach prompt alarm for its hour today, or tomorrow once past.
+Future<void> setCoachAlarm({bool firstSet = false}) async {
+  final now = DateTime.now();
+  var at = DateTime(
+      now.year, now.month, now.day, AppConfig.instance.coachPromptHour);
+  if (!firstSet || !at.isAfter(now)) {
+    at = DateTime(at.year, at.month, at.day + 1, at.hour);
+  }
+  final exact = await NotificationManager.instance.canScheduleExactAlarms();
+  await AndroidAlarmManager.oneShotAt(at, coachAlarmId, coachCallbackDispatcher,
+      allowWhileIdle: true, exact: exact, rescheduleOnReboot: true);
 }
 
 @pragma('vm:entry-point')

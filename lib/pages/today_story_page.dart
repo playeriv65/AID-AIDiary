@@ -2,37 +2,37 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'package:daily_you/config_provider.dart';
 import 'package:daily_you/flashback_manager.dart';
 import 'package:daily_you/l10n/generated/app_localizations.dart';
+import 'package:daily_you/models/coach_program.dart';
 import 'package:daily_you/models/entry.dart';
 import 'package:daily_you/models/flashback.dart';
 import 'package:daily_you/providers/entries_provider.dart';
+import 'package:daily_you/services/coach_service.dart';
 import 'package:daily_you/time_manager.dart';
 import 'package:daily_you/utils/entry_context_display.dart';
 import 'package:daily_you/utils/entry_navigation.dart';
 import 'package:daily_you/utils/entry_preview.dart';
+import 'package:daily_you/widgets/coach_widgets.dart';
 import 'package:daily_you/widgets/mood_icon.dart';
-import 'package:daily_you/widgets/story_shell.dart';
+import 'package:daily_you/widgets/story_player.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
 import 'package:material_ui/material_ui.dart';
 
-/// Full-screen slides about the diary: statistics, a 30-day mood chart and
-/// a throwback.
-class TodayStoryPage extends StatelessWidget {
-  const TodayStoryPage(
-      {super.key, this.slideDuration = const Duration(seconds: 6)});
+/// The stories row played as one chain, like Journey: today's statistics
+/// and mood chart, the coach program's prompt, the throwback, then a
+/// closing card. A row card starts the chain at its own story.
+class TodayStory {
+  static const today = 'today';
+  static const coach = 'coach';
+  static const throwback = 'throwback';
 
-  final Duration slideDuration;
+  static Future<void> open(BuildContext context, {String from = today}) =>
+      StoryPlayer.show(context, groups: groups, startAt: from, wrapUp: true);
 
-  static Future<void> open(BuildContext context) =>
-      Navigator.of(context).push(MaterialPageRoute(
-          fullscreenDialog: true,
-          allowSnapshotting: false,
-          builder: (_) => const TodayStoryPage()));
-
-  @override
-  Widget build(BuildContext context) {
+  static List<StoryGroup> groups(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final entries = EntriesProvider.instance.entries;
     final days = entries
@@ -40,27 +40,255 @@ class TodayStoryPage extends StatelessWidget {
             DateTime(e.timeCreate.year, e.timeCreate.month, e.timeCreate.day))
         .toSet()
         .length;
-    return StoryShell(
-      slideDuration: slideDuration,
-      subtitle: l10n.storyEntriesAndDays(entries.length, days),
+    final flashback = ConfigProvider.instance.get(Settings.showFlashbacks)
+        ? FlashbackManager.getFlashbacks(context, entries).firstOrNull
+        : null;
+    final enrollment = CoachService.current(l10n);
+    return [
+      StoryGroup(
+        id: today,
+        subtitle: l10n.storyEntriesAndDays(entries.length, days),
+        slides: [
+          (
+            icon: Icons.insights_rounded,
+            title: l10n.storyStatistics,
+            body: _Statistics(entries: entries),
+          ),
+          (
+            icon: Icons.mood_rounded,
+            title: l10n.storyMoodChart,
+            body: _MoodChart(entries: entries),
+          ),
+        ],
+      ),
+      if (enrollment != null) _coachGroup(l10n, enrollment),
+      if (flashback != null)
+        StoryGroup(
+          id: throwback,
+          subtitle: flashback.title,
+          slides: [
+            (
+              icon: Icons.history_rounded,
+              title: l10n.storyThrowback,
+              body: _Throwback(flashback: flashback),
+            ),
+          ],
+        ),
+    ];
+  }
+
+  /// The program's cover with the day, then today's prompt to answer.
+  static StoryGroup _coachGroup(
+      AppLocalizations l10n, CoachEnrollment enrollment) {
+    final program = enrollment.program;
+    final step = enrollment.schedule.stepOn(DateTime.now());
+    final label = program.stepLabel(l10n, step);
+    return StoryGroup(
+      id: coach,
+      subtitle: label,
+      leading: const CoachAvatar(),
+      backdrop: ProgramCover(program: program, iconSize: 240, radius: 0),
       slides: [
         (
-          icon: Icons.insights_rounded,
-          title: l10n.storyStatistics,
-          body: _Statistics(entries: entries),
+          icon: Icons.flag_outlined,
+          title: l10n.pageCoachTitle,
+          body: _CoachCover(program: program, label: label),
         ),
         (
-          icon: Icons.mood_rounded,
-          title: l10n.storyMoodChart,
-          body: _MoodChart(entries: entries),
-        ),
-        (
-          icon: Icons.history_rounded,
-          title: l10n.storyThrowback,
-          body: _Throwback(
-              flashbacks: FlashbackManager.getFlashbacks(context, entries)),
+          icon: Icons.flag_outlined,
+          title: l10n.pageCoachTitle,
+          body: _CoachPrompt(
+              prompt: program.prompts[step],
+              step: step,
+              answeredEarlier: enrollment.answered >= step),
         ),
       ],
+    );
+  }
+}
+
+class _CoachCover extends StatelessWidget {
+  const _CoachCover({required this.program, required this.label});
+  final CoachProgram program;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Center(
+      child: Column(mainAxisSize: MainAxisSize.min, children: [
+        const CoachAvatar(radius: 32),
+        const SizedBox(height: 20),
+        Text(program.title,
+            textAlign: TextAlign.center,
+            style: theme.textTheme.titleLarge
+                ?.copyWith(color: Colors.white, fontWeight: FontWeight.w700)),
+        const SizedBox(height: 32),
+        Text(label,
+            style: theme.textTheme.displaySmall
+                ?.copyWith(color: Colors.white, fontWeight: FontWeight.w700)),
+      ]),
+    );
+  }
+}
+
+/// The prompt in large type over an answer bar. The answer is written in
+/// place and saved as an entry with the prompt as its heading.
+class _CoachPrompt extends StatefulWidget {
+  const _CoachPrompt(
+      {required this.prompt,
+      required this.step,
+      required this.answeredEarlier});
+  final String prompt;
+  final int step;
+  final bool answeredEarlier;
+
+  @override
+  State<_CoachPrompt> createState() => _CoachPromptState();
+}
+
+class _CoachPromptState extends State<_CoachPrompt> {
+  Entry? _saved;
+
+  Future<void> _answer() async {
+    final saved = _saved;
+    if (saved != null) {
+      return StoryPlayer.pauseDuring(
+          context, () => EntryNavigation.edit(context, saved));
+    }
+    final text = await StoryPlayer.pauseDuring(
+        context,
+        () => showGeneralDialog<String>(
+              context: context,
+              barrierDismissible: true,
+              barrierLabel:
+                  MaterialLocalizations.of(context).modalBarrierDismissLabel,
+              barrierColor: Colors.black54,
+              pageBuilder: (_, __, ___) => _AnswerSheet(prompt: widget.prompt),
+            ));
+    if (text == null || text.trim().isEmpty) return;
+    final entry = await CoachService.answer(widget.prompt, text, widget.step);
+    if (mounted) setState(() => _saved = entry);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
+    final done = _saved != null || widget.answeredEarlier;
+    return Column(children: [
+      Expanded(
+        child: Center(
+          child: Text(widget.prompt,
+              textAlign: TextAlign.center,
+              style: theme.textTheme.headlineMedium
+                  ?.copyWith(color: Colors.white, fontWeight: FontWeight.w700)),
+        ),
+      ),
+      Material(
+        color: Colors.black26,
+        shape: const StadiumBorder(side: BorderSide(color: Colors.white70)),
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          key: const ValueKey('coach-answer'),
+          onTap: _saved == null && widget.answeredEarlier ? null : _answer,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+            child: Row(children: [
+              Icon(done ? Icons.check_rounded : Icons.edit_rounded,
+                  color: Colors.white),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Text(
+                    _saved != null
+                        ? l10n.coachAnswered
+                        : widget.answeredEarlier
+                            ? l10n.coachAnsweredEarlier
+                            : l10n.coachAnswerHint,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: theme.textTheme.bodyLarge
+                        ?.copyWith(color: Colors.white)),
+              ),
+            ]),
+          ),
+        ),
+      ),
+    ]);
+  }
+}
+
+/// A full-height box over the story for writing the answer.
+class _AnswerSheet extends StatefulWidget {
+  const _AnswerSheet({required this.prompt});
+  final String prompt;
+
+  @override
+  State<_AnswerSheet> createState() => _AnswerSheetState();
+}
+
+class _AnswerSheetState extends State<_AnswerSheet> {
+  final _controller = TextEditingController();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
+    const border = OutlineInputBorder(
+        borderSide: BorderSide(color: Colors.white70),
+        borderRadius: BorderRadius.all(Radius.circular(20)));
+    return SafeArea(
+      child: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 560, maxHeight: 680),
+          child: Material(
+            type: MaterialType.transparency,
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(children: [
+                Row(children: [
+                  Expanded(
+                    child: Text(widget.prompt,
+                        style: theme.textTheme.titleMedium
+                            ?.copyWith(color: Colors.white)),
+                  ),
+                  TextButton(
+                    key: const ValueKey('coach-answer-done'),
+                    onPressed: () =>
+                        Navigator.of(context).pop(_controller.text),
+                    child: Text(l10n.coachAnswerDone),
+                  ),
+                ]),
+                const SizedBox(height: 8),
+                Expanded(
+                  child: TextField(
+                    key: const ValueKey('coach-answer-field'),
+                    controller: _controller,
+                    autofocus: true,
+                    expands: true,
+                    maxLines: null,
+                    textAlignVertical: TextAlignVertical.top,
+                    style: theme.textTheme.bodyLarge
+                        ?.copyWith(color: Colors.white),
+                    decoration: InputDecoration(
+                      hintText: l10n.coachAnswerHint,
+                      hintStyle: const TextStyle(color: Colors.white60),
+                      enabledBorder: border,
+                      focusedBorder: border,
+                    ),
+                  ),
+                ),
+              ]),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
@@ -218,24 +446,12 @@ class _MoodChart extends StatelessWidget {
 }
 
 class _Throwback extends StatelessWidget {
-  const _Throwback({required this.flashbacks});
-  final List<Flashback> flashbacks;
+  const _Throwback({required this.flashback});
+  final Flashback flashback;
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
-    final flashback = flashbacks.firstOrNull;
-    if (flashback == null) {
-      return Center(
-        child: Column(mainAxisSize: MainAxisSize.min, children: [
-          Icon(Icons.history_rounded,
-              size: 72, color: theme.colorScheme.primary),
-          const SizedBox(height: 16),
-          Text(l10n.storyNoThrowback, style: theme.textTheme.titleLarge),
-        ]),
-      );
-    }
     final entry = flashback.firstEntry;
     final preview = entryPreview(entry.text);
     return Center(

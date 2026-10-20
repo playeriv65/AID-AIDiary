@@ -11,6 +11,7 @@ import 'package:daily_you/database/image_storage.dart';
 import 'package:daily_you/device_info_service.dart';
 import 'package:daily_you/launch_intent.dart';
 import 'package:daily_you/main.dart';
+import 'package:daily_you/services/coach_service.dart';
 import 'package:daily_you/services/home_widget_service.dart';
 import 'package:daily_you/utils/auto_backup_schedule.dart';
 import 'package:daily_you/utils/backup_restore_utils.dart';
@@ -119,6 +120,8 @@ class _LaunchPageState extends State<LaunchPage> {
     if (!mounted) return;
     await prefs.setString('tranferStatusTemplate',
         AppLocalizations.of(context)!.tranferStatus('{percent}'));
+    if (!mounted) return;
+    await CoachService.storeNotificationText(AppLocalizations.of(context)!);
   }
 
   Future _checkDatabaseConnection() async {

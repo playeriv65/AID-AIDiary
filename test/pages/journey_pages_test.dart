@@ -1,6 +1,7 @@
 @Tags(['integration'])
 library;
 
+import 'package:daily_you/config_provider.dart';
 import 'package:daily_you/database/entry_store.dart';
 import 'package:daily_you/layouts/mobile_scaffold.dart';
 import 'package:daily_you/models/entry.dart';
@@ -13,6 +14,7 @@ import 'package:daily_you/pages/search_page.dart';
 import 'package:daily_you/providers/entry_images_provider.dart';
 import 'package:daily_you/providers/tags_provider.dart';
 import 'package:daily_you/widgets/mood_icon.dart';
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -119,13 +121,46 @@ void main() {
     expect(find.byKey(const ValueKey('coach-program-everyday')), findsNothing);
     await tester.tap(find.text('全部'));
     await tester.pumpAndSettle();
+    // Wide: the program opens in the list pane, the detail pane stays empty.
     await tapKey(tester, 'coach-program-everyday');
-    await tapKey(tester, 'coach-prompt-0');
-    final text = tester
-        .widget<EditableText>(find.byType(EditableText).first)
-        .controller
-        .text;
-    expect(text, startsWith('## '));
+    expect(find.byKey(const ValueKey('detail-empty')), findsOneWidget);
+    // Settling first would let the debounced config write start for real.
+    await tester.tap(find.byKey(const ValueKey('coach-enroll')));
+    await tester.pump();
+    EasyDebounce.cancel('save-config');
+    await tester.pumpAndSettle();
+    expect(find.byKey(const ValueKey('coach-end')), findsOneWidget);
+    expect(find.byKey(const ValueKey('coach-enrolled-tip')), findsOneWidget);
+
+    // Day 1 waits in the stories; its prompt is answered in place.
+    await tester.pumpWidget(harness.app(const Scaffold(body: JournalPage())));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const ValueKey('story-coach')));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
+    expect(find.text('第 1 天'), findsWidgets);
+    // The story is a card in the middle of a wide window.
+    await tester.tapAt(const Offset(900, 400));
+    await tester.pump(const Duration(milliseconds: 400));
+    await tester.tap(find.byKey(const ValueKey('coach-answer')));
+    await tester.pump(const Duration(milliseconds: 400));
+    await tester.enterText(
+        find.byKey(const ValueKey('coach-answer-field')), '和朋友去了海边');
+    await tester.tap(find.byKey(const ValueKey('coach-answer-done')));
+    // Wait on the save without moving fake time, which would start the
+    // debounced config write for real.
+    for (var i = 0;
+        i < 50 && ConfigProvider.instance.get(Settings.coachAnsweredStep) != 0;
+        i++) {
+      await tester.runAsync(
+          () => Future<void>.delayed(const Duration(milliseconds: 20)));
+      await tester.pump();
+    }
+    EasyDebounce.cancel('save-config');
+    final saved = EntryStore.instance.entries.single;
+    expect(saved.text, startsWith('## '));
+    expect(saved.text, endsWith('和朋友去了海边'));
+    await DiaryAppHarness.setSetting(Settings.coachProgram, '');
     await tester.pumpWidget(const SizedBox.shrink());
   });
 

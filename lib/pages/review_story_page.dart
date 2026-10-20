@@ -15,7 +15,7 @@ import 'package:daily_you/utils/entry_navigation.dart';
 import 'package:daily_you/utils/entry_preview.dart';
 import 'package:daily_you/widgets/local_image_loader.dart';
 import 'package:daily_you/widgets/mood_icon.dart';
-import 'package:daily_you/widgets/story_shell.dart';
+import 'package:daily_you/widgets/story_player.dart';
 import 'package:daily_you/widgets/year_pixels.dart';
 import 'package:intl/intl.dart';
 import 'package:material_ui/material_ui.dart';
@@ -29,10 +29,7 @@ class ReviewStoryPage extends StatelessWidget {
   final ReviewSpan span;
 
   static Future<void> open(BuildContext context, ReviewSpan span) =>
-      Navigator.of(context).push(MaterialPageRoute(
-          fullscreenDialog: true,
-          allowSnapshotting: false,
-          builder: (_) => ReviewStoryPage(span: span)));
+      StoryPlayer.show(context, groups: (context) => [group(context, span)]);
 
   /// The review for the current week or year.
   static PeriodReview current(BuildContext context, ReviewSpan span) {
@@ -64,7 +61,10 @@ class ReviewStoryPage extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) =>
+      StoryPlayer(groups: [group(context, span)]);
+
+  static StoryGroup group(BuildContext context, ReviewSpan span) {
     final l10n = AppLocalizations.of(context)!;
     final locale = TimeManager.currentLocale(context);
     final review = current(context, span);
@@ -77,7 +77,8 @@ class ReviewStoryPage extends StatelessWidget {
     final hasFavorites = review.topTags.isNotEmpty ||
         review.topActivities.isNotEmpty ||
         review.topPlaces.isNotEmpty;
-    return StoryShell(
+    return StoryGroup(
+      id: 'review-${span.name}',
       subtitle: subtitle,
       slides: [
         (

@@ -536,8 +536,6 @@
   "adaptiveNewEntry": "Write an entry",
   "pageJournalTitle": "Journal",
   "@pageJournalTitle": {},
-  "coachWritePrompt": "Write about it",
-  "@coachWritePrompt": {},
   "coachPrompt1": "What made you smile today?",
   "@coachPrompt1": {},
   "coachPrompt2": "What is one thing you learned today?",
@@ -620,11 +618,11 @@
   "@coachUseTemplate": {},
   "coachProgramEverydayTitle": "Everyday moments",
   "@coachProgramEverydayTitle": {},
-  "coachProgramEverydayDescription": "Short questions that help you notice the small things in a day.",
+  "coachProgramEverydayDescription": "Five short questions, one a day. Each takes a minute or two and helps you see what made the day yours. A gentle way to build the habit of writing a little every day.",
   "@coachProgramEverydayDescription": {},
   "coachProgramReflectTitle": "Looking inward",
   "@coachProgramReflectTitle": {},
-  "coachProgramReflectDescription": "Questions for slowing down and understanding how you feel.",
+  "coachProgramReflectDescription": "One deeper question a week, for five weeks. Take your time with each: how you have been feeling, what wears you out, what you are grateful for.",
   "@coachProgramReflectDescription": {},
   "searchFilters": "Filters",
   "@searchFilters": {},
@@ -1024,10 +1022,86 @@
   "editorWordCount": "{words} words · {characters} characters",
   "@editorWordCount": {
     "placeholders": {
-      "words": {"type": "int"},
-      "characters": {"type": "int"}
+      "words": {
+        "type": "int"
+      },
+      "characters": {
+        "type": "int"
+      }
     }
   },
-  "coachNothingSelected": "Choose a program or template.",
-  "@coachNothingSelected": {}
+  "coachProgramEverydayTagline": "Notice the small things in a day.",
+  "@coachProgramEverydayTagline": {},
+  "coachProgramReflectTagline": "Slow down and listen to yourself.",
+  "@coachProgramReflectTagline": {},
+  "coachDuration": "Duration",
+  "@coachDuration": {},
+  "coachInterval": "Interval",
+  "@coachInterval": {},
+  "coachDifficulty": "Difficulty",
+  "@coachDifficulty": {},
+  "coachIntervalDaily": "Daily",
+  "@coachIntervalDaily": {},
+  "coachIntervalWeekly": "Weekly",
+  "@coachIntervalWeekly": {},
+  "coachDifficultyBeginner": "Beginner",
+  "@coachDifficultyBeginner": {},
+  "coachDifficultyIntermediate": "Intermediate",
+  "@coachDifficultyIntermediate": {},
+  "coachDurationDays": "{count, plural, =1{1 day} other{{count} days}}",
+  "@coachDurationDays": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "coachDurationWeeks": "{count, plural, =1{1 week} other{{count} weeks}}",
+  "@coachDurationWeeks": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "coachDayN": "Day {n}",
+  "@coachDayN": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "coachWeekN": "Week {n}",
+  "@coachWeekN": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "coachEnroll": "Enroll",
+  "@coachEnroll": {},
+  "coachEndProgram": "End program",
+  "@coachEndProgram": {},
+  "coachAuthor": "Author",
+  "@coachAuthor": {},
+  "coachAuthorBio": "Prompts written for this app.",
+  "@coachAuthorBio": {},
+  "coachEnrolledTip": "All set! Your questions will show up in Stories.",
+  "@coachEnrolledTip": {},
+  "coachGoToStories": "Go to Stories",
+  "@coachGoToStories": {},
+  "coachAnswerHint": "Write your answer…",
+  "@coachAnswerHint": {},
+  "storyWrapUp": "That's all for today.",
+  "@storyWrapUp": {},
+  "storyTapToClose": "Tap to close",
+  "@storyTapToClose": {},
+  "coachAnswerDone": "Done",
+  "@coachAnswerDone": {},
+  "coachAnswered": "Answered, tap to open",
+  "@coachAnswered": {},
+  "coachAnsweredEarlier": "Answered",
+  "@coachAnsweredEarlier": {}
 }

@@ -1812,12 +1812,6 @@ abstract class AppLocalizations {
   /// **'Journal'**
   String get pageJournalTitle;
 
-  /// No description provided for @coachWritePrompt.
-  ///
-  /// In en, this message translates to:
-  /// **'Write about it'**
-  String get coachWritePrompt;
-
   /// No description provided for @coachPrompt1.
   ///
   /// In en, this message translates to:
@@ -2067,7 +2061,7 @@ abstract class AppLocalizations {
   /// No description provided for @coachProgramEverydayDescription.
   ///
   /// In en, this message translates to:
-  /// **'Short questions that help you notice the small things in a day.'**
+  /// **'Five short questions, one a day. Each takes a minute or two and helps you see what made the day yours. A gentle way to build the habit of writing a little every day.'**
   String get coachProgramEverydayDescription;
 
   /// No description provided for @coachProgramReflectTitle.
@@ -2079,7 +2073,7 @@ abstract class AppLocalizations {
   /// No description provided for @coachProgramReflectDescription.
   ///
   /// In en, this message translates to:
-  /// **'Questions for slowing down and understanding how you feel.'**
+  /// **'One deeper question a week, for five weeks. Take your time with each: how you have been feeling, what wears you out, what you are grateful for.'**
   String get coachProgramReflectDescription;
 
   /// No description provided for @searchFilters.
@@ -3210,11 +3204,155 @@ abstract class AppLocalizations {
   /// **'{words} words · {characters} characters'**
   String editorWordCount(int words, int characters);
 
-  /// No description provided for @coachNothingSelected.
+  /// No description provided for @coachProgramEverydayTagline.
   ///
   /// In en, this message translates to:
-  /// **'Choose a program or template.'**
-  String get coachNothingSelected;
+  /// **'Notice the small things in a day.'**
+  String get coachProgramEverydayTagline;
+
+  /// No description provided for @coachProgramReflectTagline.
+  ///
+  /// In en, this message translates to:
+  /// **'Slow down and listen to yourself.'**
+  String get coachProgramReflectTagline;
+
+  /// No description provided for @coachDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'Duration'**
+  String get coachDuration;
+
+  /// No description provided for @coachInterval.
+  ///
+  /// In en, this message translates to:
+  /// **'Interval'**
+  String get coachInterval;
+
+  /// No description provided for @coachDifficulty.
+  ///
+  /// In en, this message translates to:
+  /// **'Difficulty'**
+  String get coachDifficulty;
+
+  /// No description provided for @coachIntervalDaily.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily'**
+  String get coachIntervalDaily;
+
+  /// No description provided for @coachIntervalWeekly.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly'**
+  String get coachIntervalWeekly;
+
+  /// No description provided for @coachDifficultyBeginner.
+  ///
+  /// In en, this message translates to:
+  /// **'Beginner'**
+  String get coachDifficultyBeginner;
+
+  /// No description provided for @coachDifficultyIntermediate.
+  ///
+  /// In en, this message translates to:
+  /// **'Intermediate'**
+  String get coachDifficultyIntermediate;
+
+  /// No description provided for @coachDurationDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 day} other{{count} days}}'**
+  String coachDurationDays(int count);
+
+  /// No description provided for @coachDurationWeeks.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 week} other{{count} weeks}}'**
+  String coachDurationWeeks(int count);
+
+  /// No description provided for @coachDayN.
+  ///
+  /// In en, this message translates to:
+  /// **'Day {n}'**
+  String coachDayN(int n);
+
+  /// No description provided for @coachWeekN.
+  ///
+  /// In en, this message translates to:
+  /// **'Week {n}'**
+  String coachWeekN(int n);
+
+  /// No description provided for @coachEnroll.
+  ///
+  /// In en, this message translates to:
+  /// **'Enroll'**
+  String get coachEnroll;
+
+  /// No description provided for @coachEndProgram.
+  ///
+  /// In en, this message translates to:
+  /// **'End program'**
+  String get coachEndProgram;
+
+  /// No description provided for @coachAuthor.
+  ///
+  /// In en, this message translates to:
+  /// **'Author'**
+  String get coachAuthor;
+
+  /// No description provided for @coachAuthorBio.
+  ///
+  /// In en, this message translates to:
+  /// **'Prompts written for this app.'**
+  String get coachAuthorBio;
+
+  /// No description provided for @coachEnrolledTip.
+  ///
+  /// In en, this message translates to:
+  /// **'All set! Your questions will show up in Stories.'**
+  String get coachEnrolledTip;
+
+  /// No description provided for @coachGoToStories.
+  ///
+  /// In en, this message translates to:
+  /// **'Go to Stories'**
+  String get coachGoToStories;
+
+  /// No description provided for @coachAnswerHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Write your answer…'**
+  String get coachAnswerHint;
+
+  /// No description provided for @storyWrapUp.
+  ///
+  /// In en, this message translates to:
+  /// **'That\'s all for today.'**
+  String get storyWrapUp;
+
+  /// No description provided for @storyTapToClose.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to close'**
+  String get storyTapToClose;
+
+  /// No description provided for @coachAnswerDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get coachAnswerDone;
+
+  /// No description provided for @coachAnswered.
+  ///
+  /// In en, this message translates to:
+  /// **'Answered, tap to open'**
+  String get coachAnswered;
+
+  /// No description provided for @coachAnsweredEarlier.
+  ///
+  /// In en, this message translates to:
+  /// **'Answered'**
+  String get coachAnsweredEarlier;
 }
 
 class _AppLocalizationsDelegate

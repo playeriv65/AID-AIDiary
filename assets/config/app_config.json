@@ -43,6 +43,9 @@
     "morningEndsHour": 11,
     "eveningStartsHour": 18
   },
+  "coach": {
+    "promptHour": 9
+  },
   "recentlyDeleted": {
     "retentionDays": 30
   },

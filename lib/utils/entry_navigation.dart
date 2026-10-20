@@ -23,7 +23,6 @@ class EntryNavigation {
       List<EntryImage>? images,
       DateTime? overrideCreateDate,
       int? initialMood,
-      String? initialPrompt,
       Template? template}) {
     // The editor covers the whole window, rail included, like Journey.
     return Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
@@ -37,7 +36,6 @@ class EntryNavigation {
                 : const []),
         overrideCreateDate: overrideCreateDate,
         initialMood: initialMood,
-        initialPrompt: initialPrompt,
         template: template,
       ),
     ));
@@ -45,13 +43,12 @@ class EntryNavigation {
 
   /// Opens a new entry on [day], keeping the current time of day.
   static Future<void> addForDay(BuildContext context, DateTime day,
-      {int? initialMood, String? initialPrompt}) {
+      {int? initialMood}) {
     return edit(context, null,
         overrideCreateDate: TimeManager.isToday(day)
             ? DateTime.now()
             : TimeManager.currentTimeOnDifferentDate(day),
-        initialMood: initialMood,
-        initialPrompt: initialPrompt);
+        initialMood: initialMood);
   }
 
   static Future<void> addForPickedDay(BuildContext context) async {

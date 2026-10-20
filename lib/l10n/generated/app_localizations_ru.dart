@@ -989,9 +989,6 @@ class AppLocalizationsRu extends AppLocalizations {
   String get pageJournalTitle => 'Journal';
 
   @override
-  String get coachWritePrompt => 'Write about it';
-
-  @override
   String get coachPrompt1 => 'What made you smile today?';
 
   @override
@@ -1124,14 +1121,14 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get coachProgramEverydayDescription =>
-      'Short questions that help you notice the small things in a day.';
+      'Five short questions, one a day. Each takes a minute or two and helps you see what made the day yours. A gentle way to build the habit of writing a little every day.';
 
   @override
   String get coachProgramReflectTitle => 'Looking inward';
 
   @override
   String get coachProgramReflectDescription =>
-      'Questions for slowing down and understanding how you feel.';
+      'One deeper question a week, for five weeks. Take your time with each: how you have been feeling, what wears you out, what you are grateful for.';
 
   @override
   String get searchFilters => 'Filters';
@@ -1730,5 +1727,98 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
-  String get coachNothingSelected => 'Choose a program or template.';
+  String get coachProgramEverydayTagline => 'Notice the small things in a day.';
+
+  @override
+  String get coachProgramReflectTagline => 'Slow down and listen to yourself.';
+
+  @override
+  String get coachDuration => 'Duration';
+
+  @override
+  String get coachInterval => 'Interval';
+
+  @override
+  String get coachDifficulty => 'Difficulty';
+
+  @override
+  String get coachIntervalDaily => 'Daily';
+
+  @override
+  String get coachIntervalWeekly => 'Weekly';
+
+  @override
+  String get coachDifficultyBeginner => 'Beginner';
+
+  @override
+  String get coachDifficultyIntermediate => 'Intermediate';
+
+  @override
+  String coachDurationDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count days',
+      one: '1 day',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String coachDurationWeeks(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count weeks',
+      one: '1 week',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String coachDayN(int n) {
+    return 'Day $n';
+  }
+
+  @override
+  String coachWeekN(int n) {
+    return 'Week $n';
+  }
+
+  @override
+  String get coachEnroll => 'Enroll';
+
+  @override
+  String get coachEndProgram => 'End program';
+
+  @override
+  String get coachAuthor => 'Author';
+
+  @override
+  String get coachAuthorBio => 'Prompts written for this app.';
+
+  @override
+  String get coachEnrolledTip =>
+      'All set! Your questions will show up in Stories.';
+
+  @override
+  String get coachGoToStories => 'Go to Stories';
+
+  @override
+  String get coachAnswerHint => 'Write your answer…';
+
+  @override
+  String get storyWrapUp => 'That\'s all for today.';
+
+  @override
+  String get storyTapToClose => 'Tap to close';
+
+  @override
+  String get coachAnswerDone => 'Done';
+
+  @override
+  String get coachAnswered => 'Answered, tap to open';
+
+  @override
+  String get coachAnsweredEarlier => 'Answered';
 }

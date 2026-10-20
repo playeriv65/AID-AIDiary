@@ -964,9 +964,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get pageJournalTitle => '日记';
 
   @override
-  String get coachWritePrompt => '就写这个';
-
-  @override
   String get coachPrompt1 => '今天有什么让你会心一笑的事？';
 
   @override
@@ -1097,13 +1094,15 @@ class AppLocalizationsZh extends AppLocalizations {
   String get coachProgramEverydayTitle => '日常小记';
 
   @override
-  String get coachProgramEverydayDescription => '几个简单的问题，帮你留意一天里的小事。';
+  String get coachProgramEverydayDescription =>
+      '五个简单的问题，每天一个。每个只要一两分钟，帮你看见这一天里属于你的东西。想养成每天写一点的习惯，可以从这里开始。';
 
   @override
   String get coachProgramReflectTitle => '向内看看';
 
   @override
-  String get coachProgramReflectDescription => '慢下来，想想自己最近的感受。';
+  String get coachProgramReflectDescription =>
+      '五周，每周一个更深一点的问题。每个都不用急：最近的感受、什么在消耗你、你感激什么。';
 
   @override
   String get searchFilters => '筛选';
@@ -1690,7 +1689,87 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get coachNothingSelected => '选择一个练习或模板。';
+  String get coachProgramEverydayTagline => '留意一天里的小事。';
+
+  @override
+  String get coachProgramReflectTagline => '慢下来，听听自己。';
+
+  @override
+  String get coachDuration => '时长';
+
+  @override
+  String get coachInterval => '频率';
+
+  @override
+  String get coachDifficulty => '难度';
+
+  @override
+  String get coachIntervalDaily => '每天';
+
+  @override
+  String get coachIntervalWeekly => '每周';
+
+  @override
+  String get coachDifficultyBeginner => '入门';
+
+  @override
+  String get coachDifficultyIntermediate => '进阶';
+
+  @override
+  String coachDurationDays(int count) {
+    return '$count 天';
+  }
+
+  @override
+  String coachDurationWeeks(int count) {
+    return '$count 周';
+  }
+
+  @override
+  String coachDayN(int n) {
+    return '第 $n 天';
+  }
+
+  @override
+  String coachWeekN(int n) {
+    return '第 $n 周';
+  }
+
+  @override
+  String get coachEnroll => '参加';
+
+  @override
+  String get coachEndProgram => '结束计划';
+
+  @override
+  String get coachAuthor => '作者';
+
+  @override
+  String get coachAuthorBio => '为这个应用编写的写作问题。';
+
+  @override
+  String get coachEnrolledTip => '好了！之后的问题会出现在“故事”里。';
+
+  @override
+  String get coachGoToStories => '去看故事';
+
+  @override
+  String get coachAnswerHint => '写下你的回答……';
+
+  @override
+  String get storyWrapUp => '今天就到这里。';
+
+  @override
+  String get storyTapToClose => '点一下关闭';
+
+  @override
+  String get coachAnswerDone => '完成';
+
+  @override
+  String get coachAnswered => '已写进日记，点一下打开';
+
+  @override
+  String get coachAnsweredEarlier => '已回答';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -2636,9 +2715,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get pageJournalTitle => '日記';
 
   @override
-  String get coachWritePrompt => '就寫這個';
-
-  @override
   String get coachPrompt1 => '今天有什麼讓你會心一笑的事？';
 
   @override
@@ -2769,13 +2845,15 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get coachProgramEverydayTitle => '日常小記';
 
   @override
-  String get coachProgramEverydayDescription => '幾個簡單的問題，幫你留意一天裡的小事。';
+  String get coachProgramEverydayDescription =>
+      '五個簡單的問題，每天一個。每個只要一兩分鐘，幫你看見這一天裡屬於你的東西。想養成每天寫一點的習慣，可以從這裡開始。';
 
   @override
   String get coachProgramReflectTitle => '向內看看';
 
   @override
-  String get coachProgramReflectDescription => '慢下來，想想自己最近的感受。';
+  String get coachProgramReflectDescription =>
+      '五週，每週一個更深一點的問題。每個都不用急：最近的感受、什麼在消耗你、你感激什麼。';
 
   @override
   String get searchFilters => '篩選';
@@ -3362,5 +3440,85 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   }
 
   @override
-  String get coachNothingSelected => '選擇一個練習或範本。';
+  String get coachProgramEverydayTagline => '留意一天裡的小事。';
+
+  @override
+  String get coachProgramReflectTagline => '慢下來，聽聽自己。';
+
+  @override
+  String get coachDuration => '時長';
+
+  @override
+  String get coachInterval => '頻率';
+
+  @override
+  String get coachDifficulty => '難度';
+
+  @override
+  String get coachIntervalDaily => '每天';
+
+  @override
+  String get coachIntervalWeekly => '每週';
+
+  @override
+  String get coachDifficultyBeginner => '入門';
+
+  @override
+  String get coachDifficultyIntermediate => '進階';
+
+  @override
+  String coachDurationDays(int count) {
+    return '$count 天';
+  }
+
+  @override
+  String coachDurationWeeks(int count) {
+    return '$count 週';
+  }
+
+  @override
+  String coachDayN(int n) {
+    return '第 $n 天';
+  }
+
+  @override
+  String coachWeekN(int n) {
+    return '第 $n 週';
+  }
+
+  @override
+  String get coachEnroll => '參加';
+
+  @override
+  String get coachEndProgram => '結束計畫';
+
+  @override
+  String get coachAuthor => '作者';
+
+  @override
+  String get coachAuthorBio => '為這個應用編寫的寫作問題。';
+
+  @override
+  String get coachEnrolledTip => '好了！之後的問題會出現在「故事」裡。';
+
+  @override
+  String get coachGoToStories => '去看故事';
+
+  @override
+  String get coachAnswerHint => '寫下你的回答……';
+
+  @override
+  String get storyWrapUp => '今天就到這裡。';
+
+  @override
+  String get storyTapToClose => '點一下關閉';
+
+  @override
+  String get coachAnswerDone => '完成';
+
+  @override
+  String get coachAnswered => '已寫進日記，點一下打開';
+
+  @override
+  String get coachAnsweredEarlier => '已回答';
 }

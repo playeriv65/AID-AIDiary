@@ -6,8 +6,11 @@
 //   flutter test tool/screenshots/
 // Output: artifacts/ui-tablet-*.png.
 
+import 'package:daily_you/config_provider.dart';
+import 'package:daily_you/pages/coach_page.dart';
 import 'package:daily_you/pages/edit_entry_page.dart';
 import 'package:daily_you/pages/search_page.dart';
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -48,8 +51,24 @@ void main() {
     await DiaryAppHarness.goTo(tester, 3);
     await session.capture(tester, 'tablet-atlas');
     await DiaryAppHarness.goTo(tester, 4);
-    await session.tapKey(tester, 'coach-program-everyday');
     await session.capture(tester, 'tablet-coach');
+    await session.tapKey(tester, 'coach-program-everyday');
+    await session.capture(tester, 'tablet-coach-program');
+    // Enrol without letting the debounced config write run for real.
+    await tester.tap(find.byKey(const ValueKey('coach-enroll')));
+    await tester.pump();
+    EasyDebounce.cancel('save-config');
+    await tester.pumpAndSettle();
+    ScaffoldMessenger.of(tester.element(find.byType(CoachPage)))
+        .removeCurrentSnackBar();
+    await DiaryAppHarness.goTo(tester, 0);
+    await tester.tap(find.byKey(const ValueKey('story-coach')));
+    await session.capture(tester, 'tablet-story-coach', settle: false);
+    await tester.tapAt(const Offset(900, 400));
+    await session.capture(tester, 'tablet-story-prompt', settle: false);
+    await tester.tap(find.byKey(const ValueKey('story-close')));
+    await tester.pumpAndSettle();
+    await DiaryAppHarness.setSetting(Settings.coachProgram, '');
     await session.finish(tester);
   });
 }

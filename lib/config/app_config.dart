@@ -88,6 +88,9 @@ class AppConfig {
   int get morningEndsHour => _section('routine')['morningEndsHour'] as int;
   int get eveningStartsHour => _section('routine')['eveningStartsHour'] as int;
 
+  /// Hour of the day a coach program's new prompt is announced.
+  int get coachPromptHour => _section('coach')['promptHour'] as int;
+
   /// Entries in Recently deleted are erased after this long.
   Duration get deletedRetention =>
       Duration(days: _section('recentlyDeleted')['retentionDays'] as int);

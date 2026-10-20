@@ -52,10 +52,6 @@ class AddEditEntryPage extends StatefulWidget {
   /// Mood preselected for a new entry, e.g. from the Today page.
   final int? initialMood;
 
-  /// Writing prompt placed as a heading in a new entry. It counts as part of
-  /// the untouched draft, so an unanswered prompt is not saved.
-  final String? initialPrompt;
-
   /// Template for a new entry in place of the default one.
   final Template? template;
 
@@ -67,7 +63,6 @@ class AddEditEntryPage extends StatefulWidget {
     this.images = const <EntryImage>[],
     this.sharedText,
     this.initialMood,
-    this.initialPrompt,
     this.template,
   });
 
@@ -131,11 +126,6 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
               .map((templateTag) => templateTag.tagId));
         }
       }
-      if (widget.initialPrompt != null) {
-        templateText = templateText.isEmpty
-            ? '## ${widget.initialPrompt}\n\n'
-            : '## ${widget.initialPrompt}\n\n$templateText';
-      }
       dirtyTrackerBaselineText = templateText;
       _tagSource = TagAttachmentSource(
           supportsValues: true, initialTagIds: defaultTagIds);
@@ -186,7 +176,7 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
       _loadingEntry = false;
     });
 
-    if (widget.sharedText != null || widget.initialPrompt != null) {
+    if (widget.sharedText != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (!mounted) return;
         _textEditingController.selection =

@@ -74,6 +74,11 @@ class Settings {
   // "system", "12" or "24".
   static const timeFormat = Setting<String>("timeFormat", "system");
   static const routinePrompts = Setting<bool>("routinePrompts", true);
+  // The coach program the user is enrolled in ("" for none), the day it
+  // started (yyyy-MM-dd) and the last step answered (-1 for none).
+  static const coachProgram = Setting<String>("coachProgram", "");
+  static const coachStartDate = Setting<String>("coachStartDate", "");
+  static const coachAnsweredStep = Setting<int>("coachAnsweredStep", -1);
   // "newest", "oldest" or "updated".
   static const journalSort = Setting<String>("journalSort", "newest");
   // Weekdays (1 = Monday) the daily reminder fires on.

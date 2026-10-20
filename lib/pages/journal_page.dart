@@ -23,9 +23,11 @@ import 'package:daily_you/pages/entry_view_page.dart';
 import 'package:daily_you/pages/share_page.dart';
 import 'package:daily_you/providers/entries_provider.dart';
 import 'package:daily_you/providers/entry_images_provider.dart';
+import 'package:daily_you/services/coach_service.dart';
 import 'package:daily_you/services/home_widget_service.dart';
 import 'package:daily_you/time_manager.dart';
 import 'package:daily_you/utils/entry_navigation.dart';
+import 'package:daily_you/widgets/coach_widgets.dart';
 import 'package:daily_you/widgets/journal_entry_row.dart';
 import 'package:daily_you/widgets/list_detail_layout.dart';
 import 'package:daily_you/widgets/support_banner.dart';
@@ -310,8 +312,24 @@ class _Stories extends StatelessWidget {
               subtitle: TimeManager.formatDate(now, context),
               background: cs.tertiaryContainer,
               foreground: cs.onTertiaryContainer,
-              onTap: () => TodayStoryPage.open(context),
+              onTap: () => TodayStory.open(context),
             ),
+            if (CoachService.current(l10n) case final enrollment?) ...[
+              const SizedBox(width: 8),
+              _StoryCard(
+                key: const ValueKey('story-coach'),
+                width: cardWidth,
+                icon: Icons.flag_outlined,
+                title: enrollment.program
+                    .stepLabel(l10n, enrollment.schedule.stepOn(now)),
+                subtitle: enrollment.program.title,
+                background: cs.primaryContainer,
+                foreground: Colors.white,
+                backdrop: ProgramCover(
+                    program: enrollment.program, iconSize: 56, radius: 0),
+                onTap: () => TodayStory.open(context, from: TodayStory.coach),
+              ),
+            ],
             for (final capsule in EntriesProvider.instance.entries.where((e) =>
                 e.openAt != null &&
                 !e.isSealed &&
@@ -340,7 +358,7 @@ class _Stories extends StatelessWidget {
               foreground: cs.onSurfaceVariant,
               onTap: flashback == null
                   ? null
-                  : () => EntryNavigation.flashback(context, flashback),
+                  : () => TodayStory.open(context, from: TodayStory.throwback),
             ),
             if (_routine(context) case (final template, final title)) ...[
               const SizedBox(width: 8),
@@ -431,10 +449,14 @@ class _StoryCard extends StatelessWidget {
     required this.background,
     required this.foreground,
     required this.width,
+    this.backdrop,
     this.onTap,
   });
 
   final double width;
+
+  /// Art behind the text, darkened at the bottom so the text reads.
+  final Widget? backdrop;
   final IconData icon;
   final String title;
   final String subtitle;
@@ -450,31 +472,46 @@ class _StoryCard extends StatelessWidget {
       child: Material(
         color: background,
         borderRadius: BorderRadius.circular(12),
-        child: InkWell(
-          borderRadius: BorderRadius.circular(12),
-          onTap: onTap,
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Icon(icon, size: 18, color: foreground),
-                const SizedBox(height: 8),
-                Text(title,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: theme.textTheme.titleSmall?.copyWith(
-                        color: foreground, fontWeight: FontWeight.w700)),
-                Text(subtitle,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: theme.textTheme.labelMedium
-                        ?.copyWith(color: foreground.withValues(alpha: .8))),
-              ],
+        clipBehavior: Clip.antiAlias,
+        child: Stack(fit: StackFit.expand, children: [
+          if (backdrop != null) ...[
+            backdrop!,
+            const DecoratedBox(
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [Colors.transparent, Colors.black54]))),
+          ],
+          // Its own Material, so the ripple paints over the backdrop.
+          Material(
+            type: MaterialType.transparency,
+            child: InkWell(
+              onTap: onTap,
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Icon(icon, size: 18, color: foreground),
+                    const SizedBox(height: 8),
+                    Text(title,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: theme.textTheme.titleSmall?.copyWith(
+                            color: foreground, fontWeight: FontWeight.w700)),
+                    Text(subtitle,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: theme.textTheme.labelMedium?.copyWith(
+                            color: foreground.withValues(alpha: .8))),
+                  ],
+                ),
+              ),
             ),
           ),
-        ),
+        ]),
       ),
     );
   }
