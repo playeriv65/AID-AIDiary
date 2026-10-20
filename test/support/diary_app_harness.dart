@@ -11,6 +11,7 @@ import 'package:daily_you/providers/entry_images_provider.dart';
 import 'package:daily_you/providers/tags_provider.dart';
 import 'package:daily_you/providers/templates_provider.dart';
 import 'package:daily_you/theme_mode_provider.dart';
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:material_ui/material_ui.dart';
@@ -109,6 +110,13 @@ class DiaryAppHarness {
         location: location,
         weather: weather,
         activity: activity))))!;
+  }
+
+  /// Changes a setting in memory. The debounced file write is dropped: run
+  /// for real it can outlive the test and lock its temporary config folder.
+  static Future<void> setSetting<T>(Setting<T> setting, T value) async {
+    await ConfigProvider.instance.set(setting, value);
+    EasyDebounce.cancel('save-config');
   }
 
   /// Runs a real async action and waits until [until] holds.

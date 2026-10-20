@@ -70,11 +70,9 @@ void main() {
 
   testWidgets('entry text follows the font size and line spacing settings',
       (tester) async {
-    await tester.runAsync(() async {
-      await ConfigProvider.instance.set(Settings.entryFontSize, 'large');
-      await ConfigProvider.instance.set(Settings.entryLineSpacing, 'relaxed');
-      await ConfigProvider.instance.set(Settings.entryFontFamily, 'serif');
-    });
+    await DiaryAppHarness.setSetting(Settings.entryFontSize, 'large');
+    await DiaryAppHarness.setSetting(Settings.entryLineSpacing, 'relaxed');
+    await DiaryAppHarness.setSetting(Settings.entryFontFamily, 'serif');
     DiaryAppHarness.size(tester, const Size(390, 844));
     await tester.pumpWidget(harness.app(const AddEditEntryPage()));
     await tester.pumpAndSettle();
@@ -92,8 +90,7 @@ void main() {
     await tester.pumpWidget(harness.app(const Scaffold(body: JournalPage())));
     await tester.pumpAndSettle();
     expect(find.byKey(const ValueKey('wallpaper-grid')), findsNothing);
-    await tester.runAsync(
-        () => ConfigProvider.instance.set(Settings.wallpaper, 'grid'));
+    await DiaryAppHarness.setSetting(Settings.wallpaper, 'grid');
     await tester.pumpAndSettle();
     expect(find.byKey(const ValueKey('wallpaper-grid')), findsOneWidget);
   });

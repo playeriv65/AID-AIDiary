@@ -94,8 +94,7 @@ void main() {
           modified: DateTime(2026, 10, 9)));
       await EntryStore.instance.add(_entry('新的', DateTime(2026, 10, 5, 9)));
     });
-    await tester.runAsync(
-        () => ConfigProvider.instance.set(Settings.journalSort, 'updated'));
+    await DiaryAppHarness.setSetting(Settings.journalSort, 'updated');
     DiaryAppHarness.size(tester, const Size(390, 1200));
     await tester.pumpWidget(harness.app(const Scaffold(body: JournalPage())));
     await tester.pumpAndSettle();
