@@ -3,7 +3,9 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'package:daily_you/database/image_storage.dart';
+import 'package:daily_you/models/image.dart';
 import 'package:daily_you/widgets/local_image_cache.dart';
+import 'package:daily_you/widgets/media_attachment.dart';
 import 'package:flutter/foundation.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -47,7 +49,10 @@ class _LocalImageLoaderState extends State<LocalImageLoader> {
     }
   }
 
+  bool get _isMedia => MediaKind.of(widget.imagePath) != MediaKind.image;
+
   Future<void> _load() async {
+    if (_isMedia) return;
     final bytes = await LocalImageCache.instance
         .getResizedImageBytes(widget.imagePath, widget.cacheSize);
     if (mounted) {
@@ -61,6 +66,7 @@ class _LocalImageLoaderState extends State<LocalImageLoader> {
 
   @override
   Widget build(BuildContext context) {
+    if (_isMedia) return MediaTile(kind: MediaKind.of(widget.imagePath));
     if (_bytes != null) {
       return Image.memory(
         _bytes!,

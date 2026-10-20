@@ -94,9 +94,9 @@
     "themeLight": "淺色",
     "settingsShowMarkdownToolbar": "顯示 Markdown 工具列",
     "imageFolderErrorDescription": "更改影像資料夾失敗！",
-    "deletePhotoDescription": "您要刪除此照片嗎？",
+    "deletePhotoDescription": "確定要刪除這個附件嗎？",
     "themeSystem": "系統",
-    "deletePhotoTitle": "刪除照片",
+    "deletePhotoTitle": "刪除附件",
     "settingsCustomAccentColor": "自訂強調色",
     "moodIconPrompt": "輸入圖示",
     "importLogs": "匯入紀錄",
@@ -417,5 +417,14 @@
     "lineSpacingNormal": "標準",
     "lineSpacingRelaxed": "寬鬆",
     "moodAssociationsTitle": "什麼讓我感到…",
-    "moodAssociationsCount": "{total} 篇中有 {matching} 篇"
+    "moodAssociationsCount": "{total} 篇中有 {matching} 篇",
+    "videoRecord": "錄製影片",
+    "videoChoose": "選擇影片",
+    "audioRecordTitle": "錄製語音",
+    "audioChoose": "選擇音訊檔",
+    "audioStart": "錄音",
+    "audioStop": "停止並儲存",
+    "audioPermissionDenied": "麥克風權限已關閉，請在系統設定中允許。",
+    "mediaTooLarge": "這部影片太大，無法加入。",
+    "mediaUnavailable": "此附件在這台裝置上無法使用。"
 }

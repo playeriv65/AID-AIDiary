@@ -128,9 +128,9 @@
   "@deleteLogTitle": {},
   "deleteLogDescription": "Do you want to delete this log?",
   "@deleteLogDescription": {},
-  "deletePhotoTitle": "Delete Photo",
+  "deletePhotoTitle": "Delete attachment",
   "@deletePhotoTitle": {},
-  "deletePhotoDescription": "Do you want to delete this photo?",
+  "deletePhotoDescription": "Are you sure you want to delete this attachment?",
   "@deletePhotoDescription": {},
   "pageSettingsTitle": "Settings",
   "@pageSettingsTitle": {},
@@ -837,8 +837,30 @@
   "moodAssociationsCount": "{matching} of {total} entries",
   "@moodAssociationsCount": {
     "placeholders": {
-      "matching": {"type": "int"},
-      "total": {"type": "int"}
+      "matching": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
     }
-  }
+  },
+  "videoRecord": "Record a video",
+  "@videoRecord": {},
+  "videoChoose": "Choose a video",
+  "@videoChoose": {},
+  "audioRecordTitle": "Record a voice note",
+  "@audioRecordTitle": {},
+  "audioChoose": "Choose an audio file",
+  "@audioChoose": {},
+  "audioStart": "Record",
+  "@audioStart": {},
+  "audioStop": "Stop and save",
+  "@audioStop": {},
+  "audioPermissionDenied": "Microphone access is off. Allow it in the system settings.",
+  "@audioPermissionDenied": {},
+  "mediaTooLarge": "This video is too large to attach.",
+  "@mediaTooLarge": {},
+  "mediaUnavailable": "This attachment is not available on this device.",
+  "@mediaUnavailable": {}
 }

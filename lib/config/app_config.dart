@@ -69,6 +69,20 @@ class AppConfig {
           key as String: (value as List).cast<String>(),
       };
 
+  List<String> get videoExtensions =>
+      (_section('media')['videoExtensions'] as List).cast<String>();
+  List<String> get audioExtensions =>
+      (_section('media')['audioExtensions'] as List).cast<String>();
+  String get recordingExtension =>
+      _section('media')['recordingExtension'] as String;
+  Duration get maxVideoDuration =>
+      Duration(minutes: _section('media')['maxVideoMinutes'] as int);
+
+  /// Attachments are held in memory while stored and synced, so videos
+  /// above this size are refused.
+  int get maxVideoBytes =>
+      (_section('media')['maxVideoMegabytes'] as int) * 1024 * 1024;
+
   String get wallpaperDirectory => _section('wallpaper')['directory'] as String;
   double get wallpaperScrimOpacity =>
       (_section('wallpaper')['photoScrimOpacity'] as num).toDouble();

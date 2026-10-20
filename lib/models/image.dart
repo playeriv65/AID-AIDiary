@@ -2,7 +2,26 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'package:daily_you/config/app_config.dart';
+import 'package:path/path.dart' as p;
+
 const String imagesTable = 'entry_images';
+
+/// What an attachment holds. Attachments share one table and folder; the
+/// file extension tells them apart, so backups and sync need no changes.
+enum MediaKind {
+  image,
+  video,
+  audio;
+
+  static MediaKind of(String fileName) {
+    final extension = p.extension(fileName).toLowerCase();
+    final config = AppConfig.instance;
+    if (config.videoExtensions.contains(extension)) return video;
+    if (config.audioExtensions.contains(extension)) return audio;
+    return image;
+  }
+}
 
 class EntryImageFields {
   static const List<String> values = [
@@ -33,6 +52,9 @@ class EntryImage {
     required this.imgRank,
     required this.timeCreate,
   });
+
+  MediaKind get kind => MediaKind.of(imgPath);
+  bool get isImage => kind == MediaKind.image;
 
   EntryImage copy({
     int? id,

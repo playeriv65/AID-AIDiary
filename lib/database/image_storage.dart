@@ -236,6 +236,19 @@ class ImageStorage {
     return bytes;
   }
 
+  /// A file on this device holding the attachment, for players that need a
+  /// path; fetches it from the external folder when only that has it.
+  Future<File?> localFile(String name) async {
+    final file = File(join(await getInternalFolder(), name));
+    if (await file.exists() && await file.length() > 0) return file;
+    final external = externalStore;
+    if (external == null) return null;
+    final bytes = _nonEmpty(await external.read(name));
+    if (bytes == null) return null;
+    await file.writeAsBytes(bytes, flush: true);
+    return file;
+  }
+
   Uint8List? _nonEmpty(Uint8List? bytes) =>
       bytes == null || bytes.isEmpty ? null : bytes;
 

@@ -19,6 +19,7 @@ import 'package:daily_you/utils/entry_typography.dart';
 import 'package:daily_you/widgets/delete_confirm_dialog.dart';
 import 'package:daily_you/widgets/entry_tag_chips.dart';
 import 'package:daily_you/widgets/local_image_loader.dart';
+import 'package:daily_you/widgets/media_attachment.dart';
 import 'package:daily_you/widgets/mood_icon.dart';
 import 'package:daily_you/widgets/scaled_markdown.dart';
 import 'package:daily_you/widgets/tag_chip.dart';
@@ -210,12 +211,13 @@ class EntryViewPage extends StatelessWidget {
     final mood = MoodIcon.getMoodIcon(entry.mood);
     final text =
         '${mood.isEmpty ? '' : '$mood '}${TimeManager.formatDateWithWeekday(entry.timeCreate, context)}\n${entry.text}';
-    if (images.isNotEmpty) {
-      final bytes = await ImageStorage.instance.getBytes(images.first.imgPath);
+    final photo = images.where((image) => image.isImage).firstOrNull;
+    if (photo != null) {
+      final bytes = await ImageStorage.instance.getBytes(photo.imgPath);
       if (bytes != null) {
         await SharePlus.instance.share(ShareParams(
             files: [XFile.fromData(bytes, mimeType: 'image/*')],
-            fileNameOverrides: [images.first.imgPath],
+            fileNameOverrides: [photo.imgPath],
             text: text));
         return;
       }
@@ -235,6 +237,19 @@ class _Photos extends StatefulWidget {
 class _PhotosState extends State<_Photos> {
   int _page = 0;
 
+  /// Photos open in the zoomable viewer among the other photos; videos and
+  /// voice notes open in the player.
+  void _open(BuildContext context, EntryImage attachment) {
+    final photos = widget.images.where((image) => image.isImage).toList();
+    Navigator.of(context).push(MaterialPageRoute(
+      allowSnapshotting: false,
+      fullscreenDialog: true,
+      builder: (_) => attachment.isImage
+          ? ImageViewPage(images: photos, index: photos.indexOf(attachment))
+          : MediaPlayerPage(name: attachment.imgPath),
+    ));
+  }
+
   @override
   Widget build(BuildContext context) {
     final images = widget.images;
@@ -245,11 +260,8 @@ class _PhotosState extends State<_Photos> {
           itemCount: images.length,
           onPageChanged: (page) => setState(() => _page = page),
           itemBuilder: (context, index) => GestureDetector(
-            onTap: () => Navigator.of(context).push(MaterialPageRoute(
-              allowSnapshotting: false,
-              fullscreenDialog: true,
-              builder: (_) => ImageViewPage(images: images, index: index),
-            )),
+            key: ValueKey('entry-attachment-$index'),
+            onTap: () => _open(context, images[index]),
             child: LocalImageLoader(
                 imagePath: images[index].imgPath, cacheSize: 1200),
           ),

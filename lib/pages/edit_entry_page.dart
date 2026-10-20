@@ -30,6 +30,7 @@ import 'package:daily_you/models/entry.dart';
 import 'package:daily_you/widgets/entry_image_actions.dart';
 import 'package:daily_you/widgets/entry_mood_picker.dart';
 import 'package:daily_you/widgets/location_dialog.dart';
+import 'package:daily_you/widgets/media_attachment.dart';
 import 'package:daily_you/widgets/context_dialogs.dart';
 import 'package:daily_you/utils/entry_context_display.dart';
 import 'package:daily_you/config_provider.dart';
@@ -571,7 +572,29 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
     if (choice != null) _setActivity(choice.activity);
   }
 
+  /// Offers ways to add a video or voice note, then runs the chosen one.
+  Future<void> _chooseAttachment(
+      List<(IconData, String, Future<void> Function())> options) async {
+    final chosen = await showModalBottomSheet<Future<void> Function()>(
+      context: context,
+      showDragHandle: true,
+      builder: (context) => SafeArea(
+        child: Column(mainAxisSize: MainAxisSize.min, children: [
+          for (final (icon, label, action) in options)
+            ListTile(
+              key: ValueKey('attachment-$label'),
+              leading: Icon(icon),
+              title: Text(label),
+              onTap: () => Navigator.of(context).pop(action),
+            ),
+        ]),
+      ),
+    );
+    await chosen?.call();
+  }
+
   List<ToolbarAction> _buildMainActions(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     // Same order as Journey: media, place, weather, activity, mood, tags.
     return [
       ToolbarAction(
@@ -585,6 +608,39 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
           mayLeaveApp: true,
           onPressed: () => EntryImageActions.takePhoto(_addImage),
         ),
+      ToolbarAction(
+        icon: const Icon(Icons.videocam_outlined),
+        mayLeaveApp: true,
+        onPressed: () => _chooseAttachment([
+          if (Platform.isAndroid)
+            (
+              Icons.videocam_rounded,
+              l10n.videoRecord,
+              () => MediaActions.pickVideo(context, _addImage, camera: true)
+            ),
+          (
+            Icons.video_library_outlined,
+            l10n.videoChoose,
+            () => MediaActions.pickVideo(context, _addImage)
+          ),
+        ]),
+      ),
+      ToolbarAction(
+        icon: const Icon(Icons.mic_none_rounded),
+        mayLeaveApp: true,
+        onPressed: () => _chooseAttachment([
+          (
+            Icons.mic_rounded,
+            l10n.audioRecordTitle,
+            () => MediaActions.recordAudio(context, _addImage)
+          ),
+          (
+            Icons.audio_file_outlined,
+            l10n.audioChoose,
+            () => MediaActions.pickAudio(_addImage)
+          ),
+        ]),
+      ),
       ToolbarAction(
         icon: const Icon(Icons.place_outlined),
         onPressed: _chooseLocation,

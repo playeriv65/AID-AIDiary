@@ -303,10 +303,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get deleteLogDescription => '您确定要删除该条日迹吗？';
 
   @override
-  String get deletePhotoTitle => '删除图片';
+  String get deletePhotoTitle => '删除附件';
 
   @override
-  String get deletePhotoDescription => '您确定要删除这张图片吗？';
+  String get deletePhotoDescription => '确定要删除这个附件吗？';
 
   @override
   String get pageSettingsTitle => '设置';
@@ -1427,6 +1427,33 @@ class AppLocalizationsZh extends AppLocalizations {
   String moodAssociationsCount(int matching, int total) {
     return '$total 篇中有 $matching 篇';
   }
+
+  @override
+  String get videoRecord => '录制视频';
+
+  @override
+  String get videoChoose => '选择视频';
+
+  @override
+  String get audioRecordTitle => '录制语音';
+
+  @override
+  String get audioChoose => '选择音频文件';
+
+  @override
+  String get audioStart => '录音';
+
+  @override
+  String get audioStop => '停止并保存';
+
+  @override
+  String get audioPermissionDenied => '麦克风权限已关闭，请在系统设置中允许。';
+
+  @override
+  String get mediaTooLarge => '这个视频太大，无法添加。';
+
+  @override
+  String get mediaUnavailable => '此附件在这台设备上不可用。';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -1728,10 +1755,10 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get deleteLogDescription => '您要刪除此紀錄嗎？';
 
   @override
-  String get deletePhotoTitle => '刪除照片';
+  String get deletePhotoTitle => '刪除附件';
 
   @override
-  String get deletePhotoDescription => '您要刪除此照片嗎？';
+  String get deletePhotoDescription => '確定要刪除這個附件嗎？';
 
   @override
   String get pageSettingsTitle => '設定';
@@ -2835,4 +2862,31 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String moodAssociationsCount(int matching, int total) {
     return '$total 篇中有 $matching 篇';
   }
+
+  @override
+  String get videoRecord => '錄製影片';
+
+  @override
+  String get videoChoose => '選擇影片';
+
+  @override
+  String get audioRecordTitle => '錄製語音';
+
+  @override
+  String get audioChoose => '選擇音訊檔';
+
+  @override
+  String get audioStart => '錄音';
+
+  @override
+  String get audioStop => '停止並儲存';
+
+  @override
+  String get audioPermissionDenied => '麥克風權限已關閉，請在系統設定中允許。';
+
+  @override
+  String get mediaTooLarge => '這部影片太大，無法加入。';
+
+  @override
+  String get mediaUnavailable => '此附件在這台裝置上無法使用。';
 }

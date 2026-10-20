@@ -585,13 +585,13 @@ abstract class AppLocalizations {
   /// No description provided for @deletePhotoTitle.
   ///
   /// In en, this message translates to:
-  /// **'Delete Photo'**
+  /// **'Delete attachment'**
   String get deletePhotoTitle;
 
   /// No description provided for @deletePhotoDescription.
   ///
   /// In en, this message translates to:
-  /// **'Do you want to delete this photo?'**
+  /// **'Are you sure you want to delete this attachment?'**
   String get deletePhotoDescription;
 
   /// No description provided for @pageSettingsTitle.
@@ -2711,6 +2711,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{matching} of {total} entries'**
   String moodAssociationsCount(int matching, int total);
+
+  /// No description provided for @videoRecord.
+  ///
+  /// In en, this message translates to:
+  /// **'Record a video'**
+  String get videoRecord;
+
+  /// No description provided for @videoChoose.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a video'**
+  String get videoChoose;
+
+  /// No description provided for @audioRecordTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Record a voice note'**
+  String get audioRecordTitle;
+
+  /// No description provided for @audioChoose.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose an audio file'**
+  String get audioChoose;
+
+  /// No description provided for @audioStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Record'**
+  String get audioStart;
+
+  /// No description provided for @audioStop.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop and save'**
+  String get audioStop;
+
+  /// No description provided for @audioPermissionDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Microphone access is off. Allow it in the system settings.'**
+  String get audioPermissionDenied;
+
+  /// No description provided for @mediaTooLarge.
+  ///
+  /// In en, this message translates to:
+  /// **'This video is too large to attach.'**
+  String get mediaTooLarge;
+
+  /// No description provided for @mediaUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'This attachment is not available on this device.'**
+  String get mediaUnavailable;
 }
 
 class _AppLocalizationsDelegate

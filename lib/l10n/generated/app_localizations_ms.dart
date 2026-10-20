@@ -1399,4 +1399,33 @@ class AppLocalizationsMs extends AppLocalizations {
   String moodAssociationsCount(int matching, int total) {
     return '$matching of $total entries';
   }
+
+  @override
+  String get videoRecord => 'Record a video';
+
+  @override
+  String get videoChoose => 'Choose a video';
+
+  @override
+  String get audioRecordTitle => 'Record a voice note';
+
+  @override
+  String get audioChoose => 'Choose an audio file';
+
+  @override
+  String get audioStart => 'Record';
+
+  @override
+  String get audioStop => 'Stop and save';
+
+  @override
+  String get audioPermissionDenied =>
+      'Microphone access is off. Allow it in the system settings.';
+
+  @override
+  String get mediaTooLarge => 'This video is too large to attach.';
+
+  @override
+  String get mediaUnavailable =>
+      'This attachment is not available on this device.';
 }

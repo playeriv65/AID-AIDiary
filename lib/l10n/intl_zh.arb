@@ -46,8 +46,8 @@
     "writeSomethingHint": "写点什么…",
     "deleteLogTitle": "删除日迹",
     "deleteLogDescription": "您确定要删除该条日迹吗？",
-    "deletePhotoTitle": "删除图片",
-    "deletePhotoDescription": "您确定要删除这张图片吗？",
+    "deletePhotoTitle": "删除附件",
+    "deletePhotoDescription": "确定要删除这个附件吗？",
     "pageSettingsTitle": "设置",
     "settingsAppearanceTitle": "外观",
     "settingsTheme": "主题模式",
@@ -416,5 +416,14 @@
     "lineSpacingNormal": "标准",
     "lineSpacingRelaxed": "宽松",
     "moodAssociationsTitle": "什么让我感到…",
-    "moodAssociationsCount": "{total} 篇中有 {matching} 篇"
+    "moodAssociationsCount": "{total} 篇中有 {matching} 篇",
+    "videoRecord": "录制视频",
+    "videoChoose": "选择视频",
+    "audioRecordTitle": "录制语音",
+    "audioChoose": "选择音频文件",
+    "audioStart": "录音",
+    "audioStop": "停止并保存",
+    "audioPermissionDenied": "麦克风权限已关闭，请在系统设置中允许。",
+    "mediaTooLarge": "这个视频太大，无法添加。",
+    "mediaUnavailable": "此附件在这台设备上不可用。"
 }
