@@ -48,7 +48,10 @@ class ReviewStoryPage extends StatelessWidget {
     final tagById = {for (final tag in tags.tags) tag.id: tag};
     final favoriteId = tags.favoriteTag?.id;
     return PeriodReview.of(
-      EntriesProvider.instance.entries,
+      [
+        for (final entry in EntriesProvider.instance.entries)
+          if (!entry.isSealed) entry,
+      ],
       start,
       end,
       tagsOf: (entry) => [

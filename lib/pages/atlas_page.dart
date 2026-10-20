@@ -43,7 +43,7 @@ class _AtlasPageState extends State<AtlasPage>
   }
 
   static List<Entry> geotagged() => EntriesProvider.instance.entries
-      .where((e) => e.location?.hasCoordinates ?? false)
+      .where((e) => !e.isSealed && (e.location?.hasCoordinates ?? false))
       .toList();
 
   static LatLng _point(Entry entry) =>

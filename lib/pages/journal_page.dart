@@ -290,6 +290,23 @@ class _Stories extends StatelessWidget {
           foreground: cs.onTertiaryContainer,
           onTap: () => TodayStoryPage.open(context),
         ),
+        for (final capsule in EntriesProvider.instance.entries.where((e) =>
+            e.openAt != null &&
+            !e.isSealed &&
+            now.difference(e.openAt!) < const Duration(days: 7))) ...[
+          const SizedBox(width: 8),
+          _StoryCard(
+            key: ValueKey('story-capsule-${capsule.id}'),
+            width: cardWidth,
+            icon: Icons.lock_open_rounded,
+            title: l10n.capsuleOpened,
+            subtitle: l10n.capsuleWrittenOn(
+                TimeManager.formatDate(capsule.timeCreate, context)),
+            background: cs.secondaryContainer,
+            foreground: cs.onSecondaryContainer,
+            onTap: () => EntryNavigation.view(context, capsule),
+          ),
+        ],
         const SizedBox(width: 8),
         _StoryCard(
           key: const ValueKey('story-throwback'),

@@ -49,6 +49,7 @@ class _SearchPageState extends State<SearchPage> {
     final tags = TagsProvider.instance;
     final query = _controller.text.trim().toLowerCase();
     return EntriesProvider.instance.entries.where((entry) {
+      if (entry.isSealed) return false;
       if (query.isNotEmpty &&
           !entry.text.toLowerCase().contains(query) &&
           !(entry.location?.name?.toLowerCase().contains(query) ?? false)) {

@@ -3065,6 +3065,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Year in pixels'**
   String get yearInPixels;
+
+  /// No description provided for @capsuleSeal.
+  ///
+  /// In en, this message translates to:
+  /// **'Seal as a time capsule'**
+  String get capsuleSeal;
+
+  /// No description provided for @capsuleTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Time capsule'**
+  String get capsuleTitle;
+
+  /// No description provided for @capsuleOpensOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Opens on {date}'**
+  String capsuleOpensOn(Object date);
+
+  /// No description provided for @capsuleWrittenOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Written on {date}'**
+  String capsuleWrittenOn(Object date);
+
+  /// No description provided for @capsuleOpenEarly.
+  ///
+  /// In en, this message translates to:
+  /// **'Open early'**
+  String get capsuleOpenEarly;
+
+  /// No description provided for @capsuleOpenEarlyDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'The capsule opens now and stays open.'**
+  String get capsuleOpenEarlyDescription;
+
+  /// No description provided for @capsuleOpened.
+  ///
+  /// In en, this message translates to:
+  /// **'Time capsule opened'**
+  String get capsuleOpened;
 }
 
 class _AppLocalizationsDelegate

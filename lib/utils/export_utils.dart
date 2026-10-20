@@ -57,6 +57,7 @@ String encodeJsonEntries(List<Entry> entries,
             'temperature': weather.temperature,
           },
         if (entry.activity case final activity?) 'activity': activity.name,
+        if (entry.openAt case final openAt?) 'openAt': openAt.toIso8601String(),
         'tags': [
           for (final tag in tagsOf(entry))
             {'name': tag.name, if (tag.value != null) 'value': tag.value},

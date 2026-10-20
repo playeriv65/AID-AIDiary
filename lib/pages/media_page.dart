@@ -35,7 +35,8 @@ class _MediaPageState extends State<MediaPage>
     final images = EntryImagesProvider.instance;
     return [
       for (final entry in EntriesProvider.instance.entries)
-        for (final image in images.getForEntry(entry)) (entry, image),
+        if (!entry.isSealed)
+          for (final image in images.getForEntry(entry)) (entry, image),
     ];
   }
 

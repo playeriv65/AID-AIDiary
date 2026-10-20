@@ -351,6 +351,7 @@ CREATE TABLE $entriesTable (
   ${EntryFields.weatherCode} INTEGER,
   ${EntryFields.temperature} REAL,
   ${EntryFields.activity} TEXT,
+  ${EntryFields.openAt} DATETIME,
   ${EntryFields.deletedAt} DATETIME
 )
 ''');
@@ -591,8 +592,10 @@ DROP TABLE old_entries;
       }
     }
     if (oldVersion <= 7) {
-      await db.execute(
-          'ALTER TABLE $entriesTable ADD COLUMN ${EntryFields.deletedAt} DATETIME');
+      for (final column in [EntryFields.openAt, EntryFields.deletedAt]) {
+        await db
+            .execute('ALTER TABLE $entriesTable ADD COLUMN $column DATETIME');
+      }
     }
   }
 

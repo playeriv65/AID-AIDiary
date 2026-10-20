@@ -1608,6 +1608,31 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get yearInPixels => '心情像素';
+
+  @override
+  String get capsuleSeal => '设为时间胶囊';
+
+  @override
+  String get capsuleTitle => '时间胶囊';
+
+  @override
+  String capsuleOpensOn(Object date) {
+    return '$date 开启';
+  }
+
+  @override
+  String capsuleWrittenOn(Object date) {
+    return '写于 $date';
+  }
+
+  @override
+  String get capsuleOpenEarly => '提前打开';
+
+  @override
+  String get capsuleOpenEarlyDescription => '胶囊会立即打开，并且不再封存。';
+
+  @override
+  String get capsuleOpened => '时间胶囊已开启';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -3197,4 +3222,29 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get yearInPixels => '心情像素';
+
+  @override
+  String get capsuleSeal => '設為時間膠囊';
+
+  @override
+  String get capsuleTitle => '時間膠囊';
+
+  @override
+  String capsuleOpensOn(Object date) {
+    return '$date 開啟';
+  }
+
+  @override
+  String capsuleWrittenOn(Object date) {
+    return '寫於 $date';
+  }
+
+  @override
+  String get capsuleOpenEarly => '提前打開';
+
+  @override
+  String get capsuleOpenEarlyDescription => '膠囊會立即打開，並且不再封存。';
+
+  @override
+  String get capsuleOpened => '時間膠囊已開啟';
 }

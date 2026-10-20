@@ -19,6 +19,7 @@ class EntryFields {
     weatherCode,
     temperature,
     activity,
+    openAt,
   ];
   static const String id = 'id';
   static const String text = 'text';
@@ -31,6 +32,7 @@ class EntryFields {
   static const String weatherCode = 'weather_code';
   static const String temperature = 'temperature';
   static const String activity = 'activity';
+  static const String openAt = 'open_at';
 
   /// Set while an entry sits in Recently deleted; not part of [Entry].
   static const String deletedAt = 'deleted_at';
@@ -106,6 +108,9 @@ class Entry {
   final EntryWeather? weather;
   final EntryActivity? activity;
 
+  /// A time capsule stays sealed until this moment.
+  final DateTime? openAt;
+
   const Entry({
     this.id,
     required this.text,
@@ -115,7 +120,11 @@ class Entry {
     this.location,
     this.weather,
     this.activity,
+    this.openAt,
   });
+
+  /// Whether this is a time capsule that has not opened yet.
+  bool get isSealed => openAt?.isAfter(DateTime.now()) ?? false;
 
   static const _unset = Object();
 
@@ -128,6 +137,7 @@ class Entry {
     Object? location = _unset,
     Object? weather = _unset,
     Object? activity = _unset,
+    Object? openAt = _unset,
   }) =>
       Entry(
         id: id ?? this.id,
@@ -140,6 +150,7 @@ class Entry {
         weather: weather == _unset ? this.weather : weather as EntryWeather?,
         activity:
             activity == _unset ? this.activity : activity as EntryActivity?,
+        openAt: openAt == _unset ? this.openAt : openAt as DateTime?,
       );
 
   static Entry fromJson(Map<String, Object?> json) {
@@ -162,6 +173,10 @@ class Entry {
               code: json[EntryFields.weatherCode] as int,
               temperature: (json[EntryFields.temperature] as num).toDouble()),
       activity: EntryActivity.fromName(json[EntryFields.activity] as String?),
+      openAt: switch (json[EntryFields.openAt]) {
+        final String at => DateTime.parse(at),
+        _ => null,
+      },
     );
   }
 
@@ -177,5 +192,6 @@ class Entry {
         EntryFields.weatherCode: weather?.code,
         EntryFields.temperature: weather?.temperature,
         EntryFields.activity: activity?.name,
+        EntryFields.openAt: openAt?.toIso8601String(),
       };
 }

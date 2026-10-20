@@ -58,6 +58,7 @@ class EntryViewPage extends StatelessWidget {
     final tags = context.watch<TagsProvider>();
     final favorite = tags.isFavorite(entryId);
     final l10n = AppLocalizations.of(context)!;
+    final sealed = entry.isSealed;
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surfaceContainerLowest,
@@ -65,46 +66,57 @@ class EntryViewPage extends StatelessWidget {
         automaticallyImplyLeading: !embedded,
         backgroundColor: Theme.of(context).colorScheme.surfaceContainerLowest,
         actions: [
-          IconButton(
-            tooltip: l10n.entryShare,
-            icon: const Icon(Icons.share_rounded),
-            onPressed: () => _share(context, entry, images),
-          ),
-          if (tags.favoriteTag != null)
+          if (!sealed) ...[
             IconButton(
-              key: const ValueKey('entry-favorite'),
-              tooltip: l10n.entryFavorite,
-              isSelected: favorite,
-              icon: const Icon(Icons.star_outline_rounded),
-              selectedIcon: const Icon(Icons.star_rounded),
-              onPressed: () => tags.setFavorite(entryId, !favorite),
+              tooltip: l10n.entryShare,
+              icon: const Icon(Icons.share_rounded),
+              onPressed: () => _share(context, entry, images),
             ),
-          IconButton(
-            key: const ValueKey('diary-entry-edit'),
-            tooltip: l10n.entryEdit,
-            icon: const Icon(Icons.edit_rounded),
-            onPressed: () => _edit(context, entry, images),
-          ),
+            if (tags.favoriteTag != null)
+              IconButton(
+                key: const ValueKey('entry-favorite'),
+                tooltip: l10n.entryFavorite,
+                isSelected: favorite,
+                icon: const Icon(Icons.star_outline_rounded),
+                selectedIcon: const Icon(Icons.star_rounded),
+                onPressed: () => tags.setFavorite(entryId, !favorite),
+              ),
+            IconButton(
+              key: const ValueKey('diary-entry-edit'),
+              tooltip: l10n.entryEdit,
+              icon: const Icon(Icons.edit_rounded),
+              onPressed: () => _edit(context, entry, images),
+            ),
+          ],
           PopupMenuButton<String>(
             key: const ValueKey('entry-more'),
             onSelected: (value) => switch (value) {
               'duplicate' => _duplicate(context, entry),
               'template' => _saveAsTemplate(context, entry),
+              'capsule' => _seal(context, entry),
               _ => _delete(context, entry),
             },
             itemBuilder: (context) => [
-              PopupMenuItem(
-                  key: const ValueKey('entry-duplicate'),
-                  value: 'duplicate',
-                  child: ListTile(
-                      leading: const Icon(Icons.copy_rounded),
-                      title: Text(l10n.entryDuplicate))),
-              PopupMenuItem(
-                  key: const ValueKey('entry-save-template'),
-                  value: 'template',
-                  child: ListTile(
-                      leading: const Icon(Icons.note_add_outlined),
-                      title: Text(l10n.entrySaveAsTemplate))),
+              if (!sealed) ...[
+                PopupMenuItem(
+                    key: const ValueKey('entry-capsule'),
+                    value: 'capsule',
+                    child: ListTile(
+                        leading: const Icon(Icons.lock_clock_outlined),
+                        title: Text(l10n.capsuleSeal))),
+                PopupMenuItem(
+                    key: const ValueKey('entry-duplicate'),
+                    value: 'duplicate',
+                    child: ListTile(
+                        leading: const Icon(Icons.copy_rounded),
+                        title: Text(l10n.entryDuplicate))),
+                PopupMenuItem(
+                    key: const ValueKey('entry-save-template'),
+                    value: 'template',
+                    child: ListTile(
+                        leading: const Icon(Icons.note_add_outlined),
+                        title: Text(l10n.entrySaveAsTemplate))),
+              ],
               PopupMenuItem(
                   value: 'delete',
                   child: ListTile(
@@ -115,35 +127,37 @@ class EntryViewPage extends StatelessWidget {
           ),
         ],
       ),
-      body: ListView(
-        padding: const EdgeInsets.only(bottom: 24),
-        children: [
-          if (images.isNotEmpty) _Photos(images: images),
-          Center(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 760),
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    EntryDateBlock(entry: entry),
-                    _Metadata(entry: entry),
-                    const SizedBox(height: 16),
-                    if (entry.text.isNotEmpty)
-                      SelectionArea(
-                        child: ScaledMarkdown(
-                            data: entry.text,
-                            selectable: false,
-                            typography: EntryTypography.of(context)),
+      body: sealed
+          ? _SealedCapsule(entry: entry)
+          : ListView(
+              padding: const EdgeInsets.only(bottom: 24),
+              children: [
+                if (images.isNotEmpty) _Photos(images: images),
+                Center(
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 760),
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          EntryDateBlock(entry: entry),
+                          _Metadata(entry: entry),
+                          const SizedBox(height: 16),
+                          if (entry.text.isNotEmpty)
+                            SelectionArea(
+                              child: ScaledMarkdown(
+                                  data: entry.text,
+                                  selectable: false,
+                                  typography: EntryTypography.of(context)),
+                            ),
+                        ],
                       ),
-                  ],
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
-          ),
-        ],
-      ),
       bottomNavigationBar: onPrevious == null && onNext == null
           ? null
           : SafeArea(
@@ -194,6 +208,20 @@ class EntryViewPage extends StatelessWidget {
     final fallback = TimeManager.formatDate(entry.timeCreate, context);
     await EntryActions.saveAsTemplate(entry, fallback);
     messenger.showSnackBar(SnackBar(content: Text(l10n.entrySavedAsTemplate)));
+  }
+
+  /// Seals the entry until a day the writer picks.
+  Future<void> _seal(BuildContext context, Entry entry) async {
+    final now = DateTime.now();
+    final day = await TimeManager.pickDate(
+      context,
+      initialDate: DateTime(now.year + 1, now.month, now.day),
+      firstDate: DateTime(now.year, now.month, now.day + 1),
+      lastDate: DateTime(now.year + 50),
+    );
+    if (day == null) return;
+    await EntryStore.instance
+        .setOpenAt(entry, DateTime(day.year, day.month, day.day));
   }
 
   Future<void> _delete(BuildContext context, Entry entry) async {
@@ -276,6 +304,69 @@ class _PhotosState extends State<_Photos> {
             ),
           ),
       ]),
+    );
+  }
+}
+
+/// What a sealed time capsule shows instead of its content.
+class _SealedCapsule extends StatelessWidget {
+  const _SealedCapsule({required this.entry});
+  final Entry entry;
+
+  Future<void> _openEarly(BuildContext context) async {
+    final l10n = AppLocalizations.of(context)!;
+    final open = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.capsuleOpenEarly),
+        content: Text(l10n.capsuleOpenEarlyDescription),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
+          ),
+          FilledButton(
+            key: const ValueKey('capsule-open-confirm'),
+            onPressed: () => Navigator.pop(context, true),
+            child: Text(l10n.capsuleOpenEarly),
+          ),
+        ],
+      ),
+    );
+    if (open == true) await EntryStore.instance.setOpenAt(entry, null);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(32),
+        child: Column(mainAxisSize: MainAxisSize.min, children: [
+          Icon(Icons.lock_clock_rounded,
+              size: 80, color: theme.colorScheme.primary),
+          const SizedBox(height: 16),
+          Text(l10n.capsuleTitle, style: theme.textTheme.headlineSmall),
+          const SizedBox(height: 8),
+          Text(
+              l10n.capsuleOpensOn(
+                  TimeManager.formatDate(entry.openAt!, context)),
+              style: theme.textTheme.titleMedium),
+          Text(
+              l10n.capsuleWrittenOn(
+                  TimeManager.formatDate(entry.timeCreate, context)),
+              style: theme.textTheme.bodyMedium
+                  ?.copyWith(color: theme.colorScheme.outline)),
+          const SizedBox(height: 24),
+          TextButton.icon(
+            key: const ValueKey('capsule-open-early'),
+            onPressed: () => _openEarly(context),
+            icon: const Icon(Icons.lock_open_rounded),
+            label: Text(l10n.capsuleOpenEarly),
+          ),
+        ]),
+      ),
     );
   }
 }

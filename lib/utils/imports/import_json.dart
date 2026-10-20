@@ -57,7 +57,11 @@ List<ImportedEntry> decodeJsonEntries(Uint8List bytes) {
                   temperature: (weather['temperature'] as num).toDouble()),
               _ => null,
             },
-            activity: EntryActivity.fromName(entry['activity'] as String?)),
+            activity: EntryActivity.fromName(entry['activity'] as String?),
+            openAt: switch (entry['openAt']) {
+              final String at => DateTime.parse(at),
+              _ => null,
+            }),
         images: [
           // Support old imgPath field
           if (entry['imgPath'] != null)

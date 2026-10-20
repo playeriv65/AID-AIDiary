@@ -476,5 +476,12 @@
     "reviewFavorites": "最常出現",
     "reviewByMonth": "每月篇數",
     "reviewHighlight": "精選一篇",
-    "yearInPixels": "心情像素"
+    "yearInPixels": "心情像素",
+    "capsuleSeal": "設為時間膠囊",
+    "capsuleTitle": "時間膠囊",
+    "capsuleOpensOn": "{date} 開啟",
+    "capsuleWrittenOn": "寫於 {date}",
+    "capsuleOpenEarly": "提前打開",
+    "capsuleOpenEarlyDescription": "膠囊會立即打開，並且不再封存。",
+    "capsuleOpened": "時間膠囊已開啟"
 }

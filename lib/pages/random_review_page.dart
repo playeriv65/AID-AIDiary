@@ -62,7 +62,9 @@ class _RandomReviewPageState extends State<RandomReviewPage> {
     _shuffle();
   }
 
-  bool _matches(Entry entry) => switch (_filter) {
+  bool _matches(Entry entry) =>
+      !entry.isSealed &&
+      switch (_filter) {
         RandomFilter.all => true,
         RandomFilter.photos => EntryImagesProvider.instance
             .getForEntry(entry)

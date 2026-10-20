@@ -118,6 +118,20 @@ class EntryStore with ChangeNotifier {
 
   Future<List<DeletedEntry>> deleted() => EntryDao.getDeleted();
 
+  /// Seals an entry as a time capsule until [openAt], or opens it with null.
+  Future<Entry> setOpenAt(Entry entry, DateTime? openAt) async {
+    final updated = entry.copy(openAt: openAt);
+    await EntryDao.update(updated);
+    _entries = [
+      for (final existing in _entries)
+        existing.id == entry.id ? updated : existing,
+    ];
+    _indexEntriesByDay();
+    await AppDatabase.instance.updateExternalDatabase();
+    notifyListeners();
+    return updated;
+  }
+
   /// Brings an entry back from Recently deleted.
   Future<void> restore(Entry entry) async {
     await EntryDao.setDeleted(entry.id!, null);

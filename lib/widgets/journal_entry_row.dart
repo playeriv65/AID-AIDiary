@@ -42,7 +42,9 @@ class JournalEntryRow extends StatelessWidget {
     final cs = theme.colorScheme;
     final l10n = AppLocalizations.of(context)!;
     final preview = entryPreview(entry.text);
-    final thumbnail = images.isNotEmpty && !hideImage ? images.first : null;
+    final sealed = entry.isSealed;
+    final thumbnail =
+        images.isNotEmpty && !hideImage && !sealed ? images.first : null;
     final muted =
         theme.textTheme.bodyMedium?.copyWith(color: cs.onSurfaceVariant);
     final hasMood = MoodIcon.getMoodIcon(entry.mood).isNotEmpty;
@@ -68,59 +70,78 @@ class JournalEntryRow extends StatelessWidget {
                         style: theme.textTheme.titleSmall
                             ?.copyWith(fontWeight: FontWeight.w700)),
                     const SizedBox(height: 4),
-                    if (preview.title != null)
-                      Text(preview.title!,
-                          maxLines: 1,
+                    // A sealed capsule shows nothing of what is inside.
+                    if (sealed)
+                      Row(children: [
+                        Icon(Icons.lock_clock_rounded,
+                            size: 16, color: cs.primary),
+                        const SizedBox(width: 6),
+                        Expanded(
+                          child: Text(
+                              l10n.capsuleOpensOn(TimeManager.formatDate(
+                                  entry.openAt!, context)),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: muted),
+                        ),
+                      ])
+                    else ...[
+                      if (preview.title != null)
+                        Text(preview.title!,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: theme.textTheme.bodyMedium),
+                      Text(
+                          preview.snippet.isEmpty && preview.title == null
+                              ? l10n.writeSomethingHint
+                              : preview.snippet,
+                          maxLines: preview.title == null ? 2 : 1,
                           overflow: TextOverflow.ellipsis,
-                          style: theme.textTheme.bodyMedium),
-                    Text(
-                        preview.snippet.isEmpty && preview.title == null
-                            ? l10n.writeSomethingHint
-                            : preview.snippet,
-                        maxLines: preview.title == null ? 2 : 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: muted),
-                    if (hasMood || location != null || entry.id != null) ...[
-                      const SizedBox(height: 6),
-                      SizedBox(
-                        height: 18,
-                        child: Row(children: [
-                          if (hasMood) ...[
-                            MoodIcon(moodValue: entry.mood, size: 14),
-                            const SizedBox(width: 6),
-                          ],
-                          if (location != null) ...[
-                            Icon(Icons.place_rounded,
-                                size: 14, color: cs.onSurfaceVariant),
-                            const SizedBox(width: 2),
-                            Flexible(
-                              child: Text(location.label,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: theme.textTheme.labelSmall
-                                      ?.copyWith(color: cs.onSurfaceVariant)),
+                          style: muted),
+                      if (hasMood || location != null || entry.id != null) ...[
+                        const SizedBox(height: 6),
+                        SizedBox(
+                          height: 18,
+                          child: Row(children: [
+                            if (hasMood) ...[
+                              MoodIcon(moodValue: entry.mood, size: 14),
+                              const SizedBox(width: 6),
+                            ],
+                            if (location != null) ...[
+                              Icon(Icons.place_rounded,
+                                  size: 14, color: cs.onSurfaceVariant),
+                              const SizedBox(width: 2),
+                              Flexible(
+                                child: Text(location.label,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: theme.textTheme.labelSmall
+                                        ?.copyWith(color: cs.onSurfaceVariant)),
+                              ),
+                              const SizedBox(width: 6),
+                            ],
+                            if (entry.weather != null) ...[
+                              Icon(weatherIcon(entry.weather!.code),
+                                  size: 14, color: cs.onSurfaceVariant),
+                              const SizedBox(width: 6),
+                            ],
+                            if (entry.activity != null) ...[
+                              Icon(activityIcon(entry.activity!),
+                                  size: 14, color: cs.onSurfaceVariant),
+                              const SizedBox(width: 6),
+                            ],
+                            Expanded(
+                              child: Align(
+                                alignment: AlignmentDirectional.centerStart,
+                                child: EntryTagIconPreview(
+                                    entryId: entry.id,
+                                    iconSize: 14,
+                                    spacing: 4),
+                              ),
                             ),
-                            const SizedBox(width: 6),
-                          ],
-                          if (entry.weather != null) ...[
-                            Icon(weatherIcon(entry.weather!.code),
-                                size: 14, color: cs.onSurfaceVariant),
-                            const SizedBox(width: 6),
-                          ],
-                          if (entry.activity != null) ...[
-                            Icon(activityIcon(entry.activity!),
-                                size: 14, color: cs.onSurfaceVariant),
-                            const SizedBox(width: 6),
-                          ],
-                          Expanded(
-                            child: Align(
-                              alignment: AlignmentDirectional.centerStart,
-                              child: EntryTagIconPreview(
-                                  entryId: entry.id, iconSize: 14, spacing: 4),
-                            ),
-                          ),
-                        ]),
-                      ),
+                          ]),
+                        ),
+                      ],
                     ],
                   ]),
             ),

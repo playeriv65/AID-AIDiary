@@ -974,5 +974,19 @@
   "reviewHighlight": "Highlight",
   "@reviewHighlight": {},
   "yearInPixels": "Year in pixels",
-  "@yearInPixels": {}
+  "@yearInPixels": {},
+  "capsuleSeal": "Seal as a time capsule",
+  "@capsuleSeal": {},
+  "capsuleTitle": "Time capsule",
+  "@capsuleTitle": {},
+  "capsuleOpensOn": "Opens on {date}",
+  "@capsuleOpensOn": {},
+  "capsuleWrittenOn": "Written on {date}",
+  "@capsuleWrittenOn": {},
+  "capsuleOpenEarly": "Open early",
+  "@capsuleOpenEarly": {},
+  "capsuleOpenEarlyDescription": "The capsule opens now and stays open.",
+  "@capsuleOpenEarlyDescription": {},
+  "capsuleOpened": "Time capsule opened",
+  "@capsuleOpened": {}
 }

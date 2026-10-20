@@ -1635,4 +1635,30 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get yearInPixels => 'Year in pixels';
+
+  @override
+  String get capsuleSeal => 'Seal as a time capsule';
+
+  @override
+  String get capsuleTitle => 'Time capsule';
+
+  @override
+  String capsuleOpensOn(Object date) {
+    return 'Opens on $date';
+  }
+
+  @override
+  String capsuleWrittenOn(Object date) {
+    return 'Written on $date';
+  }
+
+  @override
+  String get capsuleOpenEarly => 'Open early';
+
+  @override
+  String get capsuleOpenEarlyDescription =>
+      'The capsule opens now and stays open.';
+
+  @override
+  String get capsuleOpened => 'Time capsule opened';
 }

@@ -102,7 +102,9 @@ class FlashbackManager {
       BuildContext context, List<Entry> entries) {
     final configProvider = Provider.of<ConfigProvider>(context);
 
-    List<Entry> filteredEntries = entries;
+    // Sealed time capsules must not surface early.
+    List<Entry> filteredEntries =
+        entries.where((entry) => !entry.isSealed).toList();
 
     if (configProvider.get(Settings.excludeBadDaysFromFlashbacks)) {
       // Filter out unhappy entries

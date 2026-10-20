@@ -475,5 +475,12 @@
     "reviewFavorites": "最常出现",
     "reviewByMonth": "每月篇数",
     "reviewHighlight": "精选一篇",
-    "yearInPixels": "心情像素"
+    "yearInPixels": "心情像素",
+    "capsuleSeal": "设为时间胶囊",
+    "capsuleTitle": "时间胶囊",
+    "capsuleOpensOn": "{date} 开启",
+    "capsuleWrittenOn": "写于 {date}",
+    "capsuleOpenEarly": "提前打开",
+    "capsuleOpenEarlyDescription": "胶囊会立即打开，并且不再封存。",
+    "capsuleOpened": "时间胶囊已开启"
 }
