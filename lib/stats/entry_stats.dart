@@ -18,10 +18,14 @@ const List<String> _weekdayKeys = [
   'Sun',
 ];
 
+/// Word counts of entries already seen. Entries are immutable and an edit
+/// makes a new one, so only changed entries are counted again.
+final _wordCounts = Expando<int>();
+
 int totalWordCount(List<Entry> entries) {
   var total = 0;
   for (final entry in entries) {
-    total += wordsCount(entry.text);
+    total += _wordCounts[entry] ??= wordsCount(entry.text);
   }
   return total;
 }
@@ -30,8 +34,7 @@ int greatDayCount(List<Entry> entries) {
   final greatDays = <DateTime>{};
   for (final entry in entries) {
     if (entry.mood == null || entry.mood! < 1) continue;
-    final date = entry.timeCreate;
-    greatDays.add(DateTime(date.year, date.month, date.day));
+    greatDays.add(entry.day);
   }
   return greatDays.length;
 }

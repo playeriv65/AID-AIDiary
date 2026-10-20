@@ -211,12 +211,21 @@ List<(DateTime, List<Entry>)> groupEntriesByDay(List<Entry> entries,
     {DateTime Function(Entry entry)? timeOf}) {
   final groups = <(DateTime, List<Entry>)>[];
   for (final entry in entries) {
-    final time = timeOf?.call(entry) ?? entry.timeCreate;
-    final day = DateTime(time.year, time.month, time.day);
-    if (groups.isNotEmpty && groups.last.$1 == day) {
+    final last = groups.lastOrNull?.$1;
+    final time = timeOf?.call(entry);
+    final sameDay = time == null
+        ? last == entry.day
+        : last != null &&
+            last.year == time.year &&
+            last.month == time.month &&
+            last.day == time.day;
+    if (sameDay) {
       groups.last.$2.add(entry);
     } else {
-      groups.add((day, [entry]));
+      groups.add((
+        time == null ? entry.day : DateTime(time.year, time.month, time.day),
+        [entry]
+      ));
     }
   }
   return groups;

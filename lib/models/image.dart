@@ -3,6 +3,7 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'package:aid_diary/config/app_config.dart';
+import 'package:aid_diary/utils/local_time.dart';
 import 'package:path/path.dart' as p;
 
 const String imagesTable = 'entry_images';
@@ -96,7 +97,7 @@ class EntryImage {
         entryId: json[EntryImageFields.entryId] as int?,
         imgPath: json[EntryImageFields.imgPath] as String,
         imgRank: json[EntryImageFields.imgRank] as int,
-        timeCreate: DateTime.parse(json[EntryImageFields.timeCreate] as String),
+        timeCreate: parseLocalTime(json[EntryImageFields.timeCreate] as String),
       );
 
   Map<String, Object?> toJson() => {

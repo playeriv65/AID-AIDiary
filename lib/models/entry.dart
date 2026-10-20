@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'package:aid_diary/utils/local_time.dart';
+
 const String entriesTable = 'entries';
 
 const String deprecatedImgPath = 'img_path';
@@ -111,7 +113,7 @@ class Entry {
   /// A time capsule stays sealed until this moment.
   final DateTime? openAt;
 
-  const Entry({
+  Entry({
     this.id,
     required this.text,
     this.mood,
@@ -122,6 +124,12 @@ class Entry {
     this.activity,
     this.openAt,
   });
+
+  /// Local midnight of [timeCreate], the key entries are grouped by. Kept
+  /// once made: a local DateTime asks the OS for the time zone, which adds
+  /// up over thousands of entries on every change.
+  late final DateTime day =
+      DateTime(timeCreate.year, timeCreate.month, timeCreate.day);
 
   /// Whether this is a time capsule that has not opened yet.
   bool get isSealed => openAt?.isAfter(DateTime.now()) ?? false;
@@ -163,8 +171,8 @@ class Entry {
       id: json[EntryFields.id] as int?,
       text: json[EntryFields.text] as String,
       mood: json[EntryFields.mood] as int?,
-      timeCreate: DateTime.parse(json[EntryFields.timeCreate] as String),
-      timeModified: DateTime.parse(json[EntryFields.timeModified] as String),
+      timeCreate: parseLocalTime(json[EntryFields.timeCreate] as String),
+      timeModified: parseLocalTime(json[EntryFields.timeModified] as String),
       location: location.isEmpty ? null : location,
       weather: json[EntryFields.weatherCode] == null ||
               json[EntryFields.temperature] == null
@@ -174,7 +182,7 @@ class Entry {
               temperature: (json[EntryFields.temperature] as num).toDouble()),
       activity: EntryActivity.fromName(json[EntryFields.activity] as String?),
       openAt: switch (json[EntryFields.openAt]) {
-        final String at => DateTime.parse(at),
+        final String at => parseLocalTime(at),
         _ => null,
       },
     );

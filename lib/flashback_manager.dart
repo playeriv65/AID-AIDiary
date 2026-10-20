@@ -98,10 +98,41 @@ class FlashbackManager {
     return null;
   }
 
+  static Object? _cacheKey;
+  static List<Flashback> _cached = const [];
+
+  /// Today's flashbacks from [entries], which must be newest first. Pages
+  /// rebuild often, so the result is kept until the entry list (replaced on
+  /// every change), the day, the language or a flashback setting changes.
   static List<Flashback> getFlashbacks(
       BuildContext context, List<Entry> entries) {
     final configProvider = Provider.of<ConfigProvider>(context);
+    final now = DateTime.now();
+    final key = (
+      entries,
+      DateTime(now.year, now.month, now.day),
+      Localizations.localeOf(context),
+      [
+        for (final setting in [
+          Settings.excludeBadDaysFromFlashbacks,
+          Settings.showflashbackYearsAgo,
+          Settings.showflashback6MonthsAgo,
+          Settings.showflashback1MonthAgo,
+          Settings.showflashback1WeekAgo,
+          Settings.showflashbackGoodDay,
+          Settings.showflashbackRandomDay,
+        ])
+          configProvider.get(setting)
+      ].join(),
+    );
+    if (key == _cacheKey) return _cached;
+    _cached = _compute(context, configProvider, entries, now);
+    _cacheKey = key;
+    return _cached;
+  }
 
+  static List<Flashback> _compute(BuildContext context,
+      ConfigProvider configProvider, List<Entry> entries, DateTime now) {
     // Sealed time capsules must not surface early.
     List<Entry> filteredEntries =
         entries.where((entry) => !entry.isSealed).toList();
@@ -124,25 +155,28 @@ class FlashbackManager {
 
     final locale = TimeManager.currentLocale(context);
     final isJalali = TimeManager.isJalaliCalendar(context);
-    final now = DateTime.now();
+    final yearsAgo = configProvider.get(Settings.showflashbackYearsAgo);
+    final sixMonthsAgo = configProvider.get(Settings.showflashback6MonthsAgo);
+    final oneMonthAgo = configProvider.get(Settings.showflashback1MonthAgo);
+    final oneWeekAgo = configProvider.get(Settings.showflashback1WeekAgo);
+    final weekAgo = now.subtract(const Duration(days: 7));
 
     // Time based memories
-    for (var entry in filteredEntries.reversed.toList()) {
+    for (var entry in filteredEntries.reversed) {
       if (usedEntries.contains(entry)) continue;
-      if (configProvider.get(Settings.showflashbackYearsAgo) &&
+      if (yearsAgo &&
           TimeManager.isSameCalendarDayOfYear(
               entry.timeCreate, now, isJalali) &&
           TimeManager.calendarYearOf(entry.timeCreate, isJalali) !=
               TimeManager.calendarYearOf(now, isJalali)) {
-        var yearsAgo = TimeManager.calendarYearOf(now, isJalali) -
+        final years = TimeManager.calendarYearOf(now, isJalali) -
             TimeManager.calendarYearOf(entry.timeCreate, isJalali);
         onThisDayEntries.add(entry);
-        onThisDayLabels
-            .add(AppLocalizations.of(context)!.flashbackYear(yearsAgo));
+        onThisDayLabels.add(AppLocalizations.of(context)!.flashbackYear(years));
         usedEntries.add(entry);
         continue;
       }
-      if (configProvider.get(Settings.showflashback6MonthsAgo) &&
+      if (sixMonthsAgo &&
           TimeManager.datesExactCalendarMonthDiff(
                   entry.timeCreate, now, isJalali) ==
               6) {
@@ -151,7 +185,7 @@ class FlashbackManager {
         usedEntries.add(entry);
         continue;
       }
-      if (configProvider.get(Settings.showflashback1MonthAgo) &&
+      if (oneMonthAgo &&
           TimeManager.datesExactCalendarMonthDiff(
                   entry.timeCreate, now, isJalali) ==
               1) {
@@ -160,9 +194,7 @@ class FlashbackManager {
         usedEntries.add(entry);
         continue;
       }
-      if (configProvider.get(Settings.showflashback1WeekAgo) &&
-          TimeManager.isSameDay(entry.timeCreate,
-              DateTime.now().subtract(const Duration(days: 7)))) {
+      if (oneWeekAgo && TimeManager.isSameDay(entry.timeCreate, weekAgo)) {
         final label = AppLocalizations.of(context)!.flashbackWeek(1);
         singleFlashbacks.putIfAbsent(label, () => []).add(entry);
         usedEntries.add(entry);

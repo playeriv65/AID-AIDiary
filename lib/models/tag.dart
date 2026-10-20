@@ -3,6 +3,7 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'package:aid_diary/models/tag_icon_type.dart';
+import 'package:aid_diary/utils/local_time.dart';
 
 const String tagsTable = 'tags';
 const String entryTagsTable = 'entry_tags';
@@ -101,8 +102,8 @@ class Tag {
         tagType: TagType.fromInt(json[TagFields.tagType] as int),
         color: json[TagFields.color] as int?,
         sortOrder: (json[TagFields.sortOrder] as int?) ?? 0,
-        timeCreate: DateTime.parse(json[TagFields.timeCreate] as String),
-        timeModified: DateTime.parse(json[TagFields.timeModified] as String),
+        timeCreate: parseLocalTime(json[TagFields.timeCreate] as String),
+        timeModified: parseLocalTime(json[TagFields.timeModified] as String),
       );
 
   Map<String, Object?> toJson() => {
@@ -163,7 +164,7 @@ class EntryTag {
         entryId: json[EntryTagFields.entryId] as int,
         tagId: json[EntryTagFields.tagId] as int,
         value: json[EntryTagFields.value] as String?,
-        timeCreate: DateTime.parse(json[EntryTagFields.timeCreate] as String),
+        timeCreate: parseLocalTime(json[EntryTagFields.timeCreate] as String),
       );
 
   Map<String, Object?> toJson() => {
@@ -214,7 +215,7 @@ class TemplateTag {
         templateId: json[TemplateTagFields.templateId] as int,
         tagId: json[TemplateTagFields.tagId] as int,
         timeCreate:
-            DateTime.parse(json[TemplateTagFields.timeCreate] as String),
+            parseLocalTime(json[TemplateTagFields.timeCreate] as String),
       );
 
   Map<String, Object?> toJson() => {

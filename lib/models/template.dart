@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'package:aid_diary/utils/local_time.dart';
+
 const String templatesTable = 'templates';
 
 class TemplatesFields {
@@ -47,9 +49,9 @@ class Template {
         id: json[TemplatesFields.id] as int?,
         name: json[TemplatesFields.name] as String,
         text: json[TemplatesFields.text] as String?,
-        timeCreate: DateTime.parse(json[TemplatesFields.timeCreate] as String),
+        timeCreate: parseLocalTime(json[TemplatesFields.timeCreate] as String),
         timeModified:
-            DateTime.parse(json[TemplatesFields.timeModified] as String),
+            parseLocalTime(json[TemplatesFields.timeModified] as String),
       );
 
   Map<String, Object?> toJson() => {

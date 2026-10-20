@@ -3,6 +3,7 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'package:aid_diary/models/tag_icon_type.dart';
+import 'package:aid_diary/utils/local_time.dart';
 
 const String tagCategoriesTable = 'tag_categories';
 
@@ -77,9 +78,9 @@ class TagCategory {
         color: json[TagCategoryFields.color] as int?,
         sortOrder: (json[TagCategoryFields.sortOrder] as int?) ?? 0,
         timeCreate:
-            DateTime.parse(json[TagCategoryFields.timeCreate] as String),
+            parseLocalTime(json[TagCategoryFields.timeCreate] as String),
         timeModified:
-            DateTime.parse(json[TagCategoryFields.timeModified] as String),
+            parseLocalTime(json[TagCategoryFields.timeModified] as String),
       );
 
   Map<String, Object?> toJson() => {

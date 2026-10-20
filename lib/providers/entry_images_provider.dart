@@ -14,8 +14,18 @@ class EntryImagesProvider with ChangeNotifier {
 
   EntryImagesProvider._init();
 
-  List<EntryImage> images = List.empty(growable: true);
-  Map<int, EntryImage?> _firstImageByEntryId = {};
+  List<EntryImage> _images = [];
+  List<EntryImage> get images => _images;
+
+  @visibleForTesting
+  set images(List<EntryImage> value) {
+    _images = value;
+    _rebuildCache();
+  }
+
+  /// Each entry's images, highest rank first, so lookups while building
+  /// pages do not scan every image.
+  Map<int, List<EntryImage>> _byEntry = {};
 
   bool _isLoaded = false;
 
@@ -25,21 +35,20 @@ class EntryImagesProvider with ChangeNotifier {
   set isLoaded(bool value) => _isLoaded = value;
 
   void _rebuildCache() {
-    final cache = <int, EntryImage?>{};
-    for (final img in images) {
+    final byEntry = <int, List<EntryImage>>{};
+    for (final img in _images) {
       final id = img.entryId;
-      if (id == null) continue;
-      final existing = cache[id];
-      if (existing == null || img.imgRank > existing.imgRank) {
-        cache[id] = img;
-      }
+      if (id != null) byEntry.putIfAbsent(id, () => []).add(img);
     }
-    _firstImageByEntryId = cache;
+    for (final list in byEntry.values) {
+      list.sort((a, b) => b.imgRank.compareTo(a.imgRank));
+    }
+    _byEntry = byEntry;
   }
 
   /// Load the provider's data from the app database
   Future<void> load() async {
-    images = await EntryImageDao.getAll();
+    _images = await EntryImageDao.getAll();
     _rebuildCache();
     _isLoaded = true;
     notifyListeners();
@@ -49,7 +58,7 @@ class EntryImagesProvider with ChangeNotifier {
 
   Future<void> add(EntryImage image, {skipUpdate = false}) async {
     final imageWithId = await EntryImageDao.add(image);
-    images.add(imageWithId);
+    _images.add(imageWithId);
     _rebuildCache();
     await AppDatabase.instance.updateExternalDatabase();
     if (!skipUpdate) {
@@ -59,7 +68,7 @@ class EntryImagesProvider with ChangeNotifier {
 
   Future<void> remove(EntryImage image) async {
     await EntryImageDao.remove(image);
-    images.removeWhere((x) => x.id == image.id);
+    _images.removeWhere((x) => x.id == image.id);
     _rebuildCache();
     await AppDatabase.instance.updateExternalDatabase();
     notifyListeners();
@@ -67,8 +76,8 @@ class EntryImagesProvider with ChangeNotifier {
 
   Future<void> update(EntryImage image) async {
     await EntryImageDao.update(image);
-    final index = images.indexWhere((x) => x.id == image.id);
-    images[index] = image;
+    final index = _images.indexWhere((x) => x.id == image.id);
+    _images[index] = image;
     _rebuildCache();
     await AppDatabase.instance.updateExternalDatabase();
     notifyListeners();
@@ -77,8 +86,8 @@ class EntryImagesProvider with ChangeNotifier {
   /// Replaces the cached images for [entryId] with rows already written
   /// elsewhere.
   void applyForEntry(int entryId, List<EntryImage> written) {
-    images = [
-      ...images.where((image) => image.entryId != entryId),
+    _images = [
+      ..._images.where((image) => image.entryId != entryId),
       ...written,
     ];
     _rebuildCache();
@@ -86,13 +95,8 @@ class EntryImagesProvider with ChangeNotifier {
   }
 
   EntryImage? getFirstImageForEntry(int entryId) =>
-      _firstImageByEntryId[entryId];
+      _byEntry[entryId]?.firstOrNull;
 
-  /// Get the images for a given entry, sorted by rank descending.
-  List<EntryImage> getForEntry(Entry entry) {
-    final imagesForEntry =
-        images.where((img) => img.entryId == entry.id!).toList();
-    imagesForEntry.sort((a, b) => b.imgRank.compareTo(a.imgRank));
-    return imagesForEntry;
-  }
+  /// The images of [entry], highest rank first. Do not modify the list.
+  List<EntryImage> getForEntry(Entry entry) => _byEntry[entry.id] ?? const [];
 }

@@ -5,6 +5,7 @@
 import 'package:aid_diary/database/app_database.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:aid_diary/utils/local_time.dart';
 
 /// An entry in Recently deleted and when it went there.
 typedef DeletedEntry = ({Entry entry, DateTime deletedAt});
@@ -28,7 +29,7 @@ class EntryDao {
       for (final json in result)
         (
           entry: Entry.fromJson(json),
-          deletedAt: DateTime.parse(json[EntryFields.deletedAt] as String),
+          deletedAt: parseLocalTime(json[EntryFields.deletedAt] as String),
         ),
     ];
   }

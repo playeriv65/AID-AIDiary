@@ -62,8 +62,7 @@ class PeriodReview {
   int get daysInPeriod => end.difference(start).inDays;
 
   Set<DateTime> get daysWritten => {
-        for (final e in entries)
-          DateTime(e.timeCreate.year, e.timeCreate.month, e.timeCreate.day),
+        for (final e in entries) e.day,
       };
 
   int get words => totalWordCount(entries);

@@ -35,11 +35,7 @@ class TodayStory {
   static List<StoryGroup> groups(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final entries = EntriesProvider.instance.entries;
-    final days = entries
-        .map((e) =>
-            DateTime(e.timeCreate.year, e.timeCreate.month, e.timeCreate.day))
-        .toSet()
-        .length;
+    final days = EntriesProvider.instance.getEntryDayCount();
     final flashback = ConfigProvider.instance.get(Settings.showFlashbacks)
         ? FlashbackManager.getFlashbacks(context, entries).firstOrNull
         : null;

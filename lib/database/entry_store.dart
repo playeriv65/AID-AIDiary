@@ -222,7 +222,17 @@ class EntryStore with ChangeNotifier {
   }
 
   List<Entry> getEntriesForDate(DateTime date) {
-    return _entriesByDay[DateTime(date.year, date.month, date.day)] ?? const [];
+    // Calendars pass local midnights already; making one again costs a
+    // time zone lookup per call.
+    final day = !date.isUtc &&
+            date.hour == 0 &&
+            date.minute == 0 &&
+            date.second == 0 &&
+            date.millisecond == 0 &&
+            date.microsecond == 0
+        ? date
+        : DateTime(date.year, date.month, date.day);
+    return _entriesByDay[day] ?? const [];
   }
 
   int getEntryDayCount() => _entriesByDay.length;
@@ -382,9 +392,7 @@ class EntryStore with ChangeNotifier {
   void _indexEntriesByDay() {
     final index = <DateTime, List<Entry>>{};
     for (final entry in _entries) {
-      final key = DateTime(
-          entry.timeCreate.year, entry.timeCreate.month, entry.timeCreate.day);
-      index.putIfAbsent(key, () => []).add(entry);
+      index.putIfAbsent(entry.day, () => []).add(entry);
     }
     _entriesByDay = index;
   }

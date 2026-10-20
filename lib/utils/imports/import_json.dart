@@ -10,6 +10,7 @@ import 'package:aid_diary/models/image.dart';
 import 'package:aid_diary/storage/storage_picker.dart';
 import 'package:aid_diary/utils/imports/import_helpers.dart';
 import 'package:aid_diary/utils/operation_outcome.dart';
+import 'package:aid_diary/utils/local_time.dart';
 
 Future<OperationOutcome> importFromJson(Function(String) updateStatus) async {
   updateStatus("0%");
@@ -41,8 +42,8 @@ List<ImportedEntry> decodeJsonEntries(Uint8List bytes) {
         Entry(
             text: entry['text'],
             mood: entry['mood'] as int?,
-            timeCreate: DateTime.parse(entry['timeCreated']),
-            timeModified: DateTime.parse(entry['timeModified']),
+            timeCreate: parseLocalTime(entry['timeCreated']),
+            timeModified: parseLocalTime(entry['timeModified']),
             // Written by our own JSON export; absent in older files.
             location: switch (entry['location']) {
               final Map place => EntryLocation(
@@ -59,7 +60,7 @@ List<ImportedEntry> decodeJsonEntries(Uint8List bytes) {
             },
             activity: EntryActivity.fromName(entry['activity'] as String?),
             openAt: switch (entry['openAt']) {
-              final String at => DateTime.parse(at),
+              final String at => parseLocalTime(at),
               _ => null,
             }),
         images: [
@@ -76,7 +77,7 @@ List<ImportedEntry> decodeJsonEntries(Uint8List bytes) {
                   entryId: null,
                   imgPath: image['imgPath'],
                   imgRank: image['imgRank'] as int,
-                  timeCreate: DateTime.parse(image['timeCreated'])),
+                  timeCreate: parseLocalTime(image['timeCreated'])),
         ],
       ),
   ];

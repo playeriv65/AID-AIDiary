@@ -552,13 +552,17 @@ class _ValueOverTimeChartState extends State<ValueOverTimeChart> {
   List<FlSpot?> _computeSpots(List<DateTime> buckets, DateTime rangeStart) {
     final Map<int, List<double>> bucketValues = {};
     for (final point in widget.dataPoints) {
-      int bucketIndex = -1;
-      for (int i = buckets.length - 1; i >= 0; i--) {
-        if (!buckets[i].isAfter(point.date)) {
-          bucketIndex = i;
-          break;
+      // The last bucket starting at or before the point; buckets ascend.
+      var low = 0, high = buckets.length;
+      while (low < high) {
+        final mid = (low + high) >> 1;
+        if (buckets[mid].isAfter(point.date)) {
+          high = mid;
+        } else {
+          low = mid + 1;
         }
       }
+      final bucketIndex = low - 1;
       if (bucketIndex < 0) continue;
       (bucketValues[bucketIndex] ??= []).add(point.value);
     }
