@@ -93,7 +93,10 @@ android {
             vcsInfo.include = false
         }
         profile {
-            signingConfig = signingConfigs.release
+            // Profile builds are for measuring on local devices; without a
+            // release key they use the debug one, like debug builds.
+            signingConfig = keystorePropertiesFile.exists()
+                    ? signingConfigs.release : signingConfigs.debug
         }
     }
 

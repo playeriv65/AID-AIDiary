@@ -11,6 +11,10 @@ $env:ANDROID_HOME='D:\software\android-sdk'
 $env:ANDROID_USER_HOME='D:\software\android-user'
 $env:ANDROID_AVD_HOME='D:\software\android-avd'
 $env:GRADLE_USER_HOME='D:\software\gradle-cache'
+# Flutter leaves a temp folder per test or build run that is interrupted;
+# keep them off the small system drive.
+$env:TEMP = $env:TMP = 'D:\software\temp'
+New-Item -ItemType Directory -Force $env:TEMP | Out-Null
 Set-Location (Split-Path $PSScriptRoot -Parent)
 switch ($Target) {
   'windows' { flutter run -d windows }
