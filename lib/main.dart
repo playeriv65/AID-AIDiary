@@ -160,9 +160,14 @@ void callbackDispatcher() async {
   final ready = await AppDatabase.instance
       .init(forceWithoutSync: true, allowMigration: false);
 
+  // The alarm fires daily and rearms itself; off days just stay quiet.
+  final remindToday = ConfigProvider.instance
+      .get(Settings.reminderWeekdays)
+      .contains(DateTime.now().weekday);
   if (ready) {
-    if (EntriesProvider.instance.getEntryForDate(DateTime.now()) == null ||
-        ConfigProvider.instance.get(Settings.alwaysRemind)) {
+    if (remindToday &&
+        (EntriesProvider.instance.getEntryForDate(DateTime.now()) == null ||
+            ConfigProvider.instance.get(Settings.alwaysRemind))) {
       FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
           FlutterLocalNotificationsPlugin();
 
@@ -526,8 +531,14 @@ class _MainAppState extends State<MainApp> {
                 },
                 theme: lightTheme,
                 darkTheme: darkTheme,
-                builder: (context, child) =>
-                    LegacyMaterialBridge(child: child!),
+                builder: (context, child) => MediaQuery(
+                    // Every time label reads this, so the setting applies
+                    // app wide.
+                    data: MediaQuery.of(context).copyWith(
+                        alwaysUse24HourFormat:
+                            configProvider.chosen24HourFormat ??
+                                MediaQuery.of(context).alwaysUse24HourFormat),
+                    child: LegacyMaterialBridge(child: child!)),
                 home: const LaunchPage(nextPage: MobileScaffold()))),
       );
     });

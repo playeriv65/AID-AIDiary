@@ -1478,4 +1478,52 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get widgetWrite => 'Write';
+
+  @override
+  String get insertChecklist => 'Checklist';
+
+  @override
+  String get insertNumberedList => 'Numbered list';
+
+  @override
+  String get insertTable => 'Table';
+
+  @override
+  String get insertDivider => 'Divider';
+
+  @override
+  String get insertCodeBlock => 'Code block';
+
+  @override
+  String get journalSortTitle => 'Sort entries';
+
+  @override
+  String get journalSortUpdated => 'Last updated';
+
+  @override
+  String get settingsTimeFormat => 'Time format';
+
+  @override
+  String get timeFormat12 => '12-hour';
+
+  @override
+  String get timeFormat24 => '24-hour';
+
+  @override
+  String get settingsReminderDays => 'Remind me on';
+
+  @override
+  String get locationRecent => 'Recent places';
+
+  @override
+  String get shareImage => 'Share image';
+
+  @override
+  String get shareSaveImage => 'Save image';
+
+  @override
+  String get shareAsText => 'Share as text';
+
+  @override
+  String get shareSaved => 'Image saved';
 }

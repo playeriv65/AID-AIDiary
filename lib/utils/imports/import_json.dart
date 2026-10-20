@@ -42,7 +42,22 @@ List<ImportedEntry> decodeJsonEntries(Uint8List bytes) {
             text: entry['text'],
             mood: entry['mood'] as int?,
             timeCreate: DateTime.parse(entry['timeCreated']),
-            timeModified: DateTime.parse(entry['timeModified'])),
+            timeModified: DateTime.parse(entry['timeModified']),
+            // Written by our own JSON export; absent in older files.
+            location: switch (entry['location']) {
+              final Map place => EntryLocation(
+                  name: place['name'] as String?,
+                  latitude: (place['latitude'] as num?)?.toDouble(),
+                  longitude: (place['longitude'] as num?)?.toDouble()),
+              _ => null,
+            },
+            weather: switch (entry['weather']) {
+              final Map weather => EntryWeather(
+                  code: weather['code'] as int,
+                  temperature: (weather['temperature'] as num).toDouble()),
+              _ => null,
+            },
+            activity: EntryActivity.fromName(entry['activity'] as String?)),
         images: [
           // Support old imgPath field
           if (entry['imgPath'] != null)

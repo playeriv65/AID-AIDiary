@@ -2783,6 +2783,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Write'**
   String get widgetWrite;
+
+  /// No description provided for @insertChecklist.
+  ///
+  /// In en, this message translates to:
+  /// **'Checklist'**
+  String get insertChecklist;
+
+  /// No description provided for @insertNumberedList.
+  ///
+  /// In en, this message translates to:
+  /// **'Numbered list'**
+  String get insertNumberedList;
+
+  /// No description provided for @insertTable.
+  ///
+  /// In en, this message translates to:
+  /// **'Table'**
+  String get insertTable;
+
+  /// No description provided for @insertDivider.
+  ///
+  /// In en, this message translates to:
+  /// **'Divider'**
+  String get insertDivider;
+
+  /// No description provided for @insertCodeBlock.
+  ///
+  /// In en, this message translates to:
+  /// **'Code block'**
+  String get insertCodeBlock;
+
+  /// No description provided for @journalSortTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort entries'**
+  String get journalSortTitle;
+
+  /// No description provided for @journalSortUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Last updated'**
+  String get journalSortUpdated;
+
+  /// No description provided for @settingsTimeFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'Time format'**
+  String get settingsTimeFormat;
+
+  /// No description provided for @timeFormat12.
+  ///
+  /// In en, this message translates to:
+  /// **'12-hour'**
+  String get timeFormat12;
+
+  /// No description provided for @timeFormat24.
+  ///
+  /// In en, this message translates to:
+  /// **'24-hour'**
+  String get timeFormat24;
+
+  /// No description provided for @settingsReminderDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Remind me on'**
+  String get settingsReminderDays;
+
+  /// No description provided for @locationRecent.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent places'**
+  String get locationRecent;
+
+  /// No description provided for @shareImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Share image'**
+  String get shareImage;
+
+  /// No description provided for @shareSaveImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Save image'**
+  String get shareSaveImage;
+
+  /// No description provided for @shareAsText.
+  ///
+  /// In en, this message translates to:
+  /// **'Share as text'**
+  String get shareAsText;
+
+  /// No description provided for @shareSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Image saved'**
+  String get shareSaved;
 }
 
 class _AppLocalizationsDelegate

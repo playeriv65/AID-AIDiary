@@ -107,6 +107,13 @@ class _BackupRestoreSettingsState extends State<BackupRestoreSettings> {
                     chosenFormat = ExportFormat.markdown;
                     Navigator.of(context).pop();
                   }),
+              ListTile(
+                  key: const ValueKey('export-json'),
+                  title: const Text('JSON'),
+                  onTap: () {
+                    chosenFormat = ExportFormat.json;
+                    Navigator.of(context).pop();
+                  }),
             ],
           ),
         );
@@ -125,6 +132,9 @@ class _BackupRestoreSettingsState extends State<BackupRestoreSettings> {
       outcome = await ExportUtils.exportToMarkdown(context, (status) {
         statusNotifier.value = status;
       });
+    } else if (chosenFormat == ExportFormat.json) {
+      outcome = await ExportUtils.exportToJson(
+          (status) => statusNotifier.value = status);
     }
 
     if (!mounted) return;

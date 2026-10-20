@@ -4,6 +4,7 @@
 
 import 'dart:async';
 
+import 'package:daily_you/l10n/generated/app_localizations.dart';
 import 'package:daily_you/utils/text_editing.dart';
 import 'package:daily_you/widgets/icons/svg_icon.dart';
 import 'package:material_ui/material_ui.dart';
@@ -58,7 +59,48 @@ List<ToolbarAction> markdownActions(
       icon: const Icon(Icons.link_rounded),
       onPressed: () => wrapSelection(controller, '[', ']()'),
     ),
+    ToolbarAction(
+      icon: const Icon(Icons.add_box_outlined),
+      onPressed: () => _insertBlock(context, controller),
+    ),
   ];
+}
+
+/// Markdown blocks offered by the insert menu: icon, label, text, and where
+/// the cursor lands inside it.
+List<(IconData, String, String, int)> _blocks(AppLocalizations l10n) => [
+      (Icons.checklist_rounded, l10n.insertChecklist, '- [ ] ', 6),
+      (Icons.format_list_numbered_rounded, l10n.insertNumberedList, '1. ', 3),
+      (
+        Icons.table_chart_outlined,
+        l10n.insertTable,
+        '|  |  |\n| --- | --- |\n|  |  |\n',
+        2
+      ),
+      (Icons.horizontal_rule_rounded, l10n.insertDivider, '---\n', 4),
+      (Icons.code_rounded, l10n.insertCodeBlock, '```\n\n```\n', 4),
+    ];
+
+Future<void> _insertBlock(
+    BuildContext context, TextEditingController controller) async {
+  final l10n = AppLocalizations.of(context)!;
+  final chosen = await showModalBottomSheet<(String, int)>(
+    context: context,
+    showDragHandle: true,
+    builder: (context) => SafeArea(
+      child: Column(mainAxisSize: MainAxisSize.min, children: [
+        for (final (icon, label, block, cursor) in _blocks(l10n))
+          ListTile(
+            key: ValueKey('insert-$label'),
+            leading: Icon(icon),
+            title: Text(label),
+            onTap: () => Navigator.pop(context, (block, cursor)),
+          ),
+      ]),
+    ),
+  );
+  if (chosen == null) return;
+  insertBlock(controller, chosen.$1, cursorOffset: chosen.$2);
 }
 
 Future<void> _insertHeader(

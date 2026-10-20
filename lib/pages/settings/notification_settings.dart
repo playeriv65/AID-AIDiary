@@ -155,6 +155,8 @@ class NotificationSettings extends StatefulWidget {
               await NotificationManager.instance.stopDailyReminders();
               await NotificationManager.instance.startScheduledDailyReminders();
             }),
+      if (configProvider.get(Settings.dailyReminders))
+        _ReminderWeekdays(configProvider: configProvider),
     ];
   }
 
@@ -238,6 +240,43 @@ class _NotificationSettingsState extends State<NotificationSettings> {
                     type: AppSettingsType.notification)),
         ],
       ),
+    );
+  }
+}
+
+/// Which weekdays the daily reminder speaks up on; at least one stays on.
+class _ReminderWeekdays extends StatelessWidget {
+  const _ReminderWeekdays({required this.configProvider});
+
+  final ConfigProvider configProvider;
+
+  @override
+  Widget build(BuildContext context) {
+    final labels = TimeManager.daysOfWeekLabels(context);
+    final days = configProvider.get(Settings.reminderWeekdays).cast<int>();
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Text(AppLocalizations.of(context)!.settingsReminderDays,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+        const SizedBox(height: 8),
+        Wrap(spacing: 6, runSpacing: 6, children: [
+          for (var weekday = 1; weekday <= 7; weekday++)
+            FilterChip(
+              key: ValueKey('reminder-day-$weekday'),
+              label: Text(labels[weekday - 1]),
+              showCheckmark: false,
+              selected: days.contains(weekday),
+              onSelected: (on) {
+                final next = {...days};
+                on ? next.add(weekday) : next.remove(weekday);
+                if (next.isEmpty) return;
+                configProvider.set(
+                    Settings.reminderWeekdays, next.toList()..sort());
+              },
+            ),
+        ]),
+      ]),
     );
   }
 }

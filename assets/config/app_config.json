@@ -17,7 +17,8 @@
     "timeoutSeconds": 8
   },
   "location": {
-    "timeoutSeconds": 15
+    "timeoutSeconds": 15,
+    "recentPlaces": 6
   },
   "activity": {
     "timeoutSeconds": 10
@@ -37,6 +38,11 @@
     "recordingExtension": ".m4a",
     "maxVideoMinutes": 5,
     "maxVideoMegabytes": 200
+  },
+  "share": {
+    "cardWidth": 380,
+    "pixelRatio": 3.0,
+    "maxCharacters": 900
   },
   "wallpaper": {
     "directory": "wallpaper",

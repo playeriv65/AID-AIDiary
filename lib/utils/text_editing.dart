@@ -17,6 +17,28 @@ void insertAtCursor(TextEditingController controller, String text) {
   );
 }
 
+/// Inserts [block] on lines of its own at the cursor, and leaves the cursor
+/// [cursorOffset] characters into it (its end by default).
+void insertBlock(TextEditingController controller, String block,
+    {int? cursorOffset}) {
+  final text = controller.text;
+  final selection = controller.selection;
+  final start = selection.isValid ? selection.start : text.length;
+  final end = selection.isValid ? selection.end : text.length;
+  final before = text.substring(0, start);
+  final after = text.substring(end);
+  final lead = before.isEmpty || before.endsWith('\n') ? '' : '\n';
+  final trail =
+      after.isEmpty || after.startsWith('\n') || block.endsWith('\n')
+          ? ''
+          : '\n';
+  controller.value = TextEditingValue(
+    text: '$before$lead$block$trail$after',
+    selection: TextSelection.collapsed(
+        offset: start + lead.length + (cursorOffset ?? block.length)),
+  );
+}
+
 void insertTemplateText(TextEditingController controller, String text,
     {required bool hasFocus}) {
   if (controller.text.isEmpty) {

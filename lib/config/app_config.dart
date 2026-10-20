@@ -83,6 +83,13 @@ class AppConfig {
   int get maxVideoBytes =>
       (_section('media')['maxVideoMegabytes'] as int) * 1024 * 1024;
 
+  /// Share cards are laid out this wide and rendered at [sharePixelRatio].
+  double get shareCardWidth =>
+      (_section('share')['cardWidth'] as num).toDouble();
+  double get sharePixelRatio =>
+      (_section('share')['pixelRatio'] as num).toDouble();
+  int get shareMaxCharacters => _section('share')['maxCharacters'] as int;
+
   String get wallpaperDirectory => _section('wallpaper')['directory'] as String;
   double get wallpaperScrimOpacity =>
       (_section('wallpaper')['photoScrimOpacity'] as num).toDouble();
@@ -97,6 +104,7 @@ class AppConfig {
 
   Duration get locationTimeout =>
       Duration(seconds: _section('location')['timeoutSeconds'] as int);
+  int get recentPlacesLimit => _section('location')['recentPlaces'] as int;
 
   Duration get activityTimeout =>
       Duration(seconds: _section('activity')['timeoutSeconds'] as int);

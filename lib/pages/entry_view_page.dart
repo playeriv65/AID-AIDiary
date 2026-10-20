@@ -3,11 +3,11 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'package:daily_you/database/entry_store.dart';
-import 'package:daily_you/database/image_storage.dart';
 import 'package:daily_you/l10n/generated/app_localizations.dart';
 import 'package:daily_you/models/entry.dart';
 import 'package:daily_you/models/image.dart';
 import 'package:daily_you/pages/edit_entry_page.dart';
+import 'package:daily_you/pages/entry_share_page.dart';
 import 'package:daily_you/pages/image_view_page.dart';
 import 'package:daily_you/providers/entries_provider.dart';
 import 'package:daily_you/providers/entry_images_provider.dart';
@@ -26,7 +26,6 @@ import 'package:daily_you/widgets/tag_chip.dart';
 import 'package:intl/intl.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
-import 'package:share_plus/share_plus.dart';
 
 /// Reads one entry: photos, date block, metadata, then the text.
 class EntryViewPage extends StatelessWidget {
@@ -128,7 +127,7 @@ class EntryViewPage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _DateBlock(entry: entry),
+                    EntryDateBlock(entry: entry),
                     _Metadata(entry: entry),
                     const SizedBox(height: 16),
                     if (entry.text.isNotEmpty)
@@ -207,23 +206,12 @@ class EntryViewPage extends StatelessWidget {
   }
 
   Future<void> _share(
-      BuildContext context, Entry entry, List<EntryImage> images) async {
-    final mood = MoodIcon.getMoodIcon(entry.mood);
-    final text =
-        '${mood.isEmpty ? '' : '$mood '}${TimeManager.formatDateWithWeekday(entry.timeCreate, context)}\n${entry.text}';
-    final photo = images.where((image) => image.isImage).firstOrNull;
-    if (photo != null) {
-      final bytes = await ImageStorage.instance.getBytes(photo.imgPath);
-      if (bytes != null) {
-        await SharePlus.instance.share(ShareParams(
-            files: [XFile.fromData(bytes, mimeType: 'image/*')],
-            fileNameOverrides: [photo.imgPath],
-            text: text));
-        return;
-      }
-    }
-    await SharePlus.instance.share(ShareParams(text: text));
-  }
+          BuildContext context, Entry entry, List<EntryImage> images) =>
+      Navigator.of(context).push(MaterialPageRoute(
+        allowSnapshotting: false,
+        fullscreenDialog: true,
+        builder: (_) => EntrySharePage(entry: entry, images: images),
+      ));
 }
 
 class _Photos extends StatefulWidget {
@@ -292,8 +280,9 @@ class _PhotosState extends State<_Photos> {
   }
 }
 
-class _DateBlock extends StatelessWidget {
-  const _DateBlock({required this.entry});
+/// Large day number beside the date, weekday and time.
+class EntryDateBlock extends StatelessWidget {
+  const EntryDateBlock({super.key, required this.entry});
   final Entry entry;
 
   @override

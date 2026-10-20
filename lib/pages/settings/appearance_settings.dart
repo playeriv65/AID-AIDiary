@@ -402,6 +402,15 @@ class _AppearanceSettingsPageState extends State<AppearanceSettings> {
                           }
                         }),
                   ),
+                  _choice(
+                      configProvider,
+                      'settings-time-format',
+                      AppLocalizations.of(context)!.settingsTimeFormat,
+                      Settings.timeFormat, {
+                    'system': AppLocalizations.of(context)!.themeSystem,
+                    '12': AppLocalizations.of(context)!.timeFormat12,
+                    '24': AppLocalizations.of(context)!.timeFormat24,
+                  }),
                   const Divider(height: 32),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),

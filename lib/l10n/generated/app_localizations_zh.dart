@@ -1463,6 +1463,54 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get widgetWrite => '写日记';
+
+  @override
+  String get insertChecklist => '待办清单';
+
+  @override
+  String get insertNumberedList => '编号列表';
+
+  @override
+  String get insertTable => '表格';
+
+  @override
+  String get insertDivider => '分割线';
+
+  @override
+  String get insertCodeBlock => '代码块';
+
+  @override
+  String get journalSortTitle => '日记排序';
+
+  @override
+  String get journalSortUpdated => '最近修改';
+
+  @override
+  String get settingsTimeFormat => '时间格式';
+
+  @override
+  String get timeFormat12 => '12 小时制';
+
+  @override
+  String get timeFormat24 => '24 小时制';
+
+  @override
+  String get settingsReminderDays => '提醒日';
+
+  @override
+  String get locationRecent => '最近的地点';
+
+  @override
+  String get shareImage => '分享图片';
+
+  @override
+  String get shareSaveImage => '保存图片';
+
+  @override
+  String get shareAsText => '以文字分享';
+
+  @override
+  String get shareSaved => '图片已保存';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -2907,4 +2955,52 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get widgetWrite => '寫日記';
+
+  @override
+  String get insertChecklist => '待辦清單';
+
+  @override
+  String get insertNumberedList => '編號列表';
+
+  @override
+  String get insertTable => '表格';
+
+  @override
+  String get insertDivider => '分隔線';
+
+  @override
+  String get insertCodeBlock => '程式碼區塊';
+
+  @override
+  String get journalSortTitle => '日記排序';
+
+  @override
+  String get journalSortUpdated => '最近修改';
+
+  @override
+  String get settingsTimeFormat => '時間格式';
+
+  @override
+  String get timeFormat12 => '12 小時制';
+
+  @override
+  String get timeFormat24 => '24 小時制';
+
+  @override
+  String get settingsReminderDays => '提醒日';
+
+  @override
+  String get locationRecent => '最近的地點';
+
+  @override
+  String get shareImage => '分享圖片';
+
+  @override
+  String get shareSaveImage => '儲存圖片';
+
+  @override
+  String get shareAsText => '以文字分享';
+
+  @override
+  String get shareSaved => '圖片已儲存';
 }

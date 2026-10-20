@@ -429,5 +429,21 @@
     "mediaUnavailable": "此附件在這台裝置上無法使用。",
     "widgetDone": "今天的日記已寫好",
     "widgetPending": "今天過得怎麼樣？",
-    "widgetWrite": "寫日記"
+    "widgetWrite": "寫日記",
+    "insertChecklist": "待辦清單",
+    "insertNumberedList": "編號列表",
+    "insertTable": "表格",
+    "insertDivider": "分隔線",
+    "insertCodeBlock": "程式碼區塊",
+    "journalSortTitle": "日記排序",
+    "journalSortUpdated": "最近修改",
+    "settingsTimeFormat": "時間格式",
+    "timeFormat12": "12 小時制",
+    "timeFormat24": "24 小時制",
+    "settingsReminderDays": "提醒日",
+    "locationRecent": "最近的地點",
+    "shareImage": "分享圖片",
+    "shareSaveImage": "儲存圖片",
+    "shareAsText": "以文字分享",
+    "shareSaved": "圖片已儲存"
 }

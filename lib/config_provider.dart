@@ -71,6 +71,13 @@ class Settings {
       Setting<Map<String, dynamic>?>("overrideLanguage", null);
   static const showFlashbacks = Setting<bool>("showFlashbacks", true);
   static const temperatureUnit = Setting<String>("temperatureUnit", "celsius");
+  // "system", "12" or "24".
+  static const timeFormat = Setting<String>("timeFormat", "system");
+  // "newest", "oldest" or "updated".
+  static const journalSort = Setting<String>("journalSort", "newest");
+  // Weekdays (1 = Monday) the daily reminder fires on.
+  static const reminderWeekdays =
+      Setting<List<dynamic>>("reminderWeekdays", [1, 2, 3, 4, 5, 6, 7]);
   // Keys into the typography section of assets/config/app_config.json.
   static const entryFontFamily = Setting<String>("entryFontFamily", "system");
   static const entryFontSize = Setting<String>("entryFontSize", "medium");
@@ -166,6 +173,9 @@ class Settings {
     overrideLanguage,
     showFlashbacks,
     temperatureUnit,
+    timeFormat,
+    journalSort,
+    reminderWeekdays,
     entryFontFamily,
     entryFontSize,
     entryLineSpacing,
@@ -434,7 +444,15 @@ class ConfigProvider with ChangeNotifier {
     });
   }
 
+  /// The 12/24-hour choice from settings; null follows the system.
+  bool? get chosen24HourFormat => switch (get(Settings.timeFormat)) {
+        '24' => true,
+        '12' => false,
+        _ => null,
+      };
+
   bool is24HourFormat() {
+    if (chosen24HourFormat case final chosen?) return chosen;
     if (PlatformDispatcher.instance.alwaysUse24HourFormat) return true;
     String formattedTime =
         DateFormat.jm(PlatformDispatcher.instance.locale.toString())

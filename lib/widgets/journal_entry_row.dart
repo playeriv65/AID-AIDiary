@@ -185,11 +185,13 @@ class EntryDayGroup extends StatelessWidget {
 }
 
 /// Consecutive entries grouped by calendar day, keeping their order.
-List<(DateTime, List<Entry>)> groupEntriesByDay(List<Entry> entries) {
+/// Runs of entries on the same day, by [timeOf] (the entry date by default).
+List<(DateTime, List<Entry>)> groupEntriesByDay(List<Entry> entries,
+    {DateTime Function(Entry entry)? timeOf}) {
   final groups = <(DateTime, List<Entry>)>[];
   for (final entry in entries) {
-    final day = DateTime(
-        entry.timeCreate.year, entry.timeCreate.month, entry.timeCreate.day);
+    final time = timeOf?.call(entry) ?? entry.timeCreate;
+    final day = DateTime(time.year, time.month, time.day);
     if (groups.isNotEmpty && groups.last.$1 == day) {
       groups.last.$2.add(entry);
     } else {

@@ -428,5 +428,21 @@
     "mediaUnavailable": "此附件在这台设备上不可用。",
     "widgetDone": "今天的日记已写好",
     "widgetPending": "今天过得怎么样？",
-    "widgetWrite": "写日记"
+    "widgetWrite": "写日记",
+    "insertChecklist": "待办清单",
+    "insertNumberedList": "编号列表",
+    "insertTable": "表格",
+    "insertDivider": "分割线",
+    "insertCodeBlock": "代码块",
+    "journalSortTitle": "日记排序",
+    "journalSortUpdated": "最近修改",
+    "settingsTimeFormat": "时间格式",
+    "timeFormat12": "12 小时制",
+    "timeFormat24": "24 小时制",
+    "settingsReminderDays": "提醒日",
+    "locationRecent": "最近的地点",
+    "shareImage": "分享图片",
+    "shareSaveImage": "保存图片",
+    "shareAsText": "以文字分享",
+    "shareSaved": "图片已保存"
 }

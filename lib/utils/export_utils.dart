@@ -14,6 +14,7 @@ import 'package:daily_you/models/entry.dart';
 import 'package:daily_you/models/image.dart';
 import 'package:daily_you/providers/entries_provider.dart';
 import 'package:daily_you/providers/entry_images_provider.dart';
+import 'package:daily_you/providers/tags_provider.dart';
 import 'package:daily_you/time_manager.dart';
 import 'package:daily_you/utils/operation_outcome.dart';
 import 'package:daily_you/utils/zip_utils.dart';
@@ -27,9 +28,91 @@ import 'package:daily_you/l10n/generated/app_localizations.dart';
 enum ExportFormat {
   none,
   markdown,
+  json,
+}
+
+/// Entries as the JSON array [decodeJsonEntries] reads back, plus place,
+/// weather, activity and tags. Attachments are listed by name only; the
+/// backup carries their files.
+String encodeJsonEntries(List<Entry> entries,
+    {required List<EntryImage> Function(Entry entry) imagesOf,
+    required List<({String name, String? value})> Function(Entry entry)
+        tagsOf}) {
+  return const JsonEncoder.withIndent('  ').convert([
+    for (final entry in entries)
+      {
+        'text': entry.text,
+        'mood': entry.mood,
+        'timeCreated': entry.timeCreate.toIso8601String(),
+        'timeModified': entry.timeModified.toIso8601String(),
+        if (entry.location case final place?)
+          'location': {
+            'name': place.name,
+            'latitude': place.latitude,
+            'longitude': place.longitude,
+          },
+        if (entry.weather case final weather?)
+          'weather': {
+            'code': weather.code,
+            'temperature': weather.temperature,
+          },
+        if (entry.activity case final activity?) 'activity': activity.name,
+        'tags': [
+          for (final tag in tagsOf(entry))
+            {'name': tag.name, if (tag.value != null) 'value': tag.value},
+        ],
+        'images': [
+          for (final image in imagesOf(entry))
+            {
+              'imgPath': image.imgPath,
+              'imgRank': image.imgRank,
+              'timeCreated': image.timeCreate.toIso8601String(),
+            },
+        ],
+      },
+  ]);
 }
 
 class ExportUtils {
+  /// Saves every entry as one JSON file in a folder the user picks.
+  static Future<OperationOutcome> exportToJson(
+      Function(String) updateStatus) async {
+    updateStatus("0%");
+    PickedDirectory? exportFolder;
+    try {
+      exportFolder = await StoragePicker.pickDirectory();
+    } catch (error) {
+      return OperationOutcome.failed(error);
+    }
+    if (exportFolder == null) return const OperationOutcome.cancelled();
+
+    final tags = TagsProvider.instance;
+    final tagById = {for (final tag in tags.tags) tag.id: tag};
+    final json = encodeJsonEntries(
+      EntriesProvider.instance.entries,
+      imagesOf: EntryImagesProvider.instance.getForEntry,
+      tagsOf: (entry) => [
+        for (final entryTag in tags.getEntryTagsForEntry(entry.id!))
+          if (tagById[entryTag.tagId] case final tag?)
+            (name: tag.name, value: entryTag.value),
+      ],
+    );
+    final name =
+        "aid_diary_${DateTime.now().toIso8601String().replaceAll(':', '-')}.json";
+    final file = File(join((await getTemporaryDirectory()).path, name));
+    try {
+      await file.writeAsString(json);
+      await exportFolder.copyFileInto(file.path, name,
+          mimeType: "application/json",
+          onProgress: (percent) => updateStatus("${percent.round()}%"));
+      return const OperationOutcome.succeeded();
+    } catch (error) {
+      return OperationOutcome.failed(error);
+    } finally {
+      if (await file.exists()) await file.delete();
+    }
+  }
+
   static Future<OperationOutcome> exportToMarkdown(
       BuildContext context, Function(String) updateStatus) async {
     final localizations = AppLocalizations.of(context)!;

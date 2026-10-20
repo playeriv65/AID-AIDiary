@@ -41,7 +41,6 @@ class JournalPage extends StatefulWidget {
 class _JournalPageState extends State<JournalPage>
     with AutomaticKeepAliveClientMixin {
   int? _selectedId;
-  bool _newestFirst = true;
   StreamSubscription<SharePayload>? _shareSubscription;
   StreamSubscription<Uri?>? _widgetTapSubscription;
 
@@ -126,9 +125,16 @@ class _JournalPageState extends State<JournalPage>
     }
   }
 
+  String get _sort => ConfigProvider.instance.get(Settings.journalSort);
+
   List<Entry> _ordered() {
     final entries = EntriesProvider.instance.entries;
-    return _newestFirst ? entries : entries.reversed.toList();
+    return switch (_sort) {
+      'oldest' => entries.reversed.toList(),
+      'updated' => List.of(entries)
+        ..sort((a, b) => b.timeModified.compareTo(a.timeModified)),
+      _ => entries,
+    };
   }
 
   void _open(Entry entry, bool split) {
@@ -164,7 +170,8 @@ class _JournalPageState extends State<JournalPage>
     context.watch<EntriesProvider>();
     final images = context.watch<EntryImagesProvider>();
     final ordered = _ordered();
-    final groups = groupEntriesByDay(ordered);
+    final groups = groupEntriesByDay(ordered,
+        timeOf: _sort == 'updated' ? (e) => e.timeModified : null);
     final hideImages = config.get(Settings.hideImagesInGallery);
     final showBanner = SupportBanner.shouldShowBanner(
       entryCount: ordered.length,
@@ -196,16 +203,28 @@ class _JournalPageState extends State<JournalPage>
                             : const []),
                     const SizedBox(height: 12),
                     SectionLabel(l10n.journalEntries,
-                        trailing: IconButton(
+                        trailing: PopupMenuButton<String>(
                           key: const ValueKey('journal-sort'),
-                          tooltip: _newestFirst
-                              ? l10n.sortOrderDescendingTitle
-                              : l10n.sortOrderAscendingTitle,
-                          icon: Icon(_newestFirst
-                              ? Icons.arrow_downward_rounded
-                              : Icons.arrow_upward_rounded),
-                          onPressed: () =>
-                              setState(() => _newestFirst = !_newestFirst),
+                          tooltip: l10n.journalSortTitle,
+                          icon: Icon(switch (_sort) {
+                            'oldest' => Icons.arrow_upward_rounded,
+                            'updated' => Icons.update_rounded,
+                            _ => Icons.arrow_downward_rounded,
+                          }),
+                          initialValue: _sort,
+                          onSelected: (value) =>
+                              config.set(Settings.journalSort, value),
+                          itemBuilder: (context) => [
+                            for (final (value, label) in [
+                              ('newest', l10n.sortOrderDescendingTitle),
+                              ('oldest', l10n.sortOrderAscendingTitle),
+                              ('updated', l10n.journalSortUpdated),
+                            ])
+                              PopupMenuItem(
+                                  key: ValueKey('journal-sort-$value'),
+                                  value: value,
+                                  child: Text(label)),
+                          ],
                         )),
                   ]),
             ),

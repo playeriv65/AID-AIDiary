@@ -2,14 +2,27 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'package:daily_you/config/app_config.dart';
 import 'package:daily_you/l10n/generated/app_localizations.dart';
 import 'package:daily_you/models/entry.dart';
+import 'package:daily_you/providers/entries_provider.dart';
 import 'package:daily_you/services/location_service.dart';
 import 'package:daily_you/time_manager.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// The dialog's answer; a null [location] removes the entry's location.
 typedef LocationChoice = ({EntryLocation? location});
+
+/// Named places from [entries] (newest first), each name once.
+List<EntryLocation> recentPlaces(List<Entry> entries, int limit) {
+  final seen = <String>{};
+  return [
+    for (final entry in entries)
+      if (entry.location case final place?)
+        if (place.name case final name? when name.isNotEmpty)
+          if (seen.add(name)) place,
+  ].take(limit).toList();
+}
 
 /// Sets an entry's place from the device position or by name.
 Future<LocationChoice?> showLocationDialog(
@@ -35,6 +48,8 @@ class _LocationDialogState extends State<_LocationDialog> {
   late final _name = TextEditingController(text: widget.current?.name ?? '');
   late double? _latitude = widget.current?.latitude;
   late double? _longitude = widget.current?.longitude;
+  late final List<EntryLocation> _recent = recentPlaces(
+      EntriesProvider.instance.entries, AppConfig.instance.recentPlacesLimit);
   bool _locating = false;
   bool _searching = false;
   List<PlaceMatch>? _matches;
@@ -129,6 +144,24 @@ class _LocationDialogState extends State<_LocationDialog> {
                   ),
           ),
         ),
+        if (_matches == null && _recent.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text(l10n.locationRecent, style: theme.textTheme.labelMedium),
+              const SizedBox(height: 4),
+              Wrap(spacing: 6, runSpacing: 6, children: [
+                for (final (index, place) in _recent.indexed)
+                  ActionChip(
+                    key: ValueKey('location-recent-$index'),
+                    avatar: const Icon(Icons.history_rounded, size: 18),
+                    label: Text(place.name!),
+                    onPressed: () => _pick((location: place, detail: null)),
+                  ),
+              ]),
+            ]),
+          ),
         if (_matches case final matches?)
           if (matches.isEmpty)
             Padding(
