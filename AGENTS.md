@@ -10,6 +10,8 @@
 - In widget tests, change settings with `DiaryAppHarness.setSetting` (a real-time config write can lock the temp folder) and wait on SQLite work started by a widget with `DiaryAppHarness.pumpUntil`. When a tap itself changes config (enrolling in a coach program, answering its prompt), pump once and `EasyDebounce.cancel('save-config')` before settling: `pumpAndSettle` and `pumpUntil` move fake time past the 1 s debounce and start the write for real.
 - Stories play as one chain (`StoryPlayer`, `TodayStory.open(from:)`): Today, the coach program's day, the throwback, then a closing card; a card over the app on wide windows, full screen on phones. Coach enrolment lives in config (`coachProgram`, `coachStartDate`, `coachAnsweredStep`); its daily notification follows the reminder pattern in `main.dart` (alarm plus localized text stored in SharedPreferences at startup).
 - Feature ideas not built yet live in `TODO.md`.
+- The UI follows Journey's Android tablet and phone layouts; Windows uses the tablet layout (no separate desktop layout).
+- A new `Setting` must also go into `Settings.all`: startup prunes config keys missing from it (`test/config_settings_test.dart` checks).
 - Videos and voice notes are attachments in the `entry_images` table and image folder, told apart by file extension (`MediaKind`), so backup and sync cover them unchanged.
 - Build the APK with `./scripts/dev.ps1 apk` (flavors need `--flavor dev`). Test the home screen widget on the headless emulator; `am force-stop` cancels the widget's taps until it next updates, so use `am kill` for cold-start checks.
 - Do not import data or keys from the old project, and do not delete the parent folder's `.private-legacy`.
