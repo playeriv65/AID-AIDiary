@@ -1,9 +1,14 @@
 # Privacy Policy
 
-Last updated: September 16, 2026
+Last updated: October 19, 2026
 
-Daily you does not collect or share any personal information. Any content created within the app is stored locally on the device.
+AID Diary does not collect or share personal information. Entries, photos, videos, voice notes, locations and settings are stored on the device, and in backups or folders you choose.
 
-## Contact
+Some optional features contact third-party services directly from the device:
 
-If you have questions about this privacy policy, email `demizodemazo@gmail.com`
+- **Maps and places**: map tiles from OpenStreetMap; place names and place search from OpenStreetMap Nominatim, which receive coordinates or the text you search for.
+- **Weather**: Open-Meteo, which receives coordinates and a date.
+
+Nothing is sent to these services unless you use the feature, or turn on automatic place or weather for new entries. Their own privacy policies apply to those requests.
+
+Location, activity recognition and microphone permissions are requested only when you use the feature that needs them.

@@ -15,8 +15,12 @@ Entry storage (SQLite), photos, moods, tags and trackers, templates, statistics,
 ## Changed locally
 
 - Own app name, Android application ID and Windows metadata; About screen and welcome entry state that this is a modified version of Daily You.
-- Layout modelled on the Journey diary app (layout and features only; no code, assets or text copied): journal with stories and day groups, calendar, media, atlas and coach destinations; navigation rail with list/detail panes on wide windows, bottom bar on phones; entry detail with star and previous/next; search with filters; editor with date title and a mood / place / tags / photo toolbar.
-- Entry location (latitude, longitude, place name), database version 6; device location via geolocator, place names via OpenStreetMap Nominatim, map tiles from OpenStreetMap through flutter_map. Endpoints in `assets/config/app_config.json`.
+- Layout modelled on the Journey diary app (layout and features only; no code, assets or text copied): journal with stories and day groups, calendar, media, atlas and coach destinations; navigation rail with list/detail panes on wide windows, bottom bar on phones; entry detail with star and previous/next; search with filters; editor with date title and an attachment / place / weather / activity / mood / tags toolbar.
+- Privacy policy rewritten for this build (local storage, optional network services); the upstream contact address is not used.
+- Entry location (latitude, longitude, place name), weather (WMO code and temperature) and activity; database version 7. Device location via geolocator, place names and place search via OpenStreetMap Nominatim, map tiles from OpenStreetMap through flutter_map with marker clustering, weather from Open-Meteo, activity detection via flutter_activity_recognition (Android). Optional automatic place, weather and activity for new entries. Endpoints in `assets/config/app_config.json`.
+- Video and voice note attachments (video_player, video_player_win, record) stored alongside photos.
+- Today story (statistics, mood chart, throwback), built-in templates and a template link in the editor, duplicate and save-as-template for entries, inline search filters, "What makes me feel…" mood associations, entry font / size / line spacing and list wallpapers, settings regrouped into General, Data & storage, Stories, Notifications, Security and Help & about.
+- Android home screen widget (home_widget).
 - Theme colour presets and neutral backgrounds.
 - Windows development script, native-asset packaging per the Flutter template, cooperative cancellation of archive compression, format detection for desktop thumbnails.
 - Headless screenshot generation in `tool/screenshots/`.

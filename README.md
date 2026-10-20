@@ -15,17 +15,24 @@ The layout follows the Journey diary app: a bottom bar on phones, a navigation r
 | ![Media](artifacts/ui-tablet-media.png) | ![Coach](artifacts/ui-phone-coach.png) ![Search](artifacts/ui-phone-search.png) |
 | ![Coach](artifacts/ui-tablet-coach.png) | ![Editor](artifacts/ui-phone-editor.png) |
 
-- **Journal**: stories (today, throwbacks), then entries grouped by day with time, title, preview, mood, place, tags and a thumbnail.
+- **Journal**: stories (today, throwbacks), then entries grouped by day with time, title, preview, mood, place, weather, activity, tags and a thumbnail. The Today story steps through statistics, a 30-day mood chart and a throwback.
 - **Calendar**: scrolling months; wide windows list the selected day beside them.
-- **Media**: every attached photo.
-- **Atlas**: entries with a location on an OpenStreetMap map.
-- **Coach**: built-in prompt programs and your templates.
-- **Entry**: photos, date block, metadata, text; star, share, edit, delete; previous/next.
-- **Editor**: date in the title, mood / place / tags / photos in the bottom toolbar, Markdown formatting.
-- **Search**: text, tags, starred and mood filters.
-- The profile button opens statistics, templates and settings (backup, security, appearance, reminders).
+- **Media**: every attached photo, video and voice note.
+- **Atlas**: entries with a location on an OpenStreetMap map; nearby markers merge into numbered clusters that zoom in when tapped.
+- **Coach**: built-in prompt programs and templates, plus your own templates.
+- **Entry**: photos, videos and voice notes, date block, metadata, text; star, share, edit, duplicate, save as template, delete; previous/next.
+- **Editor**: date in the title; photos, camera (Android), video, voice note, place (current position or place search), weather, activity, mood and tags in the bottom toolbar; template link on an empty entry; Markdown formatting.
+- **Search**: text plus inline tag, starred, activity and mood filters.
+- **Statistics**: streaks, mood over time, and "What makes me feel…", which ranks the activities and tags most often seen with a mood.
+- **Settings**: general (theme, wallpaper, entry font, size and line spacing, units, add place / weather / activity automatically), data and storage, stories, notifications (Android), security, help and about.
+- **Android home screen widget**: today's date, whether today has an entry, the latest entry's first line, the streak and a Write button.
 
-Entries, photos and coordinates stay on the device. Map tiles and place names are fetched from OpenStreetMap services; the endpoints live in [assets/config/app_config.json](assets/config/app_config.json).
+Entries, photos and coordinates stay on the device. Network use, all optional and configured in [assets/config/app_config.json](assets/config/app_config.json):
+
+- OpenStreetMap map tiles, and Nominatim for place names and place search.
+- Open-Meteo for weather (forecast for recent days, the archive for older entries); only coordinates and a date are sent.
+
+Android permissions beyond storage and notifications: location (place), activity recognition (detecting walking, cycling and so on) and microphone (voice notes), each requested only when that feature is used.
 
 ## Development
 
@@ -37,7 +44,10 @@ Windows is the main development environment. Use the installed Flutter SDK at `D
 ./scripts/dev.ps1 screenshots  # regenerate artifacts/ui-*.png headlessly
 ./scripts/dev.ps1 windows      # run the Windows app
 ./scripts/dev.ps1 android      # run on the emulator
+./scripts/dev.ps1 apk          # build the debug APK (dev flavor)
 ```
+
+The Android build runs on the installed JDK 23: the root `android/build.gradle` gives every module's Kotlin the JVM target its Java already uses, since many plugins leave it unset. Flutter's Android SDK path is pinned with `flutter config --android-sdk D:\software\android-sdk`.
 
 Screenshots are rendered by widget tests in `tool/screenshots/` with real fonts (Flutter SDK icons, Windows Noto Sans SC and Segoe Emoji); no window opens.
 
