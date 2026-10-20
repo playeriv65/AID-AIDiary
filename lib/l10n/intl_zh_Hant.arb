@@ -567,5 +567,10 @@
     "helpFaq5Q": "忘記密碼怎麼辦？",
     "helpFaq5A": "密碼無法找回，所以請保留日記的備份。",
     "helpPrivacy": "隱私",
-    "helpPrivacyText": "日記、照片和設定不會離開這台裝置，除非你自己分享或備份。應用只在顯示地圖和查地名（OpenStreetMap、Nominatim、Overpass）以及天氣（Open-Meteo）時連網，只傳送座標或地名，從不傳送你寫的內容。"
+    "helpPrivacyText": "日記、照片和設定不會離開這台裝置，除非你自己分享或備份。應用只在顯示地圖和查地名（OpenStreetMap、Nominatim、Overpass）以及天氣（Open-Meteo）時連網，只傳送座標或地名，從不傳送你寫的內容。",
+    "photoMetaTitle": "使用照片裡的資訊？",
+    "photoMetaDateAndPlace": "把這篇日記的時間改成 {date}、地點改成 {place}？這是照片裡記錄的。",
+    "photoMetaDate": "把這篇日記的時間改成照片拍攝的 {date}？",
+    "photoMetaPlace": "把這篇日記的地點設為照片拍攝的 {place}？",
+    "photoMetaApply": "使用"
 }

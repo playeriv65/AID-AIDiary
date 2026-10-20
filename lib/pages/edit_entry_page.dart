@@ -33,6 +33,7 @@ import 'package:daily_you/widgets/location_dialog.dart';
 import 'package:daily_you/widgets/media_attachment.dart';
 import 'package:daily_you/widgets/context_dialogs.dart';
 import 'package:daily_you/utils/entry_context_display.dart';
+import 'package:daily_you/utils/photo_metadata.dart';
 import 'package:daily_you/config_provider.dart';
 import 'package:daily_you/services/activity_service.dart';
 import 'package:daily_you/services/location_service.dart';
@@ -531,6 +532,63 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
     if (choice != null) _setLocation(choice.location);
   }
 
+  /// Like Journey, offers a picked photo's time and place for the entry:
+  /// the time when it is over an hour off, the place when the entry has
+  /// none with coordinates.
+  Future<void> _offerPhotoMetadata(PhotoMetadata photo) async {
+    final l10n = AppLocalizations.of(context)!;
+    final taken = photo.taken;
+    final newDate = taken != null &&
+            taken.difference(entryDate!).abs() > const Duration(hours: 1)
+        ? taken
+        : null;
+    final newPlace = photo.hasPlace && !(location?.hasCoordinates ?? false);
+    if (newDate == null && !newPlace) return;
+    final language = TimeManager.currentLocale(context).split('_').first;
+    String? placeLabel;
+    EntryLocation? place;
+    if (newPlace) {
+      final name = await LocationService()
+          .placeName(photo.latitude!, photo.longitude!, languageCode: language);
+      place = EntryLocation(
+          latitude: photo.latitude, longitude: photo.longitude, name: name);
+      placeLabel = place.label;
+    }
+    if (!mounted) return;
+    final dateLabel = newDate == null
+        ? null
+        : '${TimeManager.formatDate(newDate, context)} '
+            '${TimeManager.timeOfDayString(context, TimeOfDay.fromDateTime(newDate))}';
+    final message = switch ((dateLabel, placeLabel)) {
+      (final date?, final where?) => l10n.photoMetaDateAndPlace(date, where),
+      (final date?, null) => l10n.photoMetaDate(date),
+      (null, final where?) => l10n.photoMetaPlace(where),
+      (null, null) => '',
+    };
+    final apply = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.photoMetaTitle),
+        content: Text(message),
+        actions: [
+          TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text(MaterialLocalizations.of(context).cancelButtonLabel)),
+          FilledButton(
+              key: const ValueKey('photo-meta-apply'),
+              onPressed: () => Navigator.of(context).pop(true),
+              child: Text(l10n.photoMetaApply)),
+        ],
+      ),
+    );
+    if (apply != true || !mounted) return;
+    setState(() {
+      if (newDate != null) entryDate = newDate;
+      if (place != null) location = place;
+    });
+    _scheduleSave();
+  }
+
   void _setWeather(EntryWeather? value) {
     setState(() => weather = value);
     _scheduleSave();
@@ -580,7 +638,8 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
       ToolbarAction(
         icon: const Icon(Icons.photo),
         mayLeaveApp: true,
-        onPressed: () => EntryImageActions.pickFromGallery(_addImage),
+        onPressed: () => EntryImageActions.pickFromGallery(_addImage,
+            onMetadata: _offerPhotoMetadata),
       ),
       if (Platform.isAndroid)
         ToolbarAction(

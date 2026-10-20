@@ -8,6 +8,7 @@ import 'dart:isolate';
 import 'package:daily_you/config_provider.dart';
 import 'package:daily_you/database/image_storage.dart';
 import 'package:daily_you/utils/exif_orientation.dart';
+import 'package:daily_you/utils/photo_metadata.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
@@ -31,14 +32,21 @@ class EntryImageActions {
     }
   }
 
-  static Future<void> pickFromGallery(
-      ValueChanged<List<String>> onChangedImage) async {
+  /// Adds photos from the gallery. [onMetadata] gets the first one's date
+  /// and place, read before compression can drop them.
+  static Future<void> pickFromGallery(ValueChanged<List<String>> onChangedImage,
+      {ValueChanged<PhotoMetadata>? onMetadata}) async {
     final picker = ImagePicker();
     final quality = ConfigProvider.instance.get(Settings.imageQualityLevel);
     final pickedFiles = await picker.pickMultiImage();
 
     final newImages = <String>[];
+    PhotoMetadata? metadata;
     for (final file in pickedFiles) {
+      if (onMetadata != null && metadata == null) {
+        final read = PhotoMetadata.read(await file.readAsBytes());
+        if (!read.isEmpty) metadata = read;
+      }
       final imageName = await _storeCompressed(file, quality);
       if (imageName != null) {
         newImages.add(imageName);
@@ -48,6 +56,7 @@ class EntryImageActions {
       }
     }
     onChangedImage(newImages);
+    if (metadata != null) onMetadata!(metadata);
   }
 
   static Future<List<String>> importSharedImages(List<String> paths) async {

@@ -3611,6 +3611,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Entries, photos and settings never leave this device unless you share or back them up. The app only goes online for map tiles and place names (OpenStreetMap, Nominatim, Overpass) and weather (Open-Meteo), sending coordinates or a place name, never your writing.'**
   String get helpPrivacyText;
+
+  /// No description provided for @photoMetaTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Use the photo\'s details?'**
+  String get photoMetaTitle;
+
+  /// No description provided for @photoMetaDateAndPlace.
+  ///
+  /// In en, this message translates to:
+  /// **'Change this entry\'s time to {date} and its place to {place}, as recorded in the photo?'**
+  String photoMetaDateAndPlace(String date, String place);
+
+  /// No description provided for @photoMetaDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Change this entry\'s time to {date}, when the photo was taken?'**
+  String photoMetaDate(String date);
+
+  /// No description provided for @photoMetaPlace.
+  ///
+  /// In en, this message translates to:
+  /// **'Set this entry\'s place to {place}, where the photo was taken?'**
+  String photoMetaPlace(String place);
+
+  /// No description provided for @photoMetaApply.
+  ///
+  /// In en, this message translates to:
+  /// **'Use them'**
+  String get photoMetaApply;
 }
 
 class _AppLocalizationsDelegate

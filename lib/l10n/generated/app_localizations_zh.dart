@@ -1902,6 +1902,27 @@ class AppLocalizationsZh extends AppLocalizations {
   @override
   String get helpPrivacyText =>
       '日记、照片和设置不会离开这台设备，除非你自己分享或备份。应用只在显示地图和查地名（OpenStreetMap、Nominatim、Overpass）以及天气（Open-Meteo）时联网，只发送坐标或地名，从不发送你写的内容。';
+
+  @override
+  String get photoMetaTitle => '使用照片里的信息？';
+
+  @override
+  String photoMetaDateAndPlace(String date, String place) {
+    return '把这篇日记的时间改成 $date、地点改成 $place？这是照片里记录的。';
+  }
+
+  @override
+  String photoMetaDate(String date) {
+    return '把这篇日记的时间改成照片拍摄的 $date？';
+  }
+
+  @override
+  String photoMetaPlace(String place) {
+    return '把这篇日记的地点设为照片拍摄的 $place？';
+  }
+
+  @override
+  String get photoMetaApply => '使用';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -3785,4 +3806,25 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   @override
   String get helpPrivacyText =>
       '日記、照片和設定不會離開這台裝置，除非你自己分享或備份。應用只在顯示地圖和查地名（OpenStreetMap、Nominatim、Overpass）以及天氣（Open-Meteo）時連網，只傳送座標或地名，從不傳送你寫的內容。';
+
+  @override
+  String get photoMetaTitle => '使用照片裡的資訊？';
+
+  @override
+  String photoMetaDateAndPlace(String date, String place) {
+    return '把這篇日記的時間改成 $date、地點改成 $place？這是照片裡記錄的。';
+  }
+
+  @override
+  String photoMetaDate(String date) {
+    return '把這篇日記的時間改成照片拍攝的 $date？';
+  }
+
+  @override
+  String photoMetaPlace(String place) {
+    return '把這篇日記的地點設為照片拍攝的 $place？';
+  }
+
+  @override
+  String get photoMetaApply => '使用';
 }

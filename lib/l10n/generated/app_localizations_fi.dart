@@ -1954,4 +1954,25 @@ class AppLocalizationsFi extends AppLocalizations {
   @override
   String get helpPrivacyText =>
       'Entries, photos and settings never leave this device unless you share or back them up. The app only goes online for map tiles and place names (OpenStreetMap, Nominatim, Overpass) and weather (Open-Meteo), sending coordinates or a place name, never your writing.';
+
+  @override
+  String get photoMetaTitle => 'Use the photo\'s details?';
+
+  @override
+  String photoMetaDateAndPlace(String date, String place) {
+    return 'Change this entry\'s time to $date and its place to $place, as recorded in the photo?';
+  }
+
+  @override
+  String photoMetaDate(String date) {
+    return 'Change this entry\'s time to $date, when the photo was taken?';
+  }
+
+  @override
+  String photoMetaPlace(String place) {
+    return 'Set this entry\'s place to $place, where the photo was taken?';
+  }
+
+  @override
+  String get photoMetaApply => 'Use them';
 }
