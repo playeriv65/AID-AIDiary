@@ -56,28 +56,10 @@ class AppLocalizationsTa extends AppLocalizations {
   String get actionTakePhoto => 'புகைப்படம் எடு';
 
   @override
-  String get actionToday => 'இன்று';
-
-  @override
-  String get actionOtherDay => 'மற்ற நாள்';
-
-  @override
-  String get pageHomeTitle => 'முகப்பு';
-
-  @override
-  String get jumpToMonthTitle => 'Jump to month';
-
-  @override
-  String get jumpToLogTitle => 'Jump to log';
-
-  @override
   String get flashbacksTitle => 'நினைவலைகள்';
 
   @override
   String get settingsFlashbacksExcludeBadDays => 'மோசமான நாட்களை தவிர்க்க';
-
-  @override
-  String get flaskbacksEmpty => 'இதுவரை நினைவலைகள் எதுவும் இல்லை …';
 
   @override
   String get flashbackGoodDay => 'ஒரு நல்ல நாள்';
@@ -122,9 +104,6 @@ class AppLocalizationsTa extends AppLocalizations {
   String get flashbackOnThisDay => 'இந்த நாளில்';
 
   @override
-  String get pageGalleryTitle => 'தொகுப்பு';
-
-  @override
   String get searchLogsHint => 'தேடல் பதிவுகள்…';
 
   @override
@@ -165,9 +144,6 @@ class AppLocalizationsTa extends AppLocalizations {
 
   @override
   String get noResults => 'No Results…';
-
-  @override
-  String get sortDateTitle => 'திகதி';
 
   @override
   String get sortOrderAscendingTitle => 'ஏறுதல்';
@@ -313,9 +289,6 @@ class AppLocalizationsTa extends AppLocalizations {
   String get pageSettingsTitle => 'அமைப்புகள்';
 
   @override
-  String get settingsAppearanceTitle => 'தோற்றம்';
-
-  @override
   String get settingsTheme => 'கருப்பொருள்';
 
   @override
@@ -350,9 +323,6 @@ class AppLocalizationsTa extends AppLocalizations {
   String get settingsCustomAccentColor => 'தனிப்பயன் உச்சரிப்பு நிறம்';
 
   @override
-  String get settingsShowMarkdownToolbar => 'Show Markdown Toolbar';
-
-  @override
   String get settingsShowFlashbacks => 'ஃப்ளாச்பேக்குகளைக் காட்டு';
 
   @override
@@ -362,12 +332,6 @@ class AppLocalizationsTa extends AppLocalizations {
   String get moodIconPrompt => 'ஐகானை உள்ளிடவும்';
 
   @override
-  String get settingsFlashbacksViewLayout => 'Flashbacks View Layout';
-
-  @override
-  String get settingsHideImagesInGallery => 'கேலரியில் படங்களை மறை';
-
-  @override
   String get settingsHideImages => 'படங்களை மறை';
 
   @override
@@ -375,14 +339,6 @@ class AppLocalizationsTa extends AppLocalizations {
 
   @override
   String get settingsNotificationsTitle => 'அறிவிப்புகள்';
-
-  @override
-  String get settingsDailyReminderOnboarding =>
-      'உங்களை சீராக வைத்திருக்க நாள்தோறும் நினைவூட்டல்களை இயக்கவும்!';
-
-  @override
-  String get settingsNotificationsPermissionsPrompt =>
-      'சீரற்ற தருணத்தில் அல்லது நீங்கள் விரும்பும் நேரத்தில் நினைவூட்டலை அனுப்ப \'அட்டவணை அலாரங்கள்\' இசைவு கோரப்படும்.';
 
   @override
   String get settingsDailyReminderTitle => 'நாள்தோறும் நினைவூட்டல்';
@@ -421,16 +377,7 @@ class AppLocalizationsTa extends AppLocalizations {
   String get settingsTemplatesTitle => 'வார்ப்புருக்கள்';
 
   @override
-  String get settingsDefaultTemplate => 'இயல்புநிலை டெம்ப்ளேட்';
-
-  @override
   String get manageTemplates => 'டெம்ப்ளேட்களை நிர்வகிக்கவும்';
-
-  @override
-  String get addTemplate => 'ஒரு டெம்ப்ளேட்டைச் சேர்க்கவும்';
-
-  @override
-  String get newTemplate => 'New Template';
 
   @override
   String get noTemplateTitle => 'எதுவுமில்லை';
@@ -438,9 +385,6 @@ class AppLocalizationsTa extends AppLocalizations {
   @override
   String get noTemplatesDescription =>
       'இதுவரை டெம்ப்ளேட்கள் எதுவும் உருவாக்கப்படவில்லை…';
-
-  @override
-  String get templateVariableTime => 'நேரம்';
 
   @override
   String get templateDefaultTimestampTitle => 'நேர முத்திரை';
@@ -790,9 +734,6 @@ class AppLocalizationsTa extends AppLocalizations {
   }
 
   @override
-  String get settingsExport => 'Export';
-
-  @override
   String get settingsExportToAnotherFormat =>
       'மற்றொரு வடிவத்திற்கு ஏற்றுமதி செய்யவும்';
 
@@ -801,23 +742,8 @@ class AppLocalizationsTa extends AppLocalizations {
       'இதை காப்புப்பிரதியாகப் பயன்படுத்தக் கூடாது!';
 
   @override
-  String get exportLogs => 'Export Logs';
-
-  @override
-  String get exportImages => 'Export Images';
-
-  @override
-  String get settingsImport => 'Import';
-
-  @override
   String get settingsImportFromAnotherApp =>
       'மற்றொரு பயன்பாட்டிலிருந்து இறக்குமதி செய்யவும்';
-
-  @override
-  String get importLogs => 'Import Logs';
-
-  @override
-  String get importImages => 'Import Images';
 
   @override
   String get logFormatTitle => 'வடிவமைப்பைத் தேர்ந்தெடுக்கவும்';
@@ -929,13 +855,7 @@ class AppLocalizationsTa extends AppLocalizations {
   String get settingsOpenSourceLicenses => 'Open Source Licenses';
 
   @override
-  String get imagesTitle => 'படங்கள்';
-
-  @override
   String get tagMoodTitle => 'மனநிலை';
-
-  @override
-  String get calendarTagDisplayLabel => 'Tag';
 
   @override
   String get selectTagTitle => 'Select Tag';
@@ -995,17 +915,6 @@ class AppLocalizationsTa extends AppLocalizations {
 
   @override
   String get coachPrompt10 => 'If today had a title, what would it be?';
-
-  @override
-  String entryReadingTime(num count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count min read',
-      one: '1 min read',
-    );
-    return '$_temp0';
-  }
 
   @override
   String get pageMediaTitle => 'Media';

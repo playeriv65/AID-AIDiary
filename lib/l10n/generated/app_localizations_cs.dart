@@ -56,28 +56,10 @@ class AppLocalizationsCs extends AppLocalizations {
   String get actionTakePhoto => 'Udělej fotku';
 
   @override
-  String get actionToday => 'Dnes';
-
-  @override
-  String get actionOtherDay => 'Jiný den';
-
-  @override
-  String get pageHomeTitle => 'Hlavní stránka';
-
-  @override
-  String get jumpToMonthTitle => 'Skočit na měsíc';
-
-  @override
-  String get jumpToLogTitle => 'Skočit na záznam';
-
-  @override
   String get flashbacksTitle => 'Vzpomínky';
 
   @override
   String get settingsFlashbacksExcludeBadDays => 'Vyřadit špatné dny';
-
-  @override
-  String get flaskbacksEmpty => 'Zatím žádné vzpomínky…';
 
   @override
   String get flashbackGoodDay => 'Dobrý den';
@@ -122,9 +104,6 @@ class AppLocalizationsCs extends AppLocalizations {
   String get flashbackOnThisDay => 'Tohoto dne';
 
   @override
-  String get pageGalleryTitle => 'Galerie';
-
-  @override
   String get searchLogsHint => 'Vyhledávání záznamů…';
 
   @override
@@ -159,9 +138,6 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String get noResults => 'Žádné výsledky…';
-
-  @override
-  String get sortDateTitle => 'Datum';
 
   @override
   String get sortOrderAscendingTitle => 'Stoupající';
@@ -307,9 +283,6 @@ class AppLocalizationsCs extends AppLocalizations {
   String get pageSettingsTitle => 'Nastavení';
 
   @override
-  String get settingsAppearanceTitle => 'Vzhled';
-
-  @override
   String get settingsTheme => 'Téma';
 
   @override
@@ -343,9 +316,6 @@ class AppLocalizationsCs extends AppLocalizations {
   String get settingsCustomAccentColor => 'Vlastní barva';
 
   @override
-  String get settingsShowMarkdownToolbar => 'Zobrazit panel nástrojů';
-
-  @override
   String get settingsShowFlashbacks => 'Zobrazit vzpomínky';
 
   @override
@@ -355,12 +325,6 @@ class AppLocalizationsCs extends AppLocalizations {
   String get moodIconPrompt => 'Vložte ikonu';
 
   @override
-  String get settingsFlashbacksViewLayout => 'Zobrazení rozložení vzpomínek';
-
-  @override
-  String get settingsHideImagesInGallery => 'Skrýt obrázky v galerii';
-
-  @override
   String get settingsHideImages => 'Skrýt obrázky';
 
   @override
@@ -368,14 +332,6 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String get settingsNotificationsTitle => 'Oznámení';
-
-  @override
-  String get settingsDailyReminderOnboarding =>
-      'Zapněte si denní připomenutí, abyste byli důslední!';
-
-  @override
-  String get settingsNotificationsPermissionsPrompt =>
-      'K odeslání připomenutí v náhodný okamžik nebo ve vámi preferovaný čas bude vyžadováno oprávnění „naplánovat alarmy“.';
 
   @override
   String get settingsDailyReminderTitle => 'Denní připomenutí';
@@ -410,25 +366,13 @@ class AppLocalizationsCs extends AppLocalizations {
   String get settingsTemplatesTitle => 'Šablony';
 
   @override
-  String get settingsDefaultTemplate => 'Výchozí šablona';
-
-  @override
   String get manageTemplates => 'Spravovat šablony';
-
-  @override
-  String get addTemplate => 'Přidat šablonu';
-
-  @override
-  String get newTemplate => 'Nová šablona';
 
   @override
   String get noTemplateTitle => 'Žádná';
 
   @override
   String get noTemplatesDescription => 'Zatím nebyly vytvořeny žádné šablony…';
-
-  @override
-  String get templateVariableTime => 'Čas';
 
   @override
   String get templateDefaultTimestampTitle => 'Časový údaj';
@@ -780,9 +724,6 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
-  String get settingsExport => 'Export';
-
-  @override
   String get settingsExportToAnotherFormat => 'Exportovat do jiného formátu';
 
   @override
@@ -790,22 +731,7 @@ class AppLocalizationsCs extends AppLocalizations {
       'To by nemělo být použito jako záloha!';
 
   @override
-  String get exportLogs => 'Export Logs';
-
-  @override
-  String get exportImages => 'Export Images';
-
-  @override
-  String get settingsImport => 'Import';
-
-  @override
   String get settingsImportFromAnotherApp => 'Importovat z jiné aplikace';
-
-  @override
-  String get importLogs => 'Import Logs';
-
-  @override
-  String get importImages => 'Import Images';
 
   @override
   String get logFormatTitle => 'Zvolte formát';
@@ -914,13 +840,7 @@ class AppLocalizationsCs extends AppLocalizations {
   String get settingsOpenSourceLicenses => 'Open Source Licenses';
 
   @override
-  String get imagesTitle => 'Obrázky';
-
-  @override
   String get tagMoodTitle => 'Nálada';
-
-  @override
-  String get calendarTagDisplayLabel => 'Štítek';
 
   @override
   String get selectTagTitle => 'Vybrat štítek';
@@ -980,17 +900,6 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String get coachPrompt10 => 'If today had a title, what would it be?';
-
-  @override
-  String entryReadingTime(num count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count min read',
-      one: '1 min read',
-    );
-    return '$_temp0';
-  }
 
   @override
   String get pageMediaTitle => 'Media';

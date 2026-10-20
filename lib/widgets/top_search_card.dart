@@ -7,6 +7,7 @@ import 'package:aid_diary/pages/search_page.dart';
 import 'package:aid_diary/pages/settings/templates_page.dart';
 import 'package:aid_diary/pages/settings_page.dart';
 import 'package:aid_diary/pages/statistics_page.dart';
+import 'package:aid_diary/widgets/app_logo.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// Floating card at the top of each page: app name, search and the profile
@@ -31,7 +32,7 @@ class TopSearchCard extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.only(left: 16, right: 8),
           child: Row(children: [
-            Icon(Icons.auto_stories_rounded, color: cs.primary),
+            const AppLogo(),
             const SizedBox(width: 10),
             Expanded(
               child: Text(l10n.appTitle.toUpperCase(),

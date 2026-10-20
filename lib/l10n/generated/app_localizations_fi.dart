@@ -56,29 +56,11 @@ class AppLocalizationsFi extends AppLocalizations {
   String get actionTakePhoto => 'Ota kuva';
 
   @override
-  String get actionToday => 'Tänään';
-
-  @override
-  String get actionOtherDay => 'Other day';
-
-  @override
-  String get pageHomeTitle => 'Etusivu';
-
-  @override
-  String get jumpToMonthTitle => 'Jump to month';
-
-  @override
-  String get jumpToLogTitle => 'Jump to log';
-
-  @override
   String get flashbacksTitle => 'Muistikuvat';
 
   @override
   String get settingsFlashbacksExcludeBadDays =>
       'Jätä huonot päivät huomioimatta';
-
-  @override
-  String get flaskbacksEmpty => 'Ei ole vielä muistikuvia…';
 
   @override
   String get flashbackGoodDay => 'Hyvä päivä';
@@ -123,9 +105,6 @@ class AppLocalizationsFi extends AppLocalizations {
   String get flashbackOnThisDay => 'On This Day';
 
   @override
-  String get pageGalleryTitle => 'Galleria';
-
-  @override
   String get searchLogsHint => 'Hae lokeista…';
 
   @override
@@ -166,9 +145,6 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get noResults => 'No Results…';
-
-  @override
-  String get sortDateTitle => 'Päivämäärä';
 
   @override
   String get sortOrderAscendingTitle => 'Nouseva';
@@ -314,9 +290,6 @@ class AppLocalizationsFi extends AppLocalizations {
   String get pageSettingsTitle => 'Asetukset';
 
   @override
-  String get settingsAppearanceTitle => 'Ulkoasu';
-
-  @override
   String get settingsTheme => 'Teema';
 
   @override
@@ -350,9 +323,6 @@ class AppLocalizationsFi extends AppLocalizations {
   String get settingsCustomAccentColor => 'Mukautettu korostusväri';
 
   @override
-  String get settingsShowMarkdownToolbar => 'Show Markdown Toolbar';
-
-  @override
   String get settingsShowFlashbacks => 'Näytä takaumat';
 
   @override
@@ -362,12 +332,6 @@ class AppLocalizationsFi extends AppLocalizations {
   String get moodIconPrompt => 'Syötä kuvake';
 
   @override
-  String get settingsFlashbacksViewLayout => 'Takaumien näkymän asettelu';
-
-  @override
-  String get settingsHideImagesInGallery => 'Piilota kuvat galleriassa';
-
-  @override
   String get settingsHideImages => 'Hide Images';
 
   @override
@@ -375,14 +339,6 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get settingsNotificationsTitle => 'Ilmoitukset';
-
-  @override
-  String get settingsDailyReminderOnboarding =>
-      'Ota päivittäiset muistutukset käyttöön pysyäksesi johdonmukaisena!';
-
-  @override
-  String get settingsNotificationsPermissionsPrompt =>
-      '\'Ajoita hälytykset\' -lupaa pyydetään muistutuksen lähettämiseksi satunnaiseen aikaan tai haluamanasi aikana.';
 
   @override
   String get settingsDailyReminderTitle => 'Päivittäinen muistutus';
@@ -417,25 +373,13 @@ class AppLocalizationsFi extends AppLocalizations {
   String get settingsTemplatesTitle => 'Pohjamallit';
 
   @override
-  String get settingsDefaultTemplate => 'Oletuspohjamalli';
-
-  @override
   String get manageTemplates => 'Hallitse pohjamalleja';
-
-  @override
-  String get addTemplate => 'Lisää pohjamalli';
-
-  @override
-  String get newTemplate => 'New Template';
 
   @override
   String get noTemplateTitle => 'Ei mitään';
 
   @override
   String get noTemplatesDescription => 'Ei vielä luotuja pohjamalleja…';
-
-  @override
-  String get templateVariableTime => 'Aika';
 
   @override
   String get templateDefaultTimestampTitle => 'Aikaleima';
@@ -787,9 +731,6 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get settingsExport => 'Export';
-
-  @override
   String get settingsExportToAnotherFormat => 'Vie toiseen muotoon';
 
   @override
@@ -797,22 +738,7 @@ class AppLocalizationsFi extends AppLocalizations {
       'Tätä ei tule käyttää varmuuskopiona!';
 
   @override
-  String get exportLogs => 'Export Logs';
-
-  @override
-  String get exportImages => 'Export Images';
-
-  @override
-  String get settingsImport => 'Import';
-
-  @override
   String get settingsImportFromAnotherApp => 'Tuo toisesta sovelluksesta';
-
-  @override
-  String get importLogs => 'Import Logs';
-
-  @override
-  String get importImages => 'Import Images';
 
   @override
   String get logFormatTitle => 'Valitse muoto';
@@ -922,13 +848,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get settingsOpenSourceLicenses => 'Open Source Licenses';
 
   @override
-  String get imagesTitle => 'Images';
-
-  @override
   String get tagMoodTitle => 'Mieliala';
-
-  @override
-  String get calendarTagDisplayLabel => 'Tag';
 
   @override
   String get selectTagTitle => 'Select Tag';
@@ -988,17 +908,6 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get coachPrompt10 => 'If today had a title, what would it be?';
-
-  @override
-  String entryReadingTime(num count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count min read',
-      one: '1 min read',
-    );
-    return '$_temp0';
-  }
 
   @override
   String get pageMediaTitle => 'Media';

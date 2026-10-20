@@ -18,6 +18,7 @@ import 'package:aid_diary/widgets/scaled_markdown.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
+import 'package:aid_diary/widgets/app_logo.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -198,7 +199,7 @@ class EntryShareCard extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.fromLTRB(22, 12, 22, 18),
             child: Row(children: [
-              Icon(Icons.auto_stories_rounded, size: 16, color: cs.primary),
+              const AppLogo(size: 16),
               const SizedBox(width: 6),
               Text(l10n.appTitle,
                   style: theme.textTheme.labelLarge?.copyWith(

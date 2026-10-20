@@ -16,26 +16,30 @@ void main() {
   EntryImage image(int entryId, String name) =>
       EntryImage(entryId: entryId, imgPath: name, imgRank: 0, timeCreate: time);
 
-  test('the photo stays the same all day and skips other media', () {
+  test('candidates are photos outside sealed capsules', () {
     final entries = [entry(1), entry(2), entry(3, openAt: DateTime(2099))];
     final media = {
       1: [image(1, 'a.jpg'), image(1, 'clip.mp4')],
       2: [image(2, 'b.jpg'), image(2, 'note.m4a')],
       3: [image(3, 'sealed.jpg')],
     };
-    List<EntryImage> imagesOf(Entry e) => media[e.id]!;
-    final morning = photoForDay(entries, imagesOf, DateTime(2026, 10, 20, 8));
-    final evening = photoForDay(entries, imagesOf, DateTime(2026, 10, 20, 22));
-    expect(morning!.image.imgPath, evening!.image.imgPath);
-    final seen = {
-      for (var day = 1; day <= 30; day++)
-        photoForDay(entries, imagesOf, DateTime(2026, 11, day))!.image.imgPath,
-    };
-    expect(seen, {'a.jpg', 'b.jpg'});
+    final names = photoCandidates(entries, (e) => media[e.id]!, 10)
+        .map((c) => c.image.imgPath);
+    expect(names, ['a.jpg', 'b.jpg']);
   });
 
-  test('no photos, no choice', () {
-    expect(photoForDay([entry(1)], (_) => const [], DateTime(2026)), isNull);
+  test('a capped sample is stable while the photos stay the same', () {
+    final entries = [for (var id = 1; id <= 50; id++) entry(id)];
+    List<EntryImage> imagesOf(Entry e) => [image(e.id!, '${e.id}.jpg')];
+    final first = photoCandidates(entries, imagesOf, 12);
+    final again = photoCandidates(entries, imagesOf, 12);
+    expect(first, hasLength(12));
+    expect(
+        again.map((c) => c.image.imgPath), first.map((c) => c.image.imgPath));
+  });
+
+  test('no photos, no candidates', () {
+    expect(photoCandidates([entry(1)], (_) => const [], 10), isEmpty);
   });
 
   test('photo widget taps name their entry', () {

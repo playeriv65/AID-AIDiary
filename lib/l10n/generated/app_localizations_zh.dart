@@ -54,28 +54,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get actionTakePhoto => '拍张照';
 
   @override
-  String get actionToday => '今天';
-
-  @override
-  String get actionOtherDay => '前几天';
-
-  @override
-  String get pageHomeTitle => '主页';
-
-  @override
-  String get jumpToMonthTitle => '月迹跳转';
-
-  @override
-  String get jumpToLogTitle => '日记直达';
-
-  @override
   String get flashbacksTitle => '往昔重现';
 
   @override
   String get settingsFlashbacksExcludeBadDays => '排除糟糕的日子';
-
-  @override
-  String get flaskbacksEmpty => '暂无回忆…';
 
   @override
   String get flashbackGoodDay => '美好的一天';
@@ -120,9 +102,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get flashbackOnThisDay => '在这一天';
 
   @override
-  String get pageGalleryTitle => '迹忆';
-
-  @override
   String get searchLogsHint => '搜索日记…';
 
   @override
@@ -163,9 +142,6 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get noResults => '无结果…';
-
-  @override
-  String get sortDateTitle => '日期';
 
   @override
   String get sortOrderAscendingTitle => '升序';
@@ -309,9 +285,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get pageSettingsTitle => '设置';
 
   @override
-  String get settingsAppearanceTitle => '外观';
-
-  @override
   String get settingsTheme => '主题模式';
 
   @override
@@ -345,9 +318,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settingsCustomAccentColor => '自定义强调色';
 
   @override
-  String get settingsShowMarkdownToolbar => '显示 Markdown 工具栏';
-
-  @override
   String get settingsShowFlashbacks => '显示往昔重现';
 
   @override
@@ -357,12 +327,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get moodIconPrompt => '输入一个图标';
 
   @override
-  String get settingsFlashbacksViewLayout => '往昔重现的视图布局';
-
-  @override
-  String get settingsHideImagesInGallery => '隐藏图库中的图片';
-
-  @override
   String get settingsHideImages => '隐藏图片';
 
   @override
@@ -370,12 +334,6 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get settingsNotificationsTitle => '通知';
-
-  @override
-  String get settingsDailyReminderOnboarding => '开启每日提醒，保持自己的连贯性！';
-
-  @override
-  String get settingsNotificationsPermissionsPrompt => '为了按时发送提醒，应用将请求通知权限。';
 
   @override
   String get settingsDailyReminderTitle => '每日提醒';
@@ -408,25 +366,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settingsTemplatesTitle => '模板';
 
   @override
-  String get settingsDefaultTemplate => '默认模板';
-
-  @override
   String get manageTemplates => '管理模板';
-
-  @override
-  String get addTemplate => '选择添加模板';
-
-  @override
-  String get newTemplate => '新建模板';
 
   @override
   String get noTemplateTitle => '无';
 
   @override
   String get noTemplatesDescription => '尚未创建任何模板…';
-
-  @override
-  String get templateVariableTime => '时间';
 
   @override
   String get templateDefaultTimestampTitle => '时间戳';
@@ -773,31 +719,13 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get settingsExport => '导出数据';
-
-  @override
   String get settingsExportToAnotherFormat => '导出为另一种格式';
 
   @override
   String get settingsExportFormatDescription => '这不应该被用作备份！';
 
   @override
-  String get exportLogs => '导出日记';
-
-  @override
-  String get exportImages => '导出图片';
-
-  @override
-  String get settingsImport => '导入数据';
-
-  @override
   String get settingsImportFromAnotherApp => '从其他应用程序导入';
-
-  @override
-  String get importLogs => '导入日记';
-
-  @override
-  String get importImages => '导入图片';
 
   @override
   String get logFormatTitle => '选择格式';
@@ -905,13 +833,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settingsOpenSourceLicenses => '开源许可';
 
   @override
-  String get imagesTitle => '图像';
-
-  @override
   String get tagMoodTitle => '心情';
-
-  @override
-  String get calendarTagDisplayLabel => '标签';
 
   @override
   String get selectTagTitle => '选择标签';
@@ -971,16 +893,6 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get coachPrompt10 => '如果给今天起个标题，会是什么？';
-
-  @override
-  String entryReadingTime(num count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '约 $count 分钟读完',
-    );
-    return '$_temp0';
-  }
 
   @override
   String get pageMediaTitle => '媒体';
@@ -2026,28 +1938,10 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get actionTakePhoto => '拍照';
 
   @override
-  String get actionToday => '今天';
-
-  @override
-  String get actionOtherDay => '其他天';
-
-  @override
-  String get pageHomeTitle => '主頁';
-
-  @override
-  String get jumpToMonthTitle => '跳至月份';
-
-  @override
-  String get jumpToLogTitle => '跳至紀錄';
-
-  @override
   String get flashbacksTitle => '往日重現';
 
   @override
   String get settingsFlashbacksExcludeBadDays => '排除糟糕的日子';
-
-  @override
-  String get flaskbacksEmpty => '暫無回憶…';
 
   @override
   String get flashbackGoodDay => '美好的一天';
@@ -2092,9 +1986,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get flashbackOnThisDay => '在這一天';
 
   @override
-  String get pageGalleryTitle => '紀錄';
-
-  @override
   String get searchLogsHint => '搜尋紀錄…';
 
   @override
@@ -2135,9 +2026,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get noResults => '無結果…';
-
-  @override
-  String get sortDateTitle => '日期';
 
   @override
   String get sortOrderAscendingTitle => '升序';
@@ -2281,9 +2169,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get pageSettingsTitle => '設定';
 
   @override
-  String get settingsAppearanceTitle => '外觀';
-
-  @override
   String get settingsTheme => '主題';
 
   @override
@@ -2317,9 +2202,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get settingsCustomAccentColor => '自訂強調色';
 
   @override
-  String get settingsShowMarkdownToolbar => '顯示 Markdown 工具列';
-
-  @override
   String get settingsShowFlashbacks => '顯示往日重現';
 
   @override
@@ -2329,12 +2211,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get moodIconPrompt => '輸入圖示';
 
   @override
-  String get settingsFlashbacksViewLayout => '往日重現檢視佈局';
-
-  @override
-  String get settingsHideImagesInGallery => '隱藏紀錄頁中的圖片';
-
-  @override
   String get settingsHideImages => '隱藏圖片';
 
   @override
@@ -2342,13 +2218,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get settingsNotificationsTitle => '通知';
-
-  @override
-  String get settingsDailyReminderOnboarding => '開啟每日提醒，助你持之以恆！';
-
-  @override
-  String get settingsNotificationsPermissionsPrompt =>
-      '為了在隨機或您設定的時間發送提醒，系統將請求「排程鬧鐘」權限。';
 
   @override
   String get settingsDailyReminderTitle => '每日提醒';
@@ -2381,25 +2250,13 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get settingsTemplatesTitle => '模板';
 
   @override
-  String get settingsDefaultTemplate => '預設模板';
-
-  @override
   String get manageTemplates => '管理模板';
-
-  @override
-  String get addTemplate => '新增模板';
-
-  @override
-  String get newTemplate => '新增模板';
 
   @override
   String get noTemplateTitle => '無';
 
   @override
   String get noTemplatesDescription => '尚未建立模板…';
-
-  @override
-  String get templateVariableTime => '時間';
 
   @override
   String get templateDefaultTimestampTitle => '時間戳記';
@@ -2746,31 +2603,13 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   }
 
   @override
-  String get settingsExport => '匯出';
-
-  @override
   String get settingsExportToAnotherFormat => '匯出為其他格式';
 
   @override
   String get settingsExportFormatDescription => '這不應該被用來備份！';
 
   @override
-  String get exportLogs => '匯出紀錄';
-
-  @override
-  String get exportImages => '匯出影像';
-
-  @override
-  String get settingsImport => '匯入';
-
-  @override
   String get settingsImportFromAnotherApp => '從其他應用程式匯入';
-
-  @override
-  String get importLogs => '匯入紀錄';
-
-  @override
-  String get importImages => '匯入影像';
 
   @override
   String get logFormatTitle => '選擇格式';
@@ -2863,13 +2702,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get settingsOpenSourceLicenses => '開源授權條款';
 
   @override
-  String get imagesTitle => '影像';
-
-  @override
   String get tagMoodTitle => '心情';
-
-  @override
-  String get calendarTagDisplayLabel => '標籤';
 
   @override
   String get selectTagTitle => '選擇標籤';
@@ -2929,16 +2762,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get coachPrompt10 => '如果給今天起個標題，會是什麼？';
-
-  @override
-  String entryReadingTime(num count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '約 $count 分鐘讀完',
-    );
-    return '$_temp0';
-  }
 
   @override
   String get pageMediaTitle => '媒體';

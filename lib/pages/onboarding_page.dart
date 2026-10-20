@@ -8,6 +8,7 @@ import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/notification_manager.dart';
 import 'package:aid_diary/pages/settings/security_settings.dart';
+import 'package:aid_diary/widgets/app_logo.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// Welcome pages on first launch, like Journey's: welcome, what the diary
@@ -60,15 +61,15 @@ class _OnboardingPageState extends State<OnboardingPage> {
     final last = _page == _count - 1;
     final pages = [
       _OnboardStep(
-          icon: Icons.auto_stories_rounded,
+          icon: const AppLogo(size: 80),
           title: l10n.onboardWelcomeTitle,
           text: l10n.onboardWelcomeText),
       _OnboardStep(
-          icon: Icons.photo_album_outlined,
+          icon: const Icon(Icons.photo_album_outlined),
           title: l10n.onboardIntroTitle,
           text: l10n.onboardIntroText),
       _OnboardStep(
-        icon: Icons.lock_outline_rounded,
+        icon: const Icon(Icons.lock_outline_rounded),
         title: l10n.onboardPrivateTitle,
         text: l10n.onboardPrivateText,
         action: OutlinedButton.icon(
@@ -81,7 +82,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
         ),
       ),
       _OnboardStep(
-        icon: Icons.notifications_active_outlined,
+        icon: const Icon(Icons.notifications_active_outlined),
         title: l10n.onboardNotifyTitle,
         text: l10n.onboardNotifyText,
         // Notifications exist on Android only.
@@ -99,7 +100,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
             : null,
       ),
       _OnboardStep(
-          icon: Icons.celebration_rounded,
+          icon: const Icon(Icons.celebration_rounded),
           title: l10n.onboardDoneTitle,
           text: l10n.onboardDoneText),
     ];
@@ -169,7 +170,7 @@ class _OnboardStep extends StatelessWidget {
       required this.title,
       required this.text,
       this.action});
-  final IconData icon;
+  final Widget icon;
   final String title;
   final String text;
   final Widget? action;
@@ -189,7 +190,10 @@ class _OnboardStep extends StatelessWidget {
               height: 160,
               decoration: BoxDecoration(
                   color: cs.primaryContainer, shape: BoxShape.circle),
-              child: Icon(icon, size: 72, color: cs.onPrimaryContainer),
+              alignment: Alignment.center,
+              child: IconTheme(
+                  data: IconThemeData(size: 72, color: cs.onPrimaryContainer),
+                  child: icon),
             ),
             const SizedBox(height: 32),
             Text(title,

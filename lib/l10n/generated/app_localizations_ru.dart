@@ -56,28 +56,10 @@ class AppLocalizationsRu extends AppLocalizations {
   String get actionTakePhoto => 'Сделать фото';
 
   @override
-  String get actionToday => 'Сегодня';
-
-  @override
-  String get actionOtherDay => 'Другой день';
-
-  @override
-  String get pageHomeTitle => 'Дом';
-
-  @override
-  String get jumpToMonthTitle => 'Выбрать месяц';
-
-  @override
-  String get jumpToLogTitle => 'Выбрать день';
-
-  @override
   String get flashbacksTitle => 'Воспоминания';
 
   @override
   String get settingsFlashbacksExcludeBadDays => 'Не учитывать плохие дни';
-
-  @override
-  String get flaskbacksEmpty => 'Воспоминаний пока нет…';
 
   @override
   String get flashbackGoodDay => 'Хороший день';
@@ -125,9 +107,6 @@ class AppLocalizationsRu extends AppLocalizations {
   String get flashbackOnThisDay => 'В этот день';
 
   @override
-  String get pageGalleryTitle => 'Галерея';
-
-  @override
   String get searchLogsHint => 'Искать записи…';
 
   @override
@@ -171,9 +150,6 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get noResults => 'No Results…';
-
-  @override
-  String get sortDateTitle => 'Дата';
 
   @override
   String get sortOrderAscendingTitle => 'В порядке возрастания';
@@ -319,9 +295,6 @@ class AppLocalizationsRu extends AppLocalizations {
   String get pageSettingsTitle => 'Настройки';
 
   @override
-  String get settingsAppearanceTitle => 'Внешний вид';
-
-  @override
   String get settingsTheme => 'Тема';
 
   @override
@@ -356,10 +329,6 @@ class AppLocalizationsRu extends AppLocalizations {
   String get settingsCustomAccentColor => 'Пользовательский акцентный цвет';
 
   @override
-  String get settingsShowMarkdownToolbar =>
-      'Показать панель инструментов Markdown';
-
-  @override
   String get settingsShowFlashbacks => 'Показать воспоминания';
 
   @override
@@ -369,12 +338,6 @@ class AppLocalizationsRu extends AppLocalizations {
   String get moodIconPrompt => 'Введите значок (емодзи)';
 
   @override
-  String get settingsFlashbacksViewLayout => 'Отображение флеш-беков';
-
-  @override
-  String get settingsHideImagesInGallery => 'Скрыть изображения в галерее';
-
-  @override
   String get settingsHideImages => 'Скрыть изображения';
 
   @override
@@ -382,14 +345,6 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get settingsNotificationsTitle => 'Уведомления';
-
-  @override
-  String get settingsDailyReminderOnboarding =>
-      'Включи ежедневные напоминания, чтобы оставаться последовательным!';
-
-  @override
-  String get settingsNotificationsPermissionsPrompt =>
-      'Будет запрошено разрешение «Планирование будильников» для отправки напоминания в случайный момент или в выбранное время.';
 
   @override
   String get settingsDailyReminderTitle => 'Ежедневное напоминание';
@@ -427,25 +382,13 @@ class AppLocalizationsRu extends AppLocalizations {
   String get settingsTemplatesTitle => 'Шаблоны';
 
   @override
-  String get settingsDefaultTemplate => 'Шаблон по умолчанию';
-
-  @override
   String get manageTemplates => 'Управление шаблонами';
-
-  @override
-  String get addTemplate => 'Добавить шаблон';
-
-  @override
-  String get newTemplate => 'Новый шаблон';
 
   @override
   String get noTemplateTitle => 'Нет';
 
   @override
   String get noTemplatesDescription => 'Нет созданных шаблонов…';
-
-  @override
-  String get templateVariableTime => 'Время';
 
   @override
   String get templateDefaultTimestampTitle => 'Временная метка';
@@ -796,9 +739,6 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
-  String get settingsExport => 'Экспорт';
-
-  @override
   String get settingsExportToAnotherFormat => 'Сохранить в другом формате';
 
   @override
@@ -806,22 +746,7 @@ class AppLocalizationsRu extends AppLocalizations {
       'Не используйте это как резервную копию!';
 
   @override
-  String get exportLogs => 'Экспорт записей';
-
-  @override
-  String get exportImages => 'Экспорт изображений';
-
-  @override
-  String get settingsImport => 'Импорт';
-
-  @override
   String get settingsImportFromAnotherApp => 'Импорт из другого приложения';
-
-  @override
-  String get importLogs => 'Импорт записей';
-
-  @override
-  String get importImages => 'Импорт изображений';
 
   @override
   String get logFormatTitle => 'Выбрать формат';
@@ -930,13 +855,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get settingsOpenSourceLicenses => 'Open Source Licenses';
 
   @override
-  String get imagesTitle => 'Изображения';
-
-  @override
   String get tagMoodTitle => 'Настроение';
-
-  @override
-  String get calendarTagDisplayLabel => 'Tag';
 
   @override
   String get selectTagTitle => 'Select Tag';
@@ -996,17 +915,6 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get coachPrompt10 => 'If today had a title, what would it be?';
-
-  @override
-  String entryReadingTime(num count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count min read',
-      one: '1 min read',
-    );
-    return '$_temp0';
-  }
 
   @override
   String get pageMediaTitle => 'Media';

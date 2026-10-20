@@ -56,28 +56,10 @@ class AppLocalizationsNl extends AppLocalizations {
   String get actionTakePhoto => 'Trek foto';
 
   @override
-  String get actionToday => 'Vandaag';
-
-  @override
-  String get actionOtherDay => 'Andere dag';
-
-  @override
-  String get pageHomeTitle => 'Start';
-
-  @override
-  String get jumpToMonthTitle => 'Spring naar maand';
-
-  @override
-  String get jumpToLogTitle => 'Jump to log';
-
-  @override
   String get flashbacksTitle => 'Terugblikken';
 
   @override
   String get settingsFlashbacksExcludeBadDays => 'Sluit slechte dagen uit';
-
-  @override
-  String get flaskbacksEmpty => 'Nog geen terugblikken…';
 
   @override
   String get flashbackGoodDay => 'Een goede dag';
@@ -122,9 +104,6 @@ class AppLocalizationsNl extends AppLocalizations {
   String get flashbackOnThisDay => 'On This Day';
 
   @override
-  String get pageGalleryTitle => 'Galerij';
-
-  @override
   String get searchLogsHint => 'Doorzoek logboeken…';
 
   @override
@@ -165,9 +144,6 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get noResults => 'No Results…';
-
-  @override
-  String get sortDateTitle => 'Datum';
 
   @override
   String get sortOrderAscendingTitle => 'Oplopend';
@@ -315,9 +291,6 @@ class AppLocalizationsNl extends AppLocalizations {
   String get pageSettingsTitle => 'Instellingen';
 
   @override
-  String get settingsAppearanceTitle => 'Uiterlijk';
-
-  @override
   String get settingsTheme => 'Thema';
 
   @override
@@ -352,9 +325,6 @@ class AppLocalizationsNl extends AppLocalizations {
   String get settingsCustomAccentColor => 'Eigen accentkleur';
 
   @override
-  String get settingsShowMarkdownToolbar => 'Toon Markdown werkbalk';
-
-  @override
   String get settingsShowFlashbacks => 'Toon terugblikken';
 
   @override
@@ -364,12 +334,6 @@ class AppLocalizationsNl extends AppLocalizations {
   String get moodIconPrompt => 'Voer een icoon in';
 
   @override
-  String get settingsFlashbacksViewLayout => 'Flashbacks View Layout';
-
-  @override
-  String get settingsHideImagesInGallery => 'Hide Images In Gallery';
-
-  @override
   String get settingsHideImages => 'Hide Images';
 
   @override
@@ -377,14 +341,6 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get settingsNotificationsTitle => 'Meldingen';
-
-  @override
-  String get settingsDailyReminderOnboarding =>
-      'Zet dagelijkse herinneringen aan om consistent te blijven!';
-
-  @override
-  String get settingsNotificationsPermissionsPrompt =>
-      'De \'plan alarmen\' toestemming zal aangevraagd worden om de herinnering op een willekeurig moment of op je gewenste tijd te sturen.';
 
   @override
   String get settingsDailyReminderTitle => 'Dagelijkse herinnering';
@@ -420,25 +376,13 @@ class AppLocalizationsNl extends AppLocalizations {
   String get settingsTemplatesTitle => 'Sjablonen';
 
   @override
-  String get settingsDefaultTemplate => 'Standaardsjabloon';
-
-  @override
   String get manageTemplates => 'Sjablonen beheren';
-
-  @override
-  String get addTemplate => 'Sjabloon toevoegen';
-
-  @override
-  String get newTemplate => 'Nieuw sjabloon';
 
   @override
   String get noTemplateTitle => 'Geen';
 
   @override
   String get noTemplatesDescription => 'Nog geen sjablonen aangemaakt…';
-
-  @override
-  String get templateVariableTime => 'Time';
 
   @override
   String get templateDefaultTimestampTitle => 'Timestamp';
@@ -787,9 +731,6 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
-  String get settingsExport => 'Export';
-
-  @override
   String get settingsExportToAnotherFormat =>
       'Exporteren naar een ander formaat';
 
@@ -798,22 +739,7 @@ class AppLocalizationsNl extends AppLocalizations {
       'Dit zou niet als een back-up gebruikt moeten worden!';
 
   @override
-  String get exportLogs => 'Export Logs';
-
-  @override
-  String get exportImages => 'Export Images';
-
-  @override
-  String get settingsImport => 'Import';
-
-  @override
   String get settingsImportFromAnotherApp => 'Importeer vanuit een andere app';
-
-  @override
-  String get importLogs => 'Import Logs';
-
-  @override
-  String get importImages => 'Import Images';
 
   @override
   String get logFormatTitle => 'Kies formaat';
@@ -924,13 +850,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get settingsOpenSourceLicenses => 'Open Source Licenses';
 
   @override
-  String get imagesTitle => 'Images';
-
-  @override
   String get tagMoodTitle => 'Humeur';
-
-  @override
-  String get calendarTagDisplayLabel => 'Tag';
 
   @override
   String get selectTagTitle => 'Select Tag';
@@ -990,17 +910,6 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get coachPrompt10 => 'If today had a title, what would it be?';
-
-  @override
-  String entryReadingTime(num count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count min read',
-      one: '1 min read',
-    );
-    return '$_temp0';
-  }
 
   @override
   String get pageMediaTitle => 'Media';

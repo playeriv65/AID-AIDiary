@@ -56,28 +56,10 @@ class AppLocalizationsFa extends AppLocalizations {
   String get actionTakePhoto => 'عکس بگیر';
 
   @override
-  String get actionToday => 'امروز';
-
-  @override
-  String get actionOtherDay => 'روز دیگر';
-
-  @override
-  String get pageHomeTitle => 'خانه';
-
-  @override
-  String get jumpToMonthTitle => 'پرش به ماه';
-
-  @override
-  String get jumpToLogTitle => 'پرش به تاریخچه';
-
-  @override
   String get flashbacksTitle => 'فلش بک';
 
   @override
   String get settingsFlashbacksExcludeBadDays => 'مستثنی کردن روزهای بد';
-
-  @override
-  String get flaskbacksEmpty => 'هیچ فلش بکی وجود ندارد…';
 
   @override
   String get flashbackGoodDay => 'یک روز خوب';
@@ -122,9 +104,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get flashbackOnThisDay => 'در این روز';
 
   @override
-  String get pageGalleryTitle => 'گالری';
-
-  @override
   String get searchLogsHint => 'تاریخچه جستجوها…';
 
   @override
@@ -165,9 +144,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get noResults => 'بدون نتیجه…';
-
-  @override
-  String get sortDateTitle => 'تاریخ';
 
   @override
   String get sortOrderAscendingTitle => 'افزایشی';
@@ -313,9 +289,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get pageSettingsTitle => 'تنظیمات';
 
   @override
-  String get settingsAppearanceTitle => 'ظاهر';
-
-  @override
   String get settingsTheme => '‏تم';
 
   @override
@@ -349,9 +322,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get settingsCustomAccentColor => 'شخصی سازی رنگ بندی';
 
   @override
-  String get settingsShowMarkdownToolbar => 'Show Markdown Toolbar';
-
-  @override
   String get settingsShowFlashbacks => 'نمایش فلش بک ها';
 
   @override
@@ -361,12 +331,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get moodIconPrompt => 'یک آیکون وارد کنید';
 
   @override
-  String get settingsFlashbacksViewLayout => 'Flashbacks View Layout';
-
-  @override
-  String get settingsHideImagesInGallery => 'پنهان کردن عکس های درون گالری';
-
-  @override
   String get settingsHideImages => 'پنهان کردن عکس ها';
 
   @override
@@ -374,14 +338,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get settingsNotificationsTitle => 'نوتیفیکشن ها';
-
-  @override
-  String get settingsDailyReminderOnboarding =>
-      'یاداوری روزانه را فعال کن تا همیشه منظم باشی!';
-
-  @override
-  String get settingsNotificationsPermissionsPrompt =>
-      'مجوز «برنامه‌ریزی هشدارها» درخواست می‌شود تا یادآوری را در یک لحظهٔ تصادفی یا در زمان دلخواه شما ارسال کند.';
 
   @override
   String get settingsDailyReminderTitle => 'یادآوری روزانه';
@@ -416,25 +372,13 @@ class AppLocalizationsFa extends AppLocalizations {
   String get settingsTemplatesTitle => '‎الگوها';
 
   @override
-  String get settingsDefaultTemplate => 'الگوی پیشفرض';
-
-  @override
   String get manageTemplates => 'مدیریت الگوها';
-
-  @override
-  String get addTemplate => 'افزودن یک الگو';
-
-  @override
-  String get newTemplate => 'New Template';
 
   @override
   String get noTemplateTitle => 'هیچ';
 
   @override
   String get noTemplatesDescription => 'هیچ الگویی هنوز ایجاد نشده است…';
-
-  @override
-  String get templateVariableTime => 'زمان';
 
   @override
   String get templateDefaultTimestampTitle => 'زمان ثبت';
@@ -782,9 +726,6 @@ class AppLocalizationsFa extends AppLocalizations {
   }
 
   @override
-  String get settingsExport => 'Export';
-
-  @override
   String get settingsExportToAnotherFormat => 'خروجی به فرمت دیگر';
 
   @override
@@ -792,22 +733,7 @@ class AppLocalizationsFa extends AppLocalizations {
       'این نباید به عنوان یک پشتیبان استفاده شود!';
 
   @override
-  String get exportLogs => 'Export Logs';
-
-  @override
-  String get exportImages => 'Export Images';
-
-  @override
-  String get settingsImport => 'Import';
-
-  @override
   String get settingsImportFromAnotherApp => 'ورودی از یک برنامه دیگر';
-
-  @override
-  String get importLogs => 'Import Logs';
-
-  @override
-  String get importImages => 'Import Images';
 
   @override
   String get logFormatTitle => 'انتخاب فرمت';
@@ -916,13 +842,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get settingsOpenSourceLicenses => 'Open Source Licenses';
 
   @override
-  String get imagesTitle => 'تصاویر';
-
-  @override
   String get tagMoodTitle => 'حس و حال';
-
-  @override
-  String get calendarTagDisplayLabel => 'برچسب';
 
   @override
   String get selectTagTitle => 'انتخاب برچسب';
@@ -982,17 +902,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get coachPrompt10 => 'If today had a title, what would it be?';
-
-  @override
-  String entryReadingTime(num count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count min read',
-      one: '1 min read',
-    );
-    return '$_temp0';
-  }
 
   @override
   String get pageMediaTitle => 'Media';

@@ -56,28 +56,10 @@ class AppLocalizationsDa extends AppLocalizations {
   String get actionTakePhoto => 'Take photo';
 
   @override
-  String get actionToday => 'Today';
-
-  @override
-  String get actionOtherDay => 'Other day';
-
-  @override
-  String get pageHomeTitle => 'Hjem';
-
-  @override
-  String get jumpToMonthTitle => 'Jump to month';
-
-  @override
-  String get jumpToLogTitle => 'Jump to log';
-
-  @override
   String get flashbacksTitle => 'Minder';
 
   @override
   String get settingsFlashbacksExcludeBadDays => 'Ekskluder dårlige dage';
-
-  @override
-  String get flaskbacksEmpty => 'Ingen minder endnu…';
 
   @override
   String get flashbackGoodDay => 'En god dag';
@@ -122,9 +104,6 @@ class AppLocalizationsDa extends AppLocalizations {
   String get flashbackOnThisDay => 'On This Day';
 
   @override
-  String get pageGalleryTitle => 'Galleri';
-
-  @override
   String get searchLogsHint => 'Søg i logs…';
 
   @override
@@ -165,9 +144,6 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String get noResults => 'No Results…';
-
-  @override
-  String get sortDateTitle => 'Dato';
 
   @override
   String get sortOrderAscendingTitle => 'Stigende';
@@ -311,9 +287,6 @@ class AppLocalizationsDa extends AppLocalizations {
   String get pageSettingsTitle => 'Indstillinger';
 
   @override
-  String get settingsAppearanceTitle => 'Udseende';
-
-  @override
   String get settingsTheme => 'Tema';
 
   @override
@@ -347,9 +320,6 @@ class AppLocalizationsDa extends AppLocalizations {
   String get settingsCustomAccentColor => 'Brugerdefineret accentfarve';
 
   @override
-  String get settingsShowMarkdownToolbar => 'Vis markdown-værktøjslinje';
-
-  @override
   String get settingsShowFlashbacks => 'Vis minder';
 
   @override
@@ -359,12 +329,6 @@ class AppLocalizationsDa extends AppLocalizations {
   String get moodIconPrompt => 'Angiv et ikon';
 
   @override
-  String get settingsFlashbacksViewLayout => 'Flashbacks View Layout';
-
-  @override
-  String get settingsHideImagesInGallery => 'Hide Images In Gallery';
-
-  @override
   String get settingsHideImages => 'Hide Images';
 
   @override
@@ -372,14 +336,6 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String get settingsNotificationsTitle => 'Meddelelser';
-
-  @override
-  String get settingsDailyReminderOnboarding =>
-      'Aktivér daglige påmindelser for at forblive konsekvent!';
-
-  @override
-  String get settingsNotificationsPermissionsPrompt =>
-      'The \'schedule alarms\' permission will be requested to send the reminder at a random moment or at your preferred time.';
 
   @override
   String get settingsDailyReminderTitle => 'Daglig påmindelse';
@@ -415,25 +371,13 @@ class AppLocalizationsDa extends AppLocalizations {
   String get settingsTemplatesTitle => 'Skabeloner';
 
   @override
-  String get settingsDefaultTemplate => 'Standardskabelon';
-
-  @override
   String get manageTemplates => 'Administrer skabeloner';
-
-  @override
-  String get addTemplate => 'Tilføj en skabelon';
-
-  @override
-  String get newTemplate => 'Ny skabelon';
 
   @override
   String get noTemplateTitle => 'Ingen';
 
   @override
   String get noTemplatesDescription => 'Ingen skabeloner oprettet endnu…';
-
-  @override
-  String get templateVariableTime => 'Time';
 
   @override
   String get templateDefaultTimestampTitle => 'Timestamp';
@@ -781,9 +725,6 @@ class AppLocalizationsDa extends AppLocalizations {
   }
 
   @override
-  String get settingsExport => 'Eksportér';
-
-  @override
   String get settingsExportToAnotherFormat => 'Export To Another Format';
 
   @override
@@ -791,22 +732,7 @@ class AppLocalizationsDa extends AppLocalizations {
       'This should not be used as a backup!';
 
   @override
-  String get exportLogs => 'Eksportér logs';
-
-  @override
-  String get exportImages => 'Eksportér billeder';
-
-  @override
-  String get settingsImport => 'Importér';
-
-  @override
   String get settingsImportFromAnotherApp => 'Importér fra en anden app';
-
-  @override
-  String get importLogs => 'Importér logs';
-
-  @override
-  String get importImages => 'Importér billeder';
 
   @override
   String get logFormatTitle => 'Vælg format';
@@ -915,13 +841,7 @@ class AppLocalizationsDa extends AppLocalizations {
   String get settingsOpenSourceLicenses => 'Open Source Licenses';
 
   @override
-  String get imagesTitle => 'Images';
-
-  @override
   String get tagMoodTitle => 'Humør';
-
-  @override
-  String get calendarTagDisplayLabel => 'Tag';
 
   @override
   String get selectTagTitle => 'Select Tag';
@@ -981,17 +901,6 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String get coachPrompt10 => 'If today had a title, what would it be?';
-
-  @override
-  String entryReadingTime(num count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count min read',
-      one: '1 min read',
-    );
-    return '$_temp0';
-  }
 
   @override
   String get pageMediaTitle => 'Media';

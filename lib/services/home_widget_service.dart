@@ -2,22 +2,20 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'dart:convert';
 import 'dart:io';
-import 'dart:isolate';
 import 'dart:math';
-import 'dart:typed_data';
 
 import 'package:aid_diary/database/image_storage.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/models/image.dart';
 import 'package:aid_diary/stats/streaks.dart';
+import 'package:flutter/foundation.dart' show mapEquals;
 import 'package:home_widget/home_widget.dart';
-import 'package:image/image.dart' as img;
 import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart' show join;
-import 'package:path_provider/path_provider.dart';
 
 /// What the Android home screen widget shows, as the text it needs.
 class HomeWidgetSnapshot {
@@ -74,23 +72,22 @@ class HomeWidgetSnapshot {
       '';
 }
 
-/// The photo the photo widget shows today and the entry it belongs to.
+/// A photo the photo widget may show and the entry it belongs to.
 typedef PhotoWidgetChoice = ({Entry entry, EntryImage image});
 
-/// One photo for [day], the same all day so the widget does not flicker as
-/// entries change; null when no entry has a photo. Sealed capsules are
-/// left out.
-PhotoWidgetChoice? photoForDay(List<Entry> entries,
-    List<EntryImage> Function(Entry entry) imagesOf, DateTime day) {
+/// Up to [limit] photos for the photo widget, which picks one per day by
+/// itself. The sample stays the same while the number of photos does, so
+/// pushing it again changes nothing. Sealed capsules are left out.
+List<PhotoWidgetChoice> photoCandidates(List<Entry> entries,
+    List<EntryImage> Function(Entry entry) imagesOf, int limit) {
   final photos = [
     for (final entry in entries)
       if (!entry.isSealed)
         for (final image in imagesOf(entry))
           if (image.isImage) (entry: entry, image: image),
   ];
-  if (photos.isEmpty) return null;
-  final seed = day.year * 10000 + day.month * 100 + day.day;
-  return photos[Random(seed).nextInt(photos.length)];
+  if (photos.length <= limit) return photos;
+  return (photos..shuffle(Random(photos.length))).take(limit).toList();
 }
 
 /// Keeps the Android widgets in step with the diary and reports their taps.
@@ -101,70 +98,54 @@ class HomeWidgetService {
   static const _entryHost = 'entry';
   static final _logger = Logger('HomeWidgetService');
 
-  /// The photo last copied for the widget, so it is not redone each time.
-  static String? _photoShown;
+  /// What each widget was last given, so unchanged data is not rewritten
+  /// on every change to the diary.
+  static Map<String, String>? _pushed;
+  static Map<String, String>? _photosPushed;
 
   static bool get supported => Platform.isAndroid;
 
   static Future<void> push(HomeWidgetSnapshot snapshot) async {
     if (!supported) return;
+    final data = snapshot.toWidgetData();
+    if (mapEquals(data, _pushed)) return;
+    _pushed = data;
+    await _save(data, _provider, 'Home widget');
+  }
+
+  /// Gives the photo widget [candidates] with [caption] under each and
+  /// [empty] for when there is none. The widget picks one per day and
+  /// loads the file itself, so it turns over without the app.
+  static Future<void> pushPhotos(List<PhotoWidgetChoice> candidates,
+      String Function(Entry entry) caption, String empty) async {
+    if (!supported) return;
+    final folder = await ImageStorage.instance.getInternalFolder();
+    final data = {
+      'photo_widget_photos': jsonEncode([
+        for (final (:entry, :image) in candidates)
+          {
+            'path': join(folder, image.imgPath),
+            'entry': entry.id,
+            'caption': caption(entry),
+          }
+      ]),
+      'photo_widget_empty': empty,
+    };
+    if (mapEquals(data, _photosPushed)) return;
+    _photosPushed = data;
+    await _save(data, _photoProvider, 'Photo widget');
+  }
+
+  static Future<void> _save(
+      Map<String, String> data, String provider, String name) async {
     try {
-      for (final MapEntry(:key, :value) in snapshot.toWidgetData().entries) {
+      for (final MapEntry(:key, :value) in data.entries) {
         await HomeWidget.saveWidgetData<String>(key, value);
       }
-      await HomeWidget.updateWidget(qualifiedAndroidName: _provider);
+      await HomeWidget.updateWidget(qualifiedAndroidName: provider);
     } catch (error, stackTrace) {
-      _logger.warning('Home widget update failed', error, stackTrace);
+      _logger.warning('$name update failed', error, stackTrace);
     }
-  }
-
-  /// Gives the photo widget [choice], scaled down into a file the widget
-  /// reads, with [caption] under it; [empty] shows when there is none.
-  static Future<void> pushPhoto(
-      PhotoWidgetChoice? choice, String caption, String empty) async {
-    if (!supported) return;
-    try {
-      final file = File(join(
-          (await getApplicationSupportDirectory()).path, 'widget_photo.jpg'));
-      var path = '';
-      if (choice != null) {
-        if (_photoShown != choice.image.imgPath || !file.existsSync()) {
-          final bytes =
-              await ImageStorage.instance.getBytes(choice.image.imgPath);
-          final scaled =
-              bytes == null ? null : await Isolate.run(() => _scale(bytes));
-          if (scaled != null) {
-            await file.writeAsBytes(scaled, flush: true);
-            _photoShown = choice.image.imgPath;
-          }
-        }
-        if (_photoShown == choice.image.imgPath) path = file.path;
-      }
-      await HomeWidget.saveWidgetData<String>('photo_widget_path', path);
-      await HomeWidget.saveWidgetData<String>(
-          'photo_widget_entry', path.isEmpty ? '' : '${choice!.entry.id}');
-      await HomeWidget.saveWidgetData<String>('photo_widget_caption', caption);
-      await HomeWidget.saveWidgetData<String>('photo_widget_empty', empty);
-      await HomeWidget.updateWidget(qualifiedAndroidName: _photoProvider);
-    } catch (error, stackTrace) {
-      _logger.warning('Photo widget update failed', error, stackTrace);
-    }
-  }
-
-  /// Upright and at most 720 px on the long side: widget bitmaps travel
-  /// through a size-limited channel.
-  static Uint8List? _scale(Uint8List bytes) {
-    final decoded = img.decodeImage(bytes);
-    if (decoded == null) return null;
-    final upright = img.bakeOrientation(decoded);
-    final landscape = upright.width >= upright.height;
-    final scaled = (landscape ? upright.width : upright.height) <= 720
-        ? upright
-        : img.copyResize(upright,
-            width: landscape ? 720 : null,
-            height: landscape ? null : 720,
-            interpolation: img.Interpolation.average);
-    return img.encodeJpg(scaled, quality: 85);
   }
 
   /// Whether a widget tap asked to write today's entry.

@@ -56,28 +56,10 @@ class AppLocalizationsKo extends AppLocalizations {
   String get actionTakePhoto => 'Take photo';
 
   @override
-  String get actionToday => 'Today';
-
-  @override
-  String get actionOtherDay => 'Other day';
-
-  @override
-  String get pageHomeTitle => '홈';
-
-  @override
-  String get jumpToMonthTitle => 'Jump to month';
-
-  @override
-  String get jumpToLogTitle => 'Jump to log';
-
-  @override
   String get flashbacksTitle => '회상';
 
   @override
   String get settingsFlashbacksExcludeBadDays => '나쁜 날들 제외';
-
-  @override
-  String get flaskbacksEmpty => '아직 회상할 것이 없습니다…';
 
   @override
   String get flashbackGoodDay => '좋은 날';
@@ -122,9 +104,6 @@ class AppLocalizationsKo extends AppLocalizations {
   String get flashbackOnThisDay => 'On This Day';
 
   @override
-  String get pageGalleryTitle => '갤러리';
-
-  @override
   String get searchLogsHint => '기록 검색…';
 
   @override
@@ -165,9 +144,6 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get noResults => 'No Results…';
-
-  @override
-  String get sortDateTitle => '날짜';
 
   @override
   String get sortOrderAscendingTitle => '오름차순';
@@ -311,9 +287,6 @@ class AppLocalizationsKo extends AppLocalizations {
   String get pageSettingsTitle => '설정';
 
   @override
-  String get settingsAppearanceTitle => '외형';
-
-  @override
   String get settingsTheme => '테마';
 
   @override
@@ -347,9 +320,6 @@ class AppLocalizationsKo extends AppLocalizations {
   String get settingsCustomAccentColor => '커스텀 강조 색상';
 
   @override
-  String get settingsShowMarkdownToolbar => 'Show Markdown Toolbar';
-
-  @override
   String get settingsShowFlashbacks => '회상 표시';
 
   @override
@@ -359,12 +329,6 @@ class AppLocalizationsKo extends AppLocalizations {
   String get moodIconPrompt => '아이콘 입력';
 
   @override
-  String get settingsFlashbacksViewLayout => '회상 뷰 레이아웃';
-
-  @override
-  String get settingsHideImagesInGallery => '갤러리에서 이미지 숨김';
-
-  @override
   String get settingsHideImages => 'Hide Images';
 
   @override
@@ -372,13 +336,6 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get settingsNotificationsTitle => '알림';
-
-  @override
-  String get settingsDailyReminderOnboarding => '일일 알림을 활성화 해 꾸준함을 유지하세요!';
-
-  @override
-  String get settingsNotificationsPermissionsPrompt =>
-      '랜덤한 시간이나 선호하는 시간에 리마인더를 보내기 위해 \'스케줄 알림\' 권한이 요청됩니다.';
 
   @override
   String get settingsDailyReminderTitle => '일일 알림';
@@ -411,25 +368,13 @@ class AppLocalizationsKo extends AppLocalizations {
   String get settingsTemplatesTitle => '템플릿';
 
   @override
-  String get settingsDefaultTemplate => '기본 템플릿';
-
-  @override
   String get manageTemplates => '템플릿 관리';
-
-  @override
-  String get addTemplate => '템플릿 추가';
-
-  @override
-  String get newTemplate => 'New Template';
 
   @override
   String get noTemplateTitle => '없음';
 
   @override
   String get noTemplatesDescription => '아직 템플릿이 생성되지 않았습니다…';
-
-  @override
-  String get templateVariableTime => '시간';
 
   @override
   String get templateDefaultTimestampTitle => '타임스탬프';
@@ -777,31 +722,13 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
-  String get settingsExport => 'Export';
-
-  @override
   String get settingsExportToAnotherFormat => '다른 형식으로 내보내기';
 
   @override
   String get settingsExportFormatDescription => '백업으로 사용을 권장하지 않습니다!';
 
   @override
-  String get exportLogs => 'Export Logs';
-
-  @override
-  String get exportImages => 'Export Images';
-
-  @override
-  String get settingsImport => 'Import';
-
-  @override
   String get settingsImportFromAnotherApp => '다른 앱에서 가져오기';
-
-  @override
-  String get importLogs => 'Import Logs';
-
-  @override
-  String get importImages => 'Import Images';
 
   @override
   String get logFormatTitle => '형식 선택';
@@ -909,13 +836,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get settingsOpenSourceLicenses => 'Open Source Licenses';
 
   @override
-  String get imagesTitle => 'Images';
-
-  @override
   String get tagMoodTitle => '기분';
-
-  @override
-  String get calendarTagDisplayLabel => 'Tag';
 
   @override
   String get selectTagTitle => 'Select Tag';
@@ -975,17 +896,6 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get coachPrompt10 => 'If today had a title, what would it be?';
-
-  @override
-  String entryReadingTime(num count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count min read',
-      one: '1 min read',
-    );
-    return '$_temp0';
-  }
 
   @override
   String get pageMediaTitle => 'Media';

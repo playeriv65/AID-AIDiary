@@ -145,4 +145,7 @@ class AppConfig {
   String get weatherAttribution => _section('weather')['attribution'] as String;
   String get weatherAttributionUrl =>
       _section('weather')['attributionUrl'] as String;
+
+  /// How many photos the photo widget gets to pick its daily one from.
+  int get photoWidgetCandidates => _section('photoWidget')['candidates'] as int;
 }

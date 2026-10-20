@@ -252,36 +252,6 @@ abstract class AppLocalizations {
   /// **'Take photo'**
   String get actionTakePhoto;
 
-  /// No description provided for @actionToday.
-  ///
-  /// In en, this message translates to:
-  /// **'Today'**
-  String get actionToday;
-
-  /// No description provided for @actionOtherDay.
-  ///
-  /// In en, this message translates to:
-  /// **'Other day'**
-  String get actionOtherDay;
-
-  /// No description provided for @pageHomeTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Home'**
-  String get pageHomeTitle;
-
-  /// No description provided for @jumpToMonthTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Jump to month'**
-  String get jumpToMonthTitle;
-
-  /// No description provided for @jumpToLogTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Jump to log'**
-  String get jumpToLogTitle;
-
   /// No description provided for @flashbacksTitle.
   ///
   /// In en, this message translates to:
@@ -293,12 +263,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Exclude bad days'**
   String get settingsFlashbacksExcludeBadDays;
-
-  /// No description provided for @flaskbacksEmpty.
-  ///
-  /// In en, this message translates to:
-  /// **'No Flashbacks Yet…'**
-  String get flaskbacksEmpty;
 
   /// No description provided for @flashbackGoodDay.
   ///
@@ -336,12 +300,6 @@ abstract class AppLocalizations {
   /// **'On This Day'**
   String get flashbackOnThisDay;
 
-  /// No description provided for @pageGalleryTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Gallery'**
-  String get pageGalleryTitle;
-
   /// No description provided for @searchLogsHint.
   ///
   /// In en, this message translates to:
@@ -377,12 +335,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No Results…'**
   String get noResults;
-
-  /// No description provided for @sortDateTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Date'**
-  String get sortDateTitle;
 
   /// No description provided for @sortOrderAscendingTitle.
   ///
@@ -594,12 +546,6 @@ abstract class AppLocalizations {
   /// **'Settings'**
   String get pageSettingsTitle;
 
-  /// No description provided for @settingsAppearanceTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Appearance'**
-  String get settingsAppearanceTitle;
-
   /// No description provided for @settingsTheme.
   ///
   /// In en, this message translates to:
@@ -666,12 +612,6 @@ abstract class AppLocalizations {
   /// **'Custom Accent Color'**
   String get settingsCustomAccentColor;
 
-  /// No description provided for @settingsShowMarkdownToolbar.
-  ///
-  /// In en, this message translates to:
-  /// **'Show Markdown Toolbar'**
-  String get settingsShowMarkdownToolbar;
-
   /// No description provided for @settingsShowFlashbacks.
   ///
   /// In en, this message translates to:
@@ -690,18 +630,6 @@ abstract class AppLocalizations {
   /// **'Enter an icon'**
   String get moodIconPrompt;
 
-  /// No description provided for @settingsFlashbacksViewLayout.
-  ///
-  /// In en, this message translates to:
-  /// **'Flashbacks View Layout'**
-  String get settingsFlashbacksViewLayout;
-
-  /// No description provided for @settingsHideImagesInGallery.
-  ///
-  /// In en, this message translates to:
-  /// **'Hide Images In Gallery'**
-  String get settingsHideImagesInGallery;
-
   /// No description provided for @settingsHideImages.
   ///
   /// In en, this message translates to:
@@ -719,18 +647,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Notifications'**
   String get settingsNotificationsTitle;
-
-  /// No description provided for @settingsDailyReminderOnboarding.
-  ///
-  /// In en, this message translates to:
-  /// **'Enable daily reminders to keep yourself consistent!'**
-  String get settingsDailyReminderOnboarding;
-
-  /// No description provided for @settingsNotificationsPermissionsPrompt.
-  ///
-  /// In en, this message translates to:
-  /// **'The \'schedule alarms\' permission will be requested to send the reminder at a random moment or at your preferred time.'**
-  String get settingsNotificationsPermissionsPrompt;
 
   /// No description provided for @settingsDailyReminderTitle.
   ///
@@ -792,29 +708,11 @@ abstract class AppLocalizations {
   /// **'Templates'**
   String get settingsTemplatesTitle;
 
-  /// No description provided for @settingsDefaultTemplate.
-  ///
-  /// In en, this message translates to:
-  /// **'Default Template'**
-  String get settingsDefaultTemplate;
-
   /// No description provided for @manageTemplates.
   ///
   /// In en, this message translates to:
   /// **'Manage Templates'**
   String get manageTemplates;
-
-  /// No description provided for @addTemplate.
-  ///
-  /// In en, this message translates to:
-  /// **'Add a Template'**
-  String get addTemplate;
-
-  /// No description provided for @newTemplate.
-  ///
-  /// In en, this message translates to:
-  /// **'New Template'**
-  String get newTemplate;
 
   /// No description provided for @noTemplateTitle.
   ///
@@ -827,12 +725,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No templates created yet…'**
   String get noTemplatesDescription;
-
-  /// No description provided for @templateVariableTime.
-  ///
-  /// In en, this message translates to:
-  /// **'Time'**
-  String get templateVariableTime;
 
   /// No description provided for @templateDefaultTimestampTitle.
   ///
@@ -1440,12 +1332,6 @@ abstract class AppLocalizations {
   /// **'Migrating photos… {current}/{total}'**
   String migratingImagesStatus(Object current, Object total);
 
-  /// No description provided for @settingsExport.
-  ///
-  /// In en, this message translates to:
-  /// **'Export'**
-  String get settingsExport;
-
   /// No description provided for @settingsExportToAnotherFormat.
   ///
   /// In en, this message translates to:
@@ -1458,41 +1344,11 @@ abstract class AppLocalizations {
   /// **'This should not be used as a backup!'**
   String get settingsExportFormatDescription;
 
-  /// No description provided for @exportLogs.
-  ///
-  /// In en, this message translates to:
-  /// **'Export Logs'**
-  String get exportLogs;
-
-  /// No description provided for @exportImages.
-  ///
-  /// In en, this message translates to:
-  /// **'Export Images'**
-  String get exportImages;
-
-  /// No description provided for @settingsImport.
-  ///
-  /// In en, this message translates to:
-  /// **'Import'**
-  String get settingsImport;
-
   /// No description provided for @settingsImportFromAnotherApp.
   ///
   /// In en, this message translates to:
   /// **'Import From Another App'**
   String get settingsImportFromAnotherApp;
-
-  /// No description provided for @importLogs.
-  ///
-  /// In en, this message translates to:
-  /// **'Import Logs'**
-  String get importLogs;
-
-  /// No description provided for @importImages.
-  ///
-  /// In en, this message translates to:
-  /// **'Import Images'**
-  String get importImages;
 
   /// No description provided for @logFormatTitle.
   ///
@@ -1698,23 +1554,11 @@ abstract class AppLocalizations {
   /// **'Open Source Licenses'**
   String get settingsOpenSourceLicenses;
 
-  /// No description provided for @imagesTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Images'**
-  String get imagesTitle;
-
   /// No description provided for @tagMoodTitle.
   ///
   /// In en, this message translates to:
   /// **'Mood'**
   String get tagMoodTitle;
-
-  /// No description provided for @calendarTagDisplayLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Tag'**
-  String get calendarTagDisplayLabel;
 
   /// No description provided for @selectTagTitle.
   ///
@@ -1829,12 +1673,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'If today had a title, what would it be?'**
   String get coachPrompt10;
-
-  /// No description provided for @entryReadingTime.
-  ///
-  /// In en, this message translates to:
-  /// **'{count, plural, one{1 min read} other{{count} min read}}'**
-  String entryReadingTime(num count);
 
   /// No description provided for @pageMediaTitle.
   ///

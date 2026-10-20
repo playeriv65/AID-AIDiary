@@ -85,7 +85,8 @@ class NotificationManager {
 
     await _notifications!.initialize(
         settings: const InitializationSettings(
-            android: AndroidInitializationSettings('@drawable/ic_notification')),
+            android:
+                AndroidInitializationSettings('@drawable/ic_notification')),
         onDidReceiveNotificationResponse: _onResponse,
         onDidReceiveBackgroundNotificationResponse:
             backupCancelBackgroundHandler);
@@ -107,25 +108,37 @@ class NotificationManager {
   }
 
   /// The lasting "quick write" notification; tapping it opens a new entry.
-  Future<void> showQuickWrite(String title, String text) async =>
-      _notifications!.show(
-          id: quickWriteNotificationId,
-          title: title,
-          body: text,
-          notificationDetails: NotificationDetails(
-              android: AndroidNotificationDetails(quickWriteChannelId,
-                  channelName(await SharedPreferences.getInstance(),
-                      quickWriteChannelId),
-                  icon: '@drawable/ic_notification',
-                  importance: Importance.low,
-                  priority: Priority.low,
-                  ongoing: true,
-                  autoCancel: false,
-                  showWhen: false,
-                  playSound: false)));
+  /// Its text stays stored while it is on, so QuickWriteRestoreReceiver on
+  /// Android can put it back after a restart.
+  Future<void> showQuickWrite(String title, String text) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_quickWriteTitleKey, title);
+    await prefs.setString(_quickWriteTextKey, text);
+    await _notifications!.show(
+        id: quickWriteNotificationId,
+        title: title,
+        body: text,
+        notificationDetails: NotificationDetails(
+            android: AndroidNotificationDetails(
+                quickWriteChannelId, channelName(prefs, quickWriteChannelId),
+                icon: '@drawable/ic_notification',
+                importance: Importance.low,
+                priority: Priority.low,
+                ongoing: true,
+                autoCancel: false,
+                showWhen: false,
+                playSound: false)));
+  }
 
-  Future<void> hideQuickWrite() =>
-      _notifications!.cancel(id: quickWriteNotificationId);
+  Future<void> hideQuickWrite() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_quickWriteTitleKey);
+    await prefs.remove(_quickWriteTextKey);
+    await _notifications!.cancel(id: quickWriteNotificationId);
+  }
+
+  static const _quickWriteTitleKey = 'quickWriteTitle';
+  static const _quickWriteTextKey = 'quickWriteText';
 
   Future<void> startNudges() => setNudgeAlarm(firstSet: true);
 
@@ -274,8 +287,8 @@ class NotificationManager {
         notificationDetails: NotificationDetails(
             android: AndroidNotificationDetails(
           backupNotificationChannelId,
-          channelName(
-              await SharedPreferences.getInstance(), backupNotificationChannelId),
+          channelName(await SharedPreferences.getInstance(),
+              backupNotificationChannelId),
           icon: '@drawable/ic_notification',
           importance: Importance.defaultImportance,
           priority: Priority.defaultPriority,

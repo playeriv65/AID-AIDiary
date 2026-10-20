@@ -56,28 +56,10 @@ class AppLocalizationsMs extends AppLocalizations {
   String get actionTakePhoto => 'Ambil gambar';
 
   @override
-  String get actionToday => 'Hari ini';
-
-  @override
-  String get actionOtherDay => 'Hari lain';
-
-  @override
-  String get pageHomeTitle => 'Utama';
-
-  @override
-  String get jumpToMonthTitle => 'Langkau ke bulan';
-
-  @override
-  String get jumpToLogTitle => 'Langkau ke log';
-
-  @override
   String get flashbacksTitle => 'Imbas kembali';
 
   @override
   String get settingsFlashbacksExcludeBadDays => 'Kecualikan hari-hari buruk';
-
-  @override
-  String get flaskbacksEmpty => 'Belum ada imbas semula…';
 
   @override
   String get flashbackGoodDay => 'Hari yang baik';
@@ -104,9 +86,6 @@ class AppLocalizationsMs extends AppLocalizations {
   String get flashbackOnThisDay => 'Pada Hari Ini';
 
   @override
-  String get pageGalleryTitle => 'Galeri';
-
-  @override
   String get searchLogsHint => 'Log carian…';
 
   @override
@@ -129,9 +108,6 @@ class AppLocalizationsMs extends AppLocalizations {
 
   @override
   String get noResults => 'Tiada hasil…';
-
-  @override
-  String get sortDateTitle => 'Tarikh';
 
   @override
   String get sortOrderAscendingTitle => 'Menaik';
@@ -262,9 +238,6 @@ class AppLocalizationsMs extends AppLocalizations {
   String get pageSettingsTitle => 'Tetapan';
 
   @override
-  String get settingsAppearanceTitle => 'Penampilan';
-
-  @override
   String get settingsTheme => 'Tema';
 
   @override
@@ -298,9 +271,6 @@ class AppLocalizationsMs extends AppLocalizations {
   String get settingsCustomAccentColor => 'Warna Tema Tersuai';
 
   @override
-  String get settingsShowMarkdownToolbar => 'Show Markdown Toolbar';
-
-  @override
   String get settingsShowFlashbacks => 'Tunjukkan Imbasan Semula';
 
   @override
@@ -310,12 +280,6 @@ class AppLocalizationsMs extends AppLocalizations {
   String get moodIconPrompt => 'Masukkan Ikon';
 
   @override
-  String get settingsFlashbacksViewLayout => 'Flashbacks View Layout';
-
-  @override
-  String get settingsHideImagesInGallery => 'Sembunyikan Imej Dalam Galeri';
-
-  @override
   String get settingsHideImages => 'Sembunyikan Imej';
 
   @override
@@ -323,14 +287,6 @@ class AppLocalizationsMs extends AppLocalizations {
 
   @override
   String get settingsNotificationsTitle => 'Pemberitahuan';
-
-  @override
-  String get settingsDailyReminderOnboarding =>
-      'Dayakan peringatan harian untuk memastikan diri anda konsisten!';
-
-  @override
-  String get settingsNotificationsPermissionsPrompt =>
-      'Kebenaran \'jadualkan penggera\' akan diminta untuk menghantar peringatan pada waktu tertentu atau pada waktu pilihan anda.';
 
   @override
   String get settingsDailyReminderTitle => 'Peringatan Harian';
@@ -366,25 +322,13 @@ class AppLocalizationsMs extends AppLocalizations {
   String get settingsTemplatesTitle => 'Templat';
 
   @override
-  String get settingsDefaultTemplate => 'Templat Asal';
-
-  @override
   String get manageTemplates => 'Urus Templat';
-
-  @override
-  String get addTemplate => 'Tambah Templat';
-
-  @override
-  String get newTemplate => 'New Template';
 
   @override
   String get noTemplateTitle => 'Tiada';
 
   @override
   String get noTemplatesDescription => 'Tiada templat dicipta…';
-
-  @override
-  String get templateVariableTime => 'Masa';
 
   @override
   String get templateDefaultTimestampTitle => 'Tanda Masa';
@@ -733,9 +677,6 @@ class AppLocalizationsMs extends AppLocalizations {
   }
 
   @override
-  String get settingsExport => 'Export';
-
-  @override
   String get settingsExportToAnotherFormat => 'Eksport Kepada Format Lain';
 
   @override
@@ -743,22 +684,7 @@ class AppLocalizationsMs extends AppLocalizations {
       'Ini tidak boleh digunakan sebagai sandaran!';
 
   @override
-  String get exportLogs => 'Export Logs';
-
-  @override
-  String get exportImages => 'Export Images';
-
-  @override
-  String get settingsImport => 'Import';
-
-  @override
   String get settingsImportFromAnotherApp => 'Import Daripada Aplikasi Lain';
-
-  @override
-  String get importLogs => 'Import Logs';
-
-  @override
-  String get importImages => 'Import Images';
 
   @override
   String get logFormatTitle => 'Pilih Format';
@@ -867,13 +793,7 @@ class AppLocalizationsMs extends AppLocalizations {
   String get settingsOpenSourceLicenses => 'Open Source Licenses';
 
   @override
-  String get imagesTitle => 'Images';
-
-  @override
   String get tagMoodTitle => 'Suasana';
-
-  @override
-  String get calendarTagDisplayLabel => 'Tag';
 
   @override
   String get selectTagTitle => 'Select Tag';
@@ -933,17 +853,6 @@ class AppLocalizationsMs extends AppLocalizations {
 
   @override
   String get coachPrompt10 => 'If today had a title, what would it be?';
-
-  @override
-  String entryReadingTime(num count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count min read',
-      one: '1 min read',
-    );
-    return '$_temp0';
-  }
 
   @override
   String get pageMediaTitle => 'Media';

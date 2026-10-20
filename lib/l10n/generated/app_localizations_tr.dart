@@ -56,28 +56,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String get actionTakePhoto => 'Fotoğraf çek';
 
   @override
-  String get actionToday => 'Bugün';
-
-  @override
-  String get actionOtherDay => 'Başka gün';
-
-  @override
-  String get pageHomeTitle => 'Ana';
-
-  @override
-  String get jumpToMonthTitle => 'Aya git';
-
-  @override
-  String get jumpToLogTitle => 'Günlüğe git';
-
-  @override
   String get flashbacksTitle => 'Geçmiş';
 
   @override
   String get settingsFlashbacksExcludeBadDays => 'Kötü günleri çıkar';
-
-  @override
-  String get flaskbacksEmpty => 'Henüz Geçmiş Yok…';
 
   @override
   String get flashbackGoodDay => 'İyi Bir Gün';
@@ -122,9 +104,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get flashbackOnThisDay => 'Bu Günde';
 
   @override
-  String get pageGalleryTitle => 'Galeri';
-
-  @override
   String get searchLogsHint => 'Kayıt Ara…';
 
   @override
@@ -165,9 +144,6 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get noResults => 'No Results…';
-
-  @override
-  String get sortDateTitle => 'Tarih';
 
   @override
   String get sortOrderAscendingTitle => 'Artan';
@@ -313,9 +289,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get pageSettingsTitle => 'Ayarlar';
 
   @override
-  String get settingsAppearanceTitle => 'Görünüm';
-
-  @override
   String get settingsTheme => 'Tema';
 
   @override
@@ -349,9 +322,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get settingsCustomAccentColor => 'Özel Vurgu Rengi';
 
   @override
-  String get settingsShowMarkdownToolbar => 'Markdown araç çubuğunu göster';
-
-  @override
   String get settingsShowFlashbacks => 'Bilgi Kartlarını Göster';
 
   @override
@@ -361,12 +331,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get moodIconPrompt => 'Bir simge belirleyin';
 
   @override
-  String get settingsFlashbacksViewLayout => 'Geçmiş Görünüm Düzeni';
-
-  @override
-  String get settingsHideImagesInGallery => 'Görüntüleri Galeride Gizle';
-
-  @override
   String get settingsHideImages => 'Resimleri Gizle';
 
   @override
@@ -374,14 +338,6 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get settingsNotificationsTitle => 'Bildirimler';
-
-  @override
-  String get settingsDailyReminderOnboarding =>
-      'Süreklilik için günlük hatırlatıcıları etkinleştirin!';
-
-  @override
-  String get settingsNotificationsPermissionsPrompt =>
-      '\'Takvim alarmları\' izninden bildirimi rastgele bir anda veya tercih ettiğiniz zamanda göndermesi isteyecektir.';
 
   @override
   String get settingsDailyReminderTitle => 'Günlük Hatırlatma';
@@ -416,25 +372,13 @@ class AppLocalizationsTr extends AppLocalizations {
   String get settingsTemplatesTitle => 'Şablonlar';
 
   @override
-  String get settingsDefaultTemplate => 'Varsayılan Şablon';
-
-  @override
   String get manageTemplates => 'Şablonları Yönet';
-
-  @override
-  String get addTemplate => 'Bir Şablon Ekle';
-
-  @override
-  String get newTemplate => 'Yeni şablon';
 
   @override
   String get noTemplateTitle => 'Hiçbiri';
 
   @override
   String get noTemplatesDescription => 'Henüz şablon oluşturulmadı…';
-
-  @override
-  String get templateVariableTime => 'Zaman';
 
   @override
   String get templateDefaultTimestampTitle => 'Zaman Damgası';
@@ -783,9 +727,6 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get settingsExport => 'Dışa aktar';
-
-  @override
   String get settingsExportToAnotherFormat => 'Başka Bir Formatta Dışarı Aktar';
 
   @override
@@ -793,22 +734,7 @@ class AppLocalizationsTr extends AppLocalizations {
       'Bu yedek olarak kullanılmamalıdır!';
 
   @override
-  String get exportLogs => 'Kayıtları dışa aktar';
-
-  @override
-  String get exportImages => 'Görselleri dışa aktar';
-
-  @override
-  String get settingsImport => 'İçe aktar';
-
-  @override
   String get settingsImportFromAnotherApp => 'Başka Bir Uygulamadan İçe Aktar';
-
-  @override
-  String get importLogs => 'Kayıtları içe aktar';
-
-  @override
-  String get importImages => 'Görselleri içe aktar';
 
   @override
   String get logFormatTitle => 'Biçim Seçin';
@@ -917,13 +843,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get settingsOpenSourceLicenses => 'Open Source Licenses';
 
   @override
-  String get imagesTitle => 'Resimler';
-
-  @override
   String get tagMoodTitle => 'Ruh hâli';
-
-  @override
-  String get calendarTagDisplayLabel => 'Etiket';
 
   @override
   String get selectTagTitle => 'Etiket Seç';
@@ -983,17 +903,6 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get coachPrompt10 => 'If today had a title, what would it be?';
-
-  @override
-  String entryReadingTime(num count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count min read',
-      one: '1 min read',
-    );
-    return '$_temp0';
-  }
 
   @override
   String get pageMediaTitle => 'Media';

@@ -56,28 +56,10 @@ class AppLocalizationsRo extends AppLocalizations {
   String get actionTakePhoto => 'Fă o poză';
 
   @override
-  String get actionToday => 'Astăzi';
-
-  @override
-  String get actionOtherDay => 'Altă zi';
-
-  @override
-  String get pageHomeTitle => 'Acasă';
-
-  @override
-  String get jumpToMonthTitle => 'Sari la lună';
-
-  @override
-  String get jumpToLogTitle => 'Sari la înregistrare';
-
-  @override
   String get flashbacksTitle => 'Amintiri';
 
   @override
   String get settingsFlashbacksExcludeBadDays => 'Exclude zilele proaste';
-
-  @override
-  String get flaskbacksEmpty => 'Încă nu ai amintiri…';
 
   @override
   String get flashbackGoodDay => 'O zi bună';
@@ -122,9 +104,6 @@ class AppLocalizationsRo extends AppLocalizations {
   String get flashbackOnThisDay => 'În această zi';
 
   @override
-  String get pageGalleryTitle => 'Galerie';
-
-  @override
   String get searchLogsHint => 'Caută Înregistrări…';
 
   @override
@@ -165,9 +144,6 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get noResults => 'Nu sunt rezultate…';
-
-  @override
-  String get sortDateTitle => 'Data';
 
   @override
   String get sortOrderAscendingTitle => 'Crescător';
@@ -312,9 +288,6 @@ class AppLocalizationsRo extends AppLocalizations {
   String get pageSettingsTitle => 'Setări';
 
   @override
-  String get settingsAppearanceTitle => 'Aspect';
-
-  @override
   String get settingsTheme => 'Temă';
 
   @override
@@ -349,9 +322,6 @@ class AppLocalizationsRo extends AppLocalizations {
   String get settingsCustomAccentColor => 'Culoare De Accent Personalizată';
 
   @override
-  String get settingsShowMarkdownToolbar => 'Show Markdown Toolbar';
-
-  @override
   String get settingsShowFlashbacks => 'Arată Amintiri';
 
   @override
@@ -361,12 +331,6 @@ class AppLocalizationsRo extends AppLocalizations {
   String get moodIconPrompt => 'Introdu o iconiță';
 
   @override
-  String get settingsFlashbacksViewLayout => 'Flashbacks View Layout';
-
-  @override
-  String get settingsHideImagesInGallery => 'Ascunde Imaginile În Galerie';
-
-  @override
   String get settingsHideImages => 'Ascunde Imaginile';
 
   @override
@@ -374,14 +338,6 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get settingsNotificationsTitle => 'Notificări';
-
-  @override
-  String get settingsDailyReminderOnboarding =>
-      'Activează mementourile zilnice pentru a rămâne consecvent!';
-
-  @override
-  String get settingsNotificationsPermissionsPrompt =>
-      'Permisiunea „Programare alarme” va fi solicitată pentru a trimite mementoul într-un moment aleatoriu sau la ora preferată.';
 
   @override
   String get settingsDailyReminderTitle => 'Memento Zilnic';
@@ -418,25 +374,13 @@ class AppLocalizationsRo extends AppLocalizations {
   String get settingsTemplatesTitle => 'Șabloane';
 
   @override
-  String get settingsDefaultTemplate => 'Șablon Implicit';
-
-  @override
   String get manageTemplates => 'Gestionează Șabloane';
-
-  @override
-  String get addTemplate => 'Adaugă un Șablon';
-
-  @override
-  String get newTemplate => 'New Template';
 
   @override
   String get noTemplateTitle => 'Nici unul';
 
   @override
   String get noTemplatesDescription => 'Nici un șablon creat încă…';
-
-  @override
-  String get templateVariableTime => 'Timp';
 
   @override
   String get templateDefaultTimestampTitle => 'Marcaj temporal';
@@ -784,9 +728,6 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get settingsExport => 'Export';
-
-  @override
   String get settingsExportToAnotherFormat => 'Export To Another Format';
 
   @override
@@ -794,22 +735,7 @@ class AppLocalizationsRo extends AppLocalizations {
       'This should not be used as a backup!';
 
   @override
-  String get exportLogs => 'Export Logs';
-
-  @override
-  String get exportImages => 'Export Images';
-
-  @override
-  String get settingsImport => 'Import';
-
-  @override
   String get settingsImportFromAnotherApp => 'Import From Another App';
-
-  @override
-  String get importLogs => 'Import Logs';
-
-  @override
-  String get importImages => 'Import Images';
 
   @override
   String get logFormatTitle => 'Choose Format';
@@ -918,13 +844,7 @@ class AppLocalizationsRo extends AppLocalizations {
   String get settingsOpenSourceLicenses => 'Open Source Licenses';
 
   @override
-  String get imagesTitle => 'Images';
-
-  @override
   String get tagMoodTitle => 'Mood';
-
-  @override
-  String get calendarTagDisplayLabel => 'Tag';
 
   @override
   String get selectTagTitle => 'Select Tag';
@@ -984,17 +904,6 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get coachPrompt10 => 'If today had a title, what would it be?';
-
-  @override
-  String entryReadingTime(num count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count min read',
-      one: '1 min read',
-    );
-    return '$_temp0';
-  }
 
   @override
   String get pageMediaTitle => 'Media';

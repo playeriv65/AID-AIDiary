@@ -55,6 +55,6 @@ void main() {
     expect(find.textContaining('只保存在这台设备上'), findsOneWidget);
     await tester.tap(find.byKey(const ValueKey('help-about')));
     await tester.pumpAndSettle();
-    expect(find.textContaining('AID Diary · 修改版'), findsOneWidget);
+    expect(find.textContaining('的修改版，不是官方的'), findsOneWidget);
   });
 }

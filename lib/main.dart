@@ -619,7 +619,6 @@ class _MainAppState extends State<MainApp> {
             child: MaterialApp(
                 onGenerateTitle: (context) =>
                     AppLocalizations.of(context)!.appTitle,
-                title: 'AID Diary',
                 themeMode: themeModeProvider.themeMode,
                 debugShowCheckedModeBanner: false,
                 localizationsDelegates: <LocalizationsDelegate<dynamic>>[

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- The app pushes a new photo when the diary changes and once a day when it
-     opens; the period refreshes the widget otherwise. -->
+<!-- The app pushes the photo list when the diary changes; the hourly update
+     lets the widget pick the new day's photo without the app. -->
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
     android:description="@string/photo_widget_description"
     android:initialLayout="@layout/photo_widget"

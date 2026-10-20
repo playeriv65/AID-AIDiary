@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_description">一眼看到今天的日記</string>
+    <string name="widget_pending_default">今天過得怎麼樣？</string>
+    <string name="widget_done_default">今天的日記已寫好</string>
+    <string name="widget_write_default">寫日記</string>
+    <string name="photo_widget_description">日記裡的一張照片</string>
+    <string name="photo_widget_empty_default">日記裡的照片會出現在這裡。</string>
+</resources>

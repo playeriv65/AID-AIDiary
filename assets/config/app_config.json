@@ -3,7 +3,7 @@
     "tileUrlTemplate": "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
     "attribution": "© OpenStreetMap contributors",
     "attributionUrl": "https://www.openstreetmap.org/copyright",
-    "userAgentPackageName": "com.aiddiary.app",
+    "userAgentPackageName": "dev.aid.diary",
     "defaultZoom": 3.0,
     "entryZoom": 13.0,
     "maxZoom": 18.0,
@@ -76,5 +76,8 @@
     "timeoutSeconds": 8,
     "attribution": "Weather data by Open-Meteo.com",
     "attributionUrl": "https://open-meteo.com/"
+  },
+  "photoWidget": {
+    "candidates": 120
   }
 }

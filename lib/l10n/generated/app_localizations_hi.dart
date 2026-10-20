@@ -56,28 +56,10 @@ class AppLocalizationsHi extends AppLocalizations {
   String get actionTakePhoto => 'फोटो लें';
 
   @override
-  String get actionToday => 'आज';
-
-  @override
-  String get actionOtherDay => 'अगले दिन';
-
-  @override
-  String get pageHomeTitle => 'होम';
-
-  @override
-  String get jumpToMonthTitle => 'महीने पर जाएं';
-
-  @override
-  String get jumpToLogTitle => 'लॉग पर जाएं';
-
-  @override
   String get flashbacksTitle => 'फ्लैशबैक्स';
 
   @override
   String get settingsFlashbacksExcludeBadDays => 'बुरे दिनों के अलावा';
-
-  @override
-  String get flaskbacksEmpty => 'अभी तक कोई फ़्लैशबैक नहीं…';
 
   @override
   String get flashbackGoodDay => 'अच्छा दिन';
@@ -122,9 +104,6 @@ class AppLocalizationsHi extends AppLocalizations {
   String get flashbackOnThisDay => 'आज के दिन';
 
   @override
-  String get pageGalleryTitle => 'गैलरी';
-
-  @override
   String get searchLogsHint => 'लॉग्स खोजें…';
 
   @override
@@ -165,9 +144,6 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get noResults => 'No Results…';
-
-  @override
-  String get sortDateTitle => 'दिनांक';
 
   @override
   String get sortOrderAscendingTitle => 'बढ़ते हुए क्रम में';
@@ -313,9 +289,6 @@ class AppLocalizationsHi extends AppLocalizations {
   String get pageSettingsTitle => 'सैटिंग्स';
 
   @override
-  String get settingsAppearanceTitle => 'दिखने में';
-
-  @override
   String get settingsTheme => 'थीम';
 
   @override
@@ -349,9 +322,6 @@ class AppLocalizationsHi extends AppLocalizations {
   String get settingsCustomAccentColor => 'Custom Accent Color';
 
   @override
-  String get settingsShowMarkdownToolbar => 'Show Markdown Toolbar';
-
-  @override
   String get settingsShowFlashbacks => 'Show Flashbacks';
 
   @override
@@ -361,12 +331,6 @@ class AppLocalizationsHi extends AppLocalizations {
   String get moodIconPrompt => 'कोई आइकन इंटर करें';
 
   @override
-  String get settingsFlashbacksViewLayout => 'Flashbacks View Layout';
-
-  @override
-  String get settingsHideImagesInGallery => 'Hide Images In Gallery';
-
-  @override
   String get settingsHideImages => 'Hide Images';
 
   @override
@@ -374,14 +338,6 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get settingsNotificationsTitle => 'सूचनाएं';
-
-  @override
-  String get settingsDailyReminderOnboarding =>
-      'Enable daily reminders to keep yourself consistent!';
-
-  @override
-  String get settingsNotificationsPermissionsPrompt =>
-      'The \'schedule alarms\' permission will be requested to send the reminder at a random moment or at your preferred time.';
 
   @override
   String get settingsDailyReminderTitle => 'डेली रिमाइंडर';
@@ -416,25 +372,13 @@ class AppLocalizationsHi extends AppLocalizations {
   String get settingsTemplatesTitle => 'Templates';
 
   @override
-  String get settingsDefaultTemplate => 'डिफ़ॉल्ट टेम्पलेट';
-
-  @override
   String get manageTemplates => 'टेम्पलेट मैनेज करें';
-
-  @override
-  String get addTemplate => 'टेम्पलेट जोड़ें';
-
-  @override
-  String get newTemplate => 'New Template';
 
   @override
   String get noTemplateTitle => 'None';
 
   @override
   String get noTemplatesDescription => 'No templates created yet…';
-
-  @override
-  String get templateVariableTime => 'Time';
 
   @override
   String get templateDefaultTimestampTitle => 'Timestamp';
@@ -782,9 +726,6 @@ class AppLocalizationsHi extends AppLocalizations {
   }
 
   @override
-  String get settingsExport => 'Export';
-
-  @override
   String get settingsExportToAnotherFormat =>
       'किसी अन्य फॉर्मेट में निर्यात करें';
 
@@ -793,22 +734,7 @@ class AppLocalizationsHi extends AppLocalizations {
       'इसका उपयोग बैकअप के रूप में नहीं किया जाना चाहिए!';
 
   @override
-  String get exportLogs => 'Export Logs';
-
-  @override
-  String get exportImages => 'Export Images';
-
-  @override
-  String get settingsImport => 'Import';
-
-  @override
   String get settingsImportFromAnotherApp => 'किसी अन्य ऐप से आयात करें';
-
-  @override
-  String get importLogs => 'Import Logs';
-
-  @override
-  String get importImages => 'Import Images';
 
   @override
   String get logFormatTitle => 'प्रारूप चुनें';
@@ -917,13 +843,7 @@ class AppLocalizationsHi extends AppLocalizations {
   String get settingsOpenSourceLicenses => 'Open Source Licenses';
 
   @override
-  String get imagesTitle => 'Images';
-
-  @override
   String get tagMoodTitle => 'Mood';
-
-  @override
-  String get calendarTagDisplayLabel => 'Tag';
 
   @override
   String get selectTagTitle => 'Select Tag';
@@ -983,17 +903,6 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get coachPrompt10 => 'If today had a title, what would it be?';
-
-  @override
-  String entryReadingTime(num count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count min read',
-      one: '1 min read',
-    );
-    return '$_temp0';
-  }
 
   @override
   String get pageMediaTitle => 'Media';

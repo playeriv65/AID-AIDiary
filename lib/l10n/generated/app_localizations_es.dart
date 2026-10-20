@@ -56,28 +56,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get actionTakePhoto => 'Tomar foto';
 
   @override
-  String get actionToday => 'Hoy';
-
-  @override
-  String get actionOtherDay => 'Otro día';
-
-  @override
-  String get pageHomeTitle => 'Inicio';
-
-  @override
-  String get jumpToMonthTitle => 'Ir a mes';
-
-  @override
-  String get jumpToLogTitle => 'Ir al registro';
-
-  @override
   String get flashbacksTitle => 'Recuerdos';
 
   @override
   String get settingsFlashbacksExcludeBadDays => 'Excluir dias malos';
-
-  @override
-  String get flaskbacksEmpty => 'Aún no hay recuerdos…';
 
   @override
   String get flashbackGoodDay => 'Un Buen Día';
@@ -122,9 +104,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get flashbackOnThisDay => 'En este día';
 
   @override
-  String get pageGalleryTitle => 'Galería';
-
-  @override
   String get searchLogsHint => 'Buscar registros…';
 
   @override
@@ -165,9 +144,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get noResults => 'Sin resultados…';
-
-  @override
-  String get sortDateTitle => 'Fecha';
 
   @override
   String get sortOrderAscendingTitle => 'Ascendente';
@@ -313,9 +289,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get pageSettingsTitle => 'Configuración';
 
   @override
-  String get settingsAppearanceTitle => 'Apariencia';
-
-  @override
   String get settingsTheme => 'Tema';
 
   @override
@@ -349,10 +322,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get settingsCustomAccentColor => 'Color de Acento Personalizado';
 
   @override
-  String get settingsShowMarkdownToolbar =>
-      'Mostrar Barra de Herramientas Markdown';
-
-  @override
   String get settingsShowFlashbacks => 'Mostrar Recuerdos';
 
   @override
@@ -362,12 +331,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get moodIconPrompt => 'Introduce un icono';
 
   @override
-  String get settingsFlashbacksViewLayout => 'Vista de Recuerdos';
-
-  @override
-  String get settingsHideImagesInGallery => 'Ocultar Imágenes en Galería';
-
-  @override
   String get settingsHideImages => 'Ocultar imágenes';
 
   @override
@@ -375,14 +338,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get settingsNotificationsTitle => 'Notificaciones';
-
-  @override
-  String get settingsDailyReminderOnboarding =>
-      '¡Activa recordatorios diarios para mantenerte activo!';
-
-  @override
-  String get settingsNotificationsPermissionsPrompt =>
-      'Los permisos de \"alarmas de planificacion\" seran solicitados para enviarte un recordatorio en un momento aleatorio de tu preferencia.';
 
   @override
   String get settingsDailyReminderTitle => 'Recordatorio diario';
@@ -418,25 +373,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get settingsTemplatesTitle => 'Plantillas';
 
   @override
-  String get settingsDefaultTemplate => 'Plantilla Predeterminada';
-
-  @override
   String get manageTemplates => 'Administrar Plantillas';
-
-  @override
-  String get addTemplate => 'Agregar una Plantilla';
-
-  @override
-  String get newTemplate => 'Nueva Plantilla';
 
   @override
   String get noTemplateTitle => 'Ninguno';
 
   @override
   String get noTemplatesDescription => 'Aún no se han creado plantillas…';
-
-  @override
-  String get templateVariableTime => 'Tiempo';
 
   @override
   String get templateDefaultTimestampTitle => 'Fecha y hora';
@@ -788,9 +731,6 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get settingsExport => 'Exportar';
-
-  @override
   String get settingsExportToAnotherFormat => 'Exportar a otro formato';
 
   @override
@@ -798,22 +738,7 @@ class AppLocalizationsEs extends AppLocalizations {
       'Esto no debe usarse como respaldo.';
 
   @override
-  String get exportLogs => 'Exportar Registros';
-
-  @override
-  String get exportImages => 'Exportar Imágenes';
-
-  @override
-  String get settingsImport => 'Importar';
-
-  @override
   String get settingsImportFromAnotherApp => 'Importar de otra aplicación';
-
-  @override
-  String get importLogs => 'Importar Registros';
-
-  @override
-  String get importImages => 'Importar Imágenes';
 
   @override
   String get logFormatTitle => 'Elija Formato';
@@ -924,13 +849,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get settingsOpenSourceLicenses => 'Licencias de código abierto';
 
   @override
-  String get imagesTitle => 'Imágenes';
-
-  @override
   String get tagMoodTitle => 'Ánimo';
-
-  @override
-  String get calendarTagDisplayLabel => 'Etiqueta';
 
   @override
   String get selectTagTitle => 'Selecciona etiqueta';
@@ -990,17 +909,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get coachPrompt10 => 'If today had a title, what would it be?';
-
-  @override
-  String entryReadingTime(num count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count min read',
-      one: '1 min read',
-    );
-    return '$_temp0';
-  }
 
   @override
   String get pageMediaTitle => 'Media';

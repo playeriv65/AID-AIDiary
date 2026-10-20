@@ -56,28 +56,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get actionTakePhoto => '写真を撮る';
 
   @override
-  String get actionToday => '今日';
-
-  @override
-  String get actionOtherDay => 'Other day';
-
-  @override
-  String get pageHomeTitle => 'ホーム';
-
-  @override
-  String get jumpToMonthTitle => 'Jump to month';
-
-  @override
-  String get jumpToLogTitle => 'Jump to log';
-
-  @override
   String get flashbacksTitle => '回想';
 
   @override
   String get settingsFlashbacksExcludeBadDays => '気分が沈んだ日を除外';
-
-  @override
-  String get flaskbacksEmpty => 'まだ回想はありません…';
 
   @override
   String get flashbackGoodDay => 'よい一日';
@@ -122,9 +104,6 @@ class AppLocalizationsJa extends AppLocalizations {
   String get flashbackOnThisDay => 'On This Day';
 
   @override
-  String get pageGalleryTitle => 'ギャラリー';
-
-  @override
   String get searchLogsHint => '記録を検索…';
 
   @override
@@ -165,9 +144,6 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get noResults => '結果はありません…';
-
-  @override
-  String get sortDateTitle => '日付';
 
   @override
   String get sortOrderAscendingTitle => '昇順';
@@ -311,9 +287,6 @@ class AppLocalizationsJa extends AppLocalizations {
   String get pageSettingsTitle => '設定';
 
   @override
-  String get settingsAppearanceTitle => '外観';
-
-  @override
   String get settingsTheme => 'テーマ';
 
   @override
@@ -347,9 +320,6 @@ class AppLocalizationsJa extends AppLocalizations {
   String get settingsCustomAccentColor => '強調色をカスタマイズ';
 
   @override
-  String get settingsShowMarkdownToolbar => 'Show Markdown Toolbar';
-
-  @override
   String get settingsShowFlashbacks => '回想を表示';
 
   @override
@@ -359,12 +329,6 @@ class AppLocalizationsJa extends AppLocalizations {
   String get moodIconPrompt => 'アイコンを入力してください';
 
   @override
-  String get settingsFlashbacksViewLayout => '回想の外観設定';
-
-  @override
-  String get settingsHideImagesInGallery => 'ギャラリーでは画像を非表示';
-
-  @override
   String get settingsHideImages => 'Hide Images';
 
   @override
@@ -372,13 +336,6 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get settingsNotificationsTitle => '通知';
-
-  @override
-  String get settingsDailyReminderOnboarding => 'リマインダーを有効にして、毎日日記を継続しましょう！';
-
-  @override
-  String get settingsNotificationsPermissionsPrompt =>
-      'ランダム、または希望する時間にリマインダーを送信するには、「アラームとリマインダー」の権限が必要です。';
 
   @override
   String get settingsDailyReminderTitle => 'リマインダー';
@@ -412,25 +369,13 @@ class AppLocalizationsJa extends AppLocalizations {
   String get settingsTemplatesTitle => 'テンプレート';
 
   @override
-  String get settingsDefaultTemplate => 'デフォルトテンプレート';
-
-  @override
   String get manageTemplates => 'テンプレートを管理する';
-
-  @override
-  String get addTemplate => 'テンプレートを追加する';
-
-  @override
-  String get newTemplate => 'New Template';
 
   @override
   String get noTemplateTitle => 'なし';
 
   @override
   String get noTemplatesDescription => 'テンプレートはまだ作成されていません…';
-
-  @override
-  String get templateVariableTime => 'Time';
 
   @override
   String get templateDefaultTimestampTitle => 'Timestamp';
@@ -777,31 +722,13 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
-  String get settingsExport => 'Export';
-
-  @override
   String get settingsExportToAnotherFormat => 'その他の形式にエクスポート';
 
   @override
   String get settingsExportFormatDescription => 'これらの形式はバックアップとして利用できません！';
 
   @override
-  String get exportLogs => 'Export Logs';
-
-  @override
-  String get exportImages => 'Export Images';
-
-  @override
-  String get settingsImport => 'Import';
-
-  @override
   String get settingsImportFromAnotherApp => 'バックアップのインポート';
-
-  @override
-  String get importLogs => 'Import Logs';
-
-  @override
-  String get importImages => 'Import Images';
 
   @override
   String get logFormatTitle => '形式の選択';
@@ -909,13 +836,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get settingsOpenSourceLicenses => 'Open Source Licenses';
 
   @override
-  String get imagesTitle => 'Images';
-
-  @override
   String get tagMoodTitle => '気分';
-
-  @override
-  String get calendarTagDisplayLabel => 'Tag';
 
   @override
   String get selectTagTitle => 'Select Tag';
@@ -975,17 +896,6 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get coachPrompt10 => 'If today had a title, what would it be?';
-
-  @override
-  String entryReadingTime(num count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count min read',
-      one: '1 min read',
-    );
-    return '$_temp0';
-  }
 
   @override
   String get pageMediaTitle => 'Media';

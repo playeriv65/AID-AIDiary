@@ -56,28 +56,10 @@ class AppLocalizationsUk extends AppLocalizations {
   String get actionTakePhoto => 'Зробити фото';
 
   @override
-  String get actionToday => 'Сьогодні';
-
-  @override
-  String get actionOtherDay => 'Іншого дня';
-
-  @override
-  String get pageHomeTitle => 'Домашня';
-
-  @override
-  String get jumpToMonthTitle => 'Перейти до місяця';
-
-  @override
-  String get jumpToLogTitle => 'Перейти до журналу';
-
-  @override
   String get flashbacksTitle => 'Спогади';
 
   @override
   String get settingsFlashbacksExcludeBadDays => 'Виключити погані дні';
-
-  @override
-  String get flaskbacksEmpty => 'Ще немає спогадів…';
 
   @override
   String get flashbackGoodDay => 'Хороший день';
@@ -125,9 +107,6 @@ class AppLocalizationsUk extends AppLocalizations {
   String get flashbackOnThisDay => 'Цього дня';
 
   @override
-  String get pageGalleryTitle => 'Галерея';
-
-  @override
   String get searchLogsHint => 'Шукати запис…';
 
   @override
@@ -170,9 +149,6 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get noResults => 'Немає результатів…';
-
-  @override
-  String get sortDateTitle => 'За датою';
 
   @override
   String get sortOrderAscendingTitle => 'За зростанням';
@@ -318,9 +294,6 @@ class AppLocalizationsUk extends AppLocalizations {
   String get pageSettingsTitle => 'Налаштування';
 
   @override
-  String get settingsAppearanceTitle => 'Зовнішній вигляд';
-
-  @override
   String get settingsTheme => 'Тема';
 
   @override
@@ -355,10 +328,6 @@ class AppLocalizationsUk extends AppLocalizations {
   String get settingsCustomAccentColor => 'Обрати свій колір акценту';
 
   @override
-  String get settingsShowMarkdownToolbar =>
-      'Відображати панель форматування тексту';
-
-  @override
   String get settingsShowFlashbacks => 'Показати флешбеки';
 
   @override
@@ -368,12 +337,6 @@ class AppLocalizationsUk extends AppLocalizations {
   String get moodIconPrompt => 'Введіть іконку (емоджи)';
 
   @override
-  String get settingsFlashbacksViewLayout => 'Макет перегляду флешбеків';
-
-  @override
-  String get settingsHideImagesInGallery => 'Приховати зображення в галереї';
-
-  @override
   String get settingsHideImages => 'Сховати зображення';
 
   @override
@@ -381,14 +344,6 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get settingsNotificationsTitle => 'Нагадування';
-
-  @override
-  String get settingsDailyReminderOnboarding =>
-      'Увімкніть щоденні нагадування, щоб залишатися послідовним!';
-
-  @override
-  String get settingsNotificationsPermissionsPrompt =>
-      'Для надсилання нагадування у випадковий момент або у вибраний вами час буде запрошено дозвіл на «запланування будильників».';
 
   @override
   String get settingsDailyReminderTitle => 'Кожноденне нагадування';
@@ -423,25 +378,13 @@ class AppLocalizationsUk extends AppLocalizations {
   String get settingsTemplatesTitle => 'Шаблони';
 
   @override
-  String get settingsDefaultTemplate => 'Шаблон за замовчуванням';
-
-  @override
   String get manageTemplates => 'Керувати шаблонами';
-
-  @override
-  String get addTemplate => 'Додати шаблон';
-
-  @override
-  String get newTemplate => 'Новий шаблон';
 
   @override
   String get noTemplateTitle => 'Порожній';
 
   @override
   String get noTemplatesDescription => 'Жодного шаблону немає…';
-
-  @override
-  String get templateVariableTime => 'Час';
 
   @override
   String get templateDefaultTimestampTitle => 'Timestamp';
@@ -791,9 +734,6 @@ class AppLocalizationsUk extends AppLocalizations {
   }
 
   @override
-  String get settingsExport => 'Експорт';
-
-  @override
   String get settingsExportToAnotherFormat => 'Експорт в інший формат';
 
   @override
@@ -801,22 +741,7 @@ class AppLocalizationsUk extends AppLocalizations {
       'Це не слід використовувати як резервний варіант!';
 
   @override
-  String get exportLogs => 'Експортувати записи';
-
-  @override
-  String get exportImages => 'Експортувати світлини';
-
-  @override
-  String get settingsImport => 'Імпорт';
-
-  @override
   String get settingsImportFromAnotherApp => 'Імпорт з іншої програми';
-
-  @override
-  String get importLogs => 'Імпортувати записи';
-
-  @override
-  String get importImages => 'Імпортувати світлини';
 
   @override
   String get logFormatTitle => 'Оберіть тип файлу';
@@ -925,13 +850,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get settingsOpenSourceLicenses => 'Open Source Licenses';
 
   @override
-  String get imagesTitle => 'Images';
-
-  @override
   String get tagMoodTitle => 'Настрій';
-
-  @override
-  String get calendarTagDisplayLabel => 'Tag';
 
   @override
   String get selectTagTitle => 'Select Tag';
@@ -991,17 +910,6 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get coachPrompt10 => 'If today had a title, what would it be?';
-
-  @override
-  String entryReadingTime(num count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count min read',
-      one: '1 min read',
-    );
-    return '$_temp0';
-  }
 
   @override
   String get pageMediaTitle => 'Media';

@@ -4,6 +4,7 @@
 
 import 'dart:math';
 
+import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/database/app_database.dart';
 import 'package:aid_diary/database/entry_tag_dao.dart';
 import 'package:aid_diary/database/tag_category_dao.dart';
@@ -332,7 +333,9 @@ class TagsProvider with ChangeNotifier {
   }
 
   Future<void> createDefaultTags() async {
-    final deviceLocale = WidgetsBinding.instance.platformDispatcher.locale;
+    // Names are stored, so use the language the app shows, not the device's.
+    final deviceLocale = ConfigProvider.instance.getOverrideLanguage() ??
+        WidgetsBinding.instance.platformDispatcher.locale;
     Locale locale;
     if (AppLocalizations.delegate.isSupported(deviceLocale)) {
       locale = deviceLocale;

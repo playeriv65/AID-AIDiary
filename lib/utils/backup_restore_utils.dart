@@ -201,8 +201,7 @@ class BackupRestoreUtils {
     final encryptingTemplate =
         prefs.getString('encryptingBackupStatusTemplate');
     final transferringTemplate = prefs.getString('tranferStatusTemplate');
-    final failedTitle =
-        prefs.getString('autoBackupFailedTitle') ?? 'Backup Failed';
+    final failedTitle = prefs.getString('autoBackupFailedTitle') ?? '';
     final cancelLabel = prefs.getString('backupCancelActionLabel');
 
     String stageTitle(String? template, int percent) =>

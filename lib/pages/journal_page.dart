@@ -50,6 +50,7 @@ class _JournalPageState extends State<JournalPage>
   StreamSubscription<SharePayload>? _shareSubscription;
   StreamSubscription<Uri?>? _widgetTapSubscription;
   StreamSubscription<void>? _newEntryTapSubscription;
+  Timer? _homeWidgetTimer;
 
   @override
   bool get wantKeepAlive => true;
@@ -85,25 +86,27 @@ class _JournalPageState extends State<JournalPage>
     _shareSubscription?.cancel();
     _widgetTapSubscription?.cancel();
     _newEntryTapSubscription?.cancel();
+    _homeWidgetTimer?.cancel();
     EntriesProvider.instance.removeListener(_pushHomeWidget);
     EntryImagesProvider.instance.removeListener(_pushHomeWidget);
     super.dispose();
   }
 
+  /// Coalesces bursts of changes, such as autosaves while typing.
   void _pushHomeWidget() {
-    if (!mounted) return;
-    final l10n = AppLocalizations.of(context)!;
-    final entries = EntriesProvider.instance.entries;
-    HomeWidgetService.push(HomeWidgetSnapshot.from(entries, l10n));
-    final photo = photoForDay(
-        entries, EntryImagesProvider.instance.getForEntry, DateTime.now());
-    HomeWidgetService.pushPhoto(
-        photo,
-        photo == null
-            ? ''
-            : TimeManager.formatDateWithWeekday(
-                photo.entry.timeCreate, context),
-        l10n.photoWidgetEmpty);
+    _homeWidgetTimer?.cancel();
+    _homeWidgetTimer = Timer(const Duration(seconds: 1), () {
+      if (!mounted) return;
+      final l10n = AppLocalizations.of(context)!;
+      final entries = EntriesProvider.instance.entries;
+      HomeWidgetService.push(HomeWidgetSnapshot.from(entries, l10n));
+      HomeWidgetService.pushPhotos(
+          photoCandidates(entries, EntryImagesProvider.instance.getForEntry,
+              AppConfig.instance.photoWidgetCandidates),
+          (entry) =>
+              TimeManager.formatDateWithWeekday(entry.timeCreate, context),
+          l10n.photoWidgetEmpty);
+    });
   }
 
   Future<void> _showEntry(int id) async {

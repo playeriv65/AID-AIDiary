@@ -56,28 +56,10 @@ class AppLocalizationsLt extends AppLocalizations {
   String get actionTakePhoto => 'Fotografuoti';
 
   @override
-  String get actionToday => 'Šiandien';
-
-  @override
-  String get actionOtherDay => 'Kita diena';
-
-  @override
-  String get pageHomeTitle => 'Pradžia';
-
-  @override
-  String get jumpToMonthTitle => 'Peršokti į mėnesį';
-
-  @override
-  String get jumpToLogTitle => 'Peršokti į žurnalo įrašą';
-
-  @override
   String get flashbacksTitle => 'Žvilgsniai į praeitį';
 
   @override
   String get settingsFlashbacksExcludeBadDays => 'Neįtraukti blogų dienų';
-
-  @override
-  String get flaskbacksEmpty => 'Kol kas nėra žvilgsnių į praeitį…';
 
   @override
   String get flashbackGoodDay => 'Gera diena';
@@ -128,9 +110,6 @@ class AppLocalizationsLt extends AppLocalizations {
   String get flashbackOnThisDay => 'Šią dieną';
 
   @override
-  String get pageGalleryTitle => 'Galerija';
-
-  @override
   String get searchLogsHint => 'Ieškoti žurnalo įrašų…';
 
   @override
@@ -177,9 +156,6 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String get noResults => 'No Results…';
-
-  @override
-  String get sortDateTitle => 'Data';
 
   @override
   String get sortOrderAscendingTitle => 'Didėjančiai';
@@ -325,9 +301,6 @@ class AppLocalizationsLt extends AppLocalizations {
   String get pageSettingsTitle => 'Nustatymai';
 
   @override
-  String get settingsAppearanceTitle => 'Išvaizda';
-
-  @override
   String get settingsTheme => 'Apipavidalinimas';
 
   @override
@@ -362,9 +335,6 @@ class AppLocalizationsLt extends AppLocalizations {
   String get settingsCustomAccentColor => 'Tinkinta paryškinimo spalva';
 
   @override
-  String get settingsShowMarkdownToolbar => 'Show Markdown Toolbar';
-
-  @override
   String get settingsShowFlashbacks => 'Rodyti žvilgsnius į praeitį';
 
   @override
@@ -374,12 +344,6 @@ class AppLocalizationsLt extends AppLocalizations {
   String get moodIconPrompt => 'Įveskite piktogramą (jaustuką)';
 
   @override
-  String get settingsFlashbacksViewLayout => 'Flashbacks View Layout';
-
-  @override
-  String get settingsHideImagesInGallery => 'Slėpti paveikslus galerijoje';
-
-  @override
   String get settingsHideImages => 'Slėpti paveikslus';
 
   @override
@@ -387,14 +351,6 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String get settingsNotificationsTitle => 'Pranešimai';
-
-  @override
-  String get settingsDailyReminderOnboarding =>
-      'Įjunkite kasdienius priminimus, kad būtumėte nuoseklūs!';
-
-  @override
-  String get settingsNotificationsPermissionsPrompt =>
-      'Bus paprašyta leidimo „Planuoti žadintuvus“, kad jūsų pageidaujamu laiku atsitiktinę akimirką būtų parodytas priminimas.';
 
   @override
   String get settingsDailyReminderTitle => 'Kasdienis priminimas';
@@ -431,25 +387,13 @@ class AppLocalizationsLt extends AppLocalizations {
   String get settingsTemplatesTitle => 'Šablonai';
 
   @override
-  String get settingsDefaultTemplate => 'Numatytasis šablonas';
-
-  @override
   String get manageTemplates => 'Tvarkyti šablonus';
-
-  @override
-  String get addTemplate => 'Pridėti šabloną';
-
-  @override
-  String get newTemplate => 'New Template';
 
   @override
   String get noTemplateTitle => 'Nėra';
 
   @override
   String get noTemplatesDescription => 'Kol kas nėra sukurtų šablonų…';
-
-  @override
-  String get templateVariableTime => 'Laikas';
 
   @override
   String get templateDefaultTimestampTitle => 'Laiko žyma';
@@ -800,9 +744,6 @@ class AppLocalizationsLt extends AppLocalizations {
   }
 
   @override
-  String get settingsExport => 'Export';
-
-  @override
   String get settingsExportToAnotherFormat => 'Eksportuoti kitu formatu';
 
   @override
@@ -810,22 +751,7 @@ class AppLocalizationsLt extends AppLocalizations {
       'Tai neturėtų būti naudojama kaip atsarginės kopijos kūrimui!';
 
   @override
-  String get exportLogs => 'Export Logs';
-
-  @override
-  String get exportImages => 'Export Images';
-
-  @override
-  String get settingsImport => 'Import';
-
-  @override
   String get settingsImportFromAnotherApp => 'Importuoti iš kitos programėlės';
-
-  @override
-  String get importLogs => 'Import Logs';
-
-  @override
-  String get importImages => 'Import Images';
 
   @override
   String get logFormatTitle => 'Pasirinkti formatą';
@@ -934,13 +860,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get settingsOpenSourceLicenses => 'Open Source Licenses';
 
   @override
-  String get imagesTitle => 'Paveikslai';
-
-  @override
   String get tagMoodTitle => 'Nuotaika';
-
-  @override
-  String get calendarTagDisplayLabel => 'Tag';
 
   @override
   String get selectTagTitle => 'Select Tag';
@@ -1000,17 +920,6 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String get coachPrompt10 => 'If today had a title, what would it be?';
-
-  @override
-  String entryReadingTime(num count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count min read',
-      one: '1 min read',
-    );
-    return '$_temp0';
-  }
 
   @override
   String get pageMediaTitle => 'Media';
