@@ -2,6 +2,9 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+@Tags(['integration'])
+library;
+
 import 'dart:typed_data';
 
 import 'package:daily_you/config/app_config.dart';

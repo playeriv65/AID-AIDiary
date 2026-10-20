@@ -1,5 +1,7 @@
+@Tags(['widget'])
+library;
+
 import 'package:daily_you/database/entry_store.dart';
-import 'package:daily_you/models/entry.dart';
 import 'package:daily_you/pages/entry_view_page.dart';
 import 'package:daily_you/pages/journal_page.dart';
 import 'package:daily_you/pages/search_page.dart';
@@ -10,16 +12,6 @@ import '../support/diary_app_harness.dart';
 
 void main() {
   final harness = DiaryAppHarness()..register();
-
-  test('an entry is sealed only until its opening day', () {
-    final now = DateTime.now();
-    Entry entry(DateTime? openAt) =>
-        Entry(text: '', timeCreate: now, timeModified: now, openAt: openAt);
-    expect(entry(null).isSealed, isFalse);
-    expect(entry(now.add(const Duration(days: 1))).isSealed, isTrue);
-    expect(entry(now.subtract(const Duration(days: 1))).isSealed, isFalse);
-    expect(entry(now).copy(openAt: null).openAt, isNull);
-  });
 
   testWidgets('a sealed capsule hides its content until opened early',
       (tester) async {

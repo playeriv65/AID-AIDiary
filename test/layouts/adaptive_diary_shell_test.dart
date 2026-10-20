@@ -1,3 +1,6 @@
+@Tags(['widget'])
+library;
+
 import 'package:daily_you/custom_locale_delegates.dart';
 import 'package:daily_you/layouts/adaptive_diary_shell.dart';
 import 'package:flutter_test/flutter_test.dart';

@@ -9,6 +9,7 @@ import 'package:daily_you/models/entry.dart';
 import 'package:daily_you/models/image.dart';
 import 'package:daily_you/storage/in_memory_file_store.dart';
 import 'package:daily_you/utils/export_utils.dart';
+import 'package:daily_you/utils/imports/import_json.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
@@ -96,5 +97,39 @@ void main() {
 
     expect(await imageStore.list(),
         equals(['image_2026-03-04_0.png', 'image_2026-03-04_2_0.png']));
+  });
+
+  test('the JSON export reads back with place, weather and activity', () {
+    final entry = Entry(
+        text: '# 雨天\n散步',
+        mood: 1,
+        timeCreate: DateTime(2026, 10, 18, 9),
+        timeModified: DateTime(2026, 10, 18, 10),
+        location:
+            const EntryLocation(name: '外滩', latitude: 31.2, longitude: 121.5),
+        weather: const EntryWeather(code: 61, temperature: 14.5),
+        activity: EntryActivity.walking,
+        openAt: DateTime(2027, 1, 1));
+    final json = encodeJsonEntries([entry],
+        imagesOf: (_) => [
+              EntryImage(
+                  entryId: 1,
+                  imgPath: 'a.jpg',
+                  imgRank: 0,
+                  timeCreate: DateTime(2026, 10, 18))
+            ],
+        tagsOf: (_) => [(name: '精力', value: '7')]);
+    expect((jsonDecode(json) as List).single['tags'], [
+      {'name': '精力', 'value': '7'}
+    ]);
+    final back = decodeJsonEntries(utf8.encode(json)).single;
+    expect(back.entry.text, entry.text);
+    expect(back.entry.mood, 1);
+    expect(back.entry.timeModified, entry.timeModified);
+    expect(back.entry.location, entry.location);
+    expect(back.entry.weather, entry.weather);
+    expect(back.entry.activity, EntryActivity.walking);
+    expect(back.entry.openAt, DateTime(2027, 1, 1));
+    expect(back.images.single.imgPath, 'a.jpg');
   });
 }

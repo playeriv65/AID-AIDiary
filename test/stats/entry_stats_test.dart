@@ -135,4 +135,31 @@ void main() {
         entriesInRange(entries, StatsRange.sixMonths, now: now), hasLength(2));
     expect(entriesInRange(entries, StatsRange.allTime, now: now), hasLength(3));
   });
+
+  test('moodAssociations ranks factors by how often they had the mood', () {
+    Entry rated(int id, int? mood, EntryActivity activity) => Entry(
+        id: id,
+        text: '',
+        mood: mood,
+        activity: activity,
+        timeCreate: DateTime(2026, 10, id),
+        timeModified: DateTime(2026, 10, id));
+    final entries = [
+      rated(1, 2, EntryActivity.walking),
+      rated(2, 2, EntryActivity.walking),
+      rated(3, 2, EntryActivity.vehicle),
+      rated(4, -2, EntryActivity.vehicle),
+      rated(5, -2, EntryActivity.vehicle),
+      rated(6, 2, EntryActivity.flying), // seen once: too little to say
+      rated(7, null, EntryActivity.walking), // unrated: ignored
+    ];
+    Iterable<EntryActivity> activityOf(Entry e) =>
+        [if (e.activity case final a?) a];
+    expect(moodAssociations(entries, 2, activityOf), [
+      (factor: EntryActivity.walking, matching: 2, total: 2),
+      (factor: EntryActivity.vehicle, matching: 1, total: 3),
+    ]);
+    expect(moodAssociations(entries, -2, activityOf).single.factor,
+        EntryActivity.vehicle);
+  });
 }

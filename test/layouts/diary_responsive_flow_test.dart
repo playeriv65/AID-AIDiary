@@ -1,3 +1,6 @@
+@Tags(['integration'])
+library;
+
 import 'package:daily_you/database/entry_store.dart';
 import 'package:daily_you/layouts/mobile_scaffold.dart';
 import 'package:daily_you/pages/entries_list_page.dart';

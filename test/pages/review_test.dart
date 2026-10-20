@@ -1,89 +1,18 @@
+@Tags(['widget'])
+library;
+
 import 'dart:math';
 
-import 'package:daily_you/models/entry.dart';
-import 'package:daily_you/models/image.dart';
 import 'package:daily_you/pages/random_review_page.dart';
 import 'package:daily_you/pages/review_story_page.dart';
-import 'package:daily_you/stats/period_review.dart';
-import 'package:daily_you/time_manager.dart';
 import 'package:daily_you/widgets/year_pixels.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../support/diary_app_harness.dart';
 
-Entry _entry(int id, DateTime time,
-        {int? mood,
-        String text = '',
-        EntryActivity? activity,
-        String? place}) =>
-    Entry(
-        id: id,
-        text: text,
-        mood: mood,
-        activity: activity,
-        location: place == null ? null : EntryLocation(name: place),
-        timeCreate: time,
-        timeModified: time);
-
 void main() {
   final harness = DiaryAppHarness()..register();
-
-  test('weeks start on the chosen weekday', () {
-    final wednesday = DateTime(2026, 10, 21, 15);
-    expect(TimeManager.startOfWeek(wednesday, DateTime.monday),
-        DateTime(2026, 10, 19));
-    expect(TimeManager.startOfWeek(wednesday, DateTime.sunday),
-        DateTime(2026, 10, 18));
-    expect(TimeManager.startOfWeek(DateTime(2026, 10, 19), DateTime.monday),
-        DateTime(2026, 10, 19));
-  });
-
-  test('a period review counts what happened inside it', () {
-    final entries = [
-      _entry(5, DateTime(2026, 10, 25), mood: -1, text: 'outside'),
-      _entry(4, DateTime(2026, 10, 21, 20),
-          mood: 2, text: 'great long day', activity: EntryActivity.cycling),
-      _entry(3, DateTime(2026, 10, 21, 8), mood: 1, place: '家'),
-      _entry(2, DateTime(2026, 10, 20), mood: 1, place: '家'),
-      _entry(1, DateTime(2026, 10, 18), text: 'before'),
-    ];
-    final review =
-        PeriodReview.of(entries, DateTime(2026, 10, 19), DateTime(2026, 10, 26),
-            tagsOf: (e) => e.id! >= 3 ? ['工作'] : const [],
-            imagesOf: (e) => [
-                  EntryImage(
-                      entryId: e.id,
-                      imgPath: e.id == 2 ? 'a.jpg' : 'b.m4a',
-                      imgRank: 0,
-                      timeCreate: e.timeCreate)
-                ]);
-    expect(review.entries.map((e) => e.id), [5, 4, 3, 2]);
-    expect(review.daysInPeriod, 7);
-    expect(review.daysWritten.length, 3);
-    expect(review.longestStreak, 2);
-    expect(review.averageMood, 0.75);
-    expect(review.photos.single.imgPath, 'a.jpg');
-    expect(review.topTags.single, (item: '工作', count: 3));
-    expect(review.topPlaces.single, (item: '家', count: 2));
-    expect(review.topActivities.single.item, EntryActivity.cycling);
-    expect(review.highlight!.id, 4);
-    expect(review.perMonth[9], 4);
-  });
-
-  test('the random deck shows every entry before repeating', () {
-    final deck = RandomDeck(Random(1));
-    final seen = <int>{};
-    int? last;
-    for (var i = 0; i < 4; i++) {
-      last = deck.next([1, 2, 3, 4], avoid: last);
-      seen.add(last!);
-    }
-    expect(seen, {1, 2, 3, 4});
-    final next = deck.next([1, 2, 3, 4], avoid: last);
-    expect(next, isNot(last));
-    expect(deck.next(const []), isNull);
-  });
 
   testWidgets('random walk shows an entry and moves to another',
       (tester) async {

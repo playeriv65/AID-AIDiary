@@ -1,5 +1,5 @@
 param(
-  [ValidateSet('windows','windows-background','windows-driver','android','apk','test','analyze','pub','screenshots')][string]$Target='windows',
+  [ValidateSet('windows','windows-background','windows-driver','android','apk','test','test-unit','test-widget','test-integration','analyze','pub','screenshots')][string]$Target='windows',
   # Flutter device id for 'android', e.g. a wireless adb serial from `flutter devices`.
   [string]$Device='emulator-5554'
 )
@@ -25,7 +25,11 @@ switch ($Target) {
   'android' { flutter run -d $Device --flavor dev --print-dtd }
   'apk' { flutter build apk --debug --flavor dev }
   'pub' { flutter pub get }
-  # Four workers keep the full suite from pinning every core.
+  # Test layers (see dart_test.yaml). Four workers keep runs from pinning
+  # every core. Unit tests while iterating; all layers before committing.
+  'test-unit' { flutter test -j 4 --exclude-tags widget,integration }
+  'test-widget' { flutter test -j 4 --tags widget }
+  'test-integration' { flutter test -j 4 --tags integration }
   'test' { flutter test -j 4 }
   'analyze' { flutter analyze }
   # Renders artifacts/ui-*.png in widget tests; no window opens.

@@ -1,3 +1,6 @@
+@Tags(['integration'])
+library;
+
 import 'dart:typed_data';
 
 import 'package:daily_you/database/entry_store.dart';

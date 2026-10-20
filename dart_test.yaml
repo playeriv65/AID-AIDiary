@@ -1,0 +1,8 @@
+# Test layers. Untagged files are unit tests: pure logic, run while iterating.
+# Tag a file with @Tags(['widget']) or @Tags(['integration']) above `library;`.
+tags:
+  # One page or component on the test harness.
+  widget:
+  # The whole app, real SQLite, migrations, isolates, encrypted archives.
+  integration:
+    timeout: 2x

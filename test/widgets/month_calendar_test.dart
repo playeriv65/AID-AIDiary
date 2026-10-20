@@ -1,3 +1,6 @@
+@Tags(['widget'])
+library;
+
 import 'package:daily_you/widgets/month_calendar.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';

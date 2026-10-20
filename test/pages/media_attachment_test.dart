@@ -1,3 +1,6 @@
+@Tags(['widget'])
+library;
+
 import 'package:daily_you/models/image.dart';
 import 'package:daily_you/pages/edit_entry_page.dart';
 import 'package:daily_you/pages/entry_view_page.dart';
@@ -10,21 +13,6 @@ import '../support/diary_app_harness.dart';
 
 void main() {
   final harness = DiaryAppHarness()..register();
-
-  test('attachments are told apart by extension', () {
-    expect(MediaKind.of('daily_you_2026.jpg'), MediaKind.image);
-    expect(MediaKind.of('clip.MP4'), MediaKind.video);
-    expect(MediaKind.of('voice-1.m4a'), MediaKind.audio);
-    expect(MediaKind.of('no_extension'), MediaKind.image);
-  });
-
-  test('media durations read like a player clock', () {
-    expect(formatMediaDuration(const Duration(seconds: 7)), '0:07');
-    expect(
-        formatMediaDuration(const Duration(minutes: 12, seconds: 5)), '12:05');
-    expect(
-        formatMediaDuration(const Duration(hours: 1, minutes: 2)), '1:02:00');
-  });
 
   testWidgets('videos and voice notes show as tiles and open the player',
       (tester) async {

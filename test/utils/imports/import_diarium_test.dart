@@ -2,6 +2,9 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+@Tags(['integration'])
+library;
+
 import 'package:daily_you/database/app_database.dart';
 import 'package:daily_you/database/entry_tag_dao.dart';
 import 'package:daily_you/database/tag_dao.dart';

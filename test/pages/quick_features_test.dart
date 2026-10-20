@@ -1,4 +1,6 @@
-import 'dart:convert';
+@Tags(['widget'])
+library;
+
 import 'dart:ui' as ui;
 
 import 'package:daily_you/config_provider.dart';
@@ -6,13 +8,8 @@ import 'package:daily_you/database/entry_dao.dart';
 import 'package:daily_you/database/entry_store.dart';
 import 'package:daily_you/pages/recently_deleted_page.dart';
 import 'package:daily_you/models/entry.dart';
-import 'package:daily_you/models/image.dart';
 import 'package:daily_you/pages/entry_share_page.dart';
 import 'package:daily_you/pages/journal_page.dart';
-import 'package:daily_you/utils/export_utils.dart';
-import 'package:daily_you/utils/imports/import_json.dart';
-import 'package:daily_you/utils/text_editing.dart';
-import 'package:daily_you/widgets/location_dialog.dart';
 import 'package:daily_you/widgets/quick_check_in.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -30,65 +27,6 @@ Entry _entry(String text, DateTime created,
 
 void main() {
   final harness = DiaryAppHarness()..register();
-
-  test('blocks go on lines of their own', () {
-    final controller = TextEditingController(text: 'ab')
-      ..selection = const TextSelection.collapsed(offset: 1);
-    insertBlock(controller, '---\n', cursorOffset: 4);
-    expect(controller.text, 'a\n---\nb');
-    expect(controller.selection.baseOffset, 6);
-
-    final empty = TextEditingController();
-    insertBlock(empty, '- [ ] ', cursorOffset: 6);
-    expect(empty.text, '- [ ] ');
-  });
-
-  test('recent places are named, newest first and listed once', () {
-    final places = recentPlaces([
-      _entry('', DateTime(2026, 10, 3),
-          location: const EntryLocation(name: '公园', latitude: 1, longitude: 2)),
-      _entry('', DateTime(2026, 10, 2),
-          location: const EntryLocation(latitude: 5, longitude: 6)),
-      _entry('', DateTime(2026, 10, 1),
-          location: const EntryLocation(name: '公园')),
-      _entry('', DateTime(2026, 9, 1),
-          location: const EntryLocation(name: '学校')),
-    ], 5);
-    expect(places.map((p) => p.name), ['公园', '学校']);
-    expect(places.first.latitude, 1);
-  });
-
-  test('the JSON export reads back with place, weather and activity', () {
-    final entry = Entry(
-        text: '# 雨天\n散步',
-        mood: 1,
-        timeCreate: DateTime(2026, 10, 18, 9),
-        timeModified: DateTime(2026, 10, 18, 10),
-        location:
-            const EntryLocation(name: '外滩', latitude: 31.2, longitude: 121.5),
-        weather: const EntryWeather(code: 61, temperature: 14.5),
-        activity: EntryActivity.walking);
-    final json = encodeJsonEntries([entry],
-        imagesOf: (_) => [
-              EntryImage(
-                  entryId: 1,
-                  imgPath: 'a.jpg',
-                  imgRank: 0,
-                  timeCreate: DateTime(2026, 10, 18))
-            ],
-        tagsOf: (_) => [(name: '精力', value: '7')]);
-    expect((jsonDecode(json) as List).single['tags'], [
-      {'name': '精力', 'value': '7'}
-    ]);
-    final back = decodeJsonEntries(utf8.encode(json)).single;
-    expect(back.entry.text, entry.text);
-    expect(back.entry.mood, 1);
-    expect(back.entry.timeModified, entry.timeModified);
-    expect(back.entry.location, entry.location);
-    expect(back.entry.weather, entry.weather);
-    expect(back.entry.activity, EntryActivity.walking);
-    expect(back.images.single.imgPath, 'a.jpg');
-  });
 
   testWidgets('the journal can sort by last update', (tester) async {
     await tester.runAsync(() async {

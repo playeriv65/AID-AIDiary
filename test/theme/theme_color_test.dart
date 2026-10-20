@@ -1,3 +1,6 @@
+@Tags(['widget'])
+library;
+
 import 'dart:io';
 
 import 'package:daily_you/config_provider.dart';

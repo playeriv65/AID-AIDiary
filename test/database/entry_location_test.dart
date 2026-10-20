@@ -1,3 +1,6 @@
+@Tags(['integration'])
+library;
+
 import 'package:daily_you/database/app_database.dart';
 import 'package:daily_you/database/entry_dao.dart';
 import 'package:daily_you/models/entry.dart';

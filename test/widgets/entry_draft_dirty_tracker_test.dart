@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'package:daily_you/models/entry.dart';
 import 'package:daily_you/models/tag.dart';
 import 'package:daily_you/widgets/entry_draft_dirty_tracker.dart';
 import 'package:daily_you/widgets/tag_attachment_source.dart';
@@ -90,6 +91,28 @@ void main() {
           tagSource: tagSource,
           hasImages: false,
         ),
+        isTrue);
+  });
+
+  test('auto-filled context keeps a new entry untouched', () {
+    final draft = tracker();
+    const weather = EntryWeather(code: 0, temperature: 20);
+    draft.adoptAutoFill(weather: weather, activity: EntryActivity.walking);
+    expect(
+        draft.hasFieldChanges(
+            text: 'draft',
+            mood: null,
+            date: date,
+            weather: weather,
+            activity: EntryActivity.walking),
+        isFalse);
+    expect(
+        draft.hasFieldChanges(
+            text: 'draft',
+            mood: null,
+            date: date,
+            weather: weather,
+            activity: EntryActivity.running),
         isTrue);
   });
 
