@@ -4,24 +4,24 @@
 
 import 'dart:async';
 
-import 'package:daily_you/l10n/generated/app_localizations.dart';
-import 'package:daily_you/models/template.dart';
-import 'package:daily_you/utils/text_editing.dart';
-import 'package:daily_you/widgets/editor_action_bar/action_bar_pill.dart';
-import 'package:daily_you/widgets/editor_action_bar/dock_metrics.dart';
-import 'package:daily_you/widgets/editor_action_bar/editor_keyboard_session.dart';
-import 'package:daily_you/widgets/editor_action_bar/toolbar_actions.dart';
-import 'package:daily_you/widgets/editor_action_bar/action_bar_toggle_button.dart';
-import 'package:daily_you/widgets/editor_action_bar/toolbar_entry.dart';
-import 'package:daily_you/widgets/editor_action_bar/toolbar_focus_restorer.dart';
-import 'package:daily_you/widgets/editor_action_bar/toolbar_morph.dart';
-import 'package:daily_you/widgets/editor_action_bar/toolbar_overflow_popup.dart';
-import 'package:daily_you/widgets/template_select_popup.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/models/template.dart';
+import 'package:aid_diary/utils/text_editing.dart';
+import 'package:aid_diary/widgets/editor_action_bar/action_bar_pill.dart';
+import 'package:aid_diary/widgets/editor_action_bar/dock_metrics.dart';
+import 'package:aid_diary/widgets/editor_action_bar/editor_keyboard_session.dart';
+import 'package:aid_diary/widgets/editor_action_bar/toolbar_actions.dart';
+import 'package:aid_diary/widgets/editor_action_bar/action_bar_toggle_button.dart';
+import 'package:aid_diary/widgets/editor_action_bar/toolbar_entry.dart';
+import 'package:aid_diary/widgets/editor_action_bar/toolbar_focus_restorer.dart';
+import 'package:aid_diary/widgets/editor_action_bar/toolbar_morph.dart';
+import 'package:aid_diary/widgets/editor_action_bar/toolbar_overflow_popup.dart';
+import 'package:aid_diary/widgets/template_select_popup.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:word_count/word_count.dart';
 
-export 'package:daily_you/widgets/editor_action_bar/editor_action_bar_overlay.dart';
-export 'package:daily_you/widgets/editor_action_bar/toolbar_actions.dart'
+export 'package:aid_diary/widgets/editor_action_bar/editor_action_bar_overlay.dart';
+export 'package:aid_diary/widgets/editor_action_bar/toolbar_actions.dart'
     show ToolbarAction;
 
 class EditorActionBar extends StatefulWidget {

@@ -1,4 +1,4 @@
-import 'package:daily_you/utils/text_editing.dart';
+import 'package:aid_diary/utils/text_editing.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 

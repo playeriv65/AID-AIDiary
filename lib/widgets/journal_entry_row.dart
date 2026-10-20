@@ -2,15 +2,15 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-import 'package:daily_you/l10n/generated/app_localizations.dart';
-import 'package:daily_you/models/entry.dart';
-import 'package:daily_you/models/image.dart';
-import 'package:daily_you/time_manager.dart';
-import 'package:daily_you/utils/entry_context_display.dart';
-import 'package:daily_you/utils/entry_preview.dart';
-import 'package:daily_you/widgets/entry_tag_icon_preview.dart';
-import 'package:daily_you/widgets/local_image_loader.dart';
-import 'package:daily_you/widgets/mood_icon.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/models/entry.dart';
+import 'package:aid_diary/models/image.dart';
+import 'package:aid_diary/time_manager.dart';
+import 'package:aid_diary/utils/entry_context_display.dart';
+import 'package:aid_diary/utils/entry_preview.dart';
+import 'package:aid_diary/widgets/entry_tag_icon_preview.dart';
+import 'package:aid_diary/widgets/local_image_loader.dart';
+import 'package:aid_diary/widgets/mood_icon.dart';
 import 'package:intl/intl.dart';
 import 'package:material_ui/material_ui.dart';
 

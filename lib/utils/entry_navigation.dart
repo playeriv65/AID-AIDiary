@@ -2,18 +2,18 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-import 'package:daily_you/l10n/generated/app_localizations.dart';
-import 'package:daily_you/models/entry.dart';
-import 'package:daily_you/models/flashback.dart';
-import 'package:daily_you/models/image.dart';
-import 'package:daily_you/models/template.dart';
-import 'package:daily_you/notification_manager.dart';
-import 'package:daily_you/pages/edit_entry_page.dart';
-import 'package:daily_you/pages/entries_list_page.dart';
-import 'package:daily_you/pages/entry_timeline_page.dart';
-import 'package:daily_you/providers/entries_provider.dart';
-import 'package:daily_you/providers/entry_images_provider.dart';
-import 'package:daily_you/time_manager.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/models/entry.dart';
+import 'package:aid_diary/models/flashback.dart';
+import 'package:aid_diary/models/image.dart';
+import 'package:aid_diary/models/template.dart';
+import 'package:aid_diary/notification_manager.dart';
+import 'package:aid_diary/pages/edit_entry_page.dart';
+import 'package:aid_diary/pages/entries_list_page.dart';
+import 'package:aid_diary/pages/entry_timeline_page.dart';
+import 'package:aid_diary/providers/entries_provider.dart';
+import 'package:aid_diary/providers/entry_images_provider.dart';
+import 'package:aid_diary/time_manager.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// Routes shared by the Today, Journal and Calendar pages.

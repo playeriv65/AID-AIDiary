@@ -4,11 +4,11 @@
 
 import 'dart:io';
 
-import 'package:daily_you/database/image_storage.dart';
-import 'package:daily_you/time_manager.dart';
-import 'package:daily_you/storage/storage_picker.dart';
-import 'package:daily_you/models/image.dart';
-import 'package:daily_you/widgets/zoomable_image_page_view.dart';
+import 'package:aid_diary/database/image_storage.dart';
+import 'package:aid_diary/time_manager.dart';
+import 'package:aid_diary/storage/storage_picker.dart';
+import 'package:aid_diary/models/image.dart';
+import 'package:aid_diary/widgets/zoomable_image_page_view.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';

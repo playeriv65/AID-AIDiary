@@ -1,4 +1,4 @@
-import 'package:daily_you/utils/entry_preview.dart';
+import 'package:aid_diary/utils/entry_preview.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

@@ -3,7 +3,8 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 enum ImportFormat {
-  dailyYouJson,
+  /// This app's JSON export (Daily You's JSON has the same shape).
+  json,
   daybook,
   daylio,
   diarium,

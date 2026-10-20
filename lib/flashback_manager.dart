@@ -5,12 +5,12 @@
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:daily_you/config_provider.dart';
+import 'package:aid_diary/config_provider.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:daily_you/l10n/generated/app_localizations.dart';
-import 'package:daily_you/models/entry.dart';
-import 'package:daily_you/models/flashback.dart';
-import 'package:daily_you/time_manager.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/models/entry.dart';
+import 'package:aid_diary/models/flashback.dart';
+import 'package:aid_diary/time_manager.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';

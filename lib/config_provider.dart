@@ -6,9 +6,9 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
-import 'package:daily_you/language_option.dart';
-import 'package:daily_you/storage/secret_store.dart';
-import 'package:daily_you/time_manager.dart';
+import 'package:aid_diary/language_option.dart';
+import 'package:aid_diary/storage/secret_store.dart';
+import 'package:aid_diary/time_manager.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -117,8 +117,6 @@ class Settings {
       Setting<bool>("showflashbackRandomDay", true);
   static const hideImagesInGallery =
       Setting<bool>("hideImagesInGallery", false);
-  static const lastDismissedSupportBannerDate =
-      Setting<String?>("lastDismissedSupportBannerDate", null);
   static const calendarSystem = Setting<String>("calendarSystem", "system");
   static const moodOverTimeGrouping =
       Setting<String?>("moodOverTimeGrouping", null);
@@ -212,7 +210,6 @@ class Settings {
     showflashbackGoodDay,
     showflashbackRandomDay,
     hideImagesInGallery,
-    lastDismissedSupportBannerDate,
     calendarSystem,
     moodOverTimeGrouping,
     moodOverTimeSmoothing,

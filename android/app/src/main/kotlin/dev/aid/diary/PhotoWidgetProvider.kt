@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-package com.demizo.daily_you
+package dev.aid.diary
 
 import android.appwidget.AppWidgetManager
 import android.content.Context

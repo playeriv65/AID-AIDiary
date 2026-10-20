@@ -2,10 +2,10 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:archive/archive.dart';
-import 'package:daily_you/config/app_config.dart';
-import 'package:daily_you/models/entry.dart';
-import 'package:daily_you/models/image.dart';
-import 'package:daily_you/utils/entry_share.dart';
+import 'package:aid_diary/config/app_config.dart';
+import 'package:aid_diary/models/entry.dart';
+import 'package:aid_diary/models/image.dart';
+import 'package:aid_diary/utils/entry_share.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

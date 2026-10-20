@@ -2,17 +2,17 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-import 'package:daily_you/config_provider.dart';
-import 'package:daily_you/models/tag.dart';
-import 'package:daily_you/pages/settings/tags_settings.dart';
-import 'package:daily_you/providers/tags_provider.dart';
-import 'package:daily_you/widgets/edit_tag.dart';
-import 'package:daily_you/widgets/tag_attachment_source.dart';
-import 'package:daily_you/widgets/tag_chip.dart';
-import 'package:daily_you/widgets/tag_grouped_chip_list.dart';
-import 'package:daily_you/utils/tag_name_sanitizer.dart';
+import 'package:aid_diary/config_provider.dart';
+import 'package:aid_diary/models/tag.dart';
+import 'package:aid_diary/pages/settings/tags_settings.dart';
+import 'package:aid_diary/providers/tags_provider.dart';
+import 'package:aid_diary/widgets/edit_tag.dart';
+import 'package:aid_diary/widgets/tag_attachment_source.dart';
+import 'package:aid_diary/widgets/tag_chip.dart';
+import 'package:aid_diary/widgets/tag_grouped_chip_list.dart';
+import 'package:aid_diary/utils/tag_name_sanitizer.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:daily_you/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:provider/provider.dart';
 
 enum TagPickerMode { attach, selectSingle }

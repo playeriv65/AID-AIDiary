@@ -5,21 +5,21 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:daily_you/config_provider.dart';
-import 'package:daily_you/database/app_database.dart';
-import 'package:daily_you/database/image_storage.dart';
-import 'package:daily_you/notification_manager.dart';
-import 'package:daily_you/storage/file_store.dart';
-import 'package:daily_you/storage/local_file_store.dart';
-import 'package:daily_you/storage/storage_picker.dart';
-import 'package:daily_you/utils/backup_encryption.dart';
-import 'package:daily_you/utils/cancellation_token.dart';
-import 'package:daily_you/utils/operation_outcome.dart';
-import 'package:daily_you/utils/password_store.dart';
-import 'package:daily_you/utils/zip_utils.dart';
-import 'package:daily_you/widgets/auth_popup.dart';
+import 'package:aid_diary/config_provider.dart';
+import 'package:aid_diary/database/app_database.dart';
+import 'package:aid_diary/database/image_storage.dart';
+import 'package:aid_diary/notification_manager.dart';
+import 'package:aid_diary/storage/file_store.dart';
+import 'package:aid_diary/storage/local_file_store.dart';
+import 'package:aid_diary/storage/storage_picker.dart';
+import 'package:aid_diary/utils/backup_encryption.dart';
+import 'package:aid_diary/utils/cancellation_token.dart';
+import 'package:aid_diary/utils/operation_outcome.dart';
+import 'package:aid_diary/utils/password_store.dart';
+import 'package:aid_diary/utils/zip_utils.dart';
+import 'package:aid_diary/widgets/auth_popup.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:daily_you/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -35,8 +35,11 @@ class BackupRestoreUtils {
   // Prevent periodic and catch-up backups from colliding
   static bool _autoBackupRunning = false;
 
-  static const String manualBackupPrefix = 'daily_you_backup_';
-  static const String autoBackupPrefix = 'daily_you_auto_backup_';
+  static const String manualBackupPrefix = 'aid_diary_backup_';
+  static const String autoBackupPrefix = 'aid_diary_auto_backup_';
+
+  /// Automatic backups named before the rename, still pruned with the rest.
+  static const String legacyAutoBackupPrefix = 'daily_you_auto_backup_';
 
   static String? _backupPassword() =>
       BackupPasswordStore.isEnabled ? BackupPasswordStore.password : null;
@@ -267,12 +270,17 @@ class BackupRestoreUtils {
 
   static Future<void> _pruneAutoBackups(FileStore destination, int keep) async {
     if (keep <= 0) return;
+    // Oldest first: legacy names predate every current one, then by date.
+    String age(String name) => name.startsWith(legacyAutoBackupPrefix)
+        ? '0${name.substring(legacyAutoBackupPrefix.length)}'
+        : '1${name.substring(autoBackupPrefix.length)}';
     final backups = (await destination.list())
         .where((name) =>
-            name.startsWith(autoBackupPrefix) &&
+            (name.startsWith(autoBackupPrefix) ||
+                name.startsWith(legacyAutoBackupPrefix)) &&
             (name.endsWith('.zip') || name.endsWith('.zip.enc')))
         .toList()
-      ..sort();
+      ..sort((a, b) => age(a).compareTo(age(b)));
     if (backups.length <= keep) return;
 
     for (final name in backups.take(backups.length - keep)) {
@@ -398,8 +406,10 @@ class BackupRestoreUtils {
       await _extractBackup(tempZipFile, restoreFolder, reportExtractProgress);
 
       final restoreStore = LocalFileStore(restoreFolder.path);
+      // Backups from before the rename hold the database under its old name.
       final databaseBytes =
-          await restoreStore.read(AppDatabase.databaseFileName);
+          await restoreStore.read(AppDatabase.databaseFileName) ??
+              await restoreStore.read(AppDatabase.legacyDatabaseFileName);
       if (databaseBytes != null) {
         // Import database
         await AppDatabase.instance.close();

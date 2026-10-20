@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:daily_you/config_provider.dart';
+import 'package:aid_diary/config_provider.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

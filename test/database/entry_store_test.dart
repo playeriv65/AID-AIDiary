@@ -7,17 +7,17 @@ library;
 
 import 'dart:typed_data';
 
-import 'package:daily_you/config/app_config.dart';
-import 'package:daily_you/database/app_database.dart';
-import 'package:daily_you/database/entry_store.dart';
-import 'package:daily_you/database/image_storage.dart';
-import 'package:daily_you/database/tag_dao.dart';
-import 'package:daily_you/models/entry.dart';
-import 'package:daily_you/models/image.dart';
-import 'package:daily_you/models/tag.dart';
-import 'package:daily_you/providers/entry_images_provider.dart';
-import 'package:daily_you/providers/tags_provider.dart';
-import 'package:daily_you/storage/in_memory_file_store.dart';
+import 'package:aid_diary/config/app_config.dart';
+import 'package:aid_diary/database/app_database.dart';
+import 'package:aid_diary/database/entry_store.dart';
+import 'package:aid_diary/database/image_storage.dart';
+import 'package:aid_diary/database/tag_dao.dart';
+import 'package:aid_diary/models/entry.dart';
+import 'package:aid_diary/models/image.dart';
+import 'package:aid_diary/models/tag.dart';
+import 'package:aid_diary/providers/entry_images_provider.dart';
+import 'package:aid_diary/providers/tags_provider.dart';
+import 'package:aid_diary/storage/in_memory_file_store.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 

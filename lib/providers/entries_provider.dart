@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-import 'package:daily_you/database/entry_store.dart';
-import 'package:daily_you/models/entry.dart';
+import 'package:aid_diary/database/entry_store.dart';
+import 'package:aid_diary/models/entry.dart';
 import 'package:material_ui/material_ui.dart';
 
 enum OrderBy { date, mood, tracker }

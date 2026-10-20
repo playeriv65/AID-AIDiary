@@ -4,25 +4,25 @@
 
 import 'dart:io';
 
-import 'package:daily_you/config_provider.dart';
-import 'package:daily_you/device_info_service.dart';
-import 'package:daily_you/main.dart';
-import 'package:daily_you/notification_manager.dart';
-import 'package:daily_you/storage/storage_picker.dart';
-import 'package:daily_you/time_manager.dart';
-import 'package:daily_you/utils/auto_backup_schedule.dart';
-import 'package:daily_you/utils/backup_restore_utils.dart';
-import 'package:daily_you/utils/imports/import_registry.dart';
-import 'package:daily_you/utils/export_utils.dart';
-import 'package:daily_you/utils/operation_outcome.dart';
-import 'package:daily_you/utils/password_store.dart';
-import 'package:daily_you/widgets/auth_popup.dart';
-import 'package:daily_you/widgets/auto_backup_settings_dialog.dart';
-import 'package:daily_you/widgets/failure_dialog.dart';
-import 'package:daily_you/widgets/settings_icon_action.dart';
-import 'package:daily_you/widgets/settings_toggle.dart';
+import 'package:aid_diary/config_provider.dart';
+import 'package:aid_diary/device_info_service.dart';
+import 'package:aid_diary/main.dart';
+import 'package:aid_diary/notification_manager.dart';
+import 'package:aid_diary/storage/storage_picker.dart';
+import 'package:aid_diary/time_manager.dart';
+import 'package:aid_diary/utils/auto_backup_schedule.dart';
+import 'package:aid_diary/utils/backup_restore_utils.dart';
+import 'package:aid_diary/utils/imports/import_registry.dart';
+import 'package:aid_diary/utils/export_utils.dart';
+import 'package:aid_diary/utils/operation_outcome.dart';
+import 'package:aid_diary/utils/password_store.dart';
+import 'package:aid_diary/widgets/auth_popup.dart';
+import 'package:aid_diary/widgets/auto_backup_settings_dialog.dart';
+import 'package:aid_diary/widgets/failure_dialog.dart';
+import 'package:aid_diary/widgets/settings_icon_action.dart';
+import 'package:aid_diary/widgets/settings_toggle.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:daily_you/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:provider/provider.dart';
 
 class BackupRestoreSettings extends StatefulWidget {

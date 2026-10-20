@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-import 'package:daily_you/models/entry.dart';
-import 'package:daily_you/models/image.dart';
-import 'package:daily_you/stats/entry_stats.dart';
+import 'package:aid_diary/models/entry.dart';
+import 'package:aid_diary/models/image.dart';
+import 'package:aid_diary/stats/entry_stats.dart';
 
 /// A count of how often something came up, most frequent first.
 typedef Tally<T> = List<({T item, int count})>;

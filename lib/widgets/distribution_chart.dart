@@ -5,7 +5,7 @@
 import 'dart:math' as math;
 import 'package:fl_chart/fl_chart.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:daily_you/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
 
 class _Bin {
   final double min;

@@ -6,10 +6,10 @@
 //   flutter test tool/screenshots/
 // Output: artifacts/ui-tablet-*.png.
 
-import 'package:daily_you/config_provider.dart';
-import 'package:daily_you/pages/coach_page.dart';
-import 'package:daily_you/pages/edit_entry_page.dart';
-import 'package:daily_you/pages/search_page.dart';
+import 'package:aid_diary/config_provider.dart';
+import 'package:aid_diary/pages/coach_page.dart';
+import 'package:aid_diary/pages/edit_entry_page.dart';
+import 'package:aid_diary/pages/search_page.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';

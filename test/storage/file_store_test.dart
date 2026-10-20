@@ -5,9 +5,9 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:daily_you/storage/file_store.dart';
-import 'package:daily_you/storage/in_memory_file_store.dart';
-import 'package:daily_you/storage/local_file_store.dart';
+import 'package:aid_diary/storage/file_store.dart';
+import 'package:aid_diary/storage/in_memory_file_store.dart';
+import 'package:aid_diary/storage/local_file_store.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' show join;
 

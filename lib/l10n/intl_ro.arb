@@ -88,6 +88,5 @@
     "chartGroupingMonth": "Lună",
     "chartGroupingYear": "An",
     "chartSmoothingLabel": "Netezire",
-    "databaseMigrationErrorRetry": "Reîncearcă",
-    "errorReport": "Raportează o Problemă"
+    "databaseMigrationErrorRetry": "Reîncearcă"
 }

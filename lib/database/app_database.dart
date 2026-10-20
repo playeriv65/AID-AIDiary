@@ -4,24 +4,24 @@
 
 import 'dart:io';
 
-import 'package:daily_you/config_provider.dart';
-import 'package:daily_you/database/image_storage.dart';
-import 'package:daily_you/l10n/generated/app_localizations.dart';
-import 'package:daily_you/storage/external_sync_health.dart';
-import 'package:daily_you/storage/file_store.dart';
-import 'package:daily_you/storage/local_file_store.dart';
-import 'package:daily_you/storage/storage_picker.dart';
-import 'package:daily_you/utils/operation_outcome.dart';
-import 'package:daily_you/utils/generated/tag_icon_registry.dart';
-import 'package:daily_you/models/entry.dart';
-import 'package:daily_you/models/image.dart';
-import 'package:daily_you/models/tag.dart';
-import 'package:daily_you/models/tag_category.dart';
-import 'package:daily_you/models/template.dart';
-import 'package:daily_you/providers/entries_provider.dart';
-import 'package:daily_you/providers/entry_images_provider.dart';
-import 'package:daily_you/providers/tags_provider.dart';
-import 'package:daily_you/providers/templates_provider.dart';
+import 'package:aid_diary/config_provider.dart';
+import 'package:aid_diary/database/image_storage.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/storage/external_sync_health.dart';
+import 'package:aid_diary/storage/file_store.dart';
+import 'package:aid_diary/storage/local_file_store.dart';
+import 'package:aid_diary/storage/storage_picker.dart';
+import 'package:aid_diary/utils/operation_outcome.dart';
+import 'package:aid_diary/utils/generated/tag_icon_registry.dart';
+import 'package:aid_diary/models/entry.dart';
+import 'package:aid_diary/models/image.dart';
+import 'package:aid_diary/models/tag.dart';
+import 'package:aid_diary/models/tag_category.dart';
+import 'package:aid_diary/models/template.dart';
+import 'package:aid_diary/providers/entries_provider.dart';
+import 'package:aid_diary/providers/entry_images_provider.dart';
+import 'package:aid_diary/providers/tags_provider.dart';
+import 'package:aid_diary/providers/templates_provider.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -37,9 +37,13 @@ class AppDatabase {
   static DatabaseExecutor executorOr(DatabaseExecutor? executor) =>
       executor ?? instance.database!;
 
-  static const String databaseFileName = 'daily_you.db';
+  static const String databaseFileName = 'aid_diary.db';
 
-  final Logger _logger = Logger('AppDatabase');
+  /// The name the database had before; existing files and backups still
+  /// carry it and are read under it once, then renamed.
+  static const String legacyDatabaseFileName = 'daily_you.db';
+
+  static final Logger _logger = Logger('AppDatabase');
 
   final ExternalSyncHealth externalSyncHealth =
       ExternalSyncHealth('AppDatabase');
@@ -66,6 +70,7 @@ class AppDatabase {
     _internalPath = await getInternalPath();
     migrationFailed = false;
     bool success = true;
+    await renameLegacyDatabase(_internalPath!);
 
     if (Platform.isAndroid && allowMigration) {
       final migrated = await _migrateDbFromExternalStorage();
@@ -95,6 +100,20 @@ class AppDatabase {
     return success;
   }
 
+  /// Gives a database still under its old file name (and its SQLite side
+  /// files) the current name. Runs before anything opens it.
+  static Future<void> renameLegacyDatabase(String path) async {
+    final current = File(path);
+    final legacy = File(join(dirname(path), legacyDatabaseFileName));
+    if (await current.exists() || !await legacy.exists()) return;
+    _logger.info('Renaming ${legacy.path} to ${current.path}');
+    for (final suffix in const ['-wal', '-shm', '-journal']) {
+      final side = File('${legacy.path}$suffix');
+      if (await side.exists()) await side.rename('${current.path}$suffix');
+    }
+    await legacy.rename(current.path);
+  }
+
   /// Returns whether it is safe to open the internal database. False means a
   /// migration was needed but failed, so the caller must not create a fresh
   /// database over the still-intact external copy.
@@ -103,7 +122,8 @@ class AppDatabase {
 
     final oldDir = await getExternalStorageDirectory();
     if (oldDir == null) return true;
-    final oldPath = join(oldDir.path, databaseFileName);
+    // Only builds from before the rename kept the database there.
+    final oldPath = join(oldDir.path, legacyDatabaseFileName);
     if (!await File(oldPath).exists()) return true;
 
     _logger.info('Database migration started: $oldPath -> $_internalPath');
@@ -287,6 +307,15 @@ class AppDatabase {
     final externalLocation = externalStore;
     if (externalLocation == null) return false;
 
+    // A sync folder written before the rename: carry its copy over.
+    if (!await externalLocation.exists(databaseFileName) &&
+        await externalLocation.exists(legacyDatabaseFileName)) {
+      final legacyBytes = await externalLocation.read(legacyDatabaseFileName);
+      if (legacyBytes != null) {
+        await externalLocation.write(databaseFileName, legacyBytes);
+      }
+    }
+
     if (!await externalLocation.exists(databaseFileName)) {
       final bytes = await internalStore.read(databaseFileName);
       if (bytes == null) return false;
@@ -404,10 +433,9 @@ CREATE TABLE $imagesTable (
       skipUpdate: true,
     );
 
-    final imageBytes =
-        await rootBundle.load('assets/daily_you_First_Steps.webp');
+    final imageBytes = await rootBundle.load('assets/welcome_first_steps.webp');
     final imageName = await ImageStorage.instance.create(
-      'daily_you_First_Steps.webp',
+      'welcome_first_steps.webp',
       imageBytes.buffer.asUint8List(),
       currTime: now,
     );

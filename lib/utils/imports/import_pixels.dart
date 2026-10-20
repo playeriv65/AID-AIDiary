@@ -4,11 +4,11 @@
 
 import 'dart:convert';
 
-import 'package:daily_you/models/entry.dart';
-import 'package:daily_you/providers/entries_provider.dart';
-import 'package:daily_you/storage/storage_picker.dart';
-import 'package:daily_you/utils/imports/import_helpers.dart';
-import 'package:daily_you/utils/operation_outcome.dart';
+import 'package:aid_diary/models/entry.dart';
+import 'package:aid_diary/providers/entries_provider.dart';
+import 'package:aid_diary/storage/storage_picker.dart';
+import 'package:aid_diary/utils/imports/import_helpers.dart';
+import 'package:aid_diary/utils/operation_outcome.dart';
 import 'package:intl/intl.dart';
 
 Future<OperationOutcome> importFromPixels(Function(String) updateStatus) async {

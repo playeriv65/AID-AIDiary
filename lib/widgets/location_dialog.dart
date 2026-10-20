@@ -4,14 +4,14 @@
 
 import 'dart:math';
 
-import 'package:daily_you/config/app_config.dart';
-import 'package:daily_you/l10n/generated/app_localizations.dart';
-import 'package:daily_you/layouts/adaptive_diary_shell.dart';
-import 'package:daily_you/models/entry.dart';
-import 'package:daily_you/providers/entries_provider.dart';
-import 'package:daily_you/services/location_service.dart';
-import 'package:daily_you/services/saved_places.dart';
-import 'package:daily_you/time_manager.dart';
+import 'package:aid_diary/config/app_config.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/layouts/adaptive_diary_shell.dart';
+import 'package:aid_diary/models/entry.dart';
+import 'package:aid_diary/providers/entries_provider.dart';
+import 'package:aid_diary/services/location_service.dart';
+import 'package:aid_diary/services/saved_places.dart';
+import 'package:aid_diary/time_manager.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// The dialog's answer; a null [location] removes the entry's location.

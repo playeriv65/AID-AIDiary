@@ -2,19 +2,19 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-import 'package:daily_you/config_provider.dart';
-import 'package:daily_you/l10n/generated/app_localizations.dart';
-import 'package:daily_you/layouts/adaptive_diary_shell.dart';
-import 'package:daily_you/models/builtin_templates.dart';
-import 'package:daily_you/models/coach_program.dart';
-import 'package:daily_you/models/template.dart';
-import 'package:daily_you/providers/templates_provider.dart';
-import 'package:daily_you/services/coach_service.dart';
-import 'package:daily_you/utils/entry_navigation.dart';
-import 'package:daily_you/widgets/coach_widgets.dart';
-import 'package:daily_you/widgets/list_detail_layout.dart';
-import 'package:daily_you/widgets/scaled_markdown.dart';
-import 'package:daily_you/widgets/top_search_card.dart';
+import 'package:aid_diary/config_provider.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/layouts/adaptive_diary_shell.dart';
+import 'package:aid_diary/models/builtin_templates.dart';
+import 'package:aid_diary/models/coach_program.dart';
+import 'package:aid_diary/models/template.dart';
+import 'package:aid_diary/providers/templates_provider.dart';
+import 'package:aid_diary/services/coach_service.dart';
+import 'package:aid_diary/utils/entry_navigation.dart';
+import 'package:aid_diary/widgets/coach_widgets.dart';
+import 'package:aid_diary/widgets/list_detail_layout.dart';
+import 'package:aid_diary/widgets/scaled_markdown.dart';
+import 'package:aid_diary/widgets/top_search_card.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 

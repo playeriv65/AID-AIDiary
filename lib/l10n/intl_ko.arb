@@ -87,7 +87,7 @@
     "settingsLogFolder": "기록 폴더",
     "settingsImageFolder": "이미지 폴더",
     "warningTitle": "경고",
-    "logFolderWarningDescription": "이미 'daily_you.db' 파일이 존재하는 폴더를 선택할 경우, 존재하는 기록을 덮어쓰게 됩니다!",
+    "logFolderWarningDescription": "이미 'aid_diary.db' 파일이 존재하는 폴더를 선택할 경우, 존재하는 기록을 덮어쓰게 됩니다!",
     "errorTitle": "에러",
     "logFolderErrorDescription": "기록 폴더 변경 실패!",
     "imageFolderErrorDescription": "이미지 폴더 변경 실패!",
@@ -104,8 +104,6 @@
     "settingsExportToAnotherFormat": "다른 형식으로 내보내기",
     "settingsExportFormatDescription": "백업으로 사용을 권장하지 않습니다!",
     "settingsImportFromAnotherApp": "다른 앱에서 가져오기",
-    "settingsTranslateCallToAction": "누구든 일기를 쓸 수 있어야 합니다!",
-    "settingsHelpTranslate": "번역 지원",
     "logFormatTitle": "형식 선택",
     "logFormatDescription": "다른 앱의 형식은 모든 기능을 지원하지 않을 수 있습니다. 서드 파티 형식은 언제든 바뀔 수 있어 문제가 있다면 알려주시기 바랍니다. 이는 존재하는 기록에 영향을 미치지 않습니다!",
     "formatMarkdown": "마크다운",
@@ -132,8 +130,5 @@
     "settingsVersion": "버전",
     "settingsLicense": "라이센스",
     "licenseGPLv3": "GPL-3.0",
-    "settingsSourceCode": "소스 코드",
-    "settingsMadeWithLove": "❤️을 담아 제작",
-    "settingsConsiderSupporting": "앱을 후원해주세요",
     "tagMoodTitle": "기분"
 }

@@ -4,7 +4,7 @@
 
 import 'dart:typed_data';
 
-import 'package:daily_you/storage/file_store.dart';
+import 'package:aid_diary/storage/file_store.dart';
 import 'package:logging/logging.dart';
 import 'package:saf_util/saf_util.dart';
 import 'package:shared_storage/shared_storage.dart' as saf;

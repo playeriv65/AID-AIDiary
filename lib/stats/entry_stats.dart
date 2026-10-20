@@ -4,8 +4,8 @@
 
 import 'dart:math' as math;
 
-import 'package:daily_you/models/entry.dart';
-import 'package:daily_you/models/tag.dart';
+import 'package:aid_diary/models/entry.dart';
+import 'package:aid_diary/models/tag.dart';
 import 'package:word_count/word_count.dart';
 
 const List<String> _weekdayKeys = [

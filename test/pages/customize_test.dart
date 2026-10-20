@@ -1,13 +1,13 @@
 @Tags(['widget'])
 library;
 
-import 'package:daily_you/config_provider.dart';
-import 'package:daily_you/database/entry_store.dart';
-import 'package:daily_you/models/entry.dart';
-import 'package:daily_you/pages/edit_entry_page.dart';
-import 'package:daily_you/pages/journal_page.dart';
-import 'package:daily_you/pages/settings/appearance_settings.dart';
-import 'package:daily_you/widgets/mood_associations_card.dart';
+import 'package:aid_diary/config_provider.dart';
+import 'package:aid_diary/database/entry_store.dart';
+import 'package:aid_diary/models/entry.dart';
+import 'package:aid_diary/pages/edit_entry_page.dart';
+import 'package:aid_diary/pages/journal_page.dart';
+import 'package:aid_diary/pages/settings/appearance_settings.dart';
+import 'package:aid_diary/widgets/mood_associations_card.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';

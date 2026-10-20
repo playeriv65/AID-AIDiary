@@ -1,5 +1,5 @@
-name: daily_you
-description: Every day is worth remembering...
+name: aid_diary
+description: A private diary that stays on your device.
 publish_to: 'none'
 version: 3.6.1+3006001
 
@@ -96,7 +96,10 @@ flutter:
   generate: true
   uses-material-design: true
   assets:
-    - assets/daily_you_First_Steps.webp
+    - assets/welcome_first_steps.webp
+    # Shown on the About screen's license page.
+    - LICENSE.txt
+    - ADDITIONAL_TERMS.md
     - assets/icons/
     - assets/config/app_config.json
 

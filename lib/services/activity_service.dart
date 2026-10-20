@@ -5,8 +5,8 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:daily_you/config/app_config.dart';
-import 'package:daily_you/models/entry.dart';
+import 'package:aid_diary/config/app_config.dart';
+import 'package:aid_diary/models/entry.dart';
 import 'package:flutter_activity_recognition/flutter_activity_recognition.dart';
 import 'package:logging/logging.dart';
 

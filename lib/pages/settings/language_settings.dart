@@ -5,15 +5,14 @@
 import 'dart:io';
 
 import 'package:app_settings/app_settings.dart';
-import 'package:daily_you/config_provider.dart';
-import 'package:daily_you/device_info_service.dart';
-import 'package:daily_you/language_option.dart';
-import 'package:daily_you/widgets/settings_dropdown.dart';
-import 'package:daily_you/widgets/settings_icon_action.dart';
+import 'package:aid_diary/config_provider.dart';
+import 'package:aid_diary/device_info_service.dart';
+import 'package:aid_diary/language_option.dart';
+import 'package:aid_diary/widgets/settings_dropdown.dart';
+import 'package:aid_diary/widgets/settings_icon_action.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:daily_you/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class LanguageSettings extends StatefulWidget {
   const LanguageSettings({super.key});
@@ -69,31 +68,6 @@ class _LanguageSettingsState extends State<LanguageSettings> {
                 configProvider.set(
                     Settings.overrideLanguage, newValue?.toJson());
               }),
-          Padding(
-            padding: const EdgeInsets.only(top: 16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(AppLocalizations.of(context)!
-                    .settingsTranslateCallToAction),
-                ElevatedButton.icon(
-                  icon: Icon(Icons.translate_rounded),
-                  label:
-                      Text(AppLocalizations.of(context)!.settingsHelpTranslate),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                    foregroundColor: Theme.of(context).colorScheme.surface,
-                  ),
-                  onPressed: () async {
-                    await launchUrl(
-                        Uri.https("hosted.weblate.org", "/projects/daily-you"),
-                        mode: LaunchMode.externalApplication);
-                  },
-                )
-              ],
-            ),
-          )
         ],
       ),
     );

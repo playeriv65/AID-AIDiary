@@ -9,14 +9,14 @@
 import 'dart:io';
 import 'dart:ui' as ui;
 
-import 'package:daily_you/database/image_storage.dart';
-import 'package:daily_you/layouts/mobile_scaffold.dart';
-import 'package:daily_you/models/entry.dart';
-import 'package:daily_you/models/image.dart';
-import 'package:daily_you/providers/entry_images_provider.dart';
-import 'package:daily_you/providers/tags_provider.dart';
-import 'package:daily_you/storage/in_memory_file_store.dart';
-import 'package:daily_you/pages/atlas_page.dart';
+import 'package:aid_diary/database/image_storage.dart';
+import 'package:aid_diary/layouts/mobile_scaffold.dart';
+import 'package:aid_diary/models/entry.dart';
+import 'package:aid_diary/models/image.dart';
+import 'package:aid_diary/providers/entry_images_provider.dart';
+import 'package:aid_diary/providers/tags_provider.dart';
+import 'package:aid_diary/storage/in_memory_file_store.dart';
+import 'package:aid_diary/pages/atlas_page.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';

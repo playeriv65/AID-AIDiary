@@ -1,4 +1,4 @@
-import 'package:daily_you/utils/map_clusters.dart';
+import 'package:aid_diary/utils/map_clusters.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

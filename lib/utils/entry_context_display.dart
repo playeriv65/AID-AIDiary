@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-import 'package:daily_you/config_provider.dart';
-import 'package:daily_you/l10n/generated/app_localizations.dart';
-import 'package:daily_you/models/entry.dart';
+import 'package:aid_diary/config_provider.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/models/entry.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// Colour for a day's mood, from very bad (-2) to very good (2).

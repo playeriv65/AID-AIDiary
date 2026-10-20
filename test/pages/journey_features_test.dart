@@ -1,15 +1,15 @@
 @Tags(['widget'])
 library;
 
-import 'package:daily_you/database/entry_store.dart';
-import 'package:daily_you/models/entry.dart';
-import 'package:daily_you/pages/edit_entry_page.dart';
-import 'package:daily_you/pages/settings_page.dart';
-import 'package:daily_you/pages/today_story_page.dart';
-import 'package:daily_you/providers/tags_provider.dart';
-import 'package:daily_you/providers/templates_provider.dart';
-import 'package:daily_you/utils/entry_actions.dart';
-import 'package:daily_you/widgets/story_player.dart';
+import 'package:aid_diary/database/entry_store.dart';
+import 'package:aid_diary/models/entry.dart';
+import 'package:aid_diary/pages/edit_entry_page.dart';
+import 'package:aid_diary/pages/settings_page.dart';
+import 'package:aid_diary/pages/today_story_page.dart';
+import 'package:aid_diary/providers/tags_provider.dart';
+import 'package:aid_diary/providers/templates_provider.dart';
+import 'package:aid_diary/utils/entry_actions.dart';
+import 'package:aid_diary/widgets/story_player.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 

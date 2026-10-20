@@ -277,7 +277,7 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get errorExternalStorageAccessDescription =>
-      'Якщо ви використовуєте мережеве сховище, перевірте інтернет і доступ до сервісу сховища.\n\nТакож DailyYou могла втратити дозволи на доступ до зовнішньої теки. Перейдіть до налаштувань і знову виберіть зовнішню теку, щоб надати до неї доступ.\n\nУвага, зміни не будуть синхронізовані, доки ви не відновите доступ до зовнішнього сховища!';
+      'Якщо ви використовуєте мережеве сховище, перевірте інтернет і доступ до сервісу сховища.\n\nТакож застосунок могла втратити дозволи на доступ до зовнішньої теки. Перейдіть до налаштувань і знову виберіть зовнішню теку, щоб надати до неї доступ.\n\nУвага, зміни не будуть синхронізовані, доки ви не відновите доступ до зовнішнього сховища!';
 
   @override
   String get errorExternalStorageAccessContinue =>
@@ -292,9 +292,6 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get databaseMigrationErrorRetry => 'Спробувати знову';
-
-  @override
-  String get errorReport => 'Повідомити про проблему';
 
   @override
   String get lastModified => 'Востаннє змінено';
@@ -645,7 +642,7 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get welcomeLogBodyText =>
-      '## Welcome to AID Diary\n\n> Every day is worth remembering.\n\nWrite what happened, how you felt, and where you were. Your entries stay on this device.\n\n- **Journal** lists every entry by day\n- **Calendar**, **Media** and **Atlas** look back by date, photo and place\n- **Coach** offers prompts and templates when you don\'t know what to write\n\nAID Diary is a modified version of [Daily You](https://github.com/Demizo/Daily_You) by Demizo and contributors, and not the official Daily You app.';
+      '## Welcome to AID Diary\n\n> A quiet place for your days.\n\nWrite what happened, how you felt, and where you were. Your entries stay on this device.\n\n- **Journal** lists every entry by day\n- **Calendar**, **Media** and **Atlas** look back by date, photo and place\n- **Coach** offers prompts and templates when you don\'t know what to write';
 
   @override
   String get settingsStorageTitle => 'Сховище';
@@ -676,7 +673,7 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get logFolderWarningDescription =>
-      'Якщо вибрана тека вже містить файл \'daily_you.db\', він перезапише існуючі записи в журналі!';
+      'Якщо вибрана тека вже містить файл \'aid_diary.db\', він перезапише існуючі записи в журналі!';
 
   @override
   String get errorTitle => 'Помилка';
@@ -816,13 +813,6 @@ class AppLocalizationsUk extends AppLocalizations {
   String get settingsImportFromAnotherApp => 'Імпорт з іншої програми';
 
   @override
-  String get settingsTranslateCallToAction =>
-      'Кожен повинен мати доступ до щоденника!';
-
-  @override
-  String get settingsHelpTranslate => 'Допомога з перекладом';
-
-  @override
   String get importLogs => 'Імпортувати записи';
 
   @override
@@ -834,9 +824,6 @@ class AppLocalizationsUk extends AppLocalizations {
   @override
   String get logFormatDescription =>
       'Формат іншої програми може не підтримувати всі функції. Будь ласка, повідомляйте про будь-які проблеми, оскільки формати сторонніх розробників можуть змінитися будь-коли. Це не вплине на існуючі журнали!';
-
-  @override
-  String get formatDailyYouJson => 'Daily You (JSON)';
 
   @override
   String get formatDaybook => 'Щоденник';
@@ -935,16 +922,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get licenseGPLv3 => 'GPL-3.0';
 
   @override
-  String get settingsSourceCode => 'Вихідний код';
-
-  @override
   String get settingsOpenSourceLicenses => 'Open Source Licenses';
-
-  @override
-  String get settingsMadeWithLove => 'Зроблено з ❤️';
-
-  @override
-  String get settingsConsiderSupporting => 'розглянути можливість підтримки';
 
   @override
   String get imagesTitle => 'Images';
@@ -1935,7 +1913,7 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get helpFaq3A =>
-      'Yes: in Settings → Data & storage, import exports from Daylio, Diarium, Diaro, DayBook, My Brain, OneShot and Pixels, or a Daily You JSON file.';
+      'Yes: in Settings → Data & storage, import exports from Daylio, Diarium, Diaro, DayBook, My Brain, OneShot and Pixels, or a JSON export.';
 
   @override
   String get helpFaq4Q => 'How do coach programs work?';
@@ -2027,4 +2005,29 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get photoWidgetEmpty => 'Photos you add to entries show up here.';
+
+  @override
+  String get channelReminders => 'Reminders';
+
+  @override
+  String get channelOnThisDay => 'On this day';
+
+  @override
+  String get channelCoach => 'Coach prompts';
+
+  @override
+  String get channelNudges => 'Nudges after quiet days';
+
+  @override
+  String get channelQuickWrite => 'Quick write';
+
+  @override
+  String get channelBackup => 'Backups';
+
+  @override
+  String get formatJsonExport => 'JSON (AID Diary export)';
+
+  @override
+  String get aboutModifiedNotice =>
+      'A modified version of Daily You by Demizo and contributors. It is not the official Daily You app.';
 }

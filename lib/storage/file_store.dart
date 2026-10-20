@@ -5,8 +5,8 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:daily_you/storage/local_file_store.dart';
-import 'package:daily_you/storage/saf_file_store.dart';
+import 'package:aid_diary/storage/local_file_store.dart';
+import 'package:aid_diary/storage/saf_file_store.dart';
 
 enum CreateResult { created, alreadyExists, failed }
 

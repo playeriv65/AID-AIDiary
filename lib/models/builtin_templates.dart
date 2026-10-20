@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-import 'package:daily_you/l10n/generated/app_localizations.dart';
-import 'package:daily_you/models/template.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/models/template.dart';
 
 /// A ready-made template shipped with the app, in the user's language.
 /// It is never stored; picking it only inserts its text.

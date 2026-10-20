@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-import 'package:daily_you/l10n/generated/app_localizations.dart';
-import 'package:daily_you/providers/entries_provider.dart';
-import 'package:daily_you/utils/entry_context_display.dart';
-import 'package:daily_you/utils/entry_navigation.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/providers/entries_provider.dart';
+import 'package:aid_diary/utils/entry_context_display.dart';
+import 'package:aid_diary/utils/entry_navigation.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// Year in Pixels on the statistics page, with arrows between years.

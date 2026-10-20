@@ -4,7 +4,7 @@
 
 import 'dart:io';
 
-import 'package:daily_you/config_provider.dart';
+import 'package:aid_diary/config_provider.dart';
 import 'package:material_ui/material_ui.dart';
 
 class MoodIcon extends StatefulWidget {

@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-import 'package:daily_you/config/app_config.dart';
-import 'package:daily_you/config_provider.dart';
+import 'package:aid_diary/config/app_config.dart';
+import 'package:aid_diary/config_provider.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 

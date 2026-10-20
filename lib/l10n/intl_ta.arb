@@ -98,7 +98,7 @@
     "settingsLogFolder": "பதிவு கோப்புறை",
     "settingsImageFolder": "படக் கோப்புறை",
     "warningTitle": "எச்சரிக்கை",
-    "logFolderWarningDescription": "தேர்ந்தெடுக்கப்பட்ட கோப்புறையில் ஏற்கனவே 'daily_you.db' கோப்பு இருந்தால், அது ஏற்கனவே உள்ள உங்கள் பதிவுகளை மேலெழுதப் பயன்படுத்தப்படும்!",
+    "logFolderWarningDescription": "தேர்ந்தெடுக்கப்பட்ட கோப்புறையில் ஏற்கனவே 'aid_diary.db' கோப்பு இருந்தால், அது ஏற்கனவே உள்ள உங்கள் பதிவுகளை மேலெழுதப் பயன்படுத்தப்படும்!",
     "errorTitle": "பிழை",
     "logFolderErrorDescription": "பதிவு கோப்புறையை மாற்ற முடியவில்லை!",
     "imageFolderErrorDescription": "பட கோப்புறையை மாற்ற முடியவில்லை!",
@@ -115,8 +115,6 @@
     "settingsExportToAnotherFormat": "மற்றொரு வடிவத்திற்கு ஏற்றுமதி செய்யவும்",
     "settingsExportFormatDescription": "இதை காப்புப்பிரதியாகப் பயன்படுத்தக் கூடாது!",
     "settingsImportFromAnotherApp": "மற்றொரு பயன்பாட்டிலிருந்து இறக்குமதி செய்யவும்",
-    "settingsTranslateCallToAction": "ஒவ்வொருவரும் ஒரு பத்திரிகையை அணுக வேண்டும்!",
-    "settingsHelpTranslate": "மொழிபெயர்க்க உதவுங்கள்",
     "logFormatTitle": "வடிவமைப்பைத் தேர்ந்தெடுக்கவும்",
     "logFormatDescription": "மற்றொரு ஆப்சின் வடிவம் அனைத்து அம்சங்களையும் ஆதரிக்காமல் இருக்கலாம். மூன்றாம் தரப்பு வடிவங்கள் எந்த நேரத்திலும் மாறக்கூடும் என்பதால், ஏதேனும் சிக்கல்களைப் புகாரளிக்கவும். இது ஏற்கனவே உள்ள பதிவுகளை பாதிக்காது!",
     "formatMarkdown": "மார்க் பேரூர்",
@@ -143,9 +141,6 @@
     "settingsVersion": "பதிப்பு",
     "settingsLicense": "உரிமம்",
     "licenseGPLv3": "சிபிஎல்-3.0",
-    "settingsSourceCode": "மூலக் குறியீடு",
-    "settingsMadeWithLove": "❤️ கொண்டு உருவாக்கப்பட்டது",
-    "settingsConsiderSupporting": "ஆதரிப்பதை கருத்தில் கொள்ளுங்கள்",
     "imagesTitle": "படங்கள்",
     "tagMoodTitle": "மனநிலை"
 }

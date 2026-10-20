@@ -1,8 +1,8 @@
 @Tags(['widget'])
 library;
 
-import 'package:daily_you/custom_locale_delegates.dart';
-import 'package:daily_you/layouts/adaptive_diary_shell.dart';
+import 'package:aid_diary/custom_locale_delegates.dart';
+import 'package:aid_diary/layouts/adaptive_diary_shell.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 

@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-import 'package:daily_you/models/tag.dart';
-import 'package:daily_you/widgets/tracker_value_dialog.dart';
+import 'package:aid_diary/models/tag.dart';
+import 'package:aid_diary/widgets/tracker_value_dialog.dart';
 import 'package:flutter/widgets.dart';
 
 /// In-memory working set of attached tags. Holds tag ids and (optionally) tracker values

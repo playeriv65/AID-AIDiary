@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-package com.demizo.daily_you.share_receiver
+package dev.aid.diary.share_receiver
 
 import android.content.Context
 import android.content.Intent

@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-import 'package:daily_you/widgets/editor_action_bar/dock_metrics.dart';
-import 'package:daily_you/widgets/editor_action_bar/toolbar_entry.dart';
+import 'package:aid_diary/widgets/editor_action_bar/dock_metrics.dart';
+import 'package:aid_diary/widgets/editor_action_bar/toolbar_entry.dart';
 import 'package:material_ui/material_ui.dart';
 
 class ToolbarOverflowPopup {

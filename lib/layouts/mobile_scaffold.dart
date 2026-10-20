@@ -2,14 +2,14 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-import 'package:daily_you/l10n/generated/app_localizations.dart';
-import 'package:daily_you/layouts/adaptive_diary_shell.dart';
-import 'package:daily_you/pages/atlas_page.dart';
-import 'package:daily_you/pages/calendar_page.dart';
-import 'package:daily_you/pages/coach_page.dart';
-import 'package:daily_you/pages/journal_page.dart';
-import 'package:daily_you/pages/media_page.dart';
-import 'package:daily_you/utils/entry_navigation.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/layouts/adaptive_diary_shell.dart';
+import 'package:aid_diary/pages/atlas_page.dart';
+import 'package:aid_diary/pages/calendar_page.dart';
+import 'package:aid_diary/pages/coach_page.dart';
+import 'package:aid_diary/pages/journal_page.dart';
+import 'package:aid_diary/pages/media_page.dart';
+import 'package:aid_diary/utils/entry_navigation.dart';
 import 'package:material_ui/material_ui.dart';
 
 class MobileScaffold extends StatefulWidget {

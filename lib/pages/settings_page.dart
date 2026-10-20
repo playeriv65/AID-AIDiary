@@ -3,85 +3,27 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'dart:io';
-import 'package:daily_you/pages/settings/help_page.dart';
-import 'package:daily_you/pages/settings/appearance_settings.dart';
-import 'package:daily_you/pages/settings/data_settings.dart';
-import 'package:daily_you/pages/settings/flashback_settings.dart';
-import 'package:daily_you/pages/settings/notification_settings.dart';
-import 'package:daily_you/pages/settings/security_settings.dart';
-import 'package:daily_you/providers/entries_provider.dart';
-import 'package:daily_you/widgets/settings_category.dart';
-import 'package:flutter/gestures.dart';
+import 'package:aid_diary/pages/settings/help_page.dart';
+import 'package:aid_diary/pages/settings/appearance_settings.dart';
+import 'package:aid_diary/pages/settings/data_settings.dart';
+import 'package:aid_diary/pages/settings/flashback_settings.dart';
+import 'package:aid_diary/pages/settings/notification_settings.dart';
+import 'package:aid_diary/pages/settings/security_settings.dart';
+import 'package:aid_diary/widgets/settings_category.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:daily_you/l10n/generated/app_localizations.dart';
-import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
 
-class SettingsPage extends StatefulWidget {
+class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
 
   @override
-  State<SettingsPage> createState() => _SettingsPageState();
-}
-
-class _SettingsPageState extends State<SettingsPage> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final entriesProvider = Provider.of<EntriesProvider>(context);
-
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.pageSettingsTitle),
+        title: Text(l10n.pageSettingsTitle),
         centerTitle: true,
       ),
-      persistentFooterButtons: [
-        Center(
-          child: RichText(
-            textAlign: TextAlign.center,
-            text: TextSpan(
-              children: [
-                TextSpan(
-                    text: AppLocalizations.of(context)!.settingsMadeWithLove,
-                    style: TextStyle(
-                        fontSize: 14,
-                        color: Theme.of(context).colorScheme.secondary)),
-                if (entriesProvider.entries.length > 30)
-                  TextSpan(
-                      text: " ",
-                      style: TextStyle(
-                          fontSize: 14,
-                          color: Theme.of(context).colorScheme.secondary)),
-                if (entriesProvider.entries.length > 30)
-                  TextSpan(
-                    text: AppLocalizations.of(context)!
-                        .settingsConsiderSupporting,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Theme.of(context).colorScheme.primary,
-                      decoration: TextDecoration.underline,
-                    ),
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = () async {
-                        await launchUrl(
-                            Uri(
-                                scheme: "https",
-                                host: "github.com",
-                                path: "/Demizo/Daily_You",
-                                queryParameters: {"tab": "readme-ov-file"},
-                                fragment: "support-the-app"),
-                            mode: LaunchMode.externalApplication);
-                      },
-                  ),
-              ],
-            ),
-          ),
-        )
-      ],
       body: Align(
           alignment: Alignment.topCenter,
           child: ConstrainedBox(
@@ -91,30 +33,28 @@ class _SettingsPageState extends State<SettingsPage> {
                   // Grouped like Journey: general, data, stories,
                   // reminders, security, help.
                   SettingsCategory(
-                      title: AppLocalizations.of(context)!.settingsGeneralTitle,
+                      title: l10n.settingsGeneralTitle,
                       icon: Icons.tune_rounded,
                       page: const AppearanceSettings()),
                   SettingsCategory(
-                      title: AppLocalizations.of(context)!.settingsDataTitle,
+                      title: l10n.settingsDataTitle,
                       icon: Icons.storage_rounded,
                       page: const DataSettings()),
                   SettingsCategory(
-                      title: AppLocalizations.of(context)!.settingsStoriesTitle,
+                      title: l10n.settingsStoriesTitle,
                       icon: Icons.auto_stories_rounded,
                       page: const FlashbackSettings()),
                   if (Platform.isAndroid)
                     SettingsCategory(
-                        title: AppLocalizations.of(context)!
-                            .settingsNotificationsTitle,
+                        title: l10n.settingsNotificationsTitle,
                         icon: Icons.notifications_rounded,
                         page: const NotificationSettings()),
                   SettingsCategory(
-                      title:
-                          AppLocalizations.of(context)!.settingsSecurityTitle,
+                      title: l10n.settingsSecurityTitle,
                       icon: Icons.security_rounded,
                       page: const SecuritySettings()),
                   SettingsCategory(
-                      title: AppLocalizations.of(context)!.settingsHelpTitle,
+                      title: l10n.settingsHelpTitle,
                       icon: Icons.help_outline_rounded,
                       page: const HelpPage()),
                 ],

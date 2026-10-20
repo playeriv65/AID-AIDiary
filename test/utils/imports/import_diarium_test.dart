@@ -5,12 +5,12 @@
 @Tags(['integration'])
 library;
 
-import 'package:daily_you/database/app_database.dart';
-import 'package:daily_you/database/entry_tag_dao.dart';
-import 'package:daily_you/database/tag_dao.dart';
-import 'package:daily_you/models/tag.dart';
-import 'package:daily_you/providers/tags_provider.dart';
-import 'package:daily_you/utils/imports/import_diarium.dart';
+import 'package:aid_diary/database/app_database.dart';
+import 'package:aid_diary/database/entry_tag_dao.dart';
+import 'package:aid_diary/database/tag_dao.dart';
+import 'package:aid_diary/models/tag.dart';
+import 'package:aid_diary/providers/tags_provider.dart';
+import 'package:aid_diary/utils/imports/import_diarium.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 

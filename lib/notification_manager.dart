@@ -5,7 +5,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
-import 'package:daily_you/main.dart';
+import 'package:aid_diary/main.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -15,7 +15,33 @@ import 'package:shared_preferences/shared_preferences.dart';
 const int backupNotificationId = 2;
 const int nudgeNotificationId = 4;
 const int quickWriteNotificationId = 5;
-const String backupNotificationChannelId = 'daily_you_backup';
+
+// Notification channels. Android lists each under its localized name,
+// stored in SharedPreferences at startup so background isolates have it.
+const String reminderChannelId = 'aid_diary_reminder';
+const String onThisDayChannelId = 'aid_diary_on_this_day';
+const String coachChannelId = 'aid_diary_coach';
+const String nudgeChannelId = 'aid_diary_nudge';
+const String quickWriteChannelId = 'aid_diary_quick_write';
+const String backupNotificationChannelId = 'aid_diary_backup';
+
+/// Channel ids from before the rename, deleted at start so each channel is
+/// listed once in Android's settings.
+const List<String> _legacyChannelIds = [
+  'daily_you_reminder',
+  'daily_you_on_this_day',
+  'daily_you_coach',
+  'daily_you_nudge',
+  'daily_you_quick_write',
+  'daily_you_backup',
+];
+
+String channelNameKey(String channelId) => 'channelName.$channelId';
+
+/// The localized name stored for [channelId], or the id before the app has
+/// run once.
+String channelName(SharedPreferences prefs, String channelId) =>
+    prefs.getString(channelNameKey(channelId)) ?? channelId;
 const String backupCancelActionId = 'cancel_auto_backup';
 const String _backupCancelRequestedPrefsKey = 'autoBackupCancelRequested';
 
@@ -59,11 +85,15 @@ class NotificationManager {
 
     await _notifications!.initialize(
         settings: const InitializationSettings(
-            android: AndroidInitializationSettings('@drawable/ic_notification'),
-            linux: LinuxInitializationSettings(defaultActionName: 'Log Today')),
+            android: AndroidInitializationSettings('@drawable/ic_notification')),
         onDidReceiveNotificationResponse: _onResponse,
         onDidReceiveBackgroundNotificationResponse:
             backupCancelBackgroundHandler);
+    if (Platform.isAndroid) {
+      for (final id in _legacyChannelIds) {
+        await _android.deleteNotificationChannel(channelId: id);
+      }
+    }
   }
 
   /// A tap while the app runs; a cold start reads the launch details.
@@ -77,14 +107,15 @@ class NotificationManager {
   }
 
   /// The lasting "quick write" notification; tapping it opens a new entry.
-  Future<void> showQuickWrite(String title, String text) =>
+  Future<void> showQuickWrite(String title, String text) async =>
       _notifications!.show(
           id: quickWriteNotificationId,
           title: title,
           body: text,
           notificationDetails: NotificationDetails(
-              android: AndroidNotificationDetails(
-                  'daily_you_quick_write', title,
+              android: AndroidNotificationDetails(quickWriteChannelId,
+                  channelName(await SharedPreferences.getInstance(),
+                      quickWriteChannelId),
                   icon: '@drawable/ic_notification',
                   importance: Importance.low,
                   priority: Priority.low,
@@ -207,7 +238,8 @@ class NotificationManager {
       title: title,
       notificationDetails: AndroidNotificationDetails(
         backupNotificationChannelId,
-        title,
+        channelName(
+            await SharedPreferences.getInstance(), backupNotificationChannelId),
         icon: '@drawable/ic_notification',
         importance: Importance.low,
         priority: Priority.low,
@@ -242,7 +274,8 @@ class NotificationManager {
         notificationDetails: NotificationDetails(
             android: AndroidNotificationDetails(
           backupNotificationChannelId,
-          title,
+          channelName(
+              await SharedPreferences.getInstance(), backupNotificationChannelId),
           icon: '@drawable/ic_notification',
           importance: Importance.defaultImportance,
           priority: Priority.defaultPriority,

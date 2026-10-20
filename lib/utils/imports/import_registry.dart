@@ -2,20 +2,20 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-import 'package:daily_you/l10n/generated/app_localizations.dart';
-import 'package:daily_you/utils/imports/import_daybook.dart' as daybook;
-import 'package:daily_you/utils/imports/import_daylio.dart' as daylio;
-import 'package:daily_you/utils/imports/import_diarium.dart' as diarium;
-import 'package:daily_you/utils/imports/import_diaro.dart' as diaro;
-import 'package:daily_you/utils/imports/import_format.dart';
-import 'package:daily_you/utils/imports/import_json.dart' as json;
-import 'package:daily_you/utils/imports/import_mybrain.dart' as mybrain;
-import 'package:daily_you/utils/imports/import_oneshot.dart' as oneshot;
-import 'package:daily_you/utils/imports/import_pixels.dart' as pixels;
-import 'package:daily_you/utils/operation_outcome.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/utils/imports/import_daybook.dart' as daybook;
+import 'package:aid_diary/utils/imports/import_daylio.dart' as daylio;
+import 'package:aid_diary/utils/imports/import_diarium.dart' as diarium;
+import 'package:aid_diary/utils/imports/import_diaro.dart' as diaro;
+import 'package:aid_diary/utils/imports/import_format.dart';
+import 'package:aid_diary/utils/imports/import_json.dart' as json;
+import 'package:aid_diary/utils/imports/import_mybrain.dart' as mybrain;
+import 'package:aid_diary/utils/imports/import_oneshot.dart' as oneshot;
+import 'package:aid_diary/utils/imports/import_pixels.dart' as pixels;
+import 'package:aid_diary/utils/operation_outcome.dart';
 import 'package:flutter/widgets.dart';
 
-export 'package:daily_you/utils/imports/import_format.dart';
+export 'package:aid_diary/utils/imports/import_format.dart';
 
 typedef ImportRunner = Future<OperationOutcome> Function(
     BuildContext context, Function(String) updateStatus);
@@ -33,8 +33,8 @@ class ImportRegistry {
 
   static final ImportRegistry instance = ImportRegistry([
     ImportFormatOption(
-      ImportFormat.dailyYouJson,
-      (localizations) => localizations.formatDailyYouJson,
+      ImportFormat.json,
+      (localizations) => localizations.formatJsonExport,
       (context, updateStatus) => json.importFromJson(updateStatus),
     ),
     ImportFormatOption(

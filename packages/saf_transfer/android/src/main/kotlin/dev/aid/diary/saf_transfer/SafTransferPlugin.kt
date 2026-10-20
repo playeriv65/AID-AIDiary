@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-package com.demizo.daily_you.saf_transfer
+package dev.aid.diary.saf_transfer
 
 import android.content.Context
 import androidx.documentfile.provider.DocumentFile

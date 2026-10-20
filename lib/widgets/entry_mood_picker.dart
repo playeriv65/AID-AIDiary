@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-import 'package:daily_you/widgets/material_shapes.dart';
-import 'package:daily_you/widgets/punch_scale.dart';
+import 'package:aid_diary/widgets/material_shapes.dart';
+import 'package:aid_diary/widgets/punch_scale.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:daily_you/widgets/mood_icon.dart';
+import 'package:aid_diary/widgets/mood_icon.dart';
 
 class EntryMoodPicker extends StatefulWidget {
   final int? moodValue;

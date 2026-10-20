@@ -4,7 +4,7 @@
 // Run `dart run tool/generate_tag_icons.dart` to regenerate after editing
 // the yaml source.
 
-import 'package:daily_you/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// Identifies a curated icon group

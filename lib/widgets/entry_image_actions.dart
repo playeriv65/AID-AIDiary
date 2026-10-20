@@ -5,10 +5,10 @@
 import 'dart:io';
 import 'dart:isolate';
 
-import 'package:daily_you/config_provider.dart';
-import 'package:daily_you/database/image_storage.dart';
-import 'package:daily_you/utils/exif_orientation.dart';
-import 'package:daily_you/utils/photo_metadata.dart';
+import 'package:aid_diary/config_provider.dart';
+import 'package:aid_diary/database/image_storage.dart';
+import 'package:aid_diary/utils/exif_orientation.dart';
+import 'package:aid_diary/utils/photo_metadata.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';

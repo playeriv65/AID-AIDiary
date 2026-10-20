@@ -14,5 +14,5 @@ flutter:
   plugin:
     platforms:
       android:
-        package: com.demizo.daily_you.share_receiver
+        package: dev.aid.diary.share_receiver
         pluginClass: ShareReceiverPlugin

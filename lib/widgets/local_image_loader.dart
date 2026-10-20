@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-import 'package:daily_you/database/image_storage.dart';
-import 'package:daily_you/models/image.dart';
-import 'package:daily_you/widgets/local_image_cache.dart';
-import 'package:daily_you/widgets/media_attachment.dart';
+import 'package:aid_diary/database/image_storage.dart';
+import 'package:aid_diary/models/image.dart';
+import 'package:aid_diary/widgets/local_image_cache.dart';
+import 'package:aid_diary/widgets/media_attachment.dart';
 import 'package:flutter/foundation.dart';
 import 'package:material_ui/material_ui.dart';
 

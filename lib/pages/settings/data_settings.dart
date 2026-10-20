@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-import 'package:daily_you/l10n/generated/app_localizations.dart';
-import 'package:daily_you/pages/recently_deleted_page.dart';
-import 'package:daily_you/pages/settings/backup_restore_settings.dart';
-import 'package:daily_you/pages/settings/storage_settings.dart';
-import 'package:daily_you/widgets/settings_category.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/pages/recently_deleted_page.dart';
+import 'package:aid_diary/pages/settings/backup_restore_settings.dart';
+import 'package:aid_diary/pages/settings/storage_settings.dart';
+import 'package:aid_diary/widgets/settings_category.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// Backups, imports and where the diary is stored.

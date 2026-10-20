@@ -5,8 +5,8 @@
 import 'dart:math';
 import 'dart:ui' show BoxHeightStyle;
 
-import 'package:daily_you/utils/markdown_preview_scanner.dart';
-import 'package:daily_you/widgets/markdown_preview_controller.dart';
+import 'package:aid_diary/utils/markdown_preview_scanner.dart';
+import 'package:aid_diary/widgets/markdown_preview_controller.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter/rendering.dart';
 

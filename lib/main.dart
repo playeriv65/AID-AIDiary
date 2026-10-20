@@ -7,31 +7,31 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
-import 'package:daily_you/config/app_config.dart';
-import 'package:daily_you/config_provider.dart';
-import 'package:daily_you/custom_locale_delegates.dart';
-import 'package:daily_you/database/app_database.dart';
-import 'package:daily_you/device_info_service.dart';
-import 'package:daily_you/flashback_manager.dart';
-import 'package:daily_you/models/coach_program.dart';
-import 'package:daily_you/notification_manager.dart';
-import 'package:daily_you/pages/launch_page.dart';
-import 'package:daily_you/providers/entries_provider.dart';
-import 'package:daily_you/providers/entry_images_provider.dart';
-import 'package:daily_you/providers/tags_provider.dart';
-import 'package:daily_you/providers/templates_provider.dart';
-import 'package:daily_you/services/coach_service.dart';
-import 'package:daily_you/time_manager.dart';
-import 'package:daily_you/utils/auto_backup_schedule.dart';
-import 'package:daily_you/utils/backup_restore_utils.dart';
-import 'package:daily_you/utils/logging.dart';
-import 'package:daily_you/widgets/legacy_material_bridge.dart';
+import 'package:aid_diary/config/app_config.dart';
+import 'package:aid_diary/config_provider.dart';
+import 'package:aid_diary/custom_locale_delegates.dart';
+import 'package:aid_diary/database/app_database.dart';
+import 'package:aid_diary/device_info_service.dart';
+import 'package:aid_diary/flashback_manager.dart';
+import 'package:aid_diary/models/coach_program.dart';
+import 'package:aid_diary/notification_manager.dart';
+import 'package:aid_diary/pages/launch_page.dart';
+import 'package:aid_diary/providers/entries_provider.dart';
+import 'package:aid_diary/providers/entry_images_provider.dart';
+import 'package:aid_diary/providers/tags_provider.dart';
+import 'package:aid_diary/providers/templates_provider.dart';
+import 'package:aid_diary/services/coach_service.dart';
+import 'package:aid_diary/time_manager.dart';
+import 'package:aid_diary/utils/auto_backup_schedule.dart';
+import 'package:aid_diary/utils/backup_restore_utils.dart';
+import 'package:aid_diary/utils/logging.dart';
+import 'package:aid_diary/widgets/legacy_material_bridge.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:daily_you/l10n/generated/app_localizations.dart';
-import 'package:daily_you/layouts/mobile_scaffold.dart';
-import 'package:daily_you/theme_mode_provider.dart';
-import 'package:daily_you/theme_palette.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/layouts/mobile_scaffold.dart';
+import 'package:aid_diary/theme_mode_provider.dart';
+import 'package:aid_diary/theme_palette.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -120,9 +120,7 @@ void onThisDayCallbackDispatcher() async {
       await flutterLocalNotificationsPlugin.initialize(
           settings: const InitializationSettings(
               android:
-                  AndroidInitializationSettings('@drawable/ic_notification'),
-              linux: LinuxInitializationSettings(
-                  defaultActionName: 'On This Day')));
+                  AndroidInitializationSettings('@drawable/ic_notification')));
 
       // Localized notification text is stored in SharedPreferences upon startup
       var prefs = await SharedPreferences.getInstance();
@@ -130,8 +128,8 @@ void onThisDayCallbackDispatcher() async {
       var description = prefs.getString('onThisDayNotificationDescription');
 
       var androidDetails = AndroidNotificationDetails(
-        'daily_you_on_this_day',
-        title ?? 'On This Day',
+        onThisDayChannelId,
+        channelName(prefs, onThisDayChannelId),
         icon: '@drawable/ic_notification',
         importance: Importance.defaultImportance,
         priority: Priority.defaultPriority,
@@ -187,7 +185,8 @@ void coachCallbackDispatcher() async {
         title: title,
         body: prompts[schedule.stepOn(now)],
         notificationDetails: NotificationDetails(
-            android: AndroidNotificationDetails('daily_you_coach', title,
+            android: AndroidNotificationDetails(
+                coachChannelId, channelName(prefs, coachChannelId),
                 icon: '@drawable/ic_notification')));
   }
   // Rearm daily until the last prompt has been announced.
@@ -236,7 +235,8 @@ void nudgeCallbackDispatcher() async {
             title: title,
             body: messages[now.weekday - 1],
             notificationDetails: NotificationDetails(
-                android: AndroidNotificationDetails('daily_you_nudge', title,
+                android: AndroidNotificationDetails(
+                    nudgeChannelId, channelName(prefs, nudgeChannelId),
                     icon: '@drawable/ic_notification')));
       }
     }
@@ -293,9 +293,7 @@ void callbackDispatcher() async {
       await flutterLocalNotificationsPlugin.initialize(
           settings: const InitializationSettings(
               android:
-                  AndroidInitializationSettings('@drawable/ic_notification'),
-              linux:
-                  LinuxInitializationSettings(defaultActionName: 'Log Today')));
+                  AndroidInitializationSettings('@drawable/ic_notification')));
 
       // Localized notification text is stored in SharedPreferences upon startup
       var prefs = await SharedPreferences.getInstance();
@@ -303,8 +301,8 @@ void callbackDispatcher() async {
       var description = prefs.getString('dailyReminderDescription');
 
       var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-        'daily_you_reminder',
-        title ?? "Log Today!",
+        reminderChannelId,
+        channelName(prefs, reminderChannelId),
         icon: '@drawable/ic_notification',
         importance: Importance.defaultImportance,
         priority: Priority.defaultPriority,
@@ -504,7 +502,7 @@ Future<ForegroundServiceConfig> _autoBackupForegroundServiceConfig() async {
   return ForegroundServiceConfig(
     notificationId: backupNotificationId,
     notificationChannelId: backupNotificationChannelId,
-    notificationChannelName: backupNotificationChannelId,
+    notificationChannelName: channelName(prefs, backupNotificationChannelId),
     notificationTitle: prefs
         .getString('creatingBackupStatusTemplate')
         ?.replaceFirst('{percent}', '0'),

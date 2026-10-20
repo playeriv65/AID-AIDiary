@@ -3,12 +3,12 @@ library;
 
 import 'dart:convert';
 
-import 'package:daily_you/models/entry.dart';
-import 'package:daily_you/pages/entry_view_page.dart';
-import 'package:daily_you/services/location_service.dart';
-import 'package:daily_you/services/weather_service.dart';
-import 'package:daily_you/widgets/context_dialogs.dart';
-import 'package:daily_you/widgets/location_dialog.dart';
+import 'package:aid_diary/models/entry.dart';
+import 'package:aid_diary/pages/entry_view_page.dart';
+import 'package:aid_diary/services/location_service.dart';
+import 'package:aid_diary/services/weather_service.dart';
+import 'package:aid_diary/widgets/context_dialogs.dart';
+import 'package:aid_diary/widgets/location_dialog.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';

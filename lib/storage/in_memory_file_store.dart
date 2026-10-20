@@ -4,7 +4,7 @@
 
 import 'dart:typed_data';
 
-import 'package:daily_you/storage/file_store.dart';
+import 'package:aid_diary/storage/file_store.dart';
 
 class InMemoryFileStore implements FileStore {
   InMemoryFileStore(

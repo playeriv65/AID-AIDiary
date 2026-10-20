@@ -546,12 +546,6 @@ abstract class AppLocalizations {
   /// **'Retry'**
   String get databaseMigrationErrorRetry;
 
-  /// No description provided for @errorReport.
-  ///
-  /// In en, this message translates to:
-  /// **'Report Issue'**
-  String get errorReport;
-
   /// No description provided for @lastModified.
   ///
   /// In en, this message translates to:
@@ -1191,7 +1185,7 @@ abstract class AppLocalizations {
   /// No description provided for @welcomeLogBodyText.
   ///
   /// In en, this message translates to:
-  /// **'## Welcome to AID Diary\n\n> Every day is worth remembering.\n\nWrite what happened, how you felt, and where you were. Your entries stay on this device.\n\n- **Journal** lists every entry by day\n- **Calendar**, **Media** and **Atlas** look back by date, photo and place\n- **Coach** offers prompts and templates when you don\'t know what to write\n\nAID Diary is a modified version of [Daily You](https://github.com/Demizo/Daily_You) by Demizo and contributors, and not the official Daily You app.'**
+  /// **'## Welcome to AID Diary\n\n> A quiet place for your days.\n\nWrite what happened, how you felt, and where you were. Your entries stay on this device.\n\n- **Journal** lists every entry by day\n- **Calendar**, **Media** and **Atlas** look back by date, photo and place\n- **Coach** offers prompts and templates when you don\'t know what to write'**
   String get welcomeLogBodyText;
 
   /// No description provided for @settingsStorageTitle.
@@ -1251,7 +1245,7 @@ abstract class AppLocalizations {
   /// No description provided for @logFolderWarningDescription.
   ///
   /// In en, this message translates to:
-  /// **'If the selected folder already contains a \'daily_you.db\' file, it will be used to overwrite your existing logs!'**
+  /// **'If the selected folder already contains a \'aid_diary.db\' file, it will be used to overwrite your existing logs!'**
   String get logFolderWarningDescription;
 
   /// No description provided for @errorTitle.
@@ -1488,18 +1482,6 @@ abstract class AppLocalizations {
   /// **'Import From Another App'**
   String get settingsImportFromAnotherApp;
 
-  /// No description provided for @settingsTranslateCallToAction.
-  ///
-  /// In en, this message translates to:
-  /// **'Everyone should have access to a journal!'**
-  String get settingsTranslateCallToAction;
-
-  /// No description provided for @settingsHelpTranslate.
-  ///
-  /// In en, this message translates to:
-  /// **'Help Translate'**
-  String get settingsHelpTranslate;
-
   /// No description provided for @importLogs.
   ///
   /// In en, this message translates to:
@@ -1523,12 +1505,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Another app\'s format may not support all features. Please report any issues since third party formats may change at any time. This will not impact existing logs!'**
   String get logFormatDescription;
-
-  /// No description provided for @formatDailyYouJson.
-  ///
-  /// In en, this message translates to:
-  /// **'Daily You (JSON)'**
-  String get formatDailyYouJson;
 
   /// No description provided for @formatDaybook.
   ///
@@ -1716,29 +1692,11 @@ abstract class AppLocalizations {
   /// **'GPL-3.0'**
   String get licenseGPLv3;
 
-  /// No description provided for @settingsSourceCode.
-  ///
-  /// In en, this message translates to:
-  /// **'Source Code'**
-  String get settingsSourceCode;
-
   /// No description provided for @settingsOpenSourceLicenses.
   ///
   /// In en, this message translates to:
   /// **'Open Source Licenses'**
   String get settingsOpenSourceLicenses;
-
-  /// No description provided for @settingsMadeWithLove.
-  ///
-  /// In en, this message translates to:
-  /// **'Made with ❤️'**
-  String get settingsMadeWithLove;
-
-  /// No description provided for @settingsConsiderSupporting.
-  ///
-  /// In en, this message translates to:
-  /// **'consider supporting'**
-  String get settingsConsiderSupporting;
 
   /// No description provided for @imagesTitle.
   ///
@@ -3573,7 +3531,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpFaq3A.
   ///
   /// In en, this message translates to:
-  /// **'Yes: in Settings → Data & storage, import exports from Daylio, Diarium, Diaro, DayBook, My Brain, OneShot and Pixels, or a Daily You JSON file.'**
+  /// **'Yes: in Settings → Data & storage, import exports from Daylio, Diarium, Diaro, DayBook, My Brain, OneShot and Pixels, or a JSON export.'**
   String get helpFaq3A;
 
   /// No description provided for @helpFaq4Q.
@@ -3731,6 +3689,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Photos you add to entries show up here.'**
   String get photoWidgetEmpty;
+
+  /// No description provided for @channelReminders.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders'**
+  String get channelReminders;
+
+  /// No description provided for @channelOnThisDay.
+  ///
+  /// In en, this message translates to:
+  /// **'On this day'**
+  String get channelOnThisDay;
+
+  /// No description provided for @channelCoach.
+  ///
+  /// In en, this message translates to:
+  /// **'Coach prompts'**
+  String get channelCoach;
+
+  /// No description provided for @channelNudges.
+  ///
+  /// In en, this message translates to:
+  /// **'Nudges after quiet days'**
+  String get channelNudges;
+
+  /// No description provided for @channelQuickWrite.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick write'**
+  String get channelQuickWrite;
+
+  /// No description provided for @channelBackup.
+  ///
+  /// In en, this message translates to:
+  /// **'Backups'**
+  String get channelBackup;
+
+  /// No description provided for @formatJsonExport.
+  ///
+  /// In en, this message translates to:
+  /// **'JSON (AID Diary export)'**
+  String get formatJsonExport;
+
+  /// No description provided for @aboutModifiedNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'A modified version of Daily You by Demizo and contributors. It is not the official Daily You app.'**
+  String get aboutModifiedNotice;
 }
 
 class _AppLocalizationsDelegate

@@ -1,10 +1,10 @@
 @Tags(['widget'])
 library;
 
-import 'package:daily_you/database/entry_store.dart';
-import 'package:daily_you/pages/entry_view_page.dart';
-import 'package:daily_you/pages/journal_page.dart';
-import 'package:daily_you/pages/search_page.dart';
+import 'package:aid_diary/database/entry_store.dart';
+import 'package:aid_diary/pages/entry_view_page.dart';
+import 'package:aid_diary/pages/journal_page.dart';
+import 'package:aid_diary/pages/search_page.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 

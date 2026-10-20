@@ -5,9 +5,9 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:daily_you/config_provider.dart';
-import 'package:daily_you/storage/in_memory_secret_store.dart';
-import 'package:daily_you/storage/secret_store.dart';
+import 'package:aid_diary/config_provider.dart';
+import 'package:aid_diary/storage/in_memory_secret_store.dart';
+import 'package:aid_diary/storage/secret_store.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' show join;

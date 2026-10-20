@@ -5,11 +5,11 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:daily_you/models/entry.dart';
-import 'package:daily_you/models/image.dart';
-import 'package:daily_you/storage/in_memory_file_store.dart';
-import 'package:daily_you/utils/export_utils.dart';
-import 'package:daily_you/utils/imports/import_json.dart';
+import 'package:aid_diary/models/entry.dart';
+import 'package:aid_diary/models/image.dart';
+import 'package:aid_diary/storage/in_memory_file_store.dart';
+import 'package:aid_diary/utils/export_utils.dart';
+import 'package:aid_diary/utils/imports/import_json.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
@@ -58,7 +58,7 @@ void main() {
       (
         EntryImage(
             entryId: 1,
-            imgPath: 'daily_you_a.png',
+            imgPath: 'aid_diary_a.png',
             imgRank: 1,
             timeCreate: timeCreate),
         Uint8List.fromList([1, 2])
@@ -66,7 +66,7 @@ void main() {
       (
         EntryImage(
             entryId: 1,
-            imgPath: 'daily_you_b.jpg',
+            imgPath: 'aid_diary_b.jpg',
             imgRank: 0,
             timeCreate: timeCreate),
         Uint8List.fromList([3, 4])
@@ -87,7 +87,7 @@ void main() {
     final timeCreate = DateTime(2026, 3, 4);
     final image = EntryImage(
         entryId: 1,
-        imgPath: 'daily_you_a.png',
+        imgPath: 'aid_diary_a.png',
         imgRank: 0,
         timeCreate: timeCreate);
     final bytes = Uint8List.fromList([1]);

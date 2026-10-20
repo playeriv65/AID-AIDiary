@@ -6,8 +6,8 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:crypto/crypto.dart';
-import 'package:daily_you/config_provider.dart';
-import 'package:daily_you/utils/crypto_utils.dart';
+import 'package:aid_diary/config_provider.dart';
+import 'package:aid_diary/utils/crypto_utils.dart';
 
 abstract class PasswordStore {
   const PasswordStore();

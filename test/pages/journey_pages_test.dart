@@ -1,19 +1,19 @@
 @Tags(['integration'])
 library;
 
-import 'package:daily_you/config_provider.dart';
-import 'package:daily_you/database/entry_store.dart';
-import 'package:daily_you/layouts/mobile_scaffold.dart';
-import 'package:daily_you/models/entry.dart';
-import 'package:daily_you/models/image.dart';
-import 'package:daily_you/pages/atlas_page.dart';
-import 'package:daily_you/pages/coach_page.dart';
-import 'package:daily_you/pages/journal_page.dart';
-import 'package:daily_you/pages/media_page.dart';
-import 'package:daily_you/pages/search_page.dart';
-import 'package:daily_you/providers/entry_images_provider.dart';
-import 'package:daily_you/providers/tags_provider.dart';
-import 'package:daily_you/widgets/mood_icon.dart';
+import 'package:aid_diary/config_provider.dart';
+import 'package:aid_diary/database/entry_store.dart';
+import 'package:aid_diary/layouts/mobile_scaffold.dart';
+import 'package:aid_diary/models/entry.dart';
+import 'package:aid_diary/models/image.dart';
+import 'package:aid_diary/pages/atlas_page.dart';
+import 'package:aid_diary/pages/coach_page.dart';
+import 'package:aid_diary/pages/journal_page.dart';
+import 'package:aid_diary/pages/media_page.dart';
+import 'package:aid_diary/pages/search_page.dart';
+import 'package:aid_diary/providers/entry_images_provider.dart';
+import 'package:aid_diary/providers/tags_provider.dart';
+import 'package:aid_diary/widgets/mood_icon.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';

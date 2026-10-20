@@ -90,11 +90,11 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "AID Diary" "\0"
-            VALUE "FileDescription", "AID Diary - modified Daily You" "\0"
+            VALUE "FileDescription", "AID Diary" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "daily_you" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2023 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "daily_you.exe" "\0"
+            VALUE "InternalName", "aid_diary" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2026 Demizo and contributors. GPL-3.0-only." "\0"
+            VALUE "OriginalFilename", "aid_diary.exe" "\0"
             VALUE "ProductName", "AID Diary" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END

@@ -1,9 +1,9 @@
 @Tags(['widget'])
 library;
 
-import 'package:daily_you/config_provider.dart';
-import 'package:daily_you/pages/onboarding_page.dart';
-import 'package:daily_you/pages/settings/help_page.dart';
+import 'package:aid_diary/config_provider.dart';
+import 'package:aid_diary/pages/onboarding_page.dart';
+import 'package:aid_diary/pages/settings/help_page.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';

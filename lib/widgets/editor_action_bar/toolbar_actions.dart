@@ -4,9 +4,9 @@
 
 import 'dart:async';
 
-import 'package:daily_you/l10n/generated/app_localizations.dart';
-import 'package:daily_you/utils/text_editing.dart';
-import 'package:daily_you/widgets/icons/svg_icon.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/utils/text_editing.dart';
+import 'package:aid_diary/widgets/icons/svg_icon.dart';
 import 'package:material_ui/material_ui.dart';
 
 @immutable

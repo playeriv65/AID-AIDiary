@@ -5,8 +5,8 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:daily_you/utils/imports/import_json.dart';
-import 'package:daily_you/utils/imports/import_mybrain.dart';
+import 'package:aid_diary/utils/imports/import_json.dart';
+import 'package:aid_diary/utils/imports/import_mybrain.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 Uint8List jsonBytes(Object data) =>

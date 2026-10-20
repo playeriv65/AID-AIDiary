@@ -6,8 +6,8 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:archive/archive.dart';
-import 'package:daily_you/models/entry.dart';
-import 'package:daily_you/models/image.dart';
+import 'package:aid_diary/models/entry.dart';
+import 'package:aid_diary/models/image.dart';
 import 'package:markdown/markdown.dart' as md;
 
 /// One entry as plain text, an HTML page or a ZIP with its original media.

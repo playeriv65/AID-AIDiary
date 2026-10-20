@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:daily_you/utils/photo_metadata.dart';
+import 'package:aid_diary/utils/photo_metadata.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:image/image.dart' as img;
 

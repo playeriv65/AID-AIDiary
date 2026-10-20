@@ -4,12 +4,12 @@
 
 import 'dart:ui';
 
-import 'package:daily_you/l10n/generated/app_localizations.dart';
-import 'package:daily_you/utils/entry_typography.dart';
-import 'package:daily_you/utils/markdown_preview_styles.dart';
-import 'package:daily_you/widgets/editor_action_bar/editor_keyboard_session.dart';
-import 'package:daily_you/widgets/markdown_preview_controller.dart';
-import 'package:daily_you/widgets/markdown_preview_decorations.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/utils/entry_typography.dart';
+import 'package:aid_diary/utils/markdown_preview_styles.dart';
+import 'package:aid_diary/widgets/editor_action_bar/editor_keyboard_session.dart';
+import 'package:aid_diary/widgets/markdown_preview_controller.dart';
+import 'package:aid_diary/widgets/markdown_preview_decorations.dart';
 import 'package:material_ui/material_ui.dart';
 
 class EntryTextField extends StatefulWidget {

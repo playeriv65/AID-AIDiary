@@ -2,17 +2,17 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-import 'package:daily_you/models/tag_category.dart';
-import 'package:daily_you/models/tag_icon_type.dart';
-import 'package:daily_you/providers/tags_provider.dart';
-import 'package:daily_you/widgets/color_picker_dialog.dart';
-import 'package:daily_you/widgets/color_swatch_row.dart';
-import 'package:daily_you/widgets/delete_confirm_dialog.dart';
-import 'package:daily_you/widgets/icon_picker_dialog.dart';
-import 'package:daily_you/widgets/tag_icon_glyph.dart';
-import 'package:daily_you/utils/tag_name_sanitizer.dart';
+import 'package:aid_diary/models/tag_category.dart';
+import 'package:aid_diary/models/tag_icon_type.dart';
+import 'package:aid_diary/providers/tags_provider.dart';
+import 'package:aid_diary/widgets/color_picker_dialog.dart';
+import 'package:aid_diary/widgets/color_swatch_row.dart';
+import 'package:aid_diary/widgets/delete_confirm_dialog.dart';
+import 'package:aid_diary/widgets/icon_picker_dialog.dart';
+import 'package:aid_diary/widgets/tag_icon_glyph.dart';
+import 'package:aid_diary/utils/tag_name_sanitizer.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:daily_you/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
 
 class EditCategory extends StatefulWidget {
   final TagCategory? category;

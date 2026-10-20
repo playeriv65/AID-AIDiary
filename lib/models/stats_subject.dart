@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-import 'package:daily_you/models/tag.dart';
+import 'package:aid_diary/models/tag.dart';
 
 sealed class StatsSubject {
   const StatsSubject();

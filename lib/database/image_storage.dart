@@ -5,16 +5,16 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:daily_you/config_provider.dart';
-import 'package:daily_you/file_bytes_cache.dart';
-import 'package:daily_you/storage/external_sync_health.dart';
-import 'package:daily_you/storage/file_store.dart';
-import 'package:daily_you/storage/local_file_store.dart';
-import 'package:daily_you/storage/storage_picker.dart';
-import 'package:daily_you/utils/operation_outcome.dart';
+import 'package:aid_diary/config_provider.dart';
+import 'package:aid_diary/file_bytes_cache.dart';
+import 'package:aid_diary/storage/external_sync_health.dart';
+import 'package:aid_diary/storage/file_store.dart';
+import 'package:aid_diary/storage/local_file_store.dart';
+import 'package:aid_diary/storage/storage_picker.dart';
+import 'package:aid_diary/utils/operation_outcome.dart';
 import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
-import 'package:daily_you/providers/entry_images_provider.dart';
+import 'package:aid_diary/providers/entry_images_provider.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pool/pool.dart';
@@ -268,12 +268,12 @@ class ImageStorage {
     final timestamp =
         currTime.toIso8601String().split('.').first.replaceAll(':', '-');
 
-    var newImageName = "daily_you_$timestamp$fileExtension";
+    var newImageName = "aid_diary_$timestamp$fileExtension";
 
     // Ensure unique name
     int index = 1;
     while (await internal.exists(newImageName)) {
-      newImageName = "daily_you_${timestamp}_$index$fileExtension";
+      newImageName = "aid_diary_${timestamp}_$index$fileExtension";
       index += 1;
     }
 

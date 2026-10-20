@@ -5,8 +5,8 @@
 import 'dart:math';
 import 'dart:ui' show ImageFilter;
 
-import 'package:daily_you/l10n/generated/app_localizations.dart';
-import 'package:daily_you/layouts/adaptive_diary_shell.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/layouts/adaptive_diary_shell.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// One slide: an icon and title in the header above its content.

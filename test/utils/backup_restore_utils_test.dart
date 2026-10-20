@@ -4,8 +4,8 @@
 
 import 'dart:typed_data';
 
-import 'package:daily_you/storage/in_memory_file_store.dart';
-import 'package:daily_you/utils/backup_restore_utils.dart';
+import 'package:aid_diary/storage/in_memory_file_store.dart';
+import 'package:aid_diary/utils/backup_restore_utils.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 class BlindFileStore extends InMemoryFileStore {

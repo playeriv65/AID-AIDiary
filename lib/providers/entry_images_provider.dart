@@ -3,10 +3,10 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'dart:async';
-import 'package:daily_you/database/app_database.dart';
-import 'package:daily_you/database/entry_image_dao.dart';
-import 'package:daily_you/models/entry.dart';
-import 'package:daily_you/models/image.dart';
+import 'package:aid_diary/database/app_database.dart';
+import 'package:aid_diary/database/entry_image_dao.dart';
+import 'package:aid_diary/models/entry.dart';
+import 'package:aid_diary/models/image.dart';
 import 'package:material_ui/material_ui.dart';
 
 class EntryImagesProvider with ChangeNotifier {

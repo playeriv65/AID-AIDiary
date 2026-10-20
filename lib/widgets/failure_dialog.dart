@@ -2,10 +2,9 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-import 'package:daily_you/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 Future<void> showFailureDialog(BuildContext context,
     {required String description, Object? error}) {
@@ -56,12 +55,6 @@ class FailureDialog extends StatelessWidget {
           onPressed: () =>
               Clipboard.setData(ClipboardData(text: details ?? description)),
           child: Text(MaterialLocalizations.of(context).copyButtonLabel),
-        ),
-        TextButton(
-          onPressed: () => launchUrl(
-              Uri.https("github.com", "/Demizo/Daily_You/issues"),
-              mode: LaunchMode.externalApplication),
-          child: Text(AppLocalizations.of(context)!.errorReport),
         ),
         TextButton(
           onPressed: () => Navigator.pop(context),

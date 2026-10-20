@@ -4,10 +4,10 @@
 
 import 'dart:io';
 
-import 'package:daily_you/config_provider.dart';
-import 'package:daily_you/l10n/generated/app_localizations.dart';
-import 'package:daily_you/notification_manager.dart';
-import 'package:daily_you/pages/settings/security_settings.dart';
+import 'package:aid_diary/config_provider.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/notification_manager.dart';
+import 'package:aid_diary/pages/settings/security_settings.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// Welcome pages on first launch, like Journey's: welcome, what the diary

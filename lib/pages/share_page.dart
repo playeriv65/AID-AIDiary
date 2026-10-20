@@ -4,18 +4,18 @@
 
 import 'dart:io';
 
-import 'package:daily_you/l10n/generated/app_localizations.dart';
-import 'package:daily_you/models/entry.dart';
-import 'package:daily_you/models/image.dart';
-import 'package:daily_you/pages/edit_entry_page.dart';
-import 'package:daily_you/providers/entries_provider.dart';
-import 'package:daily_you/providers/entry_images_provider.dart';
-import 'package:daily_you/time_manager.dart';
-import 'package:daily_you/widgets/day_menu.dart';
-import 'package:daily_you/widgets/entry_image_actions.dart';
-import 'package:daily_you/widgets/image_grid.dart';
-import 'package:daily_you/widgets/large_card.dart';
-import 'package:daily_you/widgets/month_calendar.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/models/entry.dart';
+import 'package:aid_diary/models/image.dart';
+import 'package:aid_diary/pages/edit_entry_page.dart';
+import 'package:aid_diary/providers/entries_provider.dart';
+import 'package:aid_diary/providers/entry_images_provider.dart';
+import 'package:aid_diary/time_manager.dart';
+import 'package:aid_diary/widgets/day_menu.dart';
+import 'package:aid_diary/widgets/entry_image_actions.dart';
+import 'package:aid_diary/widgets/image_grid.dart';
+import 'package:aid_diary/widgets/large_card.dart';
+import 'package:aid_diary/widgets/month_calendar.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:share_receiver/share_receiver.dart';
 

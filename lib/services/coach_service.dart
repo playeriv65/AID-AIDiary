@@ -5,12 +5,12 @@
 import 'dart:io';
 
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
-import 'package:daily_you/config_provider.dart';
-import 'package:daily_you/database/entry_store.dart';
-import 'package:daily_you/l10n/generated/app_localizations.dart';
-import 'package:daily_you/main.dart';
-import 'package:daily_you/models/coach_program.dart';
-import 'package:daily_you/models/entry.dart';
+import 'package:aid_diary/config_provider.dart';
+import 'package:aid_diary/database/entry_store.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/main.dart';
+import 'package:aid_diary/models/coach_program.dart';
+import 'package:aid_diary/models/entry.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Enrolment in a coach program: one at a time, its prompts answered from

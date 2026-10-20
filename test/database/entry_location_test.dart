@@ -1,10 +1,10 @@
 @Tags(['integration'])
 library;
 
-import 'package:daily_you/database/app_database.dart';
-import 'package:daily_you/database/entry_dao.dart';
-import 'package:daily_you/models/entry.dart';
-import 'package:daily_you/services/location_service.dart';
+import 'package:aid_diary/database/app_database.dart';
+import 'package:aid_diary/database/entry_dao.dart';
+import 'package:aid_diary/models/entry.dart';
+import 'package:aid_diary/services/location_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 

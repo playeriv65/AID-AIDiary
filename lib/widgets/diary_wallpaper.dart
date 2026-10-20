@@ -4,8 +4,8 @@
 
 import 'dart:io';
 
-import 'package:daily_you/config/app_config.dart';
-import 'package:daily_you/config_provider.dart';
+import 'package:aid_diary/config/app_config.dart';
+import 'package:aid_diary/config_provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:path/path.dart' as p;

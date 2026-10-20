@@ -3,9 +3,9 @@ library;
 
 import 'dart:math';
 
-import 'package:daily_you/pages/random_review_page.dart';
-import 'package:daily_you/pages/review_story_page.dart';
-import 'package:daily_you/widgets/year_pixels.dart';
+import 'package:aid_diary/pages/random_review_page.dart';
+import 'package:aid_diary/pages/review_story_page.dart';
+import 'package:aid_diary/widgets/year_pixels.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 

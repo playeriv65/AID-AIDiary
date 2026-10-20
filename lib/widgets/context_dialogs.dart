@@ -2,12 +2,12 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-import 'package:daily_you/config/app_config.dart';
-import 'package:daily_you/l10n/generated/app_localizations.dart';
-import 'package:daily_you/models/entry.dart';
-import 'package:daily_you/services/activity_service.dart';
-import 'package:daily_you/services/weather_service.dart';
-import 'package:daily_you/utils/entry_context_display.dart';
+import 'package:aid_diary/config/app_config.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/models/entry.dart';
+import 'package:aid_diary/services/activity_service.dart';
+import 'package:aid_diary/services/weather_service.dart';
+import 'package:aid_diary/utils/entry_context_display.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:url_launcher/url_launcher.dart';
 

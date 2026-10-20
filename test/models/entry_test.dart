@@ -1,4 +1,4 @@
-import 'package:daily_you/models/entry.dart';
+import 'package:aid_diary/models/entry.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

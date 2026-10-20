@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-import 'package:daily_you/widgets/editor_action_bar.dart';
-import 'package:daily_you/widgets/entry_text_field.dart';
-import 'package:daily_you/widgets/markdown_preview_controller.dart';
+import 'package:aid_diary/widgets/editor_action_bar.dart';
+import 'package:aid_diary/widgets/entry_text_field.dart';
+import 'package:aid_diary/widgets/markdown_preview_controller.dart';
 import 'package:material_ui/material_ui.dart';
 
 class EntryTextEditor extends StatefulWidget {

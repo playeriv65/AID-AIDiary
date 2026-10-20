@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-import 'package:daily_you/database/app_database.dart';
-import 'package:daily_you/models/tag_category.dart';
+import 'package:aid_diary/database/app_database.dart';
+import 'package:aid_diary/models/tag_category.dart';
 
 class TagCategoryDao {
   static Future<List<TagCategory>> getAll() async {

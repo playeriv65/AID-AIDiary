@@ -5,11 +5,11 @@
 import 'dart:async';
 import 'dart:typed_data';
 
-import 'package:daily_you/database/image_storage.dart';
-import 'package:daily_you/models/image.dart';
-import 'package:daily_you/providers/entry_images_provider.dart';
-import 'package:daily_you/storage/file_store.dart';
-import 'package:daily_you/storage/in_memory_file_store.dart';
+import 'package:aid_diary/database/image_storage.dart';
+import 'package:aid_diary/models/image.dart';
+import 'package:aid_diary/providers/entry_images_provider.dart';
+import 'package:aid_diary/storage/file_store.dart';
+import 'package:aid_diary/storage/in_memory_file_store.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 class FakeImageFolder extends InMemoryFileStore {
@@ -154,7 +154,7 @@ void main() {
 
   group('capture', () {
     final captureTime = DateTime(2026, 1, 2, 3, 4, 5);
-    const capturedName = 'daily_you_2026-01-02T03-04-05.jpg';
+    const capturedName = 'aid_diary_2026-01-02T03-04-05.jpg';
 
     test('uploads without looking anything up first', () async {
       final externalStore = FakeImageFolder();
@@ -214,7 +214,7 @@ void main() {
   group('reconcile', () {
     late FakeImageFolder folder;
     final captureTime = DateTime(2026, 1, 2, 3, 4, 5);
-    const capturedName = 'daily_you_2026-01-02T03-04-05.jpg';
+    const capturedName = 'aid_diary_2026-01-02T03-04-05.jpg';
 
     Future<ImageSyncSummary> reconcile() async =>
         (await storage.reconcileImageFolder())!;

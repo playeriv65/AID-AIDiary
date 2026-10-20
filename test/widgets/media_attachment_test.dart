@@ -1,6 +1,6 @@
-import 'package:daily_you/config/app_config.dart';
-import 'package:daily_you/models/image.dart';
-import 'package:daily_you/widgets/media_attachment.dart';
+import 'package:aid_diary/config/app_config.dart';
+import 'package:aid_diary/models/image.dart';
+import 'package:aid_diary/widgets/media_attachment.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -10,7 +10,7 @@ void main() {
   });
 
   test('attachments are told apart by extension', () {
-    expect(MediaKind.of('daily_you_2026.jpg'), MediaKind.image);
+    expect(MediaKind.of('aid_diary_2026.jpg'), MediaKind.image);
     expect(MediaKind.of('clip.MP4'), MediaKind.video);
     expect(MediaKind.of('voice-1.m4a'), MediaKind.audio);
     expect(MediaKind.of('no_extension'), MediaKind.image);

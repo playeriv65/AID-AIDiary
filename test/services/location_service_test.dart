@@ -1,4 +1,4 @@
-import 'package:daily_you/services/location_service.dart';
+import 'package:aid_diary/services/location_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

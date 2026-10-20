@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-import 'package:daily_you/config/app_config.dart';
+import 'package:aid_diary/config/app_config.dart';
 import 'package:path/path.dart' as p;
 
 const String imagesTable = 'entry_images';

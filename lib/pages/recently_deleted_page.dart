@@ -2,13 +2,13 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-import 'package:daily_you/config/app_config.dart';
-import 'package:daily_you/database/entry_dao.dart';
-import 'package:daily_you/database/entry_store.dart';
-import 'package:daily_you/l10n/generated/app_localizations.dart';
-import 'package:daily_you/providers/entry_images_provider.dart';
-import 'package:daily_you/widgets/journal_entry_row.dart';
-import 'package:daily_you/widgets/list_detail_layout.dart';
+import 'package:aid_diary/config/app_config.dart';
+import 'package:aid_diary/database/entry_dao.dart';
+import 'package:aid_diary/database/entry_store.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/providers/entry_images_provider.dart';
+import 'package:aid_diary/widgets/journal_entry_row.dart';
+import 'package:aid_diary/widgets/list_detail_layout.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// Deleted entries waiting out the retention period; restore or erase them.

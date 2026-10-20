@@ -4,9 +4,9 @@
 
 import 'dart:ui';
 
-import 'package:daily_you/models/image.dart';
+import 'package:aid_diary/models/image.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:daily_you/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
 
 import 'local_image_loader.dart';
 

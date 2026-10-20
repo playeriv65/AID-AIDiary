@@ -1,7 +1,7 @@
 @Tags(['widget'])
 library;
 
-import 'package:daily_you/widgets/month_calendar.dart';
+import 'package:aid_diary/widgets/month_calendar.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:shamsi_date/shamsi_date.dart';

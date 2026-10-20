@@ -2,25 +2,25 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-import 'package:daily_you/config_provider.dart';
-import 'package:daily_you/time_manager.dart';
-import 'package:daily_you/widgets/color_picker_dialog.dart';
-import 'package:daily_you/widgets/diary_wallpaper.dart';
-import 'package:daily_you/widgets/mood_icon.dart';
-import 'package:daily_you/widgets/settings_dropdown.dart';
-import 'package:daily_you/widgets/settings_header.dart';
-import 'package:daily_you/widgets/settings_icon_action.dart';
-import 'package:daily_you/widgets/settings_toggle.dart';
+import 'package:aid_diary/config_provider.dart';
+import 'package:aid_diary/time_manager.dart';
+import 'package:aid_diary/widgets/color_picker_dialog.dart';
+import 'package:aid_diary/widgets/diary_wallpaper.dart';
+import 'package:aid_diary/widgets/mood_icon.dart';
+import 'package:aid_diary/widgets/settings_dropdown.dart';
+import 'package:aid_diary/widgets/settings_header.dart';
+import 'package:aid_diary/widgets/settings_icon_action.dart';
+import 'package:aid_diary/widgets/settings_toggle.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:daily_you/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:daily_you/theme_mode_provider.dart';
-import 'package:daily_you/widgets/theme_color_presets.dart';
-import 'package:daily_you/pages/settings/language_settings.dart';
-import 'package:daily_you/pages/settings/tags_settings.dart';
-import 'package:daily_you/pages/settings/templates_page.dart';
-import 'package:daily_you/widgets/settings_category.dart';
+import 'package:aid_diary/theme_mode_provider.dart';
+import 'package:aid_diary/widgets/theme_color_presets.dart';
+import 'package:aid_diary/pages/settings/language_settings.dart';
+import 'package:aid_diary/pages/settings/tags_settings.dart';
+import 'package:aid_diary/pages/settings/templates_page.dart';
+import 'package:aid_diary/widgets/settings_category.dart';
 
 class AppearanceSettings extends StatefulWidget {
   const AppearanceSettings({super.key});

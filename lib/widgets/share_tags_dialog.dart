@@ -4,14 +4,14 @@
 
 import 'dart:io';
 
-import 'package:daily_you/providers/tags_provider.dart';
-import 'package:daily_you/utils/backup_restore_utils.dart';
-import 'package:daily_you/utils/tag_category_visuals.dart';
-import 'package:daily_you/utils/templates_tags_transfer.dart';
-import 'package:daily_you/widgets/failure_dialog.dart';
-import 'package:daily_you/widgets/tag_icon_glyph.dart';
+import 'package:aid_diary/providers/tags_provider.dart';
+import 'package:aid_diary/utils/backup_restore_utils.dart';
+import 'package:aid_diary/utils/tag_category_visuals.dart';
+import 'package:aid_diary/utils/templates_tags_transfer.dart';
+import 'package:aid_diary/widgets/failure_dialog.dart';
+import 'package:aid_diary/widgets/tag_icon_glyph.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:daily_you/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:provider/provider.dart';
 
 class ShareTagsDialog extends StatefulWidget {
@@ -26,7 +26,7 @@ class _ShareTagsDialogState extends State<ShareTagsDialog> {
 
   String _fileName() {
     final timestamp = DateTime.now().toIso8601String().replaceAll(':', '-');
-    return "daily_you_tags_$timestamp.json";
+    return "aid_diary_tags_$timestamp.json";
   }
 
   Future<void> _save() async {

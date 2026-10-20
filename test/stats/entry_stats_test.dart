@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-import 'package:daily_you/models/entry.dart';
-import 'package:daily_you/models/tag.dart';
-import 'package:daily_you/stats/entry_stats.dart';
-import 'package:daily_you/stats/stats_range.dart';
+import 'package:aid_diary/models/entry.dart';
+import 'package:aid_diary/models/tag.dart';
+import 'package:aid_diary/stats/entry_stats.dart';
+import 'package:aid_diary/stats/stats_range.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

@@ -5,7 +5,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:daily_you/storage/file_store.dart';
+import 'package:aid_diary/storage/file_store.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:path/path.dart';
 import 'package:saf_transfer/saf_transfer.dart';

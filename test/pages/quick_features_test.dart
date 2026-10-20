@@ -3,14 +3,14 @@ library;
 
 import 'dart:ui' as ui;
 
-import 'package:daily_you/config_provider.dart';
-import 'package:daily_you/database/entry_dao.dart';
-import 'package:daily_you/database/entry_store.dart';
-import 'package:daily_you/pages/recently_deleted_page.dart';
-import 'package:daily_you/models/entry.dart';
-import 'package:daily_you/pages/entry_share_page.dart';
-import 'package:daily_you/pages/journal_page.dart';
-import 'package:daily_you/widgets/quick_check_in.dart';
+import 'package:aid_diary/config_provider.dart';
+import 'package:aid_diary/database/entry_dao.dart';
+import 'package:aid_diary/database/entry_store.dart';
+import 'package:aid_diary/pages/recently_deleted_page.dart';
+import 'package:aid_diary/models/entry.dart';
+import 'package:aid_diary/pages/entry_share_page.dart';
+import 'package:aid_diary/pages/journal_page.dart';
+import 'package:aid_diary/widgets/quick_check_in.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';

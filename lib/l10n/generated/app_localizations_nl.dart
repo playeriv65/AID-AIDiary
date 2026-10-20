@@ -289,9 +289,6 @@ class AppLocalizationsNl extends AppLocalizations {
   String get databaseMigrationErrorRetry => 'Retry';
 
   @override
-  String get errorReport => 'Report Issue';
-
-  @override
   String get lastModified => 'Gewijzigd';
 
   @override
@@ -642,7 +639,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get welcomeLogBodyText =>
-      '## Welcome to AID Diary\n\n> Every day is worth remembering.\n\nWrite what happened, how you felt, and where you were. Your entries stay on this device.\n\n- **Journal** lists every entry by day\n- **Calendar**, **Media** and **Atlas** look back by date, photo and place\n- **Coach** offers prompts and templates when you don\'t know what to write\n\nAID Diary is a modified version of [Daily You](https://github.com/Demizo/Daily_You) by Demizo and contributors, and not the official Daily You app.';
+      '## Welcome to AID Diary\n\n> A quiet place for your days.\n\nWrite what happened, how you felt, and where you were. Your entries stay on this device.\n\n- **Journal** lists every entry by day\n- **Calendar**, **Media** and **Atlas** look back by date, photo and place\n- **Coach** offers prompts and templates when you don\'t know what to write';
 
   @override
   String get settingsStorageTitle => 'Opslag';
@@ -673,7 +670,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get logFolderWarningDescription =>
-      'Als de geselecteerde map al een \'daily_you.db\' bestand bevat, zal het gebruikt worden om je bestaande logs te overschrijven!';
+      'Als de geselecteerde map al een \'aid_diary.db\' bestand bevat, zal het gebruikt worden om je bestaande logs te overschrijven!';
 
   @override
   String get errorTitle => 'Fout';
@@ -813,13 +810,6 @@ class AppLocalizationsNl extends AppLocalizations {
   String get settingsImportFromAnotherApp => 'Importeer vanuit een andere app';
 
   @override
-  String get settingsTranslateCallToAction =>
-      'Iedereen zou toegang tot een dagboek moeten hebben!';
-
-  @override
-  String get settingsHelpTranslate => 'Help vertalen';
-
-  @override
   String get importLogs => 'Import Logs';
 
   @override
@@ -831,9 +821,6 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String get logFormatDescription =>
       'Het formaat van een andere app ondersteunt mogelijk niet alle functies. Meld eventuele problemen, aangezien formaten van derden op ieder moment kunnen veranderen. Dit heeft geen invloed op bestaande logs!';
-
-  @override
-  String get formatDailyYouJson => 'Daily You (JSON)';
 
   @override
   String get formatDaybook => 'Daybook';
@@ -934,16 +921,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get licenseGPLv3 => 'GPL-3.0';
 
   @override
-  String get settingsSourceCode => 'Broncode';
-
-  @override
   String get settingsOpenSourceLicenses => 'Open Source Licenses';
-
-  @override
-  String get settingsMadeWithLove => 'Gemaakt met ❤️';
-
-  @override
-  String get settingsConsiderSupporting => 'overweeg te ondersteunen';
 
   @override
   String get imagesTitle => 'Images';
@@ -1934,7 +1912,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get helpFaq3A =>
-      'Yes: in Settings → Data & storage, import exports from Daylio, Diarium, Diaro, DayBook, My Brain, OneShot and Pixels, or a Daily You JSON file.';
+      'Yes: in Settings → Data & storage, import exports from Daylio, Diarium, Diaro, DayBook, My Brain, OneShot and Pixels, or a JSON export.';
 
   @override
   String get helpFaq4Q => 'How do coach programs work?';
@@ -2026,4 +2004,29 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get photoWidgetEmpty => 'Photos you add to entries show up here.';
+
+  @override
+  String get channelReminders => 'Reminders';
+
+  @override
+  String get channelOnThisDay => 'On this day';
+
+  @override
+  String get channelCoach => 'Coach prompts';
+
+  @override
+  String get channelNudges => 'Nudges after quiet days';
+
+  @override
+  String get channelQuickWrite => 'Quick write';
+
+  @override
+  String get channelBackup => 'Backups';
+
+  @override
+  String get formatJsonExport => 'JSON (AID Diary export)';
+
+  @override
+  String get aboutModifiedNotice =>
+      'A modified version of Daily You by Demizo and contributors. It is not the official Daily You app.';
 }

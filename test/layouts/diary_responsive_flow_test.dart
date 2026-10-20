@@ -1,11 +1,11 @@
 @Tags(['integration'])
 library;
 
-import 'package:daily_you/database/entry_store.dart';
-import 'package:daily_you/layouts/mobile_scaffold.dart';
-import 'package:daily_you/pages/entries_list_page.dart';
-import 'package:daily_you/providers/entries_provider.dart';
-import 'package:daily_you/widgets/month_calendar.dart';
+import 'package:aid_diary/database/entry_store.dart';
+import 'package:aid_diary/layouts/mobile_scaffold.dart';
+import 'package:aid_diary/pages/entries_list_page.dart';
+import 'package:aid_diary/providers/entries_provider.dart';
+import 'package:aid_diary/widgets/month_calendar.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 

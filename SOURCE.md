@@ -14,7 +14,7 @@ Entry storage (SQLite), photos, moods, tags and trackers, templates, statistics,
 
 ## Changed locally
 
-- Own app name, Android application ID and Windows metadata; About screen and welcome entry state that this is a modified version of Daily You.
+- Own app name, Android application ID and Windows metadata; the About screen states that this is a modified version of Daily You and shows LICENSE.txt and ADDITIONAL_TERMS.md. Package, file, database, backup and notification-channel names use `aid_diary`; the old `daily_you` names are still read.
 - Own app icon (a blue spiral notebook with a sparkle, flat shapes), drawn from scratch by `tool/icon/export_icon.py`.
 - Layout modelled on the Journey diary app (layout and features only; no code, assets or text copied): journal with stories and day groups, calendar, media, atlas and coach destinations; navigation rail with list/detail panes on wide windows, bottom bar on phones; entry detail with star and previous/next; search with filters; editor with date title and an attachment / place / weather / activity / mood / tags toolbar.
 - Privacy policy rewritten for this build (local storage, optional network services); the upstream contact address is not used.

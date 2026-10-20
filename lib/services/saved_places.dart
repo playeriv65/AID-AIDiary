@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-import 'package:daily_you/config_provider.dart';
-import 'package:daily_you/models/entry.dart';
+import 'package:aid_diary/config_provider.dart';
+import 'package:aid_diary/models/entry.dart';
 
 /// Places the user starred in the location picker, newest first.
 class SavedPlaces {

@@ -45,10 +45,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get themeTintBackgroundHint => '关闭后使用中性黑灰背景，按钮仍保留所选颜色。';
 
   @override
-  String get dailyReminderTitle => '记得留下今日日迹！';
+  String get dailyReminderTitle => '记得留下今日日记！';
 
   @override
-  String get dailyReminderDescription => '今天的日迹还没写呢…';
+  String get dailyReminderDescription => '今天的日记还没写呢…';
 
   @override
   String get actionTakePhoto => '拍张照';
@@ -66,7 +66,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get jumpToMonthTitle => '月迹跳转';
 
   @override
-  String get jumpToLogTitle => '日迹直达';
+  String get jumpToLogTitle => '日记直达';
 
   @override
   String get flashbacksTitle => '往昔重现';
@@ -123,15 +123,15 @@ class AppLocalizationsZh extends AppLocalizations {
   String get pageGalleryTitle => '迹忆';
 
   @override
-  String get searchLogsHint => '搜索日迹…';
+  String get searchLogsHint => '搜索日记…';
 
   @override
   String logCount(num count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '日迹 $count',
-      one: '日迹 $count',
+      other: '日记 $count',
+      one: '日记 $count',
     );
     return '$_temp0';
   }
@@ -159,7 +159,7 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get noLogs => '暂无日迹…';
+  String get noLogs => '暂无日记…';
 
   @override
   String get noResults => '无结果…';
@@ -285,9 +285,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get databaseMigrationErrorRetry => '重试';
 
   @override
-  String get errorReport => '报告问题';
-
-  @override
   String get lastModified => '最后修改时间';
 
   @override
@@ -297,7 +294,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get titleHint => '标题…';
 
   @override
-  String get deleteLogTitle => '删除日迹';
+  String get deleteLogTitle => '删除日记';
 
   @override
   String get deleteLogDescription => '删除后会移到「最近删除」，在那里可以恢复。';
@@ -630,7 +627,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get welcomeLogBodyText =>
-      '## 欢迎使用 AID Diary\n\n> 每一天都值得被记住。\n\n写下发生了什么、心情如何、在哪里。日记只保存在这台设备上。\n\n- **日记**：按天列出所有日记\n- **日历**、**媒体**、**地图**：按日期、照片和地点回顾\n- **引导**：不知道写什么时，给你题目和模板\n\nAID Diary 基于 Demizo 和贡献者开发的 [Daily You](https://github.com/Demizo/Daily_You) 修改，不是 Daily You 官方应用。';
+      '## 欢迎使用 AID Diary\n\n> 一个安静记录日子的地方。\n\n写下发生了什么、心情如何、在哪里。日记只保存在这台设备上。\n\n- **日记**：按天列出所有日记\n- **日历**、**媒体**、**地图**：按日期、照片和地点回顾\n- **引导**：不知道写什么时，给你问题和模板';
 
   @override
   String get settingsStorageTitle => '存储';
@@ -651,7 +648,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get imageQualityNoCompression => '无损';
 
   @override
-  String get settingsLogFolder => '日迹存储目录';
+  String get settingsLogFolder => '日记存储目录';
 
   @override
   String get settingsImageFolder => '图片存储目录';
@@ -661,13 +658,13 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get logFolderWarningDescription =>
-      '如果所选文件夹中已包含“daily_you.db”文件，它将被用于覆盖您现有的日迹！';
+      '如果所选文件夹中已包含“aid_diary.db”文件，它将被用于覆盖您现有的日记！';
 
   @override
   String get errorTitle => '错误';
 
   @override
-  String get logFolderErrorDescription => '无法更改日迹目录！';
+  String get logFolderErrorDescription => '无法更改日记目录！';
 
   @override
   String get imageFolderErrorDescription => '无法更改图片目录！';
@@ -785,7 +782,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settingsExportFormatDescription => '这不应该被用作备份！';
 
   @override
-  String get exportLogs => '导出日迹';
+  String get exportLogs => '导出日记';
 
   @override
   String get exportImages => '导出图片';
@@ -797,13 +794,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settingsImportFromAnotherApp => '从其他应用程序导入';
 
   @override
-  String get settingsTranslateCallToAction => '每个人都应该有权使用日迹！';
-
-  @override
-  String get settingsHelpTranslate => '协助翻译';
-
-  @override
-  String get importLogs => '导入日迹';
+  String get importLogs => '导入日记';
 
   @override
   String get importImages => '导入图片';
@@ -813,10 +804,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get logFormatDescription =>
-      '其他应用的格式可能无法支持所有功能。若遇到任何问题请及时反馈，因为第三方格式可能随时发生变化。不过这一点不会影响现有的日迹！';
-
-  @override
-  String get formatDailyYouJson => 'Daily You (JSON)';
+      '其他应用的格式可能无法支持所有功能。若遇到任何问题请及时反馈，因为第三方格式可能随时发生变化。不过这一点不会影响现有的日记！';
 
   @override
   String get formatDaybook => 'Daybook';
@@ -843,10 +831,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get formatMarkdown => 'Markdown';
 
   @override
-  String get settingsDeleteAllLogsTitle => '删除全部日迹';
+  String get settingsDeleteAllLogsTitle => '删除全部日记';
 
   @override
-  String get settingsDeleteAllLogsDescription => '您确定要删除全部的日迹吗？';
+  String get settingsDeleteAllLogsDescription => '您确定要删除全部的日记吗？';
 
   @override
   String settingsDeleteAllLogsPrompt(Object prompt) {
@@ -914,16 +902,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get licenseGPLv3 => 'GPL-3.0';
 
   @override
-  String get settingsSourceCode => '源代码';
-
-  @override
   String get settingsOpenSourceLicenses => '开源许可';
-
-  @override
-  String get settingsMadeWithLove => '用❤️制作';
-
-  @override
-  String get settingsConsiderSupporting => '考虑支持';
 
   @override
   String get imagesTitle => '图像';
@@ -1882,7 +1861,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get helpFaq3A =>
-      '可以：在 设置 → 数据与存储 里导入 Daylio、Diarium、Diaro、DayBook、My Brain、OneShot、Pixels 的导出文件，或 Daily You 的 JSON 文件。';
+      '可以：在 设置 → 数据与存储 里导入 Daylio、Diarium、Diaro、DayBook、My Brain、OneShot、Pixels 的导出文件，或 JSON 导出文件。';
 
   @override
   String get helpFaq4Q => '写作计划怎么用？';
@@ -1970,6 +1949,31 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get photoWidgetEmpty => '日记里的照片会出现在这里。';
+
+  @override
+  String get channelReminders => '写日记提醒';
+
+  @override
+  String get channelOnThisDay => '那年今日';
+
+  @override
+  String get channelCoach => '写作计划';
+
+  @override
+  String get channelNudges => '久未写日记提醒';
+
+  @override
+  String get channelQuickWrite => '快速写';
+
+  @override
+  String get channelBackup => '备份';
+
+  @override
+  String get formatJsonExport => 'JSON（AID Diary 导出）';
+
+  @override
+  String get aboutModifiedNotice =>
+      'Daily You（作者 Demizo 及贡献者）的修改版，不是官方的 Daily You 应用。';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -2251,9 +2255,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get databaseMigrationErrorRetry => '重試';
-
-  @override
-  String get errorReport => '報告問題';
 
   @override
   String get lastModified => '已修改';
@@ -2599,7 +2600,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get welcomeLogBodyText =>
-      '## 歡迎使用 AID Diary\n\n> 每一天都值得被記住。\n\n寫下發生了什麼、心情如何、在哪裡。日記只保存在這台裝置上。\n\n- **日記**：按天列出所有日記\n- **日曆**、**媒體**、**地圖**：按日期、照片和地點回顧\n- **引導**：不知道寫什麼時，給你題目和範本\n\nAID Diary 基於 Demizo 和貢獻者開發的 [Daily You](https://github.com/Demizo/Daily_You) 修改，不是 Daily You 官方應用。';
+      '## 歡迎使用 AID Diary\n\n> 一個安靜記錄日子的地方。\n\n寫下發生了什麼、心情如何、在哪裡。日記只保存在這台裝置上。\n\n- **日記**：按天列出所有日記\n- **日曆**、**媒體**、**地圖**：按日期、照片和地點回顧\n- **引導**：不知道寫什麼時，給你問題和範本';
 
   @override
   String get settingsStorageTitle => '存儲';
@@ -2630,7 +2631,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get logFolderWarningDescription =>
-      '如果選定的資料夾中已經包含一個 \'daily_you.db\' 文件，它將覆蓋您現有的紀錄！';
+      '如果選定的資料夾中已經包含一個 \'aid_diary.db\' 文件，它將覆蓋您現有的紀錄！';
 
   @override
   String get errorTitle => '錯誤';
@@ -2766,12 +2767,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get settingsImportFromAnotherApp => '從其他應用程式匯入';
 
   @override
-  String get settingsTranslateCallToAction => '每個人都應該有權使用日記！';
-
-  @override
-  String get settingsHelpTranslate => '協助翻譯';
-
-  @override
   String get importLogs => '匯入紀錄';
 
   @override
@@ -2865,16 +2860,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get licenseGPLv3 => 'GPL-3.0';
 
   @override
-  String get settingsSourceCode => '原始碼';
-
-  @override
   String get settingsOpenSourceLicenses => '開源授權條款';
-
-  @override
-  String get settingsMadeWithLove => '用❤️製作';
-
-  @override
-  String get settingsConsiderSupporting => '考慮支持';
 
   @override
   String get imagesTitle => '影像';
@@ -3833,7 +3819,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get helpFaq3A =>
-      '可以：在 設定 → 資料與儲存 裡匯入 Daylio、Diarium、Diaro、DayBook、My Brain、OneShot、Pixels 的匯出檔，或 Daily You 的 JSON 檔。';
+      '可以：在 設定 → 資料與儲存 裡匯入 Daylio、Diarium、Diaro、DayBook、My Brain、OneShot、Pixels 的匯出檔，或 JSON 匯出檔。';
 
   @override
   String get helpFaq4Q => '寫作計畫怎麼用？';
@@ -3921,4 +3907,29 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get photoWidgetEmpty => '日記裡的照片會出現在這裡。';
+
+  @override
+  String get channelReminders => '寫日記提醒';
+
+  @override
+  String get channelOnThisDay => '那年今日';
+
+  @override
+  String get channelCoach => '寫作計畫';
+
+  @override
+  String get channelNudges => '久未寫日記提醒';
+
+  @override
+  String get channelQuickWrite => '快速寫';
+
+  @override
+  String get channelBackup => '備份';
+
+  @override
+  String get formatJsonExport => 'JSON（AID Diary 匯出）';
+
+  @override
+  String get aboutModifiedNotice =>
+      'Daily You（作者 Demizo 及貢獻者）的修改版，不是官方的 Daily You 應用。';
 }

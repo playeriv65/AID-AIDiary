@@ -1,6 +1,6 @@
-import 'package:daily_you/config_provider.dart';
-import 'package:daily_you/l10n/generated/app_localizations.dart';
-import 'package:daily_you/theme_mode_provider.dart';
+import 'package:aid_diary/config_provider.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/theme_mode_provider.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 

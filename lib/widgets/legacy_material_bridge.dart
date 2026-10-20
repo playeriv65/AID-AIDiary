@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-import 'package:daily_you/custom_locale_delegates.dart';
+import 'package:aid_diary/custom_locale_delegates.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// Legacy theme bridge with corrected icon colors

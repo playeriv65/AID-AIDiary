@@ -4,8 +4,8 @@
 
 import 'dart:math';
 
-import 'package:daily_you/utils/markdown_preview_scanner.dart';
-import 'package:daily_you/utils/markdown_preview_styles.dart';
+import 'package:aid_diary/utils/markdown_preview_scanner.dart';
+import 'package:aid_diary/utils/markdown_preview_styles.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 

@@ -6,8 +6,8 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:crypto/crypto.dart';
-import 'package:daily_you/config_provider.dart';
-import 'package:daily_you/utils/password_store.dart';
+import 'package:aid_diary/config_provider.dart';
+import 'package:aid_diary/utils/password_store.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pointycastle/export.dart';
 

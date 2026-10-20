@@ -1,4 +1,4 @@
-import 'package:daily_you/time_manager.dart';
+import 'package:aid_diary/time_manager.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

@@ -4,7 +4,7 @@
 
 import 'dart:ui' show PlatformDispatcher;
 
-import 'package:daily_you/config_provider.dart';
+import 'package:aid_diary/config_provider.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:intl/intl.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';

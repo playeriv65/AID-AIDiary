@@ -15,5 +15,5 @@ flutter:
   plugin:
     platforms:
       android:
-        package: com.demizo.daily_you.saf_transfer
+        package: dev.aid.diary.saf_transfer
         pluginClass: SafTransferPlugin

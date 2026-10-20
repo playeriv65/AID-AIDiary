@@ -1,4 +1,4 @@
-import 'package:daily_you/models/coach_program.dart';
+import 'package:aid_diary/models/coach_program.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

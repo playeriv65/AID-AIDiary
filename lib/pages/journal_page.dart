@@ -5,33 +5,32 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:daily_you/config/app_config.dart';
-import 'package:daily_you/config_provider.dart';
-import 'package:daily_you/models/builtin_templates.dart';
-import 'package:daily_you/widgets/quick_check_in.dart';
-import 'package:daily_you/device_info_service.dart';
-import 'package:daily_you/flashback_manager.dart';
-import 'package:daily_you/l10n/generated/app_localizations.dart';
-import 'package:daily_you/launch_intent.dart';
-import 'package:daily_you/models/entry.dart';
-import 'package:daily_you/models/flashback.dart';
-import 'package:daily_you/notification_manager.dart';
-import 'package:daily_you/pages/random_review_page.dart';
-import 'package:daily_you/pages/review_story_page.dart';
-import 'package:daily_you/pages/today_story_page.dart';
-import 'package:daily_you/pages/entry_view_page.dart';
-import 'package:daily_you/pages/share_page.dart';
-import 'package:daily_you/providers/entries_provider.dart';
-import 'package:daily_you/providers/entry_images_provider.dart';
-import 'package:daily_you/services/coach_service.dart';
-import 'package:daily_you/services/home_widget_service.dart';
-import 'package:daily_you/time_manager.dart';
-import 'package:daily_you/utils/entry_navigation.dart';
-import 'package:daily_you/widgets/coach_widgets.dart';
-import 'package:daily_you/widgets/journal_entry_row.dart';
-import 'package:daily_you/widgets/list_detail_layout.dart';
-import 'package:daily_you/widgets/support_banner.dart';
-import 'package:daily_you/widgets/top_search_card.dart';
+import 'package:aid_diary/config/app_config.dart';
+import 'package:aid_diary/config_provider.dart';
+import 'package:aid_diary/models/builtin_templates.dart';
+import 'package:aid_diary/widgets/quick_check_in.dart';
+import 'package:aid_diary/device_info_service.dart';
+import 'package:aid_diary/flashback_manager.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/launch_intent.dart';
+import 'package:aid_diary/models/entry.dart';
+import 'package:aid_diary/models/flashback.dart';
+import 'package:aid_diary/notification_manager.dart';
+import 'package:aid_diary/pages/random_review_page.dart';
+import 'package:aid_diary/pages/review_story_page.dart';
+import 'package:aid_diary/pages/today_story_page.dart';
+import 'package:aid_diary/pages/entry_view_page.dart';
+import 'package:aid_diary/pages/share_page.dart';
+import 'package:aid_diary/providers/entries_provider.dart';
+import 'package:aid_diary/providers/entry_images_provider.dart';
+import 'package:aid_diary/services/coach_service.dart';
+import 'package:aid_diary/services/home_widget_service.dart';
+import 'package:aid_diary/time_manager.dart';
+import 'package:aid_diary/utils/entry_navigation.dart';
+import 'package:aid_diary/widgets/coach_widgets.dart';
+import 'package:aid_diary/widgets/journal_entry_row.dart';
+import 'package:aid_diary/widgets/list_detail_layout.dart';
+import 'package:aid_diary/widgets/top_search_card.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 import 'package:share_receiver/share_receiver.dart';
@@ -215,10 +214,6 @@ class _JournalPageState extends State<JournalPage>
     final groups = groupEntriesByDay(ordered,
         timeOf: _sort == 'updated' ? (e) => e.timeModified : null);
     final hideImages = config.get(Settings.hideImagesInGallery);
-    final showBanner = SupportBanner.shouldShowBanner(
-      entryCount: ordered.length,
-      lastDismissedIso: config.get(Settings.lastDismissedSupportBannerDate),
-    );
 
     return ListDetailLayout(
       detail: _detail(ordered),
@@ -229,8 +224,6 @@ class _JournalPageState extends State<JournalPage>
             padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
             sliver: SliverToBoxAdapter(child: TopSearchCard()),
           ),
-          if (showBanner)
-            SliverToBoxAdapter(child: SupportBanner(configProvider: config)),
           SliverPadding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             sliver: SliverToBoxAdapter(

@@ -3,12 +3,12 @@ library;
 
 import 'dart:io';
 
-import 'package:daily_you/config_provider.dart';
-import 'package:daily_you/custom_locale_delegates.dart';
-import 'package:daily_you/l10n/generated/app_localizations.dart';
-import 'package:daily_you/theme_mode_provider.dart';
-import 'package:daily_you/theme_palette.dart';
-import 'package:daily_you/widgets/theme_color_presets.dart';
+import 'package:aid_diary/config_provider.dart';
+import 'package:aid_diary/custom_locale_delegates.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/theme_mode_provider.dart';
+import 'package:aid_diary/theme_palette.dart';
+import 'package:aid_diary/widgets/theme_color_presets.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';

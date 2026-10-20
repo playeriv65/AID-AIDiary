@@ -29,7 +29,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace = "com.demizo.daily_you"
+    namespace = "dev.aid.diary"
     compileSdkVersion 37
     ndkVersion = flutter.ndkVersion
 

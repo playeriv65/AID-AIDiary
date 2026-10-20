@@ -4,12 +4,12 @@
 
 import 'dart:math';
 
-import 'package:daily_you/l10n/generated/app_localizations.dart';
-import 'package:daily_you/models/entry.dart';
-import 'package:daily_you/pages/entry_view_page.dart';
-import 'package:daily_you/providers/entries_provider.dart';
-import 'package:daily_you/providers/entry_images_provider.dart';
-import 'package:daily_you/widgets/list_detail_layout.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/models/entry.dart';
+import 'package:aid_diary/pages/entry_view_page.dart';
+import 'package:aid_diary/providers/entries_provider.dart';
+import 'package:aid_diary/providers/entry_images_provider.dart';
+import 'package:aid_diary/widgets/list_detail_layout.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// Which entries a random walk draws from.

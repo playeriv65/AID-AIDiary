@@ -1,5 +1,5 @@
-import 'package:daily_you/models/entry.dart';
-import 'package:daily_you/widgets/location_dialog.dart';
+import 'package:aid_diary/models/entry.dart';
+import 'package:aid_diary/widgets/location_dialog.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 Entry _placed(DateTime time, EntryLocation location) =>

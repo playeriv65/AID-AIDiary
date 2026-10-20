@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-import 'package:daily_you/models/tag.dart';
-import 'package:daily_you/utils/tag_visuals.dart';
-import 'package:daily_you/widgets/tag_icon_glyph.dart';
+import 'package:aid_diary/models/tag.dart';
+import 'package:aid_diary/utils/tag_visuals.dart';
+import 'package:aid_diary/widgets/tag_icon_glyph.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:daily_you/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
 
 class LabelSummaryCard extends StatelessWidget {
   final Tag tag;

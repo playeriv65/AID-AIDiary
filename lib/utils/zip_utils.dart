@@ -7,7 +7,7 @@ import 'dart:io';
 import 'dart:isolate';
 
 import 'package:archive/archive_io.dart';
-import 'package:daily_you/utils/cancellation_token.dart';
+import 'package:aid_diary/utils/cancellation_token.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path/path.dart';
 

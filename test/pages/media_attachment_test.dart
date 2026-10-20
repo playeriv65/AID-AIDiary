@@ -1,11 +1,11 @@
 @Tags(['widget'])
 library;
 
-import 'package:daily_you/models/image.dart';
-import 'package:daily_you/pages/edit_entry_page.dart';
-import 'package:daily_you/pages/entry_view_page.dart';
-import 'package:daily_you/providers/entry_images_provider.dart';
-import 'package:daily_you/widgets/media_attachment.dart';
+import 'package:aid_diary/models/image.dart';
+import 'package:aid_diary/pages/edit_entry_page.dart';
+import 'package:aid_diary/pages/entry_view_page.dart';
+import 'package:aid_diary/providers/entry_images_provider.dart';
+import 'package:aid_diary/widgets/media_attachment.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 

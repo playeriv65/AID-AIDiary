@@ -2,17 +2,17 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-import 'package:daily_you/l10n/generated/app_localizations.dart';
-import 'package:daily_you/pages/entry_view_page.dart';
-import 'package:daily_you/providers/entries_provider.dart';
-import 'package:daily_you/providers/entry_images_provider.dart';
-import 'package:daily_you/time_manager.dart';
-import 'package:daily_you/utils/entry_navigation.dart';
-import 'package:daily_you/widgets/journal_entry_row.dart';
-import 'package:daily_you/widgets/list_detail_layout.dart';
-import 'package:daily_you/widgets/top_search_card.dart';
-import 'package:daily_you/widgets/month_calendar.dart';
-import 'package:daily_you/pages/entry_timeline_page.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/pages/entry_view_page.dart';
+import 'package:aid_diary/providers/entries_provider.dart';
+import 'package:aid_diary/providers/entry_images_provider.dart';
+import 'package:aid_diary/time_manager.dart';
+import 'package:aid_diary/utils/entry_navigation.dart';
+import 'package:aid_diary/widgets/journal_entry_row.dart';
+import 'package:aid_diary/widgets/list_detail_layout.dart';
+import 'package:aid_diary/widgets/top_search_card.dart';
+import 'package:aid_diary/widgets/month_calendar.dart';
+import 'package:aid_diary/pages/entry_timeline_page.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 

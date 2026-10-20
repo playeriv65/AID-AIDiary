@@ -2,13 +2,13 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-import 'package:daily_you/config_provider.dart';
-import 'package:daily_you/l10n/generated/app_localizations.dart';
-import 'package:daily_you/storage/storage_picker.dart';
-import 'package:daily_you/utils/auto_backup_schedule.dart';
-import 'package:daily_you/widgets/settings_dropdown.dart';
-import 'package:daily_you/widgets/settings_icon_action.dart';
-import 'package:daily_you/widgets/settings_toggle.dart';
+import 'package:aid_diary/config_provider.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/storage/storage_picker.dart';
+import 'package:aid_diary/utils/auto_backup_schedule.dart';
+import 'package:aid_diary/widgets/settings_dropdown.dart';
+import 'package:aid_diary/widgets/settings_icon_action.dart';
+import 'package:aid_diary/widgets/settings_toggle.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 

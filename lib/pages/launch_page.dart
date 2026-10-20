@@ -5,25 +5,24 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:daily_you/config_provider.dart';
-import 'package:daily_you/database/app_database.dart';
-import 'package:daily_you/database/image_storage.dart';
-import 'package:daily_you/device_info_service.dart';
-import 'package:daily_you/launch_intent.dart';
-import 'package:daily_you/main.dart';
-import 'package:daily_you/notification_manager.dart';
-import 'package:daily_you/pages/onboarding_page.dart';
-import 'package:daily_you/services/coach_service.dart';
-import 'package:daily_you/services/home_widget_service.dart';
-import 'package:daily_you/utils/auto_backup_schedule.dart';
-import 'package:daily_you/utils/backup_restore_utils.dart';
-import 'package:daily_you/widgets/auth_popup.dart';
+import 'package:aid_diary/config_provider.dart';
+import 'package:aid_diary/database/app_database.dart';
+import 'package:aid_diary/database/image_storage.dart';
+import 'package:aid_diary/device_info_service.dart';
+import 'package:aid_diary/launch_intent.dart';
+import 'package:aid_diary/main.dart';
+import 'package:aid_diary/notification_manager.dart';
+import 'package:aid_diary/pages/onboarding_page.dart';
+import 'package:aid_diary/services/coach_service.dart';
+import 'package:aid_diary/services/home_widget_service.dart';
+import 'package:aid_diary/utils/auto_backup_schedule.dart';
+import 'package:aid_diary/utils/backup_restore_utils.dart';
+import 'package:aid_diary/widgets/auth_popup.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:daily_you/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:logging/logging.dart';
 import 'package:quick_actions/quick_actions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 enum _LaunchErrorType { externalAccess, migrationFailed }
 
@@ -127,6 +126,16 @@ class _LaunchPageState extends State<LaunchPage> {
         AppLocalizations.of(context)!.tranferStatus('{percent}'));
     if (!mounted) return;
     final l10n = AppLocalizations.of(context)!;
+    for (final (id, name) in [
+      (reminderChannelId, l10n.channelReminders),
+      (onThisDayChannelId, l10n.channelOnThisDay),
+      (coachChannelId, l10n.channelCoach),
+      (nudgeChannelId, l10n.channelNudges),
+      (quickWriteChannelId, l10n.channelQuickWrite),
+      (backupNotificationChannelId, l10n.channelBackup),
+    ]) {
+      await prefs.setString(channelNameKey(id), name);
+    }
     await CoachService.storeNotificationText(l10n);
     await prefs.setString('nudgeTitle', l10n.nudgeTitle);
     // Monday first, as DateTime.weekday counts.
@@ -225,11 +234,6 @@ class _LaunchPageState extends State<LaunchPage> {
     await _checkDatabaseConnection();
   }
 
-  Future<void> _reportIssue() async {
-    await launchUrl(Uri.https("github.com", "/Demizo/Daily_You/issues"),
-        mode: LaunchMode.externalApplication);
-  }
-
   Future<void> _migrateImagesFromExternalStorage() async {
     if (!await ImageStorage.instance.needsImageMigration()) return;
     if (!mounted) return;
@@ -319,9 +323,6 @@ class _LaunchPageState extends State<LaunchPage> {
             TextButton(
                 onPressed: _retryDatabaseConnection,
                 child: Text(localizations.databaseMigrationErrorRetry)),
-            TextButton(
-                onPressed: _reportIssue,
-                child: Text(localizations.errorReport)),
           ],
         );
       case _LaunchErrorType.externalAccess:

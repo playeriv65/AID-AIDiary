@@ -2,21 +2,21 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-import 'package:daily_you/models/tag.dart';
-import 'package:daily_you/models/tag_category.dart';
-import 'package:daily_you/providers/tags_provider.dart';
-import 'package:daily_you/utils/backup_restore_utils.dart';
-import 'package:daily_you/utils/tag_category_visuals.dart';
-import 'package:daily_you/utils/templates_tags_transfer.dart';
-import 'package:daily_you/widgets/edit_category.dart';
-import 'package:daily_you/widgets/edit_tag.dart';
-import 'package:daily_you/widgets/expressive_fab_menu.dart';
-import 'package:daily_you/widgets/failure_dialog.dart';
-import 'package:daily_you/widgets/share_tags_dialog.dart';
-import 'package:daily_you/widgets/tag_chip.dart';
-import 'package:daily_you/widgets/tag_icon_glyph.dart';
+import 'package:aid_diary/models/tag.dart';
+import 'package:aid_diary/models/tag_category.dart';
+import 'package:aid_diary/providers/tags_provider.dart';
+import 'package:aid_diary/utils/backup_restore_utils.dart';
+import 'package:aid_diary/utils/tag_category_visuals.dart';
+import 'package:aid_diary/utils/templates_tags_transfer.dart';
+import 'package:aid_diary/widgets/edit_category.dart';
+import 'package:aid_diary/widgets/edit_tag.dart';
+import 'package:aid_diary/widgets/expressive_fab_menu.dart';
+import 'package:aid_diary/widgets/failure_dialog.dart';
+import 'package:aid_diary/widgets/share_tags_dialog.dart';
+import 'package:aid_diary/widgets/tag_chip.dart';
+import 'package:aid_diary/widgets/tag_icon_glyph.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:daily_you/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:provider/provider.dart';
 
 sealed class _ListItem {

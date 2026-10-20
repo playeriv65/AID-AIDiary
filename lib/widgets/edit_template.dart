@@ -2,23 +2,23 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-import 'package:daily_you/config_provider.dart';
-import 'package:daily_you/models/template.dart';
-import 'package:daily_you/providers/tags_provider.dart';
-import 'package:daily_you/providers/templates_provider.dart';
-import 'package:daily_you/utils/text_editing.dart';
-import 'package:daily_you/widgets/delete_confirm_dialog.dart';
-import 'package:daily_you/widgets/editor_action_bar.dart';
-import 'package:daily_you/widgets/editor_action_bar/editor_keyboard_session.dart';
-import 'package:daily_you/widgets/entry_text_edit.dart';
-import 'package:daily_you/widgets/markdown_preview_controller.dart';
-import 'package:daily_you/widgets/tag_attachment_source.dart';
-import 'package:daily_you/widgets/tag_chip.dart';
-import 'package:daily_you/widgets/tag_grouped_chip_list.dart';
-import 'package:daily_you/widgets/tag_picker_dialog.dart';
+import 'package:aid_diary/config_provider.dart';
+import 'package:aid_diary/models/template.dart';
+import 'package:aid_diary/providers/tags_provider.dart';
+import 'package:aid_diary/providers/templates_provider.dart';
+import 'package:aid_diary/utils/text_editing.dart';
+import 'package:aid_diary/widgets/delete_confirm_dialog.dart';
+import 'package:aid_diary/widgets/editor_action_bar.dart';
+import 'package:aid_diary/widgets/editor_action_bar/editor_keyboard_session.dart';
+import 'package:aid_diary/widgets/entry_text_edit.dart';
+import 'package:aid_diary/widgets/markdown_preview_controller.dart';
+import 'package:aid_diary/widgets/tag_attachment_source.dart';
+import 'package:aid_diary/widgets/tag_chip.dart';
+import 'package:aid_diary/widgets/tag_grouped_chip_list.dart';
+import 'package:aid_diary/widgets/tag_picker_dialog.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
-import 'package:daily_you/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:provider/provider.dart';
 
 class EditTemplate extends StatefulWidget {

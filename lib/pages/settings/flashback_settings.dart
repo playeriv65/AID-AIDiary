@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-import 'package:daily_you/config_provider.dart';
-import 'package:daily_you/widgets/settings_header.dart';
-import 'package:daily_you/widgets/settings_toggle.dart';
+import 'package:aid_diary/config_provider.dart';
+import 'package:aid_diary/widgets/settings_header.dart';
+import 'package:aid_diary/widgets/settings_toggle.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:daily_you/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:provider/provider.dart';
 
 class FlashbackSettings extends StatefulWidget {

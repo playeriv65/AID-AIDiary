@@ -7,11 +7,11 @@ import 'dart:isolate';
 import 'dart:math';
 import 'dart:typed_data';
 
-import 'package:daily_you/database/image_storage.dart';
-import 'package:daily_you/l10n/generated/app_localizations.dart';
-import 'package:daily_you/models/entry.dart';
-import 'package:daily_you/models/image.dart';
-import 'package:daily_you/stats/streaks.dart';
+import 'package:aid_diary/database/image_storage.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/models/entry.dart';
+import 'package:aid_diary/models/image.dart';
+import 'package:aid_diary/stats/streaks.dart';
 import 'package:home_widget/home_widget.dart';
 import 'package:image/image.dart' as img;
 import 'package:intl/intl.dart';
@@ -95,8 +95,8 @@ PhotoWidgetChoice? photoForDay(List<Entry> entries,
 
 /// Keeps the Android widgets in step with the diary and reports their taps.
 class HomeWidgetService {
-  static const _provider = 'com.demizo.daily_you.DiaryWidgetProvider';
-  static const _photoProvider = 'com.demizo.daily_you.PhotoWidgetProvider';
+  static const _provider = 'dev.aid.diary.DiaryWidgetProvider';
+  static const _photoProvider = 'dev.aid.diary.PhotoWidgetProvider';
   static const _writeHost = 'write';
   static const _entryHost = 'entry';
   static final _logger = Logger('HomeWidgetService');

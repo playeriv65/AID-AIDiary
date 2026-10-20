@@ -3,18 +3,18 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'dart:io';
-import 'package:daily_you/utils/backup_restore_utils.dart';
-import 'package:daily_you/config_provider.dart';
-import 'package:daily_you/database/app_database.dart';
-import 'package:daily_you/database/image_storage.dart';
-import 'package:daily_you/providers/entries_provider.dart';
-import 'package:daily_you/storage/storage_picker.dart';
-import 'package:daily_you/widgets/failure_dialog.dart';
-import 'package:daily_you/widgets/settings_dropdown.dart';
-import 'package:daily_you/widgets/settings_icon_action.dart';
+import 'package:aid_diary/utils/backup_restore_utils.dart';
+import 'package:aid_diary/config_provider.dart';
+import 'package:aid_diary/database/app_database.dart';
+import 'package:aid_diary/database/image_storage.dart';
+import 'package:aid_diary/providers/entries_provider.dart';
+import 'package:aid_diary/storage/storage_picker.dart';
+import 'package:aid_diary/widgets/failure_dialog.dart';
+import 'package:aid_diary/widgets/settings_dropdown.dart';
+import 'package:aid_diary/widgets/settings_icon_action.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:daily_you/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 

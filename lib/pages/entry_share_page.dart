@@ -5,16 +5,16 @@
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
-import 'package:daily_you/config/app_config.dart';
-import 'package:daily_you/l10n/generated/app_localizations.dart';
-import 'package:daily_you/models/entry.dart';
-import 'package:daily_you/models/image.dart';
-import 'package:daily_you/pages/entry_view_page.dart';
-import 'package:daily_you/utils/entry_context_display.dart';
-import 'package:daily_you/utils/entry_typography.dart';
-import 'package:daily_you/widgets/local_image_loader.dart';
-import 'package:daily_you/widgets/mood_icon.dart';
-import 'package:daily_you/widgets/scaled_markdown.dart';
+import 'package:aid_diary/config/app_config.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/models/entry.dart';
+import 'package:aid_diary/models/image.dart';
+import 'package:aid_diary/pages/entry_view_page.dart';
+import 'package:aid_diary/utils/entry_context_display.dart';
+import 'package:aid_diary/utils/entry_typography.dart';
+import 'package:aid_diary/widgets/local_image_loader.dart';
+import 'package:aid_diary/widgets/mood_icon.dart';
+import 'package:aid_diary/widgets/scaled_markdown.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';

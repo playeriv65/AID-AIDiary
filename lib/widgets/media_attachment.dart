@@ -5,10 +5,10 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:daily_you/config/app_config.dart';
-import 'package:daily_you/database/image_storage.dart';
-import 'package:daily_you/l10n/generated/app_localizations.dart';
-import 'package:daily_you/models/image.dart';
+import 'package:aid_diary/config/app_config.dart';
+import 'package:aid_diary/database/image_storage.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/models/image.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logging/logging.dart';

@@ -4,16 +4,16 @@
 
 import 'dart:math';
 
-import 'package:daily_you/database/app_database.dart';
-import 'package:daily_you/database/entry_tag_dao.dart';
-import 'package:daily_you/database/tag_category_dao.dart';
-import 'package:daily_you/database/tag_dao.dart';
-import 'package:daily_you/database/template_tag_dao.dart';
-import 'package:daily_you/l10n/generated/app_localizations.dart';
-import 'package:daily_you/models/tag.dart';
-import 'package:daily_you/models/tag_category.dart';
-import 'package:daily_you/models/tag_icon_type.dart';
-import 'package:daily_you/utils/generated/tag_icon_registry.dart';
+import 'package:aid_diary/database/app_database.dart';
+import 'package:aid_diary/database/entry_tag_dao.dart';
+import 'package:aid_diary/database/tag_category_dao.dart';
+import 'package:aid_diary/database/tag_dao.dart';
+import 'package:aid_diary/database/template_tag_dao.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/models/tag.dart';
+import 'package:aid_diary/models/tag_category.dart';
+import 'package:aid_diary/models/tag_icon_type.dart';
+import 'package:aid_diary/utils/generated/tag_icon_registry.dart';
 import 'package:material_ui/material_ui.dart';
 
 class TagSection {

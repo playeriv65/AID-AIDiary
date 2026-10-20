@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:daily_you/pages/random_review_page.dart';
+import 'package:aid_diary/pages/random_review_page.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

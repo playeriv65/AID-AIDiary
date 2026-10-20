@@ -15,5 +15,5 @@ flutter:
   plugin:
     platforms:
       android:
-        package: com.demizo.daily_you.backup_crypto
+        package: dev.aid.diary.backup_crypto
         pluginClass: BackupCryptoPlugin

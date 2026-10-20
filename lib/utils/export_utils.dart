@@ -6,24 +6,24 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:daily_you/database/image_storage.dart';
-import 'package:daily_you/storage/file_store.dart';
-import 'package:daily_you/storage/local_file_store.dart';
-import 'package:daily_you/storage/storage_picker.dart';
-import 'package:daily_you/models/entry.dart';
-import 'package:daily_you/models/image.dart';
-import 'package:daily_you/providers/entries_provider.dart';
-import 'package:daily_you/providers/entry_images_provider.dart';
-import 'package:daily_you/providers/tags_provider.dart';
-import 'package:daily_you/time_manager.dart';
-import 'package:daily_you/utils/operation_outcome.dart';
-import 'package:daily_you/utils/zip_utils.dart';
-import 'package:daily_you/widgets/mood_icon.dart';
+import 'package:aid_diary/database/image_storage.dart';
+import 'package:aid_diary/storage/file_store.dart';
+import 'package:aid_diary/storage/local_file_store.dart';
+import 'package:aid_diary/storage/storage_picker.dart';
+import 'package:aid_diary/models/entry.dart';
+import 'package:aid_diary/models/image.dart';
+import 'package:aid_diary/providers/entries_provider.dart';
+import 'package:aid_diary/providers/entry_images_provider.dart';
+import 'package:aid_diary/providers/tags_provider.dart';
+import 'package:aid_diary/time_manager.dart';
+import 'package:aid_diary/utils/operation_outcome.dart';
+import 'package:aid_diary/utils/zip_utils.dart';
+import 'package:aid_diary/widgets/mood_icon.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:daily_you/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
 
 enum ExportFormat {
   none,
@@ -137,7 +137,7 @@ class ExportUtils {
         Directory(join(tempExportFolder.path, "Images"));
     await tempExportImageFolder.create(recursive: true);
     final exportedZipName =
-        "daily_you_markdown_export_${DateTime.now().toIso8601String().replaceAll(':', '-')}.zip";
+        "aid_diary_markdown_export_${DateTime.now().toIso8601String().replaceAll(':', '-')}.zip";
 
     final exportStore = LocalFileStore(tempExportFolder.path);
     final exportImageStore = LocalFileStore(tempExportImageFolder.path);

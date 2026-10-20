@@ -5,18 +5,27 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:daily_you/models/tag.dart';
-import 'package:daily_you/models/tag_category.dart';
-import 'package:daily_you/models/tag_icon_type.dart';
-import 'package:daily_you/models/template.dart';
-import 'package:daily_you/providers/tags_provider.dart';
-import 'package:daily_you/providers/templates_provider.dart';
-import 'package:daily_you/storage/storage_picker.dart';
-import 'package:daily_you/utils/operation_outcome.dart';
+import 'package:aid_diary/models/tag.dart';
+import 'package:aid_diary/models/tag_category.dart';
+import 'package:aid_diary/models/tag_icon_type.dart';
+import 'package:aid_diary/models/template.dart';
+import 'package:aid_diary/providers/tags_provider.dart';
+import 'package:aid_diary/providers/templates_provider.dart';
+import 'package:aid_diary/storage/storage_picker.dart';
+import 'package:aid_diary/utils/operation_outcome.dart';
 import 'package:share_plus/share_plus.dart';
 
-const String _tagsFileType = "daily_you_tags";
-const String _templatesFileType = "daily_you_templates";
+const String _tagsFileType = "aid_diary_tags";
+const String _templatesFileType = "aid_diary_templates";
+
+/// File types this import reads, including the names from before the
+/// rename, which Daily You's own exports also use.
+const Set<String> _importableTypes = {
+  _tagsFileType,
+  _templatesFileType,
+  "daily_you_tags",
+  "daily_you_templates",
+};
 const int _transferFileVersion = 1;
 
 typedef _ItemIdentity = (
@@ -186,8 +195,7 @@ class TemplatesTagsTransfer {
       if (bytes == null) return const OperationOutcome.failed();
 
       final jsonData = json.decode(utf8.decode(bytes)) as Map<String, dynamic>;
-      if (jsonData['type'] != _tagsFileType &&
-          jsonData['type'] != _templatesFileType) {
+      if (!_importableTypes.contains(jsonData['type'])) {
         return const OperationOutcome.failed();
       }
 

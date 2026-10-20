@@ -3,13 +3,13 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'dart:math' as math;
-import 'package:daily_you/config_provider.dart';
-import 'package:daily_you/time_manager.dart';
-import 'package:daily_you/utils/bucket_combiner.dart';
-import 'package:daily_you/utils/chart_y_range.dart';
-import 'package:daily_you/widgets/connected_button_group.dart';
+import 'package:aid_diary/config_provider.dart';
+import 'package:aid_diary/time_manager.dart';
+import 'package:aid_diary/utils/bucket_combiner.dart';
+import 'package:aid_diary/utils/chart_y_range.dart';
+import 'package:aid_diary/widgets/connected_button_group.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:daily_you/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
