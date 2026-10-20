@@ -5,6 +5,7 @@
 import 'package:daily_you/config_provider.dart';
 import 'package:daily_you/time_manager.dart';
 import 'package:daily_you/widgets/color_picker_dialog.dart';
+import 'package:daily_you/widgets/diary_wallpaper.dart';
 import 'package:daily_you/widgets/mood_icon.dart';
 import 'package:daily_you/widgets/settings_dropdown.dart';
 import 'package:daily_you/widgets/settings_header.dart';
@@ -161,6 +162,65 @@ class _AppearanceSettingsPageState extends State<AppearanceSettings> {
     return dropdownItems;
   }
 
+  /// A dropdown over a string setting whose options are [labels]' keys.
+  Widget _choice(ConfigProvider configProvider, String key, String title,
+      Setting<String> setting, Map<String, String> labels,
+      {Future<void> Function(String value)? onChanged}) {
+    return SettingsDropdown<String>(
+      key: ValueKey(key),
+      title: title,
+      value: configProvider.get(setting),
+      options: [
+        for (final MapEntry(key: value, value: label) in labels.entries)
+          DropdownMenuItem(value: value, child: Text(label)),
+      ],
+      onChanged: (value) async {
+        if (value == null) return;
+        await (onChanged?.call(value) ?? configProvider.set(setting, value));
+      },
+    );
+  }
+
+  List<Widget> _customizeSettings(
+      BuildContext context, ConfigProvider configProvider) {
+    final l10n = AppLocalizations.of(context)!;
+    return [
+      _choice(configProvider, 'settings-wallpaper', l10n.settingsWallpaper,
+          Settings.wallpaper, {
+        WallpaperKind.none.name: l10n.wallpaperNone,
+        WallpaperKind.dots.name: l10n.wallpaperDots,
+        WallpaperKind.grid.name: l10n.wallpaperGrid,
+        WallpaperKind.lines.name: l10n.wallpaperLines,
+        WallpaperKind.photo.name: l10n.wallpaperPhoto,
+      }, onChanged: (value) async {
+        if (value == WallpaperKind.photo.name) {
+          await DiaryWallpaper.pickPhoto();
+        } else {
+          await configProvider.set(Settings.wallpaper, value);
+        }
+      }),
+      _choice(configProvider, 'settings-font-family', l10n.settingsFontFamily,
+          Settings.entryFontFamily, {
+        'system': l10n.fontSystem,
+        'serif': l10n.fontSerif,
+        'mono': l10n.fontMono,
+      }),
+      _choice(configProvider, 'settings-font-size', l10n.settingsFontSize,
+          Settings.entryFontSize, {
+        'small': l10n.fontSizeSmall,
+        'medium': l10n.fontSizeMedium,
+        'large': l10n.fontSizeLarge,
+        'extraLarge': l10n.fontSizeExtraLarge,
+      }),
+      _choice(configProvider, 'settings-line-spacing', l10n.settingsLineSpacing,
+          Settings.entryLineSpacing, {
+        'compact': l10n.lineSpacingCompact,
+        'normal': l10n.lineSpacingNormal,
+        'relaxed': l10n.lineSpacingRelaxed,
+      }),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeModeProvider>(context);
@@ -245,6 +305,7 @@ class _AppearanceSettingsPageState extends State<AppearanceSettings> {
                     onChanged: (value) =>
                         configProvider.set(Settings.tintThemeBackground, value),
                   ),
+                  ..._customizeSettings(context, configProvider),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 8.0),
                     child: SettingsDropdown<String>(

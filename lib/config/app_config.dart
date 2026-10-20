@@ -58,6 +58,29 @@ class AppConfig {
   Duration get geocodeTimeout =>
       Duration(seconds: _section('geocoding')['timeoutSeconds'] as int);
 
+  Map<String, double> get fontSizes => _numbers('typography', 'fontSizes');
+  Map<String, double> get lineSpacings =>
+      _numbers('typography', 'lineSpacings');
+
+  /// Font family names per choice, first preferred; empty means the theme's.
+  Map<String, List<String>> get fontFamilies => {
+        for (final MapEntry(:key, :value)
+            in (_section('typography')['fontFamilies'] as Map).entries)
+          key as String: (value as List).cast<String>(),
+      };
+
+  String get wallpaperDirectory => _section('wallpaper')['directory'] as String;
+  double get wallpaperScrimOpacity =>
+      (_section('wallpaper')['photoScrimOpacity'] as num).toDouble();
+  double get wallpaperPatternSpacing =>
+      (_section('wallpaper')['patternSpacing'] as num).toDouble();
+
+  Map<String, double> _numbers(String section, String name) => {
+        for (final MapEntry(:key, :value)
+            in (_section(section)[name] as Map).entries)
+          key as String: (value as num).toDouble(),
+      };
+
   Duration get locationTimeout =>
       Duration(seconds: _section('location')['timeoutSeconds'] as int);
 

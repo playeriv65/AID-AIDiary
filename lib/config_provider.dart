@@ -71,6 +71,12 @@ class Settings {
       Setting<Map<String, dynamic>?>("overrideLanguage", null);
   static const showFlashbacks = Setting<bool>("showFlashbacks", true);
   static const temperatureUnit = Setting<String>("temperatureUnit", "celsius");
+  // Keys into the typography section of assets/config/app_config.json.
+  static const entryFontFamily = Setting<String>("entryFontFamily", "system");
+  static const entryFontSize = Setting<String>("entryFontSize", "medium");
+  static const entryLineSpacing = Setting<String>("entryLineSpacing", "normal");
+  static const wallpaper = Setting<String>("wallpaper", "none");
+  static const wallpaperImage = Setting<String>("wallpaperImage", "");
   // Off by default: each one asks for a permission or uses the network.
   static const autoAddLocation = Setting<bool>("autoAddLocation", false);
   static const autoAddWeather = Setting<bool>("autoAddWeather", false);
@@ -160,6 +166,11 @@ class Settings {
     overrideLanguage,
     showFlashbacks,
     temperatureUnit,
+    entryFontFamily,
+    entryFontSize,
+    entryLineSpacing,
+    wallpaper,
+    wallpaperImage,
     autoAddLocation,
     autoAddWeather,
     autoAddActivity,

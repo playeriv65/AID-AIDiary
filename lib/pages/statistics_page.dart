@@ -14,6 +14,7 @@ import 'package:daily_you/stats/stats_range.dart';
 import 'package:daily_you/stats/streaks.dart';
 import 'package:daily_you/widgets/distribution_chart.dart';
 import 'package:daily_you/widgets/label_summary_card.dart';
+import 'package:daily_you/widgets/mood_associations_card.dart';
 import 'package:daily_you/widgets/mood_icon.dart';
 import 'package:daily_you/widgets/mood_summary_chart.dart';
 import 'package:daily_you/widgets/stat_range_selector.dart';
@@ -289,6 +290,7 @@ class _StatsPageState extends State<StatsPage>
         moodCounts: moodTotals(entries),
         hasData: hasData,
       ),
+      MoodAssociationsCard(entries: entries),
       ValueByDayChart(
         averageValues: averageByDayOfWeek(
             entries, (entry) => entry.mood?.toDouble(),

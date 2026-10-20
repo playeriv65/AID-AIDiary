@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'package:daily_you/utils/entry_typography.dart';
 import 'package:daily_you/widgets/markdown_highlight_syntax.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:markdown_widget/markdown_widget.dart';
@@ -15,6 +16,9 @@ class ScaledMarkdown extends StatelessWidget {
   final bool compact;
   final bool selectable;
 
+  /// Entry font, size and line spacing; null keeps the markdown defaults.
+  final EntryTypography? typography;
+
   const ScaledMarkdown({
     super.key,
     required this.data,
@@ -22,6 +26,7 @@ class ScaledMarkdown extends StatelessWidget {
     this.scaleFactor = 1,
     this.compact = false,
     this.selectable = true,
+    this.typography,
   });
 
   @override
@@ -36,13 +41,24 @@ class ScaledMarkdown extends StatelessWidget {
     // Get the device's current text scaling to respect user settings
     final deviceScaler = MediaQuery.textScalerOf(context);
     // Apply custom scaling to the user's text scale
-    final customScaler = TextScaler.linear(deviceScaler.scale(scaleFactor));
+    final customScaler = TextScaler.linear(
+        deviceScaler.scale(scaleFactor * (typography?.scale ?? 1)));
+
+    var config = theme.brightness == Brightness.light
+        ? MarkdownConfig.defaultConfig
+        : MarkdownConfig.darkConfig;
+    if (typography case final typography?) {
+      config = config.copy(configs: [
+        PConfig(
+            textStyle: TextStyle(
+                fontSize: EntryTypography.baseFontSize,
+                height: typography.lineSpacing)),
+      ]);
+    }
 
     return MarkdownBlock(
       selectable: selectable,
-      config: theme.brightness == Brightness.light
-          ? MarkdownConfig.defaultConfig
-          : MarkdownConfig.darkConfig,
+      config: config,
       generator: MarkdownGenerator(
         inlineSyntaxList: [HighlightSyntax()],
         generators: [highlightGenerator(Colors.yellow.shade700)],
@@ -53,7 +69,9 @@ class ScaledMarkdown extends StatelessWidget {
                     null;
 
             final child = Text.rich(
-              span,
+              typography == null
+                  ? span
+                  : TextSpan(style: typography!.familyStyle, children: [span]),
               textScaler:
                   shouldIgnoreTextScaler ? TextScaler.noScaling : customScaler,
             );

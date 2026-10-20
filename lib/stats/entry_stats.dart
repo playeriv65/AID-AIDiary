@@ -113,5 +113,34 @@ Set<int> entryIdsWithTag(List<EntryTag> entryTags, int tagId) {
   return (dataMin >= 0 ? 0 : dataMin, dataMax);
 }
 
+/// How often entries with a factor (an activity, a tag) had a given mood.
+typedef MoodAssociation<K> = ({K factor, int matching, int total});
+
+/// Factors most tied to [mood]: the share of each factor's rated entries
+/// that had it, highest first. Factors seen on fewer than [minEntries] rated
+/// entries, or never with [mood], are left out.
+List<MoodAssociation<K>> moodAssociations<K>(
+    List<Entry> entries, int mood, Iterable<K> Function(Entry entry) factorsOf,
+    {int minEntries = 2}) {
+  final totals = <K, int>{};
+  final matching = <K, int>{};
+  for (final entry in entries.where((e) => e.mood != null)) {
+    for (final factor in factorsOf(entry).toSet()) {
+      totals[factor] = (totals[factor] ?? 0) + 1;
+      if (entry.mood == mood) matching[factor] = (matching[factor] ?? 0) + 1;
+    }
+  }
+  final result = [
+    for (final MapEntry(key: factor, value: total) in totals.entries)
+      if (total >= minEntries && (matching[factor] ?? 0) > 0)
+        (factor: factor, matching: matching[factor]!, total: total),
+  ];
+  result.sort((a, b) {
+    final byShare = (b.matching / b.total).compareTo(a.matching / a.total);
+    return byShare != 0 ? byShare : b.matching.compareTo(a.matching);
+  });
+  return result;
+}
+
 String _weekdayKeyOf(Entry entry) =>
     _weekdayKeys[entry.timeCreate.weekday - DateTime.monday];

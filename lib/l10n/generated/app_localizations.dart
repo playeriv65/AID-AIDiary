@@ -1068,36 +1068,6 @@ abstract class AppLocalizations {
   /// **'Delete \"{name}\"?'**
   String deleteTemplateMessage(Object name);
 
-  /// No description provided for @filterTagsTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Filter'**
-  String get filterTagsTitle;
-
-  /// No description provided for @tagFilterModeAny.
-  ///
-  /// In en, this message translates to:
-  /// **'Any Tag'**
-  String get tagFilterModeAny;
-
-  /// No description provided for @tagFilterModeAll.
-  ///
-  /// In en, this message translates to:
-  /// **'All Tags'**
-  String get tagFilterModeAll;
-
-  /// No description provided for @clearAllFilters.
-  ///
-  /// In en, this message translates to:
-  /// **'Clear All'**
-  String get clearAllFilters;
-
-  /// No description provided for @noTagsFilterLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'No Tags'**
-  String get noTagsFilterLabel;
-
   /// No description provided for @addTagsTitle.
   ///
   /// In en, this message translates to:
@@ -2615,6 +2585,132 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No places found'**
   String get locationSearchEmpty;
+
+  /// No description provided for @settingsWallpaper.
+  ///
+  /// In en, this message translates to:
+  /// **'Wallpaper'**
+  String get settingsWallpaper;
+
+  /// No description provided for @wallpaperNone.
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get wallpaperNone;
+
+  /// No description provided for @wallpaperDots.
+  ///
+  /// In en, this message translates to:
+  /// **'Dots'**
+  String get wallpaperDots;
+
+  /// No description provided for @wallpaperGrid.
+  ///
+  /// In en, this message translates to:
+  /// **'Grid'**
+  String get wallpaperGrid;
+
+  /// No description provided for @wallpaperLines.
+  ///
+  /// In en, this message translates to:
+  /// **'Lines'**
+  String get wallpaperLines;
+
+  /// No description provided for @wallpaperPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo…'**
+  String get wallpaperPhoto;
+
+  /// No description provided for @settingsFontFamily.
+  ///
+  /// In en, this message translates to:
+  /// **'Font'**
+  String get settingsFontFamily;
+
+  /// No description provided for @fontSystem.
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get fontSystem;
+
+  /// No description provided for @fontSerif.
+  ///
+  /// In en, this message translates to:
+  /// **'Serif'**
+  String get fontSerif;
+
+  /// No description provided for @fontMono.
+  ///
+  /// In en, this message translates to:
+  /// **'Monospace'**
+  String get fontMono;
+
+  /// No description provided for @settingsFontSize.
+  ///
+  /// In en, this message translates to:
+  /// **'Font size'**
+  String get settingsFontSize;
+
+  /// No description provided for @fontSizeSmall.
+  ///
+  /// In en, this message translates to:
+  /// **'Small'**
+  String get fontSizeSmall;
+
+  /// No description provided for @fontSizeMedium.
+  ///
+  /// In en, this message translates to:
+  /// **'Medium'**
+  String get fontSizeMedium;
+
+  /// No description provided for @fontSizeLarge.
+  ///
+  /// In en, this message translates to:
+  /// **'Large'**
+  String get fontSizeLarge;
+
+  /// No description provided for @fontSizeExtraLarge.
+  ///
+  /// In en, this message translates to:
+  /// **'Extra large'**
+  String get fontSizeExtraLarge;
+
+  /// No description provided for @settingsLineSpacing.
+  ///
+  /// In en, this message translates to:
+  /// **'Line spacing'**
+  String get settingsLineSpacing;
+
+  /// No description provided for @lineSpacingCompact.
+  ///
+  /// In en, this message translates to:
+  /// **'Compact'**
+  String get lineSpacingCompact;
+
+  /// No description provided for @lineSpacingNormal.
+  ///
+  /// In en, this message translates to:
+  /// **'Normal'**
+  String get lineSpacingNormal;
+
+  /// No description provided for @lineSpacingRelaxed.
+  ///
+  /// In en, this message translates to:
+  /// **'Relaxed'**
+  String get lineSpacingRelaxed;
+
+  /// No description provided for @moodAssociationsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What makes me feel…'**
+  String get moodAssociationsTitle;
+
+  /// No description provided for @moodAssociationsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{matching} of {total} entries'**
+  String moodAssociationsCount(int matching, int total);
 }
 
 class _AppLocalizationsDelegate

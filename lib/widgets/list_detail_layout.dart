@@ -4,6 +4,7 @@
 
 import 'package:daily_you/l10n/generated/app_localizations.dart';
 import 'package:daily_you/layouts/adaptive_diary_shell.dart';
+import 'package:daily_you/widgets/diary_wallpaper.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// A page's list beside its detail pane when there is room, the list alone
@@ -27,13 +28,13 @@ class ListDetailLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
       if (!diarySupportsSplit(constraints.biggest)) {
-        return listBuilder(context, false);
+        return DiaryWallpaper(child: listBuilder(context, false));
       }
       final cs = Theme.of(context).colorScheme;
       return Row(key: const ValueKey('list-detail-split'), children: [
         SizedBox(
             width: listWidth(constraints.maxWidth),
-            child: listBuilder(context, true)),
+            child: DiaryWallpaper(child: listBuilder(context, true))),
         Expanded(
           child: ColoredBox(
             color: detail == null ? cs.surface : cs.surfaceContainerLowest,

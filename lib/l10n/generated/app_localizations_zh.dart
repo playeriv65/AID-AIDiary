@@ -569,21 +569,6 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get filterTagsTitle => '过滤器';
-
-  @override
-  String get tagFilterModeAny => '任意标签';
-
-  @override
-  String get tagFilterModeAll => '所有标签';
-
-  @override
-  String get clearAllFilters => '清除全部';
-
-  @override
-  String get noTagsFilterLabel => '无标签';
-
-  @override
   String get addTagsTitle => '添加标签';
 
   @override
@@ -1377,6 +1362,71 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get locationSearchEmpty => '没有找到地点';
+
+  @override
+  String get settingsWallpaper => '壁纸';
+
+  @override
+  String get wallpaperNone => '无';
+
+  @override
+  String get wallpaperDots => '圆点';
+
+  @override
+  String get wallpaperGrid => '方格';
+
+  @override
+  String get wallpaperLines => '横线';
+
+  @override
+  String get wallpaperPhoto => '照片…';
+
+  @override
+  String get settingsFontFamily => '字体';
+
+  @override
+  String get fontSystem => '系统';
+
+  @override
+  String get fontSerif => '衬线';
+
+  @override
+  String get fontMono => '等宽';
+
+  @override
+  String get settingsFontSize => '字号';
+
+  @override
+  String get fontSizeSmall => '小';
+
+  @override
+  String get fontSizeMedium => '中';
+
+  @override
+  String get fontSizeLarge => '大';
+
+  @override
+  String get fontSizeExtraLarge => '特大';
+
+  @override
+  String get settingsLineSpacing => '行距';
+
+  @override
+  String get lineSpacingCompact => '紧凑';
+
+  @override
+  String get lineSpacingNormal => '标准';
+
+  @override
+  String get lineSpacingRelaxed => '宽松';
+
+  @override
+  String get moodAssociationsTitle => '什么让我感到…';
+
+  @override
+  String moodAssociationsCount(int matching, int total) {
+    return '$total 篇中有 $matching 篇';
+  }
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -1943,21 +1993,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String deleteTemplateMessage(Object name) {
     return '刪除「$name」？';
   }
-
-  @override
-  String get filterTagsTitle => '過濾器';
-
-  @override
-  String get tagFilterModeAny => '任意標籤';
-
-  @override
-  String get tagFilterModeAll => '所有標籤';
-
-  @override
-  String get clearAllFilters => '清除全部';
-
-  @override
-  String get noTagsFilterLabel => '無標籤';
 
   @override
   String get addTagsTitle => '新增標籤';
@@ -2735,4 +2770,69 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get locationSearchEmpty => '沒有找到地點';
+
+  @override
+  String get settingsWallpaper => '桌布';
+
+  @override
+  String get wallpaperNone => '無';
+
+  @override
+  String get wallpaperDots => '圓點';
+
+  @override
+  String get wallpaperGrid => '方格';
+
+  @override
+  String get wallpaperLines => '橫線';
+
+  @override
+  String get wallpaperPhoto => '照片…';
+
+  @override
+  String get settingsFontFamily => '字型';
+
+  @override
+  String get fontSystem => '系統';
+
+  @override
+  String get fontSerif => '襯線';
+
+  @override
+  String get fontMono => '等寬';
+
+  @override
+  String get settingsFontSize => '字級';
+
+  @override
+  String get fontSizeSmall => '小';
+
+  @override
+  String get fontSizeMedium => '中';
+
+  @override
+  String get fontSizeLarge => '大';
+
+  @override
+  String get fontSizeExtraLarge => '特大';
+
+  @override
+  String get settingsLineSpacing => '行距';
+
+  @override
+  String get lineSpacingCompact => '緊湊';
+
+  @override
+  String get lineSpacingNormal => '標準';
+
+  @override
+  String get lineSpacingRelaxed => '寬鬆';
+
+  @override
+  String get moodAssociationsTitle => '什麼讓我感到…';
+
+  @override
+  String moodAssociationsCount(int matching, int total) {
+    return '$total 篇中有 $matching 篇';
+  }
 }

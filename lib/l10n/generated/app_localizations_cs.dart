@@ -573,21 +573,6 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
-  String get filterTagsTitle => 'Filtr';
-
-  @override
-  String get tagFilterModeAny => 'Jakýkoliv štítek';
-
-  @override
-  String get tagFilterModeAll => 'Všechny štítky';
-
-  @override
-  String get clearAllFilters => 'Smazat vše';
-
-  @override
-  String get noTagsFilterLabel => 'Žádné štítky';
-
-  @override
   String get addTagsTitle => 'Přidat štítky';
 
   @override
@@ -1396,4 +1381,69 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String get locationSearchEmpty => 'No places found';
+
+  @override
+  String get settingsWallpaper => 'Wallpaper';
+
+  @override
+  String get wallpaperNone => 'None';
+
+  @override
+  String get wallpaperDots => 'Dots';
+
+  @override
+  String get wallpaperGrid => 'Grid';
+
+  @override
+  String get wallpaperLines => 'Lines';
+
+  @override
+  String get wallpaperPhoto => 'Photo…';
+
+  @override
+  String get settingsFontFamily => 'Font';
+
+  @override
+  String get fontSystem => 'System';
+
+  @override
+  String get fontSerif => 'Serif';
+
+  @override
+  String get fontMono => 'Monospace';
+
+  @override
+  String get settingsFontSize => 'Font size';
+
+  @override
+  String get fontSizeSmall => 'Small';
+
+  @override
+  String get fontSizeMedium => 'Medium';
+
+  @override
+  String get fontSizeLarge => 'Large';
+
+  @override
+  String get fontSizeExtraLarge => 'Extra large';
+
+  @override
+  String get settingsLineSpacing => 'Line spacing';
+
+  @override
+  String get lineSpacingCompact => 'Compact';
+
+  @override
+  String get lineSpacingNormal => 'Normal';
+
+  @override
+  String get lineSpacingRelaxed => 'Relaxed';
+
+  @override
+  String get moodAssociationsTitle => 'What makes me feel…';
+
+  @override
+  String moodAssociationsCount(int matching, int total) {
+    return '$matching of $total entries';
+  }
 }

@@ -15,6 +15,7 @@ import 'package:daily_you/providers/tags_provider.dart';
 import 'package:daily_you/time_manager.dart';
 import 'package:daily_you/utils/entry_actions.dart';
 import 'package:daily_you/utils/entry_context_display.dart';
+import 'package:daily_you/utils/entry_typography.dart';
 import 'package:daily_you/widgets/delete_confirm_dialog.dart';
 import 'package:daily_you/widgets/entry_tag_chips.dart';
 import 'package:daily_you/widgets/local_image_loader.dart';
@@ -131,8 +132,10 @@ class EntryViewPage extends StatelessWidget {
                     const SizedBox(height: 16),
                     if (entry.text.isNotEmpty)
                       SelectionArea(
-                        child:
-                            ScaledMarkdown(data: entry.text, selectable: false),
+                        child: ScaledMarkdown(
+                            data: entry.text,
+                            selectable: false,
+                            typography: EntryTypography.of(context)),
                       ),
                   ],
                 ),

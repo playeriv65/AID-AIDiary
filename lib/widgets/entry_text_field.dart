@@ -5,6 +5,7 @@
 import 'dart:ui';
 
 import 'package:daily_you/l10n/generated/app_localizations.dart';
+import 'package:daily_you/utils/entry_typography.dart';
 import 'package:daily_you/utils/markdown_preview_styles.dart';
 import 'package:daily_you/widgets/editor_action_bar/editor_keyboard_session.dart';
 import 'package:daily_you/widgets/markdown_preview_controller.dart';
@@ -59,10 +60,9 @@ class _EntryTextFieldState extends State<EntryTextField> {
     final theme = Theme.of(context);
     final styles = MarkdownPreviewStyles.fromTheme(context);
     final session = EditorKeyboardSessionScope.maybeOf(context);
-    final baseStyle = theme.textTheme.bodyLarge!.copyWith(
-      fontSize: 16,
-      color: theme.colorScheme.onSurface,
-    );
+    final baseStyle = EntryTypography.of(context).apply(theme
+        .textTheme.bodyLarge!
+        .copyWith(color: theme.colorScheme.onSurface));
     final strutStyle = StrutStyle.fromTextStyle(baseStyle);
 
     final field = TextField(

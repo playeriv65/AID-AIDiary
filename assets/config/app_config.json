@@ -22,6 +22,20 @@
   "activity": {
     "timeoutSeconds": 10
   },
+  "typography": {
+    "fontSizes": {"small": 14, "medium": 16, "large": 18, "extraLarge": 21},
+    "lineSpacings": {"compact": 1.3, "normal": 1.5, "relaxed": 1.8},
+    "fontFamilies": {
+      "system": [],
+      "serif": ["Noto Serif SC", "Source Han Serif SC", "Songti SC", "SimSun", "Noto Serif", "Georgia", "serif"],
+      "mono": ["Cascadia Mono", "Consolas", "Noto Sans Mono", "Roboto Mono", "monospace"]
+    }
+  },
+  "wallpaper": {
+    "directory": "wallpaper",
+    "photoScrimOpacity": 0.78,
+    "patternSpacing": 24
+  },
   "weather": {
     "forecastUrl": "https://api.open-meteo.com/v1/forecast",
     "archiveUrl": "https://archive-api.open-meteo.com/v1/archive",
