@@ -3203,6 +3203,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Save'**
   String get checkInSave;
+
+  /// No description provided for @editorWordCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{words} words · {characters} characters'**
+  String editorWordCount(int words, int characters);
+
+  /// No description provided for @coachNothingSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a program or template.'**
+  String get coachNothingSelected;
 }
 
 class _AppLocalizationsDelegate

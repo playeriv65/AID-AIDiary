@@ -499,5 +499,7 @@
     "checkInMood": "現在心情如何？",
     "checkInActivity": "在做什麼？",
     "checkInNote": "寫一句（可選）",
-    "checkInSave": "記下"
+    "checkInSave": "記下",
+    "editorWordCount": "{words} 字 · {characters} 個字元",
+    "coachNothingSelected": "選擇一個練習或範本。"
 }

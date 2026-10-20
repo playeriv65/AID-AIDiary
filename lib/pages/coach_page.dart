@@ -146,6 +146,7 @@ class _CoachPageState extends State<CoachPage>
 
     return ListDetailLayout(
       detail: selected?.detail(),
+      emptyDetailText: l10n.coachNothingSelected,
       listBuilder: (context, split) => CustomScrollView(slivers: [
         const SliverPadding(
           padding: EdgeInsets.fromLTRB(16, 16, 16, 8),

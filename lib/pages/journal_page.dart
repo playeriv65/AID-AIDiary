@@ -101,7 +101,8 @@ class _JournalPageState extends State<JournalPage>
   Future<void> _handleShare(SharePayload payload) async {
     if (!mounted) return;
     Navigator.of(context).popUntil((route) => route.isFirst);
-    await Navigator.of(context).push(MaterialPageRoute(
+    // SharePage turns into the editor, which is full screen.
+    await Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
       allowSnapshotting: false,
       builder: (context) => SharePage(payload: payload),
     ));

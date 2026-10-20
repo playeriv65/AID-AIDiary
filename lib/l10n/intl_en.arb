@@ -1020,5 +1020,14 @@
   "checkInNote": "A line about it (optional)",
   "@checkInNote": {},
   "checkInSave": "Save",
-  "@checkInSave": {}
+  "@checkInSave": {},
+  "editorWordCount": "{words} words · {characters} characters",
+  "@editorWordCount": {
+    "placeholders": {
+      "words": {"type": "int"},
+      "characters": {"type": "int"}
+    }
+  },
+  "coachNothingSelected": "Choose a program or template.",
+  "@coachNothingSelected": {}
 }

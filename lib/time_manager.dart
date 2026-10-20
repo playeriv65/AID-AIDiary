@@ -103,19 +103,6 @@ class TimeManager {
     6: 'sunday',
   };
 
-  /// The weekday weeks start on (1 = Monday), from settings or the locale.
-  static int firstWeekday(BuildContext context) {
-    final chosen = ConfigProvider.instance.get(Settings.startingDayOfWeek);
-    final index = dayOfWeekIndexMapping.entries
-        .where((e) => e.value == chosen)
-        .firstOrNull
-        ?.key;
-    if (index != null) return index + 1;
-    // MaterialLocalizations counts from Sunday = 0.
-    final sundayBased = MaterialLocalizations.of(context).firstDayOfWeekIndex;
-    return sundayBased == 0 ? DateTime.sunday : sundayBased;
-  }
-
   /// Midnight on the first day of the week holding [date].
   static DateTime startOfWeek(DateTime date, int firstWeekday) {
     final back = (date.weekday - firstWeekday) % 7;

@@ -4,6 +4,7 @@
 
 import 'dart:async';
 
+import 'package:daily_you/l10n/generated/app_localizations.dart';
 import 'package:daily_you/models/template.dart';
 import 'package:daily_you/utils/text_editing.dart';
 import 'package:daily_you/widgets/editor_action_bar/action_bar_pill.dart';
@@ -17,6 +18,7 @@ import 'package:daily_you/widgets/editor_action_bar/toolbar_morph.dart';
 import 'package:daily_you/widgets/editor_action_bar/toolbar_overflow_popup.dart';
 import 'package:daily_you/widgets/template_select_popup.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:word_count/word_count.dart';
 
 export 'package:daily_you/widgets/editor_action_bar/editor_action_bar_overlay.dart';
 export 'package:daily_you/widgets/editor_action_bar/toolbar_actions.dart'
@@ -48,6 +50,9 @@ class EditorActionBar extends StatefulWidget {
   static const double wideBreakpoint = 600.0;
 
   static const double _dividerWidth = 8.0;
+
+  /// Room reserved for the word and character count on wide windows.
+  static const double _countWidth = 168.0;
 
   @override
   State<EditorActionBar> createState() => _EditorActionBarState();
@@ -279,6 +284,11 @@ class _EditorActionBarState extends State<EditorActionBar> {
               overflowButtonWidth: metrics.buttonSize,
               padding: metrics.pillPadding,
             );
+            // The count sits beside the centred pill only where it fits.
+            final sideRoom = (maxPillWidth - split.pillWidth) / 2;
+            final showCount = combined &&
+                !split.hasOverflow &&
+                sideRoom >= EditorActionBar._countWidth;
 
             return Stack(
               children: [
@@ -308,6 +318,14 @@ class _EditorActionBarState extends State<EditorActionBar> {
                     ],
                   ),
                 ),
+                if (showCount)
+                  PositionedDirectional(
+                    end: metrics.contentInset,
+                    top: 0,
+                    bottom: 0,
+                    width: EditorActionBar._countWidth,
+                    child: _WordCount(controller: widget.controller),
+                  ),
               ],
             );
           },
@@ -347,6 +365,34 @@ class _EditorActionBarState extends State<EditorActionBar> {
               ),
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Words and characters in the entry, counted as statistics count them.
+class _WordCount extends StatelessWidget {
+  const _WordCount({required this.controller});
+
+  final TextEditingController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
+    return ValueListenableBuilder<TextEditingValue>(
+      valueListenable: controller,
+      builder: (context, value, _) => Align(
+        alignment: AlignmentDirectional.centerEnd,
+        child: Text(
+          l10n.editorWordCount(
+              wordsCount(value.text), value.text.characters.length),
+          key: const ValueKey('editor-word-count'),
+          maxLines: 1,
+          overflow: TextOverflow.fade,
+          style: theme.textTheme.labelSmall?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant, letterSpacing: 0.6),
         ),
       ),
     );

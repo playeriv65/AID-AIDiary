@@ -1725,4 +1725,12 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get checkInSave => 'Save';
+
+  @override
+  String editorWordCount(int words, int characters) {
+    return '$words words · $characters characters';
+  }
+
+  @override
+  String get coachNothingSelected => 'Choose a program or template.';
 }

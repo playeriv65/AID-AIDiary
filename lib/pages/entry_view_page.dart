@@ -184,7 +184,7 @@ class EntryViewPage extends StatelessWidget {
 
   Future<void> _edit(
       BuildContext context, Entry entry, List<EntryImage> images) async {
-    await Navigator.of(context).push(PageRouteBuilder(
+    await Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
       allowSnapshotting: false,
       fullscreenDialog: true,
       pageBuilder: (context, _, __) =>

@@ -25,7 +25,8 @@ class EntryNavigation {
       int? initialMood,
       String? initialPrompt,
       Template? template}) {
-    return Navigator.of(context).push(MaterialPageRoute(
+    // The editor covers the whole window, rail included, like Journey.
+    return Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
       allowSnapshotting: false,
       builder: (context) => AddEditEntryPage(
         entry: entry,

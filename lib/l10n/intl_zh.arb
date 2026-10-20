@@ -498,5 +498,7 @@
     "checkInMood": "现在心情如何？",
     "checkInActivity": "在做什么？",
     "checkInNote": "写一句（可选）",
-    "checkInSave": "记下"
+    "checkInSave": "记下",
+    "editorWordCount": "{words} 字 · {characters} 个字符",
+    "coachNothingSelected": "选择一个练习或模板。"
 }

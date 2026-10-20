@@ -1683,6 +1683,14 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get checkInSave => '记下';
+
+  @override
+  String editorWordCount(int words, int characters) {
+    return '$words 字 · $characters 个字符';
+  }
+
+  @override
+  String get coachNothingSelected => '选择一个练习或模板。';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -3347,4 +3355,12 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get checkInSave => '記下';
+
+  @override
+  String editorWordCount(int words, int characters) {
+    return '$words 字 · $characters 個字元';
+  }
+
+  @override
+  String get coachNothingSelected => '選擇一個練習或範本。';
 }

@@ -14,12 +14,16 @@ class ListDetailLayout extends StatelessWidget {
     super.key,
     required this.listBuilder,
     required this.detail,
+    this.emptyDetailText,
   });
 
   final Widget Function(BuildContext context, bool split) listBuilder;
 
   /// Shown beside the list; null shows the "nothing selected" state.
   final Widget? detail;
+
+  /// The "nothing selected" text; defaults to the one about entries.
+  final String? emptyDetailText;
 
   static double listWidth(double available) =>
       (available * .5).clamp(340.0, 640.0);
@@ -40,7 +44,9 @@ class ListDetailLayout extends StatelessWidget {
             color: detail == null ? cs.surface : cs.surfaceContainerLowest,
             child: detail ??
                 Center(
-                  child: Text(AppLocalizations.of(context)!.noEntrySelected,
+                  child: Text(
+                      emptyDetailText ??
+                          AppLocalizations.of(context)!.noEntrySelected,
                       key: const ValueKey('detail-empty'),
                       style: Theme.of(context)
                           .textTheme

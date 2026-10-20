@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'package:daily_you/config_provider.dart';
 import 'package:daily_you/l10n/generated/app_localizations.dart';
 import 'package:daily_you/models/entry.dart';
 import 'package:daily_you/providers/entries_provider.dart';
@@ -36,12 +37,11 @@ class ReviewStoryPage extends StatelessWidget {
   /// The review for the current week or year.
   static PeriodReview current(BuildContext context, ReviewSpan span) {
     final now = DateTime.now();
+    // The settings index counts from Monday = 0; DateTime.weekday from 1.
+    final weekStart = TimeManager.startOfWeek(
+        now, ConfigProvider.instance.getFirstDayOfWeekIndex(context) + 1);
     final (start, end) = switch (span) {
-      ReviewSpan.week => (
-          TimeManager.startOfWeek(now, TimeManager.firstWeekday(context)),
-          TimeManager.startOfWeek(now, TimeManager.firstWeekday(context))
-              .add(const Duration(days: 7)),
-        ),
+      ReviewSpan.week => (weekStart, weekStart.add(const Duration(days: 7))),
       ReviewSpan.year => (DateTime(now.year), DateTime(now.year + 1)),
     };
     final tags = TagsProvider.instance;
