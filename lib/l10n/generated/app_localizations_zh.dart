@@ -1886,6 +1886,57 @@ class AppLocalizationsZh extends AppLocalizations {
   @override
   String get aboutModifiedNotice =>
       'Daily You（作者 Demizo 及贡献者）的修改版，不是官方的 Daily You 应用。';
+
+  @override
+  String get toolbarPhotos => '添加照片';
+
+  @override
+  String get toolbarVideo => '视频';
+
+  @override
+  String get toolbarAudio => '语音';
+
+  @override
+  String get toolbarTags => '标签';
+
+  @override
+  String get toolbarBulletList => '无序列表';
+
+  @override
+  String get toolbarHeading => '标题';
+
+  @override
+  String get toolbarBold => '粗体';
+
+  @override
+  String get toolbarItalic => '斜体';
+
+  @override
+  String get toolbarHighlight => '高亮';
+
+  @override
+  String get toolbarStrikethrough => '删除线';
+
+  @override
+  String get toolbarQuote => '引用';
+
+  @override
+  String get toolbarLink => '链接';
+
+  @override
+  String get toolbarInsert => '插入';
+
+  @override
+  String get toolbarUndo => '撤销';
+
+  @override
+  String get toolbarRedo => '重做';
+
+  @override
+  String get toolbarInsertDate => '插入日期';
+
+  @override
+  String get toolbarInsertTime => '插入时间';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -3755,4 +3806,55 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   @override
   String get aboutModifiedNotice =>
       'Daily You（作者 Demizo 及貢獻者）的修改版，不是官方的 Daily You 應用。';
+
+  @override
+  String get toolbarPhotos => '新增照片';
+
+  @override
+  String get toolbarVideo => '影片';
+
+  @override
+  String get toolbarAudio => '語音';
+
+  @override
+  String get toolbarTags => '標籤';
+
+  @override
+  String get toolbarBulletList => '項目符號清單';
+
+  @override
+  String get toolbarHeading => '標題';
+
+  @override
+  String get toolbarBold => '粗體';
+
+  @override
+  String get toolbarItalic => '斜體';
+
+  @override
+  String get toolbarHighlight => '醒目提示';
+
+  @override
+  String get toolbarStrikethrough => '刪除線';
+
+  @override
+  String get toolbarQuote => '引用';
+
+  @override
+  String get toolbarLink => '連結';
+
+  @override
+  String get toolbarInsert => '插入';
+
+  @override
+  String get toolbarUndo => '復原';
+
+  @override
+  String get toolbarRedo => '重做';
+
+  @override
+  String get toolbarInsertDate => '插入日期';
+
+  @override
+  String get toolbarInsertTime => '插入時間';
 }

@@ -135,14 +135,24 @@ bool Win32Window::Create(const std::wstring& title,
   UINT dpi = FlutterDesktopGetDpiForMonitor(monitor);
   double scale_factor = dpi / 96.0;
 
-  HWND window = CreateWindow(
-      window_class, title.c_str(), WS_OVERLAPPEDWINDOW,
+  // Tooling runs: on screen, so the compositor keeps driving frames (an
+  // off-screen window gets no vsync and its animations stall), but nearly
+  // transparent, click-through, never activated and kept off the taskbar.
+  const DWORD ex_style = RunsInBackground()
+                             ? WS_EX_LAYERED | WS_EX_TRANSPARENT |
+                                   WS_EX_NOACTIVATE | WS_EX_TOOLWINDOW
+                             : 0;
+  HWND window = CreateWindowEx(
+      ex_style, window_class, title.c_str(), WS_OVERLAPPEDWINDOW,
       Scale(origin.x, scale_factor), Scale(origin.y, scale_factor),
       Scale(size.width, scale_factor), Scale(size.height, scale_factor),
       nullptr, nullptr, GetModuleHandle(nullptr), this);
 
   if (!window) {
     return false;
+  }
+  if (RunsInBackground()) {
+    SetLayeredWindowAttributes(window, 0, 1, LWA_ALPHA);
   }
 
   UpdateTheme(window);
@@ -152,9 +162,13 @@ bool Win32Window::Create(const std::wstring& title,
 
 bool Win32Window::Show() {
   // Tooling runs keep the window shown, so Flutter still renders, but never
-  // activate it.
-  return ShowWindow(window_handle_,
-                    RunsInBackground() ? SW_SHOWNOACTIVATE : SW_SHOWNORMAL);
+  // activate it and keep it below everything else.
+  if (RunsInBackground()) {
+    ShowWindow(window_handle_, SW_SHOWNOACTIVATE);
+    return SetWindowPos(window_handle_, HWND_BOTTOM, 0, 0, 0, 0,
+                        SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
+  }
+  return ShowWindow(window_handle_, SW_SHOWNORMAL);
 }
 
 // static

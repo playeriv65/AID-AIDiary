@@ -1932,4 +1932,55 @@ class AppLocalizationsBe extends AppLocalizations {
   @override
   String get aboutModifiedNotice =>
       'A modified version of Daily You by Demizo and contributors. It is not the official Daily You app.';
+
+  @override
+  String get toolbarPhotos => 'Add photos';
+
+  @override
+  String get toolbarVideo => 'Video';
+
+  @override
+  String get toolbarAudio => 'Voice note';
+
+  @override
+  String get toolbarTags => 'Tags';
+
+  @override
+  String get toolbarBulletList => 'Bulleted list';
+
+  @override
+  String get toolbarHeading => 'Heading';
+
+  @override
+  String get toolbarBold => 'Bold';
+
+  @override
+  String get toolbarItalic => 'Italic';
+
+  @override
+  String get toolbarHighlight => 'Highlight';
+
+  @override
+  String get toolbarStrikethrough => 'Strikethrough';
+
+  @override
+  String get toolbarQuote => 'Quote';
+
+  @override
+  String get toolbarLink => 'Link';
+
+  @override
+  String get toolbarInsert => 'Insert';
+
+  @override
+  String get toolbarUndo => 'Undo';
+
+  @override
+  String get toolbarRedo => 'Redo';
+
+  @override
+  String get toolbarInsertDate => 'Insert the date';
+
+  @override
+  String get toolbarInsertTime => 'Insert the time';
 }

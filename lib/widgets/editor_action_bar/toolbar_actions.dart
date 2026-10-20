@@ -12,6 +12,9 @@ import 'package:material_ui/material_ui.dart';
 @immutable
 class ToolbarAction {
   final Widget icon;
+
+  /// Shown on hover and long press, and read out by screen readers.
+  final String tooltip;
   final FutureOr<void> Function() onPressed;
 
   /// For actions that may launch an external activity. Focus must be manually restored
@@ -19,6 +22,7 @@ class ToolbarAction {
 
   const ToolbarAction({
     required this.icon,
+    required this.tooltip,
     required this.onPressed,
     this.mayLeaveApp = false,
   });
@@ -26,41 +30,51 @@ class ToolbarAction {
 
 List<ToolbarAction> markdownActions(
     BuildContext context, TextEditingController controller) {
+  final l10n = AppLocalizations.of(context)!;
   return [
     ToolbarAction(
       icon: const Icon(Icons.format_list_bulleted_rounded),
+      tooltip: l10n.toolbarBulletList,
       onPressed: () => insertLinePrefix(controller, '-'),
     ),
     ToolbarAction(
       icon: const Icon(Icons.text_fields_rounded),
+      tooltip: l10n.toolbarHeading,
       onPressed: () => _insertHeader(context, controller),
     ),
     ToolbarAction(
       icon: const Icon(Icons.format_bold_rounded),
+      tooltip: l10n.toolbarBold,
       onPressed: () => wrapSelection(controller, '**'),
     ),
     ToolbarAction(
       icon: const Icon(Icons.format_italic_rounded),
+      tooltip: l10n.toolbarItalic,
       onPressed: () => wrapSelection(controller, '_'),
     ),
     ToolbarAction(
       icon: const SvgIcon('assets/icons/format_ink_highlighter.svg'),
+      tooltip: l10n.toolbarHighlight,
       onPressed: () => wrapSelection(controller, '=='),
     ),
     ToolbarAction(
       icon: const Icon(Icons.format_strikethrough_rounded),
+      tooltip: l10n.toolbarStrikethrough,
       onPressed: () => wrapSelection(controller, '~~'),
     ),
     ToolbarAction(
       icon: const Icon(Icons.format_quote_rounded),
+      tooltip: l10n.toolbarQuote,
       onPressed: () => insertLinePrefix(controller, '>'),
     ),
     ToolbarAction(
       icon: const Icon(Icons.link_rounded),
+      tooltip: l10n.toolbarLink,
       onPressed: () => wrapSelection(controller, '[', ']()'),
     ),
     ToolbarAction(
       icon: const Icon(Icons.add_box_outlined),
+      tooltip: l10n.toolbarInsert,
       onPressed: () => _insertBlock(context, controller),
     ),
   ];

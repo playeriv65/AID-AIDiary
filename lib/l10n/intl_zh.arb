@@ -561,5 +561,22 @@
     "channelQuickWrite": "快速写",
     "channelBackup": "备份",
     "formatJsonExport": "JSON（AID Diary 导出）",
-    "aboutModifiedNotice": "Daily You（作者 Demizo 及贡献者）的修改版，不是官方的 Daily You 应用。"
+    "aboutModifiedNotice": "Daily You（作者 Demizo 及贡献者）的修改版，不是官方的 Daily You 应用。",
+    "toolbarPhotos": "添加照片",
+    "toolbarVideo": "视频",
+    "toolbarAudio": "语音",
+    "toolbarTags": "标签",
+    "toolbarBulletList": "无序列表",
+    "toolbarHeading": "标题",
+    "toolbarBold": "粗体",
+    "toolbarItalic": "斜体",
+    "toolbarHighlight": "高亮",
+    "toolbarStrikethrough": "删除线",
+    "toolbarQuote": "引用",
+    "toolbarLink": "链接",
+    "toolbarInsert": "插入",
+    "toolbarUndo": "撤销",
+    "toolbarRedo": "重做",
+    "toolbarInsertDate": "插入日期",
+    "toolbarInsertTime": "插入时间"
 }

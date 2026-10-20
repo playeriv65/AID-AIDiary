@@ -53,6 +53,8 @@ class ActionBarPill extends StatelessWidget {
                           builder: (buttonContext) => ToolbarIconButton(
                             size: metrics.buttonSize,
                             icon: const Icon(Icons.more_horiz_rounded),
+                            tooltip: MaterialLocalizations.of(buttonContext)
+                                .moreButtonTooltip,
                             onPressed: () => onShowOverflow(buttonContext),
                           ),
                         ),
@@ -89,12 +91,14 @@ class DockSurface extends StatelessWidget {
 class ToolbarIconButton extends StatelessWidget {
   final double size;
   final Widget icon;
+  final String tooltip;
   final VoidCallback? onPressed;
 
   const ToolbarIconButton({
     super.key,
     required this.size,
     required this.icon,
+    required this.tooltip,
     required this.onPressed,
   });
 
@@ -106,6 +110,7 @@ class ToolbarIconButton extends StatelessWidget {
       child: IconButton(
         padding: EdgeInsets.zero,
         visualDensity: VisualDensity.compact,
+        tooltip: tooltip,
         icon: icon,
         onPressed: onPressed,
       ),

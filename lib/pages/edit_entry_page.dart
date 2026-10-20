@@ -637,6 +637,7 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
     return [
       ToolbarAction(
         icon: const Icon(Icons.photo),
+        tooltip: l10n.toolbarPhotos,
         mayLeaveApp: true,
         onPressed: () => EntryImageActions.pickFromGallery(_addImage,
             onMetadata: _offerPhotoMetadata),
@@ -644,11 +645,13 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
       if (Platform.isAndroid)
         ToolbarAction(
           icon: const Icon(Icons.photo_camera_rounded),
+          tooltip: l10n.actionTakePhoto,
           mayLeaveApp: true,
           onPressed: () => EntryImageActions.takePhoto(_addImage),
         ),
       ToolbarAction(
         icon: const Icon(Icons.videocam_outlined),
+        tooltip: l10n.toolbarVideo,
         mayLeaveApp: true,
         onPressed: () => _chooseAttachment([
           if (Platform.isAndroid)
@@ -666,6 +669,7 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
       ),
       ToolbarAction(
         icon: const Icon(Icons.mic_none_rounded),
+        tooltip: l10n.toolbarAudio,
         mayLeaveApp: true,
         onPressed: () => _chooseAttachment([
           (
@@ -682,22 +686,27 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
       ),
       ToolbarAction(
         icon: const Icon(Icons.place_outlined),
+        tooltip: l10n.locationTitle,
         onPressed: _chooseLocation,
       ),
       ToolbarAction(
         icon: const Icon(Icons.wb_sunny_outlined),
+        tooltip: l10n.weatherTitle,
         onPressed: _chooseWeather,
       ),
       ToolbarAction(
         icon: const Icon(Icons.directions_walk_rounded),
+        tooltip: l10n.activityTitle,
         onPressed: _chooseActivity,
       ),
       ToolbarAction(
         icon: const Icon(Icons.mood_rounded),
+        tooltip: l10n.tagMoodTitle,
         onPressed: _chooseMood,
       ),
       ToolbarAction(
         icon: const Icon(Icons.local_offer_rounded),
+        tooltip: l10n.toolbarTags,
         onPressed: () => showDialog(
           context: context,
           builder: (_) =>

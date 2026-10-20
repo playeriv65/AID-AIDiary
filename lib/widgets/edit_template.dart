@@ -120,17 +120,21 @@ class _EditTemplateState extends State<EditTemplate> {
   }
 
   List<ToolbarAction> _buildMainActions() {
+    final l10n = AppLocalizations.of(context)!;
     return [
       ToolbarAction(
         icon: const Icon(Icons.today_rounded),
+        tooltip: l10n.toolbarInsertDate,
         onPressed: () => insertAtCursor(_textEditingController, '{{date}}'),
       ),
       ToolbarAction(
         icon: const Icon(Icons.access_time_rounded),
+        tooltip: l10n.toolbarInsertTime,
         onPressed: () => insertAtCursor(_textEditingController, '{{time}}'),
       ),
       ToolbarAction(
         icon: const Icon(Icons.local_offer_rounded),
+        tooltip: l10n.toolbarTags,
         onPressed: _openTagPicker,
       ),
     ];

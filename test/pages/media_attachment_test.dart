@@ -64,4 +64,14 @@ void main() {
     await tester.pumpAndSettle();
     await tester.pumpWidget(const SizedBox.shrink());
   });
+
+  testWidgets('every toolbar button names what it does', (tester) async {
+    DiaryAppHarness.size(tester, const Size(1280, 800));
+    await tester.pumpWidget(harness.app(const AddEditEntryPage()));
+    await tester.pumpAndSettle();
+    for (final name in ['位置', '天气', '标签', '粗体', '插入', '撤销']) {
+      expect(find.byTooltip(name), findsOneWidget, reason: name);
+    }
+    await tester.pumpWidget(const SizedBox.shrink());
+  });
 }

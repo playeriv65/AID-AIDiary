@@ -25,10 +25,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
   project.set_dart_entrypoint_arguments(std::move(command_line_arguments));
 
   FlutterWindow window(project);
-  // Far beyond any monitor when tooling runs the app in the background.
-  Win32Window::Point origin = RunsInBackground()
-                                  ? Win32Window::Point(30000, 30000)
-                                  : Win32Window::Point(10, 10);
+  Win32Window::Point origin(10, 10);
   Win32Window::Size size(1280, 720);
   if (!window.Create(L"AID Diary", origin, size)) {
     return EXIT_FAILURE;

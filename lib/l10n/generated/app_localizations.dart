@@ -3575,6 +3575,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'A modified version of Daily You by Demizo and contributors. It is not the official Daily You app.'**
   String get aboutModifiedNotice;
+
+  /// No description provided for @toolbarPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'Add photos'**
+  String get toolbarPhotos;
+
+  /// No description provided for @toolbarVideo.
+  ///
+  /// In en, this message translates to:
+  /// **'Video'**
+  String get toolbarVideo;
+
+  /// No description provided for @toolbarAudio.
+  ///
+  /// In en, this message translates to:
+  /// **'Voice note'**
+  String get toolbarAudio;
+
+  /// No description provided for @toolbarTags.
+  ///
+  /// In en, this message translates to:
+  /// **'Tags'**
+  String get toolbarTags;
+
+  /// No description provided for @toolbarBulletList.
+  ///
+  /// In en, this message translates to:
+  /// **'Bulleted list'**
+  String get toolbarBulletList;
+
+  /// No description provided for @toolbarHeading.
+  ///
+  /// In en, this message translates to:
+  /// **'Heading'**
+  String get toolbarHeading;
+
+  /// No description provided for @toolbarBold.
+  ///
+  /// In en, this message translates to:
+  /// **'Bold'**
+  String get toolbarBold;
+
+  /// No description provided for @toolbarItalic.
+  ///
+  /// In en, this message translates to:
+  /// **'Italic'**
+  String get toolbarItalic;
+
+  /// No description provided for @toolbarHighlight.
+  ///
+  /// In en, this message translates to:
+  /// **'Highlight'**
+  String get toolbarHighlight;
+
+  /// No description provided for @toolbarStrikethrough.
+  ///
+  /// In en, this message translates to:
+  /// **'Strikethrough'**
+  String get toolbarStrikethrough;
+
+  /// No description provided for @toolbarQuote.
+  ///
+  /// In en, this message translates to:
+  /// **'Quote'**
+  String get toolbarQuote;
+
+  /// No description provided for @toolbarLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Link'**
+  String get toolbarLink;
+
+  /// No description provided for @toolbarInsert.
+  ///
+  /// In en, this message translates to:
+  /// **'Insert'**
+  String get toolbarInsert;
+
+  /// No description provided for @toolbarUndo.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
+  String get toolbarUndo;
+
+  /// No description provided for @toolbarRedo.
+  ///
+  /// In en, this message translates to:
+  /// **'Redo'**
+  String get toolbarRedo;
+
+  /// No description provided for @toolbarInsertDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Insert the date'**
+  String get toolbarInsertDate;
+
+  /// No description provided for @toolbarInsertTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Insert the time'**
+  String get toolbarInsertTime;
 }
 
 class _AppLocalizationsDelegate

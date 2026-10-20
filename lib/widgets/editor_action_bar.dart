@@ -2,8 +2,6 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-import 'dart:async';
-
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/models/template.dart';
 import 'package:aid_diary/utils/text_editing.dart';
@@ -118,8 +116,7 @@ class _EditorActionBarState extends State<EditorActionBar> {
     return _spaced([
       if (widget.showTemplateButton) _templateEntry(metrics),
       for (final action in widget.mainActions ?? const <ToolbarAction>[])
-        _iconEntry(metrics, action.icon, action.onPressed,
-            claimsFocus: false, reconnectsKeyboard: action.mayLeaveApp),
+        _iconEntry(metrics, action, claimsFocus: false),
     ]);
   }
 
@@ -133,8 +130,7 @@ class _EditorActionBarState extends State<EditorActionBar> {
         _dividerEntry(),
       ],
       for (final action in markdownActions(context, widget.controller))
-        _iconEntry(metrics, action.icon, action.onPressed,
-            reconnectsKeyboard: action.mayLeaveApp),
+        _iconEntry(metrics, action),
       if (undoController != null) ...[
         _dividerEntry(),
         _undoEntry(metrics, undoController, isUndo: true),
@@ -149,6 +145,7 @@ class _EditorActionBarState extends State<EditorActionBar> {
       build: (context, dismissOverflow) => ToolbarIconButton(
         size: metrics.buttonSize,
         icon: const Icon(Icons.note_add_rounded),
+        tooltip: AppLocalizations.of(context)!.templatePickerTitle,
         onPressed: () {
           dismissOverflow?.call();
           // Capture before the popup or focus restorer can shift focus away
@@ -168,20 +165,19 @@ class _EditorActionBarState extends State<EditorActionBar> {
 
   ToolbarEntry _iconEntry(
     DockMetrics metrics,
-    Widget icon,
-    FutureOr<void> Function() action, {
+    ToolbarAction action, {
     bool claimsFocus = true,
-    bool reconnectsKeyboard = false,
   }) {
     return ToolbarEntry(
       width: metrics.buttonSize,
       build: (context, dismissOverflow) => ToolbarIconButton(
         size: metrics.buttonSize,
-        icon: icon,
+        icon: action.icon,
+        tooltip: action.tooltip,
         onPressed: () {
           dismissOverflow?.call();
-          _focusRestorer.run(action,
-              claimsFocus: claimsFocus, reconnectsKeyboard: reconnectsKeyboard);
+          _focusRestorer.run(action.onPressed,
+              claimsFocus: claimsFocus, reconnectsKeyboard: action.mayLeaveApp);
         },
       ),
     );
@@ -201,6 +197,9 @@ class _EditorActionBarState extends State<EditorActionBar> {
           return ToolbarIconButton(
             size: metrics.buttonSize,
             icon: Icon(isUndo ? Icons.undo_rounded : Icons.redo_rounded),
+            tooltip: isUndo
+                ? AppLocalizations.of(context)!.toolbarUndo
+                : AppLocalizations.of(context)!.toolbarRedo,
             onPressed: enabled
                 ? () {
                     dismissOverflow?.call();
