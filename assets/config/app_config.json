@@ -39,6 +39,9 @@
     "maxVideoMinutes": 5,
     "maxVideoMegabytes": 200
   },
+  "recentlyDeleted": {
+    "retentionDays": 30
+  },
   "share": {
     "cardWidth": 380,
     "pixelRatio": 3.0,

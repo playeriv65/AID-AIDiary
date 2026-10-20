@@ -83,6 +83,10 @@ class AppConfig {
   int get maxVideoBytes =>
       (_section('media')['maxVideoMegabytes'] as int) * 1024 * 1024;
 
+  /// Entries in Recently deleted are erased after this long.
+  Duration get deletedRetention =>
+      Duration(days: _section('recentlyDeleted')['retentionDays'] as int);
+
   /// Share cards are laid out this wide and rendered at [sharePixelRatio].
   double get shareCardWidth =>
       (_section('share')['cardWidth'] as num).toDouble();

@@ -579,7 +579,7 @@ abstract class AppLocalizations {
   /// No description provided for @deleteLogDescription.
   ///
   /// In en, this message translates to:
-  /// **'Do you want to delete this log?'**
+  /// **'The entry moves to Recently deleted, where you can restore it.'**
   String get deleteLogDescription;
 
   /// No description provided for @deletePhotoTitle.
@@ -2879,6 +2879,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Image saved'**
   String get shareSaved;
+
+  /// No description provided for @deletedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Recently deleted'**
+  String get deletedTitle;
+
+  /// No description provided for @deletedNone.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing deleted recently'**
+  String get deletedNone;
+
+  /// No description provided for @deletedHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleted entries stay here for {days} days, then are erased.'**
+  String deletedHint(int days);
+
+  /// No description provided for @deletedDaysLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'{days} days left'**
+  String deletedDaysLeft(int days);
+
+  /// No description provided for @deletedRestore.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore'**
+  String get deletedRestore;
+
+  /// No description provided for @deletedDeleteForever.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete forever'**
+  String get deletedDeleteForever;
+
+  /// No description provided for @deletedDeleteForeverDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'The entry and its attachments are erased. This cannot be undone.'**
+  String get deletedDeleteForeverDescription;
+
+  /// No description provided for @deletedEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Empty'**
+  String get deletedEmpty;
+
+  /// No description provided for @deletedEmptyDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Erase every entry in Recently deleted? This cannot be undone.'**
+  String get deletedEmptyDescription;
+
+  /// No description provided for @formatJson.
+  ///
+  /// In en, this message translates to:
+  /// **'JSON'**
+  String get formatJson;
 }
 
 class _AppLocalizationsDelegate

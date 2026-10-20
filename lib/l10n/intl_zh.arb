@@ -45,7 +45,7 @@
     "titleHint": "标题…",
     "writeSomethingHint": "写点什么…",
     "deleteLogTitle": "删除日迹",
-    "deleteLogDescription": "您确定要删除该条日迹吗？",
+    "deleteLogDescription": "删除后会移到「最近删除」，在那里可以恢复。",
     "deletePhotoTitle": "删除附件",
     "deletePhotoDescription": "确定要删除这个附件吗？",
     "pageSettingsTitle": "设置",
@@ -444,5 +444,15 @@
     "shareImage": "分享图片",
     "shareSaveImage": "保存图片",
     "shareAsText": "以文字分享",
-    "shareSaved": "图片已保存"
+    "shareSaved": "图片已保存",
+    "deletedTitle": "最近删除",
+    "deletedNone": "没有最近删除的日记",
+    "deletedHint": "删除的日记会在这里保留 {days} 天，之后彻底清除。",
+    "deletedDaysLeft": "还剩 {days} 天",
+    "deletedRestore": "恢复",
+    "deletedDeleteForever": "彻底删除",
+    "deletedDeleteForeverDescription": "这篇日记和它的附件会被清除，无法撤销。",
+    "deletedEmpty": "清空",
+    "deletedEmptyDescription": "清除「最近删除」里的全部日记？无法撤销。",
+    "formatJson": "JSON"
 }

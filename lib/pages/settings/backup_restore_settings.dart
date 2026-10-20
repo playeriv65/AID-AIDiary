@@ -109,7 +109,7 @@ class _BackupRestoreSettingsState extends State<BackupRestoreSettings> {
                   }),
               ListTile(
                   key: const ValueKey('export-json'),
-                  title: const Text('JSON'),
+                  title: Text(AppLocalizations.of(context)!.formatJson),
                   onTap: () {
                     chosenFormat = ExportFormat.json;
                     Navigator.of(context).pop();

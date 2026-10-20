@@ -39,7 +39,7 @@
     "writeSomethingHint": "寫點什麼…",
     "titleHint": "標題…",
     "deleteLogTitle": "刪除紀錄",
-    "deleteLogDescription": "您要刪除此紀錄嗎？",
+    "deleteLogDescription": "刪除後會移到「最近刪除」，在那裡可以恢復。",
     "pageSettingsTitle": "設定",
     "settingsAppearanceTitle": "外觀",
     "settingsTheme": "主題",
@@ -445,5 +445,15 @@
     "shareImage": "分享圖片",
     "shareSaveImage": "儲存圖片",
     "shareAsText": "以文字分享",
-    "shareSaved": "圖片已儲存"
+    "shareSaved": "圖片已儲存",
+    "deletedTitle": "最近刪除",
+    "deletedNone": "沒有最近刪除的日記",
+    "deletedHint": "刪除的日記會在這裡保留 {days} 天，之後徹底清除。",
+    "deletedDaysLeft": "還剩 {days} 天",
+    "deletedRestore": "恢復",
+    "deletedDeleteForever": "徹底刪除",
+    "deletedDeleteForeverDescription": "這篇日記和它的附件會被清除，無法復原。",
+    "deletedEmpty": "清空",
+    "deletedEmptyDescription": "清除「最近刪除」裡的全部日記？無法復原。",
+    "formatJson": "JSON"
 }

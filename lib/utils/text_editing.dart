@@ -28,10 +28,9 @@ void insertBlock(TextEditingController controller, String block,
   final before = text.substring(0, start);
   final after = text.substring(end);
   final lead = before.isEmpty || before.endsWith('\n') ? '' : '\n';
-  final trail =
-      after.isEmpty || after.startsWith('\n') || block.endsWith('\n')
-          ? ''
-          : '\n';
+  final trail = after.isEmpty || after.startsWith('\n') || block.endsWith('\n')
+      ? ''
+      : '\n';
   controller.value = TextEditingValue(
     text: '$before$lead$block$trail$after',
     selection: TextSelection.collapsed(

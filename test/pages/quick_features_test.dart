@@ -2,7 +2,9 @@ import 'dart:convert';
 import 'dart:ui' as ui;
 
 import 'package:daily_you/config_provider.dart';
+import 'package:daily_you/database/entry_dao.dart';
 import 'package:daily_you/database/entry_store.dart';
+import 'package:daily_you/pages/recently_deleted_page.dart';
 import 'package:daily_you/models/entry.dart';
 import 'package:daily_you/models/image.dart';
 import 'package:daily_you/pages/entry_share_page.dart';
@@ -100,6 +102,59 @@ void main() {
     await tester.pumpAndSettle();
     expect(tester.getTopLeft(find.text('旧的')).dy,
         lessThan(tester.getTopLeft(find.text('新的')).dy));
+  });
+
+  testWidgets('deleting moves an entry to Recently deleted', (tester) async {
+    final entry =
+        await DiaryAppHarness.addEntry(tester, '要删的', DateTime(2026, 10, 1));
+    final store = EntryStore.instance;
+    await tester.runAsync(() => store.delete(entry));
+    expect(store.entries, isEmpty);
+    var deleted = (await tester.runAsync(store.deleted))!;
+    expect(deleted.single.entry.text, '要删的');
+
+    await tester.runAsync(() => store.restore(deleted.single.entry));
+    expect(store.entries.single.id, entry.id);
+    expect(await tester.runAsync(store.deleted), isEmpty);
+
+    await tester.runAsync(() async {
+      await store.delete(entry);
+      await store.erase(entry);
+    });
+    deleted = (await tester.runAsync(store.deleted))!;
+    expect(deleted, isEmpty);
+    expect(store.entries, isEmpty);
+  });
+
+  testWidgets('old deletions are erased when entries load', (tester) async {
+    final entry =
+        await DiaryAppHarness.addEntry(tester, '很久以前删的', DateTime(2026, 9, 1));
+    final store = EntryStore.instance;
+    await tester.runAsync(() async {
+      await EntryDao.setDeleted(
+          entry.id!, DateTime.now().subtract(const Duration(days: 31)));
+      await store.load();
+    });
+    expect(await tester.runAsync(store.deleted), isEmpty);
+  });
+
+  testWidgets('Recently deleted restores an entry', (tester) async {
+    final entry =
+        await DiaryAppHarness.addEntry(tester, '找回来', DateTime(2026, 10, 2));
+    await tester.runAsync(() => EntryStore.instance.delete(entry));
+    DiaryAppHarness.size(tester, const Size(390, 844));
+    await DiaryAppHarness.runUntil(
+        tester,
+        () => tester.pumpWidget(harness.app(const RecentlyDeletedPage())),
+        () => find.text('找回来').evaluate().isNotEmpty);
+    expect(find.text('还剩 30 天'), findsOneWidget);
+    await tester.tap(find.text('找回来'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const ValueKey('deleted-restore')));
+    await DiaryAppHarness.pumpUntil(
+        tester, () => find.text('没有最近删除的日记').evaluate().isNotEmpty);
+    expect(EntryStore.instance.entries.single.text, '找回来');
+    expect(find.text('没有最近删除的日记'), findsOneWidget);
   });
 
   testWidgets('an entry renders to a share picture', (tester) async {

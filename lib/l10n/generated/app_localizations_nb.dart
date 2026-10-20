@@ -304,7 +304,8 @@ class AppLocalizationsNb extends AppLocalizations {
   String get deleteLogTitle => 'Delete Log';
 
   @override
-  String get deleteLogDescription => 'Do you want to delete this log?';
+  String get deleteLogDescription =>
+      'The entry moves to Recently deleted, where you can restore it.';
 
   @override
   String get deletePhotoTitle => 'Delete attachment';
@@ -1535,4 +1536,40 @@ class AppLocalizationsNb extends AppLocalizations {
 
   @override
   String get shareSaved => 'Image saved';
+
+  @override
+  String get deletedTitle => 'Recently deleted';
+
+  @override
+  String get deletedNone => 'Nothing deleted recently';
+
+  @override
+  String deletedHint(int days) {
+    return 'Deleted entries stay here for $days days, then are erased.';
+  }
+
+  @override
+  String deletedDaysLeft(int days) {
+    return '$days days left';
+  }
+
+  @override
+  String get deletedRestore => 'Restore';
+
+  @override
+  String get deletedDeleteForever => 'Delete forever';
+
+  @override
+  String get deletedDeleteForeverDescription =>
+      'The entry and its attachments are erased. This cannot be undone.';
+
+  @override
+  String get deletedEmpty => 'Empty';
+
+  @override
+  String get deletedEmptyDescription =>
+      'Erase every entry in Recently deleted? This cannot be undone.';
+
+  @override
+  String get formatJson => 'JSON';
 }

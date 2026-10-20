@@ -300,7 +300,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get deleteLogTitle => '删除日迹';
 
   @override
-  String get deleteLogDescription => '您确定要删除该条日迹吗？';
+  String get deleteLogDescription => '删除后会移到「最近删除」，在那里可以恢复。';
 
   @override
   String get deletePhotoTitle => '删除附件';
@@ -1511,6 +1511,40 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get shareSaved => '图片已保存';
+
+  @override
+  String get deletedTitle => '最近删除';
+
+  @override
+  String get deletedNone => '没有最近删除的日记';
+
+  @override
+  String deletedHint(int days) {
+    return '删除的日记会在这里保留 $days 天，之后彻底清除。';
+  }
+
+  @override
+  String deletedDaysLeft(int days) {
+    return '还剩 $days 天';
+  }
+
+  @override
+  String get deletedRestore => '恢复';
+
+  @override
+  String get deletedDeleteForever => '彻底删除';
+
+  @override
+  String get deletedDeleteForeverDescription => '这篇日记和它的附件会被清除，无法撤销。';
+
+  @override
+  String get deletedEmpty => '清空';
+
+  @override
+  String get deletedEmptyDescription => '清除「最近删除」里的全部日记？无法撤销。';
+
+  @override
+  String get formatJson => 'JSON';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -1809,7 +1843,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get deleteLogTitle => '刪除紀錄';
 
   @override
-  String get deleteLogDescription => '您要刪除此紀錄嗎？';
+  String get deleteLogDescription => '刪除後會移到「最近刪除」，在那裡可以恢復。';
 
   @override
   String get deletePhotoTitle => '刪除附件';
@@ -3003,4 +3037,38 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get shareSaved => '圖片已儲存';
+
+  @override
+  String get deletedTitle => '最近刪除';
+
+  @override
+  String get deletedNone => '沒有最近刪除的日記';
+
+  @override
+  String deletedHint(int days) {
+    return '刪除的日記會在這裡保留 $days 天，之後徹底清除。';
+  }
+
+  @override
+  String deletedDaysLeft(int days) {
+    return '還剩 $days 天';
+  }
+
+  @override
+  String get deletedRestore => '恢復';
+
+  @override
+  String get deletedDeleteForever => '徹底刪除';
+
+  @override
+  String get deletedDeleteForeverDescription => '這篇日記和它的附件會被清除，無法復原。';
+
+  @override
+  String get deletedEmpty => '清空';
+
+  @override
+  String get deletedEmptyDescription => '清除「最近刪除」裡的全部日記？無法復原。';
+
+  @override
+  String get formatJson => 'JSON';
 }

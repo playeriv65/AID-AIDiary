@@ -4,6 +4,7 @@
 
 import 'dart:typed_data';
 
+import 'package:daily_you/config/app_config.dart';
 import 'package:daily_you/database/app_database.dart';
 import 'package:daily_you/database/entry_store.dart';
 import 'package:daily_you/database/image_storage.dart';
@@ -45,7 +46,12 @@ void main() {
         entryId: null, imgPath: name, imgRank: 0, timeCreate: time);
   }
 
-  setUpAll(sqfliteFfiInit);
+  setUpAll(() async {
+    TestWidgetsFlutterBinding.ensureInitialized();
+    sqfliteFfiInit();
+    // The store reads the Recently deleted retention period from it.
+    await AppConfig.load();
+  });
 
   setUp(() async {
     databaseFactory = databaseFactoryFfi;
@@ -283,7 +289,7 @@ void main() {
           images: [image],
         ));
 
-    await store.delete(saved);
+    await store.erase(saved);
     await reloadEverything();
 
     expect(store.entries, isEmpty);

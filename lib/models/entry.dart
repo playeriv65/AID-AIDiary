@@ -31,6 +31,9 @@ class EntryFields {
   static const String weatherCode = 'weather_code';
   static const String temperature = 'temperature';
   static const String activity = 'activity';
+
+  /// Set while an entry sits in Recently deleted; not part of [Entry].
+  static const String deletedAt = 'deleted_at';
 }
 
 /// Weather when the entry was written: a WMO weather code and the air

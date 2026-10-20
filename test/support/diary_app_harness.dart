@@ -119,6 +119,18 @@ class DiaryAppHarness {
     EasyDebounce.cancel('save-config');
   }
 
+  /// Lets real time pass between frames until [until] holds, for work that
+  /// started in a widget (fake time) but waits on real IO such as SQLite.
+  static Future<void> pumpUntil(
+      WidgetTester tester, bool Function() until) async {
+    for (var i = 0; i < 50 && !until(); i++) {
+      await tester.runAsync(
+          () => Future<void>.delayed(const Duration(milliseconds: 20)));
+      await tester.pump(const Duration(milliseconds: 50));
+    }
+    await tester.pumpAndSettle();
+  }
+
   /// Runs a real async action and waits until [until] holds.
   static Future<void> runUntil(
       WidgetTester tester, VoidCallback action, bool Function() until) async {

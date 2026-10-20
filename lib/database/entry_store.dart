@@ -4,6 +4,7 @@
 
 import 'dart:async';
 
+import 'package:daily_you/config/app_config.dart';
 import 'package:daily_you/database/app_database.dart';
 import 'package:daily_you/database/entry_dao.dart';
 import 'package:daily_you/database/entry_image_dao.dart';
@@ -100,13 +101,46 @@ class EntryStore with ChangeNotifier {
   EntryDraftSession beginDraft() => EntryDraftSession._(this);
 
   Future<void> load() async {
+    await _purgeExpired();
     _entries = await EntryDao.getAll();
     _indexEntriesByDay();
     notifyListeners();
   }
 
+  /// Moves an entry to Recently deleted; its photos and tags stay with it.
   Future<void> delete(Entry entry) async {
-    final images = EntryImagesProvider.instance.getForEntry(entry);
+    await EntryDao.setDeleted(entry.id!, DateTime.now());
+    _entries = _entries.where((existing) => existing.id != entry.id).toList();
+    _indexEntriesByDay();
+    await AppDatabase.instance.updateExternalDatabase();
+    notifyListeners();
+  }
+
+  Future<List<DeletedEntry>> deleted() => EntryDao.getDeleted();
+
+  /// Brings an entry back from Recently deleted.
+  Future<void> restore(Entry entry) async {
+    await EntryDao.setDeleted(entry.id!, null);
+    _entries = [..._entries, entry];
+    _sortEntries();
+    _indexEntriesByDay();
+    await AppDatabase.instance.updateExternalDatabase();
+    notifyListeners();
+  }
+
+  /// Erases entries that sat in Recently deleted past the retention period.
+  Future<void> _purgeExpired() async {
+    final cutoff = DateTime.now().subtract(AppConfig.instance.deletedRetention);
+    for (final item in await EntryDao.getDeleted()) {
+      if (item.deletedAt.isBefore(cutoff)) await erase(item.entry);
+    }
+  }
+
+  /// Removes an entry, its tags and its attachment files for good.
+  Future<void> erase(Entry entry) async {
+    // From the database: this also runs while loading, before the image
+    // provider has its list.
+    final images = await EntryImageDao.getForEntry(entry.id!);
 
     await AppDatabase.instance.database!.transaction((transaction) async {
       for (final image in images) {
@@ -139,12 +173,16 @@ class EntryStore with ChangeNotifier {
     return entryWithId;
   }
 
+  /// Erases every entry, including those in Recently deleted.
   Future<void> deleteAll(Function(String) updateStatus) async {
     updateStatus("0%");
-    final allEntries = entries.toList();
+    final allEntries = [
+      ...entries,
+      for (final item in await EntryDao.getDeleted()) item.entry,
+    ];
     var processedEntries = 0;
     for (final entry in allEntries) {
-      await delete(entry);
+      await erase(entry);
       processedEntries += 1;
       updateStatus(
           "${((processedEntries / allEntries.length) * 100).round()}%");

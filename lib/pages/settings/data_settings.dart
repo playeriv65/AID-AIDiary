@@ -3,6 +3,7 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'package:daily_you/l10n/generated/app_localizations.dart';
+import 'package:daily_you/pages/recently_deleted_page.dart';
 import 'package:daily_you/pages/settings/backup_restore_settings.dart';
 import 'package:daily_you/pages/settings/storage_settings.dart';
 import 'package:daily_you/widgets/settings_category.dart';
@@ -30,6 +31,10 @@ class DataSettings extends StatelessWidget {
                 title: l10n.settingsStorageTitle,
                 icon: Icons.storage_rounded,
                 page: const StorageSettings()),
+            SettingsCategory(
+                title: l10n.deletedTitle,
+                icon: Icons.delete_outline_rounded,
+                page: const RecentlyDeletedPage()),
           ]),
         ),
       ),

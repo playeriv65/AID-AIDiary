@@ -126,7 +126,7 @@
   "@titleHint": {},
   "deleteLogTitle": "Delete Log",
   "@deleteLogTitle": {},
-  "deleteLogDescription": "Do you want to delete this log?",
+  "deleteLogDescription": "The entry moves to Recently deleted, where you can restore it.",
   "@deleteLogDescription": {},
   "deletePhotoTitle": "Delete attachment",
   "@deletePhotoTitle": {},
@@ -900,5 +900,33 @@
   "shareAsText": "Share as text",
   "@shareAsText": {},
   "shareSaved": "Image saved",
-  "@shareSaved": {}
+  "@shareSaved": {},
+  "deletedTitle": "Recently deleted",
+  "@deletedTitle": {},
+  "deletedNone": "Nothing deleted recently",
+  "@deletedNone": {},
+  "deletedHint": "Deleted entries stay here for {days} days, then are erased.",
+  "@deletedHint": {
+    "placeholders": {
+      "days": {"type": "int"}
+    }
+  },
+  "deletedDaysLeft": "{days} days left",
+  "@deletedDaysLeft": {
+    "placeholders": {
+      "days": {"type": "int"}
+    }
+  },
+  "deletedRestore": "Restore",
+  "@deletedRestore": {},
+  "deletedDeleteForever": "Delete forever",
+  "@deletedDeleteForever": {},
+  "deletedDeleteForeverDescription": "The entry and its attachments are erased. This cannot be undone.",
+  "@deletedDeleteForeverDescription": {},
+  "deletedEmpty": "Empty",
+  "@deletedEmpty": {},
+  "deletedEmptyDescription": "Erase every entry in Recently deleted? This cannot be undone.",
+  "@deletedEmptyDescription": {},
+  "formatJson": "JSON",
+  "@formatJson": {}
 }

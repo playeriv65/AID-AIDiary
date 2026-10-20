@@ -29,13 +29,18 @@ CREATE TABLE entries (
       'time_modified': '2026-01-02T03:04:05.000',
     });
     AppDatabase.instance.database = db;
-    await AppDatabase.instance.upgradeSchema(db, 5, 7);
+    await AppDatabase.instance.upgradeSchema(db, 5, 8);
 
     final old = (await EntryDao.getAll()).single;
     expect(old.text, 'old entry');
     expect(old.location, isNull);
     expect(old.weather, isNull);
     expect(old.activity, isNull);
+    await EntryDao.setDeleted(old.id!, DateTime(2026, 10, 20));
+    expect(await EntryDao.getAll(), isEmpty);
+    expect(
+        (await EntryDao.getDeleted()).single.deletedAt, DateTime(2026, 10, 20));
+    await EntryDao.setDeleted(old.id!, null);
 
     final placed = await EntryDao.add(Entry(
         text: 'new entry',
