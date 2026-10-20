@@ -1633,6 +1633,56 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get capsuleOpened => '时间胶囊已开启';
+
+  @override
+  String get templateMorningName => '早间日记';
+
+  @override
+  String get templateMorningDescription => '三分钟安排好今天';
+
+  @override
+  String get templateMorningText =>
+      '## 今天最想做好的三件事\n1. \n2. \n3. \n\n## 今天期待的一件事\n\n## 想对自己说的一句话\n';
+
+  @override
+  String get templateEveningName => '晚间回顾';
+
+  @override
+  String get templateEveningDescription => '用三件好事收尾一天';
+
+  @override
+  String get templateEveningText =>
+      '## 今天的三件好事\n1. \n2. \n3. \n\n## 今天学到了什么\n\n## 明天可以做得更好的地方\n';
+
+  @override
+  String get routineMorning => '早上好';
+
+  @override
+  String get routineEvening => '晚间回顾';
+
+  @override
+  String get settingsRoutinePrompts => '早晚日记提示';
+
+  @override
+  String get settingsRoutinePromptsHint => '在故事里按时段推荐早间或晚间模板';
+
+  @override
+  String get checkInTitle => '快速记录';
+
+  @override
+  String get checkInSubtitle => '两下记下心情';
+
+  @override
+  String get checkInMood => '现在心情如何？';
+
+  @override
+  String get checkInActivity => '在做什么？';
+
+  @override
+  String get checkInNote => '写一句（可选）';
+
+  @override
+  String get checkInSave => '记下';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -3247,4 +3297,54 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get capsuleOpened => '時間膠囊已開啟';
+
+  @override
+  String get templateMorningName => '早間日記';
+
+  @override
+  String get templateMorningDescription => '三分鐘安排好今天';
+
+  @override
+  String get templateMorningText =>
+      '## 今天最想做好的三件事\n1. \n2. \n3. \n\n## 今天期待的一件事\n\n## 想對自己說的一句話\n';
+
+  @override
+  String get templateEveningName => '晚間回顧';
+
+  @override
+  String get templateEveningDescription => '用三件好事收尾一天';
+
+  @override
+  String get templateEveningText =>
+      '## 今天的三件好事\n1. \n2. \n3. \n\n## 今天學到了什麼\n\n## 明天可以做得更好的地方\n';
+
+  @override
+  String get routineMorning => '早安';
+
+  @override
+  String get routineEvening => '晚間回顧';
+
+  @override
+  String get settingsRoutinePrompts => '早晚日記提示';
+
+  @override
+  String get settingsRoutinePromptsHint => '在故事裡按時段推薦早間或晚間模板';
+
+  @override
+  String get checkInTitle => '快速記錄';
+
+  @override
+  String get checkInSubtitle => '兩下記下心情';
+
+  @override
+  String get checkInMood => '現在心情如何？';
+
+  @override
+  String get checkInActivity => '在做什麼？';
+
+  @override
+  String get checkInNote => '寫一句（可選）';
+
+  @override
+  String get checkInSave => '記下';
 }

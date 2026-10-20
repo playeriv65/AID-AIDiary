@@ -1661,4 +1661,55 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get capsuleOpened => 'Time capsule opened';
+
+  @override
+  String get templateMorningName => 'Morning pages';
+
+  @override
+  String get templateMorningDescription => 'Set up the day in three minutes';
+
+  @override
+  String get templateMorningText =>
+      '## Three things I want to do well today\n1. \n2. \n3. \n\n## Something I look forward to\n\n## A note to myself\n';
+
+  @override
+  String get templateEveningName => 'Evening review';
+
+  @override
+  String get templateEveningDescription => 'Close the day with what went well';
+
+  @override
+  String get templateEveningText =>
+      '## Three good things today\n1. \n2. \n3. \n\n## What I learned\n\n## What could go better tomorrow\n';
+
+  @override
+  String get routineMorning => 'Good morning';
+
+  @override
+  String get routineEvening => 'Evening review';
+
+  @override
+  String get settingsRoutinePrompts => 'Morning and evening prompts';
+
+  @override
+  String get settingsRoutinePromptsHint =>
+      'Suggest the morning or evening template in Stories';
+
+  @override
+  String get checkInTitle => 'Quick check-in';
+
+  @override
+  String get checkInSubtitle => 'Mood in two taps';
+
+  @override
+  String get checkInMood => 'How do you feel?';
+
+  @override
+  String get checkInActivity => 'What are you doing?';
+
+  @override
+  String get checkInNote => 'A line about it (optional)';
+
+  @override
+  String get checkInSave => 'Save';
 }

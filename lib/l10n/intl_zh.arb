@@ -482,5 +482,21 @@
     "capsuleWrittenOn": "写于 {date}",
     "capsuleOpenEarly": "提前打开",
     "capsuleOpenEarlyDescription": "胶囊会立即打开，并且不再封存。",
-    "capsuleOpened": "时间胶囊已开启"
+    "capsuleOpened": "时间胶囊已开启",
+    "templateMorningName": "早间日记",
+    "templateMorningDescription": "三分钟安排好今天",
+    "templateMorningText": "## 今天最想做好的三件事\n1. \n2. \n3. \n\n## 今天期待的一件事\n\n## 想对自己说的一句话\n",
+    "templateEveningName": "晚间回顾",
+    "templateEveningDescription": "用三件好事收尾一天",
+    "templateEveningText": "## 今天的三件好事\n1. \n2. \n3. \n\n## 今天学到了什么\n\n## 明天可以做得更好的地方\n",
+    "routineMorning": "早上好",
+    "routineEvening": "晚间回顾",
+    "settingsRoutinePrompts": "早晚日记提示",
+    "settingsRoutinePromptsHint": "在故事里按时段推荐早间或晚间模板",
+    "checkInTitle": "快速记录",
+    "checkInSubtitle": "两下记下心情",
+    "checkInMood": "现在心情如何？",
+    "checkInActivity": "在做什么？",
+    "checkInNote": "写一句（可选）",
+    "checkInSave": "记下"
 }

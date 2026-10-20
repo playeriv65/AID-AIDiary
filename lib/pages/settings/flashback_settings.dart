@@ -34,6 +34,13 @@ class _FlashbackSettingsPageState extends State<FlashbackSettings> {
       body: ListView(
         children: [
           SettingsToggle(
+              key: const ValueKey('settings-routine-prompts'),
+              title: AppLocalizations.of(context)!.settingsRoutinePrompts,
+              hint: AppLocalizations.of(context)!.settingsRoutinePromptsHint,
+              setting: Settings.routinePrompts,
+              onChanged: (value) =>
+                  configProvider.set(Settings.routinePrompts, value)),
+          SettingsToggle(
               title: AppLocalizations.of(context)!.settingsShowFlashbacks,
               setting: Settings.showFlashbacks,
               onChanged: (value) {

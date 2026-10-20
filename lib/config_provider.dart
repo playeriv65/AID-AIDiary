@@ -73,6 +73,7 @@ class Settings {
   static const temperatureUnit = Setting<String>("temperatureUnit", "celsius");
   // "system", "12" or "24".
   static const timeFormat = Setting<String>("timeFormat", "system");
+  static const routinePrompts = Setting<bool>("routinePrompts", true);
   // "newest", "oldest" or "updated".
   static const journalSort = Setting<String>("journalSort", "newest");
   // Weekdays (1 = Monday) the daily reminder fires on.
@@ -174,6 +175,7 @@ class Settings {
     showFlashbacks,
     temperatureUnit,
     timeFormat,
+    routinePrompts,
     journalSort,
     reminderWeekdays,
     entryFontFamily,

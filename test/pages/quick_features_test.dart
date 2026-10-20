@@ -13,6 +13,7 @@ import 'package:daily_you/utils/export_utils.dart';
 import 'package:daily_you/utils/imports/import_json.dart';
 import 'package:daily_you/utils/text_editing.dart';
 import 'package:daily_you/widgets/location_dialog.dart';
+import 'package:daily_you/widgets/quick_check_in.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
@@ -155,6 +156,27 @@ void main() {
         tester, () => find.text('没有最近删除的日记').evaluate().isNotEmpty);
     expect(EntryStore.instance.entries.single.text, '找回来');
     expect(find.text('没有最近删除的日记'), findsOneWidget);
+  });
+
+  testWidgets('a quick check-in saves mood, activity and note', (tester) async {
+    DiaryAppHarness.size(tester, const Size(390, 844));
+    await tester.pumpWidget(harness.app(const Scaffold(body: SizedBox())));
+    showQuickCheckIn(tester.element(find.byType(SizedBox).first));
+    await tester.pumpAndSettle();
+    final save = find.byKey(const ValueKey('check-in-save'));
+    expect(tester.widget<FilledButton>(save).onPressed, isNull);
+    await tester.tap(find.byKey(const ValueKey('check-in-mood-1')));
+    await tester.tap(find.byKey(const ValueKey('check-in-activity-running')));
+    await tester.enterText(
+        find.byKey(const ValueKey('check-in-note')), '跑了五公里');
+    await tester.pump();
+    await tester.tap(save);
+    await DiaryAppHarness.pumpUntil(
+        tester, () => EntryStore.instance.entries.isNotEmpty);
+    final entry = EntryStore.instance.entries.single;
+    expect(entry.mood, 1);
+    expect(entry.activity, EntryActivity.running);
+    expect(entry.text, '跑了五公里');
   });
 
   testWidgets('an entry renders to a share picture', (tester) async {

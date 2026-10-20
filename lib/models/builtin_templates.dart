@@ -25,12 +25,25 @@ class BuiltinTemplate {
     return Template(name: name, text: text, timeCreate: now, timeModified: now);
   }
 
+  static BuiltinTemplate byId(AppLocalizations l10n, String id) =>
+      all(l10n).firstWhere((template) => template.id == id);
+
   static List<BuiltinTemplate> all(AppLocalizations l10n) => [
         BuiltinTemplate(
             id: 'daily',
             name: l10n.templateDailyName,
             description: l10n.templateDailyDescription,
             text: l10n.templateDailyText),
+        BuiltinTemplate(
+            id: 'morning',
+            name: l10n.templateMorningName,
+            description: l10n.templateMorningDescription,
+            text: l10n.templateMorningText),
+        BuiltinTemplate(
+            id: 'evening',
+            name: l10n.templateEveningName,
+            description: l10n.templateEveningDescription,
+            text: l10n.templateEveningText),
         BuiltinTemplate(
             id: 'travel',
             name: l10n.templateTravelName,

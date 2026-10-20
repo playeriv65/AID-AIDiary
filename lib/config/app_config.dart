@@ -83,6 +83,11 @@ class AppConfig {
   int get maxVideoBytes =>
       (_section('media')['maxVideoMegabytes'] as int) * 1024 * 1024;
 
+  /// The morning prompt shows before this hour, the evening one from the
+  /// other on.
+  int get morningEndsHour => _section('routine')['morningEndsHour'] as int;
+  int get eveningStartsHour => _section('routine')['eveningStartsHour'] as int;
+
   /// Entries in Recently deleted are erased after this long.
   Duration get deletedRetention =>
       Duration(days: _section('recentlyDeleted')['retentionDays'] as int);

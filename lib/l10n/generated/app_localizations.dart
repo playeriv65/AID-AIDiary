@@ -3107,6 +3107,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Time capsule opened'**
   String get capsuleOpened;
+
+  /// No description provided for @templateMorningName.
+  ///
+  /// In en, this message translates to:
+  /// **'Morning pages'**
+  String get templateMorningName;
+
+  /// No description provided for @templateMorningDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Set up the day in three minutes'**
+  String get templateMorningDescription;
+
+  /// No description provided for @templateMorningText.
+  ///
+  /// In en, this message translates to:
+  /// **'## Three things I want to do well today\n1. \n2. \n3. \n\n## Something I look forward to\n\n## A note to myself\n'**
+  String get templateMorningText;
+
+  /// No description provided for @templateEveningName.
+  ///
+  /// In en, this message translates to:
+  /// **'Evening review'**
+  String get templateEveningName;
+
+  /// No description provided for @templateEveningDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Close the day with what went well'**
+  String get templateEveningDescription;
+
+  /// No description provided for @templateEveningText.
+  ///
+  /// In en, this message translates to:
+  /// **'## Three good things today\n1. \n2. \n3. \n\n## What I learned\n\n## What could go better tomorrow\n'**
+  String get templateEveningText;
+
+  /// No description provided for @routineMorning.
+  ///
+  /// In en, this message translates to:
+  /// **'Good morning'**
+  String get routineMorning;
+
+  /// No description provided for @routineEvening.
+  ///
+  /// In en, this message translates to:
+  /// **'Evening review'**
+  String get routineEvening;
+
+  /// No description provided for @settingsRoutinePrompts.
+  ///
+  /// In en, this message translates to:
+  /// **'Morning and evening prompts'**
+  String get settingsRoutinePrompts;
+
+  /// No description provided for @settingsRoutinePromptsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggest the morning or evening template in Stories'**
+  String get settingsRoutinePromptsHint;
+
+  /// No description provided for @checkInTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick check-in'**
+  String get checkInTitle;
+
+  /// No description provided for @checkInSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Mood in two taps'**
+  String get checkInSubtitle;
+
+  /// No description provided for @checkInMood.
+  ///
+  /// In en, this message translates to:
+  /// **'How do you feel?'**
+  String get checkInMood;
+
+  /// No description provided for @checkInActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'What are you doing?'**
+  String get checkInActivity;
+
+  /// No description provided for @checkInNote.
+  ///
+  /// In en, this message translates to:
+  /// **'A line about it (optional)'**
+  String get checkInNote;
+
+  /// No description provided for @checkInSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get checkInSave;
 }
 
 class _AppLocalizationsDelegate

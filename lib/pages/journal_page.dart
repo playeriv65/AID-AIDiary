@@ -5,7 +5,10 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:daily_you/config/app_config.dart';
 import 'package:daily_you/config_provider.dart';
+import 'package:daily_you/models/builtin_templates.dart';
+import 'package:daily_you/widgets/quick_check_in.dart';
 import 'package:daily_you/device_info_service.dart';
 import 'package:daily_you/flashback_manager.dart';
 import 'package:daily_you/l10n/generated/app_localizations.dart';
@@ -268,6 +271,21 @@ class _Stories extends StatelessWidget {
   const _Stories({required this.flashbacks});
   final List<Flashback> flashbacks;
 
+  /// The morning or evening template to suggest now, with its card title.
+  static (BuiltinTemplate, String)? _routine(BuildContext context) {
+    if (!ConfigProvider.instance.get(Settings.routinePrompts)) return null;
+    final l10n = AppLocalizations.of(context)!;
+    final config = AppConfig.instance;
+    final hour = DateTime.now().hour;
+    if (hour < config.morningEndsHour) {
+      return (BuiltinTemplate.byId(l10n, 'morning'), l10n.routineMorning);
+    }
+    if (hour >= config.eveningStartsHour) {
+      return (BuiltinTemplate.byId(l10n, 'evening'), l10n.routineEvening);
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -319,6 +337,33 @@ class _Stories extends StatelessWidget {
           onTap: flashback == null
               ? null
               : () => EntryNavigation.flashback(context, flashback),
+        ),
+        if (_routine(context) case (final template, final title)) ...[
+          const SizedBox(width: 8),
+          _StoryCard(
+            key: const ValueKey('story-routine'),
+            width: cardWidth,
+            icon: now.hour < 12
+                ? Icons.wb_twilight_rounded
+                : Icons.nights_stay_rounded,
+            title: title,
+            subtitle: template.description,
+            background: cs.secondaryContainer,
+            foreground: cs.onSecondaryContainer,
+            onTap: () => EntryNavigation.edit(context, null,
+                template: template.toTemplate()),
+          ),
+        ],
+        const SizedBox(width: 8),
+        _StoryCard(
+          key: const ValueKey('story-check-in'),
+          width: cardWidth,
+          icon: Icons.add_reaction_outlined,
+          title: l10n.checkInTitle,
+          subtitle: l10n.checkInSubtitle,
+          background: cs.secondaryContainer,
+          foreground: cs.onSecondaryContainer,
+          onTap: () => showQuickCheckIn(context),
         ),
         for (final (key, icon, title, subtitle, onTap) in [
           (
