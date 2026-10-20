@@ -25,7 +25,8 @@ switch ($Target) {
   'android' { flutter run -d $Device --flavor dev --print-dtd }
   'apk' { flutter build apk --debug --flavor dev }
   'pub' { flutter pub get }
-  'test' { flutter test }
+  # Four workers keep the full suite from pinning every core.
+  'test' { flutter test -j 4 }
   'analyze' { flutter analyze }
   # Renders artifacts/ui-*.png in widget tests; no window opens.
   'screenshots' { flutter test tool/screenshots/ }
