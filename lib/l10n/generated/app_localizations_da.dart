@@ -727,6 +727,9 @@ class AppLocalizationsDa extends AppLocalizations {
       'En anden apps format understøtter muligvis ikke alle funktioner. Dette påvirker ikke eksisterende logs!';
 
   @override
+  String get formatDayOne => 'Day One';
+
+  @override
   String get formatDaybook => 'Daybook';
 
   @override
@@ -737,6 +740,9 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String get formatDiaro => 'Diaro';
+
+  @override
+  String get formatJourney => 'Journey';
 
   @override
   String get formatMyBrain => 'My Brain';

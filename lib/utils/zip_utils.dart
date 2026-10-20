@@ -12,10 +12,13 @@ import 'package:flutter/foundation.dart';
 import 'package:path/path.dart';
 
 class ZipUtils {
+  /// Zips [inputFiles] and [inputFolders]; each folder's contents go under
+  /// its name, or at the zip's root when [foldersAtRoot] is set.
   static Future<void> compress(
       String outputFile, List<String> inputFiles, List<String> inputFolders,
       {Function(double percent)? onProgress,
-      CancellationToken? cancellationToken}) async {
+      CancellationToken? cancellationToken,
+      bool foldersAtRoot = false}) async {
     if (cancellationToken?.isCancelled ?? false) {
       throw BackupCancelledException();
     }
@@ -51,6 +54,7 @@ class ZipUtils {
           "outputFile": outputFile,
           "inputFiles": inputFiles,
           "inputFolders": inputFolders,
+          "foldersAtRoot": foldersAtRoot,
           "port": rxPort.sendPort,
         },
         onExit: exitPort.sendPort);
@@ -110,6 +114,7 @@ class ZipUtils {
         if (cancelled) break;
         // TODO This is not accurate and only works for a single folder
         await encoder.addDirectory(Directory(folder),
+            includeDirName: !(args["foldersAtRoot"] as bool),
             level: 0,
             filter: (_, progress) =>
                 cancelled ? ZipFileOperation.cancel : ZipFileOperation.include,

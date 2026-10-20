@@ -723,6 +723,9 @@ class AppLocalizationsJa extends AppLocalizations {
       '外部アプリの形式では、すべての機能が利用可能とは限りません。サードパーティの形式は随時変更される可能性があるため、問題が発生した場合はご報告ください。既存のログには影響しません！';
 
   @override
+  String get formatDayOne => 'Day One';
+
+  @override
   String get formatDaybook => 'Daybook';
 
   @override
@@ -733,6 +736,9 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get formatDiaro => 'Diaro';
+
+  @override
+  String get formatJourney => 'Journey';
 
   @override
   String get formatMyBrain => 'My Brain';

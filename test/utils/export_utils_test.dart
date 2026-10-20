@@ -9,6 +9,7 @@ import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/models/image.dart';
 import 'package:aid_diary/storage/in_memory_file_store.dart';
 import 'package:aid_diary/utils/export_utils.dart';
+import 'package:aid_diary/utils/formats/archive_export.dart';
 import 'package:aid_diary/utils/imports/import_json.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -33,8 +34,12 @@ void main() {
   Future<String> noteNamed(String name) async =>
       utf8.decode((await noteStore.read(name))!);
 
+  Future<void> write(Entry entry,
+          [List<(EntryImage, Uint8List)> images = const []]) =>
+      writer.write(ExportedEntry(entry, images: images));
+
   test('names a note after the day it was written', () async {
-    await writer.write(entryOn(DateTime(2026, 3, 4), text: 'a good day'), []);
+    await write(entryOn(DateTime(2026, 3, 4), text: 'a good day'));
 
     expect(await noteStore.list(), equals(['log_2026-03-04.md']));
     expect(await noteNamed('log_2026-03-04.md'),
@@ -42,9 +47,9 @@ void main() {
   });
 
   test('numbers later notes that share a day', () async {
-    await writer.write(entryOn(DateTime(2026, 3, 4, 8)), []);
-    await writer.write(entryOn(DateTime(2026, 3, 4, 20)), []);
-    await writer.write(entryOn(DateTime(2026, 3, 5)), []);
+    await write(entryOn(DateTime(2026, 3, 4, 8)));
+    await write(entryOn(DateTime(2026, 3, 4, 20)));
+    await write(entryOn(DateTime(2026, 3, 5)));
 
     expect(
         await noteStore.list(),
@@ -54,7 +59,7 @@ void main() {
 
   test('writes images beside the note and links them by rank', () async {
     final timeCreate = DateTime(2026, 3, 4);
-    await writer.write(entryOn(timeCreate, text: 'body'), [
+    await write(entryOn(timeCreate, text: 'body'), [
       (
         EntryImage(
             entryId: 1,
@@ -92,8 +97,8 @@ void main() {
         timeCreate: timeCreate);
     final bytes = Uint8List.fromList([1]);
 
-    await writer.write(entryOn(timeCreate), [(image, bytes)]);
-    await writer.write(entryOn(timeCreate), [(image, bytes)]);
+    await write(entryOn(timeCreate), [(image, bytes)]);
+    await write(entryOn(timeCreate), [(image, bytes)]);
 
     expect(await imageStore.list(),
         equals(['image_2026-03-04_0.png', 'image_2026-03-04_2_0.png']));
@@ -131,5 +136,6 @@ void main() {
     expect(back.entry.activity, EntryActivity.walking);
     expect(back.entry.openAt, DateTime(2027, 1, 1));
     expect(back.images.single.imgPath, 'a.jpg');
+    expect(back.tags, [(name: '精力', value: '7')]);
   });
 }

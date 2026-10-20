@@ -5,10 +5,12 @@
 enum ImportFormat {
   /// This app's JSON export.
   json,
+  dayOne,
   daybook,
   daylio,
   diarium,
   diaro,
+  journey,
   myBrain,
   oneShot,
   pixels,

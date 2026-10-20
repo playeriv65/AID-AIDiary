@@ -734,6 +734,9 @@ class AppLocalizationsPl extends AppLocalizations {
       'Formaty innych aplikacji mogą nie wspierać wszystkich funkcji. Proszę o zgłaszanie jakichkolwiek błędów, ponieważ formaty tych aplikacji mogą się zmienić w każdym momencie. To nie wpłynie na istniejące wpisy!';
 
   @override
+  String get formatDayOne => 'Day One';
+
+  @override
   String get formatDaybook => 'Daybook';
 
   @override
@@ -744,6 +747,9 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get formatDiaro => 'Diaro';
+
+  @override
+  String get formatJourney => 'Journey';
 
   @override
   String get formatMyBrain => 'My Brain';

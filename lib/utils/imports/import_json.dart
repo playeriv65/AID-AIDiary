@@ -44,7 +44,7 @@ List<ImportedEntry> decodeJsonEntries(Uint8List bytes) {
             mood: entry['mood'] as int?,
             timeCreate: parseLocalTime(entry['timeCreated']),
             timeModified: parseLocalTime(entry['timeModified']),
-            // Written by our own JSON export; absent in older files.
+            // Optional, like everything below.
             location: switch (entry['location']) {
               final Map place => EntryLocation(
                   name: place['name'] as String?,
@@ -63,6 +63,10 @@ List<ImportedEntry> decodeJsonEntries(Uint8List bytes) {
               final String at => parseLocalTime(at),
               _ => null,
             }),
+        tags: [
+          for (final tag in entry['tags'] as List? ?? const [])
+            (name: tag['name'] as String, value: tag['value'] as String?),
+        ],
         images: [
           if (entry['images'] != null)
             for (var image in entry['images'])

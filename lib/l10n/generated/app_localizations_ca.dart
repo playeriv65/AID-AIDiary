@@ -737,6 +737,9 @@ class AppLocalizationsCa extends AppLocalizations {
       'És possible que el format d\'una altra aplicació no admeti totes les funcions. Informeu de qualsevol problema, ja que els formats de tercers poden canviar en qualsevol moment. Això no afectarà els registres existents.';
 
   @override
+  String get formatDayOne => 'Day One';
+
+  @override
   String get formatDaybook => 'Daybook';
 
   @override
@@ -747,6 +750,9 @@ class AppLocalizationsCa extends AppLocalizations {
 
   @override
   String get formatDiaro => 'Diaro';
+
+  @override
+  String get formatJourney => 'Journey';
 
   @override
   String get formatMyBrain => 'My Brain';

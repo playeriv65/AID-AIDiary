@@ -27,36 +27,41 @@ class SettingsToggle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final configProvider = Provider.of<ConfigProvider>(context);
-    return Padding(
-      padding:
-          const EdgeInsets.only(top: 8.0, bottom: 8.0, left: 16.0, right: 16.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                ),
-                if (hint != null)
+    final value = configProvider.get(setting);
+    // Tapping anywhere on the row flips the switch, as in a list tile.
+    return InkWell(
+      onTap: onChanged == null ? null : () => onChanged!(!value),
+      child: Padding(
+        padding: const EdgeInsets.only(
+            top: 8.0, bottom: 8.0, left: 16.0, right: 16.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
                   Text(
-                    hint!,
-                    style: TextStyle(fontSize: 14),
+                    title,
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),
-              ],
+                  if (hint != null)
+                    Text(
+                      hint!,
+                      style: TextStyle(fontSize: 14),
+                    ),
+                ],
+              ),
             ),
-          ),
-          if (secondaryIcon != null && onSecondaryPressed != null)
-            IconButton(onPressed: onSecondaryPressed, icon: secondaryIcon!),
-          Switch(
-            key: ValueKey('${setting.key}-switch'),
-            value: configProvider.get(setting),
-            onChanged: onChanged,
-          )
-        ],
+            if (secondaryIcon != null && onSecondaryPressed != null)
+              IconButton(onPressed: onSecondaryPressed, icon: secondaryIcon!),
+            Switch(
+              key: ValueKey('${setting.key}-switch'),
+              value: value,
+              onChanged: onChanged,
+            )
+          ],
+        ),
       ),
     );
   }

@@ -723,6 +723,9 @@ class AppLocalizationsKo extends AppLocalizations {
       '다른 앱의 형식은 모든 기능을 지원하지 않을 수 있습니다. 서드 파티 형식은 언제든 바뀔 수 있어 문제가 있다면 알려주시기 바랍니다. 이는 존재하는 기록에 영향을 미치지 않습니다!';
 
   @override
+  String get formatDayOne => 'Day One';
+
+  @override
   String get formatDaybook => 'Daybook';
 
   @override
@@ -733,6 +736,9 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get formatDiaro => 'Diaro';
+
+  @override
+  String get formatJourney => 'Journey';
 
   @override
   String get formatMyBrain => 'My Brain';

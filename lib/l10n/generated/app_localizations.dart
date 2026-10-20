@@ -1338,6 +1338,12 @@ abstract class AppLocalizations {
   /// **'Another app\'s format may not support all features. Please report any issues since third party formats may change at any time. This will not impact existing logs!'**
   String get logFormatDescription;
 
+  /// No description provided for @formatDayOne.
+  ///
+  /// In en, this message translates to:
+  /// **'Day One'**
+  String get formatDayOne;
+
   /// No description provided for @formatDaybook.
   ///
   /// In en, this message translates to:
@@ -1361,6 +1367,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Diaro'**
   String get formatDiaro;
+
+  /// No description provided for @formatJourney.
+  ///
+  /// In en, this message translates to:
+  /// **'Journey'**
+  String get formatJourney;
 
   /// No description provided for @formatMyBrain.
   ///

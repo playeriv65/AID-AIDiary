@@ -14,11 +14,10 @@ import 'package:aid_diary/utils/auto_backup_schedule.dart';
 import 'package:aid_diary/utils/backup_restore_utils.dart';
 import 'package:aid_diary/utils/imports/import_registry.dart';
 import 'package:aid_diary/utils/export_utils.dart';
-import 'package:aid_diary/utils/operation_outcome.dart';
 import 'package:aid_diary/utils/password_store.dart';
 import 'package:aid_diary/widgets/auth_popup.dart';
 import 'package:aid_diary/widgets/auto_backup_settings_dialog.dart';
-import 'package:aid_diary/widgets/failure_dialog.dart';
+import 'package:aid_diary/widgets/progress_dialog.dart';
 import 'package:aid_diary/widgets/settings_icon_action.dart';
 import 'package:aid_diary/widgets/settings_toggle.dart';
 import 'package:material_ui/material_ui.dart';
@@ -38,151 +37,77 @@ class _BackupRestoreSettingsState extends State<BackupRestoreSettings> {
     super.initState();
   }
 
-  Future<void> _showImportSelectionPopup() async {
-    ImportFormat? chosenFormat;
-    await showDialog(
+  /// Asks which of [options] to use; null when the dialog is dismissed.
+  Future<T?> _chooseFormat<T>(
+      String description, List<(T, String, Key)> options) {
+    return showDialog<T>(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(AppLocalizations.of(context)!.logFormatTitle),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(AppLocalizations.of(context)!.logFormatDescription),
-              Divider(),
-              for (final option in ImportRegistry.instance.options)
-                ListTile(
-                    title: Text(option.name(AppLocalizations.of(context)!)),
-                    onTap: () {
-                      chosenFormat = option.format;
-                      Navigator.of(context).pop();
-                    }),
-            ],
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(description),
+                const Divider(),
+                for (final (value, name, key) in options)
+                  ListTile(
+                      key: key,
+                      title: Text(name),
+                      onTap: () => Navigator.of(context).pop(value)),
+              ],
+            ),
           ),
         );
       },
     );
+  }
 
-    final format = chosenFormat;
-    if (format == null) return;
-    if (!mounted) return;
-
-    ValueNotifier<String> statusNotifier = ValueNotifier<String>("");
-
-    BackupRestoreUtils.showLoadingStatus(context, statusNotifier);
-
-    final outcome =
-        await ImportRegistry.instance.optionFor(format).run(context, (status) {
-      statusNotifier.value = status;
-    });
-
-    if (!mounted) return;
-    Navigator.of(context).pop();
-
-    if (outcome.failed) {
-      await showFailureDialog(context,
-          description: AppLocalizations.of(context)!.importErrorDescription,
-          error: outcome.error);
-    }
+  Future<void> _showImportSelectionPopup() async {
+    final localizations = AppLocalizations.of(context)!;
+    final option = await _chooseFormat(localizations.logFormatDescription, [
+      for (final option in ImportRegistry.instance.options)
+        (
+          option,
+          option.name(localizations),
+          ValueKey('import-${option.format.name}')
+        ),
+    ]);
+    if (option == null || !mounted) return;
+    await runOperation(context, (update) => option.run(context, update),
+        failureDescription: localizations.importErrorDescription);
   }
 
   Future<void> _showExportSelectionPopup() async {
-    ExportFormat chosenFormat = ExportFormat.none;
-    await showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(AppLocalizations.of(context)!.logFormatTitle),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(AppLocalizations.of(context)!
-                  .settingsExportFormatDescription),
-              Divider(),
-              ListTile(
-                  title: Text(AppLocalizations.of(context)!.formatMarkdown),
-                  onTap: () {
-                    chosenFormat = ExportFormat.markdown;
-                    Navigator.of(context).pop();
-                  }),
-              ListTile(
-                  key: const ValueKey('export-json'),
-                  title: Text(AppLocalizations.of(context)!.formatJson),
-                  onTap: () {
-                    chosenFormat = ExportFormat.json;
-                    Navigator.of(context).pop();
-                  }),
-            ],
-          ),
-        );
-      },
-    );
-
-    if (chosenFormat == ExportFormat.none) return;
-    if (!mounted) return;
-
-    ValueNotifier<String> statusNotifier = ValueNotifier<String>("");
-
-    BackupRestoreUtils.showLoadingStatus(context, statusNotifier);
-
-    var outcome = const OperationOutcome.cancelled();
-    if (chosenFormat == ExportFormat.markdown) {
-      outcome = await ExportUtils.exportToMarkdown(context, (status) {
-        statusNotifier.value = status;
-      });
-    } else if (chosenFormat == ExportFormat.json) {
-      outcome = await ExportUtils.exportToJson(
-          (status) => statusNotifier.value = status);
-    }
-
-    if (!mounted) return;
-    Navigator.of(context).pop();
-
-    if (outcome.failed) {
-      await showFailureDialog(context,
-          description: AppLocalizations.of(context)!.exportErrorDescription,
-          error: outcome.error);
-    }
+    final localizations = AppLocalizations.of(context)!;
+    final option =
+        await _chooseFormat(localizations.settingsExportFormatDescription, [
+      for (final option in ExportRegistry.instance.options)
+        (
+          option,
+          option.name(localizations),
+          ValueKey('export-${option.format.name}')
+        ),
+    ]);
+    if (option == null || !mounted) return;
+    await runOperation(context, (update) => option.run(context, update),
+        failureDescription: localizations.exportErrorDescription);
   }
 
   Future<void> _backupData(BuildContext context) async {
-    ValueNotifier<String> statusNotifier = ValueNotifier<String>("");
-
-    BackupRestoreUtils.showLoadingStatus(context, statusNotifier);
-
-    final outcome = await BackupRestoreUtils.backupToZip(context, (status) {
-      statusNotifier.value = status;
-    });
-
-    if (!context.mounted) return;
-    Navigator.of(context).pop();
-
-    if (outcome.failed) {
-      await showFailureDialog(context,
-          description: AppLocalizations.of(context)!.backupErrorDescription,
-          error: outcome.error);
-    }
+    await runOperation(
+        context, (update) => BackupRestoreUtils.backupToZip(context, update),
+        failureDescription:
+            AppLocalizations.of(context)!.backupErrorDescription);
   }
 
   Future<void> _restoreData(BuildContext context) async {
-    ValueNotifier<String> statusNotifier = ValueNotifier<String>("");
-
-    BackupRestoreUtils.showLoadingStatus(context, statusNotifier);
-
-    final outcome = await BackupRestoreUtils.restoreFromZip(context, (status) {
-      statusNotifier.value = status;
-    });
-
-    if (!context.mounted) return;
-    Navigator.of(context).pop();
-
-    if (outcome.failed) {
-      await showFailureDialog(context,
-          description: AppLocalizations.of(context)!.restoreErrorDescription,
-          error: outcome.error);
-    }
+    await runOperation(
+        context, (update) => BackupRestoreUtils.restoreFromZip(context, update),
+        failureDescription:
+            AppLocalizations.of(context)!.restoreErrorDescription);
   }
 
   Future<void> _showRestoreWarning() async {

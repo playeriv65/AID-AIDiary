@@ -451,35 +451,4 @@ class BackupRestoreUtils {
       if (bytes != null) await destination.write(imageName, bytes);
     }
   }
-
-  static void showLoadingStatus(
-      BuildContext context, ValueNotifier<String> statusNotifier) {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) {
-        return PopScope(
-          canPop: false,
-          child: Dialog(
-            child: Container(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  CircularProgressIndicator(),
-                  const SizedBox(height: 20),
-                  ValueListenableBuilder<String>(
-                    valueListenable: statusNotifier,
-                    builder: (context, message, child) {
-                      return Text(message, textAlign: TextAlign.center);
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
 }

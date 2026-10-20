@@ -5,9 +5,8 @@
 import 'dart:io';
 
 import 'package:aid_diary/providers/templates_provider.dart';
-import 'package:aid_diary/utils/backup_restore_utils.dart';
+import 'package:aid_diary/widgets/progress_dialog.dart';
 import 'package:aid_diary/utils/templates_tags_transfer.dart';
-import 'package:aid_diary/widgets/failure_dialog.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:provider/provider.dart';
@@ -31,22 +30,12 @@ class _ShareTemplatesDialogState extends State<ShareTemplatesDialog> {
     final bytes = TemplatesTagsTransfer.exportTemplates(_selectedIds);
     final fileName = _fileName();
 
-    ValueNotifier<String> statusNotifier = ValueNotifier<String>("");
-    BackupRestoreUtils.showLoadingStatus(context, statusNotifier);
-
-    final outcome =
-        await TemplatesTagsTransfer.saveBytesToFile(bytes, fileName, (status) {
-      statusNotifier.value = status;
-    });
-
-    if (!mounted) return;
-    Navigator.of(context).pop();
-
-    if (outcome.failed) {
-      await showFailureDialog(context,
-          description: AppLocalizations.of(context)!.exportErrorDescription,
-          error: outcome.error);
-    }
+    await runOperation(
+        context,
+        (update) =>
+            TemplatesTagsTransfer.saveBytesToFile(bytes, fileName, update),
+        failureDescription:
+            AppLocalizations.of(context)!.exportErrorDescription);
   }
 
   Future<void> _share() async {

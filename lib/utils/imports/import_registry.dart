@@ -3,6 +3,9 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/utils/formats/day_one_format.dart';
+import 'package:aid_diary/utils/formats/journey_format.dart';
+import 'package:aid_diary/utils/imports/import_archive.dart';
 import 'package:aid_diary/utils/imports/import_daybook.dart' as daybook;
 import 'package:aid_diary/utils/imports/import_daylio.dart' as daylio;
 import 'package:aid_diary/utils/imports/import_diarium.dart' as diarium;
@@ -38,6 +41,13 @@ class ImportRegistry {
       (context, updateStatus) => json.importFromJson(updateStatus),
     ),
     ImportFormatOption(
+      ImportFormat.dayOne,
+      (localizations) => localizations.formatDayOne,
+      (context, updateStatus) => importArchive(
+          context, updateStatus, decodeDayOneArchive,
+          singleFileName: 'Journal.json'),
+    ),
+    ImportFormatOption(
       ImportFormat.daybook,
       (localizations) => localizations.formatDaybook,
       daybook.importFromDaybook,
@@ -55,7 +65,16 @@ class ImportRegistry {
     ImportFormatOption(
       ImportFormat.diaro,
       (localizations) => localizations.formatDiaro,
-      diaro.importFromDiaro,
+      (context, updateStatus) => importArchive(
+          context, updateStatus, diaro.decodeDiaroArchive,
+          singleFileName: 'DiaroBackup.xml'),
+    ),
+    ImportFormatOption(
+      ImportFormat.journey,
+      (localizations) => localizations.formatJourney,
+      (context, updateStatus) => importArchive(
+          context, updateStatus, decodeJourneyArchive,
+          singleFileName: 'entry.json'),
     ),
     ImportFormatOption(
       ImportFormat.myBrain,

@@ -34,7 +34,8 @@ The layout follows the Journey diary app: a bottom bar on phones, a navigation r
 - **Search**: text plus inline tag, starred, activity and mood filters.
 - **Statistics**: streaks, mood over time, "What makes me feel…" (the activities and tags most often seen with a mood) and Year in Pixels.
 - **Recently deleted**: deleted entries wait 30 days (configurable) before they are erased; restore or erase them early.
-- **Export**: JSON (every entry with place, weather, activity, tags and attachment names; the JSON import reads it back) and Markdown, besides the full backup.
+- **Export**: JSON (every entry with place, weather, activity, tags and attachment names; the JSON import reads it back), Markdown, and Journey and Day One archives that those apps import, besides the full backup.
+- **Import**: Journey backups (both schemas) and Day One JSON exports with photos, tags, stars, place and weather, plus Daybook, Daylio, Diarium, Diaro, My Brain, OneShot and Pixels.
 - **Settings**: general (theme, wallpaper, entry font, size and line spacing, units, 12/24-hour time, add place / weather / activity automatically), data and storage (backup, export, Recently deleted), stories (morning and evening prompts, throwbacks), notifications (Android: reminders with weekdays, on this day, a nudge after a few quiet days, a lasting quick-write notification), security, help (FAQ, privacy) and about.
 - **Android home screen widgets**: today's status (date, whether today has an entry, the latest entry's first line, the streak and a Write button), and a photo from the diary, a different one each day, that opens its entry.
 

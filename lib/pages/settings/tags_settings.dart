@@ -5,13 +5,12 @@
 import 'package:aid_diary/models/tag.dart';
 import 'package:aid_diary/models/tag_category.dart';
 import 'package:aid_diary/providers/tags_provider.dart';
-import 'package:aid_diary/utils/backup_restore_utils.dart';
+import 'package:aid_diary/widgets/progress_dialog.dart';
 import 'package:aid_diary/utils/tag_category_visuals.dart';
 import 'package:aid_diary/utils/templates_tags_transfer.dart';
 import 'package:aid_diary/widgets/edit_category.dart';
 import 'package:aid_diary/widgets/edit_tag.dart';
 import 'package:aid_diary/widgets/expressive_fab_menu.dart';
-import 'package:aid_diary/widgets/failure_dialog.dart';
 import 'package:aid_diary/widgets/share_tags_dialog.dart';
 import 'package:aid_diary/widgets/tag_chip.dart';
 import 'package:aid_diary/widgets/tag_icon_glyph.dart';
@@ -66,22 +65,9 @@ class _TagsSettingsState extends State<TagsSettings> {
   }
 
   Future<void> _importFile(BuildContext context) async {
-    ValueNotifier<String> statusNotifier = ValueNotifier<String>("");
-
-    BackupRestoreUtils.showLoadingStatus(context, statusNotifier);
-
-    final outcome = await TemplatesTagsTransfer.importTransferFile((status) {
-      statusNotifier.value = status;
-    });
-
-    if (!context.mounted) return;
-    Navigator.of(context).pop();
-
-    if (outcome.failed) {
-      await showFailureDialog(context,
-          description: AppLocalizations.of(context)!.importErrorDescription,
-          error: outcome.error);
-    }
+    await runOperation(context, TemplatesTagsTransfer.importTransferFile,
+        failureDescription:
+            AppLocalizations.of(context)!.importErrorDescription);
   }
 
   void _toggleCollapse(int? categoryId) {

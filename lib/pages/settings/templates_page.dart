@@ -3,10 +3,9 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'package:aid_diary/models/template.dart';
-import 'package:aid_diary/utils/backup_restore_utils.dart';
+import 'package:aid_diary/widgets/progress_dialog.dart';
 import 'package:aid_diary/utils/templates_tags_transfer.dart';
 import 'package:aid_diary/widgets/edit_template.dart';
-import 'package:aid_diary/widgets/failure_dialog.dart';
 import 'package:aid_diary/widgets/share_templates_dialog.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:aid_diary/config_provider.dart';
@@ -37,22 +36,9 @@ class _TemplateSettingsState extends State<TemplateSettings> {
   }
 
   Future<void> _importFile(BuildContext context) async {
-    ValueNotifier<String> statusNotifier = ValueNotifier<String>("");
-
-    BackupRestoreUtils.showLoadingStatus(context, statusNotifier);
-
-    final outcome = await TemplatesTagsTransfer.importTransferFile((status) {
-      statusNotifier.value = status;
-    });
-
-    if (!context.mounted) return;
-    Navigator.of(context).pop();
-
-    if (outcome.failed) {
-      await showFailureDialog(context,
-          description: AppLocalizations.of(context)!.importErrorDescription,
-          error: outcome.error);
-    }
+    await runOperation(context, TemplatesTagsTransfer.importTransferFile,
+        failureDescription:
+            AppLocalizations.of(context)!.importErrorDescription);
   }
 
   Widget _templateList(BuildContext context) {

@@ -729,6 +729,9 @@ class AppLocalizationsHi extends AppLocalizations {
       'अन्य ऐप का प्रारूप सभी फीचर्स को सपोर्ट नहीं कर सकता है। कृपया किसी भी समस्या को रिपोर्ट करें क्योंकि थर्ड पार्टी के प्रारूप कभी भी बदल सकते हैं। यह मौजूदा लॉग को प्रभावित नहीं करेगा!';
 
   @override
+  String get formatDayOne => 'Day One';
+
+  @override
   String get formatDaybook => 'Daybook';
 
   @override
@@ -739,6 +742,9 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get formatDiaro => 'Diaro';
+
+  @override
+  String get formatJourney => 'Journey';
 
   @override
   String get formatMyBrain => 'My Brain';

@@ -5,10 +5,9 @@
 import 'dart:io';
 
 import 'package:aid_diary/providers/tags_provider.dart';
-import 'package:aid_diary/utils/backup_restore_utils.dart';
+import 'package:aid_diary/widgets/progress_dialog.dart';
 import 'package:aid_diary/utils/tag_category_visuals.dart';
 import 'package:aid_diary/utils/templates_tags_transfer.dart';
-import 'package:aid_diary/widgets/failure_dialog.dart';
 import 'package:aid_diary/widgets/tag_icon_glyph.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
@@ -33,22 +32,12 @@ class _ShareTagsDialogState extends State<ShareTagsDialog> {
     final bytes = TemplatesTagsTransfer.exportTags(_selectedTagIds);
     final fileName = _fileName();
 
-    ValueNotifier<String> statusNotifier = ValueNotifier<String>("");
-    BackupRestoreUtils.showLoadingStatus(context, statusNotifier);
-
-    final outcome =
-        await TemplatesTagsTransfer.saveBytesToFile(bytes, fileName, (status) {
-      statusNotifier.value = status;
-    });
-
-    if (!mounted) return;
-    Navigator.of(context).pop();
-
-    if (outcome.failed) {
-      await showFailureDialog(context,
-          description: AppLocalizations.of(context)!.exportErrorDescription,
-          error: outcome.error);
-    }
+    await runOperation(
+        context,
+        (update) =>
+            TemplatesTagsTransfer.saveBytesToFile(bytes, fileName, update),
+        failureDescription:
+            AppLocalizations.of(context)!.exportErrorDescription);
   }
 
   Future<void> _share() async {

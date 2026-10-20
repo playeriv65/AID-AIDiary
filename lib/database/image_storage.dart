@@ -164,8 +164,13 @@ class ImageStorage {
   Uint8List? _nonEmpty(Uint8List? bytes) =>
       bytes == null || bytes.isEmpty ? null : bytes;
 
+  /// Stores [bytes] under a new name. [imageName] is a file already in the
+  /// image folder, which is reused as is; [fileExtension] names a new file's
+  /// type when there is no such name.
   Future<String?> create(String? imageName, Uint8List bytes,
-      {DateTime? currTime, bool skipExternalUpload = false}) async {
+      {DateTime? currTime,
+      bool skipExternalUpload = false,
+      String fileExtension = ".jpg"}) async {
     currTime ??= DateTime.now();
 
     final internal = await internalStore();
@@ -175,7 +180,7 @@ class ImageStorage {
       return imageName;
     }
 
-    var fileExtension = imageName != null ? extension(imageName) : ".jpg";
+    if (imageName != null) fileExtension = extension(imageName);
 
     final timestamp =
         currTime.toIso8601String().split('.').first.replaceAll(':', '-');

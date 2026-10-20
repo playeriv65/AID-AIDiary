@@ -3,13 +3,12 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'dart:io';
-import 'package:aid_diary/utils/backup_restore_utils.dart';
+import 'package:aid_diary/widgets/progress_dialog.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/database/app_database.dart';
 import 'package:aid_diary/database/image_storage.dart';
 import 'package:aid_diary/providers/entries_provider.dart';
 import 'package:aid_diary/storage/storage_picker.dart';
-import 'package:aid_diary/widgets/failure_dialog.dart';
 import 'package:aid_diary/widgets/settings_dropdown.dart';
 import 'package:aid_diary/widgets/settings_icon_action.dart';
 import 'package:device_info_plus/device_info_plus.dart';
@@ -98,44 +97,16 @@ class _StorageSettingsState extends State<StorageSettings> {
     );
     if (confirmed) {
       if (!mounted) return;
-      ValueNotifier<String> statusNotifier = ValueNotifier<String>("");
-
-      BackupRestoreUtils.showLoadingStatus(context, statusNotifier);
-      final outcome =
-          await AppDatabase.instance.selectExternalLocation((status) {
-        statusNotifier.value = status;
-      });
-
-      if (!mounted) return;
-      Navigator.of(context).pop();
-
-      if (outcome.failed) {
-        await showFailureDialog(context,
-            description:
-                AppLocalizations.of(context)!.logFolderErrorDescription,
-            error: outcome.error);
-      }
+      await runOperation(context, AppDatabase.instance.selectExternalLocation,
+          failureDescription:
+              AppLocalizations.of(context)!.logFolderErrorDescription);
     }
   }
 
   Future<void> _attemptImageFolderChange() async {
-    ValueNotifier<String> statusNotifier = ValueNotifier<String>("");
-
-    BackupRestoreUtils.showLoadingStatus(context, statusNotifier);
-    final outcome =
-        await ImageStorage.instance.selectExternalLocation((status) {
-      statusNotifier.value = status;
-    });
-
-    if (!mounted) return;
-    Navigator.of(context).pop();
-
-    if (outcome.failed) {
-      await showFailureDialog(context,
-          description:
-              AppLocalizations.of(context)!.imageFolderErrorDescription,
-          error: outcome.error);
-    }
+    await runOperation(context, ImageStorage.instance.selectExternalLocation,
+        failureDescription:
+            AppLocalizations.of(context)!.imageFolderErrorDescription);
   }
 
   void _showDeleteAllLogsDialog(
@@ -212,19 +183,10 @@ class _StorageSettingsState extends State<StorageSettings> {
   }
 
   Future<void> _deleteAllLogs(BuildContext context) async {
-    ValueNotifier<String> statusNotifier = ValueNotifier<String>("");
-
-    BackupRestoreUtils.showLoadingStatus(context, statusNotifier);
-
-    try {
-      await EntriesProvider.instance.deleteAll((status) {
-        statusNotifier.value = status;
-      });
-
+    await runWithProgress(context, (update) async {
+      await EntriesProvider.instance.deleteAll(update);
       await ImageStorage.instance.garbageCollectImages();
-    } finally {
-      if (context.mounted) Navigator.of(context).pop();
-    }
+    });
   }
 
   @override

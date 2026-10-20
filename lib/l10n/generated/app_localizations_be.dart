@@ -730,6 +730,9 @@ class AppLocalizationsBe extends AppLocalizations {
       'Another app\'s format may not support all features. Please report any issues since third party formats may change at any time. This will not impact existing logs!';
 
   @override
+  String get formatDayOne => 'Day One';
+
+  @override
   String get formatDaybook => 'Daybook';
 
   @override
@@ -740,6 +743,9 @@ class AppLocalizationsBe extends AppLocalizations {
 
   @override
   String get formatDiaro => 'Diaro';
+
+  @override
+  String get formatJourney => 'Journey';
 
   @override
   String get formatMyBrain => 'My Brain';

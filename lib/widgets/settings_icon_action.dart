@@ -23,32 +23,37 @@ class SettingsIconAction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding:
-          const EdgeInsets.only(top: 8.0, bottom: 8.0, left: 16.0, right: 16.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                ),
-                if (hint != null)
+    // The whole row is the target, as in a list tile; the icon only marks
+    // the action.
+    return InkWell(
+      onTap: onPressed,
+      child: Padding(
+        padding: const EdgeInsets.only(
+            top: 8.0, bottom: 8.0, left: 16.0, right: 16.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
                   Text(
-                    hint!,
-                    style: TextStyle(fontSize: 14),
+                    title,
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),
-              ],
+                  if (hint != null)
+                    Text(
+                      hint!,
+                      style: TextStyle(fontSize: 14),
+                    ),
+                ],
+              ),
             ),
-          ),
-          IconButton(onPressed: onPressed, icon: icon),
-          if (secondaryIcon != null && onSecondaryPressed != null)
-            IconButton(onPressed: onSecondaryPressed, icon: secondaryIcon!)
-        ],
+            IconButton(onPressed: onPressed, icon: icon),
+            if (secondaryIcon != null && onSecondaryPressed != null)
+              IconButton(onPressed: onSecondaryPressed, icon: secondaryIcon!)
+          ],
+        ),
       ),
     );
   }

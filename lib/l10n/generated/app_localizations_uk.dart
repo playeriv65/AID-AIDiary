@@ -736,6 +736,9 @@ class AppLocalizationsUk extends AppLocalizations {
       'Формат іншої програми може не підтримувати всі функції. Будь ласка, повідомляйте про будь-які проблеми, оскільки формати сторонніх розробників можуть змінитися будь-коли. Це не вплине на існуючі журнали!';
 
   @override
+  String get formatDayOne => 'Day One';
+
+  @override
   String get formatDaybook => 'Щоденник';
 
   @override
@@ -746,6 +749,9 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get formatDiaro => 'Діаро';
+
+  @override
+  String get formatJourney => 'Journey';
 
   @override
   String get formatMyBrain => 'My Brain';

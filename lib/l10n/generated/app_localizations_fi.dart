@@ -733,6 +733,9 @@ class AppLocalizationsFi extends AppLocalizations {
       'Toisen sovelluksen muoto ei välttämättä tue kaikkia ominaisuuksia. Ilmoita kaikista vioista, koska kolmansien osapuolten muodot voivat muuttua milloin tahansa. Tämä ei vaikuta olemassa oleviin lokeihin!';
 
   @override
+  String get formatDayOne => 'Day One';
+
+  @override
   String get formatDaybook => 'Daybook';
 
   @override
@@ -743,6 +746,9 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get formatDiaro => 'Diaro';
+
+  @override
+  String get formatJourney => 'Journey';
 
   @override
   String get formatMyBrain => 'My Brain';
