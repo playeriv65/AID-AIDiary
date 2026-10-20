@@ -118,8 +118,8 @@ icons_launcher:
       enable: false
       image_path: "assets/logo_border.png"
     windows:
-      enable: false
+      enable: true
       image_path: "assets/logo.png"
     linux:
-      enable: true
+      enable: false
       image_path: "assets/logo.png"

@@ -11,6 +11,7 @@
 - Stories play as one chain (`StoryPlayer`, `TodayStory.open(from:)`): Today, the coach program's day, the throwback, then a closing card; a card over the app on wide windows, full screen on phones. Coach enrolment lives in config (`coachProgram`, `coachStartDate`, `coachAnsweredStep`); its daily notification follows the reminder pattern in `main.dart` (alarm plus localized text stored in SharedPreferences at startup).
 - Feature ideas not built yet live in `TODO.md`.
 - The UI follows Journey's Android tablet and phone layouts; Windows uses the tablet layout (no separate desktop layout).
+- The app icon is drawn by `tool/icon/export_icon.py` (colours and sizes at its top); it writes `assets/logo*.png` and `assets/logo.svg`, then `dart run icons_launcher:create` regenerates the Android launcher, round, adaptive, monochrome and notification icons and the Windows `.ico`. The Android 12+ splash uses the launcher icon.
 - A new `Setting` must also go into `Settings.all`: startup prunes config keys missing from it (`test/config_settings_test.dart` checks).
 - Videos and voice notes are attachments in the `entry_images` table and image folder, told apart by file extension (`MediaKind`), so backup and sync cover them unchanged.
 - Build the APK with `./scripts/dev.ps1 apk` (flavors need `--flavor dev`). Test the home screen widget on the headless emulator; `am force-stop` cancels the widget's taps until it next updates, so use `am kill` for cold-start checks.
