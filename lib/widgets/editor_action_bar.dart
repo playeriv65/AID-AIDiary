@@ -54,6 +54,9 @@ class EditorActionBar extends StatefulWidget {
   /// Room reserved for the word and character count on wide windows.
   static const double _countWidth = 168.0;
 
+  /// Space between the tools and the count.
+  static const double _countGap = 12.0;
+
   @override
   State<EditorActionBar> createState() => _EditorActionBarState();
 }
@@ -266,7 +269,9 @@ class _EditorActionBarState extends State<EditorActionBar> {
                     mirroredReserved -
                     metrics.contentInset * 2)
                 .clamp(0.0, constraints.maxWidth);
-            final pillAlignment = showToggle && !isWide
+            // Wide windows line the tools up from the start, the count
+            // right after them.
+            final pillAlignment = (showToggle && !isWide) || combined
                 ? AlignmentDirectional.centerStart
                 : AlignmentDirectional.center;
 
@@ -284,11 +289,11 @@ class _EditorActionBarState extends State<EditorActionBar> {
               overflowButtonWidth: metrics.buttonSize,
               padding: metrics.pillPadding,
             );
-            // The count sits beside the centred pill only where it fits.
-            final sideRoom = (maxPillWidth - split.pillWidth) / 2;
+            // The count follows the pill only where it fits.
             final showCount = combined &&
                 !split.hasOverflow &&
-                sideRoom >= EditorActionBar._countWidth;
+                maxPillWidth - split.pillWidth >=
+                    EditorActionBar._countWidth + EditorActionBar._countGap;
 
             return Stack(
               children: [
@@ -320,7 +325,9 @@ class _EditorActionBarState extends State<EditorActionBar> {
                 ),
                 if (showCount)
                   PositionedDirectional(
-                    end: metrics.contentInset,
+                    start: metrics.contentInset +
+                        split.pillWidth +
+                        EditorActionBar._countGap,
                     top: 0,
                     bottom: 0,
                     width: EditorActionBar._countWidth,
@@ -384,7 +391,7 @@ class _WordCount extends StatelessWidget {
     return ValueListenableBuilder<TextEditingValue>(
       valueListenable: controller,
       builder: (context, value, _) => Align(
-        alignment: AlignmentDirectional.centerEnd,
+        alignment: AlignmentDirectional.centerStart,
         child: Text(
           l10n.editorWordCount(
               wordsCount(value.text), value.text.characters.length),

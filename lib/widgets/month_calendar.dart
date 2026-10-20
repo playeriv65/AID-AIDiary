@@ -190,7 +190,8 @@ class _MonthGrid extends StatelessWidget {
     // Monday is index 0 in firstDayIndex; DateTime.weekday is 1 for Monday.
     final leading = (month.start.weekday - 1 - firstDayIndex + 7) % 7;
     final cells = leading + month.length;
-    final rows = (cells / 7).ceil();
+    // Every month takes six weeks, so months line up while scrolling.
+    const rows = 6;
 
     Widget cell(int index) {
       if (index < leading || index >= cells) return const SizedBox.shrink();
@@ -254,14 +255,20 @@ class _MonthGrid extends StatelessWidget {
               style: theme.textTheme.titleSmall
                   ?.copyWith(color: cs.onSurfaceVariant)),
         ),
-        for (var row = 0; row < rows; row++)
-          SizedBox(
-            height: 48,
-            child: Row(children: [
-              for (var col = 0; col < 7; col++)
-                Expanded(child: cell(row * 7 + col)),
-            ]),
-          ),
+        // Square day cells, within reason on very wide or narrow panes.
+        LayoutBuilder(builder: (context, constraints) {
+          final rowHeight = (constraints.maxWidth / 7).clamp(48.0, 96.0);
+          return Column(children: [
+            for (var row = 0; row < rows; row++)
+              SizedBox(
+                height: rowHeight,
+                child: Row(children: [
+                  for (var col = 0; col < 7; col++)
+                    Expanded(child: cell(row * 7 + col)),
+                ]),
+              ),
+          ]);
+        }),
       ]),
     );
   }

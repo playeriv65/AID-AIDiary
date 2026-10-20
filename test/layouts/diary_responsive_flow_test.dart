@@ -87,7 +87,7 @@ void main() {
     await DiaryAppHarness.runUntil(
         tester,
         () => tester
-            .widget<IconButton>(find.byKey(const ValueKey('entry-done')))
+            .widget<IconButton>(find.byKey(const ValueKey('entry-close')))
             .onPressed!(),
         () => EntryStore.instance.entries.isNotEmpty);
     final saved = EntryStore.instance.entries.single;

@@ -98,9 +98,9 @@ class _CoachPageState extends State<CoachPage>
         cards.add((
           key: program.id,
           detail: detail,
-          card: (headerHeight) => _CoachCard(
+          card: (headerAspectRatio) => _CoachCard(
                 key: ValueKey('coach-program-${program.id}'),
-                headerHeight: headerHeight,
+                headerAspectRatio: headerAspectRatio,
                 icon: Icons.lightbulb_outline_rounded,
                 kind: l10n.coachKindProgram,
                 title: program.title,
@@ -116,9 +116,9 @@ class _CoachPageState extends State<CoachPage>
         cards.add((
           key: 'builtin-${builtin.id}',
           detail: detail,
-          card: (headerHeight) => _CoachCard(
+          card: (headerAspectRatio) => _CoachCard(
                 key: ValueKey('coach-builtin-${builtin.id}'),
-                headerHeight: headerHeight,
+                headerAspectRatio: headerAspectRatio,
                 icon: Icons.auto_awesome_outlined,
                 kind: l10n.templateFeatured,
                 title: builtin.name,
@@ -131,9 +131,9 @@ class _CoachPageState extends State<CoachPage>
         cards.add((
           key: template,
           detail: detail,
-          card: (headerHeight) => _CoachCard(
+          card: (headerAspectRatio) => _CoachCard(
                 key: ValueKey('coach-template-${template.id}'),
-                headerHeight: headerHeight,
+                headerAspectRatio: headerAspectRatio,
                 icon: Icons.description_outlined,
                 kind: l10n.coachKindTemplate,
                 title: template.name,
@@ -183,19 +183,31 @@ class _CoachPageState extends State<CoachPage>
         else
           SliverPadding(
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 96),
-            sliver: SliverGrid.builder(
-              // Phones show one full-width card per row.
-              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: split ? 320 : 640,
-                  mainAxisExtent: split ? 260 : 300,
-                  mainAxisSpacing: 12,
-                  crossAxisSpacing: 12),
-              itemCount: cards.length,
-              itemBuilder: (context, index) {
-                final card = cards[index];
-                return GestureDetector(
-                  onTap: () => _open(context, card.detail, card.key, split),
-                  child: card.card(split ? 110 : 150),
+            // Cards are as tall as their text; beside a detail pane two
+            // share a row and match heights, phones show one per row.
+            sliver: SliverList.separated(
+              itemCount: (cards.length / (split ? 2 : 1)).ceil(),
+              separatorBuilder: (_, __) => const SizedBox(height: 12),
+              itemBuilder: (context, row) {
+                final perRow = split ? 2 : 1;
+                Widget cell(int index) {
+                  if (index >= cards.length) return const SizedBox.shrink();
+                  final card = cards[index];
+                  return GestureDetector(
+                    onTap: () => _open(context, card.detail, card.key, split),
+                    child: card.card(split ? 4 / 3 : 2),
+                  );
+                }
+
+                return IntrinsicHeight(
+                  child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        for (var i = 0; i < perRow; i++) ...[
+                          if (i > 0) const SizedBox(width: 12),
+                          Expanded(child: cell(row * perRow + i)),
+                        ],
+                      ]),
                 );
               },
             ),
@@ -212,10 +224,11 @@ class _CoachCard extends StatelessWidget {
     required this.kind,
     required this.title,
     required this.description,
-    required this.headerHeight,
+    required this.headerAspectRatio,
   });
 
-  final double headerHeight;
+  /// Width over height of the illustration area.
+  final double headerAspectRatio;
   final IconData icon;
   final String kind;
   final String title;
@@ -231,29 +244,31 @@ class _CoachCard extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-        Container(
-          height: headerHeight,
-          color: cs.primaryContainer,
-          child: Icon(icon, size: 48, color: cs.onPrimaryContainer),
+        AspectRatio(
+          aspectRatio: headerAspectRatio,
+          child: ColoredBox(
+            color: cs.primaryContainer,
+            child: Icon(icon, size: 64, color: cs.onPrimaryContainer),
+          ),
         ),
         Padding(
-          padding: const EdgeInsets.all(14),
+          padding: const EdgeInsets.fromLTRB(24, 20, 24, 24),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text(kind.toUpperCase(),
-                style: theme.textTheme.labelSmall
-                    ?.copyWith(letterSpacing: 1.4, color: cs.onSurfaceVariant)),
-            const SizedBox(height: 4),
+                style: theme.textTheme.labelMedium
+                    ?.copyWith(letterSpacing: 1.6, color: cs.onSurfaceVariant)),
+            const SizedBox(height: 6),
             Text(title,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
-                style: theme.textTheme.titleMedium
+                style: theme.textTheme.titleLarge
                     ?.copyWith(fontWeight: FontWeight.w700)),
-            const SizedBox(height: 4),
+            const SizedBox(height: 6),
             Text(description,
-                maxLines: 2,
+                maxLines: 3,
                 overflow: TextOverflow.ellipsis,
-                style: theme.textTheme.bodySmall
+                style: theme.textTheme.bodyLarge
                     ?.copyWith(color: cs.onSurfaceVariant)),
           ]),
         ),

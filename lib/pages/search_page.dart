@@ -4,6 +4,8 @@
 
 import 'package:daily_you/l10n/generated/app_localizations.dart';
 import 'package:daily_you/models/entry.dart';
+import 'package:daily_you/models/tag.dart';
+import 'package:daily_you/pages/entry_view_page.dart';
 import 'package:daily_you/providers/entries_provider.dart';
 import 'package:daily_you/providers/entry_images_provider.dart';
 import 'package:daily_you/providers/tags_provider.dart';
@@ -31,6 +33,7 @@ class _SearchPageState extends State<SearchPage> {
   bool _starred = false;
   final Set<EntryActivity> _activities = {};
   final Set<int> _moods = {};
+  int? _selectedId;
 
   bool get _active =>
       _controller.text.trim().isNotEmpty ||
@@ -81,38 +84,91 @@ class _SearchPageState extends State<SearchPage> {
   void _toggle<T>(Set<T> set, T value, bool? on) =>
       setState(() => on == true ? set.add(value) : set.remove(value));
 
+  void _open(Entry entry, bool split) {
+    if (split) {
+      setState(() => _selectedId = entry.id);
+    } else {
+      EntryNavigation.view(context, entry, entries: _results);
+    }
+  }
+
+  Widget? _detail(List<Entry> results) {
+    final index = results.indexWhere((e) => e.id == _selectedId);
+    if (index < 0) return null;
+    return EntryViewPage(
+      key: ValueKey('search-detail-$_selectedId'),
+      entryId: _selectedId!,
+      embedded: true,
+      onPrevious: index > 0
+          ? () => setState(() => _selectedId = results[index - 1].id)
+          : null,
+      onNext: index < results.length - 1
+          ? () => setState(() => _selectedId = results[index + 1].id)
+          : null,
+      onEntryEdited: (id) => setState(() => _selectedId = id),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     context.watch<EntriesProvider>();
     final tags = context.watch<TagsProvider>();
-    final images = context.watch<EntryImagesProvider>();
     final results = _active ? _results() : const <Entry>[];
     final favoriteId = tags.favoriteTag?.id;
     final tagOptions = tags.tags.where((t) => t.id != favoriteId).toList();
 
+    // The search bar heads the list pane; on wide screens the detail pane
+    // beside it shows the picked result, as on the journal.
     return Scaffold(
-      appBar: AppBar(
-        title: TextField(
-          key: const ValueKey('search-field'),
-          controller: _controller,
-          autofocus: true,
-          decoration: InputDecoration(
-              hintText: l10n.searchLogsHint, border: InputBorder.none),
-          onChanged: (_) => setState(() {}),
-        ),
-        actions: [
-          if (_active)
-            IconButton(
-              tooltip: MaterialLocalizations.of(context).clearButtonTooltip,
-              icon: const Icon(Icons.close_rounded),
-              onPressed: _clear,
+      body: SafeArea(
+        child: ListDetailLayout(
+          detail: _detail(results),
+          listBuilder: (context, split) => Column(children: [
+            SizedBox(
+              height: kToolbarHeight,
+              child: Row(children: [
+                const SizedBox(width: 4),
+                const BackButton(),
+                Expanded(
+                  child: TextField(
+                    key: const ValueKey('search-field'),
+                    controller: _controller,
+                    autofocus: true,
+                    style: theme.textTheme.titleMedium,
+                    decoration: InputDecoration(
+                        hintText: l10n.searchLogsHint,
+                        border: InputBorder.none),
+                    onChanged: (_) => setState(() {}),
+                  ),
+                ),
+                if (_active)
+                  IconButton(
+                    key: const ValueKey('search-clear'),
+                    tooltip:
+                        MaterialLocalizations.of(context).clearButtonTooltip,
+                    icon: const Icon(Icons.close_rounded),
+                    onPressed: _clear,
+                  ),
+                const SizedBox(width: 4),
+              ]),
             ),
-        ],
+            const Divider(height: 1),
+            Expanded(child: _list(context, split, results, tagOptions)),
+          ]),
+        ),
       ),
-      body: ListView(
-        padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
+    );
+  }
+
+  Widget _list(BuildContext context, bool split, List<Entry> results,
+      List<Tag> tagOptions) {
+    final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final images = context.watch<EntryImagesProvider>();
+    return ListView(
+        padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
         children: [
           SectionLabel(l10n.searchFilters),
           _FilterSection(
@@ -191,8 +247,8 @@ class _SearchPageState extends State<SearchPage> {
                     JournalEntryRow(
                       entry: entry,
                       images: images.getForEntry(entry),
-                      onTap: () => EntryNavigation.view(context, entry,
-                          entries: _results),
+                      selected: split && entry.id == _selectedId,
+                      onTap: () => _open(entry, split),
                     ),
                 ]),
           ] else
@@ -203,9 +259,7 @@ class _SearchPageState extends State<SearchPage> {
                   style: theme.textTheme.bodyMedium
                       ?.copyWith(color: theme.colorScheme.outline)),
             ),
-        ],
-      ),
-    );
+        ]);
   }
 }
 

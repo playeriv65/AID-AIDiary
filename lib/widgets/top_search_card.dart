@@ -89,41 +89,86 @@ Future<void> showProfileSheet(BuildContext context) {
     builder: (context) {
       final theme = Theme.of(context);
       final cs = theme.colorScheme;
+      Widget row(String key, IconData icon, String title, VoidCallback onTap) =>
+          ListTile(
+            key: ValueKey(key),
+            leading: Icon(icon),
+            title: Text(title,
+                style: theme.textTheme.titleSmall
+                    ?.copyWith(fontWeight: FontWeight.w600)),
+            trailing: const Icon(Icons.chevron_right_rounded),
+            onTap: onTap,
+          );
+
+      // Close, who you are, then the destinations grouped in one card.
       return SafeArea(
-        child: Column(mainAxisSize: MainAxisSize.min, children: [
-          ListTile(
-            leading: CircleAvatar(
-                backgroundColor: cs.secondaryContainer,
-                child:
-                    Icon(Icons.person_rounded, color: cs.onSecondaryContainer)),
-            title: Text(l10n.appTitle, style: theme.textTheme.titleMedium),
-            subtitle: Text(l10n.profileLocalOnly),
-          ),
-          const Divider(indent: 16, endIndent: 16),
-          ListTile(
-            key: const ValueKey('profile-statistics'),
-            leading: const Icon(Icons.insights_rounded),
-            title: Text(l10n.pageStatisticsTitle),
-            onTap: () => open(
-                'statistics',
-                () => Scaffold(
-                    appBar: AppBar(title: Text(l10n.pageStatisticsTitle)),
-                    body: const StatsPage())),
-          ),
-          ListTile(
-            key: const ValueKey('profile-templates'),
-            leading: const Icon(Icons.description_outlined),
-            title: Text(l10n.settingsTemplatesTitle),
-            onTap: () => open('templates', () => const TemplateSettings()),
-          ),
-          ListTile(
-            key: const ValueKey('diary-settings'),
-            leading: const Icon(Icons.settings_rounded),
-            title: Text(l10n.pageSettingsTitle),
-            onTap: () => open('settings', () => const SettingsPage()),
-          ),
-          const SizedBox(height: 8),
-        ]),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+          child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Align(
+                  alignment: AlignmentDirectional.centerStart,
+                  child: IconButton(
+                    key: const ValueKey('profile-close'),
+                    tooltip:
+                        MaterialLocalizations.of(context).closeButtonTooltip,
+                    icon: const Icon(Icons.close_rounded),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                ),
+                ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  leading: CircleAvatar(
+                      radius: 28,
+                      backgroundColor: cs.secondaryContainer,
+                      child: Icon(Icons.person_rounded,
+                          color: cs.onSecondaryContainer)),
+                  title:
+                      Text(l10n.appTitle, style: theme.textTheme.titleMedium),
+                  subtitle: Text(l10n.profileLocalOnly),
+                ),
+                const SizedBox(height: 12),
+                Card.filled(
+                  margin: EdgeInsets.zero,
+                  color: cs.surfaceContainerHigh,
+                  clipBehavior: Clip.antiAlias,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12)),
+                  child: Column(children: [
+                    row(
+                        'diary-settings',
+                        Icons.settings_rounded,
+                        l10n.pageSettingsTitle,
+                        () => open('settings', () => const SettingsPage())),
+                    const Divider(height: 1),
+                    row(
+                        'profile-statistics',
+                        Icons.insights_rounded,
+                        l10n.pageStatisticsTitle,
+                        () => open(
+                            'statistics',
+                            () => Scaffold(
+                                appBar: AppBar(
+                                    title: Text(l10n.pageStatisticsTitle)),
+                                body: const StatsPage()))),
+                    const Divider(height: 1),
+                    row(
+                        'profile-templates',
+                        Icons.description_outlined,
+                        l10n.settingsTemplatesTitle,
+                        () =>
+                            open('templates', () => const TemplateSettings())),
+                  ]),
+                ),
+                const SizedBox(height: 24),
+                Text(l10n.appTitle.toUpperCase(),
+                    textAlign: TextAlign.center,
+                    style: theme.textTheme.labelLarge
+                        ?.copyWith(letterSpacing: 2, color: cs.outline)),
+              ]),
+        ),
       );
     },
   );

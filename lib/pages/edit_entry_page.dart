@@ -103,6 +103,10 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
   bool _deletingEntry = false;
   bool _newEntry = false;
   bool _creatingNewEntry = false;
+
+  /// Whether anything changed in this session; the close button then reads
+  /// as "done". Leaving saves either way.
+  bool _edited = false;
   late TagAttachmentSource _tagSource;
   late EntryDraftDirtyTracker _dirtyTracker;
   late final EntryDraftSession _draftSession = EntryStore.instance.beginDraft();
@@ -351,22 +355,8 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
               appBar: AppBar(
                   centerTitle: true,
                   title: _buildDateTitle(context, theme),
-                  leading: IconButton(
-                    key: const ValueKey('entry-close'),
-                    tooltip:
-                        MaterialLocalizations.of(context).closeButtonTooltip,
-                    icon: const Icon(Icons.close_rounded),
-                    onPressed: () {
-                      // Pop edit page
-                      Navigator.of(context).pop();
-                      if (!_creatingNewEntry &&
-                          Navigator.of(context).canPop()) {
-                        // Pop view page
-                        Navigator.of(context).pop();
-                      }
-                    },
-                  ),
-                  actions: [_deleteButton(), _closeButton()]),
+                  leading: _closeButton(),
+                  actions: [if (!_creatingNewEntry) _deleteButton()]),
               body: EditorActionBarOverlay(
                 keyboardInset: keyboardInset,
                 body: LayoutBuilder(
@@ -708,14 +698,19 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
   }
 
   Widget _deleteButton() => IconButton(
-        icon: const Icon(Icons.delete),
+        key: const ValueKey('entry-delete'),
+        tooltip: MaterialLocalizations.of(context).deleteButtonTooltip,
+        icon: const Icon(Icons.delete_outline_rounded),
         onPressed: () => _showDeleteEntryPopup(),
       );
 
+  // Leaving saves (see PopScope), so close and done are one button.
   Widget _closeButton() => IconButton(
-        key: const ValueKey('entry-done'),
-        icon: Icon(
-            _creatingNewEntry ? Icons.check_rounded : Icons.edit_off_rounded),
+        key: const ValueKey('entry-close'),
+        tooltip: _edited
+            ? MaterialLocalizations.of(context).saveButtonLabel
+            : MaterialLocalizations.of(context).closeButtonTooltip,
+        icon: Icon(_edited ? Icons.check_rounded : Icons.close_rounded),
         onPressed: () => Navigator.of(context).pop(),
       );
 
@@ -751,6 +746,15 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
   }
 
   void _scheduleSave() {
+    // Every edit lands here; auto-filled context does not. Text set while
+    // the editor builds also lands here, so redraw after the frame.
+    if (!_edited) {
+      _edited = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) setState(() {});
+      });
+      WidgetsBinding.instance.scheduleFrame();
+    }
     EasyDebounce.debounce("save-entry", const Duration(seconds: 5), _saveEntry);
   }
 

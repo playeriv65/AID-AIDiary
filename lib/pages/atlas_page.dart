@@ -195,10 +195,14 @@ class _AtlasPageState extends State<AtlasPage>
                   _clusterMarker(context, cluster, split: split),
             ]);
           }),
-          RichAttributionWidget(attributions: [
-            TextSourceAttribution(config.mapAttribution,
-                onTap: () => launchUrl(Uri.parse(config.mapAttributionUrl))),
-          ]),
+          // Bottom left, clear of the fit button.
+          RichAttributionWidget(
+              alignment: AttributionAlignment.bottomLeft,
+              attributions: [
+                TextSourceAttribution(config.mapAttribution,
+                    onTap: () =>
+                        launchUrl(Uri.parse(config.mapAttributionUrl))),
+              ]),
         ],
       ),
       const Positioned(top: 16, left: 16, right: 16, child: TopSearchCard()),

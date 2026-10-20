@@ -26,7 +26,12 @@ class EntryTagChips extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<TagsProvider>(
       builder: (context, tagsProvider, _) {
-        final entryTags = tagsProvider.getEntryTagsForEntry(entryId);
+        // The star in the app bar already shows the favourite tag.
+        final favoriteId = tagsProvider.favoriteTag?.id;
+        final entryTags = tagsProvider
+            .getEntryTagsForEntry(entryId)
+            .where((t) => t.tagId != favoriteId)
+            .toList();
         if (entryTags.isEmpty) return const SizedBox.shrink();
 
         final entryTagByTagId = {

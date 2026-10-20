@@ -1,8 +1,6 @@
 @Tags(['integration'])
 library;
 
-import 'dart:typed_data';
-
 import 'package:daily_you/database/entry_store.dart';
 import 'package:daily_you/layouts/mobile_scaffold.dart';
 import 'package:daily_you/models/entry.dart';
@@ -15,7 +13,6 @@ import 'package:daily_you/pages/search_page.dart';
 import 'package:daily_you/providers/entry_images_provider.dart';
 import 'package:daily_you/providers/tags_provider.dart';
 import 'package:daily_you/widgets/mood_icon.dart';
-import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -152,6 +149,46 @@ void main() {
     await tester.pumpWidget(const SizedBox.shrink());
   });
 
+  testWidgets('wide search shows a picked result beside the list',
+      (tester) async {
+    final entry =
+        await DiaryAppHarness.addEntry(tester, '去公园散步', DateTime.now());
+    DiaryAppHarness.size(tester, const Size(1280, 800));
+    await tester.pumpWidget(harness.app(const SearchPage()));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const ValueKey('detail-empty')), findsOneWidget);
+    await tester.enterText(find.byKey(const ValueKey('search-field')), '公园');
+    await tester.pumpAndSettle();
+    await tapKey(tester, 'journal-entry-${entry.id}');
+    expect(find.byKey(ValueKey('search-detail-${entry.id}')), findsOneWidget);
+    expect(find.byType(SearchPage), findsOneWidget);
+    await tester.pumpWidget(const SizedBox.shrink());
+  });
+
+  testWidgets('editor close turns into done once something changes',
+      (tester) async {
+    DiaryAppHarness.size(tester, const Size(1280, 800));
+    await tester.pumpWidget(harness.app(const MobileScaffold()));
+    await tester.pumpAndSettle();
+    await tapKey(tester, 'diary-new-entry');
+    Icon closeIcon() => tester.widget<Icon>(find.descendant(
+        of: find.byKey(const ValueKey('entry-close')),
+        matching: find.byType(Icon)));
+    expect(closeIcon().icon, Icons.close_rounded);
+    expect(find.byKey(const ValueKey('entry-delete')), findsNothing);
+    await tester.enterText(find.byType(EditableText).first, '写了一句');
+    await tester.pump();
+    await tester.pump();
+    expect(closeIcon().icon, Icons.check_rounded);
+    await DiaryAppHarness.runUntil(
+        tester,
+        () => tester
+            .widget<IconButton>(find.byKey(const ValueKey('entry-close')))
+            .onPressed!(),
+        () => EntryStore.instance.entries.isNotEmpty);
+    await tester.pumpWidget(const SizedBox.shrink());
+  });
+
   testWidgets('atlas shows geotagged entries as markers', (tester) async {
     final placed = await DiaryAppHarness.addEntry(tester, '在河边', DateTime.now(),
         location: const EntryLocation(
@@ -242,7 +279,7 @@ void main() {
     await DiaryAppHarness.runUntil(
         tester,
         () => tester
-            .widget<IconButton>(find.byKey(const ValueKey('entry-done')))
+            .widget<IconButton>(find.byKey(const ValueKey('entry-close')))
             .onPressed!(),
         () => EntryStore.instance.entries.isNotEmpty);
     final saved = EntryStore.instance.entries.single;
