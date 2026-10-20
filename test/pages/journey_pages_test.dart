@@ -19,87 +19,12 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
+import '../support/blank_tiles.dart';
 import '../support/diary_app_harness.dart';
-
-/// Serves a 1x1 transparent tile so map tests make no network calls.
-class _BlankTiles extends TileProvider {
-  static final _png = Uint8List.fromList([
-    0x89,
-    0x50,
-    0x4E,
-    0x47,
-    0x0D,
-    0x0A,
-    0x1A,
-    0x0A,
-    0x00,
-    0x00,
-    0x00,
-    0x0D,
-    0x49,
-    0x48,
-    0x44,
-    0x52,
-    0x00,
-    0x00,
-    0x00,
-    0x01,
-    0x00,
-    0x00,
-    0x00,
-    0x01,
-    0x08,
-    0x06,
-    0x00,
-    0x00,
-    0x00,
-    0x1F,
-    0x15,
-    0xC4,
-    0x89,
-    0x00,
-    0x00,
-    0x00,
-    0x0D,
-    0x49,
-    0x44,
-    0x41,
-    0x54,
-    0x78,
-    0x9C,
-    0x63,
-    0x00,
-    0x01,
-    0x00,
-    0x00,
-    0x05,
-    0x00,
-    0x01,
-    0x0D,
-    0x0A,
-    0x2D,
-    0xB4,
-    0x00,
-    0x00,
-    0x00,
-    0x00,
-    0x49,
-    0x45,
-    0x4E,
-    0x44,
-    0xAE,
-    0x42,
-    0x60,
-    0x82,
-  ]);
-
-  @override
-  ImageProvider getImage(TileCoordinates coordinates, TileLayer options) =>
-      MemoryImage(_png);
-}
 
 void main() {
   final harness = DiaryAppHarness()..register();
+  AtlasPage.tileProviderOverride = BlankTiles();
 
   Future<void> tapKey(WidgetTester tester, String key) async {
     await tester.tap(find.byKey(ValueKey(key)).hitTestable());
@@ -233,8 +158,7 @@ void main() {
             latitude: 31.23, longitude: 121.47, name: '外滩'));
     await DiaryAppHarness.addEntry(tester, '没有位置', DateTime.now());
     DiaryAppHarness.size(tester, const Size(1280, 800));
-    await tester.pumpWidget(
-        harness.app(Scaffold(body: AtlasPage(tileProvider: _BlankTiles()))));
+    await tester.pumpWidget(harness.app(Scaffold(body: const AtlasPage())));
     await tester.pumpAndSettle();
     expect(find.byKey(ValueKey('atlas-marker-${placed.id}')), findsOneWidget);
     await tester.tap(find.byKey(ValueKey('atlas-marker-${placed.id}')));
@@ -253,8 +177,7 @@ void main() {
     final far = await DiaryAppHarness.addEntry(tester, '北京', DateTime.now(),
         location: const EntryLocation(latitude: 39.9, longitude: 116.4));
     DiaryAppHarness.size(tester, const Size(1280, 800));
-    await tester.pumpWidget(
-        harness.app(Scaffold(body: AtlasPage(tileProvider: _BlankTiles()))));
+    await tester.pumpWidget(harness.app(Scaffold(body: const AtlasPage())));
     await tester.pumpAndSettle();
     final cluster = find.byKey(ValueKey('atlas-cluster-${a.id}'));
     expect(cluster, findsOneWidget);

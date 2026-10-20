@@ -19,10 +19,12 @@ import 'package:url_launcher/url_launcher.dart';
 
 /// Entries with coordinates as markers on a map.
 class AtlasPage extends StatefulWidget {
-  const AtlasPage({super.key, this.tileProvider});
+  const AtlasPage({super.key});
 
-  /// Overrides tile loading, for tests.
-  final TileProvider? tileProvider;
+  /// Replaces tile loading in tests, which reach the page through the app
+  /// shell and must not start the network tile cache.
+  @visibleForTesting
+  static TileProvider? tileProviderOverride;
 
   @override
   State<AtlasPage> createState() => _AtlasPageState();
@@ -176,7 +178,7 @@ class _AtlasPageState extends State<AtlasPage>
           TileLayer(
             urlTemplate: config.tileUrlTemplate,
             userAgentPackageName: config.userAgentPackageName,
-            tileProvider: widget.tileProvider,
+            tileProvider: AtlasPage.tileProviderOverride,
           ),
           // Reads the camera, so clusters regroup as the map zooms.
           Builder(builder: (context) {

@@ -16,11 +16,13 @@ import 'package:daily_you/models/image.dart';
 import 'package:daily_you/providers/entry_images_provider.dart';
 import 'package:daily_you/providers/tags_provider.dart';
 import 'package:daily_you/storage/in_memory_file_store.dart';
+import 'package:daily_you/pages/atlas_page.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
+import 'blank_tiles.dart';
 import 'diary_app_harness.dart';
 
 const _fonts = {
@@ -66,6 +68,7 @@ ScreenshotSession screenshotSession() {
             (_) async => scratch.path);
     await TestWidgetsFlutterBinding.instance.runAsync(_loadFonts);
   });
+  AtlasPage.tileProviderOverride = BlankTiles();
   tearDownAll(() => scratch.deleteSync(recursive: true));
 
   Future<void> seed(WidgetTester tester) async {
