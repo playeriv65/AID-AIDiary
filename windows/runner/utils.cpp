@@ -62,3 +62,7 @@ std::string Utf8FromUtf16(const wchar_t* utf16_string) {
   }
   return utf8_string;
 }
+
+bool RunsInBackground() {
+  return ::GetEnvironmentVariableW(L"AID_BACKGROUND_WINDOW", nullptr, 0) > 0;
+}

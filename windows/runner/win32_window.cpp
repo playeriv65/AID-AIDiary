@@ -4,6 +4,7 @@
 #include <flutter_windows.h>
 
 #include "resource.h"
+#include "utils.h"
 
 namespace {
 
@@ -150,7 +151,10 @@ bool Win32Window::Create(const std::wstring& title,
 }
 
 bool Win32Window::Show() {
-  return ShowWindow(window_handle_, SW_SHOWNORMAL);
+  // Tooling runs keep the window shown, so Flutter still renders, but never
+  // activate it.
+  return ShowWindow(window_handle_,
+                    RunsInBackground() ? SW_SHOWNOACTIVATE : SW_SHOWNORMAL);
 }
 
 // static

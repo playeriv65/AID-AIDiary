@@ -16,4 +16,8 @@ std::string Utf8FromUtf16(const wchar_t* utf16_string);
 // encoded in UTF-8. Returns an empty std::vector<std::string> on failure.
 std::vector<std::string> GetCommandLineArguments();
 
+// Whether AID_BACKGROUND_WINDOW is set: the app then runs for tooling (hot
+// reload, inspection) with its window off screen and never focused.
+bool RunsInBackground();
+
 #endif  // RUNNER_UTILS_H_
