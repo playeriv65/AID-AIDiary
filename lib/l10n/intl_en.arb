@@ -908,13 +908,17 @@
   "deletedHint": "Deleted entries stay here for {days} days, then are erased.",
   "@deletedHint": {
     "placeholders": {
-      "days": {"type": "int"}
+      "days": {
+        "type": "int"
+      }
     }
   },
   "deletedDaysLeft": "{days} days left",
   "@deletedDaysLeft": {
     "placeholders": {
-      "days": {"type": "int"}
+      "days": {
+        "type": "int"
+      }
     }
   },
   "deletedRestore": "Restore",
@@ -928,5 +932,47 @@
   "deletedEmptyDescription": "Erase every entry in Recently deleted? This cannot be undone.",
   "@deletedEmptyDescription": {},
   "formatJson": "JSON",
-  "@formatJson": {}
+  "@formatJson": {},
+  "randomTitle": "Random walk",
+  "@randomTitle": {},
+  "randomSubtitle": "Open a past entry",
+  "@randomSubtitle": {},
+  "randomNext": "Another",
+  "@randomNext": {},
+  "randomAll": "All",
+  "@randomAll": {},
+  "randomWithPhotos": "With photos",
+  "@randomWithPhotos": {},
+  "randomGoodDays": "Good days",
+  "@randomGoodDays": {},
+  "randomEmpty": "No entries to pick from",
+  "@randomEmpty": {},
+  "reviewWeekTitle": "This week",
+  "@reviewWeekTitle": {},
+  "reviewWeekSubtitle": "Your week so far",
+  "@reviewWeekSubtitle": {},
+  "reviewYearTitle": "This year",
+  "@reviewYearTitle": {},
+  "reviewEmpty": "Nothing written yet",
+  "@reviewEmpty": {},
+  "reviewEntries": "Entries",
+  "@reviewEntries": {},
+  "reviewDaysWritten": "Days written",
+  "@reviewDaysWritten": {},
+  "reviewWords": "Words",
+  "@reviewWords": {},
+  "reviewPhotos": "Photos",
+  "@reviewPhotos": {},
+  "reviewLongestRun": "Longest run of days",
+  "@reviewLongestRun": {},
+  "reviewAverageMood": "Average mood",
+  "@reviewAverageMood": {},
+  "reviewFavorites": "Most often",
+  "@reviewFavorites": {},
+  "reviewByMonth": "By month",
+  "@reviewByMonth": {},
+  "reviewHighlight": "Highlight",
+  "@reviewHighlight": {},
+  "yearInPixels": "Year in pixels",
+  "@yearInPixels": {}
 }

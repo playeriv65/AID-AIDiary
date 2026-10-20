@@ -8,16 +8,18 @@ import 'package:daily_you/models/entry.dart';
 import 'package:daily_you/models/flashback.dart';
 import 'package:daily_you/providers/entries_provider.dart';
 import 'package:daily_you/time_manager.dart';
+import 'package:daily_you/utils/entry_context_display.dart';
 import 'package:daily_you/utils/entry_navigation.dart';
 import 'package:daily_you/utils/entry_preview.dart';
 import 'package:daily_you/widgets/mood_icon.dart';
+import 'package:daily_you/widgets/story_shell.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// Full-screen slides about the diary: statistics, a 30-day mood chart and
-/// a throwback. Slides advance on their own; taps step back or forward.
-class TodayStoryPage extends StatefulWidget {
+/// a throwback.
+class TodayStoryPage extends StatelessWidget {
   const TodayStoryPage(
       {super.key, this.slideDuration = const Duration(seconds: 6)});
 
@@ -30,137 +32,35 @@ class TodayStoryPage extends StatefulWidget {
           builder: (_) => const TodayStoryPage()));
 
   @override
-  State<TodayStoryPage> createState() => _TodayStoryPageState();
-}
-
-class _TodayStoryPageState extends State<TodayStoryPage>
-    with SingleTickerProviderStateMixin {
-  static const _slideCount = 3;
-  late final AnimationController _progress =
-      AnimationController(vsync: this, duration: widget.slideDuration)
-        ..addStatusListener((status) {
-          if (status == AnimationStatus.completed) _next();
-        })
-        ..forward();
-  int _slide = 0;
-
-  @override
-  void dispose() {
-    _progress.dispose();
-    super.dispose();
-  }
-
-  void _go(int slide) {
-    if (slide >= _slideCount) {
-      Navigator.of(context).maybePop();
-      return;
-    }
-    setState(() => _slide = slide.clamp(0, _slideCount - 1));
-    _progress.forward(from: 0);
-  }
-
-  void _next() => _go(_slide + 1);
-
-  @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final cs = Theme.of(context).colorScheme;
     final entries = EntriesProvider.instance.entries;
-    final slides = [
-      (
-        Icons.insights_rounded,
-        l10n.storyStatistics,
-        _Statistics(entries: entries)
-      ),
-      (Icons.mood_rounded, l10n.storyMoodChart, _MoodChart(entries: entries)),
-      (
-        Icons.history_rounded,
-        l10n.storyThrowback,
-        _Throwback(
-            flashbacks: FlashbackManager.getFlashbacks(context, entries)),
-      ),
-    ];
-    final (icon, title, body) = slides[_slide];
     final days = entries
         .map((e) =>
             DateTime(e.timeCreate.year, e.timeCreate.month, e.timeCreate.day))
         .toSet()
         .length;
-
-    return Scaffold(
-      backgroundColor: cs.surfaceContainerLow,
-      body: SafeArea(
-        child: GestureDetector(
-          key: const ValueKey('story-surface'),
-          behavior: HitTestBehavior.opaque,
-          onTapUp: (details) {
-            final width = MediaQuery.sizeOf(context).width;
-            details.localPosition.dx < width / 3 ? _go(_slide - 1) : _next();
-          },
-          onLongPressStart: (_) => _progress.stop(),
-          onLongPressEnd: (_) => _progress.forward(),
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  AnimatedBuilder(
-                    animation: _progress,
-                    builder: (context, _) => Row(children: [
-                      for (var i = 0; i < _slideCount; i++) ...[
-                        if (i > 0) const SizedBox(width: 4),
-                        Expanded(
-                          child: LinearProgressIndicator(
-                            value: i < _slide
-                                ? 1
-                                : i == _slide
-                                    ? _progress.value
-                                    : 0,
-                            minHeight: 3,
-                            borderRadius: BorderRadius.circular(2),
-                          ),
-                        ),
-                      ],
-                    ]),
-                  ),
-                  const SizedBox(height: 12),
-                  Row(children: [
-                    CircleAvatar(
-                        backgroundColor: cs.primary,
-                        child: Icon(icon, color: cs.onPrimary)),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(title.toUpperCase(),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .labelLarge
-                                    ?.copyWith(letterSpacing: 1.6)),
-                            Text(l10n.storyEntriesAndDays(entries.length, days),
-                                style: Theme.of(context).textTheme.labelMedium),
-                          ]),
-                    ),
-                    IconButton(
-                      key: const ValueKey('story-close'),
-                      tooltip:
-                          MaterialLocalizations.of(context).closeButtonTooltip,
-                      icon: const Icon(Icons.close_rounded),
-                      onPressed: () => Navigator.of(context).maybePop(),
-                    ),
-                  ]),
-                  Expanded(
-                    child: AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 250),
-                      child: KeyedSubtree(
-                          key: ValueKey('story-slide-$_slide'), child: body),
-                    ),
-                  ),
-                ]),
-          ),
+    return StoryShell(
+      slideDuration: slideDuration,
+      subtitle: l10n.storyEntriesAndDays(entries.length, days),
+      slides: [
+        (
+          icon: Icons.insights_rounded,
+          title: l10n.storyStatistics,
+          body: _Statistics(entries: entries),
         ),
-      ),
+        (
+          icon: Icons.mood_rounded,
+          title: l10n.storyMoodChart,
+          body: _MoodChart(entries: entries),
+        ),
+        (
+          icon: Icons.history_rounded,
+          title: l10n.storyThrowback,
+          body: _Throwback(
+              flashbacks: FlashbackManager.getFlashbacks(context, entries)),
+        ),
+      ],
     );
   }
 }
@@ -251,16 +151,6 @@ class _Legend extends StatelessWidget {
         Text(label),
       ]);
 }
-
-/// Colour for a day's mood, from very bad (-2) to very good (2).
-Color moodColor(int? mood, ColorScheme cs) => switch (mood) {
-      -2 => Colors.red.shade300,
-      -1 => Colors.orange.shade300,
-      0 => Colors.amber.shade300,
-      1 => Colors.lightGreen.shade400,
-      2 => Colors.green.shade500,
-      _ => cs.secondaryContainer,
-    };
 
 /// The last 30 days, each tinted by its latest mood; tap a day to open it.
 class _MoodChart extends StatelessWidget {

@@ -2939,6 +2939,132 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'JSON'**
   String get formatJson;
+
+  /// No description provided for @randomTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Random walk'**
+  String get randomTitle;
+
+  /// No description provided for @randomSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Open a past entry'**
+  String get randomSubtitle;
+
+  /// No description provided for @randomNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Another'**
+  String get randomNext;
+
+  /// No description provided for @randomAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get randomAll;
+
+  /// No description provided for @randomWithPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'With photos'**
+  String get randomWithPhotos;
+
+  /// No description provided for @randomGoodDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Good days'**
+  String get randomGoodDays;
+
+  /// No description provided for @randomEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No entries to pick from'**
+  String get randomEmpty;
+
+  /// No description provided for @reviewWeekTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'This week'**
+  String get reviewWeekTitle;
+
+  /// No description provided for @reviewWeekSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your week so far'**
+  String get reviewWeekSubtitle;
+
+  /// No description provided for @reviewYearTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'This year'**
+  String get reviewYearTitle;
+
+  /// No description provided for @reviewEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing written yet'**
+  String get reviewEmpty;
+
+  /// No description provided for @reviewEntries.
+  ///
+  /// In en, this message translates to:
+  /// **'Entries'**
+  String get reviewEntries;
+
+  /// No description provided for @reviewDaysWritten.
+  ///
+  /// In en, this message translates to:
+  /// **'Days written'**
+  String get reviewDaysWritten;
+
+  /// No description provided for @reviewWords.
+  ///
+  /// In en, this message translates to:
+  /// **'Words'**
+  String get reviewWords;
+
+  /// No description provided for @reviewPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos'**
+  String get reviewPhotos;
+
+  /// No description provided for @reviewLongestRun.
+  ///
+  /// In en, this message translates to:
+  /// **'Longest run of days'**
+  String get reviewLongestRun;
+
+  /// No description provided for @reviewAverageMood.
+  ///
+  /// In en, this message translates to:
+  /// **'Average mood'**
+  String get reviewAverageMood;
+
+  /// No description provided for @reviewFavorites.
+  ///
+  /// In en, this message translates to:
+  /// **'Most often'**
+  String get reviewFavorites;
+
+  /// No description provided for @reviewByMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'By month'**
+  String get reviewByMonth;
+
+  /// No description provided for @reviewHighlight.
+  ///
+  /// In en, this message translates to:
+  /// **'Highlight'**
+  String get reviewHighlight;
+
+  /// No description provided for @yearInPixels.
+  ///
+  /// In en, this message translates to:
+  /// **'Year in pixels'**
+  String get yearInPixels;
 }
 
 class _AppLocalizationsDelegate

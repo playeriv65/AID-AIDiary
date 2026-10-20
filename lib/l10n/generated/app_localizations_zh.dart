@@ -1545,6 +1545,69 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get formatJson => 'JSON';
+
+  @override
+  String get randomTitle => '随机漫步';
+
+  @override
+  String get randomSubtitle => '翻开一篇旧日记';
+
+  @override
+  String get randomNext => '换一篇';
+
+  @override
+  String get randomAll => '全部';
+
+  @override
+  String get randomWithPhotos => '有照片';
+
+  @override
+  String get randomGoodDays => '开心的日子';
+
+  @override
+  String get randomEmpty => '没有可以抽的日记';
+
+  @override
+  String get reviewWeekTitle => '本周回顾';
+
+  @override
+  String get reviewWeekSubtitle => '这一周写了什么';
+
+  @override
+  String get reviewYearTitle => '年度回顾';
+
+  @override
+  String get reviewEmpty => '还没有写日记';
+
+  @override
+  String get reviewEntries => '篇日记';
+
+  @override
+  String get reviewDaysWritten => '写日记的天数';
+
+  @override
+  String get reviewWords => '字数';
+
+  @override
+  String get reviewPhotos => '照片';
+
+  @override
+  String get reviewLongestRun => '最长连续天数';
+
+  @override
+  String get reviewAverageMood => '平均心情';
+
+  @override
+  String get reviewFavorites => '最常出现';
+
+  @override
+  String get reviewByMonth => '每月篇数';
+
+  @override
+  String get reviewHighlight => '精选一篇';
+
+  @override
+  String get yearInPixels => '心情像素';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -3071,4 +3134,67 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get formatJson => 'JSON';
+
+  @override
+  String get randomTitle => '隨機漫步';
+
+  @override
+  String get randomSubtitle => '翻開一篇舊日記';
+
+  @override
+  String get randomNext => '換一篇';
+
+  @override
+  String get randomAll => '全部';
+
+  @override
+  String get randomWithPhotos => '有照片';
+
+  @override
+  String get randomGoodDays => '開心的日子';
+
+  @override
+  String get randomEmpty => '沒有可以抽的日記';
+
+  @override
+  String get reviewWeekTitle => '本週回顧';
+
+  @override
+  String get reviewWeekSubtitle => '這一週寫了什麼';
+
+  @override
+  String get reviewYearTitle => '年度回顧';
+
+  @override
+  String get reviewEmpty => '還沒有寫日記';
+
+  @override
+  String get reviewEntries => '篇日記';
+
+  @override
+  String get reviewDaysWritten => '寫日記的天數';
+
+  @override
+  String get reviewWords => '字數';
+
+  @override
+  String get reviewPhotos => '照片';
+
+  @override
+  String get reviewLongestRun => '最長連續天數';
+
+  @override
+  String get reviewAverageMood => '平均心情';
+
+  @override
+  String get reviewFavorites => '最常出現';
+
+  @override
+  String get reviewByMonth => '每月篇數';
+
+  @override
+  String get reviewHighlight => '精選一篇';
+
+  @override
+  String get yearInPixels => '心情像素';
 }

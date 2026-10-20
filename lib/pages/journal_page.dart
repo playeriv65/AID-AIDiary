@@ -13,6 +13,8 @@ import 'package:daily_you/launch_intent.dart';
 import 'package:daily_you/models/entry.dart';
 import 'package:daily_you/models/flashback.dart';
 import 'package:daily_you/notification_manager.dart';
+import 'package:daily_you/pages/random_review_page.dart';
+import 'package:daily_you/pages/review_story_page.dart';
 import 'package:daily_you/pages/today_story_page.dart';
 import 'package:daily_you/pages/entry_view_page.dart';
 import 'package:daily_you/pages/share_page.dart';
@@ -301,6 +303,41 @@ class _Stories extends StatelessWidget {
               ? null
               : () => EntryNavigation.flashback(context, flashback),
         ),
+        for (final (key, icon, title, subtitle, onTap) in [
+          (
+            'story-random',
+            Icons.shuffle_rounded,
+            l10n.randomTitle,
+            l10n.randomSubtitle,
+            () => RandomReviewPage.open(context),
+          ),
+          (
+            'story-week',
+            Icons.date_range_rounded,
+            l10n.reviewWeekTitle,
+            l10n.reviewWeekSubtitle,
+            () => ReviewStoryPage.open(context, ReviewSpan.week),
+          ),
+          (
+            'story-year',
+            Icons.calendar_month_rounded,
+            l10n.reviewYearTitle,
+            '${now.year}',
+            () => ReviewStoryPage.open(context, ReviewSpan.year),
+          ),
+        ]) ...[
+          const SizedBox(width: 8),
+          _StoryCard(
+            key: ValueKey(key),
+            width: cardWidth,
+            icon: icon,
+            title: title,
+            subtitle: subtitle,
+            background: cs.primaryContainer,
+            foreground: cs.onPrimaryContainer,
+            onTap: onTap,
+          ),
+        ],
         for (final extra in flashbacks.skip(1)) ...[
           const SizedBox(width: 8),
           _StoryCard(

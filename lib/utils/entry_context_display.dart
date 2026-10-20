@@ -7,6 +7,16 @@ import 'package:daily_you/l10n/generated/app_localizations.dart';
 import 'package:daily_you/models/entry.dart';
 import 'package:material_ui/material_ui.dart';
 
+/// Colour for a day's mood, from very bad (-2) to very good (2).
+Color moodColor(int? mood, ColorScheme cs) => switch (mood) {
+      -2 => Colors.red.shade300,
+      -1 => Colors.orange.shade300,
+      0 => Colors.amber.shade300,
+      1 => Colors.lightGreen.shade400,
+      2 => Colors.green.shade500,
+      _ => cs.secondaryContainer,
+    };
+
 /// Coarse weather groups for WMO weather codes.
 enum WeatherKind {
   clear,

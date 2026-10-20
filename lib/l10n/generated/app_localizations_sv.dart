@@ -1572,4 +1572,67 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get formatJson => 'JSON';
+
+  @override
+  String get randomTitle => 'Random walk';
+
+  @override
+  String get randomSubtitle => 'Open a past entry';
+
+  @override
+  String get randomNext => 'Another';
+
+  @override
+  String get randomAll => 'All';
+
+  @override
+  String get randomWithPhotos => 'With photos';
+
+  @override
+  String get randomGoodDays => 'Good days';
+
+  @override
+  String get randomEmpty => 'No entries to pick from';
+
+  @override
+  String get reviewWeekTitle => 'This week';
+
+  @override
+  String get reviewWeekSubtitle => 'Your week so far';
+
+  @override
+  String get reviewYearTitle => 'This year';
+
+  @override
+  String get reviewEmpty => 'Nothing written yet';
+
+  @override
+  String get reviewEntries => 'Entries';
+
+  @override
+  String get reviewDaysWritten => 'Days written';
+
+  @override
+  String get reviewWords => 'Words';
+
+  @override
+  String get reviewPhotos => 'Photos';
+
+  @override
+  String get reviewLongestRun => 'Longest run of days';
+
+  @override
+  String get reviewAverageMood => 'Average mood';
+
+  @override
+  String get reviewFavorites => 'Most often';
+
+  @override
+  String get reviewByMonth => 'By month';
+
+  @override
+  String get reviewHighlight => 'Highlight';
+
+  @override
+  String get yearInPixels => 'Year in pixels';
 }
