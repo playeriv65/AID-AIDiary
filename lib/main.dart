@@ -45,6 +45,7 @@ const String _autoBackupCatchupWorkName = 'auto_backup_catchup';
 const String _autoBackupPeriodicTaskName = 'autoBackupPeriodic';
 const String _autoBackupCatchupTaskName = 'autoBackupCatchup';
 const String _autoBackupRetryAttemptPrefsKey = 'autoBackupRetryAttempt';
+const String _alarmDispatcherBuildPrefsKey = 'alarmDispatcherBuild';
 
 // Max backup retry attempts
 const int _autoBackupMaxAttempts = 3;
@@ -353,6 +354,22 @@ Future<void> _showReminder() async {
   }
 }
 
+/// Records the alarm plugin's callback dispatcher once per build.
+///
+/// [AndroidAlarmManager.initialize] stores the dispatcher's handle and also
+/// starts a second Flutter engine that stays up for as long as the process
+/// does; the alarm service starts that engine by itself when an alarm fires,
+/// so running it on every launch only costs memory and start-up time.
+Future<void> _recordAlarmDispatcher() async {
+  final info = DeviceInfoService().appInfo;
+  final build = '${info?.version}+${info?.buildNumber}';
+  final prefs = await currentPrefs();
+  if (prefs.getString(_alarmDispatcherBuildPrefsKey) == build) return;
+  if (await AndroidAlarmManager.initialize()) {
+    await prefs.setString(_alarmDispatcherBuildPrefsKey, build);
+  }
+}
+
 void main() async {
   if (Platform.isLinux || Platform.isWindows) {
     // Initialize FFI
@@ -363,8 +380,12 @@ void main() async {
 
   configureLogging();
 
-  // Create the config file if it doesn't exist
-  await ConfigProvider.instance.init();
+  // The config file, the platform's key stores and the device details are
+  // all slow to open and independent, so they load side by side.
+  await Future.wait([
+    ConfigProvider.instance.init(),
+    DeviceInfoService().init(),
+  ]);
 
   // Load any cached flashbacks
   await AppConfig.load();
@@ -373,15 +394,12 @@ void main() async {
   final themeProvider = ThemeModeProvider();
   await themeProvider.initializeThemeFromConfig();
 
-  // Get current device info
-  await DeviceInfoService().init();
-
   // Notification only supported on android
   if (Platform.isAndroid) {
     await FlutterDisplayMode.setHighRefreshRate();
     await NotificationManager.instance.init();
 
-    await AndroidAlarmManager.initialize();
+    await _recordAlarmDispatcher();
     await Workmanager().initialize(autoBackupCallbackDispatcher);
     await armAutoBackupWork();
   }

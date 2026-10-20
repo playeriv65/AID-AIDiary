@@ -35,6 +35,7 @@ class _LaunchPageState extends State<LaunchPage> {
   final Logger _logger = Logger('LaunchPage');
   bool isLoading = true;
   bool _initialized = false;
+  Future<void> _launchIntentRead = Future.value();
 
   @override
   void initState() {
@@ -53,12 +54,23 @@ class _LaunchPageState extends State<LaunchPage> {
   }
 
   Future _initializeApp() async {
-    await _storeLocalizedNotificationStrings();
-    await _updateAppShortcuts();
+    // Only the database holds up the journal. The notification text is
+    // bookkeeping for later, and the shortcuts only have to be read before
+    // the journal looks at the launch intent.
+    final l10n = AppLocalizations.of(context)!;
+    final materialL10n = MaterialLocalizations.of(context);
+    unawaited(_storeLocalizedNotificationStrings(l10n, materialL10n)
+        .then((_) {}, onError: (Object error, StackTrace stackTrace) {
+      _logger.severe('Storing notification text failed', error, stackTrace);
+    }));
+    _launchIntentRead = _updateAppShortcuts(l10n).then((_) {},
+        onError: (Object error, StackTrace stackTrace) {
+      _logger.severe('Reading the launch shortcut failed', error, stackTrace);
+    });
     await _checkDatabaseConnection();
   }
 
-  Future _updateAppShortcuts() async {
+  Future<void> _updateAppShortcuts(AppLocalizations l10n) async {
     if (!Platform.isAndroid) return;
     final widgetUri = await HomeWidgetService.launchUri();
     if (HomeWidgetService.isWrite(widgetUri)) {
@@ -78,73 +90,62 @@ class _LaunchPageState extends State<LaunchPage> {
     });
 
     await quickActions.clearShortcutItems();
-    if (!mounted) return;
     await quickActions.setShortcutItems(<ShortcutItem>[
       ShortcutItem(
         type: 'action_log_today',
-        localizedTitle: AppLocalizations.of(context)!.dailyReminderTitle,
+        localizedTitle: l10n.dailyReminderTitle,
         icon: '@drawable/ic_shortcut_edit',
       ),
       ShortcutItem(
         type: 'action_take_photo',
-        localizedTitle: AppLocalizations.of(context)!.actionTakePhoto,
+        localizedTitle: l10n.actionTakePhoto,
         icon: '@drawable/ic_shortcut_camera_alt',
       )
     ]);
   }
 
-  Future _storeLocalizedNotificationStrings() async {
-    var prefs = await SharedPreferences.getInstance();
-    if (!mounted) return;
-    await prefs.setString(
-        'dailyReminderTitle', AppLocalizations.of(context)!.dailyReminderTitle);
-    if (!mounted) return;
-    await prefs.setString('dailyReminderDescription',
-        AppLocalizations.of(context)!.dailyReminderDescription);
-    if (!mounted) return;
-    await prefs.setString('onThisDayNotificationTitle',
-        AppLocalizations.of(context)!.flashbackOnThisDay);
-    if (!mounted) return;
-    await prefs.setString('onThisDayNotificationDescription',
-        AppLocalizations.of(context)!.settingsOnThisDayDescription);
-    if (!mounted) return;
-    await prefs.setString('autoBackupFailedTitle',
-        AppLocalizations.of(context)!.autoBackupFailedTitle);
-    if (!mounted) return;
-    await prefs.setString('backupCancelActionLabel',
-        MaterialLocalizations.of(context).cancelButtonLabel);
-    if (!mounted) return;
-    await prefs.setString('creatingBackupStatusTemplate',
-        AppLocalizations.of(context)!.creatingBackupStatus('{percent}'));
-    if (!mounted) return;
-    await prefs.setString('encryptingBackupStatusTemplate',
-        AppLocalizations.of(context)!.encryptingBackupStatus('{percent}'));
-    if (!mounted) return;
-    await prefs.setString('tranferStatusTemplate',
-        AppLocalizations.of(context)!.tranferStatus('{percent}'));
-    if (!mounted) return;
-    final l10n = AppLocalizations.of(context)!;
-    for (final (id, name) in [
-      (reminderChannelId, l10n.channelReminders),
-      (onThisDayChannelId, l10n.channelOnThisDay),
-      (coachChannelId, l10n.channelCoach),
-      (nudgeChannelId, l10n.channelNudges),
-      (quickWriteChannelId, l10n.channelQuickWrite),
-      (backupNotificationChannelId, l10n.channelBackup),
-    ]) {
-      await prefs.setString(channelNameKey(id), name);
-    }
-    await CoachService.storeNotificationText(l10n);
-    await prefs.setString('nudgeTitle', l10n.nudgeTitle);
-    // Monday first, as DateTime.weekday counts.
-    await prefs.setStringList('nudgeMessages', [
-      l10n.nudgeMonday,
-      l10n.nudgeTuesday,
-      l10n.nudgeWednesday,
-      l10n.nudgeThursday,
-      l10n.nudgeFriday,
-      l10n.nudgeSaturday,
-      l10n.nudgeSunday,
+  /// Stores the text that notifications show when they are posted from a
+  /// background isolate, which has no localizations of its own.
+  static Future<void> _storeLocalizedNotificationStrings(
+      AppLocalizations l10n, MaterialLocalizations materialL10n) async {
+    final prefs = await SharedPreferences.getInstance();
+    await Future.wait([
+      for (final (key, value) in [
+        ('dailyReminderTitle', l10n.dailyReminderTitle),
+        ('dailyReminderDescription', l10n.dailyReminderDescription),
+        ('onThisDayNotificationTitle', l10n.flashbackOnThisDay),
+        ('onThisDayNotificationDescription', l10n.settingsOnThisDayDescription),
+        ('autoBackupFailedTitle', l10n.autoBackupFailedTitle),
+        ('backupCancelActionLabel', materialL10n.cancelButtonLabel),
+        (
+          'creatingBackupStatusTemplate',
+          l10n.creatingBackupStatus('{percent}')
+        ),
+        (
+          'encryptingBackupStatusTemplate',
+          l10n.encryptingBackupStatus('{percent}')
+        ),
+        ('tranferStatusTemplate', l10n.tranferStatus('{percent}')),
+        (channelNameKey(reminderChannelId), l10n.channelReminders),
+        (channelNameKey(onThisDayChannelId), l10n.channelOnThisDay),
+        (channelNameKey(coachChannelId), l10n.channelCoach),
+        (channelNameKey(nudgeChannelId), l10n.channelNudges),
+        (channelNameKey(quickWriteChannelId), l10n.channelQuickWrite),
+        (channelNameKey(backupNotificationChannelId), l10n.channelBackup),
+        ('nudgeTitle', l10n.nudgeTitle),
+      ])
+        prefs.setString(key, value),
+      // Monday first, as DateTime.weekday counts.
+      prefs.setStringList('nudgeMessages', [
+        l10n.nudgeMonday,
+        l10n.nudgeTuesday,
+        l10n.nudgeWednesday,
+        l10n.nudgeThursday,
+        l10n.nudgeFriday,
+        l10n.nudgeSaturday,
+        l10n.nudgeSunday,
+      ]),
+      CoachService.storeNotificationText(l10n),
     ]);
     if (!Platform.isAndroid) return;
     // A lasting notification does not survive a restart; put it back.
@@ -244,6 +245,8 @@ class _LaunchPageState extends State<LaunchPage> {
   Future<void> _nextPage() async {
     // The welcome pages come first, once.
     final onboarded = ConfigProvider.instance.get(Settings.onboardingDone);
+    await _launchIntentRead;
+    if (!mounted) return;
     await Navigator.of(context).pushReplacement(MaterialPageRoute(
         builder: (context) =>
             onboarded ? widget.nextPage : OnboardingPage(next: widget.nextPage),

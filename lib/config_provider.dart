@@ -304,9 +304,11 @@ class ConfigProvider with ChangeNotifier {
     if (!dbPath.existsSync()) dbPath.createSync(recursive: true);
     configFilePath = join(dbPath.path, 'config.json');
 
+    // The file replaces the whole map, so it comes first. The two stores
+    // fill in their own keys and each takes tens of milliseconds to open, so
+    // they load side by side.
     await readConfig();
-    await loadSecureConfig();
-    await loadSecretStoreConfig();
+    await Future.wait([loadSecureConfig(), loadSecretStoreConfig()]);
     await _pruneUnknownKeys();
   }
 
