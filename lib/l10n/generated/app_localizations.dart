@@ -2765,6 +2765,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This attachment is not available on this device.'**
   String get mediaUnavailable;
+
+  /// No description provided for @widgetDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s entry is written'**
+  String get widgetDone;
+
+  /// No description provided for @widgetPending.
+  ///
+  /// In en, this message translates to:
+  /// **'How was your day?'**
+  String get widgetPending;
+
+  /// No description provided for @widgetWrite.
+  ///
+  /// In en, this message translates to:
+  /// **'Write'**
+  String get widgetWrite;
 }
 
 class _AppLocalizationsDelegate

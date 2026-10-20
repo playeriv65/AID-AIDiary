@@ -1,0 +1,39 @@
+import 'package:daily_you/l10n/generated/app_localizations.dart';
+import 'package:daily_you/models/entry.dart';
+import 'package:daily_you/services/home_widget_service.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:intl/intl.dart';
+import 'package:material_ui/material_ui.dart';
+
+Entry _entry(String text, DateTime time) =>
+    Entry(text: text, timeCreate: time, timeModified: time);
+
+void main() {
+  final l10n = lookupAppLocalizations(const Locale('zh'));
+
+  test('the widget shows the latest entry and the streak', () {
+    final now = DateTime.now();
+    final snapshot = HomeWidgetSnapshot.from([
+      _entry('\n## 今天去了公园\n很开心', now),
+      _entry('# 昨天\n散步', now.subtract(const Duration(days: 1))),
+    ], l10n);
+    expect(snapshot.writtenDate, DateFormat('yyyy-MM-dd').format(now));
+    expect(snapshot.snippet, '今天去了公园');
+    expect(snapshot.streak, l10n.streakCurrent(2));
+    expect(snapshot.toWidgetData()['widget_write'], l10n.widgetWrite);
+  });
+
+  test('an empty diary leaves the date, snippet and streak blank', () {
+    final snapshot = HomeWidgetSnapshot.from(const [], l10n);
+    expect(snapshot.writtenDate, isEmpty);
+    expect(snapshot.snippet, isEmpty);
+    expect(snapshot.streak, isEmpty);
+    expect(snapshot.pending, l10n.widgetPending);
+  });
+
+  test('first lines drop markdown marks', () {
+    expect(HomeWidgetSnapshot.firstLine('- [ ] 买菜'), '[ ] 买菜');
+    expect(HomeWidgetSnapshot.firstLine('> 引用\n正文'), '引用');
+    expect(HomeWidgetSnapshot.firstLine('1. 第一条'), '第一条');
+  });
+}

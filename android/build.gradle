@@ -12,6 +12,18 @@ subprojects {
 subprojects {
     project.evaluationDependsOn(':app')
 }
+// Kotlin compiles for the JDK that runs Gradle unless a module sets a
+// target, and many plugins don't; on a newer JDK that clashes with their
+// Java target. Give every module's Kotlin the target its Java already uses.
+subprojects {
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile).configureEach {
+        def javaTarget = project.extensions.findByName('android')?.compileOptions?.targetCompatibility
+        if (javaTarget != null) {
+            compilerOptions.jvmTarget.set(
+                    org.jetbrains.kotlin.gradle.dsl.JvmTarget.fromTarget(javaTarget.toString()))
+        }
+    }
+}
 
 tasks.register("clean", Delete) {
     delete rootProject.buildDir

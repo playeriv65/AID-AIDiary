@@ -290,6 +290,10 @@ class _MediaPlayerPageState extends State<MediaPlayerPage> {
               Expanded(
                 child: VideoProgressIndicator(controller,
                     allowScrubbing: true,
+                    colors: const VideoProgressColors(
+                        playedColor: Colors.white,
+                        bufferedColor: Colors.white38,
+                        backgroundColor: Colors.white24),
                     padding: const EdgeInsets.symmetric(horizontal: 8)),
               ),
               Text(

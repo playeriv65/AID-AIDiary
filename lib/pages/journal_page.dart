@@ -18,6 +18,7 @@ import 'package:daily_you/pages/entry_view_page.dart';
 import 'package:daily_you/pages/share_page.dart';
 import 'package:daily_you/providers/entries_provider.dart';
 import 'package:daily_you/providers/entry_images_provider.dart';
+import 'package:daily_you/services/home_widget_service.dart';
 import 'package:daily_you/time_manager.dart';
 import 'package:daily_you/utils/entry_navigation.dart';
 import 'package:daily_you/widgets/journal_entry_row.dart';
@@ -42,6 +43,7 @@ class _JournalPageState extends State<JournalPage>
   int? _selectedId;
   bool _newestFirst = true;
   StreamSubscription<SharePayload>? _shareSubscription;
+  StreamSubscription<Uri?>? _widgetTapSubscription;
 
   @override
   bool get wantKeepAlive => true;
@@ -54,12 +56,33 @@ class _JournalPageState extends State<JournalPage>
     if (Platform.isAndroid) {
       _shareSubscription = ShareReceiver.instance.shares.listen(_handleShare);
     }
+    if (HomeWidgetService.supported) {
+      EntriesProvider.instance.addListener(_pushHomeWidget);
+      WidgetsBinding.instance.addPostFrameCallback((_) => _pushHomeWidget());
+      _widgetTapSubscription = HomeWidgetService.taps.listen((uri) {
+        if (HomeWidgetService.isWrite(uri) && mounted) _writeToday();
+      });
+    }
   }
 
   @override
   void dispose() {
     _shareSubscription?.cancel();
+    _widgetTapSubscription?.cancel();
+    EntriesProvider.instance.removeListener(_pushHomeWidget);
     super.dispose();
+  }
+
+  void _pushHomeWidget() {
+    if (!mounted) return;
+    HomeWidgetService.push(HomeWidgetSnapshot.from(
+        EntriesProvider.instance.entries, AppLocalizations.of(context)!));
+  }
+
+  Future<void> _writeToday() async {
+    Navigator.of(context).popUntil((route) => route.isFirst);
+    await EntryNavigation.edit(
+        context, EntriesProvider.instance.getEntryForToday());
   }
 
   Future<void> _checkForLaunchIntent() async {

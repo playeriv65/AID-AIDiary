@@ -11,6 +11,7 @@ import 'package:daily_you/database/image_storage.dart';
 import 'package:daily_you/device_info_service.dart';
 import 'package:daily_you/launch_intent.dart';
 import 'package:daily_you/main.dart';
+import 'package:daily_you/services/home_widget_service.dart';
 import 'package:daily_you/utils/auto_backup_schedule.dart';
 import 'package:daily_you/utils/backup_restore_utils.dart';
 import 'package:daily_you/widgets/auth_popup.dart';
@@ -61,6 +62,9 @@ class _LaunchPageState extends State<LaunchPage> {
 
   Future _updateAppShortcuts() async {
     if (!Platform.isAndroid) return;
+    if (HomeWidgetService.isWrite(await HomeWidgetService.launchUri())) {
+      DeviceInfoService().launchIntent = LaunchIntent.logToday();
+    }
     final QuickActions quickActions = const QuickActions();
     await quickActions.initialize((shortcutType) {
       if (shortcutType == 'action_log_today') {

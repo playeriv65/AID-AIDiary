@@ -1,4 +1,4 @@
-param([ValidateSet('windows','windows-driver','android','test','analyze','pub','screenshots')][string]$Target='windows')
+param([ValidateSet('windows','windows-driver','android','apk','test','analyze','pub','screenshots')][string]$Target='windows')
 $env:PUB_CACHE='D:\software\pub-cache'
 $env:FLUTTER_ROOT='D:\software\flutter'
 $env:Path='D:\software\flutter\bin;D:\software\android-sdk\platform-tools;' + $env:Path
@@ -12,6 +12,7 @@ switch ($Target) {
   'windows' { flutter run -d windows }
   'windows-driver' { flutter run -d windows -t test_driver/app.dart }
   'android' { flutter run -d emulator-5554 --flavor dev }
+  'apk' { flutter build apk --debug --flavor dev }
   'pub' { flutter pub get }
   'test' { flutter test }
   'analyze' { flutter analyze }

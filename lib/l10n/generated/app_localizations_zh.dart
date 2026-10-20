@@ -1454,6 +1454,15 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get mediaUnavailable => '此附件在这台设备上不可用。';
+
+  @override
+  String get widgetDone => '今天的日记已写好';
+
+  @override
+  String get widgetPending => '今天过得怎么样？';
+
+  @override
+  String get widgetWrite => '写日记';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -2889,4 +2898,13 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get mediaUnavailable => '此附件在這台裝置上無法使用。';
+
+  @override
+  String get widgetDone => '今天的日記已寫好';
+
+  @override
+  String get widgetPending => '今天過得怎麼樣？';
+
+  @override
+  String get widgetWrite => '寫日記';
 }

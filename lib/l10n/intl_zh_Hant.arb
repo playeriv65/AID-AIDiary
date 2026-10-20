@@ -426,5 +426,8 @@
     "audioStop": "停止並儲存",
     "audioPermissionDenied": "麥克風權限已關閉，請在系統設定中允許。",
     "mediaTooLarge": "這部影片太大，無法加入。",
-    "mediaUnavailable": "此附件在這台裝置上無法使用。"
+    "mediaUnavailable": "此附件在這台裝置上無法使用。",
+    "widgetDone": "今天的日記已寫好",
+    "widgetPending": "今天過得怎麼樣？",
+    "widgetWrite": "寫日記"
 }

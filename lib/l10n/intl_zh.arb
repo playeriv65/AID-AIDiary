@@ -425,5 +425,8 @@
     "audioStop": "停止并保存",
     "audioPermissionDenied": "麦克风权限已关闭，请在系统设置中允许。",
     "mediaTooLarge": "这个视频太大，无法添加。",
-    "mediaUnavailable": "此附件在这台设备上不可用。"
+    "mediaUnavailable": "此附件在这台设备上不可用。",
+    "widgetDone": "今天的日记已写好",
+    "widgetPending": "今天过得怎么样？",
+    "widgetWrite": "写日记"
 }

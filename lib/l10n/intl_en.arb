@@ -862,5 +862,11 @@
   "mediaTooLarge": "This video is too large to attach.",
   "@mediaTooLarge": {},
   "mediaUnavailable": "This attachment is not available on this device.",
-  "@mediaUnavailable": {}
+  "@mediaUnavailable": {},
+  "widgetDone": "Today's entry is written",
+  "@widgetDone": {},
+  "widgetPending": "How was your day?",
+  "@widgetPending": {},
+  "widgetWrite": "Write",
+  "@widgetWrite": {}
 }

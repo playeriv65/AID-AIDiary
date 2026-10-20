@@ -1492,4 +1492,13 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get mediaUnavailable =>
       'This attachment is not available on this device.';
+
+  @override
+  String get widgetDone => 'Today\'s entry is written';
+
+  @override
+  String get widgetPending => 'How was your day?';
+
+  @override
+  String get widgetWrite => 'Write';
 }
