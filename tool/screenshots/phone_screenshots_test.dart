@@ -27,6 +27,8 @@ void main() {
         tester, 'journal-entry-${await session.starredEntryId(tester)}');
     await session.capture(tester, 'phone-entry');
     await session.tapKey(tester, 'entry-share');
+    await session.capture(tester, 'phone-share-as');
+    await session.tapKey(tester, 'share-as-image');
     await session.capture(tester, 'phone-share');
     await tester.tap(find.byType(CloseButton).hitTestable().first);
     await tester.pumpAndSettle();

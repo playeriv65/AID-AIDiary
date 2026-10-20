@@ -2,7 +2,11 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:daily_you/database/entry_store.dart';
+import 'package:daily_you/database/image_storage.dart';
 import 'package:daily_you/l10n/generated/app_localizations.dart';
 import 'package:daily_you/models/entry.dart';
 import 'package:daily_you/models/image.dart';
@@ -15,6 +19,7 @@ import 'package:daily_you/providers/tags_provider.dart';
 import 'package:daily_you/time_manager.dart';
 import 'package:daily_you/utils/entry_actions.dart';
 import 'package:daily_you/utils/entry_context_display.dart';
+import 'package:daily_you/utils/entry_share.dart';
 import 'package:daily_you/utils/entry_typography.dart';
 import 'package:daily_you/widgets/delete_confirm_dialog.dart';
 import 'package:daily_you/widgets/entry_tag_chips.dart';
@@ -26,6 +31,7 @@ import 'package:daily_you/widgets/tag_chip.dart';
 import 'package:intl/intl.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 /// Reads one entry: photos, date block, metadata, then the text.
 class EntryViewPage extends StatelessWidget {
@@ -234,14 +240,75 @@ class EntryViewPage extends StatelessWidget {
     await EntryStore.instance.delete(entry);
   }
 
+  /// "Share as…" like Journey: the picture card, a ZIP with the original
+  /// media, plain text or an HTML page.
   Future<void> _share(
-          BuildContext context, Entry entry, List<EntryImage> images) =>
-      Navigator.of(context).push(MaterialPageRoute(
-        allowSnapshotting: false,
-        fullscreenDialog: true,
-        builder: (_) => EntrySharePage(entry: entry, images: images),
-      ));
+      BuildContext context, Entry entry, List<EntryImage> images) async {
+    final l10n = AppLocalizations.of(context)!;
+    final choice = await showModalBottomSheet<_ShareAs>(
+      context: context,
+      showDragHandle: true,
+      builder: (context) => SafeArea(
+        child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(24, 0, 24, 8),
+                child: Text(l10n.shareAs,
+                    style: Theme.of(context).textTheme.titleLarge),
+              ),
+              for (final (option, icon, label) in [
+                (_ShareAs.image, Icons.image_outlined, l10n.shareAsImage),
+                (_ShareAs.zip, Icons.folder_zip_outlined, l10n.shareAsZip),
+                (_ShareAs.text, Icons.notes_rounded, l10n.shareAsPlainText),
+                (_ShareAs.html, Icons.code_rounded, l10n.shareAsHtml),
+              ])
+                ListTile(
+                  key: ValueKey('share-as-${option.name}'),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 24),
+                  leading: Icon(icon),
+                  title: Text(label),
+                  onTap: () => Navigator.of(context).pop(option),
+                ),
+              const SizedBox(height: 8),
+            ]),
+      ),
+    );
+    if (choice == null || !context.mounted) return;
+    final mood = MoodIcon.getMoodIcon(entry.mood);
+    final heading = '${mood.isEmpty ? '' : '$mood '}'
+        '${TimeManager.formatDateWithWeekday(entry.timeCreate, context)}';
+    final name =
+        'aid-diary-${DateFormat('yyyy-MM-dd-HHmm').format(entry.timeCreate)}';
+    Future<void> shareFile(List<int> bytes, String mimeType, String file) =>
+        SharePlus.instance.share(ShareParams(files: [
+          XFile.fromData(Uint8List.fromList(bytes), mimeType: mimeType)
+        ], fileNameOverrides: [
+          file
+        ]));
+    switch (choice) {
+      case _ShareAs.image:
+        await Navigator.of(context).push(MaterialPageRoute(
+          allowSnapshotting: false,
+          fullscreenDialog: true,
+          builder: (_) => EntrySharePage(entry: entry, images: images),
+        ));
+      case _ShareAs.text:
+        await SharePlus.instance
+            .share(ShareParams(text: EntryShare.plainText(entry, heading)));
+      case _ShareAs.html:
+        await shareFile(utf8.encode(EntryShare.html(entry, heading)),
+            'text/html', '$name.html');
+      case _ShareAs.zip:
+        final bytes = await EntryShare.zip(
+            entry, heading, images, ImageStorage.instance.getBytes);
+        await shareFile(bytes, 'application/zip', '$name.zip');
+    }
+  }
 }
+
+enum _ShareAs { image, zip, text, html }
 
 class _Photos extends StatefulWidget {
   const _Photos({required this.images});

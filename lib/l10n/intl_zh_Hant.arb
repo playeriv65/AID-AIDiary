@@ -441,7 +441,6 @@
     "locationRecent": "最近的地點",
     "shareImage": "分享圖片",
     "shareSaveImage": "儲存圖片",
-    "shareAsText": "以文字分享",
     "shareSaved": "圖片已儲存",
     "deletedTitle": "最近刪除",
     "deletedNone": "沒有最近刪除的日記",
@@ -533,5 +532,10 @@
     "locationNearby": "附近的地點",
     "locationRename": "重新命名",
     "locationSavePlace": "收藏地點",
-    "locationUnsavePlace": "取消收藏"
+    "locationUnsavePlace": "取消收藏",
+    "shareAs": "分享為…",
+    "shareAsImage": "圖片",
+    "shareAsZip": "ZIP（含原始照片和影音）",
+    "shareAsPlainText": "純文字",
+    "shareAsHtml": "HTML"
 }

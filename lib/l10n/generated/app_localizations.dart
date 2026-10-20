@@ -2850,12 +2850,6 @@ abstract class AppLocalizations {
   /// **'Save image'**
   String get shareSaveImage;
 
-  /// No description provided for @shareAsText.
-  ///
-  /// In en, this message translates to:
-  /// **'Share as text'**
-  String get shareAsText;
-
   /// No description provided for @shareSaved.
   ///
   /// In en, this message translates to:
@@ -3407,6 +3401,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Remove from saved places'**
   String get locationUnsavePlace;
+
+  /// No description provided for @shareAs.
+  ///
+  /// In en, this message translates to:
+  /// **'Share as…'**
+  String get shareAs;
+
+  /// No description provided for @shareAsImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Image'**
+  String get shareAsImage;
+
+  /// No description provided for @shareAsZip.
+  ///
+  /// In en, this message translates to:
+  /// **'ZIP with the original media'**
+  String get shareAsZip;
+
+  /// No description provided for @shareAsPlainText.
+  ///
+  /// In en, this message translates to:
+  /// **'Plain text'**
+  String get shareAsPlainText;
+
+  /// No description provided for @shareAsHtml.
+  ///
+  /// In en, this message translates to:
+  /// **'HTML'**
+  String get shareAsHtml;
 }
 
 class _AppLocalizationsDelegate

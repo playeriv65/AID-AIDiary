@@ -1500,9 +1500,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get shareSaveImage => '保存图片';
 
   @override
-  String get shareAsText => '以文字分享';
-
-  @override
   String get shareSaved => '图片已保存';
 
   @override
@@ -1797,6 +1794,21 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get locationUnsavePlace => '取消收藏';
+
+  @override
+  String get shareAs => '分享为…';
+
+  @override
+  String get shareAsImage => '图片';
+
+  @override
+  String get shareAsZip => 'ZIP（含原始照片和音视频）';
+
+  @override
+  String get shareAsPlainText => '纯文本';
+
+  @override
+  String get shareAsHtml => 'HTML';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -3278,9 +3290,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get shareSaveImage => '儲存圖片';
 
   @override
-  String get shareAsText => '以文字分享';
-
-  @override
   String get shareSaved => '圖片已儲存';
 
   @override
@@ -3575,4 +3584,19 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get locationUnsavePlace => '取消收藏';
+
+  @override
+  String get shareAs => '分享為…';
+
+  @override
+  String get shareAsImage => '圖片';
+
+  @override
+  String get shareAsZip => 'ZIP（含原始照片和影音）';
+
+  @override
+  String get shareAsPlainText => '純文字';
+
+  @override
+  String get shareAsHtml => 'HTML';
 }

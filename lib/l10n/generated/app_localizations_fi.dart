@@ -1527,9 +1527,6 @@ class AppLocalizationsFi extends AppLocalizations {
   String get shareSaveImage => 'Save image';
 
   @override
-  String get shareAsText => 'Share as text';
-
-  @override
   String get shareSaved => 'Image saved';
 
   @override
@@ -1841,4 +1838,19 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get locationUnsavePlace => 'Remove from saved places';
+
+  @override
+  String get shareAs => 'Share as…';
+
+  @override
+  String get shareAsImage => 'Image';
+
+  @override
+  String get shareAsZip => 'ZIP with the original media';
+
+  @override
+  String get shareAsPlainText => 'Plain text';
+
+  @override
+  String get shareAsHtml => 'HTML';
 }

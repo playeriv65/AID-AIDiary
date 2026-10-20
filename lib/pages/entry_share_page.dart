@@ -10,7 +10,6 @@ import 'package:daily_you/l10n/generated/app_localizations.dart';
 import 'package:daily_you/models/entry.dart';
 import 'package:daily_you/models/image.dart';
 import 'package:daily_you/pages/entry_view_page.dart';
-import 'package:daily_you/time_manager.dart';
 import 'package:daily_you/utils/entry_context_display.dart';
 import 'package:daily_you/utils/entry_typography.dart';
 import 'package:daily_you/widgets/local_image_loader.dart';
@@ -79,14 +78,6 @@ class _EntrySharePageState extends State<EntrySharePage> {
         }
       });
 
-  Future<void> _shareText() {
-    final mood = MoodIcon.getMoodIcon(widget.entry.mood);
-    final date =
-        TimeManager.formatDateWithWeekday(widget.entry.timeCreate, context);
-    return SharePlus.instance.share(ShareParams(
-        text: '${mood.isEmpty ? '' : '$mood '}$date\n${widget.entry.text}'));
-  }
-
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -96,14 +87,6 @@ class _EntrySharePageState extends State<EntrySharePage> {
       appBar: AppBar(
         title: Text(l10n.entryShare),
         backgroundColor: cs.surfaceContainer,
-        actions: [
-          TextButton.icon(
-            key: const ValueKey('share-text'),
-            onPressed: _busy ? null : _shareText,
-            icon: const Icon(Icons.notes_rounded),
-            label: Text(l10n.shareAsText),
-          ),
-        ],
       ),
       body: Center(
         child: SingleChildScrollView(

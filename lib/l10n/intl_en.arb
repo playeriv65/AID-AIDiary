@@ -891,8 +891,6 @@
   "@shareImage": {},
   "shareSaveImage": "Save image",
   "@shareSaveImage": {},
-  "shareAsText": "Share as text",
-  "@shareAsText": {},
   "shareSaved": "Image saved",
   "@shareSaved": {},
   "deletedTitle": "Recently deleted",
@@ -1121,5 +1119,15 @@
   "locationSavePlace": "Save place",
   "@locationSavePlace": {},
   "locationUnsavePlace": "Remove from saved places",
-  "@locationUnsavePlace": {}
+  "@locationUnsavePlace": {},
+  "shareAs": "Share as…",
+  "@shareAs": {},
+  "shareAsImage": "Image",
+  "@shareAsImage": {},
+  "shareAsZip": "ZIP with the original media",
+  "@shareAsZip": {},
+  "shareAsPlainText": "Plain text",
+  "@shareAsPlainText": {},
+  "shareAsHtml": "HTML",
+  "@shareAsHtml": {}
 }
