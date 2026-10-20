@@ -249,16 +249,6 @@ class AppLocalizationsCs extends AppLocalizations {
       'Pokračovat s lokální databází';
 
   @override
-  String get databaseMigrationErrorTitle => 'Nepodařilo se přesunout vaše data';
-
-  @override
-  String get databaseMigrationErrorDescription =>
-      'Vaše záznamy jsou v bezpečí, ale nepodařilo se je přesunout do úložiště aplikace.\n\nZkuste to znovu, v případě opakovaného problému nahlašte chybu.';
-
-  @override
-  String get databaseMigrationErrorRetry => 'Zkusit znovu';
-
-  @override
   String get lastModified => 'Upraveno';
 
   @override
@@ -717,11 +707,6 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String get cleanUpStatus => 'Uklízení…';
-
-  @override
-  String migratingImagesStatus(Object current, Object total) {
-    return 'Migruju fotky… $current/$total';
-  }
 
   @override
   String get settingsExportToAnotherFormat => 'Exportovat do jiného formátu';

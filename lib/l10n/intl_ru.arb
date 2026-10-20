@@ -131,8 +131,6 @@
     "chartGroupingYear": "Год",
     "settingsOnThisDayDescription": "Вернитесь к прошлым воспоминаниям",
     "chartSmoothingLabel": "Сглаживание",
-    "databaseMigrationErrorTitle": "Не смогли перенести ваши данные",
-    "databaseMigrationErrorRetry": "Повторить",
     "settingsCalendarSystem": "Тип календаря",
     "calendarSystemGregorian": "Григорианский календарь",
     "templateDefaultReflectionTitle": "Рефлексия",

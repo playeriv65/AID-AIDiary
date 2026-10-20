@@ -255,16 +255,6 @@ class AppLocalizationsDe extends AppLocalizations {
       'Weiter mit lokaler Datenbank';
 
   @override
-  String get databaseMigrationErrorTitle => 'Konnte Daten nicht verschieben';
-
-  @override
-  String get databaseMigrationErrorDescription =>
-      'Deine Einträge sind sicher, konnten aber nicht in den Appspeicher verschoben werden.\n\nVersuche es erneut und melde das Problem, sofern es weiterhin auftritt.';
-
-  @override
-  String get databaseMigrationErrorRetry => 'Erneut versuchen';
-
-  @override
   String get lastModified => 'Geändert';
 
   @override
@@ -725,11 +715,6 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get cleanUpStatus => 'Aufräumen…';
-
-  @override
-  String migratingImagesStatus(Object current, Object total) {
-    return 'Übertrage Fotos… $current/$total';
-  }
 
   @override
   String get settingsExportToAnotherFormat => 'In anderes Format exportieren';

@@ -256,16 +256,6 @@ class AppLocalizationsFi extends AppLocalizations {
       'Jatka paikallisen tietokannan kanssa';
 
   @override
-  String get databaseMigrationErrorTitle => 'Couldn\'t Move Your Data';
-
-  @override
-  String get databaseMigrationErrorDescription =>
-      'Your entries are safe but couldn\'t be moved to the app\'s storage.\n\nTry again, and report the issue if it keeps happening.';
-
-  @override
-  String get databaseMigrationErrorRetry => 'Retry';
-
-  @override
   String get lastModified => 'Muokattu';
 
   @override
@@ -724,11 +714,6 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get cleanUpStatus => 'Siivotaan…';
-
-  @override
-  String migratingImagesStatus(Object current, Object total) {
-    return 'Migrating photos… $current/$total';
-  }
 
   @override
   String get settingsExportToAnotherFormat => 'Vie toiseen muotoon';

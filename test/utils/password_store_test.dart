@@ -5,7 +5,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:crypto/crypto.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/utils/password_store.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -46,28 +45,6 @@ void main() {
       await store.save('dolphin');
       expect(ConfigProvider.instance.get(Settings.passwordHash),
           startsWith(r'$argon2id$v=19$m='));
-    });
-
-    test('a legacy sha-256 hash validates once and is rehashed', () async {
-      final legacyHash = sha256.convert(utf8.encode('dolphin')).toString();
-      await ConfigProvider.instance.set(Settings.passwordHash, legacyHash);
-
-      expect(await store.validate('dolphin'), isTrue);
-
-      final rehashed = ConfigProvider.instance.get(Settings.passwordHash);
-      expect(rehashed, isNot(legacyHash));
-      expect(rehashed, startsWith(r'$argon2id$'));
-
-      expect(await store.validate('dolphin'), isTrue);
-    });
-
-    test('a wrong password against a legacy hash does not validate or rehash',
-        () async {
-      final legacyHash = sha256.convert(utf8.encode('dolphin')).toString();
-      await ConfigProvider.instance.set(Settings.passwordHash, legacyHash);
-
-      expect(await store.validate('wrong'), isFalse);
-      expect(ConfigProvider.instance.get(Settings.passwordHash), legacyHash);
     });
 
     test(

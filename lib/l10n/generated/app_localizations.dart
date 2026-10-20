@@ -480,24 +480,6 @@ abstract class AppLocalizations {
   /// **'Continue With Local Database'**
   String get errorExternalStorageAccessContinue;
 
-  /// No description provided for @databaseMigrationErrorTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Couldn\'t Move Your Data'**
-  String get databaseMigrationErrorTitle;
-
-  /// No description provided for @databaseMigrationErrorDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Your entries are safe but couldn\'t be moved to the app\'s storage.\n\nTry again, and report the issue if it keeps happening.'**
-  String get databaseMigrationErrorDescription;
-
-  /// No description provided for @databaseMigrationErrorRetry.
-  ///
-  /// In en, this message translates to:
-  /// **'Retry'**
-  String get databaseMigrationErrorRetry;
-
   /// No description provided for @lastModified.
   ///
   /// In en, this message translates to:
@@ -1325,12 +1307,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cleaning Up…'**
   String get cleanUpStatus;
-
-  /// No description provided for @migratingImagesStatus.
-  ///
-  /// In en, this message translates to:
-  /// **'Migrating photos… {current}/{total}'**
-  String migratingImagesStatus(Object current, Object total);
 
   /// No description provided for @settingsExportToAnotherFormat.
   ///

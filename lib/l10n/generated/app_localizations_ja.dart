@@ -253,16 +253,6 @@ class AppLocalizationsJa extends AppLocalizations {
   String get errorExternalStorageAccessContinue => 'ローカルデータベースを使用して続行';
 
   @override
-  String get databaseMigrationErrorTitle => 'Couldn\'t Move Your Data';
-
-  @override
-  String get databaseMigrationErrorDescription =>
-      'Your entries are safe but couldn\'t be moved to the app\'s storage.\n\nTry again, and report the issue if it keeps happening.';
-
-  @override
-  String get databaseMigrationErrorRetry => 'Retry';
-
-  @override
   String get lastModified => '最終更新';
 
   @override
@@ -715,11 +705,6 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get cleanUpStatus => 'クリーンアップ中…';
-
-  @override
-  String migratingImagesStatus(Object current, Object total) {
-    return 'Migrating photos… $current/$total';
-  }
 
   @override
   String get settingsExportToAnotherFormat => 'その他の形式にエクスポート';

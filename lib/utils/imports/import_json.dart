@@ -64,13 +64,6 @@ List<ImportedEntry> decodeJsonEntries(Uint8List bytes) {
               _ => null,
             }),
         images: [
-          // Support old imgPath field
-          if (entry['imgPath'] != null)
-            EntryImage(
-                entryId: null,
-                imgPath: entry['imgPath'],
-                imgRank: 0,
-                timeCreate: DateTime.now()),
           if (entry['images'] != null)
             for (var image in entry['images'])
               EntryImage(

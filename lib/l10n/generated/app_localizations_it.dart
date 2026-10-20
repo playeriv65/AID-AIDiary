@@ -255,16 +255,6 @@ class AppLocalizationsIt extends AppLocalizations {
       'Prosegui con l\'archivio locale';
 
   @override
-  String get databaseMigrationErrorTitle => 'Impossibile spostare i dati';
-
-  @override
-  String get databaseMigrationErrorDescription =>
-      'I tuoi ricordi sono al sicuro, ma non è stato possibile spostarli nell\'archivio dell\'app.\n\nRiprova. Dovesse continuare a succedere, crea una segnalazione.';
-
-  @override
-  String get databaseMigrationErrorRetry => 'Riprova';
-
-  @override
   String get lastModified => 'Modificato';
 
   @override
@@ -727,11 +717,6 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get cleanUpStatus => 'Sto facendo pulizia…';
-
-  @override
-  String migratingImagesStatus(Object current, Object total) {
-    return 'Spostando $current foto su $total';
-  }
 
   @override
   String get settingsExportToAnotherFormat => 'Esporta in un altro formato';

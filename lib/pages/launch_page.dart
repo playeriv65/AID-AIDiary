@@ -16,15 +16,12 @@ import 'package:aid_diary/pages/onboarding_page.dart';
 import 'package:aid_diary/services/coach_service.dart';
 import 'package:aid_diary/services/home_widget_service.dart';
 import 'package:aid_diary/utils/auto_backup_schedule.dart';
-import 'package:aid_diary/utils/backup_restore_utils.dart';
 import 'package:aid_diary/widgets/auth_popup.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:logging/logging.dart';
 import 'package:quick_actions/quick_actions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-enum _LaunchErrorType { externalAccess, migrationFailed }
 
 class LaunchPage extends StatefulWidget {
   final Widget nextPage;
@@ -38,7 +35,6 @@ class _LaunchPageState extends State<LaunchPage> {
   final Logger _logger = Logger('LaunchPage');
   bool isLoading = true;
   bool _initialized = false;
-  _LaunchErrorType _errorType = _LaunchErrorType.externalAccess;
 
   @override
   void initState() {
@@ -190,7 +186,6 @@ class _LaunchPageState extends State<LaunchPage> {
     }
 
     if (initialized) {
-      await _migrateImagesFromExternalStorage();
       if (ImageStorage.instance.usingExternalLocation()) {
         if (await ImageStorage.instance.hasExternalLocationPermission()) {
           unawaited(ImageStorage.instance.syncImageFolder(false).then((_) {},
@@ -202,18 +197,14 @@ class _LaunchPageState extends State<LaunchPage> {
           await _nextPage();
           return;
         }
-        _errorType = _LaunchErrorType.externalAccess;
       } else {
         unawaited(_catchUpMissedAutoBackup());
         await _nextPage();
         return;
       }
-    } else {
-      _errorType = AppDatabase.instance.migrationFailed
-          ? _LaunchErrorType.migrationFailed
-          : _LaunchErrorType.externalAccess;
     }
 
+    // The database or the external folder could not be reached.
     if (!mounted) return;
     setState(() {
       isLoading = false;
@@ -234,33 +225,6 @@ class _LaunchPageState extends State<LaunchPage> {
     if (!overdue) return;
 
     await enqueueAutoBackupCatchup();
-  }
-
-  Future<void> _retryDatabaseConnection() async {
-    setState(() {
-      isLoading = true;
-    });
-    await _checkDatabaseConnection();
-  }
-
-  Future<void> _migrateImagesFromExternalStorage() async {
-    if (!await ImageStorage.instance.needsImageMigration()) return;
-    if (!mounted) return;
-
-    final statusNotifier = ValueNotifier<String>("");
-    BackupRestoreUtils.showLoadingStatus(context, statusNotifier);
-
-    try {
-      await ImageStorage.instance.migrateImagesFromExternalStorage(
-        updateStatus: (migrated, total) {
-          if (!mounted) return;
-          statusNotifier.value = AppLocalizations.of(context)!
-              .migratingImagesStatus(migrated, total);
-        },
-      );
-    } finally {
-      if (mounted) Navigator.of(context).pop();
-    }
   }
 
   Future _forceLocalDatabase() async {
@@ -323,27 +287,14 @@ class _LaunchPageState extends State<LaunchPage> {
 
     final localizations = AppLocalizations.of(context)!;
 
-    switch (_errorType) {
-      case _LaunchErrorType.migrationFailed:
-        return _buildErrorScaffold(
-          title: localizations.databaseMigrationErrorTitle,
-          description: localizations.databaseMigrationErrorDescription,
-          actions: [
-            TextButton(
-                onPressed: _retryDatabaseConnection,
-                child: Text(localizations.databaseMigrationErrorRetry)),
-          ],
-        );
-      case _LaunchErrorType.externalAccess:
-        return _buildErrorScaffold(
-          title: localizations.errorExternalStorageAccessTitle,
-          description: localizations.errorExternalStorageAccessDescription,
-          actions: [
-            TextButton(
-                onPressed: _forceLocalDatabase,
-                child: Text(localizations.errorExternalStorageAccessContinue)),
-          ],
-        );
-    }
+    return _buildErrorScaffold(
+      title: localizations.errorExternalStorageAccessTitle,
+      description: localizations.errorExternalStorageAccessDescription,
+      actions: [
+        TextButton(
+            onPressed: _forceLocalDatabase,
+            child: Text(localizations.errorExternalStorageAccessContinue)),
+      ],
+    );
   }
 }

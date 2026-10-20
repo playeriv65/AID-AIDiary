@@ -260,16 +260,6 @@ class AppLocalizationsAr extends AppLocalizations {
       'متابعة مع قاعدة البيانات المحلية';
 
   @override
-  String get databaseMigrationErrorTitle => 'تعذر نقل بياناتك';
-
-  @override
-  String get databaseMigrationErrorDescription =>
-      'بياناتك آمنة، لكن لم يتمكن التطبيق من نقلها إلى مساحة التخزين الخاصة به.\n\nحاول مرة أخرى، وأبلغ عن المشكلة إذا استمرت في الحدوث.';
-
-  @override
-  String get databaseMigrationErrorRetry => 'عيد';
-
-  @override
   String get lastModified => 'معدّل';
 
   @override
@@ -724,11 +714,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get cleanUpStatus => 'جارٍ التنظيف…';
-
-  @override
-  String migratingImagesStatus(Object current, Object total) {
-    return 'Migrating photos… $current/$total';
-  }
 
   @override
   String get settingsExportToAnotherFormat => 'التصدير إلى تنسيق آخر';

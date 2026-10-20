@@ -18,14 +18,7 @@ import 'package:share_plus/share_plus.dart';
 const String _tagsFileType = "aid_diary_tags";
 const String _templatesFileType = "aid_diary_templates";
 
-/// File types this import reads, including the names from before the
-/// rename, which Daily You's own exports also use.
-const Set<String> _importableTypes = {
-  _tagsFileType,
-  _templatesFileType,
-  "daily_you_tags",
-  "daily_you_templates",
-};
+const Set<String> _importableTypes = {_tagsFileType, _templatesFileType};
 const int _transferFileVersion = 1;
 
 typedef _ItemIdentity = (

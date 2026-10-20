@@ -72,6 +72,5 @@
     "chartGroupingWeek": "Săptămână",
     "chartGroupingMonth": "Lună",
     "chartGroupingYear": "An",
-    "chartSmoothingLabel": "Netezire",
-    "databaseMigrationErrorRetry": "Reîncearcă"
+    "chartSmoothingLabel": "Netezire"
 }

@@ -261,16 +261,6 @@ class AppLocalizationsRu extends AppLocalizations {
       'Продолжить с локальным хранением данных';
 
   @override
-  String get databaseMigrationErrorTitle => 'Не смогли перенести ваши данные';
-
-  @override
-  String get databaseMigrationErrorDescription =>
-      'Your entries are safe but couldn\'t be moved to the app\'s storage.\n\nTry again, and report the issue if it keeps happening.';
-
-  @override
-  String get databaseMigrationErrorRetry => 'Повторить';
-
-  @override
   String get lastModified => 'Изменено';
 
   @override
@@ -732,11 +722,6 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get cleanUpStatus => 'Прибираемся…';
-
-  @override
-  String migratingImagesStatus(Object current, Object total) {
-    return 'Migrating photos… $current/$total';
-  }
 
   @override
   String get settingsExportToAnotherFormat => 'Сохранить в другом формате';

@@ -137,7 +137,6 @@
     "chartGroupingMonth": "Ay",
     "chartGroupingYear": "Yıl",
     "chartSmoothingLabel": "Düzeltme",
-    "databaseMigrationErrorRetry": "Yeniden Dene",
     "settingsTagsTitle": "Etiketler",
     "manageTags": "Etiketleri Yönet",
     "tagTypeTrackerTitle": "İzleyici",
@@ -181,10 +180,8 @@
     "tagAnnoyedName": "Sinirli",
     "selectTagTitle": "Etiket Seç",
     "labelPresentLabel": "Şimdi",
-    "databaseMigrationErrorTitle": "Verinizi Taşıyamadık",
     "tagTypeLabelTitle": "",
     "iconGroupMoodPeople": "Ruh Hâli & İnsanlar",
     "tagPickerSortManualLabel": "Manuel sıralama",
-    "tagPickerSortUsageLabel": "Kullanıma göre sırala",
-    "migratingImagesStatus": "Fotoğraflar aktarılıyor… {current}/{total}"
+    "tagPickerSortUsageLabel": "Kullanıma göre sırala"
 }

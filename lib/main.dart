@@ -138,8 +138,8 @@ void onThisDayCallbackDispatcher() => _runAlarm(
 
 Future<void> _showOnThisDay() async {
   // Skip syncing and migration for the alarm background task
-  final ready = await AppDatabase.instance
-      .init(forceWithoutSync: true, allowMigration: false);
+  final ready =
+      await AppDatabase.instance.init(forceWithoutSync: true, background: true);
 
   if (ready) {
     final now = DateTime.now();
@@ -240,8 +240,8 @@ void nudgeCallbackDispatcher() =>
 
 Future<void> _showNudge() async {
   // Skip syncing and migration for the alarm background task
-  final ready = await AppDatabase.instance
-      .init(forceWithoutSync: true, allowMigration: false);
+  final ready =
+      await AppDatabase.instance.init(forceWithoutSync: true, background: true);
   if (ready) {
     final latest = EntriesProvider.instance.entries
         .map((e) => e.timeCreate)
@@ -304,8 +304,8 @@ void callbackDispatcher() =>
 
 Future<void> _showReminder() async {
   // Skip syncing and migration for the alarm background task
-  final ready = await AppDatabase.instance
-      .init(forceWithoutSync: true, allowMigration: false);
+  final ready =
+      await AppDatabase.instance.init(forceWithoutSync: true, background: true);
 
   // The alarm fires daily and rearms itself; off days just stay quiet.
   final remindToday = ConfigProvider.instance

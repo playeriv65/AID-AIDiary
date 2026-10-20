@@ -256,17 +256,6 @@ class AppLocalizationsFr extends AppLocalizations {
       'Poursuivre avec la base de données locale';
 
   @override
-  String get databaseMigrationErrorTitle =>
-      'Déplacement des données impossible';
-
-  @override
-  String get databaseMigrationErrorDescription =>
-      'Vos entrées sont en sécurité mais n\'ont pas pu être déplacées dans le stockage applicatif.\n\nEssayez de nouveau et signaler ce souci s’il continue de se produire.';
-
-  @override
-  String get databaseMigrationErrorRetry => 'Réessayer';
-
-  @override
   String get lastModified => 'Modification';
 
   @override
@@ -730,11 +719,6 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get cleanUpStatus => 'Nettoyage…';
-
-  @override
-  String migratingImagesStatus(Object current, Object total) {
-    return 'Migration des photos… $current/$total';
-  }
 
   @override
   String get settingsExportToAnotherFormat => 'Exporter dans un autre format';

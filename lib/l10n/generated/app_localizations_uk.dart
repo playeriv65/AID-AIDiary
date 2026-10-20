@@ -260,16 +260,6 @@ class AppLocalizationsUk extends AppLocalizations {
       'Використовувати натомість локальне сховище';
 
   @override
-  String get databaseMigrationErrorTitle => 'Не вдалося перемістити ваші дані';
-
-  @override
-  String get databaseMigrationErrorDescription =>
-      'Ваші записи в безпеці, але не можуть бути переміщенні до сховища додатка.\n\nСпробуйте знову та повідомте про проблему, якщо вона повториться.';
-
-  @override
-  String get databaseMigrationErrorRetry => 'Спробувати знову';
-
-  @override
   String get lastModified => 'Востаннє змінено';
 
   @override
@@ -727,11 +717,6 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get cleanUpStatus => 'Замітаємо сліди…';
-
-  @override
-  String migratingImagesStatus(Object current, Object total) {
-    return 'Migrating photos… $current/$total';
-  }
 
   @override
   String get settingsExportToAnotherFormat => 'Експорт в інший формат';

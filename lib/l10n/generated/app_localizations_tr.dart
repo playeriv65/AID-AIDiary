@@ -255,16 +255,6 @@ class AppLocalizationsTr extends AppLocalizations {
       'Yerel Veri Tabanı ile Devam Edin';
 
   @override
-  String get databaseMigrationErrorTitle => 'Verinizi Taşıyamadık';
-
-  @override
-  String get databaseMigrationErrorDescription =>
-      'Your entries are safe but couldn\'t be moved to the app\'s storage.\n\nTry again, and report the issue if it keeps happening.';
-
-  @override
-  String get databaseMigrationErrorRetry => 'Yeniden Dene';
-
-  @override
   String get lastModified => 'Değişiklik';
 
   @override
@@ -720,11 +710,6 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get cleanUpStatus => 'Temizleniyor…';
-
-  @override
-  String migratingImagesStatus(Object current, Object total) {
-    return 'Fotoğraflar aktarılıyor… $current/$total';
-  }
 
   @override
   String get settingsExportToAnotherFormat => 'Başka Bir Formatta Dışarı Aktar';

@@ -255,16 +255,6 @@ class AppLocalizationsId extends AppLocalizations {
       'Lanjutkan dengan database lokal';
 
   @override
-  String get databaseMigrationErrorTitle => 'Tidak Dapat Memindahkan Data Anda';
-
-  @override
-  String get databaseMigrationErrorDescription =>
-      'Entri Anda aman tetapi tidak dapat dipindahkan ke penyimpanan aplikasi.\n\nCoba lagi, dan laporkan masalah ini jika terus terjadi.';
-
-  @override
-  String get databaseMigrationErrorRetry => 'Coba Lagi';
-
-  @override
   String get lastModified => 'Diubah';
 
   @override
@@ -720,11 +710,6 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get cleanUpStatus => 'Membersihkan…';
-
-  @override
-  String migratingImagesStatus(Object current, Object total) {
-    return 'Memigrasikan foto… $current/$total';
-  }
 
   @override
   String get settingsExportToAnotherFormat => 'Ekspor ke Format Lain';

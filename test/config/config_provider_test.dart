@@ -13,22 +13,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' show join;
 import 'package:shared_preferences/shared_preferences.dart';
 
-class _ThrowingSecretStore implements SecretStore {
-  @override
-  Future<bool> isAvailable() async => false;
-
-  @override
-  Future<String?> read(String key) async =>
-      throw Exception('secret store unavailable');
-
-  @override
-  Future<void> write(String key, String value) async =>
-      throw Exception('secret store unavailable');
-
-  @override
-  Future<void> delete(String key) async {}
-}
-
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
@@ -124,30 +108,5 @@ void main() {
     expect(await SecretStore.instance.read(Settings.passwordHash.key),
         json.encode('a-hash'));
     expect(configFile.existsSync(), isFalse);
-  });
-
-  test('a legacy shared-preferences secret is migrated into the secret store',
-      () async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(Settings.passwordHash.key, json.encode('old-hash'));
-
-    await configProvider.migrateSecretToSecretStore(Settings.passwordHash);
-    await configProvider.loadSecretStoreConfig();
-
-    expect(configProvider.get(Settings.passwordHash), 'old-hash');
-    expect(prefs.getString(Settings.passwordHash.key), isNull);
-  });
-
-  test('a failed migration leaves the shared-preferences value in place',
-      () async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(Settings.passwordHash.key, json.encode('old-hash'));
-    SecretStore.instance = _ThrowingSecretStore();
-
-    await configProvider.migrateSecretToSecretStore(Settings.passwordHash);
-    await configProvider.loadSecretStoreConfig();
-
-    expect(configProvider.get(Settings.passwordHash), 'old-hash');
-    expect(prefs.getString(Settings.passwordHash.key), json.encode('old-hash'));
   });
 }

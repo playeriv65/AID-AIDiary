@@ -251,16 +251,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get errorExternalStorageAccessContinue => '继续使用本地数据库';
 
   @override
-  String get databaseMigrationErrorTitle => '无法移动你的数据';
-
-  @override
-  String get databaseMigrationErrorDescription =>
-      '您的数据是安全的，但无法移动到应用的储存中。\n\n请重试，如果问题复现，请报告这个问题。';
-
-  @override
-  String get databaseMigrationErrorRetry => '重试';
-
-  @override
   String get lastModified => '最后修改时间';
 
   @override
@@ -712,11 +702,6 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get cleanUpStatus => '正在清理…';
-
-  @override
-  String migratingImagesStatus(Object current, Object total) {
-    return '正在移动图片… $current/$total';
-  }
 
   @override
   String get settingsExportToAnotherFormat => '导出为另一种格式';
@@ -2186,16 +2171,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get errorExternalStorageAccessContinue => '繼續使用本地資料庫';
 
   @override
-  String get databaseMigrationErrorTitle => '無法移動你的資料';
-
-  @override
-  String get databaseMigrationErrorDescription =>
-      '您的條目是安全的，但無法移至應用程式的儲存空間。\n\n請再試一次，如果問題持續發生，請回報該問題。';
-
-  @override
-  String get databaseMigrationErrorRetry => '重試';
-
-  @override
   String get lastModified => '已修改';
 
   @override
@@ -2647,11 +2622,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get cleanUpStatus => '正在清理…';
-
-  @override
-  String migratingImagesStatus(Object current, Object total) {
-    return '正在移轉照片… $current/$total';
-  }
 
   @override
   String get settingsExportToAnotherFormat => '匯出為其他格式';

@@ -39,18 +39,10 @@ class AppDatabase {
 
   static const String databaseFileName = 'aid_diary.db';
 
-  /// The name the database had before; existing files and backups still
-  /// carry it and are read under it once, then renamed.
-  static const String legacyDatabaseFileName = 'daily_you.db';
-
   static final Logger _logger = Logger('AppDatabase');
 
   final ExternalSyncHealth externalSyncHealth =
       ExternalSyncHealth('AppDatabase');
-
-  /// True when a migration from external storage was attempted on the last
-  /// [init] but failed.
-  bool migrationFailed = false;
 
   static Database? _database;
   Database? get database => _database;
@@ -65,26 +57,14 @@ class AppDatabase {
   FileStore? get externalStore =>
       usingExternalLocation() ? FileStore.external(getExternalPath()) : null;
 
+  /// Opens the diary. A background task passes [background]: it must never
+  /// create the database, so it gives up when there is none yet.
   Future<bool> init(
-      {bool forceWithoutSync = false, bool allowMigration = true}) async {
+      {bool forceWithoutSync = false, bool background = false}) async {
     _internalPath = await getInternalPath();
-    migrationFailed = false;
     bool success = true;
-    await renameLegacyDatabase(_internalPath!);
 
-    if (Platform.isAndroid && allowMigration) {
-      final migrated = await _migrateDbFromExternalStorage();
-      if (!migrated && !forceWithoutSync) {
-        // Migration was attempted but failed
-        migrationFailed = true;
-        return false;
-      }
-    }
-
-    // Migration is foreground-only. A background task (allowMigration: false)
-    // must never create a fresh database before the user has migrated their
-    // data, so bail if there is nothing to open yet.
-    if (!allowMigration && !await File(_internalPath!).exists()) {
+    if (background && !await File(_internalPath!).exists()) {
       return false;
     }
 
@@ -98,56 +78,6 @@ class AppDatabase {
 
     await AppDatabase.instance.open();
     return success;
-  }
-
-  /// Gives a database still under its old file name (and its SQLite side
-  /// files) the current name. Runs before anything opens it.
-  static Future<void> renameLegacyDatabase(String path) async {
-    final current = File(path);
-    final legacy = File(join(dirname(path), legacyDatabaseFileName));
-    if (await current.exists() || !await legacy.exists()) return;
-    _logger.info('Renaming ${legacy.path} to ${current.path}');
-    for (final suffix in const ['-wal', '-shm', '-journal']) {
-      final side = File('${legacy.path}$suffix');
-      if (await side.exists()) await side.rename('${current.path}$suffix');
-    }
-    await legacy.rename(current.path);
-  }
-
-  /// Returns whether it is safe to open the internal database. False means a
-  /// migration was needed but failed, so the caller must not create a fresh
-  /// database over the still-intact external copy.
-  Future<bool> _migrateDbFromExternalStorage() async {
-    if (await File(_internalPath!).exists()) return true;
-
-    final oldDir = await getExternalStorageDirectory();
-    if (oldDir == null) return true;
-    // Only builds from before the rename kept the database there.
-    final oldPath = join(oldDir.path, legacyDatabaseFileName);
-    if (!await File(oldPath).exists()) return true;
-
-    _logger.info('Database migration started: $oldPath -> $_internalPath');
-    try {
-      await File(oldPath).copy(_internalPath!);
-      if (await _validateSqliteDatabase(_internalPath!)) {
-        await File(oldPath).delete();
-        _logger.info('Database migration finished successfully');
-        return true;
-      }
-      // Integrity check failed: discard the bad copy and keep the external
-      // original so the migration can be retried instead of proceeding.
-      await File(_internalPath!).delete();
-      _logger.severe(
-          'Database migration failed: integrity check failed, kept original external database');
-      return false;
-    } catch (error, stackTrace) {
-      // Remove any partial copy so the migration is retried on relaunch.
-      if (await File(_internalPath!).exists()) {
-        await File(_internalPath!).delete();
-      }
-      _logger.severe('Database migration failed', error, stackTrace);
-      return false;
-    }
   }
 
   Future<void> open() async {
@@ -306,15 +236,6 @@ class AppDatabase {
   Future<bool> _syncWithExternalDatabase({bool forceOverwrite = false}) async {
     final externalLocation = externalStore;
     if (externalLocation == null) return false;
-
-    // A sync folder written before the rename: carry its copy over.
-    if (!await externalLocation.exists(databaseFileName) &&
-        await externalLocation.exists(legacyDatabaseFileName)) {
-      final legacyBytes = await externalLocation.read(legacyDatabaseFileName);
-      if (legacyBytes != null) {
-        await externalLocation.write(databaseFileName, legacyBytes);
-      }
-    }
 
     if (!await externalLocation.exists(databaseFileName)) {
       final bytes = await internalStore.read(databaseFileName);

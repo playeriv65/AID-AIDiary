@@ -254,17 +254,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get errorExternalStorageAccessContinue => 'ادامه با پایگاه داده محلی';
 
   @override
-  String get databaseMigrationErrorTitle =>
-      'نتوانستم داده‌های شما را منتقل کنم';
-
-  @override
-  String get databaseMigrationErrorDescription =>
-      'ورودی‌های شما امن هستند اما امکان انتقال آنها به حافظه برنامه وجود ندارد.\n\nدوباره امتحان کنید و اگر مشکل ادامه داشت، آن را گزارش دهید.';
-
-  @override
-  String get databaseMigrationErrorRetry => 'تلاش دوباره';
-
-  @override
   String get lastModified => 'تغییریافته';
 
   @override
@@ -719,11 +708,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get cleanUpStatus => 'در حال تمیز کردن …';
-
-  @override
-  String migratingImagesStatus(Object current, Object total) {
-    return 'در حال انتقال تصاویر… $current/$total';
-  }
 
   @override
   String get settingsExportToAnotherFormat => 'خروجی به فرمت دیگر';

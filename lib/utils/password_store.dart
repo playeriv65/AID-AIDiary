@@ -5,7 +5,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:crypto/crypto.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/utils/crypto_utils.dart';
 
@@ -30,15 +29,7 @@ class AppPasswordStore extends PasswordStore {
     final stored = ConfigProvider.instance.get(Settings.passwordHash);
     if (stored.isEmpty) return false;
 
-    final decoded = _Argon2Phc.tryDecode(stored);
-    if (decoded != null) return decoded.verify(password);
-
-    final legacyHash = sha256.convert(utf8.encode(password)).toString();
-    if (!constantTimeEquals(utf8.encode(stored), utf8.encode(legacyHash))) {
-      return false;
-    }
-    await save(password);
-    return true;
+    return _Argon2Phc.tryDecode(stored)?.verify(password) ?? false;
   }
 
   @override

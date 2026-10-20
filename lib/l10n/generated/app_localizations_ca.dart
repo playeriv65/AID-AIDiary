@@ -255,17 +255,6 @@ class AppLocalizationsCa extends AppLocalizations {
       'Continua amb la base de dades local';
 
   @override
-  String get databaseMigrationErrorTitle =>
-      'No s\'han pogut moure les vostres dades';
-
-  @override
-  String get databaseMigrationErrorDescription =>
-      'Les vostres entrades estan segures, però no s\'han pogut moure a l\'emmagatzematge de l\'aplicació.\n\nTorneu-ho a provar i informeu del problema si continua passant.';
-
-  @override
-  String get databaseMigrationErrorRetry => 'Torna-ho a provar';
-
-  @override
   String get lastModified => 'Modificat';
 
   @override
@@ -728,11 +717,6 @@ class AppLocalizationsCa extends AppLocalizations {
 
   @override
   String get cleanUpStatus => 'S\'està netejant…';
-
-  @override
-  String migratingImagesStatus(Object current, Object total) {
-    return 'S\'estan migrant les fotos… $current/$total';
-  }
 
   @override
   String get settingsExportToAnotherFormat => 'Exporta a un altre format';

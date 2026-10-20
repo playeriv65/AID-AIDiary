@@ -37,9 +37,6 @@ class BackupRestoreUtils {
   static const String manualBackupPrefix = 'aid_diary_backup_';
   static const String autoBackupPrefix = 'aid_diary_auto_backup_';
 
-  /// Automatic backups named before the rename, still pruned with the rest.
-  static const String legacyAutoBackupPrefix = 'daily_you_auto_backup_';
-
   static String? _backupPassword() =>
       BackupPasswordStore.isEnabled ? BackupPasswordStore.password : null;
 
@@ -149,7 +146,7 @@ class BackupRestoreUtils {
     final databaseAlreadyOpen = AppDatabase.instance.database != null;
     if (!databaseAlreadyOpen &&
         !await AppDatabase.instance
-            .init(forceWithoutSync: true, allowMigration: false)) {
+            .init(forceWithoutSync: true, background: true)) {
       _logger.severe('Automatic backup skipped: could not open database');
       return false;
     }
@@ -268,17 +265,13 @@ class BackupRestoreUtils {
 
   static Future<void> _pruneAutoBackups(FileStore destination, int keep) async {
     if (keep <= 0) return;
-    // Oldest first: legacy names predate every current one, then by date.
-    String age(String name) => name.startsWith(legacyAutoBackupPrefix)
-        ? '0${name.substring(legacyAutoBackupPrefix.length)}'
-        : '1${name.substring(autoBackupPrefix.length)}';
+    // Oldest first: the names carry their date.
     final backups = (await destination.list())
         .where((name) =>
-            (name.startsWith(autoBackupPrefix) ||
-                name.startsWith(legacyAutoBackupPrefix)) &&
+            name.startsWith(autoBackupPrefix) &&
             (name.endsWith('.zip') || name.endsWith('.zip.enc')))
         .toList()
-      ..sort((a, b) => age(a).compareTo(age(b)));
+      ..sort();
     if (backups.length <= keep) return;
 
     for (final name in backups.take(backups.length - keep)) {
@@ -404,10 +397,8 @@ class BackupRestoreUtils {
       await _extractBackup(tempZipFile, restoreFolder, reportExtractProgress);
 
       final restoreStore = LocalFileStore(restoreFolder.path);
-      // Backups from before the rename hold the database under its old name.
       final databaseBytes =
-          await restoreStore.read(AppDatabase.databaseFileName) ??
-              await restoreStore.read(AppDatabase.legacyDatabaseFileName);
+          await restoreStore.read(AppDatabase.databaseFileName);
       if (databaseBytes != null) {
         // Import database
         await AppDatabase.instance.close();

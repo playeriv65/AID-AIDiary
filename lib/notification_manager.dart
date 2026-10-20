@@ -25,17 +25,6 @@ const String nudgeChannelId = 'aid_diary_nudge';
 const String quickWriteChannelId = 'aid_diary_quick_write';
 const String backupNotificationChannelId = 'aid_diary_backup';
 
-/// Channel ids from before the rename, deleted at start so each channel is
-/// listed once in Android's settings.
-const List<String> _legacyChannelIds = [
-  'daily_you_reminder',
-  'daily_you_on_this_day',
-  'daily_you_coach',
-  'daily_you_nudge',
-  'daily_you_quick_write',
-  'daily_you_backup',
-];
-
 /// SharedPreferences as stored now, for alarm and backup callbacks. Their
 /// isolate lives on between runs, and getInstance keeps serving the values
 /// from its first call, which misses anything the app stored since.
@@ -99,11 +88,6 @@ class NotificationManager {
         onDidReceiveNotificationResponse: _onResponse,
         onDidReceiveBackgroundNotificationResponse:
             backupCancelBackgroundHandler);
-    if (Platform.isAndroid) {
-      for (final id in _legacyChannelIds) {
-        await _android.deleteNotificationChannel(channelId: id);
-      }
-    }
   }
 
   /// A tap while the app runs; a cold start reads the launch details.

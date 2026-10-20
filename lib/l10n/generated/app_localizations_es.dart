@@ -255,16 +255,6 @@ class AppLocalizationsEs extends AppLocalizations {
       'Continuar con la base de datos local';
 
   @override
-  String get databaseMigrationErrorTitle => 'No se pudieron mover tus datos';
-
-  @override
-  String get databaseMigrationErrorDescription =>
-      'Tus entradas están a salvo, pero no se pudieron mover al almacenamiento de la aplicación.\n\nInténtalo de nuevo, y reporta el problema si continúa ocurriendo.';
-
-  @override
-  String get databaseMigrationErrorRetry => 'Volver a intentar';
-
-  @override
   String get lastModified => 'Modificado';
 
   @override
@@ -724,11 +714,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get cleanUpStatus => 'Limpiando…';
-
-  @override
-  String migratingImagesStatus(Object current, Object total) {
-    return 'Migrando fotos… $current/$total';
-  }
 
   @override
   String get settingsExportToAnotherFormat => 'Exportar a otro formato';

@@ -74,28 +74,6 @@ void main() {
       expect(decoded.single.images.every((image) => image.entryId == null),
           isTrue);
     });
-
-    test('decodes the deprecated imgPath field ahead of the images list', () {
-      final decoded = decodeJsonEntries(jsonBytes([
-        {
-          'text': '',
-          'timeCreated': '2026-01-02T00:00:00.000',
-          'timeModified': '2026-01-02T00:00:00.000',
-          'imgPath': 'legacy.jpg',
-          'images': [
-            {
-              'imgPath': 'modern.jpg',
-              'imgRank': 0,
-              'timeCreated': '2026-01-02T00:00:00.000'
-            },
-          ],
-        }
-      ]));
-
-      expect(decoded.single.images.map((image) => image.imgPath),
-          equals(['legacy.jpg', 'modern.jpg']));
-      expect(decoded.single.images.first.imgRank, equals(0));
-    });
   });
 
   group('decodeMyBrainEntries', () {

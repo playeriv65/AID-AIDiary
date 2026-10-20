@@ -304,42 +304,10 @@ class ConfigProvider with ChangeNotifier {
     if (!dbPath.existsSync()) dbPath.createSync(recursive: true);
     configFilePath = join(dbPath.path, 'config.json');
 
-    if (Platform.isAndroid) {
-      await _migrateConfigFromExternalStorage(dbPath);
-    }
-
     await readConfig();
     await loadSecureConfig();
-    await migrateSecretToSecretStore(Settings.passwordHash);
     await loadSecretStoreConfig();
     await _pruneUnknownKeys();
-  }
-
-  Future<void> _migrateConfigFromExternalStorage(Directory newDir) async {
-    final newFile = File(join(newDir.path, 'config.json'));
-    if (newFile.existsSync()) return;
-
-    final oldDir = await getExternalStorageDirectory();
-    if (oldDir == null) return;
-    final oldFile = File(join(oldDir.path, 'config.json'));
-    if (!oldFile.existsSync()) return;
-
-    // Never let a migration failure abort startup; settings fall back to
-    // defaults via readConfig() if the config can't be moved.
-    try {
-      _logger
-          .info('Config migration started: ${oldFile.path} -> ${newFile.path}');
-      await oldFile.copy(newFile.path);
-      if (newFile.existsSync() && newFile.lengthSync() > 0) {
-        await oldFile.delete();
-        _logger.info('Config migration finished successfully');
-      } else {
-        _logger.severe(
-            'Config migration failed: copied file missing or empty, kept original');
-      }
-    } catch (error, stackTrace) {
-      _logger.severe('Config migration failed', error, stackTrace);
-    }
   }
 
   Future<void> _pruneUnknownKeys() async {
@@ -368,11 +336,9 @@ class ConfigProvider with ChangeNotifier {
   }
 
   Future<void> loadSecretStoreConfig() async {
-    final prefs = await SharedPreferences.getInstance();
     for (final setting
         in Settings.all.where((setting) => setting.secretStore)) {
-      final stored =
-          await _readSecret(setting.key) ?? prefs.getString(setting.key);
+      final stored = await _readSecret(setting.key);
       if (stored == null) {
         _config[setting.key] = setting.defaultValue;
         continue;
@@ -398,27 +364,6 @@ class ConfigProvider with ChangeNotifier {
       _logger.warning('${setting.key} is not valid JSON, reading it raw', error,
           stackTrace);
       _config[setting.key] = stored;
-    }
-  }
-
-  Future<void> migrateSecretToSecretStore(Setting<Object?> setting) async {
-    final prefs = await SharedPreferences.getInstance();
-    if (await _readSecret(setting.key) != null) return;
-
-    final legacyValue = prefs.getString(setting.key);
-    if (legacyValue == null) return;
-
-    try {
-      await SecretStore.instance.write(setting.key, legacyValue);
-      if (await SecretStore.instance.read(setting.key) == legacyValue) {
-        await prefs.remove(setting.key);
-      } else {
-        _logger
-            .severe('Secret migration verification failed for ${setting.key}');
-      }
-    } catch (error, stackTrace) {
-      _logger.severe(
-          'Secret migration failed for ${setting.key}', error, stackTrace);
     }
   }
 

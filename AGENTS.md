@@ -1,7 +1,7 @@
 # AID Diary
 
 - Talk to the user in Chinese. Code comments and docs are in English. Python uses uv.
-- GPL-3.0 modification of Daily You: keep upstream copyright headers, LICENSE.txt and ADDITIONAL_TERMS.md, and keep the app clearly distinct from the official one (own name, own IDs, the modified-version notice in About). Nothing else in the app names Daily You; files and databases from Daily You (`daily_you.db`, `daily_you_*` backups and transfers) are still read so old data keeps working.
+- GPL-3.0 modification of Daily You: keep upstream copyright headers, LICENSE.txt and ADDITIONAL_TERMS.md, and keep the app clearly distinct from the official one (own name, own IDs, the modified-version notice in About). Nothing else in the app names Daily You, and there is no compatibility with Daily You data or with older builds of this app (old file names, external-storage migrations, legacy password hashes): do not add any back.
 - Main branch is `main`. Larger tasks use a `task/<name>` branch in its own git worktree, merged back and removed when done. No remote is configured; do not publish or release unless asked.
 - Develop natively on Windows: Flutter SDK `D:/software/flutter`, `PUB_CACHE=D:/software/pub-cache`, scripts via `scripts/dev.ps1`. Targets are Windows and Android only.
 - UI reference is the Journey app (layout and features). Never copy its code, assets, illustrations or text; write prompts and copy ourselves.
