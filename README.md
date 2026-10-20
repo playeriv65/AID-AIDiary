@@ -14,9 +14,12 @@ The layout follows the Journey diary app: a bottom bar on phones, a navigation r
 | ![Calendar](artifacts/ui-tablet-calendar.png) | ![Calendar](artifacts/ui-phone-calendar.png) ![Media](artifacts/ui-phone-media.png) |
 | ![Media](artifacts/ui-tablet-media.png) | ![Coach](artifacts/ui-phone-coach.png) ![Search](artifacts/ui-phone-search.png) |
 | ![Coach](artifacts/ui-tablet-coach.png) | ![Editor](artifacts/ui-phone-editor.png) ![Share](artifacts/ui-phone-share.png) |
+| ![Coach program](artifacts/ui-tablet-coach-program.png) | ![Location](artifacts/ui-phone-location-picker.png) ![Share as](artifacts/ui-phone-share-as.png) |
+| ![Coach story](artifacts/ui-tablet-story-prompt.png) | |
 | | ![Random walk](artifacts/ui-phone-random.png) ![Week review](artifacts/ui-phone-week-review.png) |
 
-- **Journal**: stories, then entries grouped by day with time, title, preview, mood, place, weather, activity, tags and a thumbnail; sort by entry date (either way) or by last update. Stories: Today (statistics, 30-day mood chart, throwback), throwbacks, opened time capsules, a morning or evening prompt, quick check-in, random walk, this week and this year in review.
+- **Journal**: stories, then entries grouped by day with time, title, preview, mood, place, weather, activity, tags and a thumbnail; sort by entry date (either way) or by last update. Stories: Today, the coach program's day, throwback, opened time capsules, a morning or evening prompt, quick check-in, random walk, this week and this year in review. Today, the coach day and the throwback play as one chain (statistics, 30-day mood chart, the day's prompt answered in place, the throwback, a closing card), as a card over wide windows.
+- **First launch**: welcome pages (what the diary does, privacy with a passcode, reminders).
 - **Random walk**: one random past entry at a time, no repeats until all were shown; all entries, only those with photos, or only good days.
 - **Reviews**: the week or the year as story slides: counts, mood (a 7-day row, or the year in pixels), most frequent tags, activities and places, photos, entries per month and a highlight.
 - **Quick check-in**: a mood, optionally an activity and a line of text, saved as an entry in two taps.
@@ -24,15 +27,16 @@ The layout follows the Journey diary app: a bottom bar on phones, a navigation r
 - **Calendar**: scrolling months; wide windows list the selected day beside them.
 - **Media**: every attached photo, video and voice note.
 - **Atlas**: entries with a location on an OpenStreetMap map; nearby markers merge into numbered clusters that zoom in when tapped.
-- **Coach**: built-in prompt programs and templates, plus your own templates.
-- **Entry**: photos, videos and voice notes, date block, metadata, text; star, share as a picture (or text), edit, duplicate, save as template, seal as time capsule, delete; previous/next.
-- **Editor**: date in the title; photos, camera (Android), video, voice note, place (current position, recent places or place search), weather, activity, mood and tags in the bottom toolbar; template link on an empty entry; Markdown formatting with an insert menu (checklist, numbered list, table, divider, code block). Built-in templates include morning pages and an evening review.
+- **Coach**: built-in prompt programs and templates, plus your own templates. A program shows its length, interval and difficulty; once enrolled, each day's or week's question appears in the stories (and as a notification on Android) and the answer is saved as an entry.
+- **Entry**: photos, videos and voice notes, date block, metadata, text; star, share as a picture, a ZIP with the original media, plain text or an HTML page, edit, duplicate, save as template, seal as time capsule, delete; previous/next.
+- **Editor**: date in the title; photos (offering the photo's time and place for the entry), camera (Android), video, voice note, place, weather, activity, mood and tags in the bottom toolbar; template link on an empty entry; Markdown formatting with an insert menu (checklist, numbered list, table, divider, code block). Built-in templates include morning pages and an evening review.
+- **Place**: the current position at once, rename or remove; a picker with a custom name, saved (starred) places, place search, nearby places and recent places.
 - **Search**: text plus inline tag, starred, activity and mood filters.
 - **Statistics**: streaks, mood over time, "What makes me feel…" (the activities and tags most often seen with a mood) and Year in Pixels.
 - **Recently deleted**: deleted entries wait 30 days (configurable) before they are erased; restore or erase them early.
 - **Export**: JSON (every entry with place, weather, activity, tags and attachment names; the JSON import reads it back) and Markdown, besides the full backup.
-- **Settings**: general (theme, wallpaper, entry font, size and line spacing, units, 12/24-hour time, add place / weather / activity automatically), data and storage (backup, export, Recently deleted), stories (morning and evening prompts, throwbacks), notifications (Android, with reminder weekdays), security, help and about.
-- **Android home screen widget**: today's date, whether today has an entry, the latest entry's first line, the streak and a Write button.
+- **Settings**: general (theme, wallpaper, entry font, size and line spacing, units, 12/24-hour time, add place / weather / activity automatically), data and storage (backup, export, Recently deleted), stories (morning and evening prompts, throwbacks), notifications (Android: reminders with weekdays, on this day, a nudge after a few quiet days, a lasting quick-write notification), security, help (FAQ, privacy) and about.
+- **Android home screen widgets**: today's status (date, whether today has an entry, the latest entry's first line, the streak and a Write button), and a photo from the diary, a different one each day, that opens its entry.
 
 Entries, photos and coordinates stay on the device. Network use, all optional and configured in [assets/config/app_config.json](assets/config/app_config.json):
 
