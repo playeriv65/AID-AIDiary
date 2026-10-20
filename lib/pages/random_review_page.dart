@@ -97,37 +97,32 @@ class _RandomReviewPageState extends State<RandomReviewPage> {
               body: EmptyState(
                   icon: Icons.shuffle_rounded, title: l10n.randomEmpty))
           : EntryViewPage(key: ValueKey('random-$id'), entryId: id),
+      floatingActionButton: FloatingActionButton.extended(
+        key: const ValueKey('random-next'),
+        heroTag: 'random-next',
+        onPressed: _shuffle,
+        icon: const Icon(Icons.shuffle_rounded),
+        label: Text(l10n.randomNext),
+      ),
       bottomNavigationBar: SafeArea(
-        child: Padding(
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
           padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
           child: Row(children: [
-            Expanded(
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(children: [
-                  for (final (filter, label) in [
-                    (RandomFilter.all, l10n.randomAll),
-                    (RandomFilter.photos, l10n.randomWithPhotos),
-                    (RandomFilter.goodDays, l10n.randomGoodDays),
-                  ])
-                    Padding(
-                      padding: const EdgeInsets.only(right: 6),
-                      child: ChoiceChip(
-                        key: ValueKey('random-filter-${filter.name}'),
-                        label: Text(label),
-                        selected: _filter == filter,
-                        onSelected: (_) => _setFilter(filter),
-                      ),
-                    ),
-                ]),
+            for (final (filter, label) in [
+              (RandomFilter.all, l10n.randomAll),
+              (RandomFilter.photos, l10n.randomWithPhotos),
+              (RandomFilter.goodDays, l10n.randomGoodDays),
+            ])
+              Padding(
+                padding: const EdgeInsets.only(right: 6),
+                child: ChoiceChip(
+                  key: ValueKey('random-filter-${filter.name}'),
+                  label: Text(label),
+                  selected: _filter == filter,
+                  onSelected: (_) => _setFilter(filter),
+                ),
               ),
-            ),
-            FilledButton.icon(
-              key: const ValueKey('random-next'),
-              onPressed: _shuffle,
-              icon: const Icon(Icons.shuffle_rounded),
-              label: Text(l10n.randomNext),
-            ),
           ]),
         ),
       ),

@@ -297,123 +297,126 @@ class _Stories extends StatelessWidget {
         ((MediaQuery.sizeOf(context).width - 32 - 8) / 2).clamp(120.0, 200.0);
     return SizedBox(
       height: 128,
-      child: ListView(scrollDirection: Axis.horizontal, children: [
-        _StoryCard(
-          key: const ValueKey('story-today'),
-          width: cardWidth,
-          icon: Icons.bookmark_rounded,
-          title: l10n.storyToday,
-          subtitle: TimeManager.formatDate(now, context),
-          background: cs.tertiaryContainer,
-          foreground: cs.onTertiaryContainer,
-          onTap: () => TodayStoryPage.open(context),
-        ),
-        for (final capsule in EntriesProvider.instance.entries.where((e) =>
-            e.openAt != null &&
-            !e.isSealed &&
-            now.difference(e.openAt!) < const Duration(days: 7))) ...[
-          const SizedBox(width: 8),
-          _StoryCard(
-            key: ValueKey('story-capsule-${capsule.id}'),
-            width: cardWidth,
-            icon: Icons.lock_open_rounded,
-            title: l10n.capsuleOpened,
-            subtitle: l10n.capsuleWrittenOn(
-                TimeManager.formatDate(capsule.timeCreate, context)),
-            background: cs.secondaryContainer,
-            foreground: cs.onSecondaryContainer,
-            onTap: () => EntryNavigation.view(context, capsule),
-          ),
-        ],
-        const SizedBox(width: 8),
-        _StoryCard(
-          key: const ValueKey('story-throwback'),
-          width: cardWidth,
-          icon: Icons.history_rounded,
-          title: l10n.storyThrowback,
-          subtitle: flashback?.title ?? l10n.storyNoThrowback,
-          background: cs.surfaceContainerHighest,
-          foreground: cs.onSurfaceVariant,
-          onTap: flashback == null
-              ? null
-              : () => EntryNavigation.flashback(context, flashback),
-        ),
-        if (_routine(context) case (final template, final title)) ...[
-          const SizedBox(width: 8),
-          _StoryCard(
-            key: const ValueKey('story-routine'),
-            width: cardWidth,
-            icon: now.hour < 12
-                ? Icons.wb_twilight_rounded
-                : Icons.nights_stay_rounded,
-            title: title,
-            subtitle: template.description,
-            background: cs.secondaryContainer,
-            foreground: cs.onSecondaryContainer,
-            onTap: () => EntryNavigation.edit(context, null,
-                template: template.toTemplate()),
-          ),
-        ],
-        const SizedBox(width: 8),
-        _StoryCard(
-          key: const ValueKey('story-check-in'),
-          width: cardWidth,
-          icon: Icons.add_reaction_outlined,
-          title: l10n.checkInTitle,
-          subtitle: l10n.checkInSubtitle,
-          background: cs.secondaryContainer,
-          foreground: cs.onSecondaryContainer,
-          onTap: () => showQuickCheckIn(context),
-        ),
-        for (final (key, icon, title, subtitle, onTap) in [
-          (
-            'story-random',
-            Icons.shuffle_rounded,
-            l10n.randomTitle,
-            l10n.randomSubtitle,
-            () => RandomReviewPage.open(context),
-          ),
-          (
-            'story-week',
-            Icons.date_range_rounded,
-            l10n.reviewWeekTitle,
-            l10n.reviewWeekSubtitle,
-            () => ReviewStoryPage.open(context, ReviewSpan.week),
-          ),
-          (
-            'story-year',
-            Icons.calendar_month_rounded,
-            l10n.reviewYearTitle,
-            '${now.year}',
-            () => ReviewStoryPage.open(context, ReviewSpan.year),
-          ),
-        ]) ...[
-          const SizedBox(width: 8),
-          _StoryCard(
-            key: ValueKey(key),
-            width: cardWidth,
-            icon: icon,
-            title: title,
-            subtitle: subtitle,
-            background: cs.primaryContainer,
-            foreground: cs.onPrimaryContainer,
-            onTap: onTap,
-          ),
-        ],
-        for (final extra in flashbacks.skip(1)) ...[
-          const SizedBox(width: 8),
-          _StoryCard(
-            width: cardWidth,
-            icon: Icons.auto_awesome_rounded,
-            title: extra.title,
-            subtitle:
-                TimeManager.formatDate(extra.firstEntry.timeCreate, context),
-            background: cs.secondaryContainer,
-            foreground: cs.onSecondaryContainer,
-            onTap: () => EntryNavigation.flashback(context, extra),
-          ),
-        ],
-      ]),
+      child: ListView(
+          key: const ValueKey('journal-stories'),
+          scrollDirection: Axis.horizontal,
+          children: [
+            _StoryCard(
+              key: const ValueKey('story-today'),
+              width: cardWidth,
+              icon: Icons.bookmark_rounded,
+              title: l10n.storyToday,
+              subtitle: TimeManager.formatDate(now, context),
+              background: cs.tertiaryContainer,
+              foreground: cs.onTertiaryContainer,
+              onTap: () => TodayStoryPage.open(context),
+            ),
+            for (final capsule in EntriesProvider.instance.entries.where((e) =>
+                e.openAt != null &&
+                !e.isSealed &&
+                now.difference(e.openAt!) < const Duration(days: 7))) ...[
+              const SizedBox(width: 8),
+              _StoryCard(
+                key: ValueKey('story-capsule-${capsule.id}'),
+                width: cardWidth,
+                icon: Icons.lock_open_rounded,
+                title: l10n.capsuleOpened,
+                subtitle: l10n.capsuleWrittenOn(
+                    TimeManager.formatDate(capsule.timeCreate, context)),
+                background: cs.secondaryContainer,
+                foreground: cs.onSecondaryContainer,
+                onTap: () => EntryNavigation.view(context, capsule),
+              ),
+            ],
+            const SizedBox(width: 8),
+            _StoryCard(
+              key: const ValueKey('story-throwback'),
+              width: cardWidth,
+              icon: Icons.history_rounded,
+              title: l10n.storyThrowback,
+              subtitle: flashback?.title ?? l10n.storyNoThrowback,
+              background: cs.surfaceContainerHighest,
+              foreground: cs.onSurfaceVariant,
+              onTap: flashback == null
+                  ? null
+                  : () => EntryNavigation.flashback(context, flashback),
+            ),
+            if (_routine(context) case (final template, final title)) ...[
+              const SizedBox(width: 8),
+              _StoryCard(
+                key: const ValueKey('story-routine'),
+                width: cardWidth,
+                icon: now.hour < 12
+                    ? Icons.wb_twilight_rounded
+                    : Icons.nights_stay_rounded,
+                title: title,
+                subtitle: template.description,
+                background: cs.secondaryContainer,
+                foreground: cs.onSecondaryContainer,
+                onTap: () => EntryNavigation.edit(context, null,
+                    template: template.toTemplate()),
+              ),
+            ],
+            const SizedBox(width: 8),
+            _StoryCard(
+              key: const ValueKey('story-check-in'),
+              width: cardWidth,
+              icon: Icons.add_reaction_outlined,
+              title: l10n.checkInTitle,
+              subtitle: l10n.checkInSubtitle,
+              background: cs.secondaryContainer,
+              foreground: cs.onSecondaryContainer,
+              onTap: () => showQuickCheckIn(context),
+            ),
+            for (final (key, icon, title, subtitle, onTap) in [
+              (
+                'story-random',
+                Icons.shuffle_rounded,
+                l10n.randomTitle,
+                l10n.randomSubtitle,
+                () => RandomReviewPage.open(context),
+              ),
+              (
+                'story-week',
+                Icons.date_range_rounded,
+                l10n.reviewWeekTitle,
+                l10n.reviewWeekSubtitle,
+                () => ReviewStoryPage.open(context, ReviewSpan.week),
+              ),
+              (
+                'story-year',
+                Icons.calendar_month_rounded,
+                l10n.reviewYearTitle,
+                '${now.year}',
+                () => ReviewStoryPage.open(context, ReviewSpan.year),
+              ),
+            ]) ...[
+              const SizedBox(width: 8),
+              _StoryCard(
+                key: ValueKey(key),
+                width: cardWidth,
+                icon: icon,
+                title: title,
+                subtitle: subtitle,
+                background: cs.primaryContainer,
+                foreground: cs.onPrimaryContainer,
+                onTap: onTap,
+              ),
+            ],
+            for (final extra in flashbacks.skip(1)) ...[
+              const SizedBox(width: 8),
+              _StoryCard(
+                width: cardWidth,
+                icon: Icons.auto_awesome_rounded,
+                title: extra.title,
+                subtitle: TimeManager.formatDate(
+                    extra.firstEntry.timeCreate, context),
+                background: cs.secondaryContainer,
+                foreground: cs.onSecondaryContainer,
+                onTap: () => EntryNavigation.flashback(context, extra),
+              ),
+            ],
+          ]),
     );
   }
 }

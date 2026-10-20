@@ -6,6 +6,9 @@
 - Develop natively on Windows: Flutter SDK `D:/software/flutter`, `PUB_CACHE=D:/software/pub-cache`, scripts via `scripts/dev.ps1`. Targets are Windows and Android only.
 - UI reference is the Journey app (layout and features). Never copy its code, assets, illustrations or text; write prompts and copy ourselves.
 - Data stays on the device. The only network use is OpenStreetMap map tiles, Nominatim (place names and place search) and Open-Meteo weather; endpoints and settings live in `assets/config/app_config.json`, not in code. No AI, mem0 or cloud sync for now.
+- `EntryStore.delete` moves an entry to Recently deleted; only `erase` removes it. Anything new that lists entries must skip sealed time capsules (`Entry.isSealed`) unless it shows them locked.
+- In widget tests, change settings with `DiaryAppHarness.setSetting` (a real-time config write can lock the temp folder) and wait on SQLite work started by a widget with `DiaryAppHarness.pumpUntil`.
+- Feature ideas not built yet live in `TODO.md`.
 - Videos and voice notes are attachments in the `entry_images` table and image folder, told apart by file extension (`MediaKind`), so backup and sync cover them unchanged.
 - Build the APK with `./scripts/dev.ps1 apk` (flavors need `--flavor dev`). Test the home screen widget on the headless emulator; `am force-stop` cancels the widget's taps until it next updates, so use `am kill` for cold-start checks.
 - Do not import data or keys from the old project, and do not delete the parent folder's `.private-legacy`.

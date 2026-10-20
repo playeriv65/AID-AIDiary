@@ -94,7 +94,17 @@ class _EntrySharePageState extends State<EntrySharePage> {
     return Scaffold(
       backgroundColor: cs.surfaceContainer,
       appBar: AppBar(
-          title: Text(l10n.entryShare), backgroundColor: cs.surfaceContainer),
+        title: Text(l10n.entryShare),
+        backgroundColor: cs.surfaceContainer,
+        actions: [
+          TextButton.icon(
+            key: const ValueKey('share-text'),
+            onPressed: _busy ? null : _shareText,
+            icon: const Icon(Icons.notes_rounded),
+            label: Text(l10n.shareAsText),
+          ),
+        ],
+      ),
       body: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
@@ -115,12 +125,6 @@ class _EntrySharePageState extends State<EntrySharePage> {
             spacing: 8,
             runSpacing: 8,
             children: [
-              TextButton.icon(
-                key: const ValueKey('share-text'),
-                onPressed: _busy ? null : _shareText,
-                icon: const Icon(Icons.notes_rounded),
-                label: Text(l10n.shareAsText),
-              ),
               OutlinedButton.icon(
                 key: const ValueKey('share-save'),
                 onPressed: _busy ? null : _saveImage,

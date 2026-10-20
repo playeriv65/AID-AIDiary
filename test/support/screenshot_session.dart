@@ -125,11 +125,15 @@ ScreenshotSession screenshotSession() {
       );
 
   /// Lets real image decoding finish, then writes the frame to [name].
-  Future<void> capture(WidgetTester tester, String name) async {
+  /// Screens that never settle, such as a running story, pass [settle].
+  Future<void> capture(WidgetTester tester, String name,
+      {bool settle = true}) async {
     for (var i = 0; i < 6; i++) {
       await tester.runAsync(
           () => Future<void>.delayed(const Duration(milliseconds: 400)));
-      await tester.pumpAndSettle();
+      settle
+          ? await tester.pumpAndSettle()
+          : await tester.pump(const Duration(milliseconds: 100));
     }
     await tester.runAsync(() async {
       final render =
@@ -158,7 +162,7 @@ class ScreenshotSession {
       required this.tapKey});
   final Future<void> Function(WidgetTester) seed;
   final Widget Function() app;
-  final Future<void> Function(WidgetTester, String) capture;
+  final Future<void> Function(WidgetTester, String, {bool settle}) capture;
   final Future<void> Function(WidgetTester, String) tapKey;
 
   /// Seeds sample entries, sizes the view and shows the app.

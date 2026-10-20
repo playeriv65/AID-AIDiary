@@ -26,7 +26,35 @@ void main() {
     await session.tapKey(
         tester, 'journal-entry-${await session.starredEntryId(tester)}');
     await session.capture(tester, 'phone-entry');
+    await session.tapKey(tester, 'entry-share');
+    await session.capture(tester, 'phone-share');
+    await tester.tap(find.byType(CloseButton).hitTestable().first);
+    await tester.pumpAndSettle();
     await back(tester);
+    // The stories row builds lazily, so scroll it to the card first.
+    Future<void> openStory(String key) async {
+      await tester.scrollUntilVisible(find.byKey(ValueKey(key)), 120,
+          scrollable: find
+              .descendant(
+                  of: find.byKey(const ValueKey('journal-stories')),
+                  matching: find.byType(Scrollable))
+              .first);
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(ValueKey(key)));
+    }
+
+    await openStory('story-random');
+    await tester.pumpAndSettle();
+    await session.capture(tester, 'phone-random');
+    await back(tester);
+    await openStory('story-week');
+    await session.capture(tester, 'phone-week-review', settle: false);
+    await tester.tap(find.byKey(const ValueKey('story-close')));
+    await tester.pumpAndSettle();
+    // Revealing the cards scrolled the journal; go back to its top.
+    await tester.drag(
+        find.byKey(const ValueKey('journal-stories')), const Offset(0, 800));
+    await tester.pumpAndSettle();
     await session.tapKey(tester, 'journal-search');
     await session.capture(tester, 'phone-search');
     await back(tester);

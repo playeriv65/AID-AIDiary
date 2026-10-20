@@ -13,18 +13,25 @@ The layout follows the Journey diary app: a bottom bar on phones, a navigation r
 | ![Journal](artifacts/ui-tablet-journal.png) | ![Journal](artifacts/ui-phone-journal.png) ![Entry](artifacts/ui-phone-entry.png) |
 | ![Calendar](artifacts/ui-tablet-calendar.png) | ![Calendar](artifacts/ui-phone-calendar.png) ![Media](artifacts/ui-phone-media.png) |
 | ![Media](artifacts/ui-tablet-media.png) | ![Coach](artifacts/ui-phone-coach.png) ![Search](artifacts/ui-phone-search.png) |
-| ![Coach](artifacts/ui-tablet-coach.png) | ![Editor](artifacts/ui-phone-editor.png) |
+| ![Coach](artifacts/ui-tablet-coach.png) | ![Editor](artifacts/ui-phone-editor.png) ![Share](artifacts/ui-phone-share.png) |
+| | ![Random walk](artifacts/ui-phone-random.png) ![Week review](artifacts/ui-phone-week-review.png) |
 
-- **Journal**: stories (today, throwbacks), then entries grouped by day with time, title, preview, mood, place, weather, activity, tags and a thumbnail. The Today story steps through statistics, a 30-day mood chart and a throwback.
+- **Journal**: stories, then entries grouped by day with time, title, preview, mood, place, weather, activity, tags and a thumbnail; sort by entry date (either way) or by last update. Stories: Today (statistics, 30-day mood chart, throwback), throwbacks, opened time capsules, a morning or evening prompt, quick check-in, random walk, this week and this year in review.
+- **Random walk**: one random past entry at a time, no repeats until all were shown; all entries, only those with photos, or only good days.
+- **Reviews**: the week or the year as story slides: counts, mood (a 7-day row, or the year in pixels), most frequent tags, activities and places, photos, entries per month and a highlight.
+- **Quick check-in**: a mood, optionally an activity and a line of text, saved as an entry in two taps.
+- **Time capsules**: seal an entry until a date; until then it shows locked and stays out of search, throwbacks, random walk, media and the map. It can be opened early.
 - **Calendar**: scrolling months; wide windows list the selected day beside them.
 - **Media**: every attached photo, video and voice note.
 - **Atlas**: entries with a location on an OpenStreetMap map; nearby markers merge into numbered clusters that zoom in when tapped.
 - **Coach**: built-in prompt programs and templates, plus your own templates.
-- **Entry**: photos, videos and voice notes, date block, metadata, text; star, share, edit, duplicate, save as template, delete; previous/next.
-- **Editor**: date in the title; photos, camera (Android), video, voice note, place (current position or place search), weather, activity, mood and tags in the bottom toolbar; template link on an empty entry; Markdown formatting.
+- **Entry**: photos, videos and voice notes, date block, metadata, text; star, share as a picture (or text), edit, duplicate, save as template, seal as time capsule, delete; previous/next.
+- **Editor**: date in the title; photos, camera (Android), video, voice note, place (current position, recent places or place search), weather, activity, mood and tags in the bottom toolbar; template link on an empty entry; Markdown formatting with an insert menu (checklist, numbered list, table, divider, code block). Built-in templates include morning pages and an evening review.
 - **Search**: text plus inline tag, starred, activity and mood filters.
-- **Statistics**: streaks, mood over time, and "What makes me feel…", which ranks the activities and tags most often seen with a mood.
-- **Settings**: general (theme, wallpaper, entry font, size and line spacing, units, add place / weather / activity automatically), data and storage, stories, notifications (Android), security, help and about.
+- **Statistics**: streaks, mood over time, "What makes me feel…" (the activities and tags most often seen with a mood) and Year in Pixels.
+- **Recently deleted**: deleted entries wait 30 days (configurable) before they are erased; restore or erase them early.
+- **Export**: JSON (every entry with place, weather, activity, tags and attachment names; the JSON import reads it back) and Markdown, besides the full backup.
+- **Settings**: general (theme, wallpaper, entry font, size and line spacing, units, 12/24-hour time, add place / weather / activity automatically), data and storage (backup, export, Recently deleted), stories (morning and evening prompts, throwbacks), notifications (Android, with reminder weekdays), security, help and about.
 - **Android home screen widget**: today's date, whether today has an entry, the latest entry's first line, the streak and a Write button.
 
 Entries, photos and coordinates stay on the device. Network use, all optional and configured in [assets/config/app_config.json](assets/config/app_config.json):

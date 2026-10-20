@@ -68,6 +68,7 @@ class EntryViewPage extends StatelessWidget {
         actions: [
           if (!sealed) ...[
             IconButton(
+              key: const ValueKey('entry-share'),
               tooltip: l10n.entryShare,
               icon: const Icon(Icons.share_rounded),
               onPressed: () => _share(context, entry, images),
