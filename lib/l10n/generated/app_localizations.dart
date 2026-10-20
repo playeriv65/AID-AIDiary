@@ -3641,6 +3641,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Use them'**
   String get photoMetaApply;
+
+  /// No description provided for @quickWriteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick write'**
+  String get quickWriteTitle;
+
+  /// No description provided for @quickWriteText.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to start a new entry.'**
+  String get quickWriteText;
+
+  /// No description provided for @settingsQuickWriteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick write in notifications'**
+  String get settingsQuickWriteTitle;
+
+  /// No description provided for @settingsQuickWriteDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep a notification that opens a new entry.'**
+  String get settingsQuickWriteDescription;
+
+  /// No description provided for @settingsNudgesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Nudge me after a quiet stretch'**
+  String get settingsNudgesTitle;
+
+  /// No description provided for @settingsNudgesDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'A gentle reminder when you haven\'t written for {days} days.'**
+  String settingsNudgesDescription(int days);
+
+  /// No description provided for @nudgeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'It\'s been a while'**
+  String get nudgeTitle;
+
+  /// No description provided for @nudgeMonday.
+  ///
+  /// In en, this message translates to:
+  /// **'A new week: what are you looking forward to?'**
+  String get nudgeMonday;
+
+  /// No description provided for @nudgeTuesday.
+  ///
+  /// In en, this message translates to:
+  /// **'Two lines are enough. How are you today?'**
+  String get nudgeTuesday;
+
+  /// No description provided for @nudgeWednesday.
+  ///
+  /// In en, this message translates to:
+  /// **'Halfway through the week. What stood out so far?'**
+  String get nudgeWednesday;
+
+  /// No description provided for @nudgeThursday.
+  ///
+  /// In en, this message translates to:
+  /// **'Anything small worth keeping from today?'**
+  String get nudgeThursday;
+
+  /// No description provided for @nudgeFriday.
+  ///
+  /// In en, this message translates to:
+  /// **'The week is wrapping up. Note one good moment.'**
+  String get nudgeFriday;
+
+  /// No description provided for @nudgeSaturday.
+  ///
+  /// In en, this message translates to:
+  /// **'A slow Saturday is a good day to write.'**
+  String get nudgeSaturday;
+
+  /// No description provided for @nudgeSunday.
+  ///
+  /// In en, this message translates to:
+  /// **'Look back on the week before it ends.'**
+  String get nudgeSunday;
+
+  /// No description provided for @photoWidgetEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos you add to entries show up here.'**
+  String get photoWidgetEmpty;
 }
 
 class _AppLocalizationsDelegate

@@ -3,6 +3,7 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'package:app_settings/app_settings.dart';
+import 'package:daily_you/config/app_config.dart';
 import 'package:daily_you/config_provider.dart';
 import 'package:daily_you/notification_manager.dart';
 import 'package:daily_you/time_manager.dart';
@@ -224,6 +225,40 @@ class _NotificationSettingsState extends State<NotificationSettings> {
             child: Divider(),
           ),
           ...NotificationSettings.buildOnThisDaySettings(context),
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+            child: Divider(),
+          ),
+          SettingsToggle(
+              title: AppLocalizations.of(context)!.settingsNudgesTitle,
+              hint: AppLocalizations.of(context)!
+                  .settingsNudgesDescription(AppConfig.instance.nudgeAfterDays),
+              setting: Settings.inactivityNudges,
+              onChanged: (value) async {
+                final notifications = NotificationManager.instance;
+                if (await notifications.hasNotificationPermission()) {
+                  value
+                      ? await notifications.startNudges()
+                      : await notifications.stopNudges();
+                  await configProvider.set(Settings.inactivityNudges, value);
+                }
+              }),
+          SettingsToggle(
+              title: AppLocalizations.of(context)!.settingsQuickWriteTitle,
+              hint: AppLocalizations.of(context)!.settingsQuickWriteDescription,
+              setting: Settings.quickWriteNotification,
+              onChanged: (value) async {
+                final notifications = NotificationManager.instance;
+                final l10n = AppLocalizations.of(context)!;
+                if (await notifications.hasNotificationPermission()) {
+                  value
+                      ? await notifications.showQuickWrite(
+                          l10n.quickWriteTitle, l10n.quickWriteText)
+                      : await notifications.hideQuickWrite();
+                  await configProvider.set(
+                      Settings.quickWriteNotification, value);
+                }
+              }),
           if (configProvider.get(Settings.dailyReminders) ||
               configProvider.get(Settings.onThisDayNotifications))
             Padding(

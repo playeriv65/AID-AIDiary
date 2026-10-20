@@ -11,6 +11,7 @@ import 'package:daily_you/database/image_storage.dart';
 import 'package:daily_you/device_info_service.dart';
 import 'package:daily_you/launch_intent.dart';
 import 'package:daily_you/main.dart';
+import 'package:daily_you/notification_manager.dart';
 import 'package:daily_you/pages/onboarding_page.dart';
 import 'package:daily_you/services/coach_service.dart';
 import 'package:daily_you/services/home_widget_service.dart';
@@ -64,8 +65,11 @@ class _LaunchPageState extends State<LaunchPage> {
 
   Future _updateAppShortcuts() async {
     if (!Platform.isAndroid) return;
-    if (HomeWidgetService.isWrite(await HomeWidgetService.launchUri())) {
+    final widgetUri = await HomeWidgetService.launchUri();
+    if (HomeWidgetService.isWrite(widgetUri)) {
       DeviceInfoService().launchIntent = LaunchIntent.logToday();
+    } else if (HomeWidgetService.entryOf(widgetUri) case final id?) {
+      DeviceInfoService().launchIntent = LaunchIntent.openEntry(id);
     }
     final QuickActions quickActions = const QuickActions();
     await quickActions.initialize((shortcutType) {
@@ -122,7 +126,25 @@ class _LaunchPageState extends State<LaunchPage> {
     await prefs.setString('tranferStatusTemplate',
         AppLocalizations.of(context)!.tranferStatus('{percent}'));
     if (!mounted) return;
-    await CoachService.storeNotificationText(AppLocalizations.of(context)!);
+    final l10n = AppLocalizations.of(context)!;
+    await CoachService.storeNotificationText(l10n);
+    await prefs.setString('nudgeTitle', l10n.nudgeTitle);
+    // Monday first, as DateTime.weekday counts.
+    await prefs.setStringList('nudgeMessages', [
+      l10n.nudgeMonday,
+      l10n.nudgeTuesday,
+      l10n.nudgeWednesday,
+      l10n.nudgeThursday,
+      l10n.nudgeFriday,
+      l10n.nudgeSaturday,
+      l10n.nudgeSunday,
+    ]);
+    // A lasting notification does not survive a restart; put it back.
+    if (Platform.isAndroid &&
+        ConfigProvider.instance.get(Settings.quickWriteNotification)) {
+      await NotificationManager.instance
+          .showQuickWrite(l10n.quickWriteTitle, l10n.quickWriteText);
+    }
   }
 
   Future _checkDatabaseConnection() async {

@@ -50,6 +50,7 @@ class _JournalPageState extends State<JournalPage>
   int? _selectedId;
   StreamSubscription<SharePayload>? _shareSubscription;
   StreamSubscription<Uri?>? _widgetTapSubscription;
+  StreamSubscription<void>? _newEntryTapSubscription;
 
   @override
   bool get wantKeepAlive => true;
@@ -61,12 +62,21 @@ class _JournalPageState extends State<JournalPage>
     _checkForNotificationLaunch();
     if (Platform.isAndroid) {
       _shareSubscription = ShareReceiver.instance.shares.listen(_handleShare);
+      _newEntryTapSubscription =
+          NotificationManager.instance.newEntryTaps.stream.listen((_) {
+        if (!mounted) return;
+        Navigator.of(context).popUntil((route) => route.isFirst);
+        EntryNavigation.edit(context, null);
+      });
     }
     if (HomeWidgetService.supported) {
       EntriesProvider.instance.addListener(_pushHomeWidget);
+      EntryImagesProvider.instance.addListener(_pushHomeWidget);
       WidgetsBinding.instance.addPostFrameCallback((_) => _pushHomeWidget());
       _widgetTapSubscription = HomeWidgetService.taps.listen((uri) {
-        if (HomeWidgetService.isWrite(uri) && mounted) _writeToday();
+        if (!mounted) return;
+        if (HomeWidgetService.isWrite(uri)) _writeToday();
+        if (HomeWidgetService.entryOf(uri) case final id?) _showEntry(id);
       });
     }
   }
@@ -75,14 +85,34 @@ class _JournalPageState extends State<JournalPage>
   void dispose() {
     _shareSubscription?.cancel();
     _widgetTapSubscription?.cancel();
+    _newEntryTapSubscription?.cancel();
     EntriesProvider.instance.removeListener(_pushHomeWidget);
+    EntryImagesProvider.instance.removeListener(_pushHomeWidget);
     super.dispose();
   }
 
   void _pushHomeWidget() {
     if (!mounted) return;
-    HomeWidgetService.push(HomeWidgetSnapshot.from(
-        EntriesProvider.instance.entries, AppLocalizations.of(context)!));
+    final l10n = AppLocalizations.of(context)!;
+    final entries = EntriesProvider.instance.entries;
+    HomeWidgetService.push(HomeWidgetSnapshot.from(entries, l10n));
+    final photo = photoForDay(
+        entries, EntryImagesProvider.instance.getForEntry, DateTime.now());
+    HomeWidgetService.pushPhoto(
+        photo,
+        photo == null
+            ? ''
+            : TimeManager.formatDateWithWeekday(
+                photo.entry.timeCreate, context),
+        l10n.photoWidgetEmpty);
+  }
+
+  Future<void> _showEntry(int id) async {
+    final entry =
+        EntriesProvider.instance.entries.where((e) => e.id == id).firstOrNull;
+    if (entry == null) return;
+    Navigator.of(context).popUntil((route) => route.isFirst);
+    await EntryNavigation.view(context, entry);
   }
 
   Future<void> _writeToday() async {
@@ -95,6 +125,7 @@ class _JournalPageState extends State<JournalPage>
     final intent = DeviceInfoService().launchIntent;
     if (intent == null) return;
     DeviceInfoService().launchIntent = null;
+    if (intent is OpenEntryIntent) return _showEntry(intent.id);
     final today = EntriesProvider.instance.getEntryForToday();
     await EntryNavigation.edit(context, today,
         openCamera: intent is TakePhotoIntent);
@@ -123,6 +154,9 @@ class _JournalPageState extends State<JournalPage>
       final referenceDate = DateTime.tryParse(payload) ?? DateTime.now();
       await NotificationManager.instance.dismissOnThisDayNotification();
       if (mounted) await EntryNavigation.onThisDay(context, referenceDate);
+    } else if (notifId == quickWriteNotificationId ||
+        notifId == nudgeNotificationId) {
+      await EntryNavigation.edit(context, null);
     } else if (notifId == 0) {
       final targetDate = DateTime.tryParse(payload) ?? DateTime.now();
       await EntryNavigation.edit(

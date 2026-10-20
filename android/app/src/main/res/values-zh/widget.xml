@@ -4,4 +4,6 @@
     <string name="widget_pending_default">今天过得怎么样？</string>
     <string name="widget_done_default">今天的日记已写好</string>
     <string name="widget_write_default">写日记</string>
+    <string name="photo_widget_description">日记里的一张照片</string>
+    <string name="photo_widget_empty_default">日记里的照片会出现在这里。</string>
 </resources>

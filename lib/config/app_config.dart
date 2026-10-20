@@ -98,6 +98,10 @@ class AppConfig {
   /// Hour of the day a coach program's new prompt is announced.
   int get coachPromptHour => _section('coach')['promptHour'] as int;
 
+  /// Days without an entry before a nudge, and the hour it may come at.
+  int get nudgeAfterDays => _section('nudges')['afterDays'] as int;
+  int get nudgeHour => _section('nudges')['hour'] as int;
+
   /// Entries in Recently deleted are erased after this long.
   Duration get deletedRetention =>
       Duration(days: _section('recentlyDeleted')['retentionDays'] as int);

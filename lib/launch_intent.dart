@@ -7,6 +7,13 @@ sealed class LaunchIntent {
 
   const factory LaunchIntent.logToday() = LogTodayIntent;
   const factory LaunchIntent.takePhoto() = TakePhotoIntent;
+  const factory LaunchIntent.openEntry(int id) = OpenEntryIntent;
+}
+
+/// The photo widget was tapped: show its entry.
+class OpenEntryIntent extends LaunchIntent {
+  const OpenEntryIntent(this.id);
+  final int id;
 }
 
 class TakePhotoIntent extends LaunchIntent {

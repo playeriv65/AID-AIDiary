@@ -1220,5 +1220,41 @@
     }
   },
   "photoMetaApply": "Use them",
-  "@photoMetaApply": {}
+  "@photoMetaApply": {},
+  "quickWriteTitle": "Quick write",
+  "@quickWriteTitle": {},
+  "quickWriteText": "Tap to start a new entry.",
+  "@quickWriteText": {},
+  "settingsQuickWriteTitle": "Quick write in notifications",
+  "@settingsQuickWriteTitle": {},
+  "settingsQuickWriteDescription": "Keep a notification that opens a new entry.",
+  "@settingsQuickWriteDescription": {},
+  "settingsNudgesTitle": "Nudge me after a quiet stretch",
+  "@settingsNudgesTitle": {},
+  "settingsNudgesDescription": "A gentle reminder when you haven't written for {days} days.",
+  "@settingsNudgesDescription": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "nudgeTitle": "It's been a while",
+  "@nudgeTitle": {},
+  "nudgeMonday": "A new week: what are you looking forward to?",
+  "@nudgeMonday": {},
+  "nudgeTuesday": "Two lines are enough. How are you today?",
+  "@nudgeTuesday": {},
+  "nudgeWednesday": "Halfway through the week. What stood out so far?",
+  "@nudgeWednesday": {},
+  "nudgeThursday": "Anything small worth keeping from today?",
+  "@nudgeThursday": {},
+  "nudgeFriday": "The week is wrapping up. Note one good moment.",
+  "@nudgeFriday": {},
+  "nudgeSaturday": "A slow Saturday is a good day to write.",
+  "@nudgeSaturday": {},
+  "nudgeSunday": "Look back on the week before it ends.",
+  "@nudgeSunday": {},
+  "photoWidgetEmpty": "Photos you add to entries show up here.",
+  "@photoWidgetEmpty": {}
 }

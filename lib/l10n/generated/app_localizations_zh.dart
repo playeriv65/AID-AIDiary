@@ -1923,6 +1923,53 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get photoMetaApply => '使用';
+
+  @override
+  String get quickWriteTitle => '快速写';
+
+  @override
+  String get quickWriteText => '点一下开始写新日记。';
+
+  @override
+  String get settingsQuickWriteTitle => '通知栏快速写';
+
+  @override
+  String get settingsQuickWriteDescription => '在通知栏常驻一个入口，点一下就写新日记。';
+
+  @override
+  String get settingsNudgesTitle => '久未写日记时提醒我';
+
+  @override
+  String settingsNudgesDescription(int days) {
+    return '$days 天没写日记时，轻轻提醒一下。';
+  }
+
+  @override
+  String get nudgeTitle => '好久没写了';
+
+  @override
+  String get nudgeMonday => '新的一周开始了，有什么期待的吗？';
+
+  @override
+  String get nudgeTuesday => '写两行就够了。今天怎么样？';
+
+  @override
+  String get nudgeWednesday => '一周过半，有什么印象深刻的事？';
+
+  @override
+  String get nudgeThursday => '今天有什么小事值得留下来？';
+
+  @override
+  String get nudgeFriday => '这周快结束了，记下一个美好的瞬间吧。';
+
+  @override
+  String get nudgeSaturday => '慢悠悠的周六，正适合写点什么。';
+
+  @override
+  String get nudgeSunday => '在这周结束前回头看看吧。';
+
+  @override
+  String get photoWidgetEmpty => '日记里的照片会出现在这里。';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -3827,4 +3874,51 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get photoMetaApply => '使用';
+
+  @override
+  String get quickWriteTitle => '快速寫';
+
+  @override
+  String get quickWriteText => '點一下開始寫新日記。';
+
+  @override
+  String get settingsQuickWriteTitle => '通知列快速寫';
+
+  @override
+  String get settingsQuickWriteDescription => '在通知列常駐一個入口，點一下就寫新日記。';
+
+  @override
+  String get settingsNudgesTitle => '久未寫日記時提醒我';
+
+  @override
+  String settingsNudgesDescription(int days) {
+    return '$days 天沒寫日記時，輕輕提醒一下。';
+  }
+
+  @override
+  String get nudgeTitle => '好久沒寫了';
+
+  @override
+  String get nudgeMonday => '新的一週開始了，有什麼期待的嗎？';
+
+  @override
+  String get nudgeTuesday => '寫兩行就夠了。今天怎麼樣？';
+
+  @override
+  String get nudgeWednesday => '一週過半，有什麼印象深刻的事？';
+
+  @override
+  String get nudgeThursday => '今天有什麼小事值得留下來？';
+
+  @override
+  String get nudgeFriday => '這週快結束了，記下一個美好的瞬間吧。';
+
+  @override
+  String get nudgeSaturday => '慢悠悠的週六，正適合寫點什麼。';
+
+  @override
+  String get nudgeSunday => '在這週結束前回頭看看吧。';
+
+  @override
+  String get photoWidgetEmpty => '日記裡的照片會出現在這裡。';
 }

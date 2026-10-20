@@ -571,5 +571,20 @@
     "photoMetaDateAndPlace": "把这篇日记的时间改成 {date}、地点改成 {place}？这是照片里记录的。",
     "photoMetaDate": "把这篇日记的时间改成照片拍摄的 {date}？",
     "photoMetaPlace": "把这篇日记的地点设为照片拍摄的 {place}？",
-    "photoMetaApply": "使用"
+    "photoMetaApply": "使用",
+    "quickWriteTitle": "快速写",
+    "quickWriteText": "点一下开始写新日记。",
+    "settingsQuickWriteTitle": "通知栏快速写",
+    "settingsQuickWriteDescription": "在通知栏常驻一个入口，点一下就写新日记。",
+    "settingsNudgesTitle": "久未写日记时提醒我",
+    "settingsNudgesDescription": "{days} 天没写日记时，轻轻提醒一下。",
+    "nudgeTitle": "好久没写了",
+    "nudgeMonday": "新的一周开始了，有什么期待的吗？",
+    "nudgeTuesday": "写两行就够了。今天怎么样？",
+    "nudgeWednesday": "一周过半，有什么印象深刻的事？",
+    "nudgeThursday": "今天有什么小事值得留下来？",
+    "nudgeFriday": "这周快结束了，记下一个美好的瞬间吧。",
+    "nudgeSaturday": "慢悠悠的周六，正适合写点什么。",
+    "nudgeSunday": "在这周结束前回头看看吧。",
+    "photoWidgetEmpty": "日记里的照片会出现在这里。"
 }

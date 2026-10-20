@@ -81,6 +81,11 @@ class Settings {
   static const savedPlaces = Setting<List<dynamic>>("savedPlaces", []);
   // The welcome pages have been seen.
   static const onboardingDone = Setting<bool>("onboardingDone", false);
+  // A lasting notification that opens a new entry (Android).
+  static const quickWriteNotification =
+      Setting<bool>("quickWriteNotification", false);
+  // A nudge after some days without an entry (Android).
+  static const inactivityNudges = Setting<bool>("inactivityNudges", false);
   // "newest", "oldest" or "updated".
   static const journalSort = Setting<String>("journalSort", "newest");
   // Weekdays (1 = Monday) the daily reminder fires on.
@@ -187,6 +192,8 @@ class Settings {
     coachAnsweredStep,
     savedPlaces,
     onboardingDone,
+    quickWriteNotification,
+    inactivityNudges,
     journalSort,
     reminderWeekdays,
     entryFontFamily,

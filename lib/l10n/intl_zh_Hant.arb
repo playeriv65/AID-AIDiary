@@ -572,5 +572,20 @@
     "photoMetaDateAndPlace": "把這篇日記的時間改成 {date}、地點改成 {place}？這是照片裡記錄的。",
     "photoMetaDate": "把這篇日記的時間改成照片拍攝的 {date}？",
     "photoMetaPlace": "把這篇日記的地點設為照片拍攝的 {place}？",
-    "photoMetaApply": "使用"
+    "photoMetaApply": "使用",
+    "quickWriteTitle": "快速寫",
+    "quickWriteText": "點一下開始寫新日記。",
+    "settingsQuickWriteTitle": "通知列快速寫",
+    "settingsQuickWriteDescription": "在通知列常駐一個入口，點一下就寫新日記。",
+    "settingsNudgesTitle": "久未寫日記時提醒我",
+    "settingsNudgesDescription": "{days} 天沒寫日記時，輕輕提醒一下。",
+    "nudgeTitle": "好久沒寫了",
+    "nudgeMonday": "新的一週開始了，有什麼期待的嗎？",
+    "nudgeTuesday": "寫兩行就夠了。今天怎麼樣？",
+    "nudgeWednesday": "一週過半，有什麼印象深刻的事？",
+    "nudgeThursday": "今天有什麼小事值得留下來？",
+    "nudgeFriday": "這週快結束了，記下一個美好的瞬間吧。",
+    "nudgeSaturday": "慢悠悠的週六，正適合寫點什麼。",
+    "nudgeSunday": "在這週結束前回頭看看吧。",
+    "photoWidgetEmpty": "日記裡的照片會出現在這裡。"
 }

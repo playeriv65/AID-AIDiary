@@ -11,4 +11,6 @@
     <string name="widget_pending_default">How was your day?</string>
     <string name="widget_done_default">Today\'s entry is written</string>
     <string name="widget_write_default">Write</string>
+    <string name="photo_widget_description">A photo from your diary</string>
+    <string name="photo_widget_empty_default">Photos you add to entries show up here.</string>
 </resources>

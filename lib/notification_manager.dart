@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'dart:async';
 import 'dart:io';
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:daily_you/main.dart';
@@ -12,6 +13,8 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 const int backupNotificationId = 2;
+const int nudgeNotificationId = 4;
+const int quickWriteNotificationId = 5;
 const String backupNotificationChannelId = 'daily_you_backup';
 const String backupCancelActionId = 'cancel_auto_backup';
 const String _backupCancelRequestedPrefsKey = 'autoBackupCancelRequested';
@@ -30,6 +33,9 @@ class NotificationManager {
   static FlutterLocalNotificationsPlugin? _notifications;
 
   bool justLaunched = true;
+
+  /// Taps on notifications that open a new entry while the app runs.
+  final newEntryTaps = StreamController<void>.broadcast();
 
   FlutterLocalNotificationsPlugin get notifications {
     return _notifications!;
@@ -55,9 +61,46 @@ class NotificationManager {
         settings: const InitializationSettings(
             android: AndroidInitializationSettings('@drawable/ic_notification'),
             linux: LinuxInitializationSettings(defaultActionName: 'Log Today')),
-        onDidReceiveNotificationResponse: backupCancelBackgroundHandler,
+        onDidReceiveNotificationResponse: _onResponse,
         onDidReceiveBackgroundNotificationResponse:
             backupCancelBackgroundHandler);
+  }
+
+  /// A tap while the app runs; a cold start reads the launch details.
+  void _onResponse(NotificationResponse response) {
+    if (response.actionId == backupCancelActionId) {
+      backupCancelBackgroundHandler(response);
+    } else if (response.id == quickWriteNotificationId ||
+        response.id == nudgeNotificationId) {
+      newEntryTaps.add(null);
+    }
+  }
+
+  /// The lasting "quick write" notification; tapping it opens a new entry.
+  Future<void> showQuickWrite(String title, String text) =>
+      _notifications!.show(
+          id: quickWriteNotificationId,
+          title: title,
+          body: text,
+          notificationDetails: NotificationDetails(
+              android: AndroidNotificationDetails(
+                  'daily_you_quick_write', title,
+                  icon: '@drawable/ic_notification',
+                  importance: Importance.low,
+                  priority: Priority.low,
+                  ongoing: true,
+                  autoCancel: false,
+                  showWhen: false,
+                  playSound: false)));
+
+  Future<void> hideQuickWrite() =>
+      _notifications!.cancel(id: quickWriteNotificationId);
+
+  Future<void> startNudges() => setNudgeAlarm(firstSet: true);
+
+  Future<void> stopNudges() async {
+    await AndroidAlarmManager.cancel(nudgeAlarmId);
+    await _notifications!.cancel(id: nudgeNotificationId);
   }
 
   // SharedPreferencesAsync, not SharedPreferences.getInstance() which caches the whole map

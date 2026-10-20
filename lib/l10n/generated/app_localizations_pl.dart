@@ -1975,4 +1975,53 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get photoMetaApply => 'Use them';
+
+  @override
+  String get quickWriteTitle => 'Quick write';
+
+  @override
+  String get quickWriteText => 'Tap to start a new entry.';
+
+  @override
+  String get settingsQuickWriteTitle => 'Quick write in notifications';
+
+  @override
+  String get settingsQuickWriteDescription =>
+      'Keep a notification that opens a new entry.';
+
+  @override
+  String get settingsNudgesTitle => 'Nudge me after a quiet stretch';
+
+  @override
+  String settingsNudgesDescription(int days) {
+    return 'A gentle reminder when you haven\'t written for $days days.';
+  }
+
+  @override
+  String get nudgeTitle => 'It\'s been a while';
+
+  @override
+  String get nudgeMonday => 'A new week: what are you looking forward to?';
+
+  @override
+  String get nudgeTuesday => 'Two lines are enough. How are you today?';
+
+  @override
+  String get nudgeWednesday =>
+      'Halfway through the week. What stood out so far?';
+
+  @override
+  String get nudgeThursday => 'Anything small worth keeping from today?';
+
+  @override
+  String get nudgeFriday => 'The week is wrapping up. Note one good moment.';
+
+  @override
+  String get nudgeSaturday => 'A slow Saturday is a good day to write.';
+
+  @override
+  String get nudgeSunday => 'Look back on the week before it ends.';
+
+  @override
+  String get photoWidgetEmpty => 'Photos you add to entries show up here.';
 }

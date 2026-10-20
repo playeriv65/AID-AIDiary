@@ -196,6 +196,67 @@ void coachCallbackDispatcher() async {
   }
 }
 
+/// Alarm id of the nudge after days without an entry.
+const int nudgeAlarmId = 4;
+
+@pragma('vm:entry-point')
+void nudgeCallbackDispatcher() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  configureLogging();
+  await ConfigProvider.instance.init();
+  await AppConfig.load();
+  // Skip syncing and migration for the alarm background task
+  final ready = await AppDatabase.instance
+      .init(forceWithoutSync: true, allowMigration: false);
+  if (ready) {
+    final latest = EntriesProvider.instance.entries
+        .map((e) => e.timeCreate)
+        .fold<DateTime?>(null, (a, b) => a == null || b.isAfter(a) ? b : a);
+    final now = DateTime.now();
+    final after = AppConfig.instance.nudgeAfterDays;
+    final quietDays = latest == null
+        ? 0
+        : DateTime.utc(now.year, now.month, now.day)
+            .difference(DateTime.utc(latest.year, latest.month, latest.day))
+            .inDays;
+    // Every few quiet days rather than every day.
+    if (quietDays >= after && quietDays % after == 0) {
+      // Localized notification text is stored in SharedPreferences upon startup
+      final prefs = await SharedPreferences.getInstance();
+      final title = prefs.getString('nudgeTitle');
+      final messages = prefs.getStringList('nudgeMessages');
+      if (title != null && messages != null && messages.length == 7) {
+        final notifications = FlutterLocalNotificationsPlugin();
+        await notifications.initialize(
+            settings: const InitializationSettings(
+                android: AndroidInitializationSettings(
+                    '@drawable/ic_notification')));
+        await notifications.show(
+            id: nudgeNotificationId,
+            title: title,
+            body: messages[now.weekday - 1],
+            notificationDetails: NotificationDetails(
+                android: AndroidNotificationDetails('daily_you_nudge', title,
+                    icon: '@drawable/ic_notification')));
+      }
+    }
+    AppDatabase.instance.close();
+  }
+  await setNudgeAlarm(firstSet: false);
+}
+
+/// Arms the nudge alarm for its hour today, or tomorrow once past.
+Future<void> setNudgeAlarm({bool firstSet = false}) async {
+  final now = DateTime.now();
+  var at = DateTime(now.year, now.month, now.day, AppConfig.instance.nudgeHour);
+  if (!firstSet || !at.isAfter(now)) {
+    at = DateTime(at.year, at.month, at.day + 1, at.hour);
+  }
+  final exact = await NotificationManager.instance.canScheduleExactAlarms();
+  await AndroidAlarmManager.oneShotAt(at, nudgeAlarmId, nudgeCallbackDispatcher,
+      allowWhileIdle: true, exact: exact, rescheduleOnReboot: true);
+}
+
 /// Arms the coach prompt alarm for its hour today, or tomorrow once past.
 Future<void> setCoachAlarm({bool firstSet = false}) async {
   final now = DateTime.now();

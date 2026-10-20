@@ -52,6 +52,10 @@
   "coach": {
     "promptHour": 9
   },
+  "nudges": {
+    "afterDays": 3,
+    "hour": 19
+  },
   "recentlyDeleted": {
     "retentionDays": 30
   },
