@@ -18,8 +18,8 @@ import es.antonborri.home_widget.HomeWidgetLaunchIntent
  * Puts the lasting "quick write" notification back after a restart or an
  * app update, which clear it, without waiting for the app to be opened.
  * The app stores the localized text while the notification is on and
- * removes it when turned off; a tap opens a new entry like the widget's
- * write button. The app replaces this copy with its own once it runs.
+ * removes it when turned off; a tap opens a new entry. The app replaces
+ * this copy with its own once it runs.
  */
 class QuickWriteRestoreReceiver : BroadcastReceiver() {
   override fun onReceive(context: Context, intent: Intent) {
@@ -50,7 +50,7 @@ class QuickWriteRestoreReceiver : BroadcastReceiver() {
             .setShowWhen(false)
             .setContentIntent(
                 HomeWidgetLaunchIntent.getActivity(
-                    context, MainActivity::class.java, Uri.parse("aiddiary://write")))
+                    context, MainActivity::class.java, Uri.parse("aiddiary://new")))
             .build()
     manager.notify(NOTIFICATION_ID, notification)
   }

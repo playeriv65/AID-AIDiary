@@ -95,6 +95,7 @@ class HomeWidgetService {
   static const _provider = 'dev.aid.diary.DiaryWidgetProvider';
   static const _photoProvider = 'dev.aid.diary.PhotoWidgetProvider';
   static const _writeHost = 'write';
+  static const _newEntryHost = 'new';
   static const _entryHost = 'entry';
   static final _logger = Logger('HomeWidgetService');
 
@@ -150,6 +151,10 @@ class HomeWidgetService {
 
   /// Whether a widget tap asked to write today's entry.
   static bool isWrite(Uri? uri) => uri?.host == _writeHost;
+
+  /// Whether the quick-write notification, as put back natively after a
+  /// restart, asked for a new entry.
+  static bool isNewEntry(Uri? uri) => uri?.host == _newEntryHost;
 
   /// The entry a photo widget tap asked to show.
   static int? entryOf(Uri? uri) => uri?.host == _entryHost

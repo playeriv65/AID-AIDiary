@@ -23,7 +23,6 @@ import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class _RestoreCancelled implements Exception {}
 
@@ -196,7 +195,7 @@ class BackupRestoreUtils {
   }
 
   static Future<AutoBackupOutcome> _runAutoBackupAndNotify() async {
-    final prefs = await SharedPreferences.getInstance();
+    final prefs = await currentPrefs();
     final creatingTemplate = prefs.getString('creatingBackupStatusTemplate');
     final encryptingTemplate =
         prefs.getString('encryptingBackupStatusTemplate');

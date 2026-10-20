@@ -62,12 +62,9 @@ class _JournalPageState extends State<JournalPage>
     _checkForNotificationLaunch();
     if (Platform.isAndroid) {
       _shareSubscription = ShareReceiver.instance.shares.listen(_handleShare);
-      _newEntryTapSubscription =
-          NotificationManager.instance.newEntryTaps.stream.listen((_) {
-        if (!mounted) return;
-        Navigator.of(context).popUntil((route) => route.isFirst);
-        EntryNavigation.edit(context, null);
-      });
+      _newEntryTapSubscription = NotificationManager
+          .instance.newEntryTaps.stream
+          .listen((_) => _writeNew());
     }
     if (HomeWidgetService.supported) {
       EntriesProvider.instance.addListener(_pushHomeWidget);
@@ -76,6 +73,7 @@ class _JournalPageState extends State<JournalPage>
       _widgetTapSubscription = HomeWidgetService.taps.listen((uri) {
         if (!mounted) return;
         if (HomeWidgetService.isWrite(uri)) _writeToday();
+        if (HomeWidgetService.isNewEntry(uri)) _writeNew();
         if (HomeWidgetService.entryOf(uri) case final id?) _showEntry(id);
       });
     }
@@ -117,6 +115,12 @@ class _JournalPageState extends State<JournalPage>
     await EntryNavigation.view(context, entry);
   }
 
+  Future<void> _writeNew() async {
+    if (!mounted) return;
+    Navigator.of(context).popUntil((route) => route.isFirst);
+    await EntryNavigation.edit(context, null);
+  }
+
   Future<void> _writeToday() async {
     Navigator.of(context).popUntil((route) => route.isFirst);
     await EntryNavigation.edit(
@@ -128,6 +132,7 @@ class _JournalPageState extends State<JournalPage>
     if (intent == null) return;
     DeviceInfoService().launchIntent = null;
     if (intent is OpenEntryIntent) return _showEntry(intent.id);
+    if (intent is NewEntryIntent) return _writeNew();
     final today = EntriesProvider.instance.getEntryForToday();
     await EntryNavigation.edit(context, today,
         openCamera: intent is TakePhotoIntent);

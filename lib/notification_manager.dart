@@ -36,6 +36,15 @@ const List<String> _legacyChannelIds = [
   'daily_you_backup',
 ];
 
+/// SharedPreferences as stored now, for alarm and backup callbacks. Their
+/// isolate lives on between runs, and getInstance keeps serving the values
+/// from its first call, which misses anything the app stored since.
+Future<SharedPreferences> currentPrefs() async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.reload();
+  return prefs;
+}
+
 String channelNameKey(String channelId) => 'channelName.$channelId';
 
 /// The localized name stored for [channelId], or the id before the app has
@@ -140,7 +149,7 @@ class NotificationManager {
   static const _quickWriteTitleKey = 'quickWriteTitle';
   static const _quickWriteTextKey = 'quickWriteText';
 
-  Future<void> startNudges() => setNudgeAlarm(firstSet: true);
+  Future<void> startNudges() => setNudgeAlarm();
 
   Future<void> stopNudges() async {
     await AndroidAlarmManager.cancel(nudgeAlarmId);

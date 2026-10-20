@@ -34,10 +34,10 @@ import 'package:aid_diary/theme_mode_provider.dart';
 import 'package:aid_diary/theme_palette.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:statsfl/statsfl.dart';
 import 'package:provider/provider.dart';
+import 'package:logging/logging.dart';
 import 'package:workmanager/workmanager.dart';
 
 const String _autoBackupPeriodicWorkName = 'auto_backup_periodic';
@@ -52,12 +52,47 @@ const int _autoBackupMaxAttempts = 3;
 // Lets onTaskStopped wait for the running task's cleanup to actually finish
 Completer<void>? _autoBackupCleanupComplete;
 
+/// What every background entry point (alarms, backup work) needs before it
+/// reads settings or the diary: it starts without main().
+Future<void> _initBackground() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  configureLogging();
+  await ConfigProvider.instance.init();
+  await AppConfig.load();
+}
+
+/// The alarm callback running in this isolate, if any.
+Future<void> _alarmQueue = Future.value();
+
+/// Runs an alarm callback, then [rearm] even when it failed: the alarms
+/// rearm themselves, so one error would otherwise end them for good.
+/// Callbacks due together share this isolate and the one database
+/// connection, so they run one after another.
+Future<void> _runAlarm(
+    String name, Future<void> Function() body, Future<void> Function() rearm) {
+  Future<void> step(String what, Future<void> Function() action) async {
+    try {
+      await action();
+    } catch (error, stackTrace) {
+      Logger('Alarms').severe('$name alarm: $what failed', error, stackTrace);
+    }
+  }
+
+  Future<void> run() async {
+    await step('run', () async {
+      await _initBackground();
+      await body();
+    });
+    await step('rearm', rearm);
+  }
+
+  return _alarmQueue = _alarmQueue.then((_) => run());
+}
+
 @pragma('vm:entry-point')
 void autoBackupCallbackDispatcher() {
   Workmanager().executeTask((taskName, inputData) async {
-    WidgetsFlutterBinding.ensureInitialized();
-    configureLogging();
-    await ConfigProvider.instance.init();
+    await _initBackground();
 
     _autoBackupCleanupComplete = Completer<void>();
     try {
@@ -80,7 +115,7 @@ void autoBackupCallbackDispatcher() {
 }
 
 Future<bool> _runAutoBackupWithBoundedRetry() async {
-  final prefs = await SharedPreferences.getInstance();
+  final prefs = await currentPrefs();
   final outcome = await BackupRestoreUtils.runAutoBackupAndNotify();
 
   if (outcome != AutoBackupOutcome.failed) {
@@ -98,10 +133,10 @@ Future<bool> _runAutoBackupWithBoundedRetry() async {
 }
 
 @pragma('vm:entry-point')
-void onThisDayCallbackDispatcher() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  configureLogging();
-  await ConfigProvider.instance.init();
+void onThisDayCallbackDispatcher() => _runAlarm(
+    'On this day', _showOnThisDay, () => setOnThisDayAlarm(firstSet: false));
+
+Future<void> _showOnThisDay() async {
   // Skip syncing and migration for the alarm background task
   final ready = await AppDatabase.instance
       .init(forceWithoutSync: true, allowMigration: false);
@@ -123,7 +158,7 @@ void onThisDayCallbackDispatcher() async {
                   AndroidInitializationSettings('@drawable/ic_notification')));
 
       // Localized notification text is stored in SharedPreferences upon startup
-      var prefs = await SharedPreferences.getInstance();
+      var prefs = await currentPrefs();
       var title = prefs.getString('onThisDayNotificationTitle');
       var description = prefs.getString('onThisDayNotificationDescription');
 
@@ -145,31 +180,35 @@ void onThisDayCallbackDispatcher() async {
       }
     }
 
-    AppDatabase.instance.close();
+    await AppDatabase.instance.close();
   }
-
-  setOnThisDayAlarm(firstSet: false);
 }
 
 /// Alarm and notification id of the coach program's prompt.
 const int coachAlarmId = 3;
 
 @pragma('vm:entry-point')
-void coachCallbackDispatcher() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  configureLogging();
-  await ConfigProvider.instance.init();
-  await AppConfig.load();
+void coachCallbackDispatcher() {
+  CoachSchedule? schedule;
+  _runAlarm('Coach', () async => schedule = await _showCoachPrompt(), () async {
+    // Rearm daily until the last prompt has been announced; with no
+    // enrolment there is nothing to rearm.
+    final tomorrow = DateTime.now().add(const Duration(days: 1));
+    if (schedule?.finishedOn(tomorrow) == false) await setCoachAlarm();
+  });
+}
 
+/// Shows today's prompt when it is new; returns the running schedule.
+Future<CoachSchedule?> _showCoachPrompt() async {
   // Localized program text is stored in SharedPreferences upon startup
-  final prefs = await SharedPreferences.getInstance();
+  final prefs = await currentPrefs();
   final title = prefs.getString(CoachService.titleKey);
   final prompts = prefs.getStringList(CoachService.promptsKey);
   final days = prefs.getInt(CoachService.daysKey);
   final start =
       DateTime.tryParse(ConfigProvider.instance.get(Settings.coachStartDate));
   if (title == null || prompts == null || days == null || start == null) {
-    return;
+    return null;
   }
   final schedule =
       CoachSchedule(start: start, days: days, steps: prompts.length);
@@ -189,21 +228,17 @@ void coachCallbackDispatcher() async {
                 coachChannelId, channelName(prefs, coachChannelId),
                 icon: '@drawable/ic_notification')));
   }
-  // Rearm daily until the last prompt has been announced.
-  if (!schedule.finishedOn(now.add(const Duration(days: 1)))) {
-    await setCoachAlarm(firstSet: false);
-  }
+  return schedule;
 }
 
 /// Alarm id of the nudge after days without an entry.
 const int nudgeAlarmId = 4;
 
 @pragma('vm:entry-point')
-void nudgeCallbackDispatcher() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  configureLogging();
-  await ConfigProvider.instance.init();
-  await AppConfig.load();
+void nudgeCallbackDispatcher() =>
+    _runAlarm('Nudge', _showNudge, () => setNudgeAlarm());
+
+Future<void> _showNudge() async {
   // Skip syncing and migration for the alarm background task
   final ready = await AppDatabase.instance
       .init(forceWithoutSync: true, allowMigration: false);
@@ -221,7 +256,7 @@ void nudgeCallbackDispatcher() async {
     // Every few quiet days rather than every day.
     if (quietDays >= after && quietDays % after == 0) {
       // Localized notification text is stored in SharedPreferences upon startup
-      final prefs = await SharedPreferences.getInstance();
+      final prefs = await currentPrefs();
       final title = prefs.getString('nudgeTitle');
       final messages = prefs.getStringList('nudgeMessages');
       if (title != null && messages != null && messages.length == 7) {
@@ -240,41 +275,34 @@ void nudgeCallbackDispatcher() async {
                     icon: '@drawable/ic_notification')));
       }
     }
-    AppDatabase.instance.close();
+    await AppDatabase.instance.close();
   }
-  await setNudgeAlarm(firstSet: false);
 }
 
-/// Arms the nudge alarm for its hour today, or tomorrow once past.
-Future<void> setNudgeAlarm({bool firstSet = false}) async {
-  final now = DateTime.now();
-  var at = DateTime(now.year, now.month, now.day, AppConfig.instance.nudgeHour);
-  if (!firstSet || !at.isAfter(now)) {
-    at = DateTime(at.year, at.month, at.day + 1, at.hour);
-  }
-  final exact = await NotificationManager.instance.canScheduleExactAlarms();
-  await AndroidAlarmManager.oneShotAt(at, nudgeAlarmId, nudgeCallbackDispatcher,
-      allowWhileIdle: true, exact: exact, rescheduleOnReboot: true);
-}
+/// Arms the nudge alarm for the next time its hour comes round.
+Future<void> setNudgeAlarm() => _armDaily(
+    nudgeAlarmId, AppConfig.instance.nudgeHour, nudgeCallbackDispatcher);
 
-/// Arms the coach prompt alarm for its hour today, or tomorrow once past.
-Future<void> setCoachAlarm({bool firstSet = false}) async {
+/// Arms the coach prompt alarm for the next time its hour comes round.
+Future<void> setCoachAlarm() => _armDaily(
+    coachAlarmId, AppConfig.instance.coachPromptHour, coachCallbackDispatcher);
+
+/// Arms [callback] for [hour] today, or tomorrow once past. A run that
+/// comes late (the device was off) so still gets today's turn.
+Future<void> _armDaily(int id, int hour, void Function() callback) async {
   final now = DateTime.now();
-  var at = DateTime(
-      now.year, now.month, now.day, AppConfig.instance.coachPromptHour);
-  if (!firstSet || !at.isAfter(now)) {
-    at = DateTime(at.year, at.month, at.day + 1, at.hour);
-  }
+  var at = DateTime(now.year, now.month, now.day, hour);
+  if (!at.isAfter(now)) at = DateTime(now.year, now.month, now.day + 1, hour);
   final exact = await NotificationManager.instance.canScheduleExactAlarms();
-  await AndroidAlarmManager.oneShotAt(at, coachAlarmId, coachCallbackDispatcher,
+  await AndroidAlarmManager.oneShotAt(at, id, callback,
       allowWhileIdle: true, exact: exact, rescheduleOnReboot: true);
 }
 
 @pragma('vm:entry-point')
-void callbackDispatcher() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  configureLogging();
-  await ConfigProvider.instance.init();
+void callbackDispatcher() =>
+    _runAlarm('Reminder', _showReminder, () => setAlarm(firstSet: false));
+
+Future<void> _showReminder() async {
   // Skip syncing and migration for the alarm background task
   final ready = await AppDatabase.instance
       .init(forceWithoutSync: true, allowMigration: false);
@@ -296,7 +324,7 @@ void callbackDispatcher() async {
                   AndroidInitializationSettings('@drawable/ic_notification')));
 
       // Localized notification text is stored in SharedPreferences upon startup
-      var prefs = await SharedPreferences.getInstance();
+      var prefs = await currentPrefs();
       var title = prefs.getString('dailyReminderTitle');
       var description = prefs.getString('dailyReminderDescription');
 
@@ -321,10 +349,8 @@ void callbackDispatcher() async {
             payload: DateTime.now().toIso8601String());
       }
     }
-    AppDatabase.instance.close();
+    await AppDatabase.instance.close();
   }
-
-  setAlarm(firstSet: false);
 }
 
 void main() async {
@@ -498,7 +524,7 @@ Future<bool> isAutoBackupPeriodicRunning() async {
 }
 
 Future<ForegroundServiceConfig> _autoBackupForegroundServiceConfig() async {
-  final prefs = await SharedPreferences.getInstance();
+  final prefs = await currentPrefs();
   return ForegroundServiceConfig(
     notificationId: backupNotificationId,
     notificationChannelId: backupNotificationChannelId,

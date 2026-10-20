@@ -161,9 +161,9 @@ class AppDatabase {
   }
 
   Future<void> close() async {
-    final db = _database!;
+    final db = _database;
     _database = null;
-    db.close();
+    await db?.close();
   }
 
   Future<bool> _validateSqliteDatabase(String path) async {

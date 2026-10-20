@@ -67,6 +67,8 @@ class _LaunchPageState extends State<LaunchPage> {
     final widgetUri = await HomeWidgetService.launchUri();
     if (HomeWidgetService.isWrite(widgetUri)) {
       DeviceInfoService().launchIntent = LaunchIntent.logToday();
+    } else if (HomeWidgetService.isNewEntry(widgetUri)) {
+      DeviceInfoService().launchIntent = LaunchIntent.newEntry();
     } else if (HomeWidgetService.entryOf(widgetUri) case final id?) {
       DeviceInfoService().launchIntent = LaunchIntent.openEntry(id);
     }
@@ -148,11 +150,18 @@ class _LaunchPageState extends State<LaunchPage> {
       l10n.nudgeSaturday,
       l10n.nudgeSunday,
     ]);
+    if (!Platform.isAndroid) return;
     // A lasting notification does not survive a restart; put it back.
-    if (Platform.isAndroid &&
-        ConfigProvider.instance.get(Settings.quickWriteNotification)) {
+    if (ConfigProvider.instance.get(Settings.quickWriteNotification)) {
       await NotificationManager.instance
           .showQuickWrite(l10n.quickWriteTitle, l10n.quickWriteText);
+    }
+    // These alarms rearm themselves from their callback; arming them again
+    // here mends a chain a failed run broke. Fixed hours, so this is a no-op
+    // otherwise.
+    if (CoachService.current(l10n) != null) await setCoachAlarm();
+    if (ConfigProvider.instance.get(Settings.inactivityNudges)) {
+      await setNudgeAlarm();
     }
   }
 

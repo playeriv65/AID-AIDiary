@@ -47,7 +47,7 @@ class CoachService {
     await config.set(Settings.coachAnsweredStep, -1);
     if (Platform.isAndroid) {
       await storeNotificationText(l10n);
-      await setCoachAlarm(firstSet: true);
+      await setCoachAlarm();
     }
   }
 

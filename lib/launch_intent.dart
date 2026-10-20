@@ -8,6 +8,12 @@ sealed class LaunchIntent {
   const factory LaunchIntent.logToday() = LogTodayIntent;
   const factory LaunchIntent.takePhoto() = TakePhotoIntent;
   const factory LaunchIntent.openEntry(int id) = OpenEntryIntent;
+  const factory LaunchIntent.newEntry() = NewEntryIntent;
+}
+
+/// The quick-write notification was tapped: start a new entry.
+class NewEntryIntent extends LaunchIntent {
+  const NewEntryIntent();
 }
 
 /// The photo widget was tapped: show its entry.

@@ -46,5 +46,8 @@ void main() {
     expect(HomeWidgetService.entryOf(Uri.parse('aiddiary://entry?id=12')), 12);
     expect(HomeWidgetService.entryOf(Uri.parse('aiddiary://write')), isNull);
     expect(HomeWidgetService.entryOf(null), isNull);
+    expect(HomeWidgetService.isNewEntry(Uri.parse('aiddiary://new')), isTrue);
+    expect(
+        HomeWidgetService.isNewEntry(Uri.parse('aiddiary://write')), isFalse);
   });
 }
