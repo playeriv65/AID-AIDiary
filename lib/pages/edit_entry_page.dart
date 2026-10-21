@@ -34,6 +34,7 @@ import 'package:aid_diary/widgets/tag_chip.dart';
 import 'package:aid_diary/widgets/tag_picker_dialog.dart';
 import 'package:aid_diary/widgets/template_select_popup.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
@@ -264,7 +265,6 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
       if (_model.askDay) _buildDayQuestion(context),
       _buildTitleField(theme),
       _buildBodyEditor(context),
-      const SizedBox(height: 16),
       _buildMedia(context),
       const SizedBox(height: 16),
       _buildMetaRows(context),
@@ -383,19 +383,29 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
     );
   }
 
-  /// The writing itself; it grows with the text, and the space below the
-  /// last line still takes a tap.
+  /// The writing itself; it grows with the text, and everything from the
+  /// title down to the media tile, blank space included, takes a tap.
   Widget _buildBodyEditor(BuildContext context) {
     // Built under the action bar overlay, which holds the keyboard session.
     return Builder(
       builder: (context) => GestureDetector(
-        behavior: HitTestBehavior.translucent,
+        behavior: HitTestBehavior.opaque,
+        // Taps on the text itself go to the field; this gets the rest.
         onTap: () {
           EditorKeyboardSessionScope.read(context)?.resume();
-          _focusNode.requestFocus();
+          _textEditingController.selection = TextSelection.collapsed(
+              offset: _textEditingController.text.length);
+          if (_focusNode.hasFocus) {
+            // Still focused after the keyboard was swiped away: bring the
+            // keyboard back, which focusing again would not.
+            SystemChannels.textInput.invokeMethod<void>('TextInput.show');
+          } else {
+            _focusNode.requestFocus();
+          }
         },
         child: ConstrainedBox(
-          constraints: const BoxConstraints(minHeight: 200),
+          // The gap above the media tile is part of the writing area.
+          constraints: const BoxConstraints(minHeight: 240),
           child: Align(
             alignment: Alignment.topCenter,
             child: EntryTextEditor(
@@ -724,22 +734,34 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
                 messenger.showSnackBar(SnackBar(content: Text(tooLarge)))));
   }
 
-  /// Gallery, photo or video; only phones have a camera to offer.
+  /// Everything an entry can hold: from the gallery, the camera (phones
+  /// only), a voice note or files.
   Future<void> _addMedia() {
     final l10n = AppLocalizations.of(context)!;
-    if (!Platform.isAndroid) return _pickFromGallery();
+    final add = _model.addAttachments;
     return _chooseAttachment([
       (Icons.photo_library_outlined, l10n.mediaFromGallery, _pickFromGallery),
+      if (Platform.isAndroid) ...[
+        (
+          Icons.photo_camera_rounded,
+          l10n.actionTakePhoto,
+          () => EntryImageActions.takePhoto(add)
+        ),
+        (
+          Icons.videocam_rounded,
+          l10n.videoRecord,
+          () => MediaActions.pickVideo(context, add, camera: true)
+        ),
+      ],
       (
-        Icons.photo_camera_rounded,
-        l10n.actionTakePhoto,
-        () => EntryImageActions.takePhoto(_model.addAttachments)
+        Icons.mic_rounded,
+        l10n.audioRecordTitle,
+        () => MediaActions.recordAudio(context, add)
       ),
       (
-        Icons.videocam_rounded,
-        l10n.videoRecord,
-        () =>
-            MediaActions.pickVideo(context, _model.addAttachments, camera: true)
+        Icons.folder_open_rounded,
+        l10n.mediaFromFiles,
+        () => MediaActions.pickFiles(context, add)
       ),
     ]);
   }

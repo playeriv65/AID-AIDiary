@@ -40,6 +40,7 @@
     }
   },
   "media": {
+    "imageExtensions": [".jpg", ".jpeg", ".png", ".webp", ".heic", ".heif", ".gif"],
     "videoExtensions": [".mp4", ".mov", ".m4v", ".webm", ".mkv", ".3gp"],
     "audioExtensions": [".m4a", ".aac", ".mp3", ".wav", ".ogg", ".opus", ".flac"],
     "recordingExtension": ".m4a",

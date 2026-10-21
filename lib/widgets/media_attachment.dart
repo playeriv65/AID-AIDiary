@@ -7,6 +7,7 @@ import 'dart:io';
 
 import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/database/image_storage.dart';
+import 'package:aid_diary/widgets/entry_image_actions.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/models/image.dart';
 import 'package:file_picker/file_picker.dart';
@@ -75,6 +76,46 @@ class MediaActions {
     } finally {
       // Android hands over a cache copy; desktop pickers return the original.
       if (Platform.isAndroid && await file.exists()) await file.delete();
+    }
+  }
+
+  /// Adds photos, videos and audio picked as files: photos are compressed
+  /// like gallery ones, and a video over the size limit is left out.
+  static Future<void> pickFiles(
+      BuildContext context, ValueChanged<List<String>> onAdded) async {
+    final messenger = ScaffoldMessenger.maybeOf(context);
+    final tooLarge = AppLocalizations.of(context)!.mediaTooLarge;
+    final config = AppConfig.instance;
+    final result =
+        await FilePicker.pickFiles(type: FileType.custom, allowedExtensions: [
+      for (final extension in [
+        ...config.imageExtensions,
+        ...config.videoExtensions,
+        ...config.audioExtensions,
+      ])
+        extension.substring(1)
+    ]);
+    final paths = [
+      for (final file in result)
+        if (file.path case final path?) path
+    ];
+    final photos = [
+      for (final path in paths)
+        if (MediaKind.of(path) == MediaKind.image) path
+    ];
+    if (photos.isNotEmpty) {
+      onAdded(await EntryImageActions.importSharedImages(photos));
+    }
+    for (final path in paths) {
+      switch (MediaKind.of(path)) {
+        case MediaKind.image:
+          continue;
+        case MediaKind.video
+            when await File(path).length() > config.maxVideoBytes:
+          messenger?.showSnackBar(SnackBar(content: Text(tooLarge)));
+        case MediaKind.video || MediaKind.audio:
+          await _store(p.basename(path), File(path), onAdded);
+      }
     }
   }
 

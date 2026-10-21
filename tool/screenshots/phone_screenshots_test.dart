@@ -73,6 +73,13 @@ void main() {
     await DiaryAppHarness.goTo(tester, 0);
     await session.tapKey(tester, 'diary-new-entry');
     await session.capture(tester, 'phone-editor');
+    // With the real CJK font the caret must sit on the hint's line.
+    final editable = tester.state<EditableTextState>(DiaryAppHarness.entryBody);
+    final render = editable.renderEditable;
+    final caret = MatrixUtils.transformRect(render.getTransformTo(null),
+        render.getLocalRectForCaret(const TextPosition(offset: 0)));
+    final hint = tester.getRect(find.text('开始写，或选择一个'));
+    expect(caret.center.dy, closeTo(hint.center.dy, 1.5));
     await tester.tap(find.byIcon(Icons.place_outlined).hitTestable());
     await tester.pumpAndSettle();
     await session.capture(tester, 'phone-location');

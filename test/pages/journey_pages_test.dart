@@ -315,6 +315,55 @@ void main() {
     await tester.pumpWidget(const SizedBox.shrink());
   });
 
+  testWidgets('a tap anywhere above the media tile starts writing',
+      (tester) async {
+    DiaryAppHarness.size(tester, const Size(390, 844));
+    await tester.pumpWidget(harness.app(const AddEditEntryPage()));
+    await tester.pumpAndSettle();
+    bool writing() => tester
+        .state<EditableTextState>(DiaryAppHarness.entryBody)
+        .widget
+        .focusNode
+        .hasFocus;
+    final tile = tester.getRect(find.byKey(const ValueKey('editor-add-media')));
+    final title = tester.getRect(find.byKey(const ValueKey('editor-title')));
+    // Just above the tile, and halfway down the blank space, near the edge.
+    for (final point in [
+      Offset(tile.center.dx + 120, tile.top - 12),
+      Offset(30, (title.bottom + tile.top) / 2),
+    ]) {
+      FocusManager.instance.primaryFocus?.unfocus();
+      await tester.pumpAndSettle();
+      expect(writing(), isFalse);
+      await tester.tapAt(point);
+      await tester.pumpAndSettle();
+      expect(writing(), isTrue, reason: '$point');
+    }
+    // The keyboard swiped away while the field keeps focus comes back too.
+    tester.testTextInput.hide();
+    await tester.pump();
+    expect(tester.testTextInput.isVisible, isFalse);
+    await tester.tapAt(Offset(30, tile.top - 12));
+    await tester.pumpAndSettle();
+    expect(writing(), isTrue);
+    expect(tester.testTextInput.isVisible, isTrue);
+    await tester.pumpWidget(const SizedBox.shrink());
+  });
+
+  testWidgets('the caret lines up with the empty editor hint', (tester) async {
+    DiaryAppHarness.size(tester, const Size(390, 844));
+    await tester.pumpWidget(harness.app(const AddEditEntryPage()));
+    await tester.pumpAndSettle();
+    final state = tester.state<EditableTextState>(DiaryAppHarness.entryBody);
+    final render = state.renderEditable;
+    final caret = MatrixUtils.transformRect(render.getTransformTo(null),
+        render.getLocalRectForCaret(const TextPosition(offset: 0)));
+    final hint = tester.getRect(find.text('开始写，或选择一个'));
+    // Same line: the caret's middle on the hint words' middle.
+    expect(caret.center.dy, closeTo(hint.center.dy, 1.5));
+    await tester.pumpWidget(const SizedBox.shrink());
+  });
+
   testWidgets('the title field is the entry title, left out when empty',
       (tester) async {
     DiaryAppHarness.size(tester, const Size(390, 844));

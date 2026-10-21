@@ -100,6 +100,9 @@ class _EntryTextFieldState extends State<EntryTextField> {
       style: baseStyle,
       decoration: InputDecoration(
         border: InputBorder.none,
+        // Dense: no minimum height that would centre a short field and move
+        // its first line off the content padding the hint below relies on.
+        isDense: true,
         contentPadding: widget.contentPadding,
         hintText: widget.onChooseTemplate == null
             ? AppLocalizations.of(context)!.writeSomethingHint
@@ -115,6 +118,8 @@ class _EntryTextFieldState extends State<EntryTextField> {
       child: field,
     );
     if (widget.onChooseTemplate == null) return decorated;
+    // Over the field rather than in its hint slot, where the field would
+    // take the link's taps.
     return Stack(children: [
       decorated,
       ValueListenableBuilder<TextEditingValue>(
@@ -124,7 +129,9 @@ class _EntryTextFieldState extends State<EntryTextField> {
             : Padding(
                 padding: widget.contentPadding,
                 child: _TemplateHint(
-                    style: baseStyle, onChoose: widget.onChooseTemplate!),
+                    style: baseStyle,
+                    strutStyle: strutStyle,
+                    onChoose: widget.onChooseTemplate!),
               ),
       ),
     ]);
@@ -134,8 +141,12 @@ class _EntryTextFieldState extends State<EntryTextField> {
 /// "Start writing or choose a [Template]." Only the link takes taps; the
 /// words let them through to the field underneath.
 class _TemplateHint extends StatelessWidget {
-  const _TemplateHint({required this.style, required this.onChoose});
+  const _TemplateHint(
+      {required this.style, required this.strutStyle, required this.onChoose});
   final TextStyle style;
+
+  /// The field's line height, so the words sit on the caret's line.
+  final StrutStyle strutStyle;
   final VoidCallback onChoose;
 
   @override
@@ -144,7 +155,9 @@ class _TemplateHint extends StatelessWidget {
     final cs = Theme.of(context).colorScheme;
     final hint = style.copyWith(color: Theme.of(context).hintColor);
     return Wrap(crossAxisAlignment: WrapCrossAlignment.center, children: [
-      IgnorePointer(child: Text(l10n.editorStartWriting, style: hint)),
+      IgnorePointer(
+          child: Text(l10n.editorStartWriting,
+              style: hint, strutStyle: strutStyle)),
       Material(
         color: cs.secondaryContainer,
         borderRadius: BorderRadius.circular(16),
@@ -153,18 +166,22 @@ class _TemplateHint extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
           onTap: onChoose,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+            // No vertical padding: the chip stays one line tall.
+            padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Row(mainAxisSize: MainAxisSize.min, children: [
               Icon(Icons.grid_view_rounded,
                   size: 16, color: cs.onSecondaryContainer),
               const SizedBox(width: 4),
               Text(l10n.editorTemplateLink,
-                  style: style.copyWith(color: cs.onSecondaryContainer)),
+                  style: style.copyWith(color: cs.onSecondaryContainer),
+                  strutStyle: strutStyle),
             ]),
           ),
         ),
       ),
-      IgnorePointer(child: Text(l10n.editorStartWritingEnd, style: hint)),
+      IgnorePointer(
+          child: Text(l10n.editorStartWritingEnd,
+              style: hint, strutStyle: strutStyle)),
     ]);
   }
 }

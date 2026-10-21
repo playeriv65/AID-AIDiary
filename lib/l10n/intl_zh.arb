@@ -571,6 +571,7 @@
     "toolbarPhotos": "添加照片",
     "toolbarMedia": "照片和视频",
     "mediaFromGallery": "从图库选择",
+    "mediaFromFiles": "从文件选择",
     "editorLeaveTitle": "保存这篇日记？",
     "editorLeaveDiscard": "不保存",
     "editorTitleHint": "标题",

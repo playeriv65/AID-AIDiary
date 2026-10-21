@@ -572,6 +572,7 @@
     "toolbarPhotos": "新增照片",
     "toolbarMedia": "照片和影片",
     "mediaFromGallery": "從相簿選擇",
+    "mediaFromFiles": "從檔案選擇",
     "editorLeaveTitle": "儲存這篇日記？",
     "editorLeaveDiscard": "不儲存",
     "editorTitleHint": "標題",

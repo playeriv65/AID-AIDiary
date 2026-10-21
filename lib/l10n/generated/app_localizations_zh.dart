@@ -1929,6 +1929,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get mediaFromGallery => '从图库选择';
 
   @override
+  String get mediaFromFiles => '从文件选择';
+
+  @override
   String get editorLeaveTitle => '保存这篇日记？';
 
   @override
@@ -3891,6 +3894,9 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get mediaFromGallery => '從相簿選擇';
+
+  @override
+  String get mediaFromFiles => '從檔案選擇';
 
   @override
   String get editorLeaveTitle => '儲存這篇日記？';

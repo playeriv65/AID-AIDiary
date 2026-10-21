@@ -1247,6 +1247,8 @@
   "@toolbarMedia": {},
   "mediaFromGallery": "Choose from gallery",
   "@mediaFromGallery": {},
+  "mediaFromFiles": "Choose from files",
+  "@mediaFromFiles": {},
   "editorLeaveTitle": "Save this entry?",
   "@editorLeaveTitle": {},
   "editorLeaveDiscard": "Don't save",

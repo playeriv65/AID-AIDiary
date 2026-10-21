@@ -1975,6 +1975,9 @@ class AppLocalizationsHi extends AppLocalizations {
   String get mediaFromGallery => 'Choose from gallery';
 
   @override
+  String get mediaFromFiles => 'Choose from files';
+
+  @override
   String get editorLeaveTitle => 'Save this entry?';
 
   @override

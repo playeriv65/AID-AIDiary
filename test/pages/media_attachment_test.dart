@@ -60,6 +60,22 @@ void main() {
     await tester.pumpWidget(const SizedBox.shrink());
   });
 
+  testWidgets('the media tile offers gallery, voice note and files',
+      (tester) async {
+    DiaryAppHarness.size(tester, const Size(390, 844));
+    await tester.pumpWidget(harness.app(const AddEditEntryPage()));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const ValueKey('editor-add-media')));
+    await tester.pumpAndSettle();
+    // The camera ones are added on Android; tests run on the desktop.
+    for (final label in ['从图库选择', '录制语音', '从文件选择']) {
+      expect(find.text(label), findsOneWidget, reason: label);
+    }
+    await tester.tapAt(const Offset(195, 100));
+    await tester.pumpAndSettle();
+    await tester.pumpWidget(const SizedBox.shrink());
+  });
+
   testWidgets('every editor button names what it does', (tester) async {
     DiaryAppHarness.size(tester, const Size(1280, 800));
     await tester.pumpWidget(harness.app(const AddEditEntryPage()));

@@ -3642,6 +3642,12 @@ abstract class AppLocalizations {
   /// **'Choose from gallery'**
   String get mediaFromGallery;
 
+  /// No description provided for @mediaFromFiles.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose from files'**
+  String get mediaFromFiles;
+
   /// No description provided for @editorLeaveTitle.
   ///
   /// In en, this message translates to:

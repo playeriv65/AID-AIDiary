@@ -76,6 +76,9 @@ class AppConfig {
           key as String: (value as List).cast<String>(),
       };
 
+  /// Photo files the file picker offers next to videos and audio.
+  List<String> get imageExtensions =>
+      (_section('media')['imageExtensions'] as List).cast<String>();
   List<String> get videoExtensions =>
       (_section('media')['videoExtensions'] as List).cast<String>();
   List<String> get audioExtensions =>
