@@ -36,7 +36,11 @@ class Device {
   }
 
   Future<SyncReport> sync(SyncBackend backend, {ItemCipher? cipher}) =>
-      SyncEngine(db: db, backend: backend, photos: photos, cipher: cipher)
+      SyncEngine(
+              db: db,
+              backend: backend,
+              photos: FileStorePhotos(photos),
+              cipher: cipher)
           .sync();
 
   Future<int> write(String text, {String day = '2026-10-20T09:00:00.000'}) =>

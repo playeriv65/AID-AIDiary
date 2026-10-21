@@ -6,6 +6,7 @@ import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/pages/recently_deleted_page.dart';
 import 'package:aid_diary/pages/settings/backup_restore_settings.dart';
 import 'package:aid_diary/pages/settings/storage_settings.dart';
+import 'package:aid_diary/pages/settings/sync_settings.dart';
 import 'package:aid_diary/widgets/settings_category.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -23,6 +24,10 @@ class DataSettings extends StatelessWidget {
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 840),
           child: ListView(children: [
+            SettingsCategory(
+                title: l10n.settingsSyncTitle,
+                icon: Icons.cloud_sync_rounded,
+                page: const SyncSettings()),
             SettingsCategory(
                 title: l10n.settingsBackupRestoreTitle,
                 icon: Icons.settings_backup_restore_rounded,

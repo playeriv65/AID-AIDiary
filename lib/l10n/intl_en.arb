@@ -1288,5 +1288,111 @@
   "toolbarInsertDate": "Insert the date",
   "@toolbarInsertDate": {},
   "toolbarInsertTime": "Insert the time",
-  "@toolbarInsertTime": {}
+  "@toolbarInsertTime": {},
+  "settingsSyncTitle": "Cloud Sync",
+  "@settingsSyncTitle": {},
+  "syncOffDescription": "Keep this diary the same on all your devices through a WebDAV server, such as Nextcloud, Synology or Jianguoyun.",
+  "@syncOffDescription": {},
+  "syncServer": "Server address",
+  "@syncServer": {},
+  "syncUsername": "Username",
+  "@syncUsername": {},
+  "syncPassword": "Password",
+  "@syncPassword": {},
+  "syncConnect": "Connect",
+  "@syncConnect": {},
+  "syncConnecting": "Connecting…",
+  "@syncConnecting": {},
+  "syncSignInFailed": "Could not sign in. Check the address, the username and the password.",
+  "@syncSignInFailed": {},
+  "syncConnectFailed": "Could not connect: {error}",
+  "@syncConnectFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "syncNewSpaceTitle": "Start syncing",
+  "@syncNewSpaceTitle": {},
+  "syncNewSpaceDescription": "There is no synced diary on this server yet. This diary will be uploaded to it.",
+  "@syncNewSpaceDescription": {},
+  "syncEncrypt": "End-to-end encryption",
+  "@syncEncrypt": {},
+  "syncEncryptDescription": "Entries and photos are encrypted on your devices. Nobody else can read them, not even whoever runs the server.",
+  "@syncEncryptDescription": {},
+  "syncPassphrase": "Encryption passphrase",
+  "@syncPassphrase": {},
+  "syncPassphraseRepeat": "Repeat the passphrase",
+  "@syncPassphraseRepeat": {},
+  "syncPassphraseTooShort": "Use at least 8 characters",
+  "@syncPassphraseTooShort": {},
+  "syncPassphraseMismatch": "The passphrases differ",
+  "@syncPassphraseMismatch": {},
+  "syncPassphraseNote": "You need the passphrase or the recovery key to add another device. The diary on this device stays readable without them.",
+  "@syncPassphraseNote": {},
+  "syncRecoveryKeyTitle": "Save your recovery key",
+  "@syncRecoveryKeyTitle": {},
+  "syncRecoveryKeyDescription": "If you forget the passphrase, this key opens your synced diary. Keep it in a password manager or on paper. It is shown only this once.",
+  "@syncRecoveryKeyDescription": {},
+  "syncRecoveryKeyCopied": "Recovery key copied",
+  "@syncRecoveryKeyCopied": {},
+  "syncRecoveryKeySaved": "I have saved it",
+  "@syncRecoveryKeySaved": {},
+  "syncJoinTitle": "Join the synced diary",
+  "@syncJoinTitle": {},
+  "syncJoinDescription": "This server already holds a synced diary. The entries on this device will be added to it.",
+  "@syncJoinDescription": {},
+  "syncJoinEncrypted": "It is end-to-end encrypted. Enter its passphrase to open it.",
+  "@syncJoinEncrypted": {},
+  "syncUseRecoveryKey": "Use the recovery key",
+  "@syncUseRecoveryKey": {},
+  "syncUsePassphrase": "Use the passphrase",
+  "@syncUsePassphrase": {},
+  "syncRecoveryKey": "Recovery key",
+  "@syncRecoveryKey": {},
+  "syncWrongKey": "This does not open the synced diary.",
+  "@syncWrongKey": {},
+  "syncLastSynced": "Last synced {time}",
+  "@syncLastSynced": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "syncNever": "Not synced yet",
+  "@syncNever": {},
+  "syncSyncing": "Syncing…",
+  "@syncSyncing": {},
+  "syncFailed": "The last sync failed: {error}",
+  "@syncFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "syncLocked": "The synced diary was reset on another device, or its key is missing here. Unlock it to keep syncing.",
+  "@syncLocked": {},
+  "syncNow": "Sync now",
+  "@syncNow": {},
+  "syncUnlock": "Unlock",
+  "@syncUnlock": {},
+  "syncEncrypted": "End-to-end encrypted",
+  "@syncEncrypted": {},
+  "syncNotEncrypted": "Not encrypted",
+  "@syncNotEncrypted": {},
+  "syncChangePassphrase": "Change passphrase",
+  "@syncChangePassphrase": {},
+  "syncPassphraseChanged": "Passphrase changed",
+  "@syncPassphraseChanged": {},
+  "syncResetEncryption": "Reset encryption",
+  "@syncResetEncryption": {},
+  "syncResetEncryptionDescription": "For a forgotten passphrase: the encrypted copy on the server is replaced by the diary on this device, under a new passphrase. Your other devices then join again with it.",
+  "@syncResetEncryptionDescription": {},
+  "syncDisconnect": "Stop syncing",
+  "@syncDisconnect": {},
+  "syncDisconnectDescription": "This device stops syncing. The diary here and the copy on the server stay as they are.",
+  "@syncDisconnectDescription": {}
 }

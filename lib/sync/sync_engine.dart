@@ -3,6 +3,7 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'dart:convert';
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:aid_diary/models/image.dart';
@@ -13,6 +14,42 @@ import 'package:aid_diary/sync/sync_records.dart';
 import 'package:aid_diary/sync/sync_schema.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:uuid/uuid.dart';
+
+/// The photo files on this device, as sync uses them.
+abstract interface class SyncPhotos {
+  Future<bool> exists(String name);
+
+  /// Null when there is no such file.
+  Future<Uint8List?> read(String name);
+
+  /// Throws when the file could not be written.
+  Future<void> write(String name, Uint8List bytes);
+
+  Future<void> delete(String name);
+}
+
+/// Photos kept in a [FileStore].
+class FileStorePhotos implements SyncPhotos {
+  const FileStorePhotos(this.store);
+
+  final FileStore store;
+
+  @override
+  Future<bool> exists(String name) => store.exists(name);
+
+  @override
+  Future<Uint8List?> read(String name) => store.read(name);
+
+  @override
+  Future<void> write(String name, Uint8List bytes) async {
+    if (!await store.write(name, bytes)) {
+      throw FileSystemException('Could not write the photo', name);
+    }
+  }
+
+  @override
+  Future<void> delete(String name) => store.delete(name);
+}
 
 /// What one sync did.
 class SyncReport {
@@ -51,7 +88,7 @@ class SyncEngine {
   final SyncBackend backend;
 
   /// Where photo files live on this device.
-  final FileStore photos;
+  final SyncPhotos photos;
 
   /// Null for a space that is not end-to-end encrypted.
   final ItemCipher? cipher;

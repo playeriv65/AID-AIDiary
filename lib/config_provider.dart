@@ -151,6 +151,15 @@ class Settings {
   static const lastAutoBackup =
       Setting<String>("lastAutoBackup", "", secure: true);
 
+  /// Where this device syncs, as JSON; empty when it does not. Kept on the
+  /// device, like the secrets that go with it.
+  static const syncTarget = Setting<String>("syncTarget", "", secure: true);
+
+  /// The sync password and space key, as JSON.
+  static const syncSecrets =
+      Setting<String>("syncSecrets", "", secure: true, secretStore: true);
+  static const lastSync = Setting<String>("lastSync", "", secure: true);
+
   static const List<Setting<Object?>> all = [
     configVersion,
     theme,
@@ -231,6 +240,9 @@ class Settings {
     autoBackupMaxCount,
     lastBackup,
     lastAutoBackup,
+    syncTarget,
+    syncSecrets,
+    lastSync,
   ];
 
   static const moodIcons = <int, Setting<String>>{

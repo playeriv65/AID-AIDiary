@@ -2036,4 +2036,153 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get toolbarInsertTime => 'Insert the time';
+
+  @override
+  String get settingsSyncTitle => 'Cloud Sync';
+
+  @override
+  String get syncOffDescription =>
+      'Keep this diary the same on all your devices through a WebDAV server, such as Nextcloud, Synology or Jianguoyun.';
+
+  @override
+  String get syncServer => 'Server address';
+
+  @override
+  String get syncUsername => 'Username';
+
+  @override
+  String get syncPassword => 'Password';
+
+  @override
+  String get syncConnect => 'Connect';
+
+  @override
+  String get syncConnecting => 'Connecting…';
+
+  @override
+  String get syncSignInFailed =>
+      'Could not sign in. Check the address, the username and the password.';
+
+  @override
+  String syncConnectFailed(String error) {
+    return 'Could not connect: $error';
+  }
+
+  @override
+  String get syncNewSpaceTitle => 'Start syncing';
+
+  @override
+  String get syncNewSpaceDescription =>
+      'There is no synced diary on this server yet. This diary will be uploaded to it.';
+
+  @override
+  String get syncEncrypt => 'End-to-end encryption';
+
+  @override
+  String get syncEncryptDescription =>
+      'Entries and photos are encrypted on your devices. Nobody else can read them, not even whoever runs the server.';
+
+  @override
+  String get syncPassphrase => 'Encryption passphrase';
+
+  @override
+  String get syncPassphraseRepeat => 'Repeat the passphrase';
+
+  @override
+  String get syncPassphraseTooShort => 'Use at least 8 characters';
+
+  @override
+  String get syncPassphraseMismatch => 'The passphrases differ';
+
+  @override
+  String get syncPassphraseNote =>
+      'You need the passphrase or the recovery key to add another device. The diary on this device stays readable without them.';
+
+  @override
+  String get syncRecoveryKeyTitle => 'Save your recovery key';
+
+  @override
+  String get syncRecoveryKeyDescription =>
+      'If you forget the passphrase, this key opens your synced diary. Keep it in a password manager or on paper. It is shown only this once.';
+
+  @override
+  String get syncRecoveryKeyCopied => 'Recovery key copied';
+
+  @override
+  String get syncRecoveryKeySaved => 'I have saved it';
+
+  @override
+  String get syncJoinTitle => 'Join the synced diary';
+
+  @override
+  String get syncJoinDescription =>
+      'This server already holds a synced diary. The entries on this device will be added to it.';
+
+  @override
+  String get syncJoinEncrypted =>
+      'It is end-to-end encrypted. Enter its passphrase to open it.';
+
+  @override
+  String get syncUseRecoveryKey => 'Use the recovery key';
+
+  @override
+  String get syncUsePassphrase => 'Use the passphrase';
+
+  @override
+  String get syncRecoveryKey => 'Recovery key';
+
+  @override
+  String get syncWrongKey => 'This does not open the synced diary.';
+
+  @override
+  String syncLastSynced(String time) {
+    return 'Last synced $time';
+  }
+
+  @override
+  String get syncNever => 'Not synced yet';
+
+  @override
+  String get syncSyncing => 'Syncing…';
+
+  @override
+  String syncFailed(String error) {
+    return 'The last sync failed: $error';
+  }
+
+  @override
+  String get syncLocked =>
+      'The synced diary was reset on another device, or its key is missing here. Unlock it to keep syncing.';
+
+  @override
+  String get syncNow => 'Sync now';
+
+  @override
+  String get syncUnlock => 'Unlock';
+
+  @override
+  String get syncEncrypted => 'End-to-end encrypted';
+
+  @override
+  String get syncNotEncrypted => 'Not encrypted';
+
+  @override
+  String get syncChangePassphrase => 'Change passphrase';
+
+  @override
+  String get syncPassphraseChanged => 'Passphrase changed';
+
+  @override
+  String get syncResetEncryption => 'Reset encryption';
+
+  @override
+  String get syncResetEncryptionDescription =>
+      'For a forgotten passphrase: the encrypted copy on the server is replaced by the diary on this device, under a new passphrase. Your other devices then join again with it.';
+
+  @override
+  String get syncDisconnect => 'Stop syncing';
+
+  @override
+  String get syncDisconnectDescription =>
+      'This device stops syncing. The diary here and the copy on the server stay as they are.';
 }

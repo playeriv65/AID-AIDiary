@@ -203,6 +203,22 @@ class ImageStorage {
     return newImageName;
   }
 
+  /// Stores [bytes] as [name], for files that arrive with their name, such
+  /// as photos from sync. False when the file could not be written.
+  Future<bool> store(String name, Uint8List bytes) async {
+    if (!await (await internalStore()).write(name, bytes)) return false;
+    imageCache.put(name, bytes);
+    final external = externalStore;
+    if (external != null) unawaited(_createExternal(external, name, bytes));
+    return true;
+  }
+
+  /// Whether a file by [name] is in the image folder on this device or in
+  /// the external one.
+  Future<bool> exists(String name) async =>
+      await (await internalStore()).exists(name) ||
+      (await externalStore?.exists(name) ?? false);
+
   Future<CreateResult> _createExternal(
       FileStore external, String name, Uint8List bytes) async {
     _uploadingNames.add(name);

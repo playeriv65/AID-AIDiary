@@ -178,7 +178,7 @@ void main() {
     Future<SyncReport> sync(Database db) => SyncEngine(
             db: db,
             backend: backendFor(server),
-            photos: InMemoryFileStore(),
+            photos: FileStorePhotos(InMemoryFileStore()),
             cipher: ItemCipher(keys.key))
         .sync();
 

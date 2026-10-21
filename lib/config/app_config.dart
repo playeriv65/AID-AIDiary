@@ -161,4 +161,13 @@ class AppConfig {
   /// Hours until which the editor may ask which day a new entry is for.
   List<int> get dayAskUntilHourChoices =>
       (_section('diaryDay')['askUntilHourChoices'] as List).cast<int>();
+
+  /// Quiet time after a change before it syncs, so a burst of edits goes
+  /// up together.
+  Duration get syncAfterChange =>
+      Duration(seconds: _section('sync')['afterChangeSeconds'] as int);
+
+  /// How often the app syncs while it stays open.
+  Duration get syncWhileOpen =>
+      Duration(minutes: _section('sync')['whileOpenMinutes'] as int);
 }

@@ -20,6 +20,7 @@ import 'package:aid_diary/utils/auto_backup_schedule.dart';
 import 'package:aid_diary/widgets/auth_popup.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/sync/sync_service.dart';
 import 'package:logging/logging.dart';
 import 'package:quick_actions/quick_actions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -256,6 +257,7 @@ class _LaunchPageState extends State<LaunchPage> {
   Future<void> _nextPage() async {
     // The welcome pages come first, once.
     final onboarded = ConfigProvider.instance.get(Settings.onboardingDone);
+    SyncService.instance.start();
     await _launchIntentRead;
     if (!mounted) return;
     // The journal replaces the launch screen at once, the way content
