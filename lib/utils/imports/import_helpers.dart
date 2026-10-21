@@ -48,6 +48,7 @@ Future<void> addImportedEntries(
     List<ImportedEntry> importedEntries, Function(String) updateStatus) async {
   final totalEntries = importedEntries.length;
   var processedEntries = 0;
+  await EntriesProvider.instance.complete;
   final taken = {
     for (final entry in EntriesProvider.instance.entries) entry.timeCreate
   };

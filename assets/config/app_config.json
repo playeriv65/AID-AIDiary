@@ -79,5 +79,8 @@
   },
   "photoWidget": {
     "candidates": 120
+  },
+  "launch": {
+    "firstScreenEntries": 60
   }
 }

@@ -5,6 +5,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/database/app_database.dart';
 import 'package:aid_diary/database/image_storage.dart';
@@ -180,7 +181,8 @@ class _LaunchPageState extends State<LaunchPage> {
     //Initialize Database
     bool initialized;
     try {
-      initialized = await AppDatabase.instance.init();
+      initialized = await AppDatabase.instance
+          .init(firstScreen: AppConfig.instance.launchFirstScreenEntries);
     } catch (error, stackTrace) {
       _logger.severe('Database initialization failed', error, stackTrace);
       initialized = false;
@@ -230,7 +232,9 @@ class _LaunchPageState extends State<LaunchPage> {
 
   Future _forceLocalDatabase() async {
     try {
-      await AppDatabase.instance.init(forceWithoutSync: true);
+      await AppDatabase.instance.init(
+          forceWithoutSync: true,
+          firstScreen: AppConfig.instance.launchFirstScreenEntries);
       await _nextPage();
     } catch (error, stackTrace) {
       _logger.severe(
@@ -247,8 +251,12 @@ class _LaunchPageState extends State<LaunchPage> {
     final onboarded = ConfigProvider.instance.get(Settings.onboardingDone);
     await _launchIntentRead;
     if (!mounted) return;
-    await Navigator.of(context).pushReplacement(MaterialPageRoute(
-        builder: (context) =>
+    // The journal replaces the launch screen at once, the way content
+    // replaces a splash screen; a page transition here only delays it.
+    await Navigator.of(context).pushReplacement(PageRouteBuilder(
+        transitionDuration: Duration.zero,
+        reverseTransitionDuration: Duration.zero,
+        pageBuilder: (context, _, __) =>
             onboarded ? widget.nextPage : OnboardingPage(next: widget.nextPage),
         allowSnapshotting: false));
   }

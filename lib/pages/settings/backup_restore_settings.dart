@@ -5,6 +5,7 @@
 import 'dart:io';
 
 import 'package:aid_diary/config_provider.dart';
+import 'package:aid_diary/providers/entries_provider.dart';
 import 'package:aid_diary/device_info_service.dart';
 import 'package:aid_diary/main.dart';
 import 'package:aid_diary/notification_manager.dart';
@@ -75,6 +76,8 @@ class _BackupRestoreSettingsState extends State<BackupRestoreSettings> {
           ValueKey('import-${option.format.name}')
         ),
     ]);
+    // Importers skip entries already in the diary, so they need all of it.
+    await EntriesProvider.instance.complete;
     if (option == null || !mounted) return;
     await runOperation(context, (update) => option.run(context, update),
         failureDescription: localizations.importErrorDescription);

@@ -9,6 +9,7 @@ import 'dart:typed_data';
 
 import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/database/app_database.dart';
+import 'package:aid_diary/database/entry_dao.dart';
 import 'package:aid_diary/database/entry_store.dart';
 import 'package:aid_diary/database/image_storage.dart';
 import 'package:aid_diary/database/tag_dao.dart';
@@ -299,5 +300,44 @@ void main() {
     expect(TagsProvider.instance.entryTags, isEmpty);
     expect(EntryImagesProvider.instance.images, isEmpty);
     expect(await imageFiles.exists('photo.jpg'), isFalse);
+  });
+
+  group('first-screen load', () {
+    Future<void> writeDays(int count) async {
+      for (var day = 1; day <= count; day++) {
+        final at = DateTime(2025, 1, day, 9);
+        await EntryDao.add(
+            Entry(text: 'day $day', timeCreate: at, timeModified: at));
+      }
+    }
+
+    test('shows the newest entries first and the rest after', () async {
+      await writeDays(5);
+
+      await store.load(firstScreen: 2);
+      expect(store.entries.map((e) => e.text), ['day 5', 'day 4']);
+
+      await store.complete;
+      expect(store.entries, hasLength(5));
+      expect(store.entries.last.text, 'day 1');
+    });
+
+    test('is complete at once when the diary fits the first screen', () async {
+      await writeDays(2);
+
+      await store.load(firstScreen: 5);
+      expect(store.entries, hasLength(2));
+    });
+
+    test('keeps an entry added while the rest is read', () async {
+      await writeDays(3);
+
+      await store.load(firstScreen: 1);
+      final added = await store.add(draftEntry(text: 'written now'));
+
+      await store.complete;
+      expect(store.entries, hasLength(4));
+      expect(store.entries.map((e) => e.id), contains(added.id));
+    });
   });
 }

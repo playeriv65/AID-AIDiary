@@ -148,4 +148,9 @@ class AppConfig {
 
   /// How many photos the photo widget gets to pick its daily one from.
   int get photoWidgetCandidates => _section('photoWidget')['candidates'] as int;
+
+  /// Newest entries read before the journal shows at launch; more than a
+  /// tall screen holds, so the first scroll does not run out.
+  int get launchFirstScreenEntries =>
+      _section('launch')['firstScreenEntries'] as int;
 }

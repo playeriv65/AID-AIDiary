@@ -58,9 +58,13 @@ class AppDatabase {
       usingExternalLocation() ? FileStore.external(getExternalPath()) : null;
 
   /// Opens the diary. A background task passes [background]: it must never
-  /// create the database, so it gives up when there is none yet.
+  /// create the database, so it gives up when there is none yet. With
+  /// [firstScreen], the newest entries are read first and the rest follow in
+  /// the background, see [EntryStore.load].
   Future<bool> init(
-      {bool forceWithoutSync = false, bool background = false}) async {
+      {bool forceWithoutSync = false,
+      bool background = false,
+      int? firstScreen}) async {
     _internalPath = await getInternalPath();
     bool success = true;
 
@@ -76,15 +80,15 @@ class AppDatabase {
       }
     }
 
-    await AppDatabase.instance.open();
+    await AppDatabase.instance.open(firstScreen: firstScreen);
     return success;
   }
 
-  Future<void> open() async {
+  Future<void> open({int? firstScreen}) async {
     _database = await openDatabase(_internalPath!,
         version: 8, onCreate: _createDatabase, onUpgrade: _onUpgrade);
 
-    await EntriesProvider.instance.load();
+    await EntriesProvider.instance.load(firstScreen: firstScreen);
     await EntryImagesProvider.instance.load();
     await TemplatesProvider.instance.load();
     await TagsProvider.instance.load();

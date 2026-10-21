@@ -19,7 +19,12 @@ class EntriesProvider with ChangeNotifier {
   /// Newest first. Replaced, never changed in place, on every change.
   List<Entry> get entries => _store.entries;
 
-  Future<void> load() => _store.load();
+  /// See [EntryStore.load].
+  Future<void> load({int? firstScreen}) =>
+      _store.load(firstScreen: firstScreen);
+
+  /// Completes once [entries] holds every entry; see [EntryStore.complete].
+  Future<void> get complete => _store.complete;
 
   Future<Entry> add(Entry entry, {bool skipUpdate = false}) =>
       _store.add(entry, skipUpdate: skipUpdate);

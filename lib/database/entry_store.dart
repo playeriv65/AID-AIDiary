@@ -17,7 +17,10 @@ import 'package:aid_diary/providers/entry_images_provider.dart';
 import 'package:aid_diary/providers/tags_provider.dart';
 import 'package:aid_diary/time_manager.dart';
 import 'package:flutter/foundation.dart';
+import 'package:logging/logging.dart';
 import 'package:sqflite/sqflite.dart';
+
+final Logger _logger = Logger('EntryStore');
 
 class EntryDraft {
   final Entry entry;
@@ -100,15 +103,40 @@ class EntryStore with ChangeNotifier {
 
   EntryDraftSession beginDraft() => EntryDraftSession._(this);
 
-  Future<void> load() async {
+  Future<void> _complete = Future.value();
+
+  /// Completes once [entries] holds every entry. Changes wait for it, so a
+  /// background read cannot replace an entry written in the meantime.
+  Future<void> get complete => _complete;
+
+  /// Reads every entry. With [firstScreen], it returns once that many of the
+  /// newest are in [entries], enough to show the journal, and reads the
+  /// rest in the background; the time to show the journal then no longer
+  /// grows with the diary.
+  Future<void> load({int? firstScreen}) async {
+    await _complete;
     await _purgeExpired();
-    _entries = await EntryDao.getAll();
+    if (firstScreen != null) {
+      _setEntries(await EntryDao.getAll(limit: firstScreen));
+      if (_entries.length < firstScreen) return;
+    }
+    final rest = EntryDao.getAll().then(_setEntries);
+    _complete = rest;
+    if (firstScreen == null) return rest;
+    unawaited(rest.then((_) {}, onError: (Object error, StackTrace stackTrace) {
+      _logger.severe('Reading the older entries failed', error, stackTrace);
+    }));
+  }
+
+  void _setEntries(List<Entry> entries) {
+    _entries = entries;
     _indexEntriesByDay();
     notifyListeners();
   }
 
   /// Moves an entry to Recently deleted; its photos and tags stay with it.
   Future<void> delete(Entry entry) async {
+    await _complete;
     await EntryDao.setDeleted(entry.id!, DateTime.now());
     _entries = _entries.where((existing) => existing.id != entry.id).toList();
     _indexEntriesByDay();
@@ -120,6 +148,7 @@ class EntryStore with ChangeNotifier {
 
   /// Seals an entry as a time capsule until [openAt], or opens it with null.
   Future<Entry> setOpenAt(Entry entry, DateTime? openAt) async {
+    await _complete;
     final updated = entry.copy(openAt: openAt);
     await EntryDao.update(updated);
     _entries = [
@@ -134,6 +163,7 @@ class EntryStore with ChangeNotifier {
 
   /// Brings an entry back from Recently deleted.
   Future<void> restore(Entry entry) async {
+    await _complete;
     await EntryDao.setDeleted(entry.id!, null);
     _entries = [..._entries, entry];
     _sortEntries();
@@ -175,6 +205,7 @@ class EntryStore with ChangeNotifier {
   }
 
   Future<Entry> add(Entry entry, {bool skipUpdate = false}) async {
+    await _complete;
     final entryWithId = await EntryDao.add(entry);
     _entries = [..._entries, entryWithId];
     await AppDatabase.instance.updateExternalDatabase();
@@ -189,6 +220,7 @@ class EntryStore with ChangeNotifier {
 
   /// Erases every entry, including those in Recently deleted.
   Future<void> deleteAll(Function(String) updateStatus) async {
+    await _complete;
     updateStatus("0%");
     final allEntries = [
       ...entries,
@@ -242,6 +274,7 @@ class EntryStore with ChangeNotifier {
   }
 
   Future<Entry> _writeDraft(EntryDraft draft) async {
+    await _complete;
     late Entry saved;
     late _TagWrite tagWrite;
     late _ImageWrite imageWrite;

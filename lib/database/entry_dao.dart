@@ -12,10 +12,13 @@ typedef DeletedEntry = ({Entry entry, DateTime deletedAt});
 
 class EntryDao {
   /// Entries not in Recently deleted, newest first.
-  static Future<List<Entry>> getAll() async {
+  /// Entries not in Recently deleted, newest first; only the [limit] newest
+  /// when given.
+  static Future<List<Entry>> getAll({int? limit}) async {
     final result = await AppDatabase.instance.database!.query(entriesTable,
         where: '${EntryFields.deletedAt} IS NULL',
-        orderBy: '${EntryFields.timeCreate} DESC');
+        orderBy: '${EntryFields.timeCreate} DESC',
+        limit: limit);
 
     return result.map((json) => Entry.fromJson(json)).toList();
   }
