@@ -5,6 +5,7 @@
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/models/image.dart';
+import 'package:aid_diary/sync/sync_service.dart';
 import 'package:aid_diary/time_manager.dart';
 import 'package:aid_diary/utils/entry_context_display.dart';
 import 'package:aid_diary/utils/entry_preview.dart';
@@ -80,6 +81,25 @@ class JournalEntryRow extends StatelessWidget {
                               color: cs.onSurfaceVariant),
                         ),
                       ],
+                      // Only entries that did not sync are marked.
+                      if (entry.id case final id?)
+                        ListenableBuilder(
+                          listenable: SyncService.instance,
+                          builder: (context, _) =>
+                              SyncService.instance.unsyncedEntryIds.contains(id)
+                                  ? Padding(
+                                      padding: const EdgeInsetsDirectional.only(
+                                          start: 4),
+                                      child: Tooltip(
+                                        message: l10n.syncEntryUnsynced,
+                                        child: Icon(Icons.cloud_off_rounded,
+                                            key: ValueKey('unsynced-$id'),
+                                            size: 14,
+                                            color: cs.error),
+                                      ),
+                                    )
+                                  : const SizedBox.shrink(),
+                        ),
                     ]),
                     const SizedBox(height: 4),
                     // A sealed capsule shows nothing of what is inside.

@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/sync/sync_backend.dart';
 import 'package:aid_diary/sync/sync_crypto.dart';
@@ -227,14 +228,25 @@ class _SyncSettingsState extends State<SyncSettings> {
       padding: const EdgeInsets.all(16),
       children: [
         Text(l10n.syncOffDescription),
-        const SizedBox(height: 24),
+        const SizedBox(height: 16),
+        Align(
+          alignment: AlignmentDirectional.centerStart,
+          child: ActionChip(
+            key: const ValueKey('sync-use-official'),
+            avatar: const Icon(Icons.cloud_outlined, size: 18),
+            label: Text(l10n.syncUseOfficial),
+            onPressed: () =>
+                _server.text = AppConfig.instance.syncOfficialServer,
+          ),
+        ),
+        const SizedBox(height: 16),
         TextField(
           key: const ValueKey('sync-server'),
           controller: _server,
           keyboardType: TextInputType.url,
           autocorrect: false,
           decoration: field(l10n.syncServer)
-              .copyWith(hintText: 'https://dav.jianguoyun.com/dav/'),
+              .copyWith(hintText: AppConfig.instance.syncExampleServer),
         ),
         const SizedBox(height: 12),
         TextField(

@@ -1999,6 +1999,12 @@ class AppLocalizationsZh extends AppLocalizations {
       '通过 WebDAV 服务器（如 Nextcloud、群晖、坚果云）让这本日记在你的所有设备上保持一致。';
 
   @override
+  String get syncEntryUnsynced => '还没同步：上次同步没有成功';
+
+  @override
+  String get syncUseOfficial => '使用 AID 同步服务器';
+
+  @override
   String get syncServer => '服务器地址';
 
   @override

@@ -3780,6 +3780,18 @@ abstract class AppLocalizations {
   /// **'Keep this diary the same on all your devices through a WebDAV server, such as Nextcloud, Synology or Jianguoyun.'**
   String get syncOffDescription;
 
+  /// No description provided for @syncEntryUnsynced.
+  ///
+  /// In en, this message translates to:
+  /// **'Not synced: the last sync did not go through'**
+  String get syncEntryUnsynced;
+
+  /// No description provided for @syncUseOfficial.
+  ///
+  /// In en, this message translates to:
+  /// **'Use the AID sync server'**
+  String get syncUseOfficial;
+
   /// No description provided for @syncServer.
   ///
   /// In en, this message translates to:

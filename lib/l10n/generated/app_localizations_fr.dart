@@ -2056,6 +2056,13 @@ class AppLocalizationsFr extends AppLocalizations {
       'Keep this diary the same on all your devices through a WebDAV server, such as Nextcloud, Synology or Jianguoyun.';
 
   @override
+  String get syncEntryUnsynced =>
+      'Not synced: the last sync did not go through';
+
+  @override
+  String get syncUseOfficial => 'Use the AID sync server';
+
+  @override
   String get syncServer => 'Server address';
 
   @override

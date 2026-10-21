@@ -54,6 +54,17 @@ void main() {
   group('a new database', () {
     setUp(() => AppDatabase.instance.createSchema(db));
 
+    test('finds the entries whose changes have not gone up', () async {
+      final waiting = await addEntry('waiting');
+      final sent = await addEntry('sent');
+      await db.delete(syncChangesTable,
+          where: '$syncIdColumn = ?',
+          whereArgs: [await idOf(entriesTable, sent)]);
+      expect(await pendingEntryIds(db), {waiting});
+      await clearSyncState(db);
+      expect(await pendingEntryIds(db), isEmpty);
+    });
+
     test('gives new rows an id and records them', () async {
       final entry = await idOf(entriesTable, await addEntry('hello'));
 

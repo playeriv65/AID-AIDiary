@@ -112,6 +112,11 @@ class SyncService with ChangeNotifier {
   Object? error;
   SyncReport? lastReport;
 
+  /// Entries (local ids) still waiting to go up while syncing is failing or
+  /// locked. Empty while it works: synced is the normal state and is not
+  /// marked, and a change waiting a few seconds for its turn is not either.
+  Set<int> unsyncedEntryIds = const {};
+
   Future<void>? _running;
   bool _again = false;
   bool _reloading = false;
@@ -211,6 +216,7 @@ class SyncService with ChangeNotifier {
           info.id != target.spaceId ||
           (info.encrypted && key == null)) {
         error = null;
+        await _markUnsynced();
         _setState(SyncState.locked);
         return;
       }
@@ -225,12 +231,21 @@ class SyncService with ChangeNotifier {
       await ConfigProvider.instance
           .set(Settings.lastSync, DateTime.now().toIso8601String());
       error = null;
+      unsyncedEntryIds = const {};
       _setState(SyncState.idle);
     } catch (e, stackTrace) {
       _logger.warning('Sync failed', e, stackTrace);
       error = e;
+      await _markUnsynced();
       _setState(SyncState.failed);
     }
+  }
+
+  /// Finds the entries whose changes have not gone up.
+  Future<void> _markUnsynced() async {
+    final db = AppDatabase.instance.database;
+    if (db == null) return;
+    unsyncedEntryIds = await pendingEntryIds(db);
   }
 
   Future<void> _reload() async {
@@ -326,6 +341,7 @@ class SyncService with ChangeNotifier {
     await ConfigProvider.instance.set(Settings.lastSync, '');
     lastReport = null;
     error = null;
+    unsyncedEntryIds = const {};
     _setState(SyncState.off);
   }
 

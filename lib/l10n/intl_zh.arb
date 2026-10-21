@@ -594,6 +594,8 @@
     "toolbarInsertTime": "插入时间",
     "settingsSyncTitle": "云同步",
     "syncOffDescription": "通过 WebDAV 服务器（如 Nextcloud、群晖、坚果云）让这本日记在你的所有设备上保持一致。",
+    "syncEntryUnsynced": "还没同步：上次同步没有成功",
+    "syncUseOfficial": "使用 AID 同步服务器",
     "syncServer": "服务器地址",
     "syncUsername": "用户名",
     "syncPassword": "密码",

@@ -87,6 +87,8 @@
   },
   "sync": {
     "afterChangeSeconds": 15,
-    "whileOpenMinutes": 10
+    "whileOpenMinutes": 10,
+    "officialServer": "https://aid.playeriv65.com/dav/",
+    "exampleServer": "https://dav.jianguoyun.com/dav/"
   }
 }

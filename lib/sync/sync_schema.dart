@@ -142,6 +142,15 @@ SELECT '${kind.name}', $syncIdColumn, $_nowMs FROM ${kind.table}''');
   }
 }
 
+/// Local ids of the entries with changes that have not gone up yet.
+Future<Set<int>> pendingEntryIds(DatabaseExecutor db) async => {
+      for (final row in await db.rawQuery('''
+SELECT e.id FROM $entriesTable e
+JOIN $syncChangesTable c ON c.kind = ? AND c.$syncIdColumn = e.$syncIdColumn''',
+          [SyncKind.entry.name]))
+        row['id'] as int,
+    };
+
 /// Forgets what was synced where, for a diary that leaves its space.
 Future<void> clearSyncState(DatabaseExecutor db) async {
   await db.delete(syncChangesTable);

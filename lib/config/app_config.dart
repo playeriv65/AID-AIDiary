@@ -170,4 +170,10 @@ class AppConfig {
   /// How often the app syncs while it stays open.
   Duration get syncWhileOpen =>
       Duration(minutes: _section('sync')['whileOpenMinutes'] as int);
+
+  /// The AID sync server's WebDAV address (server/ in this repository).
+  String get syncOfficialServer => _section('sync')['officialServer'] as String;
+
+  /// An address shown as an example in the server field.
+  String get syncExampleServer => _section('sync')['exampleServer'] as String;
 }
