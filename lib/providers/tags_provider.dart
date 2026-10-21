@@ -332,6 +332,29 @@ class TagsProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  /// Icons of the categories and tags [createDefaultTags] makes. Every
+  /// install makes its own, and sync recognises them by these.
+  static const defaultCategoryIcons = [
+    TagIconKey.sentimentVerySatisfied,
+    TagIconKey.directionsRun,
+  ];
+  static const defaultTagIcons = [
+    TagIconKey.favorite,
+    TagIconKey.batteryChargingFull,
+    TagIconKey.celebration,
+    TagIconKey.volunteerActivism,
+    TagIconKey.spa,
+    TagIconKey.nightlight,
+    TagIconKey.psychology,
+    TagIconKey.thunderstorm,
+    TagIconKey.fitnessCenter,
+    TagIconKey.groups,
+    TagIconKey.palette,
+    TagIconKey.theaterComedy,
+    TagIconKey.localDining,
+    TagIconKey.cleaningServices,
+  ];
+
   Future<void> createDefaultTags() async {
     // Names are stored, so use the language the app shows, not the device's.
     final deviceLocale = ConfigProvider.instance.getOverrideLanguage() ??

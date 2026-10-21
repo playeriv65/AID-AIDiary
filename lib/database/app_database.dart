@@ -26,6 +26,8 @@ import 'package:aid_diary/providers/tags_provider.dart';
 import 'package:aid_diary/providers/templates_provider.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/widgets.dart';
+import 'package:aid_diary/sync/builtin_ids.dart';
+import 'package:aid_diary/sync/sync_schema.dart';
 import 'package:logging/logging.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:path/path.dart';
@@ -88,7 +90,7 @@ class AppDatabase {
 
   Future<void> open({int? firstScreen}) async {
     _database = await openDatabase(_internalPath!,
-        version: 10, onCreate: _createDatabase, onUpgrade: _onUpgrade);
+        version: 11, onCreate: _createDatabase, onUpgrade: _onUpgrade);
 
     await EntriesProvider.instance.load(firstScreen: firstScreen);
     await EntryImagesProvider.instance.load();
@@ -291,9 +293,23 @@ class AppDatabase {
     await TemplatesProvider.instance.createDefaultTemplates();
     await TagsProvider.instance.createDefaultTags();
     await createWelcomeEntry();
+    await _assignBuiltinIds(db);
+  }
+
+  Future<void> _assignBuiltinIds(DatabaseExecutor db) async {
+    final l10n = await TemplatesProvider.defaultsLocalizations();
+    await assignBuiltinIds(db,
+        defaultTemplateNames: TemplatesProvider.defaultTemplateNames(l10n));
   }
 
   Future<void> createSchema(Database db) async {
+    await createVersion10Schema(db);
+    await addSyncSchema(db);
+  }
+
+  /// The tables as they were before sync, for upgrade tests.
+  @visibleForTesting
+  Future<void> createVersion10Schema(Database db) async {
     await db.execute('''
 CREATE TABLE $entriesTable (
   ${EntryFields.id} INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
@@ -362,9 +378,9 @@ CREATE TABLE $imagesTable (
       skipUpdate: true,
     );
 
-    final imageBytes = await rootBundle.load('assets/welcome_first_steps.webp');
+    final imageBytes = await rootBundle.load('assets/$welcomeImageName');
     final imageName = await ImageStorage.instance.create(
-      'welcome_first_steps.webp',
+      welcomeImageName,
       imageBytes.buffer.asUint8List(),
       currTime: now,
     );
@@ -580,6 +596,12 @@ DROP TABLE old_entries;
             whereArgs: [row[EntryFields.id]]);
       }
       await batch.commit(noResult: true);
+    }
+    if (oldVersion <= 10 && newVersion >= 11) {
+      await addSyncSchema(db);
+      await _assignBuiltinIds(db);
+      // Nothing has synced yet; joining a space marks everything.
+      await db.delete(syncChangesTable);
     }
   }
 

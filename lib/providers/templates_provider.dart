@@ -57,7 +57,8 @@ class TemplatesProvider with ChangeNotifier {
     return templates.where((t) => t.id == defaultTemplateId).firstOrNull;
   }
 
-  Future<void> createDefaultTemplates() async {
+  /// The language the default templates are written in.
+  static Future<AppLocalizations> defaultsLocalizations() {
     final deviceLocale = WidgetsBinding.instance.platformDispatcher.locale;
     Locale locale;
     if (AppLocalizations.delegate.isSupported(deviceLocale)) {
@@ -68,7 +69,19 @@ class TemplatesProvider with ChangeNotifier {
           ? langOnly
           : const Locale('en');
     }
-    final l10n = await AppLocalizations.delegate.load(locale);
+    return AppLocalizations.delegate.load(locale);
+  }
+
+  /// Names of the templates [createDefaultTemplates] makes, in its order.
+  /// Every install makes its own, and sync recognises them by these.
+  static List<String> defaultTemplateNames(AppLocalizations l10n) => [
+        l10n.templateDefaultTimestampTitle,
+        l10n.templateDefaultSummaryTitle,
+        l10n.templateDefaultReflectionTitle,
+      ];
+
+  Future<void> createDefaultTemplates() async {
+    final l10n = await defaultsLocalizations();
     final defaultTemplates = [
       Template(
           name: l10n.templateDefaultTimestampTitle,
@@ -88,7 +101,7 @@ class TemplatesProvider with ChangeNotifier {
     ];
 
     for (final template in defaultTemplates) {
-      add(template);
+      await add(template);
     }
   }
 }
