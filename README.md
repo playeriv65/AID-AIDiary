@@ -58,6 +58,7 @@ Windows is the main development environment. Use the installed Flutter SDK at `D
 ./scripts/dev.ps1 windows      # run the Windows app
 ./scripts/dev.ps1 android      # run on the emulator
 ./scripts/dev.ps1 apk          # build the debug APK (dev flavor)
+./scripts/dev.ps1 release      # build the signed release APK and install it on connected devices
 ```
 
 The Android build runs on the installed JDK 23: the root `android/build.gradle` gives every module's Kotlin the JVM target its Java already uses, since many plugins leave it unset. Flutter's Android SDK path is pinned with `flutter config --android-sdk D:\software\android-sdk`.

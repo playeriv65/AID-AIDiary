@@ -1,5 +1,5 @@
 param(
-  [ValidateSet('windows','windows-background','windows-driver','android','apk','test','test-unit','test-widget','test-integration','analyze','pub','screenshots')][string]$Target='windows',
+  [ValidateSet('windows','windows-background','windows-driver','android','apk','release','test','test-unit','test-widget','test-integration','analyze','pub','screenshots')][string]$Target='windows',
   # Flutter device id for 'android', e.g. a wireless adb serial from `flutter devices`.
   [string]$Device='emulator-5554'
 )
@@ -28,6 +28,20 @@ switch ($Target) {
   # Prints the DTD URI so the Dart MCP server can attach for hot reload.
   'android' { flutter run -d $Device --flavor dev --print-dtd }
   'apk' { flutter build apk --debug --flavor dev }
+  # The everyday app: signed with android/key.properties (kept out of git)
+  # and installed over the existing one, data kept, on every connected
+  # phone or tablet.
+  'release' {
+    flutter build apk --release --flavor independent --target-platform android-arm64
+    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+    $apk = 'build\app\outputs\flutter-apk\app-independent-release.apk'
+    foreach ($line in (adb devices | Select-Object -Skip 1)) {
+      $serial, $state = $line -split '\s+'
+      if ($state -ne 'device' -or $serial -like 'emulator-*') { continue }
+      Write-Host "Installing on $serial"
+      adb -s $serial install -r $apk
+    }
+  }
   'pub' { flutter pub get }
   # Test layers (see dart_test.yaml). Four workers keep runs from pinning
   # every core. Unit tests while iterating; all layers before committing.
