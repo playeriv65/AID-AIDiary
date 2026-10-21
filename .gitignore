@@ -57,3 +57,8 @@ android/app/.cxx/
 
 # Current changelog
 changelog.txt
+
+# Go sync server: local data and builds
+server/data/
+server/aid-sync
+server/aid-sync.exe

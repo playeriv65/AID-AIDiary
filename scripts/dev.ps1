@@ -1,5 +1,5 @@
 param(
-  [ValidateSet('windows','windows-background','windows-driver','android','apk','release','test','test-unit','test-widget','test-integration','analyze','pub','screenshots')][string]$Target='windows',
+  [ValidateSet('windows','windows-background','windows-driver','android','apk','release','test','test-unit','test-widget','test-integration','test-server','analyze','pub','screenshots')][string]$Target='windows',
   # Flutter device id for 'android', e.g. a wireless adb serial from `flutter devices`.
   [string]$Device='emulator-5554'
 )
@@ -53,6 +53,14 @@ switch ($Target) {
   'test-unit' { flutter test -j 4 --exclude-tags widget,integration }
   'test-widget' { flutter test -j 4 --tags widget }
   'test-integration' { flutter test -j 4 --tags integration }
+  # The Go sync server under server/.
+  'test-server' {
+    Push-Location server
+    try {
+      go vet ./...
+      if ($LASTEXITCODE -eq 0) { go test ./... }
+    } finally { Pop-Location }
+  }
   'test' { flutter test -j 4 }
   'analyze' { flutter analyze }
   # Renders artifacts/ui-*.png in widget tests; no window opens.
