@@ -10,7 +10,7 @@ import 'package:aid_diary/providers/entries_provider.dart';
 import 'package:aid_diary/providers/entry_images_provider.dart';
 import 'package:aid_diary/providers/tags_provider.dart';
 import 'package:aid_diary/utils/entry_context_display.dart';
-import 'package:aid_diary/utils/entry_navigation.dart';
+import 'package:aid_diary/routing/entry_navigation.dart';
 import 'package:aid_diary/widgets/journal_entry_row.dart';
 import 'package:aid_diary/widgets/list_detail_layout.dart';
 import 'package:aid_diary/widgets/mood_icon.dart';

@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'package:aid_diary/routing/app_navigation.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/models/tag.dart';
-import 'package:aid_diary/pages/settings/tags_settings.dart';
 import 'package:aid_diary/providers/tags_provider.dart';
 import 'package:aid_diary/widgets/edit_tag.dart';
 import 'package:aid_diary/widgets/tag_attachment_source.dart';
@@ -334,9 +334,7 @@ class _TagPickerDialogState extends State<TagPickerDialog> {
     );
 
     final manageTags = TextButton(
-      onPressed: () => Navigator.of(context).push(
-        MaterialPageRoute(builder: (_) => const TagsSettings()),
-      ),
+      onPressed: () => AppNavigation.tags(Navigator.of(context)),
       child: Text(l10n.manageTags),
     );
 

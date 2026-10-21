@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'package:aid_diary/routing/app_navigation.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/models/builtin_templates.dart';
 import 'package:aid_diary/models/template.dart';
-import 'package:aid_diary/pages/settings/templates_page.dart';
 import 'package:aid_diary/providers/templates_provider.dart';
 import 'package:aid_diary/widgets/list_detail_layout.dart';
 import 'package:material_ui/material_ui.dart';
@@ -115,10 +115,8 @@ class TemplateSelect extends StatelessWidget {
         TextButton.icon(
           icon: const Icon(Icons.edit_document),
           label: Text(l10n.manageTemplates),
-          onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-              allowSnapshotting: false,
-              fullscreenDialog: true,
-              builder: (context) => const TemplateSettings())),
+          onPressed: () => AppNavigation.templates(Navigator.of(context),
+              fullscreenDialog: true),
         ),
         TextButton(
           onPressed: () => Navigator.of(context).pop(),

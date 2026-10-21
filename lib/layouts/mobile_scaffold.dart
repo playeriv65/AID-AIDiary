@@ -9,7 +9,7 @@ import 'package:aid_diary/pages/calendar_page.dart';
 import 'package:aid_diary/pages/coach_page.dart';
 import 'package:aid_diary/pages/journal_page.dart';
 import 'package:aid_diary/pages/media_page.dart';
-import 'package:aid_diary/utils/entry_navigation.dart';
+import 'package:aid_diary/routing/entry_navigation.dart';
 import 'package:material_ui/material_ui.dart';
 
 class MobileScaffold extends StatefulWidget {

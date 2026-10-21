@@ -6,7 +6,7 @@ import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/providers/entries_provider.dart';
 import 'package:aid_diary/providers/entry_images_provider.dart';
 import 'package:aid_diary/time_manager.dart';
-import 'package:aid_diary/utils/entry_navigation.dart';
+import 'package:aid_diary/routing/entry_navigation.dart';
 import 'package:aid_diary/widgets/journal_entry_row.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';

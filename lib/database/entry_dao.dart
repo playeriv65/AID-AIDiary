@@ -7,9 +7,6 @@ import 'package:aid_diary/models/entry.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:aid_diary/utils/local_time.dart';
 
-/// An entry in Recently deleted and when it went there.
-typedef DeletedEntry = ({Entry entry, DateTime deletedAt});
-
 class EntryDao {
   /// Entries not in Recently deleted, by diary day then written time, newest
   /// first; only the [limit] newest when given.

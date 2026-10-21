@@ -7,7 +7,7 @@ import 'dart:io';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/providers/entries_provider.dart';
 import 'package:aid_diary/device_info_service.dart';
-import 'package:aid_diary/main.dart';
+import 'package:aid_diary/background/background_work.dart';
 import 'package:aid_diary/notification_manager.dart';
 import 'package:aid_diary/storage/storage_picker.dart';
 import 'package:aid_diary/time_manager.dart';
@@ -108,9 +108,29 @@ class _BackupRestoreSettingsState extends State<BackupRestoreSettings> {
 
   Future<void> _restoreData(BuildContext context) async {
     await runOperation(
-        context, (update) => BackupRestoreUtils.restoreFromZip(context, update),
+        context,
+        (update) => BackupRestoreUtils.restoreFromZip(context, update,
+            askPassword: () => _askBackupPassword(context)),
         failureDescription:
             AppLocalizations.of(context)!.restoreErrorDescription);
+  }
+
+  /// The password of an encrypted backup the saved one does not open.
+  Future<String?> _askBackupPassword(BuildContext context) async {
+    if (!context.mounted) return null;
+    String? password;
+    await showDialog(
+        context: context,
+        builder: (context) => AuthPopup(
+              mode: AuthPopupMode.enterPassword,
+              title: AppLocalizations.of(context)!.backupEncryptedTitle,
+              description: AppLocalizations.of(context)!.backupEncryptedContent,
+              showBiometrics: false,
+              dismissable: true,
+              store: const BackupPasswordStore(),
+              onSuccess: (entered) => password = entered,
+            ));
+    return password;
   }
 
   Future<void> _showRestoreWarning() async {

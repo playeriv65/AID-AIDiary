@@ -12,7 +12,7 @@ import 'package:aid_diary/providers/tags_provider.dart';
 import 'package:aid_diary/stats/period_review.dart';
 import 'package:aid_diary/time_manager.dart';
 import 'package:aid_diary/utils/entry_context_display.dart';
-import 'package:aid_diary/utils/entry_navigation.dart';
+import 'package:aid_diary/routing/entry_navigation.dart';
 import 'package:aid_diary/utils/entry_preview.dart';
 import 'package:aid_diary/widgets/local_image_loader.dart';
 import 'package:aid_diary/widgets/mood_icon.dart';

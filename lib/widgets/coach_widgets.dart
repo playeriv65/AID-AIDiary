@@ -44,9 +44,15 @@ class ProgramCover extends StatelessWidget {
           ),
         ),
         child: Center(
-            child: Icon(program.icon,
+            child: Icon(coachProgramIcon(program),
                 size: iconSize, color: cs.onPrimaryContainer)),
       ),
     );
   }
 }
+
+/// The icon on a program's cover; the model itself stays free of UI.
+IconData coachProgramIcon(CoachProgram program) => switch (program.id) {
+      'reflect' => Icons.self_improvement_rounded,
+      _ => Icons.wb_sunny_outlined,
+    };

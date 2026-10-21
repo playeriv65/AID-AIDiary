@@ -17,7 +17,6 @@ import 'package:aid_diary/utils/cancellation_token.dart';
 import 'package:aid_diary/utils/operation_outcome.dart';
 import 'package:aid_diary/utils/password_store.dart';
 import 'package:aid_diary/utils/zip_utils.dart';
-import 'package:aid_diary/widgets/auth_popup.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:logging/logging.dart';
@@ -289,8 +288,13 @@ class BackupRestoreUtils {
         onProgress: onProgress);
   }
 
-  static Future<void> _decryptBackup(BuildContext context, File encrypted,
-      File destination, void Function(double percent) onProgress) async {
+  /// Decrypts with the saved backup password, else with one [askPassword]
+  /// gets from the user (null cancels).
+  static Future<void> _decryptBackup(
+      File encrypted,
+      File destination,
+      void Function(double percent) onProgress,
+      Future<String?> Function() askPassword) async {
     try {
       final password =
           BackupPasswordStore.isEnabled ? BackupPasswordStore.password : null;
@@ -299,29 +303,12 @@ class BackupRestoreUtils {
           encrypted.path, destination.path, password,
           onProgress: onProgress);
     } catch (_) {
-      if (!context.mounted) rethrow;
-      final password = await _promptForBackupPassword(context);
+      final password = await askPassword();
       if (password == null) throw _RestoreCancelled();
       await BackupEncryption.decryptFile(
           encrypted.path, destination.path, password,
           onProgress: onProgress);
     }
-  }
-
-  static Future<String?> _promptForBackupPassword(BuildContext context) async {
-    String? password;
-    await showDialog(
-        context: context,
-        builder: (context) => AuthPopup(
-              mode: AuthPopupMode.enterPassword,
-              title: AppLocalizations.of(context)!.backupEncryptedTitle,
-              description: AppLocalizations.of(context)!.backupEncryptedContent,
-              showBiometrics: false,
-              dismissable: true,
-              store: const BackupPasswordStore(),
-              onSuccess: (entered) => password = entered,
-            ));
-    return password;
   }
 
   static Future<OperationOutcome> backupToZip(
@@ -352,8 +339,11 @@ class BackupRestoreUtils {
     return outcome;
   }
 
+  /// Restores a picked backup; [askPassword] asks for the password of an
+  /// encrypted one the saved password does not open.
   static Future<OperationOutcome> restoreFromZip(
-      BuildContext context, void Function(String) updateStatus) async {
+      BuildContext context, void Function(String) updateStatus,
+      {required Future<String?> Function() askPassword}) async {
     final localizations = AppLocalizations.of(context)!;
     var outcome = const OperationOutcome.succeeded();
     var tempDir = await getTemporaryDirectory();
@@ -377,11 +367,10 @@ class BackupRestoreUtils {
       });
 
       if (await BackupEncryption.looksEncrypted(tempImportFile)) {
-        if (!context.mounted) throw _RestoreCancelled();
-        await _decryptBackup(context, tempImportFile, tempZipFile, (percent) {
+        await _decryptBackup(tempImportFile, tempZipFile, (percent) {
           updateStatus(
               localizations.decryptingBackupStatus("${percent.round()}"));
-        });
+        }, askPassword);
       } else {
         if (await tempZipFile.exists()) await tempZipFile.delete();
         await tempImportFile.copy(tempZipFile.path);

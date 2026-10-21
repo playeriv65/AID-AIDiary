@@ -10,7 +10,7 @@ import 'package:aid_diary/models/coach_program.dart';
 import 'package:aid_diary/models/template.dart';
 import 'package:aid_diary/providers/templates_provider.dart';
 import 'package:aid_diary/services/coach_service.dart';
-import 'package:aid_diary/utils/entry_navigation.dart';
+import 'package:aid_diary/routing/entry_navigation.dart';
 import 'package:aid_diary/widgets/coach_widgets.dart';
 import 'package:aid_diary/widgets/list_detail_layout.dart';
 import 'package:aid_diary/widgets/scaled_markdown.dart';
@@ -67,7 +67,7 @@ class _CoachPageState extends State<CoachPage>
             card: (headerAspectRatio) => _CoachCard(
                   key: ValueKey('coach-program-${program.id}'),
                   headerAspectRatio: headerAspectRatio,
-                  icon: program.icon,
+                  icon: coachProgramIcon(program),
                   kind: l10n.coachKindProgram,
                   title: program.title,
                   description: program.tagline,

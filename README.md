@@ -50,7 +50,7 @@ Android permissions beyond storage and notifications: location (place, asked for
 
 ## Development
 
-Windows is the main development environment. Use the installed Flutter SDK at `D:\software\flutter` (no WSL, no SDK submodule).
+Windows is the main development environment. Use the installed Flutter SDK at `D:\software\flutter` (no WSL, no SDK submodule). The code is organized after Flutter's official architecture guide; [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) describes the layers and the rules the tests enforce.
 
 ```powershell
 ./scripts/dev.ps1 test         # all tests

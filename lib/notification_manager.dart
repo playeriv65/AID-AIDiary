@@ -5,7 +5,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
-import 'package:aid_diary/main.dart';
+import 'package:aid_diary/background/background_work.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';

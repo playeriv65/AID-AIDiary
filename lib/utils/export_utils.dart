@@ -23,7 +23,7 @@ import 'package:aid_diary/utils/formats/day_one_format.dart';
 import 'package:aid_diary/utils/formats/journey_format.dart';
 import 'package:aid_diary/utils/operation_outcome.dart';
 import 'package:aid_diary/utils/zip_utils.dart';
-import 'package:aid_diary/widgets/mood_icon.dart';
+import 'package:aid_diary/utils/mood_emoji.dart';
 import 'package:intl/intl.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:path/path.dart';
@@ -285,8 +285,7 @@ class MarkdownExportWriter implements ArchiveExportWriter {
       await imageStore.write(prettyName, bytes);
     }
 
-    final moodText =
-        entry.mood != null ? "${MoodIcon.getMoodIcon(entry.mood)} " : "";
+    final moodText = entry.mood != null ? "${moodEmoji(entry.mood)} " : "";
     noteBody.writeln(
         "$moodText${DateFormat.yMMMEd(locale).format(entry.day)}\n${entry.text}");
 

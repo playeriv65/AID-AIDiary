@@ -2,11 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'package:aid_diary/routing/app_navigation.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
-import 'package:aid_diary/pages/search_page.dart';
-import 'package:aid_diary/pages/settings/templates_page.dart';
-import 'package:aid_diary/pages/settings_page.dart';
-import 'package:aid_diary/pages/statistics_page.dart';
 import 'package:aid_diary/widgets/app_logo.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -49,9 +46,7 @@ class TopSearchCard extends StatelessWidget {
                 key: const ValueKey('journal-search'),
                 tooltip: l10n.searchLogsHint,
                 icon: const Icon(Icons.search_rounded),
-                onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                    allowSnapshotting: false,
-                    builder: (_) => const SearchPage())),
+                onPressed: () => AppNavigation.search(Navigator.of(context)),
               ),
             ],
             IconButton(
@@ -76,12 +71,9 @@ class TopSearchCard extends StatelessWidget {
 Future<void> showProfileSheet(BuildContext context) {
   final navigator = Navigator.of(context);
   final l10n = AppLocalizations.of(context)!;
-  void open(String name, Widget Function() page) {
+  void open(Future<void> Function(NavigatorState navigator) screen) {
     navigator.pop();
-    navigator.push(MaterialPageRoute<void>(
-        settings: RouteSettings(name: name),
-        allowSnapshotting: false,
-        builder: (_) => page()));
+    screen(navigator);
   }
 
   return showModalBottomSheet<void>(
@@ -142,25 +134,19 @@ Future<void> showProfileSheet(BuildContext context) {
                         'diary-settings',
                         Icons.settings_rounded,
                         l10n.pageSettingsTitle,
-                        () => open('settings', () => const SettingsPage())),
+                        () => open(AppNavigation.settings)),
                     const Divider(height: 1),
                     row(
                         'profile-statistics',
                         Icons.insights_rounded,
                         l10n.pageStatisticsTitle,
-                        () => open(
-                            'statistics',
-                            () => Scaffold(
-                                appBar: AppBar(
-                                    title: Text(l10n.pageStatisticsTitle)),
-                                body: const StatsPage()))),
+                        () => open(AppNavigation.statistics)),
                     const Divider(height: 1),
                     row(
                         'profile-templates',
                         Icons.description_outlined,
                         l10n.settingsTemplatesTitle,
-                        () =>
-                            open('templates', () => const TemplateSettings())),
+                        () => open(AppNavigation.templates)),
                   ]),
                 ),
                 const SizedBox(height: 24),

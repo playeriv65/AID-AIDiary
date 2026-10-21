@@ -3465,13 +3465,13 @@ abstract class AppLocalizations {
   /// No description provided for @photoMetaDateAndPlace.
   ///
   /// In en, this message translates to:
-  /// **'Change this entry\'s time to {date} and its place to {place}, as recorded in the photo?'**
+  /// **'Count this entry for {date} and set its place to {place}, as recorded in the photo?'**
   String photoMetaDateAndPlace(String date, String place);
 
   /// No description provided for @photoMetaDate.
   ///
   /// In en, this message translates to:
-  /// **'Change this entry\'s time to {date}, when the photo was taken?'**
+  /// **'Count this entry for {date}, when the photo was taken?'**
   String photoMetaDate(String date);
 
   /// No description provided for @photoMetaPlace.

@@ -1831,12 +1831,12 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String photoMetaDateAndPlace(String date, String place) {
-    return '把这篇日记的时间改成 $date、地点改成 $place？这是照片里记录的。';
+    return '把这篇日记算作 $date、地点改成 $place？这是照片里记录的。';
   }
 
   @override
   String photoMetaDate(String date) {
-    return '把这篇日记的时间改成照片拍摄的 $date？';
+    return '把这篇日记算作照片拍摄的 $date？';
   }
 
   @override
@@ -3795,12 +3795,12 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String photoMetaDateAndPlace(String date, String place) {
-    return '把這篇日記的時間改成 $date、地點改成 $place？這是照片裡記錄的。';
+    return '把這篇日記算作 $date、地點改成 $place？這是照片裡記錄的。';
   }
 
   @override
   String photoMetaDate(String date) {
-    return '把這篇日記的時間改成照片拍攝的 $date？';
+    return '把這篇日記算作照片拍攝的 $date？';
   }
 
   @override

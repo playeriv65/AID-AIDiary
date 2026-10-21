@@ -9,7 +9,7 @@ import 'package:aid_diary/utils/diary_day.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/database/entry_store.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
-import 'package:aid_diary/main.dart';
+import 'package:aid_diary/background/background_work.dart';
 import 'package:aid_diary/models/coach_program.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:shared_preferences/shared_preferences.dart';

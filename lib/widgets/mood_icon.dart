@@ -4,7 +4,7 @@
 
 import 'dart:io';
 
-import 'package:aid_diary/config_provider.dart';
+import 'package:aid_diary/utils/mood_emoji.dart';
 import 'package:material_ui/material_ui.dart';
 
 class MoodIcon extends StatefulWidget {
@@ -22,11 +22,7 @@ class MoodIcon extends StatefulWidget {
   @override
   State<MoodIcon> createState() => _MoodIconState();
 
-  static String getMoodIcon(int? moodValue) {
-    final setting = Settings.moodIcons[moodValue];
-    if (setting == null) return "";
-    return ConfigProvider.instance.get(setting);
-  }
+  static String getMoodIcon(int? moodValue) => moodEmoji(moodValue);
 }
 
 class _MoodIconState extends State<MoodIcon> {

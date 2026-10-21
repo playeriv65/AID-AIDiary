@@ -27,7 +27,7 @@ import 'package:aid_diary/providers/entry_images_provider.dart';
 import 'package:aid_diary/services/coach_service.dart';
 import 'package:aid_diary/services/home_widget_service.dart';
 import 'package:aid_diary/time_manager.dart';
-import 'package:aid_diary/utils/entry_navigation.dart';
+import 'package:aid_diary/routing/entry_navigation.dart';
 import 'package:aid_diary/widgets/coach_widgets.dart';
 import 'package:aid_diary/widgets/journal_entry_row.dart';
 import 'package:aid_diary/widgets/list_detail_layout.dart';

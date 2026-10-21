@@ -3,7 +3,6 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
-import 'package:material_ui/material_ui.dart';
 
 enum CoachInterval { daily, weekly }
 
@@ -13,7 +12,6 @@ enum CoachDifficulty { beginner, intermediate }
 class CoachProgram {
   const CoachProgram({
     required this.id,
-    required this.icon,
     required this.title,
     required this.tagline,
     required this.description,
@@ -23,7 +21,6 @@ class CoachProgram {
   });
 
   final String id;
-  final IconData icon;
   final String title;
 
   /// One line under the cover.
@@ -57,7 +54,6 @@ class CoachProgram {
   static List<CoachProgram> all(AppLocalizations l10n) => [
         CoachProgram(
           id: 'everyday',
-          icon: Icons.wb_sunny_outlined,
           title: l10n.coachProgramEverydayTitle,
           tagline: l10n.coachProgramEverydayTagline,
           description: l10n.coachProgramEverydayDescription,
@@ -73,7 +69,6 @@ class CoachProgram {
         ),
         CoachProgram(
           id: 'reflect',
-          icon: Icons.self_improvement_rounded,
           title: l10n.coachProgramReflectTitle,
           tagline: l10n.coachProgramReflectTagline,
           description: l10n.coachProgramReflectDescription,

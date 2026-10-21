@@ -11,7 +11,7 @@ import 'package:aid_diary/database/app_database.dart';
 import 'package:aid_diary/database/image_storage.dart';
 import 'package:aid_diary/device_info_service.dart';
 import 'package:aid_diary/launch_intent.dart';
-import 'package:aid_diary/main.dart';
+import 'package:aid_diary/background/background_work.dart';
 import 'package:aid_diary/notification_manager.dart';
 import 'package:aid_diary/pages/onboarding_page.dart';
 import 'package:aid_diary/services/coach_service.dart';

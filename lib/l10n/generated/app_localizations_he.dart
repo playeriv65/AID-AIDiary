@@ -1874,12 +1874,12 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String photoMetaDateAndPlace(String date, String place) {
-    return 'Change this entry\'s time to $date and its place to $place, as recorded in the photo?';
+    return 'Count this entry for $date and set its place to $place, as recorded in the photo?';
   }
 
   @override
   String photoMetaDate(String date) {
-    return 'Change this entry\'s time to $date, when the photo was taken?';
+    return 'Count this entry for $date, when the photo was taken?';
   }
 
   @override

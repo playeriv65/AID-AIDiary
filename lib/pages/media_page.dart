@@ -8,7 +8,7 @@ import 'package:aid_diary/models/image.dart';
 import 'package:aid_diary/pages/entry_view_page.dart';
 import 'package:aid_diary/providers/entries_provider.dart';
 import 'package:aid_diary/providers/entry_images_provider.dart';
-import 'package:aid_diary/utils/entry_navigation.dart';
+import 'package:aid_diary/routing/entry_navigation.dart';
 import 'package:aid_diary/widgets/list_detail_layout.dart';
 import 'package:aid_diary/widgets/local_image_loader.dart';
 import 'package:aid_diary/widgets/top_search_card.dart';

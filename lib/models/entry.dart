@@ -284,3 +284,6 @@ class Entry {
         EntryFields.diaryDate: DiaryDay.format(day),
       };
 }
+
+/// An entry in Recently deleted and when it went there.
+typedef DeletedEntry = ({Entry entry, DateTime deletedAt});
