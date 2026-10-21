@@ -30,7 +30,12 @@ const List<Rule> _rules = [
   ),
   (
     from: [
-      'database/', 'storage/', 'services/', 'providers/', 'background/', //
+      'database/',
+      'storage/',
+      'services/',
+      'providers/',
+      'background/',
+      'sync/',
     ],
     forbidden: ['pages/', 'widgets/', 'layouts/', 'routing/', 'main.dart'],
     why: 'the data layer never reaches up into the UI',

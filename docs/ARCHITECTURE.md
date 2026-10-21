@@ -33,7 +33,7 @@ reasoning; this file only records our decisions.
 | Layer | Folders | Role in the guide |
 | --- | --- | --- |
 | UI | `pages/` (screens), `layouts/` (the app shell around them), `widgets/` (shared components), `routing/` (opening screens) | Views; view models where a screen has its own logic (see below) |
-| Data | `database/` (`EntryStore` and DAOs over SQLite), `providers/` (stores for attachments, tags, templates), `storage/` (files, secret store, folder picker), `services/` (network and platform: place names, weather, home widget, coach schedule), `background/` (alarms and backup work that run without the UI) | Repositories (`EntryStore`, `providers/`) over services (DAOs, `storage/`, `services/`) |
+| Data | `database/` (`EntryStore` and DAOs over SQLite), `providers/` (stores for attachments, tags, templates), `storage/` (files, secret store, folder picker), `services/` (network and platform: place names, weather, home widget, coach schedule), `background/` (alarms and backup work that run without the UI), `sync/` (sync engine, encryption and backends) | Repositories (`EntryStore`, `providers/`) over services (DAOs, `storage/`, `services/`) |
 | Pure | `models/`, `stats/`, most of `utils/` (dates and diary days, previews, formats, imports) | Domain models and logic |
 | App | `main.dart` (start-up only), `config/` (`app_config.json` access), `l10n/` | Composition and configuration |
 
@@ -47,7 +47,7 @@ formatting is UI helper. Move one into its folder when a change touches it.
 `test/architecture/layer_boundaries_test.dart` fails on any of these:
 
 1. `models/` and `stats/` import no app layer and no Flutter UI library.
-2. The data layer (`database/`, `storage/`, `services/`, `providers/`,
+2. The data layer (`database/`, `storage/`, `services/`, `providers/`, `sync/`,
    `background/`) imports nothing from the UI (`pages/`, `widgets/`,
    `layouts/`, `routing/`) and not `main.dart`.
 3. The UI never imports a DAO; it goes through the stores.

@@ -166,7 +166,7 @@ void main() {
     });
     final written = await addEntry('my day');
 
-    await AppDatabase.instance.upgradeSchema(db, 8, 9);
+    await AppDatabase.instance.upgradeSchema(db, 10, 11);
 
     expect(
         await idOf(tagsTable, favorite), 'builtin-tag-${TagIconKey.favorite}');
