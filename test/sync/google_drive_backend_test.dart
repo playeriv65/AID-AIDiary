@@ -58,6 +58,9 @@ class FakeDrive {
   /// Results per page, small so that paging is exercised.
   var pageSize = 2;
 
+  /// Requests to turn away as Drive does when a user writes too fast.
+  var rateLimitNext = 0;
+
   /// Every request, as "METHOD path uploadType".
   final List<String> requests = [];
 
@@ -79,6 +82,17 @@ class FakeDrive {
     final type = request.url.queryParameters['uploadType'];
     requests.add('${request.method} ${request.url.path}'
         '${type == null ? '' : ' $type'}');
+    if (rateLimitNext > 0) {
+      rateLimitNext--;
+      return _json({
+        'error': {
+          'code': 403,
+          'errors': [
+            {'reason': 'userRateLimitExceeded'}
+          ],
+        },
+      }, 403);
+    }
     if (request.headers['Authorization'] != 'Bearer $validToken') {
       return http.Response('', 401);
     }
@@ -288,6 +302,32 @@ void main() {
     final drive = FakeDrive();
     await backendFor(drive).write("items/it's", Uint8List.fromList([4]));
     expect(await backendFor(drive).read("items/it's"), [4]);
+  });
+
+  test('uploads side by side into a new space make each folder once', () async {
+    final drive = FakeDrive();
+    final backend = backendFor(drive);
+
+    await Future.wait([
+      for (var i = 0; i < 6; i++)
+        backend.write('blobs/$i', Uint8List.fromList([i])),
+    ]);
+
+    expect(drive.items.where((item) => item.folder).map(drive.pathOf),
+        ['AID Diary', 'AID Diary/blobs']);
+    // Looking for the two folders and one listing; new files in a listed
+    // folder need no search of their own.
+    expect(drive.requests.where((r) => r.startsWith('GET /drive/v3/files')),
+        hasLength(3));
+    expect((await backendFor(drive).list('blobs')), hasLength(6));
+  });
+
+  test('a write turned away for writing too fast is tried again', () async {
+    final drive = FakeDrive()..rateLimitNext = 1;
+
+    await backendFor(drive).write('packs/one', Uint8List.fromList([1]));
+
+    expect(drive.paths, contains('AID Diary/packs/one'));
   });
 
   test('two devices sync an encrypted diary through Google Drive', () async {

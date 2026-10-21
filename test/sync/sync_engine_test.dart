@@ -228,31 +228,65 @@ JOIN $entriesTable e ON e.id = l.${EntryTagFields.entryId}''');
     expect(await laptop.db.query(tagsTable), hasLength(1));
   });
 
+  /// One pack per item, so tests can stop and compact between them.
+  const onePerPack = SyncLimits(packBytes: 1, compactAfter: 1000, parallel: 3);
+
   SyncEngine engineFor(Device device,
-          {void Function(SyncProgress)? onProgress,
+          {SyncLimits limits = testLimits,
+          void Function(SyncProgress)? onProgress,
           bool Function()? stopped}) =>
       SyncEngine(
           db: device.db,
           backend: cloud,
           photos: FileStorePhotos(device.photos),
+          limits: limits,
           onProgress: onProgress,
           stopped: stopped);
 
-  test('a long sync tells how far it is', () async {
+  List<String> filesIn(String folder) => [
+        for (final path in cloud.files.keys)
+          if (path.startsWith('$folder/')) path.substring(folder.length + 1),
+      ];
+
+  test('many changes go up together in one pack', () async {
+    for (var i = 0; i < 50; i++) {
+      await phone.write('entry $i');
+    }
+
+    expect((await phone.sync(cloud)).sent, 50);
+    expect(filesIn(SpaceLayout.packs), hasLength(1));
+    expect((await laptop.sync(cloud)).received, 50);
+    expect(await laptop.texts(), hasLength(50));
+  });
+
+  test('changes beyond a pack size go into further packs', () async {
+    for (var i = 0; i < 20; i++) {
+      await phone.write('entry $i');
+    }
+
+    await phone.sync(cloud,
+        limits:
+            const SyncLimits(packBytes: 2000, compactAfter: 1000, parallel: 3));
+
+    expect(filesIn(SpaceLayout.packs).length, inInclusiveRange(2, 19));
+    await laptop.sync(cloud);
+    expect(await laptop.texts(), hasLength(20));
+  });
+
+  test('a long sync tells how far it is, file by file', () async {
     for (var i = 0; i < 3; i++) {
       await phone.write('entry $i');
     }
     final sending = <SyncProgress>[];
-    await engineFor(phone, onProgress: sending.add).sync();
+    await engineFor(phone, limits: onePerPack, onProgress: sending.add).sync();
     final receiving = <SyncProgress>[];
     await engineFor(laptop, onProgress: receiving.add).sync();
 
     expect(sending, [
       for (var i = 0; i < 3; i++) (sending: true, done: i, total: 3),
     ]);
-    expect(receiving, [
-      for (var i = 0; i < 3; i++) (sending: false, done: i, total: 3),
-    ]);
+    expect(receiving.map((progress) => progress.done), [0, 1, 2]);
+    expect(receiving.map((progress) => progress.total), everyElement(3));
   });
 
   test('a stopped sync keeps what it sent and sends the rest next time',
@@ -260,12 +294,14 @@ JOIN $entriesTable e ON e.id = l.${EntryTagFields.entryId}''');
     for (var i = 0; i < 4; i++) {
       await phone.write('entry $i');
     }
-    var items = 0;
+    var files = 0;
     final report = await engineFor(phone,
-        onProgress: (_) => items++, stopped: () => items >= 2).sync();
+        limits: onePerPack,
+        onProgress: (_) => files++,
+        stopped: () => files >= 2).sync();
 
     expect(report.sent, 2);
-    expect(await laptop.sync(cloud), isA<SyncReport>());
+    await laptop.sync(cloud);
     expect(await laptop.texts(), hasLength(2));
     expect((await phone.sync(cloud)).sent, 2);
     await laptop.sync(cloud);
@@ -277,14 +313,84 @@ JOIN $entriesTable e ON e.id = l.${EntryTagFields.entryId}''');
     for (var i = 0; i < 3; i++) {
       await phone.write('entry $i');
     }
-    await phone.sync(cloud);
+    await phone.sync(cloud, limits: onePerPack);
     await laptop.write('mine');
-    var items = 0;
+    var files = 0;
     final report = await engineFor(laptop,
-        onProgress: (_) => items++, stopped: () => items >= 2).sync();
+        onProgress: (_) => files++, stopped: () => files >= 2).sync();
 
     expect(report.sent, 0);
+    expect(await laptop.texts(), ['mine']);
     expect((await laptop.sync(cloud)).sent, 1);
     expect(await laptop.texts(), hasLength(4));
+  });
+
+  test('packs read in any order settle on the newest edit', () async {
+    final tablet = await Device.create();
+    addTearDown(tablet.db.close);
+    await phone.write('plan');
+    await phone.sync(cloud);
+    await laptop.sync(cloud);
+
+    // The tablet reads both edits at once, the newer one in the older pack.
+    await laptop.edit('plan', 'plan from the laptop');
+    await later();
+    await phone.edit('plan', 'plan from the phone');
+    await phone.sync(cloud);
+    await laptop.sync(cloud);
+    await tablet.sync(cloud);
+
+    expect(await tablet.texts(), ['plan from the phone']);
+    expect(await tablet.texts(deleted: true), ['plan from the laptop']);
+  });
+
+  test('a snapshot folds the packs and still carries deletions', () async {
+    const compacting =
+        SyncLimits(packBytes: 1 << 20, compactAfter: 2, parallel: 3);
+    await phone.write('kept');
+    await phone.write('dropped');
+    await phone.sync(cloud, limits: compacting);
+    await laptop.sync(cloud);
+
+    // The laptop is away while the phone deletes, edits and compacts.
+    await phone.db.delete(entriesTable,
+        where: '${EntryFields.text} = ?', whereArgs: ['dropped']);
+    await phone.sync(cloud, limits: compacting);
+    await phone.edit('kept', 'kept and edited');
+    await phone.sync(cloud, limits: compacting);
+
+    final files = filesIn(SpaceLayout.packs);
+    expect(files, hasLength(1));
+    expect(files.single, startsWith(SpaceLayout.snapshotPrefix));
+
+    await laptop.sync(cloud);
+    expect(await laptop.texts(), ['kept and edited']);
+    final tablet = await Device.create();
+    addTearDown(tablet.db.close);
+    await tablet.sync(cloud);
+    expect(await tablet.texts(), ['kept and edited']);
+  });
+
+  test('an item whose photo is missing waits, and everything read with it',
+      () async {
+    final entry = await phone.write('beach');
+    await phone.photos.write('aid_diary_1.jpg', Uint8List.fromList([1, 2]));
+    await phone.db.insert(imagesTable, {
+      EntryImageFields.entryId: entry,
+      EntryImageFields.imgPath: 'aid_diary_1.jpg',
+      EntryImageFields.imgRank: 0,
+    });
+    await phone.write('plain');
+    await phone.sync(cloud);
+    final blob = filesIn(SpaceLayout.blobs).single;
+    final held = cloud.files.remove(SpaceLayout.blob(blob))!;
+
+    await laptop.sync(cloud);
+    expect(await laptop.texts(), ['plain']);
+
+    cloud.files[SpaceLayout.blob(blob)] = held;
+    await laptop.sync(cloud);
+    expect(await laptop.texts(), ['beach', 'plain']);
+    expect(await laptop.db.query(imagesTable), hasLength(1));
   });
 }

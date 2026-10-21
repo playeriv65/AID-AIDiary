@@ -19,6 +19,8 @@ import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
+import '../support/sync_device.dart';
+
 /// A small WebDAV server that behaves like real ones where it matters: 409
 /// for a PUT into a missing folder, 405 for MKCOL on an existing one, and
 /// separate property groups for found and missing properties.
@@ -217,6 +219,7 @@ void main() {
             db: db,
             backend: backendFor(server),
             photos: FileStorePhotos(InMemoryFileStore()),
+            limits: testLimits,
             cipher: ItemCipher(keys.key))
         .sync();
 

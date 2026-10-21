@@ -171,6 +171,20 @@ class AppConfig {
   Duration get syncWhileOpen =>
       Duration(minutes: _section('sync')['whileOpenMinutes'] as int);
 
+  /// Changes up to this many bytes of JSON go into one pack.
+  int get syncPackBytes => (_section('sync')['packKiB'] as int) * 1024;
+
+  /// Packs in a space beyond which they are folded into a snapshot.
+  int get syncCompactAfterPacks => _section('sync')['compactAfterPacks'] as int;
+
+  /// A sync shows how far it is only once it has run this long; quick ones
+  /// just sync.
+  Duration get syncProgressAfter =>
+      Duration(seconds: _section('sync')['progressAfterSeconds'] as int);
+
+  /// Files a sync moves at the same time.
+  int get syncParallelTransfers => _section('sync')['parallelTransfers'] as int;
+
   /// The AID sync server's WebDAV address (server/ in this repository).
   String get syncOfficialServer => _section('sync')['officialServer'] as String;
 

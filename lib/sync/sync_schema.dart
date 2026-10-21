@@ -32,8 +32,13 @@ const String syncIdColumn = 'uuid';
 /// Items changed locally since they were last sent, with when.
 const String syncChangesTable = 'sync_changes';
 
-/// The remote version of every item as of the last sync.
+/// The space's packs and snapshots this device has read or written. They
+/// never change, so the version column only tells the listing apart.
 const String syncSeenTable = 'sync_seen';
+
+/// When each item last changed, as of the version this device sent or
+/// took in; deleted items stay, so a deletion outlives the packs it came in.
+const String syncItemsTable = 'sync_items';
 
 /// One row; while its flag is set, writes are not recorded as changes. Set
 /// while remote items are written into the database.
@@ -81,6 +86,7 @@ CREATE TABLE $syncSeenTable (
   path TEXT NOT NULL PRIMARY KEY,
   version TEXT NOT NULL
 )''');
+  await addSyncItemsTable(db);
   await db.execute('CREATE TABLE $syncGuardTable (active INTEGER NOT NULL)');
   await db.execute('INSERT INTO $syncGuardTable (active) VALUES (0)');
 
@@ -100,6 +106,14 @@ CREATE TABLE $syncSeenTable (
             'WHERE id = $row.$parentColumn)');
   }
 }
+
+Future<void> addSyncItemsTable(DatabaseExecutor db) => db.execute('''
+CREATE TABLE $syncItemsTable (
+  kind TEXT NOT NULL,
+  $syncIdColumn TEXT NOT NULL,
+  modified INTEGER NOT NULL,
+  PRIMARY KEY (kind, $syncIdColumn)
+)''');
 
 Future<void> _changeTriggers(DatabaseExecutor db, String table, SyncKind kind,
     {required String Function(String row) idOf}) async {
@@ -155,4 +169,5 @@ JOIN $syncChangesTable c ON c.kind = ? AND c.$syncIdColumn = e.$syncIdColumn''',
 Future<void> clearSyncState(DatabaseExecutor db) async {
   await db.delete(syncChangesTable);
   await db.delete(syncSeenTable);
+  await db.delete(syncItemsTable);
 }

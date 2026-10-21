@@ -10,6 +10,11 @@ import 'package:aid_diary/sync/sync_crypto.dart';
 import 'package:aid_diary/sync/sync_engine.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
+/// Room for every test's changes in one pack, and no compaction unless a
+/// test asks for it.
+const SyncLimits testLimits =
+    SyncLimits(packBytes: 1 << 20, compactAfter: 1000, parallel: 3);
+
 /// One device: its own database and photo folder.
 class Device {
   Device._(this.db);
@@ -24,11 +29,13 @@ class Device {
     return Device._(db);
   }
 
-  Future<SyncReport> sync(SyncBackend backend, {ItemCipher? cipher}) =>
+  Future<SyncReport> sync(SyncBackend backend,
+          {ItemCipher? cipher, SyncLimits limits = testLimits}) =>
       SyncEngine(
               db: db,
               backend: backend,
               photos: FileStorePhotos(photos),
+              limits: limits,
               cipher: cipher)
           .sync();
 

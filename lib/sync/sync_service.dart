@@ -170,9 +170,10 @@ class SyncService with ChangeNotifier {
   Object? error;
   SyncReport? lastReport;
 
-  /// How far the running sync is; null when none runs or it has not
-  /// started on the items yet.
+  /// How far the running sync is, once it has taken long enough to say;
+  /// null otherwise.
   SyncProgress? progress;
+  DateTime _started = DateTime(0);
   DateTime _progressShown = DateTime(0);
   static const _progressEvery = Duration(milliseconds: 250);
 
@@ -289,6 +290,7 @@ class SyncService with ChangeNotifier {
     final target = this.target;
     final login = _login;
     if (target == null || login == null) return;
+    _started = DateTime.now();
     _setState(SyncState.syncing);
     try {
       final backend = login.backend();
@@ -306,6 +308,10 @@ class SyncService with ChangeNotifier {
           db: AppDatabase.instance.database!,
           backend: backend,
           photos: const ImageStoragePhotos(),
+          limits: SyncLimits(
+              packBytes: AppConfig.instance.syncPackBytes,
+              compactAfter: AppConfig.instance.syncCompactAfterPacks,
+              parallel: AppConfig.instance.syncParallelTransfers),
           cipher: info.encrypted ? ItemCipher(key!) : null,
           onProgress: _progressed,
           stopped: () => _stopping).sync();
@@ -326,9 +332,12 @@ class SyncService with ChangeNotifier {
     }
   }
 
-  /// Passes on how far the sync is, a few times a second at most.
+  /// Passes on how far a slow sync is, a few times a second at most.
   void _progressed(SyncProgress progress) {
     final now = DateTime.now();
+    if (now.difference(_started) < AppConfig.instance.syncProgressAfter) {
+      return;
+    }
     if (this.progress?.sending == progress.sending &&
         now.difference(_progressShown) < _progressEvery) {
       return;
@@ -488,7 +497,7 @@ class SyncService with ChangeNotifier {
     final login = _login!;
     final backend = login.backend();
     await _stop();
-    for (final folder in [SpaceLayout.items, SpaceLayout.blobs]) {
+    for (final folder in [SpaceLayout.packs, SpaceLayout.blobs]) {
       for (final path in (await backend.list(folder)).keys) {
         await backend.delete(path);
       }

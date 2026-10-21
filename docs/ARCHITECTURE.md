@@ -106,8 +106,8 @@ fakes without global setup.
 Kept in step with the code; remove items as they land.
 
 - Folder names follow layers loosely rather than the guide's `ui/` and
-  `data/` split; renaming waits until the open `task/cloud-sync` branch is
-  merged, to avoid conflicts across the whole tree.
+  `data/` split; renaming waits for a quiet moment with no open task
+  branch, to avoid conflicts across the whole tree.
 - Other screens with logic of their own (search filters, the backup and
   sync settings) to move into view models when they are next changed.
 - Top-level modules in `lib/` still to be filed under their layer.

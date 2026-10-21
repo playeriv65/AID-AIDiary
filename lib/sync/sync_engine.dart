@@ -4,6 +4,7 @@
 
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:aid_diary/models/image.dart';
@@ -69,195 +70,360 @@ class SyncReport {
   bool get changedLocally => received > 0 || keptConflicts > 0;
 }
 
-/// How far a sync is: [done] of [total] items received, or sent.
+/// How far a sync is: [done] of [total] files received, or sent.
 typedef SyncProgress = ({bool sending, int done, int total});
+
+/// How a sync batches its work.
+class SyncLimits {
+  const SyncLimits(
+      {required this.packBytes,
+      required this.compactAfter,
+      required this.parallel});
+
+  /// A pack holds changes up to about this many bytes of JSON before it is
+  /// compressed; more changes go into further packs.
+  final int packBytes;
+
+  /// Packs in a space beyond which a device folds them into a snapshot.
+  final int compactAfter;
+
+  /// Files moved at the same time.
+  final int parallel;
+}
 
 /// Brings a diary and a space up to date with each other.
 ///
-/// Items are compared by the time they last changed: the newer side wins,
-/// and a local entry that loses is kept in Recently deleted rather than
-/// dropped. Photos travel as separate blobs, fetched before the items that
-/// use them are written.
+/// A sync reads the packs and snapshots it has not read yet, takes in what
+/// is newer than what the diary has, and sends its own changes as one new
+/// pack. Items are compared by the time they last changed: the newer side
+/// wins, whatever order packs arrive in, and a local entry that loses is kept
+/// in Recently deleted rather than dropped. Photos travel as separate blobs,
+/// sent before the packs that use them and fetched before those items are
+/// written.
 class SyncEngine {
   SyncEngine(
       {required this.db,
       required this.backend,
       required this.photos,
+      required this.limits,
       this.cipher,
       this.onProgress,
       this.stopped,
       DateTime Function()? now})
       : _now = now ?? DateTime.now;
 
-  /// Asked between items; when it says so, the sync ends early with what
-  /// is done so far, and the rest follows next time.
-  final bool Function()? stopped;
-  bool get _stopped => stopped?.call() ?? false;
-
   final Database db;
   final SyncBackend backend;
-
-  /// Told after each item, so a long first sync can show how far it is.
-  final void Function(SyncProgress progress)? onProgress;
 
   /// Where photo files live on this device.
   final SyncPhotos photos;
 
+  final SyncLimits limits;
+
   /// Null for a space that is not end-to-end encrypted.
   final ItemCipher? cipher;
+
+  /// Told before each file, so a long sync can show how far it is.
+  final void Function(SyncProgress progress)? onProgress;
+
+  /// Asked between files; when it says so, the sync ends early with what is
+  /// done so far, and the rest follows next time.
+  final bool Function()? stopped;
+  bool get _stopped => stopped?.call() ?? false;
+
   final DateTime Function() _now;
 
   Future<SyncReport> sync() async {
-    final seen = {
-      for (final row in await db.query(syncSeenTable))
-        row['path'] as String: row['version'] as String,
-    };
-    final remote = await backend.list(SpaceLayout.items);
-    final pending = await _pending();
+    final received = await _receive();
+    // Sending over changes not yet taken in could put an older edit over a
+    // newer one; that waits for a sync that reads everything.
+    if (received == null) return const SyncReport();
+    final sent = await _push();
+    if (!_stopped) await _compact();
+    return SyncReport(
+        received: received.applied, sent: sent, keptConflicts: received.kept);
+  }
 
-    // What other devices changed since the last sync.
-    final incoming = <SyncRecord>[];
-    final versions = <String, String>{};
-    final changed = [
-      for (final MapEntry(key: path, value: version) in remote.entries)
-        if (seen[path] != version) (path, version),
+  /// Takes in the packs and snapshots not read yet; null when it could not
+  /// read or apply all of them.
+  Future<({int applied, int kept})?> _receive() async {
+    final seen = await _seen();
+    final unread = [
+      for (final path in (await backend.list(SpaceLayout.packs)).keys)
+        if (!seen.contains(path)) path,
     ];
-    for (final (index, (path, version)) in changed.indexed) {
-      if (_stopped) break;
-      onProgress?.call((sending: false, done: index, total: changed.length));
-      final bytes = await backend.read(path);
-      if (bytes == null) continue;
-      incoming.add(await _decode(path.split('/').last, bytes));
-      versions[path] = version;
+    // Snapshots first, newest first: the packs they cover need no reading.
+    final snapshots = unread.where(SpaceLayout.isSnapshot).toList()
+      ..sort((a, b) => b.compareTo(a));
+    final packs = unread.where((path) => !SpaceLayout.isSnapshot(path)).toList()
+      ..sort();
+
+    final incoming = <String, SyncRecord>{};
+    final covered = <String>{};
+    final read = <String>[];
+    var done = 0;
+    void take(String path, _Pack pack) {
+      covered.addAll(pack.covers);
+      for (final record in pack.records) {
+        final key = _key(record.kind, record.id);
+        final known = incoming[key];
+        if (known == null || _newer(record, known)) incoming[key] = record;
+      }
+      read.add(path);
     }
 
-    // The newer side wins; a local entry that loses is kept.
-    final toApply = <SyncRecord>[];
-    final superseded = <_Pending>[];
-    final losers = <SyncRecord>[];
-    for (final record in incoming) {
-      final local = pending[record.id];
-      if (local == null) {
-        toApply.add(record);
-      } else if (record.modified >= local.changedAt) {
-        toApply.add(record);
-        superseded.add(local);
-        if (record.kind == SyncKind.entry) {
-          final mine =
-              await exportRecord(db, local.kind, record.id, local.changedAt);
-          if (!mine.deleted && !_sameEntry(mine, record)) losers.add(mine);
-        }
+    for (final path in snapshots) {
+      if (_stopped) return null;
+      onProgress?.call((sending: false, done: done++, total: unread.length));
+      if (covered.contains(path)) {
+        read.add(path);
+        continue;
       }
+      final pack = await _readPack(path);
+      if (pack != null) take(path, pack);
+    }
+    read.addAll(packs.where(covered.contains));
+    await _parallel(packs.where((path) => !covered.contains(path)),
+        (path) async {
+      if (_stopped) return;
+      onProgress?.call((sending: false, done: done++, total: unread.length));
+      final pack = await _readPack(path);
+      if (pack != null) take(path, pack);
+    });
+    if (_stopped) return null;
+
+    // The newer side wins; a local entry that loses is kept.
+    final known = {
+      for (final row in await db.query(syncItemsTable))
+        _key(SyncKind.byName(row['kind'] as String),
+            row[syncIdColumn] as String): row['modified'] as int,
+    };
+    final pending = await _pending();
+    final toApply = <SyncRecord>[];
+    for (final record in incoming.values) {
+      final key = _key(record.kind, record.id);
+      if (record.modified <= (known[key] ?? -1)) continue;
+      final local = pending[key];
+      if (local != null && local.changedAt > record.modified) continue;
+      toApply.add(record);
+    }
+
+    // Photos first, so entries never point at missing files. An item whose
+    // photo is not in the space yet waits, and so does everything read with
+    // it, until a later sync.
+    final photoFiles = <String, String>{};
+    final waiting = <String>{};
+    final names = <String>{};
+    final fetches = <({String key, String id, String name})>[];
+    for (final record in toApply) {
+      for (final photo in record.photos) {
+        if (photoFiles.containsKey(photo.id) ||
+            await _hasPhoto(photo.id) ||
+            fetches.any((fetch) => fetch.id == photo.id)) {
+          continue;
+        }
+        final taken =
+            names.contains(photo.file) || await photos.exists(photo.file);
+        final name = localNameFor(photo.id, photo.file, taken);
+        names.add(name);
+        fetches.add((
+          key: _key(record.kind, record.id),
+          id: photo.id,
+          name: name,
+        ));
+      }
+    }
+    await _parallel(fetches, (fetch) async {
+      final sealed = await backend.read(SpaceLayout.blob(fetch.id));
+      if (sealed == null) {
+        waiting.add(fetch.key);
+        return;
+      }
+      await photos.write(fetch.name, await _open(fetch.id, sealed));
+      photoFiles[fetch.id] = fetch.name;
+    });
+    final ready = [
+      for (final record in toApply)
+        if (!waiting.contains(_key(record.kind, record.id))) record,
+    ]..sort((a, b) => a.kind.index.compareTo(b.kind.index));
+
+    final losers = <SyncRecord>[];
+    for (final record in ready) {
+      final local = pending[_key(record.kind, record.id)];
+      if (local == null || record.kind != SyncKind.entry) continue;
+      final mine =
+          await exportRecord(db, local.kind, record.id, local.changedAt);
+      if (!mine.deleted && !_sameEntry(mine, record)) losers.add(mine);
     }
     for (final loser in losers) {
       await db.transaction((txn) => keepLosingEntry(
           txn, loser, const Uuid().v4().replaceAll('-', ''), _now()));
     }
-
-    // Photos first, so entries never point at missing files. An entry whose
-    // photo is not in the space yet waits for the next sync.
-    final photoFiles = <String, String>{};
-    final ready = <SyncRecord>[];
-    for (final record in toApply) {
-      if (await _fetchPhotos(record, photoFiles)) {
-        ready.add(record);
-      } else {
-        versions.remove(SpaceLayout.item(record.id));
-      }
-    }
-    ready.sort((a, b) => a.kind.index.compareTo(b.kind.index));
     final unused = await withoutRecording(db, (txn) async {
       final writer = RecordWriter(txn, fileOf: (id) => photoFiles[id]!);
       for (final record in ready) {
         await writer.apply(record);
+        await _know(txn, record);
+        if (pending[_key(record.kind, record.id)] case final local?) {
+          await _clearChange(txn, local);
+        }
       }
-      for (final local in superseded) {
-        await _clearChange(txn, local);
-      }
-      for (final MapEntry(key: path, value: version) in versions.entries) {
-        await _see(txn, path, version);
+      if (waiting.isEmpty) {
+        for (final path in read) {
+          await _see(txn, path);
+        }
       }
       return writer.unusedFiles();
     });
     for (final file in unused) {
       await photos.delete(file);
     }
-
-    // A sync stopped before it read every remote change sends nothing: a
-    // local edit must not go over a newer one it has not seen.
-    final sent = _stopped ? 0 : await _push();
-    return SyncReport(
-        received: ready.length, sent: sent, keptConflicts: losers.length);
+    if (waiting.isNotEmpty) return null;
+    return (applied: ready.length, kept: losers.length);
   }
 
-  /// Sends every local change, photos before the entries that use them.
+  /// Sends every local change: photos first, then the items in packs.
   Future<int> _push() async {
-    final pending = await _pending();
-    if (pending.isEmpty) return 0;
+    final pending = (await _pending()).values.toList();
+    if (pending.isEmpty || _stopped) return 0;
+    final changes = <_Change>[
+      for (final local in pending)
+        (
+          local: local,
+          record: await exportRecord(db, local.kind, local.id, local.changedAt)
+        ),
+    ];
     final blobs = await backend.list(SpaceLayout.blobs);
-    final unknownVersion = <String>[];
+    final uploads = {
+      for (final change in changes)
+        for (final photo in change.record.photos)
+          if (!blobs.containsKey(SpaceLayout.blob(photo.id))) photo.id: photo,
+    };
+    final packs = _chunks(changes);
+    final total = uploads.length + packs.length;
+    var done = 0;
+    await _parallel(uploads.values, (photo) async {
+      if (_stopped) return;
+      onProgress?.call((sending: true, done: done++, total: total));
+      final bytes = await photos.read(photo.file);
+      if (bytes == null) return;
+      await backend.write(
+          SpaceLayout.blob(photo.id), await _seal(photo.id, bytes));
+    });
+
     var sent = 0;
-    for (final local in pending.values) {
+    for (final pack in packs) {
       if (_stopped) break;
-      onProgress?.call((sending: true, done: sent, total: pending.length));
-      final record =
-          await exportRecord(db, local.kind, local.id, local.changedAt);
-      for (final photo in record.photos) {
-        final path = SpaceLayout.blob(photo.id);
-        if (blobs.containsKey(path)) continue;
-        final bytes = await photos.read(photo.file);
-        if (bytes == null) continue;
-        await backend.write(path, await _seal(photo.id, bytes));
-      }
-      final path = SpaceLayout.item(local.id);
-      final version = await backend.write(path,
-          await _seal(local.id, utf8.encode(jsonEncode(record.toJson()))));
+      onProgress?.call((sending: true, done: done++, total: total));
+      final path = SpaceLayout.pack(_newName(SpaceLayout.packPrefix));
+      await backend.write(
+          path,
+          await _sealPack(
+              path, [for (final change in pack) change.record], const []));
       await db.transaction((txn) async {
-        if (version != null) {
-          await _see(txn, path, version);
-        } else {
-          unknownVersion.add(path);
+        for (final change in pack) {
+          await _know(txn, change.record);
+          await _clearChange(txn, change.local);
         }
-        await _clearChange(txn, local);
+        await _see(txn, path);
       });
-      sent++;
-    }
-    if (unknownVersion.isNotEmpty) {
-      final listed = await backend.list(SpaceLayout.items);
-      await db.transaction((txn) async {
-        for (final path in unknownVersion) {
-          if (listed[path] case final version?) await _see(txn, path, version);
-        }
-      });
+      sent += pack.length;
     }
     return sent;
   }
 
-  Future<bool> _fetchPhotos(
-      SyncRecord record, Map<String, String> photoFiles) async {
-    for (final photo in record.photos) {
-      final known = await db.query(imagesTable,
+  /// Splits [changes] into packs of about [SyncLimits.packBytes] each.
+  List<List<_Change>> _chunks(List<_Change> changes) {
+    final packs = <List<_Change>>[];
+    var size = limits.packBytes;
+    for (final change in changes) {
+      final bytes = jsonEncode(change.record.toJson()).length;
+      if (size + bytes > limits.packBytes && size > 0) {
+        packs.add([]);
+        size = 0;
+      }
+      packs.last.add(change);
+      size += bytes;
+    }
+    return packs;
+  }
+
+  /// Folds the packs this device has read into one snapshot, once there
+  /// are more than [SyncLimits.compactAfter], and removes them. Packs it has
+  /// not read yet stay for the next device.
+  Future<void> _compact() async {
+    final listed = (await backend.list(SpaceLayout.packs)).keys;
+    if (listed.where((path) => !SpaceLayout.isSnapshot(path)).length <=
+        limits.compactAfter) {
+      return;
+    }
+    // Every item's version must be in a pack before it can be folded.
+    if ((await _pending()).isNotEmpty) return;
+    final seen = await _seen();
+    final covers = [
+      for (final path in listed)
+        if (seen.contains(path)) path,
+    ];
+    final items = [
+      for (final row in await db.query(syncItemsTable))
+        await exportRecord(db, SyncKind.byName(row['kind'] as String),
+            row[syncIdColumn] as String, row['modified'] as int),
+    ];
+    final path = SpaceLayout.pack(_newName(SpaceLayout.snapshotPrefix));
+    await backend.write(path, await _sealPack(path, items, covers));
+    await db.transaction((txn) => _see(txn, path));
+    await _parallel(covers, (old) async {
+      await backend.delete(old);
+      await db.delete(syncSeenTable, where: 'path = ?', whereArgs: [old]);
+    });
+  }
+
+  /// Runs [task] on each of [items], [SyncLimits.parallel] at a time.
+  Future<void> _parallel<T>(
+      Iterable<T> items, Future<void> Function(T item) task) async {
+    final queue = items.iterator;
+    Future<void> worker() async {
+      while (queue.moveNext()) {
+        final item = queue.current;
+        await task(item);
+      }
+    }
+
+    await Future.wait([for (var i = 0; i < limits.parallel; i++) worker()]);
+  }
+
+  static String _key(SyncKind kind, String id) => '${kind.name}/$id';
+
+  /// Whether [a] wins over [b], a version of the same item: the later
+  /// change, and on a tie the same pick on every device.
+  static bool _newer(SyncRecord a, SyncRecord b) => a.modified != b.modified
+      ? a.modified > b.modified
+      : jsonEncode(a.toJson()).compareTo(jsonEncode(b.toJson())) > 0;
+
+  static final Random _random = Random.secure();
+
+  /// A file name that sorts by time and never meets another device's.
+  String _newName(String prefix) =>
+      '$prefix${_now().millisecondsSinceEpoch.toString().padLeft(14, '0')}-'
+      '${List.generate(4, (_) => _random.nextInt(256).toRadixString(16).padLeft(2, '0')).join()}';
+
+  Future<bool> _hasPhoto(String id) async => (await db.query(imagesTable,
           columns: ['id'],
           where: '$syncIdColumn = ?',
-          whereArgs: [photo.id],
-          limit: 1);
-      if (known.isNotEmpty) continue;
-      final sealed = await backend.read(SpaceLayout.blob(photo.id));
-      if (sealed == null) return false;
-      final name =
-          localNameFor(photo.id, photo.file, await photos.exists(photo.file));
-      await photos.write(name, await _open(photo.id, sealed));
-      photoFiles[photo.id] = name;
-    }
-    return true;
-  }
+          whereArgs: [id],
+          limit: 1))
+      .isNotEmpty;
+
+  Future<Set<String>> _seen() async => {
+        for (final row in await db.query(syncSeenTable)) row['path'] as String,
+      };
 
   Future<Map<String, _Pending>> _pending() async => {
         for (final row in await db.query(syncChangesTable))
-          row[syncIdColumn] as String: _Pending(
-              SyncKind.byName(row['kind'] as String),
-              row[syncIdColumn] as String,
-              row['changed_at'] as int),
+          _key(SyncKind.byName(row['kind'] as String),
+                  row[syncIdColumn] as String):
+              _Pending(SyncKind.byName(row['kind'] as String),
+                  row[syncIdColumn] as String, row['changed_at'] as int),
       };
 
   /// Forgets a change unless the item changed again meanwhile.
@@ -266,18 +432,44 @@ class SyncEngine {
           where: 'kind = ? AND $syncIdColumn = ? AND changed_at = ?',
           whereArgs: [local.kind.name, local.id, local.changedAt]);
 
-  Future<void> _see(DatabaseExecutor txn, String path, String version) =>
-      txn.insert(syncSeenTable, {'path': path, 'version': version},
+  /// Keeps the newest version of an item this device has.
+  Future<void> _know(DatabaseExecutor txn, SyncRecord record) => txn.rawInsert(
+          'INSERT OR REPLACE INTO $syncItemsTable (kind, $syncIdColumn, modified) '
+          'VALUES (?, ?, MAX(?, COALESCE((SELECT modified FROM $syncItemsTable '
+          'WHERE kind = ? AND $syncIdColumn = ?), 0)))',
+          [
+            record.kind.name,
+            record.id,
+            record.modified,
+            record.kind.name,
+            record.id,
+          ]);
+
+  Future<void> _see(DatabaseExecutor txn, String path) =>
+      txn.insert(syncSeenTable, {'path': path, 'version': ''},
           conflictAlgorithm: ConflictAlgorithm.replace);
 
-  Future<SyncRecord> _decode(String id, Uint8List bytes) async {
-    final plain = await _open(id, bytes);
-    final record = SyncRecord.fromJson(
-        jsonDecode(utf8.decode(plain)) as Map<String, Object?>);
-    if (record.id != id) {
-      throw FormatException('Item $id holds the record of ${record.id}');
-    }
-    return record;
+  Future<Uint8List> _sealPack(
+      String path, List<SyncRecord> records, List<String> covers) async {
+    final json = jsonEncode({
+      'records': [for (final record in records) record.toJson()],
+      if (covers.isNotEmpty) 'covers': covers,
+    });
+    return _seal(path, gzip.encode(utf8.encode(json)));
+  }
+
+  Future<_Pack?> _readPack(String path) async {
+    final bytes = await backend.read(path);
+    if (bytes == null) return null;
+    final json = jsonDecode(utf8.decode(gzip.decode(await _open(path, bytes))))
+        as Map<String, Object?>;
+    return _Pack(
+      [
+        for (final record in json['records'] as List)
+          SyncRecord.fromJson((record as Map).cast<String, Object?>()),
+      ],
+      (json['covers'] as List? ?? const []).cast<String>(),
+    );
   }
 
   Future<Uint8List> _seal(String id, List<int> plain) async {
@@ -318,4 +510,15 @@ class _Pending {
   final SyncKind kind;
   final String id;
   final int changedAt;
+}
+
+typedef _Change = ({_Pending local, SyncRecord record});
+
+class _Pack {
+  const _Pack(this.records, this.covers);
+
+  final List<SyncRecord> records;
+
+  /// For a snapshot, the packs and snapshots it replaces.
+  final List<String> covers;
 }

@@ -188,6 +188,20 @@ void main() {
     expect(await changes(), isEmpty);
   });
 
+  test('a diary from before packs gets the item versions table', () async {
+    await AppDatabase.instance.createSchema(db);
+    await db.execute('DROP TABLE $syncItemsTable');
+    await db.insert(syncSeenTable, {'path': 'items/old', 'version': 'v1'});
+    final entry = await addEntry('kept');
+
+    await AppDatabase.instance.upgradeSchema(db, 11, 12);
+
+    expect(await db.query(syncItemsTable), isEmpty);
+    expect(await db.query(syncSeenTable), isEmpty);
+    expect(await db.query(entriesTable, where: 'id = ?', whereArgs: [entry]),
+        hasLength(1));
+  });
+
   test('the built-in icons are the ones the defaults use', () async {
     await AppDatabase.instance.createSchema(db);
     await TagsProvider.instance.createDefaultTags();

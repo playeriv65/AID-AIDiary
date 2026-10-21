@@ -61,7 +61,7 @@ void liveSyncScenarios(SyncBackend Function() backend, {Object? skip}) {
 
     // Nothing on the server reads as the diary.
     for (final file in [
-      ...(await cloud.list(SpaceLayout.items)).keys,
+      ...(await cloud.list(SpaceLayout.packs)).keys,
       ...(await cloud.list(SpaceLayout.blobs)).keys,
     ]) {
       final bytes = await cloud.read(file);
@@ -88,6 +88,35 @@ void liveSyncScenarios(SyncBackend Function() backend, {Object? skip}) {
     expect(space.encryption!.unlockWithPassphrase('wrong'),
         throwsA(isA<WrongKeyException>()));
   }, skip: skip);
+
+  test('a diary of 4000 entries goes up and comes down in moments', () async {
+    final keys = await SpaceEncryption.create(passphrase, kdf: kdf);
+    final cipher = ItemCipher(keys.key);
+    await phone.db.transaction((txn) async {
+      for (var i = 0; i < 4000; i++) {
+        await txn.insert(entriesTable, {
+          EntryFields.text:
+              'Day $i: ${'a walk by the river, then coffee. ' * 12}',
+          EntryFields.timeCreate: '2026-10-20T09:00:00.000',
+          EntryFields.timeModified: '2026-10-20T09:00:00.000',
+        });
+      }
+    });
+    final cloud = backend();
+    await cloud.check();
+
+    final up = Stopwatch()..start();
+    expect((await phone.sync(cloud, cipher: cipher)).sent, 4000);
+    up.stop();
+    final down = Stopwatch()..start();
+    expect((await laptop.sync(backend(), cipher: cipher)).received, 4000);
+    down.stop();
+
+    // ignore: avoid_print
+    print('4000 entries: up ${up.elapsedMilliseconds} ms, '
+        'down ${down.elapsedMilliseconds} ms');
+    expect(up.elapsed + down.elapsed, lessThan(const Duration(minutes: 1)));
+  }, skip: skip, timeout: const Timeout(Duration(minutes: 5)));
 
   test('edits, conflicts and deletions travel both ways', () async {
     final keys = await SpaceEncryption.create(passphrase, kdf: kdf);

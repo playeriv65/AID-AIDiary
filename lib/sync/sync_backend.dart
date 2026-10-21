@@ -31,14 +31,24 @@ abstract interface class SyncBackend {
   Future<void> delete(String path);
 }
 
-/// Where a space keeps its parts.
+/// Where a space keeps its parts: changes travel in packs, many items to a
+/// file, and photos and recordings as blobs of their own.
 abstract final class SpaceLayout {
   static const String info = 'space.json';
-  static const String items = 'items';
+  static const String packs = 'packs';
   static const String blobs = 'blobs';
 
-  static String item(String id) => '$items/$id';
+  /// A device's changes from one sync.
+  static const String packPrefix = 'pack-';
+
+  /// Every item as of the packs it replaces.
+  static const String snapshotPrefix = 'snapshot-';
+
+  static String pack(String name) => '$packs/$name';
   static String blob(String id) => '$blobs/$id';
+
+  static bool isSnapshot(String path) =>
+      path.split('/').last.startsWith(snapshotPrefix);
 }
 
 /// A space's description file: its format, its id and, when it is end-to-end
@@ -46,7 +56,8 @@ abstract final class SpaceLayout {
 class SpaceInfo {
   const SpaceInfo({required this.id, this.encryption, this.format = current});
 
-  static const int current = 1;
+  /// 2: packs of changes in place of one file per item.
+  static const int current = 2;
 
   final int format;
   final String id;
@@ -64,9 +75,11 @@ class SpaceInfo {
   factory SpaceInfo.fromBytes(Uint8List bytes) {
     final json = jsonDecode(utf8.decode(bytes)) as Map<String, Object?>;
     final format = json['format'] as int;
-    if (format > current) {
-      throw UnsupportedError(
-          'This space was made by a newer version of the app (format $format)');
+    if (format != current) {
+      throw UnsupportedError(format > current
+          ? 'This space was made by a newer version of the app (format $format)'
+          : 'This space was made by an early test version of the app '
+              '(format $format); start a new one');
     }
     return SpaceInfo(
         id: json['id'] as String,

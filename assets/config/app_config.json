@@ -88,6 +88,10 @@
   "sync": {
     "afterChangeSeconds": 15,
     "whileOpenMinutes": 10,
+    "packKiB": 16384,
+    "compactAfterPacks": 20,
+    "parallelTransfers": 3,
+    "progressAfterSeconds": 3,
     "officialServer": "https://aid.playeriv65.com/dav/",
     "exampleServer": "https://dav.jianguoyun.com/dav/",
     "googleDrive": {

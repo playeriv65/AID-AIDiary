@@ -90,7 +90,7 @@ class AppDatabase {
 
   Future<void> open({int? firstScreen}) async {
     _database = await openDatabase(_internalPath!,
-        version: 11, onCreate: _createDatabase, onUpgrade: _onUpgrade);
+        version: 12, onCreate: _createDatabase, onUpgrade: _onUpgrade);
 
     await EntriesProvider.instance.load(firstScreen: firstScreen);
     await EntryImagesProvider.instance.load();
@@ -602,6 +602,10 @@ DROP TABLE old_entries;
       await _assignBuiltinIds(db);
       // Nothing has synced yet; joining a space marks everything.
       await db.delete(syncChangesTable);
+    } else if (oldVersion == 11 && newVersion >= 12) {
+      // Spaces now hold packs; what was read of the old item files is moot.
+      await addSyncItemsTable(db);
+      await db.delete(syncSeenTable);
     }
   }
 

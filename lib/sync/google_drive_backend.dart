@@ -58,10 +58,17 @@ class GoogleDriveBackend implements SyncBackend {
   String? _accessToken;
 
   /// Drive ids of the folders found or made, by path ('' is the space).
-  final Map<String, String> _folderIds = {};
+  /// Uploads running side by side share one lookup, so a folder is made
+  /// once.
+  final Map<String, Future<String>> _folders = {};
 
   /// Drive ids of files, by path, from listings and lookups.
   final Map<String, String> _fileIds = {};
+
+  /// Folders whose files are all in [_fileIds], so a missing path there is
+  /// a new file and needs no search.
+  final Set<String> _listed = {};
+  final Map<String, Future<void>> _listings = {};
 
   Uri _uri(Uri base, String path, [Map<String, String>? query]) =>
       base.resolve(path).replace(queryParameters: query);
@@ -96,14 +103,21 @@ class GoogleDriveBackend implements SyncBackend {
       _accessToken = await _token(renew: true);
       response = await connected();
     }
-    for (var wait = 1;
-        wait <= 4 && (response.statusCode == 429 || response.statusCode >= 500);
-        wait *= 2) {
+    for (var wait = 1; wait <= 16 && _busy(response); wait *= 2) {
       await Future<void>.delayed(Duration(seconds: wait));
       response = await connected();
     }
     return response;
   }
+
+  /// Drive says "slow down" with 429, or with 403 and a rate limit reason.
+  static bool _busy(http.Response response) =>
+      response.statusCode == 429 ||
+      response.statusCode >= 500 ||
+      (response.statusCode == 403 && _rateLimit.hasMatch(response.body));
+
+  /// The reasons `rateLimitExceeded` and `userRateLimitExceeded`.
+  static final RegExp _rateLimit = RegExp('[rR]ateLimitExceeded');
 
   Map<String, Object?> _json(
       String method, String path, http.Response response) {
@@ -139,44 +153,6 @@ class GoogleDriveBackend implements SyncBackend {
     return found;
   }
 
-  /// The Drive id of the folder at [path], made when [make] is set; null
-  /// when it is missing.
-  Future<String?> _folderId(String path, {bool make = false}) async {
-    final known = _folderIds[path];
-    if (known != null) return known;
-    final String parentId;
-    final String name;
-    if (path.isEmpty) {
-      parentId = 'root';
-      name = folder;
-    } else {
-      final cut = path.lastIndexOf('/');
-      final parent =
-          await _folderId(cut < 0 ? '' : path.substring(0, cut), make: make);
-      if (parent == null) return null;
-      parentId = parent;
-      name = path.substring(cut + 1);
-    }
-    final existing = await _search(
-        path,
-        'name = ${_quote(name)} and ${_quote(parentId)} in parents '
-        'and mimeType = ${_quote(_folderType)}');
-    var id = existing.firstOrNull?['id'] as String?;
-    if (id == null && make) {
-      final response =
-          await _send('POST', _uri(_api, 'files', {'fields': 'id'}),
-              headers: {'Content-Type': 'application/json'},
-              body: utf8.encode(jsonEncode({
-                'name': name,
-                'mimeType': _folderType,
-                'parents': [parentId],
-              })));
-      id = _json('MKDIR', path, response)['id'] as String;
-    }
-    if (id != null) _folderIds[path] = id;
-    return id;
-  }
-
   ({String parent, String name}) _split(String path) {
     final cut = path.lastIndexOf('/');
     return cut < 0
@@ -184,11 +160,56 @@ class GoogleDriveBackend implements SyncBackend {
         : (parent: path.substring(0, cut), name: path.substring(cut + 1));
   }
 
+  /// The Drive id of the folder at [path], made if it is missing.
+  Future<String> _folder(String path) async {
+    final lookup = _folders[path] ??= _findOrMake(path);
+    try {
+      return await lookup;
+    } catch (_) {
+      _folders.remove(path);
+      rethrow;
+    }
+  }
+
+  /// The Drive id of the folder at [path]; null when it does not exist.
+  Future<String?> _existingFolder(String path) async {
+    if (_folders[path] case final lookup?) return lookup;
+    final parent =
+        path.isEmpty ? 'root' : await _existingFolder(_split(path).parent);
+    if (parent == null) return null;
+    final id = await _findFolder(path, parent);
+    if (id != null) _folders[path] ??= Future.value(id);
+    return id;
+  }
+
+  Future<String> _findOrMake(String path) async {
+    final parent = path.isEmpty ? 'root' : await _folder(_split(path).parent);
+    final found = await _findFolder(path, parent);
+    if (found != null) return found;
+    final response = await _send('POST', _uri(_api, 'files', {'fields': 'id'}),
+        headers: {'Content-Type': 'application/json'},
+        body: utf8.encode(jsonEncode({
+          'name': path.isEmpty ? folder : _split(path).name,
+          'mimeType': _folderType,
+          'parents': [parent],
+        })));
+    return _json('MKDIR', path, response)['id'] as String;
+  }
+
+  Future<String?> _findFolder(String path, String parentId) async {
+    final name = path.isEmpty ? folder : _split(path).name;
+    final found = await _search(
+        path,
+        'name = ${_quote(name)} and ${_quote(parentId)} in parents '
+        'and mimeType = ${_quote(_folderType)}');
+    return found.firstOrNull?['id'] as String?;
+  }
+
   Future<String?> _fileId(String path) async {
     final known = _fileIds[path];
-    if (known != null) return known;
     final (:parent, :name) = _split(path);
-    final parentId = await _folderId(parent);
+    if (known != null || _listed.contains(parent)) return known;
+    final parentId = await _existingFolder(parent);
     if (parentId == null) return null;
     final found = await _search(
         path,
@@ -201,12 +222,12 @@ class GoogleDriveBackend implements SyncBackend {
 
   @override
   Future<void> check() async {
-    await _folderId('', make: true);
+    await _folder('');
   }
 
   @override
   Future<Map<String, String>> list(String path) async {
-    final id = await _folderId(path);
+    final id = await _existingFolder(path);
     if (id == null) return {};
     final files = <String, String>{};
     // Oldest first, so of two files that raced to the same name the newer
@@ -217,6 +238,7 @@ class GoogleDriveBackend implements SyncBackend {
       _fileIds[filePath] = file['id'] as String;
       files[filePath] = (file['md5Checksum'] ?? file['modifiedTime']) as String;
     }
+    _listed.add(path);
     return files;
   }
 
@@ -239,7 +261,9 @@ class GoogleDriveBackend implements SyncBackend {
   @override
   Future<String?> write(String path, Uint8List bytes) async {
     final (:parent, :name) = _split(path);
-    final parentId = (await _folderId(parent, make: true))!;
+    final parentId = await _folder(parent);
+    // One listing tells every upload into the folder which files are new.
+    if (!_listed.contains(parent)) await (_listings[parent] ??= list(parent));
     final id = await _fileId(path);
     if (id != null) {
       final response = await _put(path, bytes, id: id);
