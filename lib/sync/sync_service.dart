@@ -170,6 +170,12 @@ class SyncService with ChangeNotifier {
   Object? error;
   SyncReport? lastReport;
 
+  /// How far the running sync is; null when none runs or it has not
+  /// started on the items yet.
+  SyncProgress? progress;
+  DateTime _progressShown = DateTime(0);
+  static const _progressEvery = Duration(milliseconds: 250);
+
   /// Entries (local ids) still waiting to go up while syncing is failing or
   /// locked. Empty while it works: synced is the normal state and is not
   /// marked, and a change waiting a few seconds for its turn is not either.
@@ -177,6 +183,7 @@ class SyncService with ChangeNotifier {
 
   Future<void>? _running;
   bool _again = false;
+  bool _stopping = false;
   bool _reloading = false;
   Timer? _soon;
   Timer? _periodic;
@@ -296,11 +303,13 @@ class SyncService with ChangeNotifier {
         return;
       }
       final report = await SyncEngine(
-              db: AppDatabase.instance.database!,
-              backend: backend,
-              photos: const ImageStoragePhotos(),
-              cipher: info.encrypted ? ItemCipher(key!) : null)
-          .sync();
+          db: AppDatabase.instance.database!,
+          backend: backend,
+          photos: const ImageStoragePhotos(),
+          cipher: info.encrypted ? ItemCipher(key!) : null,
+          onProgress: _progressed,
+          stopped: () => _stopping).sync();
+      progress = null;
       lastReport = report;
       if (report.changedLocally) await _reload();
       await ConfigProvider.instance
@@ -310,10 +319,23 @@ class SyncService with ChangeNotifier {
       _setState(SyncState.idle);
     } catch (e, stackTrace) {
       _logger.warning('Sync failed', e, stackTrace);
+      progress = null;
       error = e;
       await _markUnsynced();
       _setState(SyncState.failed);
     }
+  }
+
+  /// Passes on how far the sync is, a few times a second at most.
+  void _progressed(SyncProgress progress) {
+    final now = DateTime.now();
+    if (this.progress?.sending == progress.sending &&
+        now.difference(_progressShown) < _progressEvery) {
+      return;
+    }
+    _progressShown = now;
+    this.progress = progress;
+    notifyListeners();
   }
 
   /// Finds the entries whose changes have not gone up.
@@ -405,7 +427,20 @@ class SyncService with ChangeNotifier {
         login.credential,
         key);
     _setState(SyncState.idle);
-    await syncNow();
+    // A first sync may take long; it goes on while the page shows how far
+    // it is.
+    unawaited(syncNow());
+  }
+
+  /// Stops the running sync after the item in hand and waits for it.
+  Future<void> _stop() async {
+    _soon?.cancel();
+    _stopping = true;
+    try {
+      await _running;
+    } finally {
+      _stopping = false;
+    }
   }
 
   /// Signs in to the cloud drive again after Google asked for it, keeping
@@ -420,8 +455,7 @@ class SyncService with ChangeNotifier {
 
   /// Stops syncing on this device; the space and the diary stay as they are.
   Future<void> disconnect() async {
-    _soon?.cancel();
-    await _running;
+    await _stop();
     await clearSyncState(AppDatabase.instance.database!);
     await ConfigProvider.instance.set(Settings.syncTarget, '');
     await ConfigProvider.instance.set(Settings.syncSecrets, '');
@@ -453,7 +487,7 @@ class SyncService with ChangeNotifier {
   Future<String> resetEncryption(String passphrase) async {
     final login = _login!;
     final backend = login.backend();
-    await _running;
+    await _stop();
     for (final folder in [SpaceLayout.items, SpaceLayout.blobs]) {
       for (final path in (await backend.list(folder)).keys) {
         await backend.delete(path);

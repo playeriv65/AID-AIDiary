@@ -2017,6 +2017,16 @@ class AppLocalizationsZh extends AppLocalizations {
   String get syncSignInAgain => '重新登录';
 
   @override
+  String syncReceiving(int done, int total) {
+    return '正在下载 $done / $total…';
+  }
+
+  @override
+  String syncSending(int done, int total) {
+    return '正在上传 $done / $total…';
+  }
+
+  @override
   String get syncGoogleDriveNotAllowed =>
       '没有允许访问 Google 云端硬盘。请重新连接，并在 Google 的页面上勾选云端硬盘这一项。';
 
@@ -2053,13 +2063,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get syncNewSpaceTitle => '开始同步';
 
   @override
-  String get syncNewSpaceDescription => '这台服务器上还没有同步的日记，将把这本日记上传上去。';
+  String get syncNewSpaceDescription => '这里还没有同步的日记，将把这本日记上传上去。';
 
   @override
   String get syncEncrypt => '端到端加密';
 
   @override
-  String get syncEncryptDescription => '日记和照片在你的设备上加密，别人都读不到，包括服务器的运营方。';
+  String get syncEncryptDescription => '日记和照片在你的设备上加密，别人都读不到，包括保存它们的服务商。';
 
   @override
   String get syncPassphrase => '加密口令';
@@ -2093,7 +2103,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get syncJoinTitle => '加入已同步的日记';
 
   @override
-  String get syncJoinDescription => '这台服务器上已经有同步的日记，这台设备上的日记会合并进去。';
+  String get syncJoinDescription => '这里已经有同步的日记，这台设备上的日记会合并进去。';
 
   @override
   String get syncJoinEncrypted => '它已端到端加密，请输入口令打开。';
@@ -2152,13 +2162,13 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get syncResetEncryptionDescription =>
-      '用于忘记口令时：服务器上的加密副本会被这台设备上的日记替换，并改用新口令加密。之后其他设备需要用新口令重新加入。';
+      '用于忘记口令时：同步的加密副本会被这台设备上的日记替换，并改用新口令加密。之后其他设备需要用新口令重新加入。';
 
   @override
   String get syncDisconnect => '停止同步';
 
   @override
-  String get syncDisconnectDescription => '这台设备将停止同步。这里的日记和服务器上的副本都保持原样。';
+  String get syncDisconnectDescription => '这台设备将停止同步。这里的日记和同步的副本都保持原样。';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).

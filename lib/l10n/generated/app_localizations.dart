@@ -3816,6 +3816,18 @@ abstract class AppLocalizations {
   /// **'Sign in again'**
   String get syncSignInAgain;
 
+  /// No description provided for @syncReceiving.
+  ///
+  /// In en, this message translates to:
+  /// **'Receiving {done} of {total}…'**
+  String syncReceiving(int done, int total);
+
+  /// No description provided for @syncSending.
+  ///
+  /// In en, this message translates to:
+  /// **'Sending {done} of {total}…'**
+  String syncSending(int done, int total);
+
   /// No description provided for @syncGoogleDriveNotAllowed.
   ///
   /// In en, this message translates to:
@@ -3885,7 +3897,7 @@ abstract class AppLocalizations {
   /// No description provided for @syncNewSpaceDescription.
   ///
   /// In en, this message translates to:
-  /// **'There is no synced diary on this server yet. This diary will be uploaded to it.'**
+  /// **'There is no synced diary here yet. This diary will be uploaded.'**
   String get syncNewSpaceDescription;
 
   /// No description provided for @syncEncrypt.
@@ -3897,7 +3909,7 @@ abstract class AppLocalizations {
   /// No description provided for @syncEncryptDescription.
   ///
   /// In en, this message translates to:
-  /// **'Entries and photos are encrypted on your devices. Nobody else can read them, not even whoever runs the server.'**
+  /// **'Entries and photos are encrypted on your devices. Nobody else can read them, not even whoever stores them.'**
   String get syncEncryptDescription;
 
   /// No description provided for @syncPassphrase.
@@ -3963,7 +3975,7 @@ abstract class AppLocalizations {
   /// No description provided for @syncJoinDescription.
   ///
   /// In en, this message translates to:
-  /// **'This server already holds a synced diary. The entries on this device will be added to it.'**
+  /// **'A synced diary is already here. The entries on this device will be added to it.'**
   String get syncJoinDescription;
 
   /// No description provided for @syncJoinEncrypted.
@@ -4071,7 +4083,7 @@ abstract class AppLocalizations {
   /// No description provided for @syncResetEncryptionDescription.
   ///
   /// In en, this message translates to:
-  /// **'For a forgotten passphrase: the encrypted copy on the server is replaced by the diary on this device, under a new passphrase. Your other devices then join again with it.'**
+  /// **'For a forgotten passphrase: the encrypted synced copy is replaced by the diary on this device, under a new passphrase. Your other devices then join again with it.'**
   String get syncResetEncryptionDescription;
 
   /// No description provided for @syncDisconnect.
@@ -4083,7 +4095,7 @@ abstract class AppLocalizations {
   /// No description provided for @syncDisconnectDescription.
   ///
   /// In en, this message translates to:
-  /// **'This device stops syncing. The diary here and the copy on the server stay as they are.'**
+  /// **'This device stops syncing. The diary here and the synced copy stay as they are.'**
   String get syncDisconnectDescription;
 }
 

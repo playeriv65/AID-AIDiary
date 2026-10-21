@@ -2064,6 +2064,16 @@ class AppLocalizationsOc extends AppLocalizations {
   String get syncSignInAgain => 'Sign in again';
 
   @override
+  String syncReceiving(int done, int total) {
+    return 'Receiving $done of $total…';
+  }
+
+  @override
+  String syncSending(int done, int total) {
+    return 'Sending $done of $total…';
+  }
+
+  @override
   String get syncGoogleDriveNotAllowed =>
       'Access to Google Drive was not allowed. Connect again and tick Google Drive on Google\'s page.';
 
@@ -2103,14 +2113,14 @@ class AppLocalizationsOc extends AppLocalizations {
 
   @override
   String get syncNewSpaceDescription =>
-      'There is no synced diary on this server yet. This diary will be uploaded to it.';
+      'There is no synced diary here yet. This diary will be uploaded.';
 
   @override
   String get syncEncrypt => 'End-to-end encryption';
 
   @override
   String get syncEncryptDescription =>
-      'Entries and photos are encrypted on your devices. Nobody else can read them, not even whoever runs the server.';
+      'Entries and photos are encrypted on your devices. Nobody else can read them, not even whoever stores them.';
 
   @override
   String get syncPassphrase => 'Encryption passphrase';
@@ -2146,7 +2156,7 @@ class AppLocalizationsOc extends AppLocalizations {
 
   @override
   String get syncJoinDescription =>
-      'This server already holds a synced diary. The entries on this device will be added to it.';
+      'A synced diary is already here. The entries on this device will be added to it.';
 
   @override
   String get syncJoinEncrypted =>
@@ -2207,12 +2217,12 @@ class AppLocalizationsOc extends AppLocalizations {
 
   @override
   String get syncResetEncryptionDescription =>
-      'For a forgotten passphrase: the encrypted copy on the server is replaced by the diary on this device, under a new passphrase. Your other devices then join again with it.';
+      'For a forgotten passphrase: the encrypted synced copy is replaced by the diary on this device, under a new passphrase. Your other devices then join again with it.';
 
   @override
   String get syncDisconnect => 'Stop syncing';
 
   @override
   String get syncDisconnectDescription =>
-      'This device stops syncing. The diary here and the copy on the server stay as they are.';
+      'This device stops syncing. The diary here and the synced copy stay as they are.';
 }

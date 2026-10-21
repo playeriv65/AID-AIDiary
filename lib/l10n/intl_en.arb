@@ -1307,6 +1307,20 @@
   "@syncGoogleSignInAgain": {},
   "syncSignInAgain": "Sign in again",
   "@syncSignInAgain": {},
+  "syncReceiving": "Receiving {done} of {total}…",
+  "@syncReceiving": {
+    "placeholders": {
+      "done": {"type": "int"},
+      "total": {"type": "int"}
+    }
+  },
+  "syncSending": "Sending {done} of {total}…",
+  "@syncSending": {
+    "placeholders": {
+      "done": {"type": "int"},
+      "total": {"type": "int"}
+    }
+  },
   "syncGoogleDriveNotAllowed": "Access to Google Drive was not allowed. Connect again and tick Google Drive on Google's page.",
   "@syncGoogleDriveNotAllowed": {},
   "syncEntryUnsynced": "Not synced: the last sync did not go through",
@@ -1335,11 +1349,11 @@
   },
   "syncNewSpaceTitle": "Start syncing",
   "@syncNewSpaceTitle": {},
-  "syncNewSpaceDescription": "There is no synced diary on this server yet. This diary will be uploaded to it.",
+  "syncNewSpaceDescription": "There is no synced diary here yet. This diary will be uploaded.",
   "@syncNewSpaceDescription": {},
   "syncEncrypt": "End-to-end encryption",
   "@syncEncrypt": {},
-  "syncEncryptDescription": "Entries and photos are encrypted on your devices. Nobody else can read them, not even whoever runs the server.",
+  "syncEncryptDescription": "Entries and photos are encrypted on your devices. Nobody else can read them, not even whoever stores them.",
   "@syncEncryptDescription": {},
   "syncPassphrase": "Encryption passphrase",
   "@syncPassphrase": {},
@@ -1361,7 +1375,7 @@
   "@syncRecoveryKeySaved": {},
   "syncJoinTitle": "Join the synced diary",
   "@syncJoinTitle": {},
-  "syncJoinDescription": "This server already holds a synced diary. The entries on this device will be added to it.",
+  "syncJoinDescription": "A synced diary is already here. The entries on this device will be added to it.",
   "@syncJoinDescription": {},
   "syncJoinEncrypted": "It is end-to-end encrypted. Enter its passphrase to open it.",
   "@syncJoinEncrypted": {},
@@ -1409,10 +1423,10 @@
   "@syncPassphraseChanged": {},
   "syncResetEncryption": "Reset encryption",
   "@syncResetEncryption": {},
-  "syncResetEncryptionDescription": "For a forgotten passphrase: the encrypted copy on the server is replaced by the diary on this device, under a new passphrase. Your other devices then join again with it.",
+  "syncResetEncryptionDescription": "For a forgotten passphrase: the encrypted synced copy is replaced by the diary on this device, under a new passphrase. Your other devices then join again with it.",
   "@syncResetEncryptionDescription": {},
   "syncDisconnect": "Stop syncing",
   "@syncDisconnect": {},
-  "syncDisconnectDescription": "This device stops syncing. The diary here and the copy on the server stay as they are.",
+  "syncDisconnectDescription": "This device stops syncing. The diary here and the synced copy stay as they are.",
   "@syncDisconnectDescription": {}
 }

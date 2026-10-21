@@ -14,6 +14,7 @@ import 'package:aid_diary/models/tag.dart';
 import 'package:aid_diary/models/tag_category.dart';
 import 'package:aid_diary/sync/sync_backend.dart';
 import 'package:aid_diary/sync/sync_crypto.dart';
+import 'package:aid_diary/sync/sync_engine.dart';
 import 'package:aid_diary/sync/sync_schema.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -225,5 +226,65 @@ JOIN $entriesTable e ON e.id = l.${EntryTagFields.entryId}''');
 
     expect(await phone.db.query(tagsTable), hasLength(1));
     expect(await laptop.db.query(tagsTable), hasLength(1));
+  });
+
+  SyncEngine engineFor(Device device,
+          {void Function(SyncProgress)? onProgress,
+          bool Function()? stopped}) =>
+      SyncEngine(
+          db: device.db,
+          backend: cloud,
+          photos: FileStorePhotos(device.photos),
+          onProgress: onProgress,
+          stopped: stopped);
+
+  test('a long sync tells how far it is', () async {
+    for (var i = 0; i < 3; i++) {
+      await phone.write('entry $i');
+    }
+    final sending = <SyncProgress>[];
+    await engineFor(phone, onProgress: sending.add).sync();
+    final receiving = <SyncProgress>[];
+    await engineFor(laptop, onProgress: receiving.add).sync();
+
+    expect(sending, [
+      for (var i = 0; i < 3; i++) (sending: true, done: i, total: 3),
+    ]);
+    expect(receiving, [
+      for (var i = 0; i < 3; i++) (sending: false, done: i, total: 3),
+    ]);
+  });
+
+  test('a stopped sync keeps what it sent and sends the rest next time',
+      () async {
+    for (var i = 0; i < 4; i++) {
+      await phone.write('entry $i');
+    }
+    var items = 0;
+    final report = await engineFor(phone,
+        onProgress: (_) => items++, stopped: () => items >= 2).sync();
+
+    expect(report.sent, 2);
+    expect(await laptop.sync(cloud), isA<SyncReport>());
+    expect(await laptop.texts(), hasLength(2));
+    expect((await phone.sync(cloud)).sent, 2);
+    await laptop.sync(cloud);
+    expect(await laptop.texts(), hasLength(4));
+  });
+
+  test('a sync stopped while receiving sends nothing over unseen changes',
+      () async {
+    for (var i = 0; i < 3; i++) {
+      await phone.write('entry $i');
+    }
+    await phone.sync(cloud);
+    await laptop.write('mine');
+    var items = 0;
+    final report = await engineFor(laptop,
+        onProgress: (_) => items++, stopped: () => items >= 2).sync();
+
+    expect(report.sent, 0);
+    expect((await laptop.sync(cloud)).sent, 1);
+    expect(await laptop.texts(), hasLength(4));
   });
 }

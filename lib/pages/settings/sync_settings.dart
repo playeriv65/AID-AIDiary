@@ -215,7 +215,13 @@ class _SyncSettingsState extends State<SyncSettings> {
   String _status(AppLocalizations l10n) {
     final last = _service.lastSync;
     return switch (_service.state) {
-      SyncState.syncing => l10n.syncSyncing,
+      SyncState.syncing => switch (_service.progress) {
+          (sending: false, :final done, :final total) =>
+            l10n.syncReceiving(done, total),
+          (sending: true, :final done, :final total) =>
+            l10n.syncSending(done, total),
+          null => l10n.syncSyncing,
+        },
       SyncState.failed =>
         l10n.syncFailed(_describe(_service.error ?? '', l10n)),
       SyncState.locked => l10n.syncLocked,

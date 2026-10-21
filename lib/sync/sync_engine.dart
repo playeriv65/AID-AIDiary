@@ -69,6 +69,9 @@ class SyncReport {
   bool get changedLocally => received > 0 || keptConflicts > 0;
 }
 
+/// How far a sync is: [done] of [total] items received, or sent.
+typedef SyncProgress = ({bool sending, int done, int total});
+
 /// Brings a diary and a space up to date with each other.
 ///
 /// Items are compared by the time they last changed: the newer side wins,
@@ -81,11 +84,21 @@ class SyncEngine {
       required this.backend,
       required this.photos,
       this.cipher,
+      this.onProgress,
+      this.stopped,
       DateTime Function()? now})
       : _now = now ?? DateTime.now;
 
+  /// Asked between items; when it says so, the sync ends early with what
+  /// is done so far, and the rest follows next time.
+  final bool Function()? stopped;
+  bool get _stopped => stopped?.call() ?? false;
+
   final Database db;
   final SyncBackend backend;
+
+  /// Told after each item, so a long first sync can show how far it is.
+  final void Function(SyncProgress progress)? onProgress;
 
   /// Where photo files live on this device.
   final SyncPhotos photos;
@@ -105,8 +118,13 @@ class SyncEngine {
     // What other devices changed since the last sync.
     final incoming = <SyncRecord>[];
     final versions = <String, String>{};
-    for (final MapEntry(key: path, value: version) in remote.entries) {
-      if (seen[path] == version) continue;
+    final changed = [
+      for (final MapEntry(key: path, value: version) in remote.entries)
+        if (seen[path] != version) (path, version),
+    ];
+    for (final (index, (path, version)) in changed.indexed) {
+      if (_stopped) break;
+      onProgress?.call((sending: false, done: index, total: changed.length));
       final bytes = await backend.read(path);
       if (bytes == null) continue;
       incoming.add(await _decode(path.split('/').last, bytes));
@@ -165,7 +183,9 @@ class SyncEngine {
       await photos.delete(file);
     }
 
-    final sent = await _push();
+    // A sync stopped before it read every remote change sends nothing: a
+    // local edit must not go over a newer one it has not seen.
+    final sent = _stopped ? 0 : await _push();
     return SyncReport(
         received: ready.length, sent: sent, keptConflicts: losers.length);
   }
@@ -178,6 +198,8 @@ class SyncEngine {
     final unknownVersion = <String>[];
     var sent = 0;
     for (final local in pending.values) {
+      if (_stopped) break;
+      onProgress?.call((sending: true, done: sent, total: pending.length));
       final record =
           await exportRecord(db, local.kind, local.id, local.changedAt);
       for (final photo in record.photos) {
