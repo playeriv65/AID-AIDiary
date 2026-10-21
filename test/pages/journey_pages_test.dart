@@ -14,6 +14,7 @@ import 'package:aid_diary/pages/media_page.dart';
 import 'package:aid_diary/pages/search_page.dart';
 import 'package:aid_diary/providers/entry_images_provider.dart';
 import 'package:aid_diary/providers/tags_provider.dart';
+import 'package:aid_diary/widgets/entry_text_field.dart';
 import 'package:aid_diary/widgets/mood_icon.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/services.dart';
@@ -259,6 +260,29 @@ void main() {
         () => find.byType(AddEditEntryPage).evaluate().isEmpty);
     expect(find.byType(AddEditEntryPage), findsNothing);
     expect(EntryStore.instance.entries, isEmpty);
+    await tester.pumpWidget(const SizedBox.shrink());
+  });
+
+  testWidgets('the keyboard sliding does not rebuild the entry text',
+      (tester) async {
+    DiaryAppHarness.size(tester, const Size(390, 844));
+    await tester.pumpWidget(harness.app(const AddEditEntryPage()));
+    await tester.pumpAndSettle();
+    await tester.enterText(DiaryAppHarness.entryBody, '很长的一篇日记');
+    await tester.pumpAndSettle();
+    var textRebuilds = 0;
+    debugOnRebuildDirtyWidget = (element, _) {
+      if (element.widget is EntryTextField) textRebuilds++;
+    };
+    addTearDown(() => debugOnRebuildDirtyWidget = null);
+    addTearDown(tester.view.resetViewInsets);
+    for (final inset in [300.0, 220.0, 140.0, 60.0, 0.0]) {
+      tester.view.viewInsets = FakeViewPadding(bottom: inset);
+      await tester.pump(const Duration(milliseconds: 16));
+    }
+    debugOnRebuildDirtyWidget = null;
+    expect(textRebuilds, 0);
+    expect(find.byKey(const ValueKey('editor-title')), findsOneWidget);
     await tester.pumpWidget(const SizedBox.shrink());
   });
 

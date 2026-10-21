@@ -40,7 +40,7 @@ class TagChip extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = tag.resolvedColor(context,
         fallback: Theme.of(context).colorScheme.secondary);
-    final screenWidth = MediaQuery.of(context).size.width;
+    final screenWidth = MediaQuery.sizeOf(context).width;
 
     return LayoutBuilder(
       builder: (context, constraints) {

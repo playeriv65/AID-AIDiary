@@ -10,6 +10,7 @@ import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/database/entry_store.dart';
+import 'package:aid_diary/widgets/back_gesture_transition.dart';
 import 'package:aid_diary/custom_locale_delegates.dart';
 import 'package:aid_diary/database/app_database.dart';
 import 'package:aid_diary/device_info_service.dart';
@@ -655,6 +656,14 @@ class _MainAppState extends State<MainApp> {
             ),
             scaffoldBackgroundColor: Colors.black);
       }
+
+      // The back gesture follows the finger and fades out at its own pace.
+      const transitions = PageTransitionsTheme(builders: {
+        TargetPlatform.android: DiaryPageTransitionsBuilder(),
+        TargetPlatform.windows: ZoomPageTransitionsBuilder(),
+      });
+      lightTheme = lightTheme.copyWith(pageTransitionsTheme: transitions);
+      darkTheme = darkTheme.copyWith(pageTransitionsTheme: transitions);
 
       return StatsFl(
         isEnabled: false,

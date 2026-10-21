@@ -67,7 +67,9 @@ class EditorKeyboardSession extends ChangeNotifier {
       if (!alreadyDocked) notifyListeners();
       return;
     }
-    if (!_isUp) return;
+    // The bar changes its tools only once the keyboard is down, not while
+    // it slides, where the swap looked like a stutter.
+    if (!_isUp || inset > 0) return;
     _dismissDebounce ??= Timer(dismissDebounceDuration, () {
       _dismissDebounce = null;
       _isUp = false;
@@ -108,5 +110,10 @@ class EditorKeyboardSessionScope
 
   static EditorKeyboardSession? maybeOf(BuildContext context) => context
       .dependOnInheritedWidgetOfExactType<EditorKeyboardSessionScope>()
+      ?.notifier;
+
+  /// The session without listening to it, for event handlers.
+  static EditorKeyboardSession? read(BuildContext context) => context
+      .getInheritedWidgetOfExactType<EditorKeyboardSessionScope>()
       ?.notifier;
 }

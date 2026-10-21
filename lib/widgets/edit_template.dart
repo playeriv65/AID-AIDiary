@@ -185,9 +185,8 @@ class _EditTemplateState extends State<EditTemplate> {
 
   @override
   Widget build(BuildContext context) {
-    final keyboardInset = EditorActionBarOverlay.keyboardInsetOf(context);
-
-    return Scaffold(
+    return EditorKeyboardInset(
+        child: Scaffold(
       appBar: AppBar(
         actions: [
           if (widget.template != null) deleteButton(),
@@ -195,7 +194,6 @@ class _EditTemplateState extends State<EditTemplate> {
         ],
       ),
       body: EditorActionBarOverlay(
-        keyboardInset: keyboardInset,
         body: CustomScrollView(
           slivers: [
             SliverToBoxAdapter(
@@ -250,7 +248,7 @@ class _EditTemplateState extends State<EditTemplate> {
                 builder: (context) => GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
-                    EditorKeyboardSessionScope.maybeOf(context)?.resume();
+                    EditorKeyboardSessionScope.read(context)?.resume();
                     _focusNode.requestFocus();
                   },
                   child: Row(
@@ -299,6 +297,6 @@ class _EditTemplateState extends State<EditTemplate> {
           mainActions: _buildMainActions(),
         ),
       ),
-    );
+    ));
   }
 }

@@ -87,7 +87,9 @@ class TimeManager {
   }
 
   static DateFormat localizedTimeFormat(BuildContext context, String locale) {
-    if (MediaQuery.of(context).alwaysUse24HourFormat) {
+    // Only this aspect: a full MediaQuery dependency rebuilds the caller on
+    // every keyboard frame.
+    if (MediaQuery.alwaysUse24HourFormatOf(context)) {
       return DateFormat.Hm(locale);
     }
     return DateFormat.jm(locale);

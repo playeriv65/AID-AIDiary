@@ -64,14 +64,13 @@ class _EntryTextFieldState extends State<EntryTextField> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final styles = MarkdownPreviewStyles.fromTheme(context);
-    final session = EditorKeyboardSessionScope.maybeOf(context);
     final baseStyle = EntryTypography.of(context).apply(theme
         .textTheme.bodyLarge!
         .copyWith(color: theme.colorScheme.onSurface));
     final strutStyle = StrutStyle.fromTextStyle(baseStyle);
 
     final field = TextField(
-      onTap: session?.resume,
+      onTap: () => EditorKeyboardSessionScope.read(context)?.resume(),
       controller: widget.controller,
       undoController: widget.undoController,
       focusNode: widget.focusNode,

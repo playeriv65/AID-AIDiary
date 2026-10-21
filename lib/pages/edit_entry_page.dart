@@ -391,63 +391,64 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final keyboardInset = EditorActionBarOverlay.keyboardInsetOf(context);
+    if (_loadingEntry) return const Scaffold();
 
-    return _loadingEntry
-        ? Scaffold()
-        : PopScope(
-            // Going back over changes asks first; the done button does not.
-            canPop: !_edited,
-            onPopInvokedWithResult: (didPop, result) async {
-              if (!didPop) return _confirmLeave();
-              if (_discarded) return;
-              if (!_deletingEntry) await _saveEntry();
-              await _draftSession.commit();
-            },
-            child: Scaffold(
-              appBar: AppBar(
-                  titleSpacing: 0,
-                  title: _buildDateTitle(context, theme),
-                  leading: _closeButton(),
-                  actions: [
-                    _tagsButton(),
-                    if (!_creatingNewEntry) _deleteButton(),
-                  ]),
-              body: EditorActionBarOverlay(
-                keyboardInset: keyboardInset,
-                // Like a page: title, writing, then what goes with it.
-                body: LayoutBuilder(
-                  builder: (context, constraints) {
-                    final sidePadding =
-                        ((constraints.maxWidth - _pageWidth) / 2)
-                            .clamp(0.0, double.infinity);
-                    return ListView(
-                      padding: EdgeInsets.fromLTRB(
-                          sidePadding + 8,
-                          8,
-                          sidePadding + 8,
-                          24 + EditorActionBar.reservedHeight(context)),
-                      children: [
-                        _buildTitleField(theme),
-                        _buildBodyEditor(context),
-                        const SizedBox(height: 16),
-                        _buildMedia(context),
-                        const SizedBox(height: 16),
-                        _buildMetaRows(context),
-                      ],
-                    );
-                  },
-                ),
-                actionBar: EditorActionBar(
-                  controller: _textEditingController,
-                  undoController: _undoController,
-                  focusNode: _focusNode,
-                  onTemplateInserted: _applyInsertedTemplateTags,
-                  mainActions: _buildMainActions(context),
-                ),
-              ),
+    // Like a page: title, writing, then what goes with it. Built here, not
+    // in the LayoutBuilder, so the keyboard resizing the page re-lays it out
+    // without rebuilding the text on every frame.
+    final content = [
+      _buildTitleField(theme),
+      _buildBodyEditor(context),
+      const SizedBox(height: 16),
+      _buildMedia(context),
+      const SizedBox(height: 16),
+      _buildMetaRows(context),
+    ];
+    return PopScope(
+      // Going back over changes asks first; the done button does not.
+      canPop: !_edited,
+      onPopInvokedWithResult: (didPop, result) async {
+        if (!didPop) return _confirmLeave();
+        if (_discarded) return;
+        if (!_deletingEntry) await _saveEntry();
+        await _draftSession.commit();
+      },
+      child: EditorKeyboardInset(
+        child: Scaffold(
+          appBar: AppBar(
+              titleSpacing: 0,
+              title: _buildDateTitle(context, theme),
+              leading: _closeButton(),
+              actions: [
+                _tagsButton(),
+                if (!_creatingNewEntry) _deleteButton(),
+              ]),
+          body: EditorActionBarOverlay(
+            body: LayoutBuilder(
+              builder: (context, constraints) {
+                final sidePadding = ((constraints.maxWidth - _pageWidth) / 2)
+                    .clamp(0.0, double.infinity);
+                return ListView(
+                  padding: EdgeInsets.fromLTRB(
+                      sidePadding + 8,
+                      8,
+                      sidePadding + 8,
+                      24 + EditorActionBar.reservedHeight(context)),
+                  children: content,
+                );
+              },
             ),
-          );
+            actionBar: EditorActionBar(
+              controller: _textEditingController,
+              undoController: _undoController,
+              focusNode: _focusNode,
+              onTemplateInserted: _applyInsertedTemplateTags,
+              mainActions: _buildMainActions(context),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   /// The optional title: a large centred line that is simply left out of
@@ -473,27 +474,30 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
   /// The writing itself; it grows with the text, and the space below the
   /// last line still takes a tap.
   Widget _buildBodyEditor(BuildContext context) {
-    return GestureDetector(
-      behavior: HitTestBehavior.translucent,
-      onTap: () {
-        EditorKeyboardSessionScope.maybeOf(context)?.resume();
-        _focusNode.requestFocus();
-      },
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(minHeight: 200),
-        child: Align(
-          alignment: Alignment.topCenter,
-          child: EntryTextEditor(
-            text: _body,
-            expands: false,
-            focusNode: _focusNode,
-            textEditingController: _textEditingController,
-            undoHistoryController: _undoController,
-            onExpand: _openFullScreenEditor,
-            onChooseTemplate: () => showTemplateSelectPopup(
-                context, _textEditingController,
-                hasFocus: _focusNode.hasFocus,
-                onTemplateSelected: _applyInsertedTemplateTags),
+    // Built under the action bar overlay, which holds the keyboard session.
+    return Builder(
+      builder: (context) => GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () {
+          EditorKeyboardSessionScope.read(context)?.resume();
+          _focusNode.requestFocus();
+        },
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(minHeight: 200),
+          child: Align(
+            alignment: Alignment.topCenter,
+            child: EntryTextEditor(
+              text: _body,
+              expands: false,
+              focusNode: _focusNode,
+              textEditingController: _textEditingController,
+              undoHistoryController: _undoController,
+              onExpand: _openFullScreenEditor,
+              onChooseTemplate: () => showTemplateSelectPopup(
+                  context, _textEditingController,
+                  hasFocus: _focusNode.hasFocus,
+                  onTemplateSelected: _applyInsertedTemplateTags),
+            ),
           ),
         ),
       ),

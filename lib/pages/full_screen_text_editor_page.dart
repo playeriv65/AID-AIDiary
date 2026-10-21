@@ -52,14 +52,13 @@ class _FullScreenTextEditorPageState extends State<FullScreenTextEditorPage> {
 
   @override
   Widget build(BuildContext context) {
-    final keyboardInset = EditorActionBarOverlay.keyboardInsetOf(context);
-
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, _) {
         if (!didPop) _close();
       },
-      child: Scaffold(
+      child: EditorKeyboardInset(
+          child: Scaffold(
         appBar: AppBar(
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_rounded),
@@ -77,7 +76,6 @@ class _FullScreenTextEditorPageState extends State<FullScreenTextEditorPage> {
         body: Builder(
           builder: (context) {
             return EditorActionBarOverlay(
-              keyboardInset: keyboardInset,
               body: SafeArea(
                 top: false,
                 bottom: false,
@@ -102,7 +100,7 @@ class _FullScreenTextEditorPageState extends State<FullScreenTextEditorPage> {
             );
           },
         ),
-      ),
+      )),
     );
   }
 }
