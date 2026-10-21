@@ -129,9 +129,6 @@ class AppConfig {
       Duration(seconds: _section('location')['timeoutSeconds'] as int);
   int get recentPlacesLimit => _section('location')['recentPlaces'] as int;
 
-  Duration get activityTimeout =>
-      Duration(seconds: _section('activity')['timeoutSeconds'] as int);
-
   Uri get weatherForecastUrl =>
       Uri.parse(_section('weather')['forecastUrl'] as String);
   Uri get weatherArchiveUrl =>
@@ -153,4 +150,9 @@ class AppConfig {
   /// tall screen holds, so the first scroll does not run out.
   int get launchFirstScreenEntries =>
       _section('launch')['firstScreenEntries'] as int;
+
+  /// Entries written before this hour count for the day before, when the
+  /// late-night setting is on.
+  int get lateNightUntilHour =>
+      _section('diaryDay')['lateNightUntilHour'] as int;
 }

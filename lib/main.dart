@@ -9,6 +9,7 @@ import 'dart:math';
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/config_provider.dart';
+import 'package:aid_diary/database/entry_store.dart';
 import 'package:aid_diary/custom_locale_delegates.dart';
 import 'package:aid_diary/database/app_database.dart';
 import 'package:aid_diary/device_info_service.dart';
@@ -60,6 +61,7 @@ Future<void> _initBackground() async {
   configureLogging();
   await ConfigProvider.instance.init();
   await AppConfig.load();
+  EntryStore.instance.applyLateNightSetting();
 }
 
 /// The alarm callback running in this isolate, if any.
@@ -389,6 +391,7 @@ void main() async {
 
   // Load any cached flashbacks
   await AppConfig.load();
+  EntryStore.instance.applyLateNightSetting();
   await FlashbackManager.init();
 
   final themeProvider = ThemeModeProvider();

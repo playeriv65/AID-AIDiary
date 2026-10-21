@@ -8,6 +8,7 @@ import 'dart:typed_data';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/storage/file_store.dart';
 import 'package:aid_diary/utils/formats/archive_export.dart';
+import 'package:aid_diary/utils/formats/time_zones.dart';
 import 'package:aid_diary/utils/formats/weather_codes.dart';
 import 'package:aid_diary/utils/imports/import_archive.dart';
 import 'package:aid_diary/utils/imports/import_helpers.dart';
@@ -61,12 +62,16 @@ Future<List<ImportedEntry>> decodeJourneyArchive(ArchiveFiles files) async {
 ImportedEntry? decodeJourneyEntry(
     Map<String, dynamic> json, ImportedPhoto? Function(String name) photo) {
   final v2 = json['schemaVersion'] == 2;
-  final created =
+  final createdAt =
       v2 ? _isoTime(json['dateOfJournal']) : _epochTime(json['date_journal']);
-  if (created == null) return null;
+  if (createdAt == null) return null;
+  // The time as it read where the entry was written, not where it is
+  // imported.
+  final created = wallClockInZone(createdAt, json['timezone'] as String?);
   final modified =
-      (v2 ? _isoTime(json['updatedAt']) : _epochTime(json['date_modified'])) ??
-          created;
+      (v2 ? _isoTime(json['updatedAt']) : _epochTime(json['date_modified']))
+              ?.toLocal() ??
+          created.wall;
 
   final text = json['text'] as String? ?? '';
   final markdown = switch (json['type']) {
@@ -96,7 +101,8 @@ ImportedEntry? decodeJourneyEntry(
   return ImportedEntry(
     Entry(
       text: markdown,
-      timeCreate: created,
+      timeCreate: created.wall,
+      utcOffset: created.utcOffset,
       timeModified: modified,
       location: location.isEmpty ? null : location,
       weather:
@@ -119,12 +125,13 @@ ImportedEntry? decodeJourneyEntry(
 }
 
 DateTime? _epochTime(Object? millis) => switch (millis) {
-      final int ms when ms > 0 => DateTime.fromMillisecondsSinceEpoch(ms),
+      final int ms when ms > 0 =>
+        DateTime.fromMillisecondsSinceEpoch(ms, isUtc: true),
       _ => null,
     };
 
 DateTime? _isoTime(Object? text) => switch (text) {
-      final String iso => DateTime.tryParse(iso)?.toLocal(),
+      final String iso => DateTime.tryParse(iso)?.toUtc(),
       _ => null,
     };
 
@@ -142,7 +149,7 @@ class JourneyExportWriter implements ArchiveExportWriter {
   @override
   Future<void> write(ExportedEntry exported) async {
     final entry = exported.entry;
-    final created = entry.timeCreate.millisecondsSinceEpoch;
+    final created = entry.createdInstant.millisecondsSinceEpoch;
     // Journey ids are the creation time and a hex suffix.
     final id =
         '$created-${(entry.id ?? created).toRadixString(16).padLeft(16, '0')}';
@@ -164,7 +171,7 @@ class JourneyExportWriter implements ArchiveExportWriter {
       'type': 'markdown',
       'date_journal': created,
       'date_modified': entry.timeModified.millisecondsSinceEpoch,
-      'timezone': '',
+      'timezone': zoneForOffset(entry.writtenOffset) ?? '',
       'address': location?.name ?? '',
       'lat': location?.latitude ?? _unset,
       'lon': location?.longitude ?? _unset,

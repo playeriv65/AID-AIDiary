@@ -2,7 +2,9 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/config_provider.dart';
+import 'package:aid_diary/database/entry_store.dart';
 import 'package:aid_diary/time_manager.dart';
 import 'package:aid_diary/widgets/color_picker_dialog.dart';
 import 'package:aid_diary/widgets/diary_wallpaper.dart';
@@ -411,6 +413,17 @@ class _AppearanceSettingsPageState extends State<AppearanceSettings> {
                     '12': AppLocalizations.of(context)!.timeFormat12,
                     '24': AppLocalizations.of(context)!.timeFormat24,
                   }),
+                  SettingsToggle(
+                    title: AppLocalizations.of(context)!.settingsLateNight,
+                    hint: AppLocalizations.of(context)!.settingsLateNightHint(
+                        AppConfig.instance.lateNightUntilHour),
+                    setting: Settings.lateNightPreviousDay,
+                    onChanged: (value) async {
+                      await configProvider.set(
+                          Settings.lateNightPreviousDay, value);
+                      EntryStore.instance.applyLateNightSetting();
+                    },
+                  ),
                   const Divider(height: 32),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),

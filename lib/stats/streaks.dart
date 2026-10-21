@@ -10,8 +10,8 @@ typedef Streaks = ({int current, int longest, int? daysSinceBadDay});
 Streaks calculateStreaks(List<Entry> entries, {DateTime? now}) {
   if (entries.isEmpty) return (current: 0, longest: 0, daysSinceBadDay: null);
 
-  final today = _calendarDay(now ?? DateTime.now());
-  final mostRecentDay = _calendarDay(entries.first.timeCreate);
+  final today = _calendarDay(Entry.diaryDayOf(now ?? DateTime.now()));
+  final mostRecentDay = _calendarDay(entries.first.day);
   final isCurrent = today.difference(mostRecentDay).inDays <= 1;
 
   var current = 0;
@@ -23,7 +23,7 @@ Streaks calculateStreaks(List<Entry> entries, {DateTime? now}) {
   DateTime? previousDay;
 
   for (final entry in entries) {
-    final day = _calendarDay(entry.timeCreate);
+    final day = _calendarDay(entry.day);
 
     if (daysSinceBadDay == null && entry.mood != null && entry.mood! < 0) {
       daysSinceBadDay = today.difference(day).inDays;

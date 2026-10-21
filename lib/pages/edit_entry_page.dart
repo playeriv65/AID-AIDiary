@@ -654,9 +654,24 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
                     style: theme.textTheme.titleLarge
                         ?.copyWith(fontWeight: FontWeight.w600)),
                 TextSpan(
-                    text: '  /  $time $weekday',
+                    text: '  /  $time $weekday'
+                        '${_entry.otherZoneLabel == null ? '' : ' ${_entry.otherZoneLabel}'}',
                     style: theme.textTheme.bodyMedium
                         ?.copyWith(color: cs.onSurfaceVariant)),
+                if (date.hour < Entry.dayStartHour)
+                  WidgetSpan(
+                    alignment: PlaceholderAlignment.middle,
+                    child: Padding(
+                      padding: const EdgeInsetsDirectional.only(start: 4),
+                      child: Tooltip(
+                        message: AppLocalizations.of(context)!.lateNightBadge,
+                        child: Icon(Icons.bedtime_outlined,
+                            key: const ValueKey('editor-late-night'),
+                            size: 16,
+                            color: cs.onSurfaceVariant),
+                      ),
+                    ),
+                  ),
               ]),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,

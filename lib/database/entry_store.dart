@@ -5,6 +5,7 @@
 import 'dart:async';
 
 import 'package:aid_diary/config/app_config.dart';
+import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/database/app_database.dart';
 import 'package:aid_diary/database/entry_dao.dart';
 import 'package:aid_diary/database/entry_image_dao.dart';
@@ -15,7 +16,6 @@ import 'package:aid_diary/models/image.dart';
 import 'package:aid_diary/models/tag.dart';
 import 'package:aid_diary/providers/entry_images_provider.dart';
 import 'package:aid_diary/providers/tags_provider.dart';
-import 'package:aid_diary/time_manager.dart';
 import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
 import 'package:sqflite/sqflite.dart';
@@ -292,10 +292,26 @@ class EntryStore with ChangeNotifier {
   }
 
   Entry? getEntryForToday() {
-    if (entries.isNotEmpty && TimeManager.isToday(entries.first.timeCreate)) {
+    if (entries.isNotEmpty &&
+        entries.first.day == Entry.diaryDayOf(DateTime.now())) {
       return entries.first;
     }
     return null;
+  }
+
+  /// Reads the late-night setting into [Entry.dayStartHour].
+  void applyLateNightSetting() =>
+      setDayStartHour(ConfigProvider.instance.get(Settings.lateNightPreviousDay)
+          ? AppConfig.instance.lateNightUntilHour
+          : 0);
+
+  /// Entries before [hour] count for the day before; 0 turns it off.
+  @visibleForTesting
+  void setDayStartHour(int hour) {
+    if (Entry.dayStartHour == hour) return;
+    Entry.dayStartHour = hour;
+    _indexEntriesByDay();
+    notifyListeners();
   }
 
   Entry? getEntryForDate(DateTime date) {

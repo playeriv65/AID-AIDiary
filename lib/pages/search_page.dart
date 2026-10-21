@@ -201,23 +201,25 @@ class _SearchPageState extends State<SearchPage> {
             value: _starred,
             onChanged: (value) => setState(() => _starred = value ?? false),
           ),
-          _FilterSection(
-            key: const ValueKey('search-filter-activity'),
-            icon: Icons.directions_walk_rounded,
-            title: l10n.activityTitle,
-            options: EntryActivity.values.length,
-            selected: _activities.length,
-            children: [
-              for (final activity in EntryActivity.values)
-                CheckboxListTile(
-                  key: ValueKey('search-activity-${activity.name}'),
-                  secondary: Icon(activityIcon(activity)),
-                  title: Text(activityLabel(activity, l10n)),
-                  value: _activities.contains(activity),
-                  onChanged: (on) => _toggle(_activities, activity, on),
-                ),
-            ],
-          ),
+          // Activities are no longer recorded; imported entries may have one.
+          if (EntriesProvider.instance.entries.any((e) => e.activity != null))
+            _FilterSection(
+              key: const ValueKey('search-filter-activity'),
+              icon: Icons.directions_walk_rounded,
+              title: l10n.activityTitle,
+              options: EntryActivity.values.length,
+              selected: _activities.length,
+              children: [
+                for (final activity in EntryActivity.values)
+                  CheckboxListTile(
+                    key: ValueKey('search-activity-${activity.name}'),
+                    secondary: Icon(activityIcon(activity)),
+                    title: Text(activityLabel(activity, l10n)),
+                    value: _activities.contains(activity),
+                    onChanged: (on) => _toggle(_activities, activity, on),
+                  ),
+              ],
+            ),
           _FilterSection(
             key: const ValueKey('search-filter-mood'),
             icon: Icons.mood_rounded,

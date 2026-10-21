@@ -62,13 +62,25 @@ class JournalEntryRow extends StatelessWidget {
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                        label ??
-                            TimeManager.localizedTimeFormat(
-                                    context, TimeManager.currentLocale(context))
-                                .format(entry.timeCreate),
-                        style: theme.textTheme.titleSmall
-                            ?.copyWith(fontWeight: FontWeight.w700)),
+                    Row(children: [
+                      Text(
+                          label ??
+                              TimeManager.localizedTimeFormat(context,
+                                      TimeManager.currentLocale(context))
+                                  .format(entry.timeCreate),
+                          style: theme.textTheme.titleSmall
+                              ?.copyWith(fontWeight: FontWeight.w700)),
+                      if (label == null && entry.isLateNight) ...[
+                        const SizedBox(width: 4),
+                        Tooltip(
+                          message: l10n.lateNightBadge,
+                          child: Icon(Icons.bedtime_outlined,
+                              key: const ValueKey('late-night'),
+                              size: 14,
+                              color: cs.onSurfaceVariant),
+                        ),
+                      ],
+                    ]),
                     const SizedBox(height: 4),
                     // A sealed capsule shows nothing of what is inside.
                     if (sealed)
@@ -90,7 +102,8 @@ class JournalEntryRow extends StatelessWidget {
                         Text(preview.title!,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: theme.textTheme.bodyMedium),
+                            style: theme.textTheme.titleMedium
+                                ?.copyWith(fontWeight: FontWeight.w600)),
                       Text(
                           preview.snippet.isEmpty && preview.title == null
                               ? l10n.writeSomethingHint

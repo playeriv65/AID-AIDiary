@@ -1383,6 +1383,18 @@ class AppLocalizationsBg extends AppLocalizations {
   String get settingsTimeFormat => 'Time format';
 
   @override
+  String get settingsLateNight => 'Late nights count as the day before';
+
+  @override
+  String settingsLateNightHint(int hour) {
+    return 'Entries written before $hour:00 are listed under the previous day. Their time stays as written.';
+  }
+
+  @override
+  String get lateNightBadge =>
+      'Written late at night, counted for the day before';
+
+  @override
   String get timeFormat12 => '12-hour';
 
   @override

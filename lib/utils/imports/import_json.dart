@@ -43,6 +43,7 @@ List<ImportedEntry> decodeJsonEntries(Uint8List bytes) {
             text: entry['text'],
             mood: entry['mood'] as int?,
             timeCreate: parseLocalTime(entry['timeCreated']),
+            utcOffset: entry['utcOffsetMinutes'] as int?,
             timeModified: parseLocalTime(entry['timeModified']),
             // Optional, like everything below.
             location: switch (entry['location']) {

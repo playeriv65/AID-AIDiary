@@ -22,6 +22,7 @@ class EntryFields {
     temperature,
     activity,
     openAt,
+    utcOffset,
   ];
   static const String id = 'id';
   static const String text = 'text';
@@ -35,6 +36,7 @@ class EntryFields {
   static const String temperature = 'temperature';
   static const String activity = 'activity';
   static const String openAt = 'open_at';
+  static const String utcOffset = 'utc_offset';
 
   /// Set while an entry sits in Recently deleted; not part of [Entry].
   static const String deletedAt = 'deleted_at';
@@ -113,6 +115,12 @@ class Entry {
   /// A time capsule stays sealed until this moment.
   final DateTime? openAt;
 
+  /// Minutes ahead of UTC where the entry was written. [timeCreate] is the
+  /// wall-clock time there, so it reads the same after the device moves to
+  /// another time zone; this pins down the moment for formats that need
+  /// one. Null for entries from before it was recorded.
+  final int? utcOffset;
+
   Entry({
     this.id,
     required this.text,
@@ -123,13 +131,68 @@ class Entry {
     this.weather,
     this.activity,
     this.openAt,
+    this.utcOffset,
   });
 
-  /// Local midnight of [timeCreate], the key entries are grouped by. Kept
-  /// once made: a local DateTime asks the OS for the time zone, which adds
-  /// up over thousands of entries on every change.
-  late final DateTime day =
+  /// The UTC offset where this was written, or the device's for that time
+  /// when unknown.
+  Duration get writtenOffset => utcOffset == null
+      ? timeCreate.timeZoneOffset
+      : Duration(minutes: utcOffset!);
+
+  /// "UTC+8" when the entry was written in another time zone than the
+  /// device's, so its time is not read as local; null otherwise.
+  String? get otherZoneLabel {
+    final offset = utcOffset;
+    if (offset == null || offset == timeCreate.timeZoneOffset.inMinutes) {
+      return null;
+    }
+    final sign = offset < 0 ? '−' : '+';
+    final hours = offset.abs() ~/ 60;
+    final minutes = offset.abs() % 60;
+    return 'UTC$sign$hours${minutes == 0 ? '' : ':${'$minutes'.padLeft(2, '0')}'}';
+  }
+
+  /// The moment [timeCreate] stands for, in UTC.
+  DateTime get createdInstant => DateTime.utc(
+          timeCreate.year,
+          timeCreate.month,
+          timeCreate.day,
+          timeCreate.hour,
+          timeCreate.minute,
+          timeCreate.second,
+          timeCreate.millisecond)
+      .subtract(writtenOffset);
+
+  /// The local wall-clock time at [offset] for a UTC moment.
+  static DateTime wallClockAt(DateTime instant, Duration offset) {
+    final wall = instant.toUtc().add(offset);
+    return DateTime(wall.year, wall.month, wall.day, wall.hour, wall.minute,
+        wall.second, wall.millisecond);
+  }
+
+  /// Entries written before this hour belong to the day before, the way a
+  /// late night still feels like that day; 0 turns this off. Set from the
+  /// late-night setting.
+  static int dayStartHour = 0;
+
+  /// The diary day a moment belongs to, such as now; see [day].
+  static DateTime diaryDayOf(DateTime time) => DateTime(
+      time.year, time.month, time.day - (time.hour < dayStartHour ? 1 : 0));
+
+  /// Whether this entry was written in the small hours and counts for the
+  /// day before.
+  bool get isLateNight => timeCreate.hour < dayStartHour;
+
+  /// The diary day this entry belongs to, the key entries are grouped by:
+  /// local midnight of [timeCreate], or of the day before for a late-night
+  /// entry. Both are kept once made: a local DateTime asks the OS for the
+  /// time zone, which adds up over thousands of entries on every change.
+  DateTime get day => isLateNight ? _dayBefore : _calendarDay;
+  late final DateTime _calendarDay =
       DateTime(timeCreate.year, timeCreate.month, timeCreate.day);
+  late final DateTime _dayBefore =
+      DateTime(timeCreate.year, timeCreate.month, timeCreate.day - 1);
 
   /// Whether this is a time capsule that has not opened yet.
   bool get isSealed => openAt?.isAfter(DateTime.now()) ?? false;
@@ -146,6 +209,7 @@ class Entry {
     Object? weather = _unset,
     Object? activity = _unset,
     Object? openAt = _unset,
+    Object? utcOffset = _unset,
   }) =>
       Entry(
         id: id ?? this.id,
@@ -159,6 +223,7 @@ class Entry {
         activity:
             activity == _unset ? this.activity : activity as EntryActivity?,
         openAt: openAt == _unset ? this.openAt : openAt as DateTime?,
+        utcOffset: utcOffset == _unset ? this.utcOffset : utcOffset as int?,
       );
 
   static Entry fromJson(Map<String, Object?> json) {
@@ -185,6 +250,7 @@ class Entry {
         final String at => parseLocalTime(at),
         _ => null,
       },
+      utcOffset: json[EntryFields.utcOffset] as int?,
     );
   }
 
@@ -201,5 +267,6 @@ class Entry {
         EntryFields.temperature: weather?.temperature,
         EntryFields.activity: activity?.name,
         EntryFields.openAt: openAt?.toIso8601String(),
+        EntryFields.utcOffset: utcOffset,
       };
 }

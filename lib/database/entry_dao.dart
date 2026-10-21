@@ -63,11 +63,16 @@ class EntryDao {
     }
   }
 
+  /// Inserts [entry]; without a known UTC offset it was written here, so
+  /// it takes this device's.
   static Future<Entry> add(Entry entry, {DatabaseExecutor? executor}) async {
+    final placed = entry.utcOffset == null
+        ? entry.copy(utcOffset: entry.timeCreate.timeZoneOffset.inMinutes)
+        : entry;
     final id = await AppDatabase.executorOr(executor)
-        .insert(entriesTable, entry.toJson());
+        .insert(entriesTable, placed.toJson());
 
-    return entry.copy(id: id);
+    return placed.copy(id: id);
   }
 
   static Future<void> update(Entry entry, {DatabaseExecutor? executor}) async {

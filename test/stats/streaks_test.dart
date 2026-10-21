@@ -19,6 +19,21 @@ void main() {
     expect(streaks.daysSinceBadDay, isNull);
   });
 
+  test('a late-night entry keeps the day before in the streak', () {
+    Entry.dayStartHour = 4;
+    addTearDown(() => Entry.dayStartHour = 0);
+    final streaks = calculateStreaks(
+      [
+        // Written at 1:30 on the 10th, after skipping the evening of the 9th.
+        entryAt(DateTime(2025, 3, 10, 1, 30)),
+        entryAt(DateTime(2025, 3, 8, 21)),
+      ],
+      now: DateTime(2025, 3, 10, 2),
+    );
+
+    expect(streaks.current, 2);
+  });
+
   test('counts a streak across a daylight saving transition', () {
     final streaks = calculateStreaks(
       [

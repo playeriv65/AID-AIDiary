@@ -50,6 +50,18 @@ void main() {
       expect(decoded.photos.single.name, '1-a-0.jpg');
     });
 
+    test('keeps the time as it read where the entry was written', () {
+      // 23:30 in Shanghai is 15:30 UTC, whatever zone imports it.
+      final decoded = decodeJourneyEntry({
+        'text': 'late in Shanghai',
+        'date_journal': DateTime.utc(2025, 6, 7, 15, 30).millisecondsSinceEpoch,
+        'timezone': 'Asia/Shanghai',
+      }, noPhoto)!;
+      expect(decoded.entry.timeCreate, DateTime(2025, 6, 7, 23, 30));
+      expect(decoded.entry.utcOffset, 8 * 60);
+      expect(decoded.entry.createdInstant, DateTime.utc(2025, 6, 7, 15, 30));
+    });
+
     test('treats Journey\'s unset markers as missing', () {
       final decoded = decodeJourneyEntry({
         'text': 'plain',
@@ -150,5 +162,27 @@ void main() {
     expect(back.favorite, isTrue);
     expect(back.photos.single.name, endsWith('.png'));
     expect(await back.photos.single.read(), [1, 2, 3]);
+  });
+
+  test('an entry from another time zone keeps its time through export',
+      () async {
+    final store = InMemoryFileStore();
+    final writer = JourneyExportWriter(store);
+    // Written at 23:30 in UTC+8, exported wherever the device is now.
+    final created = DateTime(2025, 6, 7, 23, 30);
+    await writer.write(ExportedEntry(Entry(
+        id: 1,
+        text: 'x',
+        timeCreate: created,
+        timeModified: created,
+        utcOffset: 8 * 60)));
+    await writer.close();
+
+    final back =
+        (await decodeJourneyArchive(await MemoryArchive.of({'': store})))
+            .single;
+    expect(back.entry.timeCreate, created);
+    expect(back.entry.utcOffset, 8 * 60);
+    expect(back.entry.createdInstant, DateTime.utc(2025, 6, 7, 15, 30));
   });
 }

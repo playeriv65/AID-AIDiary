@@ -463,7 +463,9 @@ class EntryDateBlock extends StatelessWidget {
         Text(TimeManager.formatDate(entry.timeCreate, context),
             style: detailStyle),
         Text(
-            '${DateFormat.EEEE(locale).format(entry.timeCreate)} ${TimeManager.localizedTimeFormat(context, locale).format(entry.timeCreate)}',
+            '${DateFormat.EEEE(locale).format(entry.timeCreate)} ${TimeManager.localizedTimeFormat(context, locale).format(entry.timeCreate)}'
+            '${entry.otherZoneLabel == null ? '' : ' (${entry.otherZoneLabel})'}',
+            key: const ValueKey('entry-time'),
             style: detailStyle),
       ]),
     ]);

@@ -26,8 +26,8 @@
     "limit": 12,
     "timeoutSeconds": 10
   },
-  "activity": {
-    "timeoutSeconds": 10
+  "diaryDay": {
+    "lateNightUntilHour": 4
   },
   "typography": {
     "fontSizes": {"small": 14, "medium": 16, "large": 18, "extraLarge": 21},

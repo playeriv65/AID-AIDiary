@@ -1364,6 +1364,17 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settingsTimeFormat => '时间格式';
 
   @override
+  String get settingsLateNight => '凌晨的日记算作前一天';
+
+  @override
+  String settingsLateNightHint(int hour) {
+    return '凌晨 $hour 点前写的日记归到前一天显示，记录的时间本身不变。';
+  }
+
+  @override
+  String get lateNightBadge => '凌晨写的，算作前一天';
+
+  @override
   String get timeFormat12 => '12 小时制';
 
   @override
@@ -3285,6 +3296,17 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get settingsTimeFormat => '時間格式';
+
+  @override
+  String get settingsLateNight => '凌晨的日記算作前一天';
+
+  @override
+  String settingsLateNightHint(int hour) {
+    return '凌晨 $hour 點前寫的日記歸到前一天顯示，記錄的時間本身不變。';
+  }
+
+  @override
+  String get lateNightBadge => '凌晨寫的，算作前一天';
 
   @override
   String get timeFormat12 => '12 小時制';

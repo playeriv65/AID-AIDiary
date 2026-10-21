@@ -2598,6 +2598,24 @@ abstract class AppLocalizations {
   /// **'Time format'**
   String get settingsTimeFormat;
 
+  /// No description provided for @settingsLateNight.
+  ///
+  /// In en, this message translates to:
+  /// **'Late nights count as the day before'**
+  String get settingsLateNight;
+
+  /// No description provided for @settingsLateNightHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Entries written before {hour}:00 are listed under the previous day. Their time stays as written.'**
+  String settingsLateNightHint(int hour);
+
+  /// No description provided for @lateNightBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Written late at night, counted for the day before'**
+  String get lateNightBadge;
+
   /// No description provided for @timeFormat12.
   ///
   /// In en, this message translates to:

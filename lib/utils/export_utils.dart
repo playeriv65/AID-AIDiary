@@ -102,7 +102,9 @@ String encodeJsonEntries(List<Entry> entries,
       {
         'text': entry.text,
         'mood': entry.mood,
+        // Wall-clock time where it was written, and that place's offset.
         'timeCreated': entry.timeCreate.toIso8601String(),
+        if (entry.utcOffset case final offset?) 'utcOffsetMinutes': offset,
         'timeModified': entry.timeModified.toIso8601String(),
         if (entry.location case final place?)
           'location': {

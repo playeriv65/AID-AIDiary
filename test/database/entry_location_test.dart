@@ -32,13 +32,15 @@ CREATE TABLE entries (
       'time_modified': '2026-01-02T03:04:05.000',
     });
     AppDatabase.instance.database = db;
-    await AppDatabase.instance.upgradeSchema(db, 5, 8);
+    await AppDatabase.instance.upgradeSchema(db, 5, 9);
 
     final old = (await EntryDao.getAll()).single;
     expect(old.text, 'old entry');
     expect(old.location, isNull);
     expect(old.weather, isNull);
     expect(old.activity, isNull);
+    // Where an old entry was written is unknown.
+    expect(old.utcOffset, isNull);
     await EntryDao.setDeleted(old.id!, DateTime(2026, 10, 20));
     expect(await EntryDao.getAll(), isEmpty);
     expect(
@@ -60,6 +62,8 @@ CREATE TABLE entries (
             latitude: 31.23, longitude: 121.47, name: 'The Bund'));
     expect(read.weather, const EntryWeather(code: 61, temperature: 14.5));
     expect(read.activity, EntryActivity.walking);
+    // A new entry was written here.
+    expect(read.utcOffset, DateTime(2026, 10, 19).timeZoneOffset.inMinutes);
   });
 
   test('location label prefers the name over coordinates', () {

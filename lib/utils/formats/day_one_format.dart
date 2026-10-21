@@ -8,6 +8,7 @@ import 'dart:typed_data';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/storage/file_store.dart';
 import 'package:aid_diary/utils/formats/archive_export.dart';
+import 'package:aid_diary/utils/formats/time_zones.dart';
 import 'package:aid_diary/utils/formats/weather_codes.dart';
 import 'package:aid_diary/utils/imports/import_archive.dart';
 import 'package:aid_diary/utils/imports/import_helpers.dart';
@@ -78,8 +79,11 @@ List<ImportedEntry> decodeDayOneJournal(Map<String, dynamic> journal,
 /// Decodes one entry, or returns null when it has no creation date.
 ImportedEntry? decodeDayOneEntry(
     Map<String, dynamic> json, ImportedPhoto? Function(String name) photo) {
-  final created = _time(json['creationDate']);
-  if (created == null) return null;
+  final createdAt = _time(json['creationDate']);
+  if (createdAt == null) return null;
+  // The time as it read where the entry was written.
+  final created =
+      wallClockInZone(createdAt.toUtc(), json['timeZone'] as String?);
 
   final text = (json['text'] as String? ?? '')
       .replaceAll(_moment, '')
@@ -114,8 +118,9 @@ ImportedEntry? decodeDayOneEntry(
   return ImportedEntry(
     Entry(
       text: text,
-      timeCreate: created,
-      timeModified: _time(json['modifiedDate']) ?? created,
+      timeCreate: created.wall,
+      utcOffset: created.utcOffset,
+      timeModified: _time(json['modifiedDate']) ?? created.wall,
       location: location.isEmpty ? null : location,
       weather: weatherCode == null || temperature == null
           ? null
@@ -171,7 +176,8 @@ class DayOneExportWriter implements ArchiveExportWriter {
     final weather = entry.weather;
     _entries.add({
       'uuid': _identifier('${entry.id}-${entry.timeCreate.toIso8601String()}'),
-      'creationDate': _utc(entry.timeCreate),
+      'creationDate': _utc(entry.createdInstant),
+      if (zoneForOffset(entry.writtenOffset) case final zone?) 'timeZone': zone,
       'modifiedDate': _utc(entry.timeModified),
       'starred': exported.favorite,
       'text': [

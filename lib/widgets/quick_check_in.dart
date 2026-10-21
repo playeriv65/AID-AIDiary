@@ -29,7 +29,6 @@ class _QuickCheckIn extends StatefulWidget {
 class _QuickCheckInState extends State<_QuickCheckIn> {
   final _note = TextEditingController();
   int? _mood;
-  EntryActivity? _activity;
   bool _saving = false;
 
   @override
@@ -44,7 +43,6 @@ class _QuickCheckInState extends State<_QuickCheckIn> {
     final entry = await EntryStore.instance.add(Entry(
         text: _note.text.trim(),
         mood: _mood,
-        activity: _activity,
         timeCreate: now,
         timeModified: now));
     if (mounted) Navigator.of(context).pop(entry);
@@ -84,20 +82,6 @@ class _QuickCheckInState extends State<_QuickCheckIn> {
               ),
           ]),
           const SizedBox(height: 20),
-          Text(l10n.checkInActivity, style: theme.textTheme.titleSmall),
-          const SizedBox(height: 8),
-          Wrap(spacing: 6, runSpacing: 6, children: [
-            for (final activity in EntryActivity.values)
-              ChoiceChip(
-                key: ValueKey('check-in-activity-${activity.name}'),
-                avatar: Icon(activityIcon(activity), size: 18),
-                label: Text(activityLabel(activity, l10n)),
-                selected: _activity == activity,
-                onSelected: (on) =>
-                    setState(() => _activity = on ? activity : null),
-              ),
-          ]),
-          const SizedBox(height: 16),
           TextField(
             key: const ValueKey('check-in-note'),
             controller: _note,

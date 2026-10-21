@@ -807,6 +807,16 @@
   "@journalSortUpdated": {},
   "settingsTimeFormat": "Time format",
   "@settingsTimeFormat": {},
+  "settingsLateNight": "Late nights count as the day before",
+  "@settingsLateNight": {},
+  "settingsLateNightHint": "Entries written before {hour}:00 are listed under the previous day. Their time stays as written.",
+  "@settingsLateNightHint": {
+    "placeholders": {
+      "hour": {"type": "int"}
+    }
+  },
+  "lateNightBadge": "Written late at night, counted for the day before",
+  "@lateNightBadge": {},
   "timeFormat12": "12-hour",
   "@timeFormat12": {},
   "timeFormat24": "24-hour",

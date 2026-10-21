@@ -86,7 +86,7 @@ class AppDatabase {
 
   Future<void> open({int? firstScreen}) async {
     _database = await openDatabase(_internalPath!,
-        version: 8, onCreate: _createDatabase, onUpgrade: _onUpgrade);
+        version: 9, onCreate: _createDatabase, onUpgrade: _onUpgrade);
 
     await EntriesProvider.instance.load(firstScreen: firstScreen);
     await EntryImagesProvider.instance.load();
@@ -306,7 +306,8 @@ CREATE TABLE $entriesTable (
   ${EntryFields.temperature} REAL,
   ${EntryFields.activity} TEXT,
   ${EntryFields.openAt} DATETIME,
-  ${EntryFields.deletedAt} DATETIME
+  ${EntryFields.deletedAt} DATETIME,
+  ${EntryFields.utcOffset} INTEGER
 )
 ''');
     await db.execute('''
@@ -549,6 +550,12 @@ DROP TABLE old_entries;
         await db
             .execute('ALTER TABLE $entriesTable ADD COLUMN $column DATETIME');
       }
+    }
+    if (oldVersion <= 8) {
+      // Older entries keep a null offset: where they were written is not
+      // known, so they read as written in the device's time zone.
+      await db.execute(
+          'ALTER TABLE $entriesTable ADD COLUMN ${EntryFields.utcOffset} INTEGER');
     }
   }
 
