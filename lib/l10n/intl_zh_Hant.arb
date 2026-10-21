@@ -264,6 +264,7 @@
     "atlasEmpty": "還沒有帶位置的日記。",
     "atlasEmptyHint": "記錄了位置的日記會顯示在地圖上。",
     "atlasShowAll": "顯示全部日記",
+    "atlasMyLocation": "我的位置",
     "coachAll": "全部",
     "coachPrograms": "計畫",
     "coachTemplates": "範本",

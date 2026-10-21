@@ -149,6 +149,13 @@ class _LaunchPageState extends State<LaunchPage> {
       CoachService.storeNotificationText(l10n),
     ]);
     if (!Platform.isAndroid) return;
+    await NotificationManager.instance.createChannels(
+        reminders: l10n.channelReminders,
+        onThisDay: l10n.channelOnThisDay,
+        coach: l10n.channelCoach,
+        nudges: l10n.channelNudges,
+        quickWrite: l10n.channelQuickWrite,
+        backup: l10n.channelBackup);
     // A lasting notification does not survive a restart; put it back.
     if (ConfigProvider.instance.get(Settings.quickWriteNotification)) {
       await NotificationManager.instance

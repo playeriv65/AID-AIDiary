@@ -974,6 +974,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get atlasShowAll => 'Show all entries';
 
   @override
+  String get atlasMyLocation => 'My location';
+
+  @override
   String get coachAll => 'All';
 
   @override

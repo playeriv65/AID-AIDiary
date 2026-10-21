@@ -952,6 +952,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get atlasShowAll => '显示全部日记';
 
   @override
+  String get atlasMyLocation => '我的位置';
+
+  @override
   String get coachAll => '全部';
 
   @override
@@ -2855,6 +2858,9 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get atlasShowAll => '顯示全部日記';
+
+  @override
+  String get atlasMyLocation => '我的位置';
 
   @override
   String get coachAll => '全部';

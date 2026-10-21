@@ -165,32 +165,22 @@ class _AdaptiveDiaryShellState extends State<AdaptiveDiaryShell> {
     return LayoutBuilder(builder: (context, constraints) {
       final compact =
           diaryLayoutFor(constraints.biggest) == DiaryLayout.compact;
-      return Scaffold(
-          resizeToAvoidBottomInset: false,
-          body: Column(children: [
-            Expanded(
-                child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                  // Keep content in the same element slot to preserve drafts/routes.
-                  if (!compact) _rail() else const SizedBox.shrink(),
-                  Expanded(
-                      child: NavigatorPopHandler<Object?>(
-                          onPopWithResult: (result) =>
-                              widget.navigatorKey.currentState!.pop(result),
-                          child: Navigator(
-                              key: widget.navigatorKey,
-                              observers: [_observer],
-                              pages: [
-                                MaterialPage<void>(
-                                    key: const ValueKey('diary-home-route'),
-                                    child: widget.home)
-                              ],
-                              onDidRemovePage: (_) {}))),
-                ])),
-            if (compact && !_hasContentRoute)
-              NavigationBar(
+      // The bar belongs to the home route: pushed pages slide over it with
+      // the rest of home, so a push or pop never resizes anything mid-way.
+      final home = Column(children: [
+        Expanded(
+            // Keeps home in the same element slot to preserve its state.
+            child: MediaQuery.removePadding(
+                context: context, removeBottom: compact, child: widget.home)),
+        if (compact)
+          // The bar keeps clear of the gesture area only, not the status bar.
+          MediaQuery.removePadding(
+              context: context,
+              removeTop: true,
+              child: NavigationBar(
                   key: const ValueKey('diary-bottom-navigation'),
+                  // Material 3 Expressive's short bar.
+                  height: 64,
                   selectedIndex: widget.selectedIndex,
                   onDestinationSelected: _select,
                   destinations: [
@@ -199,7 +189,26 @@ class _AdaptiveDiaryShellState extends State<AdaptiveDiaryShell> {
                           icon: Icon(d.icon),
                           selectedIcon: Icon(d.selectedIcon),
                           label: d.label)
-                  ]),
+                  ])),
+      ]);
+      return Scaffold(
+          resizeToAvoidBottomInset: false,
+          body: Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+            // Keep content in the same element slot to preserve drafts/routes.
+            if (!compact) _rail() else const SizedBox.shrink(),
+            Expanded(
+                child: NavigatorPopHandler<Object?>(
+                    onPopWithResult: (result) =>
+                        widget.navigatorKey.currentState!.pop(result),
+                    child: Navigator(
+                        key: widget.navigatorKey,
+                        observers: [_observer],
+                        pages: [
+                          MaterialPage<void>(
+                              key: const ValueKey('diary-home-route'),
+                              child: home)
+                        ],
+                        onDidRemovePage: (_) {}))),
           ]));
     });
   }

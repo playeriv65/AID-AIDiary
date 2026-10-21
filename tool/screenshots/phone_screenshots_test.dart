@@ -21,7 +21,9 @@ void main() {
   }
 
   testWidgets('phone', (tester) async {
-    await session.start(tester, const Size(390, 844));
+    // A gesture-navigation phone: status bar on top, gesture handle below.
+    await session
+        .start(tester, const Size(390, 844), systemBars: (top: 40, bottom: 20));
     await session.capture(tester, 'phone-journal');
     await session.tapKey(
         tester, 'journal-entry-${await session.starredEntryId(tester)}');

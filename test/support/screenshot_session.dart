@@ -169,11 +169,12 @@ class ScreenshotSession {
   final Future<void> Function(WidgetTester, String) tapKey;
 
   /// Seeds sample entries, sizes the view and shows the app.
-  Future<void> start(WidgetTester tester, Size size) async {
+  Future<void> start(WidgetTester tester, Size size,
+      {({double top, double bottom}) systemBars = (top: 0, bottom: 0)}) async {
     await seed(tester);
     // flutter_test draws shadows as solid outlines; render real ones.
     debugDisableShadows = false;
-    DiaryAppHarness.size(tester, size);
+    DiaryAppHarness.size(tester, size, systemBars: systemBars);
     await tester.pumpWidget(app());
     // Touch-style focus, so no keyboard focus rings show up.
     FocusManager.instance.highlightStrategy =

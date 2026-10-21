@@ -1794,6 +1794,12 @@ abstract class AppLocalizations {
   /// **'Show all entries'**
   String get atlasShowAll;
 
+  /// No description provided for @atlasMyLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'My location'**
+  String get atlasMyLocation;
+
   /// No description provided for @coachAll.
   ///
   /// In en, this message translates to:

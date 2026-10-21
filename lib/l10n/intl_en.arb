@@ -530,6 +530,8 @@
   "@atlasEmptyHint": {},
   "atlasShowAll": "Show all entries",
   "@atlasShowAll": {},
+  "atlasMyLocation": "My location",
+  "@atlasMyLocation": {},
   "coachAll": "All",
   "@coachAll": {},
   "coachPrograms": "Programs",

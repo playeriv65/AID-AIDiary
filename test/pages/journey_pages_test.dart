@@ -15,6 +15,7 @@ import 'package:aid_diary/providers/entry_images_provider.dart';
 import 'package:aid_diary/providers/tags_provider.dart';
 import 'package:aid_diary/widgets/mood_icon.dart';
 import 'package:easy_debounce/easy_debounce.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -236,6 +237,35 @@ void main() {
     await tester.tap(find.byKey(ValueKey('atlas-marker-${placed.id}')));
     await tester.pumpAndSettle();
     expect(find.byKey(ValueKey('atlas-detail-${placed.id}')), findsOneWidget);
+    expect(tester.takeException(), isNull);
+    await tester.pumpWidget(const SizedBox.shrink());
+  });
+
+  testWidgets('opening the atlas asks for location and marks the device',
+      (tester) async {
+    final calls = <String>[];
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(
+            const MethodChannel('flutter.baseflow.com/geolocator'),
+            (call) async {
+      calls.add(call.method);
+      return switch (call.method) {
+        'isLocationServiceEnabled' => true,
+        'checkPermission' => 0, // denied: not asked yet
+        'requestPermission' => 2, // while in use
+        'getCurrentPosition' => {
+            'latitude': 31.23,
+            'longitude': 121.47,
+            'timestamp': 0
+          },
+        _ => null,
+      };
+    });
+    DiaryAppHarness.size(tester, const Size(1280, 800));
+    await tester.pumpWidget(harness.app(Scaffold(body: const AtlasPage())));
+    await tester.pumpAndSettle();
+    expect(calls, contains('requestPermission'));
+    expect(find.byKey(const ValueKey('atlas-here')), findsOneWidget);
     expect(tester.takeException(), isNull);
     await tester.pumpWidget(const SizedBox.shrink());
   });

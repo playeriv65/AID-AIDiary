@@ -263,6 +263,7 @@
     "atlasEmpty": "还没有带位置的日记。",
     "atlasEmptyHint": "记录了位置的日记会显示在地图上。",
     "atlasShowAll": "显示全部日记",
+    "atlasMyLocation": "我的位置",
     "coachAll": "全部",
     "coachPrograms": "计划",
     "coachTemplates": "模板",

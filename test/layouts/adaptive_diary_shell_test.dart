@@ -98,6 +98,32 @@ void main() {
     expect(find.text('Home'), findsOneWidget);
   });
 
+  testWidgets('phone pages keep their size while they close', (tester) async {
+    tester.view.devicePixelRatio = 1;
+    tester.view.physicalSize = const Size(390, 844);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    addTearDown(tester.view.resetPhysicalSize);
+    final nav = GlobalKey<NavigatorState>();
+    await tester.pumpWidget(_app(nav, const Scaffold(body: Text('Home'))));
+    await tester.pumpAndSettle();
+    final homeSize = tester.getSize(find.text('Home'));
+    nav.currentState!.push(MaterialPageRoute<void>(
+        builder: (_) =>
+            const Scaffold(body: SizedBox.expand(key: Key('page')))));
+    await tester.pumpAndSettle();
+    final pageSize = tester.getSize(find.byKey(const Key('page')));
+    nav.currentState!.pop();
+    // The bar used to reappear on the pop's first frame and squeeze both.
+    for (var i = 0; i < 5; i++) {
+      await tester.pump(const Duration(milliseconds: 40));
+      expect(tester.getSize(find.byKey(const Key('page'))), pageSize);
+    }
+    await tester.pumpAndSettle();
+    expect(tester.getSize(find.text('Home')), homeSize);
+    expect(
+        find.byKey(const ValueKey('diary-bottom-navigation')), findsOneWidget);
+  });
+
   testWidgets('rail navigation respects an editor pop guard', (tester) async {
     tester.view.devicePixelRatio = 1;
     tester.view.physicalSize = const Size(1200, 800);

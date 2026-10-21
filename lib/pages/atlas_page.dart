@@ -7,6 +7,7 @@ import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/pages/entry_view_page.dart';
 import 'package:aid_diary/providers/entries_provider.dart';
+import 'package:aid_diary/services/location_service.dart';
 import 'package:aid_diary/utils/entry_navigation.dart';
 import 'package:aid_diary/utils/map_clusters.dart';
 import 'package:aid_diary/widgets/list_detail_layout.dart';
@@ -35,8 +36,45 @@ class _AtlasPageState extends State<AtlasPage>
   final MapController _controller = MapController();
   int? _selectedId;
 
+  /// The device position, once location access is granted.
+  LatLng? _here;
+
   @override
   bool get wantKeepAlive => true;
+
+  @override
+  void initState() {
+    super.initState();
+    // Opening the map is the moment to ask for location access; an empty map
+    // then starts where the user is.
+    WidgetsBinding.instance.addPostFrameCallback(
+        (_) => _locate(move: geotagged().isEmpty, report: false));
+  }
+
+  /// Finds the device; [report] says why it failed, for an explicit tap.
+  Future<void> _locate({required bool move, required bool report}) async {
+    final l10n = AppLocalizations.of(context)!;
+    final messenger = ScaffoldMessenger.of(context);
+    String? error;
+    try {
+      final here = await LocationService().position();
+      if (!mounted) return;
+      setState(() => _here = here);
+      if (move) _controller.move(here, AppConfig.instance.mapEntryZoom);
+    } on LocationException catch (e) {
+      error = switch (e.reason) {
+        LocationFailure.serviceDisabled => l10n.locationServiceDisabled,
+        LocationFailure.permissionDenied => l10n.locationPermissionDenied,
+        LocationFailure.unavailable => l10n.locationUnavailable,
+      };
+    } catch (_) {
+      // No location support on this platform.
+      error = l10n.locationUnavailable;
+    }
+    if (report && error != null) {
+      messenger.showSnackBar(SnackBar(content: Text(error)));
+    }
+  }
 
   @override
   void dispose() {
@@ -188,6 +226,20 @@ class _AtlasPageState extends State<AtlasPage>
                 (entry) => camera.projectAtZoom(_point(entry)),
                 config.mapClusterRadius);
             return MarkerLayer(markers: [
+              if (_here case final here?)
+                Marker(
+                  point: here,
+                  width: 22,
+                  height: 22,
+                  child: DecoratedBox(
+                    key: const ValueKey('atlas-here'),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: cs.secondary,
+                      border: Border.all(color: cs.surface, width: 3),
+                    ),
+                  ),
+                ),
               for (final cluster in clusters)
                 if (cluster.length == 1)
                   _entryMarker(context, cluster.single, split: split)
@@ -217,20 +269,31 @@ class _AtlasPageState extends State<AtlasPage>
                   hint: l10n.atlasEmptyHint),
             ),
           ),
-        )
-      else
-        PositionedDirectional(
-          end: 16,
-          // Phones keep the new-entry button in that corner.
-          bottom: split ? 16 : 88,
-          child: FloatingActionButton.small(
-            key: const ValueKey('atlas-fit'),
-            heroTag: 'atlas-fit',
-            tooltip: l10n.atlasShowAll,
-            onPressed: () => _fitAll(entries),
-            child: const Icon(Icons.fit_screen_rounded),
-          ),
         ),
+      PositionedDirectional(
+        end: 16,
+        // Phones keep the new-entry button in that corner.
+        bottom: split ? 16 : 88,
+        child: Column(mainAxisSize: MainAxisSize.min, children: [
+          FloatingActionButton.small(
+            key: const ValueKey('atlas-locate'),
+            heroTag: 'atlas-locate',
+            tooltip: l10n.atlasMyLocation,
+            onPressed: () => _locate(move: true, report: true),
+            child: const Icon(Icons.my_location_rounded),
+          ),
+          if (entries.isNotEmpty) ...[
+            const SizedBox(height: 8),
+            FloatingActionButton.small(
+              key: const ValueKey('atlas-fit'),
+              heroTag: 'atlas-fit',
+              tooltip: l10n.atlasShowAll,
+              onPressed: () => _fitAll(entries),
+              child: const Icon(Icons.fit_screen_rounded),
+            ),
+          ],
+        ]),
+      ),
     ]);
   }
 }

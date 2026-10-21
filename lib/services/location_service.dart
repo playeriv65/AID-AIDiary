@@ -32,6 +32,15 @@ class LocationService {
   final http.Client _client;
 
   Future<EntryLocation> current({String? languageCode}) async {
+    final here = await position();
+    final name = await placeName(here.latitude, here.longitude,
+        languageCode: languageCode);
+    return EntryLocation(
+        latitude: here.latitude, longitude: here.longitude, name: name);
+  }
+
+  /// The device position, asking for the permission when it is undecided.
+  Future<LatLng> position() async {
     if (!await Geolocator.isLocationServiceEnabled()) {
       throw const LocationException(LocationFailure.serviceDisabled);
     }
@@ -53,10 +62,7 @@ class LocationService {
       _logger.warning('Position unavailable', error, stackTrace);
       throw const LocationException(LocationFailure.unavailable);
     }
-    final name = await placeName(position.latitude, position.longitude,
-        languageCode: languageCode);
-    return EntryLocation(
-        latitude: position.latitude, longitude: position.longitude, name: name);
+    return LatLng(position.latitude, position.longitude);
   }
 
   /// A short place name for the coordinates, or null when the lookup fails.

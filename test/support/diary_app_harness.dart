@@ -81,11 +81,20 @@ class DiaryAppHarness {
               supportedLocales: AppLocalizations.supportedLocales,
               home: child));
 
-  static void size(WidgetTester tester, Size size) {
+  /// Sizes the view; [systemBars] are the status and gesture bar heights a
+  /// phone keeps clear.
+  static void size(WidgetTester tester, Size size,
+      {({double top, double bottom}) systemBars = (top: 0, bottom: 0)}) {
     tester.view.devicePixelRatio = 1;
     tester.view.physicalSize = size;
+    final padding =
+        FakeViewPadding(top: systemBars.top, bottom: systemBars.bottom);
+    tester.view.padding = padding;
+    tester.view.viewPadding = padding;
     addTearDown(tester.view.resetDevicePixelRatio);
     addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetPadding);
+    addTearDown(tester.view.resetViewPadding);
   }
 
   /// Switches destination with whichever navigation the size shows.

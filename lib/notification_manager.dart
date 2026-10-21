@@ -90,6 +90,33 @@ class NotificationManager {
             backupCancelBackgroundHandler);
   }
 
+  /// Makes every notification channel now, named in the app's language, so
+  /// the system's notification settings list each kind before any arrives.
+  /// Making a channel again only renames it.
+  Future<void> createChannels(
+      {required String reminders,
+      required String onThisDay,
+      required String coach,
+      required String nudges,
+      required String quickWrite,
+      required String backup}) async {
+    final android = _notifications?.resolvePlatformSpecificImplementation<
+        AndroidFlutterLocalNotificationsPlugin>();
+    if (android == null) return;
+    for (final channel in [
+      AndroidNotificationChannel(reminderChannelId, reminders),
+      AndroidNotificationChannel(onThisDayChannelId, onThisDay),
+      AndroidNotificationChannel(coachChannelId, coach),
+      AndroidNotificationChannel(nudgeChannelId, nudges),
+      AndroidNotificationChannel(quickWriteChannelId, quickWrite,
+          importance: Importance.low, playSound: false),
+      AndroidNotificationChannel(backupNotificationChannelId, backup,
+          importance: Importance.low),
+    ]) {
+      await android.createNotificationChannel(channel);
+    }
+  }
+
   /// A tap while the app runs; a cold start reads the launch details.
   void _onResponse(NotificationResponse response) {
     if (response.actionId == backupCancelActionId) {
