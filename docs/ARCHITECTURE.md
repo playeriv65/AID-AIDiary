@@ -71,7 +71,15 @@ a view model (a `ChangeNotifier` next to the page, `pages/<name>_view_model.dart
 once it holds logic of its own: saving and discarding drafts, validation,
 multi-step flows. The page then only builds widgets from the view model's
 state and calls its methods; the view model is unit-tested without widgets.
-The entry editor (`edit_entry_page.dart`) is the first candidate.
+
+The entry editor is the worked example. `EditEntryViewModel`
+(`pages/edit_entry_view_model.dart`) holds what is edited, autosaves drafts,
+keeps or rolls back the session on leaving, picks the diary day and fills in
+place and weather; it takes its store, services and clock as constructor
+parameters, and `test/pages/edit_entry_view_model_test.dart` covers it
+without a widget. `AddEditEntryPage` keeps only the text controllers, the
+dialogs and navigation, reports typing and choices to the view model and
+redraws when it notifies.
 
 ## Dependencies
 
@@ -100,5 +108,6 @@ Kept in step with the code; remove items as they land.
 - Folder names follow layers loosely rather than the guide's `ui/` and
   `data/` split; renaming waits until the open `task/cloud-sync` branch is
   merged, to avoid conflicts across the whole tree.
-- The entry editor has no view model yet.
+- Other screens with logic of their own (search filters, the backup and
+  sync settings) to move into view models when they are next changed.
 - Top-level modules in `lib/` still to be filed under their layer.

@@ -2,49 +2,44 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-import 'dart:async';
 import 'dart:io';
 
-import 'package:aid_diary/utils/diary_day.dart';
+import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/database/entry_store.dart';
-import 'package:aid_diary/models/image.dart';
-import 'package:aid_diary/notification_manager.dart';
-import 'package:aid_diary/models/tag.dart';
-import 'package:aid_diary/providers/entry_images_provider.dart';
-import 'package:aid_diary/models/template.dart';
-import 'package:aid_diary/providers/tags_provider.dart';
-import 'package:aid_diary/providers/templates_provider.dart';
-import 'package:aid_diary/widgets/entry_draft_dirty_tracker.dart';
-import 'package:aid_diary/widgets/tag_attachment_source.dart';
-import 'package:aid_diary/widgets/tag_picker_dialog.dart';
-import 'package:aid_diary/widgets/tag_chip.dart';
-import 'package:aid_diary/time_manager.dart';
-import 'package:provider/provider.dart';
-import 'package:aid_diary/pages/full_screen_text_editor_page.dart';
-import 'package:aid_diary/widgets/editor_action_bar.dart';
-import 'package:aid_diary/widgets/editor_action_bar/editor_keyboard_session.dart';
-import 'package:aid_diary/widgets/entry_image_editable_list.dart';
-import 'package:easy_debounce/easy_debounce.dart';
-import 'package:intl/intl.dart';
-import 'package:material_ui/material_ui.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/models/entry.dart';
-import 'package:aid_diary/widgets/entry_image_actions.dart';
-import 'package:aid_diary/widgets/entry_mood_picker.dart';
-import 'package:aid_diary/widgets/location_dialog.dart';
-import 'package:aid_diary/widgets/media_attachment.dart';
-import 'package:aid_diary/widgets/context_dialogs.dart';
+import 'package:aid_diary/models/image.dart';
+import 'package:aid_diary/models/tag.dart';
+import 'package:aid_diary/models/template.dart';
+import 'package:aid_diary/notification_manager.dart';
+import 'package:aid_diary/pages/edit_entry_view_model.dart';
+import 'package:aid_diary/pages/full_screen_text_editor_page.dart';
+import 'package:aid_diary/providers/tags_provider.dart';
+import 'package:aid_diary/time_manager.dart';
+import 'package:aid_diary/utils/diary_day.dart';
 import 'package:aid_diary/utils/entry_context_display.dart';
-import 'package:aid_diary/utils/entry_preview.dart';
 import 'package:aid_diary/utils/photo_metadata.dart';
-import 'package:aid_diary/config_provider.dart';
-import 'package:aid_diary/services/location_service.dart';
-import 'package:aid_diary/services/weather_service.dart';
-import 'package:aid_diary/widgets/mood_icon.dart';
+import 'package:aid_diary/widgets/context_dialogs.dart';
+import 'package:aid_diary/widgets/editor_action_bar.dart';
+import 'package:aid_diary/widgets/editor_action_bar/editor_keyboard_session.dart';
+import 'package:aid_diary/widgets/entry_image_actions.dart';
+import 'package:aid_diary/widgets/entry_image_editable_list.dart';
+import 'package:aid_diary/widgets/entry_mood_picker.dart';
 import 'package:aid_diary/widgets/entry_text_edit.dart';
-import 'package:aid_diary/widgets/template_select_popup.dart';
+import 'package:aid_diary/widgets/location_dialog.dart';
 import 'package:aid_diary/widgets/markdown_preview_controller.dart';
+import 'package:aid_diary/widgets/media_attachment.dart';
+import 'package:aid_diary/widgets/mood_icon.dart';
+import 'package:aid_diary/widgets/tag_chip.dart';
+import 'package:aid_diary/widgets/tag_picker_dialog.dart';
+import 'package:aid_diary/widgets/template_select_popup.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:intl/intl.dart';
+import 'package:material_ui/material_ui.dart';
+import 'package:provider/provider.dart';
 
+/// The entry editor's widgets: text fields, dialogs and navigation. What is
+/// edited, saved and kept lives in [EditEntryViewModel].
 class AddEditEntryPage extends StatefulWidget {
   final Entry? entry;
 
@@ -72,11 +67,6 @@ class AddEditEntryPage extends StatefulWidget {
     this.template,
   });
 
-  static String mergeSharedText(String baseText, String? sharedText) {
-    if (sharedText == null) return baseText;
-    return baseText.isEmpty ? sharedText : '$baseText\n\n$sharedText';
-  }
-
   @override
   State<AddEditEntryPage> createState() => _AddEditEntryPageState();
 }
@@ -85,135 +75,34 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
     with WidgetsBindingObserver {
   static const double _pageWidth = 800;
 
-  late Entry _entry;
-  int id = -1;
-  String text = "";
-
-  /// The text below the title, as the editor first shows it.
-  String _body = "";
-  int? mood;
-  EntryLocation? location;
-  EntryWeather? weather;
-  EntryActivity? activity;
-
-  /// When the entry was actually written.
-  DateTime? entryDate;
-
-  /// The diary day it belongs to, chosen apart from [entryDate].
-  late DateTime _diaryDay;
-
-  /// Written in the hours that could mean either day: the editor asks until
-  /// the writer picks one.
-  bool _askDay = false;
-  late List<EntryImage> _currentImages;
-  bool _loadingEntry = true;
-  bool _openedCamera = false;
-  final ScrollController _scrollController = ScrollController();
+  late final EditEntryViewModel _model = EditEntryViewModel(
+    entry: widget.entry,
+    diaryDay: widget.diaryDay,
+    images: widget.images,
+    sharedText: widget.sharedText,
+    initialMood: widget.initialMood,
+    template: widget.template,
+    onSavedForToday: Platform.isAndroid
+        ? NotificationManager.instance.dismissReminderNotification
+        : null,
+  );
   final FocusNode _focusNode = FocusNode();
   final MarkdownPreviewController _textEditingController =
       MarkdownPreviewController();
 
-  /// The optional title, kept as the text's first line (see
-  /// [splitEntryTitle]); [_textEditingController] holds the rest.
+  /// The optional title, kept as the text's first line; the body
+  /// controller holds the rest.
   final TextEditingController _titleController = TextEditingController();
-  bool _locating = false;
   final UndoHistoryController _undoController = UndoHistoryController();
-  bool _deletingEntry = false;
 
-  /// Set once the user chose not to keep this session's changes.
-  bool _discarded = false;
-  bool _newEntry = false;
-  bool _creatingNewEntry = false;
-
-  /// Whether anything changed in this session; the close button then reads
-  /// as "done". Leaving saves either way.
-  bool _edited = false;
-  late TagAttachmentSource _tagSource;
-  late EntryDraftDirtyTracker _dirtyTracker;
-  late final EntryDraftSession _draftSession =
-      EntryStore.instance.beginDraft(widget.entry);
-
-  Future<void> _initEntry() async {
-    String dirtyTrackerBaselineText;
-    if (widget.entry == null) {
-      final createTime = DateTime.now();
-      _askDay = widget.diaryDay == null && DiaryDay.asks(createTime);
-      var templateText = "";
-      final defaultTemplate =
-          widget.template ?? TemplatesProvider.instance.getDefaultTemplate();
-      final defaultTagIds = <int>[];
-      if (defaultTemplate != null) {
-        templateText = defaultTemplate.text ?? "";
-        // Built-in templates are not stored, so they carry no tags.
-        if (defaultTemplate.id != null) {
-          defaultTagIds.addAll(TagsProvider.instance
-              .getTemplateTagsForTemplate(defaultTemplate.id!)
-              .map((templateTag) => templateTag.tagId));
-        }
-      }
-      dirtyTrackerBaselineText = templateText;
-      _tagSource = TagAttachmentSource(
-          supportsValues: true, initialTagIds: defaultTagIds);
-      _entry = Entry(
-        text: AddEditEntryPage.mergeSharedText(templateText, widget.sharedText),
-        mood: widget.initialMood,
-        timeCreate: createTime,
-        timeModified: createTime,
-        day: widget.diaryDay,
-      );
-      _newEntry = true;
-      _creatingNewEntry = true;
-      id = -1;
-    } else {
-      _entry = widget.entry!;
-      id = _entry.id ?? -1;
-      _tagSource = TagAttachmentSource.fromEntryTags(
-          TagsProvider.instance.getEntryTagsForEntry(id));
-      dirtyTrackerBaselineText = _entry.text;
-      if (widget.sharedText != null) {
-        _entry = _entry.copy(
-          text:
-              AddEditEntryPage.mergeSharedText(_entry.text, widget.sharedText),
-        );
-      }
-    }
-    _dirtyTracker = EntryDraftDirtyTracker(
-      text: dirtyTrackerBaselineText,
-      // A preselected mood is a choice the user made, so it is a change.
-      mood: widget.entry == null ? null : _entry.mood,
-      date: _entry.timeCreate,
-      day: _entry.day,
-      location: widget.entry == null ? null : _entry.location,
-      weather: widget.entry == null ? null : _entry.weather,
-      activity: widget.entry == null ? null : _entry.activity,
-      seededTagIds: _tagSource.attachedTagIds.toSet(),
-    );
-    _tagSource.addListener(_onTagsChanged);
-    mood = _entry.mood;
-    location = _entry.location;
-    weather = _entry.weather;
-    activity = _entry.activity;
-    entryDate = _entry.timeCreate;
-    _diaryDay = _entry.day;
-    text = _entry.text;
-    final (:title, :body) = splitEntryTitle(text);
-    _titleController.text = title;
-    _body = body;
-    text = joinEntryTitle(title, body);
-    // Selection moves notify too; only text changes are edits.
-    void textChanged() {
-      final joined =
-          joinEntryTitle(_titleController.text, _textEditingController.text);
-      if (joined == text) return;
-      text = joined;
-      _scheduleSave();
-    }
-
-    _titleController.addListener(textChanged);
-    _textEditingController.addListener(textChanged);
-    setState(() {
-      _loadingEntry = false;
-    });
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    _model.addListener(_redraw);
+    _titleController.text = _model.initialTitle;
+    _titleController.addListener(_reportText);
+    _textEditingController.addListener(_reportText);
 
     if (widget.sharedText != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -222,91 +111,59 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
             TextSelection.collapsed(offset: _textEditingController.text.length);
       });
     }
-
-    if (widget.openCamera && !_openedCamera) {
-      _openedCamera = true;
-      EntryImageActions.takePhoto(_addImage);
+    if (widget.openCamera) {
+      EntryImageActions.takePhoto(_model.addAttachments);
     }
-
-    // Place and weather now belong to an entry about now, not one written
-    // later about a past day.
-    if (_newEntry && _diaryDay == DiaryDay.defaultFor(entryDate!)) {
+    if (_model.wantsCurrentContext) {
       // Needs the locale, which initState may not read yet.
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) _autoFillContext();
+        if (!mounted) return;
+        final wanted = autoFillSettings(ConfigProvider.instance);
+        _model.fillCurrentContext(
+            place: wanted.place,
+            weather: wanted.weather,
+            languageCode: _language);
       });
     }
-  }
-
-  /// Fills place and weather for a new entry when the settings ask for it.
-  /// Anything the user set meanwhile is left alone, and filled values count
-  /// as the untouched baseline.
-  Future<void> _autoFillContext() async {
-    final config = ConfigProvider.instance;
-    final wantLocation = config.get(Settings.autoAddLocation);
-    final wantWeather = config.get(Settings.autoAddWeather);
-    if (!wantLocation && !wantWeather) return;
-
-    var place = location;
-    if (place == null) {
-      setState(() => _locating = true);
-      try {
-        final language = mounted
-            ? TimeManager.currentLocale(context).split('_').first
-            : null;
-        place = await LocationService().current(languageCode: language);
-      } on LocationException {
-        place = null;
-      }
-    }
-    EntryWeather? found;
-    if (wantWeather && weather == null && (place?.hasCoordinates ?? false)) {
-      found = await WeatherService()
-          .at(place!.latitude!, place.longitude!, entryDate!);
-    }
-    if (!mounted) return;
-    setState(() {
-      _locating = false;
-      if (wantLocation && location == null) location = place;
-      weather ??= found;
-    });
-    if (_newEntry) {
-      _dirtyTracker.adoptAutoFill(
-          location: location, weather: weather, activity: activity);
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addObserver(this);
-    _currentImages = List.empty(growable: true);
-    for (var image in widget.images) {
-      _currentImages.add(image.copy());
-    }
-    _initEntry();
   }
 
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-    _scrollController.dispose();
+    _titleController.removeListener(_reportText);
+    _textEditingController.removeListener(_reportText);
+    _model.removeListener(_redraw);
+    _model.dispose();
     _focusNode.dispose();
     _textEditingController.dispose();
     _titleController.dispose();
     _undoController.dispose();
-    EasyDebounce.cancel("save-entry");
-    _tagSource.removeListener(_onTagsChanged);
-    _tagSource.dispose();
     super.dispose();
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.hidden && !_discarded) {
-      _saveEntry();
+    if (state == AppLifecycleState.hidden) _model.saveForBackground();
+  }
+
+  void _reportText() =>
+      _model.setText(_titleController.text, _textEditingController.text);
+
+  /// Redraws on model changes; ones reported while the editor builds (text
+  /// set into a field) wait for the frame to end.
+  void _redraw() {
+    if (!mounted) return;
+    if (SchedulerBinding.instance.schedulerPhase ==
+        SchedulerPhase.persistentCallbacks) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) setState(() {});
+      });
+    } else {
+      setState(() {});
     }
   }
+
+  String get _language => TimeManager.currentLocale(context).split('_').first;
 
   Future<void> _openFullScreenEditor() async {
     final result =
@@ -347,9 +204,7 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
     );
     if (save == null || !mounted) return;
     if (!save) {
-      _discarded = true;
-      EasyDebounce.cancel("save-entry");
-      await _draftSession.discard();
+      await _model.discard();
       if (!mounted) return;
     }
     // Pops past the PopScope; leaving then saves unless discarded.
@@ -357,7 +212,7 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
   }
 
   void _showDeleteEntryPopup() {
-    if (_newEntry && !_hasNewEntryChanges()) {
+    if (_model.isNew && !_model.hasContent) {
       Navigator.of(context).pop();
       return;
     }
@@ -372,19 +227,13 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
               child:
                   Text(MaterialLocalizations.of(context).deleteButtonTooltip),
               onPressed: () async {
-                _deletingEntry = true;
-                EasyDebounce.cancel("save-entry");
                 final navigator = Navigator.of(context);
-                if (_newEntry) {
-                  // Persist so there is a saved entry (and any images) to delete
-                  await _saveEntry();
-                }
-                final entryToDelete = _entry;
+                final entryToDelete = await _model.prepareDelete();
                 // Pop dialog
                 navigator.pop();
                 // Pop edit page
                 navigator.pop();
-                if (!_creatingNewEntry && navigator.canPop()) {
+                if (!_model.isNew && navigator.canPop()) {
                   // Pop view page
                   navigator.pop();
                 }
@@ -407,13 +256,12 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    if (_loadingEntry) return const Scaffold();
 
     // Like a page: title, writing, then what goes with it. Built here, not
     // in the LayoutBuilder, so the keyboard resizing the page re-lays it out
     // without rebuilding the text on every frame.
     final content = [
-      if (_askDay) _buildDayQuestion(context),
+      if (_model.askDay) _buildDayQuestion(context),
       _buildTitleField(theme),
       _buildBodyEditor(context),
       const SizedBox(height: 16),
@@ -423,12 +271,10 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
     ];
     return PopScope(
       // Going back over changes asks first; the done button does not.
-      canPop: !_edited,
+      canPop: _model.canLeaveSilently,
       onPopInvokedWithResult: (didPop, result) async {
         if (!didPop) return _confirmLeave();
-        if (_discarded) return;
-        if (!_deletingEntry) await _saveEntry();
-        await _draftSession.commit();
+        await _model.leave();
       },
       child: EditorKeyboardInset(
         child: Scaffold(
@@ -438,7 +284,7 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
               leading: _closeButton(),
               actions: [
                 _tagsButton(),
-                if (!_creatingNewEntry) _deleteButton(),
+                if (!_model.isNew) _deleteButton(),
               ]),
           body: EditorActionBarOverlay(
             body: LayoutBuilder(
@@ -459,7 +305,7 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
               controller: _textEditingController,
               undoController: _undoController,
               focusNode: _focusNode,
-              onTemplateInserted: _applyInsertedTemplateTags,
+              onTemplateInserted: _model.applyTemplateTags,
               mainActions: _buildMainActions(context),
             ),
           ),
@@ -474,13 +320,13 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
   Widget _buildDayQuestion(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final cs = Theme.of(context).colorScheme;
-    final today = DiaryDay.dateOf(entryDate!);
+    final today = DiaryDay.dateOf(_model.writtenAt);
     final yesterday = DateTime(today.year, today.month, today.day - 1);
     Widget choice(String key, String label, DateTime day) => ChoiceChip(
           key: ValueKey(key),
           label: Text(label),
-          selected: _diaryDay == day,
-          onSelected: (_) => _setDiaryDay(day),
+          selected: _model.diaryDay == day,
+          onSelected: (_) => _model.setDiaryDay(day),
         );
     return Card.filled(
       key: const ValueKey('editor-day-question'),
@@ -496,7 +342,7 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
             Expanded(
               child: Text(
                   l10n.editorDayAsk(TimeManager.timeOfDayString(
-                      context, TimeOfDay.fromDateTime(entryDate!))),
+                      context, TimeOfDay.fromDateTime(_model.writtenAt))),
                   style: TextStyle(color: cs.onSecondaryContainer)),
             ),
           ]),
@@ -553,7 +399,7 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
           child: Align(
             alignment: Alignment.topCenter,
             child: EntryTextEditor(
-              text: _body,
+              text: _model.initialBody,
               expands: false,
               focusNode: _focusNode,
               textEditingController: _textEditingController,
@@ -562,7 +408,7 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
               onChooseTemplate: () => showTemplateSelectPopup(
                   context, _textEditingController,
                   hasFocus: _focusNode.hasFocus,
-                  onTemplateSelected: _applyInsertedTemplateTags),
+                  onTemplateSelected: _model.applyTemplateTags),
             ),
           ),
         ),
@@ -590,14 +436,10 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
         ),
       ),
     );
-    if (_currentImages.isEmpty) return add;
+    if (_model.images.isEmpty) return add;
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       EntryImageEditableList(
-          images: _currentImages,
-          onImagesChanged: (images) async {
-            _currentImages = images;
-            await _saveEntry();
-          }),
+          images: _model.images, onImagesChanged: _model.setImages),
       const SizedBox(height: 8),
       add,
     ]);
@@ -607,6 +449,7 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
   Widget _buildMetaRows(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final cs = Theme.of(context).colorScheme;
+    final model = _model;
     Widget row(Key key, IconData icon, String? value, String placeholder,
             VoidCallback? onTap,
             {VoidCallback? onClear}) =>
@@ -631,13 +474,15 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
         );
 
     return ListenableBuilder(
-      listenable: _tagSource,
+      listenable: model.tagSource,
       builder: (context, _) {
-        final attachedIds = _tagSource.attachedTagIds.toSet();
+        final attachedIds = model.tagSource.attachedTagIds.toSet();
         final tags = Provider.of<TagsProvider>(context)
             .tags
             .where((t) => attachedIds.contains(t.id))
             .toList();
+        final weather = model.weather;
+        final activity = model.activity;
         return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -645,32 +490,31 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
                   const ValueKey('editor-weather'),
                   weather == null
                       ? Icons.wb_sunny_outlined
-                      : weatherIcon(weather!.code),
-                  weather == null ? null : weatherSummary(weather!, l10n),
+                      : weatherIcon(weather.code),
+                  weather == null ? null : weatherSummary(weather, l10n),
                   l10n.weatherTitle,
                   _chooseWeather,
-                  onClear: () => _setWeather(null)),
+                  onClear: () => model.setWeather(null)),
               row(
                   const ValueKey('editor-location'),
                   Icons.place_outlined,
-                  location?.label,
-                  _locating ? l10n.editorLocating : l10n.locationTitle,
+                  model.location?.label,
+                  model.locating ? l10n.editorLocating : l10n.locationTitle,
                   _chooseLocation,
-                  onClear: () => _setLocation(null)),
+                  onClear: () => model.setLocation(null)),
               // When it was actually written, apart from the day it is for.
               row(
                   const ValueKey('editor-written-at'),
                   Icons.schedule_rounded,
                   l10n.editorWrittenAt(
-                      '${TimeManager.formatDate(entryDate!, context)} '
-                      '${TimeManager.timeOfDayString(context, TimeOfDay.fromDateTime(entryDate!))}'),
+                      '${TimeManager.formatDate(model.writtenAt, context)} '
+                      '${TimeManager.timeOfDayString(context, TimeOfDay.fromDateTime(model.writtenAt))}'),
                   '',
                   _chooseWrittenTime),
-              // Only imported entries still carry one.
               if (activity != null)
-                row(const ValueKey('editor-activity'), activityIcon(activity!),
-                    activityLabel(activity!, l10n), '', null,
-                    onClear: () => _setActivity(null)),
+                row(const ValueKey('editor-activity'), activityIcon(activity),
+                    activityLabel(activity, l10n), '', null,
+                    onClear: () => model.setActivity(null)),
               if (tags.isNotEmpty)
                 Padding(
                   padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
@@ -678,11 +522,11 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
                     for (final tag in tags)
                       TagChip(
                         tag: tag,
-                        value: _tagSource.valueFor(tag.id!),
+                        value: model.tagSource.valueFor(tag.id!),
                         onTap: tag.tagType == TagType.tracker
-                            ? () => _tagSource.editValue(context, tag)
+                            ? () => model.tagSource.editValue(context, tag)
                             : null,
-                        onRemove: () => _tagSource.detach(tag.id!),
+                        onRemove: () => model.tagSource.detach(tag.id!),
                       ),
                   ]),
                 ),
@@ -698,8 +542,8 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
         icon: const Icon(Icons.local_offer_outlined),
         onPressed: () => showDialog(
           context: context,
-          builder: (_) =>
-              TagPickerDialog(mode: TagPickerMode.attach, source: _tagSource),
+          builder: (_) => TagPickerDialog(
+              mode: TagPickerMode.attach, source: _model.tagSource),
         ),
       );
 
@@ -707,9 +551,10 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
   /// mood beside it; tapping the day changes the day only.
   Widget _buildDateTitle(BuildContext context, ThemeData theme) {
     final cs = theme.colorScheme;
+    final mood = _model.mood;
     final hasMood = MoodIcon.getMoodIcon(mood).isNotEmpty;
-    final date = entryDate!;
-    final diaryDay = _diaryDay;
+    final date = _model.writtenAt;
+    final diaryDay = _model.diaryDay;
     final day = diaryDay.year == DateTime.now().year
         ? TimeManager.formatMonthDay(diaryDay, context)
         : TimeManager.formatDate(diaryDay, context);
@@ -723,6 +568,7 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
     // Written on another day than it is about: the time alone would
     // mislead, so the written-at row says when.
     final sameNight = lateNight || diaryDay == written;
+    final zone = _model.entry.otherZoneLabel;
     return Row(mainAxisSize: MainAxisSize.min, children: [
       Flexible(
         child: InkWell(
@@ -740,7 +586,7 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
                 TextSpan(
                     text: ' $weekday'
                         '${sameNight ? '  /  $time' : ''}'
-                        '${_entry.otherZoneLabel == null ? '' : ' ${_entry.otherZoneLabel}'}',
+                        '${zone == null ? '' : ' $zone'}',
                     style: theme.textTheme.bodyMedium
                         ?.copyWith(color: cs.onSurfaceVariant)),
                 if (lateNight)
@@ -775,13 +621,8 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
     ]);
   }
 
-  void _setMood(int? value) {
-    setState(() => mood = value);
-    _scheduleSave();
-  }
-
   Future<void> _chooseMood() async {
-    var picked = mood;
+    var picked = _model.mood;
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
@@ -802,44 +643,25 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
         ],
       ),
     );
-    if (confirmed == true) _setMood(picked);
-  }
-
-  void _setLocation(EntryLocation? value) {
-    setState(() => location = value);
-    _scheduleSave();
+    if (confirmed == true) _model.setMood(picked);
   }
 
   Future<void> _chooseLocation() async {
-    final choice = await showLocationDialog(context, location);
-    if (choice != null) _setLocation(choice.location);
+    final choice = await showLocationDialog(context, _model.location);
+    if (choice != null) _model.setLocation(choice.location);
   }
 
-  /// Like Journey, offers a picked photo's day and place for the entry: the
-  /// diary day the photo was taken on when it is another one, the place
-  /// when the entry has none with coordinates. When the entry was written
-  /// stays as it is.
+  /// Like Journey, offers what a picked photo tells: its day and place.
   Future<void> _offerPhotoMetadata(PhotoMetadata photo) async {
     final l10n = AppLocalizations.of(context)!;
-    final taken = photo.taken;
-    final photoDay = taken == null ? null : DiaryDay.defaultFor(taken);
-    final newDay = photoDay != _diaryDay ? photoDay : null;
-    final newPlace = photo.hasPlace && !(location?.hasCoordinates ?? false);
-    if (newDay == null && !newPlace) return;
-    final language = TimeManager.currentLocale(context).split('_').first;
-    String? placeLabel;
-    EntryLocation? place;
-    if (newPlace) {
-      final name = await LocationService()
-          .placeName(photo.latitude!, photo.longitude!, languageCode: language);
-      place = EntryLocation(
-          latitude: photo.latitude, longitude: photo.longitude, name: name);
-      placeLabel = place.label;
-    }
-    if (!mounted) return;
-    final dateLabel =
-        newDay == null ? null : TimeManager.formatDate(newDay, context);
-    final message = switch ((dateLabel, placeLabel)) {
+    final suggestion =
+        await _model.suggestFromPhoto(photo, languageCode: _language);
+    if (suggestion == null || !mounted) return;
+    final dateLabel = switch (suggestion.day) {
+      final day? => TimeManager.formatDate(day, context),
+      null => null,
+    };
+    final message = switch ((dateLabel, suggestion.place?.label)) {
       (final date?, final where?) => l10n.photoMetaDateAndPlace(date, where),
       (final date?, null) => l10n.photoMetaDate(date),
       (null, final where?) => l10n.photoMetaPlace(where),
@@ -861,31 +683,13 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
         ],
       ),
     );
-    if (apply != true || !mounted) return;
-    setState(() {
-      if (newDay != null) {
-        _diaryDay = newDay;
-        _askDay = false;
-      }
-      if (place != null) location = place;
-    });
-    _scheduleSave();
-  }
-
-  void _setWeather(EntryWeather? value) {
-    setState(() => weather = value);
-    _scheduleSave();
+    if (apply == true && mounted) _model.applyPhotoSuggestion(suggestion);
   }
 
   Future<void> _chooseWeather() async {
-    final choice =
-        await showWeatherDialog(context, weather, location, entryDate!);
-    if (choice != null) _setWeather(choice.weather);
-  }
-
-  void _setActivity(EntryActivity? value) {
-    setState(() => activity = value);
-    _scheduleSave();
+    final choice = await showWeatherDialog(
+        context, _model.weather, _model.location, _model.writtenAt);
+    if (choice != null) _model.setWeather(choice.weather);
   }
 
   /// Offers ways to add an attachment, then runs the chosen one.
@@ -912,9 +716,10 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
   Future<void> _pickFromGallery() {
     final messenger = ScaffoldMessenger.of(context);
     final tooLarge = AppLocalizations.of(context)!.mediaTooLarge;
-    return EntryImageActions.pickFromGallery(_addImage,
+    return EntryImageActions.pickFromGallery(_model.addAttachments,
         onMetadata: _offerPhotoMetadata,
-        onVideo: (file) => MediaActions.addPickedVideo(file, _addImage,
+        onVideo: (file) => MediaActions.addPickedVideo(
+            file, _model.addAttachments,
             onTooLarge: () =>
                 messenger.showSnackBar(SnackBar(content: Text(tooLarge)))));
   }
@@ -928,12 +733,13 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
       (
         Icons.photo_camera_rounded,
         l10n.actionTakePhoto,
-        () => EntryImageActions.takePhoto(_addImage)
+        () => EntryImageActions.takePhoto(_model.addAttachments)
       ),
       (
         Icons.videocam_rounded,
         l10n.videoRecord,
-        () => MediaActions.pickVideo(context, _addImage, camera: true)
+        () =>
+            MediaActions.pickVideo(context, _model.addAttachments, camera: true)
       ),
     ]);
   }
@@ -957,12 +763,12 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
           (
             Icons.mic_rounded,
             l10n.audioRecordTitle,
-            () => MediaActions.recordAudio(context, _addImage)
+            () => MediaActions.recordAudio(context, _model.addAttachments)
           ),
           (
             Icons.audio_file_outlined,
             l10n.audioChoose,
-            () => MediaActions.pickAudio(_addImage)
+            () => MediaActions.pickAudio(_model.addAttachments)
           ),
         ]),
       ),
@@ -979,36 +785,29 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
   // Leaving saves (see PopScope), so close and done are one button.
   Widget _closeButton() => IconButton(
         key: const ValueKey('entry-close'),
-        tooltip: _edited
+        tooltip: _model.edited
             ? MaterialLocalizations.of(context).saveButtonLabel
             : MaterialLocalizations.of(context).closeButtonTooltip,
-        icon: Icon(_edited ? Icons.check_rounded : Icons.close_rounded),
+        icon: Icon(_model.edited ? Icons.check_rounded : Icons.close_rounded),
         onPressed: () => Navigator.of(context).pop(),
       );
-
-  void _setDiaryDay(DateTime day) {
-    setState(() {
-      _diaryDay = day;
-      _askDay = false;
-    });
-    _scheduleSave();
-  }
 
   /// Picks the day the entry belongs to; when it was written stays.
   Future<void> _chooseDiaryDay() async {
     final today = DiaryDay.dateOf(DateTime.now());
+    final current = _model.diaryDay;
     final picked = await TimeManager.pickDate(
       context,
-      initialDate: _diaryDay,
+      initialDate: current,
       firstDate: DateTime(2000),
-      lastDate: _diaryDay.isAfter(today) ? _diaryDay : today,
+      lastDate: current.isAfter(today) ? current : today,
     );
-    if (picked != null) _setDiaryDay(DiaryDay.dateOf(picked));
+    if (picked != null) _model.setDiaryDay(picked);
   }
 
   /// Corrects when the entry was written; the day it belongs to stays.
   Future<void> _chooseWrittenTime() async {
-    final written = entryDate!;
+    final written = _model.writtenAt;
     final date = await TimeManager.pickDate(
       context,
       initialDate: DiaryDay.dateOf(written),
@@ -1019,130 +818,7 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
     final time = await showTimePicker(
         context: context, initialTime: TimeOfDay.fromDateTime(written));
     if (time == null) return;
-    setState(() => entryDate =
+    _model.setWrittenAt(
         DateTime(date.year, date.month, date.day, time.hour, time.minute));
-    _scheduleSave();
-  }
-
-  void _scheduleSave() {
-    // Every edit lands here; auto-filled context does not. Text set while
-    // the editor builds also lands here, so redraw after the frame.
-    if (!_edited) {
-      _edited = true;
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) setState(() {});
-      });
-      WidgetsBinding.instance.scheduleFrame();
-    }
-    EasyDebounce.debounce("save-entry", const Duration(seconds: 5), _saveEntry);
-  }
-
-  Future<void> _saveEntry() async {
-    if (_newEntry && !_hasNewEntryChanges()) return;
-
-    if ((_newEntry || _hasEntryFieldChanges()) &&
-        Platform.isAndroid &&
-        _diaryDay == DiaryDay.today()) {
-      await NotificationManager.instance.dismissReminderNotification();
-    }
-
-    final saved = await _draftSession.save(_buildDraft);
-    _adoptSavedEntry(saved);
-    _adoptSavedImages(saved);
-    if (mounted) {
-      setState(() {});
-    }
-  }
-
-  EntryDraft _buildDraft(Entry? saved) {
-    if (saved != null) _adoptSavedEntry(saved);
-    final entry = _hasEntryFieldChanges()
-        ? _entry.copy(
-            text: text,
-            mood: mood,
-            timeCreate: entryDate,
-            day: _diaryDay,
-            timeModified: DateTime.now(),
-            location: location,
-            weather: weather,
-            activity: activity,
-          )
-        : _entry;
-    return EntryDraft(
-      entry: entry,
-      tags: _tagSource.toEntryTags(id),
-      images: [for (final image in _currentImages) image.copy()],
-    );
-  }
-
-  void _adoptSavedEntry(Entry saved) {
-    _entry = saved;
-    id = saved.id!;
-    _newEntry = false;
-    _dirtyTracker.markSaved(
-      text: saved.text,
-      mood: saved.mood,
-      date: saved.timeCreate,
-      day: saved.day,
-      location: saved.location,
-      weather: saved.weather,
-      activity: saved.activity,
-    );
-  }
-
-  void _adoptSavedImages(Entry saved) {
-    final persistedIds = {
-      for (final image in EntryImagesProvider.instance.getForEntry(saved))
-        image.imgPath: image.id
-    };
-    _currentImages = [
-      for (final image in _currentImages)
-        image.copy(id: persistedIds[image.imgPath], entryId: saved.id)
-    ];
-  }
-
-  bool _hasEntryFieldChanges() {
-    return _dirtyTracker.hasFieldChanges(
-        text: text,
-        mood: mood,
-        date: entryDate!,
-        day: _diaryDay,
-        location: location,
-        weather: weather,
-        activity: activity);
-  }
-
-  void _onTagsChanged() {
-    _scheduleSave();
-  }
-
-  bool _hasNewEntryChanges() {
-    return _dirtyTracker.hasUnsavedChanges(
-      text: text,
-      mood: mood,
-      date: entryDate!,
-      day: _diaryDay,
-      tagSource: _tagSource,
-      hasImages: _currentImages.isNotEmpty,
-      location: location,
-      weather: weather,
-      activity: activity,
-    );
-  }
-
-  void _applyInsertedTemplateTags(Template template) {
-    if (template.id == null) return;
-    final templateTagIds = TagsProvider.instance
-        .getTemplateTagsForTemplate(template.id!)
-        .map((templateTag) => templateTag.tagId);
-    for (final tagId in templateTagIds) {
-      _tagSource.addTagId(tagId);
-    }
-  }
-
-  Future<void> _addImage(List<String> imgPaths) async {
-    _currentImages =
-        EntryImage.appendRanked(_currentImages, imgPaths, entryId: id);
-    await _saveEntry();
   }
 }
