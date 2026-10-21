@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'dart:io';
+
 import 'dart:convert';
 import 'dart:typed_data';
 
@@ -56,12 +58,25 @@ class WebDavBackend implements SyncBackend {
     return _server.replace(pathSegments: [...segments, if (directory) '']);
   }
 
+  /// Sends a request, once more if the connection dropped before an answer:
+  /// every request here is idempotent, and a reused connection the server
+  /// already closed, or a phone switching networks, fails that way.
   Future<http.Response> _send(String method, Uri uri,
       {Map<String, String> headers = const {}, List<int>? body}) async {
-    final request = http.Request(method, uri)
-      ..headers.addAll({'Authorization': _authorization, ...headers});
-    if (body != null) request.bodyBytes = body;
-    return http.Response.fromStream(await _client.send(request));
+    Future<http.Response> attempt() async {
+      final request = http.Request(method, uri)
+        ..headers.addAll({'Authorization': _authorization, ...headers});
+      if (body != null) request.bodyBytes = body;
+      return http.Response.fromStream(await _client.send(request));
+    }
+
+    try {
+      return await attempt();
+    } on http.ClientException {
+      return attempt();
+    } on SocketException {
+      return attempt();
+    }
   }
 
   WebDavException _failure(
@@ -133,11 +148,16 @@ class WebDavBackend implements SyncBackend {
 
   @override
   Future<String?> write(String path, Uint8List bytes) async {
+    // The folder first: a server answering a write into a missing folder
+    // before reading the body may close the connection, which proxies such
+    // as nginx then do.
+    final parent =
+        path.contains('/') ? path.substring(0, path.lastIndexOf('/')) : '';
+    await _makeFolder(parent);
     var response = await _put(path, bytes);
     if (response.statusCode == 409 || response.statusCode == 404) {
-      // The folder is missing.
-      final parent =
-          path.contains('/') ? path.substring(0, path.lastIndexOf('/')) : '';
+      // The folder went away meanwhile.
+      _madeFolders.remove(parent);
       await _makeFolder(parent);
       response = await _put(path, bytes);
     }

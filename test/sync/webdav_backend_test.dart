@@ -33,7 +33,22 @@ class FakeDav {
       'Basic ${base64.encode(utf8.encode('diary:secret'))}';
   var _clock = 0;
 
-  late final http.Client client = MockClient(_handle);
+  /// Requests to fail as a dropped connection before any answer.
+  var dropNext = 0;
+
+  /// Every answer given, as "METHOD status".
+  final List<String> answers = [];
+
+  late final http.Client client = MockClient((request) async {
+    if (dropNext > 0) {
+      dropNext--;
+      throw http.ClientException(
+          'Connection closed before full header was received', request.url);
+    }
+    final response = await _handle(request);
+    answers.add('${request.method} ${response.statusCode}');
+    return response;
+  });
 
   String _parent(String path) {
     final trimmed =
@@ -136,6 +151,29 @@ void main() {
 
     await dav.delete('items/abc');
     expect(await dav.list('items'), isEmpty);
+  });
+
+  test('a write makes its folder first instead of meeting a 409', () async {
+    final server = FakeDav();
+    final dav = backendFor(server);
+    await dav.write('blobs/photo', Uint8List.fromList([7]));
+    expect(server.answers, isNot(contains('PUT 409')));
+    expect(server.answers.last, 'PUT 201');
+    // A folder made once is not made again.
+    server.answers.clear();
+    await dav.write('blobs/other', Uint8List.fromList([8]));
+    expect(server.answers, ['PUT 201']);
+  });
+
+  test('a dropped connection is tried once more', () async {
+    final server = FakeDav();
+    final dav = backendFor(server);
+    await dav.write('items/abc', Uint8List.fromList([1]));
+    server.dropNext = 1;
+    expect(await dav.read('items/abc'), [1]);
+    // Twice in a row is a real failure.
+    server.dropNext = 2;
+    expect(dav.read('items/abc'), throwsA(isA<http.ClientException>()));
   });
 
   test('versions fall back to the date and size without ETags', () async {
