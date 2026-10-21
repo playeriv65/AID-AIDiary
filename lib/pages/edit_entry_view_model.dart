@@ -212,7 +212,6 @@ class EditEntryViewModel extends ChangeNotifier {
   void setLocation(EntryLocation? value) => _edit(() => location = value);
   void setWeather(EntryWeather? value) => _edit(() => weather = value);
   void setActivity(EntryActivity? value) => _edit(() => activity = value);
-  void setWrittenAt(DateTime value) => _edit(() => writtenAt = value);
 
   void setDiaryDay(DateTime day) => _edit(() {
         diaryDay = DiaryDay.dateOf(day);

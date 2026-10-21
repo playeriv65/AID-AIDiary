@@ -306,7 +306,6 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
               undoController: _undoController,
               focusNode: _focusNode,
               onTemplateInserted: _model.applyTemplateTags,
-              mainActions: _buildMainActions(context),
             ),
           ),
         ),
@@ -512,15 +511,6 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
                   model.locating ? l10n.editorLocating : l10n.locationTitle,
                   _chooseLocation,
                   onClear: () => model.setLocation(null)),
-              // When it was actually written, apart from the day it is for.
-              row(
-                  const ValueKey('editor-written-at'),
-                  Icons.schedule_rounded,
-                  l10n.editorWrittenAt(
-                      '${TimeManager.formatDate(model.writtenAt, context)} '
-                      '${TimeManager.timeOfDayString(context, TimeOfDay.fromDateTime(model.writtenAt))}'),
-                  '',
-                  _chooseWrittenTime),
               if (activity != null)
                 row(const ValueKey('editor-activity'), activityIcon(activity),
                     activityLabel(activity, l10n), '', null,
@@ -575,8 +565,8 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
     final written = DiaryDay.dateOf(date);
     final lateNight =
         diaryDay == DateTime(written.year, written.month, written.day - 1);
-    // Written on another day than it is about: the time alone would
-    // mislead, so the written-at row says when.
+    // Written on another day than it is about: a time next to that day
+    // would read as when it happened, so none is shown.
     final sameNight = lateNight || diaryDay == written;
     final zone = _model.entry.otherZoneLabel;
     return Row(mainAxisSize: MainAxisSize.min, children: [
@@ -766,37 +756,6 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
     ]);
   }
 
-  List<ToolbarAction> _buildMainActions(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    // Only what is reached for while writing; place and weather sit below
-    // the text, mood by the date and tags at the top.
-    return [
-      ToolbarAction(
-        icon: const Icon(Icons.photo_camera_outlined),
-        tooltip: l10n.toolbarMedia,
-        mayLeaveApp: true,
-        onPressed: _addMedia,
-      ),
-      ToolbarAction(
-        icon: const Icon(Icons.mic_none_rounded),
-        tooltip: l10n.toolbarAudio,
-        mayLeaveApp: true,
-        onPressed: () => _chooseAttachment([
-          (
-            Icons.mic_rounded,
-            l10n.audioRecordTitle,
-            () => MediaActions.recordAudio(context, _model.addAttachments)
-          ),
-          (
-            Icons.audio_file_outlined,
-            l10n.audioChoose,
-            () => MediaActions.pickAudio(_model.addAttachments)
-          ),
-        ]),
-      ),
-    ];
-  }
-
   Widget _deleteButton() => IconButton(
         key: const ValueKey('entry-delete'),
         tooltip: MaterialLocalizations.of(context).deleteButtonTooltip,
@@ -825,22 +784,5 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
       lastDate: current.isAfter(today) ? current : today,
     );
     if (picked != null) _model.setDiaryDay(picked);
-  }
-
-  /// Corrects when the entry was written; the day it belongs to stays.
-  Future<void> _chooseWrittenTime() async {
-    final written = _model.writtenAt;
-    final date = await TimeManager.pickDate(
-      context,
-      initialDate: DiaryDay.dateOf(written),
-      firstDate: DateTime(2000),
-      lastDate: DateTime.now(),
-    );
-    if (date == null || !mounted) return;
-    final time = await showTimePicker(
-        context: context, initialTime: TimeOfDay.fromDateTime(written));
-    if (time == null) return;
-    _model.setWrittenAt(
-        DateTime(date.year, date.month, date.day, time.hour, time.minute));
   }
 }

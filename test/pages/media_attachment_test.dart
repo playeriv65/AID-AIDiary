@@ -1,6 +1,7 @@
 @Tags(['widget'])
 library;
 
+import 'package:aid_diary/widgets/editor_action_bar.dart';
 import 'package:aid_diary/models/image.dart';
 import 'package:aid_diary/pages/edit_entry_page.dart';
 import 'package:aid_diary/pages/entry_view_page.dart';
@@ -47,19 +48,6 @@ void main() {
     await tester.pumpWidget(const SizedBox.shrink());
   });
 
-  testWidgets('the editor offers voice note sources', (tester) async {
-    DiaryAppHarness.size(tester, const Size(390, 844));
-    await tester.pumpWidget(harness.app(const AddEditEntryPage()));
-    await tester.pumpAndSettle();
-    await tester.tap(find.byIcon(Icons.mic_none_rounded));
-    await tester.pumpAndSettle();
-    expect(find.text('录制语音'), findsOneWidget);
-    expect(find.text('选择音频文件'), findsOneWidget);
-    await tester.tapAt(const Offset(195, 100));
-    await tester.pumpAndSettle();
-    await tester.pumpWidget(const SizedBox.shrink());
-  });
-
   testWidgets('the media tile offers gallery, voice note and files',
       (tester) async {
     DiaryAppHarness.size(tester, const Size(390, 844));
@@ -76,13 +64,31 @@ void main() {
     await tester.pumpWidget(const SizedBox.shrink());
   });
 
-  testWidgets('every editor button names what it does', (tester) async {
+  testWidgets('the writing bar shows only while writing, and names its tools',
+      (tester) async {
     DiaryAppHarness.size(tester, const Size(1280, 800));
     await tester.pumpWidget(harness.app(const AddEditEntryPage()));
     await tester.pumpAndSettle();
-    for (final name in ['照片和视频', '心情', '标签', '粗体', '插入', '撤销']) {
+    final bar = find.byType(EditorActionBar);
+    Finder inBar(String tooltip) =>
+        find.descendant(of: bar, matching: find.byTooltip(tooltip));
+    for (final name in ['心情', '标签']) {
       expect(find.byTooltip(name), findsOneWidget, reason: name);
     }
+    // Nothing to do there but write: no bar until writing starts.
+    expect(inBar('粗体'), findsNothing);
+    await tester.tap(DiaryAppHarness.entryBody);
+    await tester.pumpAndSettle();
+    for (final name in ['粗体', '插入', '撤销']) {
+      expect(inBar(name), findsOneWidget, reason: name);
+    }
+    // Photos and voice notes go through the + tile only.
+    expect(
+        find.descendant(of: bar, matching: find.byIcon(Icons.mic_none_rounded)),
+        findsNothing);
+    FocusManager.instance.primaryFocus?.unfocus();
+    await tester.pumpAndSettle();
+    expect(inBar('粗体'), findsNothing);
     await tester.pumpWidget(const SizedBox.shrink());
   });
 }

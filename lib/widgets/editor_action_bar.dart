@@ -28,6 +28,9 @@ class EditorActionBar extends StatefulWidget {
   final UndoHistoryController? undoController;
   final bool showTemplateButton;
   final void Function(Template template)? onTemplateInserted;
+
+  /// Buttons shown while not writing. Without them the bar holds only
+  /// writing tools and shows only while writing.
   final List<ToolbarAction>? mainActions;
 
   const EditorActionBar({
@@ -97,9 +100,7 @@ class _EditorActionBarState extends State<EditorActionBar> {
     super.dispose();
   }
 
-  bool get _editingTarget =>
-      widget.mainActions != null &&
-      (_session?.isEditing ?? widget.focusNode.hasFocus);
+  bool get _editingTarget => _session?.isEditing ?? widget.focusNode.hasFocus;
 
   void _syncEditing() {
     // A dialog an action opened holds focus while it is up
@@ -246,6 +247,9 @@ class _EditorActionBarState extends State<EditorActionBar> {
     final showToggle = !combined && widget.mainActions != null && _isEditing;
     final showingMainActions = widget.mainActions != null &&
         (combined || !_isEditing || _showMainActionsWhileFocused);
+    if (widget.mainActions == null && !_isEditing) {
+      return const SizedBox.shrink(key: ValueKey('editor-bar-hidden'));
+    }
 
     return Padding(
       padding: EdgeInsets.fromLTRB(
