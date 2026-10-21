@@ -10,12 +10,14 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   final date = DateTime(2025, 6, 2, 9, 30);
+  final day = DateTime(2025, 6, 2);
 
   EntryDraftDirtyTracker tracker({Set<int> seededTagIds = const {}}) =>
       EntryDraftDirtyTracker(
         text: 'draft',
         mood: null,
         date: date,
+        day: day,
         seededTagIds: seededTagIds,
       );
 
@@ -23,24 +25,40 @@ void main() {
     final draft = tracker();
 
     expect(
-        draft.hasFieldChanges(text: 'draft', mood: null, date: date), isFalse);
+        draft.hasFieldChanges(text: 'draft', mood: null, date: date, day: day),
+        isFalse);
     expect(
-        draft.hasFieldChanges(text: 'edited', mood: null, date: date), isTrue);
-    expect(draft.hasFieldChanges(text: 'draft', mood: 1, date: date), isTrue);
+        draft.hasFieldChanges(text: 'edited', mood: null, date: date, day: day),
+        isTrue);
+    expect(draft.hasFieldChanges(text: 'draft', mood: 1, date: date, day: day),
+        isTrue);
     expect(
         draft.hasFieldChanges(
-            text: 'draft', mood: null, date: date.add(const Duration(days: 1))),
+            text: 'draft',
+            mood: null,
+            date: date.add(const Duration(days: 1)),
+            day: day),
+        isTrue);
+  });
+
+  test('moving the diary day is a change of its own', () {
+    final draft = tracker();
+    expect(
+        draft.hasFieldChanges(
+            text: 'draft', mood: null, date: date, day: DateTime(2025, 6, 1)),
         isTrue);
   });
 
   test('markSaved resets the comparison point', () {
     final draft = tracker();
 
-    draft.markSaved(text: 'edited', mood: 2, date: date);
+    draft.markSaved(text: 'edited', mood: 2, date: date, day: day);
 
-    expect(draft.hasFieldChanges(text: 'edited', mood: 2, date: date), isFalse);
+    expect(draft.hasFieldChanges(text: 'edited', mood: 2, date: date, day: day),
+        isFalse);
     expect(
-        draft.hasFieldChanges(text: 'draft', mood: null, date: date), isTrue);
+        draft.hasFieldChanges(text: 'draft', mood: null, date: date, day: day),
+        isTrue);
   });
 
   test('a new entry with only seeded tags has no unsaved changes', () {
@@ -53,6 +71,7 @@ void main() {
           text: 'draft',
           mood: null,
           date: date,
+          day: day,
           tagSource: tagSource,
           hasImages: false,
         ),
@@ -69,6 +88,7 @@ void main() {
           text: 'draft',
           mood: null,
           date: date,
+          day: day,
           tagSource: tagSource,
           hasImages: false,
         ),
@@ -88,6 +108,7 @@ void main() {
           text: 'draft',
           mood: null,
           date: date,
+          day: day,
           tagSource: tagSource,
           hasImages: false,
         ),
@@ -103,6 +124,7 @@ void main() {
             text: 'draft',
             mood: null,
             date: date,
+            day: day,
             weather: weather,
             activity: EntryActivity.walking),
         isFalse);
@@ -111,6 +133,7 @@ void main() {
             text: 'draft',
             mood: null,
             date: date,
+            day: day,
             weather: weather,
             activity: EntryActivity.running),
         isTrue);
@@ -126,6 +149,7 @@ void main() {
           text: 'draft',
           mood: null,
           date: date,
+          day: day,
           tagSource: tagSource,
           hasImages: true,
         ),

@@ -19,6 +19,7 @@ import 'package:aid_diary/models/tag.dart';
 import 'package:aid_diary/providers/entry_images_provider.dart';
 import 'package:aid_diary/providers/tags_provider.dart';
 import 'package:aid_diary/storage/in_memory_file_store.dart';
+import 'package:aid_diary/utils/diary_day.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
@@ -389,18 +390,27 @@ void main() {
     });
   });
 
-  test('changing when the day starts regroups entries at once', () async {
-    addTearDown(() => store.setDayStartHour(0));
+  test('entries group and sort by their stored diary day', () async {
+    DiaryDay.startHour = 4;
+    addTearDown(() => DiaryDay.startHour = 0);
     final late = await store.add(Entry(
         text: 'late',
         timeCreate: DateTime(2025, 6, 3, 1, 30),
         timeModified: DateTime(2025, 6, 3, 1, 30)));
-    expect(store.getEntriesForDate(DateTime(2025, 6, 3)), [late]);
+    // Written now about a day long past.
+    final recalled = await store.add(Entry(
+        text: 'recalled',
+        timeCreate: DateTime(2025, 6, 4, 9),
+        timeModified: DateTime(2025, 6, 4, 9),
+        day: DateTime(2025, 5, 1)));
+    // The hours changing later moves neither.
+    DiaryDay.startHour = 0;
+    await reloadEverything();
 
-    store.setDayStartHour(4);
-    expect(store.getEntriesForDate(DateTime(2025, 6, 2)), [late]);
+    expect(store.getEntriesForDate(DateTime(2025, 6, 2)).single.id, late.id);
     expect(store.getEntriesForDate(DateTime(2025, 6, 3)), isEmpty);
-    // A moment, not a midnight, finds the diary day it falls in.
-    expect(store.getEntriesForDate(DateTime(2025, 6, 3, 2)), [late]);
+    expect(
+        store.getEntriesForDate(DateTime(2025, 5, 1)).single.id, recalled.id);
+    expect(store.entries.map((e) => e.text), ['late', 'recalled']);
   });
 }

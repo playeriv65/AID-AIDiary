@@ -176,7 +176,7 @@ class DayOneExportWriter implements ArchiveExportWriter {
     final weather = entry.weather;
     _entries.add({
       'uuid': _identifier('${entry.id}-${entry.timeCreate.toIso8601String()}'),
-      'creationDate': _utc(entry.createdInstant),
+      'creationDate': _utc(entry.journalInstant),
       if (zoneForOffset(entry.writtenOffset) case final zone?) 'timeZone': zone,
       'modifiedDate': _utc(entry.timeModified),
       'starred': exported.favorite,

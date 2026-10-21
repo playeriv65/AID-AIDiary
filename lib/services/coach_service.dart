@@ -33,14 +33,15 @@ class CoachService {
         program: program,
         start: start,
         answered: config.get(Settings.coachAnsweredStep));
-    return enrollment.schedule.finishedOn(DiaryDay.of(now ?? DateTime.now()))
+    return enrollment.schedule
+            .finishedOn(DiaryDay.defaultFor(now ?? DateTime.now()))
         ? null
         : enrollment;
   }
 
   static Future<void> enroll(AppLocalizations l10n, CoachProgram program,
       {DateTime? now}) async {
-    final day = DiaryDay.of(now ?? DateTime.now());
+    final day = DiaryDay.defaultFor(now ?? DateTime.now());
     final config = ConfigProvider.instance;
     await config.set(Settings.coachProgram, program.id);
     await config.set(Settings.coachStartDate,

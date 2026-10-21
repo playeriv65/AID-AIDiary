@@ -47,7 +47,10 @@ import 'package:aid_diary/widgets/markdown_preview_controller.dart';
 
 class AddEditEntryPage extends StatefulWidget {
   final Entry? entry;
-  final DateTime? overrideCreateDate;
+
+  /// Diary day for a new entry written about another day, such as one
+  /// picked in the calendar; it is still written now.
+  final DateTime? diaryDay;
   final bool openCamera;
   final List<EntryImage> images;
   final String? sharedText;
@@ -61,7 +64,7 @@ class AddEditEntryPage extends StatefulWidget {
   const AddEditEntryPage({
     super.key,
     this.entry,
-    this.overrideCreateDate,
+    this.diaryDay,
     this.openCamera = false,
     this.images = const <EntryImage>[],
     this.sharedText,
@@ -92,7 +95,16 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
   EntryLocation? location;
   EntryWeather? weather;
   EntryActivity? activity;
+
+  /// When the entry was actually written.
   DateTime? entryDate;
+
+  /// The diary day it belongs to, chosen apart from [entryDate].
+  late DateTime _diaryDay;
+
+  /// Written in the hours that could mean either day: the editor asks until
+  /// the writer picks one.
+  bool _askDay = false;
   late List<EntryImage> _currentImages;
   bool _loadingEntry = true;
   bool _openedCamera = false;
@@ -124,7 +136,8 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
   Future<void> _initEntry() async {
     String dirtyTrackerBaselineText;
     if (widget.entry == null) {
-      final createTime = widget.overrideCreateDate ?? DateTime.now();
+      final createTime = DateTime.now();
+      _askDay = widget.diaryDay == null && DiaryDay.asks(createTime);
       var templateText = "";
       final defaultTemplate =
           widget.template ?? TemplatesProvider.instance.getDefaultTemplate();
@@ -145,7 +158,8 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
         text: AddEditEntryPage.mergeSharedText(templateText, widget.sharedText),
         mood: widget.initialMood,
         timeCreate: createTime,
-        timeModified: DateTime.now(),
+        timeModified: createTime,
+        day: widget.diaryDay,
       );
       _newEntry = true;
       _creatingNewEntry = true;
@@ -168,6 +182,7 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
       // A preselected mood is a choice the user made, so it is a change.
       mood: widget.entry == null ? null : _entry.mood,
       date: _entry.timeCreate,
+      day: _entry.day,
       location: widget.entry == null ? null : _entry.location,
       weather: widget.entry == null ? null : _entry.weather,
       activity: widget.entry == null ? null : _entry.activity,
@@ -179,6 +194,7 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
     weather = _entry.weather;
     activity = _entry.activity;
     entryDate = _entry.timeCreate;
+    _diaryDay = _entry.day;
     text = _entry.text;
     final (:title, :body) = splitEntryTitle(text);
     _titleController.text = title;
@@ -212,7 +228,9 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
       EntryImageActions.takePhoto(_addImage);
     }
 
-    if (_newEntry && DiaryDay.same(entryDate!, DateTime.now())) {
+    // Place and weather now belong to an entry about now, not one written
+    // later about a past day.
+    if (_newEntry && _diaryDay == DiaryDay.defaultFor(entryDate!)) {
       // Needs the locale, which initState may not read yet.
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) _autoFillContext();
@@ -395,6 +413,7 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
     // in the LayoutBuilder, so the keyboard resizing the page re-lays it out
     // without rebuilding the text on every frame.
     final content = [
+      if (_askDay) _buildDayQuestion(context),
       _buildTitleField(theme),
       _buildBodyEditor(context),
       const SizedBox(height: 16),
@@ -445,6 +464,55 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  /// Written in the hours that could close the night or open the day: asks
+  /// which day, counting it for today until answered, without stopping the
+  /// writing.
+  Widget _buildDayQuestion(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final cs = Theme.of(context).colorScheme;
+    final today = DiaryDay.dateOf(entryDate!);
+    final yesterday = DateTime(today.year, today.month, today.day - 1);
+    Widget choice(String key, String label, DateTime day) => ChoiceChip(
+          key: ValueKey(key),
+          label: Text(label),
+          selected: _diaryDay == day,
+          onSelected: (_) => _setDiaryDay(day),
+        );
+    return Card.filled(
+      key: const ValueKey('editor-day-question'),
+      color: cs.secondaryContainer,
+      margin: const EdgeInsets.fromLTRB(4, 0, 4, 8),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Row(children: [
+            Icon(Icons.bedtime_outlined,
+                size: 18, color: cs.onSecondaryContainer),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                  l10n.editorDayAsk(TimeManager.timeOfDayString(
+                      context, TimeOfDay.fromDateTime(entryDate!))),
+                  style: TextStyle(color: cs.onSecondaryContainer)),
+            ),
+          ]),
+          const SizedBox(height: 8),
+          Wrap(spacing: 8, children: [
+            choice(
+                'editor-day-yesterday',
+                l10n.editorDayYesterday(
+                    TimeManager.formatMonthDay(yesterday, context)),
+                yesterday),
+            choice(
+                'editor-day-today',
+                l10n.editorDayToday(TimeManager.formatMonthDay(today, context)),
+                today),
+          ]),
+        ]),
       ),
     );
   }
@@ -589,6 +657,15 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
                   _locating ? l10n.editorLocating : l10n.locationTitle,
                   _chooseLocation,
                   onClear: () => _setLocation(null)),
+              // When it was actually written, apart from the day it is for.
+              row(
+                  const ValueKey('editor-written-at'),
+                  Icons.schedule_rounded,
+                  l10n.editorWrittenAt(
+                      '${TimeManager.formatDate(entryDate!, context)} '
+                      '${TimeManager.timeOfDayString(context, TimeOfDay.fromDateTime(entryDate!))}'),
+                  '',
+                  _chooseWrittenTime),
               // Only imported entries still carry one.
               if (activity != null)
                 row(const ValueKey('editor-activity'), activityIcon(activity!),
@@ -626,15 +703,13 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
         ),
       );
 
-  /// The entry's date and time as the page title, with its mood beside it;
-  /// tapping the date changes date and time.
+  /// The diary day as the page title with the time it was written, and the
+  /// mood beside it; tapping the day changes the day only.
   Widget _buildDateTitle(BuildContext context, ThemeData theme) {
     final cs = theme.colorScheme;
     final hasMood = MoodIcon.getMoodIcon(mood).isNotEmpty;
     final date = entryDate!;
-    // The diary day, which a late-night entry shares with the evening
-    // before, then the clock time as written.
-    final diaryDay = DiaryDay.of(date);
+    final diaryDay = _diaryDay;
     final day = diaryDay.year == DateTime.now().year
         ? TimeManager.formatMonthDay(diaryDay, context)
         : TimeManager.formatDate(diaryDay, context);
@@ -642,14 +717,18 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
         TimeManager.timeOfDayString(context, TimeOfDay.fromDateTime(date));
     final weekday =
         DateFormat.E(TimeManager.currentLocale(context)).format(diaryDay);
+    final written = DiaryDay.dateOf(date);
+    final lateNight =
+        diaryDay == DateTime(written.year, written.month, written.day - 1);
+    // Written on another day than it is about: the time alone would
+    // mislead, so the written-at row says when.
+    final sameNight = lateNight || diaryDay == written;
     return Row(mainAxisSize: MainAxisSize.min, children: [
       Flexible(
         child: InkWell(
           key: const ValueKey('editor-date'),
           borderRadius: BorderRadius.circular(8),
-          onTap: () async {
-            if (await _chooseDate()) await _chooseTime();
-          },
+          onTap: _chooseDiaryDay,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
             child: Text.rich(
@@ -659,11 +738,12 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
                     style: theme.textTheme.titleLarge
                         ?.copyWith(fontWeight: FontWeight.w600)),
                 TextSpan(
-                    text: ' $weekday  /  $time'
+                    text: ' $weekday'
+                        '${sameNight ? '  /  $time' : ''}'
                         '${_entry.otherZoneLabel == null ? '' : ' ${_entry.otherZoneLabel}'}',
                     style: theme.textTheme.bodyMedium
                         ?.copyWith(color: cs.onSurfaceVariant)),
-                if (DiaryDay.isLateNight(date))
+                if (lateNight)
                   WidgetSpan(
                     alignment: PlaceholderAlignment.middle,
                     child: Padding(
@@ -735,18 +815,17 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
     if (choice != null) _setLocation(choice.location);
   }
 
-  /// Like Journey, offers a picked photo's time and place for the entry:
-  /// the time when it is over an hour off, the place when the entry has
-  /// none with coordinates.
+  /// Like Journey, offers a picked photo's day and place for the entry: the
+  /// diary day the photo was taken on when it is another one, the place
+  /// when the entry has none with coordinates. When the entry was written
+  /// stays as it is.
   Future<void> _offerPhotoMetadata(PhotoMetadata photo) async {
     final l10n = AppLocalizations.of(context)!;
     final taken = photo.taken;
-    final newDate = taken != null &&
-            taken.difference(entryDate!).abs() > const Duration(hours: 1)
-        ? taken
-        : null;
+    final photoDay = taken == null ? null : DiaryDay.defaultFor(taken);
+    final newDay = photoDay != _diaryDay ? photoDay : null;
     final newPlace = photo.hasPlace && !(location?.hasCoordinates ?? false);
-    if (newDate == null && !newPlace) return;
+    if (newDay == null && !newPlace) return;
     final language = TimeManager.currentLocale(context).split('_').first;
     String? placeLabel;
     EntryLocation? place;
@@ -758,10 +837,8 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
       placeLabel = place.label;
     }
     if (!mounted) return;
-    final dateLabel = newDate == null
-        ? null
-        : '${TimeManager.formatDate(newDate, context)} '
-            '${TimeManager.timeOfDayString(context, TimeOfDay.fromDateTime(newDate))}';
+    final dateLabel =
+        newDay == null ? null : TimeManager.formatDate(newDay, context);
     final message = switch ((dateLabel, placeLabel)) {
       (final date?, final where?) => l10n.photoMetaDateAndPlace(date, where),
       (final date?, null) => l10n.photoMetaDate(date),
@@ -786,7 +863,10 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
     );
     if (apply != true || !mounted) return;
     setState(() {
-      if (newDate != null) entryDate = newDate;
+      if (newDay != null) {
+        _diaryDay = newDay;
+        _askDay = false;
+      }
       if (place != null) location = place;
     });
     _scheduleSave();
@@ -906,31 +986,42 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
         onPressed: () => Navigator.of(context).pop(),
       );
 
-  /// Picks the diary day; a late-night time stays late at night after it.
-  Future<bool> _chooseDate() async {
-    DateTime? pickedDate = await TimeManager.pickDate(
-      context,
-      initialDate: DiaryDay.of(entryDate!),
-      firstDate: DateTime(2000),
-      lastDate: DiaryDay.today(),
-    );
-    if (pickedDate == null) return false;
-
-    entryDate = DiaryDay.at(pickedDate, entryDate!.hour, entryDate!.minute);
-    await _saveEntry();
-    return true;
+  void _setDiaryDay(DateTime day) {
+    setState(() {
+      _diaryDay = day;
+      _askDay = false;
+    });
+    _scheduleSave();
   }
 
-  /// Picks the time on the same diary day: 1:00 after 23:00 is that night.
-  Future<void> _chooseTime() async {
-    if (!mounted) return;
-    final pickedTime = await showTimePicker(
-        context: context, initialTime: TimeOfDay.fromDateTime(entryDate!));
-    if (pickedTime == null) return;
+  /// Picks the day the entry belongs to; when it was written stays.
+  Future<void> _chooseDiaryDay() async {
+    final today = DiaryDay.dateOf(DateTime.now());
+    final picked = await TimeManager.pickDate(
+      context,
+      initialDate: _diaryDay,
+      firstDate: DateTime(2000),
+      lastDate: _diaryDay.isAfter(today) ? _diaryDay : today,
+    );
+    if (picked != null) _setDiaryDay(DiaryDay.dateOf(picked));
+  }
 
-    entryDate = DiaryDay.at(
-        DiaryDay.of(entryDate!), pickedTime.hour, pickedTime.minute);
-    await _saveEntry();
+  /// Corrects when the entry was written; the day it belongs to stays.
+  Future<void> _chooseWrittenTime() async {
+    final written = entryDate!;
+    final date = await TimeManager.pickDate(
+      context,
+      initialDate: DiaryDay.dateOf(written),
+      firstDate: DateTime(2000),
+      lastDate: DateTime.now(),
+    );
+    if (date == null || !mounted) return;
+    final time = await showTimePicker(
+        context: context, initialTime: TimeOfDay.fromDateTime(written));
+    if (time == null) return;
+    setState(() => entryDate =
+        DateTime(date.year, date.month, date.day, time.hour, time.minute));
+    _scheduleSave();
   }
 
   void _scheduleSave() {
@@ -951,7 +1042,7 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
 
     if ((_newEntry || _hasEntryFieldChanges()) &&
         Platform.isAndroid &&
-        DiaryDay.same(DateTime.now(), entryDate!)) {
+        _diaryDay == DiaryDay.today()) {
       await NotificationManager.instance.dismissReminderNotification();
     }
 
@@ -970,6 +1061,7 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
             text: text,
             mood: mood,
             timeCreate: entryDate,
+            day: _diaryDay,
             timeModified: DateTime.now(),
             location: location,
             weather: weather,
@@ -991,6 +1083,7 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
       text: saved.text,
       mood: saved.mood,
       date: saved.timeCreate,
+      day: saved.day,
       location: saved.location,
       weather: saved.weather,
       activity: saved.activity,
@@ -1013,6 +1106,7 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
         text: text,
         mood: mood,
         date: entryDate!,
+        day: _diaryDay,
         location: location,
         weather: weather,
         activity: activity);
@@ -1027,6 +1121,7 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
       text: text,
       mood: mood,
       date: entryDate!,
+      day: _diaryDay,
       tagSource: _tagSource,
       hasImages: _currentImages.isNotEmpty,
       location: location,

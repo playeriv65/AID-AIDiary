@@ -807,9 +807,11 @@
   "@journalSortUpdated": {},
   "settingsTimeFormat": "Time format",
   "@settingsTimeFormat": {},
-  "settingsDayStart": "A diary day starts at",
+  "settingsDayStart": "New entries count for the day before until",
   "@settingsDayStart": {},
-  "settingsDayStartMidnight": "Midnight",
+  "settingsDayAskUntil": "Then ask which day until",
+  "@settingsDayAskUntil": {},
+  "settingsDayStartMidnight": "Off",
   "@settingsDayStartMidnight": {},
   "settingsDayStartAt": "{hour}:00",
   "@settingsDayStartAt": {
@@ -817,10 +819,34 @@
       "hour": {"type": "int"}
     }
   },
-  "settingsDayStartHint": "Entries written after midnight but before this belong to the day before: in the journal, the calendar, streaks, reviews and every statistic. Their time stays as written.",
+  "settingsDayStartHint": "Every entry keeps the day it belongs to next to the time it was written, and you can change that day in the editor at any time. These hours only pick the day for new entries, so changing them moves no existing entry.",
   "@settingsDayStartHint": {},
   "lateNightBadge": "Written late at night, counted for the day before",
   "@lateNightBadge": {},
+  "editorDayAsk": "Written at {time}. Which day is it for?",
+  "@editorDayAsk": {
+    "placeholders": {
+      "time": {"type": "String"}
+    }
+  },
+  "editorDayYesterday": "{date} (yesterday)",
+  "@editorDayYesterday": {
+    "placeholders": {
+      "date": {"type": "String"}
+    }
+  },
+  "editorDayToday": "{date} (today)",
+  "@editorDayToday": {
+    "placeholders": {
+      "date": {"type": "String"}
+    }
+  },
+  "editorWrittenAt": "Written {when}",
+  "@editorWrittenAt": {
+    "placeholders": {
+      "when": {"type": "String"}
+    }
+  },
   "timeFormat12": "12-hour",
   "@timeFormat12": {},
   "timeFormat24": "24-hour",
@@ -1134,7 +1160,7 @@
   "@helpPrivacyText": {},
   "photoMetaTitle": "Use the photo's details?",
   "@photoMetaTitle": {},
-  "photoMetaDateAndPlace": "Change this entry's time to {date} and its place to {place}, as recorded in the photo?",
+  "photoMetaDateAndPlace": "Count this entry for {date} and set its place to {place}, as recorded in the photo?",
   "@photoMetaDateAndPlace": {
     "placeholders": {
       "date": {
@@ -1145,7 +1171,7 @@
       }
     }
   },
-  "photoMetaDate": "Change this entry's time to {date}, when the photo was taken?",
+  "photoMetaDate": "Count this entry for {date}, when the photo was taken?",
   "@photoMetaDate": {
     "placeholders": {
       "date": {

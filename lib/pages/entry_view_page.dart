@@ -476,6 +476,14 @@ class EntryDateBlock extends StatelessWidget {
             ),
           ],
         ]),
+        // Written later about this day: say when.
+        if (entry.isForAnotherDay)
+          Text(
+              AppLocalizations.of(context)!.editorWrittenAt(
+                  TimeManager.formatDate(entry.writtenDate, context)),
+              key: const ValueKey('entry-written-at'),
+              style: theme.textTheme.labelSmall
+                  ?.copyWith(color: cs.onSurfaceVariant)),
       ]),
     ]);
   }

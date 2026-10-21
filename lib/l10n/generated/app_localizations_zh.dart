@@ -1364,10 +1364,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settingsTimeFormat => '时间格式';
 
   @override
-  String get settingsDayStart => '一天从几点开始';
+  String get settingsDayStart => '新日记在几点前算前一天';
 
   @override
-  String get settingsDayStartMidnight => '午夜 0 点';
+  String get settingsDayAskUntil => '之后到几点前询问算哪天';
+
+  @override
+  String get settingsDayStartMidnight => '不使用';
 
   @override
   String settingsDayStartAt(int hour) {
@@ -1376,10 +1379,30 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get settingsDayStartHint =>
-      '零点之后、这个时间之前写的日记属于前一天：日记列表、日历、连续天数、回顾和各项统计都按前一天算，记录的时间本身不变。';
+      '每篇日记都会同时保存实际写作时间和它所属的日记日，日记日可以随时在编辑页修改。这两个时间只决定新日记默认算哪天，修改它们不会改动已有的任何日记。';
 
   @override
   String get lateNightBadge => '凌晨写的，算作前一天';
+
+  @override
+  String editorDayAsk(String time) {
+    return '$time 写的，算哪一天？';
+  }
+
+  @override
+  String editorDayYesterday(String date) {
+    return '$date（昨天）';
+  }
+
+  @override
+  String editorDayToday(String date) {
+    return '$date（今天）';
+  }
+
+  @override
+  String editorWrittenAt(String when) {
+    return '写于 $when';
+  }
 
   @override
   String get timeFormat12 => '12 小时制';
@@ -3305,10 +3328,13 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get settingsTimeFormat => '時間格式';
 
   @override
-  String get settingsDayStart => '一天從幾點開始';
+  String get settingsDayStart => '新日記在幾點前算前一天';
 
   @override
-  String get settingsDayStartMidnight => '午夜 0 點';
+  String get settingsDayAskUntil => '之後到幾點前詢問算哪天';
+
+  @override
+  String get settingsDayStartMidnight => '不使用';
 
   @override
   String settingsDayStartAt(int hour) {
@@ -3317,10 +3343,30 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get settingsDayStartHint =>
-      '零點之後、這個時間之前寫的日記屬於前一天：日記列表、日曆、連續天數、回顧和各項統計都按前一天算，記錄的時間本身不變。';
+      '每篇日記都會同時保存實際寫作時間和它所屬的日記日，日記日可以隨時在編輯頁修改。這兩個時間只決定新日記預設算哪天，修改它們不會改動已有的任何日記。';
 
   @override
   String get lateNightBadge => '凌晨寫的，算作前一天';
+
+  @override
+  String editorDayAsk(String time) {
+    return '$time 寫的，算哪一天？';
+  }
+
+  @override
+  String editorDayYesterday(String date) {
+    return '$date（昨天）';
+  }
+
+  @override
+  String editorDayToday(String date) {
+    return '$date（今天）';
+  }
+
+  @override
+  String editorWrittenAt(String when) {
+    return '寫於 $when';
+  }
 
   @override
   String get timeFormat12 => '12 小時制';

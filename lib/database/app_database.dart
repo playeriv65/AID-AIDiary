@@ -11,6 +11,8 @@ import 'package:aid_diary/storage/external_sync_health.dart';
 import 'package:aid_diary/storage/file_store.dart';
 import 'package:aid_diary/storage/local_file_store.dart';
 import 'package:aid_diary/storage/storage_picker.dart';
+import 'package:aid_diary/utils/diary_day.dart';
+import 'package:aid_diary/utils/local_time.dart';
 import 'package:aid_diary/utils/operation_outcome.dart';
 import 'package:aid_diary/utils/generated/tag_icon_registry.dart';
 import 'package:aid_diary/models/entry.dart';
@@ -86,7 +88,7 @@ class AppDatabase {
 
   Future<void> open({int? firstScreen}) async {
     _database = await openDatabase(_internalPath!,
-        version: 9, onCreate: _createDatabase, onUpgrade: _onUpgrade);
+        version: 10, onCreate: _createDatabase, onUpgrade: _onUpgrade);
 
     await EntriesProvider.instance.load(firstScreen: firstScreen);
     await EntryImagesProvider.instance.load();
@@ -307,7 +309,8 @@ CREATE TABLE $entriesTable (
   ${EntryFields.activity} TEXT,
   ${EntryFields.openAt} DATETIME,
   ${EntryFields.deletedAt} DATETIME,
-  ${EntryFields.utcOffset} INTEGER
+  ${EntryFields.utcOffset} INTEGER,
+  ${EntryFields.diaryDate} TEXT
 )
 ''');
     await db.execute('''
@@ -556,6 +559,27 @@ DROP TABLE old_entries;
       // known, so they read as written in the device's time zone.
       await db.execute(
           'ALTER TABLE $entriesTable ADD COLUMN ${EntryFields.utcOffset} INTEGER');
+    }
+    if (oldVersion <= 9) {
+      await db.execute(
+          'ALTER TABLE $entriesTable ADD COLUMN ${EntryFields.diaryDate} TEXT');
+      // Earlier entries never chose a day: give each the default for when
+      // it was written, as a new one would get.
+      final rows = await db.query(entriesTable,
+          columns: [EntryFields.id, EntryFields.timeCreate]);
+      final batch = db.batch();
+      for (final row in rows) {
+        final written = parseLocalTime(row[EntryFields.timeCreate] as String);
+        batch.update(
+            entriesTable,
+            {
+              EntryFields.diaryDate:
+                  DiaryDay.format(DiaryDay.defaultFor(written))
+            },
+            where: '${EntryFields.id} = ?',
+            whereArgs: [row[EntryFields.id]]);
+      }
+      await batch.commit(noResult: true);
     }
   }
 

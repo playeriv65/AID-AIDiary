@@ -63,7 +63,7 @@ Future<void> _initBackground() async {
   configureLogging();
   await ConfigProvider.instance.init();
   await AppConfig.load();
-  EntryStore.instance.applyDayStartSetting();
+  EntryStore.instance.applyDiaryDaySettings();
 }
 
 /// The alarm callback running in this isolate, if any.
@@ -393,7 +393,7 @@ void main() async {
 
   // Load any cached flashbacks
   await AppConfig.load();
-  EntryStore.instance.applyDayStartSetting();
+  EntryStore.instance.applyDiaryDaySettings();
   await FlashbackManager.init();
 
   final themeProvider = ThemeModeProvider();

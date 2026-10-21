@@ -32,24 +32,41 @@ void main() {
         written);
   });
 
-  group('late-night entries', () {
+  group('diary day', () {
     tearDown(() => DiaryDay.startHour = 0);
-    Entry at(DateTime time) =>
-        Entry(text: '', timeCreate: time, timeModified: time);
+    Entry at(DateTime time, {DateTime? day}) =>
+        Entry(text: '', timeCreate: time, timeModified: time, day: day);
 
-    test('count for the day before when the setting is on', () {
-      final late = at(DateTime(2026, 10, 21, 1, 30));
-      final morning = at(DateTime(2026, 10, 21, 4));
-      expect(late.day, DateTime(2026, 10, 21));
-      expect(late.isLateNight, isFalse);
-
+    test('a new entry takes the default and keeps it', () {
       DiaryDay.startHour = 4;
+      final late = at(DateTime(2026, 10, 21, 1, 30));
       expect(late.day, DateTime(2026, 10, 20));
       expect(late.isLateNight, isTrue);
       expect(late.timeCreate, DateTime(2026, 10, 21, 1, 30));
-      expect(morning.day, DateTime(2026, 10, 21));
-      expect(at(DateTime(2026, 11, 1, 2)).day, DateTime(2026, 10, 31));
-      expect(DiaryDay.of(DateTime(2026, 1, 1, 3)), DateTime(2025, 12, 31));
+      // Changing the hours later moves no entry.
+      DiaryDay.startHour = 0;
+      expect(late.day, DateTime(2026, 10, 20));
+      expect(at(DateTime(2026, 10, 21, 1, 30)).day, DateTime(2026, 10, 21));
+    });
+
+    test('the day and the written time change apart', () {
+      final entry = at(DateTime(2026, 10, 21, 9));
+      final moved = entry.copy(day: DateTime(2026, 10, 18));
+      expect(moved.day, DateTime(2026, 10, 18));
+      expect(moved.timeCreate, entry.timeCreate);
+      expect(moved.isForAnotherDay, isTrue);
+      final retimed = moved.copy(timeCreate: DateTime(2026, 10, 22, 8));
+      expect(retimed.day, DateTime(2026, 10, 18));
+      // Other journals get the day at the written time of day.
+      expect(moved.journalTime, DateTime(2026, 10, 18, 9));
+      expect(entry.journalTime, entry.timeCreate);
+    });
+
+    test('the day survives the database row', () {
+      final entry = at(DateTime(2026, 10, 21, 9), day: DateTime(2026, 10, 18));
+      final back = Entry.fromJson(entry.toJson());
+      expect(back.day, DateTime(2026, 10, 18));
+      expect(back.timeCreate, entry.timeCreate);
     });
   });
 }

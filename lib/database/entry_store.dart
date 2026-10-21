@@ -299,18 +299,12 @@ class EntryStore with ChangeNotifier {
     return null;
   }
 
-  /// Applies the day-start setting: entries before that hour belong to the
-  /// day before, everywhere days are counted.
-  void applyDayStartSetting() =>
-      setDayStartHour(ConfigProvider.instance.get(Settings.dayStartHour));
-
-  /// Entries before [hour] count for the day before; 0 starts days at
-  /// midnight.
-  @visibleForTesting
-  void setDayStartHour(int hour) {
-    if (DiaryDay.startHour == hour) return;
-    DiaryDay.startHour = hour;
-    _indexEntriesByDay();
+  /// Reads the hours that pick a new entry's default diary day. Existing
+  /// entries keep theirs; only "today" may move, so pages redraw.
+  void applyDiaryDaySettings() {
+    final config = ConfigProvider.instance;
+    DiaryDay.startHour = config.get(Settings.dayStartHour);
+    DiaryDay.askUntilHour = config.get(Settings.dayAskUntilHour);
     notifyListeners();
   }
 
@@ -318,21 +312,9 @@ class EntryStore with ChangeNotifier {
     return getEntriesForDate(date).firstOrNull;
   }
 
-  /// Entries of a diary day: a local midnight names the day itself, any
-  /// other moment the diary day it falls in.
-  List<Entry> getEntriesForDate(DateTime date) {
-    // Calendars pass local midnights already; making one again costs a
-    // time zone lookup per call.
-    final day = !date.isUtc &&
-            date.hour == 0 &&
-            date.minute == 0 &&
-            date.second == 0 &&
-            date.millisecond == 0 &&
-            date.microsecond == 0
-        ? date
-        : DiaryDay.of(date);
-    return _entriesByDay[day] ?? const [];
-  }
+  /// Entries of the diary day [date] falls on.
+  List<Entry> getEntriesForDate(DateTime date) =>
+      _entriesByDay[DiaryDay.dateOf(date)] ?? const [];
 
   int getEntryDayCount() => _entriesByDay.length;
 
@@ -392,6 +374,7 @@ class EntryStore with ChangeNotifier {
     return stored.text != entry.text ||
         stored.mood != entry.mood ||
         stored.timeCreate != entry.timeCreate ||
+        stored.day != entry.day ||
         stored.timeModified != entry.timeModified;
   }
 
@@ -489,7 +472,12 @@ class EntryStore with ChangeNotifier {
   }
 
   void _sortEntries() {
-    _entries.sort((a, b) => _compareDateOnly(b.timeCreate, a.timeCreate));
+    // By diary day first: an entry written later about a past day sits
+    // with that day.
+    _entries.sort((a, b) {
+      final byDay = b.day.compareTo(a.day);
+      return byDay != 0 ? byDay : _compareDateOnly(b.timeCreate, a.timeCreate);
+    });
   }
 
   void _indexEntriesByDay() {

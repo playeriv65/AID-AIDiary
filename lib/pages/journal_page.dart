@@ -168,7 +168,7 @@ class _JournalPageState extends State<JournalPage>
       final targetDate = DateTime.tryParse(payload) ?? DateTime.now();
       await EntryNavigation.edit(
           context, EntriesProvider.instance.getEntryForDate(targetDate),
-          overrideCreateDate: DiaryDay.nowOn(targetDate));
+          diaryDay: DiaryDay.forNewEntry(targetDate));
     }
   }
 

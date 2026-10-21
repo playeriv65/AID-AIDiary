@@ -100,6 +100,7 @@ class Settings {
   // Off by default: each one asks for a permission or uses the network.
   static const autoAddLocation = Setting<bool>("autoAddLocation", true);
   static const autoAddWeather = Setting<bool>("autoAddWeather", true);
+  static const dayAskUntilHour = Setting<int>("dayAskUntilHour", 6);
   static const dayStartHour = Setting<int>("dayStartHour", 4);
   static const excludeBadDaysFromFlashbacks =
       Setting<bool>("excludeBadDaysFromFlashbacks", false);
@@ -202,6 +203,7 @@ class Settings {
     autoAddLocation,
     autoAddWeather,
     dayStartHour,
+    dayAskUntilHour,
     excludeBadDaysFromFlashbacks,
     showflashbackYearsAgo,
     showflashback6MonthsAgo,

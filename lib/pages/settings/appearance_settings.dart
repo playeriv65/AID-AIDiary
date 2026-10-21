@@ -183,6 +183,50 @@ class _AppearanceSettingsPageState extends State<AppearanceSettings> {
     );
   }
 
+  /// When a new entry counts for the day before, and when the editor asks.
+  List<Widget> _diaryDayHours(
+      BuildContext context, ConfigProvider configProvider) {
+    final l10n = AppLocalizations.of(context)!;
+    final config = AppConfig.instance;
+    final start = configProvider.get(Settings.dayStartHour);
+    final askChoices = [
+      for (final hour in config.dayAskUntilHourChoices)
+        if (hour >= start) hour
+    ];
+    final askUntil = configProvider.get(Settings.dayAskUntilHour);
+    Widget dropdown(String key, String title, Setting<int> setting, int value,
+            List<int> hours) =>
+        SettingsDropdown<int>(
+          key: ValueKey(key),
+          title: title,
+          value: value,
+          options: [
+            for (final hour in hours)
+              DropdownMenuItem(
+                  value: hour,
+                  child: Text(hour == 0
+                      ? l10n.settingsDayStartMidnight
+                      : l10n.settingsDayStartAt(hour))),
+          ],
+          onChanged: (value) async {
+            if (value == null) return;
+            await configProvider.set(setting, value);
+            EntryStore.instance.applyDiaryDaySettings();
+          },
+        );
+    return [
+      dropdown('settings-day-start', l10n.settingsDayStart,
+          Settings.dayStartHour, start, config.dayStartHourChoices),
+      dropdown(
+          'settings-day-ask',
+          l10n.settingsDayAskUntil,
+          Settings.dayAskUntilHour,
+          // Asking ends no earlier than the day starts.
+          askChoices.contains(askUntil) ? askUntil : askChoices.first,
+          askChoices),
+    ];
+  }
+
   List<Widget> _customizeSettings(
       BuildContext context, ConfigProvider configProvider) {
     final l10n = AppLocalizations.of(context)!;
@@ -413,26 +457,7 @@ class _AppearanceSettingsPageState extends State<AppearanceSettings> {
                     '12': AppLocalizations.of(context)!.timeFormat12,
                     '24': AppLocalizations.of(context)!.timeFormat24,
                   }),
-                  SettingsDropdown<int>(
-                    key: const ValueKey('settings-day-start'),
-                    title: AppLocalizations.of(context)!.settingsDayStart,
-                    value: configProvider.get(Settings.dayStartHour),
-                    options: [
-                      for (final hour in AppConfig.instance.dayStartHourChoices)
-                        DropdownMenuItem(
-                            value: hour,
-                            child: Text(hour == 0
-                                ? AppLocalizations.of(context)!
-                                    .settingsDayStartMidnight
-                                : AppLocalizations.of(context)!
-                                    .settingsDayStartAt(hour))),
-                    ],
-                    onChanged: (value) async {
-                      if (value == null) return;
-                      await configProvider.set(Settings.dayStartHour, value);
-                      EntryStore.instance.applyDayStartSetting();
-                    },
-                  ),
+                  ..._diaryDayHours(context, configProvider),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
                     child: Text(

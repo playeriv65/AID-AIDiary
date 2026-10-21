@@ -5,6 +5,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:aid_diary/utils/diary_day.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/models/image.dart';
 import 'package:aid_diary/storage/storage_picker.dart';
@@ -44,6 +45,7 @@ List<ImportedEntry> decodeJsonEntries(Uint8List bytes) {
             mood: entry['mood'] as int?,
             timeCreate: parseLocalTime(entry['timeCreated']),
             utcOffset: entry['utcOffsetMinutes'] as int?,
+            day: DiaryDay.parse(entry['diaryDate'] as String?),
             timeModified: parseLocalTime(entry['timeModified']),
             // Optional, like everything below.
             location: switch (entry['location']) {

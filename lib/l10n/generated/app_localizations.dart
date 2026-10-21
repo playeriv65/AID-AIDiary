@@ -2601,13 +2601,19 @@ abstract class AppLocalizations {
   /// No description provided for @settingsDayStart.
   ///
   /// In en, this message translates to:
-  /// **'A diary day starts at'**
+  /// **'New entries count for the day before until'**
   String get settingsDayStart;
+
+  /// No description provided for @settingsDayAskUntil.
+  ///
+  /// In en, this message translates to:
+  /// **'Then ask which day until'**
+  String get settingsDayAskUntil;
 
   /// No description provided for @settingsDayStartMidnight.
   ///
   /// In en, this message translates to:
-  /// **'Midnight'**
+  /// **'Off'**
   String get settingsDayStartMidnight;
 
   /// No description provided for @settingsDayStartAt.
@@ -2619,7 +2625,7 @@ abstract class AppLocalizations {
   /// No description provided for @settingsDayStartHint.
   ///
   /// In en, this message translates to:
-  /// **'Entries written after midnight but before this belong to the day before: in the journal, the calendar, streaks, reviews and every statistic. Their time stays as written.'**
+  /// **'Every entry keeps the day it belongs to next to the time it was written, and you can change that day in the editor at any time. These hours only pick the day for new entries, so changing them moves no existing entry.'**
   String get settingsDayStartHint;
 
   /// No description provided for @lateNightBadge.
@@ -2627,6 +2633,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Written late at night, counted for the day before'**
   String get lateNightBadge;
+
+  /// No description provided for @editorDayAsk.
+  ///
+  /// In en, this message translates to:
+  /// **'Written at {time}. Which day is it for?'**
+  String editorDayAsk(String time);
+
+  /// No description provided for @editorDayYesterday.
+  ///
+  /// In en, this message translates to:
+  /// **'{date} (yesterday)'**
+  String editorDayYesterday(String date);
+
+  /// No description provided for @editorDayToday.
+  ///
+  /// In en, this message translates to:
+  /// **'{date} (today)'**
+  String editorDayToday(String date);
+
+  /// No description provided for @editorWrittenAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Written {when}'**
+  String editorWrittenAt(String when);
 
   /// No description provided for @timeFormat12.
   ///

@@ -22,7 +22,7 @@ class EntryNavigation {
   static Future<void> edit(BuildContext context, Entry? entry,
       {bool openCamera = false,
       List<EntryImage>? images,
-      DateTime? overrideCreateDate,
+      DateTime? diaryDay,
       int? initialMood,
       Template? template}) {
     // The editor covers the whole window, rail included, like Journey.
@@ -35,18 +35,18 @@ class EntryNavigation {
             (entry != null
                 ? EntryImagesProvider.instance.getForEntry(entry)
                 : const []),
-        overrideCreateDate: overrideCreateDate,
+        diaryDay: diaryDay,
         initialMood: initialMood,
         template: template,
       ),
     ));
   }
 
-  /// Opens a new entry on [day], keeping the current time of day.
+  /// Opens a new entry for diary [day], written now.
   static Future<void> addForDay(BuildContext context, DateTime day,
       {int? initialMood}) {
     return edit(context, null,
-        overrideCreateDate: DiaryDay.nowOn(day), initialMood: initialMood);
+        diaryDay: DiaryDay.forNewEntry(day), initialMood: initialMood);
   }
 
   static Future<void> addForPickedDay(BuildContext context) async {

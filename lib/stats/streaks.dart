@@ -11,7 +11,7 @@ typedef Streaks = ({int current, int longest, int? daysSinceBadDay});
 Streaks calculateStreaks(List<Entry> entries, {DateTime? now}) {
   if (entries.isEmpty) return (current: 0, longest: 0, daysSinceBadDay: null);
 
-  final today = _calendarDay(DiaryDay.of(now ?? DateTime.now()));
+  final today = _calendarDay(DiaryDay.defaultFor(now ?? DateTime.now()));
   final mostRecentDay = _calendarDay(entries.first.day);
   final isCurrent = today.difference(mostRecentDay).inDays <= 1;
 

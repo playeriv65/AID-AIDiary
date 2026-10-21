@@ -11,6 +11,7 @@ class EntryDraftDirtyTracker {
     required String text,
     required int? mood,
     required DateTime date,
+    required DateTime day,
     required Set<int> seededTagIds,
     EntryLocation? location,
     EntryWeather? weather,
@@ -18,6 +19,7 @@ class EntryDraftDirtyTracker {
   })  : _lastText = text,
         _lastMood = mood,
         _lastDate = date,
+        _lastDay = day,
         _lastLocation = location,
         _lastWeather = weather,
         _lastActivity = activity,
@@ -26,6 +28,9 @@ class EntryDraftDirtyTracker {
   String _lastText;
   int? _lastMood;
   DateTime _lastDate;
+
+  /// The diary day, kept apart from the written time.
+  DateTime _lastDay;
   EntryLocation? _lastLocation;
   EntryWeather? _lastWeather;
   EntryActivity? _lastActivity;
@@ -37,6 +42,7 @@ class EntryDraftDirtyTracker {
     required String text,
     required int? mood,
     required DateTime date,
+    required DateTime day,
     EntryLocation? location,
     EntryWeather? weather,
     EntryActivity? activity,
@@ -44,6 +50,7 @@ class EntryDraftDirtyTracker {
     _lastText = text;
     _lastMood = mood;
     _lastDate = date;
+    _lastDay = day;
     _lastLocation = location;
     _lastWeather = weather;
     _lastActivity = activity;
@@ -65,6 +72,7 @@ class EntryDraftDirtyTracker {
     required String text,
     required int? mood,
     required DateTime date,
+    required DateTime day,
     EntryLocation? location,
     EntryWeather? weather,
     EntryActivity? activity,
@@ -72,6 +80,7 @@ class EntryDraftDirtyTracker {
     return text != _lastText ||
         mood != _lastMood ||
         date != _lastDate ||
+        day != _lastDay ||
         location != _lastLocation ||
         weather != _lastWeather ||
         activity != _lastActivity;
@@ -81,6 +90,7 @@ class EntryDraftDirtyTracker {
     required String text,
     required int? mood,
     required DateTime date,
+    required DateTime day,
     required TagAttachmentSource tagSource,
     required bool hasImages,
     EntryLocation? location,
@@ -91,6 +101,7 @@ class EntryDraftDirtyTracker {
             text: text,
             mood: mood,
             date: date,
+            day: day,
             location: location,
             weather: weather,
             activity: activity) ||

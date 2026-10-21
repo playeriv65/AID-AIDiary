@@ -17,7 +17,7 @@ List<Entry> entriesInRange(List<Entry> entries, StatsRange range,
   };
   if (monthCount == 0) return entries.toList();
 
-  final today = DiaryDay.of(now ?? DateTime.now());
+  final today = DiaryDay.defaultFor(now ?? DateTime.now());
   final start = DateTime(today.year, today.month - monthCount, today.day);
   return entries.where((entry) => !entry.day.isBefore(start)).toList();
 }

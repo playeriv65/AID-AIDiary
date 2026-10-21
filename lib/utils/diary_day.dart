@@ -2,42 +2,64 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-/// The diary's day, which may start after midnight.
+/// The default diary day for an entry written at a given time.
 ///
-/// Entries written before [startHour] belong to the day before, not only in
-/// how they are listed but for everything counted by day: streaks, "today",
-/// throwbacks, reviews, charts. Every day-based rule goes through here; an
-/// entry's own clock time stays as written. The day is derived, never
-/// stored, so changing the setting needs no migration and devices with
-/// different settings never disagree about stored data.
+/// Every entry stores its diary day (`Entry.day`) next to the time it was
+/// actually written, and the writer may change it at any time. These rules
+/// only pick the default for new and imported entries: before [startHour]
+/// an entry belongs to the day before, from then until [askUntilHour] the
+/// editor asks (counting it for that day until answered), later it belongs
+/// to that day. Changing the hours therefore moves no existing entry.
 abstract final class DiaryDay {
-  /// Hours after midnight that still count for the day before; 0 lets days
-  /// start at midnight. Set from the user's setting at startup.
+  /// Before this hour a new entry belongs to the day before; 0 never.
   static int startHour = 0;
 
-  /// Local midnight of the diary day [time] belongs to.
-  static DateTime of(DateTime time) =>
-      DateTime(time.year, time.month, time.day - (isLateNight(time) ? 1 : 0));
+  /// From [startHour] until this hour the editor asks which day is meant.
+  static int askUntilHour = 0;
 
-  /// The diary day now.
-  static DateTime today() => of(DateTime.now());
+  /// The diary day an entry written at [time] gets unless told otherwise.
+  static DateTime defaultFor(DateTime time) => DateTime(
+      time.year, time.month, time.day - (time.hour < startHour ? 1 : 0));
 
-  /// Whether [time] is in the small hours that count for the day before.
-  static bool isLateNight(DateTime time) => time.hour < startHour;
+  /// Whether an entry written at [time] could mean either day, so the
+  /// editor asks.
+  static bool asks(DateTime time) =>
+      time.hour >= startHour && time.hour < askUntilHour;
 
-  /// Whether [a] and [b] fall on the same diary day.
-  static bool same(DateTime a, DateTime b) => of(a) == of(b);
+  /// The diary day a new entry written now gets: what "today" means for
+  /// streaks, reminders and the widget.
+  static DateTime today() => defaultFor(DateTime.now());
 
-  /// When a new entry for diary [day] is written now: now itself on today,
-  /// else the current time of day on that day.
-  static DateTime nowOn(DateTime day) {
-    final now = DateTime.now();
-    final date = DateTime(day.year, day.month, day.day);
-    return of(now) == date ? now : at(date, now.hour, now.minute);
+  /// The explicit day for a new entry opened for [day]: none for today, so
+  /// the default applies and the editor may still ask.
+  static DateTime? forNewEntry(DateTime day) {
+    final date = dateOf(day);
+    return date == today() ? null : date;
   }
 
-  /// The clock time [hour]:[minute] that belongs to diary [day], which is on
-  /// the next calendar day in the small hours.
-  static DateTime at(DateTime day, int hour, int minute) => DateTime(
-      day.year, day.month, day.day + (hour < startHour ? 1 : 0), hour, minute);
+  /// A diary day as stored, `2026-10-20`.
+  static String format(DateTime day) =>
+      '${day.year.toString().padLeft(4, '0')}-'
+      '${day.month.toString().padLeft(2, '0')}-'
+      '${day.day.toString().padLeft(2, '0')}';
+
+  /// A stored diary day, or null for none or a malformed one.
+  static DateTime? parse(String? text) {
+    final parts = text?.split('-');
+    if (parts == null || parts.length != 3) return null;
+    final [year, month, day] = [for (final part in parts) int.tryParse(part)];
+    if (year == null || month == null || day == null) return null;
+    return DateTime(year, month, day);
+  }
+
+  /// Local midnight of [time]'s calendar date; [time] itself when it is one
+  /// already, which saves a time zone lookup.
+  static DateTime dateOf(DateTime time) => !time.isUtc &&
+          time.hour == 0 &&
+          time.minute == 0 &&
+          time.second == 0 &&
+          time.millisecond == 0 &&
+          time.microsecond == 0
+      ? time
+      : DateTime(time.year, time.month, time.day);
 }

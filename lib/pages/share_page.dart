@@ -97,7 +97,7 @@ class _SharePageState extends State<SharePage> {
 
     final page = entry == null
         ? AddEditEntryPage(
-            overrideCreateDate: DiaryDay.nowOn(day),
+            diaryDay: DiaryDay.forNewEntry(day),
             images: EntryImage.appendRanked(const [], imageNames, entryId: -1),
             sharedText: widget.payload.text,
           )

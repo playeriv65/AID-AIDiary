@@ -1,6 +1,7 @@
 @Tags(['integration'])
 library;
 
+import 'package:aid_diary/utils/diary_day.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/database/entry_store.dart';
 import 'package:aid_diary/pages/edit_entry_page.dart';
@@ -283,6 +284,34 @@ void main() {
     debugOnRebuildDirtyWidget = null;
     expect(textRebuilds, 0);
     expect(find.byKey(const ValueKey('editor-title')), findsOneWidget);
+    await tester.pumpWidget(const SizedBox.shrink());
+  });
+
+  testWidgets('in the asking hours the editor asks which day, time stays',
+      (tester) async {
+    // Every hour asks, so the test does not depend on the clock.
+    DiaryDay.startHour = 0;
+    DiaryDay.askUntilHour = 24;
+    addTearDown(() => DiaryDay.askUntilHour = 0);
+    DiaryAppHarness.size(tester, const Size(390, 844));
+    await tester.pumpWidget(harness.app(const MobileScaffold()));
+    await tester.pumpAndSettle();
+    await tapKey(tester, 'diary-new-entry');
+    expect(find.byKey(const ValueKey('editor-day-question')), findsOneWidget);
+    await tapKey(tester, 'editor-day-yesterday');
+    expect(find.byKey(const ValueKey('editor-day-question')), findsNothing);
+    await tester.enterText(DiaryAppHarness.entryBody, '昨晚的事');
+    await tester.pump();
+    await DiaryAppHarness.runUntil(
+        tester,
+        () => tester
+            .widget<IconButton>(find.byKey(const ValueKey('entry-close')))
+            .onPressed!(),
+        () => EntryStore.instance.entries.isNotEmpty);
+    final saved = EntryStore.instance.entries.single;
+    final today = DiaryDay.dateOf(DateTime.now());
+    expect(saved.day, DateTime(today.year, today.month, today.day - 1));
+    expect(DiaryDay.dateOf(saved.timeCreate), today);
     await tester.pumpWidget(const SizedBox.shrink());
   });
 

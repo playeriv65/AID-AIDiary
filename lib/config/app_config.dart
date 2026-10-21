@@ -151,7 +151,11 @@ class AppConfig {
   int get launchFirstScreenEntries =>
       _section('launch')['firstScreenEntries'] as int;
 
-  /// Hours the diary day may start at; 0 is midnight.
+  /// Hours before which a new entry may count for the day before; 0 never.
   List<int> get dayStartHourChoices =>
       (_section('diaryDay')['startHourChoices'] as List).cast<int>();
+
+  /// Hours until which the editor may ask which day a new entry is for.
+  List<int> get dayAskUntilHourChoices =>
+      (_section('diaryDay')['askUntilHourChoices'] as List).cast<int>();
 }

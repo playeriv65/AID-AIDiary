@@ -1,6 +1,7 @@
 @Tags(['integration'])
 library;
 
+import 'package:aid_diary/utils/diary_day.dart';
 import 'package:aid_diary/database/app_database.dart';
 import 'package:aid_diary/database/entry_dao.dart';
 import 'package:aid_diary/models/entry.dart';
@@ -32,7 +33,10 @@ CREATE TABLE entries (
       'time_modified': '2026-01-02T03:04:05.000',
     });
     AppDatabase.instance.database = db;
-    await AppDatabase.instance.upgradeSchema(db, 5, 9);
+    // Backfilled days follow the default for when each was written.
+    DiaryDay.startHour = 4;
+    addTearDown(() => DiaryDay.startHour = 0);
+    await AppDatabase.instance.upgradeSchema(db, 5, 10);
 
     final old = (await EntryDao.getAll()).single;
     expect(old.text, 'old entry');
@@ -41,6 +45,9 @@ CREATE TABLE entries (
     expect(old.activity, isNull);
     // Where an old entry was written is unknown.
     expect(old.utcOffset, isNull);
+    // Written at 3:04, so it belongs to the evening before.
+    expect(old.day, DateTime(2026, 1, 1));
+    expect(old.timeCreate, DateTime(2026, 1, 2, 3, 4, 5));
     await EntryDao.setDeleted(old.id!, DateTime(2026, 10, 20));
     expect(await EntryDao.getAll(), isEmpty);
     expect(

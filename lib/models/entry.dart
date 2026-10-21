@@ -24,6 +24,7 @@ class EntryFields {
     activity,
     openAt,
     utcOffset,
+    diaryDate,
   ];
   static const String id = 'id';
   static const String text = 'text';
@@ -38,6 +39,7 @@ class EntryFields {
   static const String activity = 'activity';
   static const String openAt = 'open_at';
   static const String utcOffset = 'utc_offset';
+  static const String diaryDate = 'diary_date';
 
   /// Set while an entry sits in Recently deleted; not part of [Entry].
   static const String deletedAt = 'deleted_at';
@@ -122,6 +124,12 @@ class Entry {
   /// one. Null for entries from before it was recorded.
   final int? utcOffset;
 
+  /// The diary day this entry belongs to, as a local midnight: what the
+  /// writer meant, stored next to [timeCreate], the time it was actually
+  /// written. Everything counted by day uses it, never [timeCreate]'s own
+  /// date. Without one given it takes [DiaryDay.defaultFor] that time.
+  final DateTime day;
+
   Entry({
     this.id,
     required this.text,
@@ -133,7 +141,10 @@ class Entry {
     this.activity,
     this.openAt,
     this.utcOffset,
-  });
+    DateTime? day,
+  }) : day = day == null
+            ? DiaryDay.defaultFor(timeCreate)
+            : DiaryDay.dateOf(day);
 
   /// The UTC offset where this was written, or the device's for that time
   /// when unknown.
@@ -155,14 +166,13 @@ class Entry {
   }
 
   /// The moment [timeCreate] stands for, in UTC.
-  DateTime get createdInstant => DateTime.utc(
-          timeCreate.year,
-          timeCreate.month,
-          timeCreate.day,
-          timeCreate.hour,
-          timeCreate.minute,
-          timeCreate.second,
-          timeCreate.millisecond)
+  DateTime get createdInstant => _instantOf(timeCreate);
+
+  /// The moment [journalTime] stands for, in UTC: what other journals get.
+  DateTime get journalInstant => _instantOf(journalTime);
+
+  DateTime _instantOf(DateTime wall) => DateTime.utc(wall.year, wall.month,
+          wall.day, wall.hour, wall.minute, wall.second, wall.millisecond)
       .subtract(writtenOffset);
 
   /// The local wall-clock time at [offset] for a UTC moment.
@@ -172,19 +182,26 @@ class Entry {
         wall.second, wall.millisecond);
   }
 
-  /// Whether this entry was written in the small hours and counts for the
-  /// day before; see [DiaryDay].
-  bool get isLateNight => DiaryDay.isLateNight(timeCreate);
+  /// The calendar date it was actually written on. Kept once made: a local
+  /// DateTime asks the OS for the time zone.
+  late final DateTime writtenDate = DiaryDay.dateOf(timeCreate);
 
-  /// The diary day this entry belongs to ([DiaryDay.of] its time): what
-  /// everything counted by day uses, never [timeCreate]'s own date. Both
-  /// candidates are kept once made: a local DateTime asks the OS for the
-  /// time zone, which adds up over thousands of entries on every change.
-  DateTime get day => isLateNight ? _dayBefore : _calendarDay;
-  late final DateTime _calendarDay =
-      DateTime(timeCreate.year, timeCreate.month, timeCreate.day);
-  late final DateTime _dayBefore =
-      DateTime(timeCreate.year, timeCreate.month, timeCreate.day - 1);
+  /// Written in the night after its diary day, such as at 1:30 for the
+  /// evening before.
+  bool get isLateNight =>
+      day == DateTime(writtenDate.year, writtenDate.month, writtenDate.day - 1);
+
+  /// Belongs to another day than the one it was written on, other than a
+  /// late night, such as an entry written later about a past day.
+  bool get isForAnotherDay => day != writtenDate && !isLateNight;
+
+  /// The diary day at the time of day it was written: the date other
+  /// journals get, as they have no separate diary day. The written time
+  /// itself where the two days agree or for a late night.
+  DateTime get journalTime => isForAnotherDay
+      ? DateTime(day.year, day.month, day.day, timeCreate.hour,
+          timeCreate.minute, timeCreate.second)
+      : timeCreate;
 
   /// Whether this is a time capsule that has not opened yet.
   bool get isSealed => openAt?.isAfter(DateTime.now()) ?? false;
@@ -202,6 +219,7 @@ class Entry {
     Object? activity = _unset,
     Object? openAt = _unset,
     Object? utcOffset = _unset,
+    DateTime? day,
   }) =>
       Entry(
         id: id ?? this.id,
@@ -216,6 +234,8 @@ class Entry {
             activity == _unset ? this.activity : activity as EntryActivity?,
         openAt: openAt == _unset ? this.openAt : openAt as DateTime?,
         utcOffset: utcOffset == _unset ? this.utcOffset : utcOffset as int?,
+        // A new written time leaves the diary day as it was.
+        day: day ?? this.day,
       );
 
   static Entry fromJson(Map<String, Object?> json) {
@@ -243,6 +263,7 @@ class Entry {
         _ => null,
       },
       utcOffset: json[EntryFields.utcOffset] as int?,
+      day: DiaryDay.parse(json[EntryFields.diaryDate] as String?),
     );
   }
 
@@ -260,5 +281,6 @@ class Entry {
         EntryFields.activity: activity?.name,
         EntryFields.openAt: openAt?.toIso8601String(),
         EntryFields.utcOffset: utcOffset,
+        EntryFields.diaryDate: DiaryDay.format(day),
       };
 }

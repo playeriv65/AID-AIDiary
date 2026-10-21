@@ -11,13 +11,13 @@ import 'package:aid_diary/utils/local_time.dart';
 typedef DeletedEntry = ({Entry entry, DateTime deletedAt});
 
 class EntryDao {
-  /// Entries not in Recently deleted, newest first.
-  /// Entries not in Recently deleted, newest first; only the [limit] newest
-  /// when given.
+  /// Entries not in Recently deleted, by diary day then written time, newest
+  /// first; only the [limit] newest when given.
   static Future<List<Entry>> getAll({int? limit}) async {
     final result = await AppDatabase.instance.database!.query(entriesTable,
         where: '${EntryFields.deletedAt} IS NULL',
-        orderBy: '${EntryFields.timeCreate} DESC',
+        orderBy:
+            '${EntryFields.diaryDate} DESC, ${EntryFields.timeCreate} DESC',
         limit: limit);
 
     return result.map((json) => Entry.fromJson(json)).toList();

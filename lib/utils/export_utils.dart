@@ -6,6 +6,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:aid_diary/utils/diary_day.dart';
 import 'package:aid_diary/database/image_storage.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/models/entry.dart';
@@ -105,6 +106,8 @@ String encodeJsonEntries(List<Entry> entries,
         // Wall-clock time where it was written, and that place's offset.
         'timeCreated': entry.timeCreate.toIso8601String(),
         if (entry.utcOffset case final offset?) 'utcOffsetMinutes': offset,
+        // The day the entry belongs to, chosen apart from when it was written.
+        'diaryDate': DiaryDay.format(entry.day),
         'timeModified': entry.timeModified.toIso8601String(),
         if (entry.location case final place?)
           'location': {

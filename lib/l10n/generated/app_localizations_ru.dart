@@ -1394,10 +1394,13 @@ class AppLocalizationsRu extends AppLocalizations {
   String get settingsTimeFormat => 'Time format';
 
   @override
-  String get settingsDayStart => 'A diary day starts at';
+  String get settingsDayStart => 'New entries count for the day before until';
 
   @override
-  String get settingsDayStartMidnight => 'Midnight';
+  String get settingsDayAskUntil => 'Then ask which day until';
+
+  @override
+  String get settingsDayStartMidnight => 'Off';
 
   @override
   String settingsDayStartAt(int hour) {
@@ -1406,11 +1409,31 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get settingsDayStartHint =>
-      'Entries written after midnight but before this belong to the day before: in the journal, the calendar, streaks, reviews and every statistic. Their time stays as written.';
+      'Every entry keeps the day it belongs to next to the time it was written, and you can change that day in the editor at any time. These hours only pick the day for new entries, so changing them moves no existing entry.';
 
   @override
   String get lateNightBadge =>
       'Written late at night, counted for the day before';
+
+  @override
+  String editorDayAsk(String time) {
+    return 'Written at $time. Which day is it for?';
+  }
+
+  @override
+  String editorDayYesterday(String date) {
+    return '$date (yesterday)';
+  }
+
+  @override
+  String editorDayToday(String date) {
+    return '$date (today)';
+  }
+
+  @override
+  String editorWrittenAt(String when) {
+    return 'Written $when';
+  }
 
   @override
   String get timeFormat12 => '12-hour';
