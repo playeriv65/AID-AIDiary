@@ -269,7 +269,7 @@ class MarkdownExportWriter implements ArchiveExportWriter {
   @override
   Future<void> write(ExportedEntry exported) async {
     final entry = exported.entry;
-    final timestamp = DateFormat("yyyy-MM-dd", locale).format(entry.timeCreate);
+    final timestamp = DateFormat("yyyy-MM-dd", locale).format(entry.day);
     _timestampCount[timestamp] = (_timestampCount[timestamp] ?? 0) + 1;
     final index = _timestampCount[timestamp]!;
     final indexSuffix = index > 1 ? "_$index" : "";
@@ -285,7 +285,7 @@ class MarkdownExportWriter implements ArchiveExportWriter {
     final moodText =
         entry.mood != null ? "${MoodIcon.getMoodIcon(entry.mood)} " : "";
     noteBody.writeln(
-        "$moodText${DateFormat.yMMMEd(locale).format(entry.timeCreate)}\n${entry.text}");
+        "$moodText${DateFormat.yMMMEd(locale).format(entry.day)}\n${entry.text}");
 
     await noteStore.write(
         "log_$timestamp$indexSuffix.md", utf8.encode(noteBody.toString()));

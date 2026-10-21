@@ -32,8 +32,7 @@ class PeriodReview {
   }) {
     final entries = [
       for (final entry in all)
-        if (!entry.timeCreate.isBefore(start) && entry.timeCreate.isBefore(end))
-          entry,
+        if (!entry.day.isBefore(start) && entry.day.isBefore(end)) entry,
     ];
     return PeriodReview._(
       start: start,
@@ -103,7 +102,7 @@ class PeriodReview {
   List<int> get perMonth {
     final counts = List.filled(12, 0);
     for (final e in entries) {
-      counts[e.timeCreate.month - 1]++;
+      counts[e.day.month - 1]++;
     }
     return counts;
   }

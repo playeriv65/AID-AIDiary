@@ -146,4 +146,4 @@ List<MoodAssociation<K>> moodAssociations<K>(
 }
 
 String _weekdayKeyOf(Entry entry) =>
-    _weekdayKeys[entry.timeCreate.weekday - DateTime.monday];
+    _weekdayKeys[entry.day.weekday - DateTime.monday];

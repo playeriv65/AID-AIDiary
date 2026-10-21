@@ -5,6 +5,7 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:aid_diary/utils/diary_day.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
@@ -107,10 +108,12 @@ class FlashbackManager {
   static List<Flashback> getFlashbacks(
       BuildContext context, List<Entry> entries) {
     final configProvider = Provider.of<ConfigProvider>(context);
-    final now = DateTime.now();
+    // Diary days throughout: at 1:00 it is still yesterday's throwbacks.
+    final now = DiaryDay.today();
     final key = (
       entries,
-      DateTime(now.year, now.month, now.day),
+      now,
+      DiaryDay.startHour,
       Localizations.localeOf(context),
       [
         for (final setting in [
@@ -159,26 +162,24 @@ class FlashbackManager {
     final sixMonthsAgo = configProvider.get(Settings.showflashback6MonthsAgo);
     final oneMonthAgo = configProvider.get(Settings.showflashback1MonthAgo);
     final oneWeekAgo = configProvider.get(Settings.showflashback1WeekAgo);
-    final weekAgo = now.subtract(const Duration(days: 7));
+    final weekAgo = DateTime(now.year, now.month, now.day - 7);
 
     // Time based memories
     for (var entry in filteredEntries.reversed) {
       if (usedEntries.contains(entry)) continue;
       if (yearsAgo &&
-          TimeManager.isSameCalendarDayOfYear(
-              entry.timeCreate, now, isJalali) &&
-          TimeManager.calendarYearOf(entry.timeCreate, isJalali) !=
+          TimeManager.isSameCalendarDayOfYear(entry.day, now, isJalali) &&
+          TimeManager.calendarYearOf(entry.day, isJalali) !=
               TimeManager.calendarYearOf(now, isJalali)) {
         final years = TimeManager.calendarYearOf(now, isJalali) -
-            TimeManager.calendarYearOf(entry.timeCreate, isJalali);
+            TimeManager.calendarYearOf(entry.day, isJalali);
         onThisDayEntries.add(entry);
         onThisDayLabels.add(AppLocalizations.of(context)!.flashbackYear(years));
         usedEntries.add(entry);
         continue;
       }
       if (sixMonthsAgo &&
-          TimeManager.datesExactCalendarMonthDiff(
-                  entry.timeCreate, now, isJalali) ==
+          TimeManager.datesExactCalendarMonthDiff(entry.day, now, isJalali) ==
               6) {
         final label = AppLocalizations.of(context)!.flashbackMonth(6);
         singleFlashbacks.putIfAbsent(label, () => []).add(entry);
@@ -186,15 +187,14 @@ class FlashbackManager {
         continue;
       }
       if (oneMonthAgo &&
-          TimeManager.datesExactCalendarMonthDiff(
-                  entry.timeCreate, now, isJalali) ==
+          TimeManager.datesExactCalendarMonthDiff(entry.day, now, isJalali) ==
               1) {
         final label = AppLocalizations.of(context)!.flashbackMonth(1);
         singleFlashbacks.putIfAbsent(label, () => []).add(entry);
         usedEntries.add(entry);
         continue;
       }
-      if (oneWeekAgo && TimeManager.isSameDay(entry.timeCreate, weekAgo)) {
+      if (oneWeekAgo && entry.day == weekAgo) {
         final label = AppLocalizations.of(context)!.flashbackWeek(1);
         singleFlashbacks.putIfAbsent(label, () => []).add(entry);
         usedEntries.add(entry);

@@ -7,6 +7,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
+import 'package:aid_diary/utils/diary_day.dart';
 import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/database/entry_store.dart';
@@ -62,7 +63,7 @@ Future<void> _initBackground() async {
   configureLogging();
   await ConfigProvider.instance.init();
   await AppConfig.load();
-  EntryStore.instance.applyLateNightSetting();
+  EntryStore.instance.applyDayStartSetting();
 }
 
 /// The alarm callback running in this isolate, if any.
@@ -146,11 +147,11 @@ Future<void> _showOnThisDay() async {
       await AppDatabase.instance.init(forceWithoutSync: true, background: true);
 
   if (ready) {
-    final now = DateTime.now();
+    final now = DiaryDay.today();
     final isJalali = TimeManager.isJalaliCalendarFromPlatform();
     final hasOnThisDayEntries = EntriesProvider.instance.entries.any((e) =>
-        TimeManager.isSameCalendarDayOfYear(e.timeCreate, now, isJalali) &&
-        TimeManager.calendarYearOf(e.timeCreate, isJalali) !=
+        TimeManager.isSameCalendarDayOfYear(e.day, now, isJalali) &&
+        TimeManager.calendarYearOf(e.day, isJalali) !=
             TimeManager.calendarYearOf(now, isJalali));
 
     if (hasOnThisDayEntries) {
@@ -216,7 +217,7 @@ Future<CoachSchedule?> _showCoachPrompt() async {
   }
   final schedule =
       CoachSchedule(start: start, days: days, steps: prompts.length);
-  final now = DateTime.now();
+  final now = DiaryDay.today();
   if (schedule.newPromptOn(now)) {
     final notifications = FlutterLocalNotificationsPlugin();
     await notifications.initialize(
@@ -248,9 +249,9 @@ Future<void> _showNudge() async {
       await AppDatabase.instance.init(forceWithoutSync: true, background: true);
   if (ready) {
     final latest = EntriesProvider.instance.entries
-        .map((e) => e.timeCreate)
+        .map((e) => e.day)
         .fold<DateTime?>(null, (a, b) => a == null || b.isAfter(a) ? b : a);
-    final now = DateTime.now();
+    final now = DiaryDay.today();
     final after = AppConfig.instance.nudgeAfterDays;
     final quietDays = latest == null
         ? 0
@@ -314,10 +315,10 @@ Future<void> _showReminder() async {
   // The alarm fires daily and rearms itself; off days just stay quiet.
   final remindToday = ConfigProvider.instance
       .get(Settings.reminderWeekdays)
-      .contains(DateTime.now().weekday);
+      .contains(DiaryDay.today().weekday);
   if (ready) {
     if (remindToday &&
-        (EntriesProvider.instance.getEntryForDate(DateTime.now()) == null ||
+        (EntriesProvider.instance.getEntryForDate(DiaryDay.today()) == null ||
             ConfigProvider.instance.get(Settings.alwaysRemind))) {
       FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
           FlutterLocalNotificationsPlugin();
@@ -392,7 +393,7 @@ void main() async {
 
   // Load any cached flashbacks
   await AppConfig.load();
-  EntryStore.instance.applyLateNightSetting();
+  EntryStore.instance.applyDayStartSetting();
   await FlashbackManager.init();
 
   final themeProvider = ThemeModeProvider();

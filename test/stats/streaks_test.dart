@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'package:aid_diary/utils/diary_day.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/stats/streaks.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -20,8 +21,8 @@ void main() {
   });
 
   test('a late-night entry keeps the day before in the streak', () {
-    Entry.dayStartHour = 4;
-    addTearDown(() => Entry.dayStartHour = 0);
+    DiaryDay.startHour = 4;
+    addTearDown(() => DiaryDay.startHour = 0);
     final streaks = calculateStreaks(
       [
         // Written at 1:30 on the 10th, after skipping the evening of the 9th.

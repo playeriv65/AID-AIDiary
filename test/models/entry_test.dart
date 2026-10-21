@@ -1,3 +1,4 @@
+import 'package:aid_diary/utils/diary_day.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -32,7 +33,7 @@ void main() {
   });
 
   group('late-night entries', () {
-    tearDown(() => Entry.dayStartHour = 0);
+    tearDown(() => DiaryDay.startHour = 0);
     Entry at(DateTime time) =>
         Entry(text: '', timeCreate: time, timeModified: time);
 
@@ -42,13 +43,13 @@ void main() {
       expect(late.day, DateTime(2026, 10, 21));
       expect(late.isLateNight, isFalse);
 
-      Entry.dayStartHour = 4;
+      DiaryDay.startHour = 4;
       expect(late.day, DateTime(2026, 10, 20));
       expect(late.isLateNight, isTrue);
       expect(late.timeCreate, DateTime(2026, 10, 21, 1, 30));
       expect(morning.day, DateTime(2026, 10, 21));
       expect(at(DateTime(2026, 11, 1, 2)).day, DateTime(2026, 10, 31));
-      expect(Entry.diaryDayOf(DateTime(2026, 1, 1, 3)), DateTime(2025, 12, 31));
+      expect(DiaryDay.of(DateTime(2026, 1, 1, 3)), DateTime(2025, 12, 31));
     });
   });
 }

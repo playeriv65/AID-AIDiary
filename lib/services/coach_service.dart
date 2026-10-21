@@ -5,6 +5,7 @@
 import 'dart:io';
 
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
+import 'package:aid_diary/utils/diary_day.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/database/entry_store.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
@@ -32,14 +33,14 @@ class CoachService {
         program: program,
         start: start,
         answered: config.get(Settings.coachAnsweredStep));
-    return enrollment.schedule.finishedOn(now ?? DateTime.now())
+    return enrollment.schedule.finishedOn(DiaryDay.of(now ?? DateTime.now()))
         ? null
         : enrollment;
   }
 
   static Future<void> enroll(AppLocalizations l10n, CoachProgram program,
       {DateTime? now}) async {
-    final day = now ?? DateTime.now();
+    final day = DiaryDay.of(now ?? DateTime.now());
     final config = ConfigProvider.instance;
     await config.set(Settings.coachProgram, program.id);
     await config.set(Settings.coachStartDate,

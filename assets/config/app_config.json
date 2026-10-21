@@ -27,7 +27,7 @@
     "timeoutSeconds": 10
   },
   "diaryDay": {
-    "lateNightUntilHour": 4
+    "startHourChoices": [0, 1, 2, 3, 4, 5, 6]
   },
   "typography": {
     "fontSizes": {"small": 14, "medium": 16, "large": 18, "extraLarge": 21},

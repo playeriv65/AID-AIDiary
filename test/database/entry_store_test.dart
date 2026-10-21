@@ -388,4 +388,19 @@ void main() {
       expect(store.entries.map((e) => e.id), contains(added.id));
     });
   });
+
+  test('changing when the day starts regroups entries at once', () async {
+    addTearDown(() => store.setDayStartHour(0));
+    final late = await store.add(Entry(
+        text: 'late',
+        timeCreate: DateTime(2025, 6, 3, 1, 30),
+        timeModified: DateTime(2025, 6, 3, 1, 30)));
+    expect(store.getEntriesForDate(DateTime(2025, 6, 3)), [late]);
+
+    store.setDayStartHour(4);
+    expect(store.getEntriesForDate(DateTime(2025, 6, 2)), [late]);
+    expect(store.getEntriesForDate(DateTime(2025, 6, 3)), isEmpty);
+    // A moment, not a midnight, finds the diary day it falls in.
+    expect(store.getEntriesForDate(DateTime(2025, 6, 3, 2)), [late]);
+  });
 }

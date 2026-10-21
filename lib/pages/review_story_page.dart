@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'package:aid_diary/utils/diary_day.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/models/entry.dart';
@@ -33,7 +34,7 @@ class ReviewStoryPage extends StatelessWidget {
 
   /// The review for the current week or year.
   static PeriodReview current(BuildContext context, ReviewSpan span) {
-    final now = DateTime.now();
+    final now = DiaryDay.today();
     // The settings index counts from Monday = 0; DateTime.weekday from 1.
     final weekStart = TimeManager.startOfWeek(
         now, ConfigProvider.instance.getFirstDayOfWeekIndex(context) + 1);
@@ -375,8 +376,7 @@ class _Highlight extends StatelessWidget {
                   Row(children: [
                     Expanded(
                       child: Text(
-                          TimeManager.formatDateWithWeekday(
-                              entry.timeCreate, context),
+                          TimeManager.formatDateWithWeekday(entry.day, context),
                           style: theme.textTheme.labelLarge),
                     ),
                     if (MoodIcon.getMoodIcon(entry.mood).isNotEmpty)

@@ -5,6 +5,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:aid_diary/utils/diary_day.dart';
 import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/models/builtin_templates.dart';
@@ -101,8 +102,7 @@ class _JournalPageState extends State<JournalPage>
       HomeWidgetService.pushPhotos(
           photoCandidates(entries, EntryImagesProvider.instance.getForEntry,
               AppConfig.instance.photoWidgetCandidates),
-          (entry) =>
-              TimeManager.formatDateWithWeekday(entry.timeCreate, context),
+          (entry) => TimeManager.formatDateWithWeekday(entry.day, context),
           l10n.photoWidgetEmpty);
     });
   }
@@ -158,7 +158,7 @@ class _JournalPageState extends State<JournalPage>
     final payload = launchDetails?.notificationResponse?.payload ?? '';
     if (!mounted) return;
     if (notifId == 1) {
-      final referenceDate = DateTime.tryParse(payload) ?? DateTime.now();
+      final referenceDate = DateTime.tryParse(payload) ?? DiaryDay.today();
       await NotificationManager.instance.dismissOnThisDayNotification();
       if (mounted) await EntryNavigation.onThisDay(context, referenceDate);
     } else if (notifId == quickWriteNotificationId ||
@@ -168,9 +168,7 @@ class _JournalPageState extends State<JournalPage>
       final targetDate = DateTime.tryParse(payload) ?? DateTime.now();
       await EntryNavigation.edit(
           context, EntriesProvider.instance.getEntryForDate(targetDate),
-          overrideCreateDate: TimeManager.isToday(targetDate)
-              ? DateTime.now()
-              : TimeManager.currentTimeOnDifferentDate(targetDate));
+          overrideCreateDate: DiaryDay.nowOn(targetDate));
     }
   }
 
@@ -328,7 +326,7 @@ class _Stories extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final cs = Theme.of(context).colorScheme;
-    final now = DateTime.now();
+    final now = DiaryDay.today();
     final flashback = flashbacks.firstOrNull;
     // Two cards fit side by side on a phone; wider panes keep a fixed width.
     final cardWidth =
@@ -376,7 +374,7 @@ class _Stories extends StatelessWidget {
                 icon: Icons.lock_open_rounded,
                 title: l10n.capsuleOpened,
                 subtitle: l10n.capsuleWrittenOn(
-                    TimeManager.formatDate(capsule.timeCreate, context)),
+                    TimeManager.formatDate(capsule.day, context)),
                 background: cs.secondaryContainer,
                 foreground: cs.onSecondaryContainer,
                 onTap: () => EntryNavigation.view(context, capsule),
@@ -463,8 +461,7 @@ class _Stories extends StatelessWidget {
                 width: cardWidth,
                 icon: Icons.auto_awesome_rounded,
                 title: extra.title,
-                subtitle: TimeManager.formatDate(
-                    extra.firstEntry.timeCreate, context),
+                subtitle: TimeManager.formatDate(extra.firstEntry.day, context),
                 background: cs.secondaryContainer,
                 foreground: cs.onSecondaryContainer,
                 onTap: () => EntryNavigation.flashback(context, extra),

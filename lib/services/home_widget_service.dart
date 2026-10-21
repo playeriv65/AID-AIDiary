@@ -11,6 +11,7 @@ import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/models/image.dart';
 import 'package:aid_diary/stats/streaks.dart';
+import 'package:aid_diary/utils/diary_day.dart';
 import 'package:flutter/foundation.dart' show mapEquals;
 import 'package:home_widget/home_widget.dart';
 import 'package:intl/intl.dart';
@@ -21,6 +22,7 @@ import 'package:path/path.dart' show join;
 class HomeWidgetSnapshot {
   const HomeWidgetSnapshot({
     required this.writtenDate,
+    required this.dayStartHour,
     required this.snippet,
     required this.streak,
     required this.done,
@@ -33,9 +35,9 @@ class HomeWidgetSnapshot {
     final latest = entries.firstOrNull;
     final streak = calculateStreaks(entries).current;
     return HomeWidgetSnapshot(
-      writtenDate: latest == null
-          ? ''
-          : DateFormat('yyyy-MM-dd').format(latest.timeCreate),
+      writtenDate:
+          latest == null ? '' : DateFormat('yyyy-MM-dd').format(latest.day),
+      dayStartHour: DiaryDay.startHour,
       snippet: latest == null ? '' : firstLine(latest.text),
       streak: streak > 0 ? l10n.streakCurrent(streak) : '',
       done: l10n.widgetDone,
@@ -44,8 +46,12 @@ class HomeWidgetSnapshot {
     );
   }
 
-  /// Local date of the latest entry; the widget compares it with today.
+  /// Diary day of the latest entry; the widget compares it with the diary
+  /// day now, using [dayStartHour].
   final String writtenDate;
+
+  /// Hours after midnight that still belong to the day before.
+  final int dayStartHour;
   final String snippet;
   final String streak;
   final String done;
@@ -54,6 +60,7 @@ class HomeWidgetSnapshot {
 
   Map<String, String> toWidgetData() => {
         'widget_written_date': writtenDate,
+        'widget_day_start_hour': '$dayStartHour',
         'widget_snippet': snippet,
         'widget_streak': streak,
         'widget_done': done,

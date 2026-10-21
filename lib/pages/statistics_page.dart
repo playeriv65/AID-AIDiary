@@ -271,7 +271,7 @@ class _StatsPageState extends State<StatsPage>
     final l10n = AppLocalizations.of(context)!;
     final moodPoints = entries
         .where((entry) => entry.mood != null)
-        .map((entry) => (date: entry.timeCreate, value: entry.mood!.toDouble()))
+        .map((entry) => (date: entry.day, value: entry.mood!.toDouble()))
         .toList();
     final hasData = moodPoints.length > 1;
 
@@ -323,7 +323,7 @@ class _StatsPageState extends State<StatsPage>
     final dataPoints = [
       for (final entry in entries)
         if (valueByEntryId[entry.id] case final value?)
-          (date: entry.timeCreate, value: value),
+          (date: entry.day, value: value),
     ];
     final rawValues = dataPoints.map((point) => point.value).toList();
 
@@ -375,7 +375,7 @@ class _StatsPageState extends State<StatsPage>
 
     final coveragePoints = entries
         .map((entry) => (
-              date: entry.timeCreate,
+              date: entry.day,
               value: presentIds.contains(entry.id) ? 1.0 : 0.0,
             ))
         .toList();

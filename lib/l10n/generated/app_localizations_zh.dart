@@ -1364,12 +1364,19 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settingsTimeFormat => '时间格式';
 
   @override
-  String get settingsLateNight => '凌晨的日记算作前一天';
+  String get settingsDayStart => '一天从几点开始';
 
   @override
-  String settingsLateNightHint(int hour) {
-    return '凌晨 $hour 点前写的日记归到前一天显示，记录的时间本身不变。';
+  String get settingsDayStartMidnight => '午夜 0 点';
+
+  @override
+  String settingsDayStartAt(int hour) {
+    return '凌晨 $hour 点';
   }
+
+  @override
+  String get settingsDayStartHint =>
+      '零点之后、这个时间之前写的日记属于前一天：日记列表、日历、连续天数、回顾和各项统计都按前一天算，记录的时间本身不变。';
 
   @override
   String get lateNightBadge => '凌晨写的，算作前一天';
@@ -3298,12 +3305,19 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get settingsTimeFormat => '時間格式';
 
   @override
-  String get settingsLateNight => '凌晨的日記算作前一天';
+  String get settingsDayStart => '一天從幾點開始';
 
   @override
-  String settingsLateNightHint(int hour) {
-    return '凌晨 $hour 點前寫的日記歸到前一天顯示，記錄的時間本身不變。';
+  String get settingsDayStartMidnight => '午夜 0 點';
+
+  @override
+  String settingsDayStartAt(int hour) {
+    return '凌晨 $hour 點';
   }
+
+  @override
+  String get settingsDayStartHint =>
+      '零點之後、這個時間之前寫的日記屬於前一天：日記列表、日曆、連續天數、回顧和各項統計都按前一天算，記錄的時間本身不變。';
 
   @override
   String get lateNightBadge => '凌晨寫的，算作前一天';

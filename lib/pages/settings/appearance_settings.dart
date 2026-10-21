@@ -413,16 +413,31 @@ class _AppearanceSettingsPageState extends State<AppearanceSettings> {
                     '12': AppLocalizations.of(context)!.timeFormat12,
                     '24': AppLocalizations.of(context)!.timeFormat24,
                   }),
-                  SettingsToggle(
-                    title: AppLocalizations.of(context)!.settingsLateNight,
-                    hint: AppLocalizations.of(context)!.settingsLateNightHint(
-                        AppConfig.instance.lateNightUntilHour),
-                    setting: Settings.lateNightPreviousDay,
+                  SettingsDropdown<int>(
+                    key: const ValueKey('settings-day-start'),
+                    title: AppLocalizations.of(context)!.settingsDayStart,
+                    value: configProvider.get(Settings.dayStartHour),
+                    options: [
+                      for (final hour in AppConfig.instance.dayStartHourChoices)
+                        DropdownMenuItem(
+                            value: hour,
+                            child: Text(hour == 0
+                                ? AppLocalizations.of(context)!
+                                    .settingsDayStartMidnight
+                                : AppLocalizations.of(context)!
+                                    .settingsDayStartAt(hour))),
+                    ],
                     onChanged: (value) async {
-                      await configProvider.set(
-                          Settings.lateNightPreviousDay, value);
-                      EntryStore.instance.applyLateNightSetting();
+                      if (value == null) return;
+                      await configProvider.set(Settings.dayStartHour, value);
+                      EntryStore.instance.applyDayStartSetting();
                     },
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                    child: Text(
+                        AppLocalizations.of(context)!.settingsDayStartHint,
+                        style: Theme.of(context).textTheme.bodySmall),
                   ),
                   const Divider(height: 32),
                   Padding(

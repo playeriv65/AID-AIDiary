@@ -4,6 +4,7 @@
 
 import 'dart:io';
 
+import 'package:aid_diary/utils/diary_day.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/models/image.dart';
@@ -96,8 +97,7 @@ class _SharePageState extends State<SharePage> {
 
     final page = entry == null
         ? AddEditEntryPage(
-            overrideCreateDate: TimeManager.currentTimeOnDifferentDate(day)
-                .copyWith(isUtc: false),
+            overrideCreateDate: DiaryDay.nowOn(day),
             images: EntryImage.appendRanked(const [], imageNames, entryId: -1),
             sharedText: widget.payload.text,
           )

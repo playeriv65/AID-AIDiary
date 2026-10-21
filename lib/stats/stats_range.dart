@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'package:aid_diary/utils/diary_day.dart';
 import 'package:aid_diary/models/entry.dart';
 
 enum StatsRange { month, sixMonths, year, allTime }
@@ -16,7 +17,7 @@ List<Entry> entriesInRange(List<Entry> entries, StatsRange range,
   };
   if (monthCount == 0) return entries.toList();
 
-  final today = now ?? DateTime.now();
+  final today = DiaryDay.of(now ?? DateTime.now());
   final start = DateTime(today.year, today.month - monthCount, today.day);
-  return entries.where((entry) => entry.timeCreate.isAfter(start)).toList();
+  return entries.where((entry) => !entry.day.isBefore(start)).toList();
 }

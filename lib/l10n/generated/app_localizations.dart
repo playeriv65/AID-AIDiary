@@ -2598,17 +2598,29 @@ abstract class AppLocalizations {
   /// **'Time format'**
   String get settingsTimeFormat;
 
-  /// No description provided for @settingsLateNight.
+  /// No description provided for @settingsDayStart.
   ///
   /// In en, this message translates to:
-  /// **'Late nights count as the day before'**
-  String get settingsLateNight;
+  /// **'A diary day starts at'**
+  String get settingsDayStart;
 
-  /// No description provided for @settingsLateNightHint.
+  /// No description provided for @settingsDayStartMidnight.
   ///
   /// In en, this message translates to:
-  /// **'Entries written before {hour}:00 are listed under the previous day. Their time stays as written.'**
-  String settingsLateNightHint(int hour);
+  /// **'Midnight'**
+  String get settingsDayStartMidnight;
+
+  /// No description provided for @settingsDayStartAt.
+  ///
+  /// In en, this message translates to:
+  /// **'{hour}:00'**
+  String settingsDayStartAt(int hour);
+
+  /// No description provided for @settingsDayStartHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Entries written after midnight but before this belong to the day before: in the journal, the calendar, streaks, reviews and every statistic. Their time stays as written.'**
+  String get settingsDayStartHint;
 
   /// No description provided for @lateNightBadge.
   ///

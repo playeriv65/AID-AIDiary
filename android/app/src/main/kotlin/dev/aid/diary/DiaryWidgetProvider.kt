@@ -20,8 +20,8 @@ import java.util.Locale
 /**
  * Home screen widget: today's date, whether today has an entry, the latest
  * entry's first line and the streak. The app writes localized text into the
- * widget data; the date check runs here so the widget turns over at midnight
- * without the app.
+ * widget data; the date check runs here so the widget turns over when the
+ * diary day starts without the app.
  */
 class DiaryWidgetProvider : HomeWidgetProvider() {
   override fun onUpdate(
@@ -30,7 +30,10 @@ class DiaryWidgetProvider : HomeWidgetProvider() {
       appWidgetIds: IntArray,
       widgetData: SharedPreferences,
   ) {
-    val now = Date()
+    // The diary day, which the app may start a few hours after midnight.
+    val dayStartHour =
+        widgetData.getString("widget_day_start_hour", null)?.toIntOrNull() ?: 0
+    val now = Date(System.currentTimeMillis() - dayStartHour * HOUR_MILLIS)
     val today = SimpleDateFormat("yyyy-MM-dd", Locale.US).format(now)
     val written = widgetData.getString("widget_written_date", null) == today
     val status =
@@ -65,5 +68,9 @@ class DiaryWidgetProvider : HomeWidgetProvider() {
           }
       appWidgetManager.updateAppWidget(id, views)
     }
+  }
+
+  private companion object {
+    const val HOUR_MILLIS = 3_600_000L
   }
 }

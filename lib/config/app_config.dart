@@ -151,8 +151,7 @@ class AppConfig {
   int get launchFirstScreenEntries =>
       _section('launch')['firstScreenEntries'] as int;
 
-  /// Entries written before this hour count for the day before, when the
-  /// late-night setting is on.
-  int get lateNightUntilHour =>
-      _section('diaryDay')['lateNightUntilHour'] as int;
+  /// Hours the diary day may start at; 0 is midnight.
+  List<int> get dayStartHourChoices =>
+      (_section('diaryDay')['startHourChoices'] as List).cast<int>();
 }

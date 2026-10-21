@@ -16,6 +16,7 @@ import 'package:aid_diary/models/image.dart';
 import 'package:aid_diary/models/tag.dart';
 import 'package:aid_diary/providers/entry_images_provider.dart';
 import 'package:aid_diary/providers/tags_provider.dart';
+import 'package:aid_diary/utils/diary_day.dart';
 import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
 import 'package:sqflite/sqflite.dart';
@@ -292,24 +293,23 @@ class EntryStore with ChangeNotifier {
   }
 
   Entry? getEntryForToday() {
-    if (entries.isNotEmpty &&
-        entries.first.day == Entry.diaryDayOf(DateTime.now())) {
+    if (entries.isNotEmpty && entries.first.day == DiaryDay.today()) {
       return entries.first;
     }
     return null;
   }
 
-  /// Reads the late-night setting into [Entry.dayStartHour].
-  void applyLateNightSetting() =>
-      setDayStartHour(ConfigProvider.instance.get(Settings.lateNightPreviousDay)
-          ? AppConfig.instance.lateNightUntilHour
-          : 0);
+  /// Applies the day-start setting: entries before that hour belong to the
+  /// day before, everywhere days are counted.
+  void applyDayStartSetting() =>
+      setDayStartHour(ConfigProvider.instance.get(Settings.dayStartHour));
 
-  /// Entries before [hour] count for the day before; 0 turns it off.
+  /// Entries before [hour] count for the day before; 0 starts days at
+  /// midnight.
   @visibleForTesting
   void setDayStartHour(int hour) {
-    if (Entry.dayStartHour == hour) return;
-    Entry.dayStartHour = hour;
+    if (DiaryDay.startHour == hour) return;
+    DiaryDay.startHour = hour;
     _indexEntriesByDay();
     notifyListeners();
   }
@@ -318,6 +318,8 @@ class EntryStore with ChangeNotifier {
     return getEntriesForDate(date).firstOrNull;
   }
 
+  /// Entries of a diary day: a local midnight names the day itself, any
+  /// other moment the diary day it falls in.
   List<Entry> getEntriesForDate(DateTime date) {
     // Calendars pass local midnights already; making one again costs a
     // time zone lookup per call.
@@ -328,7 +330,7 @@ class EntryStore with ChangeNotifier {
             date.millisecond == 0 &&
             date.microsecond == 0
         ? date
-        : DateTime(date.year, date.month, date.day);
+        : DiaryDay.of(date);
     return _entriesByDay[day] ?? const [];
   }
 

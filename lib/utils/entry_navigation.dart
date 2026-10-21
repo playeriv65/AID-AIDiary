@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'package:aid_diary/utils/diary_day.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/models/flashback.dart';
@@ -45,10 +46,7 @@ class EntryNavigation {
   static Future<void> addForDay(BuildContext context, DateTime day,
       {int? initialMood}) {
     return edit(context, null,
-        overrideCreateDate: TimeManager.isToday(day)
-            ? DateTime.now()
-            : TimeManager.currentTimeOnDifferentDate(day),
-        initialMood: initialMood);
+        overrideCreateDate: DiaryDay.nowOn(day), initialMood: initialMood);
   }
 
   static Future<void> addForPickedDay(BuildContext context) async {
@@ -79,7 +77,7 @@ class EntryNavigation {
     final isJalali = TimeManager.isJalaliCalendar(context);
     final refYear = TimeManager.calendarYearOf(referenceDate, isJalali);
     bool matches(Entry e) =>
-        TimeManager.isOnThisDayMatch(e.timeCreate, referenceDate, isJalali);
+        TimeManager.isOnThisDayMatch(e.day, referenceDate, isJalali);
     if (!EntriesProvider.instance.entries.any(matches)) return;
     await Navigator.of(context).push(MaterialPageRoute(
       allowSnapshotting: false,
@@ -88,7 +86,7 @@ class EntryNavigation {
         getEntries: () =>
             EntriesProvider.instance.entries.where(matches).toList(),
         labelBuilder: (_, e) => AppLocalizations.of(context)!.flashbackYear(
-            refYear - TimeManager.calendarYearOf(e.timeCreate, isJalali)),
+            refYear - TimeManager.calendarYearOf(e.day, isJalali)),
       ),
     ));
   }
@@ -97,7 +95,7 @@ class EntryNavigation {
       BuildContext context, Flashback flashback) async {
     if (flashback.isMultiEntry && flashback.isOnThisDay) {
       await NotificationManager.instance.dismissOnThisDayNotification();
-      if (context.mounted) await onThisDay(context, DateTime.now());
+      if (context.mounted) await onThisDay(context, DiaryDay.today());
     } else if (flashback.isMultiEntry) {
       final ids = flashback.entries.map((e) => e.id).toSet();
       await Navigator.of(context).push(MaterialPageRoute(

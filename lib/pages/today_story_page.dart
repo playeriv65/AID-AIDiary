@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'package:aid_diary/utils/diary_day.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/flashback_manager.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
@@ -77,7 +78,7 @@ class TodayStory {
   static StoryGroup _coachGroup(
       AppLocalizations l10n, CoachEnrollment enrollment) {
     final program = enrollment.program;
-    final step = enrollment.schedule.stepOn(DateTime.now());
+    final step = enrollment.schedule.stepOn(DiaryDay.today());
     final label = program.stepLabel(l10n, step);
     return StoryGroup(
       id: coach,
@@ -299,14 +300,12 @@ class _Statistics extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final cs = Theme.of(context).colorScheme;
     final locale = TimeManager.currentLocale(context);
-    final now = DateTime.now();
+    final now = DiaryDay.today();
     final months = [
       for (var i = 5; i >= 0; i--) DateTime(now.year, now.month - i),
     ];
     int count(DateTime month) => entries
-        .where((e) =>
-            e.timeCreate.year == month.year &&
-            e.timeCreate.month == month.month)
+        .where((e) => e.day.year == month.year && e.day.month == month.month)
         .length;
     final thisYear = [for (final m in months) count(m)];
     final lastYear = [
@@ -385,7 +384,7 @@ class _MoodChart extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final cs = Theme.of(context).colorScheme;
-    final today = DateTime.now();
+    final today = DiaryDay.today();
     final days = [
       for (var i = 29; i >= 0; i--)
         DateTime(today.year, today.month, today.day - i),
@@ -463,9 +462,7 @@ class _Throwback extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(flashback.title, style: theme.textTheme.titleLarge),
-                  Text(
-                      TimeManager.formatDateWithWeekday(
-                          entry.timeCreate, context),
+                  Text(TimeManager.formatDateWithWeekday(entry.day, context),
                       style: theme.textTheme.labelLarge),
                   const SizedBox(height: 12),
                   if (preview.title != null)

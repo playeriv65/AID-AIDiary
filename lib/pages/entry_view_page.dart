@@ -212,7 +212,7 @@ class EntryViewPage extends StatelessWidget {
   Future<void> _saveAsTemplate(BuildContext context, Entry entry) async {
     final messenger = ScaffoldMessenger.of(context);
     final l10n = AppLocalizations.of(context)!;
-    final fallback = TimeManager.formatDate(entry.timeCreate, context);
+    final fallback = TimeManager.formatDate(entry.day, context);
     await EntryActions.saveAsTemplate(entry, fallback);
     messenger.showSnackBar(SnackBar(content: Text(l10n.entrySavedAsTemplate)));
   }
@@ -278,7 +278,7 @@ class EntryViewPage extends StatelessWidget {
     if (choice == null || !context.mounted) return;
     final mood = MoodIcon.getMoodIcon(entry.mood);
     final heading = '${mood.isEmpty ? '' : '$mood '}'
-        '${TimeManager.formatDateWithWeekday(entry.timeCreate, context)}';
+        '${TimeManager.formatDateWithWeekday(entry.day, context)}';
     final name =
         'aid-diary-${DateFormat('yyyy-MM-dd-HHmm').format(entry.timeCreate)}';
     Future<void> shareFile(List<int> bytes, String mimeType, String file) =>
@@ -422,8 +422,7 @@ class _SealedCapsule extends StatelessWidget {
                   TimeManager.formatDate(entry.openAt!, context)),
               style: theme.textTheme.titleMedium),
           Text(
-              l10n.capsuleWrittenOn(
-                  TimeManager.formatDate(entry.timeCreate, context)),
+              l10n.capsuleWrittenOn(TimeManager.formatDate(entry.day, context)),
               style: theme.textTheme.bodyMedium
                   ?.copyWith(color: theme.colorScheme.outline)),
           const SizedBox(height: 24),
@@ -449,9 +448,11 @@ class EntryDateBlock extends StatelessWidget {
     final theme = Theme.of(context);
     final cs = theme.colorScheme;
     final locale = TimeManager.currentLocale(context);
+    // The diary day; a late-night entry's clock time follows below.
+    final diaryDay = entry.day;
     final day = TimeManager.isJalaliCalendar(context)
-        ? TimeManager.jalaliDayNumber(entry.timeCreate)
-        : entry.timeCreate.day;
+        ? TimeManager.jalaliDayNumber(diaryDay)
+        : diaryDay.day;
     final detailStyle = theme.textTheme.labelMedium
         ?.copyWith(color: cs.primary, fontWeight: FontWeight.w700);
     return Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
@@ -460,13 +461,21 @@ class EntryDateBlock extends StatelessWidget {
               ?.copyWith(color: cs.primary, fontWeight: FontWeight.w700)),
       const SizedBox(width: 12),
       Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text(TimeManager.formatDate(entry.timeCreate, context),
-            style: detailStyle),
-        Text(
-            '${DateFormat.EEEE(locale).format(entry.timeCreate)} ${TimeManager.localizedTimeFormat(context, locale).format(entry.timeCreate)}'
-            '${entry.otherZoneLabel == null ? '' : ' (${entry.otherZoneLabel})'}',
-            key: const ValueKey('entry-time'),
-            style: detailStyle),
+        Text(TimeManager.formatDate(diaryDay, context), style: detailStyle),
+        Row(mainAxisSize: MainAxisSize.min, children: [
+          Text(
+              '${DateFormat.EEEE(locale).format(diaryDay)} ${TimeManager.localizedTimeFormat(context, locale).format(entry.timeCreate)}'
+              '${entry.otherZoneLabel == null ? '' : ' (${entry.otherZoneLabel})'}',
+              key: const ValueKey('entry-time'),
+              style: detailStyle),
+          if (entry.isLateNight) ...[
+            const SizedBox(width: 4),
+            Tooltip(
+              message: AppLocalizations.of(context)!.lateNightBadge,
+              child: Icon(Icons.bedtime_outlined, size: 14, color: cs.primary),
+            ),
+          ],
+        ]),
       ]),
     ]);
   }

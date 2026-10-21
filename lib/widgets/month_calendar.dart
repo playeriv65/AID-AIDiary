@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'package:aid_diary/utils/diary_day.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/providers/entries_provider.dart';
@@ -74,7 +75,7 @@ class _MonthCalendarState extends State<MonthCalendar> {
   int _monthsBack(DateTime now, bool jalali) {
     final entries = EntriesProvider.instance.entries;
     if (entries.isEmpty) return 12;
-    final oldest = entries.last.timeCreate;
+    final oldest = entries.last.day;
     int index(DateTime d) {
       if (jalali) {
         final j = Jalali.fromDateTime(d);
@@ -186,7 +187,8 @@ class _MonthGrid extends StatelessWidget {
     final theme = Theme.of(context);
     final cs = theme.colorScheme;
     final entries = EntriesProvider.instance;
-    final today = DateTime.now();
+    // At 1:00 the diary is still on the day before.
+    final today = DiaryDay.today();
     // Monday is index 0 in firstDayIndex; DateTime.weekday is 1 for Monday.
     final leading = (month.start.weekday - 1 - firstDayIndex + 7) % 7;
     final cells = leading + month.length;

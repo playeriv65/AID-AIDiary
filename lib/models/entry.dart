@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'package:aid_diary/utils/diary_day.dart';
 import 'package:aid_diary/utils/local_time.dart';
 
 const String entriesTable = 'entries';
@@ -171,22 +172,13 @@ class Entry {
         wall.second, wall.millisecond);
   }
 
-  /// Entries written before this hour belong to the day before, the way a
-  /// late night still feels like that day; 0 turns this off. Set from the
-  /// late-night setting.
-  static int dayStartHour = 0;
-
-  /// The diary day a moment belongs to, such as now; see [day].
-  static DateTime diaryDayOf(DateTime time) => DateTime(
-      time.year, time.month, time.day - (time.hour < dayStartHour ? 1 : 0));
-
   /// Whether this entry was written in the small hours and counts for the
-  /// day before.
-  bool get isLateNight => timeCreate.hour < dayStartHour;
+  /// day before; see [DiaryDay].
+  bool get isLateNight => DiaryDay.isLateNight(timeCreate);
 
-  /// The diary day this entry belongs to, the key entries are grouped by:
-  /// local midnight of [timeCreate], or of the day before for a late-night
-  /// entry. Both are kept once made: a local DateTime asks the OS for the
+  /// The diary day this entry belongs to ([DiaryDay.of] its time): what
+  /// everything counted by day uses, never [timeCreate]'s own date. Both
+  /// candidates are kept once made: a local DateTime asks the OS for the
   /// time zone, which adds up over thousands of entries on every change.
   DateTime get day => isLateNight ? _dayBefore : _calendarDay;
   late final DateTime _calendarDay =

@@ -5,6 +5,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:aid_diary/utils/diary_day.dart';
 import 'package:aid_diary/database/entry_store.dart';
 import 'package:aid_diary/models/image.dart';
 import 'package:aid_diary/notification_manager.dart';
@@ -123,10 +124,7 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
   Future<void> _initEntry() async {
     String dirtyTrackerBaselineText;
     if (widget.entry == null) {
-      var createTime =
-          (TimeManager.isToday(widget.overrideCreateDate ?? DateTime.now()))
-              ? DateTime.now()
-              : (widget.overrideCreateDate ?? DateTime.now());
+      final createTime = widget.overrideCreateDate ?? DateTime.now();
       var templateText = "";
       final defaultTemplate =
           widget.template ?? TemplatesProvider.instance.getDefaultTemplate();
@@ -214,7 +212,7 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
       EntryImageActions.takePhoto(_addImage);
     }
 
-    if (_newEntry && TimeManager.isToday(entryDate!)) {
+    if (_newEntry && DiaryDay.same(entryDate!, DateTime.now())) {
       // Needs the locale, which initState may not read yet.
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) _autoFillContext();
@@ -634,13 +632,16 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
     final cs = theme.colorScheme;
     final hasMood = MoodIcon.getMoodIcon(mood).isNotEmpty;
     final date = entryDate!;
-    final day = date.year == DateTime.now().year
-        ? TimeManager.formatMonthDay(date, context)
-        : TimeManager.formatDate(date, context);
+    // The diary day, which a late-night entry shares with the evening
+    // before, then the clock time as written.
+    final diaryDay = DiaryDay.of(date);
+    final day = diaryDay.year == DateTime.now().year
+        ? TimeManager.formatMonthDay(diaryDay, context)
+        : TimeManager.formatDate(diaryDay, context);
     final time =
         TimeManager.timeOfDayString(context, TimeOfDay.fromDateTime(date));
     final weekday =
-        DateFormat.E(TimeManager.currentLocale(context)).format(date);
+        DateFormat.E(TimeManager.currentLocale(context)).format(diaryDay);
     return Row(mainAxisSize: MainAxisSize.min, children: [
       Flexible(
         child: InkWell(
@@ -658,11 +659,11 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
                     style: theme.textTheme.titleLarge
                         ?.copyWith(fontWeight: FontWeight.w600)),
                 TextSpan(
-                    text: '  /  $time $weekday'
+                    text: ' $weekday  /  $time'
                         '${_entry.otherZoneLabel == null ? '' : ' ${_entry.otherZoneLabel}'}',
                     style: theme.textTheme.bodyMedium
                         ?.copyWith(color: cs.onSurfaceVariant)),
-                if (date.hour < Entry.dayStartHour)
+                if (DiaryDay.isLateNight(date))
                   WidgetSpan(
                     alignment: PlaceholderAlignment.middle,
                     child: Padding(
@@ -905,34 +906,30 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
         onPressed: () => Navigator.of(context).pop(),
       );
 
+  /// Picks the diary day; a late-night time stays late at night after it.
   Future<bool> _chooseDate() async {
     DateTime? pickedDate = await TimeManager.pickDate(
       context,
-      initialDate: entryDate!,
+      initialDate: DiaryDay.of(entryDate!),
       firstDate: DateTime(2000),
-      lastDate: DateTime.now(),
+      lastDate: DiaryDay.today(),
     );
     if (pickedDate == null) return false;
 
-    entryDate = entryDate!.copyWith(
-      year: pickedDate.year,
-      month: pickedDate.month,
-      day: pickedDate.day,
-    );
+    entryDate = DiaryDay.at(pickedDate, entryDate!.hour, entryDate!.minute);
     await _saveEntry();
     return true;
   }
 
+  /// Picks the time on the same diary day: 1:00 after 23:00 is that night.
   Future<void> _chooseTime() async {
     if (!mounted) return;
     final pickedTime = await showTimePicker(
         context: context, initialTime: TimeOfDay.fromDateTime(entryDate!));
     if (pickedTime == null) return;
 
-    entryDate = entryDate!.copyWith(
-      hour: pickedTime.hour,
-      minute: pickedTime.minute,
-    );
+    entryDate = DiaryDay.at(
+        DiaryDay.of(entryDate!), pickedTime.hour, pickedTime.minute);
     await _saveEntry();
   }
 
@@ -954,7 +951,7 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
 
     if ((_newEntry || _hasEntryFieldChanges()) &&
         Platform.isAndroid &&
-        TimeManager.isSameDay(DateTime.now(), entryDate!)) {
+        DiaryDay.same(DateTime.now(), entryDate!)) {
       await NotificationManager.instance.dismissReminderNotification();
     }
 

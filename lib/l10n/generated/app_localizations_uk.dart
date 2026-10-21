@@ -1389,12 +1389,19 @@ class AppLocalizationsUk extends AppLocalizations {
   String get settingsTimeFormat => 'Time format';
 
   @override
-  String get settingsLateNight => 'Late nights count as the day before';
+  String get settingsDayStart => 'A diary day starts at';
 
   @override
-  String settingsLateNightHint(int hour) {
-    return 'Entries written before $hour:00 are listed under the previous day. Their time stays as written.';
+  String get settingsDayStartMidnight => 'Midnight';
+
+  @override
+  String settingsDayStartAt(int hour) {
+    return '$hour:00';
   }
+
+  @override
+  String get settingsDayStartHint =>
+      'Entries written after midnight but before this belong to the day before: in the journal, the calendar, streaks, reviews and every statistic. Their time stays as written.';
 
   @override
   String get lateNightBadge =>
