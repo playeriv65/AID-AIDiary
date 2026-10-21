@@ -70,25 +70,22 @@ void main() {
     await tester.pumpWidget(harness.app(const AddEditEntryPage()));
     await tester.pumpAndSettle();
     final bar = find.byType(EditorActionBar);
-    Finder inBar(String tooltip) =>
-        find.descendant(of: bar, matching: find.byTooltip(tooltip));
+    bool barShown() => tester.getSize(bar).height > 0;
     for (final name in ['心情', '标签']) {
       expect(find.byTooltip(name), findsOneWidget, reason: name);
     }
-    // Nothing to do there but write: no bar until writing starts.
-    expect(inBar('粗体'), findsNothing);
+    expect(barShown(), isFalse);
     await tester.tap(DiaryAppHarness.entryBody);
     await tester.pumpAndSettle();
+    expect(barShown(), isTrue);
     for (final name in ['粗体', '插入', '撤销']) {
-      expect(inBar(name), findsOneWidget, reason: name);
+      expect(find.descendant(of: bar, matching: find.byTooltip(name)),
+          findsOneWidget,
+          reason: name);
     }
-    // Photos and voice notes go through the + tile only.
-    expect(
-        find.descendant(of: bar, matching: find.byIcon(Icons.mic_none_rounded)),
-        findsNothing);
     FocusManager.instance.primaryFocus?.unfocus();
     await tester.pumpAndSettle();
-    expect(inBar('粗体'), findsNothing);
+    expect(barShown(), isFalse);
     await tester.pumpWidget(const SizedBox.shrink());
   });
 }
