@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'package:aid_diary/widgets/haptics.dart';
 import 'package:aid_diary/widgets/material_shapes.dart';
 import 'package:aid_diary/widgets/punch_scale.dart';
 import 'package:material_ui/material_ui.dart';
@@ -75,6 +76,7 @@ class _EntryMoodPickerState extends State<EntryMoodPicker> {
     if (value == _mood) {
       value = null;
     }
+    Haptics.selection();
     setState((() => _mood = value));
     widget.onChangedMood(_mood);
   }

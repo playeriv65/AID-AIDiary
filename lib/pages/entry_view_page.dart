@@ -5,6 +5,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/database/entry_store.dart';
 import 'package:aid_diary/database/image_storage.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
@@ -237,7 +238,8 @@ class EntryViewPage extends StatelessWidget {
         message: AppLocalizations.of(context)!.deleteLogDescription);
     if (!confirmed) return;
     if (!embedded && navigator.canPop()) navigator.pop();
-    await EntryStore.instance.delete(entry);
+    await AppActions.instance
+        .run('entry.delete', {'id': entry.id}, confirmed: true);
   }
 
   /// "Share as…" like Journey: the picture card, a ZIP with the original

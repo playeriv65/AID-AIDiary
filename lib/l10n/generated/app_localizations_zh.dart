@@ -2017,6 +2017,35 @@ class AppLocalizationsZh extends AppLocalizations {
   String get syncSignInAgain => '重新登录';
 
   @override
+  String get settingsCommandLineTitle => '命令行';
+
+  @override
+  String get commandLineToggle => '命令行接口';
+
+  @override
+  String get commandLineToggleHint => '允许 aid 命令行和本机上的其他程序调用应用的命令。';
+
+  @override
+  String get commandLineAlwaysOn => '开发版中始终开启。';
+
+  @override
+  String commandLineListening(int port) {
+    return '正在端口 $port 上监听';
+  }
+
+  @override
+  String get commandPaletteTitle => '所有命令';
+
+  @override
+  String get commandPaletteSearch => '搜索命令';
+
+  @override
+  String get commandPaletteRun => '运行';
+
+  @override
+  String get commandPaletteConfirm => '这一步不能简单撤销，确定运行吗？';
+
+  @override
   String syncReceiving(int done, int total) {
     return '正在下载 $done / $total…';
   }

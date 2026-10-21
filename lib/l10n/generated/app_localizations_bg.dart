@@ -2064,6 +2064,36 @@ class AppLocalizationsBg extends AppLocalizations {
   String get syncSignInAgain => 'Sign in again';
 
   @override
+  String get settingsCommandLineTitle => 'Command line';
+
+  @override
+  String get commandLineToggle => 'Command line interface';
+
+  @override
+  String get commandLineToggleHint =>
+      'Lets the aid command and other programs on this device use the app\'s commands.';
+
+  @override
+  String get commandLineAlwaysOn => 'Always on in development builds.';
+
+  @override
+  String commandLineListening(int port) {
+    return 'Listening on port $port';
+  }
+
+  @override
+  String get commandPaletteTitle => 'All commands';
+
+  @override
+  String get commandPaletteSearch => 'Search commands';
+
+  @override
+  String get commandPaletteRun => 'Run';
+
+  @override
+  String get commandPaletteConfirm => 'This cannot simply be undone. Run it?';
+
+  @override
   String syncReceiving(int done, int total) {
     return 'Receiving $done of $total…';
   }

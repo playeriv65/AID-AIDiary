@@ -33,6 +33,7 @@ reasoning; this file only records our decisions.
 | Layer | Folders | Role in the guide |
 | --- | --- | --- |
 | UI | `pages/` (screens), `layouts/` (the app shell around them), `widgets/` (shared components), `routing/` (opening screens) | Views; view models where a screen has its own logic (see below) |
+| Actions | `actions/` (`AppAction`s by area, the `AppActions` registry, the agent API) | The guide's commands and use cases, named so the CLI can call them |
 | Data | `database/` (`EntryStore` and DAOs over SQLite), `providers/` (stores for attachments, tags, templates), `storage/` (files, secret store, folder picker), `services/` (network and platform: place names, weather, home widget, coach schedule), `background/` (alarms and backup work that run without the UI), `sync/` (sync engine, encryption and backends) | Repositories (`EntryStore`, `providers/`) over services (DAOs, `storage/`, `services/`) |
 | Pure | `models/`, `stats/`, most of `utils/` (dates and diary days, previews, formats, imports) | Domain models and logic |
 | App | `main.dart` (start-up only), `config/` (`app_config.json` access), `l10n/` | Composition and configuration |
@@ -54,7 +55,8 @@ formatting is UI helper. Move one into its folder when a change touches it.
 4. `widgets/` never imports `pages/`; shared widgets open screens through
    `routing/` (`AppNavigation`, `EntryNavigation`).
 5. `utils/` imports no UI, so every layer may use it.
-6. Nothing imports `main.dart`.
+6. `actions/` imports no UI: actions also run with no screen at all.
+7. Nothing imports `main.dart`.
 
 `test/architecture/diary_day_rule_test.dart` keeps every day-based rule on
 `entry.day`, never the date of `timeCreate`.
@@ -81,6 +83,43 @@ without a widget. `AddEditEntryPage` keeps only the text controllers, the
 dialogs and navigation, reports typing and choices to the view model and
 redraws when it notifies.
 
+## Agent-native: actions shared by the GUI and the CLI
+
+Everything the app does is an action defined once (`AppAction`: an id such
+as `entry.create`, a one-sentence description, typed parameters, a risk
+level and a `run` function) and listed in `AppActions`. The surfaces are
+derived from that list, so the GUI and the command line always offer the
+same things:
+
+- GUI buttons call `AppActions.instance.run(id, args)` for one-step
+  operations (deleting, restoring, syncing now, stopping sync). Multi-step
+  flows with dialogs, such as connecting sync, call the same service
+  methods the action calls, so the logic still exists once.
+- The command palette (Ctrl+K, or Settings → Command line → All commands)
+  lists every action and runs it through a form.
+- The agent API (`actions/agent_api.dart`) serves the actions over HTTP on
+  the loopback address with a token per start; the `aid` CLI under `cli/`
+  talks to it, on this computer or over adb on a phone or tablet. It is
+  always on in development builds and behind the "Command line interface"
+  setting in others.
+- `aid guide` is written from the actions themselves.
+
+Rules that keep it so:
+
+- An action never shows UI: it takes explicit arguments and returns JSON or
+  throws `ActionException(code, message)`. Asking (a dialog, `--yes`) is
+  the caller's job; `ActionRisk.destructive` actions refuse to run unless
+  confirmed.
+- Bulk work notifies listeners once, not per item, so a CLI command that
+  adds thousands of entries redraws the GUI once.
+- `ui.screen` and `ui.navigate` let an agent see and move the GUI; the GUI
+  provides them through `ActionScreen`, so `actions/` still imports no UI.
+- Touch feedback (`widgets/haptics.dart`) belongs to the GUI: actions run
+  from the CLI stay silent.
+- Tests: `test/actions/` runs actions against real stores and the API over
+  HTTP; `test/widgets/command_palette_test.dart` checks the palette offers
+  every action; `cli/test/` covers the CLI, adb included.
+
 ## Dependencies
 
 Stores and services are app-wide singletons (`EntryStore.instance` and so
@@ -94,11 +133,14 @@ fakes without global setup.
 1. Put new data in a model (`models/`, immutable, `copy`), its column in the
    schema with a migration, and its reads and writes in the owning store.
 2. Put rules in pure code (`utils/` or `stats/`) with unit tests.
-3. Build the screen in `pages/`, shared pieces in `widgets/`, and its route
-   in `routing/` if other screens open it.
-4. Settings: a `Setting` in `Settings.all`; tunable values and endpoints in
+3. Make what it does an action in `actions/` and register it in
+   `AppActions`; the screen's buttons call the action.
+4. Build the screen in `pages/`, shared pieces in `widgets/`, and its route
+   in `routing/` if other screens open it (and in `AppNavigation.byName`
+   for `ui.navigate`).
+5. Settings: a `Setting` in `Settings.all`; tunable values and endpoints in
    `assets/config/app_config.json`; user-facing text in the ARB files.
-5. Tests at the layer that owns the logic (`dart_test.yaml` explains the
+6. Tests at the layer that owns the logic (`dart_test.yaml` explains the
    unit, widget and integration tags).
 
 ## Not done yet

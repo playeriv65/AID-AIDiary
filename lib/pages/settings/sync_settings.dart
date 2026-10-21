@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'package:aid_diary/widgets/haptics.dart';
+import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/sync/google_auth.dart';
@@ -140,6 +142,7 @@ class _SyncSettingsState extends State<SyncSettings> {
         await runWithProgress(context, (update) => open(key));
         return;
       } on WrongKeyException {
+        Haptics.error();
         if (mounted) _say(l10n.syncWrongKey);
       } catch (error) {
         if (mounted) _say(_describe(error, l10n));
@@ -155,6 +158,7 @@ class _SyncSettingsState extends State<SyncSettings> {
 
   Future<bool> _confirm(String title, String description, String action,
       {bool destructive = false}) async {
+    if (destructive) Haptics.warning();
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
@@ -208,7 +212,8 @@ class _SyncSettingsState extends State<SyncSettings> {
     if (await _confirm(l10n.syncDisconnect, l10n.syncDisconnectDescription,
             l10n.syncDisconnect) &&
         mounted) {
-      await _attempt(_service.disconnect);
+      await _attempt(() =>
+          AppActions.instance.run('sync.disconnect', {}, confirmed: true));
     }
   }
 
@@ -369,7 +374,12 @@ class _SyncSettingsState extends State<SyncSettings> {
             leading: const Icon(Icons.sync_rounded),
             title: Text(l10n.syncNow),
             enabled: !syncing,
-            onTap: _service.syncNow,
+            onTap: () async {
+              await AppActions.instance.run('sync.now', {});
+              _service.state == SyncState.failed
+                  ? Haptics.error()
+                  : Haptics.success();
+            },
           ),
         if (target.encrypted && !locked) ...[
           ListTile(
@@ -678,6 +688,7 @@ class _RecoveryKeyDialogState extends State<_RecoveryKeyDialog> {
                 onPressed: () async {
                   await Clipboard.setData(
                       ClipboardData(text: widget.recoveryKey));
+                  Haptics.success();
                   if (context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text(l10n.syncRecoveryKeyCopied)));

@@ -191,6 +191,9 @@ class AppConfig {
   /// An address shown as an example in the server field.
   String get syncExampleServer => _section('sync')['exampleServer'] as String;
 
+  /// The loopback port of the agent API the `aid` CLI talks to.
+  int get agentApiPort => _section('agentApi')['port'] as int;
+
   GoogleDriveConfig get googleDrive => GoogleDriveConfig._(
       (_section('sync')['googleDrive'] as Map).cast<String, dynamic>());
 }

@@ -4,12 +4,14 @@
 
 import 'package:material_ui/material_ui.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/widgets/haptics.dart';
 
 /// Delete confirmation prompt. Returns true when a delete is confirmed, false otherwise.
 Future<bool> showDeleteConfirmDialog(
   BuildContext context, {
   required String message,
 }) async {
+  Haptics.warning();
   final confirmed = await showDialog<bool>(
     context: context,
     builder: (dialogContext) => AlertDialog(

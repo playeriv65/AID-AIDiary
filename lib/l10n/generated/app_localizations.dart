@@ -3816,6 +3816,60 @@ abstract class AppLocalizations {
   /// **'Sign in again'**
   String get syncSignInAgain;
 
+  /// No description provided for @settingsCommandLineTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Command line'**
+  String get settingsCommandLineTitle;
+
+  /// No description provided for @commandLineToggle.
+  ///
+  /// In en, this message translates to:
+  /// **'Command line interface'**
+  String get commandLineToggle;
+
+  /// No description provided for @commandLineToggleHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Lets the aid command and other programs on this device use the app\'s commands.'**
+  String get commandLineToggleHint;
+
+  /// No description provided for @commandLineAlwaysOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Always on in development builds.'**
+  String get commandLineAlwaysOn;
+
+  /// No description provided for @commandLineListening.
+  ///
+  /// In en, this message translates to:
+  /// **'Listening on port {port}'**
+  String commandLineListening(int port);
+
+  /// No description provided for @commandPaletteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'All commands'**
+  String get commandPaletteTitle;
+
+  /// No description provided for @commandPaletteSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search commands'**
+  String get commandPaletteSearch;
+
+  /// No description provided for @commandPaletteRun.
+  ///
+  /// In en, this message translates to:
+  /// **'Run'**
+  String get commandPaletteRun;
+
+  /// No description provided for @commandPaletteConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'This cannot simply be undone. Run it?'**
+  String get commandPaletteConfirm;
+
   /// No description provided for @syncReceiving.
   ///
   /// In en, this message translates to:

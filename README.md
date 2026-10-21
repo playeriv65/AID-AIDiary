@@ -39,6 +39,7 @@ The layout follows the Journey diary app: a bottom bar on phones, a navigation r
 - **Export**: JSON (every entry with place, weather, activity, tags and attachment names; the JSON import reads it back), Markdown, and Journey and Day One archives that those apps import, besides the full backup.
 - **Import**: Journey backups (both schemas) and Day One JSON exports with photos, tags, stars, place and weather, plus Daybook, Daylio, Diarium, Diaro, My Brain, OneShot and Pixels.
 - **Settings**: general (theme, wallpaper, entry font, size and line spacing, units, 12/24-hour time, the hours that pick a new entry's diary day, add place and weather automatically), data and storage (backup, export, Recently deleted), stories (morning and evening prompts, throwbacks), notifications (Android: reminders with weekdays, on this day, a nudge after a few quiet days, a lasting quick-write notification), security, help (FAQ, privacy) and about.
+- **Command line and agents**: every feature is an action that the app's buttons, its command palette (Ctrl+K on Windows; Settings → Command line → All commands) and the `aid` command line all run, so what a script or an AI agent does shows in the app as it happens. Off in release builds until Settings → Command line is turned on; the API listens on this device only, with a new token each start.
 - **Android home screen widgets**: today's status (date, whether today has an entry, the latest entry's first line, the streak and a Write button), and a photo from the diary, a different one each day, that opens its entry.
 
 Entries, photos and coordinates stay on the device unless sync is turned on, and then reach only the chosen server, encrypted. Network use, all optional and configured in [assets/config/app_config.json](assets/config/app_config.json):
@@ -62,6 +63,18 @@ Windows is the main development environment. Use the installed Flutter SDK at `D
 ./scripts/dev.ps1 android      # run on the emulator
 ./scripts/dev.ps1 apk          # build the debug APK (dev flavor)
 ./scripts/dev.ps1 release      # build the signed release APK and install it on connected devices
+./scripts/dev.ps1 cli          # build the aid command line to build\cli\aid.exe
+```
+
+`aid` talks to the running app, on this computer or over adb (it starts the dev flavor there when needed):
+
+```powershell
+aid actions                          # every action and its arguments
+aid guide                            # the same as a guide for agents
+aid entry.list limit=5
+aid -d <adb serial> entry.seed count=4000
+aid -d <adb serial> sync.now
+aid entry.delete id=12 --yes         # destructive actions need --yes
 ```
 
 The Android build runs on the installed JDK 23: the root `android/build.gradle` gives every module's Kotlin the JVM target its Java already uses, since many plugins leave it unset. Flutter's Android SDK path is pinned with `flutter config --android-sdk D:\software\android-sdk`.

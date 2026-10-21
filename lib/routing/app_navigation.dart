@@ -4,6 +4,7 @@
 
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/pages/search_page.dart';
+import 'package:aid_diary/pages/settings/sync_settings.dart';
 import 'package:aid_diary/pages/settings/tags_settings.dart';
 import 'package:aid_diary/pages/settings/templates_page.dart';
 import 'package:aid_diary/pages/settings_page.dart';
@@ -44,4 +45,18 @@ abstract final class AppNavigation {
 
   static Future<void> tags(NavigatorState navigator) =>
       _push(navigator, 'tags', (_) => const TagsSettings());
+
+  static Future<void> sync(NavigatorState navigator) =>
+      _push(navigator, 'sync', (_) => const SyncSettings());
+
+  /// The screens above, by route name, for `ui.navigate`.
+  static final Map<String, Future<void> Function(NavigatorState navigator)>
+      byName = {
+    'search': search,
+    'settings': settings,
+    'statistics': statistics,
+    'templates': templates,
+    'tags': tags,
+    'sync': sync,
+  };
 }

@@ -159,6 +159,9 @@ class Settings {
   static const syncSecrets =
       Setting<String>("syncSecrets", "", secure: true, secretStore: true);
   static const lastSync = Setting<String>("lastSync", "", secure: true);
+  // The agent API for the `aid` command line, in builds where it is not on
+  // anyway.
+  static const agentApi = Setting<bool>("agentApi", false);
 
   static const List<Setting<Object?>> all = [
     configVersion,
@@ -243,6 +246,7 @@ class Settings {
     syncTarget,
     syncSecrets,
     lastSync,
+    agentApi,
   ];
 
   static const moodIcons = <int, Setting<String>>{

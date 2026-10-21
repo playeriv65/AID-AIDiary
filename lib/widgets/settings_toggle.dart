@@ -3,6 +3,7 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'package:aid_diary/config_provider.dart';
+import 'package:aid_diary/widgets/haptics.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
@@ -28,9 +29,16 @@ class SettingsToggle extends StatelessWidget {
   Widget build(BuildContext context) {
     final configProvider = Provider.of<ConfigProvider>(context);
     final value = configProvider.get(setting);
+    final change = onChanged;
+    final toggle = change == null
+        ? null
+        : (bool to) {
+            Haptics.selection();
+            change(to);
+          };
     // Tapping anywhere on the row flips the switch, as in a list tile.
     return InkWell(
-      onTap: onChanged == null ? null : () => onChanged!(!value),
+      onTap: toggle == null ? null : () => toggle(!value),
       child: Padding(
         padding: const EdgeInsets.only(
             top: 8.0, bottom: 8.0, left: 16.0, right: 16.0),
@@ -58,7 +66,7 @@ class SettingsToggle extends StatelessWidget {
             Switch(
               key: ValueKey('${setting.key}-switch'),
               value: value,
-              onChanged: onChanged,
+              onChanged: toggle,
             )
           ],
         ),

@@ -4,8 +4,9 @@
 
 import 'dart:io';
 
+import 'package:aid_diary/widgets/haptics.dart';
+import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/config_provider.dart';
-import 'package:aid_diary/database/entry_store.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/models/image.dart';
@@ -217,6 +218,7 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
       Navigator.of(context).pop();
       return;
     }
+    Haptics.warning();
     showDialog(
       context: context,
       useRootNavigator: false,
@@ -238,7 +240,9 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
                   // Pop view page
                   navigator.pop();
                 }
-                await EntryStore.instance.delete(entryToDelete);
+                await AppActions.instance.run(
+                    'entry.delete', {'id': entryToDelete.id},
+                    confirmed: true);
               },
             ),
             TextButton(
@@ -770,7 +774,10 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
             ? MaterialLocalizations.of(context).saveButtonLabel
             : MaterialLocalizations.of(context).closeButtonTooltip,
         icon: Icon(_model.edited ? Icons.check_rounded : Icons.close_rounded),
-        onPressed: () => Navigator.of(context).pop(),
+        onPressed: () {
+          if (_model.edited) Haptics.success();
+          Navigator.of(context).pop();
+        },
       );
 
   /// Picks the day the entry belongs to; when it was written stays.

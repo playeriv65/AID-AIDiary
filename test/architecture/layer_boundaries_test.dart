@@ -41,6 +41,11 @@ const List<Rule> _rules = [
     why: 'the data layer never reaches up into the UI',
   ),
   (
+    from: ['actions/'],
+    forbidden: ['pages/', 'widgets/', 'layouts/', 'routing/', 'main.dart'],
+    why: 'actions run without a GUI too; the GUI calls them, not back',
+  ),
+  (
     from: ['pages/', 'widgets/', 'layouts/', 'routing/'],
     forbidden: [
       'database/entry_dao.dart', 'database/entry_image_dao.dart', //

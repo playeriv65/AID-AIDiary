@@ -31,8 +31,12 @@ class AdaptiveDiaryShell extends StatefulWidget {
       required this.selectedIndex,
       required this.onDestinationSelected,
       required this.newEntryLabel,
-      required this.onNewEntry});
+      required this.onNewEntry,
+      this.observers = const []});
   final GlobalKey<NavigatorState> navigatorKey;
+
+  /// Watch the routes of the shell's Navigator alongside its own observer.
+  final List<NavigatorObserver> observers;
   final Widget home;
   final List<DiaryDestination> destinations;
   final int selectedIndex;
@@ -202,7 +206,7 @@ class _AdaptiveDiaryShellState extends State<AdaptiveDiaryShell> {
                         widget.navigatorKey.currentState!.pop(result),
                     child: Navigator(
                         key: widget.navigatorKey,
-                        observers: [_observer],
+                        observers: [_observer, ...widget.observers],
                         pages: [
                           MaterialPage<void>(
                               key: const ValueKey('diary-home-route'),

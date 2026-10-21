@@ -85,6 +85,9 @@
   "launch": {
     "firstScreenEntries": 60
   },
+  "agentApi": {
+    "port": 47819
+  },
   "sync": {
     "afterChangeSeconds": 15,
     "whileOpenMinutes": 10,

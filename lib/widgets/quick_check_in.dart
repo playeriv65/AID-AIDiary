@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'package:aid_diary/widgets/haptics.dart';
 import 'package:aid_diary/database/entry_store.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/models/entry.dart';
@@ -67,7 +68,10 @@ class _QuickCheckInState extends State<_QuickCheckIn> {
               InkWell(
                 key: ValueKey('check-in-mood-$mood'),
                 customBorder: const CircleBorder(),
-                onTap: () => setState(() => _mood = mood),
+                onTap: () {
+                  Haptics.selection();
+                  setState(() => _mood = mood);
+                },
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 150),
                   padding: const EdgeInsets.all(8),

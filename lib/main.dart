@@ -5,6 +5,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:aid_diary/actions/agent_api.dart';
 import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/database/entry_store.dart';
@@ -88,6 +89,9 @@ void main() async {
       create: (_) => ConfigProvider.instance,
     )
   ], builder: (context, child) => const MainApp()));
+
+  // After the first frame is on its way; the command line can wait that long.
+  unawaited(AgentApiSwitch.instance.apply());
 }
 
 class MainApp extends StatefulWidget {

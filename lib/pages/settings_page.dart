@@ -3,6 +3,7 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'dart:io';
+import 'package:aid_diary/pages/settings/command_line_settings.dart';
 import 'package:aid_diary/pages/settings/help_page.dart';
 import 'package:aid_diary/pages/settings/appearance_settings.dart';
 import 'package:aid_diary/pages/settings/data_settings.dart';
@@ -53,6 +54,10 @@ class SettingsPage extends StatelessWidget {
                       title: l10n.settingsSecurityTitle,
                       icon: Icons.security_rounded,
                       page: const SecuritySettings()),
+                  SettingsCategory(
+                      title: l10n.settingsCommandLineTitle,
+                      icon: Icons.terminal_rounded,
+                      page: const CommandLineSettings()),
                   SettingsCategory(
                       title: l10n.settingsHelpTitle,
                       icon: Icons.help_outline_rounded,
