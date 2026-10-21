@@ -8,10 +8,18 @@ void main() {
     expect(preview.snippet, '去了公园，看见 湖。');
   });
 
-  test('short first line followed by text is a title', () {
+  test('only a written title is a title', () {
     final preview = entryPreview('Rainy day\nStayed in and read.');
-    expect(preview.title, 'Rainy day');
-    expect(preview.snippet, 'Stayed in and read.');
+    expect(preview.title, isNull);
+    expect(preview.snippet, 'Rainy day Stayed in and read.');
+  });
+
+  test('the editor title round-trips through the entry text', () {
+    expect(splitEntryTitle('# 周末\n去了公园'), (title: '周末', body: '去了公园'));
+    expect(splitEntryTitle('## 小标题\n正文'), (title: '', body: '## 小标题\n正文'));
+    expect(joinEntryTitle(' 周末 ', '去了公园'), '# 周末\n去了公园');
+    expect(joinEntryTitle('', '去了公园'), '去了公园');
+    expect(joinEntryTitle('两行\n标题', ''), '# 两行 标题\n');
   });
 
   test('a single paragraph has no title', () {
@@ -20,18 +28,11 @@ void main() {
     expect(preview.snippet, '今天下雨，一直在家看书。');
   });
 
-  test('long first line is not a title', () {
-    final line = 'a' * 60;
-    final preview = entryPreview('$line\nmore');
-    expect(preview.title, isNull);
-    expect(preview.snippet, '$line more');
-  });
-
   test('lists, quotes, images and rules are flattened', () {
     final preview = entryPreview(
-        '## Done\n- [x] laundry\n> calm\n![cat](a.jpg)\n---\n1. call mom');
+        '# Done\n## Chores\n- [x] laundry\n> calm\n![cat](a.jpg)\n---\n1. call mom');
     expect(preview.title, 'Done');
-    expect(preview.snippet, 'laundry calm cat call mom');
+    expect(preview.snippet, 'Chores laundry calm cat call mom');
   });
 
   test('empty text gives an empty preview', () {

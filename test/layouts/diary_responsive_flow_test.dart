@@ -66,7 +66,7 @@ void main() {
     await tester.pumpAndSettle();
     await tapKey(tester, 'diary-destination-1');
     await tapKey(tester, 'diary-day-write');
-    final editable = find.byType(EditableText).first;
+    final editable = DiaryAppHarness.entryBody;
     await tester.enterText(editable, '横屏草稿不会丢失');
     for (final dimensions in [
       const Size(844, 390),

@@ -3,6 +3,7 @@ library;
 
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/database/entry_store.dart';
+import 'package:aid_diary/pages/edit_entry_page.dart';
 import 'package:aid_diary/layouts/mobile_scaffold.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/models/image.dart';
@@ -212,7 +213,7 @@ void main() {
         matching: find.byType(Icon)));
     expect(closeIcon().icon, Icons.close_rounded);
     expect(find.byKey(const ValueKey('entry-delete')), findsNothing);
-    await tester.enterText(find.byType(EditableText).first, '写了一句');
+    await tester.enterText(DiaryAppHarness.entryBody, '写了一句');
     await tester.pump();
     await tester.pump();
     expect(closeIcon().icon, Icons.check_rounded);
@@ -222,6 +223,61 @@ void main() {
             .widget<IconButton>(find.byKey(const ValueKey('entry-close')))
             .onPressed!(),
         () => EntryStore.instance.entries.isNotEmpty);
+    await tester.pumpWidget(const SizedBox.shrink());
+  });
+
+  testWidgets('going back over changes asks; not saving leaves no entry',
+      (tester) async {
+    DiaryAppHarness.size(tester, const Size(390, 844));
+    await tester.pumpWidget(harness.app(const MobileScaffold()));
+    await tester.pumpAndSettle();
+    await tapKey(tester, 'diary-new-entry');
+    await tester.enterText(DiaryAppHarness.entryBody, '不想留下');
+    await tester.pump();
+    // Going to the background meanwhile saves a draft.
+    void lifecycle(List<AppLifecycleState> states) {
+      for (final state in states) {
+        tester.binding.handleAppLifecycleStateChanged(state);
+      }
+    }
+
+    await DiaryAppHarness.runUntil(
+        tester,
+        () => lifecycle([AppLifecycleState.inactive, AppLifecycleState.hidden]),
+        () => EntryStore.instance.entries.isNotEmpty);
+    lifecycle([AppLifecycleState.inactive, AppLifecycleState.resumed]);
+    expect(EntryStore.instance.entries.single.text, '不想留下');
+    await tester.binding.handlePopRoute();
+    await tester.pumpAndSettle();
+    expect(find.byKey(const ValueKey('editor-leave-save')), findsOneWidget);
+    await DiaryAppHarness.runUntil(
+        tester,
+        () => tester
+            .widget<TextButton>(
+                find.byKey(const ValueKey('editor-leave-discard')))
+            .onPressed!(),
+        () => find.byType(AddEditEntryPage).evaluate().isEmpty);
+    expect(find.byType(AddEditEntryPage), findsNothing);
+    expect(EntryStore.instance.entries, isEmpty);
+    await tester.pumpWidget(const SizedBox.shrink());
+  });
+
+  testWidgets('the title field is the entry title, left out when empty',
+      (tester) async {
+    DiaryAppHarness.size(tester, const Size(390, 844));
+    await tester.pumpWidget(harness.app(const MobileScaffold()));
+    await tester.pumpAndSettle();
+    await tapKey(tester, 'diary-new-entry');
+    await tester.enterText(find.byKey(const ValueKey('editor-title')), '周末');
+    await tester.enterText(DiaryAppHarness.entryBody, '去了公园');
+    await tester.pump();
+    await DiaryAppHarness.runUntil(
+        tester,
+        () => tester
+            .widget<IconButton>(find.byKey(const ValueKey('entry-close')))
+            .onPressed!(),
+        () => EntryStore.instance.entries.isNotEmpty);
+    expect(EntryStore.instance.entries.single.text, '# 周末\n去了公园');
     await tester.pumpWidget(const SizedBox.shrink());
   });
 
@@ -329,17 +385,20 @@ void main() {
     await tester.pumpWidget(harness.app(const MobileScaffold()));
     await tester.pumpAndSettle();
     await tapKey(tester, 'diary-new-entry');
-    await tester.enterText(find.byType(EditableText).first, '记一下地点');
-    await tester.tap(find.byIcon(Icons.place_outlined).hitTestable());
-    await tester.pumpAndSettle();
+    await tester.enterText(DiaryAppHarness.entryBody, '记一下地点');
+    await tapKey(tester, 'editor-location');
     // No position in tests: the sheet says so and offers the picker.
     await tapKey(tester, 'location-pick');
     await tester.enterText(find.byKey(const ValueKey('location-name')), '图书馆');
     await tester.pump();
     await tapKey(tester, 'location-custom');
-    expect(find.byKey(const ValueKey('editor-location-chip')), findsOneWidget);
-    await tester.tap(find.byIcon(Icons.mood_rounded).hitTestable());
-    await tester.pumpAndSettle();
+    expect(
+        find.descendant(
+            of: find.byKey(const ValueKey('editor-location')),
+            matching: find.text('图书馆')),
+        findsOneWidget);
+    // Mood sits beside the date.
+    await tapKey(tester, 'editor-mood');
     await tester.tap(
         find.byWidgetPredicate((w) => w is MoodIcon && w.moodValue == 2).last);
     await tester.pumpAndSettle();

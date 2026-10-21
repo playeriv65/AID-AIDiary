@@ -133,20 +133,6 @@ void main() {
     expect(choice!.location, isNull);
   });
 
-  testWidgets('activity dialog returns the chosen activity', (tester) async {
-    DiaryAppHarness.size(tester, const Size(390, 844));
-    await tester.pumpWidget(harness.app(const Scaffold(body: SizedBox())));
-    final context = tester.element(find.byType(SizedBox).first);
-    ActivityChoice? choice;
-    showActivityDialog(context, null).then((value) => choice = value);
-    await tester.pumpAndSettle();
-    await tester.tap(find.byKey(const ValueKey('activity-cycling')));
-    await tester.pump();
-    await tester.tap(find.byKey(const ValueKey('activity-save')));
-    await tester.pumpAndSettle();
-    expect(choice?.activity, EntryActivity.cycling);
-  });
-
   testWidgets('entry details show weather and activity', (tester) async {
     final entry = await DiaryAppHarness.addEntry(
         tester, '下雨天', DateTime(2026, 10, 18, 9),

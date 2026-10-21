@@ -22,24 +22,36 @@ String plainMarkdownLine(String line) => line
     .replaceAll(_emphasis, '')
     .trim();
 
-/// Splits entry markdown into an optional short title and a one-line snippet.
-///
-/// A first line counts as a title when it is a heading, or when it is short
-/// and more text follows, the way a handwritten diary page starts.
-EntryPreview entryPreview(String text, {int maxTitleLength = 40}) {
-  final lines = text
+final _titleLine = RegExp(r'^# +(.*)$');
+
+/// An entry has a title only when the user wrote one: a first line that is a
+/// top-level heading. The editor keeps it in a field of its own.
+({String title, String body}) splitEntryTitle(String text) {
+  final end = text.indexOf('\n');
+  final match =
+      _titleLine.firstMatch(end == -1 ? text : text.substring(0, end));
+  if (match == null) return (title: '', body: text);
+  return (
+    title: match[1]!.trim(),
+    body: end == -1 ? '' : text.substring(end + 1)
+  );
+}
+
+/// The entry text for a [title], which may be empty, above [body].
+String joinEntryTitle(String title, String body) {
+  final line = title.replaceAll('\n', ' ').trim();
+  return line.isEmpty ? body : '# $line\n$body';
+}
+
+/// Splits entry markdown into its title, if written, and a one-line snippet.
+EntryPreview entryPreview(String text) {
+  final (:title, :body) = splitEntryTitle(text.trimLeft());
+  final snippet = body
       .split('\n')
       .where((l) => !_rule.hasMatch(l))
-      .map((l) => (raw: l, plain: plainMarkdownLine(l)))
-      .where((l) => l.plain.isNotEmpty)
-      .toList();
-  if (lines.isEmpty) return (title: null, snippet: '');
-  final first = lines.first;
-  final rest = lines.skip(1).map((l) => l.plain).join(' ');
-  final isTitle = _heading.hasMatch(first.raw) ||
-      (rest.isNotEmpty && first.plain.length <= maxTitleLength);
-  if (!isTitle) {
-    return (title: null, snippet: lines.map((l) => l.plain).join(' '));
-  }
-  return (title: first.plain, snippet: rest);
+      .map(plainMarkdownLine)
+      .where((l) => l.isNotEmpty)
+      .join(' ');
+  final plainTitle = plainMarkdownLine(title);
+  return (title: plainTitle.isEmpty ? null : plainTitle, snippet: snippet);
 }

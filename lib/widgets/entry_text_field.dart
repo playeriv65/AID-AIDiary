@@ -21,6 +21,10 @@ class EntryTextField extends StatefulWidget {
   final EdgeInsets contentPadding;
   final TextAlignVertical? textAlignVertical;
 
+  /// Fills its parent and scrolls itself; otherwise it grows with its text
+  /// inside the page's scroll view.
+  final bool expands;
+
   /// When set, an empty field invites choosing a template instead of the
   /// plain hint.
   final VoidCallback? onChooseTemplate;
@@ -35,6 +39,7 @@ class EntryTextField extends StatefulWidget {
     this.contentPadding =
         const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
     this.textAlignVertical,
+    this.expands = true,
     this.onChooseTemplate,
   });
 
@@ -72,7 +77,7 @@ class _EntryTextFieldState extends State<EntryTextField> {
       focusNode: widget.focusNode,
       scrollController: _scrollController,
       maxLines: null,
-      expands: true,
+      expands: widget.expands,
       selectionWidthStyle: BoxWidthStyle.tight,
       selectionHeightStyle: MarkdownPreviewDecorations.heightStyle,
       scrollPadding: widget.scrollPadding,

@@ -433,10 +433,6 @@ class _AppearanceSettingsPageState extends State<AppearanceSettings> {
                       Settings.autoAddWeather,
                       AppLocalizations.of(context)!.settingsAutoAddWeather
                     ),
-                    (
-                      Settings.autoAddActivity,
-                      AppLocalizations.of(context)!.settingsAutoAddActivity
-                    ),
                   ])
                     SettingsToggle(
                       title: title,

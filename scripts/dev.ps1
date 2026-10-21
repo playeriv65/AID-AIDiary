@@ -35,12 +35,17 @@ switch ($Target) {
     flutter build apk --release --flavor independent --target-platform android-arm64
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
     $apk = 'build\app\outputs\flutter-apk\app-independent-release.apk'
+    $failed = @()
     foreach ($line in (adb devices | Select-Object -Skip 1)) {
       $serial, $state = $line -split '\s+'
       if ($state -ne 'device' -or $serial -like 'emulator-*') { continue }
       Write-Host "Installing on $serial"
       adb -s $serial install -r $apk
+      if ($LASTEXITCODE -ne 0) { $failed += $serial }
     }
+    # HyperOS asks on the device before each adb install; a missed prompt
+    # fails with INSTALL_FAILED_USER_RESTRICTED.
+    if ($failed) { Write-Error "Install failed on: $($failed -join ', ')"; exit 1 }
   }
   'pub' { flutter pub get }
   # Test layers (see dart_test.yaml). Four workers keep runs from pinning

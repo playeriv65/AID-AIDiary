@@ -15,6 +15,9 @@ class EntryTextEditor extends StatefulWidget {
   final VoidCallback? onExpand;
   final VoidCallback? onChooseTemplate;
 
+  /// See [EntryTextField.expands].
+  final bool expands;
+
   const EntryTextEditor({
     super.key,
     this.text = '',
@@ -23,6 +26,7 @@ class EntryTextEditor extends StatefulWidget {
     required this.undoHistoryController,
     this.onExpand,
     this.onChooseTemplate,
+    this.expands = true,
   });
 
   @override
@@ -60,6 +64,7 @@ class _EntryTextEditorState extends State<EntryTextEditor> {
             focusNode: widget.focusNode,
             scrollController: _scrollController,
             onChooseTemplate: widget.onChooseTemplate,
+            expands: widget.expands,
             // Add padding so cursor avoids action bar
             scrollPadding: EdgeInsets.only(
               left: 20.0,

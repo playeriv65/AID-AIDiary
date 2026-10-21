@@ -2286,12 +2286,6 @@ abstract class AppLocalizations {
   /// **'Weather'**
   String get settingsAutoAddWeather;
 
-  /// No description provided for @settingsAutoAddActivity.
-  ///
-  /// In en, this message translates to:
-  /// **'Activity'**
-  String get settingsAutoAddActivity;
-
   /// No description provided for @settingsAutoAddHint.
   ///
   /// In en, this message translates to:
@@ -3575,6 +3569,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Add photos'**
   String get toolbarPhotos;
+
+  /// No description provided for @toolbarMedia.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos and videos'**
+  String get toolbarMedia;
+
+  /// No description provided for @mediaFromGallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose from gallery'**
+  String get mediaFromGallery;
+
+  /// No description provided for @editorLeaveTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Save this entry?'**
+  String get editorLeaveTitle;
+
+  /// No description provided for @editorLeaveDiscard.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t save'**
+  String get editorLeaveDiscard;
+
+  /// No description provided for @editorTitleHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Title'**
+  String get editorTitleHint;
+
+  /// No description provided for @editorLocating.
+  ///
+  /// In en, this message translates to:
+  /// **'Locating…'**
+  String get editorLocating;
 
   /// No description provided for @toolbarVideo.
   ///

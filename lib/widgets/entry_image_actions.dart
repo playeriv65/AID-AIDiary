@@ -7,6 +7,7 @@ import 'dart:isolate';
 
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/database/image_storage.dart';
+import 'package:aid_diary/models/image.dart';
 import 'package:aid_diary/utils/exif_orientation.dart';
 import 'package:aid_diary/utils/photo_metadata.dart';
 import 'package:flutter/foundation.dart';
@@ -32,17 +33,23 @@ class EntryImageActions {
     }
   }
 
-  /// Adds photos from the gallery. [onMetadata] gets the first one's date
-  /// and place, read before compression can drop them.
+  /// Adds photos and videos from the gallery; videos go to [onVideo].
+  /// [onMetadata] gets the first photo's date and place, read before
+  /// compression can drop them.
   static Future<void> pickFromGallery(ValueChanged<List<String>> onChangedImage,
-      {ValueChanged<PhotoMetadata>? onMetadata}) async {
+      {required Future<void> Function(XFile) onVideo,
+      ValueChanged<PhotoMetadata>? onMetadata}) async {
     final picker = ImagePicker();
     final quality = ConfigProvider.instance.get(Settings.imageQualityLevel);
-    final pickedFiles = await picker.pickMultiImage();
+    final pickedFiles = await picker.pickMultipleMedia();
 
     final newImages = <String>[];
     PhotoMetadata? metadata;
     for (final file in pickedFiles) {
+      if (MediaKind.of(file.name) == MediaKind.video) {
+        await onVideo(file);
+        continue;
+      }
       if (onMetadata != null && metadata == null) {
         final read = PhotoMetadata.read(await file.readAsBytes());
         if (!read.isEmpty) metadata = read;

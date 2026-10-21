@@ -1206,9 +1206,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settingsAutoAddWeather => '天气';
 
   @override
-  String get settingsAutoAddActivity => '活动';
-
-  @override
   String get settingsAutoAddHint => '新建日记时自动填好这些信息。';
 
   @override
@@ -1883,6 +1880,24 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get toolbarPhotos => '添加照片';
+
+  @override
+  String get toolbarMedia => '照片和视频';
+
+  @override
+  String get mediaFromGallery => '从图库选择';
+
+  @override
+  String get editorLeaveTitle => '保存这篇日记？';
+
+  @override
+  String get editorLeaveDiscard => '不保存';
+
+  @override
+  String get editorTitleHint => '标题';
+
+  @override
+  String get editorLocating => '正在定位…';
 
   @override
   String get toolbarVideo => '视频';
@@ -3114,9 +3129,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get settingsAutoAddWeather => '天氣';
 
   @override
-  String get settingsAutoAddActivity => '活動';
-
-  @override
   String get settingsAutoAddHint => '新增日記時自動填好這些資訊。';
 
   @override
@@ -3791,6 +3803,24 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get toolbarPhotos => '新增照片';
+
+  @override
+  String get toolbarMedia => '照片和影片';
+
+  @override
+  String get mediaFromGallery => '從相簿選擇';
+
+  @override
+  String get editorLeaveTitle => '儲存這篇日記？';
+
+  @override
+  String get editorLeaveDiscard => '不儲存';
+
+  @override
+  String get editorTitleHint => '標題';
+
+  @override
+  String get editorLocating => '正在定位…';
 
   @override
   String get toolbarVideo => '影片';

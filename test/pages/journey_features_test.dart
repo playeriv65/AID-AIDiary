@@ -27,10 +27,8 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.byKey(const ValueKey('template-featured-daily')));
     await tester.pumpAndSettle();
-    final text = tester
-        .widget<EditableText>(find.byType(EditableText).first)
-        .controller
-        .text;
+    final text =
+        tester.widget<EditableText>(DiaryAppHarness.entryBody).controller.text;
     expect(text, contains('## 今天发生了什么'));
     expect(find.byKey(const ValueKey('editor-template-link')), findsNothing);
     await tester.pumpWidget(const SizedBox.shrink());

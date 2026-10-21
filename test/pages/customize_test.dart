@@ -7,6 +7,7 @@ import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/pages/edit_entry_page.dart';
 import 'package:aid_diary/pages/journal_page.dart';
 import 'package:aid_diary/pages/settings/appearance_settings.dart';
+import 'package:aid_diary/widgets/entry_text_field.dart';
 import 'package:aid_diary/widgets/mood_associations_card.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -49,8 +50,11 @@ void main() {
     DiaryAppHarness.size(tester, const Size(390, 844));
     await tester.pumpWidget(harness.app(const AddEditEntryPage()));
     await tester.pumpAndSettle();
-    final style =
-        tester.widget<EditableText>(find.byType(EditableText).first).style;
+    final style = tester
+        .widget<EditableText>(find.descendant(
+            of: find.byType(EntryTextField),
+            matching: find.byType(EditableText)))
+        .style;
     expect(style.fontSize, 18);
     expect(style.height, 1.8);
     expect(style.fontFamilyFallback, contains('serif'));

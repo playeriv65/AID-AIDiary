@@ -78,7 +78,6 @@ dependencies:
   latlong2: ^0.10.1
   geolocator: ^14.0.1
   http: ^1.6.0
-  flutter_activity_recognition: ^4.0.0
   video_player: ^2.14.1
   video_player_win: ^3.3.1
   record: ^7.1.2

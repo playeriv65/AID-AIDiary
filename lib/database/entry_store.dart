@@ -38,21 +38,28 @@ class EntryDraft {
 /// new entry picks up the id it was just given.
 typedef EntryDraftBuilder = EntryDraft Function(Entry? saved);
 
+/// One editing session. Saves land in the database as they come, so nothing
+/// is lost if the app dies, but the session can still be [discard]ed:
+/// attachment files it takes off the entry are only deleted on [commit].
 class EntryDraftSession {
-  EntryDraftSession._(this._store);
+  EntryDraftSession._(this._store, this._original);
 
   final EntryStore _store;
+
+  /// The entry as it was before the session; null for a new entry.
+  final EntryDraft? _original;
+  final Set<String> _removedFiles = {};
   Entry? _lastSaved;
   EntryDraftBuilder? _pendingBuild;
   Completer<Entry>? _pendingCompleter;
-  bool _writing = false;
+  Completer<void>? _idle;
 
   Future<Entry> save(EntryDraftBuilder buildDraft) {
     _pendingBuild = buildDraft;
     _pendingCompleter ??= Completer<Entry>();
     final future = _pendingCompleter!.future;
-    if (!_writing) {
-      _writing = true;
+    if (_idle == null) {
+      _idle = Completer<void>();
       unawaited(_runPending());
     }
     return future;
@@ -65,14 +72,44 @@ class EntryDraftSession {
       _pendingBuild = null;
       _pendingCompleter = null;
       try {
-        final saved = await _store._writeDraft(buildDraft(_lastSaved));
+        final saved = await _store._writeDraft(buildDraft(_lastSaved),
+            removedFiles: _removedFiles);
         _lastSaved = saved;
         completer.complete(saved);
       } catch (error, stackTrace) {
         completer.completeError(error, stackTrace);
       }
     }
-    _writing = false;
+    final idle = _idle!;
+    _idle = null;
+    idle.complete();
+  }
+
+  /// Keeps what was saved: deletes the files the session took off.
+  Future<void> commit() async {
+    await _idle?.future;
+    await _store._deleteImageFiles(_removedFiles);
+    _removedFiles.clear();
+  }
+
+  /// Undoes every save: a new entry goes away for good, an existing one gets
+  /// its text, context, tags and attachments back.
+  Future<void> discard() async {
+    await _idle?.future;
+    final saved = _lastSaved;
+    if (saved == null) return;
+    final original = _original;
+    if (original == null) {
+      await _store.erase(saved);
+    } else {
+      await _store._writeDraft(original, removedFiles: _removedFiles);
+      // Original files were only set aside; the rest came with the session.
+      _removedFiles
+          .removeAll(original.images.map((image) => image.imgPath).toSet());
+    }
+    await _store._deleteImageFiles(_removedFiles);
+    _removedFiles.clear();
+    _lastSaved = null;
   }
 }
 
@@ -101,7 +138,19 @@ class EntryStore with ChangeNotifier {
 
   Map<DateTime, List<Entry>> _entriesByDay = {};
 
-  EntryDraftSession beginDraft() => EntryDraftSession._(this);
+  /// Starts editing [original], or a new entry when it is null.
+  EntryDraftSession beginDraft([Entry? original]) => EntryDraftSession._(
+      this,
+      original == null
+          ? null
+          : EntryDraft(
+              entry: original,
+              tags: TagsProvider.instance.getEntryTagsForEntry(original.id!),
+              images: [
+                  for (final image
+                      in EntryImagesProvider.instance.getForEntry(original))
+                    image.copy()
+                ]));
 
   Future<void> _complete = Future.value();
 
@@ -273,7 +322,10 @@ class EntryStore with ChangeNotifier {
     return entries.any((entry) => entry.timeCreate == timestamp);
   }
 
-  Future<Entry> _writeDraft(EntryDraft draft) async {
+  /// Writes [draft]; attachment files it drops go to [removedFiles] for the
+  /// session to delete later.
+  Future<Entry> _writeDraft(EntryDraft draft,
+      {required Set<String> removedFiles}) async {
     await _complete;
     late Entry saved;
     late _TagWrite tagWrite;
@@ -295,7 +347,7 @@ class EntryStore with ChangeNotifier {
 
     if (!entryChanged && !tagWrite.changed && !imageWrite.changed) return saved;
 
-    await _deleteImageFiles(imageWrite.removedFiles);
+    removedFiles.addAll(imageWrite.removedFiles);
 
     final index = getIndexOfEntry(saved.id!);
     if (index == -1) {

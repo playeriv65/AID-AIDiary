@@ -98,9 +98,8 @@ class Settings {
   static const wallpaper = Setting<String>("wallpaper", "none");
   static const wallpaperImage = Setting<String>("wallpaperImage", "");
   // Off by default: each one asks for a permission or uses the network.
-  static const autoAddLocation = Setting<bool>("autoAddLocation", false);
-  static const autoAddWeather = Setting<bool>("autoAddWeather", false);
-  static const autoAddActivity = Setting<bool>("autoAddActivity", false);
+  static const autoAddLocation = Setting<bool>("autoAddLocation", true);
+  static const autoAddWeather = Setting<bool>("autoAddWeather", true);
   static const excludeBadDaysFromFlashbacks =
       Setting<bool>("excludeBadDaysFromFlashbacks", false);
   static const showflashbackYearsAgo =
@@ -201,7 +200,6 @@ class Settings {
     wallpaperImage,
     autoAddLocation,
     autoAddWeather,
-    autoAddActivity,
     excludeBadDaysFromFlashbacks,
     showflashbackYearsAgo,
     showflashback6MonthsAgo,

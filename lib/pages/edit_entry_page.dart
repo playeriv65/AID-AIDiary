@@ -24,6 +24,7 @@ import 'package:aid_diary/widgets/editor_action_bar.dart';
 import 'package:aid_diary/widgets/editor_action_bar/editor_keyboard_session.dart';
 import 'package:aid_diary/widgets/entry_image_editable_list.dart';
 import 'package:easy_debounce/easy_debounce.dart';
+import 'package:intl/intl.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/models/entry.dart';
@@ -33,9 +34,9 @@ import 'package:aid_diary/widgets/location_dialog.dart';
 import 'package:aid_diary/widgets/media_attachment.dart';
 import 'package:aid_diary/widgets/context_dialogs.dart';
 import 'package:aid_diary/utils/entry_context_display.dart';
+import 'package:aid_diary/utils/entry_preview.dart';
 import 'package:aid_diary/utils/photo_metadata.dart';
 import 'package:aid_diary/config_provider.dart';
-import 'package:aid_diary/services/activity_service.dart';
 import 'package:aid_diary/services/location_service.dart';
 import 'package:aid_diary/services/weather_service.dart';
 import 'package:aid_diary/widgets/mood_icon.dart';
@@ -83,6 +84,9 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
   late Entry _entry;
   int id = -1;
   String text = "";
+
+  /// The text below the title, as the editor first shows it.
+  String _body = "";
   int? mood;
   EntryLocation? location;
   EntryWeather? weather;
@@ -95,8 +99,16 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
   final FocusNode _focusNode = FocusNode();
   final MarkdownPreviewController _textEditingController =
       MarkdownPreviewController();
+
+  /// The optional title, kept as the text's first line (see
+  /// [splitEntryTitle]); [_textEditingController] holds the rest.
+  final TextEditingController _titleController = TextEditingController();
+  bool _locating = false;
   final UndoHistoryController _undoController = UndoHistoryController();
   bool _deletingEntry = false;
+
+  /// Set once the user chose not to keep this session's changes.
+  bool _discarded = false;
   bool _newEntry = false;
   bool _creatingNewEntry = false;
 
@@ -105,7 +117,8 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
   bool _edited = false;
   late TagAttachmentSource _tagSource;
   late EntryDraftDirtyTracker _dirtyTracker;
-  late final EntryDraftSession _draftSession = EntryStore.instance.beginDraft();
+  late final EntryDraftSession _draftSession =
+      EntryStore.instance.beginDraft(widget.entry);
 
   Future<void> _initEntry() async {
     String dirtyTrackerBaselineText;
@@ -169,10 +182,21 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
     activity = _entry.activity;
     entryDate = _entry.timeCreate;
     text = _entry.text;
-    _textEditingController.addListener(() {
-      text = _textEditingController.text;
+    final (:title, :body) = splitEntryTitle(text);
+    _titleController.text = title;
+    _body = body;
+    text = joinEntryTitle(title, body);
+    // Selection moves notify too; only text changes are edits.
+    void textChanged() {
+      final joined =
+          joinEntryTitle(_titleController.text, _textEditingController.text);
+      if (joined == text) return;
+      text = joined;
       _scheduleSave();
-    });
+    }
+
+    _titleController.addListener(textChanged);
+    _textEditingController.addListener(textChanged);
     setState(() {
       _loadingEntry = false;
     });
@@ -190,21 +214,26 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
       EntryImageActions.takePhoto(_addImage);
     }
 
-    if (_newEntry && TimeManager.isToday(entryDate!)) _autoFillContext();
+    if (_newEntry && TimeManager.isToday(entryDate!)) {
+      // Needs the locale, which initState may not read yet.
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) _autoFillContext();
+      });
+    }
   }
 
-  /// Fills place, weather and activity for a new entry when the settings
-  /// ask for it. Anything the user set meanwhile is left alone, and filled
-  /// values count as the untouched baseline.
+  /// Fills place and weather for a new entry when the settings ask for it.
+  /// Anything the user set meanwhile is left alone, and filled values count
+  /// as the untouched baseline.
   Future<void> _autoFillContext() async {
     final config = ConfigProvider.instance;
     final wantLocation = config.get(Settings.autoAddLocation);
     final wantWeather = config.get(Settings.autoAddWeather);
-    final wantActivity = config.get(Settings.autoAddActivity);
-    if (!wantLocation && !wantWeather && !wantActivity) return;
+    if (!wantLocation && !wantWeather) return;
 
     var place = location;
-    if ((wantLocation || wantWeather) && place == null) {
+    if (place == null) {
+      setState(() => _locating = true);
       try {
         final language = mounted
             ? TimeManager.currentLocale(context).split('_').first
@@ -219,15 +248,11 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
       found = await WeatherService()
           .at(place!.latitude!, place.longitude!, entryDate!);
     }
-    EntryActivity? detected;
-    if (wantActivity && activity == null && ActivityService.supported) {
-      detected = await ActivityService().current();
-    }
     if (!mounted) return;
     setState(() {
+      _locating = false;
       if (wantLocation && location == null) location = place;
       weather ??= found;
-      activity ??= detected;
     });
     if (_newEntry) {
       _dirtyTracker.adoptAutoFill(
@@ -252,6 +277,7 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
     _scrollController.dispose();
     _focusNode.dispose();
     _textEditingController.dispose();
+    _titleController.dispose();
     _undoController.dispose();
     EasyDebounce.cancel("save-entry");
     _tagSource.removeListener(_onTagsChanged);
@@ -261,7 +287,7 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.hidden) {
+    if (state == AppLifecycleState.hidden && !_discarded) {
       _saveEntry();
     }
   }
@@ -279,6 +305,39 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
     if (result != null) {
       _textEditingController.text = result;
     }
+  }
+
+  /// Asks whether to keep the changes when going back over them.
+  Future<void> _confirmLeave() async {
+    final l10n = AppLocalizations.of(context)!;
+    final save = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.editorLeaveTitle),
+        actions: [
+          TextButton(
+              key: const ValueKey('editor-leave-discard'),
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text(l10n.editorLeaveDiscard)),
+          TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(MaterialLocalizations.of(context).cancelButtonLabel)),
+          FilledButton(
+              key: const ValueKey('editor-leave-save'),
+              onPressed: () => Navigator.of(context).pop(true),
+              child: Text(MaterialLocalizations.of(context).saveButtonLabel)),
+        ],
+      ),
+    );
+    if (save == null || !mounted) return;
+    if (!save) {
+      _discarded = true;
+      EasyDebounce.cancel("save-entry");
+      await _draftSession.discard();
+      if (!mounted) return;
+    }
+    // Pops past the PopScope; leaving then saves unless discarded.
+    Navigator.of(context).pop();
   }
 
   void _showDeleteEntryPopup() {
@@ -337,54 +396,44 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
     return _loadingEntry
         ? Scaffold()
         : PopScope(
+            // Going back over changes asks first; the done button does not.
+            canPop: !_edited,
             onPopInvokedWithResult: (didPop, result) async {
-              if (!_deletingEntry) {
-                await _saveEntry();
-              }
+              if (!didPop) return _confirmLeave();
+              if (_discarded) return;
+              if (!_deletingEntry) await _saveEntry();
+              await _draftSession.commit();
             },
             child: Scaffold(
               appBar: AppBar(
-                  centerTitle: true,
+                  titleSpacing: 0,
                   title: _buildDateTitle(context, theme),
                   leading: _closeButton(),
-                  actions: [if (!_creatingNewEntry) _deleteButton()]),
+                  actions: [
+                    _tagsButton(),
+                    if (!_creatingNewEntry) _deleteButton(),
+                  ]),
               body: EditorActionBarOverlay(
                 keyboardInset: keyboardInset,
+                // Like a page: title, writing, then what goes with it.
                 body: LayoutBuilder(
                   builder: (context, constraints) {
                     final sidePadding =
                         ((constraints.maxWidth - _pageWidth) / 2)
                             .clamp(0.0, double.infinity);
-                    final capPadding =
-                        EdgeInsets.symmetric(horizontal: sidePadding);
-                    return CustomScrollView(
-                      slivers: [
-                        SliverPadding(
-                          padding: capPadding,
-                          sliver: SliverToBoxAdapter(
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  if (_currentImages.isNotEmpty)
-                                    EntryImageEditableList(
-                                        images: _currentImages,
-                                        onImagesChanged: (images) async {
-                                          _currentImages = images;
-                                          await _saveEntry();
-                                        }),
-                                  _buildMetaStrip(context),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        SliverPadding(
-                          padding: capPadding,
-                          sliver: _buildTextEditorSliver(context),
-                        ),
+                    return ListView(
+                      padding: EdgeInsets.fromLTRB(
+                          sidePadding + 8,
+                          8,
+                          sidePadding + 8,
+                          24 + EditorActionBar.reservedHeight(context)),
+                      children: [
+                        _buildTitleField(theme),
+                        _buildBodyEditor(context),
+                        const SizedBox(height: 16),
+                        _buildMedia(context),
+                        const SizedBox(height: 16),
+                        _buildMetaRows(context),
                       ],
                     );
                   },
@@ -401,95 +450,229 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
           );
   }
 
-  /// Mood, place and tags already set, as removable chips.
-  Widget _buildMetaStrip(BuildContext context) {
+  /// The optional title: a large centred line that is simply left out of
+  /// the entry when empty.
+  Widget _buildTitleField(ThemeData theme) {
+    return TextField(
+      key: const ValueKey('editor-title'),
+      controller: _titleController,
+      textAlign: TextAlign.center,
+      maxLines: null,
+      textInputAction: TextInputAction.next,
+      textCapitalization: TextCapitalization.sentences,
+      onSubmitted: (_) => _focusNode.requestFocus(),
+      style:
+          theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w600),
+      decoration: InputDecoration(
+        border: InputBorder.none,
+        hintText: AppLocalizations.of(context)!.editorTitleHint,
+      ),
+    );
+  }
+
+  /// The writing itself; it grows with the text, and the space below the
+  /// last line still takes a tap.
+  Widget _buildBodyEditor(BuildContext context) {
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () {
+        EditorKeyboardSessionScope.maybeOf(context)?.resume();
+        _focusNode.requestFocus();
+      },
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(minHeight: 200),
+        child: Align(
+          alignment: Alignment.topCenter,
+          child: EntryTextEditor(
+            text: _body,
+            expands: false,
+            focusNode: _focusNode,
+            textEditingController: _textEditingController,
+            undoHistoryController: _undoController,
+            onExpand: _openFullScreenEditor,
+            onChooseTemplate: () => showTemplateSelectPopup(
+                context, _textEditingController,
+                hasFocus: _focusNode.hasFocus,
+                onTemplateSelected: _applyInsertedTemplateTags),
+          ),
+        ),
+      ),
+    );
+  }
+
+  /// The entry's photos, videos and voice notes, then a tile to add more.
+  Widget _buildMedia(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    final add = Align(
+      alignment: AlignmentDirectional.centerStart,
+      child: SizedBox.square(
+        dimension: 104,
+        child: Card.filled(
+          margin: const EdgeInsets.symmetric(horizontal: 4),
+          color: cs.surfaceContainerHigh,
+          clipBehavior: Clip.antiAlias,
+          child: InkWell(
+            key: const ValueKey('editor-add-media'),
+            onTap: _addMedia,
+            child:
+                Icon(Icons.add_rounded, size: 36, color: cs.onSurfaceVariant),
+          ),
+        ),
+      ),
+    );
+    if (_currentImages.isEmpty) return add;
+    return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+      EntryImageEditableList(
+          images: _currentImages,
+          onImagesChanged: (images) async {
+            _currentImages = images;
+            await _saveEntry();
+          }),
+      const SizedBox(height: 8),
+      add,
+    ]);
+  }
+
+  /// Weather and place, filled in on their own for a new entry, then tags.
+  Widget _buildMetaRows(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final cs = Theme.of(context).colorScheme;
+    Widget row(Key key, IconData icon, String? value, String placeholder,
+            VoidCallback? onTap,
+            {VoidCallback? onClear}) =>
+        ListTile(
+          key: key,
+          dense: true,
+          visualDensity: VisualDensity.compact,
+          contentPadding: const EdgeInsets.symmetric(horizontal: 8),
+          leading: Icon(icon, size: 20, color: cs.onSurfaceVariant),
+          title: Text(value ?? placeholder,
+              style:
+                  value == null ? TextStyle(color: cs.onSurfaceVariant) : null),
+          trailing: value == null || onClear == null
+              ? null
+              : IconButton(
+                  visualDensity: VisualDensity.compact,
+                  tooltip:
+                      MaterialLocalizations.of(context).deleteButtonTooltip,
+                  icon: const Icon(Icons.close_rounded, size: 18),
+                  onPressed: onClear),
+          onTap: onTap,
+        );
+
     return ListenableBuilder(
       listenable: _tagSource,
       builder: (context, _) {
         final attachedIds = _tagSource.attachedTagIds.toSet();
-        final tagsProvider = Provider.of<TagsProvider>(context);
-        final tags =
-            tagsProvider.tags.where((t) => attachedIds.contains(t.id)).toList();
-        final hasMood = MoodIcon.getMoodIcon(mood).isNotEmpty;
-        if (!hasMood &&
-            location == null &&
-            weather == null &&
-            activity == null &&
-            tags.isEmpty) {
-          return const SizedBox(height: 8);
-        }
-        final l10n = AppLocalizations.of(context)!;
-        return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8),
-          child: Wrap(spacing: 8, runSpacing: 8, children: [
-            if (hasMood)
-              InputChip(
-                key: const ValueKey('editor-mood-chip'),
-                avatar: MoodIcon(moodValue: mood, size: 16),
-                label: Text(AppLocalizations.of(context)!.tagMoodTitle),
-                onPressed: _chooseMood,
-                onDeleted: () => _setMood(null),
-              ),
-            if (location != null)
-              InputChip(
-                key: const ValueKey('editor-location-chip'),
-                avatar: const Icon(Icons.place_rounded, size: 16),
-                label: Text(location!.label),
-                onPressed: _chooseLocation,
-                onDeleted: () => _setLocation(null),
-              ),
-            if (weather != null)
-              InputChip(
-                key: const ValueKey('editor-weather-chip'),
-                avatar: Icon(weatherIcon(weather!.code), size: 16),
-                label: Text(weatherSummary(weather!, l10n)),
-                onPressed: _chooseWeather,
-                onDeleted: () => _setWeather(null),
-              ),
-            if (activity != null)
-              InputChip(
-                key: const ValueKey('editor-activity-chip'),
-                avatar: Icon(activityIcon(activity!), size: 16),
-                label: Text(activityLabel(activity!, l10n)),
-                onPressed: _chooseActivity,
-                onDeleted: () => _setActivity(null),
-              ),
-            for (final tag in tags)
-              TagChip(
-                tag: tag,
-                value: _tagSource.valueFor(tag.id!),
-                onTap: tag.tagType == TagType.tracker
-                    ? () => _tagSource.editValue(context, tag)
-                    : null,
-                onRemove: () => _tagSource.detach(tag.id!),
-              ),
-          ]),
-        );
+        final tags = Provider.of<TagsProvider>(context)
+            .tags
+            .where((t) => attachedIds.contains(t.id))
+            .toList();
+        return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              row(
+                  const ValueKey('editor-weather'),
+                  weather == null
+                      ? Icons.wb_sunny_outlined
+                      : weatherIcon(weather!.code),
+                  weather == null ? null : weatherSummary(weather!, l10n),
+                  l10n.weatherTitle,
+                  _chooseWeather,
+                  onClear: () => _setWeather(null)),
+              row(
+                  const ValueKey('editor-location'),
+                  Icons.place_outlined,
+                  location?.label,
+                  _locating ? l10n.editorLocating : l10n.locationTitle,
+                  _chooseLocation,
+                  onClear: () => _setLocation(null)),
+              // Only imported entries still carry one.
+              if (activity != null)
+                row(const ValueKey('editor-activity'), activityIcon(activity!),
+                    activityLabel(activity!, l10n), '', null,
+                    onClear: () => _setActivity(null)),
+              if (tags.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
+                  child: Wrap(spacing: 8, runSpacing: 8, children: [
+                    for (final tag in tags)
+                      TagChip(
+                        tag: tag,
+                        value: _tagSource.valueFor(tag.id!),
+                        onTap: tag.tagType == TagType.tracker
+                            ? () => _tagSource.editValue(context, tag)
+                            : null,
+                        onRemove: () => _tagSource.detach(tag.id!),
+                      ),
+                  ]),
+                ),
+            ]);
       },
     );
   }
 
-  /// The entry date as the page title; tapping it changes date and time.
+  /// Groups the entry, as the one action used on nearly every entry.
+  Widget _tagsButton() => IconButton(
+        key: const ValueKey('editor-tags'),
+        tooltip: AppLocalizations.of(context)!.toolbarTags,
+        icon: const Icon(Icons.local_offer_outlined),
+        onPressed: () => showDialog(
+          context: context,
+          builder: (_) =>
+              TagPickerDialog(mode: TagPickerMode.attach, source: _tagSource),
+        ),
+      );
+
+  /// The entry's date and time as the page title, with its mood beside it;
+  /// tapping the date changes date and time.
   Widget _buildDateTitle(BuildContext context, ThemeData theme) {
-    return TextButton(
-      key: const ValueKey('editor-date'),
-      onPressed: () async {
-        if (await _chooseDate()) await _chooseTime();
-      },
-      child: Row(mainAxisSize: MainAxisSize.min, children: [
-        Flexible(
-          child: Text(
-            TimeManager.formatDate(entryDate!, context).toUpperCase(),
-            overflow: TextOverflow.ellipsis,
-            style: theme.textTheme.titleSmall?.copyWith(
-                color: theme.colorScheme.primary,
-                letterSpacing: 1.2,
-                fontWeight: FontWeight.w700),
+    final cs = theme.colorScheme;
+    final hasMood = MoodIcon.getMoodIcon(mood).isNotEmpty;
+    final date = entryDate!;
+    final day = date.year == DateTime.now().year
+        ? TimeManager.formatMonthDay(date, context)
+        : TimeManager.formatDate(date, context);
+    final time =
+        TimeManager.timeOfDayString(context, TimeOfDay.fromDateTime(date));
+    final weekday =
+        DateFormat.E(TimeManager.currentLocale(context)).format(date);
+    return Row(mainAxisSize: MainAxisSize.min, children: [
+      Flexible(
+        child: InkWell(
+          key: const ValueKey('editor-date'),
+          borderRadius: BorderRadius.circular(8),
+          onTap: () async {
+            if (await _chooseDate()) await _chooseTime();
+          },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
+            child: Text.rich(
+              TextSpan(children: [
+                TextSpan(
+                    text: day,
+                    style: theme.textTheme.titleLarge
+                        ?.copyWith(fontWeight: FontWeight.w600)),
+                TextSpan(
+                    text: '  /  $time $weekday',
+                    style: theme.textTheme.bodyMedium
+                        ?.copyWith(color: cs.onSurfaceVariant)),
+              ]),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
         ),
-        Icon(Icons.arrow_drop_down_rounded, color: theme.colorScheme.primary),
-      ]),
-    );
+      ),
+      IconButton(
+        key: const ValueKey('editor-mood'),
+        tooltip: AppLocalizations.of(context)!.tagMoodTitle,
+        onPressed: _chooseMood,
+        icon: hasMood
+            ? MoodIcon(moodValue: mood, size: 24)
+            : Icon(Icons.add_reaction_outlined, color: cs.onSurfaceVariant),
+      ),
+    ]);
   }
 
   void _setMood(int? value) {
@@ -605,12 +788,7 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
     _scheduleSave();
   }
 
-  Future<void> _chooseActivity() async {
-    final choice = await showActivityDialog(context, activity);
-    if (choice != null) _setActivity(choice.activity);
-  }
-
-  /// Offers ways to add a video or voice note, then runs the chosen one.
+  /// Offers ways to add an attachment, then runs the chosen one.
   Future<void> _chooseAttachment(
       List<(IconData, String, Future<void> Function())> options) async {
     final chosen = await showModalBottomSheet<Future<void> Function()>(
@@ -631,41 +809,45 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
     await chosen?.call();
   }
 
+  Future<void> _pickFromGallery() {
+    final messenger = ScaffoldMessenger.of(context);
+    final tooLarge = AppLocalizations.of(context)!.mediaTooLarge;
+    return EntryImageActions.pickFromGallery(_addImage,
+        onMetadata: _offerPhotoMetadata,
+        onVideo: (file) => MediaActions.addPickedVideo(file, _addImage,
+            onTooLarge: () =>
+                messenger.showSnackBar(SnackBar(content: Text(tooLarge)))));
+  }
+
+  /// Gallery, photo or video; only phones have a camera to offer.
+  Future<void> _addMedia() {
+    final l10n = AppLocalizations.of(context)!;
+    if (!Platform.isAndroid) return _pickFromGallery();
+    return _chooseAttachment([
+      (Icons.photo_library_outlined, l10n.mediaFromGallery, _pickFromGallery),
+      (
+        Icons.photo_camera_rounded,
+        l10n.actionTakePhoto,
+        () => EntryImageActions.takePhoto(_addImage)
+      ),
+      (
+        Icons.videocam_rounded,
+        l10n.videoRecord,
+        () => MediaActions.pickVideo(context, _addImage, camera: true)
+      ),
+    ]);
+  }
+
   List<ToolbarAction> _buildMainActions(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    // Same order as Journey: media, place, weather, activity, mood, tags.
+    // Only what is reached for while writing; place and weather sit below
+    // the text, mood by the date and tags at the top.
     return [
       ToolbarAction(
-        icon: const Icon(Icons.photo),
-        tooltip: l10n.toolbarPhotos,
+        icon: const Icon(Icons.photo_camera_outlined),
+        tooltip: l10n.toolbarMedia,
         mayLeaveApp: true,
-        onPressed: () => EntryImageActions.pickFromGallery(_addImage,
-            onMetadata: _offerPhotoMetadata),
-      ),
-      if (Platform.isAndroid)
-        ToolbarAction(
-          icon: const Icon(Icons.photo_camera_rounded),
-          tooltip: l10n.actionTakePhoto,
-          mayLeaveApp: true,
-          onPressed: () => EntryImageActions.takePhoto(_addImage),
-        ),
-      ToolbarAction(
-        icon: const Icon(Icons.videocam_outlined),
-        tooltip: l10n.toolbarVideo,
-        mayLeaveApp: true,
-        onPressed: () => _chooseAttachment([
-          if (Platform.isAndroid)
-            (
-              Icons.videocam_rounded,
-              l10n.videoRecord,
-              () => MediaActions.pickVideo(context, _addImage, camera: true)
-            ),
-          (
-            Icons.video_library_outlined,
-            l10n.videoChoose,
-            () => MediaActions.pickVideo(context, _addImage)
-          ),
-        ]),
+        onPressed: _addMedia,
       ),
       ToolbarAction(
         icon: const Icon(Icons.mic_none_rounded),
@@ -684,75 +866,7 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
           ),
         ]),
       ),
-      ToolbarAction(
-        icon: const Icon(Icons.place_outlined),
-        tooltip: l10n.locationTitle,
-        onPressed: _chooseLocation,
-      ),
-      ToolbarAction(
-        icon: const Icon(Icons.wb_sunny_outlined),
-        tooltip: l10n.weatherTitle,
-        onPressed: _chooseWeather,
-      ),
-      ToolbarAction(
-        icon: const Icon(Icons.directions_walk_rounded),
-        tooltip: l10n.activityTitle,
-        onPressed: _chooseActivity,
-      ),
-      ToolbarAction(
-        icon: const Icon(Icons.mood_rounded),
-        tooltip: l10n.tagMoodTitle,
-        onPressed: _chooseMood,
-      ),
-      ToolbarAction(
-        icon: const Icon(Icons.local_offer_rounded),
-        tooltip: l10n.toolbarTags,
-        onPressed: () => showDialog(
-          context: context,
-          builder: (_) =>
-              TagPickerDialog(mode: TagPickerMode.attach, source: _tagSource),
-        ),
-      ),
     ];
-  }
-
-  Widget _buildTextEditorSliver(BuildContext context) {
-    return SliverFillRemaining(
-      hasScrollBody: false,
-      child: Builder(
-        builder: (context) => GestureDetector(
-          behavior: HitTestBehavior.translucent,
-          onTap: () {
-            EditorKeyboardSessionScope.maybeOf(context)?.resume();
-            _focusNode.requestFocus();
-          },
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Expanded(
-                  child: StatefulBuilder(
-                    builder: (context, setState) => EntryTextEditor(
-                      text: text,
-                      focusNode: _focusNode,
-                      textEditingController: _textEditingController,
-                      undoHistoryController: _undoController,
-                      onExpand: _openFullScreenEditor,
-                      onChooseTemplate: () => showTemplateSelectPopup(
-                          context, _textEditingController,
-                          hasFocus: _focusNode.hasFocus,
-                          onTemplateSelected: _applyInsertedTemplateTags),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 16 + EditorActionBar.reservedHeight(context)),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
   }
 
   Widget _deleteButton() => IconButton(

@@ -56,10 +56,19 @@ class MediaActions {
         source: camera ? ImageSource.camera : ImageSource.gallery,
         maxDuration: AppConfig.instance.maxVideoDuration);
     if (picked == null) return;
+    await addPickedVideo(picked, onAdded,
+        onTooLarge: () =>
+            messenger?.showSnackBar(SnackBar(content: Text(tooLarge))));
+  }
+
+  /// Stores a video a picker handed over, unless it is too large.
+  static Future<void> addPickedVideo(
+      XFile picked, ValueChanged<List<String>> onAdded,
+      {required VoidCallback onTooLarge}) async {
     final file = File(picked.path);
     try {
       if (await file.length() > AppConfig.instance.maxVideoBytes) {
-        messenger?.showSnackBar(SnackBar(content: Text(tooLarge)));
+        onTooLarge();
         return;
       }
       await _store(picked.name, file, onAdded);

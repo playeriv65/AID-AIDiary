@@ -135,6 +135,9 @@ void main() {
           ],
           images: [survivingImage],
         ));
+    // The session may still be discarded, so the file waits for commit.
+    expect(await imageFiles.exists('dropped.jpg'), isTrue);
+    await session.commit();
 
     await reloadEverything();
 
@@ -147,6 +150,51 @@ void main() {
     expect(entryImages.single.imgPath, 'kept.jpg');
     expect(await imageFiles.exists('dropped.jpg'), isFalse);
     expect(await imageFiles.exists('kept.jpg'), isTrue);
+  });
+
+  test('discarding a new entry removes it and its files', () async {
+    final image = await writeImageFile('new.jpg');
+    final session = store.beginDraft();
+    await session.save((_) =>
+        EntryDraft(entry: draftEntry(text: 'not keeping'), images: [image]));
+    expect(store.entries, hasLength(1));
+
+    await session.discard();
+    await reloadEverything();
+
+    expect(store.entries, isEmpty);
+    expect(await store.deleted(), isEmpty);
+    expect(await imageFiles.exists('new.jpg'), isFalse);
+  });
+
+  test('discarding an edit restores the entry, its tags and photos', () async {
+    final tag = await addTag('walk');
+    await TagsProvider.instance.load();
+    final oldImage = await writeImageFile('old.jpg');
+    final original = await store.beginDraft().save((_) => EntryDraft(
+        entry: draftEntry(text: 'original', mood: 1),
+        tags: [EntryTag(entryId: 0, tagId: tag.id!, timeCreate: time)],
+        images: [oldImage]));
+
+    final session = store.beginDraft(original);
+    final added = await writeImageFile('added.jpg');
+    await session.save((saved) => EntryDraft(
+        entry: (saved ?? original).copy(text: 'changed', mood: 2),
+        images: [added]));
+    expect(store.entries.single.text, 'changed');
+
+    await session.discard();
+    await reloadEverything();
+
+    final entry = store.entries.single;
+    expect(entry.text, 'original');
+    expect(entry.mood, 1);
+    expect(TagsProvider.instance.getEntryTagsForEntry(entry.id!).single.tagId,
+        tag.id);
+    expect(EntryImagesProvider.instance.getForEntry(entry).single.imgPath,
+        'old.jpg');
+    expect(await imageFiles.exists('old.jpg'), isTrue);
+    expect(await imageFiles.exists('added.jpg'), isFalse);
   });
 
   test('drops a desired tag that was deleted out from under the entry',

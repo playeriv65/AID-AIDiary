@@ -11,6 +11,7 @@ import 'package:aid_diary/providers/entry_images_provider.dart';
 import 'package:aid_diary/providers/tags_provider.dart';
 import 'package:aid_diary/providers/templates_provider.dart';
 import 'package:aid_diary/theme_mode_provider.dart';
+import 'package:aid_diary/widgets/entry_text_field.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -96,6 +97,10 @@ class DiaryAppHarness {
     addTearDown(tester.view.resetPadding);
     addTearDown(tester.view.resetViewPadding);
   }
+
+  /// The editor's writing field, below its title field.
+  static Finder get entryBody => find.descendant(
+      of: find.byType(EntryTextField), matching: find.byType(EditableText));
 
   /// Switches destination with whichever navigation the size shows.
   static Future<void> goTo(WidgetTester tester, int index) async {

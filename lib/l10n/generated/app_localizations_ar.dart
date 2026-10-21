@@ -1225,9 +1225,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get settingsAutoAddWeather => 'Weather';
 
   @override
-  String get settingsAutoAddActivity => 'Activity';
-
-  @override
   String get settingsAutoAddHint =>
       'New entries get these filled in when they are created.';
 
@@ -1932,6 +1929,24 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get toolbarPhotos => 'Add photos';
+
+  @override
+  String get toolbarMedia => 'Photos and videos';
+
+  @override
+  String get mediaFromGallery => 'Choose from gallery';
+
+  @override
+  String get editorLeaveTitle => 'Save this entry?';
+
+  @override
+  String get editorLeaveDiscard => 'Don\'t save';
+
+  @override
+  String get editorTitleHint => 'Title';
+
+  @override
+  String get editorLocating => 'Locating…';
 
   @override
   String get toolbarVideo => 'Video';

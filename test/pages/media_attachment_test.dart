@@ -47,7 +47,7 @@ void main() {
     await tester.pumpWidget(const SizedBox.shrink());
   });
 
-  testWidgets('the editor offers video and voice note sources', (tester) async {
+  testWidgets('the editor offers voice note sources', (tester) async {
     DiaryAppHarness.size(tester, const Size(390, 844));
     await tester.pumpWidget(harness.app(const AddEditEntryPage()));
     await tester.pumpAndSettle();
@@ -57,19 +57,14 @@ void main() {
     expect(find.text('选择音频文件'), findsOneWidget);
     await tester.tapAt(const Offset(195, 100));
     await tester.pumpAndSettle();
-    await tester.tap(find.byIcon(Icons.videocam_outlined));
-    await tester.pumpAndSettle();
-    expect(find.text('选择视频'), findsOneWidget);
-    await tester.tapAt(const Offset(195, 100));
-    await tester.pumpAndSettle();
     await tester.pumpWidget(const SizedBox.shrink());
   });
 
-  testWidgets('every toolbar button names what it does', (tester) async {
+  testWidgets('every editor button names what it does', (tester) async {
     DiaryAppHarness.size(tester, const Size(1280, 800));
     await tester.pumpWidget(harness.app(const AddEditEntryPage()));
     await tester.pumpAndSettle();
-    for (final name in ['位置', '天气', '标签', '粗体', '插入', '撤销']) {
+    for (final name in ['照片和视频', '心情', '标签', '粗体', '插入', '撤销']) {
       expect(find.byTooltip(name), findsOneWidget, reason: name);
     }
     await tester.pumpWidget(const SizedBox.shrink());
