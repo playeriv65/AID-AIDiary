@@ -6,3 +6,7 @@ tags:
   # The whole app, real SQLite, migrations, isolates, encrypted archives.
   integration:
     timeout: 2x
+  # Against a real sync server named in the environment (AID_SYNC_URL);
+  # skipped without one. Slow: real network and key derivation.
+  live:
+    timeout: 4x
