@@ -83,8 +83,7 @@ class WebDavBackend implements SyncBackend {
           String method, String path, http.Response response) =>
       WebDavException(method, path, response.statusCode);
 
-  /// Signs in and makes sure the space folder exists, so wrong addresses
-  /// and passwords show up at once.
+  @override
   Future<void> check() async {
     final response = await _send('PROPFIND', _server, headers: {'Depth': '0'});
     if (response.statusCode != 207) {

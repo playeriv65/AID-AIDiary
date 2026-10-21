@@ -176,4 +176,33 @@ class AppConfig {
 
   /// An address shown as an example in the server field.
   String get syncExampleServer => _section('sync')['exampleServer'] as String;
+
+  GoogleDriveConfig get googleDrive => GoogleDriveConfig._(
+      (_section('sync')['googleDrive'] as Map).cast<String, dynamic>());
+}
+
+/// The app's Google Cloud registration and the endpoints it signs in and
+/// syncs with. See docs/GOOGLE_DRIVE.md.
+class GoogleDriveConfig {
+  GoogleDriveConfig._(this._json);
+
+  final Map<String, dynamic> _json;
+
+  /// The web client, which Android sign-in names as its server.
+  String get webClientId => _json['webClientId'] as String;
+
+  /// The desktop client, signing in through the browser on Windows.
+  String get desktopClientId => _json['desktopClientId'] as String;
+
+  /// Not a secret for an installed app, but Google asks for it.
+  String get desktopClientSecret => _json['desktopClientSecret'] as String;
+
+  Uri get authUrl => Uri.parse(_json['authUrl'] as String);
+  Uri get tokenUrl => Uri.parse(_json['tokenUrl'] as String);
+  Uri get apiUrl => Uri.parse(_json['apiUrl'] as String);
+  Uri get uploadUrl => Uri.parse(_json['uploadUrl'] as String);
+
+  /// How long the browser sign-in may take before it is given up.
+  Duration get signInTimeout =>
+      Duration(minutes: _json['signInTimeoutMinutes'] as int);
 }

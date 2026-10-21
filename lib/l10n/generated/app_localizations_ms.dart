@@ -1992,7 +1992,29 @@ class AppLocalizationsMs extends AppLocalizations {
 
   @override
   String get syncOffDescription =>
-      'Keep this diary the same on all your devices through a WebDAV server, such as Nextcloud, Synology or Jianguoyun.';
+      'Keep this diary the same on all your devices through Google Drive or a WebDAV server, such as Nextcloud, Synology or Jianguoyun.';
+
+  @override
+  String get syncUseGoogleDrive => 'Sync with Google Drive';
+
+  @override
+  String get syncOrWebDav => 'Or a WebDAV server';
+
+  @override
+  String get syncGoogleDrive => 'Google Drive';
+
+  @override
+  String get syncGoogleSignedIn => 'Signed in. You can go back to AID Diary.';
+
+  @override
+  String get syncGoogleSignInAgain => 'Google needs you to sign in again.';
+
+  @override
+  String get syncSignInAgain => 'Sign in again';
+
+  @override
+  String get syncGoogleDriveNotAllowed =>
+      'Access to Google Drive was not allowed. Connect again and tick Google Drive on Google\'s page.';
 
   @override
   String get syncEntryUnsynced =>

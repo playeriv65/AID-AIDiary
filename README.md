@@ -35,7 +35,7 @@ The layout follows the Journey diary app: a bottom bar on phones, a navigation r
 - **Search**: text plus inline tag, starred and mood filters (and activity, for imported entries that have one).
 - **Statistics**: streaks, mood over time, "What makes me feel…" (the activities and tags most often seen with a mood) and Year in Pixels.
 - **Recently deleted**: deleted entries wait 30 days (configurable) before they are erased; restore or erase them early.
-- **Sync** (optional): keeps the diary, its photos, tags and templates the same on every device through a WebDAV server of your choice (Nextcloud, Synology, 坚果云 and others) or the AID sync server in `server/`. End-to-end encrypted by default: a passphrase plus a recovery key shown once; the server only holds ciphertext. Edits sync a few seconds later and while the app is open; when two devices change the same entry the newer wins and the other is kept in Recently deleted. Only entries that failed to sync are marked, with a small crossed-out cloud.
+- **Sync** (optional): keeps the diary, its photos, tags and templates the same on every device through your own Google Drive (the app sees only its `AID Diary` folder), a WebDAV server of your choice (Nextcloud, Synology, 坚果云 and others) or the AID sync server in `server/`. End-to-end encrypted by default: a passphrase plus a recovery key shown once; the server only holds ciphertext. Edits sync a few seconds later and while the app is open; when two devices change the same entry the newer wins and the other is kept in Recently deleted. Only entries that failed to sync are marked, with a small crossed-out cloud.
 - **Export**: JSON (every entry with place, weather, activity, tags and attachment names; the JSON import reads it back), Markdown, and Journey and Day One archives that those apps import, besides the full backup.
 - **Import**: Journey backups (both schemas) and Day One JSON exports with photos, tags, stars, place and weather, plus Daybook, Daylio, Diarium, Diaro, My Brain, OneShot and Pixels.
 - **Settings**: general (theme, wallpaper, entry font, size and line spacing, units, 12/24-hour time, the hours that pick a new entry's diary day, add place and weather automatically), data and storage (backup, export, Recently deleted), stories (morning and evening prompts, throwbacks), notifications (Android: reminders with weekdays, on this day, a nudge after a few quiet days, a lasting quick-write notification), security, help (FAQ, privacy) and about.
@@ -46,6 +46,7 @@ Entries, photos and coordinates stay on the device unless sync is turned on, and
 - OpenStreetMap map tiles, and Nominatim for place names and place search.
 - Overpass (OpenStreetMap) for named places near the current position, only when the location picker opens with a position.
 - Open-Meteo for weather (forecast for recent days, the archive for older entries); only coordinates and a date are sent.
+- Google sign-in and the Drive API, only when syncing with Google Drive ([docs/GOOGLE_DRIVE.md](docs/GOOGLE_DRIVE.md)).
 
 Android permissions beyond storage and notifications: location (place, asked for when a new entry or the atlas opens) and microphone (voice notes), each requested only when that feature is used.
 

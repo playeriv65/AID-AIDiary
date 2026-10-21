@@ -12,6 +12,10 @@ import 'package:uuid/uuid.dart';
 /// folder or a sync server. Like Joplin's sync targets, it only stores files;
 /// all of the syncing happens on the device.
 abstract interface class SyncBackend {
+  /// Signs in and makes sure the space folder exists, so a wrong address or
+  /// password shows up at once.
+  Future<void> check();
+
   /// The files directly in [folder] (paths relative to the space root, `/`
   /// separated), each with a version that changes whenever its content
   /// does. Empty when the folder does not exist yet.
@@ -82,6 +86,9 @@ class SpaceInfo {
 class MemorySyncBackend implements SyncBackend {
   final Map<String, (Uint8List, String)> files = {};
   var _version = 0;
+
+  @override
+  Future<void> check() async {}
 
   @override
   Future<Map<String, String>> list(String folder) async => {

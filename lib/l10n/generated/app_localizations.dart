@@ -3777,8 +3777,50 @@ abstract class AppLocalizations {
   /// No description provided for @syncOffDescription.
   ///
   /// In en, this message translates to:
-  /// **'Keep this diary the same on all your devices through a WebDAV server, such as Nextcloud, Synology or Jianguoyun.'**
+  /// **'Keep this diary the same on all your devices through Google Drive or a WebDAV server, such as Nextcloud, Synology or Jianguoyun.'**
   String get syncOffDescription;
+
+  /// No description provided for @syncUseGoogleDrive.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync with Google Drive'**
+  String get syncUseGoogleDrive;
+
+  /// No description provided for @syncOrWebDav.
+  ///
+  /// In en, this message translates to:
+  /// **'Or a WebDAV server'**
+  String get syncOrWebDav;
+
+  /// No description provided for @syncGoogleDrive.
+  ///
+  /// In en, this message translates to:
+  /// **'Google Drive'**
+  String get syncGoogleDrive;
+
+  /// Shown in the browser tab after signing in to Google on a computer
+  ///
+  /// In en, this message translates to:
+  /// **'Signed in. You can go back to AID Diary.'**
+  String get syncGoogleSignedIn;
+
+  /// No description provided for @syncGoogleSignInAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Google needs you to sign in again.'**
+  String get syncGoogleSignInAgain;
+
+  /// No description provided for @syncSignInAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in again'**
+  String get syncSignInAgain;
+
+  /// No description provided for @syncGoogleDriveNotAllowed.
+  ///
+  /// In en, this message translates to:
+  /// **'Access to Google Drive was not allowed. Connect again and tick Google Drive on Google\'s page.'**
+  String get syncGoogleDriveNotAllowed;
 
   /// No description provided for @syncEntryUnsynced.
   ///

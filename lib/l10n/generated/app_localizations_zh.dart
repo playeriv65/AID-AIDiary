@@ -1996,7 +1996,29 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get syncOffDescription =>
-      '通过 WebDAV 服务器（如 Nextcloud、群晖、坚果云）让这本日记在你的所有设备上保持一致。';
+      '通过 Google 云端硬盘或 WebDAV 服务器（如 Nextcloud、群晖、坚果云）让这本日记在你的所有设备上保持一致。';
+
+  @override
+  String get syncUseGoogleDrive => '用 Google 云端硬盘同步';
+
+  @override
+  String get syncOrWebDav => '或者用 WebDAV 服务器';
+
+  @override
+  String get syncGoogleDrive => 'Google 云端硬盘';
+
+  @override
+  String get syncGoogleSignedIn => '已登录，可以回到 AID Diary 了。';
+
+  @override
+  String get syncGoogleSignInAgain => 'Google 需要你重新登录。';
+
+  @override
+  String get syncSignInAgain => '重新登录';
+
+  @override
+  String get syncGoogleDriveNotAllowed =>
+      '没有允许访问 Google 云端硬盘。请重新连接，并在 Google 的页面上勾选云端硬盘这一项。';
 
   @override
   String get syncEntryUnsynced => '还没同步：上次同步没有成功';

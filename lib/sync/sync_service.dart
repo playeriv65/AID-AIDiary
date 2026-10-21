@@ -14,6 +14,8 @@ import 'package:aid_diary/providers/entries_provider.dart';
 import 'package:aid_diary/providers/entry_images_provider.dart';
 import 'package:aid_diary/providers/tags_provider.dart';
 import 'package:aid_diary/providers/templates_provider.dart';
+import 'package:aid_diary/sync/google_auth.dart';
+import 'package:aid_diary/sync/google_drive_backend.dart';
 import 'package:aid_diary/sync/sync_backend.dart';
 import 'package:aid_diary/sync/sync_crypto.dart';
 import 'package:aid_diary/sync/sync_engine.dart';
@@ -22,43 +24,99 @@ import 'package:aid_diary/sync/webdav_backend.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
-/// How to reach a WebDAV space.
-class WebDavLogin {
-  const WebDavLogin(
-      {required this.server, required this.username, required this.password});
+/// The kinds of place a space can live in.
+enum SyncProvider { webdav, googleDrive }
 
-  final Uri server;
+/// How to reach a space and sign in there.
+sealed class SyncLogin {
+  SyncProvider get provider;
+
+  /// The WebDAV server; null for a cloud drive.
+  Uri? get server;
+
+  /// Who is signed in: a username or an email address.
+  String get username;
+
+  /// What is kept secretly to sign in again: a password or a token.
+  String get credential;
+
+  SyncBackend backend();
+}
+
+class WebDavLogin implements SyncLogin {
+  const WebDavLogin(
+      {required Uri this.server,
+      required this.username,
+      required this.password});
+
+  @override
+  SyncProvider get provider => SyncProvider.webdav;
+  @override
+  final Uri? server;
+  @override
   final String username;
   final String password;
 
+  @override
+  String get credential => password;
+
+  @override
   WebDavBackend backend() =>
-      WebDavBackend(server: server, username: username, password: password);
+      WebDavBackend(server: server!, username: username, password: password);
+}
+
+class GoogleDriveLogin implements SyncLogin {
+  GoogleDriveLogin({required this.username, required this.auth});
+
+  @override
+  SyncProvider get provider => SyncProvider.googleDrive;
+  @override
+  Uri? get server => null;
+  @override
+  final String username;
+  final GoogleAuth auth;
+
+  @override
+  String get credential => auth.credential;
+
+  @override
+  GoogleDriveBackend backend() {
+    final config = AppConfig.instance.googleDrive;
+    return GoogleDriveBackend(
+        api: config.apiUrl, upload: config.uploadUrl, token: auth.token);
+  }
 }
 
 /// Where this device syncs. Secrets are kept apart, in the platform's
 /// secure storage.
 class SyncTarget {
   const SyncTarget(
-      {required this.server,
+      {required this.provider,
+      this.server,
       required this.username,
       required this.spaceId,
       required this.encrypted});
 
-  final Uri server;
+  final SyncProvider provider;
+  final Uri? server;
   final String username;
   final String spaceId;
   final bool encrypted;
 
   Map<String, Object?> toJson() => {
-        'type': 'webdav',
-        'server': server.toString(),
+        'type': provider.name,
+        if (server != null) 'server': server.toString(),
         'username': username,
         'spaceId': spaceId,
         'encrypted': encrypted,
       };
 
   factory SyncTarget.fromJson(Map<String, Object?> json) => SyncTarget(
-      server: Uri.parse(json['server'] as String),
+      provider: SyncProvider.values.byName(json['type'] as String),
+      server: switch (json['server']) {
+        final String server => Uri.parse(server),
+        _ => null,
+      },
       username: json['username'] as String,
       spaceId: json['spaceId'] as String,
       encrypted: json['encrypted'] as bool);
@@ -134,12 +192,12 @@ class SyncService with ChangeNotifier {
   DateTime? get lastSync =>
       DateTime.tryParse(ConfigProvider.instance.get(Settings.lastSync));
 
-  ({String password, Uint8List? key}) get _secrets {
+  ({String credential, Uint8List? key}) get _secrets {
     final stored = ConfigProvider.instance.get(Settings.syncSecrets);
-    if (stored.isEmpty) return (password: '', key: null);
+    if (stored.isEmpty) return (credential: '', key: null);
     final json = jsonDecode(stored) as Map<String, Object?>;
     return (
-      password: json['password'] as String,
+      credential: json['password'] as String,
       key: switch (json['key']) {
         final String key => base64.decode(key),
         _ => null,
@@ -147,13 +205,30 @@ class SyncService with ChangeNotifier {
     );
   }
 
-  WebDavLogin? get _login {
+  /// The login for the current target, kept so a cloud drive's tokens are
+  /// reused between syncs.
+  SyncLogin? _cachedLogin;
+
+  SyncLogin? get _login {
     final target = this.target;
-    if (target == null) return null;
-    return WebDavLogin(
-        server: target.server,
-        username: target.username,
-        password: _secrets.password);
+    if (target == null) return _cachedLogin = null;
+    final cached = _cachedLogin;
+    if (cached != null &&
+        cached.provider == target.provider &&
+        cached.username == target.username &&
+        cached.server == target.server) {
+      return cached;
+    }
+    final credential = _secrets.credential;
+    return _cachedLogin = switch (target.provider) {
+      SyncProvider.webdav => WebDavLogin(
+          server: target.server!,
+          username: target.username,
+          password: credential),
+      SyncProvider.googleDrive => GoogleDriveLogin(
+          username: target.username,
+          auth: GoogleAuth.forPlatform(credential: credential)),
+    };
   }
 
   /// Starts syncing when the diary is open: now, after changes, on resume
@@ -262,7 +337,7 @@ class SyncService with ChangeNotifier {
   }
 
   /// Signs in and reads the space at [login]: null when there is none yet.
-  Future<SpaceInfo?> probe(WebDavLogin login) async {
+  Future<SpaceInfo?> probe(SyncLogin login) async {
     final backend = login.backend();
     await backend.check();
     return _readSpace(backend);
@@ -276,7 +351,7 @@ class SyncService with ChangeNotifier {
   /// Makes a new space at [login] with this diary in it, end-to-end
   /// encrypted with [passphrase] when one is given. Returns the recovery
   /// key to show once.
-  Future<String?> createSpace(WebDavLogin login, {String? passphrase}) async {
+  Future<String?> createSpace(SyncLogin login, {String? passphrase}) async {
     final backend = login.backend();
     if (await _readSpace(backend) != null) {
       throw StateError('There is already a space here');
@@ -291,7 +366,7 @@ class SyncService with ChangeNotifier {
 
   /// Joins the space at [login], opening an encrypted one with
   /// [passphrase] or [recoveryKey]. This diary's entries join it too.
-  Future<void> joinSpace(WebDavLogin login, SpaceInfo space,
+  Future<void> joinSpace(SyncLogin login, SpaceInfo space,
       {String? passphrase, String? recoveryKey}) async {
     final encryption = space.encryption;
     Uint8List? key;
@@ -315,19 +390,31 @@ class SyncService with ChangeNotifier {
   }
 
   Future<void> _connect(
-      WebDavLogin login, SpaceInfo space, Uint8List? key) async {
+      SyncLogin login, SpaceInfo space, Uint8List? key) async {
     final db = AppDatabase.instance.database!;
     await clearSyncState(db);
     await markAllChanged(db);
+    _cachedLogin = login;
     await _save(
         SyncTarget(
+            provider: login.provider,
             server: login.server,
             username: login.username,
             spaceId: space.id,
             encrypted: space.encrypted),
-        login.password,
+        login.credential,
         key);
     _setState(SyncState.idle);
+    await syncNow();
+  }
+
+  /// Signs in to the cloud drive again after Google asked for it, keeping
+  /// the space and its key.
+  Future<void> signInAgain({required String doneMessage}) async {
+    final login = _login;
+    if (login is! GoogleDriveLogin) return;
+    await login.auth.signIn(doneMessage: doneMessage);
+    await _save(target!, login.credential, _secrets.key);
     await syncNow();
   }
 
@@ -339,6 +426,7 @@ class SyncService with ChangeNotifier {
     await ConfigProvider.instance.set(Settings.syncTarget, '');
     await ConfigProvider.instance.set(Settings.syncSecrets, '');
     await ConfigProvider.instance.set(Settings.lastSync, '');
+    _cachedLogin = null;
     lastReport = null;
     error = null;
     unsyncedEntryIds = const {};
@@ -378,11 +466,12 @@ class SyncService with ChangeNotifier {
     return keys.recoveryKey;
   }
 
-  Future<void> _save(SyncTarget target, String password, Uint8List? key) async {
+  Future<void> _save(
+      SyncTarget target, String credential, Uint8List? key) async {
     await ConfigProvider.instance.set(
         Settings.syncSecrets,
         jsonEncode({
-          'password': password,
+          'password': credential,
           if (key != null) 'key': base64.encode(key)
         }));
     await ConfigProvider.instance

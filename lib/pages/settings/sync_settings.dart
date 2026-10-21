@@ -4,6 +4,8 @@
 
 import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/sync/google_auth.dart';
+import 'package:aid_diary/sync/google_drive_backend.dart';
 import 'package:aid_diary/sync/sync_backend.dart';
 import 'package:aid_diary/sync/sync_crypto.dart';
 import 'package:aid_diary/sync/sync_service.dart';
@@ -11,6 +13,7 @@ import 'package:aid_diary/sync/webdav_backend.dart';
 import 'package:aid_diary/time_manager.dart';
 import 'package:aid_diary/widgets/progress_dialog.dart';
 import 'package:flutter/services.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// Shortest passphrase accepted for a new or changed space key.
@@ -42,15 +45,25 @@ class _SyncSettingsState extends State<SyncSettings> {
 
   String _describe(Object error, AppLocalizations l10n) => switch (error) {
         WebDavException(unauthorized: true) => l10n.syncSignInFailed,
+        GoogleSignInNeeded() ||
+        GoogleDriveException(unauthorized: true) =>
+          l10n.syncGoogleSignInAgain,
+        GoogleDriveNotAllowed() => l10n.syncGoogleDriveNotAllowed,
         WrongKeyException() => l10n.syncWrongKey,
         _ => l10n.syncConnectFailed('$error'),
       };
 
-  /// Runs [task] behind a progress dialog and reports a failure; null then.
+  /// Runs [task] behind a progress dialog and reports a failure; null then,
+  /// and also when the user called a sign-in off.
   Future<T?> _attempt<T>(Future<T> Function() task) async {
     final l10n = AppLocalizations.of(context)!;
     try {
       return await runWithProgress(context, (update) => task());
+    } on GoogleSignInException catch (error) {
+      if (error.code != GoogleSignInExceptionCode.canceled && mounted) {
+        _say(_describe(error, l10n));
+      }
+      return null;
     } catch (error) {
       if (mounted) _say(_describe(error, l10n));
       return null;
@@ -60,10 +73,22 @@ class _SyncSettingsState extends State<SyncSettings> {
   Future<void> _connect() async {
     final server = Uri.tryParse(_server.text.trim());
     if (server == null || !server.hasScheme || server.host.isEmpty) return;
-    final login = WebDavLogin(
+    await _open(WebDavLogin(
         server: server,
         username: _username.text.trim(),
-        password: _password.text);
+        password: _password.text));
+  }
+
+  Future<void> _connectGoogleDrive() async {
+    final doneMessage = AppLocalizations.of(context)!.syncGoogleSignedIn;
+    final auth = GoogleAuth.forPlatform();
+    final login = await _attempt(() async => GoogleDriveLogin(
+        username: await auth.signIn(doneMessage: doneMessage), auth: auth));
+    if (login != null && mounted) await _open(login);
+  }
+
+  /// Starts a space at [login], or joins the one already there.
+  Future<void> _open(SyncLogin login) async {
     var probed = false;
     final space = await _attempt(() async {
       final space = await _service.probe(login);
@@ -78,7 +103,7 @@ class _SyncSettingsState extends State<SyncSettings> {
     }
   }
 
-  Future<void> _startSpace(WebDavLogin login) async {
+  Future<void> _startSpace(SyncLogin login) async {
     final choice = await showDialog<({String? passphrase})>(
         context: context, builder: (_) => const _NewSpaceDialog());
     if (choice == null || !mounted) return;
@@ -87,7 +112,7 @@ class _SyncSettingsState extends State<SyncSettings> {
     if (recoveryKey != null && mounted) await _showRecoveryKey(recoveryKey);
   }
 
-  Future<void> _joinSpace(WebDavLogin login, SpaceInfo space) async {
+  Future<void> _joinSpace(SyncLogin login, SpaceInfo space) async {
     final l10n = AppLocalizations.of(context)!;
     if (!space.encrypted) {
       final join = await _confirm(
@@ -228,6 +253,21 @@ class _SyncSettingsState extends State<SyncSettings> {
       padding: const EdgeInsets.all(16),
       children: [
         Text(l10n.syncOffDescription),
+        if (GoogleAuth.available) ...[
+          const SizedBox(height: 16),
+          Align(
+            alignment: AlignmentDirectional.centerStart,
+            child: FilledButton.tonalIcon(
+              key: const ValueKey('sync-google-drive'),
+              icon: const Icon(Icons.add_to_drive_rounded),
+              label: Text(l10n.syncUseGoogleDrive),
+              onPressed: _connectGoogleDrive,
+            ),
+          ),
+          const SizedBox(height: 24),
+          Text(l10n.syncOrWebDav,
+              style: Theme.of(context).textTheme.titleSmall),
+        ],
         const SizedBox(height: 16),
         Align(
           alignment: AlignmentDirectional.centerStart,
@@ -281,8 +321,11 @@ class _SyncSettingsState extends State<SyncSettings> {
     return ListView(
       children: [
         ListTile(
-          leading: const Icon(Icons.cloud_done_rounded),
-          title: Text(target.server.host),
+          leading: Icon(switch (target.provider) {
+            SyncProvider.webdav => Icons.cloud_done_rounded,
+            SyncProvider.googleDrive => Icons.add_to_drive_rounded,
+          }),
+          title: Text(target.server?.host ?? l10n.syncGoogleDrive),
           subtitle: Text('${target.username} · '
               '${target.encrypted ? l10n.syncEncrypted : l10n.syncNotEncrypted}'),
         ),
@@ -299,6 +342,14 @@ class _SyncSettingsState extends State<SyncSettings> {
           title: Text(_status(l10n), key: const ValueKey('sync-status')),
         ),
         const Divider(),
+        if (_service.error is GoogleSignInNeeded)
+          ListTile(
+            key: const ValueKey('sync-sign-in-again'),
+            leading: const Icon(Icons.login_rounded),
+            title: Text(l10n.syncSignInAgain),
+            onTap: () => _attempt(() =>
+                _service.signInAgain(doneMessage: l10n.syncGoogleSignedIn)),
+          ),
         if (locked)
           ListTile(
             leading: const Icon(Icons.lock_open_rounded),
