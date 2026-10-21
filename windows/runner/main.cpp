@@ -18,6 +18,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
   ::CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
 
   flutter::DartProject project(L"data");
+  // Impeller builds every pipeline when the engine starts, and ANGLE
+  // compiles each shader again on every launch: about a second before the
+  // first frame here, against 0.2 s with Skia
+  // (https://github.com/flutter/flutter/issues/191860). Use Skia until a
+  // stable release fixes that.
+  project.set_impeller_switch(flutter::ImpellerSwitch::Disabled);
 
   std::vector<std::string> command_line_arguments =
       GetCommandLineArguments();
