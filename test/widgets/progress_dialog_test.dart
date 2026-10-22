@@ -2,6 +2,9 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+@Tags(['widget'])
+library;
+
 import 'dart:async';
 
 import 'package:aid_diary/widgets/progress_dialog.dart';

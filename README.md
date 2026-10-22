@@ -64,7 +64,8 @@ Windows is the main development environment (no WSL, no SDK submodule). [docs/SE
 
 ```powershell
 ./scripts/dev.ps1 pub          # resolve app and CLI dependencies on a new checkout
-./scripts/dev.ps1 test         # all tests
+./scripts/dev.ps1 test -TestFiles test/sync/local_device_test.dart # affected files/directories
+./scripts/dev.ps1 test-all     # deliberate full offline regression
 ./scripts/dev.ps1 analyze      # static analysis
 ./scripts/dev.ps1 screenshots  # regenerate artifacts/ui-*.png headlessly
 ./scripts/dev.ps1 windows      # run the Windows app
@@ -94,7 +95,9 @@ aid entry.delete id=12 --yes         # destructive actions need --yes
 
 The Android build runs on JDK 23: the root `android/build.gradle` gives every module's Kotlin the JVM target its Java already uses, since many plugins leave it unset. Flutter's Android SDK path is pinned with `flutter config --android-sdk`.
 
-Screenshots are rendered by widget tests in `tool/screenshots/` with real fonts (Flutter SDK icons, Windows Noto Sans SC and Segoe Emoji); no window opens.
+Choose validation by the affected behavior, following [docs/TESTING.md](docs/TESTING.md). A small change does not require a full regression before committing. Layer targets (`test-unit`, `test-widget`, `test-integration`) also accept `-TestFiles`; external services require explicit `test-live`. Host integration tests do not replace native device checks.
+
+Screenshots are rendered by widget tests in `tool/screenshots/` with real fonts (Flutter SDK icons, Windows Noto Sans SC and Segoe Emoji); no window opens. Pass `-TestFiles` to render only the affected screenshot file.
 
 Platforms: Windows and Android. iOS, macOS, Linux and web are not configured.
 

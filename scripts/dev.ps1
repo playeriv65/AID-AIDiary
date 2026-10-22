@@ -1,12 +1,16 @@
 param(
-  [ValidateSet('windows','windows-build','windows-stage','windows-background','windows-driver','android','apk','profile','release','test','test-unit','test-widget','test-integration','test-server','cli','test-cli','frame-rate','analyze','pub','screenshots')][string]$Target='windows',
+  [ValidateSet('windows','windows-build','windows-stage','windows-background','windows-driver','android','apk','profile','release','test','test-all','test-unit','test-widget','test-integration','test-live','test-server','cli','test-cli','frame-rate','analyze','pub','screenshots')][string]$Target='windows',
   # Flutter device id for 'android', e.g. a wireless adb serial from `flutter devices`.
   [string]$Device='emulator-5554',
-  # Optional focused files for the Flutter test targets.
+  # Files or directories; required for test, optional for layers/screenshots.
   [string[]]$TestFiles=@()
 )
-if ($TestFiles.Count -gt 0 -and $Target -notin 'test', 'test-unit', 'test-widget', 'test-integration') {
-  Write-Error 'TestFiles is supported only by the Flutter test targets.'
+if ($TestFiles.Count -gt 0 -and $Target -notin 'test', 'test-unit', 'test-widget', 'test-integration', 'test-live', 'screenshots') {
+  Write-Error 'TestFiles is supported by scoped tests, test layers and screenshots. test-all always runs the whole offline suite.'
+  exit 1
+}
+if ($Target -eq 'test' -and $TestFiles.Count -eq 0) {
+  Write-Error 'Choose affected files or directories: ./scripts/dev.ps1 test -TestFiles test/sync/copy_status_test.dart. For a deliberate full offline regression, use test-all. See docs/TESTING.md.'
   exit 1
 }
 # Where this computer keeps the toolchain, from scripts/dev.env (kept out of
@@ -61,8 +65,8 @@ if ($Target -in 'android', 'apk', 'profile', 'release' -and
 # native test DLL while it is loaded. Serialize all Flutter workspace writers.
 $buildLock = $null
 if ($Target -in 'windows', 'windows-build', 'windows-stage', 'windows-background', 'windows-driver',
-    'android', 'apk', 'profile', 'release', 'frame-rate', 'test', 'test-unit',
-    'test-widget', 'test-integration', 'screenshots', 'pub', 'analyze') {
+    'android', 'apk', 'profile', 'release', 'frame-rate', 'test', 'test-all', 'test-unit',
+    'test-widget', 'test-integration', 'test-live', 'screenshots', 'pub', 'analyze') {
   $lockPath = Join-Path (Get-Location) '.dart_tool/dev-build.lock'
   New-Item -ItemType Directory -Force (Split-Path $lockPath -Parent) | Out-Null
   try {
@@ -170,11 +174,14 @@ switch ($Target) {
     Push-Location cli
     try { dart pub get } finally { Pop-Location }
   }
-  # Test layers (see dart_test.yaml). Four workers keep runs from pinning
-  # every core. Unit tests while iterating; all layers before committing.
-  'test-unit' { flutter test -j 4 --exclude-tags widget,integration @TestFiles }
-  'test-widget' { flutter test -j 4 --tags widget @TestFiles }
-  'test-integration' { flutter test -j 4 --tags integration @TestFiles }
+  # Choose affected paths first, then a layer if useful (docs/TESTING.md).
+  # Live services are always opt-in, even when credentials are in the shell.
+  'test' { flutter test -j 4 --exclude-tags live @TestFiles }
+  'test-all' { flutter test -j 4 --exclude-tags live }
+  'test-unit' { flutter test -j 4 --exclude-tags 'widget,integration,live' @TestFiles }
+  'test-widget' { flutter test -j 4 --tags widget --exclude-tags live @TestFiles }
+  'test-integration' { flutter test -j 4 --tags integration --exclude-tags live @TestFiles }
+  'test-live' { flutter test -j 4 --tags live @TestFiles }
   # The Go sync server under server/.
   'test-server' {
     Push-Location server
@@ -199,7 +206,6 @@ switch ($Target) {
       if ($LASTEXITCODE -eq 0) { dart analyze; dart test }
     } finally { Pop-Location }
   }
-  'test' { flutter test -j 4 @TestFiles }
   'analyze' {
     # The root analyzer also sees the CLI package on a new checkout.
     Push-Location cli
@@ -208,7 +214,10 @@ switch ($Target) {
     flutter analyze
   }
   # Renders artifacts/ui-*.png in widget tests; no window opens.
-  'screenshots' { flutter test tool/screenshots/ }
+  'screenshots' {
+    if ($TestFiles.Count -eq 0) { $TestFiles = @('tool/screenshots/') }
+    flutter test -j 4 @TestFiles
+  }
 }
 } finally {
   if ($null -ne $buildLock) { $buildLock.Dispose() }

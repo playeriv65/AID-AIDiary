@@ -11,11 +11,6 @@ import '../support/diary_app_harness.dart';
 
 void main() {
   final harness = DiaryAppHarness()..register();
-  test('Unicode device labels fit the server enrollment byte limit', () {
-    expect(LocalDevice.validName(List.filled(32, '😀').join()), isTrue);
-    expect(LocalDevice.validName(List.filled(33, '😀').join()), isFalse);
-    expect(LocalDevice.validName('My\nphone'), isFalse);
-  });
   testWidgets('a device can keep its default or save a name without a profile',
       (tester) async {
     expect(LocalDevice.name, isNotEmpty);

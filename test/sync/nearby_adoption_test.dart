@@ -2,6 +2,9 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+@Tags(['integration'])
+library;
+
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/sync/nearby_adoption.dart';
 import 'package:flutter_test/flutter_test.dart';

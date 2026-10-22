@@ -292,7 +292,8 @@ fakes without global setup.
 5. Settings: a `Setting` in `Settings.all`; tunable values and endpoints in
    `assets/config/app_config.json`; user-facing text in the ARB files.
 6. Tests at the layer that owns the logic (`dart_test.yaml` explains the
-   unit, widget and integration tags).
+   unit, widget and host-integration tags). [TESTING.md](TESTING.md) selects
+   affected checks and explains when full or native regression is needed.
 
 ## Not done yet
 

@@ -2,6 +2,9 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+@Tags(['widget'])
+library;
+
 import 'package:aid_diary/widgets/back_gesture_transition.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';

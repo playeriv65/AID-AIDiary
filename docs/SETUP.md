@@ -27,7 +27,9 @@ Use `scripts/dev.ps1` for Flutter builds, tests, screenshots, initialization
 and analysis. They share a workspace lock because native test DLLs cannot be
 replaced while another test process is using them. Focused checks accept
 `./scripts/dev.ps1 test -TestFiles test/sync/copy_status_test.dart`; use another
-worktree for independent concurrent Flutter work.
+worktree for independent concurrent Flutter work. [TESTING.md](TESTING.md)
+explains which checks a change needs; full offline regression is the explicit
+`test-all` target, not the default for each commit.
 
 1. Clone `playeriv65/AID-AIDiary` (private; access from the owner).
 2. Copy `scripts/dev.env.example` to `scripts/dev.env` and set this
@@ -43,7 +45,9 @@ worktree for independent concurrent Flutter work.
 5. `./scripts/dev.ps1 pub` resolves dependencies for both the Flutter app and
    the separate `cli/` Dart package. Run it in every new checkout/worktree
    before analysis or tests; the root analyzer also reads CLI sources.
-6. `./scripts/dev.ps1 test` and `./scripts/dev.ps1 windows` to check.
+6. `./scripts/dev.ps1 test -TestFiles test/sync/local_device_test.dart` checks
+   the test environment. Run `./scripts/dev.ps1 windows` when ready to open
+   the app; use `test-all` if a full baseline is needed.
 
 ## Sync development
 

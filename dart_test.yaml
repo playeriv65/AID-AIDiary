@@ -1,12 +1,13 @@
-# Test layers. Untagged files are unit tests: pure logic, run while iterating.
+# Select affected paths before selecting a layer; see docs/TESTING.md.
+# Untagged files are logic/source-contract tests without app or storage fixtures.
 # Tag a file with @Tags(['widget']) or @Tags(['integration']) above `library;`.
 tags:
   # One page or component on the test harness.
   widget:
-  # The whole app, real SQLite, migrations, isolates, encrypted archives.
+  # Host integration: real files, SQLite, local sockets, isolates or app flows.
+  # These run under flutter test, not on Windows/Android devices.
   integration:
     timeout: 2x
-  # Against a real sync server named in the environment (AID_SYNC_URL);
-  # skipped without one. Slow: real network and key derivation.
+  # External services. Excluded by offline targets; opt in with test-live.
   live:
     timeout: 4x

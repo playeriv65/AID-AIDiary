@@ -1,6 +1,9 @@
 // Copyright (C) 2026 Demizo and contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
+@Tags(['integration'])
+library;
+
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
