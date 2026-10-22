@@ -4,11 +4,14 @@
 
 import 'package:aid_diary/actions/app_action.dart';
 import 'package:aid_diary/routing/destination.dart';
+import 'package:aid_diary/routing/drawing_navigation.dart';
 import 'package:aid_diary/routing/coach_destinations.dart';
 import 'package:aid_diary/routing/entry_navigation.dart';
 import 'package:aid_diary/routing/organize_destinations.dart';
+import 'package:aid_diary/routing/moments_destinations.dart';
 import 'package:aid_diary/routing/settings_destinations.dart';
 import 'package:aid_diary/routing/story_destinations.dart';
+import 'package:aid_diary/routing/sync_scan_navigation.dart';
 import 'package:material_ui/material_ui.dart';
 
 export 'package:aid_diary/routing/destination.dart' show Destination;
@@ -18,9 +21,12 @@ export 'package:aid_diary/routing/destination.dart' show Destination;
 /// so `ui.navigate` reaches all of them.
 final List<Destination> destinations = [
   ...settingsDestinations,
+  ...syncScanDestinations,
   ...entryDestinations,
+  ...drawingDestinations,
   ...storyDestinations,
   ...organizeDestinations,
+  ...momentsDestinations,
   ...coachDestinations,
 ];
 

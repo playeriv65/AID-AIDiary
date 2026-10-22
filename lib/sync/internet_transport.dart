@@ -22,6 +22,7 @@ class InternetTransport {
   InternetTransport(
       {required this.endpoint,
       required this.authorization,
+      this.authorizationProvider,
       required this.deviceId,
       required this.userId,
       required this.spaceId,
@@ -42,6 +43,7 @@ class InternetTransport {
 
   final Uri endpoint;
   final String authorization, deviceId, userId, spaceId;
+  final Future<String> Function()? authorizationProvider;
   final Uint8List masterKey;
   final SyncBackend vault;
   final Uri Function() localEndpoint;
@@ -108,9 +110,11 @@ class InternetTransport {
           Hmac(sha256, _signalKey).convert(utf8.encode('directory')).toString();
       final uri =
           endpoint.replace(queryParameters: {'space': tag, 'device': deviceId});
-      final socket = await WebSocket.connect(uri.toString(),
-              headers: {'Authorization': authorization})
-          .timeout(const Duration(seconds: 10));
+      final socket = await WebSocket.connect(uri.toString(), headers: {
+        'Authorization': authorizationProvider == null
+            ? authorization
+            : await authorizationProvider!()
+      }).timeout(const Duration(seconds: 10));
       if (_closed || epoch != _epoch) {
         await socket.close();
         return;

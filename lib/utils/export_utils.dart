@@ -104,41 +104,43 @@ String encodeJsonEntries(List<Entry> entries,
         tagsOf}) {
   return const JsonEncoder.withIndent('  ').convert([
     for (final entry in entries)
-      {
-        'text': entry.text,
-        'mood': entry.mood,
-        // Wall-clock time where it was written, and that place's offset.
-        'timeCreated': entry.timeCreate.toIso8601String(),
-        if (entry.utcOffset case final offset?) 'utcOffsetMinutes': offset,
-        // The day the entry belongs to, chosen apart from when it was written.
-        'diaryDate': DiaryDay.format(entry.day),
-        'timeModified': entry.timeModified.toIso8601String(),
-        if (entry.location case final place?)
-          'location': {
-            'name': place.name,
-            'latitude': place.latitude,
-            'longitude': place.longitude,
-          },
-        if (entry.weather case final weather?)
-          'weather': {
-            'code': weather.code,
-            'temperature': weather.temperature,
-          },
-        if (entry.activity case final activity?) 'activity': activity.name,
-        if (entry.openAt case final openAt?) 'openAt': openAt.toIso8601String(),
-        'tags': [
-          for (final tag in tagsOf(entry))
-            {'name': tag.name, if (tag.value != null) 'value': tag.value},
-        ],
-        'images': [
-          for (final image in imagesOf(entry))
-            {
-              'imgPath': image.imgPath,
-              'imgRank': image.imgRank,
-              'timeCreated': image.timeCreate.toIso8601String(),
+      if (!entry.isSealed)
+        {
+          'text': entry.text,
+          'mood': entry.mood,
+          // Wall-clock time where it was written, and that place's offset.
+          'timeCreated': entry.timeCreate.toIso8601String(),
+          if (entry.utcOffset case final offset?) 'utcOffsetMinutes': offset,
+          // The day the entry belongs to, chosen apart from when it was written.
+          'diaryDate': DiaryDay.format(entry.day),
+          'timeModified': entry.timeModified.toIso8601String(),
+          if (entry.location case final place?)
+            'location': {
+              'name': place.name,
+              'latitude': place.latitude,
+              'longitude': place.longitude,
             },
-        ],
-      },
+          if (entry.weather case final weather?)
+            'weather': {
+              'code': weather.code,
+              'temperature': weather.temperature,
+            },
+          if (entry.activity case final activity?) 'activity': activity.name,
+          if (entry.openAt case final openAt?)
+            'openAt': openAt.toIso8601String(),
+          'tags': [
+            for (final tag in tagsOf(entry))
+              {'name': tag.name, if (tag.value != null) 'value': tag.value},
+          ],
+          'images': [
+            for (final image in imagesOf(entry))
+              {
+                'imgPath': image.imgPath,
+                'imgRank': image.imgRank,
+                'timeCreated': image.timeCreate.toIso8601String(),
+              },
+          ],
+        },
   ]);
 }
 
@@ -161,6 +163,7 @@ class ExportUtils {
   static Future<OperationOutcome> exportToJson(
       PickedDirectory exportFolder, Function(String) updateStatus) async {
     updateStatus("0%");
+    await EntriesProvider.instance.complete;
     final json = encodeJsonEntries(
       EntriesProvider.instance.entries,
       imagesOf: EntryImagesProvider.instance.getForEntry,
@@ -201,7 +204,10 @@ class ExportUtils {
       final output = writer(folder.path);
       final favoriteId = TagsProvider.instance.favoriteTag?.id;
       final favoriteName = TagsProvider.instance.favoriteTag?.name;
-      final entries = EntriesProvider.instance.entries;
+      await EntriesProvider.instance.complete;
+      final entries = EntriesProvider.instance.entries
+          .where((entry) => !entry.isSealed)
+          .toList();
       for (final (index, entry) in entries.indexed) {
         final images = <(EntryImage, Uint8List)>[];
         for (final image in EntryImagesProvider.instance.getForEntry(entry)) {
@@ -260,6 +266,7 @@ class MarkdownExportWriter implements ArchiveExportWriter {
   @override
   Future<void> write(ExportedEntry exported) async {
     final entry = exported.entry;
+    if (entry.isSealed) return;
     final timestamp = DateFormat("yyyy-MM-dd", locale).format(entry.day);
     _timestampCount[timestamp] = (_timestampCount[timestamp] ?? 0) + 1;
     final index = _timestampCount[timestamp]!;

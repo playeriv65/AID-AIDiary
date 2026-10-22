@@ -15,8 +15,7 @@ class AppLocalizationsMs extends AppLocalizations {
   String get themeColorTitle => 'Theme color';
 
   @override
-  String get themeColorHint =>
-      'Pick a color to stop following the system accent. Applies to light and dark themes.';
+  String get themeColorHint => 'Choose a color for this palette.';
 
   @override
   String get themeColorBlue => 'Sky blue';
@@ -2274,4 +2273,332 @@ class AppLocalizationsMs extends AppLocalizations {
   @override
   String get syncCacheNotice =>
       'Cloud media is temporary. Keep the originals on your devices; syncing is not a backup.';
+
+  @override
+  String get paperTitle => 'Letter paper';
+
+  @override
+  String get paperPlain => 'Plain';
+
+  @override
+  String get paperLined => 'Lined';
+
+  @override
+  String get paperGrid => 'Grid';
+
+  @override
+  String get paperTinted => 'Tinted';
+
+  @override
+  String get paperDecorationTitle => 'Decorations';
+
+  @override
+  String get paperDecorationNone => 'None';
+
+  @override
+  String get paperDecorationBotanical => 'Leaves';
+
+  @override
+  String get paperDecorationStars => 'Stars';
+
+  @override
+  String get paperDecorationWashi => 'Washi tape';
+
+  @override
+  String get themeDarkChoice => 'Dark appearance';
+
+  @override
+  String get themeDarkSame => 'Follow light palette';
+
+  @override
+  String get themeDarkCustom => 'Separate palette';
+
+  @override
+  String get themeDarkAccent => 'Dark accent colour';
+
+  @override
+  String get themeColorTeal => 'Teal';
+
+  @override
+  String get themeColorCyan => 'Cyan';
+
+  @override
+  String get themeColorIndigo => 'Indigo';
+
+  @override
+  String get themeColorCoral => 'Coral';
+
+  @override
+  String get themeColorOlive => 'Olive';
+
+  @override
+  String get themeColorSlate => 'Slate';
+
+  @override
+  String get drawingTitle => 'Drawing';
+
+  @override
+  String get drawingPen => 'Pen';
+
+  @override
+  String get drawingEraser => 'Eraser';
+
+  @override
+  String get drawingUndo => 'Undo';
+
+  @override
+  String get drawingClear => 'Clear';
+
+  @override
+  String get drawingWidth => 'Pen width';
+
+  @override
+  String get drawingStylusOnly => 'Stylus only';
+
+  @override
+  String get drawingDiscardTitle => 'Discard drawing?';
+
+  @override
+  String get drawingDiscardBody => 'This drawing has not been saved.';
+
+  @override
+  String get drawingSaveError => 'Could not save the drawing.';
+
+  @override
+  String get syncNetworkTitle => 'Network diagnostics';
+
+  @override
+  String get syncNetworkRefresh => 'Refresh';
+
+  @override
+  String get syncNetworkSelectedRoute => 'Current path';
+
+  @override
+  String get syncNetworkAvailableRoutes => 'Available paths';
+
+  @override
+  String get syncNetworkSignaling => 'Device directory connection';
+
+  @override
+  String get syncNetworkRelayRemaining => 'Remaining relay allowance';
+
+  @override
+  String get syncNetworkIcePair => 'Direct connection candidates';
+
+  @override
+  String get syncNetworkPeerTrusted => 'Authenticated device';
+
+  @override
+  String get syncNetworkNoRoute => 'Waiting for a connection';
+
+  @override
+  String get syncNetworkUnavailable => 'Diagnostics are unavailable';
+
+  @override
+  String get syncMediaCopiesTitle => 'Media delivery and copies';
+
+  @override
+  String get syncMediaPendingCount => 'Waiting to transfer';
+
+  @override
+  String get syncMediaDurableCount => 'Delivered to personal storage';
+
+  @override
+  String get syncMediaTemporaryCount => 'Temporary or unconfirmed copies';
+
+  @override
+  String get syncMediaReceiptExplanation =>
+      'These counts describe completed deliveries, not a fresh audit of surviving backups.';
+
+  @override
+  String get syncMediaCacheExplanation =>
+      'Temporary cloud media can expire. Keep your originals or a separate backup.';
+
+  @override
+  String get momentsTitle => 'Photo moments';
+
+  @override
+  String get momentsHint =>
+      'Find groups using local photo times and optional coordinates. Photos are attached only when you choose a card.';
+
+  @override
+  String get momentsScan => 'Find moments';
+
+  @override
+  String get momentsChooseFolder => 'Choose photo folder';
+
+  @override
+  String get momentsLocation => 'Include photo locations';
+
+  @override
+  String get momentsEmpty => 'No recent photo groups.';
+
+  @override
+  String get momentsCreate => 'Write about these photos';
+
+  @override
+  String get momentsDismiss => 'Dismiss';
+
+  @override
+  String get momentsError => 'Could not read local photos.';
+
+  @override
+  String get momentsCreated => 'Photo entry created.';
+
+  @override
+  String get momentsPermission =>
+      'Allow access to photos to find local suggestions.';
+
+  @override
+  String get momentsScope =>
+      'Recent photos only; at most 500 photos and 20 photos per card.';
+
+  @override
+  String momentsPhotoCount(int count) {
+    return '$count photos';
+  }
+
+  @override
+  String get nearbyTitle => 'Nearby device transfer';
+
+  @override
+  String get nearbySend => 'This is the old device';
+
+  @override
+  String get nearbyReceive => 'This is the new device';
+
+  @override
+  String get nearbyInstructions =>
+      'Connect both devices to the same Wi-Fi or connect one to the other’s hotspot. This transfer works without Internet.';
+
+  @override
+  String get nearbyCompare =>
+      'Compare this code on both devices before approving.';
+
+  @override
+  String get nearbyConfirm => 'The codes match';
+
+  @override
+  String get nearbyScan => 'Scan old device QR';
+
+  @override
+  String get nearbyPaste => 'Paste invitation';
+
+  @override
+  String get nearbyWaiting => 'Waiting for approval on the other device';
+
+  @override
+  String get nearbyWorking => 'Transferring diary and attachments…';
+
+  @override
+  String get nearbyPending =>
+      'Some attachments are still pending. Keep the old device open and retry.';
+
+  @override
+  String get nearbyComplete => 'Diary and attachments transferred';
+
+  @override
+  String get nearbyFailed =>
+      'Could not complete the transfer. Check the local connection and retry.';
+
+  @override
+  String get nearbyEmptyRequired =>
+      'Use a new device with no diary entries and no connected sync account.';
+
+  @override
+  String get nearbyRetry => 'Continue transfer';
+
+  @override
+  String get nearbyWifi => 'Wi-Fi settings';
+
+  @override
+  String get nearbyHotspot => 'Hotspot settings';
+
+  @override
+  String get nearbyKeepOpen =>
+      'Keep this page open until the new device finishes. The invitation expires after two minutes.';
+
+  @override
+  String get syncDevicesTitle => 'Authorized devices';
+
+  @override
+  String get syncDevicesDescription =>
+      'Only approved devices can access this AID account. Revoking a device blocks the server but cannot erase a master key or diary already copied to it.';
+
+  @override
+  String get syncDeviceRequest =>
+      'Show this authorization QR to an approved device';
+
+  @override
+  String get syncDeviceAuthorize => 'Authorize a device';
+
+  @override
+  String get syncDeviceAuthorizeDescription =>
+      'Scan or paste the new device’s authorization request.';
+
+  @override
+  String get syncDeviceRevoke => 'Revoke';
+
+  @override
+  String get syncDeviceRotate => 'Rotate this device’s signing key';
+
+  @override
+  String get syncDeviceCheck => 'Check authorization';
+
+  @override
+  String get syncDeviceHardware => 'Hardware-backed signing key';
+
+  @override
+  String get syncDeviceSoftware => 'Non-exportable software signing key';
+
+  @override
+  String get syncDeviceUnavailable =>
+      'Device authorization is unavailable. Approve this device from another authorized device and retry.';
+
+  @override
+  String get syncDeviceRevoked => 'Revoked';
+
+  @override
+  String get syncDeviceLocal => 'This device';
+
+  @override
+  String get cloudTrafficTitle => 'Monthly cloud media allowance';
+
+  @override
+  String get cloudTrafficLimit => 'Monthly allowance';
+
+  @override
+  String get cloudTrafficUsed => 'Used';
+
+  @override
+  String get cloudTrafficRemaining => 'Remaining';
+
+  @override
+  String cloudTrafficResetsAt(String time) {
+    return 'Resets $time';
+  }
+
+  @override
+  String get cloudTrafficExhausted =>
+      'Cloud media allowance used up. Missing media will resume automatically over a direct connection or when the allowance resets.';
+
+  @override
+  String get cloudTrafficExplanation =>
+      'Media cache and live relay share this allowance. Direct connections do not use it. Diary text and connection control have separate small daily limits.';
+
+  @override
+  String get appearanceThemeSection => 'App theme';
+
+  @override
+  String get appearancePaperSection => 'Diary paper';
+
+  @override
+  String get appearanceTypographySection => 'Diary text';
+
+  @override
+  String get appearancePreferencesSection => 'General preferences';
+
+  @override
+  String get themeSystemAccentHint =>
+      'Uses the system palette instead of custom colors. Turn it off to choose your own.';
 }

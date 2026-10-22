@@ -3,6 +3,7 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'dart:async';
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:aid_diary/database/image_storage.dart';
@@ -10,6 +11,7 @@ import 'package:aid_diary/models/image.dart';
 import 'package:aid_diary/providers/entry_images_provider.dart';
 import 'package:aid_diary/storage/file_store.dart';
 import 'package:aid_diary/storage/in_memory_file_store.dart';
+import 'package:aid_diary/storage/local_file_store.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 class FakeImageFolder extends InMemoryFileStore {
@@ -155,6 +157,35 @@ void main() {
   group('capture', () {
     final captureTime = DateTime(2026, 1, 2, 3, 4, 5);
     const capturedName = 'aid_diary_2026-01-02T03-04-05.jpg';
+
+    test(
+        'concurrent captures reserve separate local files and preserve every payload',
+        () async {
+      final directory =
+          await Directory.systemTemp.createTemp('diary-concurrent-captures-');
+      addTearDown(() => directory.delete(recursive: true));
+      final local = LocalFileStore(directory.path);
+      useStores(local, InMemoryFileStore());
+      await local.write(capturedName, bytesOf('existing'));
+      final contents = [
+        for (var index = 0; index < 24; index++) 'photo $index'
+      ];
+      final names = await Future.wait([
+        for (final content in contents)
+          storage.create(null, bytesOf(content),
+              currTime: captureTime, skipExternalUpload: true)
+      ]);
+      expect(names.every((name) => name != null), isTrue);
+      expect(names.toSet(), hasLength(contents.length));
+      expect(await local.read(capturedName), bytesOf('existing'));
+      for (var index = 0; index < names.length; index++) {
+        expect(await local.read(names[index]!), bytesOf(contents[index]));
+      }
+      // A caller rolling back its own import cannot erase a neighbour's file.
+      await storage.delete(names.first!);
+      expect(await local.read(names[1]!), bytesOf(contents[1]));
+      expect(await local.read(capturedName), bytesOf('existing'));
+    });
 
     test('uploads without looking anything up first', () async {
       final externalStore = FakeImageFolder();

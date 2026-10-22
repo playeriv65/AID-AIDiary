@@ -141,7 +141,7 @@ class _MainAppState extends State<MainApp> {
                 brightness: Brightness.light));
       }
 
-      if (themeModeProvider.usingSystemColor && darkDynamic != null) {
+      if (themeModeProvider.usingDarkSystemColor && darkDynamic != null) {
         // FIX: Surface colors are not correct with the dynamic theme, see https://github.com/material-foundation/flutter-packages/issues/574
         // Use dynamic theme for seed color but do not inject chroma
         bool noChroma = (darkDynamic.primary.r == darkDynamic.primary.b) &&
@@ -161,7 +161,7 @@ class _MainAppState extends State<MainApp> {
           useMaterial3: true,
           materialTapTargetSize: MaterialTapTargetSize.padded,
           colorScheme: ColorScheme.fromSeed(
-              seedColor: themeModeProvider.accentColor,
+              seedColor: themeModeProvider.darkAccentColor,
               brightness: Brightness.dark),
         );
       }
@@ -172,12 +172,12 @@ class _MainAppState extends State<MainApp> {
       }
 
       // amoled override
-      if (ConfigProvider.instance.get(Settings.theme) == 'amoled') {
+      if (themeModeProvider.darkIsAmoled) {
         darkTheme = ThemeData(
             useMaterial3: true,
             materialTapTargetSize: MaterialTapTargetSize.padded,
             colorScheme: ColorScheme.fromSeed(
-              seedColor: themeModeProvider.accentColor,
+              seedColor: themeModeProvider.darkAccentColor,
               brightness: Brightness.dark,
               surfaceContainerLowest: Colors.black,
               surfaceContainerLow: Colors.black,

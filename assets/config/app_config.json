@@ -96,6 +96,9 @@
     "parallelTransfers": 3,
     "progressAfterSeconds": 3,
     "transfer": {
+      "nearbyInvitationSeconds": 120,
+      "nearbySessionSeconds": 3600,
+      "nearbyPackKiB": 1024,
       "chunkKiB": 1024,
       "cacheMaxFileMiB": 16,
       "cacheTransferMiB": 32,

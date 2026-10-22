@@ -31,6 +31,8 @@ class WebDavBackend implements SyncBackend {
       {required Uri server,
       required String username,
       required String password,
+      this.authorizationProvider,
+      this.deviceIdProvider,
       this.folder = defaultFolder,
       http.Client? client})
       : _server = server.path.endsWith('/')
@@ -46,9 +48,13 @@ class WebDavBackend implements SyncBackend {
   final Uri _server;
   final String folder;
   final String _authorization;
+  final Future<String> Function()? authorizationProvider;
+  final String? Function()? deviceIdProvider;
   final http.Client _client;
   bool? _hasMediaPolicy;
-  bool get boundedMedia => _hasMediaPolicy == true;
+  bool _operatorLimited = false;
+  Map<String, dynamic>? cachedCloudTraffic;
+  bool get boundedMedia => _operatorLimited;
 
   /// AID installations may live below a reverse-proxy path prefix.
   Uri syncApi(String resource) {
@@ -64,6 +70,10 @@ class WebDavBackend implements SyncBackend {
   Uri get networkEndpoint => syncApi('network')
       .replace(scheme: _server.scheme == 'https' ? 'wss' : 'ws');
   String get networkAuthorization => _authorization;
+  Future<String> networkCredentials() async => authorizationProvider == null
+      ? _authorization
+      : await authorizationProvider!();
+  String? get authenticatedDeviceId => deviceIdProvider?.call();
 
   /// Folders made, or being made, in this session. Writes in parallel wait
   /// on the same MKCOL: servers lock a folder while one is made, and answer
@@ -86,7 +96,8 @@ class WebDavBackend implements SyncBackend {
       {Map<String, String> headers = const {}, List<int>? body}) async {
     Future<http.Response> attempt() async {
       final request = http.Request(method, uri)
-        ..headers.addAll({'Authorization': _authorization, ...headers});
+        ..headers
+            .addAll({'Authorization': await networkCredentials(), ...headers});
       if (body != null) request.bodyBytes = body;
       return http.Response.fromStream(await _client.send(request));
     }
@@ -232,14 +243,25 @@ class WebDavBackend implements SyncBackend {
     final response = await _send('GET', syncApi('policy'));
     if (response.statusCode == 404 || response.statusCode == 405) {
       _hasMediaPolicy = false;
+      _operatorLimited = false;
+      cachedCloudTraffic = null;
       return null;
     }
     if (response.statusCode != 200) {
       throw _failure('GET', '/api/sync/policy', response);
     }
     _hasMediaPolicy = true;
-    return (jsonDecode(response.body) as Map<String, dynamic>)['media']
-        as Map<String, dynamic>;
+    final policy = jsonDecode(response.body) as Map<String, dynamic>;
+    // The capability endpoint also exists on personal installations. Only an
+    // explicit operator flag makes its media temporary and metered.
+    _operatorLimited = policy['operatorLimited'] == true;
+    if (!_operatorLimited) {
+      cachedCloudTraffic = null;
+      return null;
+    }
+    final traffic = policy['traffic'];
+    cachedCloudTraffic = traffic is Map<String, dynamic> ? traffic : null;
+    return policy['media'] as Map<String, dynamic>;
   }
 }
 

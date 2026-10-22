@@ -28,12 +28,29 @@ class ThemeModeProvider with ChangeNotifier {
       ConfigProvider.instance.get(Settings.followSystemColor);
 
   /// What [_accentColor] was made from, to tell when it needs making again.
-  (bool, int)? _accentSource;
+  (bool, int, String, bool, int)? _accentSource;
 
-  (bool, int) get _currentAccentSource => (
+  (bool, int, String, bool, int) get _currentAccentSource => (
         ConfigProvider.instance.get(Settings.followSystemColor),
         ConfigProvider.instance.get(Settings.accentColor),
+        ConfigProvider.instance.get(Settings.darkTheme),
+        ConfigProvider.instance.get(Settings.darkFollowSystemColor),
+        ConfigProvider.instance.get(Settings.darkAccentColor),
       );
+
+  bool get usingDarkSystemColor =>
+      ConfigProvider.instance.get(Settings.darkTheme) == 'same'
+          ? usingSystemColor
+          : ConfigProvider.instance.get(Settings.darkFollowSystemColor);
+  Color get darkAccentColor =>
+      ConfigProvider.instance.get(Settings.darkTheme) == 'same'
+          ? accentColor
+          : usingDarkSystemColor
+              ? SystemTheme.accentColor.accent
+              : Color(ConfigProvider.instance.get(Settings.darkAccentColor));
+  bool get darkIsAmoled =>
+      ConfigProvider.instance.get(Settings.theme) == 'amoled' ||
+      ConfigProvider.instance.get(Settings.darkTheme) == 'amoled';
 
   void _configChanged() {
     if (_accentSource != _currentAccentSource) updateAccentColor();
@@ -42,6 +59,8 @@ class ThemeModeProvider with ChangeNotifier {
   /// Makes [color] the accent, by `settings.set` as the command line does.
   Future<void> selectAccentColor(Color color) =>
       changeSetting(Settings.accentColor, color.toARGB32());
+  Future<void> selectDarkAccentColor(Color color) =>
+      changeSetting(Settings.darkAccentColor, color.toARGB32());
 
   void updateAccentColor() {
     _accentSource = _currentAccentSource;

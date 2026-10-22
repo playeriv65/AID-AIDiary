@@ -170,6 +170,25 @@ void main() {
       expect(back.timeCreate, DateTime(2026, 10, 20, 8));
     });
 
+    test('entry export excludes sealed writing and reports the exported count',
+        () async {
+      await add('Open writing', DateTime(2026, 10, 20));
+      await EntryStore.instance.add(Entry(
+          text: 'Private capsule',
+          timeCreate: DateTime(2026, 10, 21),
+          timeModified: DateTime(2026, 10, 21),
+          openAt: DateTime(2099)));
+      final folder = folders().folder('out').path;
+      final exported =
+          await run('data.export', {'format': 'json', 'path': folder});
+      expect(exported['entries'], 1);
+      final data = jsonDecode(
+          await File(p.join(folder, exported['file'] as String))
+              .readAsString()) as List;
+      expect(data.single['text'], 'Open writing');
+      expect(EntryStore.instance.entries, hasLength(2));
+    });
+
     test('the other formats are zips with the notes in them', () async {
       await add('Walk by the river', DateTime(2026, 10, 20, 8));
       final folder = folders().folder('out').path;

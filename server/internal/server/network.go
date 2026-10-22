@@ -12,6 +12,7 @@ import (
 	"errors"
 	"net/http"
 	"regexp"
+	"strings"
 	"sync"
 	"time"
 
@@ -125,14 +126,15 @@ type networkFrame struct {
 	day   string
 }
 type networkPeer struct {
-	s       *Server
-	key     roomKey
-	device  string
-	session string
-	conn    *websocket.Conn
-	ctx     context.Context
-	cancel  context.CancelFunc
-	queue   chan networkFrame
+	s             *Server
+	key           roomKey
+	device        string
+	session       string
+	authorization string
+	conn          *websocket.Conn
+	ctx           context.Context
+	cancel        context.CancelFunc
+	queue         chan networkFrame
 	// sendMu serializes enqueue against shutdown and protects unused reserves.
 	sendMu         sync.Mutex
 	closed         bool
@@ -165,6 +167,18 @@ func (s *Server) networkSocket(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	space, device := r.URL.Query().Get("space"), r.URL.Query().Get("device")
+	if strings.HasPrefix(r.Header.Get("Authorization"), "Bearer ") {
+		_, authenticated, valid := s.requireDevice(w, r)
+		if !valid {
+			release()
+			return
+		}
+		if authenticated != device {
+			release()
+			http.Error(w, "device identity mismatch", 403)
+			return
+		}
+	}
 	if !roomPattern.MatchString(space) || !devicePattern.MatchString(device) {
 		release()
 		http.Error(w, "invalid network identity", 400)
@@ -190,7 +204,7 @@ func (s *Server) networkSocket(w http.ResponseWriter, r *http.Request) {
 	}
 	day := s.transferDay()
 	const emergencyBytes int64 = 256
-	if err := s.accounts.ReserveNetwork(r.Context(), user.ID, day, "signal", emergencyBytes, s.cfg.Network.SignalDailyBytes); err != nil {
+	if err := s.reserveNetwork(r.Context(), user.ID, day, "signal", emergencyBytes); err != nil {
 		h.mu.Unlock()
 		release()
 		http.Error(w, "network signal budget exhausted", 429)
@@ -216,7 +230,8 @@ func (s *Server) networkSocket(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	p := &networkPeer{s: s, key: key, device: device, session: hex.EncodeToString(random[:]), conn: conn,
-		ctx: ctx, cancel: cancel, queue: make(chan networkFrame, s.cfg.Network.QueueFrames), emergencyDay: day, emergencyBytes: emergencyBytes}
+		authorization: r.Header.Get("Authorization"),
+		ctx:           ctx, cancel: cancel, queue: make(chan networkFrame, s.cfg.Network.QueueFrames), emergencyDay: day, emergencyBytes: emergencyBytes}
 	conn.SetReadLimit(max(s.cfg.Network.SignalFrameBytes, s.cfg.Network.RelayFrameBytes))
 	var peers = []peerInfo{}
 	for id, peer := range room {
@@ -267,9 +282,9 @@ func (s *Server) networkSocket(w http.ResponseWriter, r *http.Request) {
 		old.cancel()
 		old.conn.CloseNow()
 	}
-	name, password, _ := r.BasicAuth()
+	authorization := r.Header.Get("Authorization")
 	writerDone := make(chan struct{})
-	go func() { defer close(writerDone); p.writer(name, password) }()
+	go func() { defer close(writerDone); p.writer(authorization) }()
 	p.readLoop()
 	p.cancel()
 	conn.CloseNow()
@@ -307,11 +322,21 @@ func (s *Server) networkLimit(kind string) int64 {
 	return s.cfg.Network.SignalDailyBytes
 }
 func (s *Server) networkRemaining(ctx context.Context, user int64, kind string) (int64, error) {
+	if !s.cfg.OperatorLimits {
+		// A protocol capability ceiling, not a metered allowance. Exact integers
+		// remain representable by clients that decode JSON through JavaScript.
+		return 1<<53 - 1, nil
+	}
 	used, err := s.accounts.NetworkUsed(ctx, user, s.transferDay(), kind)
-	return max(0, s.networkLimit(kind)-used), err
+	remaining := max(0, s.networkLimit(kind)-used)
+	if err == nil && kind == "relay" {
+		traffic, failure := s.cloudTrafficPolicy(ctx, user)
+		return min(remaining, traffic.MonthlyRemainingBytes), failure
+	}
+	return remaining, err
 }
 func (s *Server) refundNetwork(user int64, day, kind string, bytes int64) {
-	if bytes <= 0 {
+	if !s.cfg.OperatorLimits || bytes <= 0 {
 		return
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
@@ -342,7 +367,7 @@ func (p *networkPeer) enqueue(kind string, message networkMessage) error {
 		return context.Canceled
 	}
 	day := p.s.transferDay()
-	if err = p.s.accounts.ReserveNetwork(p.ctx, p.key.user, day, kind, int64(len(data)), p.s.networkLimit(kind)); err != nil {
+	if err = p.s.reserveNetwork(p.ctx, p.key.user, day, kind, int64(len(data))); err != nil {
 		return err
 	}
 	select {
@@ -355,7 +380,7 @@ func (p *networkPeer) enqueue(kind string, message networkMessage) error {
 	}
 }
 
-func (p *networkPeer) writer(name, password string) {
+func (p *networkPeer) writer(authorization string) {
 	ticker := time.NewTicker(p.s.cfg.Network.HeartbeatInterval)
 	defer ticker.Stop()
 	checked := time.Now()
@@ -385,11 +410,11 @@ func (p *networkPeer) writer(name, password string) {
 				p.conn.CloseNow()
 				return
 			}
-			if time.Since(checked) >= p.s.cfg.CredentialTTL {
+			if strings.HasPrefix(authorization, "Bearer ") || time.Since(checked) >= p.s.cfg.CredentialTTL {
 				ctx, cancel := context.WithTimeout(p.ctx, p.s.cfg.Network.WriteTimeout)
-				user, err := p.s.accounts.Verify(ctx, name, password)
+				valid := p.s.validNetworkCredential(ctx, authorization, p.key.user)
 				cancel()
-				if err != nil || user.ID != p.key.user {
+				if !valid {
 					p.cancel()
 					p.conn.CloseNow()
 					return
@@ -408,6 +433,10 @@ func (p *networkPeer) readLoop() {
 		if err != nil {
 			return
 		}
+		if p.ctx.Err() != nil || (strings.HasPrefix(p.authorization, "Bearer ") &&
+			!p.s.validNetworkCredential(p.ctx, p.authorization, p.key.user)) {
+			return
+		}
 		if time.Since(window) >= time.Second {
 			window = time.Now()
 			frames = 0
@@ -421,7 +450,7 @@ func (p *networkPeer) readLoop() {
 			return
 		}
 		kind := message.Type
-		if err := p.s.accounts.ReserveNetwork(p.ctx, p.key.user, p.s.transferDay(), kind, int64(len(data)), p.s.networkLimit(kind)); err != nil {
+		if err := p.s.reserveNetwork(p.ctx, p.key.user, p.s.transferDay(), kind, int64(len(data))); err != nil {
 			p.terminalBudget(kind)
 			return
 		}
@@ -561,6 +590,11 @@ func (s *Server) Close() {
 }
 
 func (s *Server) networkPolicy(ctx context.Context, user int64) (map[string]any, error) {
+	if !s.cfg.OperatorLimits {
+		return map[string]any{"endpoint": "/api/sync/network",
+			"relay":  map[string]int64{"maxFrameBytes": s.cfg.Network.RelayFrameBytes},
+			"signal": map[string]int64{"maxFrameBytes": s.cfg.Network.SignalFrameBytes}}, nil
+	}
 	relay, err := s.networkRemaining(ctx, user, "relay")
 	if err != nil {
 		return nil, err

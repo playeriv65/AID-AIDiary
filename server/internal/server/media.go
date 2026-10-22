@@ -76,11 +76,6 @@ func (s *Server) policy(w http.ResponseWriter, r *http.Request) {
 	if !ok {
 		return
 	}
-	used, err := s.accounts.TransferUsed(r.Context(), user.ID, s.transferDay())
-	if err != nil {
-		http.Error(w, "transfer accounting unavailable", http.StatusServiceUnavailable)
-		return
-	}
 	w.Header().Set("Cache-Control", "no-store")
 	w.Header().Set("Content-Type", "application/json")
 	network, err := s.networkPolicy(r.Context(), user.ID)
@@ -88,10 +83,24 @@ func (s *Server) policy(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "network accounting unavailable", http.StatusServiceUnavailable)
 		return
 	}
-	json.NewEncoder(w).Encode(map[string]any{"network": network, "media": map[string]int64{
+	if !s.cfg.OperatorLimits {
+		json.NewEncoder(w).Encode(map[string]any{"operatorLimited": false, "network": network})
+		return
+	}
+	used, err := s.accounts.TransferUsed(r.Context(), user.ID, s.transferDay())
+	if err != nil {
+		http.Error(w, "transfer accounting unavailable", http.StatusServiceUnavailable)
+		return
+	}
+	traffic, err := s.cloudTrafficPolicy(r.Context(), user.ID)
+	if err != nil {
+		http.Error(w, "traffic accounting unavailable", http.StatusServiceUnavailable)
+		return
+	}
+	json.NewEncoder(w).Encode(map[string]any{"operatorLimited": true, "traffic": traffic, "network": network, "media": map[string]int64{
 		"maxObjectBytes":         min(s.cfg.Media.MaxObjectBytes, s.cfg.MaxUploadBytes),
 		"maxManifestBytes":       min(s.cfg.Media.defaults().MaxManifestBytes, min(s.cfg.Media.MaxObjectBytes, s.cfg.MaxUploadBytes)),
-		"transferRemainingBytes": max(0, s.cfg.Media.DailyTransferBytes-used),
+		"transferRemainingBytes": min(max(0, s.cfg.Media.DailyTransferBytes-used), traffic.MonthlyRemainingBytes),
 		"cacheTtlSeconds":        int64(s.cfg.Media.CacheTTL.Seconds()),
 		"cacheBytes":             s.cfg.Media.CacheBytes,
 	}})
@@ -101,10 +110,17 @@ func (s *Server) transferDay() string { return s.cfg.Now().UTC().Format(time.Dat
 
 func (s *Server) reserve(w http.ResponseWriter, r *http.Request, user accounts.User, bytes int64) (string, bool) {
 	day := s.transferDay()
-	if err := s.accounts.ReserveTransfer(r.Context(), user.ID, day, bytes, s.cfg.Media.DailyTransferBytes); err != nil {
+	if !s.cfg.OperatorLimits {
+		return day, true
+	}
+	if err := s.accounts.ReserveCloudMedia(r.Context(), user.ID, day, bytes, s.cfg.Media.DailyTransferBytes, s.cfg.MonthlyMediaBytes); err != nil {
 		if errors.Is(err, accounts.ErrTransferLimit) {
 			now := s.cfg.Now().UTC()
-			w.Header().Set("Retry-After", strconv.FormatInt(int64(now.Truncate(24*time.Hour).Add(24*time.Hour).Sub(now).Seconds())+1, 10))
+			reset := now.Truncate(24 * time.Hour).Add(24 * time.Hour)
+			if errors.Is(err, accounts.ErrMonthlyTransferLimit) {
+				reset = nextMonth(now)
+			}
+			w.Header().Set("Retry-After", strconv.FormatInt(int64(reset.Sub(now).Seconds())+1, 10))
 			http.Error(w, err.Error(), http.StatusTooManyRequests)
 		} else {
 			http.Error(w, "transfer accounting unavailable", http.StatusServiceUnavailable)
@@ -115,7 +131,7 @@ func (s *Server) reserve(w http.ResponseWriter, r *http.Request, user accounts.U
 }
 
 func (s *Server) refund(user accounts.User, day string, bytes int64) {
-	if bytes <= 0 {
+	if !s.cfg.OperatorLimits || bytes <= 0 {
 		return
 	}
 	// The request may already be cancelled. Failure leaves the unused reservation
@@ -153,6 +169,9 @@ func (s *Server) mediaUsage(f *folder) (int64, error) {
 // expireMedia only evicts ciphertext chunks (including old blob objects).
 // Manifests, pairing files, packs and snapshots are never cache victims.
 func (s *Server) expireMedia(f *folder) error {
+	if !s.cfg.OperatorLimits {
+		return nil
+	}
 	return filepath.WalkDir(f.root, func(name string, entry fs.DirEntry, err error) error {
 		if err != nil {
 			return err
@@ -183,9 +202,12 @@ func (s *Server) expireMedia(f *folder) error {
 }
 
 func (s *Server) putMedia(w http.ResponseWriter, r *http.Request, user accounts.User, f *folder) {
-	limit := min(s.cfg.MaxUploadBytes, s.cfg.Media.MaxObjectBytes)
-	if mediaKind(r.URL.Path) == "manifest" {
-		limit = min(limit, s.cfg.Media.defaults().MaxManifestBytes)
+	limit := s.cfg.MaxUploadBytes
+	if s.cfg.OperatorLimits {
+		limit = min(limit, s.cfg.Media.MaxObjectBytes)
+		if mediaKind(r.URL.Path) == "manifest" {
+			limit = min(limit, s.cfg.Media.defaults().MaxManifestBytes)
+		}
 	}
 	if r.ContentLength < 0 {
 		http.Error(w, "media upload requires Content-Length", http.StatusLengthRequired)
@@ -204,12 +226,16 @@ func (s *Server) putMedia(w http.ResponseWriter, r *http.Request, user accounts.
 		}
 		before = info.Size()
 	}
-	used, err := s.mediaUsage(f)
-	if err != nil {
-		http.Error(w, "storage unavailable", 500)
-		return
+	var used int64
+	if s.cfg.OperatorLimits {
+		var err error
+		used, err = s.mediaUsage(f)
+		if err != nil {
+			http.Error(w, "storage unavailable", 500)
+			return
+		}
 	}
-	if used-before+r.ContentLength > s.cfg.Media.CacheBytes ||
+	if (s.cfg.OperatorLimits && used-before+r.ContentLength > s.cfg.Media.CacheBytes) ||
 		(user.QuotaBytes > 0 && f.used-before+r.ContentLength > user.QuotaBytes) {
 		http.Error(w, "media cache full; wait for direct transfer", http.StatusInsufficientStorage)
 		return

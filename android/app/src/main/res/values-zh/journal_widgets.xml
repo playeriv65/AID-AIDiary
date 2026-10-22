@@ -1,0 +1,10 @@
+<resources>
+    <string name="streak_widget_name">连续记录</string>
+    <string name="prompt_widget_name">每日一问</string>
+    <string name="mood_widget_name">现在心情如何？</string>
+    <string name="widget_mood_low">很低落</string>
+    <string name="widget_mood_down">低落</string>
+    <string name="widget_mood_neutral">平静</string>
+    <string name="widget_mood_good">开心</string>
+    <string name="widget_mood_great">很开心</string>
+</resources>

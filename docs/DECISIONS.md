@@ -31,7 +31,30 @@ asks again. Dates are when it was settled. Ideas not built yet are in
   ✓ button saves without asking.
 - Random walk matters to the owner, who relies on One Diary's: keep it
   good.
-- Backgrounds, stickers and more themes wait in `TODO.md`.
+- Appearance is independently configurable: light/system theme, optional
+  separate dark palette, diary paper, original vector decorations and typography
+  (2026-10-22). Group settings with previews; using system colors takes precedence
+  over custom colors. The installed Durian Diary is a reference for organization,
+  without copying its assets or paid-feature behavior.
+
+## Current feature scope (2026-10-22)
+
+- Finish device authorization, offline nearby migration, sync diagnostics,
+  handwriting, configurable appearance, local photo suggestions and Android
+  widgets. Use mature, compatible drawing components.
+- Automate connection, path selection, retries and already-authorized sync.
+  Request user action only for trust, permissions or a connection that needs
+  assistance. Show the server's actual free monthly media allowance and remaining
+  bytes; the official server's cache and live relay share a default 1 GB monthly
+  allowance. Direct transfers do not consume it. Defer media automatically when
+  allowance is exhausted. Self-hosting defaults to no plan quotas, no media TTL
+  and no cache eviction; administrators may explicitly enable and configure
+  limits. Never apply the official free plan merely because a server supports
+  the AID protocol. The official service is the same self-hostable server with
+  selected parameters enabled, not a separate code path; clients use server
+  policy rather than domain-based exceptions.
+- Finer mood words, goals/habits and question-grid entries remain deferred.
+  Performance work will be revisited together later.
 
 ## Features left out on purpose
 
@@ -85,9 +108,9 @@ current implementation. Decided along the way:
   the pairing through the server or the storage is fine. The local network
   is preferred once built, and large media should travel there rather than
   through a server with limited traffic.
-- Build on the existing storage backends first (Google Drive, WebDAV, the
-  AID server); device keys and short-lived tokens on the AID server come
-  next.
+- Google Drive and ordinary WebDAV retain their provider authentication;
+  the AID server uses device keys and short-lived tokens after initial
+  account bootstrap.
 
 ### Automatic paths and bounded media (2026-10-22)
 
@@ -141,19 +164,18 @@ hash-verified media after a one-sided signaling disconnect and after the
 isolated test server stopped; directory `leave` must not discard a working
 direct link. Temporary-service/device-test cleanup was verified, including
 restored nginx, production health 200 and removed test endpoint health 404.
-The final Flutter suite passed 710 tests, with six external-service tests
-skipped; the production server still needs the networking release deployed.
-Exact evidence belongs in
+The production server still needs the updated release deployed. Exact evidence belongs in
 `docs/SYNC_NETWORK.md`.
 
-Offline first-time trust, Wi-Fi Direct/hotspot assistance and individual
-device-key revocation remain future work. Network authentication currently
-proves possession of the same MK, rather than a separate device signing
-key. Google Drive and ordinary WebDAV retain LAN and storage; the directory
-and Internet transports require the compatible server service. The new
-nearby migration flow and an advanced GUI diagnostics page have not been
-implemented. Detailed implementation boundaries and verification results
-belong in `docs/SYNC_NETWORK.md`.
+Offline first-time QR trust and MK transfer, nearby migration, per-device
+P-256 authorization/revocation/rotation, hotspot settings assistance and GUI
+diagnostics are implemented. The two devices compare a code before adoption;
+the new device generates its own non-exportable key. Revocation stops server
+access but cannot recall an MK or diary already copied. Automatic Wi-Fi Direct
+creation remains future work. Google Drive and ordinary WebDAV retain LAN and
+storage; Internet discovery requires the compatible service. Detailed
+implementation boundaries and verification results belong in
+`docs/SYNC_NETWORK.md`.
 
 ## Testing
 
@@ -173,5 +195,4 @@ belong in `docs/SYNC_NETWORK.md`.
   proposed, not decided.
 - Whether `ui.navigate to=entry` should follow the layout as a tap does
   (detail pane on wide windows) instead of always pushing a page.
-- Whether voice-note transcription on the device fits "no AI", and
-  whether inserting an image from a web address fits a local diary.
+- Whether voice-note transcription on the device fits "no AI".

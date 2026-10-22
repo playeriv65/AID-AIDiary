@@ -33,6 +33,8 @@ import 'package:aid_diary/widgets/media_attachment.dart';
 import 'package:aid_diary/widgets/mood_icon.dart';
 import 'package:aid_diary/widgets/tag_chip.dart';
 import 'package:aid_diary/widgets/tag_picker_dialog.dart';
+import 'package:aid_diary/widgets/letter_paper.dart';
+import 'package:aid_diary/routing/drawing_navigation.dart';
 import 'package:aid_diary/widgets/template_select_popup.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -290,7 +292,8 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
                 _tagsButton(),
                 if (!_model.isNew) _deleteButton(),
               ]),
-          body: EditorActionBarOverlay(
+          body: LetterPaper(
+              child: EditorActionBarOverlay(
             body: LayoutBuilder(
               builder: (context, constraints) {
                 final sidePadding = ((constraints.maxWidth - _pageWidth) / 2)
@@ -311,7 +314,7 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
               focusNode: _focusNode,
               onTemplateInserted: _model.applyTemplateTags,
             ),
-          ),
+          )),
         ),
       ),
     );
@@ -734,6 +737,14 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
     final l10n = AppLocalizations.of(context)!;
     final add = _model.addAttachments;
     return _chooseAttachment([
+      (
+        Icons.draw_outlined,
+        l10n.drawingTitle,
+        () async {
+          final name = await DrawingNavigation.open(context);
+          if (name != null) await add([name]);
+        }
+      ),
       (Icons.photo_library_outlined, l10n.mediaFromGallery, _pickFromGallery),
       if (Platform.isAndroid) ...[
         (

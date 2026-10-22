@@ -30,6 +30,7 @@ import 'package:intl/intl.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:aid_diary/widgets/letter_paper.dart';
 
 /// Reads one entry: photos, date block, metadata, then the text.
 class EntryViewPage extends StatelessWidget {
@@ -135,7 +136,8 @@ class EntryViewPage extends StatelessWidget {
       ),
       body: sealed
           ? _SealedCapsule(entry: entry)
-          : ListView(
+          : LetterPaper(
+              child: ListView(
               padding: const EdgeInsets.only(bottom: 24),
               children: [
                 if (images.isNotEmpty) _Photos(entry: entry, images: images),
@@ -163,7 +165,7 @@ class EntryViewPage extends StatelessWidget {
                   ),
                 ),
               ],
-            ),
+            )),
       bottomNavigationBar: onPrevious == null && onNext == null
           ? null
           : SafeArea(

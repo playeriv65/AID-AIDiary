@@ -15,6 +15,7 @@ import 'package:aid_diary/flashback_manager.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/launch_intent.dart';
 import 'package:aid_diary/models/entry.dart';
+import 'package:aid_diary/models/template.dart';
 import 'package:aid_diary/models/flashback.dart';
 import 'package:aid_diary/notification_manager.dart';
 import 'package:aid_diary/pages/review_story_page.dart';
@@ -59,8 +60,11 @@ class _JournalPageState extends State<JournalPage>
   @override
   void initState() {
     super.initState();
-    _checkForLaunchIntent();
-    _checkForNotificationLaunch();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      _checkForLaunchIntent();
+      _checkForNotificationLaunch();
+    });
     if (Platform.isAndroid) {
       _shareSubscription = ShareReceiver.instance.shares.listen(_handleShare);
       _newEntryTapSubscription = NotificationManager
@@ -76,6 +80,10 @@ class _JournalPageState extends State<JournalPage>
         if (HomeWidgetService.isWrite(uri)) _writeToday();
         if (HomeWidgetService.isNewEntry(uri)) _writeNew();
         if (HomeWidgetService.entryOf(uri) case final id?) _showEntry(id);
+        if (HomeWidgetService.moodOf(uri) case final mood?) _writeMood(mood);
+        if (HomeWidgetService.promptOf(uri) case final prompt?) {
+          _writePrompt(prompt);
+        }
       });
     }
   }
@@ -127,12 +135,35 @@ class _JournalPageState extends State<JournalPage>
         context, EntriesProvider.instance.getEntryForToday());
   }
 
+  Future<void> _writeMood(int value) async {
+    if (!mounted || value < -2 || value > 2) return;
+    Navigator.of(context).popUntil((route) => route.isFirst);
+    await EntryNavigation.edit(context, null, initialMood: value);
+  }
+
+  Future<void> _writePrompt(int index) async {
+    if (!mounted) return;
+    final prompts = dailyWidgetPrompts(AppLocalizations.of(context)!);
+    if (index < 0 || index >= prompts.length) return;
+    Navigator.of(context).popUntil((route) => route.isFirst);
+    final now = DateTime.now();
+    final prompt = prompts[index];
+    await EntryNavigation.edit(context, null,
+        template: Template(
+            name: prompt,
+            text: '$prompt\n\n',
+            timeCreate: now,
+            timeModified: now));
+  }
+
   Future<void> _checkForLaunchIntent() async {
     final intent = DeviceInfoService().launchIntent;
     if (intent == null) return;
     DeviceInfoService().launchIntent = null;
     if (intent is OpenEntryIntent) return _showEntry(intent.id);
     if (intent is NewEntryIntent) return _writeNew();
+    if (intent is MoodEntryIntent) return _writeMood(intent.value);
+    if (intent is PromptEntryIntent) return _writePrompt(intent.index);
     final today = EntriesProvider.instance.getEntryForToday();
     await EntryNavigation.edit(context, today,
         openCamera: intent is TakePhotoIntent);
@@ -236,6 +267,12 @@ class _JournalPageState extends State<JournalPage>
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
+                    Wrap(spacing: 8, children: [
+                      ActionChip(
+                          avatar: const Icon(Icons.photo_library_outlined),
+                          label: Text(l10n.momentsTitle),
+                          onPressed: () => openPlace(context, 'moments')),
+                    ]),
                     SectionLabel(l10n.journalStories),
                     _Stories(
                         flashbacks: FlashbackManager.getFlashbacks(

@@ -177,7 +177,7 @@ abstract class AppLocalizations {
   /// No description provided for @themeColorHint.
   ///
   /// In en, this message translates to:
-  /// **'Pick a color to stop following the system accent. Applies to light and dark themes.'**
+  /// **'Choose a color for this palette.'**
   String get themeColorHint;
 
   /// No description provided for @themeColorBlue.
@@ -4265,6 +4265,618 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cloud media is temporary. Keep the originals on your devices; syncing is not a backup.'**
   String get syncCacheNotice;
+
+  /// No description provided for @paperTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Letter paper'**
+  String get paperTitle;
+
+  /// No description provided for @paperPlain.
+  ///
+  /// In en, this message translates to:
+  /// **'Plain'**
+  String get paperPlain;
+
+  /// No description provided for @paperLined.
+  ///
+  /// In en, this message translates to:
+  /// **'Lined'**
+  String get paperLined;
+
+  /// No description provided for @paperGrid.
+  ///
+  /// In en, this message translates to:
+  /// **'Grid'**
+  String get paperGrid;
+
+  /// No description provided for @paperTinted.
+  ///
+  /// In en, this message translates to:
+  /// **'Tinted'**
+  String get paperTinted;
+
+  /// No description provided for @paperDecorationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Decorations'**
+  String get paperDecorationTitle;
+
+  /// No description provided for @paperDecorationNone.
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get paperDecorationNone;
+
+  /// No description provided for @paperDecorationBotanical.
+  ///
+  /// In en, this message translates to:
+  /// **'Leaves'**
+  String get paperDecorationBotanical;
+
+  /// No description provided for @paperDecorationStars.
+  ///
+  /// In en, this message translates to:
+  /// **'Stars'**
+  String get paperDecorationStars;
+
+  /// No description provided for @paperDecorationWashi.
+  ///
+  /// In en, this message translates to:
+  /// **'Washi tape'**
+  String get paperDecorationWashi;
+
+  /// No description provided for @themeDarkChoice.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark appearance'**
+  String get themeDarkChoice;
+
+  /// No description provided for @themeDarkSame.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow light palette'**
+  String get themeDarkSame;
+
+  /// No description provided for @themeDarkCustom.
+  ///
+  /// In en, this message translates to:
+  /// **'Separate palette'**
+  String get themeDarkCustom;
+
+  /// No description provided for @themeDarkAccent.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark accent colour'**
+  String get themeDarkAccent;
+
+  /// No description provided for @themeColorTeal.
+  ///
+  /// In en, this message translates to:
+  /// **'Teal'**
+  String get themeColorTeal;
+
+  /// No description provided for @themeColorCyan.
+  ///
+  /// In en, this message translates to:
+  /// **'Cyan'**
+  String get themeColorCyan;
+
+  /// No description provided for @themeColorIndigo.
+  ///
+  /// In en, this message translates to:
+  /// **'Indigo'**
+  String get themeColorIndigo;
+
+  /// No description provided for @themeColorCoral.
+  ///
+  /// In en, this message translates to:
+  /// **'Coral'**
+  String get themeColorCoral;
+
+  /// No description provided for @themeColorOlive.
+  ///
+  /// In en, this message translates to:
+  /// **'Olive'**
+  String get themeColorOlive;
+
+  /// No description provided for @themeColorSlate.
+  ///
+  /// In en, this message translates to:
+  /// **'Slate'**
+  String get themeColorSlate;
+
+  /// No description provided for @drawingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Drawing'**
+  String get drawingTitle;
+
+  /// No description provided for @drawingPen.
+  ///
+  /// In en, this message translates to:
+  /// **'Pen'**
+  String get drawingPen;
+
+  /// No description provided for @drawingEraser.
+  ///
+  /// In en, this message translates to:
+  /// **'Eraser'**
+  String get drawingEraser;
+
+  /// No description provided for @drawingUndo.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
+  String get drawingUndo;
+
+  /// No description provided for @drawingClear.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get drawingClear;
+
+  /// No description provided for @drawingWidth.
+  ///
+  /// In en, this message translates to:
+  /// **'Pen width'**
+  String get drawingWidth;
+
+  /// No description provided for @drawingStylusOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Stylus only'**
+  String get drawingStylusOnly;
+
+  /// No description provided for @drawingDiscardTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard drawing?'**
+  String get drawingDiscardTitle;
+
+  /// No description provided for @drawingDiscardBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This drawing has not been saved.'**
+  String get drawingDiscardBody;
+
+  /// No description provided for @drawingSaveError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save the drawing.'**
+  String get drawingSaveError;
+
+  /// No description provided for @syncNetworkTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Network diagnostics'**
+  String get syncNetworkTitle;
+
+  /// No description provided for @syncNetworkRefresh.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh'**
+  String get syncNetworkRefresh;
+
+  /// No description provided for @syncNetworkSelectedRoute.
+  ///
+  /// In en, this message translates to:
+  /// **'Current path'**
+  String get syncNetworkSelectedRoute;
+
+  /// No description provided for @syncNetworkAvailableRoutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Available paths'**
+  String get syncNetworkAvailableRoutes;
+
+  /// No description provided for @syncNetworkSignaling.
+  ///
+  /// In en, this message translates to:
+  /// **'Device directory connection'**
+  String get syncNetworkSignaling;
+
+  /// No description provided for @syncNetworkRelayRemaining.
+  ///
+  /// In en, this message translates to:
+  /// **'Remaining relay allowance'**
+  String get syncNetworkRelayRemaining;
+
+  /// No description provided for @syncNetworkIcePair.
+  ///
+  /// In en, this message translates to:
+  /// **'Direct connection candidates'**
+  String get syncNetworkIcePair;
+
+  /// No description provided for @syncNetworkPeerTrusted.
+  ///
+  /// In en, this message translates to:
+  /// **'Authenticated device'**
+  String get syncNetworkPeerTrusted;
+
+  /// No description provided for @syncNetworkNoRoute.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for a connection'**
+  String get syncNetworkNoRoute;
+
+  /// No description provided for @syncNetworkUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Diagnostics are unavailable'**
+  String get syncNetworkUnavailable;
+
+  /// No description provided for @syncMediaCopiesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Media delivery and copies'**
+  String get syncMediaCopiesTitle;
+
+  /// No description provided for @syncMediaPendingCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting to transfer'**
+  String get syncMediaPendingCount;
+
+  /// No description provided for @syncMediaDurableCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered to personal storage'**
+  String get syncMediaDurableCount;
+
+  /// No description provided for @syncMediaTemporaryCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Temporary or unconfirmed copies'**
+  String get syncMediaTemporaryCount;
+
+  /// No description provided for @syncMediaReceiptExplanation.
+  ///
+  /// In en, this message translates to:
+  /// **'These counts describe completed deliveries, not a fresh audit of surviving backups.'**
+  String get syncMediaReceiptExplanation;
+
+  /// No description provided for @syncMediaCacheExplanation.
+  ///
+  /// In en, this message translates to:
+  /// **'Temporary cloud media can expire. Keep your originals or a separate backup.'**
+  String get syncMediaCacheExplanation;
+
+  /// No description provided for @momentsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo moments'**
+  String get momentsTitle;
+
+  /// No description provided for @momentsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Find groups using local photo times and optional coordinates. Photos are attached only when you choose a card.'**
+  String get momentsHint;
+
+  /// No description provided for @momentsScan.
+  ///
+  /// In en, this message translates to:
+  /// **'Find moments'**
+  String get momentsScan;
+
+  /// No description provided for @momentsChooseFolder.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose photo folder'**
+  String get momentsChooseFolder;
+
+  /// No description provided for @momentsLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Include photo locations'**
+  String get momentsLocation;
+
+  /// No description provided for @momentsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No recent photo groups.'**
+  String get momentsEmpty;
+
+  /// No description provided for @momentsCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Write about these photos'**
+  String get momentsCreate;
+
+  /// No description provided for @momentsDismiss.
+  ///
+  /// In en, this message translates to:
+  /// **'Dismiss'**
+  String get momentsDismiss;
+
+  /// No description provided for @momentsError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not read local photos.'**
+  String get momentsError;
+
+  /// No description provided for @momentsCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo entry created.'**
+  String get momentsCreated;
+
+  /// No description provided for @momentsPermission.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow access to photos to find local suggestions.'**
+  String get momentsPermission;
+
+  /// No description provided for @momentsScope.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent photos only; at most 500 photos and 20 photos per card.'**
+  String get momentsScope;
+
+  /// No description provided for @momentsPhotoCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} photos'**
+  String momentsPhotoCount(int count);
+
+  /// No description provided for @nearbyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Nearby device transfer'**
+  String get nearbyTitle;
+
+  /// No description provided for @nearbySend.
+  ///
+  /// In en, this message translates to:
+  /// **'This is the old device'**
+  String get nearbySend;
+
+  /// No description provided for @nearbyReceive.
+  ///
+  /// In en, this message translates to:
+  /// **'This is the new device'**
+  String get nearbyReceive;
+
+  /// No description provided for @nearbyInstructions.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect both devices to the same Wi-Fi or connect one to the other’s hotspot. This transfer works without Internet.'**
+  String get nearbyInstructions;
+
+  /// No description provided for @nearbyCompare.
+  ///
+  /// In en, this message translates to:
+  /// **'Compare this code on both devices before approving.'**
+  String get nearbyCompare;
+
+  /// No description provided for @nearbyConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'The codes match'**
+  String get nearbyConfirm;
+
+  /// No description provided for @nearbyScan.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan old device QR'**
+  String get nearbyScan;
+
+  /// No description provided for @nearbyPaste.
+  ///
+  /// In en, this message translates to:
+  /// **'Paste invitation'**
+  String get nearbyPaste;
+
+  /// No description provided for @nearbyWaiting.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for approval on the other device'**
+  String get nearbyWaiting;
+
+  /// No description provided for @nearbyWorking.
+  ///
+  /// In en, this message translates to:
+  /// **'Transferring diary and attachments…'**
+  String get nearbyWorking;
+
+  /// No description provided for @nearbyPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Some attachments are still pending. Keep the old device open and retry.'**
+  String get nearbyPending;
+
+  /// No description provided for @nearbyComplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Diary and attachments transferred'**
+  String get nearbyComplete;
+
+  /// No description provided for @nearbyFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not complete the transfer. Check the local connection and retry.'**
+  String get nearbyFailed;
+
+  /// No description provided for @nearbyEmptyRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Use a new device with no diary entries and no connected sync account.'**
+  String get nearbyEmptyRequired;
+
+  /// No description provided for @nearbyRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue transfer'**
+  String get nearbyRetry;
+
+  /// No description provided for @nearbyWifi.
+  ///
+  /// In en, this message translates to:
+  /// **'Wi-Fi settings'**
+  String get nearbyWifi;
+
+  /// No description provided for @nearbyHotspot.
+  ///
+  /// In en, this message translates to:
+  /// **'Hotspot settings'**
+  String get nearbyHotspot;
+
+  /// No description provided for @nearbyKeepOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep this page open until the new device finishes. The invitation expires after two minutes.'**
+  String get nearbyKeepOpen;
+
+  /// No description provided for @syncDevicesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Authorized devices'**
+  String get syncDevicesTitle;
+
+  /// No description provided for @syncDevicesDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Only approved devices can access this AID account. Revoking a device blocks the server but cannot erase a master key or diary already copied to it.'**
+  String get syncDevicesDescription;
+
+  /// No description provided for @syncDeviceRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Show this authorization QR to an approved device'**
+  String get syncDeviceRequest;
+
+  /// No description provided for @syncDeviceAuthorize.
+  ///
+  /// In en, this message translates to:
+  /// **'Authorize a device'**
+  String get syncDeviceAuthorize;
+
+  /// No description provided for @syncDeviceAuthorizeDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan or paste the new device’s authorization request.'**
+  String get syncDeviceAuthorizeDescription;
+
+  /// No description provided for @syncDeviceRevoke.
+  ///
+  /// In en, this message translates to:
+  /// **'Revoke'**
+  String get syncDeviceRevoke;
+
+  /// No description provided for @syncDeviceRotate.
+  ///
+  /// In en, this message translates to:
+  /// **'Rotate this device’s signing key'**
+  String get syncDeviceRotate;
+
+  /// No description provided for @syncDeviceCheck.
+  ///
+  /// In en, this message translates to:
+  /// **'Check authorization'**
+  String get syncDeviceCheck;
+
+  /// No description provided for @syncDeviceHardware.
+  ///
+  /// In en, this message translates to:
+  /// **'Hardware-backed signing key'**
+  String get syncDeviceHardware;
+
+  /// No description provided for @syncDeviceSoftware.
+  ///
+  /// In en, this message translates to:
+  /// **'Non-exportable software signing key'**
+  String get syncDeviceSoftware;
+
+  /// No description provided for @syncDeviceUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Device authorization is unavailable. Approve this device from another authorized device and retry.'**
+  String get syncDeviceUnavailable;
+
+  /// No description provided for @syncDeviceRevoked.
+  ///
+  /// In en, this message translates to:
+  /// **'Revoked'**
+  String get syncDeviceRevoked;
+
+  /// No description provided for @syncDeviceLocal.
+  ///
+  /// In en, this message translates to:
+  /// **'This device'**
+  String get syncDeviceLocal;
+
+  /// No description provided for @cloudTrafficTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly cloud media allowance'**
+  String get cloudTrafficTitle;
+
+  /// No description provided for @cloudTrafficLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly allowance'**
+  String get cloudTrafficLimit;
+
+  /// No description provided for @cloudTrafficUsed.
+  ///
+  /// In en, this message translates to:
+  /// **'Used'**
+  String get cloudTrafficUsed;
+
+  /// No description provided for @cloudTrafficRemaining.
+  ///
+  /// In en, this message translates to:
+  /// **'Remaining'**
+  String get cloudTrafficRemaining;
+
+  /// No description provided for @cloudTrafficResetsAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Resets {time}'**
+  String cloudTrafficResetsAt(String time);
+
+  /// No description provided for @cloudTrafficExhausted.
+  ///
+  /// In en, this message translates to:
+  /// **'Cloud media allowance used up. Missing media will resume automatically over a direct connection or when the allowance resets.'**
+  String get cloudTrafficExhausted;
+
+  /// No description provided for @cloudTrafficExplanation.
+  ///
+  /// In en, this message translates to:
+  /// **'Media cache and live relay share this allowance. Direct connections do not use it. Diary text and connection control have separate small daily limits.'**
+  String get cloudTrafficExplanation;
+
+  /// No description provided for @appearanceThemeSection.
+  ///
+  /// In en, this message translates to:
+  /// **'App theme'**
+  String get appearanceThemeSection;
+
+  /// No description provided for @appearancePaperSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Diary paper'**
+  String get appearancePaperSection;
+
+  /// No description provided for @appearanceTypographySection.
+  ///
+  /// In en, this message translates to:
+  /// **'Diary text'**
+  String get appearanceTypographySection;
+
+  /// No description provided for @appearancePreferencesSection.
+  ///
+  /// In en, this message translates to:
+  /// **'General preferences'**
+  String get appearancePreferencesSection;
+
+  /// No description provided for @themeSystemAccentHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Uses the system palette instead of custom colors. Turn it off to choose your own.'**
+  String get themeSystemAccentHint;
 }
 
 class _AppLocalizationsDelegate

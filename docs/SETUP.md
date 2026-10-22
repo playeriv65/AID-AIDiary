@@ -223,6 +223,14 @@ HyperOS behaviour that shapes testing:
   restore (`wm size reset`, `wm density reset`,
   `cmd window user-rotation free`) afterwards.
 
+Isolated device-authorization tests also create native signing keys outside the
+scratch files. Before removing a test workspace, run the development-only,
+destructively confirmed `sync.devices_test_cleanup` action inside that workspace,
+then stop its process and remove its files. The action refuses ordinary data
+directories. Android test launches must be force-stopped before selecting a
+different `aid_test_workspace`, so the engine and native key namespace are
+initialized for the same workspace. Never clear the everyday package.
+
 ## Outside resources
 
 | What | Where | Access |

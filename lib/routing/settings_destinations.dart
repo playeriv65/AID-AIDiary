@@ -3,6 +3,7 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'package:aid_diary/device_info_service.dart';
+import 'package:aid_diary/actions/app_action.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/pages/recently_deleted_page.dart';
 import 'package:aid_diary/pages/search_page.dart';
@@ -18,6 +19,9 @@ import 'package:aid_diary/pages/settings/notification_settings.dart';
 import 'package:aid_diary/pages/settings/security_settings.dart';
 import 'package:aid_diary/pages/settings/storage_settings.dart';
 import 'package:aid_diary/pages/settings/sync_settings.dart';
+import 'package:aid_diary/pages/settings/sync_network_settings.dart';
+import 'package:aid_diary/pages/settings/nearby_migration_settings.dart';
+import 'package:aid_diary/pages/settings/sync_device_settings.dart';
 import 'package:aid_diary/widgets/pairing_dialog.dart';
 import 'package:aid_diary/pages/settings/tags_settings.dart';
 import 'package:aid_diary/pages/settings/templates_page.dart';
@@ -48,6 +52,25 @@ final List<Destination> settingsDestinations = [
   pageDestination('settings/data', 'Sync, backup, storage, recently deleted',
       (_) => const DataSettings()),
   pageDestination('sync', 'Sync', (_) => const SyncSettings()),
+  pageDestination('settings/sync/network', 'Network paths and media receipts',
+      (_) => const SyncNetworkSettings()),
+  Destination(
+      'settings/sync/nearby',
+      'Offline device pairing and diary migration',
+      (context, args) => pushPlace(
+          context,
+          'settings/sync/nearby',
+          (_) => NearbyMigrationSettings(
+              receive: args['receive'] as bool? ?? false)),
+      params: const [
+        ActionParam('receive', ParamType.boolean,
+            'Open directly as a new receiving device',
+            required: false)
+      ]),
+  pageDestination(
+      'settings/sync/devices',
+      'Authorize, revoke and rotate device signing keys',
+      (_) => const SyncDeviceSettings()),
   Destination(
       'sync/pairing',
       'Pairs this device with another of the user\'s: shows a code or '

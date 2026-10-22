@@ -80,6 +80,24 @@ void main() {
     });
   }
 
+  test('dark palette and AMOLED choice remain independent of light mode',
+      () async {
+    final provider = ThemeModeProvider();
+    addTearDown(provider.dispose);
+    await provider.selectAccentColor(const Color(0xff587e64));
+    await config.set(Settings.darkTheme, 'dark');
+    await provider.selectDarkAccentColor(const Color(0xff6671b8));
+    expect(provider.accentColor, const Color(0xff587e64));
+    expect(provider.darkAccentColor, const Color(0xff6671b8));
+    expect(provider.usingDarkSystemColor, isFalse);
+    await config.set(Settings.theme, 'system');
+    await config.set(Settings.darkTheme, 'amoled');
+    expect(provider.themeMode, ThemeMode.system);
+    expect(provider.darkIsAmoled, isTrue);
+    await config.set(Settings.darkTheme, 'same');
+    expect(provider.darkAccentColor, provider.accentColor);
+  });
+
   testWidgets(
       'color presets work at mobile width without disabling system first',
       (tester) async {
@@ -113,6 +131,52 @@ void main() {
     expect(tester.takeException(), isNull);
     await tester.pumpWidget(const SizedBox.shrink());
     EasyDebounce.cancel('save-config');
+    provider.dispose();
+  });
+  testWidgets('dark palette preview and selection stay independent of light',
+      (tester) async {
+    await config.set(Settings.followSystemColor, false);
+    await config.set(Settings.accentColor, 0xff587e64);
+    await config.set(Settings.darkTheme, 'dark');
+    await config.set(Settings.darkFollowSystemColor, false);
+    await config.set(Settings.darkAccentColor, 0xff8f6caf);
+    final provider = ThemeModeProvider()..updateAccentColor();
+    await tester.pumpWidget(MultiProvider(
+        providers: [
+          ChangeNotifierProvider.value(value: config),
+          ChangeNotifierProvider.value(value: provider),
+        ],
+        child: MaterialApp(
+            theme: ThemeData(
+                colorScheme:
+                    ColorScheme.fromSeed(seedColor: provider.accentColor)),
+            locale: const Locale('zh'),
+            localizationsDelegates: [
+              AppLocalizations.delegate,
+              ...appLocalizationsDelegates
+            ],
+            supportedLocales: AppLocalizations.supportedLocales,
+            home: const Scaffold(
+                body: SingleChildScrollView(
+                    child: ThemeColorPresets(dark: true))))));
+    await tester.pumpAndSettle();
+    final preview =
+        tester.element(find.byKey(const ValueKey('dark-theme-preview')));
+    expect(Theme.of(preview).brightness, Brightness.dark);
+    expect(
+        Theme.of(preview).colorScheme.primary,
+        ColorScheme.fromSeed(
+                seedColor: provider.darkAccentColor,
+                brightness: Brightness.dark)
+            .primary);
+    await tester.tap(find.byKey(const ValueKey('dark-theme-color-brown')));
+    await tester.pump();
+    EasyDebounce.cancel('save-config');
+    await tester.pumpAndSettle();
+    expect(config.get(Settings.darkAccentColor), 0xff967a5e);
+    expect(config.get(Settings.accentColor), 0xff587e64);
+    expect(tester.takeException(), isNull);
+    await tester.pumpWidget(const SizedBox.shrink());
     provider.dispose();
   });
 }

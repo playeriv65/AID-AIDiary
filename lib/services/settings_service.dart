@@ -98,6 +98,9 @@ class SettingsService {
     if (changes.containsKey(Settings.accentColor)) {
       await _config.set(Settings.followSystemColor, false);
     }
+    if (changes.containsKey(Settings.darkAccentColor)) {
+      await _config.set(Settings.darkFollowSystemColor, false);
+    }
     for (final effect in {
       for (final setting in changes.keys)
         if (_effects[setting] case final effect?) effect

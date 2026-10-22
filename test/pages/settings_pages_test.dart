@@ -47,10 +47,14 @@ void main() {
 
   testWidgets('a mood icon is reset to its own default', (tester) async {
     await DiaryAppHarness.setSetting(Settings.happyIcon, '👍');
-    DiaryAppHarness.size(tester, const Size(390, 1400));
+    DiaryAppHarness.size(tester, const Size(390, 844));
     await tester.pumpWidget(harness.app(const AppearanceSettings()));
     await tester.pumpAndSettle();
-    await tapAndSettle(tester, find.byIcon(Icons.refresh_rounded));
+    final reset = find.byKey(const ValueKey('appearance-reset-mood-icons'));
+    await tester.scrollUntilVisible(reset, 400,
+        scrollable: find.byType(Scrollable).first);
+    await tester.pumpAndSettle();
+    await tapAndSettle(tester, reset);
     expect(ConfigProvider.instance.get(Settings.happyIcon),
         Settings.happyIcon.defaultValue);
   });

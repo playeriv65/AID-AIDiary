@@ -81,6 +81,10 @@ class _LaunchPageState extends State<LaunchPage> {
       DeviceInfoService().launchIntent = LaunchIntent.newEntry();
     } else if (HomeWidgetService.entryOf(widgetUri) case final id?) {
       DeviceInfoService().launchIntent = LaunchIntent.openEntry(id);
+    } else if (HomeWidgetService.moodOf(widgetUri) case final mood?) {
+      DeviceInfoService().launchIntent = LaunchIntent.mood(mood);
+    } else if (HomeWidgetService.promptOf(widgetUri) case final prompt?) {
+      DeviceInfoService().launchIntent = LaunchIntent.prompt(prompt);
     }
     final QuickActions quickActions = const QuickActions();
     await quickActions.initialize((shortcutType) {

@@ -104,23 +104,42 @@ class ZipUtils {
     var opened = false;
     String? failure;
     try {
+      final files = List<String>.from(args['inputFiles']);
+      final folders = List<String>.from(args['inputFolders']);
+      final counts = <int>[];
+      for (final folder in folders) {
+        if (isWithin(
+            absolute(folder), absolute(args['outputFile'] as String))) {
+          throw ArgumentError(
+              'The output archive must be outside its input folders.');
+        }
+        counts.add(await Directory(folder).list(recursive: true).length);
+      }
+      final total =
+          files.length + counts.fold<int>(0, (sum, count) => sum + count);
+      var completed = 0;
       encoder.createWithStream(OutputFileStream(args["outputFile"]));
       opened = true;
-      for (var file in args["inputFiles"]) {
+      for (var file in files) {
         if (cancelled) break;
         await encoder.addFile(File(file));
+        completed++;
+        sendPort.send(completed / total * 100);
       }
-      for (var folder in args["inputFolders"]) {
+      for (final (index, folder) in folders.indexed) {
         if (cancelled) break;
-        // TODO This is not accurate and only works for a single folder
         await encoder.addDirectory(Directory(folder),
             includeDirName: !(args["foldersAtRoot"] as bool),
             level: 0,
             filter: (_, progress) =>
                 cancelled ? ZipFileOperation.cancel : ZipFileOperation.include,
             onProgress: (progress) {
-              sendPort.send(progress * 100);
+              if (total > 0) {
+                sendPort
+                    .send((completed + counts[index] * progress) / total * 100);
+              }
             });
+        completed += counts[index];
       }
     } catch (error) {
       failure = error.toString();
@@ -134,6 +153,7 @@ class ZipUtils {
       }
       control.close();
     }
+    if (failure == null && !cancelled) sendPort.send(100.0);
     sendPort.send(failure ?? _encodeArchiveDone);
   }
 
@@ -141,6 +161,9 @@ class ZipUtils {
     SendPort sendPort = args["port"];
     final input = InputFileStream(args["inputFile"]);
     try {
+      final destination = Directory(args['outputFolder'] as String);
+      await destination.create(recursive: true);
+      final root = await destination.resolveSymbolicLinks();
       var decoder = ZipDecoder().decodeStream(input);
 
       // Track number of files for progress indication
@@ -148,16 +171,28 @@ class ZipUtils {
       var processedFileCount = 0;
 
       for (final entry in decoder) {
+        final name = entry.name.replaceAll('\\', '/');
+        if (entry.isSymbolicLink ||
+            RegExp(r'^(?:/|[A-Za-z]:)').hasMatch(name) ||
+            name.split('/').contains('..')) {
+          throw FormatException('Archive entry has an unsafe path.');
+        }
+        final target = normalize(join(root, name));
+        if (!isWithin(root, target)) {
+          throw FormatException('Archive entry is outside the destination.');
+        }
+        var current = root;
+        for (final part in split(relative(target, from: root))) {
+          current = join(current, part);
+          if (await FileSystemEntity.type(current, followLinks: false) ==
+              FileSystemEntityType.link) {
+            throw FormatException('Archive entry traverses a symbolic link.');
+          }
+        }
         if (entry.isFile) {
           final bytes = entry.readBytes();
           if (bytes == null) continue;
-          // Fix for Zip encodings that place / at the start of files paths.
-          // All Zip paths should be relative
-          String fileName = entry.name;
-          if (fileName.startsWith('/')) {
-            fileName = fileName.substring(1);
-          }
-          final file = File(join(args["outputFolder"], fileName));
+          final file = File(target);
           await file.create(recursive: true);
           await file.writeAsBytes(bytes);
 
@@ -165,8 +200,7 @@ class ZipUtils {
           processedFileCount += 1;
           sendPort.send((processedFileCount / totalFileCount) * 100);
         } else {
-          await Directory(join(args["outputFolder"], entry.name))
-              .create(recursive: true);
+          await Directory(target).create(recursive: true);
         }
       }
     } finally {

@@ -67,3 +67,4 @@ server/aid-sync.exe
 /scripts/dev.env
 /server/deploy/media.env
 /server/deploy/network.env
+/server/deploy/official.env

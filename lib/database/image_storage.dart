@@ -199,14 +199,14 @@ class ImageStorage {
 
     var newImageName = "aid_diary_$timestamp$fileExtension";
 
-    // Ensure unique name
-    int index = 1;
-    while (await internal.exists(newImageName)) {
+    // Reserve the final name atomically. Two imports can share a timestamp;
+    // an exists/write pair would let the later writer replace the first.
+    for (var index = 1;; index++) {
+      final result = await internal.createNew(newImageName, bytes);
+      if (result == CreateResult.created) break;
+      if (result == CreateResult.failed) return null;
       newImageName = "aid_diary_${timestamp}_$index$fileExtension";
-      index += 1;
     }
-
-    if (!await internal.write(newImageName, bytes)) return null;
 
     final external = externalStore;
     if (external != null && !skipExternalUpload) {

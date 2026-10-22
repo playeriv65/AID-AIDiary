@@ -15,7 +15,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get themeColorTitle => '主题色';
 
   @override
-  String get themeColorHint => '点选后自动关闭跟随系统强调色，浅色和深色模式都会生效。';
+  String get themeColorHint => '为这套配色选择颜色。';
 
   @override
   String get themeColorBlue => '天空蓝';
@@ -2261,6 +2261,318 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get syncCacheNotice => '云端媒体缓存会过期。请保留设备上的原件；同步不等于备份。';
+
+  @override
+  String get paperTitle => '信纸';
+
+  @override
+  String get paperPlain => '素纸';
+
+  @override
+  String get paperLined => '横线';
+
+  @override
+  String get paperGrid => '方格';
+
+  @override
+  String get paperTinted => '淡彩';
+
+  @override
+  String get paperDecorationTitle => '装饰';
+
+  @override
+  String get paperDecorationNone => '无';
+
+  @override
+  String get paperDecorationBotanical => '枝叶';
+
+  @override
+  String get paperDecorationStars => '星星';
+
+  @override
+  String get paperDecorationWashi => '和纸胶带';
+
+  @override
+  String get themeDarkChoice => '暗色外观';
+
+  @override
+  String get themeDarkSame => '沿用浅色配色';
+
+  @override
+  String get themeDarkCustom => '单独配色';
+
+  @override
+  String get themeDarkAccent => '暗色强调色';
+
+  @override
+  String get themeColorTeal => '青绿';
+
+  @override
+  String get themeColorCyan => '青蓝';
+
+  @override
+  String get themeColorIndigo => '靛蓝';
+
+  @override
+  String get themeColorCoral => '珊瑚';
+
+  @override
+  String get themeColorOlive => '橄榄';
+
+  @override
+  String get themeColorSlate => '石板灰';
+
+  @override
+  String get drawingTitle => '手写与绘画';
+
+  @override
+  String get drawingPen => '画笔';
+
+  @override
+  String get drawingEraser => '橡皮';
+
+  @override
+  String get drawingUndo => '撤销';
+
+  @override
+  String get drawingClear => '清空';
+
+  @override
+  String get drawingWidth => '笔宽';
+
+  @override
+  String get drawingStylusOnly => '仅使用手写笔';
+
+  @override
+  String get drawingDiscardTitle => '放弃绘画？';
+
+  @override
+  String get drawingDiscardBody => '当前绘画尚未保存。';
+
+  @override
+  String get drawingSaveError => '无法保存绘画。';
+
+  @override
+  String get syncNetworkTitle => '网络诊断';
+
+  @override
+  String get syncNetworkRefresh => '刷新';
+
+  @override
+  String get syncNetworkSelectedRoute => '当前路径';
+
+  @override
+  String get syncNetworkAvailableRoutes => '可用路径';
+
+  @override
+  String get syncNetworkSignaling => '设备目录连接';
+
+  @override
+  String get syncNetworkRelayRemaining => '剩余中继额度';
+
+  @override
+  String get syncNetworkIcePair => '直连候选';
+
+  @override
+  String get syncNetworkPeerTrusted => '已认证设备';
+
+  @override
+  String get syncNetworkNoRoute => '等待连接';
+
+  @override
+  String get syncNetworkUnavailable => '暂时无法读取诊断';
+
+  @override
+  String get syncMediaCopiesTitle => '媒体传输与副本';
+
+  @override
+  String get syncMediaPendingCount => '等待传输';
+
+  @override
+  String get syncMediaDurableCount => '已传至个人存储';
+
+  @override
+  String get syncMediaTemporaryCount => '临时或未确认副本';
+
+  @override
+  String get syncMediaReceiptExplanation => '这些数量记录已完成的传输，不代表当前备份副本的核验结果。';
+
+  @override
+  String get syncMediaCacheExplanation => '云端临时媒体会过期，请保留原文件或独立备份。';
+
+  @override
+  String get momentsTitle => '照片回忆';
+
+  @override
+  String get momentsHint => '仅根据本地照片时间和可选坐标分组，选择卡片后才添加照片。';
+
+  @override
+  String get momentsScan => '寻找回忆';
+
+  @override
+  String get momentsChooseFolder => '选择照片文件夹';
+
+  @override
+  String get momentsLocation => '读取照片位置';
+
+  @override
+  String get momentsEmpty => '暂无近期照片分组。';
+
+  @override
+  String get momentsCreate => '用这些照片写日记';
+
+  @override
+  String get momentsDismiss => '忽略';
+
+  @override
+  String get momentsError => '无法读取本地照片。';
+
+  @override
+  String get momentsCreated => '已创建照片日记。';
+
+  @override
+  String get momentsPermission => '请允许照片访问以查找本地建议。';
+
+  @override
+  String get momentsScope => '仅查看近期照片；最多500张，每张卡片最多20张。';
+
+  @override
+  String momentsPhotoCount(int count) {
+    return '$count 张照片';
+  }
+
+  @override
+  String get nearbyTitle => '附近设备迁移';
+
+  @override
+  String get nearbySend => '这是旧设备';
+
+  @override
+  String get nearbyReceive => '这是新设备';
+
+  @override
+  String get nearbyInstructions => '两台设备连接同一 Wi-Fi，或连接对方热点；无需互联网。';
+
+  @override
+  String get nearbyCompare => '核对两端显示的验证码后再确认。';
+
+  @override
+  String get nearbyConfirm => '验证码一致';
+
+  @override
+  String get nearbyScan => '扫描旧设备二维码';
+
+  @override
+  String get nearbyPaste => '粘贴邀请';
+
+  @override
+  String get nearbyWaiting => '等待另一台设备确认';
+
+  @override
+  String get nearbyWorking => '正在迁移日记和附件…';
+
+  @override
+  String get nearbyPending => '部分附件尚待传输，请保持旧设备开启后重试。';
+
+  @override
+  String get nearbyComplete => '日记和附件已迁移';
+
+  @override
+  String get nearbyFailed => '迁移未完成，请检查本地连接后重试。';
+
+  @override
+  String get nearbyEmptyRequired => '请在没有日记且未连接同步账户的新设备上接收。';
+
+  @override
+  String get nearbyRetry => '继续迁移';
+
+  @override
+  String get nearbyWifi => 'Wi-Fi 设置';
+
+  @override
+  String get nearbyHotspot => '热点设置';
+
+  @override
+  String get nearbyKeepOpen => '保持本页开启直到新设备完成，邀请两分钟后失效。';
+
+  @override
+  String get syncDevicesTitle => '授权设备';
+
+  @override
+  String get syncDevicesDescription =>
+      '只有授权设备可访问此 AID 账户；撤销仅阻止服务器访问，不能收回已复制的主密钥和日记。';
+
+  @override
+  String get syncDeviceRequest => '向已授权设备展示此授权二维码';
+
+  @override
+  String get syncDeviceAuthorize => '授权新设备';
+
+  @override
+  String get syncDeviceAuthorizeDescription => '扫描或粘贴新设备的授权请求。';
+
+  @override
+  String get syncDeviceRevoke => '撤销授权';
+
+  @override
+  String get syncDeviceRotate => '轮换本机签名密钥';
+
+  @override
+  String get syncDeviceCheck => '检查授权';
+
+  @override
+  String get syncDeviceHardware => '硬件保护签名密钥';
+
+  @override
+  String get syncDeviceSoftware => '不可导出的软件签名密钥';
+
+  @override
+  String get syncDeviceUnavailable => '设备尚未获授权，请从另一台已授权设备批准后重试。';
+
+  @override
+  String get syncDeviceRevoked => '已撤销';
+
+  @override
+  String get syncDeviceLocal => '本机';
+
+  @override
+  String get cloudTrafficTitle => '每月云端媒体额度';
+
+  @override
+  String get cloudTrafficLimit => '每月额度';
+
+  @override
+  String get cloudTrafficUsed => '已使用';
+
+  @override
+  String get cloudTrafficRemaining => '剩余';
+
+  @override
+  String cloudTrafficResetsAt(String time) {
+    return '$time 重置';
+  }
+
+  @override
+  String get cloudTrafficExhausted => '云端媒体额度已用尽，待同步媒体会在直连可用或额度重置后自动继续。';
+
+  @override
+  String get cloudTrafficExplanation =>
+      '媒体缓存与实时中继共用此额度，直连不占用。日记文字和连接控制另有独立的小流量日限额。';
+
+  @override
+  String get appearanceThemeSection => '应用主题';
+
+  @override
+  String get appearancePaperSection => '日记信纸';
+
+  @override
+  String get appearanceTypographySection => '日记文字';
+
+  @override
+  String get appearancePreferencesSection => '通用偏好';
+
+  @override
+  String get themeSystemAccentHint => '使用系统配色并覆盖自定义颜色，关闭后可自行选色。';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -2274,7 +2586,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get themeColorTitle => '主題色';
 
   @override
-  String get themeColorHint => '點選後自動關閉跟隨系統強調色，淺色和深色模式都會生效。';
+  String get themeColorHint => '為這套配色選擇顏色。';
 
   @override
   String get themeColorBlue => '天空藍';
@@ -4240,4 +4552,316 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get syncCacheNotice => '雲端媒體暫存會過期。請保留裝置上的原始檔案；同步不等於備份。';
+
+  @override
+  String get paperTitle => '信紙';
+
+  @override
+  String get paperPlain => '素紙';
+
+  @override
+  String get paperLined => '橫線';
+
+  @override
+  String get paperGrid => '方格';
+
+  @override
+  String get paperTinted => '淡彩';
+
+  @override
+  String get paperDecorationTitle => '裝飾';
+
+  @override
+  String get paperDecorationNone => '無';
+
+  @override
+  String get paperDecorationBotanical => '枝葉';
+
+  @override
+  String get paperDecorationStars => '星星';
+
+  @override
+  String get paperDecorationWashi => '和紙膠帶';
+
+  @override
+  String get themeDarkChoice => '暗色外觀';
+
+  @override
+  String get themeDarkSame => '沿用淺色配色';
+
+  @override
+  String get themeDarkCustom => '單獨配色';
+
+  @override
+  String get themeDarkAccent => '暗色強調色';
+
+  @override
+  String get themeColorTeal => '青綠';
+
+  @override
+  String get themeColorCyan => '青藍';
+
+  @override
+  String get themeColorIndigo => '靛藍';
+
+  @override
+  String get themeColorCoral => '珊瑚';
+
+  @override
+  String get themeColorOlive => '橄欖';
+
+  @override
+  String get themeColorSlate => '石板灰';
+
+  @override
+  String get drawingTitle => '手寫與繪畫';
+
+  @override
+  String get drawingPen => '畫筆';
+
+  @override
+  String get drawingEraser => '橡皮';
+
+  @override
+  String get drawingUndo => '復原';
+
+  @override
+  String get drawingClear => '清空';
+
+  @override
+  String get drawingWidth => '筆寬';
+
+  @override
+  String get drawingStylusOnly => '僅使用觸控筆';
+
+  @override
+  String get drawingDiscardTitle => '放棄繪畫？';
+
+  @override
+  String get drawingDiscardBody => '目前繪畫尚未儲存。';
+
+  @override
+  String get drawingSaveError => '無法儲存繪畫。';
+
+  @override
+  String get syncNetworkTitle => '網路診斷';
+
+  @override
+  String get syncNetworkRefresh => '重新整理';
+
+  @override
+  String get syncNetworkSelectedRoute => '目前路徑';
+
+  @override
+  String get syncNetworkAvailableRoutes => '可用路徑';
+
+  @override
+  String get syncNetworkSignaling => '裝置目錄連線';
+
+  @override
+  String get syncNetworkRelayRemaining => '剩餘中繼額度';
+
+  @override
+  String get syncNetworkIcePair => '直連候選';
+
+  @override
+  String get syncNetworkPeerTrusted => '已驗證裝置';
+
+  @override
+  String get syncNetworkNoRoute => '等待連線';
+
+  @override
+  String get syncNetworkUnavailable => '暫時無法讀取診斷';
+
+  @override
+  String get syncMediaCopiesTitle => '媒體傳輸與副本';
+
+  @override
+  String get syncMediaPendingCount => '等待傳輸';
+
+  @override
+  String get syncMediaDurableCount => '已傳至個人儲存空間';
+
+  @override
+  String get syncMediaTemporaryCount => '暫存或未確認副本';
+
+  @override
+  String get syncMediaReceiptExplanation => '這些數量記錄已完成的傳輸，不代表目前備份副本的核驗結果。';
+
+  @override
+  String get syncMediaCacheExplanation => '雲端暫存媒體會到期，請保留原始檔案或獨立備份。';
+
+  @override
+  String get momentsTitle => '照片回憶';
+
+  @override
+  String get momentsHint => '僅根據本機照片時間和可選座標分組，選擇卡片後才加入照片。';
+
+  @override
+  String get momentsScan => '尋找回憶';
+
+  @override
+  String get momentsChooseFolder => '選擇照片資料夾';
+
+  @override
+  String get momentsLocation => '讀取照片位置';
+
+  @override
+  String get momentsEmpty => '暫無近期照片分組。';
+
+  @override
+  String get momentsCreate => '用這些照片寫日記';
+
+  @override
+  String get momentsDismiss => '忽略';
+
+  @override
+  String get momentsError => '無法讀取本機照片。';
+
+  @override
+  String get momentsCreated => '已建立照片日記。';
+
+  @override
+  String get momentsPermission => '請允許照片存取以尋找本機建議。';
+
+  @override
+  String get momentsScope => '僅查看近期照片；最多500張，每張卡片最多20張。';
+
+  @override
+  String momentsPhotoCount(int count) {
+    return '$count 張照片';
+  }
+
+  @override
+  String get nearbyTitle => '附近裝置遷移';
+
+  @override
+  String get nearbySend => '這是舊裝置';
+
+  @override
+  String get nearbyReceive => '這是新裝置';
+
+  @override
+  String get nearbyInstructions => '兩台裝置連線至同一 Wi-Fi，或連線至對方熱點；無需網際網路。';
+
+  @override
+  String get nearbyCompare => '核對兩端顯示的驗證碼後再確認。';
+
+  @override
+  String get nearbyConfirm => '驗證碼一致';
+
+  @override
+  String get nearbyScan => '掃描舊裝置 QR 碼';
+
+  @override
+  String get nearbyPaste => '貼上邀請';
+
+  @override
+  String get nearbyWaiting => '等待另一台裝置確認';
+
+  @override
+  String get nearbyWorking => '正在遷移日記和附件…';
+
+  @override
+  String get nearbyPending => '部分附件尚待傳輸，請保持舊裝置開啟後重試。';
+
+  @override
+  String get nearbyComplete => '日記和附件已遷移';
+
+  @override
+  String get nearbyFailed => '遷移未完成，請檢查本機連線後重試。';
+
+  @override
+  String get nearbyEmptyRequired => '請在沒有日記且未連線同步帳戶的新裝置上接收。';
+
+  @override
+  String get nearbyRetry => '繼續遷移';
+
+  @override
+  String get nearbyWifi => 'Wi-Fi 設定';
+
+  @override
+  String get nearbyHotspot => '熱點設定';
+
+  @override
+  String get nearbyKeepOpen => '保持本頁開啟直到新裝置完成，邀請兩分鐘後失效。';
+
+  @override
+  String get syncDevicesTitle => '授權裝置';
+
+  @override
+  String get syncDevicesDescription =>
+      '只有授權裝置可存取此 AID 帳戶；撤銷僅阻止伺服器存取，不能收回已複製的主金鑰和日記。';
+
+  @override
+  String get syncDeviceRequest => '向已授權裝置展示此授權 QR 碼';
+
+  @override
+  String get syncDeviceAuthorize => '授權新裝置';
+
+  @override
+  String get syncDeviceAuthorizeDescription => '掃描或貼上新裝置的授權請求。';
+
+  @override
+  String get syncDeviceRevoke => '撤銷授權';
+
+  @override
+  String get syncDeviceRotate => '輪換本機簽名金鑰';
+
+  @override
+  String get syncDeviceCheck => '檢查授權';
+
+  @override
+  String get syncDeviceHardware => '硬體保護簽名金鑰';
+
+  @override
+  String get syncDeviceSoftware => '不可匯出的軟體簽名金鑰';
+
+  @override
+  String get syncDeviceUnavailable => '裝置尚未獲授權，請從另一台已授權裝置批准後重試。';
+
+  @override
+  String get syncDeviceRevoked => '已撤銷';
+
+  @override
+  String get syncDeviceLocal => '本機';
+
+  @override
+  String get cloudTrafficTitle => '每月雲端媒體額度';
+
+  @override
+  String get cloudTrafficLimit => '每月額度';
+
+  @override
+  String get cloudTrafficUsed => '已使用';
+
+  @override
+  String get cloudTrafficRemaining => '剩餘';
+
+  @override
+  String cloudTrafficResetsAt(String time) {
+    return '$time 重設';
+  }
+
+  @override
+  String get cloudTrafficExhausted => '雲端媒體額度已用盡，待同步媒體會在直連可用或額度重設後自動繼續。';
+
+  @override
+  String get cloudTrafficExplanation =>
+      '媒體快取與即時中繼共用此額度，直連不占用。日記文字和連線控制另有獨立的小流量日限額。';
+
+  @override
+  String get appearanceThemeSection => '應用主題';
+
+  @override
+  String get appearancePaperSection => '日記信紙';
+
+  @override
+  String get appearanceTypographySection => '日記文字';
+
+  @override
+  String get appearancePreferencesSection => '一般偏好';
+
+  @override
+  String get themeSystemAccentHint => '使用系統配色並覆蓋自訂顏色，關閉後可自行選色。';
 }

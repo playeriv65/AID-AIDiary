@@ -24,6 +24,10 @@ class EntryActions {
         Entry(
             text: entry.text,
             mood: entry.mood,
+            day: entry.day,
+            weather: entry.weather,
+            activity: entry.activity,
+            utcOffset: entry.utcOffset,
             timeCreate: entry.timeCreate,
             timeModified: now,
             location: entry.location),

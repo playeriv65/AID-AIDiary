@@ -10,6 +10,8 @@ import 'package:aid_diary/models/image.dart';
 import 'package:aid_diary/storage/in_memory_file_store.dart';
 import 'package:aid_diary/utils/export_utils.dart';
 import 'package:aid_diary/utils/formats/archive_export.dart';
+import 'package:aid_diary/utils/formats/journey_format.dart';
+import 'package:aid_diary/utils/formats/day_one_format.dart';
 import 'package:aid_diary/utils/imports/import_json.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -114,7 +116,7 @@ void main() {
             const EntryLocation(name: '外滩', latitude: 31.2, longitude: 121.5),
         weather: const EntryWeather(code: 61, temperature: 14.5),
         activity: EntryActivity.walking,
-        openAt: DateTime(2027, 1, 1));
+        openAt: DateTime(2020, 1, 1));
     final json = encodeJsonEntries([entry],
         imagesOf: (_) => [
               EntryImage(
@@ -134,8 +136,44 @@ void main() {
     expect(back.entry.location, entry.location);
     expect(back.entry.weather, entry.weather);
     expect(back.entry.activity, EntryActivity.walking);
-    expect(back.entry.openAt, DateTime(2027, 1, 1));
+    expect(back.entry.openAt, DateTime(2020, 1, 1));
     expect(back.images.single.imgPath, 'a.jpg');
     expect(back.tags, [(name: '精力', value: '7')]);
+  });
+
+  test(
+      'JSON exchange includes open entries without reading sealed content or attachment metadata',
+      () {
+    final open = entryOn(DateTime(2026, 1, 1), text: 'Open');
+    final sealed = open.copy(text: 'Private', openAt: DateTime(2099));
+    final json = encodeJsonEntries([sealed, open], imagesOf: (entry) {
+      expect(entry, same(open));
+      return [];
+    }, tagsOf: (entry) {
+      expect(entry, same(open));
+      return [];
+    });
+    expect((jsonDecode(json) as List).single['text'], 'Open');
+    expect(json, isNot(contains('Private')));
+  });
+
+  test('archive writers exclude sealed text and attachment bytes', () async {
+    final time = DateTime(2026, 1, 1);
+    final sealed = entryOn(time, text: 'Private').copy(openAt: DateTime(2099));
+    final exported = ExportedEntry(sealed, images: [
+      (
+        EntryImage(
+            entryId: 1, imgPath: 'private.jpg', imgRank: 0, timeCreate: time),
+        Uint8List.fromList([1, 2, 3])
+      ),
+    ]);
+    final journey = JourneyExportWriter(noteStore);
+    final dayOne =
+        DayOneExportWriter(journalStore: noteStore, photoStore: imageStore);
+    await writer.write(exported);
+    await journey.write(exported);
+    await dayOne.write(exported);
+    expect(await noteStore.list(), isEmpty);
+    expect(await imageStore.list(), isEmpty);
   });
 }

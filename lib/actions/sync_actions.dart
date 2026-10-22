@@ -159,6 +159,13 @@ const _joinParams = [
 
 final List<AppAction> syncActions = [
   AppAction(
+    id: 'sync.cloud_usage',
+    describe:
+        'Cloud media monthly allowance, usage and reset time; null for personal storage without an operator policy.',
+    risk: ActionRisk.read,
+    run: (context, args) => _sync.cloudTraffic(),
+  ),
+  AppAction(
     id: 'sync.network_reconnect',
     describe:
         'Reconnects signaling while retaining established direct channels for a development network check.',

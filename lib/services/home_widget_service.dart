@@ -28,12 +28,16 @@ class HomeWidgetSnapshot {
     required this.done,
     required this.pending,
     required this.write,
+    this.prompts = const [],
+    this.zeroStreak = '',
   });
 
   /// [entries] must be newest first, as the entries provider keeps them.
   factory HomeWidgetSnapshot.from(List<Entry> entries, AppLocalizations l10n) {
-    final latest = entries.firstOrNull;
-    final streak = calculateStreaks(entries).current;
+    final visible = entries.where((entry) => !entry.isSealed).toList()
+      ..sort((a, b) => b.day.compareTo(a.day));
+    final latest = visible.firstOrNull;
+    final streak = calculateStreaks(visible).current;
     return HomeWidgetSnapshot(
       writtenDate:
           latest == null ? '' : DateFormat('yyyy-MM-dd').format(latest.day),
@@ -43,6 +47,8 @@ class HomeWidgetSnapshot {
       done: l10n.widgetDone,
       pending: l10n.widgetPending,
       write: l10n.widgetWrite,
+      prompts: dailyWidgetPrompts(l10n),
+      zeroStreak: l10n.streakCurrent(0),
     );
   }
 
@@ -57,6 +63,8 @@ class HomeWidgetSnapshot {
   final String done;
   final String pending;
   final String write;
+  final List<String> prompts;
+  final String zeroStreak;
 
   Map<String, String> toWidgetData() => {
         'widget_written_date': writtenDate,
@@ -66,6 +74,8 @@ class HomeWidgetSnapshot {
         'widget_done': done,
         'widget_pending': pending,
         'widget_write': write,
+        'widget_prompts': jsonEncode(prompts),
+        'widget_streak_zero': zeroStreak,
       };
 
   /// The first line with text, without markdown heading or list marks.
@@ -117,8 +127,12 @@ class HomeWidgetService {
     if (!supported) return;
     final data = snapshot.toWidgetData();
     if (mapEquals(data, _pushed)) return;
-    _pushed = data;
-    await _save(data, _provider, 'Home widget');
+    if (await _save(data, _provider, 'Home widget', additionalProviders: [
+      for (final kind in ['Streak', 'Prompt', 'Mood'])
+        'dev.aid.diary.${kind}WidgetProvider'
+    ])) {
+      _pushed = data;
+    }
   }
 
   /// Gives the photo widget [candidates] with [caption] under each and
@@ -140,19 +154,24 @@ class HomeWidgetService {
       'photo_widget_empty': empty,
     };
     if (mapEquals(data, _photosPushed)) return;
-    _photosPushed = data;
-    await _save(data, _photoProvider, 'Photo widget');
+    if (await _save(data, _photoProvider, 'Photo widget')) _photosPushed = data;
   }
 
-  static Future<void> _save(
-      Map<String, String> data, String provider, String name) async {
+  static Future<bool> _save(
+      Map<String, String> data, String provider, String name,
+      {List<String> additionalProviders = const []}) async {
     try {
       for (final MapEntry(:key, :value) in data.entries) {
         await HomeWidget.saveWidgetData<String>(key, value);
       }
       await HomeWidget.updateWidget(qualifiedAndroidName: provider);
+      for (final extra in additionalProviders) {
+        await HomeWidget.updateWidget(qualifiedAndroidName: extra);
+      }
+      return true;
     } catch (error, stackTrace) {
       _logger.warning('$name update failed', error, stackTrace);
+      return false;
     }
   }
 
@@ -168,9 +187,34 @@ class HomeWidgetService {
       ? int.tryParse(uri!.queryParameters['id'] ?? '')
       : null;
 
+  static int? moodOf(Uri? uri) {
+    if (uri?.host != 'mood') return null;
+    final value = int.tryParse(uri!.queryParameters['value'] ?? '');
+    return value != null && value >= -2 && value <= 2 ? value : null;
+  }
+
+  static int? promptOf(Uri? uri) {
+    if (uri?.host != 'prompt') return null;
+    final value = int.tryParse(uri!.queryParameters['index'] ?? '');
+    return value != null && value >= 0 && value < 10 ? value : null;
+  }
+
   static Future<Uri?> launchUri() =>
       supported ? HomeWidget.initiallyLaunchedFromHomeWidget() : Future.value();
 
   static Stream<Uri?> get taps =>
       supported ? HomeWidget.widgetClicked : const Stream.empty();
 }
+
+List<String> dailyWidgetPrompts(AppLocalizations l10n) => [
+      l10n.coachPrompt1,
+      l10n.coachPrompt2,
+      l10n.coachPrompt3,
+      l10n.coachPrompt4,
+      l10n.coachPrompt5,
+      l10n.coachPrompt6,
+      l10n.coachPrompt7,
+      l10n.coachPrompt8,
+      l10n.coachPrompt9,
+      l10n.coachPrompt10,
+    ];

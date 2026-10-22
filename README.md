@@ -16,10 +16,15 @@ The layout follows the Journey diary app: a bottom bar on phones, a navigation r
 | ![Coach](artifacts/ui-tablet-coach.png) | ![Editor](artifacts/ui-phone-editor.png) ![Share](artifacts/ui-phone-share.png) |
 | ![Coach program](artifacts/ui-tablet-coach-program.png) | ![Location](artifacts/ui-phone-location-picker.png) ![Share as](artifacts/ui-phone-share-as.png) |
 | ![Coach story](artifacts/ui-tablet-story-prompt.png) | |
+| ![Handwriting](artifacts/ui-tablet-backlog-drawing.png) | ![Appearance](artifacts/ui-phone-backlog-appearance.png) |
+| ![Paper](artifacts/ui-tablet-backlog-lined.png) | ![Local photo suggestions](artifacts/ui-phone-backlog-moments.png) |
 | | ![Random walk](artifacts/ui-phone-random.png) ![Week review](artifacts/ui-phone-week-review.png) |
 
 - **Journal**: stories, then entries grouped by day with time, title, preview, mood, place, weather, activity, tags and a thumbnail; sort by entry date (either way) or by last update. Stories: Today, the coach program's day, throwback, opened time capsules, a morning or evening prompt, quick check-in, random walk, this week and this year in review. Today, the coach day and the throwback play as one chain (statistics, 30-day mood chart, the day's prompt answered in place, the throwback, a closing card), as a card over wide windows.
 - **First launch**: welcome pages (what the diary does, privacy with a passcode, reminders).
+- **Nearby migration and device authorization**: scan the old device, compare a short code, then transfer the identity and verified diary/media directly. Devices generate their own non-exportable signing keys; approving a new device never copies the old signing key. Network diagnostics explain pending media and show actual official-server usage. The official media plan defaults to 1 GB/month when enabled; self-hosting defaults to no plan quotas and durable media storage, with optional administrator limits.
+- **Appearance and handwriting**: independent light/dark palettes, lined/grid/tinted writing paper and original botanical, star and washi decorations. The pen canvas uses Scribble and perfect_freehand, saves drawings as ordinary PNG attachments and supports stylus-only input.
+- **Local photo suggestions**: optional, on-device grouping by time and optionally place, with bounded scans and explicit import. Source photos are never deleted or uploaded merely to create suggestions.
 - **Random walk**: one random past entry at a time, no repeats until all were shown; all entries, only those with photos, or only good days.
 - **Reviews**: the week or the year as story slides: counts, mood (a 7-day row, or the year in pixels), most frequent tags, activities and places, photos, entries per month and a highlight.
 - **Quick check-in**: a mood and a line of text, saved as an entry in two taps.
@@ -40,7 +45,7 @@ The layout follows the Journey diary app: a bottom bar on phones, a navigation r
 - **Import**: Journey backups (both schemas) and Day One JSON exports with photos, tags, stars, place and weather, plus Daybook, Daylio, Diarium, Diaro, My Brain, OneShot and Pixels.
 - **Settings**: general (theme, wallpaper, entry font, size and line spacing, units, 12/24-hour time, the hours that pick a new entry's diary day, add place and weather automatically), data and storage (backup, export, Recently deleted), stories (morning and evening prompts, throwbacks), notifications (Android: reminders with weekdays, on this day, a nudge after a few quiet days, a lasting quick-write notification), security, help (FAQ, privacy) and about.
 - **Command line and agents**: every feature is an action that the app's buttons, its command palette (Ctrl+K on Windows; Settings → Command line → All commands) and the `aid` command line all run, so what a script or an AI agent does shows in the app as it happens. Off in release builds until Settings → Command line is turned on; the API listens on this device only, with a new token each start.
-- **Android home screen widgets**: today's status (date, whether today has an entry, the latest entry's first line, the streak and a Write button), and a photo from the diary, a different one each day, that opens its entry.
+- **Android home screen widgets**: today's status, a daily diary photo, streak, daily writing prompt and quick mood. Tapping a prompt or mood opens an editable draft rather than silently saving an entry.
 
 Entries, photos and coordinates stay on the device unless sync is turned on, and then reach the chosen storage and trusted devices, encrypted. Network use, all optional and configured in [assets/config/app_config.json](assets/config/app_config.json):
 

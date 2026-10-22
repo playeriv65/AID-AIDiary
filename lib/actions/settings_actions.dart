@@ -11,6 +11,7 @@ import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/actions/sync_actions.dart';
 import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/config_provider.dart';
+import 'package:aid_diary/database/app_database.dart';
 import 'package:aid_diary/database/entry_store.dart';
 import 'package:aid_diary/language_option.dart';
 import 'package:aid_diary/providers/entry_images_provider.dart';
@@ -63,10 +64,11 @@ Object? _decode(Setting<Object?> setting, String text) {
       };
     case Setting<int>():
       // A colour may be named, or written as 0xAARRGGBB.
-      final number =
-          setting == Settings.accentColor && accentPresets[text] != null
-              ? accentPresets[text]
-              : int.tryParse(text);
+      final number = (setting == Settings.accentColor ||
+                  setting == Settings.darkAccentColor) &&
+              accentPresets[text] != null
+          ? accentPresets[text]
+          : int.tryParse(text);
       return number ?? (throw _badValue(setting, 'a whole number'));
     case Setting<String>():
       return text;
@@ -136,6 +138,13 @@ void _check(Setting<Object?> setting, Object? value) {
     case Settings.savedPlaces
         when value is! List || value.any((p) => p is! Map):
       throw _badValue(setting, 'a JSON list of {name, latitude, longitude}');
+    case Settings.dismissedPhotoSuggestions || Settings.importedPhotoSuggestions
+        when value is! List ||
+            value.length >
+                (setting == Settings.importedPhotoSuggestions ? 2000 : 500) ||
+            value.any((id) =>
+                id is! String || !RegExp(r'^[a-f0-9]{64}$').hasMatch(id)):
+      throw _badValue(setting, 'a bounded JSON list of SHA-256 photo ids');
     case Settings.veryHappyIcon ||
             Settings.happyIcon ||
             Settings.neutralIcon ||
@@ -238,6 +247,21 @@ Map<String, String> _texts(String values) {
 }
 
 final List<AppAction> settingsActions = [
+  AppAction(
+    id: 'app.finish_onboarding',
+    describe:
+        'Completes first-run setup and creates an example only in a fresh, unused diary.',
+    risk: ActionRisk.write,
+    run: (context, args) async {
+      final created = await AppDatabase.instance.createWelcomeForFirstStart();
+      final saved =
+          await SettingsService.instance.set(Settings.onboardingDone, true);
+      if (!saved) {
+        throw const ActionException('failed', 'Could not finish setup.');
+      }
+      return {'completed': true, 'exampleCreated': created};
+    },
+  ),
   AppAction(
     id: 'app.status',
     describe: 'Shows the build, the platform, the size of the diary, the '

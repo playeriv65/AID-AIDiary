@@ -115,6 +115,13 @@ class MediaTransfers {
   static String manifestPath(String id) => 'media/manifests/$id';
   static String chunkPath(String id, String hash) => 'media/chunks/$id/$hash';
 
+  /// Prepares ciphertext for an independently hosted, read-only migration.
+  /// This does not run the sync queue or mutate the source diary's sync state.
+  Future<bool> stage(String id, String name) async {
+    await queue(id, name, sending: true);
+    return await _prepare(id, name) != null;
+  }
+
   Future<void> queue(String id, String name,
       {required bool sending, DatabaseExecutor? transaction}) async {
     if (id.isEmpty ||
@@ -316,6 +323,7 @@ class MediaTransfers {
     final input = await file?.open();
     try {
       for (var offset = 0; offset < size; offset += chunkBytes) {
+        if (_stopped) throw StateError('Attachment staging stopped');
         final length = min(chunkBytes, size - offset);
         final plain = input == null
             ? Uint8List.sublistView(memory!, offset, offset + length)

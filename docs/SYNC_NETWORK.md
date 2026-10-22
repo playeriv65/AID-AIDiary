@@ -47,6 +47,46 @@ changed.
 
 ## Verification status
 
+### Device authorization and policy follow-up (2026-10-22)
+
+The final backlog binaries passed first-run nearby migration between hidden
+Windows and the Xiaomi Pad 7. With the isolated local cloud service stopped,
+QR-bound SAS approval transferred diary metadata, a 3 MiB audio attachment and
+a rendered handwriting PNG; both attachment SHA-256 values matched, the diary
+day remained 2026-10-20, media failures were zero and the source received its
+final completion receipt. These devices were on the same Wi-Fi with Tailscale
+available; stopping the application server does not establish a no-Internet or
+cross-WAN test.
+
+Windows CNG bootstrap, explicit approval, signing-key rotation and revocation
+passed. The Pad reported a hardware-backed Android Keystore key, received
+automatic authorization through the already-approved nearby channel, rotated
+its own key and synchronized a new diary entry. Revocation then required fresh
+approval. The final first-run GUI completed directly into the journal, without
+returning through the welcome steps.
+
+One unchanged local server URL was tested with the same executable and data:
+limits off returned no quota; limits on returned the configured 8192-byte monthly
+allowance; limits off again cleared the quota and transferred a new
+17,825,836-byte WAV through storage only, with a matching SHA-256. This exceeds
+the default limited-cache original-file ceiling and demonstrates that clients
+use policy parameters rather than domain-specific behavior.
+
+The final Flutter suite passed 789 tests with six external-service tests skipped;
+analysis was clean, seven CLI tests passed, all four screenshot cases passed,
+and Go tests, vet and race checks passed. Both native builds succeeded. The
+headless Android emulator verified real mood-widget cold launch, bounded
+MediaStore scanning, explicit two-photo import and unchanged source-file hashes.
+Stylus events and handwriting rendering also have component/action tests.
+Performance measurements remain deferred. Production deployment and another-
+network validation remain separate outstanding work.
+
+Test native signing keys were removed through their isolated app instances,
+the two Pad scratch workspaces and API forwards were removed, and local test
+clients/server were stopped. The everyday app package was not changed.
+
+### Earlier automatic-path validation
+
 Previously checked: two isolated hidden Windows clients discovered each
 other through native DNS-SD, selected LAN, and exchanged a 2 MiB attachment
 with a matching SHA-256 while the test cache's file allowance was only
@@ -146,12 +186,85 @@ happen immediately. Switching between otherwise healthy paths requires a
 minimum dwell time and a sufficient score improvement. Current production
 candidates do not yet have an active throughput measurement service.
 
-The selector also supports a bounded direct-first head start for nearby
-migration. The planned migration flow is scan, establish trust, find a
-direct path, then transfer and verify. Offline first-time QR authorization,
-Wi-Fi Direct and hotspot assistance are still future work; the current app
-does not present that new flow. Existing pairing uses SPAKE2 over the
-selected shared storage before devices can authenticate each other locally.
+The selector also supports a bounded direct-first head start. First-time nearby
+migration now has its own foreground QR/SAS flow and reuses authenticated direct
+object transfer and persistent media chunks. Wi-Fi/hotspot settings assistance is
+implemented; unattended Wi-Fi Direct negotiation remains outside the current
+platform contract. Storage-based SPAKE2 pairing remains available independently.
+
+## Offline nearby authorization and migration
+
+The old device snapshots metadata in a read transaction into a separate temporary
+ciphertext vault. Its ordinary cloud queue, acknowledgements and original files
+are unchanged. Attachment ciphertext is prepared on demand, keeping large media
+out of the initial invitation step. The public QR contains only an expiring
+session, numeric local endpoints and an ephemeral X25519 public key. X25519,
+HKDF-SHA256 and AES-GCM bind the channel to that physically scanned public key.
+Both people-facing screens must confirm the same six-digit SAS before the owner
+releases MK or a migration capability. A competing receiver cannot replace an
+established transcript, and authenticated request sequence numbers reject replay.
+No long-term native signing key is exported.
+
+The recipient requires a new, unconnected diary; it must not replace an existing
+user's identity or contents. Cancellation and the empty-diary check are fenced
+inside SQLite write transactions before native secret-store writes. Secure-store
+changes are compensated if persistence or cancellation fails. Identity adoption
+waits until the requested metadata and attachments have completed. Only after
+that adoption commits does an encrypted completion receipt reach the sender.
+A lost final receipt is retried quietly and cannot undo an already complete local
+diary. Partial transfer capabilities remain in platform secret storage for retry;
+they never appear in diagnostics or the public QR. A closed or expired source
+reports failure separately from successful completion and removes its temporary
+staging database and files.
+
+For an AID account, the same confirmed SAS channel carries the new device's own
+public signing-key request. The old device authorizes that key automatically or
+persists its public signed request for retry when the cloud is reachable. It does
+not send its Basic password, bearer token or native private key. After migration,
+the new device configures the account address and existing sealed space info and
+obtains its own short token. Ordinary Google Drive/WebDAV credentials are not
+copied. User-assisted Wi-Fi or hotspot setup remains available when local routing
+requires it; this does not promise arbitrary cross-platform offline discovery or
+automatic hotspot creation.
+
+Invitation, transfer-session and pack limits live in `sync.transfer`:
+`nearbyInvitationSeconds` (120), `nearbySessionSeconds` (3600) and
+`nearbyPackKiB` (1024). New GUI operations share
+`sync.nearby_status/offer/accept/confirm/resume/cancel/wifi/hotspot` actions;
+confirmation requires the displayed SAS. Network codes and transfer secrets have
+different exposure rules: a public invitation/SAS can be displayed for this
+explicit authorization, while MK, capabilities and tokens never appear in status.
+
+## AID device keys and server authorization
+
+Each server/account registration owns a separate P-256 key in Android Keystore
+or Windows CNG. The native interface only ensures a key, signs bounded messages
+and deletes a key. Hardware-backed status comes from the provider; Windows
+currently uses a non-exportable software key. A new device generates its own key
+and proves possession rather than receiving the old device's private key.
+
+The first device uses the operator-issued account password for atomic bootstrap.
+Once a device has been registered, Basic no longer authorizes that account's
+storage or networking service. Subsequent devices require an existing authorized
+device's bearer approval. Fresh, one-use server challenges bind account, device
+and current public-key fingerprint; the client checks that context before native
+signing. Short random tokens are held in client memory, hashed at rest on the
+server and checked against active device records on every bearer request. Native
+key rotation preserves old/new aliases until the new server key is proven, so a
+lost response can recover without exporting either key.
+
+The device-management page and `sync.devices_accounts/check/authorize/revoke/rotate`
+actions expose public fingerprints and authorization status. They never return
+native key aliases, signing material, account passwords or access tokens.
+The exact endpoint payloads, finite defaults and revocation behavior are in
+[the server guide](../server/README.md#device-authorization).
+
+Revoking a device blocks its future server access and closes its server
+WebSockets; it cannot erase MK or diary copies already held by that device.
+Rotating a device signing key does not rotate shared MK or a space data key.
+Shared-MK rotation and independent revocation of the current MK-based direct
+protocol remain separate product/security work. New source implementation and
+the physical validation/deployment evidence above must be assessed separately.
 
 ## Trusted LAN peers
 
@@ -164,12 +277,10 @@ instance audience prevent unauthenticated advertisements or replayed
 requests from becoming trusted transfers. The listener exposes only allowed
 encrypted sync objects, with bounded requests and concurrency.
 
-This proves possession of the same master key, not a separate device
-signing key. Devices sharing MK cannot currently be revoked individually
-through this protocol. Per-device keys, server challenge/token
-authentication, revocation and key rotation remain future work. The Go
-server still authenticates its WebDAV accounts with their storage password;
-LAN authentication does not replace that login.
+This proves possession of the same master key. AID server access now uses the
+device challenge/token scheme above, but MK-based LAN authentication still cannot
+independently exclude one device already holding MK. Server revocation does not
+retroactively revoke that shared secret or an established direct connection.
 
 ## Internet directory and public direct paths
 
@@ -347,21 +458,28 @@ Retries use jitter and a ceiling; new diary edits do not bypass a pending
 retry deadline. Discovering a direct route can wake deferred work sooner.
 Personal Google Drive and ordinary WebDAV storage are separate from the
 operator cache: its file/traffic limits do not restrict them, although the
-provider's own quotas still apply. A self-hosted AID server advertising the
-cache policy is still an expiring cache, even under a different address.
+provider's own quotas still apply. Self-hosted AID defaults to durable storage
+without monthly/daily plan quotas, media TTL or cache eviction. An administrator
+may opt into the bounded cache policy using `AID_SYNC_OPERATOR_LIMITS=true`.
+The official deployment enables it explicitly. It uses the same server and
+client behavior as any other deployment; the domain never determines limits.
 
 Clients probe WebDAV endpoints for an authenticated
 `GET /api/sync/policy` and intersect their allowance with the server's
-remaining transfer budget and object limits. If policy is unavailable,
-operator-cache media is disabled for that run; metadata and reachable LAN
-sync can continue. Server enforcement is authoritative, including against
-modified clients.
+remaining transfer budget and object limits when `operatorLimited` is true.
+If policy refresh fails after that server advertised limits, operator-cache
+media is disabled for that run; metadata and reachable LAN sync can continue.
+A server without an enabled limit policy is treated as personal storage. Server
+enforcement is authoritative, including against modified clients.
 
-The server defaults are 2 MiB per ciphertext object, 256 KiB per manifest,
+When operator limits are enabled, defaults are 2 MiB per ciphertext object, 256 KiB per manifest,
 128 MiB cached media per account, 256 MiB combined media uploads/downloads
 per UTC day and a seven-day chunk TTL from its last successful upload.
-The 2 GiB default total account quota and 256 MiB general upload limit still
-apply. These are configurable defaults, not a deployment guarantee; see
+Cache and relay share a 1,000,000,000-byte UTC monthly media allowance, in
+addition to their independent daily limits. Metadata/control traffic uses a
+separate allowance and cannot bypass billing by renaming media as a pack.
+The 2 GiB account plan quota is also opt-in; the 256 MiB general upload safety
+limit remains enabled for self-hosting. These are configurable defaults, not a deployment guarantee; see
 [server/README.md](../server/README.md) for the exact environment variables.
 
 Expired chunks are collected before authenticated WebDAV requests.
@@ -379,8 +497,13 @@ current route, next retry time and media report. `aid sync.network` provides
 `availableRoutes` (type, stability, throughput and cost), `pendingMedia`,
 `durableRemoteMedia`, `temporaryOrUnconfirmedRemoteMedia`, the selected
 `route` and optional `retryAt`. The two remote-media counts describe completed
-outbound tasks with different retention assumptions. A dedicated advanced
-network diagnostics page has not been implemented.
+outbound tasks with different retention assumptions. The advanced network
+diagnostics page presents those counts separately, with selected/available paths,
+signaling state, authenticated peer count and actual ICE candidate types/protocol.
+Its presentation model whitelists fields and does not display endpoint addresses,
+tokens, keys or arbitrary exception strings. A durable-storage receipt is not a
+proof that a peer will retain a copy forever; cache and unconfirmed receipts remain
+explicitly separate from durable-storage receipts.
 
 Development builds also expose `aid sync.network_paths
 paths=lan,direct,ice,relay,cache` to restrict a physical test to the requested

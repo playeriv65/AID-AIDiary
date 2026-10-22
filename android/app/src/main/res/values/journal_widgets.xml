@@ -1,0 +1,17 @@
+<resources>
+    <string name="streak_widget_name">Writing streak</string>
+    <string name="prompt_widget_name">Question of the day</string>
+    <string name="mood_widget_name">How do you feel?</string>
+    <string name="widget_mood_low">Very low</string>
+    <string name="widget_mood_down">Low</string>
+    <string name="widget_mood_neutral">Neutral</string>
+    <string name="widget_mood_good">Good</string>
+    <string name="widget_mood_great">Great</string>
+    <style name="WidgetMood">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">26sp</item>
+    </style>
+</resources>

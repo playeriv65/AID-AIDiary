@@ -27,6 +27,7 @@ void useTemporaryConfig() {
 
   tearDown(() async {
     EasyDebounce.cancelAll();
+    await ConfigProvider.instance.waitForConfigWrites();
     await work.delete(recursive: true);
   });
 }

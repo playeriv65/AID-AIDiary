@@ -149,6 +149,16 @@ Rules that keep it so:
   the diary alone.
 - `ui.screen` and `ui.navigate` let an agent see and move the GUI; the GUI
   provides them through `ActionScreen`, so `actions/` still imports no UI.
+- Drawing uses a thin Scribble/PF input adapter in `widgets/`, a bounded plain
+  numeric document in `models/`, and an isolate PNG renderer in `services/`.
+  `drawing.render`, `drawing.attach` and `drawing.export` work without a GUI.
+  Local photo suggestions follow the same direction: native/selected-folder
+  metadata source, plain local grouping, then explicit import through actions.
+- Nearby pairing and migration, device approval/revocation and network diagnostics
+  use `device_sync_actions.dart`. Temporary encrypted migration snapshots are
+  independent of the live sync vault. Identity adoption uses an SQLite writer
+  transaction and compensating secure-store writes; the sender receives a final
+  receipt only after recipient content and identity have committed.
 - Touch feedback (`widgets/haptics.dart`) belongs to the GUI: actions run
   from the CLI stay silent.
 - The GUI changes data only by running actions (`AppActions.instance.run`),
@@ -229,8 +239,8 @@ Diary metadata may be synchronized while attachment bytes remain pending.
 Temporary cache receipt and durable remote storage are distinct facts;
 neither a route change nor a successful cache upload changes that distinction.
 The GUI shows simple sync/media states. `sync.status` and `sync.network`
-actions expose route, retry and media diagnostics; no advanced diagnostics
-page exists yet.
+actions expose route, retry and media diagnostics; the advanced diagnostics
+page renders only allowlisted operational fields and actual server allowances.
 
 Current remote spaces use format 4. Older formats fail explicitly rather
 than being migrated or reset automatically; local database schema updates
@@ -243,7 +253,10 @@ through one-sided signaling loss and a stopped isolated test server.
 The temporary process, data and proxy have been removed with production
 health verified; the production server still needs the networking release
 deployed. Device-key authentication and individual revocation, offline
-first-time QR trust and Wi-Fi Direct/hotspot assistance remain unimplemented.
+first-time QR trust and Wi-Fi/hotspot settings assistance are implemented.
+Automatic OS-specific Wi-Fi Direct creation remains future work. All AID
+deployments share the same policy-driven implementation: quota and cache
+retention parameters are opt-in, with no domain-based client behavior.
 Implementation and validation/deployment evidence are tracked separately in
 [SYNC_NETWORK.md](SYNC_NETWORK.md).
 

@@ -146,6 +146,7 @@ class LanMediaHost {
   StreamSubscription<LanCandidate>? _subscription;
   HttpServer? _server;
   bool _closed = false;
+  Future<void>? _closing;
   int _active = 0;
 
   Stream<LanMediaPeer> get peers => _peers.stream;
@@ -322,15 +323,19 @@ class LanMediaHost {
     }
   }
 
-  Future<void> close() async {
+  Future<void> close() => _closing ??= _close();
+  Future<void> _close() async {
     _closed = true;
-    await _subscription?.cancel();
-    await _discovery.close();
-    await _server?.close(force: true);
-    for (final client in _clients.values) {
-      client.close();
+    try {
+      await _subscription?.cancel();
+      await _discovery.close();
+    } finally {
+      await _server?.close(force: true);
+      for (final client in _clients.values) {
+        client.close();
+      }
+      await _peers.close();
     }
-    await _peers.close();
   }
 }
 

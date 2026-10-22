@@ -5,10 +5,12 @@
 import 'dart:io';
 
 import 'package:aid_diary/config_provider.dart';
+import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/actions/settings_actions.dart';
 import 'package:aid_diary/widgets/app_logo.dart';
 import 'package:aid_diary/routing/destinations.dart';
+import 'package:aid_diary/sync/nearby_service.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// Welcome pages on first launch, like Journey's: welcome, what the diary
@@ -26,6 +28,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
   final _pages = PageController();
   int _page = 0;
   bool _remindersOn = false;
+  bool _finishing = false;
 
   static const _count = 5;
 
@@ -39,15 +42,28 @@ class _OnboardingPageState extends State<OnboardingPage> {
       duration: const Duration(milliseconds: 300), curve: Curves.easeOut);
 
   Future<void> _finish() async {
-    await changeSetting(Settings.onboardingDone, true);
-    if (!mounted) return;
-    await Navigator.of(context).pushReplacement(MaterialPageRoute(
-        allowSnapshotting: false, builder: (_) => widget.next));
+    if (_finishing) return;
+    setState(() => _finishing = true);
+    try {
+      await AppActions.instance.run('app.finish_onboarding', {});
+      if (!mounted) return;
+      await Navigator.of(context).pushReplacement(MaterialPageRoute(
+          allowSnapshotting: false, builder: (_) => widget.next));
+    } finally {
+      if (mounted) setState(() => _finishing = false);
+    }
   }
 
   Future<void> _turnOnReminders() async {
     if (!await changeSetting(Settings.dailyReminders, true)) return;
     if (mounted) setState(() => _remindersOn = true);
+  }
+
+  Future<void> _receive() async {
+    await openPlace(context, 'settings/sync/nearby', {'receive': true});
+    if (mounted && NearbyService.instance.state == NearbyState.complete) {
+      await _finish();
+    }
   }
 
   @override
@@ -60,7 +76,13 @@ class _OnboardingPageState extends State<OnboardingPage> {
       _OnboardStep(
           icon: const AppLogo(size: 80),
           title: l10n.onboardWelcomeTitle,
-          text: l10n.onboardWelcomeText),
+          text: l10n.onboardWelcomeText,
+          action: OutlinedButton.icon(
+            key: const ValueKey('onboard-nearby-receive'),
+            onPressed: _finishing ? null : _receive,
+            icon: const Icon(Icons.move_to_inbox_outlined),
+            label: Text(l10n.nearbyReceive),
+          )),
       _OnboardStep(
           icon: const Icon(Icons.photo_album_outlined),
           title: l10n.onboardIntroTitle,
@@ -111,7 +133,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
               maintainState: true,
               child: TextButton(
                 key: const ValueKey('onboard-skip'),
-                onPressed: _finish,
+                onPressed: _finishing ? null : _finish,
                 child: Text(l10n.onboardSkip),
               ),
             ),
@@ -148,7 +170,11 @@ class _OnboardingPageState extends State<OnboardingPage> {
               const Spacer(),
               FilledButton(
                 key: const ValueKey('onboard-next'),
-                onPressed: last ? _finish : () => _go(_page + 1),
+                onPressed: _finishing
+                    ? null
+                    : last
+                        ? _finish
+                        : () => _go(_page + 1),
                 child: Text(last ? l10n.onboardStart : l10n.onboardNext),
               ),
             ]),

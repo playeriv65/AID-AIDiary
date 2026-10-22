@@ -21,10 +21,20 @@ Entry storage (SQLite), photos, moods, tags and trackers, templates, statistics,
 - Entry location (latitude, longitude, place name), weather (WMO code and temperature) and activity (database version 7). Device location via geolocator, place names and place search via OpenStreetMap Nominatim, map tiles from OpenStreetMap through flutter_map with marker clustering, weather from Open-Meteo, activity detection via flutter_activity_recognition (Android). Optional automatic place, weather and activity for new entries. Endpoints in `assets/config/app_config.json`.
 - Video and voice note attachments (video_player, video_player_win, record) stored alongside photos.
 - Today story (statistics, mood chart, throwback), built-in templates and a template link in the editor, duplicate and save-as-template for entries, inline search filters, "What makes me feel…" mood associations, entry font / size / line spacing and list wallpapers, settings regrouped into General, Data & storage, Stories, Notifications, Security and Help & about.
-- Android home screen widgets (home_widget): today's status and a daily photo.
+- Android home screen widgets (home_widget): today's status, a daily photo,
+  streak, daily prompt and quick mood.
 - Coach programs with enrolment, a story chain (today, coach prompt answered in place, throwback, closing card), a location sheet and picker with saved and nearby places (OpenStreetMap Overpass), a share sheet (image, ZIP with media, text, HTML), welcome pages, a help page, the photo's time and place offered from EXIF, a quick-write notification and nudges after quiet days.
 - Recently deleted and time capsules (database version 8: `deleted_at` and `open_at` on entries), random walk, week and year reviews, Year in Pixels, quick check-in, morning and evening templates, entry share pictures, JSON export, a Markdown insert menu, journal sorting by last update, reminder weekdays, 12/24-hour setting and recent places. Backlog in `TODO.md`.
 - Theme colour presets and neutral backgrounds.
+- Independent dark palettes, diary paper and original vector decorations;
+  settings grouping informed by the installed Durian Diary (no code or assets
+  copied).
+- Tablet drawing uses [Scribble 0.10.0+1](https://github.com/timcreatedit/scribble)
+  and [perfect_freehand 2.5.2+1](https://pub.dev/packages/perfect_freehand), both
+  MIT licensed. Their license notices are bundled by Flutter. Drawing documents
+  and headless PNG exports are implemented locally.
+- Local photo suggestions use bounded on-device metadata and explicitly selected
+  folders; photos are imported only after choosing a suggestion.
 - Windows development script, native-asset packaging per the Flutter template, cooperative cancellation of archive compression, format detection for desktop thumbnails.
 - Headless screenshot generation in `tool/screenshots/`.
 - End-to-end encrypted format-4 sync through personal storage and trusted peers,

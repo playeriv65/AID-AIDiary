@@ -13,6 +13,32 @@ import java.io.File
 class MainActivity: FlutterFragmentActivity() {
   override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
     super.configureFlutterEngine(flutterEngine)
+    val workspace = if (BuildConfig.FLAVOR == "dev") intent.getStringExtra("aid_test_workspace") else null
+    val scope = if (workspace != null && Regex("^[A-Za-z0-9_-]{1,64}$").matches(workspace)) workspace else "default"
+    DeviceKeys(flutterEngine.dartExecutor.binaryMessenger, "$packageName.$scope")
+    LocalPhotos(applicationContext, flutterEngine.dartExecutor.binaryMessenger)
+    MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "aid.nearby")
+      .setMethodCallHandler { call, result ->
+        val action = when (call.method) {
+          "openWifiSettings" -> android.provider.Settings.ACTION_WIFI_SETTINGS
+          "openHotspotSettings" -> "android.settings.TETHER_SETTINGS"
+          else -> null
+        }
+        if (action == null) {
+          result.notImplemented()
+        } else {
+          try {
+            val settings = Intent(action)
+            if (settings.resolveActivity(packageManager) == null) {
+              settings.action = android.provider.Settings.ACTION_WIRELESS_SETTINGS
+            }
+            startActivity(settings)
+            result.success(null)
+          } catch (_: Exception) {
+            result.error("unavailable", "Network settings are unavailable", null)
+          }
+        }
+      }
     MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "aid.dev/workspace")
       .setMethodCallHandler { call, result ->
         if (call.method != "workspace") {

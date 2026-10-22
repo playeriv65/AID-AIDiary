@@ -25,6 +25,8 @@ bool FlutterWindow::OnCreate() {
     return false;
   }
   RegisterPlugins(flutter_controller_->engine());
+  device_keys_ = RegisterDeviceKeys(flutter_controller_->engine()->messenger());
+  nearby_settings_ = RegisterNearbySettings(flutter_controller_->engine()->messenger());
   SetChildContent(flutter_controller_->view()->GetNativeWindow());
 
   flutter_controller_->engine()->SetNextFrameCallback([&]() {
@@ -40,6 +42,8 @@ bool FlutterWindow::OnCreate() {
 }
 
 void FlutterWindow::OnDestroy() {
+  nearby_settings_ = nullptr;
+  device_keys_ = nullptr;
   if (flutter_controller_) {
     flutter_controller_ = nullptr;
   }

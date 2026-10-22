@@ -9,6 +9,18 @@ sealed class LaunchIntent {
   const factory LaunchIntent.takePhoto() = TakePhotoIntent;
   const factory LaunchIntent.openEntry(int id) = OpenEntryIntent;
   const factory LaunchIntent.newEntry() = NewEntryIntent;
+  const factory LaunchIntent.mood(int value) = MoodEntryIntent;
+  const factory LaunchIntent.prompt(int index) = PromptEntryIntent;
+}
+
+class MoodEntryIntent extends LaunchIntent {
+  const MoodEntryIntent(this.value);
+  final int value;
+}
+
+class PromptEntryIntent extends LaunchIntent {
+  const PromptEntryIntent(this.index);
+  final int index;
 }
 
 /// The quick-write notification was tapped: start a new entry.

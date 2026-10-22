@@ -159,8 +159,8 @@ final List<AppAction> dataActions = [
   ),
   AppAction(
     id: 'data.export',
-    describe: 'Writes every entry to a file in a folder, for another app or '
-        'to keep.',
+    describe: 'Writes all open entries to a file for another app. Sealed '
+        'time capsules are excluded; a full backup preserves them.',
     risk: ActionRisk.write,
     params: [
       ActionParam(
@@ -182,7 +182,9 @@ final List<AppAction> dataActions = [
       return {
         'format': _formatName(option.format.name),
         'file': outcome.output,
-        'entries': EntryStore.instance.entries.length,
+        'entries': EntryStore.instance.entries
+            .where((entry) => !entry.isSealed)
+            .length,
       };
     },
   ),

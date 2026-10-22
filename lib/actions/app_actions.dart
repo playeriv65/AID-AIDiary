@@ -5,11 +5,14 @@
 import 'package:aid_diary/actions/app_action.dart';
 import 'package:aid_diary/actions/coach_actions.dart';
 import 'package:aid_diary/actions/data_actions.dart';
+import 'package:aid_diary/actions/device_sync_actions.dart';
+import 'package:aid_diary/actions/drawing_actions.dart';
 import 'package:aid_diary/actions/entry_actions.dart';
 import 'package:aid_diary/actions/entry_media_actions.dart';
 import 'package:aid_diary/actions/flashback_actions.dart';
 import 'package:aid_diary/actions/perf_actions.dart';
 import 'package:aid_diary/actions/place_actions.dart';
+import 'package:aid_diary/actions/photo_suggestion_actions.dart';
 import 'package:aid_diary/actions/screen_actions.dart';
 import 'package:aid_diary/actions/settings_actions.dart';
 import 'package:aid_diary/actions/sync_actions.dart';
@@ -34,13 +37,16 @@ class AppActions {
     ...settingsActions,
     ...entryActions,
     ...entryMediaActions,
+    ...drawingActions,
     ...tagActions,
     ...templateActions,
     ...coachActions,
     ...flashbackActions,
     ...placeActions,
+    ...photoSuggestionActions,
     ...dataActions,
     ...syncActions,
+    ...deviceSyncActions,
     ...screenActions,
     ...perfActions,
   ];

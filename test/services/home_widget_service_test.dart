@@ -36,4 +36,17 @@ void main() {
     expect(HomeWidgetSnapshot.firstLine('> 引用\n正文'), '引用');
     expect(HomeWidgetSnapshot.firstLine('1. 第一条'), '第一条');
   });
+
+  test('sealed capsules never contribute a widget snippet or streak', () {
+    final now = DateTime.now();
+    final sealed = Entry(
+        text: 'private future text',
+        timeCreate: now,
+        timeModified: now,
+        openAt: now.add(const Duration(days: 10)));
+    final snapshot = HomeWidgetSnapshot.from([sealed], l10n);
+    expect(snapshot.snippet, isEmpty);
+    expect(snapshot.writtenDate, isEmpty);
+    expect(snapshot.streak, isEmpty);
+  });
 }

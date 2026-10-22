@@ -97,7 +97,12 @@ func Open(path string, hashing Hashing, minPassword int) (*Store, error) {
 		db.Close()
 		return nil, err
 	}
-	return &Store{db: db, hashing: hashing, minPassword: minPassword}, nil
+	store := &Store{db: db, hashing: hashing, minPassword: minPassword}
+	if err := store.initDevices(); err != nil {
+		db.Close()
+		return nil, err
+	}
+	return store, nil
 }
 
 // Close closes the database.

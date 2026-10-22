@@ -5,28 +5,16 @@ Ideas collected from Journey and other diary apps, not built yet. Roughly in ord
 ## Journey parity
 The reference is Journey 5.7.0C for Android tablets and phones; Windows uses the same tablet layout. Inventoried 2026-10-20 from its resources and screens, reference only. Done: shell, journal, detail, editor, calendar, media, atlas, coach with program enrolment, search, the story chain (coach prompt, wrap-up), statistics, settings tree, onboarding, help, reminders, quick-write notification, nudges, status and photo widgets, location sheet and picker, share sheet, EXIF date and place, backup.
 
-Left from Journey Android:
-- Insert an image from a URL (needs the network; decide whether it fits a local diary).
-
 Probably skip (Journey has them, but they need cloud or AI or add little): Google Fit, rate dialog, live chat, external-link warning, automatic media categories (an image classifier), an in-app media picker.
 
-## Look and feel
-- Letter-paper backgrounds for the editor and reader (lined, grid, tinted paper).
-- Sticker and washi-tape decorations, in the style of journaling ("手帐") apps.
-- More colour themes and a separate dark-theme choice.
-
-## Features
-- Multiple journals, each with a colour and icon, viewed together or apart (Day One, Apple Journal).
+## Deferred features
 - Finer moods: emotion words plus "who with / where" context (How We Feel). This would sharpen "What makes me feel…".
 - Goals and habits on top of trackers: target values, streaks, milestones (Daylio, Stoic).
-- On-device suggestion cards: "12 photos at the park today" from local photos and places (Day One Moments, Apple Journal). Offline only, no AI.
 - Question grid entries, with a view of every answer to one question over time (Grid Diary / 格志).
-- Read entries aloud with text-to-speech (一本日记).
 - Voice note transcription: needs on-device speech recognition; decide whether that fits "no AI".
-- Handwriting and drawing on tablets.
-- More home-screen widget kinds: streak, prompt of the day, quick mood.
 
 ## Frame rate (state of 2026-10-21)
+Deferred for a separate performance pass by the owner on 2026-10-22.
 Measured with `./scripts/dev.ps1 frame-rate` on the Xiaomi tablet (3200×2136, 120 Hz, Snapdragon 7+ Gen 3, Impeller/Vulkan), skipped refreshes on screen against the 1% bar:
 
 - Journal scroll about 1.4–1.8%, media scroll about 0.8%.
@@ -59,6 +47,13 @@ path restrictions and isolated Android test workspaces are implemented.
 New remote spaces use format 4; older formats require a new space or an
 explicitly approved reset, never an automatic deletion or migration.
 
+Device-owned P-256 keys, challenge authentication, individual authorization,
+revocation and key rotation are implemented. Nearby QR trust and offline
+migration transfer identity/MK and verified chunks without copying private
+signing keys. The GUI includes network diagnostics and actual server traffic
+allowances. Official-server limits are opt-in server policy; self-hosting
+defaults to durable storage without plan quotas.
+
 Remaining work:
 
 - Extend the same-Wi-Fi Windows/Pad validation to another network. LAN,
@@ -76,20 +71,10 @@ Remaining work:
   a successful temporary test does not deploy the production
   release. Keep live relay distinct from asynchronous cache and preserve
   their separate budgets.
-- First-time offline QR trust and MK transfer, a nearby migration flow,
-  Wi-Fi Direct/hotspot assistance and platform permission handling. Reuse
-  chunk semantics and prefer direct transfer; assistance can require user
-  interaction. Current storage-based pairing remains necessary to establish
-  the shared MK before LAN authentication.
-- Per-device P-256 signing keys and server challenges/short-lived access
-  tokens instead of the AID server's WebDAV passwords; authorization and
-  revocation of individual devices, then key rotation. Current LAN HMAC
-  proves a shared MK, so it cannot revoke one device independently. Revoking
-  tokens cannot take away an MK already held by a lost device. Keep signing
-  keys non-exportable where supported: approving a new device authorizes
-  its own key and transfers MK, rather than copying a hardware-bound key.
-- Advanced network diagnostics UI. `sync.status` and `sync.network` already
-  expose routes, retry times and media/durability counts to the CLI.
+- Automatic OS-specific Wi-Fi Direct creation, beyond the implemented
+  Wi-Fi/hotspot settings assistance. Cross-platform offline operation still
+  needs a mutually reachable local network; permission prompts may require
+  user interaction.
 - A user-facing durable-copy view, separate from transfer completion. The
   operator cache can expire; successful transfer does not by itself prove
   a reliable backup, and a peer's retention is not guaranteed.

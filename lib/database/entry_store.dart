@@ -410,11 +410,7 @@ class EntryStore with ChangeNotifier {
     final index = getIndexOfEntry(entry.id!);
     if (index == -1) return true;
     final stored = entries[index];
-    return stored.text != entry.text ||
-        stored.mood != entry.mood ||
-        stored.timeCreate != entry.timeCreate ||
-        stored.day != entry.day ||
-        stored.timeModified != entry.timeModified;
+    return !mapEquals(stored.toJson(), entry.toJson());
   }
 
   Future<_TagWrite> _writeEntryTags(

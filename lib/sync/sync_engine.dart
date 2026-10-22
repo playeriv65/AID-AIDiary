@@ -91,6 +91,7 @@ class SyncEngine {
       this.onMediaFailure,
       this.onMetadata,
       this.mediaChunkBytes = 1024 * 1024,
+      this.receiveOnly = false,
       this.onProgress,
       this.stopped,
       DateTime Function()? now})
@@ -111,6 +112,9 @@ class SyncEngine {
   final void Function(Object error)? onMediaFailure;
   final Future<void> Function()? onMetadata;
   final int mediaChunkBytes;
+
+  /// Nearby migration consumes an immutable snapshot without publishing edits.
+  final bool receiveOnly;
   late final _media = MediaTransfers(
       db: db,
       photos: photos,
@@ -137,9 +141,9 @@ class SyncEngine {
     // Sending over changes not yet taken in could put an older edit over a
     // newer one; that waits for a sync that reads everything.
     if (received == null) return const SyncReport();
-    final sent = await _push();
+    final sent = receiveOnly ? 0 : await _push();
     if (received.applied > 0 || received.kept > 0) await onMetadata?.call();
-    if (!_stopped) await _compact();
+    if (!_stopped && !receiveOnly) await _compact();
     final media = await _media.run();
     return SyncReport(
         received: received.applied,

@@ -49,4 +49,10 @@ const Map<String, int> accentPresets = {
   'purple': 0xff8F6CAF,
   'rose': 0xffBE7589,
   'amber': 0xffC88945,
+  'teal': 0xff398c86,
+  'cyan': 0xff428caa,
+  'indigo': 0xff6671b8,
+  'coral': 0xffc77969,
+  'olive': 0xff89945a,
+  'slate': 0xff71818e,
 };

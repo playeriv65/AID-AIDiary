@@ -30,6 +30,10 @@ type harness struct {
 }
 
 func start(t *testing.T) *harness {
+	return startMode(t, true)
+}
+
+func startMode(t *testing.T, operatorLimits bool) *harness {
 	t.Helper()
 	data := t.TempDir()
 	store, err := accounts.Open(filepath.Join(data, "accounts.db"),
@@ -40,6 +44,7 @@ func start(t *testing.T) *harness {
 	t.Cleanup(func() { store.Close() })
 	h := &harness{t: t, data: data, store: store, now: time.Date(2026, 10, 21, 9, 0, 0, 0, time.UTC)}
 	h.server = New(Config{
+		OperatorLimits: operatorLimits,
 		DataDir:        data,
 		MaxUploadBytes: 1 << 20,
 		CredentialTTL:  time.Minute,

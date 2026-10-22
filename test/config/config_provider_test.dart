@@ -21,10 +21,7 @@ void main() {
   late File configFile;
 
   Future<void> waitForConfigWrite() async {
-    EasyDebounce.fire("save-config");
-    while (!configFile.existsSync()) {
-      await Future.delayed(Duration.zero);
-    }
+    await configProvider.flushConfig();
   }
 
   setUp(() async {
@@ -38,6 +35,7 @@ void main() {
 
   tearDown(() async {
     EasyDebounce.cancelAll();
+    await configProvider.waitForConfigWrites();
     await directory.delete(recursive: true);
   });
 
@@ -83,6 +81,20 @@ void main() {
 
     expect(configProvider.get(Settings.accentColor), 0xff62A0EA);
     expect(configProvider.get(Settings.showFlashbacks), isTrue);
+  });
+
+  test('overlapping saves persist the latest complete snapshot', () async {
+    await configProvider.set(Settings.theme, 'light');
+    final first = configProvider.flushConfig();
+    await configProvider.set(Settings.theme, 'dark');
+    await configProvider.set(Settings.accentColor, 0xff123456);
+    final second = configProvider.flushConfig();
+    await Future.wait([first, second]);
+
+    await configProvider.readConfig();
+    expect(configProvider.get(Settings.theme), 'dark');
+    expect(configProvider.get(Settings.accentColor), 0xff123456);
+    expect(File('${configFile.path}.tmp').existsSync(), isFalse);
   });
 
   test('a secure setting round-trips through shared preferences', () async {

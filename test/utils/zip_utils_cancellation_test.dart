@@ -57,4 +57,28 @@ void main() {
     expect(await File(archive).exists(), isTrue);
     expect(token.isCancelled, isFalse);
   });
+
+  test(
+      'progress covers standalone files and every folder without going backwards',
+      () async {
+    final other = await Directory(join(work.path, 'other')).create();
+    await File(join(other.path, 'note.txt')).writeAsString('another folder');
+    final standalone =
+        await File(join(work.path, 'index.json')).writeAsString('{}');
+    final progress = <double>[];
+    await ZipUtils.compress(
+        archive, [standalone.path], [inputFolder.path, other.path],
+        onProgress: progress.add);
+    expect(progress.first, closeTo(100 / 22, 0.001));
+    expect(progress.last, 100);
+    for (var i = 1; i < progress.length; i++) {
+      expect(progress[i], greaterThanOrEqualTo(progress[i - 1]));
+      expect(progress[i], inInclusiveRange(0, 100));
+    }
+    final unpacked = join(work.path, 'unpacked');
+    await ZipUtils.extract(archive, unpacked);
+    expect(await File(join(unpacked, 'other', 'note.txt')).readAsString(),
+        'another folder');
+    expect(await File(join(unpacked, 'index.json')).readAsString(), '{}');
+  });
 }

@@ -4,10 +4,45 @@
 package main
 
 import (
+	"os"
 	"strings"
 	"testing"
 	"time"
 )
+
+func TestOperatorLimitsRequireExplicitOptIn(t *testing.T) {
+	t.Setenv("AID_SYNC_OPERATOR_LIMITS", "false")
+	t.Setenv("AID_SYNC_DEFAULT_QUOTA_MB", "0")
+	if err := os.Unsetenv("AID_SYNC_DEFAULT_QUOTA_MB"); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.Unsetenv("AID_SYNC_OPERATOR_LIMITS"); err != nil {
+		t.Fatal(err)
+	}
+	if s, err := load(); err != nil || s.operatorLimits || s.defaultQuotaMB != 0 {
+		t.Fatalf("default operator mode: %+v %v", s, err)
+	}
+	for _, value := range []string{"false", "true"} {
+		t.Setenv("AID_SYNC_OPERATOR_LIMITS", value)
+		s, err := load()
+		var wantQuota int64
+		if value == "true" {
+			wantQuota = 2048
+		}
+		if err != nil || s.operatorLimits != (value == "true") || s.defaultQuotaMB != wantQuota {
+			t.Fatalf("operator flag %s: %+v %v", value, s, err)
+		}
+	}
+	t.Setenv("AID_SYNC_OPERATOR_LIMITS", "false")
+	t.Setenv("AID_SYNC_DEFAULT_QUOTA_MB", "500")
+	if s, err := load(); err != nil || s.defaultQuotaMB != 500 {
+		t.Fatalf("explicit personal disk quota: %+v %v", s, err)
+	}
+	t.Setenv("AID_SYNC_OPERATOR_LIMITS", "unlimited")
+	if _, err := load(); err == nil || !strings.Contains(err.Error(), "AID_SYNC_OPERATOR_LIMITS") {
+		t.Fatalf("invalid boolean accepted: %v", err)
+	}
+}
 
 func TestMediaEnvironmentOverridesAreBounded(t *testing.T) {
 	t.Setenv("AID_SYNC_MEDIA_MAX_OBJECT_BYTES", "8192")

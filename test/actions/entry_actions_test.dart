@@ -177,6 +177,25 @@ void main() {
         await get(copy['id'] as int), containsPair('text', 'First\n\nSecond'));
   });
 
+  test('a duplicated entry retains its diary day and recorded context',
+      () async {
+    final id = await create({
+      'text': 'A walk',
+      'time': '2026-10-21T09:00:00',
+      'day': '2026-10-18',
+      'weather': '61,18',
+      'activity': 'walking',
+      'place': 'Garden'
+    });
+    final copied = await run('entry.duplicate', {'id': '$id'});
+    final copy = await get(copied['id'] as int);
+    expect(copy['day'], '2026-10-18');
+    expect(copy['weather'], {'code': 61, 'temperature': 18.0});
+    expect(copy['activity'], 'walking');
+    expect(copy['place'], 'Garden');
+    expect(copy['utcOffsetMinutes'], (await get(id))['utcOffsetMinutes']);
+  });
+
   test('a time capsule stays sealed for actions until it opens', () async {
     final id = await create({'text': 'Dear me', 'mood': '2', 'place': 'Home'});
     await run('entry.favorite', {'id': '$id', 'value': 'true'});

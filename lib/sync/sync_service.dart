@@ -20,6 +20,8 @@ import 'package:aid_diary/providers/templates_provider.dart';
 import 'package:aid_diary/sync/google_auth.dart';
 import 'package:aid_diary/sync/google_drive_backend.dart';
 import 'package:aid_diary/sync/identity.dart';
+import 'package:aid_diary/sync/device_auth.dart';
+import 'package:aid_diary/sync/nearby_receipt.dart';
 import 'package:aid_diary/sync/pairing.dart';
 import 'package:aid_diary/sync/sync_backend.dart';
 import 'package:aid_diary/sync/sync_crypto.dart';
@@ -73,8 +75,18 @@ class WebDavLogin implements SyncLogin {
   String get credential => password;
 
   @override
-  WebDavBackend backend() =>
-      WebDavBackend(server: server!, username: username, password: password);
+  WebDavBackend backend() => WebDavBackend(
+      server: server!,
+      username: username,
+      password: password,
+      authorizationProvider:
+          DeviceAuthManager.instance.registration(server!, username) == null
+              ? null
+              : () => DeviceAuthManager.instance
+                  .session(server!, username)!
+                  .authorization(),
+      deviceIdProvider: () =>
+          DeviceAuthManager.instance.registration(server!, username)?.id);
 }
 
 class GoogleDriveLogin implements SyncLogin {
@@ -264,15 +276,14 @@ class SyncService with ChangeNotifier {
   bool _stunOnly = false;
   StreamSubscription<dynamic>? _lanPeers;
   StreamSubscription<SyncRouteCandidate?>? _routeChanges;
-  final String _networkDeviceId = const Uuid().v4();
+  String _networkDeviceId = const Uuid().v4();
   int _networkGeneration = 0;
   int _failures = 0;
   DateTime? _retryAt;
   String? get activeRoute => _connections?.current?.type.name;
   DateTime? get retryAt => _retryAt;
   bool get temporaryMediaCache =>
-      (_storage is WebDavBackend && (_storage as WebDavBackend).boundedMedia) ||
-      target?.server == Uri.parse(AppConfig.instance.syncOfficialServer);
+      _storage is WebDavBackend && (_storage as WebDavBackend).boundedMedia;
   final _random = Random();
 
   /// Operational details stay out of the everyday status label. A successful
@@ -284,6 +295,9 @@ class SyncService with ChangeNotifier {
         : await db.query('sync_media_tasks',
             columns: ['sending', 'completed', 'durable']);
     return {
+      if (_storage is WebDavBackend &&
+          (_storage as WebDavBackend).cachedCloudTraffic != null)
+        'cloudTraffic': (_storage as WebDavBackend).cachedCloudTraffic,
       'route': activeRoute,
       if (_internet != null) 'internet': _internet!.diagnostics(),
       'availableRoutes': [
@@ -310,6 +324,26 @@ class SyncService with ChangeNotifier {
               task['durable'] == 0)
           .length,
       if (_retryAt != null) 'retryAt': _retryAt!.toIso8601String(),
+    };
+  }
+
+  /// Fetches only the operator's public quota fields for the current account.
+  Future<Map<String, Object?>?> cloudTraffic() async {
+    final backend = _storage;
+    if (backend is! WebDavBackend) return null;
+    await backend.mediaPolicy();
+    final value = backend.cachedCloudTraffic;
+    if (value == null) return null;
+    return {
+      for (final key in [
+        'monthlyLimitBytes',
+        'monthlyUsedBytes',
+        'monthlyRemainingBytes'
+      ])
+        if (value[key] is int && (value[key] as int) >= 0) key: value[key],
+      if (value['resetsAt'] is String &&
+          DateTime.tryParse(value['resetsAt'] as String) != null)
+        'resetsAt': value['resetsAt'],
     };
   }
 
@@ -376,6 +410,7 @@ class SyncService with ChangeNotifier {
   /// Starts syncing when the diary is open: now, after changes, on resume
   /// and every so often.
   void start() {
+    unawaited(NearbyReceiptQueue.instance.flush());
     for (final provider in <ChangeNotifier>[
       EntriesProvider.instance,
       TagsProvider.instance,
@@ -432,6 +467,10 @@ class SyncService with ChangeNotifier {
     _started = DateTime.now();
     _setState(SyncState.syncing);
     try {
+      if (login is WebDavLogin) {
+        await DeviceAuthManager.instance
+            .flushApprovals(login.server!, login.username);
+      }
       final backend = _storageFor(login);
       final vault = MediaVault(AppDatabase.instance.database!);
       final stored = await vault.read(SpaceLayout.info);
@@ -490,8 +529,7 @@ class SyncService with ChangeNotifier {
       var transferLimit = (config['cacheTransferMiB'] as int) << 20;
       var objectLimit = 1 << 62;
       var manifestLimit = 256 * 1024;
-      var boundedCache =
-          target.server == Uri.parse(AppConfig.instance.syncOfficialServer);
+      var boundedCache = false;
       if (backend is WebDavBackend) {
         Map<String, dynamic>? policy;
         if (_connections?.healthyRoutes.any((route) => route.id == 'storage') ??
@@ -502,13 +540,13 @@ class SyncService with ChangeNotifier {
             // A reachable direct route can keep working without the cloud.
           }
         }
-        boundedCache = boundedCache || backend.boundedMedia;
+        boundedCache = backend.boundedMedia;
         if (policy == null) {
           // The operator must deploy limits before clients upload cache media.
           if (boundedCache) {
             fileLimit = transferLimit = 0;
           }
-        } else {
+        } else if (boundedCache) {
           transferLimit =
               min(transferLimit, policy['transferRemainingBytes'] as int);
           objectLimit = policy['maxObjectBytes'] as int;
@@ -561,10 +599,13 @@ class SyncService with ChangeNotifier {
                   () => MediaAllowance(
                       backend: route.backend,
                       route: 'relay',
-                      maxFileBytes: (config['relayMaxFileKiB'] as int) * 1024,
-                      remainingBytes: min(
-                          (config['relayTransferMiB'] as int) << 20,
-                          (_internet?.relayRemainingBytes ?? 0) ~/ 4),
+                      maxFileBytes: boundedCache
+                          ? (config['relayMaxFileKiB'] as int) * 1024
+                          : 1 << 62,
+                      remainingBytes: boundedCache
+                          ? min((config['relayTransferMiB'] as int) << 20,
+                              (_internet?.relayRemainingBytes ?? 0) ~/ 4)
+                          : (_internet?.relayRemainingBytes ?? 0) ~/ 4,
                       maxObjectBytes: 2 << 20));
             }
             if (route == null || !route.isDirect) return cache;
@@ -601,6 +642,12 @@ class SyncService with ChangeNotifier {
               ? SyncState.waitingForDevices
               : SyncState.mediaPending);
       if (report.pendingMedia > 0) _retry();
+    } on DeviceAuthorizationNeeded {
+      progress = null;
+      error = null;
+      await _markUnsynced();
+      _setState(SyncState.waitingForDevices);
+      _retry();
     } catch (e, stackTrace) {
       _logger.warning('Sync failed', e, stackTrace);
       progress = null;
@@ -630,6 +677,9 @@ class SyncService with ChangeNotifier {
     await _closeConnections();
     final identity = await DiaryIdentity.current();
     final config = AppConfig.instance.syncTransfer;
+    if (backend is WebDavBackend && backend.authenticatedDeviceId != null) {
+      _networkDeviceId = backend.authenticatedDeviceId!;
+    }
     final manager = SyncConnectionManager(
         userId: info.userId,
         spaceId: info.id,
@@ -697,6 +747,7 @@ class SyncService with ChangeNotifier {
           final internet = _internet = InternetTransport(
               endpoint: backend.networkEndpoint,
               authorization: backend.networkAuthorization,
+              authorizationProvider: backend.networkCredentials,
               deviceId: _networkDeviceId,
               userId: identity.userId,
               spaceId: info.id,
@@ -796,8 +847,15 @@ class SyncService with ChangeNotifier {
     }
   }
 
+  /// Refreshes the same views and external storage after an offline migration.
+  Future<void> reloadAfterMigration() => _reload();
+
   /// Signs in and reads the space at [login]: null when there is none yet.
   Future<SpaceInfo?> probe(SyncLogin login) async {
+    if (login is WebDavLogin) {
+      await DeviceAuthManager.instance
+          .prepare(login.server!, login.username, login.password);
+    }
     final backend = login.backend();
     await backend.check();
     return _readSpace(backend);
@@ -1017,6 +1075,11 @@ class SyncService with ChangeNotifier {
   }
 
   Future<void> _connect(SyncLogin login, SpaceInfo space) async {
+    final nearby = ConfigProvider.instance.get(Settings.nearbyMigration);
+    if (nearby.isNotEmpty &&
+        (jsonDecode(nearby) as Map)['phase'] != 'receipt') {
+      throw StateError('A nearby transfer is still in progress');
+    }
     await _stop();
     _pendingJoin = null;
     final db = AppDatabase.instance.database!;
@@ -1034,6 +1097,46 @@ class SyncService with ChangeNotifier {
     // A first sync may take long; it goes on while the page shows how far
     // it is.
     unawaited(syncNow());
+  }
+
+  /// The SAS-approved transfer carries only the account address and sealed
+  /// space info. This device signs for its own short token; no login is copied.
+  Future<void> connectAuthorizedNearbyAccount(
+      Map<String, Object?> account) async {
+    if (target != null) return;
+    final server = Uri.parse(account['server'] as String);
+    final username = account['username'] as String;
+    final spaceId = account['spaceId'] as String;
+    if (DeviceAuthManager.instance.registration(server, username) == null) {
+      return;
+    }
+    SpaceInfo? info;
+    if (account['spaceInfo'] case final String bytes) {
+      info = SpaceInfo.fromBytes(base64Decode(bytes));
+      final identity = await DiaryIdentity.current();
+      if (info.id != spaceId || info.userId != identity.userId) {
+        throw WrongKeyException();
+      }
+      await info.dataKey(identity.masterKey);
+    }
+    await _stop();
+    if (target != null) return;
+    _pendingJoin = null;
+    _cachedLogin =
+        WebDavLogin(server: server, username: username, password: '');
+    if (info != null) {
+      await MediaVault(AppDatabase.instance.database!)
+          .write(SpaceLayout.info, info.toBytes());
+    }
+    await _save(
+        SyncTarget(
+            provider: SyncProvider.webdav,
+            server: server,
+            username: username,
+            spaceId: spaceId),
+        '');
+    _setState(SyncState.waitingForDevices);
+    syncSoon();
   }
 
   /// Stops the running sync after the item in hand and waits for it.
@@ -1119,8 +1222,12 @@ class SyncService with ChangeNotifier {
   }
 
   Future<void> _save(SyncTarget target, String credential) async {
-    await ConfigProvider.instance
-        .set(Settings.syncSecrets, jsonEncode({'password': credential}));
+    final deviceAuthorized = target.provider == SyncProvider.webdav &&
+        DeviceAuthManager.instance
+                .registration(target.server!, target.username) !=
+            null;
+    await ConfigProvider.instance.set(Settings.syncSecrets,
+        jsonEncode({'password': deviceAuthorized ? '' : credential}));
     await ConfigProvider.instance
         .set(Settings.syncTarget, jsonEncode(target.toJson()));
   }

@@ -34,17 +34,20 @@ import (
 
 // settings are read from AID_SYNC_* variables, with these defaults.
 type settings struct {
-	dataDir        string
-	addr           string
-	defaultQuotaMB int64
-	maxUploadMB    int64
-	minPassword    int
-	failLimit      int
-	failWindow     time.Duration
-	credentialTTL  time.Duration
-	trustProxy     bool
-	media          server.MediaLimits
-	network        server.NetworkLimits
+	dataDir           string
+	addr              string
+	defaultQuotaMB    int64
+	maxUploadMB       int64
+	monthlyMediaBytes int64
+	minPassword       int
+	failLimit         int
+	failWindow        time.Duration
+	credentialTTL     time.Duration
+	trustProxy        bool
+	operatorLimits    bool
+	media             server.MediaLimits
+	network           server.NetworkLimits
+	deviceAuth        server.DeviceAuthLimits
 }
 
 func load() (settings, error) {
@@ -54,13 +57,21 @@ func load() (settings, error) {
 		trustProxy: env("AID_SYNC_TRUST_PROXY", "false") == "true",
 	}
 	var err error
+	if s.operatorLimits, err = strconv.ParseBool(env("AID_SYNC_OPERATOR_LIMITS", "false")); err != nil {
+		return s, fmt.Errorf("AID_SYNC_OPERATOR_LIMITS: %w", err)
+	}
+	var defaultQuotaMB int64
+	if s.operatorLimits {
+		defaultQuotaMB = 2048
+	}
 	ints := []struct {
 		name string
 		into *int64
 		def  int64
 	}{
-		{"AID_SYNC_DEFAULT_QUOTA_MB", &s.defaultQuotaMB, 2048},
+		{"AID_SYNC_DEFAULT_QUOTA_MB", &s.defaultQuotaMB, defaultQuotaMB},
 		{"AID_SYNC_MAX_UPLOAD_MB", &s.maxUploadMB, 256},
+		{"AID_SYNC_MONTHLY_MEDIA_BYTES", &s.monthlyMediaBytes, 1000000000},
 		{"AID_SYNC_MEDIA_MAX_OBJECT_BYTES", &s.media.MaxObjectBytes, 2 << 20},
 		{"AID_SYNC_MEDIA_MAX_MANIFEST_BYTES", &s.media.MaxManifestBytes, 256 << 10},
 		{"AID_SYNC_MEDIA_CACHE_BYTES", &s.media.CacheBytes, 128 << 20},
@@ -74,7 +85,7 @@ func load() (settings, error) {
 		if *v.into, err = strconv.ParseInt(env(v.name, strconv.FormatInt(v.def, 10)), 10, 64); err != nil {
 			return s, fmt.Errorf("%s: %w", v.name, err)
 		}
-		if *v.into < 0 || ((strings.HasPrefix(v.name, "AID_SYNC_MEDIA_") || strings.HasPrefix(v.name, "AID_SYNC_NETWORK_")) && *v.into == 0) {
+		if *v.into < 0 || ((strings.HasPrefix(v.name, "AID_SYNC_MEDIA_") || strings.HasPrefix(v.name, "AID_SYNC_NETWORK_") || v.name == "AID_SYNC_MONTHLY_MEDIA_BYTES") && *v.into == 0) {
 			return s, fmt.Errorf("%s must be positive (quota may be zero)", v.name)
 		}
 	}
@@ -88,6 +99,7 @@ func load() (settings, error) {
 		{"AID_SYNC_NETWORK_QUEUE_FRAMES", &s.network.QueueFrames, 16, 256},
 		{"AID_SYNC_NETWORK_CONNECTS_PER_MINUTE", &s.network.ConnectsPerMinute, 30, 600},
 		{"AID_SYNC_NETWORK_FRAMES_PER_SECOND", &s.network.FramesPerSecond, 32, 256},
+		{"AID_SYNC_DEVICE_MAX_DEVICES", &s.deviceAuth.MaxDevices, 16, 128},
 	} {
 		*v.into, err = strconv.Atoi(env(v.name, strconv.Itoa(v.def)))
 		if err != nil || *v.into <= 0 || *v.into > v.max {
@@ -105,6 +117,8 @@ func load() (settings, error) {
 		{"AID_SYNC_NETWORK_WRITE_TIMEOUT", &s.network.WriteTimeout, "10s"},
 		{"AID_SYNC_NETWORK_SESSION_TTL", &s.network.SessionTTL, "1h"},
 		{"AID_SYNC_NETWORK_HEARTBEAT_INTERVAL", &s.network.HeartbeatInterval, "30s"},
+		{"AID_SYNC_DEVICE_CHALLENGE_TTL", &s.deviceAuth.ChallengeTTL, "2m"},
+		{"AID_SYNC_DEVICE_TOKEN_TTL", &s.deviceAuth.TokenTTL, "15m"},
 	} {
 		*v.into, err = time.ParseDuration(env(v.name, v.def))
 		if err != nil || *v.into <= 0 {
@@ -241,14 +255,17 @@ func readPassword() (string, error) {
 func serve(s settings, store *accounts.Store) error {
 	log := slog.New(slog.NewJSONHandler(os.Stdout, nil))
 	syncServer := server.New(server.Config{
-		DataDir:        s.dataDir,
-		MaxUploadBytes: s.maxUploadMB << 20,
-		Media:          s.media,
-		Network:        s.network,
-		CredentialTTL:  s.credentialTTL,
-		FailLimit:      s.failLimit,
-		FailWindow:     s.failWindow,
-		TrustProxy:     s.trustProxy,
+		OperatorLimits:    s.operatorLimits,
+		DataDir:           s.dataDir,
+		MaxUploadBytes:    s.maxUploadMB << 20,
+		Media:             s.media,
+		Network:           s.network,
+		MonthlyMediaBytes: s.monthlyMediaBytes,
+		DeviceAuth:        s.deviceAuth,
+		CredentialTTL:     s.credentialTTL,
+		FailLimit:         s.failLimit,
+		FailWindow:        s.failWindow,
+		TrustProxy:        s.trustProxy,
 	}, store, log)
 	defer syncServer.Close()
 	web := &http.Server{

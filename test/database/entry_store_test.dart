@@ -104,6 +104,22 @@ void main() {
     expect(entryImages.single.imgPath, 'photo.jpg');
   });
 
+  test('a context-only draft saves without changing its text or timestamp',
+      () async {
+    final saved = await store.add(draftEntry());
+    final session = store.beginDraft(saved);
+    await session.save((_) => EntryDraft(
+        entry: saved.copy(
+            location: const EntryLocation(name: 'Garden'),
+            weather: const EntryWeather(code: 61, temperature: 18))));
+    await session.commit();
+    final persisted = (await EntryDao.get(saved.id!))!;
+    expect(persisted.text, saved.text);
+    expect(persisted.timeModified, saved.timeModified);
+    expect(persisted.location!.name, 'Garden');
+    expect(persisted.weather, const EntryWeather(code: 61, temperature: 18));
+  });
+
   test('reconciles tags and images on a later save', () async {
     final kept = await addTag('walk');
     final dropped = await addTag('run');

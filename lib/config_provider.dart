@@ -67,6 +67,22 @@ class Settings {
   static const followSystemColor = Setting<bool>("followSystemColor", true);
   static const accentColor = Setting<int>("accentColor", 0xff62A0EA);
   static const tintThemeBackground = Setting<bool>("tintThemeBackground", true);
+  static const darkTheme =
+      Setting<String>('darkTheme', 'same', choices: ['same', 'dark', 'amoled']);
+  static const darkAccentColor = Setting<int>('darkAccentColor', 0xff8f9be8);
+  static const darkFollowSystemColor =
+      Setting<bool>('darkFollowSystemColor', false);
+  static const paperStyle = Setting<String>('paperStyle', 'plain',
+      choices: ['plain', 'lined', 'grid', 'tinted']);
+  static const paperDecoration = Setting<String>('paperDecoration', 'none',
+      choices: ['none', 'botanical', 'stars', 'washi']);
+  static const localPhotoFolder = Setting<String>('localPhotoFolder', '');
+  static const photoSuggestionsLocation =
+      Setting<bool>('photoSuggestionsLocation', false);
+  static const dismissedPhotoSuggestions =
+      Setting<List<dynamic>>('dismissedPhotoSuggestions', []);
+  static const importedPhotoSuggestions =
+      Setting<List<dynamic>>('importedPhotoSuggestions', []);
   static const dailyReminders = Setting<bool>("dailyReminders", false);
   static const setReminderTime = Setting<bool>("setReminderTime", false);
   static const scheduledReminderHour =
@@ -204,12 +220,33 @@ class Settings {
   /// user shares (sync/identity.dart), as JSON.
   static const identity =
       Setting<String>("identity", "", secure: true, secretStore: true);
+
+  /// An unfinished nearby transfer, including its temporary encryption key.
+  static const nearbyMigration =
+      Setting<String>("nearbyMigration", "", secure: true, secretStore: true);
+
+  /// Public device registrations and native key aliases; never private keys.
+  static const deviceAuthorizations = Setting<String>(
+      "deviceAuthorizations", "",
+      secure: true, secretStore: true);
+  static const pendingDeviceApprovals = Setting<String>(
+      "pendingDeviceApprovals", "",
+      secure: true, secretStore: true);
   static const lastSync = Setting<String>("lastSync", "", secure: true);
   // The agent API for the `aid` command line, in builds where it is not on
   // anyway.
   static const agentApi = Setting<bool>("agentApi", false);
 
   static const List<Setting<Object?>> all = [
+    darkTheme,
+    localPhotoFolder,
+    photoSuggestionsLocation,
+    dismissedPhotoSuggestions,
+    importedPhotoSuggestions,
+    darkAccentColor,
+    darkFollowSystemColor,
+    paperStyle,
+    paperDecoration,
     configVersion,
     theme,
     useExternalDb,
@@ -292,6 +329,9 @@ class Settings {
     syncTarget,
     syncSecrets,
     identity,
+    nearbyMigration,
+    deviceAuthorizations,
+    pendingDeviceApprovals,
     lastSync,
     agentApi,
   ];
@@ -462,18 +502,43 @@ class ConfigProvider with ChangeNotifier {
   }
 
   Future<void> writeConfig() async {
-    EasyDebounce.debounce("save-config", Duration(seconds: 1), () async {
-      final filteredConfig = Map<String, dynamic>.from(_config)
-        ..removeWhere((key, _) => _secureKeys.contains(key));
-
-      final tempFile = File('$configFilePath.tmp');
-
-      final jsonString = json.encode(filteredConfig);
-
-      await tempFile.writeAsString(jsonString, flush: true);
-      await tempFile.rename(configFilePath);
+    EasyDebounce.debounce("save-config", Duration(seconds: 1), () {
+      // The queue owns failures even when no caller is awaiting a debounce.
+      unawaited(_saveConfigSnapshot()
+          .then<void>((_) {}, onError: (Object error, StackTrace stack) {}));
     });
   }
+
+  Future<void> _configWriteTail = Future.value();
+
+  Future<void> _saveConfigSnapshot() {
+    final path = configFilePath;
+    final filtered = Map<String, dynamic>.from(_config)
+      ..removeWhere((key, _) => _secureKeys.contains(key));
+    final contents = json.encode(filtered);
+    final result = _configWriteTail.then((_) async {
+      final temporary = File('$path.tmp');
+      try {
+        await temporary.writeAsString(contents, flush: true);
+        await temporary.rename(path);
+      } finally {
+        if (await temporary.exists()) await temporary.delete();
+      }
+    });
+    _configWriteTail =
+        result.then<void>((_) {}, onError: (Object error, StackTrace stack) {
+      _logger.severe('Writing configuration failed', error, stack);
+    });
+    return result;
+  }
+
+  /// Drains the debounce and waits until the last atomic file replacement ends.
+  Future<void> flushConfig() {
+    EasyDebounce.cancel('save-config');
+    return _saveConfigSnapshot();
+  }
+
+  Future<void> waitForConfigWrites() => _configWriteTail;
 
   /// The 12/24-hour choice from settings; null follows the system.
   bool? get chosen24HourFormat => switch (get(Settings.timeFormat)) {

@@ -53,6 +53,8 @@ dependencies:
   archive: ^4.0.7
   app_settings: ^9.0.0
   image: ^4.5.4
+  scribble: 0.10.0+1
+  perfect_freehand: 2.5.2+1
   flutter_cache_manager: ^3.4.1
   statsfl: ^2.3.0
   pool: ^1.5.1

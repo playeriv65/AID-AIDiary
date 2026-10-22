@@ -303,7 +303,6 @@ class AppDatabase {
     await createSchema(db);
     await TemplatesProvider.instance.createDefaultTemplates();
     await TagsProvider.instance.createDefaultTags();
-    await createWelcomeEntry();
     await _assignBuiltinIds(db);
   }
 
@@ -362,6 +361,43 @@ CREATE TABLE $imagesTable (
 
     await _createTagTables(db);
     await _createTemplateTagTable(db);
+  }
+
+  /// A new diary stays empty until onboarding chooses normal writing, so
+  /// receiving an old device's diary remains possible on the welcome page.
+  /// Existing writing, tombstones and any adopted or pending identity win.
+  Future<bool> createWelcomeForFirstStart() async {
+    final config = ConfigProvider.instance;
+    bool fresh() =>
+        !config.get(Settings.onboardingDone) &&
+        [
+          Settings.identity,
+          Settings.nearbyMigration,
+          Settings.syncTarget,
+          Settings.syncSecrets,
+          Settings.deviceAuthorizations,
+          Settings.pendingDeviceApprovals,
+        ].every((setting) => config.get(setting).isEmpty);
+    if (!fresh()) return false;
+    final db = _database!;
+    if ((await db.query(entriesTable, columns: ['id'], limit: 1)).isNotEmpty) {
+      return false;
+    }
+    for (final table in [syncChangesTable, syncItemsTable]) {
+      if ((await db.query(table,
+              columns: [syncIdColumn],
+              where: 'kind = ?',
+              whereArgs: [SyncKind.entry.name],
+              limit: 1))
+          .isNotEmpty) {
+        return false;
+      }
+    }
+    if (!fresh()) return false;
+    await createWelcomeEntry();
+    await EntriesProvider.instance.load();
+    await EntryImagesProvider.instance.load();
+    return true;
   }
 
   @visibleForTesting

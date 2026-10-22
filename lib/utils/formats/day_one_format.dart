@@ -159,6 +159,7 @@ class DayOneExportWriter implements ArchiveExportWriter {
   @override
   Future<void> write(ExportedEntry exported) async {
     final entry = exported.entry;
+    if (entry.isSealed) return;
     final photos = <Map<String, Object?>>[];
     for (final (index, (image, bytes)) in exported.images.indexed) {
       final md5Hash = md5.convert(bytes).toString();

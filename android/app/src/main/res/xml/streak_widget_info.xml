@@ -1,0 +1,5 @@
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:description="@string/streak_widget_name" android:initialLayout="@layout/journal_widget"
+    android:previewLayout="@layout/journal_widget" android:minWidth="180dp" android:minHeight="110dp"
+    android:targetCellWidth="3" android:targetCellHeight="2" android:resizeMode="horizontal|vertical"
+    android:updatePeriodMillis="1800000" android:widgetCategory="home_screen"/>

@@ -124,12 +124,13 @@ class FakeDav {
 }
 
 void main() {
-  test('a self-hosted AID server advertises expiring media policy', () async {
+  test('an opted-in operator advertises expiring media policy', () async {
     final client = MockClient((request) async {
       expect(request.url.path, '/api/sync/policy');
       expect(request.headers['Authorization'], startsWith('Basic '));
       return http.Response(
           jsonEncode({
+            'operatorLimited': true,
             'media': {
               'maxObjectBytes': 2048,
               'maxManifestBytes': 1024,
@@ -165,6 +166,52 @@ void main() {
     expect(await backend.mediaPolicy(), isNull);
     expect(calls, 1);
     expect(backend.boundedMedia, isFalse);
+  });
+
+  test('personal policy capabilities never display operator traffic', () async {
+    var limited = true;
+    final backend = WebDavBackend(
+        server: Uri.parse('https://own.example/dav/'),
+        username: 'diary',
+        password: 'test',
+        client: MockClient((_) async => http.Response(
+            jsonEncode({
+              'operatorLimited': limited,
+              'network': {
+                'endpoint': '/api/sync/network',
+                'relay': {'maxFrameBytes': 32768}
+              },
+              // An old/stale field must not turn an explicit personal server
+              // into a quota-bearing cache or leave an old quota card visible.
+              'media': {'cacheTtlSeconds': 60},
+              'traffic': {'monthlyLimitBytes': 1000000000},
+            }),
+            200)));
+    addTearDown(backend.close);
+    expect(await backend.mediaPolicy(), isNotNull);
+    expect(backend.cachedCloudTraffic, isNotNull);
+    limited = false;
+    expect(await backend.mediaPolicy(), isNull);
+    expect(backend.boundedMedia, isFalse);
+    expect(backend.cachedCloudTraffic, isNull);
+  });
+
+  test('legacy policy alone does not opt a personal server into quotas',
+      () async {
+    final backend = WebDavBackend(
+        server: Uri.parse('https://own.example/dav/'),
+        username: 'diary',
+        password: 'test',
+        client: MockClient((_) async => http.Response(
+            jsonEncode({
+              'media': {'cacheTtlSeconds': 60},
+              'traffic': {'monthlyLimitBytes': 1000000000},
+            }),
+            200)));
+    addTearDown(backend.close);
+    expect(await backend.mediaPolicy(), isNull);
+    expect(backend.boundedMedia, isFalse);
+    expect(backend.cachedCloudTraffic, isNull);
   });
   setUpAll(() {
     TestWidgetsFlutterBinding.ensureInitialized();

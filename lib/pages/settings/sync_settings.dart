@@ -9,6 +9,7 @@ import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/sync/google_auth.dart';
+import 'package:aid_diary/sync/device_auth.dart';
 import 'package:aid_diary/sync/google_drive_backend.dart';
 import 'package:aid_diary/sync/sync_backend.dart';
 import 'package:aid_diary/sync/sync_crypto.dart';
@@ -16,6 +17,7 @@ import 'package:aid_diary/sync/sync_service.dart';
 import 'package:aid_diary/sync/webdav_backend.dart';
 import 'package:aid_diary/time_manager.dart';
 import 'package:aid_diary/widgets/progress_dialog.dart';
+import 'package:aid_diary/widgets/cloud_traffic_notice.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:material_ui/material_ui.dart';
@@ -51,6 +53,7 @@ class _SyncSettingsState extends State<SyncSettings> {
           l10n.syncGoogleSignInAgain,
         GoogleDriveNotAllowed() => l10n.syncGoogleDriveNotAllowed,
         WrongKeyException() => l10n.syncWrongKey,
+        DeviceAuthorizationNeeded() => l10n.syncDeviceUnavailable,
         ActionException(:final message) => message,
         _ => l10n.syncConnectFailed('$error'),
       };
@@ -61,6 +64,9 @@ class _SyncSettingsState extends State<SyncSettings> {
     final l10n = AppLocalizations.of(context)!;
     try {
       return await runWithProgress(context, (update) => task());
+    } on DeviceAuthorizationNeeded {
+      if (mounted) await openPlace(context, 'settings/sync/devices');
+      return null;
     } on GoogleSignInException catch (error) {
       if (error.code != GoogleSignInExceptionCode.canceled && mounted) {
         _say(_describe(error, l10n));
@@ -282,7 +288,20 @@ class _SyncSettingsState extends State<SyncSettings> {
             listenable: _service,
             builder: (context, _) {
               final target = _service.target;
-              return target == null ? _signIn(l10n) : _connected(l10n, target);
+              if (target != null) return _connected(l10n, target);
+              return Column(children: [
+                ListTile(
+                    key: const ValueKey('nearby-migration-settings'),
+                    leading: const Icon(Icons.phonelink),
+                    title: Text(l10n.nearbyTitle),
+                    onTap: () => openPlace(context, 'settings/sync/nearby')),
+                ListTile(
+                    key: const ValueKey('sync-device-settings'),
+                    leading: const Icon(Icons.verified_user),
+                    title: Text(l10n.syncDevicesTitle),
+                    onTap: () => openPlace(context, 'settings/sync/devices')),
+                Expanded(child: _signIn(l10n)),
+              ]);
             },
           ),
         ),
@@ -296,6 +315,7 @@ class _SyncSettingsState extends State<SyncSettings> {
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
+        const CloudTrafficNotice(key: ValueKey('sync-cloud-traffic-sign-in')),
         Text(l10n.syncOffDescription),
         if (GoogleAuth.available) ...[
           const SizedBox(height: 16),
@@ -364,6 +384,7 @@ class _SyncSettingsState extends State<SyncSettings> {
     final locked = _service.state == SyncState.locked;
     return ListView(
       children: [
+        const CloudTrafficNotice(key: ValueKey('sync-cloud-traffic-connected')),
         ListTile(
           leading: Icon(switch (target.provider) {
             SyncProvider.webdav => Icons.cloud_done_rounded,
@@ -387,6 +408,18 @@ class _SyncSettingsState extends State<SyncSettings> {
           title: Text(_status(l10n), key: const ValueKey('sync-status')),
         ),
         const Divider(),
+        ListTile(
+          key: const ValueKey('sync-network-settings'),
+          leading: const Icon(Icons.hub_outlined),
+          title: Text(l10n.syncNetworkTitle),
+          onTap: () => openPlace(context, 'settings/sync/network'),
+        ),
+        ListTile(
+          key: const ValueKey('sync-device-settings'),
+          leading: const Icon(Icons.verified_user),
+          title: Text(l10n.syncDevicesTitle),
+          onTap: () => openPlace(context, 'settings/sync/devices'),
+        ),
         if (_service.error is GoogleSignInNeeded)
           ListTile(
             key: const ValueKey('sync-sign-in-again'),

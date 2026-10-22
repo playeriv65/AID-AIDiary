@@ -33,13 +33,19 @@ const Prefix = "/dav"
 // Config tunes the server; every value comes from the command line or
 // environment.
 type Config struct {
+	// OperatorLimits opts into temporary cache retention and traffic allowances.
+	// Personal installations keep durable storage and do not meter transfers.
+	OperatorLimits bool
 	// DataDir holds users' folders under users/<id>.
 	DataDir string
 	// MaxUploadBytes caps a single file.
 	MaxUploadBytes int64
+	// MonthlyMediaBytes combines cache and relay; control has its own daily cap.
+	MonthlyMediaBytes int64
 	// Media is a bounded, temporary cache, separate from durable metadata.
-	Media   MediaLimits
-	Network NetworkLimits
+	Media      MediaLimits
+	Network    NetworkLimits
+	DeviceAuth DeviceAuthLimits
 	// CredentialTTL is how long a checked password is trusted before it is
 	// checked again; a changed password takes effect within it.
 	CredentialTTL time.Duration
@@ -86,8 +92,12 @@ func New(cfg Config, store *accounts.Store, log *slog.Logger) *Server {
 	if cfg.Now == nil {
 		cfg.Now = time.Now
 	}
+	if cfg.MonthlyMediaBytes <= 0 {
+		cfg.MonthlyMediaBytes = 1000000000
+	}
 	cfg.Media = cfg.Media.defaults()
 	cfg.Network = cfg.Network.defaults()
+	cfg.DeviceAuth = cfg.DeviceAuth.defaults()
 	return &Server{
 		cfg:      cfg,
 		accounts: store,
@@ -105,6 +115,13 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /healthz", s.health)
 	mux.HandleFunc("GET /api/sync/policy", s.policy)
 	mux.HandleFunc("GET /api/sync/network", s.networkSocket)
+	mux.HandleFunc("GET /api/sync/devices/capabilities", s.deviceCapabilities)
+	mux.HandleFunc("POST /api/sync/devices", s.enrollDevice)
+	mux.HandleFunc("GET /api/sync/devices", s.listDevices)
+	mux.HandleFunc("DELETE /api/sync/devices/{device}", s.revokeDevice)
+	mux.HandleFunc("POST /api/sync/devices/rotate", s.rotateDevice)
+	mux.HandleFunc("POST /api/sync/auth/challenge", s.deviceChallenge)
+	mux.HandleFunc("POST /api/sync/auth/token", s.deviceToken)
 	mux.HandleFunc(Prefix+"/", s.dav)
 	return s.logged(mux)
 }
@@ -155,6 +172,9 @@ func (s *Server) dav(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
+	control := &controlWriter{ResponseWriter: w, server: s, request: r, user: user}
+	defer control.finish()
+	w = control
 	switch r.Method {
 	case http.MethodPut:
 		s.put(w, r, user, f)
@@ -174,6 +194,18 @@ func (s *Server) put(w http.ResponseWriter, r *http.Request, user accounts.User,
 		http.Error(w, "file too large", http.StatusRequestEntityTooLarge)
 		return
 	}
+	if r.ContentLength < 0 {
+		http.Error(w, "metadata upload requires Content-Length", http.StatusLengthRequired)
+		return
+	}
+	day := s.transferDay()
+	if !s.reserveControl(w, r, user, r.ContentLength) {
+		return
+	}
+	reader := &mediaReader{Reader: r.Body}
+	original := r.Body
+	r.Body = readCloseBudget{Reader: reader, Closer: original}
+	defer func() { s.refundNetwork(user.ID, day, "signal", r.ContentLength-min(r.ContentLength, reader.bytes)) }()
 	target := f.path(r.URL.Path)
 	var before int64
 	if info, err := os.Stat(target); err == nil {
@@ -257,6 +289,27 @@ func usage(p string) int64 {
 // authenticate checks Basic credentials, trusting a recent check, and
 // blocks an address or name after repeated failures.
 func (s *Server) authenticate(w http.ResponseWriter, r *http.Request) (accounts.User, bool) {
+	if strings.HasPrefix(r.Header.Get("Authorization"), "Bearer ") {
+		user, _, ok := s.requireDevice(w, r)
+		return user, ok
+	}
+	user, ok := s.authenticateBasic(w, r)
+	if !ok {
+		return user, false
+	}
+	has, err := s.accounts.HasDevices(r.Context(), user.ID)
+	if err != nil {
+		http.Error(w, "accounts unavailable", 503)
+		return accounts.User{}, false
+	}
+	if has {
+		s.challenge(w)
+		return accounts.User{}, false
+	}
+	return user, true
+}
+
+func (s *Server) authenticateBasic(w http.ResponseWriter, r *http.Request) (accounts.User, bool) {
 	name, password, ok := r.BasicAuth()
 	address := s.clientAddress(r)
 	now := s.cfg.Now()

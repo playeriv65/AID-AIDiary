@@ -20,7 +20,9 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:aid_diary/theme_mode_provider.dart';
 import 'package:aid_diary/widgets/theme_color_presets.dart';
+import 'package:aid_diary/widgets/paper_settings.dart';
 import 'package:aid_diary/widgets/settings_category.dart';
+import 'package:aid_diary/utils/entry_typography.dart';
 
 class AppearanceSettings extends StatefulWidget {
   const AppearanceSettings({super.key});
@@ -35,15 +37,18 @@ class _AppearanceSettingsPageState extends State<AppearanceSettings> {
     super.initState();
   }
 
-  Future<void> _showAccentColorPopup(ThemeModeProvider themeProvider) async {
-    final initialColor =
-        Color(ConfigProvider.instance.get(Settings.accentColor));
+  Future<void> _showAccentColorPopup(ThemeModeProvider themeProvider,
+      {bool dark = false}) async {
+    final initialColor = Color(ConfigProvider.instance
+        .get(dark ? Settings.darkAccentColor : Settings.accentColor));
     final result = await showDialog<ColorPickerResult>(
       context: context,
       builder: (context) => ColorPickerDialog(initialColor: initialColor),
     );
     if (result?.color != null) {
-      await themeProvider.selectAccentColor(result!.color!);
+      await (dark
+          ? themeProvider.selectDarkAccentColor(result!.color!)
+          : themeProvider.selectAccentColor(result!.color!));
     }
   }
 
@@ -222,24 +227,34 @@ class _AppearanceSettingsPageState extends State<AppearanceSettings> {
     ];
   }
 
-  List<Widget> _customizeSettings(
+  Widget _wallpaperSetting(
+      BuildContext context, ConfigProvider configProvider) {
+    final l10n = AppLocalizations.of(context)!;
+    return _choice(configProvider, 'settings-wallpaper', l10n.settingsWallpaper,
+        Settings.wallpaper, {
+      WallpaperKind.none.name: l10n.wallpaperNone,
+      WallpaperKind.dots.name: l10n.wallpaperDots,
+      WallpaperKind.grid.name: l10n.wallpaperGrid,
+      WallpaperKind.lines.name: l10n.wallpaperLines,
+      WallpaperKind.photo.name: l10n.wallpaperPhoto,
+    }, onChanged: (value) async {
+      if (value == WallpaperKind.photo.name) {
+        await DiaryWallpaper.pickPhoto();
+      } else {
+        await changeSetting(Settings.wallpaper, value);
+      }
+    });
+  }
+
+  Widget _section(String key, String title) => Padding(
+      key: ValueKey(key),
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
+      child: SettingsHeader(text: title));
+
+  List<Widget> _typographySettings(
       BuildContext context, ConfigProvider configProvider) {
     final l10n = AppLocalizations.of(context)!;
     return [
-      _choice(configProvider, 'settings-wallpaper', l10n.settingsWallpaper,
-          Settings.wallpaper, {
-        WallpaperKind.none.name: l10n.wallpaperNone,
-        WallpaperKind.dots.name: l10n.wallpaperDots,
-        WallpaperKind.grid.name: l10n.wallpaperGrid,
-        WallpaperKind.lines.name: l10n.wallpaperLines,
-        WallpaperKind.photo.name: l10n.wallpaperPhoto,
-      }, onChanged: (value) async {
-        if (value == WallpaperKind.photo.name) {
-          await DiaryWallpaper.pickPhoto();
-        } else {
-          await changeSetting(Settings.wallpaper, value);
-        }
-      }),
       _choice(configProvider, 'settings-font-family', l10n.settingsFontFamily,
           Settings.entryFontFamily, {
         'system': l10n.fontSystem,
@@ -259,6 +274,15 @@ class _AppearanceSettingsPageState extends State<AppearanceSettings> {
         'normal': l10n.lineSpacingNormal,
         'relaxed': l10n.lineSpacingRelaxed,
       }),
+      Padding(
+          padding: const EdgeInsets.all(16),
+          child: Card.filled(
+              key: const ValueKey('appearance-typography-preview'),
+              child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Text(l10n.themeColorPreview,
+                      style: EntryTypography.of(context)
+                          .apply(Theme.of(context).textTheme.bodyLarge!))))),
     ];
   }
 
@@ -266,6 +290,7 @@ class _AppearanceSettingsPageState extends State<AppearanceSettings> {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeModeProvider>(context);
     final configProvider = Provider.of<ConfigProvider>(context);
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
@@ -278,6 +303,8 @@ class _AppearanceSettingsPageState extends State<AppearanceSettings> {
               constraints: const BoxConstraints(maxWidth: 840),
               child: ListView(
                 children: [
+                  _section(
+                      'appearance-theme-section', l10n.appearanceThemeSection),
                   SettingsDropdown<String>(
                       title: AppLocalizations.of(context)!.settingsTheme,
                       value: configProvider.get(Settings.theme),
@@ -304,20 +331,59 @@ class _AppearanceSettingsPageState extends State<AppearanceSettings> {
                         changeSetting(Settings.theme, newValue);
                       }),
                   SettingsToggle(
+                      key: const ValueKey('appearance-system-accent'),
                       title: AppLocalizations.of(context)!
                           .settingsUseSystemAccentColor,
                       setting: Settings.followSystemColor,
+                      hint: l10n.themeSystemAccentHint,
                       onChanged: (value) =>
                           changeSetting(Settings.followSystemColor, value)),
                   const ThemeColorPresets(),
                   SettingsIconAction(
-                    title:
-                        AppLocalizations.of(context)!.settingsCustomAccentColor,
-                    icon: Icon(Icons.colorize_rounded),
-                    onPressed: () async {
-                      _showAccentColorPopup(themeProvider);
-                    },
-                  ),
+                      key: const ValueKey('appearance-custom-light-color'),
+                      title: l10n.settingsCustomAccentColor,
+                      icon: const Icon(Icons.colorize_rounded),
+                      onPressed: () => _showAccentColorPopup(themeProvider)),
+                  SettingsDropdown<String>(
+                      key: const ValueKey('appearance-dark-style'),
+                      title: AppLocalizations.of(context)!.themeDarkChoice,
+                      value: configProvider.get(Settings.darkTheme),
+                      options: [
+                        DropdownMenuItem(
+                            value: 'same',
+                            child: Text(
+                                AppLocalizations.of(context)!.themeDarkSame)),
+                        DropdownMenuItem(
+                            value: 'dark',
+                            child: Text(
+                                AppLocalizations.of(context)!.themeDarkCustom)),
+                        DropdownMenuItem(
+                            value: 'amoled',
+                            child: Text(
+                                AppLocalizations.of(context)!.themeAmoled)),
+                      ],
+                      onChanged: (value) {
+                        if (value != null) {
+                          changeSetting(Settings.darkTheme, value);
+                        }
+                      }),
+                  if (configProvider.get(Settings.darkTheme) != 'same') ...[
+                    SettingsToggle(
+                        key: const ValueKey('appearance-dark-system-accent'),
+                        title: AppLocalizations.of(context)!
+                            .settingsUseSystemAccentColor,
+                        setting: Settings.darkFollowSystemColor,
+                        hint: l10n.themeSystemAccentHint,
+                        onChanged: (value) => changeSetting(
+                            Settings.darkFollowSystemColor, value)),
+                    const ThemeColorPresets(dark: true),
+                    SettingsIconAction(
+                        key: const ValueKey('appearance-custom-dark-color'),
+                        title: l10n.settingsCustomAccentColor,
+                        icon: const Icon(Icons.colorize_rounded),
+                        onPressed: () =>
+                            _showAccentColorPopup(themeProvider, dark: true)),
+                  ],
                   SettingsToggle(
                     key: const ValueKey('tint-theme-background'),
                     title:
@@ -327,7 +393,18 @@ class _AppearanceSettingsPageState extends State<AppearanceSettings> {
                     onChanged: (value) =>
                         changeSetting(Settings.tintThemeBackground, value),
                   ),
-                  ..._customizeSettings(context, configProvider),
+                  _wallpaperSetting(context, configProvider),
+                  const Divider(height: 24),
+                  _section(
+                      'appearance-paper-section', l10n.appearancePaperSection),
+                  const PaperSettings(),
+                  const Divider(height: 24),
+                  _section('appearance-typography-section',
+                      l10n.appearanceTypographySection),
+                  ..._typographySettings(context, configProvider),
+                  const Divider(height: 24),
+                  _section('appearance-preferences-section',
+                      l10n.appearancePreferencesSection),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 8.0),
                     child: SettingsDropdown<String>(
@@ -397,6 +474,7 @@ class _AppearanceSettingsPageState extends State<AppearanceSettings> {
                           ],
                         ),
                         IconButton(
+                            key: const ValueKey('appearance-reset-mood-icons'),
                             onPressed: _resetMoodIcons,
                             icon: const Icon(Icons.refresh_rounded))
                       ],

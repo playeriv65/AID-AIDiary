@@ -51,10 +51,13 @@ class MediaImport {
       };
 
   /// Stores a photo compressed as the image quality setting asks.
-  static Future<String?> storeImage(String path, {String? name}) async {
+  static Future<String?> storeImage(String path,
+      {String? name, bool deduplicate = true}) async {
     final quality = ConfigProvider.instance.get(Settings.imageQualityLevel);
-    return ImageStorage.instance
-        .create(name ?? p.basename(path), await _compress(path, quality));
+    return ImageStorage.instance.create(
+        deduplicate ? name ?? p.basename(path) : null,
+        await _compress(path, quality),
+        fileExtension: p.extension(name ?? path));
   }
 
   /// Stores a video as it is; throws [MediaTooLargeException] when it is
