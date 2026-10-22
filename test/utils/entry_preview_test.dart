@@ -35,6 +35,14 @@ void main() {
     expect(preview.snippet, 'Chores laundry calm cat call mom');
   });
 
+  test('a long entry gives a cut snippet ending in an ellipsis', () {
+    final preview = entryPreview('${'很长的一天。' * 100}\n${'More. ' * 100}');
+    expect(preview.snippet, '${('很长的一天。' * 100).substring(0, 300)}…');
+    // An emoji is not split in half.
+    final emoji = entryPreview('${'a' * 299}😀 and more');
+    expect(emoji.snippet, '${'a' * 299}…');
+  });
+
   test('empty text gives an empty preview', () {
     final preview = entryPreview('\n  \n');
     expect(preview.title, isNull);

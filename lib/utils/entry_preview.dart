@@ -43,15 +43,40 @@ String joinEntryTitle(String title, String body) {
   return line.isEmpty ? body : '# $line\n$body';
 }
 
-/// Splits entry markdown into its title, if written, and a one-line snippet.
+/// Longest snippet: more than two lines hold in the widest list, so a long
+/// entry is not read and laid out in full for a line or two of it.
+const snippetCharacters = 300;
+
+/// Splits entry markdown into its title, if written, and a one-line snippet
+/// of at most [snippetCharacters], ending in an ellipsis when cut.
 EntryPreview entryPreview(String text) {
   final (:title, :body) = splitEntryTitle(text.trimLeft());
-  final snippet = body
-      .split('\n')
-      .where((l) => !_rule.hasMatch(l))
-      .map(plainMarkdownLine)
-      .where((l) => l.isNotEmpty)
-      .join(' ');
+  final snippet = StringBuffer();
+  for (var start = 0;
+      start < body.length && snippet.length <= snippetCharacters;) {
+    final newline = body.indexOf('\n', start);
+    final end = newline == -1 ? body.length : newline;
+    final line = body.substring(start, end);
+    start = end + 1;
+    if (_rule.hasMatch(line)) continue;
+    final plain = plainMarkdownLine(line);
+    if (plain.isEmpty) continue;
+    if (snippet.isNotEmpty) snippet.write(' ');
+    snippet.write(plain);
+  }
   final plainTitle = plainMarkdownLine(title);
-  return (title: plainTitle.isEmpty ? null : plainTitle, snippet: snippet);
+  return (
+    title: plainTitle.isEmpty ? null : plainTitle,
+    snippet: cutSnippet(snippet.toString(), snippetCharacters),
+  );
+}
+
+/// [snippet] cut to [maxCharacters] and an ellipsis, when longer.
+String cutSnippet(String snippet, int maxCharacters) {
+  if (snippet.length <= maxCharacters) return snippet;
+  var end = maxCharacters;
+  // Not between the two halves of an emoji or other surrogate pair.
+  final last = snippet.codeUnitAt(end - 1);
+  if (last >= 0xD800 && last <= 0xDBFF) end--;
+  return '${snippet.substring(0, end)}…';
 }

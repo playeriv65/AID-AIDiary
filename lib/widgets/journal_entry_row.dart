@@ -42,51 +42,62 @@ class JournalEntryRow extends StatelessWidget {
     final theme = Theme.of(context);
     final cs = theme.colorScheme;
     final l10n = AppLocalizations.of(context)!;
-    final preview = entryPreview(entry.text);
     final sealed = entry.isSealed;
     final thumbnail =
         images.isNotEmpty && !hideImage && !sealed ? images.first : null;
     final muted =
         theme.textTheme.bodyMedium?.copyWith(color: cs.onSurfaceVariant);
+    final preview = entryPreview(entry.text);
+    final snippetLines = preview.title == null ? 2 : 1;
     final hasMood = MoodIcon.getMoodIcon(entry.mood).isNotEmpty;
     final location = entry.location;
 
-    return Material(
-      color: selected ? cs.secondaryContainer : Colors.transparent,
-      child: InkWell(
-        key: ValueKey('journal-entry-${entry.id}'),
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(16, 14, 12, 14),
-          child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Expanded(
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(children: [
-                      Text(
-                          label ??
-                              TimeManager.localizedTimeFormat(context,
-                                      TimeManager.currentLocale(context))
-                                  .format(entry.timeCreate),
-                          style: theme.textTheme.titleSmall
-                              ?.copyWith(fontWeight: FontWeight.w700)),
-                      if (label == null && entry.isLateNight) ...[
-                        const SizedBox(width: 4),
-                        Tooltip(
-                          message: l10n.lateNightBadge,
-                          child: Icon(Icons.bedtime_outlined,
-                              key: const ValueKey('late-night'),
-                              size: 14,
-                              color: cs.onSurfaceVariant),
-                        ),
-                      ],
-                      // Only entries that did not sync are marked.
-                      if (entry.id case final id?)
-                        ListenableBuilder(
-                          listenable: SyncService.instance,
-                          builder: (context, _) =>
-                              SyncService.instance.unsyncedEntryIds.contains(id)
+    // One semantics node per row: a screen reader reads the entry as one
+    // item, and the list has a node per row to move as it scrolls rather
+    // than one per text and icon. Flutter keeps semantics up whenever any
+    // accessibility service runs, such as an auto clicker.
+    return MergeSemantics(
+      child: ColoredBox(
+        color: selected ? cs.secondaryContainer : Colors.transparent,
+        // Ink paints on this transparent Material, above the selection.
+        child: Material(
+          type: MaterialType.transparency,
+          child: InkWell(
+            key: ValueKey('journal-entry-${entry.id}'),
+            onTap: onTap,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 14, 12, 14),
+              child:
+                  Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Expanded(
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(children: [
+                          Text(
+                              label ??
+                                  TimeManager.localizedTimeFormat(context,
+                                          TimeManager.currentLocale(context))
+                                      .format(entry.timeCreate),
+                              style: theme.textTheme.titleSmall
+                                  ?.copyWith(fontWeight: FontWeight.w700)),
+                          if (label == null && entry.isLateNight) ...[
+                            const SizedBox(width: 4),
+                            Tooltip(
+                              message: l10n.lateNightBadge,
+                              child: Icon(Icons.bedtime_outlined,
+                                  key: const ValueKey('late-night'),
+                                  size: 14,
+                                  color: cs.onSurfaceVariant),
+                            ),
+                          ],
+                          // Only entries that did not sync are marked.
+                          if (entry.id case final id?)
+                            ListenableBuilder(
+                              listenable: SyncService.instance,
+                              builder: (context, _) => SyncService
+                                      .instance.unsyncedEntryIds
+                                      .contains(id)
                                   ? Padding(
                                       padding: const EdgeInsetsDirectional.only(
                                           start: 4),
@@ -99,97 +110,117 @@ class JournalEntryRow extends StatelessWidget {
                                       ),
                                     )
                                   : const SizedBox.shrink(),
-                        ),
-                    ]),
-                    const SizedBox(height: 4),
-                    // A sealed capsule shows nothing of what is inside.
-                    if (sealed)
-                      Row(children: [
-                        Icon(Icons.lock_clock_rounded,
-                            size: 16, color: cs.primary),
-                        const SizedBox(width: 6),
-                        Expanded(
-                          child: Text(
-                              l10n.capsuleOpensOn(TimeManager.formatDate(
-                                  entry.openAt!, context)),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: muted),
-                        ),
-                      ])
-                    else ...[
-                      if (preview.title != null)
-                        Text(preview.title!,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: theme.textTheme.titleMedium
-                                ?.copyWith(fontWeight: FontWeight.w600)),
-                      Text(
-                          preview.snippet.isEmpty && preview.title == null
-                              ? l10n.writeSomethingHint
-                              : preview.snippet,
-                          maxLines: preview.title == null ? 2 : 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: muted),
-                      if (hasMood || location != null || entry.id != null) ...[
-                        const SizedBox(height: 6),
-                        SizedBox(
-                          height: 18,
-                          child: Row(children: [
-                            if (hasMood) ...[
-                              MoodIcon(moodValue: entry.mood, size: 14),
-                              const SizedBox(width: 6),
-                            ],
-                            if (location != null) ...[
-                              Icon(Icons.place_rounded,
-                                  size: 14, color: cs.onSurfaceVariant),
-                              const SizedBox(width: 2),
-                              Flexible(
-                                child: Text(location.label,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: theme.textTheme.labelSmall
-                                        ?.copyWith(color: cs.onSurfaceVariant)),
-                              ),
-                              const SizedBox(width: 6),
-                            ],
-                            if (entry.weather != null) ...[
-                              Icon(weatherIcon(entry.weather!.code),
-                                  size: 14, color: cs.onSurfaceVariant),
-                              const SizedBox(width: 6),
-                            ],
-                            if (entry.activity != null) ...[
-                              Icon(activityIcon(entry.activity!),
-                                  size: 14, color: cs.onSurfaceVariant),
-                              const SizedBox(width: 6),
-                            ],
-                            Expanded(
-                              child: Align(
-                                alignment: AlignmentDirectional.centerStart,
-                                child: EntryTagIconPreview(
-                                    entryId: entry.id,
-                                    iconSize: 14,
-                                    spacing: 4),
-                              ),
                             ),
-                          ]),
-                        ),
-                      ],
-                    ],
-                  ]),
+                        ]),
+                        const SizedBox(height: 4),
+                        // A sealed capsule shows nothing of what is inside.
+                        if (sealed)
+                          Row(children: [
+                            Icon(Icons.lock_clock_rounded,
+                                size: 16, color: cs.primary),
+                            const SizedBox(width: 6),
+                            Expanded(
+                              child: Text(
+                                  l10n.capsuleOpensOn(TimeManager.formatDate(
+                                      entry.openAt!, context)),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: muted),
+                            ),
+                          ])
+                        else ...[
+                          if (preview.title != null)
+                            Text(preview.title!,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: theme.textTheme.titleMedium
+                                    ?.copyWith(fontWeight: FontWeight.w600)),
+                          // Text is shaped in full before it is cut to its
+                          // lines, and that is most of what a row costs as
+                          // it scrolls in: lay out only what its lines can
+                          // hold of the narrowest letters (about half the
+                          // font size wide each).
+                          LayoutBuilder(builder: (context, constraints) {
+                            final letter = MediaQuery.textScalerOf(context)
+                                    .scale(muted?.fontSize ?? 14) /
+                                2;
+                            return Text(
+                                preview.snippet.isEmpty && preview.title == null
+                                    ? l10n.writeSomethingHint
+                                    : cutSnippet(
+                                        preview.snippet,
+                                        (constraints.maxWidth /
+                                                letter *
+                                                snippetLines)
+                                            .ceil()),
+                                maxLines: snippetLines,
+                                overflow: TextOverflow.ellipsis,
+                                style: muted);
+                          }),
+                          if (hasMood ||
+                              location != null ||
+                              entry.id != null) ...[
+                            const SizedBox(height: 6),
+                            SizedBox(
+                              height: 18,
+                              child: Row(children: [
+                                if (hasMood) ...[
+                                  MoodIcon(moodValue: entry.mood, size: 14),
+                                  const SizedBox(width: 6),
+                                ],
+                                if (location != null) ...[
+                                  Icon(Icons.place_rounded,
+                                      size: 14, color: cs.onSurfaceVariant),
+                                  const SizedBox(width: 2),
+                                  Flexible(
+                                    child: Text(location.label,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: theme.textTheme.labelSmall
+                                            ?.copyWith(
+                                                color: cs.onSurfaceVariant)),
+                                  ),
+                                  const SizedBox(width: 6),
+                                ],
+                                if (entry.weather != null) ...[
+                                  Icon(weatherIcon(entry.weather!.code),
+                                      size: 14, color: cs.onSurfaceVariant),
+                                  const SizedBox(width: 6),
+                                ],
+                                if (entry.activity != null) ...[
+                                  Icon(activityIcon(entry.activity!),
+                                      size: 14, color: cs.onSurfaceVariant),
+                                  const SizedBox(width: 6),
+                                ],
+                                Expanded(
+                                  child: Align(
+                                    alignment: AlignmentDirectional.centerStart,
+                                    child: EntryTagIconPreview(
+                                        entryId: entry.id,
+                                        iconSize: 14,
+                                        spacing: 4),
+                                  ),
+                                ),
+                              ]),
+                            ),
+                          ],
+                        ],
+                      ]),
+                ),
+                if (thumbnail != null) ...[
+                  const SizedBox(width: 12),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: SizedBox(
+                        width: 84,
+                        height: 84,
+                        child: LocalImageLoader(
+                            imagePath: thumbnail.imgPath, cacheSize: 250)),
+                  ),
+                ],
+              ]),
             ),
-            if (thumbnail != null) ...[
-              const SizedBox(width: 12),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: SizedBox(
-                    width: 84,
-                    height: 84,
-                    child: LocalImageLoader(
-                        imagePath: thumbnail.imgPath, cacheSize: 250)),
-              ),
-            ],
-          ]),
+          ),
         ),
       ),
     );

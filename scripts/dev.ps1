@@ -1,5 +1,5 @@
 param(
-  [ValidateSet('windows','windows-background','windows-driver','android','apk','release','test','test-unit','test-widget','test-integration','test-server','cli','test-cli','analyze','pub','screenshots')][string]$Target='windows',
+  [ValidateSet('windows','windows-background','windows-driver','android','apk','release','test','test-unit','test-widget','test-integration','test-server','cli','test-cli','frame-rate','analyze','pub','screenshots')][string]$Target='windows',
   # Flutter device id for 'android', e.g. a wireless adb serial from `flutter devices`.
   [string]$Device='emulator-5554'
 )
@@ -18,7 +18,13 @@ New-Item -ItemType Directory -Force $env:TEMP | Out-Null
 Set-Location (Split-Path $PSScriptRoot -Parent)
 # A Gradle daemon holds gigabytes after a build; Android targets stop it as
 # they finish rather than leave it idling.
-function Stop-Gradle { & .\android\gradlew.bat -p android --stop --quiet | Out-Null }
+# Flutter writes the wrapper on the first Android build; before that no
+# daemon has started.
+function Stop-Gradle {
+  if (Test-Path .\android\gradlew.bat) {
+    & .\android\gradlew.bat -p android --stop --quiet | Out-Null
+  }
+}
 switch ($Target) {
   'windows' { flutter run -d windows }
   # For agents: window off screen and never focused; prints the DTD URI for
@@ -31,6 +37,34 @@ switch ($Target) {
   # Prints the DTD URI so the Dart MCP server can attach for hot reload.
   'android' { flutter run -d $Device --flavor dev --print-dtd; Stop-Gradle }
   'apk' { flutter build apk --debug --flavor dev; $code = $LASTEXITCODE; Stop-Gradle; exit $code }
+  # Frame rate with a 4000-entry diary, in profile mode
+  # (integration_test/frame_rate_test.dart): -Device windows runs it in the
+  # hidden background window, an adb serial on that phone or tablet. The
+  # numbers and the journal scroll's timeline land in build\frame_rate.json
+  # and build\frame_rate_timeline.json, pass or fail.
+  'frame-rate' {
+    $test = 'integration_test/frame_rate_test.dart'
+    $driver = 'test_driver/integration_test.dart'
+    if ($Device -eq 'windows') {
+      $env:AID_BACKGROUND_WINDOW = '1'
+      flutter drive --profile -d windows --endless-trace-buffer --driver=$driver --target=$test
+      exit $LASTEXITCODE
+    }
+    # Phones and tablets here are arm64: build that alone (one AOT compile
+    # instead of three; drive itself has no such option), then drive it.
+    # The bar is the refresh rate the user set (e.g. 120 on a 144 Hz
+    # panel); "null" leaves the test the display's fastest mode.
+    $allowed = "$(adb -s $Device shell settings get system peak_refresh_rate)".Trim()
+    $hz = if ($allowed -match '^\d+(\.\d+)?$') { [int][double]$allowed } else { 0 }
+    flutter build apk --profile --flavor dev --target-platform android-arm64 -t $test "--dart-define=AID_TARGET_HZ=$hz"
+    $code = $LASTEXITCODE
+    Stop-Gradle
+    if ($code -ne 0) { exit $code }
+    # The app stays open afterwards, 4000 entries in, to try by hand.
+    flutter drive --profile --flavor dev -d $Device --endless-trace-buffer --keep-app-running `
+      --use-application-binary build\app\outputs\flutter-apk\app-dev-profile.apk `
+      --driver=$driver --target=$test
+  }
   # The everyday app: signed with android/key.properties (kept out of git)
   # and installed over the existing one, data kept, on every connected
   # phone or tablet.
