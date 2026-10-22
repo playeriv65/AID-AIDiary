@@ -26,6 +26,16 @@ Probably skip (Journey has them, but they need cloud or AI or add little): Googl
 - Handwriting and drawing on tablets.
 - More home-screen widget kinds: streak, prompt of the day, quick mood.
 
+## Frame rate (state of 2026-10-21)
+Measured with `./scripts/dev.ps1 frame-rate` on the Xiaomi tablet (3200×2136, 120 Hz, Snapdragon 7+ Gen 3, Impeller/Vulkan), skipped refreshes on screen against the 1% bar:
+
+- Journal scroll about 1.4–1.8%, media scroll about 0.8%.
+- Opening an entry about 3.5% (was 13–14% before the layer-free page transition and the shell no longer rebuilding). Left: the entry page's first build (25–34 ms on some opens, about half of it `markdown_widget` parsing the text in `build`), and the GPU drawing two whole pages for the first frames of a transition.
+- Switching tabs about 7.7% as measured, mostly not what a person sees: a tab's first visit builds it (22–36 ms, deliberate so the map loads no tiles until opened), and `aid ui.navigate` sends no touch, so the system raises no clocks. Real taps on tabs already visited skip about 1.5%.
+- Possible next steps: an action that tells where a widget is on screen (e.g. `ui.locate key=…`) so the script taps like a person on Android, with first visits and repeats reported apart; build the entry text after the page's first frame (the arriving page is hidden for the first quarter of the transition).
+- On wide layouts tapping an entry shows it in the detail pane, while `ui.navigate to=entry` always pushes a full page; decide whether navigation should follow the layout as the tap does.
+- Skia draws the open-entry transition about 3× faster than Impeller here (4× MSAA offscreen layers); staying on Impeller, as Skia's opt-out is deprecated.
+
 ## Sync, identity and encryption (plan of 2026-10-21)
 Local-first, end-to-end encrypted, device-first, with replaceable cloud storage. No sign-up, login or password: open the app and write. Devices hold the identity and the keys; the cloud only stores and syncs ciphertext.
 
