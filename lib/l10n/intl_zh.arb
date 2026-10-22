@@ -192,6 +192,8 @@
     "iconGroupSymbols": "符号",
     "deleteTagMessage": "删除「{name}」？{count, plural, =0{} =1{ 它被用于 1 条记录中。} other{ 它被用于 {count} 条记录中。}}",
     "deleteCategoryMessage": "删除「{name}」？{count, plural, =0{} =1{其 1 个标签也将被删除。} other{其 {count} 个标签也将被删除。}}",
+    "tagNameExists": "已有同名的标签",
+    "categoryNameExists": "已有同名的分类",
     "tagPickerSortManualLabel": "手动排序",
     "tagPickerSortUsageLabel": "按使用次数排序",
     "tagFavoriteName": "我的最爱",

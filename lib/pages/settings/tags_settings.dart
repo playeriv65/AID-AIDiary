@@ -2,16 +2,15 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/models/tag.dart';
 import 'package:aid_diary/models/tag_category.dart';
 import 'package:aid_diary/providers/tags_provider.dart';
 import 'package:aid_diary/widgets/progress_dialog.dart';
 import 'package:aid_diary/utils/tag_category_visuals.dart';
 import 'package:aid_diary/utils/templates_tags_transfer.dart';
-import 'package:aid_diary/widgets/edit_category.dart';
-import 'package:aid_diary/widgets/edit_tag.dart';
+import 'package:aid_diary/routing/organize_destinations.dart';
 import 'package:aid_diary/widgets/expressive_fab_menu.dart';
-import 'package:aid_diary/widgets/share_tags_dialog.dart';
 import 'package:aid_diary/widgets/tag_chip.dart';
 import 'package:aid_diary/widgets/tag_icon_glyph.dart';
 import 'package:material_ui/material_ui.dart';
@@ -42,27 +41,6 @@ class TagsSettings extends StatefulWidget {
 class _TagsSettingsState extends State<TagsSettings> {
   final Set<int?> _manuallyCollapsedIds = {};
   bool _isDraggingCategory = false;
-
-  void _showEditTagDialog(BuildContext context, Tag? tag) {
-    showDialog(
-      context: context,
-      builder: (context) => EditTag(tag: tag),
-    );
-  }
-
-  void _showCategoryDialog(BuildContext context, TagCategory? category) {
-    showDialog(
-      context: context,
-      builder: (_) => EditCategory(category: category),
-    );
-  }
-
-  void _showShareDialog(BuildContext context) async {
-    await Navigator.of(context).push(MaterialPageRoute(
-        allowSnapshotting: false,
-        fullscreenDialog: true,
-        builder: (context) => const ShareTagsDialog()));
-  }
 
   Future<void> _importFile(BuildContext context) async {
     await runOperation(context, TemplatesTagsTransfer.importTransferFile,
@@ -112,8 +90,7 @@ class _TagsSettingsState extends State<TagsSettings> {
     return items;
   }
 
-  Future<void> _onReorder(
-      int from, int to, TagsProvider provider, List<_ListItem> items) async {
+  Future<void> _onReorder(int from, int to, List<_ListItem> items) async {
     if (from == to) return;
 
     final movedItem = items[from];
@@ -124,53 +101,34 @@ class _TagsSettingsState extends State<TagsSettings> {
       // Uncategorized header is pinned, no-op if it was somehow moved
       if (movedItem.category == null) return;
 
-      final orderedCategories = items
+      final ordered = items
           .whereType<_HeaderItem>()
-          .where((header) => header.category != null)
-          .map((header) => header.category!)
+          .map((header) => header.category)
+          .nonNulls
           .toList();
-      await provider.updateCategorySortOrders(orderedCategories);
+      await AppActions.instance.run('category.move', {
+        'id': movedItem.category!.id,
+        'position': ordered.indexOf(movedItem.category!),
+      });
     } else if (movedItem is _TagItem) {
-      TagCategory? currentCategory;
-      final Map<int?, List<Tag>> sectionTags = {};
-
+      // Where it landed: the category above it, and its place among the
+      // tags of that category on screen.
+      TagCategory? section;
+      var position = 0;
       for (final item in items) {
         if (item is _HeaderItem) {
-          currentCategory = item.category;
-          sectionTags[currentCategory?.id] ??= [];
+          section = item.category;
+          position = 0;
         } else if (item is _TagItem) {
-          (sectionTags[currentCategory?.id] ??= []).add(item.tag);
+          if (item.tag.id == movedItem.tag.id) break;
+          position++;
         }
       }
-
-      final tagsToUpdate = <Tag>[];
-      for (final entry in sectionTags.entries) {
-        final categoryId = entry.key;
-        final tagsInSection = entry.value;
-        for (int index = 0; index < tagsInSection.length; index++) {
-          final tag = tagsInSection[index];
-          final categoryChanged = tag.categoryId != categoryId;
-          final orderChanged = tag.sortOrder != index;
-          if (categoryChanged || orderChanged) {
-            tagsToUpdate.add(Tag(
-              id: tag.id,
-              name: tag.name,
-              color: tag.color,
-              tagType: tag.tagType,
-              icon: tag.icon,
-              iconType: tag.iconType,
-              categoryId: categoryId,
-              sortOrder: index,
-              timeCreate: tag.timeCreate,
-              timeModified: categoryChanged ? DateTime.now() : tag.timeModified,
-            ));
-          }
-        }
-      }
-
-      if (tagsToUpdate.isNotEmpty) {
-        await provider.batchUpdateTags(tagsToUpdate);
-      }
+      await AppActions.instance.run('tag.move', {
+        'id': movedItem.tag.id,
+        'category': section == null ? 'none' : '#${section.id}',
+        'position': position,
+      });
     }
   }
 
@@ -231,7 +189,8 @@ class _TagsSettingsState extends State<TagsSettings> {
               if (!isUncategorized)
                 IconButton(
                   icon: const Icon(Icons.edit_rounded),
-                  onPressed: () => _showCategoryDialog(context, category),
+                  onPressed: () =>
+                      OrganizeNavigation.editCategory(context, category),
                 ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -261,7 +220,7 @@ class _TagsSettingsState extends State<TagsSettings> {
       key: key,
       color: Colors.transparent,
       child: InkWell(
-        onTap: () => _showEditTagDialog(context, tag),
+        onTap: () => OrganizeNavigation.editTag(context, tag),
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 4),
           child: Row(
@@ -289,7 +248,7 @@ class _TagsSettingsState extends State<TagsSettings> {
               ),
               IconButton(
                 icon: const Icon(Icons.edit_rounded),
-                onPressed: () => _showEditTagDialog(context, tag),
+                onPressed: () => OrganizeNavigation.editTag(context, tag),
               ),
             ],
           ),
@@ -315,7 +274,7 @@ class _TagsSettingsState extends State<TagsSettings> {
           ),
           IconButton(
             icon: const Icon(Icons.share_rounded),
-            onPressed: () => _showShareDialog(context),
+            onPressed: () => OrganizeNavigation.shareTags(context),
           ),
         ],
       ),
@@ -323,11 +282,11 @@ class _TagsSettingsState extends State<TagsSettings> {
         ExpressiveFabMenuItem(
             icon: Icons.folder_rounded,
             label: l10n.tagCategoryLabel,
-            onTap: () => _showCategoryDialog(context, null)),
+            onTap: () => OrganizeNavigation.editCategory(context, null)),
         ExpressiveFabMenuItem(
             icon: Icons.local_offer_rounded,
             label: l10n.tagLabel,
-            onTap: () => _showEditTagDialog(context, null)),
+            onTap: () => OrganizeNavigation.editTag(context, null)),
       ]),
       body: isEmpty
           ? Center(
@@ -379,7 +338,7 @@ class _TagsSettingsState extends State<TagsSettings> {
                     },
                     onReorderItem: (from, to) {
                       final snapshot = List<_ListItem>.from(items);
-                      _onReorder(from, to, provider, snapshot);
+                      _onReorder(from, to, snapshot);
                     },
                     itemBuilder: (context, index) {
                       final item = items[index];

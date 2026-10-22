@@ -497,6 +497,12 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
+  String get tagNameExists => '已有同名的标签';
+
+  @override
+  String get categoryNameExists => '已有同名的分类';
+
+  @override
   String deleteTemplateMessage(Object name) {
     return '删除「$name」？';
   }
@@ -2691,6 +2697,12 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
     );
     return '刪除「$name」？$_temp0';
   }
+
+  @override
+  String get tagNameExists => '已有同名的標籤';
+
+  @override
+  String get categoryNameExists => '已有同名的分類';
 
   @override
   String deleteTemplateMessage(Object name) {

@@ -2,9 +2,10 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'package:aid_diary/actions/settings_actions.dart';
 import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/config_provider.dart';
-import 'package:aid_diary/database/entry_store.dart';
+import 'package:aid_diary/services/wallpaper_service.dart';
 import 'package:aid_diary/time_manager.dart';
 import 'package:aid_diary/widgets/color_picker_dialog.dart';
 import 'package:aid_diary/widgets/diary_wallpaper.dart';
@@ -19,9 +20,6 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:aid_diary/theme_mode_provider.dart';
 import 'package:aid_diary/widgets/theme_color_presets.dart';
-import 'package:aid_diary/pages/settings/language_settings.dart';
-import 'package:aid_diary/pages/settings/tags_settings.dart';
-import 'package:aid_diary/pages/settings/templates_page.dart';
 import 'package:aid_diary/widgets/settings_category.dart';
 
 class AppearanceSettings extends StatefulWidget {
@@ -73,8 +71,7 @@ class _AppearanceSettingsPageState extends State<AppearanceSettings> {
               onPressed: () async {
                 if (newEmoji.isNotEmpty) {
                   if (value != null) {
-                    await ConfigProvider.instance
-                        .set(Settings.moodIcons[value]!, newEmoji);
+                    await changeSetting(Settings.moodIcons[value]!, newEmoji);
                   }
                 }
                 if (!context.mounted) return;
@@ -123,11 +120,10 @@ class _AppearanceSettingsPageState extends State<AppearanceSettings> {
     );
   }
 
-  Future _resetMoodIcons() async {
-    for (final setting in Settings.moodIcons.values) {
-      await ConfigProvider.instance.set(setting, setting.defaultValue);
-    }
-  }
+  Future<void> _resetMoodIcons() => changeSettings({
+        for (final setting in Settings.moodIcons.values)
+          setting: setting.defaultValue,
+      });
 
   Widget moodIconButton(int? index) {
     return GestureDetector(
@@ -178,7 +174,7 @@ class _AppearanceSettingsPageState extends State<AppearanceSettings> {
       ],
       onChanged: (value) async {
         if (value == null) return;
-        await (onChanged?.call(value) ?? configProvider.set(setting, value));
+        await (onChanged?.call(value) ?? changeSetting(setting, value));
       },
     );
   }
@@ -210,8 +206,7 @@ class _AppearanceSettingsPageState extends State<AppearanceSettings> {
           ],
           onChanged: (value) async {
             if (value == null) return;
-            await configProvider.set(setting, value);
-            EntryStore.instance.applyDiaryDaySettings();
+            await changeSetting(setting, value);
           },
         );
     return [
@@ -242,7 +237,7 @@ class _AppearanceSettingsPageState extends State<AppearanceSettings> {
         if (value == WallpaperKind.photo.name) {
           await DiaryWallpaper.pickPhoto();
         } else {
-          await configProvider.set(Settings.wallpaper, value);
+          await changeSetting(Settings.wallpaper, value);
         }
       }),
       _choice(configProvider, 'settings-font-family', l10n.settingsFontFamily,
@@ -306,33 +301,14 @@ class _AppearanceSettingsPageState extends State<AppearanceSettings> {
                       ],
                       onChanged: (String? newValue) {
                         if (newValue == null) return;
-                        ThemeMode themeMode = ThemeMode.system;
-                        switch (newValue) {
-                          case "system":
-                            themeMode = ThemeMode.system;
-                            break;
-                          case "light":
-                            themeMode = ThemeMode.light;
-                            break;
-                          case "dark":
-                          case "amoled":
-                            themeMode = ThemeMode.dark;
-                            break;
-                          default:
-                            themeMode = ThemeMode.system;
-                            break;
-                        }
-                        themeProvider.themeMode = themeMode;
-                        configProvider.set(Settings.theme, newValue);
+                        changeSetting(Settings.theme, newValue);
                       }),
                   SettingsToggle(
                       title: AppLocalizations.of(context)!
                           .settingsUseSystemAccentColor,
                       setting: Settings.followSystemColor,
-                      onChanged: (value) {
-                        configProvider.set(Settings.followSystemColor, value);
-                        themeProvider.updateAccentColor();
-                      }),
+                      onChanged: (value) =>
+                          changeSetting(Settings.followSystemColor, value)),
                   const ThemeColorPresets(),
                   SettingsIconAction(
                     title:
@@ -349,7 +325,7 @@ class _AppearanceSettingsPageState extends State<AppearanceSettings> {
                     hint: AppLocalizations.of(context)!.themeTintBackgroundHint,
                     setting: Settings.tintThemeBackground,
                     onChanged: (value) =>
-                        configProvider.set(Settings.tintThemeBackground, value),
+                        changeSetting(Settings.tintThemeBackground, value),
                   ),
                   ..._customizeSettings(context, configProvider),
                   Padding(
@@ -361,7 +337,7 @@ class _AppearanceSettingsPageState extends State<AppearanceSettings> {
                         options: _buildFirstDayOfWeekDropdownItems(context),
                         onChanged: (String? newValue) async {
                           if (newValue == null) return;
-                          await configProvider.set(
+                          await changeSetting(
                               Settings.startingDayOfWeek, newValue);
                         }),
                   ),
@@ -387,7 +363,7 @@ class _AppearanceSettingsPageState extends State<AppearanceSettings> {
                         ],
                         onChanged: (String? newValue) async {
                           if (newValue == null) return;
-                          await configProvider.set(
+                          await changeSetting(
                               Settings.calendarSystem, newValue);
                         }),
                   ),
@@ -395,7 +371,7 @@ class _AppearanceSettingsPageState extends State<AppearanceSettings> {
                     title: AppLocalizations.of(context)!.settingsHideImages,
                     setting: Settings.hideImagesInGallery,
                     onChanged: (value) =>
-                        configProvider.set(Settings.hideImagesInGallery, value),
+                        changeSetting(Settings.hideImagesInGallery, value),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
@@ -444,7 +420,7 @@ class _AppearanceSettingsPageState extends State<AppearanceSettings> {
                         ],
                         onChanged: (String? value) {
                           if (value != null) {
-                            configProvider.set(Settings.temperatureUnit, value);
+                            changeSetting(Settings.temperatureUnit, value);
                           }
                         }),
                   ),
@@ -490,23 +466,23 @@ class _AppearanceSettingsPageState extends State<AppearanceSettings> {
                     SettingsToggle(
                       title: title,
                       setting: setting,
-                      onChanged: (value) => configProvider.set(setting, value),
+                      onChanged: (value) => changeSetting(setting, value),
                     ),
                   const Divider(height: 32),
                   SettingsCategory(
                       title:
                           AppLocalizations.of(context)!.settingsLanguageTitle,
                       icon: Icons.language_rounded,
-                      page: const LanguageSettings()),
+                      destination: 'settings/language'),
                   SettingsCategory(
                       title: AppLocalizations.of(context)!.settingsTagsTitle,
                       icon: Icons.local_offer_rounded,
-                      page: const TagsSettings()),
+                      destination: 'tags'),
                   SettingsCategory(
                       title:
                           AppLocalizations.of(context)!.settingsTemplatesTitle,
                       icon: Icons.description_rounded,
-                      page: const TemplateSettings()),
+                      destination: 'templates'),
                 ],
               ))),
     );

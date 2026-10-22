@@ -7,6 +7,7 @@ import 'dart:math';
 
 import 'package:aid_diary/utils/diary_day.dart';
 import 'package:aid_diary/config_provider.dart';
+import 'package:intl/intl.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/models/entry.dart';
@@ -105,10 +106,11 @@ class FlashbackManager {
   /// Today's flashbacks from [entries], which must be newest first. Pages
   /// rebuild often, so the result is kept until the entry list (replaced on
   /// every change), the day, the language or a flashback setting changes.
+  /// Outside a build ([listen] false) it does not subscribe to settings.
   static List<Flashback> getFlashbacks(
-      BuildContext context, List<Entry> entries) {
-    final configProvider = Provider.of<ConfigProvider>(context);
-    // Diary days throughout: at 1:00 it is still yesterday's throwbacks.
+      BuildContext context, List<Entry> entries,
+      {bool listen = true}) {
+    final configProvider = Provider.of<ConfigProvider>(context, listen: listen);
     final now = DiaryDay.today();
     final key = (
       entries,
@@ -117,6 +119,7 @@ class FlashbackManager {
       Localizations.localeOf(context),
       [
         for (final setting in [
+          Settings.showFlashbacks,
           Settings.excludeBadDaysFromFlashbacks,
           Settings.showflashbackYearsAgo,
           Settings.showflashback6MonthsAgo,
@@ -129,13 +132,27 @@ class FlashbackManager {
       ].join(),
     );
     if (key == _cacheKey) return _cached;
-    _cached = _compute(context, configProvider, entries, now);
+    _cached = forToday(entries,
+        l10n: AppLocalizations.of(context)!,
+        isJalali: TimeManager.isJalaliCalendar(context),
+        timeFormat: TimeManager.localizedTimeFormat(
+            context, TimeManager.currentLocale(context)));
     _cacheKey = key;
     return _cached;
   }
 
-  static List<Flashback> _compute(BuildContext context,
-      ConfigProvider configProvider, List<Entry> entries, DateTime now) {
+  /// Today's flashbacks from [entries] (newest first) without a widget
+  /// tree, for actions: texts from [l10n], times written with [timeFormat].
+  static List<Flashback> forToday(
+    List<Entry> entries, {
+    required AppLocalizations l10n,
+    required bool isJalali,
+    required DateFormat timeFormat,
+  }) {
+    final configProvider = ConfigProvider.instance;
+    if (!configProvider.get(Settings.showFlashbacks)) return const [];
+    // Diary days throughout: at 1:00 it is still yesterday's throwbacks.
+    final now = DiaryDay.today();
     // Sealed time capsules must not surface early.
     List<Entry> filteredEntries =
         entries.where((entry) => !entry.isSealed).toList();
@@ -156,8 +173,6 @@ class FlashbackManager {
 
     if (filteredEntries.isEmpty) return flashbacksList;
 
-    final locale = TimeManager.currentLocale(context);
-    final isJalali = TimeManager.isJalaliCalendar(context);
     final yearsAgo = configProvider.get(Settings.showflashbackYearsAgo);
     final sixMonthsAgo = configProvider.get(Settings.showflashback6MonthsAgo);
     final oneMonthAgo = configProvider.get(Settings.showflashback1MonthAgo);
@@ -174,14 +189,14 @@ class FlashbackManager {
         final years = TimeManager.calendarYearOf(now, isJalali) -
             TimeManager.calendarYearOf(entry.day, isJalali);
         onThisDayEntries.add(entry);
-        onThisDayLabels.add(AppLocalizations.of(context)!.flashbackYear(years));
+        onThisDayLabels.add(l10n.flashbackYear(years));
         usedEntries.add(entry);
         continue;
       }
       if (sixMonthsAgo &&
           TimeManager.datesExactCalendarMonthDiff(entry.day, now, isJalali) ==
               6) {
-        final label = AppLocalizations.of(context)!.flashbackMonth(6);
+        final label = l10n.flashbackMonth(6);
         singleFlashbacks.putIfAbsent(label, () => []).add(entry);
         usedEntries.add(entry);
         continue;
@@ -189,13 +204,13 @@ class FlashbackManager {
       if (oneMonthAgo &&
           TimeManager.datesExactCalendarMonthDiff(entry.day, now, isJalali) ==
               1) {
-        final label = AppLocalizations.of(context)!.flashbackMonth(1);
+        final label = l10n.flashbackMonth(1);
         singleFlashbacks.putIfAbsent(label, () => []).add(entry);
         usedEntries.add(entry);
         continue;
       }
       if (oneWeekAgo && entry.day == weekAgo) {
-        final label = AppLocalizations.of(context)!.flashbackWeek(1);
+        final label = l10n.flashbackWeek(1);
         singleFlashbacks.putIfAbsent(label, () => []).add(entry);
         usedEntries.add(entry);
         continue;
@@ -207,7 +222,7 @@ class FlashbackManager {
     }
 
     if (onThisDayEntries.isNotEmpty) {
-      final onThisDayTitle = AppLocalizations.of(context)!.flashbackOnThisDay;
+      final onThisDayTitle = l10n.flashbackOnThisDay;
       flashbacksList.add(Flashback(
         title: onThisDayTitle,
         entries: onThisDayEntries.reversed.toList(), // Most recent first
@@ -234,7 +249,7 @@ class FlashbackManager {
           seed: seed,
         );
         if (goodDayEntry != null) {
-          final label = AppLocalizations.of(context)!.flashbackGoodDay;
+          final label = l10n.flashbackGoodDay;
           singleFlashbacks.putIfAbsent(label, () => []).add(goodDayEntry);
           usedEntries.add(goodDayEntry);
         }
@@ -250,7 +265,7 @@ class FlashbackManager {
           seed: seed,
         );
         if (randomDayEntry != null) {
-          final label = AppLocalizations.of(context)!.flashbackRandomDay;
+          final label = l10n.flashbackRandomDay;
           singleFlashbacks.putIfAbsent(label, () => []).add(randomDayEntry);
           usedEntries.add(randomDayEntry);
         }
@@ -263,10 +278,7 @@ class FlashbackManager {
         entries: entries,
         entryLabels: entries.length == 1
             ? [label]
-            : entries
-                .map((e) => TimeManager.localizedTimeFormat(context, locale)
-                    .format(e.timeCreate))
-                .toList(),
+            : entries.map((e) => timeFormat.format(e.timeCreate)).toList(),
       ));
     });
     return flashbacksList;

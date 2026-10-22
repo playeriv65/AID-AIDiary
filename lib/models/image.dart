@@ -72,6 +72,13 @@ class EntryImage {
         timeCreate: timeCreate ?? this.timeCreate,
       );
 
+  /// Ranks [images] so that, listed highest first, they keep their order.
+  static void rankInOrder(List<EntryImage> images) {
+    for (var i = 0; i < images.length; i++) {
+      images[i].imgRank = images.length - 1 - i;
+    }
+  }
+
   static List<EntryImage> appendRanked(
     List<EntryImage> images,
     List<String> newImagePaths, {

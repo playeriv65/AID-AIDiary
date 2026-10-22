@@ -35,12 +35,6 @@ class _RecentlyDeletedPageState extends State<RecentlyDeletedPage> {
     if (mounted) setState(() => _items = items);
   }
 
-  int _daysLeft(DeletedEntry item) {
-    final expires = item.deletedAt.add(AppConfig.instance.deletedRetention);
-    final days = expires.difference(DateTime.now()).inHours / 24;
-    return days.ceil().clamp(0, 9999);
-  }
-
   Future<bool> _confirm(String title, String message) async {
     final l10n = AppLocalizations.of(context)!;
     Haptics.warning();
@@ -104,9 +98,7 @@ class _RecentlyDeletedPageState extends State<RecentlyDeletedPage> {
     if (!await _confirm(l10n.deletedEmpty, l10n.deletedEmptyDescription)) {
       return;
     }
-    for (final item in _items ?? const <DeletedEntry>[]) {
-      await EntryStore.instance.erase(item.entry);
-    }
+    await AppActions.instance.run('entry.empty_deleted', {}, confirmed: true);
     await _reload();
   }
 
@@ -151,8 +143,9 @@ class _RecentlyDeletedPageState extends State<RecentlyDeletedPage> {
                     JournalEntryRow(
                       entry: entry,
                       images: EntryImagesProvider.instance.getForEntry(entry),
-                      label: l10n.deletedDaysLeft(_daysLeft(
-                          items.firstWhere((i) => i.entry.id == entry.id))),
+                      label: l10n.deletedDaysLeft(items
+                          .firstWhere((i) => i.entry.id == entry.id)
+                          .daysLeft),
                       onTap: () => _actions(
                           items.firstWhere((i) => i.entry.id == entry.id)),
                     ),

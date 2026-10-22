@@ -92,19 +92,31 @@ class ImageStorage {
     return await externalStore?.isAvailable() ?? false;
   }
 
+  /// Lets the user pick the folder, then keeps the photos there.
   Future<OperationOutcome> selectExternalLocation(
       Function(String) updateStatus) async {
     try {
       var selectedDirectory = await StoragePicker.pickDirectory();
       if (selectedDirectory == null) return const OperationOutcome.cancelled();
+      return await useExternalLocation(selectedDirectory.uri, updateStatus);
+    } catch (error, stackTrace) {
+      _logger.severe(
+          'Selecting an external image location failed', error, stackTrace);
+      return OperationOutcome.failed(error);
+    }
+  }
 
+  /// Keeps the photos in the folder at [uri] from now on, copying across
+  /// what either side lacks; the old setting returns when that fails.
+  Future<OperationOutcome> useExternalLocation(
+      String uri, Function(String) updateStatus) async {
+    try {
       // Save Old Settings
       var oldExternalImageUri =
           ConfigProvider.instance.get(Settings.externalImgUri);
       var oldUseExternalImage = usingExternalLocation();
 
-      await ConfigProvider.instance
-          .set(Settings.externalImgUri, selectedDirectory.uri);
+      await ConfigProvider.instance.set(Settings.externalImgUri, uri);
       await ConfigProvider.instance.set(Settings.useExternalImg, true);
       if (await syncImageFolder(true, updateStatus: updateStatus)) {
         return const OperationOutcome.succeeded();

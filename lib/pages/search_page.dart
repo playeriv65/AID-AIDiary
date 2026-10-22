@@ -10,6 +10,7 @@ import 'package:aid_diary/providers/entries_provider.dart';
 import 'package:aid_diary/providers/entry_images_provider.dart';
 import 'package:aid_diary/providers/tags_provider.dart';
 import 'package:aid_diary/utils/entry_context_display.dart';
+import 'package:aid_diary/utils/entry_filter.dart';
 import 'package:aid_diary/routing/entry_navigation.dart';
 import 'package:aid_diary/widgets/journal_entry_row.dart';
 import 'package:aid_diary/widgets/list_detail_layout.dart';
@@ -35,12 +36,14 @@ class _SearchPageState extends State<SearchPage> {
   final Set<int> _moods = {};
   int? _selectedId;
 
-  bool get _active =>
-      _controller.text.trim().isNotEmpty ||
-      _tagIds.isNotEmpty ||
-      _starred ||
-      _activities.isNotEmpty ||
-      _moods.isNotEmpty;
+  EntryFilter get _filter => EntryFilter(
+      query: _controller.text,
+      tagIds: _tagIds,
+      starred: _starred,
+      moods: _moods,
+      activities: _activities);
+
+  bool get _active => _filter.isActive;
 
   @override
   void dispose() {
@@ -48,30 +51,8 @@ class _SearchPageState extends State<SearchPage> {
     super.dispose();
   }
 
-  List<Entry> _results() {
-    final tags = TagsProvider.instance;
-    final query = _controller.text.trim().toLowerCase();
-    return EntriesProvider.instance.entries.where((entry) {
-      if (entry.isSealed) return false;
-      if (query.isNotEmpty &&
-          !entry.text.toLowerCase().contains(query) &&
-          !(entry.location?.name?.toLowerCase().contains(query) ?? false)) {
-        return false;
-      }
-      if (_starred && !tags.isFavorite(entry.id!)) return false;
-      if (_moods.isNotEmpty && !_moods.contains(entry.mood)) return false;
-      if (_activities.isNotEmpty && !_activities.contains(entry.activity)) {
-        return false;
-      }
-      if (_tagIds.isNotEmpty &&
-          !tags
-              .getEntryTagsForEntry(entry.id!)
-              .any((t) => _tagIds.contains(t.tagId))) {
-        return false;
-      }
-      return true;
-    }).toList();
-  }
+  List<Entry> _results() =>
+      EntriesProvider.instance.entries.where(_filter.matches).toList();
 
   void _clear() => setState(() {
         _controller.clear();

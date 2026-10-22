@@ -26,6 +26,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/background/background_work.dart';
 import 'package:aid_diary/layouts/mobile_scaffold.dart';
+import 'package:aid_diary/routing/route_names.dart';
 import 'package:aid_diary/theme_mode_provider.dart';
 import 'package:aid_diary/theme_palette.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
@@ -247,6 +248,7 @@ class _MainAppState extends State<MainApp> {
                             configProvider.chosen24HourFormat ??
                                 MediaQuery.of(context).alwaysUse24HourFormat),
                     child: LegacyMaterialBridge(child: child!)),
+                navigatorObservers: [rootRoutes],
                 home: const LaunchPage(nextPage: MobileScaffold()))),
       );
     });

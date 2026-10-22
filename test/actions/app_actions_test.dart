@@ -19,14 +19,29 @@ import 'package:http/http.dart' as http;
 import '../support/diary_app_harness.dart';
 
 class FakeScreen implements ActionScreen {
-  @override
-  String current = 'journal';
+  final List<String> opened = ['journal'];
 
   @override
-  List<String> get destinations => const ['journal', 'settings'];
+  String get current => opened.last;
 
   @override
-  Future<void> navigate(String destination) async => current = destination;
+  List<ScreenDestination> get destinations => const [
+        ScreenDestination('journal', 'The journal'),
+        ScreenDestination('settings', 'The settings'),
+        ScreenDestination('entry', 'One entry',
+            params: [ActionParam('id', ParamType.integer, 'The entry')]),
+      ];
+
+  @override
+  Future<void> navigate(String destination, ActionArgs args) async =>
+      opened.add([destination, ...args.values].join('/'));
+
+  @override
+  Future<bool> back() async {
+    if (opened.length == 1) return false;
+    opened.removeLast();
+    return true;
+  }
 }
 
 void main() {
@@ -123,6 +138,31 @@ void main() {
         (await run('ui.navigate', {'to': 'settings'}))['current'], 'settings');
     expect(() => run('ui.navigate', {'to': 'nowhere'}),
         throwsA(isA<ActionException>()));
+    // A place's own arguments, typed from command-line text.
+    expect((await run('ui.navigate', {'to': 'entry', 'id': '12'}))['current'],
+        'entry/12');
+    for (final wrong in [
+      {'to': 'entry'},
+      {'to': 'entry', 'id': 'twelve'},
+      {'to': 'settings', 'id': '12'},
+    ]) {
+      expect(
+          () => run('ui.navigate', wrong),
+          throwsA(isA<ActionException>()
+              .having((e) => e.code, 'code', 'bad_args')));
+    }
+    final screenInfo = await run('ui.screen');
+    expect(
+        (screenInfo['destinations'] as List).last,
+        containsPair('params', [
+          {
+            'name': 'id',
+            'type': 'integer',
+            'describe': 'The entry',
+            'required': true
+          }
+        ]));
+    expect(await run('ui.back'), {'closed': true, 'current': 'settings'});
   });
 
   test('the agent API runs actions for whoever has the token', () async {

@@ -4,13 +4,12 @@
 
 import 'dart:math';
 
-import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/database/app_database.dart';
 import 'package:aid_diary/database/entry_tag_dao.dart';
 import 'package:aid_diary/database/tag_category_dao.dart';
 import 'package:aid_diary/database/tag_dao.dart';
 import 'package:aid_diary/database/template_tag_dao.dart';
-import 'package:aid_diary/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/l10n/shown_language.dart';
 import 'package:aid_diary/models/tag.dart';
 import 'package:aid_diary/models/tag_category.dart';
 import 'package:aid_diary/models/tag_icon_type.dart';
@@ -106,7 +105,7 @@ class TagsProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> add(Tag tag) async {
+  Future<Tag> add(Tag tag) async {
     final nextOrder = tags.isEmpty
         ? 0
         : tags.map((existing) => existing.sortOrder).reduce(max) + 1;
@@ -115,6 +114,7 @@ class TagsProvider with ChangeNotifier {
     tags = [...tags, tagWithId];
     await AppDatabase.instance.updateExternalDatabase();
     notifyListeners();
+    return tagWithId;
   }
 
   Future<void> remove(Tag tag) async {
@@ -138,6 +138,35 @@ class TagsProvider with ChangeNotifier {
     ];
     await AppDatabase.instance.updateExternalDatabase();
     notifyListeners();
+  }
+
+  /// Places tags as the tag list shows them: [sections] maps a category id
+  /// (null for none) to its tags in order. Tags whose category or position
+  /// differs are written.
+  Future<void> arrangeTags(Map<int?, List<Tag>> sections) async {
+    final changed = <Tag>[];
+    for (final MapEntry(key: categoryId, value: inSection)
+        in sections.entries) {
+      for (var index = 0; index < inSection.length; index++) {
+        final tag = inSection[index];
+        final categoryChanged = tag.categoryId != categoryId;
+        if (!categoryChanged && tag.sortOrder == index) continue;
+        // Built directly so a null category is honored.
+        changed.add(Tag(
+          id: tag.id,
+          name: tag.name,
+          color: tag.color,
+          tagType: tag.tagType,
+          icon: tag.icon,
+          iconType: tag.iconType,
+          categoryId: categoryId,
+          sortOrder: index,
+          timeCreate: tag.timeCreate,
+          timeModified: categoryChanged ? DateTime.now() : tag.timeModified,
+        ));
+      }
+    }
+    if (changed.isNotEmpty) await batchUpdateTags(changed);
   }
 
   Future<void> batchUpdateTags(List<Tag> updatedTags) async {
@@ -357,18 +386,7 @@ class TagsProvider with ChangeNotifier {
 
   Future<void> createDefaultTags() async {
     // Names are stored, so use the language the app shows, not the device's.
-    final deviceLocale = ConfigProvider.instance.getOverrideLanguage() ??
-        WidgetsBinding.instance.platformDispatcher.locale;
-    Locale locale;
-    if (AppLocalizations.delegate.isSupported(deviceLocale)) {
-      locale = deviceLocale;
-    } else {
-      final langOnly = Locale(deviceLocale.languageCode);
-      locale = AppLocalizations.delegate.isSupported(langOnly)
-          ? langOnly
-          : const Locale('en');
-    }
-    final l10n = await AppLocalizations.delegate.load(locale);
+    final l10n = await loadShownLocalizations();
     final now = DateTime.now();
 
     final defaultTags = [

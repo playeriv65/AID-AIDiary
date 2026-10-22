@@ -3,9 +3,9 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'package:app_settings/app_settings.dart';
+import 'package:aid_diary/actions/settings_actions.dart';
 import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/config_provider.dart';
-import 'package:aid_diary/notification_manager.dart';
 import 'package:aid_diary/time_manager.dart';
 import 'package:aid_diary/widgets/settings_icon_action.dart';
 import 'package:aid_diary/widgets/settings_toggle.dart';
@@ -29,14 +29,10 @@ class NotificationSettings extends StatefulWidget {
     );
 
     if (picked != null) {
-      await ConfigProvider.instance
-          .set(Settings.scheduledReminderHour, picked.hour);
-      await ConfigProvider.instance
-          .set(Settings.scheduledReminderMinute, picked.minute);
-      if (ConfigProvider.instance.get(Settings.dailyReminders)) {
-        await NotificationManager.instance.stopDailyReminders();
-        await NotificationManager.instance.startScheduledDailyReminders();
-      }
+      await changeSettings({
+        Settings.scheduledReminderHour: picked.hour,
+        Settings.scheduledReminderMinute: picked.minute,
+      });
     }
   }
 
@@ -54,14 +50,10 @@ class NotificationSettings extends StatefulWidget {
     );
 
     if (picked != null) {
-      await ConfigProvider.instance
-          .set(Settings.onThisDayNotificationHour, picked.hour);
-      await ConfigProvider.instance
-          .set(Settings.onThisDayNotificationMinute, picked.minute);
-      if (ConfigProvider.instance.get(Settings.onThisDayNotifications)) {
-        await NotificationManager.instance.stopOnThisDayNotifications();
-        await NotificationManager.instance.startOnThisDayNotifications();
-      }
+      await changeSettings({
+        Settings.onThisDayNotificationHour: picked.hour,
+        Settings.onThisDayNotificationMinute: picked.minute,
+      });
     }
   }
 
@@ -101,10 +93,6 @@ class NotificationSettings extends StatefulWidget {
             hour: range.startTime.hour, minute: range.startTime.minute),
         end: TimeOfDay(hour: range.endTime.hour, minute: range.endTime.minute),
       ));
-      if (ConfigProvider.instance.get(Settings.dailyReminders)) {
-        await NotificationManager.instance.stopDailyReminders();
-        await NotificationManager.instance.startScheduledDailyReminders();
-      }
     }
   }
 
@@ -115,18 +103,7 @@ class NotificationSettings extends StatefulWidget {
           title: AppLocalizations.of(context)!.settingsDailyReminderTitle,
           hint: AppLocalizations.of(context)!.settingsDailyReminderDescription,
           setting: Settings.dailyReminders,
-          onChanged: (value) async {
-            if (await NotificationManager.instance
-                .hasNotificationPermission()) {
-              if (value) {
-                await NotificationManager.instance
-                    .startScheduledDailyReminders();
-              } else {
-                await NotificationManager.instance.stopDailyReminders();
-              }
-              await configProvider.set(Settings.dailyReminders, value);
-            }
-          }),
+          onChanged: (value) => changeSetting(Settings.dailyReminders, value)),
       if (configProvider.get(Settings.dailyReminders))
         configProvider.get(Settings.setReminderTime)
             ? SettingsIconAction(
@@ -151,11 +128,8 @@ class NotificationSettings extends StatefulWidget {
             hint: AppLocalizations.of(context)!
                 .settingsFixedReminderTimeDescription,
             setting: Settings.setReminderTime,
-            onChanged: (value) async {
-              await configProvider.set(Settings.setReminderTime, value);
-              await NotificationManager.instance.stopDailyReminders();
-              await NotificationManager.instance.startScheduledDailyReminders();
-            }),
+            onChanged: (value) =>
+                changeSetting(Settings.setReminderTime, value)),
       if (configProvider.get(Settings.dailyReminders))
         _ReminderWeekdays(configProvider: configProvider),
     ];
@@ -168,18 +142,8 @@ class NotificationSettings extends StatefulWidget {
           title: AppLocalizations.of(context)!.flashbackOnThisDay,
           hint: AppLocalizations.of(context)!.settingsOnThisDayDescription,
           setting: Settings.onThisDayNotifications,
-          onChanged: (value) async {
-            if (await NotificationManager.instance
-                .hasNotificationPermission()) {
-              if (value) {
-                await NotificationManager.instance
-                    .startOnThisDayNotifications();
-              } else {
-                await NotificationManager.instance.stopOnThisDayNotifications();
-              }
-              await configProvider.set(Settings.onThisDayNotifications, value);
-            }
-          }),
+          onChanged: (value) =>
+              changeSetting(Settings.onThisDayNotifications, value)),
       if (configProvider.get(Settings.onThisDayNotifications))
         SettingsIconAction(
             title: AppLocalizations.of(context)!.settingsReminderTime,
@@ -217,9 +181,8 @@ class _NotificationSettingsState extends State<NotificationSettings> {
                 hint: AppLocalizations.of(context)!
                     .settingsAlwaysSendReminderDescription,
                 setting: Settings.alwaysRemind,
-                onChanged: (value) async {
-                  await configProvider.set(Settings.alwaysRemind, value);
-                }),
+                onChanged: (value) =>
+                    changeSetting(Settings.alwaysRemind, value)),
           Padding(
             padding: const EdgeInsets.only(left: 8.0, right: 8.0),
             child: Divider(),
@@ -234,31 +197,14 @@ class _NotificationSettingsState extends State<NotificationSettings> {
               hint: AppLocalizations.of(context)!
                   .settingsNudgesDescription(AppConfig.instance.nudgeAfterDays),
               setting: Settings.inactivityNudges,
-              onChanged: (value) async {
-                final notifications = NotificationManager.instance;
-                if (await notifications.hasNotificationPermission()) {
-                  value
-                      ? await notifications.startNudges()
-                      : await notifications.stopNudges();
-                  await configProvider.set(Settings.inactivityNudges, value);
-                }
-              }),
+              onChanged: (value) =>
+                  changeSetting(Settings.inactivityNudges, value)),
           SettingsToggle(
               title: AppLocalizations.of(context)!.settingsQuickWriteTitle,
               hint: AppLocalizations.of(context)!.settingsQuickWriteDescription,
               setting: Settings.quickWriteNotification,
-              onChanged: (value) async {
-                final notifications = NotificationManager.instance;
-                final l10n = AppLocalizations.of(context)!;
-                if (await notifications.hasNotificationPermission()) {
-                  value
-                      ? await notifications.showQuickWrite(
-                          l10n.quickWriteTitle, l10n.quickWriteText)
-                      : await notifications.hideQuickWrite();
-                  await configProvider.set(
-                      Settings.quickWriteNotification, value);
-                }
-              }),
+              onChanged: (value) =>
+                  changeSetting(Settings.quickWriteNotification, value)),
           if (configProvider.get(Settings.dailyReminders) ||
               configProvider.get(Settings.onThisDayNotifications))
             Padding(
@@ -306,8 +252,7 @@ class _ReminderWeekdays extends StatelessWidget {
                 final next = {...days};
                 on ? next.add(weekday) : next.remove(weekday);
                 if (next.isEmpty) return;
-                configProvider.set(
-                    Settings.reminderWeekdays, next.toList()..sort());
+                changeSetting(Settings.reminderWeekdays, next.toList()..sort());
               },
             ),
         ]),

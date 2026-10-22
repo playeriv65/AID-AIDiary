@@ -20,15 +20,13 @@ import 'package:aid_diary/utils/imports/import_helpers.dart';
 import 'package:aid_diary/utils/operation_outcome.dart';
 import 'package:aid_diary/utils/tag_name_sanitizer.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
-import 'package:material_ui/material_ui.dart';
 import 'package:html2md/html2md.dart' as html2md;
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
-Future<OperationOutcome> importFromDiarium(
-    BuildContext context, Function(String) updateStatus) async {
-  final localizations = AppLocalizations.of(context)!;
+Future<OperationOutcome> importFromDiarium(PickedFile selectedFile,
+    AppLocalizations localizations, Function(String) updateStatus) async {
   updateStatus("0%");
 
   var tempDir = await getTemporaryDirectory();
@@ -37,9 +35,6 @@ Future<OperationOutcome> importFromDiarium(
   var outcome = const OperationOutcome.succeeded();
 
   try {
-    final selectedFile = await StoragePicker.pickFile();
-    if (selectedFile == null) return const OperationOutcome.cancelled();
-
     updateStatus(localizations.tranferStatus("0"));
     await selectedFile.copyInto(tempDir.path, tempDbName,
         onProgress: (percent) {

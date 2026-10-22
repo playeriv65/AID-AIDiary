@@ -20,23 +20,45 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class Setting<T> {
   const Setting(this.key, this.defaultValue,
-      {this.secure = false, this.secretStore = false});
+      {this.secure = false,
+      this.secretStore = false,
+      this.choices,
+      this.range});
 
   final String key;
   final T defaultValue;
   final bool secure;
   final bool secretStore;
+
+  /// The only values a text setting takes, when it has a fixed list.
+  final List<String>? choices;
+
+  /// The lowest and highest value a number setting takes.
+  final (int, int)? range;
 }
+
+const _hours = (0, 23);
+const _minutes = (0, 59);
 
 class Settings {
   static const configVersion = Setting<String>("configVersion", "2");
-  static const theme = Setting<String>("theme", "system");
+  static const theme = Setting<String>("theme", "system",
+      choices: ["system", "light", "dark", "amoled"]);
   static const useExternalDb = Setting<bool>("useExternalDb", false);
   static const externalDbUri = Setting<String>("externalDbUri", "");
   static const useExternalImg = Setting<bool>("useExternalImg", false);
   static const externalImgUri = Setting<String>("externalImgUri", "");
   static const startingDayOfWeek =
-      Setting<String>("startingDayOfWeek", "system");
+      Setting<String>("startingDayOfWeek", "system", choices: [
+    "system",
+    "monday",
+    "tuesday",
+    "wednesday",
+    "thursday",
+    "friday",
+    "saturday",
+    "sunday"
+  ]);
   static const veryHappyIcon = Setting<String>("veryHappyIcon", "☺️");
   static const happyIcon = Setting<String>("happyIcon", "🙂");
   static const neutralIcon = Setting<String>("neutralIcon", "😐");
@@ -48,29 +70,40 @@ class Settings {
   static const dailyReminders = Setting<bool>("dailyReminders", false);
   static const setReminderTime = Setting<bool>("setReminderTime", false);
   static const scheduledReminderHour =
-      Setting<int>("scheduledReminderHour", 12);
+      Setting<int>("scheduledReminderHour", 12, range: _hours);
   static const scheduledReminderMinute =
-      Setting<int>("scheduledReminderMinute", 0);
-  static const reminderStartHour = Setting<int>("reminderStartHour", 9);
-  static const reminderStartMinute = Setting<int>("reminderStartMinute", 0);
-  static const reminderEndHour = Setting<int>("reminderEndHour", 21);
-  static const reminderEndMinute = Setting<int>("reminderEndMinute", 0);
+      Setting<int>("scheduledReminderMinute", 0, range: _minutes);
+  static const reminderStartHour =
+      Setting<int>("reminderStartHour", 9, range: _hours);
+  static const reminderStartMinute =
+      Setting<int>("reminderStartMinute", 0, range: _minutes);
+  static const reminderEndHour =
+      Setting<int>("reminderEndHour", 21, range: _hours);
+  static const reminderEndMinute =
+      Setting<int>("reminderEndMinute", 0, range: _minutes);
   static const alwaysRemind = Setting<bool>("alwaysRemind", false);
   static const onThisDayNotifications =
       Setting<bool>("onThisDayNotifications", false);
   static const onThisDayNotificationHour =
-      Setting<int>("onThisDayNotificationHour", 12);
+      Setting<int>("onThisDayNotificationHour", 12, range: _hours);
   static const onThisDayNotificationMinute =
-      Setting<int>("onThisDayNotificationMinute", 0);
+      Setting<int>("onThisDayNotificationMinute", 0, range: _minutes);
   static const defaultTemplate = Setting<int>("defaultTemplate", -1);
   static const imageQualityLevel =
-      Setting<String>("imageQualityLevel", ImageQuality.medium);
+      Setting<String>("imageQualityLevel", ImageQuality.medium, choices: [
+    ImageQuality.noCompression,
+    ImageQuality.high,
+    ImageQuality.medium,
+    ImageQuality.low
+  ]);
   static const overrideLanguage =
       Setting<Map<String, dynamic>?>("overrideLanguage", null);
   static const showFlashbacks = Setting<bool>("showFlashbacks", true);
-  static const temperatureUnit = Setting<String>("temperatureUnit", "celsius");
+  static const temperatureUnit = Setting<String>("temperatureUnit", "celsius",
+      choices: ["celsius", "fahrenheit"]);
   // "system", "12" or "24".
-  static const timeFormat = Setting<String>("timeFormat", "system");
+  static const timeFormat =
+      Setting<String>("timeFormat", "system", choices: ["system", "12", "24"]);
   static const routinePrompts = Setting<bool>("routinePrompts", true);
   // The coach program the user is enrolled in ("" for none), the day it
   // started (yyyy-MM-dd) and the last step answered (-1 for none).
@@ -87,21 +120,27 @@ class Settings {
   // A nudge after some days without an entry (Android).
   static const inactivityNudges = Setting<bool>("inactivityNudges", false);
   // "newest", "oldest" or "updated".
-  static const journalSort = Setting<String>("journalSort", "newest");
+  static const journalSort = Setting<String>("journalSort", "newest",
+      choices: ["newest", "oldest", "updated"]);
   // Weekdays (1 = Monday) the daily reminder fires on.
   static const reminderWeekdays =
       Setting<List<dynamic>>("reminderWeekdays", [1, 2, 3, 4, 5, 6, 7]);
   // Keys into the typography section of assets/config/app_config.json.
-  static const entryFontFamily = Setting<String>("entryFontFamily", "system");
-  static const entryFontSize = Setting<String>("entryFontSize", "medium");
-  static const entryLineSpacing = Setting<String>("entryLineSpacing", "normal");
-  static const wallpaper = Setting<String>("wallpaper", "none");
+  static const entryFontFamily = Setting<String>("entryFontFamily", "system",
+      choices: ["system", "serif", "mono"]);
+  static const entryFontSize = Setting<String>("entryFontSize", "medium",
+      choices: ["small", "medium", "large", "extraLarge"]);
+  static const entryLineSpacing = Setting<String>("entryLineSpacing", "normal",
+      choices: ["compact", "normal", "relaxed"]);
+  static const wallpaper = Setting<String>("wallpaper", "none",
+      choices: ["none", "dots", "grid", "lines", "photo"]);
   static const wallpaperImage = Setting<String>("wallpaperImage", "");
   // Off by default: each one asks for a permission or uses the network.
   static const autoAddLocation = Setting<bool>("autoAddLocation", true);
   static const autoAddWeather = Setting<bool>("autoAddWeather", true);
-  static const dayAskUntilHour = Setting<int>("dayAskUntilHour", 6);
-  static const dayStartHour = Setting<int>("dayStartHour", 4);
+  static const dayAskUntilHour =
+      Setting<int>("dayAskUntilHour", 6, range: _hours);
+  static const dayStartHour = Setting<int>("dayStartHour", 4, range: _hours);
   static const excludeBadDaysFromFlashbacks =
       Setting<bool>("excludeBadDaysFromFlashbacks", false);
   static const showflashbackYearsAgo =
@@ -118,7 +157,8 @@ class Settings {
       Setting<bool>("showflashbackRandomDay", true);
   static const hideImagesInGallery =
       Setting<bool>("hideImagesInGallery", false);
-  static const calendarSystem = Setting<String>("calendarSystem", "system");
+  static const calendarSystem = Setting<String>("calendarSystem", "system",
+      choices: ["system", "gregorian", "jalali"]);
   static const moodOverTimeGrouping =
       Setting<String?>("moodOverTimeGrouping", null);
   static const moodOverTimeSmoothing =
@@ -142,8 +182,9 @@ class Settings {
   static const autoBackupEnabled = Setting<bool>("autoBackupEnabled", false);
   static const autoBackupLocationUri =
       Setting<String>("autoBackupLocationUri", "");
-  static const autoBackupInterval =
-      Setting<String>("autoBackupInterval", "weekly");
+  static const autoBackupInterval = Setting<String>(
+      "autoBackupInterval", "weekly",
+      choices: ["daily", "weekly", "monthly"]);
   static const autoBackupRequireCharging =
       Setting<bool>("autoBackupRequireCharging", false);
   static const autoBackupMaxCount = Setting<int>("autoBackupMaxCount", 3);
@@ -297,7 +338,9 @@ class ConfigProvider with ChangeNotifier {
 
   T get<T>(Setting<T> setting) {
     final value = _config[setting.key];
-    return value is T ? value : setting.defaultValue;
+    // Not null: with T inferred as Object? an unset setting would read as
+    // null rather than its default.
+    return value != null && value is T ? value : setting.defaultValue;
   }
 
   Future<void> set<T>(Setting<T> setting, T value) async {
@@ -443,12 +486,15 @@ class ConfigProvider with ChangeNotifier {
     return !formattedTime.contains(RegExp(r'[A-Za-z]'));
   }
 
-  int getFirstDayOfWeekIndex(BuildContext context) {
+  int getFirstDayOfWeekIndex(BuildContext context) =>
+      firstDayOfWeekIndexFor(TimeManager.currentLocale(context));
+
+  /// The first day of the week, Monday = 0: the setting, or what the
+  /// language named [dateLocale] uses.
+  int firstDayOfWeekIndexFor(String dateLocale) {
     final startingDay = get(Settings.startingDayOfWeek);
     if (startingDay == 'system') {
-      return DateFormat.yMd(TimeManager.currentLocale(context))
-          .dateSymbols
-          .FIRSTDAYOFWEEK;
+      return DateFormat.yMd(dateLocale).dateSymbols.FIRSTDAYOFWEEK;
     } else {
       return TimeManager.dayOfWeekIndexMapping.keys.firstWhere(
           (k) => TimeManager.dayOfWeekIndexMapping[k] == startingDay);

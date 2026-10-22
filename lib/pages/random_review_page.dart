@@ -38,14 +38,14 @@ class RandomDeck {
 
 /// One random past entry at a time, like flipping through an old diary.
 class RandomReviewPage extends StatefulWidget {
-  const RandomReviewPage({super.key, this.random});
+  const RandomReviewPage(
+      {super.key, this.random, this.filter = RandomFilter.all});
 
   /// Overrides the shuffle, for tests.
   final Random? random;
 
-  static Future<void> open(BuildContext context) =>
-      Navigator.of(context).push(MaterialPageRoute(
-          allowSnapshotting: false, builder: (_) => const RandomReviewPage()));
+  /// Which entries it starts with.
+  final RandomFilter filter;
 
   @override
   State<RandomReviewPage> createState() => _RandomReviewPageState();
@@ -53,7 +53,7 @@ class RandomReviewPage extends StatefulWidget {
 
 class _RandomReviewPageState extends State<RandomReviewPage> {
   late final _deck = RandomDeck(widget.random ?? Random());
-  RandomFilter _filter = RandomFilter.all;
+  late RandomFilter _filter = widget.filter;
   int? _entryId;
 
   @override

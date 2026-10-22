@@ -54,13 +54,6 @@ void main() {
         onSavedForToday: onToday,
       );
 
-  test('shared text goes below the entry text after a blank line', () {
-    expect(EditEntryViewModel.mergeSharedText('template', null), 'template');
-    expect(EditEntryViewModel.mergeSharedText('', 'shared'), 'shared');
-    expect(EditEntryViewModel.mergeSharedText('template', 'shared'),
-        'template\n\nshared');
-  });
-
   test('an untouched new entry is never saved and leaves silently', () async {
     final editor = model();
     await editor.save();

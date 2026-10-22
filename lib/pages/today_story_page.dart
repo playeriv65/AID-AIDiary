@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'package:aid_diary/actions/app_actions.dart';
+import 'package:aid_diary/database/entry_store.dart';
 import 'package:aid_diary/utils/diary_day.dart';
-import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/flashback_manager.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/models/coach_program.dart';
@@ -30,16 +31,15 @@ class TodayStory {
   static const coach = 'coach';
   static const throwback = 'throwback';
 
-  static Future<void> open(BuildContext context, {String from = today}) =>
-      StoryPlayer.show(context, groups: groups, startAt: from, wrapUp: true);
-
-  static List<StoryGroup> groups(BuildContext context) {
+  /// The stories that exist now: the coach's needs a program, the throwback
+  /// a flashback. Outside a build, [listen] is false.
+  static List<StoryGroup> groups(BuildContext context, {bool listen = true}) {
     final l10n = AppLocalizations.of(context)!;
     final entries = EntriesProvider.instance.entries;
     final days = EntriesProvider.instance.getEntryDayCount();
-    final flashback = ConfigProvider.instance.get(Settings.showFlashbacks)
-        ? FlashbackManager.getFlashbacks(context, entries).firstOrNull
-        : null;
+    final flashback =
+        FlashbackManager.getFlashbacks(context, entries, listen: listen)
+            .firstOrNull;
     final enrollment = CoachService.current(l10n);
     return [
       StoryGroup(
@@ -78,7 +78,8 @@ class TodayStory {
   static StoryGroup _coachGroup(
       AppLocalizations l10n, CoachEnrollment enrollment) {
     final program = enrollment.program;
-    final step = enrollment.schedule.stepOn(DiaryDay.today());
+    final today = DiaryDay.today();
+    final step = enrollment.stepOn(today);
     final label = program.stepLabel(l10n, step);
     return StoryGroup(
       id: coach,
@@ -95,9 +96,8 @@ class TodayStory {
           icon: Icons.flag_outlined,
           title: l10n.pageCoachTitle,
           body: _CoachPrompt(
-              prompt: program.prompts[step],
-              step: step,
-              answeredEarlier: enrollment.answered >= step),
+              prompt: enrollment.promptOn(today),
+              answeredEarlier: enrollment.answeredOn(today)),
         ),
       ],
     );
@@ -132,12 +132,8 @@ class _CoachCover extends StatelessWidget {
 /// The prompt in large type over an answer bar. The answer is written in
 /// place and saved as an entry with the prompt as its heading.
 class _CoachPrompt extends StatefulWidget {
-  const _CoachPrompt(
-      {required this.prompt,
-      required this.step,
-      required this.answeredEarlier});
+  const _CoachPrompt({required this.prompt, required this.answeredEarlier});
   final String prompt;
-  final int step;
   final bool answeredEarlier;
 
   @override
@@ -164,7 +160,10 @@ class _CoachPromptState extends State<_CoachPrompt> {
               pageBuilder: (_, __, ___) => _AnswerSheet(prompt: widget.prompt),
             ));
     if (text == null || text.trim().isEmpty) return;
-    final entry = await CoachService.answer(widget.prompt, text, widget.step);
+    final answered = await AppActions.instance
+        .run('coach.answer', {'text': text}) as Map<String, Object?>;
+    final entry = EntryStore.instance.entries
+        .firstWhere((e) => e.id == answered['entry']);
     if (mounted) setState(() => _saved = entry);
   }
 
@@ -454,7 +453,7 @@ class _Throwback extends StatelessWidget {
         child: InkWell(
           key: const ValueKey('story-throwback-entry'),
           borderRadius: BorderRadius.circular(12),
-          onTap: () => EntryNavigation.flashback(context, flashback),
+          onTap: () => EntryNavigation.flashback(context, flashback, 0),
           child: Padding(
             padding: const EdgeInsets.all(20),
             child: Column(

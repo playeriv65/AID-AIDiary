@@ -139,33 +139,39 @@ class ZipUtils {
 
   static Future<void> decodeArchive(Map<String, dynamic> args) async {
     SendPort sendPort = args["port"];
-    var decoder = ZipDecoder().decodeStream(InputFileStream(args["inputFile"]));
+    final input = InputFileStream(args["inputFile"]);
+    try {
+      var decoder = ZipDecoder().decodeStream(input);
 
-    // Track number of files for progress indication
-    var totalFileCount = decoder.numberOfFiles();
-    var processedFileCount = 0;
+      // Track number of files for progress indication
+      var totalFileCount = decoder.numberOfFiles();
+      var processedFileCount = 0;
 
-    for (final entry in decoder) {
-      if (entry.isFile) {
-        final bytes = entry.readBytes();
-        if (bytes == null) continue;
-        // Fix for Zip encodings that place / at the start of files paths.
-        // All Zip paths should be relative
-        String fileName = entry.name;
-        if (fileName.startsWith('/')) {
-          fileName = fileName.substring(1);
+      for (final entry in decoder) {
+        if (entry.isFile) {
+          final bytes = entry.readBytes();
+          if (bytes == null) continue;
+          // Fix for Zip encodings that place / at the start of files paths.
+          // All Zip paths should be relative
+          String fileName = entry.name;
+          if (fileName.startsWith('/')) {
+            fileName = fileName.substring(1);
+          }
+          final file = File(join(args["outputFolder"], fileName));
+          await file.create(recursive: true);
+          await file.writeAsBytes(bytes);
+
+          // Updates status
+          processedFileCount += 1;
+          sendPort.send((processedFileCount / totalFileCount) * 100);
+        } else {
+          await Directory(join(args["outputFolder"], entry.name))
+              .create(recursive: true);
         }
-        final file = File(join(args["outputFolder"], fileName));
-        await file.create(recursive: true);
-        await file.writeAsBytes(bytes);
-
-        // Updates status
-        processedFileCount += 1;
-        sendPort.send((processedFileCount / totalFileCount) * 100);
-      } else {
-        await Directory(join(args["outputFolder"], entry.name))
-            .create(recursive: true);
       }
+    } finally {
+      // Open, the file cannot be deleted on Windows.
+      await input.close();
     }
   }
 }

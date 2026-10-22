@@ -40,3 +40,13 @@ ThemeData neutralThemeData(ThemeData theme) {
     ),
   );
 }
+
+/// The named accent colours the appearance settings offer, as ARGB.
+const Map<String, int> accentPresets = {
+  'blue': 0xff62A0EA,
+  'green': 0xff587E64,
+  'brown': 0xff967A5E,
+  'purple': 0xff8F6CAF,
+  'rose': 0xffBE7589,
+  'amber': 0xffC88945,
+};

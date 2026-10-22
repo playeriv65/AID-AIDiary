@@ -5,6 +5,7 @@
 import 'dart:ui' show PlatformDispatcher;
 
 import 'package:aid_diary/config_provider.dart';
+import 'package:aid_diary/actions/settings_actions.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:intl/intl.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
@@ -63,13 +64,12 @@ class TimeManager {
 
   static Future<void> setReminderTimeRange(
       ({TimeOfDay start, TimeOfDay end}) range) async {
-    await ConfigProvider.instance
-        .set(Settings.reminderStartHour, range.start.hour);
-    await ConfigProvider.instance
-        .set(Settings.reminderStartMinute, range.start.minute);
-    await ConfigProvider.instance.set(Settings.reminderEndHour, range.end.hour);
-    await ConfigProvider.instance
-        .set(Settings.reminderEndMinute, range.end.minute);
+    await changeSettings({
+      Settings.reminderStartHour: range.start.hour,
+      Settings.reminderStartMinute: range.start.minute,
+      Settings.reminderEndHour: range.end.hour,
+      Settings.reminderEndMinute: range.end.minute,
+    });
   }
 
   static String timeRangeString(
@@ -82,14 +82,14 @@ class TimeManager {
         .format(addTimeOfDay(startOfDay(DateTime.now()), timeOfDay));
   }
 
-  static DateFormat localizedTimeFormat(BuildContext context, String locale) {
-    // Only this aspect: a full MediaQuery dependency rebuilds the caller on
-    // every keyboard frame.
-    if (MediaQuery.alwaysUse24HourFormatOf(context)) {
-      return DateFormat.Hm(locale);
-    }
-    return DateFormat.jm(locale);
-  }
+  static DateFormat localizedTimeFormat(BuildContext context, String locale) =>
+      // Only this aspect: a full MediaQuery dependency rebuilds the caller on
+      // every keyboard frame.
+      timeFormat(locale,
+          use24Hour: MediaQuery.alwaysUse24HourFormatOf(context));
+
+  static DateFormat timeFormat(String locale, {required bool use24Hour}) =>
+      use24Hour ? DateFormat.Hm(locale) : DateFormat.jm(locale);
 
   static final Map<int, String> dayOfWeekIndexMapping = {
     0: 'monday',
@@ -135,24 +135,31 @@ class TimeManager {
     return monthDiff.abs();
   }
 
-  static String currentLocale(BuildContext context) {
-    final platformLocale = Localizations.localeOf(context);
-    if (platformLocale.languageCode == "oc") {
+  static String currentLocale(BuildContext context) =>
+      dateLocaleName(Localizations.localeOf(context));
+
+  /// The name of the date format data [locale] reads: some locales have
+  /// none of their own.
+  static String dateLocaleName(Locale locale) {
+    if (locale.languageCode == "oc") {
       return Locale("fr").toString();
     }
     // Map zh_Hant to zh_TW which has Traditional Chinese data.
-    if (platformLocale.languageCode == "zh" &&
-        platformLocale.scriptCode == "Hant") {
+    if (locale.languageCode == "zh" && locale.scriptCode == "Hant") {
       return const Locale("zh", "TW").toString();
     }
-    return platformLocale.toString();
+    return locale.toString();
   }
 
-  static bool isJalaliCalendar(BuildContext context) {
+  static bool isJalaliCalendar(BuildContext context) =>
+      isJalaliCalendarFor(Localizations.localeOf(context));
+
+  /// Whether dates show as Jalali: by the setting, else for Persian.
+  static bool isJalaliCalendarFor(Locale locale) {
     final setting = ConfigProvider.instance.get(Settings.calendarSystem);
     if (setting == 'jalali') return true;
     if (setting == 'gregorian') return false;
-    return Localizations.localeOf(context).languageCode == 'fa';
+    return locale.languageCode == 'fa';
   }
 
   static bool isJalaliCalendarFromPlatform() {

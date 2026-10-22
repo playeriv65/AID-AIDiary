@@ -2,13 +2,11 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-import 'package:aid_diary/utils/diary_day.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/providers/entries_provider.dart';
-import 'package:aid_diary/providers/entry_images_provider.dart';
-import 'package:aid_diary/providers/tags_provider.dart';
+import 'package:aid_diary/services/diary_statistics.dart';
 import 'package:aid_diary/stats/period_review.dart';
 import 'package:aid_diary/time_manager.dart';
 import 'package:aid_diary/utils/entry_context_display.dart';
@@ -21,7 +19,7 @@ import 'package:aid_diary/widgets/year_pixels.dart';
 import 'package:intl/intl.dart';
 import 'package:material_ui/material_ui.dart';
 
-enum ReviewSpan { week, year }
+export 'package:aid_diary/stats/period_review.dart' show ReviewSpan;
 
 /// A week or year in review as story slides.
 class ReviewStoryPage extends StatelessWidget {
@@ -29,37 +27,12 @@ class ReviewStoryPage extends StatelessWidget {
 
   final ReviewSpan span;
 
-  static Future<void> open(BuildContext context, ReviewSpan span) =>
-      StoryPlayer.show(context, groups: (context) => [group(context, span)]);
-
   /// The review for the current week or year.
-  static PeriodReview current(BuildContext context, ReviewSpan span) {
-    final now = DiaryDay.today();
-    // The settings index counts from Monday = 0; DateTime.weekday from 1.
-    final weekStart = TimeManager.startOfWeek(
-        now, ConfigProvider.instance.getFirstDayOfWeekIndex(context) + 1);
-    final (start, end) = switch (span) {
-      ReviewSpan.week => (weekStart, weekStart.add(const Duration(days: 7))),
-      ReviewSpan.year => (DateTime(now.year), DateTime(now.year + 1)),
-    };
-    final tags = TagsProvider.instance;
-    final tagById = {for (final tag in tags.tags) tag.id: tag};
-    final favoriteId = tags.favoriteTag?.id;
-    return PeriodReview.of(
-      [
-        for (final entry in EntriesProvider.instance.entries)
-          if (!entry.isSealed) entry,
-      ],
-      start,
-      end,
-      tagsOf: (entry) => [
-        for (final entryTag in tags.getEntryTagsForEntry(entry.id!))
-          if (entryTag.tagId != favoriteId)
-            if (tagById[entryTag.tagId] case final tag?) tag.name,
-      ],
-      imagesOf: EntryImagesProvider.instance.getForEntry,
-    );
-  }
+  static PeriodReview current(BuildContext context, ReviewSpan span) =>
+      DiaryStatistics.review(span,
+          // The settings index counts from Monday = 0; DateTime.weekday from 1.
+          firstWeekday:
+              ConfigProvider.instance.getFirstDayOfWeekIndex(context) + 1);
 
   @override
   Widget build(BuildContext context) =>

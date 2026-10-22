@@ -15,10 +15,12 @@ import 'package:shared_storage/shared_storage.dart' as saf;
 class PickedFile {
   const PickedFile(this.uri);
 
+  /// A document URI on Android, a file path anywhere else; a plain path
+  /// works on Android too, for what the app may read by path.
   final String uri;
 
   Future<Uint8List?> readBytes() async {
-    if (Platform.isAndroid) {
+    if (isContentUri(uri)) {
       return saf.getDocumentContent(Uri.parse(uri));
     }
     final file = File(uri);
@@ -27,7 +29,7 @@ class PickedFile {
 
   Future<bool> copyInto(String directoryPath, String fileName,
       {void Function(double percent)? onProgress}) async {
-    if (Platform.isAndroid) {
+    if (isContentUri(uri)) {
       return SafTransfer.copyFromExternalLocation(
           uri, join(directoryPath, fileName),
           onProgress: onProgress);
@@ -47,7 +49,7 @@ class PickedDirectory {
   Future<bool> copyFileInto(String sourcePath, String fileName,
       {required String mimeType,
       void Function(double percent)? onProgress}) async {
-    if (Platform.isAndroid) {
+    if (isContentUri(uri)) {
       return SafTransfer.copyToExternalLocation(
           sourcePath, uri, fileName, mimeType,
           onProgress: onProgress);

@@ -29,8 +29,13 @@ import 'package:material_ui/material_ui.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
+/// Writes the diary into [folder] in one format, reporting its progress as
+/// [localizations] words it; dates are written for [locale].
 typedef ExportRunner = Future<OperationOutcome> Function(
-    BuildContext context, Function(String) updateStatus);
+    PickedDirectory folder,
+    AppLocalizations localizations,
+    Locale locale,
+    Function(String) updateStatus);
 
 enum ExportFormat { markdown, json, journey, dayOne }
 
@@ -50,38 +55,37 @@ class ExportRegistry {
     ExportFormatOption(
       ExportFormat.markdown,
       (localizations) => localizations.formatMarkdown,
-      (context, updateStatus) {
-        final locale = TimeManager.currentLocale(context);
-        return ExportUtils.exportArchive(context, updateStatus,
-            name: 'markdown',
-            writer: (folder) => MarkdownExportWriter(
-                noteStore: LocalFileStore(folder),
-                imageStore: LocalFileStore(join(folder, 'Images')),
-                locale: locale));
-      },
+      (exportFolder, localizations, locale, updateStatus) =>
+          ExportUtils.exportArchive(exportFolder, localizations, updateStatus,
+              name: 'markdown',
+              writer: (folder) => MarkdownExportWriter(
+                  noteStore: LocalFileStore(folder),
+                  imageStore: LocalFileStore(join(folder, 'Images')),
+                  locale: TimeManager.dateLocaleName(locale))),
     ),
     ExportFormatOption(
       ExportFormat.json,
       (localizations) => localizations.formatJson,
-      (context, updateStatus) => ExportUtils.exportToJson(updateStatus),
+      (exportFolder, localizations, locale, updateStatus) =>
+          ExportUtils.exportToJson(exportFolder, updateStatus),
     ),
     ExportFormatOption(
       ExportFormat.journey,
       (localizations) => localizations.formatJourney,
-      (context, updateStatus) => ExportUtils.exportArchive(
-          context, updateStatus,
-          name: 'journey',
-          writer: (folder) => JourneyExportWriter(LocalFileStore(folder))),
+      (exportFolder, localizations, locale, updateStatus) =>
+          ExportUtils.exportArchive(exportFolder, localizations, updateStatus,
+              name: 'journey',
+              writer: (folder) => JourneyExportWriter(LocalFileStore(folder))),
     ),
     ExportFormatOption(
       ExportFormat.dayOne,
       (localizations) => localizations.formatDayOne,
-      (context, updateStatus) => ExportUtils.exportArchive(
-          context, updateStatus,
-          name: 'day_one',
-          writer: (folder) => DayOneExportWriter(
-              journalStore: LocalFileStore(folder),
-              photoStore: LocalFileStore(join(folder, dayOnePhotoFolder)))),
+      (exportFolder, localizations, locale, updateStatus) =>
+          ExportUtils.exportArchive(exportFolder, localizations, updateStatus,
+              name: 'day_one',
+              writer: (folder) => DayOneExportWriter(
+                  journalStore: LocalFileStore(folder),
+                  photoStore: LocalFileStore(join(folder, dayOnePhotoFolder)))),
     ),
   ]);
 
@@ -153,18 +157,10 @@ class ExportUtils {
     ];
   }
 
-  /// Saves every entry as one JSON file in a folder the user picks.
+  /// Saves every entry as one JSON file in [exportFolder].
   static Future<OperationOutcome> exportToJson(
-      Function(String) updateStatus) async {
+      PickedDirectory exportFolder, Function(String) updateStatus) async {
     updateStatus("0%");
-    PickedDirectory? exportFolder;
-    try {
-      exportFolder = await StoragePicker.pickDirectory();
-    } catch (error) {
-      return OperationOutcome.failed(error);
-    }
-    if (exportFolder == null) return const OperationOutcome.cancelled();
-
     final json = encodeJsonEntries(
       EntriesProvider.instance.entries,
       imagesOf: EntryImagesProvider.instance.getForEntry,
@@ -177,7 +173,7 @@ class ExportUtils {
       await exportFolder.copyFileInto(file.path, name,
           mimeType: "application/json",
           onProgress: (percent) => updateStatus("${percent.round()}%"));
-      return const OperationOutcome.succeeded();
+      return OperationOutcome.succeeded(output: name);
     } catch (error) {
       return OperationOutcome.failed(error);
     } finally {
@@ -187,23 +183,14 @@ class ExportUtils {
 
   /// Writes every entry with its tags and images through the writer made
   /// for a temporary folder, zips the folder and saves the zip as
-  /// `aid_diary_<name>_export_<time>.zip` in a folder the user picks.
-  static Future<OperationOutcome> exportArchive(
-      BuildContext context, Function(String) updateStatus,
+  /// `aid_diary_<name>_export_<time>.zip` in [exportFolder].
+  static Future<OperationOutcome> exportArchive(PickedDirectory exportFolder,
+      AppLocalizations localizations, Function(String) updateStatus,
       {required String name,
       required ArchiveExportWriter Function(String folder) writer}) async {
-    final localizations = AppLocalizations.of(context)!;
     updateStatus("(1/2) 0%");
 
-    PickedDirectory? exportFolder;
-    try {
-      exportFolder = await StoragePicker.pickDirectory();
-    } catch (error) {
-      return OperationOutcome.failed(error);
-    }
-    if (exportFolder == null) return const OperationOutcome.cancelled();
-
-    var outcome = const OperationOutcome.succeeded();
+    OperationOutcome outcome;
     final work = await (await getTemporaryDirectory()).createTemp('export');
     final folder = Directory(join(work.path, name));
     final zipName = "aid_diary_${name}_export_${_stamp()}.zip";
@@ -245,6 +232,7 @@ class ExportUtils {
           mimeType: "application/zip", onProgress: (percent) {
         updateStatus(localizations.tranferStatus("${percent.round()}"));
       });
+      outcome = OperationOutcome.succeeded(output: zipName);
     } catch (error) {
       outcome = OperationOutcome.failed(error);
     }

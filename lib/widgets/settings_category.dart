@@ -2,20 +2,23 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'package:aid_diary/routing/destinations.dart';
 import 'package:material_ui/material_ui.dart';
 
 class SettingsCategory extends StatelessWidget {
   final String title;
   final String? hint;
   final IconData icon;
-  final Widget page;
+
+  /// The place it opens, from `destinations.dart`.
+  final String destination;
 
   const SettingsCategory({
     super.key,
     required this.title,
     this.hint,
     required this.icon,
-    required this.page,
+    required this.destination,
   });
 
   @override
@@ -32,12 +35,7 @@ class SettingsCategory extends StatelessWidget {
         ),
       ),
       minVerticalPadding: 18,
-      onTap: () async {
-        await Navigator.of(context).push(MaterialPageRoute(
-          allowSnapshotting: false,
-          builder: (context) => page,
-        ));
-      },
+      onTap: () => openPlace(context, destination),
     );
   }
 }

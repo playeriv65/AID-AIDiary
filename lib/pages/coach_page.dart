@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/layouts/adaptive_diary_shell.dart';
@@ -10,6 +11,7 @@ import 'package:aid_diary/models/coach_program.dart';
 import 'package:aid_diary/models/template.dart';
 import 'package:aid_diary/providers/templates_provider.dart';
 import 'package:aid_diary/services/coach_service.dart';
+import 'package:aid_diary/routing/coach_destinations.dart';
 import 'package:aid_diary/routing/entry_navigation.dart';
 import 'package:aid_diary/widgets/coach_widgets.dart';
 import 'package:aid_diary/widgets/list_detail_layout.dart';
@@ -20,12 +22,14 @@ import 'package:provider/provider.dart';
 
 enum _CoachFilter { all, programs, templates }
 
-/// A card in the catalog and the page it opens. The page gets a back action
-/// when it replaces the catalog inside the list pane.
+/// A card in the catalog and the page it opens: [open] as its own place on
+/// phones, [detail] inside the list pane when there is room, with a back
+/// action.
 typedef _CoachItem = ({
   Object key,
   Widget Function(double headerAspectRatio) card,
   Widget Function(VoidCallback? onBack) detail,
+  Future<void> Function(BuildContext context) open,
 });
 
 /// Guided writing: built-in prompt programs and the user's templates.
@@ -50,8 +54,7 @@ class _CoachPageState extends State<CoachPage>
     if (split) {
       setState(() => _selected = item.key);
     } else {
-      Navigator.of(context).push(MaterialPageRoute(
-          allowSnapshotting: false, builder: (_) => item.detail(null)));
+      item.open(context);
     }
   }
 
@@ -63,7 +66,8 @@ class _CoachPageState extends State<CoachPage>
           (
             key: program.id,
             detail: (onBack) =>
-                _ProgramDetail(program: program, onBack: onBack),
+                CoachProgramDetail(program: program, onBack: onBack),
+            open: (context) => CoachNavigation.program(context, program),
             card: (headerAspectRatio) => _CoachCard(
                   key: ValueKey('coach-program-${program.id}'),
                   headerAspectRatio: headerAspectRatio,
@@ -77,8 +81,10 @@ class _CoachPageState extends State<CoachPage>
         for (final builtin in BuiltinTemplate.all(l10n))
           (
             key: 'builtin-${builtin.id}',
-            detail: (onBack) =>
-                _TemplateDetail(template: builtin.toTemplate(), onBack: onBack),
+            detail: (onBack) => CoachTemplateDetail(
+                template: builtin.toTemplate(), onBack: onBack),
+            open: (context) =>
+                CoachNavigation.builtinTemplate(context, builtin),
             card: (headerAspectRatio) => _CoachCard(
                   key: ValueKey('coach-builtin-${builtin.id}'),
                   headerAspectRatio: headerAspectRatio,
@@ -92,7 +98,8 @@ class _CoachPageState extends State<CoachPage>
           (
             key: template,
             detail: (onBack) =>
-                _TemplateDetail(template: template, onBack: onBack),
+                CoachTemplateDetail(template: template, onBack: onBack),
+            open: (context) => CoachNavigation.template(context, template),
             card: (headerAspectRatio) => _CoachCard(
                   key: ValueKey('coach-template-${template.id}'),
                   headerAspectRatio: headerAspectRatio,
@@ -260,8 +267,8 @@ class _CoachCard extends StatelessWidget {
 
 /// A program: cover and enrolment, its facts, what it is about, who wrote
 /// it. The prompts themselves arrive one at a time in the stories.
-class _ProgramDetail extends StatelessWidget {
-  const _ProgramDetail({required this.program, this.onBack});
+class CoachProgramDetail extends StatelessWidget {
+  const CoachProgramDetail({super.key, required this.program, this.onBack});
   final CoachProgram program;
   final VoidCallback? onBack;
 
@@ -269,7 +276,7 @@ class _ProgramDetail extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final messenger = ScaffoldMessenger.of(context);
     final goTo = AdaptiveDiaryShell.selectorOf(context);
-    await CoachService.enroll(l10n, program);
+    await AppActions.instance.run('coach.enroll', {'program': program.id});
     if (!context.mounted) return;
     messenger.showSnackBar(SnackBar(
       key: const ValueKey('coach-enrolled-tip'),
@@ -301,7 +308,8 @@ class _ProgramDetail extends StatelessWidget {
     final action = enrolled
         ? FilledButton.icon(
             key: const ValueKey('coach-end'),
-            onPressed: CoachService.end,
+            onPressed: () =>
+                AppActions.instance.run('coach.end', {}, confirmed: true),
             icon: const Icon(Icons.stop_circle_outlined),
             label: Text(l10n.coachEndProgram),
           )
@@ -419,8 +427,8 @@ class _ProgramFacts extends StatelessWidget {
   }
 }
 
-class _TemplateDetail extends StatelessWidget {
-  const _TemplateDetail({required this.template, this.onBack});
+class CoachTemplateDetail extends StatelessWidget {
+  const CoachTemplateDetail({super.key, required this.template, this.onBack});
   final Template template;
   final VoidCallback? onBack;
 

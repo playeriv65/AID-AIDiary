@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'package:aid_diary/actions/app_action.dart';
+import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/models/tag.dart';
 import 'package:aid_diary/models/tag_category.dart';
 import 'package:aid_diary/models/tag_icon_type.dart';
@@ -10,9 +12,10 @@ import 'package:aid_diary/widgets/color_picker_dialog.dart';
 import 'package:aid_diary/widgets/color_swatch_row.dart';
 import 'package:aid_diary/widgets/connected_button_group.dart';
 import 'package:aid_diary/widgets/delete_confirm_dialog.dart';
-import 'package:aid_diary/widgets/edit_category.dart';
+import 'package:aid_diary/routing/organize_destinations.dart';
 import 'package:aid_diary/widgets/icon_picker_dialog.dart';
 import 'package:aid_diary/widgets/tag_icon_glyph.dart';
+import 'package:aid_diary/utils/tag_look.dart';
 import 'package:aid_diary/utils/tag_name_sanitizer.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
@@ -34,6 +37,9 @@ class _EditTagState extends State<EditTag> {
   TagIconType _iconType = TagIconType.character;
   int? _color;
   int? _categoryId;
+
+  /// The name (lower case) the last save was refused for, as taken.
+  String? _refusedName;
 
   bool _colorInitialized = false;
 
@@ -71,32 +77,34 @@ class _EditTagState extends State<EditTag> {
     final name = sanitizeTagName(_nameController.text);
     if (name.isEmpty) return;
 
-    final now = DateTime.now();
-
-    if (widget.tag == null) {
-      await TagsProvider.instance.add(Tag(
-        name: name,
-        color: _color,
-        tagType: _tagType,
-        icon: _icon,
-        iconType: _iconType,
-        categoryId: _categoryId,
-        timeCreate: now,
-        timeModified: now,
-      ));
-    } else {
-      // Construct directly so categoryId: null is honored
-      await TagsProvider.instance.update(Tag(
-        id: widget.tag!.id,
-        name: name,
-        color: _color,
-        tagType: widget.tag!.tagType,
-        icon: _icon,
-        iconType: _iconType,
-        categoryId: _categoryId,
-        timeCreate: widget.tag!.timeCreate,
-        timeModified: now,
-      ));
+    final tag = widget.tag;
+    final look = (color: _color, icon: _icon, iconType: _iconType);
+    try {
+      if (tag == null) {
+        await AppActions.instance.run('tag.create', {
+          'name': name,
+          'type': _tagType.name,
+          ...tagLookArgs(look),
+          if (_categoryId != null) 'category': '$_categoryId',
+        });
+      } else {
+        await AppActions.instance.run('tag.update', {
+          'id': tag.id,
+          'name': name,
+          ...tagLookArgs(look, before: (
+            color: tag.color,
+            icon: tag.icon,
+            iconType: tag.iconType
+          )),
+          // A tag may leave its category, which a missing argument would not.
+          'category': _categoryId == null ? 'none' : '$_categoryId',
+        });
+      }
+    } on ActionException catch (error) {
+      if (error.code != 'exists') rethrow;
+      // Names stay unique: say so at the field instead of making a twin.
+      if (mounted) setState(() => _refusedName = name.toLowerCase());
+      return;
     }
 
     if (mounted) Navigator.of(context).pop();
@@ -112,7 +120,8 @@ class _EditTagState extends State<EditTag> {
       message: l10n.deleteTagMessage(entryCount, tag.name),
     );
     if (confirmed && mounted) {
-      await TagsProvider.instance.remove(tag);
+      await AppActions.instance
+          .run('tag.delete', {'id': tag.id}, confirmed: true);
       if (mounted) Navigator.of(context).pop();
     }
   }
@@ -241,6 +250,10 @@ class _EditTagState extends State<EditTag> {
                   textCapitalization: TextCapitalization.words,
                   decoration: InputDecoration(
                     hintText: AppLocalizations.of(context)!.nameHint,
+                    errorText: _refusedName ==
+                            sanitizeTagName(_nameController.text).toLowerCase()
+                        ? AppLocalizations.of(context)!.tagNameExists
+                        : null,
                     border: InputBorder.none,
                   ),
                 ),
@@ -263,10 +276,7 @@ class _EditTagState extends State<EditTag> {
   Future<void> _createCategory(BuildContext context) async {
     final categoriesBefore =
         List<TagCategory>.from(TagsProvider.instance.categories);
-    await showDialog(
-      context: context,
-      builder: (_) => const EditCategory(category: null),
-    );
+    await OrganizeNavigation.editCategory(context, null);
     final newCategory = TagsProvider.instance.categories
         .where((c) => categoriesBefore.every((b) => b.id != c.id))
         .firstOrNull;

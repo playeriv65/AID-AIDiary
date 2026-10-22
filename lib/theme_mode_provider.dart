@@ -2,39 +2,49 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-import 'dart:async';
-
 import 'package:material_ui/material_ui.dart';
+import 'package:aid_diary/actions/settings_actions.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:system_theme/system_theme.dart';
 
+/// The theme as the settings choose it. It follows the settings whoever
+/// changes them, the appearance page or an action, so nothing has to tell
+/// it.
 class ThemeModeProvider with ChangeNotifier {
-  ThemeMode _themeMode = ThemeMode.system;
-  ThemeMode get themeMode => _themeMode;
+  ThemeModeProvider() {
+    ConfigProvider.instance.addListener(_configChanged);
+  }
+
+  ThemeMode get themeMode =>
+      switch (ConfigProvider.instance.get(Settings.theme)) {
+        'dark' || 'amoled' => ThemeMode.dark,
+        'light' => ThemeMode.light,
+        _ => ThemeMode.system,
+      };
 
   Color _accentColor = const Color(0xff62A0EA);
   Color get accentColor => _accentColor;
   bool get usingSystemColor =>
       ConfigProvider.instance.get(Settings.followSystemColor);
 
-  set themeMode(ThemeMode value) {
-    _themeMode = value;
-    notifyListeners();
+  /// What [_accentColor] was made from, to tell when it needs making again.
+  (bool, int)? _accentSource;
+
+  (bool, int) get _currentAccentSource => (
+        ConfigProvider.instance.get(Settings.followSystemColor),
+        ConfigProvider.instance.get(Settings.accentColor),
+      );
+
+  void _configChanged() {
+    if (_accentSource != _currentAccentSource) updateAccentColor();
   }
 
-  set accentColor(Color color) {
-    ConfigProvider.instance.set(Settings.accentColor, color.toARGB32());
-    _accentColor = color;
-  }
-
-  Future<void> selectAccentColor(Color color) async {
-    _accentColor = color;
-    await ConfigProvider.instance.set(Settings.accentColor, color.toARGB32());
-    await ConfigProvider.instance.set(Settings.followSystemColor, false);
-    notifyListeners();
-  }
+  /// Makes [color] the accent, by `settings.set` as the command line does.
+  Future<void> selectAccentColor(Color color) =>
+      changeSetting(Settings.accentColor, color.toARGB32());
 
   void updateAccentColor() {
+    _accentSource = _currentAccentSource;
     if (ConfigProvider.instance.get(Settings.followSystemColor)) {
       _accentColor = SystemTheme.accentColor.accent;
     } else {
@@ -46,22 +56,12 @@ class ThemeModeProvider with ChangeNotifier {
   Future<void> initializeThemeFromConfig() async {
     await SystemTheme.accentColor.load();
     SystemTheme.fallbackColor = _accentColor;
-    if (ConfigProvider.instance.get(Settings.followSystemColor)) {
-      _accentColor = SystemTheme.accentColor.accent;
-    } else {
-      _accentColor = Color(ConfigProvider.instance.get(Settings.accentColor));
-    }
-
-    final configTheme = ConfigProvider.instance.get(Settings.theme);
-    if (configTheme == 'dark' || configTheme == 'amoled') {
-      _themeMode = ThemeMode.dark;
-    } else if (configTheme == 'light') {
-      _themeMode = ThemeMode.light;
-    }
-    notifyListeners();
+    updateAccentColor();
   }
 
-  ThemeMode get currentThemeMode {
-    return _themeMode;
+  @override
+  void dispose() {
+    ConfigProvider.instance.removeListener(_configChanged);
+    super.dispose();
   }
 }

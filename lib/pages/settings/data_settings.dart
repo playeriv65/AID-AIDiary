@@ -3,10 +3,6 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
-import 'package:aid_diary/pages/recently_deleted_page.dart';
-import 'package:aid_diary/pages/settings/backup_restore_settings.dart';
-import 'package:aid_diary/pages/settings/storage_settings.dart';
-import 'package:aid_diary/pages/settings/sync_settings.dart';
 import 'package:aid_diary/widgets/settings_category.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -27,19 +23,19 @@ class DataSettings extends StatelessWidget {
             SettingsCategory(
                 title: l10n.settingsSyncTitle,
                 icon: Icons.cloud_sync_rounded,
-                page: const SyncSettings()),
+                destination: 'sync'),
             SettingsCategory(
                 title: l10n.settingsBackupRestoreTitle,
                 icon: Icons.settings_backup_restore_rounded,
-                page: const BackupRestoreSettings()),
+                destination: 'settings/backup'),
             SettingsCategory(
                 title: l10n.settingsStorageTitle,
                 icon: Icons.storage_rounded,
-                page: const StorageSettings()),
+                destination: 'settings/storage'),
             SettingsCategory(
                 title: l10n.deletedTitle,
                 icon: Icons.delete_outline_rounded,
-                page: const RecentlyDeletedPage()),
+                destination: 'recently_deleted'),
           ]),
         ),
       ),

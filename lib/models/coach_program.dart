@@ -132,4 +132,12 @@ class CoachEnrollment {
 
   CoachSchedule get schedule => CoachSchedule(
       start: start, days: program.days, steps: program.prompts.length);
+
+  /// Zero-based step due on [day].
+  int stepOn(DateTime day) => schedule.stepOn(day);
+
+  String promptOn(DateTime day) => program.prompts[stepOn(day)];
+
+  /// Whether the prompt due on [day] was answered already.
+  bool answeredOn(DateTime day) => answered >= stepOn(day);
 }

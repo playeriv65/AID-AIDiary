@@ -5,7 +5,7 @@
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/models/tag.dart';
-import 'package:aid_diary/providers/tags_provider.dart';
+import 'package:aid_diary/services/diary_statistics.dart';
 import 'package:aid_diary/stats/entry_stats.dart';
 import 'package:aid_diary/utils/entry_context_display.dart';
 import 'package:aid_diary/utils/tag_visuals.dart';
@@ -33,17 +33,9 @@ class _MoodAssociationsCardState extends State<MoodAssociationsCard> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
-    final tags = TagsProvider.instance;
-    final tagById = {for (final tag in tags.tags) tag.id!: tag};
-    final factors = moodAssociations<Object>(
-      widget.entries,
-      _mood,
-      (entry) => [
-        if (entry.activity case final activity?) activity,
-        for (final entryTag in tags.getEntryTagsForEntry(entry.id!))
-          if (tagById[entryTag.tagId] case final tag?) tag,
-      ],
-    ).take(MoodAssociationsCard._shown).toList();
+    final factors = DiaryStatistics.moodAssociationsOf(widget.entries, _mood)
+        .take(MoodAssociationsCard._shown)
+        .toList();
 
     return Card.filled(
       key: const ValueKey('mood-associations'),

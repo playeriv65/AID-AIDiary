@@ -3,7 +3,7 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
-import 'package:aid_diary/pages/settings/about_settings.dart';
+import 'package:aid_diary/routing/destinations.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// Help like Journey's: frequently asked questions, the privacy note, then
@@ -52,8 +52,7 @@ class HelpPage extends StatelessWidget {
           leading: const Icon(Icons.info_outline_rounded),
           title: Text(l10n.settingsAboutTitle),
           trailing: const Icon(Icons.chevron_right_rounded),
-          onTap: () => Navigator.of(context).push(MaterialPageRoute(
-              allowSnapshotting: false, builder: (_) => const AboutSettings())),
+          onTap: () => openPlace(context, 'settings/about'),
         ),
       ]),
     );

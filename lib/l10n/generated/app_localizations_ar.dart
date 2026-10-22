@@ -508,6 +508,12 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
+  String get tagNameExists => 'There is a tag with this name already';
+
+  @override
+  String get categoryNameExists => 'There is a category with this name already';
+
+  @override
   String deleteTemplateMessage(Object name) {
     return 'حذف \"$name\"؟';
   }

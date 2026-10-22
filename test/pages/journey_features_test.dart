@@ -5,7 +5,7 @@ import 'package:aid_diary/database/entry_store.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/pages/edit_entry_page.dart';
 import 'package:aid_diary/pages/settings_page.dart';
-import 'package:aid_diary/pages/today_story_page.dart';
+import 'package:aid_diary/routing/destinations.dart';
 import 'package:aid_diary/providers/tags_provider.dart';
 import 'package:aid_diary/providers/templates_provider.dart';
 import 'package:aid_diary/utils/entry_actions.dart';
@@ -69,7 +69,7 @@ void main() {
     DiaryAppHarness.size(tester, const Size(390, 844));
     await tester.pumpWidget(harness.app(const Scaffold(body: SizedBox())));
     final context = tester.element(find.byType(SizedBox).first);
-    TodayStory.open(context);
+    openPlace(context, 'story');
     // The progress bar animates, so settle would play the whole story.
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 500));

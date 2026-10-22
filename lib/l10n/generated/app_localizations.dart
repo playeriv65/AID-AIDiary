@@ -930,6 +930,18 @@ abstract class AppLocalizations {
   /// **'Delete \"{name}\"?{count, plural, =0{} =1{ Its 1 tag will also be deleted.} other{ Its {count} tags will also be deleted.}}'**
   String deleteCategoryMessage(num count, Object name);
 
+  /// No description provided for @tagNameExists.
+  ///
+  /// In en, this message translates to:
+  /// **'There is a tag with this name already'**
+  String get tagNameExists;
+
+  /// No description provided for @categoryNameExists.
+  ///
+  /// In en, this message translates to:
+  /// **'There is a category with this name already'**
+  String get categoryNameExists;
+
   /// No description provided for @deleteTemplateMessage.
   ///
   /// In en, this message translates to:

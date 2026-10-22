@@ -6,26 +6,23 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:aid_diary/actions/app_actions.dart';
-import 'package:aid_diary/database/entry_store.dart';
 import 'package:aid_diary/database/image_storage.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/models/image.dart';
-import 'package:aid_diary/pages/edit_entry_page.dart';
-import 'package:aid_diary/pages/entry_share_page.dart';
-import 'package:aid_diary/pages/image_view_page.dart';
 import 'package:aid_diary/providers/entries_provider.dart';
 import 'package:aid_diary/providers/entry_images_provider.dart';
 import 'package:aid_diary/providers/tags_provider.dart';
+import 'package:aid_diary/routing/entry_navigation.dart';
 import 'package:aid_diary/time_manager.dart';
-import 'package:aid_diary/utils/entry_actions.dart';
+import 'package:aid_diary/utils/diary_day.dart';
 import 'package:aid_diary/utils/entry_context_display.dart';
 import 'package:aid_diary/utils/entry_share.dart';
 import 'package:aid_diary/utils/entry_typography.dart';
+import 'package:aid_diary/utils/time_capsule.dart';
 import 'package:aid_diary/widgets/delete_confirm_dialog.dart';
 import 'package:aid_diary/widgets/entry_tag_chips.dart';
 import 'package:aid_diary/widgets/local_image_loader.dart';
-import 'package:aid_diary/widgets/media_attachment.dart';
 import 'package:aid_diary/widgets/mood_icon.dart';
 import 'package:aid_diary/widgets/scaled_markdown.dart';
 import 'package:aid_diary/widgets/tag_chip.dart';
@@ -87,13 +84,14 @@ class EntryViewPage extends StatelessWidget {
                 isSelected: favorite,
                 icon: const Icon(Icons.star_outline_rounded),
                 selectedIcon: const Icon(Icons.star_rounded),
-                onPressed: () => tags.setFavorite(entryId, !favorite),
+                onPressed: () => AppActions.instance
+                    .run('entry.favorite', {'id': entryId, 'value': !favorite}),
               ),
             IconButton(
               key: const ValueKey('diary-entry-edit'),
               tooltip: l10n.entryEdit,
               icon: const Icon(Icons.edit_rounded),
-              onPressed: () => _edit(context, entry, images),
+              onPressed: () => _edit(context, entry),
             ),
           ],
           PopupMenuButton<String>(
@@ -140,7 +138,7 @@ class EntryViewPage extends StatelessWidget {
           : ListView(
               padding: const EdgeInsets.only(bottom: 24),
               children: [
-                if (images.isNotEmpty) _Photos(images: images),
+                if (images.isNotEmpty) _Photos(entry: entry, images: images),
                 Center(
                   child: ConstrainedBox(
                     constraints: const BoxConstraints(maxWidth: 760),
@@ -189,24 +187,15 @@ class EntryViewPage extends StatelessWidget {
     );
   }
 
-  Future<void> _edit(
-      BuildContext context, Entry entry, List<EntryImage> images) async {
-    await Navigator.of(context, rootNavigator: true).push(PageRouteBuilder(
-      allowSnapshotting: false,
-      fullscreenDialog: true,
-      pageBuilder: (context, _, __) =>
-          AddEditEntryPage(entry: entry, images: images),
-      transitionsBuilder: (context, animation, _, child) =>
-          FadeTransition(opacity: animation, child: child),
-      transitionDuration: const Duration(milliseconds: 200),
-    ));
+  Future<void> _edit(BuildContext context, Entry entry) async {
+    await EntryNavigation.edit(context, entry);
     onEntryEdited?.call(entry.id!);
   }
 
   Future<void> _duplicate(BuildContext context, Entry entry) async {
     final messenger = ScaffoldMessenger.of(context);
     final message = AppLocalizations.of(context)!.entryDuplicated;
-    await EntryActions.duplicate(entry);
+    await AppActions.instance.run('entry.duplicate', {'id': entry.id});
     messenger.showSnackBar(SnackBar(content: Text(message)));
   }
 
@@ -214,7 +203,8 @@ class EntryViewPage extends StatelessWidget {
     final messenger = ScaffoldMessenger.of(context);
     final l10n = AppLocalizations.of(context)!;
     final fallback = TimeManager.formatDate(entry.day, context);
-    await EntryActions.saveAsTemplate(entry, fallback);
+    await AppActions.instance
+        .run('template.create_from_entry', {'id': entry.id, 'name': fallback});
     messenger.showSnackBar(SnackBar(content: Text(l10n.entrySavedAsTemplate)));
   }
 
@@ -223,13 +213,13 @@ class EntryViewPage extends StatelessWidget {
     final now = DateTime.now();
     final day = await TimeManager.pickDate(
       context,
-      initialDate: DateTime(now.year + 1, now.month, now.day),
-      firstDate: DateTime(now.year, now.month, now.day + 1),
-      lastDate: DateTime(now.year + 50),
+      initialDate: CapsuleWindow.suggested(now),
+      firstDate: CapsuleWindow.earliest(now),
+      lastDate: CapsuleWindow.latest(now),
     );
     if (day == null) return;
-    await EntryStore.instance
-        .setOpenAt(entry, DateTime(day.year, day.month, day.day));
+    await AppActions.instance
+        .run('entry.seal', {'id': entry.id, 'opens': DiaryDay.format(day)});
   }
 
   Future<void> _delete(BuildContext context, Entry entry) async {
@@ -278,9 +268,8 @@ class EntryViewPage extends StatelessWidget {
       ),
     );
     if (choice == null || !context.mounted) return;
-    final mood = MoodIcon.getMoodIcon(entry.mood);
-    final heading = '${mood.isEmpty ? '' : '$mood '}'
-        '${TimeManager.formatDateWithWeekday(entry.day, context)}';
+    final heading = EntryShare.heading(
+        entry, TimeManager.formatDateWithWeekday(entry.day, context));
     final name =
         'aid-diary-${DateFormat('yyyy-MM-dd-HHmm').format(entry.timeCreate)}';
     Future<void> shareFile(List<int> bytes, String mimeType, String file) =>
@@ -291,11 +280,7 @@ class EntryViewPage extends StatelessWidget {
         ]));
     switch (choice) {
       case _ShareAs.image:
-        await Navigator.of(context).push(MaterialPageRoute(
-          allowSnapshotting: false,
-          fullscreenDialog: true,
-          builder: (_) => EntrySharePage(entry: entry, images: images),
-        ));
+        await EntryNavigation.share(context, entry);
       case _ShareAs.text:
         await SharePlus.instance
             .share(ShareParams(text: EntryShare.plainText(entry, heading)));
@@ -313,7 +298,8 @@ class EntryViewPage extends StatelessWidget {
 enum _ShareAs { image, zip, text, html }
 
 class _Photos extends StatefulWidget {
-  const _Photos({required this.images});
+  const _Photos({required this.entry, required this.images});
+  final Entry entry;
   final List<EntryImage> images;
 
   @override
@@ -322,19 +308,6 @@ class _Photos extends StatefulWidget {
 
 class _PhotosState extends State<_Photos> {
   int _page = 0;
-
-  /// Photos open in the zoomable viewer among the other photos; videos and
-  /// voice notes open in the player.
-  void _open(BuildContext context, EntryImage attachment) {
-    final photos = widget.images.where((image) => image.isImage).toList();
-    Navigator.of(context).push(MaterialPageRoute(
-      allowSnapshotting: false,
-      fullscreenDialog: true,
-      builder: (_) => attachment.isImage
-          ? ImageViewPage(images: photos, index: photos.indexOf(attachment))
-          : MediaPlayerPage(name: attachment.imgPath),
-    ));
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -347,7 +320,8 @@ class _PhotosState extends State<_Photos> {
           onPageChanged: (page) => setState(() => _page = page),
           itemBuilder: (context, index) => GestureDetector(
             key: ValueKey('entry-attachment-$index'),
-            onTap: () => _open(context, images[index]),
+            onTap: () =>
+                EntryNavigation.attachment(context, widget.entry, index),
             child: LocalImageLoader(
                 imagePath: images[index].imgPath, cacheSize: 1200),
           ),
@@ -403,7 +377,10 @@ class _SealedCapsule extends StatelessWidget {
         ],
       ),
     );
-    if (open == true) await EntryStore.instance.setOpenAt(entry, null);
+    if (open == true) {
+      await AppActions.instance
+          .run('entry.unseal', {'id': entry.id}, confirmed: true);
+    }
   }
 
   @override

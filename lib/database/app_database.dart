@@ -152,8 +152,25 @@ class AppDatabase {
     return await externalStore?.isAvailable() ?? false;
   }
 
+  /// Lets the user pick the folder, then moves the diary there.
   Future<OperationOutcome> selectExternalLocation(
       Function(String) updateStatus) async {
+    final PickedDirectory? selectedDirectory;
+    try {
+      selectedDirectory = await StoragePicker.pickDirectory();
+    } catch (error, stackTrace) {
+      _logger.severe(
+          'Picking an external database location failed', error, stackTrace);
+      return OperationOutcome.failed(error);
+    }
+    if (selectedDirectory == null) return const OperationOutcome.cancelled();
+    return useExternalLocation(selectedDirectory.uri, updateStatus);
+  }
+
+  /// Keeps the diary in the folder at [uri] from now on: the folder's copy
+  /// replaces this device's, and the old setting returns when that fails.
+  Future<OperationOutcome> useExternalLocation(
+      String uri, Function(String) updateStatus) async {
     bool databaseUpdated = false;
     var outcome = const OperationOutcome.succeeded();
 
@@ -163,18 +180,12 @@ class AppDatabase {
     await _database!.close();
 
     try {
-      var selectedDirectory = await StoragePicker.pickDirectory();
-      if (selectedDirectory == null) {
-        outcome = const OperationOutcome.cancelled();
-      } else {
-        await ConfigProvider.instance
-            .set(Settings.externalDbUri, selectedDirectory.uri);
-        await ConfigProvider.instance.set(Settings.useExternalDb, true);
+      await ConfigProvider.instance.set(Settings.externalDbUri, uri);
+      await ConfigProvider.instance.set(Settings.useExternalDb, true);
 
-        // Sync with external folder
-        databaseUpdated = await _syncWithExternalDatabase(forceOverwrite: true);
-        if (!databaseUpdated) outcome = const OperationOutcome.failed();
-      }
+      // Sync with external folder
+      databaseUpdated = await _syncWithExternalDatabase(forceOverwrite: true);
+      if (!databaseUpdated) outcome = const OperationOutcome.failed();
     } catch (error, stackTrace) {
       _logger.severe(
           'Selecting an external database location failed', error, stackTrace);

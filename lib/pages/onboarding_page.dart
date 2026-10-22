@@ -6,9 +6,9 @@ import 'dart:io';
 
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
-import 'package:aid_diary/notification_manager.dart';
-import 'package:aid_diary/pages/settings/security_settings.dart';
+import 'package:aid_diary/actions/settings_actions.dart';
 import 'package:aid_diary/widgets/app_logo.dart';
+import 'package:aid_diary/routing/destinations.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// Welcome pages on first launch, like Journey's: welcome, what the diary
@@ -39,17 +39,14 @@ class _OnboardingPageState extends State<OnboardingPage> {
       duration: const Duration(milliseconds: 300), curve: Curves.easeOut);
 
   Future<void> _finish() async {
-    await ConfigProvider.instance.set(Settings.onboardingDone, true);
+    await changeSetting(Settings.onboardingDone, true);
     if (!mounted) return;
     await Navigator.of(context).pushReplacement(MaterialPageRoute(
         allowSnapshotting: false, builder: (_) => widget.next));
   }
 
   Future<void> _turnOnReminders() async {
-    final notifications = NotificationManager.instance;
-    if (!await notifications.hasNotificationPermission()) return;
-    await notifications.startScheduledDailyReminders();
-    await ConfigProvider.instance.set(Settings.dailyReminders, true);
+    if (!await changeSetting(Settings.dailyReminders, true)) return;
     if (mounted) setState(() => _remindersOn = true);
   }
 
@@ -74,9 +71,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
         text: l10n.onboardPrivateText,
         action: OutlinedButton.icon(
           key: const ValueKey('onboard-passcode'),
-          onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-              allowSnapshotting: false,
-              builder: (_) => const SecuritySettings())),
+          onPressed: () => openPlace(context, 'settings/security'),
           icon: const Icon(Icons.password_rounded),
           label: Text(l10n.onboardPrivateAction),
         ),

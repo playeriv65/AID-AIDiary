@@ -43,6 +43,12 @@ String joinEntryTitle(String title, String body) {
   return line.isEmpty ? body : '# $line\n$body';
 }
 
+/// Shared text goes below the entry's own, after a blank line.
+String mergeSharedText(String baseText, String? sharedText) {
+  if (sharedText == null) return baseText;
+  return baseText.isEmpty ? sharedText : '$baseText\n\n$sharedText';
+}
+
 /// Longest snippet: more than two lines hold in the widest list, so a long
 /// entry is not read and laid out in full for a line or two of it.
 const snippetCharacters = 300;

@@ -13,16 +13,13 @@ import 'package:aid_diary/utils/imports/import_helpers.dart';
 import 'package:aid_diary/utils/operation_outcome.dart';
 import 'package:aid_diary/utils/local_time.dart';
 
-Future<OperationOutcome> importFromJson(Function(String) updateStatus) async {
+Future<OperationOutcome> importFromJson(
+    PickedFile selectedFile, Function(String) updateStatus) async {
   updateStatus("0%");
 
   var outcome = const OperationOutcome.succeeded();
 
   try {
-    final selectedFile = await StoragePicker.pickFile(
-        allowedExtensions: ['json'], mimeTypes: ['application/json']);
-    if (selectedFile == null) return const OperationOutcome.cancelled();
-
     final bytes = await selectedFile.readBytes();
     if (bytes == null) return const OperationOutcome.failed();
 

@@ -91,7 +91,7 @@ class _EntryImageEditableListState extends State<EntryImageEditableList> {
             onReorderItem: (int oldIndex, int newIndex) {
               final EntryImage image = _images.removeAt(oldIndex);
               _images.insert(newIndex, image);
-              _updateImageRanks();
+              EntryImage.rankInOrder(_images);
               setState(() {});
               widget.onImagesChanged(_images);
             }),
@@ -171,15 +171,8 @@ class _EntryImageEditableListState extends State<EntryImageEditableList> {
 
   void _deleteImage(int index) {
     _images.removeAt(index);
-    _updateImageRanks();
+    EntryImage.rankInOrder(_images);
     setState(() {});
     widget.onImagesChanged(_images);
-  }
-
-  /// Sets the image ranks assuming that the list is in the correct order
-  void _updateImageRanks() {
-    for (int i = 0; i < _images.length; i++) {
-      _images[i].imgRank = _images.length - 1 - i;
-    }
   }
 }

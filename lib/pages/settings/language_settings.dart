@@ -5,6 +5,7 @@
 import 'dart:io';
 
 import 'package:app_settings/app_settings.dart';
+import 'package:aid_diary/actions/settings_actions.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/device_info_service.dart';
 import 'package:aid_diary/language_option.dart';
@@ -65,8 +66,7 @@ class _LanguageSettingsState extends State<LanguageSettings> {
                           Text(LanguageOption.fromLocale(locale).displayName()))
               ],
               onChanged: (LanguageOption? newValue) {
-                configProvider.set(
-                    Settings.overrideLanguage, newValue?.toJson());
+                changeSetting(Settings.overrideLanguage, newValue?.toJson());
               }),
         ],
       ),

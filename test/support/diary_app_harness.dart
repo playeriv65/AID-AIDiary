@@ -10,6 +10,7 @@ import 'package:aid_diary/providers/entries_provider.dart';
 import 'package:aid_diary/providers/entry_images_provider.dart';
 import 'package:aid_diary/providers/tags_provider.dart';
 import 'package:aid_diary/providers/templates_provider.dart';
+import 'package:aid_diary/routing/route_names.dart';
 import 'package:aid_diary/theme_mode_provider.dart';
 import 'package:aid_diary/widgets/entry_text_field.dart';
 import 'package:easy_debounce/easy_debounce.dart';
@@ -73,6 +74,7 @@ class DiaryAppHarness {
             ChangeNotifierProvider.value(value: theme),
           ],
           child: MaterialApp(
+              navigatorObservers: [rootRoutes],
               theme: themeData,
               locale: const Locale('zh'),
               localizationsDelegates: [

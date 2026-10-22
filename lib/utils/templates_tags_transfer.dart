@@ -21,6 +21,9 @@ const String _templatesFileType = "aid_diary_templates";
 const Set<String> _importableTypes = {_tagsFileType, _templatesFileType};
 const int _transferFileVersion = 1;
 
+/// What an import added; items the diary already had are not counted.
+typedef TransferSummary = ({int categories, int tags, int templates});
+
 typedef _ItemIdentity = (
   String name,
   String iconType,
@@ -187,107 +190,126 @@ class TemplatesTagsTransfer {
       final bytes = await selectedFile.readBytes();
       if (bytes == null) return const OperationOutcome.failed();
 
-      final jsonData = json.decode(utf8.decode(bytes)) as Map<String, dynamic>;
-      if (!_importableTypes.contains(jsonData['type'])) {
-        return const OperationOutcome.failed();
-      }
-
-      updateStatus("25%");
-
-      final categoryIdByIdentity = <_ItemIdentity, int>{
-        for (final category in TagsProvider.instance.categories)
-          _itemIdentity(category.name, category.iconType.name, category.icon,
-              category.color): category.id!,
-      };
-      final categoryRealIdByFileId = <int, int>{};
-      for (final rawCategory in (jsonData['categories'] as List? ?? [])) {
-        final categoryJson = rawCategory as Map<String, dynamic>;
-        final fileId = categoryJson['id'] as int;
-        final name = categoryJson['name'] as String;
-        final iconType = categoryJson['iconType'] as String;
-        final icon = categoryJson['icon'] as String?;
-        final color = categoryJson['color'] as int?;
-        final identity = _itemIdentity(name, iconType, icon, color);
-        final existingId = categoryIdByIdentity[identity];
-        if (existingId != null) {
-          categoryRealIdByFileId[fileId] = existingId;
-          continue;
-        }
-        final created = await TagsProvider.instance.addCategory(TagCategory(
-          name: name,
-          icon: icon,
-          iconType: TagIconType.values.byName(iconType),
-          color: color,
-          timeCreate: DateTime.now(),
-          timeModified: DateTime.now(),
-        ));
-        categoryRealIdByFileId[fileId] = created.id!;
-        categoryIdByIdentity[identity] = created.id!;
-      }
-
-      updateStatus("50%");
-
-      final tagIdByIdentity = <_ItemIdentity, int>{
-        for (final tag in TagsProvider.instance.tags)
-          _itemIdentity(tag.name, tag.iconType.name, tag.icon, tag.color):
-              tag.id!,
-      };
-      final tagRealIdByFileId = <int, int>{};
-      for (final rawTag in (jsonData['tags'] as List? ?? [])) {
-        final tagJson = rawTag as Map<String, dynamic>;
-        final fileId = tagJson['id'] as int;
-        final name = tagJson['name'] as String;
-        final iconType = tagJson['iconType'] as String;
-        final icon = tagJson['icon'] as String?;
-        final color = tagJson['color'] as int?;
-        final identity = _itemIdentity(name, iconType, icon, color);
-        final existingId = tagIdByIdentity[identity];
-        if (existingId != null) {
-          tagRealIdByFileId[fileId] = existingId;
-          continue;
-        }
-        final categoryFileId = tagJson['categoryId'] as int?;
-        await TagsProvider.instance.add(Tag(
-          categoryId: categoryFileId != null
-              ? categoryRealIdByFileId[categoryFileId]
-              : null,
-          icon: icon,
-          iconType: TagIconType.values.byName(iconType),
-          name: name,
-          tagType: TagType.values.byName(tagJson['tagType'] as String),
-          color: color,
-          timeCreate: DateTime.now(),
-          timeModified: DateTime.now(),
-        ));
-        final createdId = TagsProvider.instance.tags.last.id!;
-        tagRealIdByFileId[fileId] = createdId;
-        tagIdByIdentity[identity] = createdId;
-      }
-
-      updateStatus("75%");
-
-      for (final rawTemplate in (jsonData['templates'] as List? ?? [])) {
-        final templateJson = rawTemplate as Map<String, dynamic>;
-        final created = await TemplatesProvider.instance.add(Template(
-          name: templateJson['name'] as String,
-          text: templateJson['text'] as String?,
-          timeCreate: DateTime.now(),
-          timeModified: DateTime.now(),
-        ));
-        final tagFileIds = (templateJson['tagIds'] as List? ?? []).cast<int>();
-        final tagIds = tagFileIds
-            .map((tagFileId) => tagRealIdByFileId[tagFileId])
-            .whereType<int>()
-            .toList();
-        if (tagIds.isNotEmpty) {
-          await TagsProvider.instance.setTemplateTags(created.id!, tagIds);
-        }
-      }
-
+      await importBytes(bytes, updateStatus: updateStatus);
       updateStatus("100%");
       return const OperationOutcome.succeeded();
     } catch (error) {
       return OperationOutcome.failed(error);
     }
+  }
+
+  /// Adds the categories, tags and templates of an exported file. Those
+  /// already there (same name, icon and color) are reused, not added twice.
+  /// Throws a [FormatException] when [bytes] are not an export of this app.
+  static Future<TransferSummary> importBytes(Uint8List bytes,
+      {void Function(String)? updateStatus}) async {
+    final jsonData = json.decode(utf8.decode(bytes));
+    if (jsonData is! Map<String, dynamic> ||
+        !_importableTypes.contains(jsonData['type'])) {
+      throw const FormatException('Not an AID Diary tags or templates file');
+    }
+    var addedCategories = 0;
+    var addedTags = 0;
+    var addedTemplates = 0;
+
+    updateStatus?.call("25%");
+
+    final categoryIdByIdentity = <_ItemIdentity, int>{
+      for (final category in TagsProvider.instance.categories)
+        _itemIdentity(category.name, category.iconType.name, category.icon,
+            category.color): category.id!,
+    };
+    final categoryRealIdByFileId = <int, int>{};
+    for (final rawCategory in (jsonData['categories'] as List? ?? [])) {
+      final categoryJson = rawCategory as Map<String, dynamic>;
+      final fileId = categoryJson['id'] as int;
+      final name = categoryJson['name'] as String;
+      final iconType = categoryJson['iconType'] as String;
+      final icon = categoryJson['icon'] as String?;
+      final color = categoryJson['color'] as int?;
+      final identity = _itemIdentity(name, iconType, icon, color);
+      final existingId = categoryIdByIdentity[identity];
+      if (existingId != null) {
+        categoryRealIdByFileId[fileId] = existingId;
+        continue;
+      }
+      final created = await TagsProvider.instance.addCategory(TagCategory(
+        name: name,
+        icon: icon,
+        iconType: TagIconType.values.byName(iconType),
+        color: color,
+        timeCreate: DateTime.now(),
+        timeModified: DateTime.now(),
+      ));
+      categoryRealIdByFileId[fileId] = created.id!;
+      categoryIdByIdentity[identity] = created.id!;
+      addedCategories++;
+    }
+
+    updateStatus?.call("50%");
+
+    final tagIdByIdentity = <_ItemIdentity, int>{
+      for (final tag in TagsProvider.instance.tags)
+        _itemIdentity(tag.name, tag.iconType.name, tag.icon, tag.color):
+            tag.id!,
+    };
+    final tagRealIdByFileId = <int, int>{};
+    for (final rawTag in (jsonData['tags'] as List? ?? [])) {
+      final tagJson = rawTag as Map<String, dynamic>;
+      final fileId = tagJson['id'] as int;
+      final name = tagJson['name'] as String;
+      final iconType = tagJson['iconType'] as String;
+      final icon = tagJson['icon'] as String?;
+      final color = tagJson['color'] as int?;
+      final identity = _itemIdentity(name, iconType, icon, color);
+      final existingId = tagIdByIdentity[identity];
+      if (existingId != null) {
+        tagRealIdByFileId[fileId] = existingId;
+        continue;
+      }
+      final categoryFileId = tagJson['categoryId'] as int?;
+      final created = await TagsProvider.instance.add(Tag(
+        categoryId: categoryFileId != null
+            ? categoryRealIdByFileId[categoryFileId]
+            : null,
+        icon: icon,
+        iconType: TagIconType.values.byName(iconType),
+        name: name,
+        tagType: TagType.values.byName(tagJson['tagType'] as String),
+        color: color,
+        timeCreate: DateTime.now(),
+        timeModified: DateTime.now(),
+      ));
+      tagRealIdByFileId[fileId] = created.id!;
+      tagIdByIdentity[identity] = created.id!;
+      addedTags++;
+    }
+
+    updateStatus?.call("75%");
+
+    for (final rawTemplate in (jsonData['templates'] as List? ?? [])) {
+      final templateJson = rawTemplate as Map<String, dynamic>;
+      final created = await TemplatesProvider.instance.add(Template(
+        name: templateJson['name'] as String,
+        text: templateJson['text'] as String?,
+        timeCreate: DateTime.now(),
+        timeModified: DateTime.now(),
+      ));
+      final tagFileIds = (templateJson['tagIds'] as List? ?? []).cast<int>();
+      final tagIds = tagFileIds
+          .map((tagFileId) => tagRealIdByFileId[tagFileId])
+          .whereType<int>()
+          .toList();
+      if (tagIds.isNotEmpty) {
+        await TagsProvider.instance.setTemplateTags(created.id!, tagIds);
+      }
+      addedTemplates++;
+    }
+
+    return (
+      categories: addedCategories,
+      tags: addedTags,
+      templates: addedTemplates,
+    );
   }
 }

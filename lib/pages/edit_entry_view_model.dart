@@ -116,12 +116,6 @@ class EditEntryViewModel extends ChangeNotifier {
     tagSource.addListener(_markEdited);
   }
 
-  /// Shared text goes below the entry's own, after a blank line.
-  static String mergeSharedText(String baseText, String? sharedText) {
-    if (sharedText == null) return baseText;
-    return baseText.isEmpty ? sharedText : '$baseText\n\n$sharedText';
-  }
-
   final EntryStore _store;
   final TagsProvider _tags;
   final EntryImagesProvider _entryImages;

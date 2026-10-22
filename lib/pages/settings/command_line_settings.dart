@@ -6,7 +6,8 @@ import 'package:aid_diary/actions/agent_api.dart';
 import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
-import 'package:aid_diary/widgets/command_palette.dart';
+import 'package:aid_diary/actions/settings_actions.dart';
+import 'package:aid_diary/routing/destinations.dart';
 import 'package:aid_diary/widgets/settings_toggle.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -22,8 +23,7 @@ class _CommandLineSettingsState extends State<CommandLineSettings> {
   final _api = AgentApiSwitch.instance;
 
   Future<void> _toggle(bool on) async {
-    await ConfigProvider.instance.set(Settings.agentApi, on);
-    await _api.apply();
+    await changeSetting(Settings.agentApi, on);
     if (mounted) setState(() {});
   }
 
@@ -63,7 +63,7 @@ class _CommandLineSettingsState extends State<CommandLineSettings> {
               key: const ValueKey('command-palette-open'),
               leading: const Icon(Icons.terminal_rounded),
               title: Text(l10n.commandPaletteTitle),
-              onTap: () => showCommandPalette(context),
+              onTap: () => openPlace(context, 'commands'),
             ),
           ]),
         ),

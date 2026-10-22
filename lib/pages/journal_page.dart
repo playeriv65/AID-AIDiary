@@ -7,9 +7,9 @@ import 'dart:io';
 
 import 'package:aid_diary/utils/diary_day.dart';
 import 'package:aid_diary/config/app_config.dart';
+import 'package:aid_diary/actions/settings_actions.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/models/builtin_templates.dart';
-import 'package:aid_diary/widgets/quick_check_in.dart';
 import 'package:aid_diary/device_info_service.dart';
 import 'package:aid_diary/flashback_manager.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
@@ -17,7 +17,6 @@ import 'package:aid_diary/launch_intent.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/models/flashback.dart';
 import 'package:aid_diary/notification_manager.dart';
-import 'package:aid_diary/pages/random_review_page.dart';
 import 'package:aid_diary/pages/review_story_page.dart';
 import 'package:aid_diary/pages/today_story_page.dart';
 import 'package:aid_diary/pages/entry_view_page.dart';
@@ -27,6 +26,7 @@ import 'package:aid_diary/providers/entry_images_provider.dart';
 import 'package:aid_diary/services/coach_service.dart';
 import 'package:aid_diary/services/home_widget_service.dart';
 import 'package:aid_diary/time_manager.dart';
+import 'package:aid_diary/routing/destinations.dart';
 import 'package:aid_diary/routing/entry_navigation.dart';
 import 'package:aid_diary/widgets/coach_widgets.dart';
 import 'package:aid_diary/widgets/journal_entry_row.dart';
@@ -238,10 +238,8 @@ class _JournalPageState extends State<JournalPage>
                   children: [
                     SectionLabel(l10n.journalStories),
                     _Stories(
-                        flashbacks: config.get(Settings.showFlashbacks)
-                            ? FlashbackManager.getFlashbacks(
-                                context, EntriesProvider.instance.entries)
-                            : const []),
+                        flashbacks: FlashbackManager.getFlashbacks(
+                            context, EntriesProvider.instance.entries)),
                     const SizedBox(height: 12),
                     SectionLabel(l10n.journalEntries,
                         trailing: PopupMenuButton<String>(
@@ -254,7 +252,7 @@ class _JournalPageState extends State<JournalPage>
                           }),
                           initialValue: _sort,
                           onSelected: (value) =>
-                              config.set(Settings.journalSort, value),
+                              changeSetting(Settings.journalSort, value),
                           itemBuilder: (context) => [
                             for (final (value, label) in [
                               ('newest', l10n.sortOrderDescendingTitle),
@@ -345,7 +343,7 @@ class _Stories extends StatelessWidget {
               subtitle: TimeManager.formatDate(now, context),
               background: cs.tertiaryContainer,
               foreground: cs.onTertiaryContainer,
-              onTap: () => TodayStory.open(context),
+              onTap: () => openPlace(context, 'story'),
             ),
             if (CoachService.current(l10n) case final enrollment?) ...[
               const SizedBox(width: 8),
@@ -360,7 +358,8 @@ class _Stories extends StatelessWidget {
                 foreground: Colors.white,
                 backdrop: ProgramCover(
                     program: enrollment.program, iconSize: 56, radius: 0),
-                onTap: () => TodayStory.open(context, from: TodayStory.coach),
+                onTap: () =>
+                    openPlace(context, 'story', {'from': TodayStory.coach}),
               ),
             ],
             for (final capsule in EntriesProvider.instance.entries.where((e) =>
@@ -391,7 +390,8 @@ class _Stories extends StatelessWidget {
               foreground: cs.onSurfaceVariant,
               onTap: flashback == null
                   ? null
-                  : () => TodayStory.open(context, from: TodayStory.throwback),
+                  : () => openPlace(
+                      context, 'story', {'from': TodayStory.throwback}),
             ),
             if (_routine(context) case (final template, final title)) ...[
               const SizedBox(width: 8),
@@ -418,7 +418,7 @@ class _Stories extends StatelessWidget {
               subtitle: l10n.checkInSubtitle,
               background: cs.secondaryContainer,
               foreground: cs.onSecondaryContainer,
-              onTap: () => showQuickCheckIn(context),
+              onTap: () => openPlace(context, 'check_in'),
             ),
             for (final (key, icon, title, subtitle, onTap) in [
               (
@@ -426,21 +426,23 @@ class _Stories extends StatelessWidget {
                 Icons.shuffle_rounded,
                 l10n.randomTitle,
                 l10n.randomSubtitle,
-                () => RandomReviewPage.open(context),
+                () => openPlace(context, 'random'),
               ),
               (
                 'story-week',
                 Icons.date_range_rounded,
                 l10n.reviewWeekTitle,
                 l10n.reviewWeekSubtitle,
-                () => ReviewStoryPage.open(context, ReviewSpan.week),
+                () => openPlace(
+                    context, 'review', {'span': ReviewSpan.week.name}),
               ),
               (
                 'story-year',
                 Icons.calendar_month_rounded,
                 l10n.reviewYearTitle,
                 '${now.year}',
-                () => ReviewStoryPage.open(context, ReviewSpan.year),
+                () => openPlace(
+                    context, 'review', {'span': ReviewSpan.year.name}),
               ),
             ]) ...[
               const SizedBox(width: 8),
@@ -455,7 +457,7 @@ class _Stories extends StatelessWidget {
                 onTap: onTap,
               ),
             ],
-            for (final extra in flashbacks.skip(1)) ...[
+            for (final (index, extra) in flashbacks.indexed.skip(1)) ...[
               const SizedBox(width: 8),
               _StoryCard(
                 width: cardWidth,
@@ -464,7 +466,7 @@ class _Stories extends StatelessWidget {
                 subtitle: TimeManager.formatDate(extra.firstEntry.day, context),
                 background: cs.secondaryContainer,
                 foreground: cs.onSecondaryContainer,
-                onTap: () => EntryNavigation.flashback(context, extra),
+                onTap: () => openPlace(context, 'flashback', {'index': index}),
               ),
             ],
           ]),

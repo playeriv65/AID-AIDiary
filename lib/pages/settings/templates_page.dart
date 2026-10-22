@@ -2,11 +2,10 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-import 'package:aid_diary/models/template.dart';
+import 'package:aid_diary/actions/app_actions.dart';
+import 'package:aid_diary/routing/organize_destinations.dart';
 import 'package:aid_diary/widgets/progress_dialog.dart';
 import 'package:aid_diary/utils/templates_tags_transfer.dart';
-import 'package:aid_diary/widgets/edit_template.dart';
-import 'package:aid_diary/widgets/share_templates_dialog.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/providers/templates_provider.dart';
@@ -21,20 +20,6 @@ class TemplateSettings extends StatefulWidget {
 }
 
 class _TemplateSettingsState extends State<TemplateSettings> {
-  void _showEditTemplatePopup(BuildContext context, Template? template) async {
-    await Navigator.of(context).push(MaterialPageRoute(
-        allowSnapshotting: false,
-        fullscreenDialog: true,
-        builder: (context) => EditTemplate(template: template)));
-  }
-
-  void _showShareDialog(BuildContext context) async {
-    await Navigator.of(context).push(MaterialPageRoute(
-        allowSnapshotting: false,
-        fullscreenDialog: true,
-        builder: (context) => const ShareTemplatesDialog()));
-  }
-
   Future<void> _importFile(BuildContext context) async {
     await runOperation(context, TemplatesTagsTransfer.importTransferFile,
         failureDescription:
@@ -84,17 +69,20 @@ class _TemplateSettingsState extends State<TemplateSettings> {
                   isDefault ? Icons.star_rounded : Icons.star_outline_rounded,
                 ),
                 onPressed: () async {
-                  await configProvider.set(
-                      Settings.defaultTemplate, isDefault ? -1 : template.id!);
+                  await AppActions.instance.run('settings.set', {
+                    'key': Settings.defaultTemplate.key,
+                    'value': '${isDefault ? -1 : template.id}',
+                  });
                 },
               ),
               IconButton(
                 icon: const Icon(Icons.edit),
-                onPressed: () => _showEditTemplatePopup(context, template),
+                onPressed: () =>
+                    OrganizeNavigation.editTemplate(context, template),
               ),
             ],
           ),
-          onTap: () => _showEditTemplatePopup(context, template),
+          onTap: () => OrganizeNavigation.editTemplate(context, template),
         );
       },
     );
@@ -114,7 +102,7 @@ class _TemplateSettingsState extends State<TemplateSettings> {
           ),
           IconButton(
             icon: const Icon(Icons.share_rounded),
-            onPressed: () => _showShareDialog(context),
+            onPressed: () => OrganizeNavigation.shareTemplates(context),
           ),
         ],
       ),
@@ -127,7 +115,7 @@ class _TemplateSettingsState extends State<TemplateSettings> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _showEditTemplatePopup(context, null),
+        onPressed: () => OrganizeNavigation.editTemplate(context, null),
         child: const Icon(Icons.add_rounded),
       ),
     );

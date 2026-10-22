@@ -3,10 +3,11 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'package:aid_diary/routing/app_navigation.dart';
+import 'package:aid_diary/actions/settings_actions.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/models/tag.dart';
 import 'package:aid_diary/providers/tags_provider.dart';
-import 'package:aid_diary/widgets/edit_tag.dart';
+import 'package:aid_diary/routing/organize_destinations.dart';
 import 'package:aid_diary/widgets/tag_attachment_source.dart';
 import 'package:aid_diary/widgets/tag_chip.dart';
 import 'package:aid_diary/widgets/tag_grouped_chip_list.dart';
@@ -59,7 +60,7 @@ class _TagPickerDialogState extends State<TagPickerDialog> {
   void _toggleSortMode() {
     final newMode = _sortMode == 'manual' ? 'usage' : 'manual';
     setState(() => _sortMode = newMode);
-    ConfigProvider.instance.set(Settings.tagPickerSortMode, newMode);
+    changeSetting(Settings.tagPickerSortMode, newMode);
   }
 
   // attach mode helpers
@@ -67,10 +68,7 @@ class _TagPickerDialogState extends State<TagPickerDialog> {
   Future<void> _createAndAddTagWithName(
       TagsProvider provider, String name) async {
     final tagsBefore = List<Tag>.from(provider.tags);
-    await showDialog(
-      context: context,
-      builder: (_) => EditTag(tag: null, initialName: name),
-    );
+    await OrganizeNavigation.editTag(context, null, name: name);
     final newTag = provider.tags
         .where((tag) =>
             tagsBefore.every((existingTag) => existingTag.id != tag.id))

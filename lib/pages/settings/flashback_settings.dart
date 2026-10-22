@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'package:aid_diary/actions/settings_actions.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/widgets/settings_header.dart';
 import 'package:aid_diary/widgets/settings_toggle.dart';
@@ -39,22 +40,19 @@ class _FlashbackSettingsPageState extends State<FlashbackSettings> {
               hint: AppLocalizations.of(context)!.settingsRoutinePromptsHint,
               setting: Settings.routinePrompts,
               onChanged: (value) =>
-                  configProvider.set(Settings.routinePrompts, value)),
+                  changeSetting(Settings.routinePrompts, value)),
           SettingsToggle(
               title: AppLocalizations.of(context)!.settingsShowFlashbacks,
               setting: Settings.showFlashbacks,
-              onChanged: (value) {
-                configProvider.set(Settings.showFlashbacks, value);
-              }),
+              onChanged: (value) =>
+                  changeSetting(Settings.showFlashbacks, value)),
           if (configProvider.get(Settings.showFlashbacks))
             SettingsToggle(
                 title: AppLocalizations.of(context)!
                     .settingsFlashbacksExcludeBadDays,
                 setting: Settings.excludeBadDaysFromFlashbacks,
-                onChanged: (value) {
-                  configProvider.set(
-                      Settings.excludeBadDaysFromFlashbacks, value);
-                }),
+                onChanged: (value) => changeSetting(
+                    Settings.excludeBadDaysFromFlashbacks, value)),
           if (configProvider.get(Settings.showFlashbacks))
             ...buildFlashbackOptions(configProvider),
         ],
@@ -73,42 +71,36 @@ class _FlashbackSettingsPageState extends State<FlashbackSettings> {
         padding: const EdgeInsets.only(left: 8.0, right: 8.0),
         child: Divider(),
       ),
-      SettingsToggle(
-          title: AppLocalizations.of(context)!.flashbackOnThisDay,
-          setting: Settings.showflashbackYearsAgo,
-          onChanged: (value) {
-            configProvider.set(Settings.showflashbackYearsAgo, value);
-          }),
-      SettingsToggle(
-          title: AppLocalizations.of(context)!.flashbackMonth(6),
-          setting: Settings.showflashback6MonthsAgo,
-          onChanged: (value) {
-            configProvider.set(Settings.showflashback6MonthsAgo, value);
-          }),
-      SettingsToggle(
-          title: AppLocalizations.of(context)!.flashbackMonth(1),
-          setting: Settings.showflashback1MonthAgo,
-          onChanged: (value) {
-            configProvider.set(Settings.showflashback1MonthAgo, value);
-          }),
-      SettingsToggle(
-          title: AppLocalizations.of(context)!.flashbackWeek(1),
-          setting: Settings.showflashback1WeekAgo,
-          onChanged: (value) {
-            configProvider.set(Settings.showflashback1WeekAgo, value);
-          }),
-      SettingsToggle(
-          title: AppLocalizations.of(context)!.flashbackGoodDay,
-          setting: Settings.showflashbackGoodDay,
-          onChanged: (value) {
-            configProvider.set(Settings.showflashbackGoodDay, value);
-          }),
-      SettingsToggle(
-          title: AppLocalizations.of(context)!.flashbackRandomDay,
-          setting: Settings.showflashbackRandomDay,
-          onChanged: (value) {
-            configProvider.set(Settings.showflashbackRandomDay, value);
-          }),
+      for (final (setting, title) in [
+        (
+          Settings.showflashbackYearsAgo,
+          AppLocalizations.of(context)!.flashbackOnThisDay
+        ),
+        (
+          Settings.showflashback6MonthsAgo,
+          AppLocalizations.of(context)!.flashbackMonth(6)
+        ),
+        (
+          Settings.showflashback1MonthAgo,
+          AppLocalizations.of(context)!.flashbackMonth(1)
+        ),
+        (
+          Settings.showflashback1WeekAgo,
+          AppLocalizations.of(context)!.flashbackWeek(1)
+        ),
+        (
+          Settings.showflashbackGoodDay,
+          AppLocalizations.of(context)!.flashbackGoodDay
+        ),
+        (
+          Settings.showflashbackRandomDay,
+          AppLocalizations.of(context)!.flashbackRandomDay
+        ),
+      ])
+        SettingsToggle(
+            title: title,
+            setting: setting,
+            onChanged: (value) => changeSetting(setting, value)),
     ];
   }
 }

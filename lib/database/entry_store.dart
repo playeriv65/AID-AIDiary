@@ -211,6 +211,21 @@ class EntryStore with ChangeNotifier {
     return updated;
   }
 
+  /// Sets the weather of an entry, or removes it with null.
+  Future<Entry> setWeather(Entry entry, EntryWeather? weather) async {
+    await _complete;
+    final updated = entry.copy(weather: weather, timeModified: DateTime.now());
+    await EntryDao.update(updated);
+    _entries = [
+      for (final existing in _entries)
+        existing.id == entry.id ? updated : existing,
+    ];
+    _indexEntriesByDay();
+    await AppDatabase.instance.updateExternalDatabase();
+    notifyListeners();
+    return updated;
+  }
+
   /// Brings an entry back from Recently deleted.
   Future<void> restore(Entry entry) async {
     await _complete;
@@ -232,6 +247,29 @@ class EntryStore with ChangeNotifier {
 
   /// Removes an entry, its tags and its attachment files for good.
   Future<void> erase(Entry entry) async {
+    await _eraseRows(entry);
+    TagsProvider.instance.applyEntryTags(entry.id!, const []);
+    EntryImagesProvider.instance.applyForEntry(entry.id!, const []);
+    await AppDatabase.instance.updateExternalDatabase();
+    notifyListeners();
+  }
+
+  /// Erases [entries] for good like [erase], but tells listeners once, when
+  /// all are gone; [onProgress] gets how many are done.
+  Future<void> eraseMany(List<Entry> entries,
+      {void Function(int done)? onProgress}) async {
+    var done = 0;
+    for (final entry in entries) {
+      await _eraseRows(entry);
+      onProgress?.call(++done);
+    }
+    await TagsProvider.instance.load();
+    await EntryImagesProvider.instance.load();
+    await AppDatabase.instance.updateExternalDatabase();
+    notifyListeners();
+  }
+
+  Future<void> _eraseRows(Entry entry) async {
     // From the database: this also runs while loading, before the image
     // provider has its list.
     final images = await EntryImageDao.getForEntry(entry.id!);
@@ -248,10 +286,13 @@ class EntryStore with ChangeNotifier {
 
     _entries = _entries.where((existing) => existing.id != entry.id).toList();
     _indexEntriesByDay();
-    TagsProvider.instance.applyEntryTags(entry.id!, const []);
-    EntryImagesProvider.instance.applyForEntry(entry.id!, const []);
-    await AppDatabase.instance.updateExternalDatabase();
-    notifyListeners();
+  }
+
+  /// Erases everything in Recently deleted for good; how many entries.
+  Future<int> emptyDeleted() async {
+    final items = await deleted();
+    await eraseMany([for (final item in items) item.entry]);
+    return items.length;
   }
 
   Future<Entry> add(Entry entry, {bool skipUpdate = false}) async {
@@ -268,7 +309,8 @@ class EntryStore with ChangeNotifier {
     return entryWithId;
   }
 
-  /// Erases every entry, including those in Recently deleted.
+  /// Erases every entry, including those in Recently deleted, and the
+  /// attachment files nothing refers to any more.
   Future<void> deleteAll(Function(String) updateStatus) async {
     await _complete;
     updateStatus("0%");
@@ -276,16 +318,13 @@ class EntryStore with ChangeNotifier {
       ...entries,
       for (final item in await EntryDao.getDeleted()) item.entry,
     ];
-    var processedEntries = 0;
-    for (final entry in allEntries) {
-      await erase(entry);
-      processedEntries += 1;
-      updateStatus(
-          "${((processedEntries / allEntries.length) * 100).round()}%");
-    }
+    await eraseMany(allEntries,
+        onProgress: (done) =>
+            updateStatus("${((done / allEntries.length) * 100).round()}%"));
 
     await load();
     await AppDatabase.instance.updateExternalDatabase();
+    await ImageStorage.instance.garbageCollectImages();
   }
 
   int getIndexOfEntry(int entryId) {
@@ -486,6 +525,15 @@ class EntryStore with ChangeNotifier {
       index.putIfAbsent(entry.day, () => []).add(entry);
     }
     _entriesByDay = index;
+  }
+}
+
+extension DeletedEntryRetention on DeletedEntry {
+  /// Whole days before Recently deleted erases this entry, rounded up.
+  int get daysLeft {
+    final expires = deletedAt.add(AppConfig.instance.deletedRetention);
+    final days = expires.difference(DateTime.now()).inHours / 24;
+    return days.ceil().clamp(0, 9999);
   }
 }
 

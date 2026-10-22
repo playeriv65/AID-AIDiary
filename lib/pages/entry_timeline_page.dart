@@ -5,7 +5,6 @@
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/providers/entries_provider.dart';
 import 'package:aid_diary/providers/entry_images_provider.dart';
-import 'package:aid_diary/time_manager.dart';
 import 'package:aid_diary/routing/entry_navigation.dart';
 import 'package:aid_diary/widgets/journal_entry_row.dart';
 import 'package:material_ui/material_ui.dart';
@@ -23,20 +22,6 @@ class EntryTimelinePage extends StatelessWidget {
   final String header;
   final List<Entry> Function() getEntries;
   final String Function(BuildContext, Entry) labelBuilder;
-
-  /// Pushes a list of every entry created on [date], newest first.
-  static Future<void> pushForDay(BuildContext context, DateTime date) {
-    return Navigator.of(context).push(MaterialPageRoute(
-      allowSnapshotting: false,
-      builder: (context) => EntryTimelinePage(
-        header: TimeManager.formatDate(date, context),
-        getEntries: () => EntriesProvider.instance.getEntriesForDate(date),
-        labelBuilder: (context, entry) => TimeManager.localizedTimeFormat(
-                context, TimeManager.currentLocale(context))
-            .format(entry.timeCreate),
-      ),
-    ));
-  }
 
   @override
   Widget build(BuildContext context) {

@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'package:aid_diary/actions/settings_actions.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/models/stats_subject.dart';
@@ -51,25 +52,11 @@ class _StatsPageState extends State<StatsPage>
   List<Entry>? _countedEntries;
   int _wordCount = 0;
 
-  static const _rangeToString = {
-    StatsRange.month: 'month',
-    StatsRange.sixMonths: 'sixMonths',
-    StatsRange.year: 'year',
-    StatsRange.allTime: 'allTime',
-  };
-
-  static const _stringToRange = {
-    'month': StatsRange.month,
-    'sixMonths': StatsRange.sixMonths,
-    'year': StatsRange.year,
-    'allTime': StatsRange.allTime,
-  };
-
   @override
   void initState() {
     super.initState();
     final saved = ConfigProvider.instance.get(Settings.statsRange);
-    statsRange = _stringToRange[saved] ?? StatsRange.allTime;
+    statsRange = StatsRange.values.asNameMap()[saved] ?? StatsRange.allTime;
     _subjectConfig = ConfigProvider.instance.get(Settings.statsSubject);
   }
 
@@ -185,8 +172,7 @@ class _StatsPageState extends State<StatsPage>
                 height: _headerHeight,
                 onRangeChanged: (newRange) {
                   setState(() => statsRange = newRange);
-                  ConfigProvider.instance
-                      .set(Settings.statsRange, _rangeToString[newRange]!);
+                  changeSetting(Settings.statsRange, newRange.name);
                 },
                 onSubjectTypeSelected: (type) =>
                     _onSubjectTypeSelected(context, type),
@@ -247,7 +233,7 @@ class _StatsPageState extends State<StatsPage>
 
   void _applySubject(StatsSubject subject) {
     setState(() => _subjectConfig = subject.toConfigString());
-    ConfigProvider.instance.set(Settings.statsSubject, _subjectConfig);
+    changeSetting(Settings.statsSubject, _subjectConfig);
   }
 
   List<Widget> _buildChartsForSubject(
@@ -269,15 +255,12 @@ class _StatsPageState extends State<StatsPage>
 
   List<Widget> _buildMoodCharts(BuildContext context, List<Entry> entries) {
     final l10n = AppLocalizations.of(context)!;
-    final moodPoints = entries
-        .where((entry) => entry.mood != null)
-        .map((entry) => (date: entry.day, value: entry.mood!.toDouble()))
-        .toList();
-    final hasData = moodPoints.length > 1;
+    final points = moodPoints(entries);
+    final hasData = points.length > 1;
 
     return [
       ValueOverTimeChart(
-        dataPoints: moodPoints,
+        dataPoints: points,
         hasData: hasData,
         yRange: _moodRange,
         combine: combineByAverage,
@@ -320,11 +303,7 @@ class _StatsPageState extends State<StatsPage>
     final valueByEntryId =
         trackerValuesByEntry(entries, tagsProvider.entryTags, tag.id!);
 
-    final dataPoints = [
-      for (final entry in entries)
-        if (valueByEntryId[entry.id] case final value?)
-          (date: entry.day, value: value),
-    ];
+    final dataPoints = trackerPoints(entries, valueByEntryId);
     final rawValues = dataPoints.map((point) => point.value).toList();
 
     final hasData = dataPoints.length > 1;
@@ -373,12 +352,7 @@ class _StatsPageState extends State<StatsPage>
         entries.where((entry) => presentIds.contains(entry.id)).length;
     final totalCount = entries.length;
 
-    final coveragePoints = entries
-        .map((entry) => (
-              date: entry.day,
-              value: presentIds.contains(entry.id) ? 1.0 : 0.0,
-            ))
-        .toList();
+    final coveragePoints = labelPoints(entries, presentIds);
 
     final dayCounts =
         countByDayOfWeek(entries, (entry) => presentIds.contains(entry.id));

@@ -10,7 +10,7 @@ import 'package:aid_diary/pages/recently_deleted_page.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/pages/entry_share_page.dart';
 import 'package:aid_diary/pages/journal_page.dart';
-import 'package:aid_diary/widgets/quick_check_in.dart';
+import 'package:aid_diary/routing/destinations.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
@@ -99,7 +99,7 @@ void main() {
   testWidgets('a quick check-in saves mood and note', (tester) async {
     DiaryAppHarness.size(tester, const Size(390, 844));
     await tester.pumpWidget(harness.app(const Scaffold(body: SizedBox())));
-    showQuickCheckIn(tester.element(find.byType(SizedBox).first));
+    openPlace(tester.element(find.byType(SizedBox).first), 'check_in');
     await tester.pumpAndSettle();
     final save = find.byKey(const ValueKey('check-in-save'));
     expect(tester.widget<FilledButton>(save).onPressed, isNull);

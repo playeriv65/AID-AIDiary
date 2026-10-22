@@ -3,10 +3,17 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'package:aid_diary/actions/app_action.dart';
+import 'package:aid_diary/actions/coach_actions.dart';
+import 'package:aid_diary/actions/data_actions.dart';
 import 'package:aid_diary/actions/entry_actions.dart';
+import 'package:aid_diary/actions/entry_media_actions.dart';
+import 'package:aid_diary/actions/flashback_actions.dart';
+import 'package:aid_diary/actions/place_actions.dart';
 import 'package:aid_diary/actions/screen_actions.dart';
 import 'package:aid_diary/actions/settings_actions.dart';
 import 'package:aid_diary/actions/sync_actions.dart';
+import 'package:aid_diary/actions/tag_actions.dart';
+import 'package:aid_diary/actions/template_actions.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
@@ -22,6 +29,13 @@ class AppActions {
   static final List<AppAction> everyAction = [
     ...settingsActions,
     ...entryActions,
+    ...entryMediaActions,
+    ...tagActions,
+    ...templateActions,
+    ...coachActions,
+    ...flashbackActions,
+    ...placeActions,
+    ...dataActions,
     ...syncActions,
     ...screenActions,
   ];
@@ -47,16 +61,21 @@ class AppActions {
           throw ActionException('unknown_action', 'There is no action $id'));
 
   /// Runs [id] with [args]. A destructive action runs only when [confirmed]:
-  /// the caller asked the person first.
+  /// the caller asked the person first. A long one reports to [progress].
   Future<Object?> run(String id, Map<String, Object?> args,
-      {bool confirmed = false}) async {
+      {bool confirmed = false, void Function(String status)? progress}) async {
     final action = find(id);
     final parsed = action.parse(args);
     if (action.risk == ActionRisk.destructive && !confirmed) {
       throw ActionException('needs_confirmation',
           '$id cannot be undone simply (${action.describe}) Confirm to go on.');
     }
-    return action.run(context, parsed);
+    return action.run(
+        progress == null
+            ? context
+            : ActionContext(
+                screen: screen, devBuild: devBuild, progress: progress),
+        parsed);
   }
 
   List<Map<String, Object?>> describe() =>

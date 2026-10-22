@@ -12,17 +12,14 @@ import 'package:material_ui/material_ui.dart';
 
 /// Every action of the app, searchable and runnable: the GUI's side of the
 /// `aid` command line, so the two always list the same things.
-Future<void> showCommandPalette(BuildContext context) =>
-    showDialog<void>(context: context, builder: (_) => const _CommandPalette());
-
-class _CommandPalette extends StatefulWidget {
-  const _CommandPalette();
+class CommandPalette extends StatefulWidget {
+  const CommandPalette({super.key});
 
   @override
-  State<_CommandPalette> createState() => _CommandPaletteState();
+  State<CommandPalette> createState() => _CommandPaletteState();
 }
 
-class _CommandPaletteState extends State<_CommandPalette> {
+class _CommandPaletteState extends State<CommandPalette> {
   final _query = TextEditingController();
 
   @override

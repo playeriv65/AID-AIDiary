@@ -2,10 +2,9 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-import 'package:aid_diary/config_provider.dart';
+import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/models/template.dart';
 import 'package:aid_diary/providers/tags_provider.dart';
-import 'package:aid_diary/providers/templates_provider.dart';
 import 'package:aid_diary/utils/text_editing.dart';
 import 'package:aid_diary/widgets/delete_confirm_dialog.dart';
 import 'package:aid_diary/widgets/editor_action_bar.dart';
@@ -54,6 +53,7 @@ class _EditTemplateState extends State<EditTemplate> {
             .getTemplateTagsForTemplate(widget.template!.id!)
             .map((templateTag) => templateTag.tagId)
             .toList();
+    _nameController.addListener(() => setState(() {}));
     _tagSource = TagAttachmentSource(initialTagIds: initialTagIds);
     _textEditingController
         .addListener(() => templateText = _textEditingController.text);
@@ -70,24 +70,16 @@ class _EditTemplateState extends State<EditTemplate> {
   }
 
   Future<void> _saveTemplate() async {
-    final int templateId;
-    if (widget.template == null) {
-      final created = await TemplatesProvider.instance.add(Template(
-          name: _nameController.text,
-          text: templateText,
-          timeCreate: DateTime.now(),
-          timeModified: DateTime.now()));
-      templateId = created.id!;
-    } else {
-      final updated = widget.template!.copy(
-          name: _nameController.text,
-          text: templateText,
-          timeModified: DateTime.now());
-      await TemplatesProvider.instance.update(updated);
-      templateId = updated.id!;
-    }
-    await TagsProvider.instance
-        .setTemplateTags(templateId, _tagSource.attachedTagIds);
+    final template = widget.template;
+    final args = {
+      'name': _nameController.text,
+      'text': templateText,
+      // By id, as a tag's name may be a number.
+      'tags': [for (final id in _tagSource.attachedTagIds) '#$id'].join(','),
+    };
+    await AppActions.instance.run(
+        template == null ? 'template.create' : 'template.update',
+        {if (template != null) 'id': template.id, ...args});
     if (!mounted) return;
     Navigator.of(context).pop();
   }
@@ -101,12 +93,8 @@ class _EditTemplateState extends State<EditTemplate> {
       message: l10n.deleteTemplateMessage(template.name),
     );
     if (confirmed && mounted) {
-      final defaultTemplateId =
-          ConfigProvider.instance.get(Settings.defaultTemplate);
-      if (defaultTemplateId == template.id) {
-        await ConfigProvider.instance.set(Settings.defaultTemplate, -1);
-      }
-      await TemplatesProvider.instance.remove(template);
+      await AppActions.instance
+          .run('template.delete', {'id': template.id}, confirmed: true);
       if (mounted) Navigator.of(context).pop();
     }
   }
@@ -169,9 +157,8 @@ class _EditTemplateState extends State<EditTemplate> {
   Widget saveButton() {
     return IconButton(
       icon: const Icon(Icons.check),
-      onPressed: () async {
-        await _saveTemplate();
-      },
+      // The template actions refuse a template without a name.
+      onPressed: _nameController.text.trim().isEmpty ? null : _saveTemplate,
     );
   }
 

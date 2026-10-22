@@ -2,12 +2,11 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-import 'dart:ui';
-
 import 'package:aid_diary/actions/app_action.dart';
-import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/sync/google_auth.dart';
+import 'package:aid_diary/sync/sync_crypto.dart';
 import 'package:aid_diary/sync/sync_service.dart';
+import 'package:aid_diary/l10n/shown_language.dart';
 
 SyncService get _sync => SyncService.instance;
 
@@ -38,7 +37,44 @@ Map<String, Object?> syncStatus() {
       },
     if (_sync.error case final error?) 'error': '$error',
     'unsyncedEntries': _sync.unsyncedEntryIds.length,
+    // The ids the journal marks as waiting to go up.
+    'unsyncedIds': _sync.unsyncedEntryIds.toList()..sort(),
   };
+}
+
+/// Runs [open], a try at opening the space with a key, and says when the
+/// key was wrong.
+Future<void> _withKey(Future<void> Function() open) async {
+  try {
+    await open();
+  } on WrongKeyException {
+    throw const ActionException(
+        'wrong_key', 'That passphrase or recovery key does not open the space');
+  }
+}
+
+/// The connected, encrypted and unlocked space a change of key needs.
+SyncTarget _keyedTarget() {
+  final target = _sync.target;
+  if (target == null) {
+    throw const ActionException('not_connected', 'Sync is not set up');
+  }
+  if (!target.encrypted) {
+    throw const ActionException('not_encrypted', 'The space is not encrypted');
+  }
+  if (_sync.state == SyncState.locked) {
+    throw const ActionException(
+        'locked', 'The space is locked: open it with sync.unlock first');
+  }
+  return target;
+}
+
+String _passphrase(ActionArgs args) {
+  final passphrase = args['passphrase'] as String;
+  if (passphrase.isEmpty) {
+    throw const ActionException('bad_args', 'passphrase must not be empty');
+  }
+  return passphrase;
 }
 
 /// Starts a space at [login], or joins the one there with the passphrase
@@ -55,8 +91,8 @@ Future<Map<String, Object?>> _open(SyncLogin login, ActionArgs args) async {
       throw const ActionException('needs_key',
           'The space here is encrypted: give passphrase or recoveryKey');
     }
-    await _sync.joinSpace(login, space,
-        passphrase: passphrase, recoveryKey: recoveryKey);
+    await _withKey(() => _sync.joinSpace(login, space,
+        passphrase: passphrase, recoveryKey: recoveryKey));
   }
   final stopwatch = Stopwatch()..start();
   await _sync.syncNow();
@@ -133,15 +169,69 @@ final List<AppAction> syncActions = [
         throw const ActionException(
             'unavailable', 'This build is not registered with Google');
       }
-      final l10n = lookupAppLocalizations(AppLocalizations.supportedLocales
-          .firstWhere(
-              (locale) =>
-                  locale.languageCode ==
-                  PlatformDispatcher.instance.locale.languageCode,
-              orElse: () => const Locale('en')));
       final auth = GoogleAuth.forPlatform();
-      final account = await auth.signIn(doneMessage: l10n.syncGoogleSignedIn);
+      final account = await auth.signIn(
+          doneMessage: shownLocalizations().syncGoogleSignedIn);
       return _open(GoogleDriveLogin(username: account, auth: auth), args);
+    },
+  ),
+  AppAction(
+    id: 'sync.unlock',
+    describe: 'Opens an encrypted space this device lost the key of, after '
+        'it was reset elsewhere, with the passphrase or the recovery key, '
+        'then syncs.',
+    risk: ActionRisk.write,
+    params: const [
+      ActionParam('passphrase', ParamType.string, 'The space passphrase',
+          required: false),
+      ActionParam('recoveryKey', ParamType.string,
+          'The recovery key, instead of the passphrase',
+          required: false),
+    ],
+    run: (context, args) async {
+      if (_sync.target == null) {
+        throw const ActionException('not_connected', 'Sync is not set up');
+      }
+      final passphrase = args['passphrase'] as String?;
+      final recoveryKey = args['recoveryKey'] as String?;
+      if (passphrase == null && recoveryKey == null) {
+        throw const ActionException(
+            'bad_args', 'Give passphrase or recoveryKey');
+      }
+      await _withKey(
+          () => _sync.unlock(passphrase: passphrase, recoveryKey: recoveryKey));
+      await _sync.syncNow();
+      return syncStatus();
+    },
+  ),
+  AppAction(
+    id: 'sync.change_passphrase',
+    describe: 'Locks the space key under a new passphrase; the synced data '
+        'and the other devices stay as they are.',
+    risk: ActionRisk.write,
+    params: const [
+      ActionParam('passphrase', ParamType.string, 'The new passphrase'),
+    ],
+    run: (context, args) async {
+      _keyedTarget();
+      await _sync.changePassphrase(_passphrase(args));
+      return syncStatus();
+    },
+  ),
+  AppAction(
+    id: 'sync.reset_encryption',
+    describe: 'For a forgotten passphrase: starts the space over from this '
+        "device's diary under a new key. The old copy is removed and the "
+        'other devices must join again. Returns the new recovery key.',
+    risk: ActionRisk.destructive,
+    params: const [
+      ActionParam('passphrase', ParamType.string, 'The new passphrase'),
+    ],
+    run: (context, args) async {
+      _keyedTarget();
+      final recoveryKey = await _sync.resetEncryption(_passphrase(args));
+      await _sync.syncNow();
+      return {'recoveryKey': recoveryKey, ...syncStatus()};
     },
   ),
   AppAction(

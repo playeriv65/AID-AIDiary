@@ -10,7 +10,6 @@ import 'package:aid_diary/storage/storage_picker.dart';
 import 'package:aid_diary/utils/imports/import_helpers.dart';
 import 'package:aid_diary/utils/operation_outcome.dart';
 import 'package:aid_diary/utils/zip_utils.dart';
-import 'package:material_ui/material_ui.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
@@ -37,19 +36,16 @@ class _DirectoryFiles implements ArchiveFiles {
   }
 }
 
-/// Lets the user pick a zip, or a single file named [singleFileName] in the
-/// archive, decodes it with [decode] and adds the entries. Photos are read
-/// while the extracted files still exist.
+/// Reads [selectedFile], a zip or a single file named [singleFileName] in
+/// the archive, decodes it with [decode] and adds the entries. Photos are
+/// read while the extracted files still exist.
 Future<OperationOutcome> importArchive(
-    BuildContext context,
+    PickedFile selectedFile,
+    AppLocalizations localizations,
     Function(String) updateStatus,
     Future<List<ImportedEntry>> Function(ArchiveFiles files) decode,
     {required String singleFileName}) async {
-  final localizations = AppLocalizations.of(context)!;
   updateStatus("0%");
-
-  final selectedFile = await StoragePicker.pickFile();
-  if (selectedFile == null) return const OperationOutcome.cancelled();
 
   var outcome = const OperationOutcome.succeeded();
   final work = await (await getTemporaryDirectory()).createTemp('import');

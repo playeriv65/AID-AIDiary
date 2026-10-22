@@ -193,6 +193,8 @@
     "iconGroupSymbols": "符號",
     "deleteTagMessage": "刪除「{name}」？{count, plural, =0{} =1{ 它被用於 1 條紀錄中。} other{ 它被用於 {count} 條紀錄中。}}",
     "deleteCategoryMessage": "刪除「{name}」？{count, plural, =0{} =1{其 1 個標籤也將被刪除。} other{其 {count} 個標籤也將被刪除。}}",
+    "tagNameExists": "已有同名的標籤",
+    "categoryNameExists": "已有同名的分類",
     "tagPickerSortManualLabel": "手動排序",
     "tagPickerSortUsageLabel": "依使用次數排序",
     "tagFavoriteName": "我的最愛",

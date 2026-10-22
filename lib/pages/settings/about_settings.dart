@@ -4,6 +4,7 @@
 
 import 'package:aid_diary/device_info_service.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/routing/destinations.dart';
 import 'package:aid_diary/widgets/settings_icon_action.dart';
 import 'package:flutter/services.dart';
 import 'package:material_ui/material_ui.dart';
@@ -36,17 +37,11 @@ class AboutSettings extends StatelessWidget {
               title: l10n.settingsLicense,
               hint: l10n.licenseGPLv3,
               icon: const Icon(Icons.chevron_right_rounded),
-              onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                  allowSnapshotting: false,
-                  builder: (_) => const _LicenseTextPage()))),
+              onPressed: () => openPlace(context, 'settings/license')),
           SettingsIconAction(
               title: l10n.settingsOpenSourceLicenses,
               icon: const Icon(Icons.chevron_right_rounded),
-              onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => LicensePage(
-                        applicationName: l10n.appTitle,
-                        applicationVersion: version,
-                      )))),
+              onPressed: () => openPlace(context, 'settings/licenses')),
         ],
       ),
     );
@@ -54,8 +49,8 @@ class AboutSettings extends StatelessWidget {
 }
 
 /// The GPL and its additional terms, as shipped with the app.
-class _LicenseTextPage extends StatelessWidget {
-  const _LicenseTextPage();
+class LicenseTextPage extends StatelessWidget {
+  const LicenseTextPage({super.key});
 
   static Future<String> _load() async =>
       '${await rootBundle.loadString('ADDITIONAL_TERMS.md')}\n\n'

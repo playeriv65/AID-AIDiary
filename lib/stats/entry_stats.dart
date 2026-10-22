@@ -18,6 +18,9 @@ const List<String> _weekdayKeys = [
   'Sun',
 ];
 
+/// One value on a diary day, the unit of the over-time charts.
+typedef DayValue = ({DateTime date, double value});
+
 /// Word counts of entries already seen. Entries are immutable and an edit
 /// makes a new one, so only changed entries are counted again.
 final _wordCounts = Expando<int>();
@@ -37,6 +40,42 @@ int greatDayCount(List<Entry> entries) {
     greatDays.add(entry.day);
   }
   return greatDays.length;
+}
+
+/// The mood of every rated entry, on its day.
+List<DayValue> moodPoints(List<Entry> entries) => [
+      for (final entry in entries)
+        if (entry.mood != null)
+          (date: entry.day, value: entry.mood!.toDouble()),
+    ];
+
+/// The tracker value of every entry that has one, on its day.
+List<DayValue> trackerPoints(
+        List<Entry> entries, Map<int, double> valueByEntryId) =>
+    [
+      for (final entry in entries)
+        if (valueByEntryId[entry.id] case final value?)
+          (date: entry.day, value: value),
+    ];
+
+/// 1 for each entry with the label in [presentIds], else 0, on its day.
+List<DayValue> labelPoints(List<Entry> entries, Set<int> presentIds) => [
+      for (final entry in entries)
+        (date: entry.day, value: presentIds.contains(entry.id) ? 1.0 : 0.0),
+    ];
+
+/// [points] with the values of each day combined into one, oldest day first.
+List<DayValue> combinePerDay(
+    List<DayValue> points, double Function(List<double> values) combine) {
+  final byDay = <DateTime, List<double>>{};
+  for (final point in points) {
+    (byDay[point.date] ??= []).add(point.value);
+  }
+  return [
+    for (final MapEntry(key: date, value: values)
+        in byDay.entries.toList()..sort((a, b) => a.key.compareTo(b.key)))
+      (date: date, value: combine(values)),
+  ];
 }
 
 Map<int, int> moodTotals(List<Entry> entries) {

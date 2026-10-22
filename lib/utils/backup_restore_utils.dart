@@ -17,7 +17,6 @@ import 'package:aid_diary/utils/cancellation_token.dart';
 import 'package:aid_diary/utils/operation_outcome.dart';
 import 'package:aid_diary/utils/password_store.dart';
 import 'package:aid_diary/utils/zip_utils.dart';
-import 'package:material_ui/material_ui.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart';
@@ -26,6 +25,27 @@ import 'package:path_provider/path_provider.dart';
 class _RestoreCancelled implements Exception {}
 
 enum AutoBackupOutcome { succeeded, cancelled, failed, skipped }
+
+/// What a backup or a restore is doing, as its progress reports it.
+enum BackupStage { compress, encrypt, transfer, cleanup, decrypt, restore }
+
+typedef BackupProgress = void Function(BackupStage stage, double percent);
+
+/// What to tell the user about [stage] being [percent] done.
+String backupStatusText(
+        AppLocalizations localizations, BackupStage stage, double percent) =>
+    switch (stage) {
+      BackupStage.compress =>
+        localizations.creatingBackupStatus("${percent.round()}"),
+      BackupStage.encrypt =>
+        localizations.encryptingBackupStatus("${percent.round()}"),
+      BackupStage.transfer => localizations.tranferStatus("${percent.round()}"),
+      BackupStage.cleanup => localizations.cleanUpStatus,
+      BackupStage.decrypt =>
+        localizations.decryptingBackupStatus("${percent.round()}"),
+      BackupStage.restore =>
+        localizations.restoringBackupStatus("${percent.round()}"),
+    };
 
 class BackupRestoreUtils {
   static final Logger _logger = Logger('BackupRestoreUtils');
@@ -42,13 +62,12 @@ class BackupRestoreUtils {
   static String _backupName(String prefix) =>
       "$prefix${DateTime.now().toIso8601String().replaceAll(':', '-')}.zip";
 
-  static Future<void> _writeBackup({
+  /// Writes a backup into [destination] and returns its file name: encrypted
+  /// with the backup password when one is set.
+  static Future<String> _writeBackup({
     required PickedDirectory destination,
     required String name,
-    required void Function(double percent) onCompress,
-    required void Function(double percent) onEncrypt,
-    required void Function(double percent) onTransfer,
-    required void Function() onCleanup,
+    required BackupProgress onProgress,
     CancellationToken? cancellationToken,
   }) async {
     final tempDir = await getTemporaryDirectory();
@@ -68,10 +87,11 @@ class BackupRestoreUtils {
         throw Exception('Failed to create a consistent database snapshot');
       }
 
-      onCompress(0);
+      onProgress(BackupStage.compress, 0);
       await ZipUtils.compress(stagedArchive.path, [databaseSnapshot.path],
           [await ImageStorage.instance.getInternalFolder()],
-          onProgress: onCompress, cancellationToken: cancellationToken);
+          onProgress: (percent) => onProgress(BackupStage.compress, percent),
+          cancellationToken: cancellationToken);
 
       if (cancellationToken?.isCancelled ?? false) {
         throw BackupCancelledException();
@@ -82,27 +102,29 @@ class BackupRestoreUtils {
 
       var backupFile = stagedArchive;
       if (password != null) {
-        onEncrypt(0);
+        onProgress(BackupStage.encrypt, 0);
         await BackupEncryption.encryptFile(
             stagedArchive.path, encryptedArchive.path, password,
-            onProgress: onEncrypt, cancellationToken: cancellationToken);
+            onProgress: (percent) => onProgress(BackupStage.encrypt, percent),
+            cancellationToken: cancellationToken);
         if (cancellationToken?.isCancelled ?? false) {
           throw BackupCancelledException();
         }
         backupFile = encryptedArchive;
       }
 
-      onTransfer(0);
+      onProgress(BackupStage.transfer, 0);
       final transferred = await destination.copyFileInto(
           backupFile.path, outputName,
           mimeType:
               password != null ? "application/octet-stream" : "application/zip",
-          onProgress: onTransfer);
+          onProgress: (percent) => onProgress(BackupStage.transfer, percent));
       if (!transferred) {
         throw Exception('Failed to transfer backup to $outputName');
       }
+      return outputName;
     } finally {
-      onCleanup();
+      onProgress(BackupStage.cleanup, 0);
       if (await stagedArchive.exists()) {
         await stagedArchive.delete();
       }
@@ -125,9 +147,7 @@ class BackupRestoreUtils {
 
   /// Throws [BackupCancelledException] when cancelled
   static Future<bool> runAutoBackup(
-      {void Function(double percent)? onCompress,
-      void Function(double percent)? onEncrypt,
-      void Function(double percent)? onTransfer,
+      {BackupProgress? onProgress,
       CancellationToken? cancellationToken}) async {
     final destinationUri =
         ConfigProvider.instance.get(Settings.autoBackupLocationUri);
@@ -154,10 +174,7 @@ class BackupRestoreUtils {
       await _writeBackup(
         destination: destination,
         name: _backupName(autoBackupPrefix),
-        onCompress: onCompress ?? (_) {},
-        onEncrypt: onEncrypt ?? (_) {},
-        onTransfer: onTransfer ?? (_) {},
-        onCleanup: () {},
+        onProgress: onProgress ?? (_, __) {},
         cancellationToken: cancellationToken,
       );
     } on BackupCancelledException {
@@ -238,9 +255,15 @@ class BackupRestoreUtils {
 
       success = await runAutoBackup(
         cancellationToken: cancellationToken,
-        onCompress: (percent) => showStage(creatingTemplate, percent),
-        onEncrypt: (percent) => showStage(encryptingTemplate, percent),
-        onTransfer: (percent) => showStage(transferringTemplate, percent),
+        onProgress: (stage, percent) {
+          final template = switch (stage) {
+            BackupStage.compress => creatingTemplate,
+            BackupStage.encrypt => encryptingTemplate,
+            BackupStage.transfer => transferringTemplate,
+            _ => null,
+          };
+          if (template != null) showStage(template, percent);
+        },
       );
     } on BackupCancelledException {
       cancelled = true;
@@ -311,79 +334,69 @@ class BackupRestoreUtils {
     }
   }
 
-  static Future<OperationOutcome> backupToZip(
-      BuildContext context, void Function(String) updateStatus) async {
-    final localizations = AppLocalizations.of(context)!;
-    var outcome = const OperationOutcome.succeeded();
-
-    try {
-      final saveDirectory = await StoragePicker.pickDirectory();
-      if (saveDirectory == null) return const OperationOutcome.cancelled();
-
-      await _writeBackup(
-        destination: saveDirectory,
-        name: _backupName(manualBackupPrefix),
-        onCompress: (percent) => updateStatus(
-            localizations.creatingBackupStatus("${percent.round()}")),
-        onEncrypt: (percent) => updateStatus(
-            localizations.encryptingBackupStatus("${percent.round()}")),
-        onTransfer: (percent) =>
-            updateStatus(localizations.tranferStatus("${percent.round()}")),
-        onCleanup: () => updateStatus(localizations.cleanUpStatus),
-      );
-      await _recordBackup();
-    } catch (error) {
-      outcome = OperationOutcome.failed(error);
-    }
-
-    return outcome;
+  /// Backs up the diary into [destination] and records it as the last
+  /// backup. Returns the backup's file name.
+  static Future<String> backupTo(PickedDirectory destination,
+      {BackupProgress? onProgress}) async {
+    final name = await _writeBackup(
+      destination: destination,
+      name: _backupName(manualBackupPrefix),
+      onProgress: onProgress ?? (_, __) {},
+    );
+    await _recordBackup();
+    return name;
   }
 
-  /// Restores a picked backup; [askPassword] asks for the password of an
-  /// encrypted one the saved password does not open.
-  static Future<OperationOutcome> restoreFromZip(
-      BuildContext context, void Function(String) updateStatus,
+  static Future<OperationOutcome> backupToZip(
+      PickedDirectory destination,
+      AppLocalizations localizations,
+      void Function(String) updateStatus) async {
+    try {
+      await backupTo(destination,
+          onProgress: (stage, percent) =>
+              updateStatus(backupStatusText(localizations, stage, percent)));
+      return const OperationOutcome.succeeded();
+    } catch (error) {
+      return OperationOutcome.failed(error);
+    }
+  }
+
+  /// Restores a picked backup, replacing the diary; [askPassword] asks for
+  /// the password of an encrypted one the saved password does not open
+  /// (null cancels).
+  static Future<OperationOutcome> restoreFromZip(PickedFile archive,
+      AppLocalizations localizations, void Function(String) updateStatus,
       {required Future<String?> Function() askPassword}) async {
-    final localizations = AppLocalizations.of(context)!;
+    void progress(BackupStage stage, double percent) =>
+        updateStatus(backupStatusText(localizations, stage, percent));
     var outcome = const OperationOutcome.succeeded();
-    var tempDir = await getTemporaryDirectory();
-    const tempImportName = "temp_backup_import";
-    final tempImportFile = File(join(tempDir.path, tempImportName));
-    final tempZipFile = File(join(tempDir.path, "temp_backup.zip"));
-    final restoreFolder = Directory(join(tempDir.path, "Restore"));
+    // Its own folder, so a file Windows still holds from the last restore
+    // cannot get in the way.
+    final work = await (await getTemporaryDirectory()).createTemp('restore');
+    const tempImportName = "backup_import";
+    final tempImportFile = File(join(work.path, tempImportName));
+    final tempZipFile = File(join(work.path, "backup.zip"));
+    final restoreFolder = Directory(join(work.path, "Restore"));
 
     try {
-      final archive = await StoragePicker.pickFile(
-          allowedExtensions: ['zip', 'enc'],
-          mimeTypes: ['application/zip', 'application/octet-stream']);
-
-      if (archive == null) return const OperationOutcome.cancelled();
-
       // Import archive
-      updateStatus(localizations.tranferStatus("0"));
-      await archive.copyInto(tempDir.path, tempImportName,
-          onProgress: (percent) {
-        updateStatus(localizations.tranferStatus("${percent.round()}"));
-      });
+      progress(BackupStage.transfer, 0);
+      await archive.copyInto(work.path, tempImportName,
+          onProgress: (percent) => progress(BackupStage.transfer, percent));
 
       if (await BackupEncryption.looksEncrypted(tempImportFile)) {
-        await _decryptBackup(tempImportFile, tempZipFile, (percent) {
-          updateStatus(
-              localizations.decryptingBackupStatus("${percent.round()}"));
-        }, askPassword);
+        await _decryptBackup(tempImportFile, tempZipFile,
+            (percent) => progress(BackupStage.decrypt, percent), askPassword);
       } else {
         if (await tempZipFile.exists()) await tempZipFile.delete();
         await tempImportFile.copy(tempZipFile.path);
       }
 
       // Restore archive
-      updateStatus(localizations.restoringBackupStatus("0"));
+      progress(BackupStage.restore, 0);
 
-      void reportExtractProgress(double percent) {
-        updateStatus(localizations.restoringBackupStatus("${percent.round()}"));
-      }
-
-      await _extractBackup(tempZipFile, restoreFolder, reportExtractProgress);
+      await _extractBackup(tempZipFile, restoreFolder,
+          (percent) => progress(BackupStage.restore, percent));
 
       final restoreStore = LocalFileStore(restoreFolder.path);
       final databaseBytes =
@@ -401,7 +414,7 @@ class BackupRestoreUtils {
             LocalFileStore(join(restoreFolder.path, "Images"));
         if (await restoredImages.isAvailable()) {
           // Also show cleanup status here since images may take awhile
-          updateStatus(localizations.cleanUpStatus);
+          progress(BackupStage.cleanup, 0);
           await ImageStorage.instance.whileNotSyncing(() async => restoreImages(
               restoredImages, await ImageStorage.instance.internalStore()));
           if (ImageStorage.instance.usingExternalLocation()) {
@@ -419,18 +432,21 @@ class BackupRestoreUtils {
     }
 
     // Delete temp files
-    updateStatus(localizations.cleanUpStatus);
-    if (await tempImportFile.exists()) {
-      await tempImportFile.delete();
-    }
-    if (await tempZipFile.exists()) {
-      await tempZipFile.delete();
-    }
-    if (await restoreFolder.exists()) {
-      await restoreFolder.delete(recursive: true);
-    }
+    progress(BackupStage.cleanup, 0);
+    await _deleteTemporary(work);
 
     return outcome;
+  }
+
+  /// Deletes what a finished restore left in the temporary folder. Failing
+  /// to is no reason to fail the restore: Windows may still hold a file
+  /// that was just in use.
+  static Future<void> _deleteTemporary(FileSystemEntity leftover) async {
+    try {
+      if (await leftover.exists()) await leftover.delete(recursive: true);
+    } on FileSystemException catch (error, stackTrace) {
+      _logger.warning('Could not delete ${leftover.path}', error, stackTrace);
+    }
   }
 
   static Future<void> restoreImages(

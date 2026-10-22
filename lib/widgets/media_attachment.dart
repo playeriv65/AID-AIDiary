@@ -7,6 +7,7 @@ import 'dart:io';
 
 import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/database/image_storage.dart';
+import 'package:aid_diary/services/media_import.dart';
 import 'package:aid_diary/widgets/entry_image_actions.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/models/image.dart';
@@ -68,11 +69,10 @@ class MediaActions {
       {required VoidCallback onTooLarge}) async {
     final file = File(picked.path);
     try {
-      if (await file.length() > AppConfig.instance.maxVideoBytes) {
-        onTooLarge();
-        return;
-      }
-      await _store(picked.name, file, onAdded);
+      _added(await MediaImport.storeVideo(picked.path, name: picked.name),
+          picked.name, onAdded);
+    } on MediaTooLargeException {
+      onTooLarge();
     } finally {
       // Android hands over a cache copy; desktop pickers return the original.
       if (Platform.isAndroid && await file.exists()) await file.delete();
@@ -107,14 +107,18 @@ class MediaActions {
       onAdded(await EntryImageActions.importSharedImages(photos));
     }
     for (final path in paths) {
+      final name = p.basename(path);
       switch (MediaKind.of(path)) {
         case MediaKind.image:
           continue;
-        case MediaKind.video
-            when await File(path).length() > config.maxVideoBytes:
-          messenger?.showSnackBar(SnackBar(content: Text(tooLarge)));
-        case MediaKind.video || MediaKind.audio:
-          await _store(p.basename(path), File(path), onAdded);
+        case MediaKind.video:
+          try {
+            _added(await MediaImport.storeVideo(path), name, onAdded);
+          } on MediaTooLargeException {
+            messenger?.showSnackBar(SnackBar(content: Text(tooLarge)));
+          }
+        case MediaKind.audio:
+          _added(await MediaImport.storeAudio(path), name, onAdded);
       }
     }
   }
@@ -123,7 +127,7 @@ class MediaActions {
     final result = await FilePicker.pickFiles(type: FileType.audio);
     final path = result.firstOrNull?.path;
     if (path == null) return;
-    await _store(p.basename(path), File(path), onAdded);
+    _added(await MediaImport.storeAudio(path), p.basename(path), onAdded);
   }
 
   static Future<void> recordAudio(
@@ -135,16 +139,14 @@ class MediaActions {
     if (path == null) return;
     final file = File(path);
     try {
-      await _store(p.basename(path), file, onAdded);
+      _added(await MediaImport.storeAudio(path), p.basename(path), onAdded);
     } finally {
       if (await file.exists()) await file.delete();
     }
   }
 
-  static Future<void> _store(
-      String name, File file, ValueChanged<List<String>> onAdded) async {
-    final stored =
-        await ImageStorage.instance.create(name, await file.readAsBytes());
+  static void _added(
+      String? stored, String name, ValueChanged<List<String>> onAdded) {
     if (stored == null) {
       _logger.warning('Could not store attachment $name');
       return;

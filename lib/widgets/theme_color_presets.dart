@@ -1,6 +1,7 @@
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/theme_mode_provider.dart';
+import 'package:aid_diary/theme_palette.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
@@ -13,13 +14,17 @@ class ThemeColorPresets extends StatelessWidget {
     final provider = context.watch<ThemeModeProvider>();
     final config = context.watch<ConfigProvider>();
     final theme = Theme.of(context);
+    final labels = {
+      'blue': l10n.themeColorBlue,
+      'green': l10n.themeColorGreen,
+      'brown': l10n.themeColorBrown,
+      'purple': l10n.themeColorPurple,
+      'rose': l10n.themeColorRose,
+      'amber': l10n.themeColorAmber,
+    };
     final presets = [
-      ('blue', l10n.themeColorBlue, const Color(0xff62A0EA)),
-      ('green', l10n.themeColorGreen, const Color(0xff587E64)),
-      ('brown', l10n.themeColorBrown, const Color(0xff967A5E)),
-      ('purple', l10n.themeColorPurple, const Color(0xff8F6CAF)),
-      ('rose', l10n.themeColorRose, const Color(0xffBE7589)),
-      ('amber', l10n.themeColorAmber, const Color(0xffC88945)),
+      for (final MapEntry(:key, :value) in accentPresets.entries)
+        (key, labels[key]!, Color(value)),
     ];
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 20, 16, 8),

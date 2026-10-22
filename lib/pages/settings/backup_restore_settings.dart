@@ -4,11 +4,10 @@
 
 import 'dart:io';
 
+import 'package:aid_diary/actions/settings_actions.dart';
 import 'package:aid_diary/config_provider.dart';
-import 'package:aid_diary/providers/entries_provider.dart';
 import 'package:aid_diary/device_info_service.dart';
-import 'package:aid_diary/background/background_work.dart';
-import 'package:aid_diary/notification_manager.dart';
+import 'package:aid_diary/pages/settings/security_settings.dart';
 import 'package:aid_diary/storage/storage_picker.dart';
 import 'package:aid_diary/time_manager.dart';
 import 'package:aid_diary/utils/auto_backup_schedule.dart';
@@ -17,7 +16,7 @@ import 'package:aid_diary/utils/imports/import_registry.dart';
 import 'package:aid_diary/utils/export_utils.dart';
 import 'package:aid_diary/utils/password_store.dart';
 import 'package:aid_diary/widgets/auth_popup.dart';
-import 'package:aid_diary/widgets/auto_backup_settings_dialog.dart';
+import 'package:aid_diary/routing/destinations.dart';
 import 'package:aid_diary/widgets/progress_dialog.dart';
 import 'package:aid_diary/widgets/settings_icon_action.dart';
 import 'package:aid_diary/widgets/settings_toggle.dart';
@@ -76,10 +75,12 @@ class _BackupRestoreSettingsState extends State<BackupRestoreSettings> {
           ValueKey('import-${option.format.name}')
         ),
     ]);
-    // Importers skip entries already in the diary, so they need all of it.
-    await EntriesProvider.instance.complete;
     if (option == null || !mounted) return;
-    await runOperation(context, (update) => option.run(context, update),
+    final file = await StoragePicker.pickFile(
+        allowedExtensions: option.extensions, mimeTypes: option.mimeTypes);
+    if (file == null || !mounted) return;
+    await runOperation(
+        context, (update) => option.run(file, localizations, update),
         failureDescription: localizations.importErrorDescription);
   }
 
@@ -95,24 +96,37 @@ class _BackupRestoreSettingsState extends State<BackupRestoreSettings> {
         ),
     ]);
     if (option == null || !mounted) return;
-    await runOperation(context, (update) => option.run(context, update),
+    final folder = await StoragePicker.pickDirectory();
+    if (folder == null || !mounted) return;
+    final locale = Localizations.localeOf(context);
+    await runOperation(
+        context, (update) => option.run(folder, localizations, locale, update),
         failureDescription: localizations.exportErrorDescription);
   }
 
   Future<void> _backupData(BuildContext context) async {
+    final localizations = AppLocalizations.of(context)!;
+    final folder = await StoragePicker.pickDirectory();
+    if (folder == null || !context.mounted) return;
     await runOperation(
-        context, (update) => BackupRestoreUtils.backupToZip(context, update),
-        failureDescription:
-            AppLocalizations.of(context)!.backupErrorDescription);
+        context,
+        (update) =>
+            BackupRestoreUtils.backupToZip(folder, localizations, update),
+        failureDescription: localizations.backupErrorDescription);
   }
 
   Future<void> _restoreData(BuildContext context) async {
+    final localizations = AppLocalizations.of(context)!;
+    final archive = await StoragePicker.pickFile(
+        allowedExtensions: ['zip', 'enc'],
+        mimeTypes: ['application/zip', 'application/octet-stream']);
+    if (archive == null || !context.mounted) return;
     await runOperation(
         context,
-        (update) => BackupRestoreUtils.restoreFromZip(context, update,
+        (update) => BackupRestoreUtils.restoreFromZip(
+            archive, localizations, update,
             askPassword: () => _askBackupPassword(context)),
-        failureDescription:
-            AppLocalizations.of(context)!.restoreErrorDescription);
+        failureDescription: localizations.restoreErrorDescription);
   }
 
   /// The password of an encrypted backup the saved one does not open.
@@ -198,11 +212,9 @@ class _BackupRestoreSettingsState extends State<BackupRestoreSettings> {
             ));
   }
 
-  Future<void> _showAutoBackupSettings() async {
-    await showDialog(
-        context: context, builder: (context) => AutoBackupSettingsDialog());
-    await armAutoBackupWork();
-  }
+  // Its settings re-arm the backup work themselves (SettingsService).
+  Future<void> _showAutoBackupSettings() =>
+      openPlace(context, 'settings/auto_backup');
 
   @override
   Widget build(BuildContext context) {
@@ -241,23 +253,20 @@ class _BackupRestoreSettingsState extends State<BackupRestoreSettings> {
               onSecondaryPressed: _showAutoBackupSettings,
               onChanged: (value) async {
                 if (value) {
-                  if (!await NotificationManager.instance
-                      .hasNotificationPermission()) {
-                    return;
-                  }
                   if (configProvider.get(Settings.autoBackupLocationUri) ==
                       '') {
                     final directory = await StoragePicker.pickDirectory();
                     if (directory == null) return;
-                    await configProvider.set(
+                    await changeSetting(
                         Settings.autoBackupLocationUri, directory.uri);
                   }
-                  await configProvider.set(Settings.autoBackupEnabled, true);
+                  if (!await changeSetting(Settings.autoBackupEnabled, true)) {
+                    return;
+                  }
                   await _showAutoBackupSettings();
                   return;
                 }
-                await configProvider.set(Settings.autoBackupEnabled, false);
-                await armAutoBackupWork();
+                await changeSetting(Settings.autoBackupEnabled, false);
               },
             ),
           SettingsToggle(
@@ -274,12 +283,9 @@ class _BackupRestoreSettingsState extends State<BackupRestoreSettings> {
                       await _showBackupPasswordDialog(
                           AppLocalizations.of(context)!
                               .settingsSecuritySetPassword);
-                      await configProvider.set(Settings.backupPasswordEnabled,
-                          BackupPasswordStore.password.isNotEmpty);
+                      await updateBackupPassword();
                     } else {
-                      await configProvider.set(Settings.backupPassword, "");
-                      await configProvider.set(
-                          Settings.backupPasswordEnabled, false);
+                      await updateBackupPassword(clear: true);
                     }
                   }
                 : null,

@@ -35,7 +35,27 @@ class TemplatesProvider with ChangeNotifier {
     return templateWithId;
   }
 
+  /// Writes [template] (added when it has no id yet) with exactly the tags
+  /// [tagIds], as the template editor does on saving.
+  Future<Template> save(Template template, List<int> tagIds) async {
+    final Template saved;
+    if (template.id == null) {
+      saved = await add(template);
+    } else {
+      await update(template);
+      saved = template;
+    }
+    await TagsProvider.instance.setTemplateTags(saved.id!, tagIds);
+    return saved;
+  }
+
+  /// Deletes [template]; when it was the default one, new entries start
+  /// empty again.
   Future<void> remove(Template template) async {
+    final config = ConfigProvider.instance;
+    if (config.get(Settings.defaultTemplate) == template.id) {
+      await config.set(Settings.defaultTemplate, -1);
+    }
     await TagsProvider.instance.removeAllTemplateTagsForTemplate(template.id!);
     await TemplateDao.remove(template.id!);
     templates.removeWhere((x) => x.id == template.id);

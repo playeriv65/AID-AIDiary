@@ -12,7 +12,6 @@ import 'package:aid_diary/widgets/journal_entry_row.dart';
 import 'package:aid_diary/widgets/list_detail_layout.dart';
 import 'package:aid_diary/widgets/top_search_card.dart';
 import 'package:aid_diary/widgets/month_calendar.dart';
-import 'package:aid_diary/pages/entry_timeline_page.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
@@ -39,7 +38,7 @@ class _CalendarPageState extends State<CalendarPage>
     if (entries.length == 1) {
       EntryNavigation.view(context, entries.single);
     } else if (entries.length > 1) {
-      EntryTimelinePage.pushForDay(context, day);
+      EntryNavigation.day(context, day);
     } else if (!day.isAfter(DateTime.now())) {
       EntryNavigation.addForDay(context, day);
     }

@@ -12,30 +12,55 @@ ActionScreen _screen(ActionContext context) =>
 final List<AppAction> screenActions = [
   AppAction(
     id: 'ui.screen',
-    describe: 'Says which screen the user is on, and where ui.navigate can go.',
+    describe: 'Says which screen the user is on, and every place ui.navigate '
+        'can open with the arguments each takes.',
     risk: ActionRisk.read,
     run: (context, args) async {
       final screen = _screen(context);
-      return {'current': screen.current, 'destinations': screen.destinations};
+      return {
+        'current': screen.current,
+        'destinations': [
+          for (final destination in screen.destinations) destination.toJson(),
+        ],
+      };
     },
   ),
   AppAction(
     id: 'ui.navigate',
-    describe: 'Opens a screen, so a person watching sees what an agent works '
-        'on.',
+    describe: 'Opens a screen or an item on it, as a tap would, so a person '
+        'watching sees what an agent works on. Takes the arguments of the '
+        'destination, e.g. to=entry id=12.',
     risk: ActionRisk.read,
+    moreArgs: true,
     params: const [
       ActionParam('to', ParamType.string, 'A destination from ui.screen'),
     ],
     run: (context, args) async {
       final screen = _screen(context);
       final to = args['to'] as String;
-      if (!screen.destinations.contains(to)) {
-        throw ActionException(
-            'bad_args', 'to must be one of ${screen.destinations.join(', ')}');
-      }
-      await screen.navigate(to);
+      final destination = screen.destinations
+              .where((destination) => destination.name == to)
+              .firstOrNull ??
+          (throw ActionException(
+              'bad_args',
+              'to must be one of ${[
+                for (final d in screen.destinations) d.name
+              ].join(', ')}'));
+      await screen.navigate(
+          to,
+          parseArgs(destination.params, {...args}..remove('to'),
+              'ui.navigate to=$to'));
       return {'current': screen.current};
+    },
+  ),
+  AppAction(
+    id: 'ui.back',
+    describe: 'Closes the screen or dialog on top, as the back gesture does.',
+    risk: ActionRisk.read,
+    run: (context, args) async {
+      final screen = _screen(context);
+      final closed = await screen.back();
+      return {'closed': closed, 'current': screen.current};
     },
   ),
 ];

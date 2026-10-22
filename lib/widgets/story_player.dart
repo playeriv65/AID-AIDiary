@@ -6,7 +6,6 @@ import 'dart:math';
 import 'dart:ui' show ImageFilter;
 
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
-import 'package:aid_diary/layouts/adaptive_diary_shell.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// One slide: an icon and title in the header above its content.
@@ -55,36 +54,6 @@ class StoryPlayer extends StatefulWidget {
   final String? startAt;
   final bool wrapUp;
   final Duration slideDuration;
-
-  /// Wide windows show the story as a card over the app, phones full screen.
-  /// [groups] runs while the story builds, so it may read providers.
-  static Future<void> show(
-    BuildContext context, {
-    required List<StoryGroup> Function(BuildContext context) groups,
-    String? startAt,
-    bool wrapUp = false,
-  }) {
-    Widget player(BuildContext context) =>
-        StoryPlayer(groups: groups(context), startAt: startAt, wrapUp: wrapUp);
-    // A tip still showing would move onto the story's own scaffold.
-    ScaffoldMessenger.maybeOf(context)?.hideCurrentSnackBar();
-    final size = MediaQuery.sizeOf(context);
-    if (!diarySupportsSplit(size)) {
-      return Navigator.of(context).push(MaterialPageRoute(
-          fullscreenDialog: true, allowSnapshotting: false, builder: player));
-    }
-    return showDialog(
-      context: context,
-      builder: (context) => Center(
-        child: SizedBox(
-          width: min(580, size.width - 32),
-          height: min(720, size.height - 48),
-          child: ClipRRect(
-              borderRadius: BorderRadius.circular(16), child: player(context)),
-        ),
-      ),
-    );
-  }
 
   /// Pauses the story around [action], e.g. while the user types.
   static Future<T> pauseDuring<T>(

@@ -275,10 +275,16 @@ class BackupEncryption {
     final baseNonce = args["baseNonce"] as Uint8List;
     final onDiskChunkSize = chunkPlainSize + _tagLength;
 
-    final input = File(args["inputFile"]).openSync(mode: FileMode.read);
-    final output =
-        File(args["outputFile"]).openSync(mode: FileMode.writeOnlyAppend);
+    RandomAccessFile? input;
+    RandomAccessFile? output;
+    // The files are closed before the result goes out: the caller kills this
+    // isolate on it, and files left open cannot be deleted on Windows. Every
+    // failure is reported too, as the caller waits for a result.
+    String result = _done;
     try {
+      input = File(args["inputFile"]).openSync(mode: FileMode.read);
+      output =
+          File(args["outputFile"]).openSync(mode: FileMode.writeOnlyAppend);
       final secretKey = SecretKeyData(key);
       var processed = 0;
       for (var chunkIndex = startChunk; chunkIndex < endChunk; chunkIndex++) {
@@ -323,15 +329,15 @@ class BackupEncryption {
         processed += plainLength;
         sendPort.send([workerIndex, processed]);
       }
-      sendPort.send(_done);
     } on BackupDecryptionFailedException {
-      sendPort.send(_decryptionFailedSentinel);
+      result = _decryptionFailedSentinel;
     } catch (error) {
-      sendPort.send(error.toString());
+      result = error.toString();
     } finally {
-      input.closeSync();
-      output.closeSync();
+      input?.closeSync();
+      output?.closeSync();
     }
+    sendPort.send(result);
   }
 
   static Future<_KeyMaterial> _prepareEncrypt(String outputFile,

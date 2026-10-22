@@ -8,7 +8,7 @@ library;
 import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/database/entry_store.dart';
-import 'package:aid_diary/widgets/command_palette.dart';
+import 'package:aid_diary/routing/destinations.dart';
 import 'package:aid_diary/widgets/delete_confirm_dialog.dart';
 import 'package:aid_diary/widgets/settings_toggle.dart';
 import 'package:flutter/services.dart';
@@ -39,7 +39,7 @@ void main() {
     DiaryAppHarness.size(tester, const Size(1280, 900));
     await tester.pumpWidget(harness.app(Builder(
         builder: (context) => TextButton(
-            onPressed: () => showCommandPalette(context),
+            onPressed: () => openPlace(context, 'commands'),
             child: const Text('open')))));
     await tester.tap(find.text('open'));
     await tester.pumpAndSettle();

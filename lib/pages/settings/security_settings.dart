@@ -4,6 +4,7 @@
 
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/device_info_service.dart';
+import 'package:aid_diary/utils/password_store.dart';
 import 'package:aid_diary/widgets/auth_popup.dart';
 import 'package:aid_diary/widgets/settings_icon_action.dart';
 import 'package:aid_diary/widgets/settings_toggle.dart';
@@ -12,6 +13,17 @@ import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:provider/provider.dart';
+
+/// Keeps the backup password's switch in step with the password: on when
+/// one is set. With [clear] it forgets the password and turns the switch
+/// off. Like the app lock, only the person at the device does this, so no
+/// action stands in for it (docs/ARCHITECTURE.md).
+Future<void> updateBackupPassword({bool clear = false}) async {
+  final config = ConfigProvider.instance;
+  if (clear) await config.set(Settings.backupPassword, '');
+  await config.set(Settings.backupPasswordEnabled,
+      !clear && BackupPasswordStore.password.isNotEmpty);
+}
 
 class SecuritySettings extends StatefulWidget {
   const SecuritySettings({super.key});

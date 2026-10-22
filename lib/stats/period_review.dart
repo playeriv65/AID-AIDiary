@@ -6,6 +6,9 @@ import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/models/image.dart';
 import 'package:aid_diary/stats/entry_stats.dart';
 
+/// The stretch of time a review covers.
+enum ReviewSpan { week, year }
+
 /// A count of how often something came up, most frequent first.
 typedef Tally<T> = List<({T item, int count})>;
 

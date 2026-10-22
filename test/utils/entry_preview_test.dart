@@ -43,6 +43,12 @@ void main() {
     expect(emoji.snippet, '${'a' * 299}…');
   });
 
+  test('shared text goes below the entry text after a blank line', () {
+    expect(mergeSharedText('template', null), 'template');
+    expect(mergeSharedText('', 'shared'), 'shared');
+    expect(mergeSharedText('template', 'shared'), 'template\n\nshared');
+  });
+
   test('empty text gives an empty preview', () {
     final preview = entryPreview('\n  \n');
     expect(preview.title, isNull);

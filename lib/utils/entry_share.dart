@@ -8,11 +8,18 @@ import 'dart:typed_data';
 import 'package:archive/archive.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/models/image.dart';
+import 'package:aid_diary/utils/mood_emoji.dart';
 import 'package:markdown/markdown.dart' as md;
 
 /// One entry as plain text, an HTML page or a ZIP with its original media.
 /// [heading] is the line above the text, e.g. the mood and date.
 class EntryShare {
+  /// The line above the text: the mood's emoji, if any, and [date].
+  static String heading(Entry entry, String date) {
+    final mood = moodEmoji(entry.mood);
+    return '${mood.isEmpty ? '' : '$mood '}$date';
+  }
+
   static String plainText(Entry entry, String heading) =>
       '$heading\n${entry.text}';
 

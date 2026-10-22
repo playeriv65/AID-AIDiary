@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'package:aid_diary/actions/settings_actions.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/storage/storage_picker.dart';
@@ -18,8 +19,7 @@ class AutoBackupSettingsDialog extends StatelessWidget {
   Future<void> _pickLocation() async {
     final directory = await StoragePicker.pickDirectory();
     if (directory == null) return;
-    await ConfigProvider.instance
-        .set(Settings.autoBackupLocationUri, directory.uri);
+    await changeSetting(Settings.autoBackupLocationUri, directory.uri);
   }
 
   @override
@@ -52,7 +52,7 @@ class AutoBackupSettingsDialog extends StatelessWidget {
               ],
               onChanged: (value) async {
                 if (value == null) return;
-                await configProvider.set(Settings.autoBackupInterval, value);
+                await changeSetting(Settings.autoBackupInterval, value);
               },
             ),
             SettingsDropdown<int>(
@@ -70,7 +70,7 @@ class AutoBackupSettingsDialog extends StatelessWidget {
               ],
               onChanged: (value) async {
                 if (value == null) return;
-                await configProvider.set(Settings.autoBackupMaxCount, value);
+                await changeSetting(Settings.autoBackupMaxCount, value);
               },
             ),
             SettingsToggle(
@@ -78,8 +78,7 @@ class AutoBackupSettingsDialog extends StatelessWidget {
                   .settingsAutoBackupRequireCharging,
               setting: Settings.autoBackupRequireCharging,
               onChanged: (value) async {
-                await configProvider.set(
-                    Settings.autoBackupRequireCharging, value);
+                await changeSetting(Settings.autoBackupRequireCharging, value);
               },
             ),
           ],

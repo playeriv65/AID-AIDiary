@@ -104,6 +104,25 @@ same things:
   setting in others.
 - `aid guide` is written from the actions themselves.
 
+The command line covers the GUI: whatever a person can do or open in the
+GUI, an action does or `ui.navigate` opens. It may do more (bulk work,
+test data). Kept out on purpose, and documented as such: setting or
+changing the app lock, the backup password and fingerprint unlock (an
+agent must not be able to lock the user out; `security.status` reads
+them), and the system's own permission prompts. Sealed time capsules stay
+sealed for actions as in the GUI: they return that an entry is sealed and
+when it opens, not its text.
+
+Places: every screen, item or dialog the GUI opens is a `Destination` in
+`lib/routing/` (`destinations.dart` gathers them), opened by taps through
+the same code `ui.navigate` uses, with typed parameters (`ui.navigate
+to=entry id=12`, `to=day day=2026-10-21`). Routes are named after their
+place, so `ui.screen` reports `entry/12`; `ui.back` closes the top one.
+Dialogs and sheets are places as well (`showPlaceDialog`, `showPlaceSheet`:
+`tag`, `check_in`, `commands`), and so are the stories (`story from=coach`,
+`review span=week`) and today's flashbacks (`flashback index=0`, numbered as
+`flashback.list` counts them).
+
 Rules that keep it so:
 
 - An action never shows UI: it takes explicit arguments and returns JSON or
@@ -112,13 +131,33 @@ Rules that keep it so:
   confirmed.
 - Bulk work notifies listeners once, not per item, so a CLI command that
   adds thousands of entries redraws the GUI once.
+- A setting that does more than store a value (rearms a reminder, applies the
+  diary day hours, starts or stops the command line server) is changed through
+  `SettingsService`, which `settings.set` and `settings.set_many` call. The
+  settings pages change a setting with `changeSetting` and `changeSettings`
+  (`lib/actions/settings_actions.dart`), which run those actions. The theme
+  needs no call: `ThemeModeProvider` follows the stored settings. Whatever
+  moves data (import, export, backup, restore, storage folders, the
+  wallpaper photo) is one function in `utils/`, `database/` or `services/`
+  that takes the picked file or folder; the page picks and shows progress, the
+  action takes a path.
 - `ui.screen` and `ui.navigate` let an agent see and move the GUI; the GUI
   provides them through `ActionScreen`, so `actions/` still imports no UI.
 - Touch feedback (`widgets/haptics.dart`) belongs to the GUI: actions run
   from the CLI stay silent.
+- The GUI changes data only by running actions (`AppActions.instance.run`),
+  never by writing to the stores and services behind them;
+  `test/architecture/actions_only_test.dart` checks `pages/`, `widgets/` and
+  `layouts/` and names the few files that may, with why (the editor's
+  draft, the app lock). A long action reports to `ActionContext.progress`,
+  which the GUI passes to its progress dialog.
+- Only `lib/routing/` pushes routes (`test/architecture/places_test.dart`
+  lists the few flows that are not places, with why), and every place
+  opened by name exists.
 - Tests: `test/actions/` runs actions against real stores and the API over
   HTTP; `test/widgets/command_palette_test.dart` checks the palette offers
-  every action; `cli/test/` covers the CLI, adb included.
+  every action; `test/routing/` opens the places through `ui.navigate` in
+  a running app shell; `cli/test/` covers the CLI, adb included.
 
 ## Dependencies
 
@@ -135,9 +174,8 @@ fakes without global setup.
 2. Put rules in pure code (`utils/` or `stats/`) with unit tests.
 3. Make what it does an action in `actions/` and register it in
    `AppActions`; the screen's buttons call the action.
-4. Build the screen in `pages/`, shared pieces in `widgets/`, and its route
-   in `routing/` if other screens open it (and in `AppNavigation.byName`
-   for `ui.navigate`).
+4. Build the screen in `pages/`, shared pieces in `widgets/`, and make it a
+   `Destination` in `routing/`, which taps and `ui.navigate` both open.
 5. Settings: a `Setting` in `Settings.all`; tunable values and endpoints in
    `assets/config/app_config.json`; user-facing text in the ARB files.
 6. Tests at the layer that owns the logic (`dart_test.yaml` explains the

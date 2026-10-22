@@ -12,8 +12,8 @@ import 'package:aid_diary/pages/calendar_page.dart';
 import 'package:aid_diary/pages/coach_page.dart';
 import 'package:aid_diary/pages/journal_page.dart';
 import 'package:aid_diary/pages/media_page.dart';
-import 'package:aid_diary/routing/app_navigation.dart';
-import 'package:aid_diary/widgets/command_palette.dart';
+import 'package:aid_diary/routing/destinations.dart' as places;
+import 'package:aid_diary/routing/route_names.dart';
 import 'package:flutter/services.dart';
 import 'package:aid_diary/routing/entry_navigation.dart';
 import 'package:material_ui/material_ui.dart';
@@ -31,7 +31,7 @@ class _MobileScaffoldState extends State<MobileScaffold>
 
   int currentIndex = 0;
   final _navigatorKey = GlobalKey<NavigatorState>();
-  final _routes = _RouteNames();
+  final _routes = RouteNames(base: 1);
 
   @override
   void initState() {
@@ -46,25 +46,50 @@ class _MobileScaffoldState extends State<MobileScaffold>
   }
 
   @override
-  String get current => _routes.top ?? _tabs[currentIndex];
+  String get current => rootRoutes.top ?? _routes.top ?? _tabs[currentIndex];
 
   @override
-  List<String> get destinations => [..._tabs, ...AppNavigation.byName.keys];
+  List<ScreenDestination> get destinations => [
+        for (final tab in _tabs) ScreenDestination(tab, 'The $tab tab'),
+        for (final destination in places.destinations) destination.info,
+      ];
+
+  /// The navigator over the tab bar, where the editor opens.
+  NavigatorState? get _root {
+    final context = _navigatorKey.currentContext;
+    return context == null ? null : Navigator.of(context, rootNavigator: true);
+  }
 
   @override
-  Future<void> navigate(String destination) async {
-    final navigator = _navigatorKey.currentState;
-    if (navigator == null) return;
+  Future<bool> back() async {
+    for (final (navigator, routes) in [
+      (_root, rootRoutes),
+      (_navigatorKey.currentState, _routes),
+    ]) {
+      if (navigator == null || !navigator.canPop()) continue;
+      final before = routes.depth;
+      await navigator.maybePop();
+      return routes.depth < before;
+    }
+    return false;
+  }
+
+  @override
+  Future<void> navigate(String destination, ActionArgs args) async {
     // Back to the tabs the way a person would, so an editor still asks
     // about unsaved changes.
-    while (navigator.canPop()) {
-      final before = _routes.depth;
-      if (!await navigator.maybePop() || _routes.depth == before) break;
+    while (rootRoutes.top != null || _routes.top != null) {
+      if (!mounted || !await back()) return;
     }
-    if (!mounted || navigator.canPop()) return;
     final tab = _tabs.indexOf(destination);
     if (tab >= 0) return _switchPage(tab);
-    await AppNavigation.byName[destination]!(navigator);
+    final context = _navigatorKey.currentContext;
+    if (context == null || !context.mounted) return;
+    // The place's future ends when it is closed: answer once it is showing.
+    await Future.any([
+      places.openPlace(context, destination, args),
+      WidgetsBinding.instance.endOfFrame,
+    ]);
   }
 
   /// Pages are built on first visit, so the map loads no tiles until opened.
@@ -94,7 +119,7 @@ class _MobileScaffoldState extends State<MobileScaffold>
 
   void _openCommands() {
     final context = _navigatorKey.currentContext;
-    if (context != null) showCommandPalette(context);
+    if (context != null) places.openPlace(context, 'commands');
   }
 
   @override
@@ -155,34 +180,5 @@ class _MobileScaffoldState extends State<MobileScaffold>
         );
       }),
     );
-  }
-}
-
-/// The names of the routes open above the tabs, for `ui.screen`.
-class _RouteNames extends NavigatorObserver {
-  final List<Route<dynamic>> _routes = [];
-
-  int get depth => _routes.length;
-
-  /// The top route's name, or null when only the tabs are showing.
-  String? get top =>
-      _routes.length > 1 ? _routes.last.settings.name ?? 'page' : null;
-
-  @override
-  void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) =>
-      _routes.add(route);
-
-  @override
-  void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) =>
-      _routes.remove(route);
-
-  @override
-  void didRemove(Route<dynamic> route, Route<dynamic>? previousRoute) =>
-      _routes.remove(route);
-
-  @override
-  void didReplace({Route<dynamic>? newRoute, Route<dynamic>? oldRoute}) {
-    final index = oldRoute == null ? -1 : _routes.indexOf(oldRoute);
-    if (index >= 0 && newRoute != null) _routes[index] = newRoute;
   }
 }

@@ -19,9 +19,15 @@ class StoredFile {
   final int size;
 }
 
+/// Whether [location] names an Android document (a `content://` URI) rather
+/// than a path.
+bool isContentUri(String location) =>
+    Platform.isAndroid && location.startsWith('content:');
+
 abstract interface class FileStore {
-  factory FileStore.external(String location) =>
-      Platform.isAndroid ? SafFileStore(location) : LocalFileStore(location);
+  factory FileStore.external(String location) => isContentUri(location)
+      ? SafFileStore(location)
+      : LocalFileStore(location);
 
   Future<bool> isAvailable();
 

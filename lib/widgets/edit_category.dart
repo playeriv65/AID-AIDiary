@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'package:aid_diary/actions/app_action.dart';
+import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/models/tag_category.dart';
 import 'package:aid_diary/models/tag_icon_type.dart';
 import 'package:aid_diary/providers/tags_provider.dart';
@@ -10,6 +12,7 @@ import 'package:aid_diary/widgets/color_swatch_row.dart';
 import 'package:aid_diary/widgets/delete_confirm_dialog.dart';
 import 'package:aid_diary/widgets/icon_picker_dialog.dart';
 import 'package:aid_diary/widgets/tag_icon_glyph.dart';
+import 'package:aid_diary/utils/tag_look.dart';
 import 'package:aid_diary/utils/tag_name_sanitizer.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
@@ -28,6 +31,9 @@ class _EditCategoryState extends State<EditCategory> {
   String? _icon;
   TagIconType _iconType = TagIconType.character;
   int? _color;
+
+  /// The name (lower case) the last save was refused for, as taken.
+  String? _refusedName;
 
   @override
   void initState() {
@@ -50,28 +56,30 @@ class _EditCategoryState extends State<EditCategory> {
     final name = sanitizeTagName(_nameController.text);
     if (name.isEmpty) return;
 
-    final now = DateTime.now();
-
-    if (widget.category == null) {
-      await TagsProvider.instance.addCategory(TagCategory(
-        name: name,
-        icon: _icon,
-        iconType: _iconType,
-        color: _color,
-        timeCreate: now,
-        timeModified: now,
-      ));
-    } else {
-      // Construct directly so null icon is honored when cleared
-      await TagsProvider.instance.updateCategory(TagCategory(
-        id: widget.category!.id,
-        name: name,
-        icon: _icon,
-        iconType: _iconType,
-        color: _color,
-        timeCreate: widget.category!.timeCreate,
-        timeModified: now,
-      ));
+    final category = widget.category;
+    final look = (color: _color, icon: _icon, iconType: _iconType);
+    try {
+      if (category == null) {
+        await AppActions.instance.run('category.create', {
+          'name': name,
+          ...tagLookArgs(look),
+        });
+      } else {
+        await AppActions.instance.run('category.update', {
+          'id': category.id,
+          'name': name,
+          ...tagLookArgs(look, before: (
+            color: category.color,
+            icon: category.icon,
+            iconType: category.iconType
+          )),
+        });
+      }
+    } on ActionException catch (error) {
+      if (error.code != 'exists') rethrow;
+      // Names stay unique: say so at the field instead of making a twin.
+      if (mounted) setState(() => _refusedName = name.toLowerCase());
+      return;
     }
 
     if (mounted) Navigator.of(context).pop();
@@ -89,7 +97,8 @@ class _EditCategoryState extends State<EditCategory> {
       message: l10n.deleteCategoryMessage(tagCount, category.name),
     );
     if (confirmed && mounted) {
-      await TagsProvider.instance.removeCategoryAndTags(category);
+      await AppActions.instance
+          .run('category.delete', {'id': category.id}, confirmed: true);
       if (mounted) Navigator.of(context).pop();
     }
   }
@@ -209,6 +218,11 @@ class _EditCategoryState extends State<EditCategory> {
                           textCapitalization: TextCapitalization.words,
                           decoration: InputDecoration(
                             hintText: l10n.nameHint,
+                            errorText: _refusedName ==
+                                    sanitizeTagName(_nameController.text)
+                                        .toLowerCase()
+                                ? l10n.categoryNameExists
+                                : null,
                             border: InputBorder.none,
                           ),
                           onSubmitted: (_) =>
