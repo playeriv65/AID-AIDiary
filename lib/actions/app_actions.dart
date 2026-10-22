@@ -8,6 +8,7 @@ import 'package:aid_diary/actions/data_actions.dart';
 import 'package:aid_diary/actions/entry_actions.dart';
 import 'package:aid_diary/actions/entry_media_actions.dart';
 import 'package:aid_diary/actions/flashback_actions.dart';
+import 'package:aid_diary/actions/perf_actions.dart';
 import 'package:aid_diary/actions/place_actions.dart';
 import 'package:aid_diary/actions/screen_actions.dart';
 import 'package:aid_diary/actions/settings_actions.dart';
@@ -22,7 +23,10 @@ import 'package:flutter/services.dart';
 class AppActions {
   AppActions({List<AppAction>? actions, this.screen, bool? devBuild})
       : _actions = actions ?? everyAction,
-        devBuild = devBuild ?? (kDebugMode || appFlavor == 'dev');
+        devBuild = devBuild ??
+            (kDebugMode ||
+                appFlavor == 'dev' ||
+                const bool.fromEnvironment('AID_DEV_BUILD'));
 
   static final AppActions instance = AppActions();
 
@@ -38,6 +42,7 @@ class AppActions {
     ...dataActions,
     ...syncActions,
     ...screenActions,
+    ...perfActions,
   ];
 
   final List<AppAction> _actions;
@@ -45,6 +50,9 @@ class AppActions {
   /// Set by the GUI once it is up.
   ActionScreen? screen;
 
+  /// Debug builds, the dev flavor, and builds made with
+  /// `--dart-define=AID_DEV_BUILD=true` (a profile build on a computer for
+  /// a frame-rate run): test data, the agent API always on, `AID_DATA_DIR`.
   final bool devBuild;
 
   ActionContext get context =>

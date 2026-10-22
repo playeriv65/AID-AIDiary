@@ -13,9 +13,12 @@ import 'package:aid_diary/actions/app_action.dart';
 import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/database/entry_store.dart';
+import 'package:aid_diary/database/image_storage.dart';
+import 'package:aid_diary/providers/entry_images_provider.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 
+import '../support/app_folders_harness.dart';
 import '../support/diary_app_harness.dart';
 
 class FakeScreen implements ActionScreen {
@@ -46,6 +49,7 @@ class FakeScreen implements ActionScreen {
 
 void main() {
   DiaryAppHarness().register();
+  useTemporaryAppFolders();
   final actions = AppActions(devBuild: true);
 
   Future<Map<String, Object?>> run(String id,
@@ -101,6 +105,18 @@ void main() {
     final page = await run('entry.list', {'limit': '10', 'offset': '290'});
     expect(page['total'], 300);
     expect(page['entries'] as List, hasLength(10));
+  });
+
+  test('test data may come with photos, each in a file of its own', () async {
+    final seeded =
+        await run('entry.seed', {'count': '40', 'words': '5', 'photos': '4'});
+    expect(seeded['photos'], 4);
+    final photos = EntryImagesProvider.instance.images;
+    expect(photos, hasLength(4));
+    expect(photos.map((photo) => photo.imgPath).toSet(), hasLength(4));
+    for (final photo in photos) {
+      expect(await ImageStorage.instance.exists(photo.imgPath), isTrue);
+    }
   });
 
   test('wrong arguments are refused with a reason', () async {

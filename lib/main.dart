@@ -6,6 +6,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:aid_diary/actions/agent_api.dart';
+import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/database/entry_store.dart';
@@ -20,6 +21,7 @@ import 'package:aid_diary/providers/entry_images_provider.dart';
 import 'package:aid_diary/providers/tags_provider.dart';
 import 'package:aid_diary/providers/templates_provider.dart';
 import 'package:aid_diary/utils/logging.dart';
+import 'package:aid_diary/utils/scratch_folders.dart';
 import 'package:aid_diary/widgets/legacy_material_bridge.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:material_ui/material_ui.dart';
@@ -42,6 +44,7 @@ void main() async {
   }
   databaseFactory = databaseFactoryFfi;
   WidgetsFlutterBinding.ensureInitialized();
+  if (AppActions.instance.devBuild) useScratchFolders();
 
   configureLogging();
 

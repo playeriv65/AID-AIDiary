@@ -62,6 +62,9 @@ Windows is the main development environment. Use the installed Flutter SDK at `D
 ./scripts/dev.ps1 windows      # run the Windows app
 ./scripts/dev.ps1 android      # run on the emulator
 ./scripts/dev.ps1 apk          # build the debug APK (dev flavor)
+./scripts/dev.ps1 profile -Device <serial>     # install the dev app in profile mode
+./scripts/dev.ps1 frame-rate -Device <serial>  # frame rate of it with a 4000-entry diary
+./scripts/dev.ps1 frame-rate -Device windows   # the same here, hidden, on scratch data
 ./scripts/dev.ps1 release      # build the signed release APK and install it on connected devices
 ./scripts/dev.ps1 cli          # build the aid command line to build\cli\aid.exe
 ```

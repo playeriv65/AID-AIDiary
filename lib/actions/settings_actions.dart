@@ -3,6 +3,7 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'dart:convert';
+import 'dart:developer' as developer;
 import 'dart:io';
 
 import 'package:aid_diary/actions/app_action.dart';
@@ -12,10 +13,12 @@ import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/database/entry_store.dart';
 import 'package:aid_diary/language_option.dart';
+import 'package:aid_diary/providers/entry_images_provider.dart';
 import 'package:aid_diary/services/settings_service.dart';
 import 'package:aid_diary/services/wallpaper_service.dart';
 import 'package:aid_diary/theme_palette.dart';
 import 'package:aid_diary/utils/password_store.dart';
+import 'package:flutter/foundation.dart' show kProfileMode, kReleaseMode;
 import 'package:flutter/widgets.dart' show StringCharacters;
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -244,15 +247,25 @@ final List<AppAction> settingsActions = [
       final info = await PackageInfo.fromPlatform();
       final store = EntryStore.instance;
       await store.complete;
+      // Debug and profile builds serve it; `aid trace` records from it.
+      final vmService = (await developer.Service.getInfo()).serverUri;
       return {
         'version': '${info.version}+${info.buildNumber}',
         'package': info.packageName,
         'devBuild': context.devBuild,
+        // Frame rates mean something only in profile and release.
+        'mode': kReleaseMode
+            ? 'release'
+            : kProfileMode
+                ? 'profile'
+                : 'debug',
         'platform': Platform.operatingSystem,
         'entries': store.entries.length,
+        'media': EntryImagesProvider.instance.images.length,
         'days': store.getEntryDayCount(),
         'sync': syncStatus()['state'],
         if (context.screen case final screen?) 'screen': screen.current,
+        if (vmService != null) 'vmService': '$vmService',
       };
     },
   ),

@@ -141,6 +141,12 @@ Rules that keep it so:
   wallpaper photo) is one function in `utils/`, `database/` or `services/`
   that takes the picked file or folder; the page picks and shows progress, the
   action takes a path.
+- `perf.start` and `perf.stop` count the frames the app draws and their build
+  and raster times; `ui.fling` swipes where no touch screen is; `aid trace`
+  records the timeline from the VM service that `app.status` names. A
+  development build started with `AID_DATA_DIR` keeps all its files there
+  (`utils/scratch_folders.dart`), so a frame-rate run on a computer leaves
+  the diary alone.
 - `ui.screen` and `ui.navigate` let an agent see and move the GUI; the GUI
   provides them through `ActionScreen`, so `actions/` still imports no UI.
 - Touch feedback (`widgets/haptics.dart`) belongs to the GUI: actions run

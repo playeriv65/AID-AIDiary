@@ -13,6 +13,8 @@ import 'dart:io';
 
 import 'package:args/args.dart';
 import 'package:http/http.dart' as http;
+import 'package:vm_service/vm_service.dart';
+import 'package:vm_service/vm_service_io.dart';
 
 const usage = '''
 aid [options] <command> [key=value ...]
@@ -21,6 +23,12 @@ Commands:
   actions                every action the app offers, with its arguments
   guide                  how an agent uses the app, as Markdown
   <action-id> [k=v ...]  runs an action, e.g. `aid entry.list limit=5`
+  trace start [widgets=true]
+                         records the app's timeline (debug and profile
+                         builds); widgets=true adds every build, layout
+                         and paint, which slows frames
+  trace stop [path=...]  stops and writes it in the Chrome trace format,
+                         for ui.perfetto.dev or DevTools
 
 Options:
 ''';
@@ -206,8 +214,107 @@ class AidClient {
   Map<String, Object?> _decode(http.Response response) =>
       jsonDecode(utf8.decode(response.bodyBytes)) as Map<String, Object?>;
 
+  /// The app's Dart VM service, which debug and profile builds serve,
+  /// reachable from here: over adb through a forwarded port.
+  Future<VmService> _vmService() async {
+    final status = await run('app.status', {});
+    final address = (status['result'] as Map?)?['vmService'] as String?;
+    if (address == null) {
+      throw const AidException(
+        'The app serves no VM service: it is a release build.',
+      );
+    }
+    var uri = Uri.parse(address);
+    if (device != null) {
+      final local = (await _adbOut([
+        'forward', 'tcp:0', 'tcp:${uri.port}', //
+      ])).trim();
+      _vmForwarded = 'tcp:$local';
+      uri = uri.replace(port: int.parse(local));
+    }
+    final path = uri.path.endsWith('/') ? uri.path : '${uri.path}/';
+    return vmServiceConnectUri(
+      uri.replace(scheme: 'ws', path: '${path}ws').toString(),
+    );
+  }
+
+  String? _vmForwarded;
+
+  static const _traceStreams = ['Dart', 'Embedder', 'GC'];
+
+  /// Flutter's switches that put every widget build, layout and paint on
+  /// the timeline, to see what a slow frame did; they slow frames down.
+  static const _widgetProfiling = [
+    'ext.flutter.profileWidgetBuilds',
+    'ext.flutter.profileRenderObjectLayouts',
+    'ext.flutter.profileRenderObjectPaints',
+  ];
+
+  /// Starts recording the timeline afresh, with every widget build, layout
+  /// and paint on it when [widgets].
+  Future<Map<String, Object?>> traceStart({required bool widgets}) async {
+    final service = await _vmService();
+    try {
+      await service.setVMTimelineFlags(_traceStreams);
+      await service.clearVMTimeline();
+      await _profileWidgets(service, widgets);
+      return {
+        'ok': true,
+        'result': {'recording': _traceStreams, 'widgets': widgets},
+      };
+    } finally {
+      await service.dispose();
+    }
+  }
+
+  /// Stops recording and writes the timeline to [path] in the Chrome trace
+  /// format, which Perfetto (ui.perfetto.dev) and DevTools open.
+  Future<Map<String, Object?>> traceStop(String path) async {
+    final service = await _vmService();
+    try {
+      final timeline = await service.getVMTimeline();
+      await _profileWidgets(service, false);
+      await service.setVMTimelineFlags([]);
+      final events = [
+        for (final event in timeline.traceEvents ?? <TimelineEvent>[])
+          event.json,
+      ];
+      final file = File(path);
+      await file.parent.create(recursive: true);
+      await file.writeAsString(jsonEncode({'traceEvents': events}));
+      return {
+        'ok': true,
+        'result': {'path': file.absolute.path, 'events': events.length},
+      };
+    } finally {
+      await service.dispose();
+    }
+  }
+
+  Future<void> _profileWidgets(VmService service, bool enabled) async {
+    final vm = await service.getVM();
+    for (final ref in vm.isolates ?? <IsolateRef>[]) {
+      final Isolate isolate;
+      try {
+        isolate = await service.getIsolate(ref.id!);
+      } on SentinelException {
+        // A short-lived isolate (Isolate.run) that ended in the meantime.
+        continue;
+      }
+      for (final extension in _widgetProfiling) {
+        if (isolate.extensionRPCs?.contains(extension) ?? false) {
+          await service.callServiceExtension(
+            extension,
+            isolateId: ref.id,
+            args: {'enabled': '$enabled'},
+          );
+        }
+      }
+    }
+  }
+
   Future<void> close() async {
-    if (_forwarded case final forwarded?) {
+    for (final forwarded in [?_forwarded, ?_vmForwarded]) {
       await _run(_adb, ['-s', device!, 'forward', '--remove', forwarded]);
     }
     _client.close();
@@ -273,19 +380,29 @@ Future<int> runAid(
       out.write(await aid.guide());
       return 0;
     }
+    final args = <String, String>{};
+    for (final pair in rest.skip(command == 'trace' ? 2 : 1)) {
+      final cut = pair.indexOf('=');
+      if (cut <= 0) {
+        out.writeln('Arguments are key=value, not "$pair"');
+        return 2;
+      }
+      args[pair.substring(0, cut)] = pair.substring(cut + 1);
+    }
     final Map<String, Object?> reply;
     if (command == 'actions') {
       reply = await aid.actions();
-    } else {
-      final args = <String, String>{};
-      for (final pair in rest.skip(1)) {
-        final cut = pair.indexOf('=');
-        if (cut <= 0) {
-          out.writeln('Arguments are key=value, not "$pair"');
+    } else if (command == 'trace') {
+      switch (rest.elementAtOrNull(1)) {
+        case 'start':
+          reply = await aid.traceStart(widgets: args['widgets'] == 'true');
+        case 'stop':
+          reply = await aid.traceStop(args['path'] ?? 'aid_timeline.json');
+        default:
+          out.writeln('trace start [widgets=true] | trace stop [path=...]');
           return 2;
-        }
-        args[pair.substring(0, cut)] = pair.substring(cut + 1);
       }
+    } else {
       reply = await aid.run(command, args, confirmed: options.flag('yes'));
     }
     out.writeln(const JsonEncoder.withIndent('  ').convert(reply));
@@ -298,6 +415,15 @@ Future<int> runAid(
       }),
     );
     return 2;
+  } on Exception catch (error) {
+    // Scripts read the JSON; say what broke there too.
+    out.writeln(
+      jsonEncode({
+        'ok': false,
+        'error': {'code': 'failed', 'message': '$error'},
+      }),
+    );
+    return 1;
   } finally {
     await aid.close();
   }

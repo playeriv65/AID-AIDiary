@@ -10,6 +10,7 @@ import 'dart:math';
 import 'package:aid_diary/actions/app_action.dart';
 import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/config/app_config.dart';
+import 'package:aid_diary/utils/scratch_folders.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart' as p;
@@ -32,8 +33,12 @@ class AgentApiSwitch {
       ConfigProvider.instance.get(Settings.agentApi);
 
   /// Where the CLI finds the port and token: the app's own folder on
-  /// Android, where `adb run-as` reads it, and `~/.aid` on computers.
+  /// Android, where `adb run-as` reads it, and `~/.aid` on computers, or
+  /// the scratch folder of a tool run (`AID_API_INFO` points `aid` there).
   static Future<File> infoFile() async {
+    if (scratchFolder case final folder?) {
+      return File(p.join(folder, _infoName));
+    }
     if (Platform.isAndroid) {
       return File(
           p.join((await getApplicationSupportDirectory()).path, _infoName));

@@ -2,15 +2,19 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'dart:isolate';
 import 'dart:math';
+import 'dart:typed_data';
 
 import 'package:aid_diary/actions/app_action.dart';
 import 'package:aid_diary/actions/entry_access.dart';
 import 'package:aid_diary/actions/place_actions.dart';
 import 'package:aid_diary/database/app_database.dart';
 import 'package:aid_diary/database/entry_store.dart';
+import 'package:aid_diary/database/image_storage.dart';
 import 'package:aid_diary/models/builtin_templates.dart';
 import 'package:aid_diary/models/entry.dart';
+import 'package:aid_diary/models/image.dart';
 import 'package:aid_diary/models/tag.dart';
 import 'package:aid_diary/providers/entry_images_provider.dart';
 import 'package:aid_diary/providers/tags_provider.dart';
@@ -21,6 +25,7 @@ import 'package:aid_diary/utils/entry_actions.dart';
 import 'package:aid_diary/utils/entry_filter.dart';
 import 'package:aid_diary/utils/entry_preview.dart';
 import 'package:aid_diary/utils/time_capsule.dart';
+import 'package:image/image.dart' as img;
 
 final EntryStore _store = EntryStore.instance;
 
@@ -82,6 +87,35 @@ Map<String, Object?> _details(Entry entry) {
 }
 
 /// The `limit` and `offset` page of [items] with how many there are in all.
+/// [kinds] different made-up photos as JPEG, the size the app keeps a
+/// phone photo at: a colour wash with a few round shapes, so each decodes
+/// as a real one does.
+List<Uint8List> _seedPhotos(int kinds) => [
+      for (var kind = 0; kind < kinds; kind++)
+        () {
+          final random = Random(kind);
+          final picture = img.Image(width: 1600, height: 1200);
+          final from = [for (var c = 0; c < 3; c++) random.nextInt(256)];
+          final to = [for (var c = 0; c < 3; c++) random.nextInt(256)];
+          for (final pixel in picture) {
+            final t = (pixel.x + pixel.y) / (1600 + 1200);
+            pixel
+              ..r = from[0] + (to[0] - from[0]) * t
+              ..g = from[1] + (to[1] - from[1]) * t
+              ..b = from[2] + (to[2] - from[2]) * t;
+          }
+          for (var shape = 0; shape < 6; shape++) {
+            img.fillCircle(picture,
+                x: random.nextInt(1600),
+                y: random.nextInt(1200),
+                radius: 80 + random.nextInt(240),
+                color: img.ColorRgb8(random.nextInt(256), random.nextInt(256),
+                    random.nextInt(256)));
+          }
+          return img.encodeJpg(picture, quality: 85);
+        }(),
+    ];
+
 Map<String, Object?> _page<T>(
         List<T> items, ActionArgs args, Map<String, Object?> Function(T) of) =>
     {
@@ -625,10 +659,22 @@ final List<AppAction> entryActions = [
       ActionParam('words', ParamType.integer,
           'About how many words each, 80 by default',
           required: false),
+      ActionParam(
+          'photos',
+          ParamType.integer,
+          'How many of them get a made-up photo, spread evenly; none by '
+              'default',
+          required: false),
     ],
     run: (context, args) async {
       final count = args['count'] as int;
       final words = args['words'] as int? ?? 80;
+      final photos = min(args['photos'] as int? ?? 0, count);
+      // A dozen different pictures, each entry's in a file of its own as
+      // a photo of its own would be.
+      final pictures = photos == 0
+          ? <Uint8List>[]
+          : await Isolate.run(() => _seedPhotos(12));
       final random = Random(count);
       const vocabulary = [
         'rain', 'river', 'coffee', 'walk', 'quiet', 'family', 'train', //
@@ -652,10 +698,35 @@ final List<AppAction> entryActions = [
             EntryFields.diaryDate: DiaryDay.format(written),
           });
         }
-        await batch.commit(noResult: true);
+        final ids = await batch.commit();
+        if (photos == 0) return;
+        final images = await ImageStorage.instance.internalStore();
+        final photoRows = txn.batch();
+        for (var i = 0; i < photos; i++) {
+          final index = i * count ~/ photos;
+          final id = ids[index] as int;
+          final name = 'seed_$id.jpg';
+          if (!await images.write(name, pictures[i % pictures.length])) {
+            throw ActionException('write_failed', 'Could not store $name');
+          }
+          photoRows.insert(imagesTable, {
+            EntryImageFields.entryId: id,
+            EntryImageFields.imgPath: name,
+            EntryImageFields.imgRank: 0,
+            EntryImageFields.timeCreate:
+                DateTime(start.year, start.month, start.day - index, 21)
+                    .toIso8601String(),
+          });
+        }
+        await photoRows.commit(noResult: true);
       });
+      await EntryImagesProvider.instance.load();
       await _store.load();
-      return {'added': count, 'elapsedMs': stopwatch.elapsedMilliseconds};
+      return {
+        'added': count,
+        'photos': photos,
+        'elapsedMs': stopwatch.elapsedMilliseconds,
+      };
     },
   ),
 ];

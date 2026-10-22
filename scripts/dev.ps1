@@ -1,5 +1,5 @@
 param(
-  [ValidateSet('windows','windows-background','windows-driver','android','apk','release','test','test-unit','test-widget','test-integration','test-server','cli','test-cli','frame-rate','analyze','pub','screenshots')][string]$Target='windows',
+  [ValidateSet('windows','windows-background','windows-driver','android','apk','profile','release','test','test-unit','test-widget','test-integration','test-server','cli','test-cli','frame-rate','analyze','pub','screenshots')][string]$Target='windows',
   # Flutter device id for 'android', e.g. a wireless adb serial from `flutter devices`.
   [string]$Device='emulator-5554'
 )
@@ -37,33 +37,31 @@ switch ($Target) {
   # Prints the DTD URI so the Dart MCP server can attach for hot reload.
   'android' { flutter run -d $Device --flavor dev --print-dtd; Stop-Gradle }
   'apk' { flutter build apk --debug --flavor dev; $code = $LASTEXITCODE; Stop-Gradle; exit $code }
-  # Frame rate with a 4000-entry diary, in profile mode
-  # (integration_test/frame_rate_test.dart): -Device windows runs it in the
-  # hidden background window, an adb serial on that phone or tablet. The
-  # numbers and the journal scroll's timeline land in build\frame_rate.json
-  # and build\frame_rate_timeline.json, pass or fail.
-  'frame-rate' {
-    $test = 'integration_test/frame_rate_test.dart'
-    $driver = 'test_driver/integration_test.dart'
-    if ($Device -eq 'windows') {
-      $env:AID_BACKGROUND_WINDOW = '1'
-      flutter drive --profile -d windows --endless-trace-buffer --driver=$driver --target=$test
-      exit $LASTEXITCODE
-    }
-    # Phones and tablets here are arm64: build that alone (one AOT compile
-    # instead of three; drive itself has no such option), then drive it.
-    # The bar is the refresh rate the user set (e.g. 120 on a 144 Hz
-    # panel); "null" leaves the test the display's fastest mode.
-    $allowed = "$(adb -s $Device shell settings get system peak_refresh_rate)".Trim()
-    $hz = if ($allowed -match '^\d+(\.\d+)?$') { [int][double]$allowed } else { 0 }
-    flutter build apk --profile --flavor dev --target-platform android-arm64 -t $test "--dart-define=AID_TARGET_HZ=$hz"
+  # The dev app in profile mode (compiled as release is, so frame rates
+  # mean something), installed over the existing one with its data kept.
+  # Phones and tablets here are arm64: one AOT compile instead of three.
+  'profile' {
+    flutter build apk --profile --flavor dev --target-platform android-arm64
     $code = $LASTEXITCODE
     Stop-Gradle
     if ($code -ne 0) { exit $code }
-    # The app stays open afterwards, 4000 entries in, to try by hand.
-    flutter drive --profile --flavor dev -d $Device --endless-trace-buffer --keep-app-running `
-      --use-application-binary build\app\outputs\flutter-apk\app-dev-profile.apk `
-      --driver=$driver --target=$test
+    adb -s $Device install -r build\app\outputs\flutter-apk\app-dev-profile.apk
+  }
+  # Frame rate with a 4000-entry diary (scripts/frame_rate.ps1): of the
+  # installed app on that phone or tablet, or with -Device windows of a
+  # profile build made here, run hidden on scratch data. The numbers and
+  # timelines land in build\frame_rate*.json.
+  'frame-rate' {
+    # aid as the sources have it, so its trace and actions match the app.
+    & $PSCommandPath cli
+    if ($Device -eq 'windows') {
+      # Development build: test data and AID_DATA_DIR.
+      flutter build windows --profile --dart-define=AID_DEV_BUILD=true
+      if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+    }
+    # It stops with an error when a scenario is too slow.
+    & (Join-Path $PSScriptRoot 'frame_rate.ps1') -Device $Device
+    exit 0
   }
   # The everyday app: signed with android/key.properties (kept out of git)
   # and installed over the existing one, data kept, on every connected

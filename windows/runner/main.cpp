@@ -17,6 +17,21 @@ int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
   // plugins.
   ::CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
 
+  if (RunsInBackground()) {
+    // The engine asks for 1 ms timers (timeBeginPeriod) and times each
+    // frame with them. Windows 11 drops that request for a process whose
+    // windows are all out of sight, so the off-screen window would get
+    // 15.6 ms ticks and about 64 frames a second whatever the display
+    // does. Keep the request, so frame-rate runs see what a visible
+    // window gets.
+    PROCESS_POWER_THROTTLING_STATE throttling{};
+    throttling.Version = PROCESS_POWER_THROTTLING_CURRENT_VERSION;
+    throttling.ControlMask = PROCESS_POWER_THROTTLING_IGNORE_TIMER_RESOLUTION;
+    throttling.StateMask = 0;
+    ::SetProcessInformation(::GetCurrentProcess(), ProcessPowerThrottling,
+                            &throttling, sizeof(throttling));
+  }
+
   flutter::DartProject project(L"data");
   // Impeller builds every pipeline when the engine starts, and ANGLE
   // compiles each shader again on every launch: about a second before the

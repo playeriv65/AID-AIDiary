@@ -1,0 +1,20 @@
+{
+  "entries": 4000,
+  "photos": 400,
+  "allowedSkippedShare": 0.01,
+  "allowedMissedShare": 0.01,
+  "stillMs": 100,
+  "settleMs": 900,
+  "startTimeoutSeconds": 60,
+  "fling": { "x": 0.25, "from": 0.75, "to": 0.25, "durationMs": 80 },
+  "widgetTrace": { "open": "journal", "flings": 2 },
+  "scenarios": [
+    { "name": "journal_scroll", "open": "journal", "flings": 5 },
+    {
+      "name": "tab_switch",
+      "tabs": ["calendar", "media", "atlas", "coach", "journal", "calendar", "media", "journal"]
+    },
+    { "name": "media_scroll", "open": "media", "flings": 4 },
+    { "name": "open_entry", "open": "journal", "entries": 3 }
+  ]
+}
