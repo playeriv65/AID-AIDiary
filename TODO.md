@@ -55,11 +55,12 @@ Local-first, end-to-end encrypted, device-first, with replaceable cloud storage.
 - Recovery and security:
   - Usual phone change: the old device approves the new one by QR code.
   - A lost device: any other trusted device can approve a new one.
-  - All devices lost: needs a recovery credential saved beforehand, restoring both MK and control of the anonymous account. Random recovery code or user-chosen recovery password: still to decide.
+  - All devices lost: needs a recovery credential saved beforehand, restoring both MK and control of the anonymous account. A random recovery code by default, or a password of the user's own.
   - Revoking a device removes its server access; an MK it already holds cannot be taken back by revoking tokens.
   - Generic phone-cloning tools cannot carry hardware-bound keys, so they are not a migration path.
 - Principle: the user owns identity and keys, devices trust each other, servers only provide replaceable sync and storage.
-- Still to design: disaster recovery, sync conflicts, key rotation. Also to reconcile with what exists today (the sync passphrase, Google Drive sync, the self-hosted server).
+- Done in the first milestone (2026-10-22), on the storage backends there are (Google Drive, WebDAV, the AID server as WebDAV): every space encrypted; user id and master key made on first use and kept in the platform's secure storage; a per-space data key sealed by the master key; a recovery code, random by default or a password of the user's own (Argon2id), sealing the master key in the space; pairing either way round, by typed or scanned code, over the space's storage with SPAKE2 (RFC 9382); passphrases and unencrypted spaces removed.
+- Next: discovery and pairing on the local network; device keys and short tokens on the AID server in place of WebDAV passwords; media synced directly between devices on one network; revoking devices; key rotation; sync conflicts beyond newer-wins.
 
 ## Decided against for now
 - App lock timeout: phones' own app-lock features cover it.

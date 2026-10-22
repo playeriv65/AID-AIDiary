@@ -210,8 +210,9 @@ class _PairingDialogState extends State<PairingDialog> {
         Center(
           child: SelectableText(code.typed,
               key: const ValueKey('pairing-code'),
-              style: theme.textTheme.headlineMedium
-                  ?.copyWith(fontFamily: 'monospace', letterSpacing: 4)),
+              style: theme.textTheme.headlineMedium?.copyWith(
+                  fontFeatures: const [FontFeature.tabularFigures()],
+                  letterSpacing: 4)),
         ),
         const SizedBox(height: 12),
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [

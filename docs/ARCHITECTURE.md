@@ -165,6 +165,25 @@ Rules that keep it so:
   every action; `test/routing/` opens the places through `ui.navigate` in
   a running app shell; `cli/test/` covers the CLI, adb included.
 
+## Sync and keys
+
+Every sync space is end-to-end encrypted (`sync/`). On first use a device
+makes the user's identity (`sync/identity.dart`): a random user id and a
+256-bit master key in the platform's secure storage. A space's description
+(`space.json`) names its user and holds two sealed keys: the space's data
+key sealed by the master key, which encrypts every item and photo with
+AES-256-GCM, and the master key sealed by the recovery code through
+Argon2id (`sync/sync_crypto.dart`). Changing the recovery code or adding a
+device rewraps a key; data is never re-encrypted for it.
+
+A device without the master key gets it by pairing (`sync/pairing.dart`)
+with one that has it, either way round: whichever shows the code, the key
+goes from the device that holds it. The two meet in files under `pairing/`
+in the space's storage and run SPAKE2 (`sync/spake2.dart`, RFC 9382 on
+P-256) with the code as password, so the storage sees only protocol
+messages and ciphertext, a wrong code ends the channel after one try, and
+the key is sent only after both sides have confirmed the same code.
+
 ## Dependencies
 
 Stores and services are app-wide singletons (`EntryStore.instance` and so

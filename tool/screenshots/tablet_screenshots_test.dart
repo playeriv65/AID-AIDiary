@@ -7,14 +7,19 @@
 // Output: artifacts/ui-tablet-*.png.
 
 import 'package:aid_diary/config_provider.dart';
+import 'package:aid_diary/layouts/mobile_scaffold.dart';
 import 'package:aid_diary/pages/coach_page.dart';
 import 'package:aid_diary/pages/edit_entry_page.dart';
 import 'package:aid_diary/pages/search_page.dart';
+import 'package:aid_diary/routing/destinations.dart';
+import 'package:aid_diary/sync/sync_service.dart';
+import 'package:aid_diary/widgets/pairing_dialog.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../../test/support/diary_app_harness.dart';
+import '../../test/support/memory_login.dart';
 import '../../test/support/screenshot_session.dart';
 
 void main() {
@@ -35,7 +40,7 @@ void main() {
         tester, 'journal-entry-${await session.starredEntryId(tester)}');
     await session.capture(tester, 'tablet-journal');
     await session.tapKey(tester, 'journal-menu');
-    await session.capture(tester, 'tablet-avatar');
+    await session.capture(tester, 'tablet-menu');
     await tester.tapAt(const Offset(640, 40));
     await tester.pumpAndSettle();
     await session.tapKey(tester, 'journal-search');
@@ -68,6 +73,20 @@ void main() {
     await session.capture(tester, 'tablet-story-prompt', settle: false);
     await tester.tap(find.byKey(const ValueKey('story-close')));
     await tester.pumpAndSettle();
+
+    // Sync against a storage in memory, then pairing another device; the
+    // waiting spinner never settles.
+    await tester
+        .runAsync(() => SyncService.instance.createSpace(MemoryLogin()));
+    await tester.runAsync(SyncService.instance.syncNow);
+    openPlace(tester.element(find.byType(MobileScaffold)), 'sync');
+    await session.capture(tester, 'tablet-sync');
+    await tester.tap(find.byKey(const ValueKey('sync-add-device')));
+    await session.capture(tester, 'tablet-pairing', settle: false);
+    Navigator.of(tester.element(find.byType(PairingDialog))).pop();
+    await tester.pump(const Duration(seconds: 5));
+    await tester.runAsync(SyncService.instance.disconnect);
+
     await DiaryAppHarness.setSetting(Settings.coachProgram, '');
     await session.finish(tester);
   });

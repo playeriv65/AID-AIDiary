@@ -18,24 +18,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../support/diary_app_harness.dart';
-
-/// A sign-in to a storage held in memory, as a WebDAV one looks.
-class _MemoryLogin implements SyncLogin {
-  _MemoryLogin(this.storage);
-
-  final MemorySyncBackend storage;
-
-  @override
-  SyncProvider get provider => SyncProvider.webdav;
-  @override
-  Uri? get server => Uri.parse('https://dav.example.test/');
-  @override
-  String get username => 'diary';
-  @override
-  String get credential => 'secret';
-  @override
-  SyncBackend backend() => storage;
-}
+import '../support/memory_login.dart';
 
 void main() {
   DiaryAppHarness().register();
@@ -95,7 +78,7 @@ void main() {
   test('a space is made, its code replaced, and a new device recovers it',
       () async {
     final storage = MemorySyncBackend();
-    final login = _MemoryLogin(storage);
+    final login = MemoryLogin(storage);
     final owner = await DiaryIdentity.current();
 
     final first = await sync.createSpace(login);
