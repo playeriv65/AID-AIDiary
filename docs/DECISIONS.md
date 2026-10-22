@@ -194,6 +194,12 @@ implementation boundaries and verification results belong in
 
 ## Testing
 
+- 2026-10-22: Use the researched project-wide policy in [TESTING.md](TESTING.md):
+  choose tests by behavior and risk, with focused iteration, explicit batch/full
+  regression and release gates. Unit tests alone do not verify UI, persistence
+  or native capabilities. Reuse results for an unchanged tested state; report
+  deferred or missing validation separately. The next performance pass and
+  cross-network checks remain deferred.
 - The Xiaomi Pad 7 is the test device; the owner's phone only when asked
   (`docs/SETUP.md`).
 - Windows test runs never show or focus a window; they run hidden.

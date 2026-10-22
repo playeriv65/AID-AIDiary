@@ -95,9 +95,9 @@ aid entry.delete id=12 --yes         # destructive actions need --yes
 
 The Android build runs on JDK 23: the root `android/build.gradle` gives every module's Kotlin the JVM target its Java already uses, since many plugins leave it unset. Flutter's Android SDK path is pinned with `flutter config --android-sdk`.
 
-Choose validation by the affected behavior, following [docs/TESTING.md](docs/TESTING.md). A small change does not require a full regression before committing. Layer targets (`test-unit`, `test-widget`, `test-integration`) also accept `-TestFiles`; external services require explicit `test-live`. Host integration tests do not replace native device checks.
+The project-wide [testing policy](docs/TESTING.md) defines the change-to-test matrix, full-regression/release gates, critical journeys and result reporting for Flutter, Go, CLI and native platforms. Isolated pure logic can use focused unit tests; UI, persistence and native behavior need their owning layers. Full regression runs for broad/high-risk changes, release gates and one active-day closing safety net, with existing results reused for an unchanged tested state. Layer targets (`test-unit`, `test-widget`, `test-integration`) also accept `-TestFiles`; external services require explicit `test-live`. There is currently no GitHub test workflow; the policy does not install CI or scheduled jobs.
 
-Screenshots are rendered by widget tests in `tool/screenshots/` with real fonts (Flutter SDK icons, Windows Noto Sans SC and Segoe Emoji); no window opens. Pass `-TestFiles` to render only the affected screenshot file.
+Screenshots are rendered by widget tests in `tool/screenshots/` with real fonts (Flutter SDK icons, Windows Noto Sans SC and Segoe Emoji); no window opens. Pass `-TestFiles` to render only the affected screenshot file and inspect the images: these scripts do not automatically compare golden images.
 
 Platforms: Windows and Android. iOS, macOS, Linux and web are not configured.
 

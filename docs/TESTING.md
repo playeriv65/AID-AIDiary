@@ -1,20 +1,32 @@
 # Testing
 
-Choose tests by the behavior changed, then by layer. A small change does not
-require the whole suite before every commit. Use `scripts/dev.ps1` so native
-test assets cannot race with another build in the same checkout.
+This is the project's testing policy, researched and adopted on 2026-10-22.
+It applies to Flutter, the Go sync server, the CLI and native-device checks.
+The developer making a change owns its test selection, failures and evidence.
+Use `scripts/dev.ps1` for Flutter operations so native test assets cannot race
+with another build in the same checkout.
+
+The goal is fast, trustworthy feedback about user-visible behavior and data
+safety. Choose the smallest scope and environment that can detect the relevant
+failure, then expand when the risk crosses boundaries. A small change does not
+require the whole suite before every commit. Unit-only testing is sufficient
+only when the change stays within pure logic and its callers' contracts.
 
 ## Daily workflow
 
-1. Identify the changed behavior and its direct callers. Run their test files;
-   include the relevant architecture contract when changing a shared rule.
-2. Expand to the affected module if the impact crosses several files. A tag
-   selects the kind of test, not the feature affected.
-3. Format changed Dart files and run static analysis for code changes. Inspect
-   affected screenshots only when appearance changes. Documentation-only
+1. Identify the observable behavior, direct callers and failure consequences:
+   appearance only, incorrect result, lost diary data, broken trust or unbounded
+   operator traffic. File count alone does not determine risk.
+2. Choose checks using the change matrix below. Include relevant callers and
+   architecture contracts, not only a test with the same filename. Look for
+   consumers with `rg`; do not maintain a brittle filename-only selector.
+3. Run focused checks while editing. Expand to the affected module if the impact
+   crosses several files. A tag selects a test environment, not a feature.
+4. Format changed source and run the relevant static analysis for code changes.
+   Review affected screenshots only for visual changes. Documentation-only
    changes need link/command review, not an app regression.
-4. Report the scope, results and anything still unverified. Repeat checks only
-   after a relevant change, a failure, or a new unresolved concern.
+5. Apply the completion/release gates below and report the exact scope. Repeat
+   checks after relevant changes or failures, not merely before each commit.
 
 ```powershell
 # One rule; paths may be files or directories, across layers.
@@ -67,18 +79,158 @@ credentials. `test-live` is explicit opt-in; it may change remote scratch
 data. See the service tests and [SETUP.md](SETUP.md) for required configuration.
 No credentials belong in commands saved to the repository or test reports.
 
-## Full regression
+## Select checks by change
 
-Use `./scripts/dev.ps1 test-all` for a deliberate whole offline regression:
-dependency or SDK updates, shared runtime/test-harness changes, database/sync
-format changes, large cross-module refactors, and release preparation. Add
-server, CLI and native checks only where affected. A full Flutter pass does
-not imply those other layers passed.
+These are minimum scopes, not excuses to ignore affected consumers. Static
+analysis and formatting accompany source changes; they are not behavior tests.
 
-A full pass applies to the code it checked. Do not rerun it merely because a
-commit is about to happen, a document changed, or another check finished.
-Select focused checks for subsequent local changes; rerun the full suite if
-the subsequent change is itself broad enough to require it.
+| Change | Minimum behavior checks | Expand when |
+|---|---|---|
+| Documentation or comments only | Links, command examples, consistency | Executable examples, manifests or configuration actually change behavior |
+| Pure validation, calculations or transformations | Affected unit cases, boundaries and direct callers | Return values, serialized output or a shared contract changes |
+| A page's rendering or interaction | Affected widget tests; render and inspect affected phone/wide views for layout changes | Navigation, state persistence or multiple pages interact |
+| Action, view model or service | Owning tests plus caller behavior; use real local dependencies where the contract requires them | Work crosses GUI/CLI, storage or sync boundaries |
+| Files, config persistence, SQLite, backup/import/export | Relevant host integration; round trips, failures and retained data | Schema, archive format, shared stores or migrations change: full app offline regression |
+| Sync, crypto, pairing, media queues or traffic policy | Relevant sync integration, malformed/authentication failures and interrupted/retried operations | Shared wire format, trust or routing semantics change: full app offline regression; add Go checks if its contract is affected |
+| Native plugin, permissions, keys, IME, widgets or networking | Owning host tests plus the affected Windows/Android build and native behavior | Platform wiring changes: smoke the affected platform; mocks cannot verify it |
+| CLI | `test-cli` (the suite is currently small), plus affected action/API tests if shared behavior changes | API changes: check both producer and consumer |
+| Go server | `test-server`; policy changes cover limits off and on | Concurrency/socket/accounting changes: `go test -race ./...` from `server/` on a supported configured toolchain; wire changes also need Flutter protocol tests |
+| SDK/dependencies, shared test harness, startup or broad refactor | Full offline suite of each affected component | Native dependency/runner changes also need platform builds and relevant device smoke |
+
+For example, a device-name length rule needs its unit tests; editing the rename
+dialog needs its widget test; changing how the name survives restart needs
+config integration. Do not run every unit test as a substitute for that widget
+or persistence test. Tests under `test/actions/` or `test/pages/` are not assumed
+to be unit/widget merely because of their folder name: inspect their fixtures.
+
+## When to run full regression
+
+"Full" must name its boundary. `test-all` is the full offline Flutter `test/`
+suite, not Go, CLI, rendered screenshots, live accounts, native builds or frame
+rate. A whole Go suite does not imply the client was tested either.
+
+| Stage | Required scope |
+|---|---|
+| Editing and intermediate commits | Affected tests and direct consumers; unit-only is allowed for isolated pure logic |
+| Finishing an isolated fix/page change | Affected module/flow checks and analysis; no automatic full Flutter run |
+| Finishing a cross-module feature/refactor, or uncertain impact | One full offline run per affected component after focused checks; include the end-to-end critical flow the change affects |
+| Safety net during active development | Once at the intentional end of a day containing app code changes, run full offline Flutter unless the same final app/test/dependency state already has a passing full run. Intermediate commits do not wait for this. No run is needed on documentation-only days |
+| Dependency/SDK, shared harness/runtime, schema or sync-format change | Full affected component suite before considering the change complete; targeted tests remain the first feedback loop |
+| App release candidate | Full offline Flutter, affected bundled CLI checks, successful intended Windows/Android builds, and release-build smoke of the critical journeys below. Review all relevant phone/wide views |
+| Server deployment | Full Go tests and vet, race checks for the server candidate, then isolated preflight and deployed HTTPS/policy/WebSocket/data round trips as applicable; unchanged client code does not require an unrelated full Flutter rerun |
+
+The daily safety net is a manual workflow rule, not a newly installed schedule
+or CI service. If development is still ongoing, state that the batch full run
+is pending rather than silently labeling focused results as full regression.
+One successful full run can satisfy several gates for the same tested state.
+
+A result belongs to the source/test state, resolved dependencies, toolchain and
+relevant platform configuration it checked. Documentation-only changes do not
+invalidate it. For later isolated source changes, keep the historical baseline
+and add focused evidence; do not claim that the old full run tested the new
+revision. For another broad change, rerun the affected full suite.
+
+The repository currently has no `.github/workflows` test automation. If CI is
+introduced, keep selected fast checks on changes and full host regression at
+the integration gate; device/live checks remain separate jobs with explicit
+environments. Do not add paid runners, production credentials or a complicated
+dependency-graph selector merely to enforce this document. At the present
+roughly minute-long Flutter full-suite duration, a batch safety net is simpler.
+
+## Critical journeys and release evidence
+
+Each changed journey needs an observable result, not only "the screen opened":
+
+- Create, edit and reopen a diary entry: text, diary day, tags and media survive
+  restart; deleting and restoring retains the intended data.
+- Backup/export/import: restore a scratch diary and compare meaningful fields
+  and original attachment bytes. Password/authentication failure or cancellation
+  must preserve the pre-existing diary. Test legacy local schema upgrades with
+  supported fixtures when changing migrations; incompatible remote sync formats
+  must still fail explicitly rather than reset a space.
+- Sync and trust: approve the intended device, merge edits, interrupt/resume media
+  and verify hashes. Wrong keys, replayed/stale sessions and revoked access fail
+  safely. Quota refusal defers media without losing text or progress; the same
+  server implementation must work with operator limits off and on.
+- Native integrations: permissions denied/granted, cold launch and the affected
+  photo, drawing, widget or key action on the actual supported platform. Windows
+  cannot establish Android Keystore/OEM behavior.
+
+These are acceptance obligations when affected or preparing a release, not a
+claim that every scenario is already automated. Existing tests and historical
+physical evidence are described in [SYNC_NETWORK.md](SYNC_NETWORK.md). Review
+the remaining gaps against the release scope instead of manufacturing a pass.
+The owner has deferred cross-network and performance checks: keep them marked
+unverified, and require a separate go/no-go decision if a release needs those
+claims. No production reset, ordinary-diary mutation or new external endpoint
+is authorized merely by this testing policy; use isolated scratch data.
+
+The screenshot harness currently walks screens and writes PNG files; it does
+not compare them to approved golden images. A passing render is not a visual
+review. Inspect the affected images for clipping, wrapping, keyboard/navigation
+state and phone/wide layout. Do not regenerate unrelated images or accept a new
+baseline automatically to hide an unintended change. Performance requires the
+existing profile/native measurement; screenshots and debug timing cannot prove it.
+
+## Test design and failure handling
+
+- Assert behavior at public boundaries and meaningful invariants. Cover normal,
+  boundary and failure paths where they matter; prefer one clear reason to fail.
+  Avoid checking private calls, widget-tree trivia or source strings just to
+  mirror implementation. Existing architecture contracts protect genuine shared
+  rules and must change with the architecture they enforce.
+- Put exhaustive rule permutations at the lowest useful layer. Add integration
+  for real storage/protocol wiring and a few critical end-to-end flows; do not
+  repeat every permutation through every screen. No fixed unit/integration
+  percentage, test-count target or blanket coverage percentage is a release gate.
+  Use coverage to find untested important branches when useful.
+- Reproduce a substantive bug and keep a regression test at its owning boundary
+  when it adds lasting value. Do not add tests for every reversible cosmetic
+  edit. When a feature is removed, remove its tests; no checks for its absence.
+- Keep fixtures local and isolated, with fresh temp stores, ephemeral socket
+  ports and explicit cleanup. Control time, randomness and remote responses when
+  possible. Prefer conditions with bounded deadlines over arbitrary sleeps;
+  mock external boundaries in host tests, and use real local stores where their
+  semantics are what is being tested. Keep live credentials opt-in.
+- Failures stop the gate. Diagnose product, test, fixture or environment causes;
+  fix the root cause and rerun the failed scope plus affected consumers. Expand
+  only when the failure reveals wider impact. A diagnostic rerun may expose a
+  flaky result, but a later pass does not erase the original failure.
+- Do not repeatedly rerun until green, increase timeouts blindly, or silently
+  skip a failing test. If an unavoidable external failure blocks a check, record
+  the blocker and the missing claim. Unsupported race tooling is a gap to fix
+  or verify in a supported environment, not a race-check pass.
+- Diagnose flaky tests with the original seed, configuration and logs. Temporary
+  quarantine needs a tracked reason, repair task and explicit report; it cannot
+  silently satisfy a data-safety, authentication or release-critical gate.
+
+## Evidence and execution cost
+
+Record the tested revision (and relevant uncommitted state), commands/files,
+platform/toolchain, pass/fail/skip counts, and what was not tested. Keep detailed
+logs under ignored `build/` paths when useful; summarize results in the handover.
+Never put credentials, diary content or signing keys in reports. A useful record
+distinguishes a fresh execution from a cached result and a historical baseline.
+
+Timing must say whether it is whole-command wall time, runner time, cold setup
+or a warm repeat. Counts describe cases or files explicitly. Do not sum focused
+subsets into the full-suite count, or equate four render cases with four images.
+Budget changes should come from measured bottlenecks, not guesses. Keep four
+Flutter workers and the workspace lock. Do not run layers repeatedly after a
+passing full suite unless later edits affect them; do not disable dependency
+validation just to make timings look shorter.
+
+## Research behind this policy
+
+The run matrix and daily cadence above are project decisions, not universal
+requirements copied from a framework. Primary guidance consulted on 2026-10-22:
+
+- [Android testing strategies](https://developer.android.com/training/testing/fundamentals/strategies): choose scope, environment and execution stage together, starting with the lowest layer that provides useful confidence.
+- [Flutter testing overview](https://docs.flutter.dev/testing/overview) and [native integration tests](https://docs.flutter.dev/testing/integration-tests): combine unit/widget coverage with important application flows and real platform execution.
+- [Google Test Sizes](https://testing.googleblog.com/2010/12/test-sizes.html): define test boundaries by dependencies such as disk, local sockets and external systems, not ambiguous names alone. Its historical timeout values are not our thresholds.
+- [The Practical Test Pyramid](https://martinfowler.com/articles/practical-test-pyramid.html), Ham Vocke: organize feedback by speed/scope and avoid duplicating the same assertions across layers.
+- [Google on flaky tests](https://testing.googleblog.com/2016/05/flaky-tests-at-google-and-how-we.html): retries/quarantine have tradeoffs and can hide real faults; this project requires visible diagnosis and tracking.
+- [Go race detector](https://go.dev/doc/articles/race_detector): race detection is dynamic and covers only executed paths, so relevant concurrent scenarios still matter.
 
 ## Audit, 2026-10-22
 

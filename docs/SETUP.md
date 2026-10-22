@@ -28,8 +28,9 @@ and analysis. They share a workspace lock because native test DLLs cannot be
 replaced while another test process is using them. Focused checks accept
 `./scripts/dev.ps1 test -TestFiles test/sync/copy_status_test.dart`; use another
 worktree for independent concurrent Flutter work. [TESTING.md](TESTING.md)
-explains which checks a change needs; full offline regression is the explicit
-`test-all` target, not the default for each commit.
+defines the change-to-test matrix, daily/completion/release gates and reporting;
+full offline regression is the explicit `test-all` target, not the default for
+each commit. Native and live checks have separate environments and claims.
 
 1. Clone `playeriv65/AID-AIDiary` (private; access from the owner).
 2. Copy `scripts/dev.env.example` to `scripts/dev.env` and set this

@@ -291,10 +291,19 @@ is in [docs/SYNC_NETWORK.md](../docs/SYNC_NETWORK.md).
 
 ## Testing against the app
 
-`go test ./...` covers the server. The app's live sync tests run against a
-running server:
+From the repository root, `./scripts/dev.ps1 test-server` runs server vet and
+tests (`go test ./...` from this directory). Follow the project-wide
+[testing policy](../docs/TESTING.md) for change scopes and deployment gates;
+concurrency changes also need `go test -race ./...` on a supported configured
+toolchain. These checks do not prove native client or cross-network behavior.
 
-```sh
-AID_SYNC_URL=http://127.0.0.1:8080/dav/ AID_SYNC_USER=NAME AID_SYNC_PASSWORD=... \
-  flutter test --tags live
+The app's live sync tests run against a running scratch server. Set
+`AID_SYNC_URL`, `AID_SYNC_USER` and `AID_SYNC_PASSWORD` in the local environment,
+then use the Flutter workspace wrapper from the repository root:
+
+```powershell
+./scripts/dev.ps1 test-live -TestFiles test/sync/live_webdav_test.dart
 ```
+
+These tests create and delete isolated remote folders. Offline Flutter targets
+exclude them even when credentials exist; a skipped live check is not a pass.
