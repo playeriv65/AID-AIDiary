@@ -36,6 +36,7 @@ import 'package:aid_diary/sync/routed_backend.dart';
 import 'package:aid_diary/sync/webdav_backend.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
+import 'package:uuid/uuid.dart';
 import 'package:path/path.dart' as p;
 
 /// The kinds of place a space can live in.
@@ -276,7 +277,7 @@ class SyncService with ChangeNotifier {
   bool _stunOnly = false;
   StreamSubscription<dynamic>? _lanPeers;
   StreamSubscription<SyncRouteCandidate?>? _routeChanges;
-  String _networkDeviceId = '';
+  String _networkDeviceId = const Uuid().v4();
   int _networkGeneration = 0;
   int _failures = 0;
   DateTime? _retryAt;
@@ -767,7 +768,6 @@ class SyncService with ChangeNotifier {
     await _closeConnections();
     final identity = await DiaryIdentity.current();
     final config = AppConfig.instance.syncTransfer;
-    _networkDeviceId = await LocalDevice.id();
     if (backend is WebDavBackend && backend.authenticatedDeviceId != null) {
       _networkDeviceId = backend.authenticatedDeviceId!;
     }
