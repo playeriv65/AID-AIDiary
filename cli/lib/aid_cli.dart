@@ -56,7 +56,7 @@ class AidClient {
        _client = client ?? http.Client(),
        _environment = environment ?? Platform.environment;
 
-  static const defaultPackage = 'dev.aid.diary.dev';
+  static const defaultPackage = 'dev.aid.diary.beta';
   static const _infoName = 'agent_api.json';
 
   /// An adb serial; null for the app on this computer.

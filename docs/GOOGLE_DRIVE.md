@@ -38,8 +38,11 @@ account is connected.
 4. Clients:
    - Web application `AID Diary Android sign-in` → `webClientId`.
    - Android `AID Diary`, package `dev.aid.diary`, and `AID Diary Android
-     Dev`, package `dev.aid.diary.dev`, both with the release key's SHA-1
-     (`keytool -list -v -keystore <storeFile> -alias <keyAlias>`).
+     Beta`, package `dev.aid.diary.beta` (the dev flavor), both with the
+     release key's SHA-1 (`keytool -list -v -keystore <storeFile> -alias
+     <keyAlias>`): every local build is signed with that key. The client for
+     the dev flavor's former package `dev.aid.diary.dev` is no longer used
+     (`docs/REFRESH_RATE.md`).
    - Desktop app `AID Diary Windows` → `desktopClientId` and
      `desktopClientSecret`.
 

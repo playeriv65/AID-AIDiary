@@ -74,29 +74,36 @@ android {
     productFlavors {
 	independent {
             dimension "default"
-            signingConfig = signingConfigs.release
 	}
         fdroid {
             dimension "default"
         }
         dev {
             dimension "default"
-            applicationIdSuffix ".dev"
+            // Not ".dev": HyperOS once took dev.aid.diary.dev for a game and
+            // keeps every app by that name at 60 Hz (docs/REFRESH_RATE.md).
+            applicationIdSuffix ".beta"
             versionNameSuffix "-dev"
             resValue "string", "app_name", "AID Diary Dev"
-            signingConfig = signingConfigs.release
         }
     }
 
     buildTypes {
-        release {
-            vcsInfo.include = false
+        // Debug and profile builds take the release key when it is here
+        // (android/key.properties), so any build installs over any other:
+        // a key change forces an uninstall, and HyperOS asks before every
+        // new install.
+        def localKey = keystorePropertiesFile.exists() ?
+                signingConfigs.release : signingConfigs.debug
+        debug {
+            signingConfig = localKey
         }
         profile {
-            // Profile builds are for measuring on local devices; without a
-            // release key they use the debug one, like debug builds.
-            signingConfig = keystorePropertiesFile.exists()
-                    ? signingConfigs.release : signingConfigs.debug
+            signingConfig = localKey
+        }
+        release {
+            signingConfig = signingConfigs.release
+            vcsInfo.include = false
         }
     }
 
