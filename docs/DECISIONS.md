@@ -164,7 +164,11 @@ hash-verified media after a one-sided signaling disconnect and after the
 isolated test server stopped; directory `leave` must not discard a working
 direct link. Temporary-service/device-test cleanup was verified, including
 restored nginx, production health 200 and removed test endpoint health 404.
-The production server still needs the updated release deployed. Exact evidence belongs in
+The owner authorized production deployment on 2026-10-22; server source
+`887dd27` and nginx WebSocket headers are now deployed, with the shared
+operator policy explicitly enabled at 1 GB per account per UTC month.
+No additional Osaka relay is needed; different-NAT testing remains deferred.
+Exact evidence belongs in
 `docs/SYNC_NETWORK.md`.
 
 Offline first-time QR trust and MK transfer, nearby migration, per-device

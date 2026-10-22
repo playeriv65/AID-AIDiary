@@ -56,8 +56,10 @@ Drive retain LAN plus their own storage. Configure STUN in
 `assets/config/app_config.json`; no TURN credentials are needed. Server
 operator settings, separate signal/relay/cache ledgers and nginx WebSocket
 upgrade headers are documented in [server/README.md](../server/README.md).
-The production container still runs the earlier release and needs an
-explicit networking deployment before users gain the new Internet paths.
+The production service was updated on 2026-10-22 from server source `887dd27`,
+including nginx WebSocket upgrades and opt-in 1 GB monthly media policy.
+[SYNC_NETWORK.md](SYNC_NETWORK.md) records deployment checks and remaining
+network-validation limits.
 
 Spaces created now use format 4. Earlier remote formats are rejected without
 migration or automatic reset. Starting over on a live server is a destructive
@@ -141,9 +143,10 @@ stopped and both directory peer lists empty. A remote directory `leave`
 must not tear down that working direct link. See `SYNC_NETWORK.md` for the
 exact fixture/hash. These were same-Wi-Fi checks; they do not establish
 cross-NAT reachability. Temporary-service/device-test cleanup is verified.
-The final Flutter suite passed 710 tests, with six external-service tests
-skipped; analysis is clean, seven CLI tests passed and Go vet/tests/race
-checks passed. The production networking release is still not deployed.
+The earlier network-validation Flutter suite passed 710 tests, with six
+external-service tests skipped; analysis is clean, seven CLI tests passed and Go vet/tests/race
+checks passed. Later app validation and the completed production deployment
+are recorded in [SYNC_NETWORK.md](SYNC_NETWORK.md).
 
 A public endpoint under the owner's AID domain may be used only when
 authorized. Keep it under a temporary proxy prefix, with a separate server,
@@ -238,7 +241,7 @@ initialized for the same workspace. Never clear the everyday package.
 | Source code | GitHub `playeriv65/AID-AIDiary` (private); the old web app as tags `legacy-web`, `legacy-web-dev` | Owner |
 | Release keystore | `D:\software\keys` on the development PC, read through `android/key.properties` | Owner only; never in git or chat |
 | Google Cloud project `aid-diary` | Drive API and the OAuth clients (Android release, Android beta, web, Windows desktop); client IDs in `assets/config/app_config.json` | Owner's Google account (`docs/GOOGLE_DRIVE.md`) |
-| AID sync server | `https://aid.playeriv65.com/dav/`, deployed from `server/deploy/` (Docker behind the host's nginx, which terminates TLS); updated WebSocket networking is implemented in source but not yet deployed to the production container | Owner's server and domain `playeriv65.com`; accounts are added there with `aid-sync adduser`; temporary public checks use isolated data and a removable proxy prefix |
+| AID sync server | `https://aid.playeriv65.com/dav/`; SSH alias `netlab_main`, installation `/srv/aid-sync`, Docker behind nginx TLS; server source `887dd27` and WebSocket headers deployed 2026-10-22 | Owner's server and domain `playeriv65.com`; maintain through native SSH and `server/deploy/`; accounts use `aid-sync adduser`; deployment and backup evidence in `docs/SYNC_NETWORK.md` |
 | Map, place and weather services | OpenStreetMap tiles, Nominatim, Overpass, Open-Meteo; endpoints in `assets/config/app_config.json` | Public; follow their usage policies (low request rates, a real User-Agent) |
 | Upstream | Daily You by Demizo (GPL-3.0); baseline in `SOURCE.md` | Public |
 | UI references | Journey and 一本日记 installers, screenshots and notes in `D:\program\diary-references\` (index in its README) | Owner's PC, outside the repository: reference only, never copied |

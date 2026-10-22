@@ -251,8 +251,10 @@ upgrade have passed; this is not cross-WAN or general NAT compatibility
 evidence. The latest binaries also retained ICE text and fresh media sync
 through one-sided signaling loss and a stopped isolated test server.
 The temporary process, data and proxy have been removed with production
-health verified; the production server still needs the networking release
-deployed. Device-key authentication and individual revocation, offline
+health verified. Production server source `887dd27` and nginx WebSocket
+headers were deployed on 2026-10-22; acceptance evidence and remaining NAT
+validation limits are in `docs/SYNC_NETWORK.md`. Device-key authentication
+and individual revocation, offline
 first-time QR trust and Wi-Fi/hotspot settings assistance are implemented.
 Automatic OS-specific Wi-Fi Direct creation remains future work. All AID
 deployments share the same policy-driven implementation: quota and cache

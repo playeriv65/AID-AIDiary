@@ -53,6 +53,10 @@ migration transfer identity/MK and verified chunks without copying private
 signing keys. The GUI includes network diagnostics and actual server traffic
 allowances. Official-server limits are opt-in server policy; self-hosting
 defaults to durable storage without plan quotas.
+Production server source `887dd27` and nginx WebSocket headers were deployed
+on 2026-10-22 with operator limits enabled and a 1 GB monthly media allowance.
+External HTTPS, WebDAV and WebSocket relay acceptance passed; the temporary
+account was removed and the existing account retained (`docs/SYNC_NETWORK.md`).
 
 Remaining work:
 
@@ -64,13 +68,6 @@ Remaining work:
   broader NAT/carrier matrix remain unverified. The external IPv6/TCP
   probe timed out, so local global-address success must not be presented as
   cross-WAN success.
-- Deploy the updated Go networking service and nginx WebSocket headers to
-  production when explicitly authorized. The production container still
-  runs the earlier release. The isolated public test endpoint, process and
-  data have been removed and production health verified;
-  a successful temporary test does not deploy the production
-  release. Keep live relay distinct from asynchronous cache and preserve
-  their separate budgets.
 - Automatic OS-specific Wi-Fi Direct creation, beyond the implemented
   Wi-Fi/hotspot settings assistance. Cross-platform offline operation still
   needs a mutually reachable local network; permission prompts may require

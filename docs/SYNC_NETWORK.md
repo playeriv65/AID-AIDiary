@@ -35,17 +35,50 @@ on Windows and Android. The connection types are implemented in source;
 their availability still depends on routing, firewall/NAT behavior, both
 devices being online and the server's deployed version.
 
-The production container at `aid.playeriv65.com` still runs the earlier
-release. Building these clients does not deploy the new signaling/relay
-service; the operator must deploy the updated server and nginx upgrade
-headers before users can use those paths. The authorized public test used
-an isolated Go process and data under `/tmp`, behind a temporary nginx
-prefix on the AID domain. The formal container on port 18081 was unchanged.
-The temporary endpoint/process/data have now been removed and verified;
-this test was not a production deployment. No Oracle firewall rules were
-changed.
+The production service at `aid.playeriv65.com` was updated on 2026-10-22
+with the owner's authorization. It runs server source `887dd27` and nginx
+WebSocket upgrade headers, with operator limits explicitly enabled and a
+1,000,000,000-byte UTC monthly media allowance per account. Self-hosting
+continues to default to limits off; both modes use the same implementation.
+Earlier isolated public tests used a temporary process, data and proxy
+prefix, all since removed. No new public port, Oracle firewall rule or
+additional Osaka relay was needed for the production deployment.
 
 ## Verification status
+
+### Production deployment (2026-10-22)
+
+The existing `aid-sync` container on `netlab_main` was recreated from server
+source `887dd27e86a0acd14fb2cfafa82a3eae07edb6bd`. Its persistent bind mount
+remains `/srv/aid-sync/data`; the existing account was retained. nginx still
+terminates TLS and forwards to `127.0.0.1:18081`, now including WebSocket
+`Upgrade` and `Connection` headers. Other sites and containers were unchanged.
+
+The Linux ARM64 binary SHA-256 is
+`ec05c2337964e736f47ae0dd85f65f98d25a2931017bca2f34297d6e3586cb47`;
+the running image ID is
+`sha256:93e52a086636b9bcd0631a9a65c23d47026d246bcdd22a2d82b6716d7b23f66c`.
+The predeployment backup is
+`/srv/aid-sync/backups/20261022T203743Z-887dd27.OvpGf0`.
+The prior image and backups remain available for rollback.
+
+The initial image could not execute a Windows-built binary copied with mode
+0644; automatic rollback restored the prior service. The Dockerfile now sets
+mode 0755 explicitly. The successful attempt ran an image preflight before
+stopping production, then passed local health and `nginx -t` checks.
+
+External checks from Windows passed public HTTPS health (200), authenticated
+policy and device capabilities, a 1024-byte WebDAV round trip, two WebSocket
+upgrades (101), and an exact 16,384-byte relay-frame round trip. The policy
+reported `operatorLimited: true` and `monthlyLimitBytes: 1000000000`; the
+account ledger recorded traffic. The temporary acceptance account and its
+data were deleted, leaving the original account count of one.
+
+These are production deployment and proxy/protocol checks, not a new native
+Windows/Pad diary transfer or proof of connectivity through different NATs.
+An additional Osaka relay was cancelled; Osaka received read-only inspection.
+The Go test suite and vet passed for this deployment. Flutter code was not
+changed; the preceding native app validation is recorded below.
 
 ### Device authorization and policy follow-up (2026-10-22)
 
@@ -78,8 +111,8 @@ and Go tests, vet and race checks passed. Both native builds succeeded. The
 headless Android emulator verified real mood-widget cold launch, bounded
 MediaStore scanning, explicit two-photo import and unchanged source-file hashes.
 Stylus events and handwriting rendering also have component/action tests.
-Performance measurements remain deferred. Production deployment and another-
-network validation remain separate outstanding work.
+Performance measurements and another-network validation remain deferred.
+Production deployment is complete as recorded above.
 
 Test native signing keys were removed through their isolated app instances,
 the two Pad scratch workspaces and API forwards were removed, and local test

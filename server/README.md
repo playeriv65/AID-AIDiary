@@ -274,6 +274,21 @@ WebSocket `Upgrade`/`Connection` headers (`deploy/nginx.conf`); its 300-second
 read timeout exceeds the default heartbeat interval. This endpoint requires
 HTTP/1.1 upgrade support on the proxy-to-server connection.
 
+For cross-compiled binaries, `deploy/Dockerfile` explicitly sets executable
+mode 0755, including when the build host is Windows. Before stopping an
+existing service, build the replacement image and run a disposable preflight
+with a separate data directory, for example:
+
+```sh
+docker run --rm -e AID_SYNC_DATA=/tmp/aid-preflight IMAGE users
+```
+
+Back up the stopped service's database and files together, retain the old
+image for rollback, then recreate the container against its original data
+volume. Verify HTTPS, authenticated policy and a real WebSocket upgrade
+through the proxy. The 2026-10-22 production deployment and acceptance record
+is in [docs/SYNC_NETWORK.md](../docs/SYNC_NETWORK.md).
+
 ## Testing against the app
 
 `go test ./...` covers the server. The app's live sync tests run against a
