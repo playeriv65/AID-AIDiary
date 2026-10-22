@@ -28,7 +28,9 @@ Commands:
                          builds); widgets=true adds every build, layout
                          and paint, which slows frames
   trace stop [path=...]  stops and writes it in the Chrome trace format,
-                         for ui.perfetto.dev or DevTools
+                         for ui.perfetto.dev or DevTools; with vm=<uri>
+                         either one uses that VM service, such as the one
+                         `flutter run` prints for a debug run
 
 Options:
 ''';
@@ -215,8 +217,11 @@ class AidClient {
       jsonDecode(utf8.decode(response.bodyBytes)) as Map<String, Object?>;
 
   /// The app's Dart VM service, which debug and profile builds serve,
-  /// reachable from here: over adb through a forwarded port.
-  Future<VmService> _vmService() async {
+  /// reachable from here: over adb through a forwarded port. [given] is
+  /// one on this computer instead, such as the one `flutter run` prints:
+  /// it stands between the app and every other client.
+  Future<VmService> _vmService(String? given) async {
+    if (given != null) return _connectVm(Uri.parse(given));
     final status = await run('app.status', {});
     final address = (status['result'] as Map?)?['vmService'] as String?;
     if (address == null) {
@@ -232,6 +237,10 @@ class AidClient {
       _vmForwarded = 'tcp:$local';
       uri = uri.replace(port: int.parse(local));
     }
+    return _connectVm(uri);
+  }
+
+  Future<VmService> _connectVm(Uri uri) {
     final path = uri.path.endsWith('/') ? uri.path : '${uri.path}/';
     return vmServiceConnectUri(
       uri.replace(scheme: 'ws', path: '${path}ws').toString(),
@@ -252,8 +261,11 @@ class AidClient {
 
   /// Starts recording the timeline afresh, with every widget build, layout
   /// and paint on it when [widgets].
-  Future<Map<String, Object?>> traceStart({required bool widgets}) async {
-    final service = await _vmService();
+  Future<Map<String, Object?>> traceStart({
+    required bool widgets,
+    String? vm,
+  }) async {
+    final service = await _vmService(vm);
     try {
       await service.setVMTimelineFlags(_traceStreams);
       await service.clearVMTimeline();
@@ -269,8 +281,8 @@ class AidClient {
 
   /// Stops recording and writes the timeline to [path] in the Chrome trace
   /// format, which Perfetto (ui.perfetto.dev) and DevTools open.
-  Future<Map<String, Object?>> traceStop(String path) async {
-    final service = await _vmService();
+  Future<Map<String, Object?>> traceStop(String path, {String? vm}) async {
+    final service = await _vmService(vm);
     try {
       final timeline = await service.getVMTimeline();
       await _profileWidgets(service, false);
@@ -395,11 +407,19 @@ Future<int> runAid(
     } else if (command == 'trace') {
       switch (rest.elementAtOrNull(1)) {
         case 'start':
-          reply = await aid.traceStart(widgets: args['widgets'] == 'true');
+          reply = await aid.traceStart(
+            widgets: args['widgets'] == 'true',
+            vm: args['vm'],
+          );
         case 'stop':
-          reply = await aid.traceStop(args['path'] ?? 'aid_timeline.json');
+          reply = await aid.traceStop(
+            args['path'] ?? 'aid_timeline.json',
+            vm: args['vm'],
+          );
         default:
-          out.writeln('trace start [widgets=true] | trace stop [path=...]');
+          out.writeln(
+            'trace start [widgets=true] [vm=...] | trace stop [path=...] [vm=...]',
+          );
           return 2;
       }
     } else {
