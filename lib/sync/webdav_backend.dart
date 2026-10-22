@@ -47,7 +47,11 @@ class WebDavBackend implements SyncBackend {
   final String folder;
   final String _authorization;
   final http.Client _client;
-  final Set<String> _madeFolders = {};
+
+  /// Folders made, or being made, in this session. Writes in parallel wait
+  /// on the same MKCOL: servers lock a folder while one is made, and answer
+  /// a second at the same time with 423 Locked.
+  final Map<String, Future<void>> _madeFolders = {};
 
   Uri _uri(String path, {bool directory = false}) {
     final segments = [
@@ -184,13 +188,21 @@ class WebDavBackend implements SyncBackend {
     final parts = path.split('/').where((part) => part.isNotEmpty).toList();
     for (var depth = 0; depth <= parts.length; depth++) {
       final folder = parts.take(depth).join('/');
-      if (_madeFolders.contains(folder)) continue;
+      await (_madeFolders[folder] ??= _mkcol(folder));
+    }
+  }
+
+  Future<void> _mkcol(String folder) async {
+    try {
       final response = await _send('MKCOL', _uri(folder, directory: true));
       // 405: it already exists.
       if (response.statusCode != 201 && response.statusCode != 405) {
         throw _failure('MKCOL', folder, response);
       }
-      _madeFolders.add(folder);
+    } catch (_) {
+      // Not made: the next write tries again.
+      _madeFolders.remove(folder);
+      rethrow;
     }
   }
 

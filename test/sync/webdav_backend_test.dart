@@ -167,6 +167,21 @@ void main() {
     expect(server.answers, ['PUT 201']);
   });
 
+  test('writes in parallel make each folder once', () async {
+    // Servers lock a folder being made and answer a second MKCOL at the
+    // same time with 423, as the AID server does.
+    final server = FakeDav();
+    final dav = backendFor(server);
+    await Future.wait([
+      for (var i = 0; i < 5; i++)
+        dav.write('blobs/photo-$i', Uint8List.fromList([i])),
+    ]);
+    expect(server.answers.where((answer) => answer.startsWith('MKCOL')),
+        hasLength(2),
+        reason: 'the space folder and blobs/');
+    expect(await dav.list('blobs'), hasLength(5));
+  });
+
   test('a dropped connection is tried once more', () async {
     final server = FakeDav();
     final dav = backendFor(server);

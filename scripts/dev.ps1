@@ -25,6 +25,14 @@ function Stop-Gradle {
     & .\android\gradlew.bat -p android --stop --quiet | Out-Null
   }
 }
+# Android builds sign with the release key when android/key.properties is
+# there, so they install over each other. It is kept out of git: a new
+# worktree has none, and would build an app the devices refuse.
+if ($Target -in 'android', 'apk', 'profile', 'release' -and
+    -not (Test-Path android\key.properties)) {
+  Write-Error 'android/key.properties is missing: copy it from the main checkout (it stays out of git).'
+  exit 1
+}
 switch ($Target) {
   'windows' { flutter run -d windows }
   # For agents: window off screen and never focused; prints the DTD URI for
