@@ -222,8 +222,10 @@ candidates do not yet have an active throughput measurement service.
 The selector also supports a bounded direct-first head start. First-time nearby
 migration now has its own foreground QR/SAS flow and reuses authenticated direct
 object transfer and persistent media chunks. Wi-Fi/hotspot settings assistance is
-implemented; unattended Wi-Fi Direct negotiation remains outside the current
-platform contract. Storage-based SPAKE2 pairing remains available independently.
+implemented and is sufficient for the scope confirmed by the owner on
+2026-10-22; automatic Wi-Fi Direct/hotspot creation is not required. Once a
+usable network exists, discovery and authenticated connection remain automatic.
+Storage-based SPAKE2 pairing remains available independently.
 
 ## Offline nearby authorization and migration
 

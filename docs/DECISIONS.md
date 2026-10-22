@@ -139,7 +139,10 @@ current implementation. Decided along the way:
   discovery, authentication and chunk protocols. The intended flow is scan,
   find a fast connection, transfer and verify. Same-Wi-Fi or hotspot
   assistance may require user action; arbitrary cross-platform offline
-  connections without interaction are not promised.
+  connections without interaction are not promised. On 2026-10-22 the owner
+  confirmed that Wi-Fi/hotspot settings guidance is sufficient; automatic
+  network creation is not required. Discovery and transfer should continue
+  automatically once the devices have a usable network.
 - A temporary cache is not a backup. Transfer completion and the existence
   of durable copies must remain separate concepts. Do not discard the last
   intended persistent media copy merely because the cache accepted it.
@@ -176,7 +179,8 @@ P-256 authorization/revocation/rotation, hotspot settings assistance and GUI
 diagnostics are implemented. The two devices compare a code before adoption;
 the new device generates its own non-exportable key. Revocation stops server
 access but cannot recall an MK or diary already copied. Automatic Wi-Fi Direct
-creation remains future work. Google Drive and ordinary WebDAV retain LAN and
+creation is outside the approved scope; settings guidance is sufficient.
+Google Drive and ordinary WebDAV retain LAN and
 storage; Internet discovery requires the compatible service. Detailed
 implementation boundaries and verification results belong in
 `docs/SYNC_NETWORK.md`.

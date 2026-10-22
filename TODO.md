@@ -68,10 +68,6 @@ Remaining work:
   broader NAT/carrier matrix remain unverified. The external IPv6/TCP
   probe timed out, so local global-address success must not be presented as
   cross-WAN success.
-- Automatic OS-specific Wi-Fi Direct creation, beyond the implemented
-  Wi-Fi/hotspot settings assistance. Cross-platform offline operation still
-  needs a mutually reachable local network; permission prompts may require
-  user interaction.
 - A user-facing durable-copy view, separate from transfer completion. The
   operator cache can expire; successful transfer does not by itself prove
   a reliable backup, and a peer's retention is not guaranteed.
@@ -80,6 +76,9 @@ Remaining work:
   product decisions.
 
 ## Decided against for now
+- Automatic Wi-Fi Direct/hotspot creation: the implemented Wi-Fi/hotspot
+  settings guidance is sufficient (2026-10-22). Automatically discover and
+  connect trusted peers once a usable network exists.
 - App lock timeout: phones' own app-lock features cover it.
 - PDF/DOCX export and printing: JSON export (and Markdown) is enough.
 - AI assistant, membership, publishing, web links.
