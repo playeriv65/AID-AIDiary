@@ -60,7 +60,11 @@ class AdaptiveDiaryShell extends StatefulWidget {
 
 class _AdaptiveDiaryShellState extends State<AdaptiveDiaryShell> {
   late final _ContentRouteObserver _observer;
-  bool _hasContentRoute = false;
+
+  /// Whether a page is open over home, which unselects the rail. Only the
+  /// rail's items listen: rebuilding the shell would rebuild its navigator
+  /// in the frame the page opens.
+  final _hasContentRoute = ValueNotifier(false);
   bool _navigating = false;
 
   Future<bool> _returnHome() async {
@@ -88,17 +92,25 @@ class _AdaptiveDiaryShellState extends State<AdaptiveDiaryShell> {
     super.initState();
     _observer = _ContentRouteObserver((hasRoute) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted && _hasContentRoute != hasRoute) {
-          setState(() => _hasContentRoute = hasRoute);
-        }
+        if (mounted) _hasContentRoute.value = hasRoute;
       });
     });
   }
 
-  Widget _railItem(int index) {
+  @override
+  void dispose() {
+    _hasContentRoute.dispose();
+    super.dispose();
+  }
+
+  Widget _railItem(int index) => ValueListenableBuilder(
+      valueListenable: _hasContentRoute,
+      builder: (context, hasContentRoute, _) => _railButton(index,
+          selected: !hasContentRoute && widget.selectedIndex == index));
+
+  Widget _railButton(int index, {required bool selected}) {
     final theme = Theme.of(context);
     final destination = widget.destinations[index];
-    final selected = !_hasContentRoute && widget.selectedIndex == index;
     final foreground = selected
         ? theme.colorScheme.onSecondaryContainer
         : theme.colorScheme.onSurfaceVariant;
