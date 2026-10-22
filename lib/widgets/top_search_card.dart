@@ -7,7 +7,7 @@ import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/widgets/app_logo.dart';
 import 'package:material_ui/material_ui.dart';
 
-/// Floating card at the top of each page: app name, search and the profile
+/// Floating card at the top of each page: app name, search and the menu
 /// sheet.
 class TopSearchCard extends StatelessWidget {
   const TopSearchCard({super.key, this.showSearch = true});
@@ -50,15 +50,10 @@ class TopSearchCard extends StatelessWidget {
               ),
             ],
             IconButton(
-              key: const ValueKey('journal-profile'),
+              key: const ValueKey('journal-menu'),
               tooltip: l10n.pageSettingsTitle,
-              icon: CircleAvatar(
-                radius: 16,
-                backgroundColor: cs.secondaryContainer,
-                child: Icon(Icons.person_rounded,
-                    size: 20, color: cs.onSecondaryContainer),
-              ),
-              onPressed: () => showProfileSheet(context),
+              icon: const Icon(Icons.menu_rounded),
+              onPressed: () => showMenuSheet(context),
             ),
           ]),
         ),
@@ -68,7 +63,7 @@ class TopSearchCard extends StatelessWidget {
 }
 
 /// Bottom sheet with the app's secondary destinations.
-Future<void> showProfileSheet(BuildContext context) {
+Future<void> showMenuSheet(BuildContext context) {
   final navigator = Navigator.of(context);
   final l10n = AppLocalizations.of(context)!;
   void open(Future<void> Function(NavigatorState navigator) screen) {
@@ -93,7 +88,7 @@ Future<void> showProfileSheet(BuildContext context) {
             onTap: onTap,
           );
 
-      // Close, who you are, then the destinations grouped in one card.
+      // Close, then the destinations grouped in one card.
       return SafeArea(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
@@ -104,25 +99,14 @@ Future<void> showProfileSheet(BuildContext context) {
                 Align(
                   alignment: AlignmentDirectional.centerStart,
                   child: IconButton(
-                    key: const ValueKey('profile-close'),
+                    key: const ValueKey('menu-close'),
                     tooltip:
                         MaterialLocalizations.of(context).closeButtonTooltip,
                     icon: const Icon(Icons.close_rounded),
                     onPressed: () => Navigator.of(context).pop(),
                   ),
                 ),
-                ListTile(
-                  contentPadding: EdgeInsets.zero,
-                  leading: CircleAvatar(
-                      radius: 28,
-                      backgroundColor: cs.secondaryContainer,
-                      child: Icon(Icons.person_rounded,
-                          color: cs.onSecondaryContainer)),
-                  title:
-                      Text(l10n.appTitle, style: theme.textTheme.titleMedium),
-                  subtitle: Text(l10n.profileLocalOnly),
-                ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 4),
                 Card.filled(
                   margin: EdgeInsets.zero,
                   color: cs.surfaceContainerHigh,
@@ -137,13 +121,13 @@ Future<void> showProfileSheet(BuildContext context) {
                         () => open(AppNavigation.settings)),
                     const Divider(height: 1),
                     row(
-                        'profile-statistics',
+                        'menu-statistics',
                         Icons.insights_rounded,
                         l10n.pageStatisticsTitle,
                         () => open(AppNavigation.statistics)),
                     const Divider(height: 1),
                     row(
-                        'profile-templates',
+                        'menu-templates',
                         Icons.description_outlined,
                         l10n.settingsTemplatesTitle,
                         () => open(AppNavigation.templates)),

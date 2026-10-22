@@ -1698,12 +1698,6 @@ abstract class AppLocalizations {
   /// **'No entry selected.'**
   String get noEntrySelected;
 
-  /// No description provided for @profileLocalOnly.
-  ///
-  /// In en, this message translates to:
-  /// **'Your diary stays on this device'**
-  String get profileLocalOnly;
-
   /// No description provided for @entryShare.
   ///
   /// In en, this message translates to:

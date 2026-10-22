@@ -914,9 +914,6 @@ class AppLocalizationsId extends AppLocalizations {
   String get noEntrySelected => 'No entry selected.';
 
   @override
-  String get profileLocalOnly => 'Your diary stays on this device';
-
-  @override
   String get entryShare => 'Share';
 
   @override

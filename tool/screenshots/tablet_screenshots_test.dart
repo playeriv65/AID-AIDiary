@@ -34,7 +34,7 @@ void main() {
     await session.tapKey(
         tester, 'journal-entry-${await session.starredEntryId(tester)}');
     await session.capture(tester, 'tablet-journal');
-    await session.tapKey(tester, 'journal-profile');
+    await session.tapKey(tester, 'journal-menu');
     await session.capture(tester, 'tablet-avatar');
     await tester.tapAt(const Offset(640, 40));
     await tester.pumpAndSettle();

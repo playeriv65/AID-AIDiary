@@ -904,9 +904,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get noEntrySelected => '未选择日记。';
 
   @override
-  String get profileLocalOnly => '日记只保存在这台设备上';
-
-  @override
   String get entryShare => '分享';
 
   @override
@@ -3083,9 +3080,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get noEntrySelected => '未選擇日記。';
-
-  @override
-  String get profileLocalOnly => '日記只保存在這台裝置上';
 
   @override
   String get entryShare => '分享';

@@ -39,7 +39,7 @@ void main() {
       expect(tester.state(find.byType(MonthCalendar)), same(calendarState));
       expect(tester.takeException(), isNull);
     }
-    await tapKey(tester, 'journal-profile');
+    await tapKey(tester, 'journal-menu');
     await tapKey(tester, 'diary-settings');
     expect(find.byKey(const ValueKey('diary-rail')), findsOneWidget);
     await tester.tap(find.text('通用'));
