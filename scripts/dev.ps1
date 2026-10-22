@@ -3,18 +3,35 @@ param(
   # Flutter device id for 'android', e.g. a wireless adb serial from `flutter devices`.
   [string]$Device='emulator-5554'
 )
-$env:PUB_CACHE='D:\software\pub-cache'
-$env:FLUTTER_ROOT='D:\software\flutter'
-$env:Path='D:\software\flutter\bin;D:\software\android-sdk\platform-tools;' + $env:Path
-$env:JAVA_HOME='D:\software\JDK'
-$env:ANDROID_HOME='D:\software\android-sdk'
-$env:ANDROID_USER_HOME='D:\software\android-user'
-$env:ANDROID_AVD_HOME='D:\software\android-avd'
-$env:GRADLE_USER_HOME='D:\software\gradle-cache'
+# Where this computer keeps the toolchain, from scripts/dev.env (kept out of
+# git; copy scripts/dev.env.example and see docs/SETUP.md).
+$devEnv = Join-Path $PSScriptRoot 'dev.env'
+if (-not (Test-Path $devEnv)) {
+  Write-Error "scripts/dev.env is missing: copy scripts/dev.env.example to it and set this computer's paths (docs/SETUP.md)."
+  exit 1
+}
+$tools = @{}
+foreach ($line in Get-Content $devEnv) {
+  if ($line -match '^\s*([A-Z_]+)\s*=\s*(.*?)\s*$') { $tools[$Matches[1]] = $Matches[2] }
+}
+foreach ($required in 'FLUTTER_ROOT', 'PUB_CACHE', 'JAVA_HOME', 'ANDROID_HOME') {
+  if (-not $tools[$required]) {
+    Write-Error "scripts/dev.env does not set $required."
+    exit 1
+  }
+}
+foreach ($name in 'FLUTTER_ROOT', 'PUB_CACHE', 'JAVA_HOME', 'ANDROID_HOME',
+    'ANDROID_USER_HOME', 'ANDROID_AVD_HOME', 'GRADLE_USER_HOME') {
+  if ($tools[$name]) { Set-Item "env:$name" $tools[$name] }
+}
+$env:Path = (Join-Path $env:FLUTTER_ROOT 'bin') + ';' +
+  (Join-Path $env:ANDROID_HOME 'platform-tools') + ';' + $env:Path
 # Flutter leaves a temp folder per test or build run that is interrupted;
-# keep them off the small system drive.
-$env:TEMP = $env:TMP = 'D:\software\temp'
-New-Item -ItemType Directory -Force $env:TEMP | Out-Null
+# DEV_TEMP keeps them off a small system drive.
+if ($tools['DEV_TEMP']) {
+  $env:TEMP = $env:TMP = $tools['DEV_TEMP']
+  New-Item -ItemType Directory -Force $env:TEMP | Out-Null
+}
 Set-Location (Split-Path $PSScriptRoot -Parent)
 # A Gradle daemon holds gigabytes after a build; Android targets stop it as
 # they finish rather than leave it idling.
@@ -30,7 +47,7 @@ function Stop-Gradle {
 # worktree has none, and would build an app the devices refuse.
 if ($Target -in 'android', 'apk', 'profile', 'release' -and
     -not (Test-Path android\key.properties)) {
-  Write-Error 'android/key.properties is missing: copy it from the main checkout (it stays out of git).'
+  Write-Error 'android/key.properties is missing: copy it from the main checkout, or make your own key from android/key.properties.example (docs/SETUP.md).'
   exit 1
 }
 switch ($Target) {

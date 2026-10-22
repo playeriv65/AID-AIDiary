@@ -7,7 +7,7 @@
 // named in AID_GOOGLE_LIVE; open it in a browser on this machine and allow
 // access:
 //
-//   AID_GOOGLE_LIVE=D:/software/temp/google-sign-in.txt
+//   AID_GOOGLE_LIVE=<temp folder>/google-sign-in.txt
 //   flutter test --tags live test/sync/live_google_drive_test.dart
 //
 // Each test works in a Drive folder of its own and removes it afterwards.

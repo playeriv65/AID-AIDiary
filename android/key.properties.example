@@ -1,0 +1,6 @@
+# The signing key of every Android build (see docs/SETUP.md). Copy to
+# android/key.properties, which git ignores, and point it at your keystore.
+storeFile=C:\\keys\\aid-diary.jks
+storePassword=
+keyAlias=aid-diary
+keyPassword=

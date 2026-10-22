@@ -62,3 +62,6 @@ changelog.txt
 server/data/
 server/aid-sync
 server/aid-sync.exe
+
+# This computer's toolchain paths for scripts/dev.ps1 (template: scripts/dev.env.example)
+/scripts/dev.env

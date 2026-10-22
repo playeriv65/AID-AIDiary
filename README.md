@@ -53,7 +53,7 @@ Android permissions beyond storage and notifications: location (place, asked for
 
 ## Development
 
-Windows is the main development environment. Use the installed Flutter SDK at `D:\software\flutter` (no WSL, no SDK submodule). The code is organized after Flutter's official architecture guide; [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) describes the layers and the rules the tests enforce.
+Windows is the main development environment (no WSL, no SDK submodule). [docs/SETUP.md](docs/SETUP.md) sets up a new computer (toolchain versions, `scripts/dev.env`, the signing key) and lists the test devices and the outside accounts the app depends on. The code is organized after Flutter's official architecture guide; [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) describes the layers and the rules the tests enforce. [docs/DECISIONS.md](docs/DECISIONS.md) records the product decisions and the open questions.
 
 ```powershell
 ./scripts/dev.ps1 test         # all tests
@@ -80,7 +80,7 @@ aid -d <adb serial> sync.now
 aid entry.delete id=12 --yes         # destructive actions need --yes
 ```
 
-The Android build runs on the installed JDK 23: the root `android/build.gradle` gives every module's Kotlin the JVM target its Java already uses, since many plugins leave it unset. Flutter's Android SDK path is pinned with `flutter config --android-sdk D:\software\android-sdk`.
+The Android build runs on JDK 23: the root `android/build.gradle` gives every module's Kotlin the JVM target its Java already uses, since many plugins leave it unset. Flutter's Android SDK path is pinned with `flutter config --android-sdk`.
 
 Screenshots are rendered by widget tests in `tool/screenshots/` with real fonts (Flutter SDK icons, Windows Noto Sans SC and Segoe Emoji); no window opens.
 
