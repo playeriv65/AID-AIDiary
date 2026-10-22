@@ -182,6 +182,57 @@ launched to avoid a new firewall authorization. The matching APK is kept
 at `build/handover/app-dev-debug.apk`, SHA-256
 `8B33B6C5306AB6E456EFB836B9FBBC2F5C2F2493CDD7547285CD6940DB10A5B7`.
 
+## Local development and diagnostics
+
+Use `aid guide` and shared app actions before manual taps when checking behavior.
+Build the CLI with `./scripts/dev.ps1 cli`; `build/cli/aid.exe` can reach the
+development Android flavor over adb with `aid -d <serial> app.status`. It reads
+the token through `run-as` and starts that flavor when necessary. Release builds
+serve the API only after Settings enables it. Keep tokens and API-info files
+private.
+
+For local multi-device sync without a phone/cloud account, start the Go service
+from `server/` (`go run ./cmd/aid-sync adduser NAME`, then `serve`) and hidden
+Windows app instances with separate `AID_DATA_DIR` and `AID_API_INFO` paths.
+These scratch instances use isolated file-backed preferences/secrets. Drive
+`sync.connect_webdav`, `sync.pair_offer` and `sync.pair_accept` through `aid`.
+Android can reach a local test port with `adb reverse tcp:PORT tcp:PORT`; debug
+and profile builds permit localhost HTTP for this. Physical route checks use
+the isolated procedure above, not ordinary diary data.
+
+Use widget tests, headless screenshots and an Android emulator with `-no-window`
+for routine visual checks. Only open a visible Windows app when the owner wants
+to inspect it. `./scripts/dev.ps1 windows-background` uses a nearly transparent,
+click-through, unfocused on-screen window rather than an off-screen window
+(which has no usable vsync). It enables Flutter Driver and logs the DTD URI.
+This default debug launch uses the real Windows data directory: back it up
+before a schema change and keep driver inspections read-only unless the task
+authorizes writes there.
+
+Flutter MCP tooling is optional and must actually be installed/available before
+using its calls. When available, use `analyze_files`/LSP and package-source reads
+for diagnostics; connect through DTD to hot reload, inspect runtime errors and
+drive the app. Restart for changes to startup, `initState` or static state.
+Turn driver frame synchronization off while a blinking text field holds focus;
+search inspector output rather than dumping the entire tree. Without that
+integration, use the configured Flutter CLI and `aid`; do not claim MCP checks
+ran. Android development launches use `./scripts/dev.ps1 android -Device <id>`;
+`adb exec-out screencap` can capture device output.
+
+For home-screen widget cold-launch checks, prefer `am kill` to `am force-stop`:
+force-stop cancels widget taps until the next update. `flutter drive` can
+uninstall the app on completion unless `--keep-app-running` is set; follow the
+signing/data safeguards below.
+
+### App icon
+
+`tool/icon/export_icon.py` draws the original icon and writes `assets/logo*.png`
+and `assets/logo.svg`; colors/scales live in that tool. Run it with uv, then
+`dart run icons_launcher:create` in the configured development environment to
+regenerate Android launcher/round/adaptive/monochrome/notification icons and the
+Windows `.ico`. Android 12+ uses the launcher icon for its splash. Keep the
+app's own visual identity and upstream licensing notices.
+
 ## Signing key
 
 Native Flutter run/build targets take an exclusive per-checkout file lock.
@@ -207,6 +258,13 @@ device's data, and a prompt on the device.
   and points `key.properties` at it. Their builds then cannot update the
   owner's installs, and Google Drive sign-in needs the new key's SHA-1
   registered (`docs/GOOGLE_DRIVE.md`).
+
+`./scripts/dev.ps1 apk` builds the development flavor (`dev.aid.diary.beta`,
+not the older `.dev` package). `./scripts/dev.ps1 release` builds the
+`independent` flavor (`dev.aid.diary`) and installs it with `adb install -r` on
+connected devices; this is the owner's ordinary app, not an isolated test
+workspace. Do not use that target as a harmless build-only check, uninstall
+either flavor, clear its data or change its signing key without authorization.
 
 ## Test devices
 

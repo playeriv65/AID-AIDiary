@@ -174,6 +174,17 @@ existing profile/native measurement; screenshots and debug timing cannot prove i
 
 ## Test design and failure handling
 
+### Widget fixtures
+
+Use `DiaryAppHarness.setSetting` for fixture setting changes and
+`DiaryAppHarness.pumpUntil` for SQLite work started by widgets. When the tap
+under test changes config, pump once and call `EasyDebounce.cancel('save-config')`
+before settling: advancing fake time through the one-second debounce otherwise
+starts a real write that can keep the temporary folder locked. This recipe
+controls fixture timing; it must not skip the behavior/assertions under test.
+
+### Review and diagnose tests
+
 - Assert behavior at public boundaries and meaningful invariants. Cover normal,
   boundary and failure paths where they matter; prefer one clear reason to fail.
   Avoid checking private calls, widget-tree trivia or source strings just to

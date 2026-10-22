@@ -48,3 +48,30 @@ same code under `dev.aid.diary.beta` ran at 120 Hz. The released package
 Others hit the same: Obsidian on a Xiaomi 13 Pro
 (<https://forum.obsidian.md/t/no-high-refresh-rate-on-android-xiaomi-13-pro/76871>)
 and Flutter apps (<https://github.com/flutter/flutter/issues/160952>).
+
+## Requested profile measurements
+
+The owner deferred the next performance pass on 2026-10-22. The measured backlog
+is in [TODO.md](../TODO.md); [TESTING.md](TESTING.md) defines when this check is
+needed. The following procedure applies when a pass is requested.
+
+Use `./scripts/dev.ps1 frame-rate -Device <adb serial>` or `-Device windows`.
+Device checks measure the installed build, so first install the correctly
+signed profile flavor with `./scripts/dev.ps1 profile -Device <serial>`.
+Windows builds a profile app with the development API and runs it hidden on
+scratch `AID_DATA_DIR` data. Scenarios and thresholds belong to
+`scripts/frame_rate.json`; the runner is `scripts/frame_rate.ps1`.
+
+The runner seeds 4000 entries with 400 photos, navigates through `aid`, flings
+with adb or `aid ui.fling`, and collects `perf.start`/`perf.stop` frame data.
+On Android it also measures presented frames through SurfaceFlinger. Review
+build/raster times, frames over budget and skipped refreshes against the
+display's actual refresh mode, not debug timing alone.
+
+Results go to `build/frame_rate.json` and scenario timelines under
+`build/frame_rate_timeline/`; `widgets.json` contains the widget build/layout/
+paint trace. `aid trace start`/`stop` captures a timeline for Perfetto. For a
+phone-sized check on the tablet, record the existing size/density/rotation,
+apply `wm size 1080x2400` and `wm density 420`, use the intended rotation, then
+restore every changed device setting. Check the classifier diagnosis above
+before attributing a 60 Hz cap to application performance.

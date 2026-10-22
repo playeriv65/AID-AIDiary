@@ -60,7 +60,7 @@ Android permissions beyond storage and notifications: location (place, asked for
 
 ## Development
 
-Windows is the main development environment (no WSL, no SDK submodule). [docs/SETUP.md](docs/SETUP.md) sets up a new computer (toolchain versions, `scripts/dev.env`, the signing key) and lists the test devices and the outside accounts the app depends on. The code is organized after Flutter's official architecture guide; [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) describes the layers and the rules the tests enforce. [docs/DECISIONS.md](docs/DECISIONS.md) records the product decisions and the open questions. [docs/SYNC_NETWORK.md](docs/SYNC_NETWORK.md) describes automatic paths, resumable media, server budgets and the network features still to build.
+Windows is the main development environment (no WSL, no SDK submodule). Start with the [documentation index](docs/INDEX.md): it routes setup, architecture, product decisions, testing and subsystem questions to their owning guides. [Engineering principles](docs/ENGINEERING.md) explain how we adapt Flutter/Google guidance, review changes and maintain documentation. [Setup](docs/SETUP.md) covers a new computer, local toolchain configuration, signing and test devices.
 
 ```powershell
 ./scripts/dev.ps1 pub          # resolve app and CLI dependencies on a new checkout

@@ -192,6 +192,15 @@ storage; Internet discovery requires the compatible service. Detailed
 implementation boundaries and verification results belong in
 `docs/SYNC_NETWORK.md`.
 
+## Engineering and documentation
+
+- 2026-10-22: Use [Engineering](ENGINEERING.md) for project principles and the
+  change/review workflow, with [INDEX.md](INDEX.md) locating each subject's
+  primary guide. Learn from official Flutter/Google guidance while recording
+  local adaptations honestly; it does not authorize new product scope or a
+  wholesale architecture/tooling migration. AGENTS is an execution entry point,
+  not a second operations manual or a history of test/deployment results.
+
 ## Testing
 
 - 2026-10-22: Use the researched project-wide policy in [TESTING.md](TESTING.md):

@@ -7,6 +7,22 @@ single-user, offline-first app. This file says how the guidance maps onto this
 repository and which rules are enforced. Read the official guide for the
 reasoning; this file only records our decisions.
 
+The [engineering policy](ENGINEERING.md) explains how recommendations become
+project rules; the [documentation index](INDEX.md) locates related guides.
+
+## Adoption and deliberate adaptations
+
+Status reviewed on 2026-10-22. Flutter's recommendations are not a claim that
+every existing module has already been refactored to match them.
+
+| Guidance | Current project choice | Reason and revisit condition |
+|---|---|---|
+| UI/data separation, owned state and one-way updates | Adopted as the boundaries below; stores/providers are repository-like owners | Keep behavior shared across screens and CLI; enforce dependency direction |
+| Views and view models | Partially adopted: editor logic is extracted; some other screens still read stores directly | Extract meaningful screen logic when touched; do not claim complete MVVM |
+| Dependency injection and abstract repositories | Partial substitution through constructor parameters; existing singleton stores/services remain | Improve concrete hidden-state/testing or backend-substitution problems in the affected area; no new global service locator |
+| Separate domain/use-case layer | Conditional, not imposed project-wide; pure rules and shared actions already have owners | Add another layer only for demonstrated complex/repeated orchestration |
+| Router, model generators and directory names from examples | Current routing, handwritten immutable models and role-based folders remain | Compare migration benefits/costs when a real limitation appears, not for sample conformity |
+
 ## Principles we take from the guide
 
 - **Separation of concerns.** UI code shows state and forwards user intent.
@@ -72,16 +88,34 @@ our screens are thin and read stores directly, which is fine. A screen gets
 a view model (a `ChangeNotifier` next to the page, `pages/<name>_view_model.dart`)
 once it holds logic of its own: saving and discarding drafts, validation,
 multi-step flows. The page then only builds widgets from the view model's
-state and calls its methods; the view model is unit-tested without widgets.
+state and calls its methods; test its logic without widgets at the layer its
+dependencies require.
 
 The entry editor is the worked example. `EditEntryViewModel`
 (`pages/edit_entry_view_model.dart`) holds what is edited, autosaves drafts,
 keeps or rolls back the session on leaving, picks the diary day and fills in
 place and weather; it takes its store, services and clock as constructor
 parameters, and `test/pages/edit_entry_view_model_test.dart` covers it
-without a widget. `AddEditEntryPage` keeps only the text controllers, the
+without a widget, using real SQLite in the host-integration layer.
+`AddEditEntryPage` keeps only the text controllers, the
 dialogs and navigation, reports typing and choices to the view model and
 redraws when it notifies.
+
+### UI work and shared state
+
+Pages stay alive and may rebuild on each diary change. Keep per-entry work out
+of build loops: use store indexes (`EntryStore.getEntriesForDate`,
+`EntryImagesProvider.getForEntry`, `TagsProvider.getEntryTagsForEntry`) and cache
+by list identity when appropriate; stores replace lists on change. Use
+`Entry.day` for diary-day grouping and `parseLocalTime` for stored wall times
+instead of repeatedly doing local time-zone conversion while building rows.
+Check behavior against a seeded diary of several thousand entries when such
+work changes; profile measurement remains a separate requested pass.
+
+New settings must be registered in `Settings.all`: startup prunes unknown keys
+and `test/config_settings_test.dart` checks the registry. Photos, videos and
+voice notes share attachment storage; `MediaKind` distinguishes their type,
+so backup/sync must preserve them through the same ownership path.
 
 ## Agent-native: actions shared by the GUI and the CLI
 
@@ -160,7 +194,9 @@ Rules that keep it so:
   transaction and compensating secure-store writes; the sender receives a final
   receipt only after recipient content and identity have committed.
 - Touch feedback (`widgets/haptics.dart`) belongs to the GUI: actions run
-  from the CLI stay silent.
+  from the CLI stay silent. Use selection feedback sparingly for tabs, switches
+  and moods, and success/warning/error feedback for outcomes or destructive
+  prompts.
 - The GUI changes data only by running actions (`AppActions.instance.run`),
   never by writing to the stores and services behind them;
   `test/architecture/actions_only_test.dart` checks `pages/`, `widgets/` and
