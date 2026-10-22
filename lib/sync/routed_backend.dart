@@ -16,6 +16,7 @@ class RoutedSyncBackend implements SyncBackend {
       required this.peers,
       this.storageAvailable,
       this.onStorageFailure,
+      this.timeoutFor,
       this.timeout = const Duration(seconds: 4)});
   final SyncBackend local;
   final SyncBackend storage;
@@ -23,13 +24,17 @@ class RoutedSyncBackend implements SyncBackend {
   final Duration timeout;
   final bool Function()? storageAvailable;
   final void Function()? onStorageFailure;
+  final Duration Function(SyncBackend)? timeoutFor;
+  Duration _timeout(SyncBackend route) => timeoutFor?.call(route) ?? timeout;
   final Set<SyncBackend> _snapshotAcknowledged = {};
   List<SyncBackend> get _routes =>
       [...peers(), if (storageAvailable?.call() ?? true) storage];
 
   @override
   Future<void> check() async {
-    await _first<void>([for (final route in _routes) () => route.check()]);
+    await _first<void>([
+      for (final route in _routes) () => route.check().timeout(_timeout(route))
+    ]);
   }
 
   @override
@@ -39,7 +44,7 @@ class RoutedSyncBackend implements SyncBackend {
       for (final route in _routes)
         () async {
           try {
-            return await route.list(folder).timeout(timeout);
+            return await route.list(folder).timeout(_timeout(route));
           } catch (_) {
             if (identical(route, storage)) onStorageFailure?.call();
             return <String, String>{};
@@ -61,7 +66,7 @@ class RoutedSyncBackend implements SyncBackend {
           () async {
             Uint8List? value;
             try {
-              value = await route.read(path);
+              value = await route.read(path).timeout(_timeout(route));
             } catch (_) {
               if (identical(route, storage)) onStorageFailure?.call();
               rethrow;
@@ -86,7 +91,7 @@ class RoutedSyncBackend implements SyncBackend {
         () async {
           String? result;
           try {
-            result = await route.write(path, bytes);
+            result = await route.write(path, bytes).timeout(_timeout(route));
           } catch (_) {
             if (identical(route, storage)) onStorageFailure?.call();
             rethrow;
@@ -112,7 +117,7 @@ class RoutedSyncBackend implements SyncBackend {
             return;
           }
           try {
-            await route.delete(path).timeout(timeout);
+            await route.delete(path).timeout(_timeout(route));
           } catch (_) {/* Retry via snapshots. */}
         }()
     ]);
@@ -127,12 +132,12 @@ class RoutedSyncBackend implements SyncBackend {
         () async {
           try {
             final present =
-                await route.list(SpaceLayout.packs).timeout(timeout);
+                await route.list(SpaceLayout.packs).timeout(_timeout(route));
             for (final path in packs.keys) {
               if (present.containsKey(path)) continue;
               final bytes = await local.read(path);
               if (bytes != null) {
-                await route.write(path, bytes).timeout(timeout);
+                await route.write(path, bytes).timeout(_timeout(route));
               }
             }
           } catch (_) {
@@ -148,7 +153,7 @@ class RoutedSyncBackend implements SyncBackend {
     var left = attempts.length;
     if (left == 0) return Future.error(StateError('No route available'));
     for (final attempt in attempts) {
-      Future<T>.sync(attempt).timeout(timeout).then((value) {
+      Future<T>.sync(attempt).then((value) {
         if (!result.isCompleted) result.complete(value);
       }, onError: (Object error, StackTrace stack) {
         if (--left == 0 && !result.isCompleted) {

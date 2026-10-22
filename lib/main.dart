@@ -44,7 +44,7 @@ void main() async {
   }
   databaseFactory = databaseFactoryFfi;
   WidgetsFlutterBinding.ensureInitialized();
-  if (AppActions.instance.devBuild) useScratchFolders();
+  if (AppActions.instance.devBuild) await useScratchFolders();
 
   configureLogging();
 
@@ -68,9 +68,11 @@ void main() async {
     await FlutterDisplayMode.setHighRefreshRate();
     await NotificationManager.instance.init();
 
-    await recordAlarmDispatcher();
-    await Workmanager().initialize(autoBackupCallbackDispatcher);
-    await armAutoBackupWork();
+    if (scratchFolder == null) {
+      await recordAlarmDispatcher();
+      await Workmanager().initialize(autoBackupCallbackDispatcher);
+      await armAutoBackupWork();
+    }
   }
 
   runApp(MultiProvider(providers: [

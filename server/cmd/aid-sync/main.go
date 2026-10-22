@@ -44,6 +44,7 @@ type settings struct {
 	credentialTTL  time.Duration
 	trustProxy     bool
 	media          server.MediaLimits
+	network        server.NetworkLimits
 }
 
 func load() (settings, error) {
@@ -64,13 +65,50 @@ func load() (settings, error) {
 		{"AID_SYNC_MEDIA_MAX_MANIFEST_BYTES", &s.media.MaxManifestBytes, 256 << 10},
 		{"AID_SYNC_MEDIA_CACHE_BYTES", &s.media.CacheBytes, 128 << 20},
 		{"AID_SYNC_MEDIA_DAILY_TRANSFER_BYTES", &s.media.DailyTransferBytes, 256 << 20},
+		{"AID_SYNC_NETWORK_SIGNAL_DAILY_BYTES", &s.network.SignalDailyBytes, 4 << 20},
+		{"AID_SYNC_NETWORK_RELAY_DAILY_BYTES", &s.network.RelayDailyBytes, 32 << 20},
+		{"AID_SYNC_NETWORK_SIGNAL_FRAME_BYTES", &s.network.SignalFrameBytes, 64 << 10},
+		{"AID_SYNC_NETWORK_RELAY_FRAME_BYTES", &s.network.RelayFrameBytes, 32 << 10},
 	}
 	for _, v := range ints {
 		if *v.into, err = strconv.ParseInt(env(v.name, strconv.FormatInt(v.def, 10)), 10, 64); err != nil {
 			return s, fmt.Errorf("%s: %w", v.name, err)
 		}
-		if *v.into < 0 || (strings.HasPrefix(v.name, "AID_SYNC_MEDIA_") && *v.into == 0) {
+		if *v.into < 0 || ((strings.HasPrefix(v.name, "AID_SYNC_MEDIA_") || strings.HasPrefix(v.name, "AID_SYNC_NETWORK_")) && *v.into == 0) {
 			return s, fmt.Errorf("%s must be positive (quota may be zero)", v.name)
+		}
+	}
+	for _, v := range []struct {
+		name     string
+		into     *int
+		def, max int
+	}{
+		{"AID_SYNC_NETWORK_MAX_PEERS", &s.network.MaxPeers, 8, 8},
+		{"AID_SYNC_NETWORK_MAX_CONNECTIONS", &s.network.MaxConnections, 16, 128},
+		{"AID_SYNC_NETWORK_QUEUE_FRAMES", &s.network.QueueFrames, 16, 256},
+		{"AID_SYNC_NETWORK_CONNECTS_PER_MINUTE", &s.network.ConnectsPerMinute, 30, 600},
+		{"AID_SYNC_NETWORK_FRAMES_PER_SECOND", &s.network.FramesPerSecond, 32, 256},
+	} {
+		*v.into, err = strconv.Atoi(env(v.name, strconv.Itoa(v.def)))
+		if err != nil || *v.into <= 0 || *v.into > v.max {
+			return s, fmt.Errorf("%s must be between 1 and %d", v.name, v.max)
+		}
+	}
+	if s.network.SignalFrameBytes > 64<<10 || s.network.RelayFrameBytes > 32<<10 {
+		return s, errors.New("AID_SYNC_NETWORK frame limits may not exceed signal 65536 / relay 32768")
+	}
+	for _, v := range []struct {
+		name string
+		into *time.Duration
+		def  string
+	}{
+		{"AID_SYNC_NETWORK_WRITE_TIMEOUT", &s.network.WriteTimeout, "10s"},
+		{"AID_SYNC_NETWORK_SESSION_TTL", &s.network.SessionTTL, "1h"},
+		{"AID_SYNC_NETWORK_HEARTBEAT_INTERVAL", &s.network.HeartbeatInterval, "30s"},
+	} {
+		*v.into, err = time.ParseDuration(env(v.name, v.def))
+		if err != nil || *v.into <= 0 {
+			return s, fmt.Errorf("%s must be a positive duration", v.name)
 		}
 	}
 	if s.media.CacheTTL, err = time.ParseDuration(env("AID_SYNC_MEDIA_CACHE_TTL", "168h")); err != nil || s.media.CacheTTL <= 0 {
@@ -202,18 +240,20 @@ func readPassword() (string, error) {
 
 func serve(s settings, store *accounts.Store) error {
 	log := slog.New(slog.NewJSONHandler(os.Stdout, nil))
-	handler := server.New(server.Config{
+	syncServer := server.New(server.Config{
 		DataDir:        s.dataDir,
 		MaxUploadBytes: s.maxUploadMB << 20,
 		Media:          s.media,
+		Network:        s.network,
 		CredentialTTL:  s.credentialTTL,
 		FailLimit:      s.failLimit,
 		FailWindow:     s.failWindow,
 		TrustProxy:     s.trustProxy,
-	}, store, log).Handler()
+	}, store, log)
+	defer syncServer.Close()
 	web := &http.Server{
 		Addr:              s.addr,
-		Handler:           handler,
+		Handler:           syncServer.Handler(),
 		ReadHeaderTimeout: 10 * time.Second,
 		IdleTimeout:       2 * time.Minute,
 	}

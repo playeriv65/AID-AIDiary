@@ -50,6 +50,21 @@ class WebDavBackend implements SyncBackend {
   bool? _hasMediaPolicy;
   bool get boundedMedia => _hasMediaPolicy == true;
 
+  /// AID installations may live below a reverse-proxy path prefix.
+  Uri syncApi(String resource) {
+    final path = _server.path;
+    final marker = path.endsWith('/dav/') ? path.length - 5 : -1;
+    return _server.replace(
+        path:
+            '${marker < 0 ? '' : path.substring(0, marker)}/api/sync/$resource',
+        query: '',
+        fragment: '');
+  }
+
+  Uri get networkEndpoint => syncApi('network')
+      .replace(scheme: _server.scheme == 'https' ? 'wss' : 'ws');
+  String get networkAuthorization => _authorization;
+
   /// Folders made, or being made, in this session. Writes in parallel wait
   /// on the same MKCOL: servers lock a folder while one is made, and answer
   /// a second at the same time with 423 Locked.
@@ -214,8 +229,7 @@ class WebDavBackend implements SyncBackend {
   /// A personal WebDAV server may not expose the AID policy endpoint.
   Future<Map<String, dynamic>?> mediaPolicy() async {
     if (_hasMediaPolicy == false) return null;
-    final response = await _send('GET',
-        _server.replace(path: '/api/sync/policy', query: '', fragment: ''));
+    final response = await _send('GET', syncApi('policy'));
     if (response.statusCode == 404 || response.statusCode == 405) {
       _hasMediaPolicy = false;
       return null;

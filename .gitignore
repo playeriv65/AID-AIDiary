@@ -66,3 +66,4 @@ server/aid-sync.exe
 # This computer's toolchain paths for scripts/dev.ps1 (template: scripts/dev.env.example)
 /scripts/dev.env
 /server/deploy/media.env
+/server/deploy/network.env

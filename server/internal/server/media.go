@@ -83,7 +83,12 @@ func (s *Server) policy(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Header().Set("Cache-Control", "no-store")
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(map[string]any{"media": map[string]int64{
+	network, err := s.networkPolicy(r.Context(), user.ID)
+	if err != nil {
+		http.Error(w, "network accounting unavailable", http.StatusServiceUnavailable)
+		return
+	}
+	json.NewEncoder(w).Encode(map[string]any{"network": network, "media": map[string]int64{
 		"maxObjectBytes":         min(s.cfg.Media.MaxObjectBytes, s.cfg.MaxUploadBytes),
 		"maxManifestBytes":       min(s.cfg.Media.defaults().MaxManifestBytes, min(s.cfg.Media.MaxObjectBytes, s.cfg.MaxUploadBytes)),
 		"transferRemainingBytes": max(0, s.cfg.Media.DailyTransferBytes-used),

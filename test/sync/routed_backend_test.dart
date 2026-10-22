@@ -25,7 +25,30 @@ class _UnavailableStorage extends MemorySyncBackend {
   }
 }
 
+class _ThrottledPeer extends MemorySyncBackend {
+  @override
+  Future<String?> write(String path, Uint8List bytes) async {
+    await Future<void>.delayed(const Duration(milliseconds: 30));
+    return super.write(path, bytes);
+  }
+}
+
 void main() {
+  test('a bounded relay gets its own deadline without relaxing cache deadlines',
+      () async {
+    final peer = _ThrottledPeer();
+    final routed = RoutedSyncBackend(
+        local: MemorySyncBackend(),
+        storage: _OfflineStorage(),
+        peers: () => [peer],
+        timeout: const Duration(milliseconds: 1),
+        timeoutFor: (route) => identical(route, peer)
+            ? const Duration(seconds: 1)
+            : const Duration(milliseconds: 1));
+    final bytes = Uint8List.fromList([1, 2, 3]);
+    await routed.write('packs/pack-throttled', bytes);
+    expect(await peer.read('packs/pack-throttled'), bytes);
+  });
   test('an unavailable cache is skipped while the peer keeps working',
       () async {
     final storage = _UnavailableStorage();

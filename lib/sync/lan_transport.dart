@@ -11,6 +11,7 @@ import 'dart:typed_data';
 import 'package:bonsoir/bonsoir.dart';
 import 'package:crypto/crypto.dart';
 import 'package:aid_diary/sync/sync_backend.dart';
+import 'package:aid_diary/sync/sync_object_paths.dart';
 
 /// Discovery records are hints. Only the signed probe can establish a peer.
 class LanCandidate {
@@ -271,25 +272,25 @@ class LanMediaHost {
         });
       } else if (request.method == 'GET' && request.uri.path == '/v1/list') {
         final folder = request.uri.queryParameters['folder'] ?? '';
-        if (!_validFolder(folder)) throw const _LanFailure(400);
+        if (!SyncObjectPaths.validFolder(folder)) throw const _LanFailure(400);
         final files = await _vault.list(folder);
         result = _json({
           for (final file in files.entries)
-            if (_validFile(file.key) &&
+            if (SyncObjectPaths.validFile(file.key) &&
                 file.key.startsWith('$folder/') &&
                 !file.key.substring(folder.length + 1).contains('/'))
               file.key: file.value,
         });
       } else if (request.uri.path == '/v1/file') {
         final path = request.uri.queryParameters['path'] ?? '';
-        if (!_validFile(path)) throw const _LanFailure(400);
+        if (!SyncObjectPaths.validFile(path)) throw const _LanFailure(400);
         switch (request.method) {
           case 'GET':
             final bytes = await _vault.read(path);
             if (bytes == null) throw const _LanFailure(404);
             result = bytes;
           case 'PUT':
-            _verifyChunk(path, body);
+            SyncObjectPaths.verifyChunk(path, body);
             result = _json({'version': await _vault.write(path, body)});
           case 'DELETE':
             await _vault.delete(path);
@@ -386,12 +387,14 @@ class LanMediaBackend implements SyncBackend {
 
   @override
   Future<Map<String, String>> list(String folder) async {
-    if (!_validFolder(folder)) throw ArgumentError.value(folder, 'folder');
+    if (!SyncObjectPaths.validFolder(folder)) {
+      throw ArgumentError.value(folder, 'folder');
+    }
     final decoded = jsonDecode(utf8.decode(
         await _send('GET', '/v1/list', query: {'folder': folder}))) as Map;
     final result = decoded.cast<String, String>();
     if (result.keys.any((path) =>
-        !_validFile(path) ||
+        !SyncObjectPaths.validFile(path) ||
         !path.startsWith('$folder/') ||
         path.substring(folder.length + 1).contains('/'))) {
       throw const FormatException('Invalid LAN media listing');
@@ -401,10 +404,12 @@ class LanMediaBackend implements SyncBackend {
 
   @override
   Future<Uint8List?> read(String path) async {
-    if (!_validFile(path)) throw ArgumentError.value(path, 'path');
+    if (!SyncObjectPaths.validFile(path)) {
+      throw ArgumentError.value(path, 'path');
+    }
     try {
       final bytes = await _send('GET', '/v1/file', query: {'path': path});
-      _verifyChunk(path, bytes);
+      SyncObjectPaths.verifyChunk(path, bytes);
       return bytes;
     } on _LanFailure catch (error) {
       if (error.status == 404) return null;
@@ -414,8 +419,10 @@ class LanMediaBackend implements SyncBackend {
 
   @override
   Future<String?> write(String path, Uint8List bytes) async {
-    if (!_validFile(path)) throw ArgumentError.value(path, 'path');
-    _verifyChunk(path, bytes);
+    if (!SyncObjectPaths.validFile(path)) {
+      throw ArgumentError.value(path, 'path');
+    }
+    SyncObjectPaths.verifyChunk(path, bytes);
     final data = jsonDecode(utf8.decode(await _send('PUT', '/v1/file',
         query: {'path': path}, bytes: bytes))) as Map;
     return data['version'] as String?;
@@ -423,7 +430,9 @@ class LanMediaBackend implements SyncBackend {
 
   @override
   Future<void> delete(String path) async {
-    if (!_validFile(path)) throw ArgumentError.value(path, 'path');
+    if (!SyncObjectPaths.validFile(path)) {
+      throw ArgumentError.value(path, 'path');
+    }
     await _send('DELETE', '/v1/file', query: {'path': path});
   }
 
@@ -500,43 +509,6 @@ class _LanAuth {
       difference |= expected.codeUnitAt(i) ^ actual.codeUnitAt(i);
     }
     return difference == 0;
-  }
-}
-
-final _id = RegExp(r'^[A-Za-z0-9_-]{1,128}$');
-final _hash = RegExp(r'^[a-f0-9]{64}$');
-bool _validFolder(String folder) {
-  final parts = folder.split('/');
-  return folder == 'packs' ||
-      folder == 'media/manifests' ||
-      (parts.length == 3 &&
-          parts[0] == 'media' &&
-          parts[1] == 'chunks' &&
-          _id.hasMatch(parts[2]));
-}
-
-bool _validFile(String path) {
-  final parts = path.split('/');
-  return path == 'space.json' ||
-      (parts.length == 2 &&
-          parts[0] == 'packs' &&
-          RegExp(r'^(pack-|snapshot-)[A-Za-z0-9_-]{1,160}$')
-              .hasMatch(parts[1])) ||
-      (parts.length == 3 &&
-          parts[0] == 'media' &&
-          parts[1] == 'manifests' &&
-          _id.hasMatch(parts[2])) ||
-      (parts.length == 4 &&
-          parts[0] == 'media' &&
-          parts[1] == 'chunks' &&
-          _id.hasMatch(parts[2]) &&
-          _hash.hasMatch(parts[3]));
-}
-
-void _verifyChunk(String path, List<int> bytes) {
-  if (path.startsWith('media/chunks/') &&
-      sha256.convert(bytes).toString() != path.split('/').last) {
-    throw const FormatException('LAN ciphertext hash mismatch');
   }
 }
 

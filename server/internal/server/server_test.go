@@ -53,6 +53,7 @@ func start(t *testing.T) *harness {
 	}, store, slog.New(slog.NewTextHandler(io.Discard, nil)))
 	web := httptest.NewServer(h.server.Handler())
 	t.Cleanup(web.Close)
+	t.Cleanup(h.server.Close)
 	h.url = web.URL
 	return h
 }

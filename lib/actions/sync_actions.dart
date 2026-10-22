@@ -8,6 +8,7 @@ import 'package:aid_diary/sync/google_auth.dart';
 import 'package:aid_diary/sync/pairing.dart';
 import 'package:aid_diary/sync/sync_crypto.dart';
 import 'package:aid_diary/sync/sync_service.dart';
+import 'package:aid_diary/sync/connection_manager.dart';
 import 'package:aid_diary/l10n/shown_language.dart';
 
 SyncService get _sync => SyncService.instance;
@@ -157,6 +158,55 @@ const _joinParams = [
 ];
 
 final List<AppAction> syncActions = [
+  AppAction(
+    id: 'sync.network_reconnect',
+    describe:
+        'Reconnects signaling while retaining established direct channels for a development network check.',
+    devOnly: true,
+    risk: ActionRisk.write,
+    params: const [
+      ActionParam(
+          'delaySeconds', ParamType.integer, 'Reconnect delay, 1 to 60 seconds',
+          required: false)
+    ],
+    run: (context, args) async {
+      final seconds = args['delaySeconds'] as int? ?? 5;
+      if (seconds < 1 || seconds > 60) {
+        throw const ActionException(
+            'bad_args', 'delaySeconds must be between 1 and 60');
+      }
+      await _sync.reconnectNetwork(delay: Duration(seconds: seconds));
+      return _sync.networkStatus();
+    },
+  ),
+  AppAction(
+    id: 'sync.network_paths',
+    describe:
+        'Restricts paths for an isolated development network check; restart restores automatic selection.',
+    devOnly: true,
+    risk: ActionRisk.write,
+    params: [
+      const ActionParam('paths', ParamType.string,
+          'Comma-separated lan,direct,ice,relay,cache'),
+      const ActionParam('stunOnly', ParamType.boolean,
+          'For ICE diagnostics, exchange only server-reflexive candidates',
+          required: false)
+    ],
+    run: (context, args) async {
+      final names =
+          (args['paths'] as String).split(',').map((s) => s.trim()).toSet();
+      if (names.isEmpty ||
+          names.any(
+              (s) => !SyncRouteType.values.any((type) => type.name == s))) {
+        throw const ActionException(
+            'invalid_paths', 'Choose one or more known network paths');
+      }
+      await _sync.setNetworkPaths(
+          {for (final name in names) SyncRouteType.values.byName(name)},
+          stunOnly: args['stunOnly'] as bool? ?? false);
+      return _sync.networkStatus();
+    },
+  ),
   AppAction(
     id: 'sync.network',
     describe: 'Advanced network diagnostics: selected and available routes, '

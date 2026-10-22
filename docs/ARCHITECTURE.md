@@ -192,6 +192,10 @@ The data layer separates these owners:
 | `sync_service.dart` | Compose storage, identity, discovery and the engine; expose diary/media states; schedule quiet retries |
 | `connection_manager.dart` | Probe verified candidates concurrently, choose a usable route, upgrade with dwell/hysteresis and fence stale network results |
 | `lan_transport.dart` | Native DNS-SD hints and HMAC-authenticated IPv4/IPv6 object transport for devices already sharing MK |
+| `internet_transport.dart` | Account-scoped presence/signaling; MK-authenticated fresh-session/client-nonce handshake; public address probes and ICE/relay lifecycle |
+| `ice_transport.dart` | STUN/WebRTC attempts, reliable binary framing, 256 KiB native-buffer cap with cancellable 20 ms getter fallback, bounded lifecycle and selected-pair diagnostics; no TURN |
+| `relay_packets.dart` | Ordered, bounded reassembly and fragmentation sized for the server's JSON frame cap |
+| `peer_object_link.dart` / `sync_object_paths.dart` | Session-bound encrypted object RPC shared by ICE and relay, replay/order checks, safe paths and object limits |
 | `routed_backend.dart` | One metadata backend across authenticated peers, shared storage and a persistent ciphertext outbox; require remote acknowledgements |
 | `sync_engine.dart` | Merge versioned packs and snapshots first, queue missing attachments and retain conflict copies |
 | `media_transfer.dart` | Encrypted immutable chunks/manifests, integrity checks, per-route allowances and resumable transfers |
@@ -204,7 +208,22 @@ progress is owned by SQLite, not by a socket; 1 MiB plaintext chunks are
 encrypted once and reused through path changes and process restarts. A
 media source pool can try other authenticated online devices when the
 selected peer lacks an object. Operator-cache traffic stays separately
-budgeted from direct transfers and personal storage.
+budgeted from live relay, direct transfers and personal storage. A direct
+source/writer pool contains direct routes only, so changing the selected
+route cannot bypass a metered allowance. Live relay is another online object
+transport; it never becomes the asynchronous cache or a durable receipt.
+
+Internet paths require an AID-compatible WebDAV server with the authenticated
+WebSocket service. Directory records do not establish trust. Both server
+sessions and fresh client nonces participate in MK-authenticated hello/echo/
+ready confirmation; signaling and object RPC bind the endpoint sessions,
+nonces and generation. Public HTTP candidates also pass the MK/device probe.
+ICE uses a fresh authenticated attempt nonce for its RPC key. On directory
+loss, relay closes while established public-direct/ICE connections may stay
+usable; retained peer clients and all queues remain bounded. Session-bound
+route IDs prevent stale completion from restoring a replaced connection.
+Google Drive and ordinary WebDAV retain LAN and shared storage rather than
+implicitly supplying that server service.
 
 Diary metadata may be synchronized while attachment bytes remain pending.
 Temporary cache receipt and durable remote storage are distinct facts;
@@ -215,10 +234,18 @@ page exists yet.
 
 Current remote spaces use format 4. Older formats fail explicitly rather
 than being migrated or reset automatically; local database schema updates
-only add queue/vault state. Device-key authentication and revocation,
-public address discovery, ICE/STUN, live relay, offline first-time QR trust
-and Wi-Fi Direct/hotspot assistance remain unimplemented. The selector has
-types for future paths without claiming those transports exist.
+only add queue/vault state. Public IPv4/IPv6 address exchange, WebRTC/STUN
+and bounded live relay are implemented. Windows/Pad same-Wi-Fi transfers,
+actual nominated UDP pair diagnostics, quota refusal and automatic LAN
+upgrade have passed; this is not cross-WAN or general NAT compatibility
+evidence. The latest binaries also retained ICE text and fresh media sync
+through one-sided signaling loss and a stopped isolated test server.
+The temporary process, data and proxy have been removed with production
+health verified; the production server still needs the networking release
+deployed. Device-key authentication and individual revocation, offline
+first-time QR trust and Wi-Fi Direct/hotspot assistance remain unimplemented.
+Implementation and validation/deployment evidence are tracked separately in
+[SYNC_NETWORK.md](SYNC_NETWORK.md).
 
 ## Dependencies
 

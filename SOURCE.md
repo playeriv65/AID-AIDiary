@@ -27,6 +27,10 @@ Entry storage (SQLite), photos, moods, tags and trackers, templates, statistics,
 - Theme colour presets and neutral backgrounds.
 - Windows development script, native-asset packaging per the Flutter template, cooperative cancellation of archive compression, format detection for desktop thumbnails.
 - Headless screenshot generation in `tool/screenshots/`.
+- End-to-end encrypted format-4 sync through personal storage and trusted peers,
+  persistent chunked media tasks, automatic LAN/public/ICE path selection and
+  a Go signaling service with separately bounded live relay and temporary cache
+  (`docs/SYNC_NETWORK.md`).
 
 ## Removed
 

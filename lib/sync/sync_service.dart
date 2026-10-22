@@ -28,6 +28,7 @@ import 'package:aid_diary/sync/sync_schema.dart';
 import 'package:aid_diary/sync/connection_manager.dart';
 import 'package:aid_diary/sync/media_transfer.dart';
 import 'package:aid_diary/sync/lan_transport.dart';
+import 'package:aid_diary/sync/internet_transport.dart';
 import 'package:aid_diary/sync/routed_backend.dart';
 import 'package:aid_diary/sync/webdav_backend.dart';
 import 'package:flutter/widgets.dart';
@@ -258,6 +259,9 @@ class SyncService with ChangeNotifier {
   AppLifecycleListener? _lifecycle;
   SyncConnectionManager? _connections;
   LanMediaHost? _lan;
+  InternetTransport? _internet;
+  Set<SyncRouteType> _enabledPaths = SyncRouteType.values.toSet();
+  bool _stunOnly = false;
   StreamSubscription<dynamic>? _lanPeers;
   StreamSubscription<SyncRouteCandidate?>? _routeChanges;
   final String _networkDeviceId = const Uuid().v4();
@@ -281,6 +285,7 @@ class SyncService with ChangeNotifier {
             columns: ['sending', 'completed', 'durable']);
     return {
       'route': activeRoute,
+      if (_internet != null) 'internet': _internet!.diagnostics(),
       'availableRoutes': [
         for (final route
             in _connections?.healthyRoutes ?? <SyncRouteCandidate>[])
@@ -436,6 +441,12 @@ class SyncService with ChangeNotifier {
       final routed = RoutedSyncBackend(
           local: vault,
           storage: backend,
+          timeoutFor: (backend) => (_connections?.healthyRoutes.any((route) =>
+                      identical(route.backend, backend) &&
+                      route.type == SyncRouteType.relay) ??
+                  false)
+              ? const Duration(minutes: 3)
+              : const Duration(seconds: 4),
           storageAvailable: () =>
               _connections == null ||
               _connections!.healthyRoutes.any((route) => route.id == 'storage'),
@@ -446,11 +457,17 @@ class SyncService with ChangeNotifier {
               _connections?.markFailed('storage');
             }
           },
-          peers: () => [
-                for (final route
-                    in _connections?.healthyRoutes ?? <SyncRouteCandidate>[])
-                  if (route.isDirect) route.backend
-              ]);
+          peers: () {
+            final routes =
+                _connections?.healthyRoutes ?? <SyncRouteCandidate>[];
+            final direct = routes.where((route) => route.isDirect).toList();
+            return [
+              for (final route in direct.isNotEmpty
+                  ? direct
+                  : routes.where((route) => route.type == SyncRouteType.relay))
+                route.backend
+            ];
+          });
       final info = await _readSpace(routed);
       final dataKey = info == null || info.id != target.spaceId
           ? null
@@ -513,8 +530,12 @@ class SyncService with ChangeNotifier {
           maxManifestBytes: manifestLimit,
           durable: !boundedCache);
       final directAllowances = <String, MediaAllowance>{};
+      final relayAllowances = <String, MediaAllowance>{};
       final peerPool = PeerSyncBackend(
-          current: () => _connections?.current?.backend,
+          current: () {
+            final route = _connections?.current;
+            return route != null && route.isDirect ? route.backend : null;
+          },
           sources: () => [
                 for (final route
                     in _connections?.healthyRoutes ?? <SyncRouteCandidate>[])
@@ -534,19 +555,32 @@ class SyncService with ChangeNotifier {
           mediaFallback: cache,
           mediaAllowance: () {
             final route = _connections?.current;
+            if (route?.type == SyncRouteType.relay) {
+              return relayAllowances.putIfAbsent(
+                  route!.id,
+                  () => MediaAllowance(
+                      backend: route.backend,
+                      route: 'relay',
+                      maxFileBytes: (config['relayMaxFileKiB'] as int) * 1024,
+                      remainingBytes: min(
+                          (config['relayTransferMiB'] as int) << 20,
+                          (_internet?.relayRemainingBytes ?? 0) ~/ 4),
+                      maxObjectBytes: 2 << 20));
+            }
             if (route == null || !route.isDirect) return cache;
             return directAllowances.putIfAbsent(
                 route.id,
                 () => MediaAllowance(
                     backend: peerPool,
-                    route: route.type.name,
+                    route: route.id,
                     maxFileBytes: 1 << 62,
                     remainingBytes: 1 << 62));
           },
           onMediaFailure: (error) {
             _logger.fine('Media transfer will retry', error);
             final route = _connections?.current;
-            if (route != null && route.isDirect) {
+            if (route != null &&
+                (route.isDirect || route.type == SyncRouteType.relay)) {
               _connections?.markFailed(route.id);
             }
           },
@@ -611,16 +645,17 @@ class SyncService with ChangeNotifier {
         probe: (candidate) => candidate.backend.check());
     _connections = manager;
     await manager.start([
-      SyncRouteCandidate(
-          id: 'storage',
-          backend: backend,
-          type: SyncRouteType.cache,
-          userId: info.userId,
-          spaceId: info.id,
-          cost: 1)
+      if (_enabledPaths.contains(SyncRouteType.cache))
+        SyncRouteCandidate(
+            id: 'storage',
+            backend: backend,
+            type: SyncRouteType.cache,
+            userId: info.userId,
+            spaceId: info.id,
+            cost: 1)
     ]);
     _routeChanges = manager.changes.listen((route) {
-      if (route?.isDirect ?? false) {
+      if (route != null && route.type != SyncRouteType.cache) {
         _retryAt = null;
         syncSoon();
       }
@@ -645,7 +680,10 @@ class SyncService with ChangeNotifier {
         }
         _lan = host;
         _lanPeers = host.peers.listen((peer) {
-          if (generation != _networkGeneration) return;
+          if (generation != _networkGeneration ||
+              !_enabledPaths.contains(SyncRouteType.lan)) {
+            return;
+          }
           unawaited(manager.addVerifiedCandidate(SyncRouteCandidate(
               id: peer.id,
               backend: peer.backend,
@@ -654,6 +692,35 @@ class SyncService with ChangeNotifier {
               spaceId: peer.spaceId)));
         });
         await host.start();
+        if (generation != _networkGeneration) return;
+        if (backend is WebDavBackend) {
+          final internet = _internet = InternetTransport(
+              endpoint: backend.networkEndpoint,
+              authorization: backend.networkAuthorization,
+              deviceId: _networkDeviceId,
+              userId: identity.userId,
+              spaceId: info.id,
+              masterKey: identity.masterKey,
+              vault: MediaVault(AppDatabase.instance.database!),
+              localEndpoint: () => host!.endpoint!,
+              stunUrls: (config['stunUrls'] as List).cast<String>(),
+              reprobe: Duration(seconds: config['reprobeSeconds'] as int),
+              enableDirect: _enabledPaths.contains(SyncRouteType.direct),
+              enableIce: _enabledPaths.contains(SyncRouteType.ice),
+              enableRelay: _enabledPaths.contains(SyncRouteType.relay),
+              stunOnly: _stunOnly,
+              onCandidate: (candidate) async {
+                if (generation == _networkGeneration) {
+                  await manager.addVerifiedCandidate(candidate);
+                }
+              },
+              onLost: (id) {
+                if (generation == _networkGeneration) {
+                  manager.removeCandidate(id);
+                }
+              });
+          await internet.start();
+        }
       } catch (error) {
         _logger.fine(
             'LAN discovery unavailable; storage sync continues', error);
@@ -666,13 +733,30 @@ class SyncService with ChangeNotifier {
     _networkGeneration++;
     await _lanPeers?.cancel();
     await _routeChanges?.cancel();
+    await _internet?.close();
     await _lan?.close();
     await _connections?.close();
     _lan = null;
+    _internet = null;
     _connections = null;
     _lanPeers = null;
     _routeChanges = null;
   }
+
+  /// Development diagnostics exercise a path without changing user settings.
+  Future<void> setNetworkPaths(Set<SyncRouteType> paths,
+      {bool stunOnly = false}) async {
+    if (paths.isEmpty) throw ArgumentError('At least one path is required');
+    await _running;
+    _enabledPaths = paths;
+    _stunOnly = stunOnly;
+    await _closeConnections();
+    syncSoon();
+  }
+
+  Future<void> reconnectNetwork(
+          {Duration delay = const Duration(seconds: 5)}) async =>
+      _internet?.reconnect(delay: delay);
 
   /// Passes on how far a slow sync is, a few times a second at most.
   void _progressed(SyncProgress progress) {

@@ -10,6 +10,7 @@ import 'package:path/path.dart' as p;
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
 import 'package:shared_preferences_platform_interface/shared_preferences_platform_interface.dart';
 import 'package:shared_preferences_platform_interface/types.dart';
+import 'package:flutter/services.dart';
 
 /// The folder a development build keeps everything in when started with
 /// `AID_DATA_DIR` set: the database, pictures, settings, the secrets that
@@ -21,8 +22,12 @@ String? scratchFolder;
 
 /// Moves every app folder and store into `AID_DATA_DIR`, when set; call
 /// before anything opens a file.
-void useScratchFolders() {
-  final folder = Platform.environment['AID_DATA_DIR'];
+Future<void> useScratchFolders() async {
+  var folder = Platform.environment['AID_DATA_DIR'];
+  if (Platform.isAndroid) {
+    folder = await const MethodChannel('aid.dev/workspace')
+        .invokeMethod<String>('workspace');
+  }
   if (folder == null || folder.isEmpty) return;
   Directory(folder).createSync(recursive: true);
   scratchFolder = folder;

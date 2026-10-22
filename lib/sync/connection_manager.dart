@@ -3,6 +3,7 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'dart:async';
+import 'dart:collection';
 import 'dart:math';
 
 import 'package:aid_diary/sync/sync_backend.dart';
@@ -131,7 +132,9 @@ class SyncConnectionManager {
   final Map<String, SyncRouteCandidate> _candidates = {};
   final Map<String, SyncRouteCandidate> _healthy = {};
   final Set<_PendingProbe> _pending = {};
+  final Map<SyncBackend, _ActualProbe> _actualProbes = HashMap.identity();
   CancelConnectionTimer? _cancelRetry;
+  Future<void>? _closing;
   SyncRouteCandidate? _current;
   DateTime? _selectedAt;
   int _generation = 0;
@@ -167,6 +170,7 @@ class SyncConnectionManager {
       ..addAll(next);
     _healthy.clear();
     _setCurrent(null);
+    if (_closed) return Future.value();
     _failedRounds = 0;
     return refresh();
   }
@@ -178,7 +182,16 @@ class SyncConnectionManager {
     _candidates[candidate.id] = candidate;
     _healthy.remove(candidate.id);
     _select();
+    if (_closed) return Future.value();
     return refresh();
+  }
+
+  /// Session-scoped transports cannot be retried after their owner closes.
+  void removeCandidate(String id) {
+    if (_closed || _candidates.remove(id) == null) return;
+    _healthy.remove(id);
+    _select();
+    if (!_closed) unawaited(refresh());
   }
 
   Future<void> refresh() async {
@@ -187,7 +200,8 @@ class SyncConnectionManager {
     _cancelRound();
     final probes = <Future<void>>[];
     final hasDirect = _candidates.values.any((c) => c.available && c.isDirect);
-    for (final candidate in _candidates.values) {
+    for (final candidate in _candidates.values.toList()) {
+      if (_closed || generation != _generation) break;
       if (!candidate.available) continue;
       final delay = policy.directFirst && hasDirect && !candidate.isDirect
           ? policy.directFirstDelay
@@ -205,23 +219,31 @@ class SyncConnectionManager {
   /// after the retry delay. Callers retain and retry the unfinished chunk.
   void markFailed(String id) {
     _ensureOpen();
+    final backend = _candidates[id]?.backend;
+    if (backend != null) _actualProbes[backend]?.invalidated = true;
     ++_generation;
     _cancelRound();
     _healthy.remove(id);
     _select();
+    if (_closed) return;
     _failedRounds++;
     _scheduleRetry();
   }
 
-  Future<void> close() async {
-    if (_closed) return;
+  Future<void> close() {
+    if (_closing != null) return _closing!;
     _closed = true;
     ++_generation;
     _cancelRound();
     _healthy.clear();
     _candidates.clear();
+    _actualProbes.clear();
     _current = null;
-    await _changes.close();
+    // A synchronous route listener may close its owner while the broadcast
+    // controller is delivering that event. Close the stream after dispatch.
+    return _closing = Future<void>.microtask(() async {
+      await _changes.close();
+    });
   }
 
   Future<void> _probeCandidate(
@@ -246,8 +268,9 @@ class SyncConnectionManager {
     void begin() {
       if (pending.finished || _closed || generation != _generation) return;
       pending.cancelTimer = _schedule(policy.probeTimeout, () => finish(false));
-      Future<void>.sync(() => _probe(candidate)).then(
-        (_) => finish(true),
+      final actual = _actualCheck(candidate);
+      actual.result.future.then(
+        (_) => finish(!actual.invalidated),
         onError: (Object _, StackTrace __) => finish(false),
       );
     }
@@ -258,6 +281,31 @@ class SyncConnectionManager {
       pending.cancelTimer = _schedule(delay, begin);
     }
     return pending.done.future;
+  }
+
+  /// A round owns its deadlines, not the backend operation. A canceled check
+  /// can still be running on the socket, so retain and reuse it by identity
+  /// until completion instead of flooding the backend on add/remove bursts.
+  _ActualProbe _actualCheck(SyncRouteCandidate candidate) {
+    final backend = candidate.backend;
+    final existing = _actualProbes[backend];
+    if (existing != null) return existing;
+    final actual = _ActualProbe();
+    _actualProbes[backend] = actual;
+    void forget() {
+      if (identical(_actualProbes[backend], actual)) {
+        _actualProbes.remove(backend);
+      }
+    }
+
+    unawaited(Future<void>.sync(() => _probe(candidate)).then<void>((_) {
+      forget();
+      actual.result.complete();
+    }, onError: (Object error, StackTrace stack) {
+      forget();
+      actual.result.completeError(error, stack);
+    }));
+    return actual;
   }
 
   void _select() {
@@ -375,4 +423,9 @@ class _PendingProbe {
     done.complete();
     return true;
   }
+}
+
+class _ActualProbe {
+  final result = Completer<void>();
+  bool invalidated = false;
 }

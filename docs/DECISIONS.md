@@ -126,12 +126,34 @@ current implementation. Decided along the way:
   automatic migration.
 
 Implemented now: the path selector, authenticated LAN transport integrated
-with shared storage, persistent chunk tasks and operator-cache limits.
-Public address discovery, ICE/STUN, live relay, offline first-time trust,
-Wi-Fi Direct/hotspot assistance and individual device-key revocation remain
-future work. LAN currently authenticates possession of the same MK, rather
-than a separate device signing key. The new nearby migration flow and an
-advanced GUI diagnostics page have not been implemented.
+with shared storage, persistent chunk tasks, operator-cache limits, and for
+AID-compatible WebDAV accounts, an authenticated Internet directory,
+encrypted public address exchange, WebRTC/STUN and bounded live relay.
+Live relay and cache use separate finite budgets. Directory presence does
+not grant trust: peers confirm MK with fresh client nonces as well as server
+sessions, and object RPC is bound to the resulting sessions/generation.
+The app configures no TURN service. Same-Wi-Fi Windows/Pad checks verified
+LAN, global-IPv6 direct, UDP ICE and bounded relay transfers, quota refusal
+and an automatic LAN upgrade. The owner deferred a different-network test;
+cross-WAN reachability and a general NAT matrix remain unverified. With
+the latest binaries, established ICE also continued syncing text and new
+hash-verified media after a one-sided signaling disconnect and after the
+isolated test server stopped; directory `leave` must not discard a working
+direct link. Temporary-service/device-test cleanup was verified, including
+restored nginx, production health 200 and removed test endpoint health 404.
+The final Flutter suite passed 710 tests, with six external-service tests
+skipped; the production server still needs the networking release deployed.
+Exact evidence belongs in
+`docs/SYNC_NETWORK.md`.
+
+Offline first-time trust, Wi-Fi Direct/hotspot assistance and individual
+device-key revocation remain future work. Network authentication currently
+proves possession of the same MK, rather than a separate device signing
+key. Google Drive and ordinary WebDAV retain LAN and storage; the directory
+and Internet transports require the compatible server service. The new
+nearby migration flow and an advanced GUI diagnostics page have not been
+implemented. Detailed implementation boundaries and verification results
+belong in `docs/SYNC_NETWORK.md`.
 
 ## Testing
 

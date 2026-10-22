@@ -48,19 +48,34 @@ platform-stored identity/MK, wrapped data keys and Argon2id recovery;
 symmetric SPAKE2 pairing through shared storage; concurrent route selection
 with upgrades, dwell and quiet retries; HMAC-authenticated IPv4/IPv6 LAN
 transport integrated with shared storage; persistent encrypted media chunks
-and task queues; metadata-first sync and bounded operator-cache media.
+and task queues; metadata-first sync and bounded operator-cache media;
+account-scoped WebSocket presence/signaling, encrypted global IPv4/IPv6
+address exchange, MK-authenticated public probes, WebRTC/STUN data channels
+without TURN, and bounded live relay with independent persistent quotas.
+Internet paths require an AID-compatible WebDAV networking service; Google
+Drive and ordinary WebDAV retain LAN plus storage. Fresh client nonces and
+MK confirmation protect server-session discovery from replay. Development
+path restrictions and isolated Android test workspaces are implemented.
 New remote spaces use format 4; older formats require a new space or an
 explicitly approved reset, never an automatic deletion or migration.
 
 Remaining work:
 
-- Validate Windows-to-Android mDNS discovery and path changes on the physical
-  test devices. Native discovery between isolated Windows clients, LAN media
-  hash verification and metadata sync with the test cloud offline pass.
-- Public address directory and reachable IPv4/IPv6 candidates outside LAN;
-  ICE/STUN and UDP connectivity checks; bounded live relay. Selector types
-  alone do not implement these paths. Keep live relay distinct from the
-  asynchronous media cache that already exists.
+- Extend the same-Wi-Fi Windows/Pad validation to another network. LAN,
+  global-IPv6 direct, UDP
+  ICE media, small live-relay media, quota refusal and automatic LAN upgrade
+  have passed with matching hashes (`docs/SYNC_NETWORK.md`). The owner
+  deferred another-network testing; cross-WAN public reachability and a
+  broader NAT/carrier matrix remain unverified. The external IPv6/TCP
+  probe timed out, so local global-address success must not be presented as
+  cross-WAN success.
+- Deploy the updated Go networking service and nginx WebSocket headers to
+  production when explicitly authorized. The production container still
+  runs the earlier release. The isolated public test endpoint, process and
+  data have been removed and production health verified;
+  a successful temporary test does not deploy the production
+  release. Keep live relay distinct from asynchronous cache and preserve
+  their separate budgets.
 - First-time offline QR trust and MK transfer, a nearby migration flow,
   Wi-Fi Direct/hotspot assistance and platform permission handling. Reuse
   chunk semantics and prefer direct transfer; assistance can require user

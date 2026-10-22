@@ -351,6 +351,143 @@ void main() {
     await manager.close();
     expect(manager.healthyRoutes, isEmpty);
   });
+
+  test('add/remove bursts share one actual check for each retained backend',
+      () async {
+    final retained = Completer<void>();
+    final calls = <String, int>{};
+    create(probe: (candidate) {
+      calls.update(candidate.id, (count) => count + 1, ifAbsent: () => 1);
+      return candidate.id == 'retained'
+          ? retained.future
+          : Future<void>.value();
+    });
+    final original = manager.start([_route('retained', SyncRouteType.lan)]);
+    final first =
+        manager.addVerifiedCandidate(_route('first', SyncRouteType.ice));
+    final second =
+        manager.addVerifiedCandidate(_route('second', SyncRouteType.ice));
+    manager.removeCandidate('first');
+    manager.removeCandidate('second');
+    await Future.wait([original, first, second]);
+    expect(calls['retained'], 1);
+    retained.complete();
+    await _flush();
+    expect(manager.current?.id, 'retained');
+    expect(manager.healthyRoutes.map((route) => route.id), ['retained']);
+  });
+
+  test('a probe deadline and retry do not duplicate the physical backend check',
+      () async {
+    final actual = Completer<void>();
+    var checks = 0;
+    create(probe: (_) {
+      checks++;
+      return actual.future;
+    });
+    final first = manager.start([_route('lan', SyncRouteType.lan)]);
+    await clock.elapse(const Duration(seconds: 4));
+    await first;
+    expect(manager.current, isNull);
+    await clock.elapse(const Duration(seconds: 2));
+    expect(checks, 1);
+    actual.complete();
+    await _flush();
+    expect(manager.current?.id, 'lan');
+  });
+
+  test('different candidate IDs sharing a backend share its outstanding check',
+      () async {
+    final backend = MemorySyncBackend();
+    final probe = Completer<void>();
+    var checks = 0;
+    create(probe: (_) {
+      checks++;
+      return probe.future;
+    });
+    final round = manager.start([
+      for (final id in ['first', 'second'])
+        SyncRouteCandidate(
+            id: id,
+            backend: backend,
+            type: SyncRouteType.lan,
+            userId: 'user',
+            spaceId: 'space'),
+    ]);
+    expect(checks, 1);
+    probe.complete();
+    await round;
+    expect(manager.healthyRoutes, hasLength(2));
+  });
+
+  test('removing a pending candidate fences its late success', () async {
+    final removed = Completer<void>();
+    create(
+        probe: (candidate) =>
+            candidate.id == 'removed' ? removed.future : Future<void>.value());
+    final round = manager.start([
+      _route('removed', SyncRouteType.lan),
+      _route('retained', SyncRouteType.direct),
+    ]);
+    await _flush();
+    manager.removeCandidate('removed');
+    removed.complete();
+    await round;
+    await _flush();
+    expect(manager.current?.id, 'retained');
+    expect(manager.healthyRoutes.map((route) => route.id), ['retained']);
+  });
+
+  test('failure-reported actual check cannot acknowledge a refreshed round',
+      () async {
+    Completer<void>? pending;
+    var checks = 0;
+    create(probe: (_) {
+      checks++;
+      return pending?.future ?? Future<void>.value();
+    });
+    await manager.start([_route('lan', SyncRouteType.lan)]);
+    pending = Completer<void>();
+    final round = manager.refresh();
+    manager.markFailed('lan');
+    final refreshed = manager.refresh();
+    expect(checks, 2);
+    pending.complete();
+    await Future.wait([round, refreshed]);
+    expect(manager.current, isNull);
+    await manager.refresh();
+    expect(checks, 3);
+    expect(manager.current?.id, 'lan');
+  });
+
+  test('removal can close through its change listener without starting a round',
+      () async {
+    create(probe: (_) async {});
+    await manager.start([
+      _route('first', SyncRouteType.lan),
+      _route('second', SyncRouteType.direct),
+    ]);
+    manager.changes.listen((route) {
+      if (route?.id == 'second') unawaited(manager.close());
+    });
+    manager.removeCandidate('first');
+    await _flush();
+    expect(manager.current, isNull);
+    expect(clock.activeTimers, 0);
+  });
+
+  test('candidate replacement can close in a listener without reprobes',
+      () async {
+    var checks = 0;
+    create(probe: (_) async => checks++);
+    await manager.start([_route('lan', SyncRouteType.lan)]);
+    manager.changes.listen((route) {
+      if (route == null) unawaited(manager.close());
+    });
+    await manager.addVerifiedCandidate(_route('lan', SyncRouteType.lan));
+    expect(checks, 1);
+    expect(clock.activeTimers, 0);
+  });
 }
 
 SyncRouteCandidate _route(

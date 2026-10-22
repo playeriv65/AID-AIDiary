@@ -38,7 +38,8 @@ type Config struct {
 	// MaxUploadBytes caps a single file.
 	MaxUploadBytes int64
 	// Media is a bounded, temporary cache, separate from durable metadata.
-	Media MediaLimits
+	Media   MediaLimits
+	Network NetworkLimits
 	// CredentialTTL is how long a checked password is trusted before it is
 	// checked again; a changed password takes effect within it.
 	CredentialTTL time.Duration
@@ -63,6 +64,7 @@ type Server struct {
 	folders  map[int64]*folder
 	trusted  map[[32]byte]trust
 	failures map[string][]time.Time
+	network  *networkHub
 }
 
 type trust struct {
@@ -85,6 +87,7 @@ func New(cfg Config, store *accounts.Store, log *slog.Logger) *Server {
 		cfg.Now = time.Now
 	}
 	cfg.Media = cfg.Media.defaults()
+	cfg.Network = cfg.Network.defaults()
 	return &Server{
 		cfg:      cfg,
 		accounts: store,
@@ -92,6 +95,7 @@ func New(cfg Config, store *accounts.Store, log *slog.Logger) *Server {
 		folders:  map[int64]*folder{},
 		trusted:  map[[32]byte]trust{},
 		failures: map[string][]time.Time{},
+		network:  newNetworkHub(),
 	}
 }
 
@@ -100,6 +104,7 @@ func (s *Server) Handler() http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /healthz", s.health)
 	mux.HandleFunc("GET /api/sync/policy", s.policy)
+	mux.HandleFunc("GET /api/sync/network", s.networkSocket)
 	mux.HandleFunc(Prefix+"/", s.dav)
 	return s.logged(mux)
 }
@@ -354,6 +359,9 @@ type statusRecorder struct {
 	http.ResponseWriter
 	status int
 }
+
+// Unwrap preserves Hijacker and Flusher through http.ResponseController.
+func (r *statusRecorder) Unwrap() http.ResponseWriter { return r.ResponseWriter }
 
 func (r *statusRecorder) WriteHeader(status int) {
 	r.status = status

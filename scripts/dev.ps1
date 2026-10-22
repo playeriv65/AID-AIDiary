@@ -1,5 +1,5 @@
 param(
-  [ValidateSet('windows','windows-build','windows-background','windows-driver','android','apk','profile','release','test','test-unit','test-widget','test-integration','test-server','cli','test-cli','frame-rate','analyze','pub','screenshots')][string]$Target='windows',
+  [ValidateSet('windows','windows-build','windows-stage','windows-background','windows-driver','android','apk','profile','release','test','test-unit','test-widget','test-integration','test-server','cli','test-cli','frame-rate','analyze','pub','screenshots')][string]$Target='windows',
   # Flutter device id for 'android', e.g. a wireless adb serial from `flutter devices`.
   [string]$Device='emulator-5554'
 )
@@ -53,7 +53,7 @@ if ($Target -in 'android', 'apk', 'profile', 'release' -and
 # Flutter stages platform assets in a shared directory in this checkout.
 # Concurrent native builds can silently package another platform's bundle.
 $buildLock = $null
-if ($Target -in 'windows', 'windows-build', 'windows-background', 'windows-driver',
+if ($Target -in 'windows', 'windows-build', 'windows-stage', 'windows-background', 'windows-driver',
     'android', 'apk', 'profile', 'release', 'frame-rate') {
   $lockPath = Join-Path (Get-Location) '.dart_tool/dev-build.lock'
   New-Item -ItemType Directory -Force (Split-Path $lockPath -Parent) | Out-Null
@@ -69,6 +69,36 @@ try {
 switch ($Target) {
   'windows' { flutter run -d windows }
   'windows-build' { flutter build windows --debug --dart-define=AID_DEV_BUILD=true }
+  'windows-stage' {
+    $runtime = $tools['DEV_WINDOWS_RUNTIME']
+    if (-not $runtime -or -not [IO.Path]::IsPathFullyQualified($runtime)) {
+      throw 'Set DEV_WINDOWS_RUNTIME to one permanent absolute directory in scripts/dev.env (docs/SETUP.md).'
+    }
+    $runtime = [IO.Path]::GetFullPath($runtime)
+    $bundle = Join-Path (Get-Location) 'build\windows\x64\runner\Debug'
+    if (-not (Test-Path (Join-Path $bundle 'data\flutter_assets\kernel_blob.bin'))) {
+      throw 'Run scripts/dev.ps1 windows-build before staging.'
+    }
+    if ($runtime.TrimEnd('\').StartsWith($bundle.TrimEnd('\'), [StringComparison]::OrdinalIgnoreCase) -or
+        $bundle.TrimEnd('\').StartsWith($runtime.TrimEnd('\'), [StringComparison]::OrdinalIgnoreCase)) {
+      throw 'The stable runtime directory must be separate from the build bundle.'
+    }
+    $runtimeExe = Join-Path $runtime 'aid_diary.exe'
+    $running = Get-Process aid_diary -ErrorAction SilentlyContinue | Where-Object { $_.Path -ieq $runtimeExe }
+    if ($running) { throw "Stop the staged runtime before updating it (PID $($running.Id -join ', '))." }
+    New-Item -ItemType Directory -Force $runtime | Out-Null
+    $runtimeLock = [IO.File]::Open((Join-Path $runtime '.aid-runtime.lock'),
+      [IO.FileMode]::OpenOrCreate, [IO.FileAccess]::ReadWrite, [IO.FileShare]::None)
+    try {
+      $existing = Get-ChildItem -LiteralPath $runtime -Force | Where-Object { $_.Name -ne '.aid-runtime.lock' }
+      if ($existing -and -not (Test-Path (Join-Path $runtime '.aid-runtime'))) {
+        throw 'Use an empty directory for the first staged runtime.'
+      }
+      Get-ChildItem -LiteralPath $bundle -Force | Copy-Item -Destination $runtime -Recurse -Force -ErrorAction Stop
+      Set-Content -LiteralPath (Join-Path $runtime '.aid-runtime') -Value 'AID Windows development runtime'
+    } finally { $runtimeLock.Dispose() }
+    Write-Output "Staged Windows runtime: $runtimeExe"
+  }
   # For agents: window off screen and never focused; prints the DTD URI for
   # the Dart MCP server (hot reload, widget tree, driver screenshots).
   'windows-background' {

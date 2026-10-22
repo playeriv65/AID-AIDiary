@@ -6,8 +6,29 @@ package dev.aid.diary
 
 import io.flutter.embedding.android.FlutterFragmentActivity
 import android.content.Intent;
+import io.flutter.embedding.engine.FlutterEngine
+import io.flutter.plugin.common.MethodChannel
+import java.io.File
 
 class MainActivity: FlutterFragmentActivity() {
+  override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
+    super.configureFlutterEngine(flutterEngine)
+    MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "aid.dev/workspace")
+      .setMethodCallHandler { call, result ->
+        if (call.method != "workspace") {
+          result.notImplemented()
+        } else {
+          val name = intent.getStringExtra("aid_test_workspace")
+          if (BuildConfig.FLAVOR != "dev" || name == null) {
+            result.success(null)
+          } else if (!Regex("^[A-Za-z0-9_-]{1,64}$").matches(name)) {
+            result.error("invalid_workspace", "Use a simple development workspace name", null)
+          } else {
+            result.success(File(filesDir, "network-tests/$name").absolutePath)
+          }
+        }
+      }
+  }
   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
     super.onActivityResult(requestCode, resultCode, data)
   }
