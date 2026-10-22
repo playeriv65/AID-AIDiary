@@ -4877,6 +4877,120 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Uses the system palette instead of custom colors. Turn it off to choose your own.'**
   String get themeSystemAccentHint;
+
+  /// No description provided for @syncDeviceNameSaveFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save the device name. Please try again.'**
+  String get syncDeviceNameSaveFailed;
+
+  /// No description provided for @nearbyConnectionHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Connection help'**
+  String get nearbyConnectionHelp;
+
+  /// No description provided for @syncAllSynced.
+  ///
+  /// In en, this message translates to:
+  /// **'Everything synced'**
+  String get syncAllSynced;
+
+  /// No description provided for @syncDetailsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync details'**
+  String get syncDetailsTitle;
+
+  /// No description provided for @syncMore.
+  ///
+  /// In en, this message translates to:
+  /// **'More options'**
+  String get syncMore;
+
+  /// No description provided for @syncDeviceName.
+  ///
+  /// In en, this message translates to:
+  /// **'Device name'**
+  String get syncDeviceName;
+
+  /// No description provided for @syncDeviceNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'For example: My tablet'**
+  String get syncDeviceNameHint;
+
+  /// No description provided for @syncDeviceNameInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Use 1 to 32 characters'**
+  String get syncDeviceNameInvalid;
+
+  /// No description provided for @syncDeviceKeyDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Security details'**
+  String get syncDeviceKeyDetails;
+
+  /// No description provided for @syncConnectionProblem.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to sync for now. Retrying automatically.'**
+  String get syncConnectionProblem;
+
+  /// No description provided for @syncCopyComplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete copy'**
+  String get syncCopyComplete;
+
+  /// No description provided for @syncCopyPartial.
+  ///
+  /// In en, this message translates to:
+  /// **'Some media is still missing'**
+  String get syncCopyPartial;
+
+  /// No description provided for @syncCopyOlder.
+  ///
+  /// In en, this message translates to:
+  /// **'New changes are waiting to sync'**
+  String get syncCopyOlder;
+
+  /// No description provided for @syncCopyUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy details are unavailable. Try again later.'**
+  String get syncCopyUnavailable;
+
+  /// No description provided for @syncCopyLastKnown.
+  ///
+  /// In en, this message translates to:
+  /// **'Other devices show their last confirmed copy. Offline devices cannot be checked now.'**
+  String get syncCopyLastKnown;
+
+  /// No description provided for @syncCopyTemporary.
+  ///
+  /// In en, this message translates to:
+  /// **'Temporary cache. Keep the originals on your devices.'**
+  String get syncCopyTemporary;
+
+  /// No description provided for @syncCopyStorage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your sync storage. Completed media uploads are listed in diagnostics.'**
+  String get syncCopyStorage;
+
+  /// No description provided for @syncCopyChecked.
+  ///
+  /// In en, this message translates to:
+  /// **'Last confirmed {time}'**
+  String syncCopyChecked(String time);
+
+  /// No description provided for @cloudTrafficSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Available this month: {remaining} / {limit}'**
+  String cloudTrafficSummary(String remaining, String limit);
 }
 
 class _AppLocalizationsDelegate

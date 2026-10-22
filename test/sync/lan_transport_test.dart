@@ -62,6 +62,13 @@ void main() {
     expect(vault.files.keys, ['media/manifests/photo']);
   });
 
+  test('authenticated peers exchange encrypted copy confirmations', () async {
+    final bytes = Uint8List.fromList([3, 7, 9]);
+    await backend.write('copies/tablet', bytes);
+    expect(await backend.list('copies'), {'copies/tablet': isA<String>()});
+    expect(await backend.read('copies/tablet'), bytes);
+  });
+
   test('wrong keys and space bindings cannot pass probe', () async {
     for (final (key, space) in [
       (Uint8List(32), 'space'),

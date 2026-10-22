@@ -19,6 +19,7 @@ import 'package:aid_diary/pages/settings/notification_settings.dart';
 import 'package:aid_diary/pages/settings/security_settings.dart';
 import 'package:aid_diary/pages/settings/storage_settings.dart';
 import 'package:aid_diary/pages/settings/sync_settings.dart';
+import 'package:aid_diary/pages/settings/sync_copy_settings.dart';
 import 'package:aid_diary/pages/settings/sync_network_settings.dart';
 import 'package:aid_diary/pages/settings/nearby_migration_settings.dart';
 import 'package:aid_diary/pages/settings/sync_device_settings.dart';
@@ -52,6 +53,10 @@ final List<Destination> settingsDestinations = [
   pageDestination('settings/data', 'Sync, backup, storage, recently deleted',
       (_) => const DataSettings()),
   pageDestination('sync', 'Sync', (_) => const SyncSettings()),
+  pageDestination(
+      'settings/sync/copies',
+      'Named device copies and last confirmations',
+      (_) => const SyncCopySettings()),
   pageDestination('settings/sync/network', 'Network paths and media receipts',
       (_) => const SyncNetworkSettings()),
   Destination(

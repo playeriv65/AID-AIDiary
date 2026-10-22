@@ -130,6 +130,7 @@ class Pairing {
       required this.identity,
       required this.holdsKey,
       required this.deviceName,
+      this.deviceNameProvider,
       required this.poll,
       required this.timeout,
       DateTime Function()? clock})
@@ -146,6 +147,7 @@ class Pairing {
 
   /// Shown to the other device.
   final String deviceName;
+  final String Function()? deviceNameProvider;
   final Duration poll;
   final Duration timeout;
   final DateTime Function() _clock;
@@ -180,7 +182,7 @@ class Pairing {
     await _write(_path(code.channel, 'a'), {
       'message': base64.encode(spake.message),
       'holdsKey': holdsKey,
-      'device': deviceName,
+      'device': deviceNameProvider?.call() ?? deviceName,
       'created': _clock().millisecondsSinceEpoch,
     });
     return code;
@@ -214,12 +216,13 @@ class Pairing {
     try {
       await _write(_path(channel, 'a2'), {
         'confirm': base64.encode(keys.confirmation),
+        'device': deviceNameProvider?.call() ?? deviceName,
         if (holdsKey) 'key': await _sealIdentity(keys, channel),
       });
       final b2 = await _wait(_path(channel, 'b2'), deadline, cancelled);
       return (
         received: holdsKey ? null : await _openIdentity(keys, channel, b2),
-        otherDevice: b['device'] as String,
+        otherDevice: b2['device'] as String? ?? b['device'] as String,
       );
     } finally {
       await _clear(channel);
@@ -247,7 +250,7 @@ class Pairing {
       'message': base64.encode(spake.message),
       'confirm': base64.encode(keys.confirmation),
       'holdsKey': holdsKey,
-      'device': deviceName,
+      'device': deviceNameProvider?.call() ?? deviceName,
     });
     final a2 = await _wait(_path(code.channel, 'a2'), deadline, cancelled);
     if (a2['failed'] case final String failed) {
@@ -264,13 +267,22 @@ class Pairing {
     final mismatch = _mismatch(a['holdsKey'] as bool);
     if (mismatch != null) throw PairingException(mismatch);
     if (holdsKey) {
-      await _write(_path(code.channel, 'b2'),
-          {'key': await _sealIdentity(keys, code.channel)});
-      return (received: null, otherDevice: a['device'] as String);
+      await _write(_path(code.channel, 'b2'), {
+        'key': await _sealIdentity(keys, code.channel),
+        'device': deviceNameProvider?.call() ?? deviceName
+      });
+      return (
+        received: null,
+        otherDevice: a2['device'] as String? ?? a['device'] as String
+      );
     }
     final received = await _openIdentity(keys, code.channel, a2);
-    await _write(_path(code.channel, 'b2'), {'received': true});
-    return (received: received, otherDevice: a['device'] as String);
+    await _write(_path(code.channel, 'b2'),
+        {'received': true, 'device': deviceNameProvider?.call() ?? deviceName});
+    return (
+      received: received,
+      otherDevice: a2['device'] as String? ?? a['device'] as String
+    );
   }
 
   /// Why the two devices cannot pair, given whether the other holds the

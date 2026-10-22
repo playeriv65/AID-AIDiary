@@ -53,6 +53,11 @@ migration transfer identity/MK and verified chunks without copying private
 signing keys. The GUI includes network diagnostics and actual server traffic
 allowances. Official-server limits are opt-in server policy; self-hosting
 defaults to durable storage without plan quotas.
+Editable device-local names and a sync-details view of last-confirmed named
+copies are implemented. Everyday status remains compact; technical network
+and key details require opening further options. A matching dataset revision
+and complete local media inventory are required for a peer's complete-copy
+label; offline confirmations and temporary cloud storage remain explicit.
 Production server source `887dd27` and nginx WebSocket headers were deployed
 on 2026-10-22 with operator limits enabled and a 1 GB monthly media allowance.
 External HTTPS, WebDAV and WebSocket relay acceptance passed; the temporary
@@ -68,9 +73,6 @@ Remaining work:
   broader NAT/carrier matrix remain unverified. The external IPv6/TCP
   probe timed out, so local global-address success must not be presented as
   cross-WAN success.
-- A user-facing durable-copy view, separate from transfer completion. The
-  operator cache can expire; successful transfer does not by itself prove
-  a reliable backup, and a peer's retention is not guaranteed.
 - Conflict handling beyond newer-wins with the losing local entry kept in
   Recently deleted. Field merging and a hybrid logical clock remain open
   product decisions.

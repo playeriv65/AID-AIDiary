@@ -15,9 +15,9 @@ import 'package:aid_diary/sync/sync_backend.dart';
 import 'package:aid_diary/sync/sync_crypto.dart';
 import 'package:aid_diary/sync/sync_service.dart';
 import 'package:aid_diary/sync/webdav_backend.dart';
-import 'package:aid_diary/time_manager.dart';
 import 'package:aid_diary/widgets/progress_dialog.dart';
 import 'package:aid_diary/widgets/cloud_traffic_notice.dart';
+import 'package:aid_diary/widgets/device_name_tile.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:material_ui/material_ui.dart';
@@ -55,7 +55,7 @@ class _SyncSettingsState extends State<SyncSettings> {
         WrongKeyException() => l10n.syncWrongKey,
         DeviceAuthorizationNeeded() => l10n.syncDeviceUnavailable,
         ActionException(:final message) => message,
-        _ => l10n.syncConnectFailed('$error'),
+        _ => l10n.syncConnectionProblem,
       };
 
   /// Runs [task] behind a progress dialog and reports a failure; null then,
@@ -264,14 +264,12 @@ class _SyncSettingsState extends State<SyncSettings> {
             l10n.syncSending(done, total),
           null => l10n.syncSyncing,
         },
-      SyncState.failed =>
-        l10n.syncFailed(_describe(_service.error ?? '', l10n)),
+      SyncState.failed => l10n.syncConnectionProblem,
       SyncState.locked => l10n.syncLocked,
       SyncState.mediaPending => l10n.syncMediaPending,
       SyncState.waitingForDevices => l10n.syncWaitingForDevices,
       _ when last == null => l10n.syncNever,
-      _ => l10n.syncLastSynced('${TimeManager.formatDate(last, context)} '
-          '${TimeManager.timeOfDayString(context, TimeOfDay.fromDateTime(last))}'),
+      _ => l10n.syncAllSynced,
     };
   }
 
@@ -290,16 +288,18 @@ class _SyncSettingsState extends State<SyncSettings> {
               final target = _service.target;
               if (target != null) return _connected(l10n, target);
               return Column(children: [
+                const DeviceNameTile(),
                 ListTile(
                     key: const ValueKey('nearby-migration-settings'),
                     leading: const Icon(Icons.phonelink),
                     title: Text(l10n.nearbyTitle),
                     onTap: () => openPlace(context, 'settings/sync/nearby')),
-                ListTile(
-                    key: const ValueKey('sync-device-settings'),
-                    leading: const Icon(Icons.verified_user),
-                    title: Text(l10n.syncDevicesTitle),
-                    onTap: () => openPlace(context, 'settings/sync/devices')),
+                if (DeviceAuthManager.instance.registrations.isNotEmpty)
+                  ListTile(
+                      key: const ValueKey('sync-device-settings'),
+                      leading: const Icon(Icons.verified_user),
+                      title: Text(l10n.syncDevicesTitle),
+                      onTap: () => openPlace(context, 'settings/sync/devices')),
                 Expanded(child: _signIn(l10n)),
               ]);
             },
@@ -386,16 +386,6 @@ class _SyncSettingsState extends State<SyncSettings> {
       children: [
         const CloudTrafficNotice(key: ValueKey('sync-cloud-traffic-connected')),
         ListTile(
-          leading: Icon(switch (target.provider) {
-            SyncProvider.webdav => Icons.cloud_done_rounded,
-            SyncProvider.googleDrive => Icons.add_to_drive_rounded,
-          }),
-          title: Text(target.server?.host ?? l10n.syncGoogleDrive),
-          subtitle: Text('${target.username} · ${l10n.syncEncrypted}'),
-        ),
-        if (_service.temporaryMediaCache)
-          ListTile(subtitle: Text(l10n.syncCacheNotice)),
-        ListTile(
           leading: syncing
               ? const SizedBox.square(
                   dimension: 24,
@@ -406,20 +396,17 @@ class _SyncSettingsState extends State<SyncSettings> {
                       ? Icons.sync_problem_rounded
                       : Icons.sync_rounded),
           title: Text(_status(l10n), key: const ValueKey('sync-status')),
+          trailing: const Icon(Icons.chevron_right_rounded),
+          onTap: () => openPlace(context, 'settings/sync/copies'),
         ),
         const Divider(),
-        ListTile(
-          key: const ValueKey('sync-network-settings'),
-          leading: const Icon(Icons.hub_outlined),
-          title: Text(l10n.syncNetworkTitle),
-          onTap: () => openPlace(context, 'settings/sync/network'),
-        ),
-        ListTile(
-          key: const ValueKey('sync-device-settings'),
-          leading: const Icon(Icons.verified_user),
-          title: Text(l10n.syncDevicesTitle),
-          onTap: () => openPlace(context, 'settings/sync/devices'),
-        ),
+        if (DeviceAuthManager.instance.registrations.isNotEmpty)
+          ListTile(
+            key: const ValueKey('sync-device-settings'),
+            leading: const Icon(Icons.verified_user),
+            title: Text(l10n.syncDevicesTitle),
+            onTap: () => openPlace(context, 'settings/sync/devices'),
+          ),
         if (_service.error is GoogleSignInNeeded)
           ListTile(
             key: const ValueKey('sync-sign-in-again'),
@@ -461,24 +448,43 @@ class _SyncSettingsState extends State<SyncSettings> {
             title: Text(l10n.syncAddDevice),
             onTap: _pair,
           ),
-          ListTile(
-            key: const ValueKey('sync-change-recovery'),
-            leading: const Icon(Icons.key_rounded),
-            title: Text(l10n.syncChangeRecoveryCode),
-            onTap: _changeRecoveryCode,
-          ),
-          ListTile(
-            key: const ValueKey('sync-reset-space'),
-            leading: const Icon(Icons.restart_alt_rounded),
-            title: Text(l10n.syncResetSpace),
-            onTap: _resetSpace,
-          ),
         ],
-        ListTile(
-          leading: const Icon(Icons.cloud_off_rounded),
-          title: Text(l10n.syncDisconnect),
-          onTap: _disconnect,
-        ),
+        ExpansionTile(
+            key: const ValueKey('sync-more'),
+            title: Text(l10n.syncMore),
+            children: [
+              const DeviceNameTile(),
+              ListTile(
+                  key: const ValueKey('nearby-migration-settings'),
+                  leading: const Icon(Icons.phonelink),
+                  title: Text(l10n.nearbyTitle),
+                  onTap: () => openPlace(context, 'settings/sync/nearby')),
+              ListTile(
+                title: Text(target.server?.host ?? l10n.syncGoogleDrive),
+                subtitle: Text('${target.username} · ${l10n.syncEncrypted}'),
+              ),
+              if (_service.temporaryMediaCache)
+                ListTile(subtitle: Text(l10n.syncCacheNotice)),
+              if (!locked) ...[
+                ListTile(
+                  key: const ValueKey('sync-change-recovery'),
+                  leading: const Icon(Icons.key_rounded),
+                  title: Text(l10n.syncChangeRecoveryCode),
+                  onTap: _changeRecoveryCode,
+                ),
+                ListTile(
+                  key: const ValueKey('sync-reset-space'),
+                  leading: const Icon(Icons.restart_alt_rounded),
+                  title: Text(l10n.syncResetSpace),
+                  onTap: _resetSpace,
+                ),
+              ],
+              ListTile(
+                leading: const Icon(Icons.cloud_off_rounded),
+                title: Text(l10n.syncDisconnect),
+                onTap: _disconnect,
+              ),
+            ]),
       ],
     );
   }

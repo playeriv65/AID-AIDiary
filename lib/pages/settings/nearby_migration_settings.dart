@@ -7,6 +7,7 @@ import 'dart:io';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/sync/nearby_service.dart';
+import 'package:aid_diary/widgets/device_name_tile.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 import 'package:aid_diary/routing/sync_scan_navigation.dart';
@@ -76,18 +77,32 @@ class _NearbyMigrationSettingsState extends State<NearbyMigrationSettings> {
                       child: ListView(
                           padding: const EdgeInsets.all(24),
                           children: [
+                            if (!busy && state != NearbyState.complete)
+                              const DeviceNameTile(),
                             Text(l10n.nearbyInstructions),
                             const SizedBox(height: 16),
-                            Wrap(spacing: 8, runSpacing: 8, children: [
-                              OutlinedButton.icon(
-                                  onPressed: () => _run('sync.nearby_wifi'),
-                                  icon: const Icon(Icons.wifi),
-                                  label: Text(l10n.nearbyWifi)),
-                              OutlinedButton.icon(
-                                  onPressed: () => _run('sync.nearby_hotspot'),
-                                  icon: const Icon(Icons.wifi_tethering),
-                                  label: Text(l10n.nearbyHotspot)),
-                            ]),
+                            if (state != NearbyState.complete)
+                              ExpansionTile(
+                                  key: ValueKey(
+                                      'nearby-help-${state == NearbyState.failed}'),
+                                  initiallyExpanded:
+                                      state == NearbyState.failed,
+                                  title: Text(l10n.nearbyConnectionHelp),
+                                  children: [
+                                    Wrap(spacing: 8, runSpacing: 8, children: [
+                                      OutlinedButton.icon(
+                                          onPressed: () =>
+                                              _run('sync.nearby_wifi'),
+                                          icon: const Icon(Icons.wifi),
+                                          label: Text(l10n.nearbyWifi)),
+                                      OutlinedButton.icon(
+                                          onPressed: () =>
+                                              _run('sync.nearby_hotspot'),
+                                          icon:
+                                              const Icon(Icons.wifi_tethering),
+                                          label: Text(l10n.nearbyHotspot)),
+                                    ]),
+                                  ]),
                             const SizedBox(height: 24),
                             if (!widget.receive &&
                                 (state == NearbyState.idle ||

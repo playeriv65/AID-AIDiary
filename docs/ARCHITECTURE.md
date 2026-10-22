@@ -209,6 +209,7 @@ The data layer separates these owners:
 | `routed_backend.dart` | One metadata backend across authenticated peers, shared storage and a persistent ciphertext outbox; require remote acknowledgements |
 | `sync_engine.dart` | Merge versioned packs and snapshots first, queue missing attachments and retain conflict copies |
 | `media_transfer.dart` | Encrypted immutable chunks/manifests, integrity checks, per-route allowances and resumable transfers |
+| `local_device.dart`, `copy_status.dart` | Device-local editable names/stable IDs; encrypted last-confirmed inventories bound to a space and device path, with dataset revisions and media presence |
 | `sync_schema.dart` | SQLite change/version state, media task queue and ciphertext vault |
 
 Metadata has one identity and version history across paths. A local outbox
@@ -239,6 +240,15 @@ Diary metadata may be synchronized while attachment bytes remain pending.
 Temporary cache receipt and durable remote storage are distinct facts;
 neither a route change nor a successful cache upload changes that distinction.
 The GUI shows simple sync/media states. `sync.status` and `sync.network`
+remain separate from `sync.copies`: the latter supplies named copy details
+only when requested. `copies/<device-id>` objects are encrypted with the space
+data key and authenticated by path and space ID. A receipt records a dataset
+revision, local media counts and a confirmation time; it is not an audit of
+an offline device's surviving backups. Details compare revisions before
+showing another device as complete and choose the newest valid confirmation
+across available sources. Their publication is optional metadata, never an
+alternative acknowledgement for diary changes. Public discovery retains
+opaque IDs rather than user labels. The `sync.status` and `sync.network`
 actions expose route, retry and media diagnostics; the advanced diagnostics
 page renders only allowlisted operational fields and actual server allowances.
 

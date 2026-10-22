@@ -12,7 +12,8 @@ import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/database/app_database.dart';
 import 'package:aid_diary/database/image_storage.dart';
-import 'package:aid_diary/device_info_service.dart';
+import 'package:aid_diary/sync/local_device.dart';
+import 'package:aid_diary/sync/copy_status.dart';
 import 'package:aid_diary/providers/entries_provider.dart';
 import 'package:aid_diary/providers/entry_images_provider.dart';
 import 'package:aid_diary/providers/tags_provider.dart';
@@ -35,7 +36,6 @@ import 'package:aid_diary/sync/routed_backend.dart';
 import 'package:aid_diary/sync/webdav_backend.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
-import 'package:uuid/uuid.dart';
 import 'package:path/path.dart' as p;
 
 /// The kinds of place a space can live in.
@@ -276,7 +276,7 @@ class SyncService with ChangeNotifier {
   bool _stunOnly = false;
   StreamSubscription<dynamic>? _lanPeers;
   StreamSubscription<SyncRouteCandidate?>? _routeChanges;
-  String _networkDeviceId = const Uuid().v4();
+  String _networkDeviceId = '';
   int _networkGeneration = 0;
   int _failures = 0;
   DateTime? _retryAt;
@@ -284,6 +284,76 @@ class SyncService with ChangeNotifier {
   DateTime? get retryAt => _retryAt;
   bool get temporaryMediaCache =>
       _storage is WebDavBackend && (_storage as WebDavBackend).boundedMedia;
+
+  Future<CopyStatusStore?> _copyStore() async {
+    final db = AppDatabase.instance.database;
+    if (db == null || target == null) return null;
+    final bytes = await MediaVault(db).read(SpaceLayout.info);
+    if (bytes == null) return null;
+    final info = SpaceInfo.fromBytes(bytes);
+    if (info.id != target!.spaceId) return null;
+    final key = await _dataKey(info);
+    if (key == null) return null;
+    return CopyStatusStore(
+        db: db,
+        photos: const ImageStoragePhotos(),
+        cipher: ItemCipher(key),
+        spaceId: info.id);
+  }
+
+  Future<String> _copyDeviceId() async {
+    final current = target;
+    if (current?.provider == SyncProvider.webdav) {
+      final registration = DeviceAuthManager.instance
+          .registration(current!.server!, current.username);
+      if (registration != null) return registration.id;
+    }
+    return LocalDevice.id();
+  }
+
+  /// User-requested copy details. Receipts name devices, never network paths.
+  Future<Map<String, Object?>> copyStatus() async {
+    final store = await _copyStore();
+    if (store == null) return {'name': LocalDevice.name, 'devices': <Object>[]};
+    final local = await store.local(await _copyDeviceId(), LocalDevice.name);
+    final vault = MediaVault(store.db);
+    final login = _login;
+    final copies = await store.readLatest({
+      vault,
+      if (login != null &&
+          (_connections == null ||
+              _connections!.healthyRoutes
+                  .any((route) => route.id == 'storage')))
+        _storageFor(login),
+      for (final route in _connections?.healthyRoutes ?? <SyncRouteCandidate>[])
+        if (route.type != SyncRouteType.cache) route.backend,
+    });
+    for (final copy in copies) {
+      await store.publish(vault, copy);
+    }
+    final network = await networkStatus();
+    return {
+      'name': LocalDevice.name,
+      'local': local.toJson(),
+      'devices': [
+        for (final copy in copies)
+          if (copy.id != local.id)
+            {...copy.toJson(), 'current': copy.revision == local.revision}
+      ],
+      'temporaryStorage': temporaryMediaCache,
+      'storage': target?.provider.name,
+      'storageHost': target?.server?.host,
+      'storedMedia': network['durableRemoteMedia'],
+      'temporaryMedia': network['temporaryOrUnconfirmedRemoteMedia'],
+    };
+  }
+
+  Future<void> renameDevice(String name) async {
+    await LocalDevice.rename(name);
+    notifyListeners();
+    syncSoon();
+  }
+
   final _random = Random();
 
   /// Operational details stay out of the everyday status label. A successful
@@ -630,6 +700,26 @@ class SyncService with ChangeNotifier {
       progress = null;
       lastReport = report;
       if (report.changedLocally) await _reload();
+      // Copy confirmations are optional metadata, never a sync acknowledgement.
+      try {
+        final copies = await _copyStore();
+        if (copies != null) {
+          final local =
+              await copies.local(await _copyDeviceId(), LocalDevice.name);
+          await copies.publish(vault, local);
+          await copies.publish(
+              RoutedSyncBackend(
+                  local: vault,
+                  storage: backend,
+                  peers: routed.peers,
+                  storageAvailable: routed.storageAvailable,
+                  timeout:
+                      Duration(seconds: config['probeTimeoutSeconds'] as int)),
+              local);
+        }
+      } catch (error) {
+        _logger.fine('Copy confirmation will retry', error);
+      }
       await ConfigProvider.instance
           .set(Settings.lastSync, DateTime.now().toIso8601String());
       error = null;
@@ -677,6 +767,7 @@ class SyncService with ChangeNotifier {
     await _closeConnections();
     final identity = await DiaryIdentity.current();
     final config = AppConfig.instance.syncTransfer;
+    _networkDeviceId = await LocalDevice.id();
     if (backend is WebDavBackend && backend.authenticatedDeviceId != null) {
       _networkDeviceId = backend.authenticatedDeviceId!;
     }
@@ -940,7 +1031,7 @@ class SyncService with ChangeNotifier {
   PairingStatus? pairing;
   bool _pairingCancelled = false;
 
-  String get _deviceName => DeviceInfoService().model ?? Platform.localHostname;
+  String get _deviceName => LocalDevice.name;
 
   /// A pairing of this device: as the one with the key when it syncs a
   /// space, else as the one waiting to join [pendingSpace].
@@ -954,6 +1045,7 @@ class SyncService with ChangeNotifier {
             identity: identity,
             holdsKey: holdsKey,
             deviceName: _deviceName,
+            deviceNameProvider: () => _deviceName,
             poll: config.pairingPoll,
             timeout: config.pairingTimeout);
     final current = await currentSpace();
@@ -1211,6 +1303,7 @@ class SyncService with ChangeNotifier {
       }
     }
     await backend.delete('media');
+    await backend.delete('copies');
     final recovery = _recoveryCode(chosen);
     final info = await SpaceInfo.create(await DiaryIdentity.current(),
         recoveryCode: recovery.code,

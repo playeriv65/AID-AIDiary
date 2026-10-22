@@ -10,6 +10,8 @@ import 'dart:convert';
 import 'package:aid_diary/actions/app_action.dart';
 import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/config/app_config.dart';
+import 'package:aid_diary/config_provider.dart';
+import 'package:aid_diary/sync/device_auth.dart';
 import 'package:aid_diary/sync/identity.dart';
 import 'package:aid_diary/sync/sync_backend.dart';
 import 'package:aid_diary/sync/sync_crypto.dart';
@@ -55,6 +57,27 @@ void main() {
     final status = await run('sync.status');
     expect(status['unsyncedIds'], [3, 7]);
     expect(status['unsyncedEntries'], 2);
+  });
+
+  test(
+      'copy details use the account device ID and do not list this device twice',
+      () async {
+    final login = MemoryLogin();
+    final registration = DeviceRegistration(
+        server: login.server!,
+        username: login.username,
+        id: 'registered-tablet',
+        alias: 'test-key',
+        publicKeySpki: 'AQID',
+        hardwareBacked: false,
+        provider: 'test');
+    await ConfigProvider.instance.set(
+        Settings.deviceAuthorizations, jsonEncode([registration.toJson()]));
+    await sync.createSpace(login);
+    await sync.syncNow();
+    final copies = await run('sync.copies');
+    expect((copies['local'] as Map)['id'], registration.id);
+    expect(copies['devices'], isEmpty);
   });
 
   test('keys and pairing need a space this device is set up with', () async {

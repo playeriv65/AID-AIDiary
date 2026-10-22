@@ -1568,5 +1568,41 @@
   "appearancePaperSection": "Diary paper",
   "appearanceTypographySection": "Diary text",
   "appearancePreferencesSection": "General preferences",
-  "themeSystemAccentHint": "Uses the system palette instead of custom colors. Turn it off to choose your own."
+  "themeSystemAccentHint": "Uses the system palette instead of custom colors. Turn it off to choose your own.",
+  "syncDeviceNameSaveFailed": "Could not save the device name. Please try again.",
+  "nearbyConnectionHelp": "Connection help",
+  "syncAllSynced": "Everything synced",
+  "syncDetailsTitle": "Sync details",
+  "syncMore": "More options",
+  "syncDeviceName": "Device name",
+  "syncDeviceNameHint": "For example: My tablet",
+  "syncDeviceNameInvalid": "Use 1 to 32 characters",
+  "syncDeviceKeyDetails": "Security details",
+  "syncConnectionProblem": "Unable to sync for now. Retrying automatically.",
+  "syncCopyComplete": "Complete copy",
+  "syncCopyPartial": "Some media is still missing",
+  "syncCopyOlder": "New changes are waiting to sync",
+  "syncCopyUnavailable": "Copy details are unavailable. Try again later.",
+  "syncCopyLastKnown": "Other devices show their last confirmed copy. Offline devices cannot be checked now.",
+  "syncCopyTemporary": "Temporary cache. Keep the originals on your devices.",
+  "syncCopyStorage": "Your sync storage. Completed media uploads are listed in diagnostics.",
+  "syncCopyChecked": "Last confirmed {time}",
+  "cloudTrafficSummary": "Available this month: {remaining} / {limit}",
+  "@syncCopyChecked": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "@cloudTrafficSummary": {
+    "placeholders": {
+      "remaining": {
+        "type": "String"
+      },
+      "limit": {
+        "type": "String"
+      }
+    }
+  }
 }

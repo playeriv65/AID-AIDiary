@@ -6,6 +6,7 @@ import 'package:aid_diary/actions/app_action.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/sync/device_auth.dart';
 import 'package:aid_diary/sync/nearby_service.dart';
+import 'package:aid_diary/sync/local_device.dart';
 import 'package:aid_diary/sync/sync_service.dart';
 import 'package:aid_diary/utils/scratch_folders.dart';
 
@@ -40,6 +41,32 @@ Map<String, Object?> nearbyStatus() => {
     };
 
 final List<AppAction> deviceSyncActions = [
+  AppAction(
+      id: 'sync.device_name',
+      describe:
+          'Reads this device name or saves a local label for pairing and copy details.',
+      params: const [
+        ActionParam(
+            'name', ParamType.string, 'A device label of 1 to 32 characters',
+            required: false)
+      ],
+      risk: ActionRisk.write,
+      run: (_, args) async {
+        if (args['name'] case final String name) {
+          if (!LocalDevice.validName(name)) {
+            throw const ActionException('bad_args',
+                'Use 1 to 32 characters without control characters');
+          }
+          await SyncService.instance.renameDevice(name);
+        }
+        return {'name': LocalDevice.name};
+      }),
+  AppAction(
+      id: 'sync.copies',
+      describe:
+          'Reads named device copies and last confirmations; temporary storage is never a backup.',
+      risk: ActionRisk.read,
+      run: (_, args) => SyncService.instance.copyStatus()),
   AppAction(
       id: 'sync.devices_test_cleanup',
       describe:

@@ -7,6 +7,8 @@ import 'dart:convert';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/sync/device_auth.dart';
+import 'package:aid_diary/sync/local_device.dart';
+import 'package:aid_diary/widgets/device_name_tile.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 import 'package:aid_diary/routing/sync_scan_navigation.dart';
@@ -22,6 +24,7 @@ class _SyncDeviceSettingsState extends State<SyncDeviceSettings> {
   final _manager = DeviceAuthManager.instance;
   DeviceRegistration? _selected;
   List<Map<String, dynamic>> _devices = [];
+  Map<String, String> _names = {};
   String? _request;
   bool _busy = false, _failed = false;
   @override
@@ -46,11 +49,22 @@ class _SyncDeviceSettingsState extends State<SyncDeviceSettings> {
     try {
       final result = await AppActions.instance
           .run('sync.devices_check', _accountArgs, confirmed: true) as Map;
+      var copies = <Object?, Object?>{};
+      try {
+        copies = (await AppActions.instance.run('sync.copies', {})) as Map;
+      } catch (_) {
+        // A missing optional copy receipt must not block account management.
+      }
       if (mounted) {
         setState(() {
           _devices =
               ((result['devices'] as List?) ?? []).cast<Map<String, dynamic>>();
           _request = result['request'] as String?;
+          _names = {
+            for (final copy in copies['devices'] as List? ?? const [])
+              if (copy is Map && copy['id'] is String && copy['name'] is String)
+                copy['id'] as String: copy['name'] as String
+          };
         });
       }
     } catch (_) {
@@ -168,34 +182,45 @@ class _SyncDeviceSettingsState extends State<SyncDeviceSettings> {
             child: ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 720),
                 child: ListView(padding: const EdgeInsets.all(24), children: [
-                  Text(l10n.syncDevicesDescription),
-                  const SizedBox(height: 16),
+                  DeviceNameTile(onChanged: () => setState(() {})),
                   if (records.isEmpty)
                     Text(l10n.syncDeviceUnavailable)
                   else ...[
-                    DropdownButtonFormField<String>(
-                        initialValue: selected?.alias,
-                        items: [
-                          for (final r in records)
-                            DropdownMenuItem(
-                                value: r.alias,
-                                child: Text('${r.username} · ${r.server.host}'))
-                        ],
-                        onChanged: _busy
-                            ? null
-                            : (alias) {
-                                setState(() => _selected = records
-                                    .firstWhere((r) => r.alias == alias));
-                                _load();
-                              }),
+                    if (records.length > 1)
+                      DropdownButtonFormField<String>(
+                          initialValue: selected?.alias,
+                          items: [
+                            for (final r in records)
+                              DropdownMenuItem(
+                                  value: r.alias,
+                                  child:
+                                      Text('${r.username} · ${r.server.host}'))
+                          ],
+                          onChanged: _busy
+                              ? null
+                              : (alias) {
+                                  setState(() => _selected = records
+                                      .firstWhere((r) => r.alias == alias));
+                                  _load();
+                                }),
                     const SizedBox(height: 12),
-                    if (selected != null) ...[
-                      Text(selected.hardwareBacked
-                          ? l10n.syncDeviceHardware
-                          : l10n.syncDeviceSoftware),
-                      const SizedBox(height: 8),
-                      SelectableText(selected.fingerprint),
-                    ],
+                    if (selected != null)
+                      ExpansionTile(
+                          title: Text(l10n.syncDeviceKeyDetails),
+                          children: [
+                            Text(l10n.syncDevicesDescription),
+                            Text(selected.hardwareBacked
+                                ? l10n.syncDeviceHardware
+                                : l10n.syncDeviceSoftware),
+                            const SizedBox(height: 8),
+                            SelectableText(selected.fingerprint),
+                            OutlinedButton.icon(
+                                onPressed: _busy
+                                    ? null
+                                    : () => _run('sync.devices_rotate'),
+                                icon: const Icon(Icons.key),
+                                label: Text(l10n.syncDeviceRotate)),
+                          ]),
                     const SizedBox(height: 16),
                     if (_busy) const LinearProgressIndicator(),
                     OutlinedButton.icon(
@@ -223,13 +248,16 @@ class _SyncDeviceSettingsState extends State<SyncDeviceSettings> {
                           icon: const Icon(Icons.add_moderator),
                           label: Text(l10n.syncDeviceAuthorize)),
                       for (final device in _devices)
-                        ListTile(
-                            title: Text('${device['label']}'),
+                        ExpansionTile(
+                            title: Text(device['id'] == selected?.id
+                                ? LocalDevice.name
+                                : _names[device['id']] ?? '${device['label']}'),
                             subtitle: Text(
-                                '${device['fingerprint']}\n${device['id'] == selected?.id ? l10n.syncDeviceLocal : ''}${device['revoked'] == true ? l10n.syncDeviceRevoked : ''}'),
-                            trailing: device['revoked'] == true
-                                ? null
-                                : TextButton(
+                                '${device['id'] == selected?.id ? l10n.syncDeviceLocal : ''}${device['revoked'] == true ? l10n.syncDeviceRevoked : ''}'),
+                            children: [
+                              SelectableText('${device['fingerprint']}'),
+                              if (device['revoked'] != true)
+                                TextButton(
                                     onPressed: _busy
                                         ? null
                                         : () async {
@@ -242,13 +270,9 @@ class _SyncDeviceSettingsState extends State<SyncDeviceSettings> {
                                               });
                                             }
                                           },
-                                    child: Text(l10n.syncDeviceRevoke))),
+                                    child: Text(l10n.syncDeviceRevoke))
+                            ]),
                       const SizedBox(height: 12),
-                      OutlinedButton.icon(
-                          onPressed:
-                              _busy ? null : () => _run('sync.devices_rotate'),
-                          icon: const Icon(Icons.key),
-                          label: Text(l10n.syncDeviceRotate)),
                     ],
                   ],
                 ]))));

@@ -211,6 +211,8 @@ class Settings {
   /// Where this device syncs, as JSON; empty when it does not. Kept on the
   /// device, like the secrets that go with it.
   static const syncTarget = Setting<String>("syncTarget", "", secure: true);
+  static const deviceName = Setting<String>("deviceName", "", secure: true);
+  static const syncDeviceId = Setting<String>("syncDeviceId", "", secure: true);
 
   /// The sync login's password or token, as JSON.
   static const syncSecrets =
@@ -327,6 +329,8 @@ class Settings {
     lastBackup,
     lastAutoBackup,
     syncTarget,
+    deviceName,
+    syncDeviceId,
     syncSecrets,
     identity,
     nearbyMigration,

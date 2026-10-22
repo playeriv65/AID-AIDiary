@@ -2573,6 +2573,67 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get themeSystemAccentHint => '使用系统配色并覆盖自定义颜色，关闭后可自行选色。';
+
+  @override
+  String get syncDeviceNameSaveFailed => '无法保存设备名称，请重试。';
+
+  @override
+  String get nearbyConnectionHelp => '连接帮助';
+
+  @override
+  String get syncAllSynced => '全部已同步';
+
+  @override
+  String get syncDetailsTitle => '同步详情';
+
+  @override
+  String get syncMore => '更多选项';
+
+  @override
+  String get syncDeviceName => '设备名称';
+
+  @override
+  String get syncDeviceNameHint => '例如：我的平板';
+
+  @override
+  String get syncDeviceNameInvalid => '请输入 1 至 32 个字符';
+
+  @override
+  String get syncDeviceKeyDetails => '安全详情';
+
+  @override
+  String get syncConnectionProblem => '暂时无法同步，会自动重试';
+
+  @override
+  String get syncCopyComplete => '完整副本';
+
+  @override
+  String get syncCopyPartial => '部分媒体待同步';
+
+  @override
+  String get syncCopyOlder => '有新内容待同步';
+
+  @override
+  String get syncCopyUnavailable => '暂时无法查看副本详情，请稍后重试';
+
+  @override
+  String get syncCopyLastKnown => '其他设备显示上次确认的副本状态，离线时无法实时核实。';
+
+  @override
+  String get syncCopyTemporary => '临时缓存会自动清理，请保留设备上的原件。';
+
+  @override
+  String get syncCopyStorage => '你的同步存储，已完成的媒体上传记录可在诊断中查看。';
+
+  @override
+  String syncCopyChecked(String time) {
+    return '上次确认：$time';
+  }
+
+  @override
+  String cloudTrafficSummary(String remaining, String limit) {
+    return '本月剩余 $remaining / $limit';
+  }
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -4864,4 +4925,65 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get themeSystemAccentHint => '使用系統配色並覆蓋自訂顏色，關閉後可自行選色。';
+
+  @override
+  String get syncDeviceNameSaveFailed => '無法儲存裝置名稱，請重試。';
+
+  @override
+  String get nearbyConnectionHelp => '連線說明';
+
+  @override
+  String get syncAllSynced => '全部已同步';
+
+  @override
+  String get syncDetailsTitle => '同步詳細資料';
+
+  @override
+  String get syncMore => '更多選項';
+
+  @override
+  String get syncDeviceName => '裝置名稱';
+
+  @override
+  String get syncDeviceNameHint => '例如：我的平板';
+
+  @override
+  String get syncDeviceNameInvalid => '請輸入 1 至 32 個字元';
+
+  @override
+  String get syncDeviceKeyDetails => '安全詳細資料';
+
+  @override
+  String get syncConnectionProblem => '暫時無法同步，會自動重試';
+
+  @override
+  String get syncCopyComplete => '完整副本';
+
+  @override
+  String get syncCopyPartial => '部分媒體待同步';
+
+  @override
+  String get syncCopyOlder => '有新內容待同步';
+
+  @override
+  String get syncCopyUnavailable => '暫時無法查看副本詳細資料，請稍後重試';
+
+  @override
+  String get syncCopyLastKnown => '其他裝置顯示上次確認的副本狀態，離線時無法即時核實。';
+
+  @override
+  String get syncCopyTemporary => '暫存快取會自動清理，請保留裝置上的原件。';
+
+  @override
+  String get syncCopyStorage => '你的同步儲存空間，已完成的媒體上傳紀錄可在診斷中查看。';
+
+  @override
+  String syncCopyChecked(String time) {
+    return '上次確認：$time';
+  }
+
+  @override
+  String cloudTrafficSummary(String remaining, String limit) {
+    return '本月剩餘 $remaining / $limit';
+  }
 }

@@ -6,6 +6,13 @@ asks again. Dates are when it was settled. Ideas not built yet are in
 
 ## What the app is
 
+- Progressive disclosure (2026-10-22): everyday screens show only what is
+  necessary. Sync shows complete, partial media or waiting; copy locations
+  and last confirmations are available on request inside sync details.
+  Technical paths, key fingerprints and destructive maintenance controls
+  belong deeper in options. Device names default to the model/computer name
+  and can be edited; they do not create a user profile. After pairing, trusted
+  device discovery and connection are automatic on a reachable network.
 - A private diary for Windows and Android, a GPL-3.0 modification of Daily
   You that stays clearly its own app (name, IDs, the notice in About). No
   compatibility with Daily You data or with older builds of this app.

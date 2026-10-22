@@ -2650,4 +2650,71 @@ class AppLocalizationsHe extends AppLocalizations {
   @override
   String get themeSystemAccentHint =>
       'Uses the system palette instead of custom colors. Turn it off to choose your own.';
+
+  @override
+  String get syncDeviceNameSaveFailed =>
+      'Could not save the device name. Please try again.';
+
+  @override
+  String get nearbyConnectionHelp => 'Connection help';
+
+  @override
+  String get syncAllSynced => 'Everything synced';
+
+  @override
+  String get syncDetailsTitle => 'Sync details';
+
+  @override
+  String get syncMore => 'More options';
+
+  @override
+  String get syncDeviceName => 'Device name';
+
+  @override
+  String get syncDeviceNameHint => 'For example: My tablet';
+
+  @override
+  String get syncDeviceNameInvalid => 'Use 1 to 32 characters';
+
+  @override
+  String get syncDeviceKeyDetails => 'Security details';
+
+  @override
+  String get syncConnectionProblem =>
+      'Unable to sync for now. Retrying automatically.';
+
+  @override
+  String get syncCopyComplete => 'Complete copy';
+
+  @override
+  String get syncCopyPartial => 'Some media is still missing';
+
+  @override
+  String get syncCopyOlder => 'New changes are waiting to sync';
+
+  @override
+  String get syncCopyUnavailable =>
+      'Copy details are unavailable. Try again later.';
+
+  @override
+  String get syncCopyLastKnown =>
+      'Other devices show their last confirmed copy. Offline devices cannot be checked now.';
+
+  @override
+  String get syncCopyTemporary =>
+      'Temporary cache. Keep the originals on your devices.';
+
+  @override
+  String get syncCopyStorage =>
+      'Your sync storage. Completed media uploads are listed in diagnostics.';
+
+  @override
+  String syncCopyChecked(String time) {
+    return 'Last confirmed $time';
+  }
+
+  @override
+  String cloudTrafficSummary(String remaining, String limit) {
+    return 'Available this month: $remaining / $limit';
+  }
 }

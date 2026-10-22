@@ -14,11 +14,13 @@ class CloudTrafficNotice extends StatefulWidget {
       {super.key,
       this.load,
       this.changes,
+      this.expanded = false,
       this.refreshDelay = const Duration(milliseconds: 500)});
 
   final Future<Map<Object?, Object?>?> Function()? load;
   final Listenable? changes;
   final Duration refreshDelay;
+  final bool expanded;
 
   @override
   State<CloudTrafficNotice> createState() => _CloudTrafficNoticeState();
@@ -29,6 +31,7 @@ class _CloudTrafficNoticeState extends State<CloudTrafficNotice> {
   _CloudTraffic? _data;
   Timer? _pending;
   bool _loading = false;
+  bool _showDetails = false;
   int _generation = 0;
 
   @override
@@ -98,6 +101,19 @@ class _CloudTrafficNoticeState extends State<CloudTrafficNotice> {
     if (data == null) return const SizedBox.shrink();
     final l10n = AppLocalizations.of(context)!;
     final locale = TimeManager.currentLocale(context);
+    if (!widget.expanded && !_showDetails) {
+      return ListTile(
+          key: const ValueKey('cloud-traffic-summary'),
+          leading: const Icon(Icons.cloud_outlined),
+          title: Text(l10n.cloudTrafficTitle),
+          subtitle: Text(data.remaining == 0
+              ? l10n.cloudTrafficExhausted
+              : l10n.cloudTrafficSummary(
+                  formatCloudTrafficBytes(data.remaining, locale),
+                  formatCloudTrafficBytes(data.limit, locale))),
+          trailing: const Icon(Icons.expand_more_rounded),
+          onTap: () => setState(() => _showDetails = true));
+    }
     final reset =
         '${DateFormat.yMMMd(locale).add_Hm().format(data.resetsAt)} UTC';
     Widget amount(String label, int bytes, String key) => Padding(

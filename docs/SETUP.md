@@ -23,6 +23,12 @@ Development happens natively on Windows (no WSL). Versions in use on
 
 ## First time on a new computer
 
+Use `scripts/dev.ps1` for Flutter builds, tests, screenshots, initialization
+and analysis. They share a workspace lock because native test DLLs cannot be
+replaced while another test process is using them. Focused checks accept
+`./scripts/dev.ps1 test -TestFiles test/sync/copy_status_test.dart`; use another
+worktree for independent concurrent Flutter work.
+
 1. Clone `playeriv65/AID-AIDiary` (private; access from the owner).
 2. Copy `scripts/dev.env.example` to `scripts/dev.env` and set this
    computer's paths. `scripts/dev.ps1` reads it for every target and stops
@@ -60,6 +66,12 @@ The production service was updated on 2026-10-22 from server source `887dd27`,
 including nginx WebSocket upgrades and opt-in 1 GB monthly media policy.
 [SYNC_NETWORK.md](SYNC_NETWORK.md) records deployment checks and remaining
 network-validation limits.
+
+Device names default to the model/computer name and can be edited in sync
+setup, pairing or device settings. They stay local to each installation;
+trusted copies exchange encrypted labels. Tap the everyday sync status for
+named copy locations and last confirmations; further options hold network
+diagnostics. A temporary cloud cache is not a persistent backup.
 
 Spaces created now use format 4. Earlier remote formats are rejected without
 migration or automatic reset. Starting over on a live server is a destructive

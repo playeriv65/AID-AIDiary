@@ -13,6 +13,7 @@ abstract final class SyncObjectPaths {
   static bool validFolder(String folder) {
     final parts = folder.split('/');
     return folder == 'packs' ||
+        folder == 'copies' ||
         folder == 'media/manifests' ||
         (parts.length == 3 &&
             parts[0] == 'media' &&
@@ -23,6 +24,7 @@ abstract final class SyncObjectPaths {
   static bool validFile(String path) {
     final parts = path.split('/');
     return path == 'space.json' ||
+        (parts.length == 2 && parts[0] == 'copies' && _id.hasMatch(parts[1])) ||
         (parts.length == 2 &&
             parts[0] == 'packs' &&
             _pack.hasMatch(parts[1])) ||

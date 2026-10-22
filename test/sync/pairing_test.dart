@@ -79,6 +79,25 @@ void main() {
     expect(await storage.list('pairing'), isEmpty);
   });
 
+  test('pairing uses the device name saved while the code is displayed',
+      () async {
+    var label = 'Default phone';
+    final shows = Pairing(
+        backend: storage,
+        space: space,
+        identity: owner,
+        holdsKey: true,
+        deviceName: label,
+        deviceNameProvider: () => label,
+        poll: const Duration(milliseconds: 5),
+        timeout: const Duration(seconds: 5));
+    final code = await shows.offer(8);
+    label = 'My phone';
+    final results = await Future.wait(
+        [shows.finishOffer(code), device(stranger, 'Tablet').accept(code)]);
+    expect(results[1].otherDevice, 'My phone');
+  });
+
   test('a wrong code ends the offer on both devices; the next one works',
       () async {
     final shows = device(owner, 'Phone');

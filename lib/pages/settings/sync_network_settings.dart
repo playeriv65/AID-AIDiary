@@ -89,7 +89,7 @@ class _SyncNetworkSettingsState extends State<SyncNetworkSettings> {
             constraints: const BoxConstraints(maxWidth: 840),
             child: ListView(padding: const EdgeInsets.all(16), children: [
               const CloudTrafficNotice(
-                  key: ValueKey('sync-network-cloud-traffic')),
+                  expanded: true, key: ValueKey('sync-network-cloud-traffic')),
               if (_loading) const LinearProgressIndicator(),
               if (_failed)
                 ListTile(

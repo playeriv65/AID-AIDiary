@@ -46,6 +46,41 @@ additional Osaka relay was needed for the production deployment.
 
 ## Verification status
 
+### Device names and progressive disclosure (2026-10-22)
+
+The everyday sync page keeps completion/pending/waiting state and necessary
+actions. Copy locations open under sync details; route diagnostics, account
+information, signing-key details, recovery and reset require deeper options.
+The limited-server allowance starts as one line, with usage details on demand.
+Wi-Fi/hotspot help on nearby migration is collapsed until needed.
+
+Every device has a useful default model/hostname and an editable local name.
+Names are used by pairing and enrollment; public DNS-SD still advertises only
+opaque IDs and authentication tags. After pairing supplies the shared identity,
+the existing background discovery, authenticated probes and route upgrades
+start automatically. A reachable local network is still required for LAN;
+numeric storage-based pairing requires its configured shared storage, whereas
+the nearby QR flow can establish trust without the application server.
+
+Encrypted `copies/<device-id>` summaries confirm a device's dataset revision,
+original-file presence counts and last-check time. Remote copy labels require
+a matching revision; stale complete reports cannot override a newer partial
+report from another source. These are last-known observations, not an offline
+device audit or a promise of future retention. Temporary cache is displayed
+separately. Publishing a copy receipt never acknowledges an unsent diary change
+and does not alter media transfer budgets. Old peers without receipts remain
+usable; their complete-copy status is unknown.
+
+Validation: 799 Flutter tests passed, with six external-service tests skipped;
+seven CLI tests passed and static analysis was clean. All four screenshot
+cases passed, including new phone/tablet sync-summary and copy-detail views.
+Tests cover automatic authenticated LAN discovery, copy receipt transport,
+matching/partial/stale inventories, path/space authentication, newest-confirmation
+selection, editable Unicode device labels, pairing-time renames and account
+device IDs without duplicate local rows. Native test DLL conflicts are prevented
+by the shared workspace lock; focused tests use `dev.ps1 test -TestFiles ...`.
+This follow-up did not add cross-WAN or performance verification.
+
 ### Production deployment (2026-10-22)
 
 The existing `aid-sync` container on `netlab_main` was recreated from server

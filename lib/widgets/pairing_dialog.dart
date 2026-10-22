@@ -10,6 +10,7 @@ import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/sync/pairing.dart';
 import 'package:aid_diary/sync/sync_service.dart';
 import 'package:aid_diary/widgets/haptics.dart';
+import 'package:aid_diary/widgets/device_name_tile.dart';
 import 'package:flutter/services.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
@@ -138,6 +139,7 @@ class _PairingDialogState extends State<PairingDialog> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                  if (!paired) const DeviceNameTile(),
                   if (!paired)
                     SegmentedButton<bool>(
                       segments: [

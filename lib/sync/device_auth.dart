@@ -6,6 +6,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:aid_diary/sync/local_device.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/services.dart';
@@ -203,7 +204,7 @@ class DeviceAuthSession {
         '${rotation ? 'aid-device-rotate-v1\n' : ''}aid-device-enroll-v1\n${registration.username}\n${registration.id}\n${registration.publicKeySpki}';
     return {
       'id': registration.id,
-      'label': Platform.localHostname,
+      'label': LocalDevice.name,
       'publicKeySpki': registration.publicKeySpki,
       'signature': base64Encode(
           await keys.sign(registration.alias, utf8.encode(message)))

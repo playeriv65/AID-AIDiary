@@ -76,6 +76,7 @@ void main() {
 
     // Sync against a storage in memory, then pairing another device; the
     // waiting spinner never settles.
+    await DiaryAppHarness.setSetting(Settings.deviceName, '我的平板');
     await tester
         .runAsync(() => SyncService.instance.createSpace(MemoryLogin()));
     await tester.runAsync(SyncService.instance.syncNow);

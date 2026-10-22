@@ -712,5 +712,41 @@
     "appearancePaperSection": "日記信紙",
     "appearanceTypographySection": "日記文字",
     "appearancePreferencesSection": "一般偏好",
-    "themeSystemAccentHint": "使用系統配色並覆蓋自訂顏色，關閉後可自行選色。"
+    "themeSystemAccentHint": "使用系統配色並覆蓋自訂顏色，關閉後可自行選色。",
+  "syncDeviceNameSaveFailed": "無法儲存裝置名稱，請重試。",
+  "nearbyConnectionHelp": "連線說明",
+  "syncAllSynced": "全部已同步",
+  "syncDetailsTitle": "同步詳細資料",
+  "syncMore": "更多選項",
+  "syncDeviceName": "裝置名稱",
+  "syncDeviceNameHint": "例如：我的平板",
+  "syncDeviceNameInvalid": "請輸入 1 至 32 個字元",
+  "syncDeviceKeyDetails": "安全詳細資料",
+  "syncConnectionProblem": "暫時無法同步，會自動重試",
+  "syncCopyComplete": "完整副本",
+  "syncCopyPartial": "部分媒體待同步",
+  "syncCopyOlder": "有新內容待同步",
+  "syncCopyUnavailable": "暫時無法查看副本詳細資料，請稍後重試",
+  "syncCopyLastKnown": "其他裝置顯示上次確認的副本狀態，離線時無法即時核實。",
+  "syncCopyTemporary": "暫存快取會自動清理，請保留裝置上的原件。",
+  "syncCopyStorage": "你的同步儲存空間，已完成的媒體上傳紀錄可在診斷中查看。",
+  "syncCopyChecked": "上次確認：{time}",
+  "cloudTrafficSummary": "本月剩餘 {remaining} / {limit}",
+  "@syncCopyChecked": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "@cloudTrafficSummary": {
+    "placeholders": {
+      "remaining": {
+        "type": "String"
+      },
+      "limit": {
+        "type": "String"
+      }
+    }
+  }
 }

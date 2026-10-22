@@ -3,6 +3,7 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'dart:io';
+import 'dart:convert';
 import 'dart:ui' as ui;
 
 import 'package:aid_diary/config_provider.dart';
@@ -12,6 +13,8 @@ import 'package:aid_diary/pages/edit_entry_page.dart';
 import 'package:aid_diary/pages/entry_view_page.dart';
 import 'package:aid_diary/pages/local_moments_page.dart';
 import 'package:aid_diary/pages/settings/appearance_settings.dart';
+import 'package:aid_diary/pages/settings/sync_settings.dart';
+import 'package:aid_diary/pages/settings/sync_copy_settings.dart';
 import 'package:aid_diary/theme_mode_provider.dart';
 import 'package:aid_diary/widgets/drawing_canvas.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -53,6 +56,49 @@ void main() {
   ]) {
     testWidgets('backlog $device', (tester) async {
       await session.start(tester, size);
+      await DiaryAppHarness.setSetting(Settings.deviceName, '我的平板');
+      await DiaryAppHarness.setSetting(
+          Settings.syncTarget,
+          jsonEncode({
+            'type': 'webdav',
+            'server': 'https://example.org/dav/',
+            'username': 'storage-account',
+            'spaceId': 'screenshots'
+          }));
+      await DiaryAppHarness.setSetting(
+          Settings.lastSync, '2026-10-22T12:00:00Z');
+      await open(tester, const SyncSettings());
+      await session.capture(tester, '$device-sync-simple');
+      await close(tester, SyncSettings);
+      await open(
+          tester,
+          SyncCopySettings(
+              load: () async => {
+                    'local': {'name': '我的平板', 'present': 3, 'total': 3},
+                    'devices': [
+                      {
+                        'name': '我的电脑',
+                        'present': 3,
+                        'total': 3,
+                        'current': true,
+                        'checkedAt': '2026-10-22T12:00:00Z'
+                      },
+                      {
+                        'name': '我的手机',
+                        'present': 1,
+                        'total': 3,
+                        'current': true,
+                        'checkedAt': '2026-10-22T11:00:00Z'
+                      },
+                    ],
+                    'storage': 'webdav',
+                    'storageHost': 'example.org',
+                    'temporaryStorage': true,
+                  }));
+      await session.capture(tester, '$device-sync-copies');
+      await close(tester, SyncCopySettings);
+      await DiaryAppHarness.setSetting(Settings.syncTarget, '');
+      await DiaryAppHarness.setSetting(Settings.lastSync, '');
       await DiaryAppHarness.setSetting(Settings.followSystemColor, false);
       await DiaryAppHarness.setSetting(Settings.accentColor, 0xff587e64);
       await DiaryAppHarness.setSetting(Settings.darkTheme, 'dark');

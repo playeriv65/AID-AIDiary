@@ -28,13 +28,16 @@ void main() {
   });
 
   testWidgets(
-      'shows monthly totals and UTC reset without rendering policy secrets',
+      'starts with one allowance line and reveals usage details on request',
       (tester) async {
     final changes = ChangeNotifier();
     addTearDown(changes.dispose);
     await tester.pumpWidget(harness.app(Scaffold(
         body: CloudTrafficNotice(
             changes: changes, load: () async => _traffic()))));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const ValueKey('cloud-traffic-summary')), findsOneWidget);
+    await tester.tap(find.byKey(const ValueKey('cloud-traffic-summary')));
     await tester.pumpAndSettle();
     expect(find.text('10 GB'), findsOneWidget);
     expect(find.text('2.5 GB'), findsOneWidget);
@@ -103,6 +106,8 @@ void main() {
     await tester.pump(const Duration(milliseconds: 1));
     await tester.pumpAndSettle();
     expect(calls, 2);
+    await tester.tap(find.byKey(const ValueKey('cloud-traffic-summary')));
+    await tester.pumpAndSettle();
     expect(
         find.byKey(const ValueKey('cloud-traffic-exhausted')), findsOneWidget);
     await tester.pump(const Duration(seconds: 5));

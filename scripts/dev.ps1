@@ -1,8 +1,14 @@
 param(
   [ValidateSet('windows','windows-build','windows-stage','windows-background','windows-driver','android','apk','profile','release','test','test-unit','test-widget','test-integration','test-server','cli','test-cli','frame-rate','analyze','pub','screenshots')][string]$Target='windows',
   # Flutter device id for 'android', e.g. a wireless adb serial from `flutter devices`.
-  [string]$Device='emulator-5554'
+  [string]$Device='emulator-5554',
+  # Optional focused files for the Flutter test targets.
+  [string[]]$TestFiles=@()
 )
+if ($TestFiles.Count -gt 0 -and $Target -notin 'test', 'test-unit', 'test-widget', 'test-integration') {
+  Write-Error 'TestFiles is supported only by the Flutter test targets.'
+  exit 1
+}
 # Where this computer keeps the toolchain, from scripts/dev.env (kept out of
 # git; copy scripts/dev.env.example and see docs/SETUP.md).
 $devEnv = Join-Path $PSScriptRoot 'dev.env'
@@ -51,17 +57,19 @@ if ($Target -in 'android', 'apk', 'profile', 'release' -and
   exit 1
 }
 # Flutter stages platform assets in a shared directory in this checkout.
-# Concurrent native builds can silently package another platform's bundle.
+# Concurrent builds/tests can stage another platform's bundle or replace a
+# native test DLL while it is loaded. Serialize all Flutter workspace writers.
 $buildLock = $null
 if ($Target -in 'windows', 'windows-build', 'windows-stage', 'windows-background', 'windows-driver',
-    'android', 'apk', 'profile', 'release', 'frame-rate') {
+    'android', 'apk', 'profile', 'release', 'frame-rate', 'test', 'test-unit',
+    'test-widget', 'test-integration', 'screenshots', 'pub', 'analyze') {
   $lockPath = Join-Path (Get-Location) '.dart_tool/dev-build.lock'
   New-Item -ItemType Directory -Force (Split-Path $lockPath -Parent) | Out-Null
   try {
     $buildLock = [System.IO.File]::Open($lockPath, [System.IO.FileMode]::OpenOrCreate,
       [System.IO.FileAccess]::ReadWrite, [System.IO.FileShare]::None)
   } catch [System.IO.IOException] {
-    Write-Error "Cannot acquire the Flutter build lock. Stop the other run/build in this checkout, or use another worktree. $($_.Exception.Message)"
+    Write-Error "Cannot acquire the Flutter workspace lock. Stop the other build/test/run in this checkout, or use another worktree. $($_.Exception.Message)"
     exit 1
   }
 }
@@ -164,9 +172,9 @@ switch ($Target) {
   }
   # Test layers (see dart_test.yaml). Four workers keep runs from pinning
   # every core. Unit tests while iterating; all layers before committing.
-  'test-unit' { flutter test -j 4 --exclude-tags widget,integration }
-  'test-widget' { flutter test -j 4 --tags widget }
-  'test-integration' { flutter test -j 4 --tags integration }
+  'test-unit' { flutter test -j 4 --exclude-tags widget,integration @TestFiles }
+  'test-widget' { flutter test -j 4 --tags widget @TestFiles }
+  'test-integration' { flutter test -j 4 --tags integration @TestFiles }
   # The Go sync server under server/.
   'test-server' {
     Push-Location server
@@ -191,7 +199,7 @@ switch ($Target) {
       if ($LASTEXITCODE -eq 0) { dart analyze; dart test }
     } finally { Pop-Location }
   }
-  'test' { flutter test -j 4 }
+  'test' { flutter test -j 4 @TestFiles }
   'analyze' {
     # The root analyzer also sees the CLI package on a new checkout.
     Push-Location cli
