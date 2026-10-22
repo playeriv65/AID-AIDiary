@@ -3,6 +3,7 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'dart:async';
+import 'dart:io';
 import 'dart:convert';
 import 'dart:typed_data';
 
@@ -10,12 +11,15 @@ import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/database/app_database.dart';
 import 'package:aid_diary/database/image_storage.dart';
+import 'package:aid_diary/device_info_service.dart';
 import 'package:aid_diary/providers/entries_provider.dart';
 import 'package:aid_diary/providers/entry_images_provider.dart';
 import 'package:aid_diary/providers/tags_provider.dart';
 import 'package:aid_diary/providers/templates_provider.dart';
 import 'package:aid_diary/sync/google_auth.dart';
 import 'package:aid_diary/sync/google_drive_backend.dart';
+import 'package:aid_diary/sync/identity.dart';
+import 'package:aid_diary/sync/pairing.dart';
 import 'package:aid_diary/sync/sync_backend.dart';
 import 'package:aid_diary/sync/sync_crypto.dart';
 import 'package:aid_diary/sync/sync_engine.dart';
@@ -28,7 +32,7 @@ import 'package:logging/logging.dart';
 enum SyncProvider { webdav, googleDrive }
 
 /// How to reach a space and sign in there.
-sealed class SyncLogin {
+abstract interface class SyncLogin {
   SyncProvider get provider;
 
   /// The WebDAV server; null for a cloud drive.
@@ -94,21 +98,18 @@ class SyncTarget {
       {required this.provider,
       this.server,
       required this.username,
-      required this.spaceId,
-      required this.encrypted});
+      required this.spaceId});
 
   final SyncProvider provider;
   final Uri? server;
   final String username;
   final String spaceId;
-  final bool encrypted;
 
   Map<String, Object?> toJson() => {
         'type': provider.name,
         if (server != null) 'server': server.toString(),
         'username': username,
         'spaceId': spaceId,
-        'encrypted': encrypted,
       };
 
   factory SyncTarget.fromJson(Map<String, Object?> json) => SyncTarget(
@@ -118,8 +119,53 @@ class SyncTarget {
         _ => null,
       },
       username: json['username'] as String,
-      spaceId: json['spaceId'] as String,
-      encrypted: json['encrypted'] as bool);
+      spaceId: json['spaceId'] as String);
+}
+
+/// The space belongs to another user's devices: this one joins by pairing
+/// with one of them (sync/pairing.dart) or with the recovery code.
+class NeedsKeyException implements Exception {
+  @override
+  String toString() =>
+      'This space belongs to other devices: pair with one, or use the '
+      'recovery code';
+}
+
+enum PairingStage { waiting, paired, failed }
+
+/// The pairing this device last offered or took part in.
+class PairingStatus {
+  const PairingStatus(
+      {required this.stage,
+      this.code,
+      this.otherDevice,
+      this.failure,
+      this.error,
+      this.joined = false});
+
+  final PairingStage stage;
+
+  /// The code this device shows, when it offered.
+  final PairingCode? code;
+  final String? otherDevice;
+  final PairingFailure? failure;
+
+  /// What went wrong other than the pairing itself, such as the storage.
+  final Object? error;
+
+  /// Whether this device received the key and joined the space.
+  final bool joined;
+}
+
+/// A chosen recovery password shorter than the app accepts.
+class WeakRecoveryCodeException implements Exception {
+  const WeakRecoveryCodeException(this.minLength);
+
+  final int minLength;
+
+  @override
+  String toString() =>
+      'A recovery password needs at least $minLength characters';
 }
 
 enum SyncState {
@@ -129,7 +175,8 @@ enum SyncState {
   syncing,
   failed,
 
-  /// The space was reset or the key is missing: join it again.
+  /// The space was reset or belongs to another user's devices now: join it
+  /// again by pairing or with the recovery code.
   locked,
 }
 
@@ -200,17 +247,11 @@ class SyncService with ChangeNotifier {
   DateTime? get lastSync =>
       DateTime.tryParse(ConfigProvider.instance.get(Settings.lastSync));
 
-  ({String credential, Uint8List? key}) get _secrets {
+  /// The login's password or token.
+  String get _credential {
     final stored = ConfigProvider.instance.get(Settings.syncSecrets);
-    if (stored.isEmpty) return (credential: '', key: null);
-    final json = jsonDecode(stored) as Map<String, Object?>;
-    return (
-      credential: json['password'] as String,
-      key: switch (json['key']) {
-        final String key => base64.decode(key),
-        _ => null,
-      },
-    );
+    if (stored.isEmpty) return '';
+    return (jsonDecode(stored) as Map<String, Object?>)['password'] as String;
   }
 
   /// The login for the current target, kept so a cloud drive's tokens are
@@ -227,7 +268,7 @@ class SyncService with ChangeNotifier {
         cached.server == target.server) {
       return cached;
     }
-    final credential = _secrets.credential;
+    final credential = _credential;
     return _cachedLogin = switch (target.provider) {
       SyncProvider.webdav => WebDavLogin(
           server: target.server!,
@@ -295,10 +336,13 @@ class SyncService with ChangeNotifier {
     try {
       final backend = login.backend();
       final info = await _readSpace(backend);
-      final key = _secrets.key;
-      if (info == null ||
-          info.id != target.spaceId ||
-          (info.encrypted && key == null)) {
+      final dataKey = info == null || info.id != target.spaceId
+          ? null
+          : await _dataKey(info);
+      if (info == null || dataKey == null) {
+        // Another device's keys hold the space now: pairing with one of
+        // them brings them here.
+        if (info != null) _pendingJoin = (login: login, space: info);
         error = null;
         await _markUnsynced();
         _setState(SyncState.locked);
@@ -312,7 +356,7 @@ class SyncService with ChangeNotifier {
               packBytes: AppConfig.instance.syncPackBytes,
               compactAfter: AppConfig.instance.syncCompactAfterPacks,
               parallel: AppConfig.instance.syncParallelTransfers),
-          cipher: info.encrypted ? ItemCipher(key!) : null,
+          cipher: ItemCipher(dataKey),
           onProgress: _progressed,
           stopped: () => _stopping).sync();
       progress = null;
@@ -379,49 +423,216 @@ class SyncService with ChangeNotifier {
     return bytes == null ? null : SpaceInfo.fromBytes(bytes);
   }
 
-  /// Makes a new space at [login] with this diary in it, end-to-end
-  /// encrypted with [passphrase] when one is given. Returns the recovery
-  /// key to show once.
-  Future<String?> createSpace(SyncLogin login, {String? passphrase}) async {
+  /// The data key of [space] from this device's master key; null when the
+  /// space is another user's.
+  Future<Uint8List?> _dataKey(SpaceInfo space) async {
+    final identity = await DiaryIdentity.current();
+    if (identity.userId != space.userId) return null;
+    try {
+      return await space.dataKey(identity.masterKey);
+    } on WrongKeyException {
+      return null;
+    }
+  }
+
+  /// Whether this device holds the keys of [space].
+  Future<bool> holdsKey(SpaceInfo space) async => await _dataKey(space) != null;
+
+  static KdfParams get _recoveryKdf => KdfParams(
+      memoryKiB: AppConfig.instance.recoveryArgon2MemoryKiB,
+      iterations: AppConfig.instance.recoveryArgon2Iterations);
+
+  /// [chosen], when it is long enough, or a new code; and whether the app
+  /// made it.
+  static ({String code, bool generated}) _recoveryCode(String? chosen) {
+    if (chosen == null) {
+      return (
+        code: newRecoveryCode(AppConfig.instance.recoveryCodeBytes),
+        generated: true
+      );
+    }
+    final min = AppConfig.instance.recoveryMinPasswordLength;
+    if (chosen.trim().length < min) throw WeakRecoveryCodeException(min);
+    return (code: chosen, generated: false);
+  }
+
+  /// Makes a new space at [login] with this diary in it, locked by this
+  /// device's master key. Returns the recovery code to show once: [chosen]
+  /// when given, else a new random one.
+  Future<String> createSpace(SyncLogin login, {String? chosen}) async {
     final backend = login.backend();
     if (await _readSpace(backend) != null) {
       throw StateError('There is already a space here');
     }
-    final keys =
-        passphrase == null ? null : await SpaceEncryption.create(passphrase);
-    final info = SpaceInfo.create(encryption: keys?.encryption);
+    final recovery = _recoveryCode(chosen);
+    final info = await SpaceInfo.create(await DiaryIdentity.current(),
+        recoveryCode: recovery.code,
+        generated: recovery.generated,
+        kdf: _recoveryKdf);
     await backend.write(SpaceLayout.info, info.toBytes());
-    await _connect(login, info, keys?.key);
-    return keys?.recoveryKey;
+    await _connect(login, info);
+    return recovery.code;
   }
 
-  /// Joins the space at [login], opening an encrypted one with
-  /// [passphrase] or [recoveryKey]. This diary's entries join it too.
-  Future<void> joinSpace(SyncLogin login, SpaceInfo space,
-      {String? passphrase, String? recoveryKey}) async {
-    final encryption = space.encryption;
-    Uint8List? key;
-    if (encryption != null) {
-      key = recoveryKey != null
-          ? await encryption.unlockWithRecoveryKey(recoveryKey)
-          : await encryption.unlockWithPassphrase(passphrase ?? '');
+  /// Joins the space at [login], which this device's master key opens. One
+  /// that belongs to other devices throws [NeedsKeyException] and waits as
+  /// [pendingSpace]: pair with one of them or [recover]. This diary's
+  /// entries join the space too.
+  Future<void> joinSpace(SyncLogin login, SpaceInfo space) async {
+    if (!await holdsKey(space)) {
+      _pendingJoin = (login: login, space: space);
+      notifyListeners();
+      throw NeedsKeyException();
     }
-    await _connect(login, space, key);
+    await _connect(login, space);
   }
 
-  /// Opens this device's space again after it was reset elsewhere or its
-  /// key went missing.
-  Future<void> unlock({String? passphrase, String? recoveryKey}) async {
+  ({SyncLogin login, SpaceInfo space})? _pendingJoin;
+
+  /// A space this device signed in to but cannot open yet: pairing brings
+  /// its key.
+  SpaceInfo? get pendingSpace => _pendingJoin?.space;
+
+  /// The pairing this device last offered or took part in.
+  PairingStatus? pairing;
+  bool _pairingCancelled = false;
+
+  String get _deviceName => DeviceInfoService().model ?? Platform.localHostname;
+
+  /// A pairing of this device: as the one with the key when it syncs a
+  /// space, else as the one waiting to join [pendingSpace].
+  Future<({Pairing pairing, SyncLogin? joining})> _newPairing() async {
+    final identity = await DiaryIdentity.current();
+    final config = AppConfig.instance;
+    Pairing pairing(SyncBackend backend, SpaceInfo space, bool holdsKey) =>
+        Pairing(
+            backend: backend,
+            space: space,
+            identity: identity,
+            holdsKey: holdsKey,
+            deviceName: _deviceName,
+            poll: config.pairingPoll,
+            timeout: config.pairingTimeout);
+    final current = await currentSpace();
+    if (current != null && await holdsKey(current.space)) {
+      return (
+        pairing: pairing(current.backend, current.space, true),
+        joining: null
+      );
+    }
+    if (_pendingJoin case (:final login, :final space)) {
+      return (
+        pairing: pairing(login.backend(), space, await holdsKey(space)),
+        joining: login
+      );
+    }
+    throw StateError('Sync is not set up on this device');
+  }
+
+  /// Shows a pairing code for the other device to type or scan; the
+  /// pairing goes on in [pairing].
+  Future<PairingCode> offerPairing() async {
+    final (:pairing, :joining) = await _newPairing();
+    _pairingCancelled = false;
+    final code = await pairing.offer(AppConfig.instance.pairingCodeDigits);
+    _setPairing(PairingStatus(stage: PairingStage.waiting, code: code));
+    unawaited(_finishPairing(
+        () => pairing.finishOffer(code, cancelled: () => _pairingCancelled),
+        pairing.space,
+        joining));
+    return code;
+  }
+
+  /// Pairs with the device showing [code], typed or scanned; a
+  /// [FormatException] when it is not a code.
+  Future<PairingStatus> acceptPairing(String code) async {
+    final parsed =
+        PairingCode.parse(code, AppConfig.instance.pairingCodeDigits) ??
+            (throw const FormatException('Not a pairing code'));
+    final (:pairing, :joining) = await _newPairing();
+    _pairingCancelled = false;
+    _setPairing(const PairingStatus(stage: PairingStage.waiting));
+    return _finishPairing(
+        () => pairing.accept(parsed, cancelled: () => _pairingCancelled),
+        pairing.space,
+        joining);
+  }
+
+  /// Stops the pairing that waits for the other device.
+  void cancelPairing() => _pairingCancelled = true;
+
+  Future<PairingStatus> _finishPairing(Future<PairingResult> Function() run,
+      SpaceInfo space, SyncLogin? joining) async {
+    final offered = pairing?.code;
+    PairingStatus status;
+    try {
+      final result = await run();
+      if (result.received case final identity?) {
+        await joinAs(joining!, space, identity);
+      }
+      status = PairingStatus(
+          stage: PairingStage.paired,
+          code: offered,
+          otherDevice: result.otherDevice,
+          joined: result.received != null);
+    } on PairingException catch (e) {
+      status = PairingStatus(
+          stage: PairingStage.failed, code: offered, failure: e.failure);
+    } catch (e, stackTrace) {
+      _logger.warning('Pairing failed', e, stackTrace);
+      status =
+          PairingStatus(stage: PairingStage.failed, code: offered, error: e);
+    }
+    _setPairing(status);
+    return status;
+  }
+
+  void _setPairing(PairingStatus status) {
+    pairing = status;
+    notifyListeners();
+  }
+
+  /// Joins [space] with [identity], the user's from another device or the
+  /// recovery code: it becomes this device's own.
+  Future<void> joinAs(
+      SyncLogin login, SpaceInfo space, DiaryIdentity identity) async {
+    if (identity.userId != space.userId) throw WrongKeyException();
+    await space.dataKey(identity.masterKey);
+    await identity.keep();
+    await _connect(login, space);
+  }
+
+  /// Joins [space] with its recovery [code], restoring the user's master
+  /// key on this device; [WrongKeyException] for a wrong code.
+  Future<void> recover(SyncLogin login, SpaceInfo space, String code) async {
+    final masterKey = await space.recovery.unlock(space.userId, code);
+    await joinAs(login, space,
+        DiaryIdentity(userId: space.userId, masterKey: masterKey));
+  }
+
+  /// Opens this device's space again after it went to other devices or
+  /// was started over, with its recovery [code].
+  Future<void> unlock(String code) async {
     final login = _login;
     if (login == null) return;
     final space = await probe(login);
     if (space == null) throw StateError('The space is gone');
-    await joinSpace(login, space,
-        passphrase: passphrase, recoveryKey: recoveryKey);
+    await recover(login, space, code);
   }
 
-  Future<void> _connect(
-      SyncLogin login, SpaceInfo space, Uint8List? key) async {
+  /// The space this device syncs and its backend, for pairing another
+  /// device; null when it syncs none.
+  Future<({SyncBackend backend, SpaceInfo space})?> currentSpace() async {
+    final login = _login;
+    if (login == null) return null;
+    final backend = login.backend();
+    final space = await _readSpace(backend);
+    if (space == null || space.id != target?.spaceId) return null;
+    return (backend: backend, space: space);
+  }
+
+  Future<void> _connect(SyncLogin login, SpaceInfo space) async {
+    _pendingJoin = null;
     final db = AppDatabase.instance.database!;
     await clearSyncState(db);
     await markAllChanged(db);
@@ -431,10 +642,8 @@ class SyncService with ChangeNotifier {
             provider: login.provider,
             server: login.server,
             username: login.username,
-            spaceId: space.id,
-            encrypted: space.encrypted),
-        login.credential,
-        key);
+            spaceId: space.id),
+        login.credential);
     _setState(SyncState.idle);
     // A first sync may take long; it goes on while the page shows how far
     // it is.
@@ -458,7 +667,7 @@ class SyncService with ChangeNotifier {
     final login = _login;
     if (login is! GoogleDriveLogin) return;
     await login.auth.signIn(doneMessage: doneMessage);
-    await _save(target!, login.credential, _secrets.key);
+    await _save(target!, login.credential);
     await syncNow();
   }
 
@@ -476,24 +685,29 @@ class SyncService with ChangeNotifier {
     _setState(SyncState.off);
   }
 
-  /// Locks the space key under a new passphrase; data and other devices
-  /// are untouched.
-  Future<void> changePassphrase(String passphrase) async {
-    final login = _login!;
-    final key = _secrets.key!;
-    final backend = login.backend();
-    final space = (await _readSpace(backend))!;
-    final changed = SpaceInfo(
-        id: space.id,
-        encryption: await space.encryption!.withPassphrase(key, passphrase));
-    await backend.write(SpaceLayout.info, changed.toBytes());
+  /// Locks the master key in the space under a new recovery code: [chosen]
+  /// when given, else a new random one, which is returned to show once.
+  /// Data, keys and other devices are untouched.
+  Future<String> changeRecoveryCode({String? chosen}) async {
+    final current = await currentSpace();
+    if (current == null || !await holdsKey(current.space)) {
+      throw NeedsKeyException();
+    }
+    final recovery = _recoveryCode(chosen);
+    final identity = await DiaryIdentity.current();
+    final lock = await RecoveryLock.lock(
+        identity.masterKey, identity.userId, recovery.code, _recoveryKdf,
+        generated: recovery.generated);
+    await current.backend
+        .write(SpaceLayout.info, current.space.withRecovery(lock).toBytes());
+    return recovery.code;
   }
 
-  /// Starts the space over from this device's diary under a new key, for a
-  /// forgotten passphrase: the old encrypted copy is removed and other
-  /// devices join again with the new passphrase. Returns the new recovery
-  /// key.
-  Future<String> resetEncryption(String passphrase) async {
+  /// Starts the space over from this device's diary, as this device's
+  /// user, when no device and no recovery code opens it any more: the old
+  /// encrypted copy is removed and other devices join again by pairing.
+  /// Returns the new recovery code.
+  Future<String> resetSpace({String? chosen}) async {
     final login = _login!;
     final backend = login.backend();
     await _stop();
@@ -502,21 +716,19 @@ class SyncService with ChangeNotifier {
         await backend.delete(path);
       }
     }
-    final keys = await SpaceEncryption.create(passphrase);
-    final info = SpaceInfo.create(encryption: keys.encryption);
+    final recovery = _recoveryCode(chosen);
+    final info = await SpaceInfo.create(await DiaryIdentity.current(),
+        recoveryCode: recovery.code,
+        generated: recovery.generated,
+        kdf: _recoveryKdf);
     await backend.write(SpaceLayout.info, info.toBytes());
-    await _connect(login, info, keys.key);
-    return keys.recoveryKey;
+    await _connect(login, info);
+    return recovery.code;
   }
 
-  Future<void> _save(
-      SyncTarget target, String credential, Uint8List? key) async {
-    await ConfigProvider.instance.set(
-        Settings.syncSecrets,
-        jsonEncode({
-          'password': credential,
-          if (key != null) 'key': base64.encode(key)
-        }));
+  Future<void> _save(SyncTarget target, String credential) async {
+    await ConfigProvider.instance
+        .set(Settings.syncSecrets, jsonEncode({'password': credential}));
     await ConfigProvider.instance
         .set(Settings.syncTarget, jsonEncode(target.toJson()));
   }

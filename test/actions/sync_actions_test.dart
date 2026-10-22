@@ -9,15 +9,48 @@ import 'dart:convert';
 
 import 'package:aid_diary/actions/app_action.dart';
 import 'package:aid_diary/actions/app_actions.dart';
-import 'package:aid_diary/config_provider.dart';
+import 'package:aid_diary/config/app_config.dart';
+import 'package:aid_diary/sync/identity.dart';
+import 'package:aid_diary/sync/sync_backend.dart';
+import 'package:aid_diary/sync/sync_crypto.dart';
 import 'package:aid_diary/sync/sync_service.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../support/diary_app_harness.dart';
 
+/// A sign-in to a storage held in memory, as a WebDAV one looks.
+class _MemoryLogin implements SyncLogin {
+  _MemoryLogin(this.storage);
+
+  final MemorySyncBackend storage;
+
+  @override
+  SyncProvider get provider => SyncProvider.webdav;
+  @override
+  Uri? get server => Uri.parse('https://dav.example.test/');
+  @override
+  String get username => 'diary';
+  @override
+  String get credential => 'secret';
+  @override
+  SyncBackend backend() => storage;
+}
+
 void main() {
   DiaryAppHarness().register();
   final actions = AppActions(devBuild: true);
+  final sync = SyncService.instance;
+
+  setUpAll(() async {
+    // The real recovery cost takes seconds per try; tests need none of it.
+    final config = jsonDecode(await rootBundle.loadString(AppConfig.assetPath))
+        as Map<String, dynamic>;
+    (config['sync']['recovery'] as Map)
+      ..['argon2MemoryKiB'] = 64
+      ..['argon2Iterations'] = 1;
+    AppConfig.setForTesting(config);
+  });
 
   Future<Map<String, Object?>> run(String id,
           [Map<String, Object?> args = const {},
@@ -28,53 +61,77 @@ void main() {
   Matcher refused(String code) =>
       throwsA(isA<ActionException>().having((e) => e.code, 'code', code));
 
-  Future<void> connectedTo(
-          {required bool encrypted}) =>
-      DiaryAppHarness.setSetting(
-          Settings.syncTarget,
-          jsonEncode(SyncTarget(
-                  provider: SyncProvider.webdav,
-                  server: Uri.parse('https://dav.example.test/'),
-                  username: 'diary',
-                  spaceId: 'space',
-                  encrypted: encrypted)
-              .toJson()));
-
-  tearDown(() => SyncService.instance.unsyncedEntryIds = const {});
+  tearDown(() async {
+    sync.unsyncedEntryIds = const {};
+    await sync.disconnect();
+  });
 
   test('the status names the entries still waiting to go up', () async {
     expect(await run('sync.status'), containsPair('unsyncedIds', isEmpty));
-    SyncService.instance.unsyncedEntryIds = {7, 3};
+    sync.unsyncedEntryIds = {7, 3};
     final status = await run('sync.status');
     expect(status['unsyncedIds'], [3, 7]);
     expect(status['unsyncedEntries'], 2);
   });
 
-  test('keys are only handled for a space this device is connected to',
-      () async {
-    expect(() => run('sync.unlock', {'passphrase': 'a'}),
+  test('keys and pairing need a space this device is set up with', () async {
+    expect(() => run('sync.unlock', {'recoveryCode': 'a'}),
         refused('not_connected'));
-    expect(() => run('sync.change_passphrase', {'passphrase': 'a'}),
+    expect(() => run('sync.recovery_code', {}, true), refused('needs_key'));
+    expect(() => run('sync.reset_space', {}, true), refused('not_connected'));
+    expect(() => run('sync.pair_offer'), refused('not_connected'));
+    expect(() => run('sync.pair_accept', {'code': '12-345678'}),
         refused('not_connected'));
-    expect(() => run('sync.reset_encryption', {'passphrase': 'a'}, true),
-        refused('not_connected'));
-
-    await connectedTo(encrypted: false);
-    expect(() => run('sync.change_passphrase', {'passphrase': 'a'}),
-        refused('not_encrypted'));
-    expect(() => run('sync.reset_encryption', {'passphrase': 'a'}, true),
-        refused('not_encrypted'));
+    expect(
+        () => run('sync.pair_accept', {'code': 'twelve'}), refused('bad_args'));
   });
 
-  test('a key needs something to open the space with, and wiping asks first',
+  test('replacing the recovery code or the space asks first', () {
+    expect(actions.find('sync.recovery_code').risk, ActionRisk.destructive);
+    expect(actions.find('sync.reset_space').risk, ActionRisk.destructive);
+    expect(() => run('sync.recovery_code'), refused('needs_confirmation'));
+  });
+
+  test('a space is made, its code replaced, and a new device recovers it',
       () async {
-    await connectedTo(encrypted: true);
-    expect(() => run('sync.unlock'), refused('bad_args'));
-    expect(() => run('sync.change_passphrase', {'passphrase': ''}),
+    final storage = MemorySyncBackend();
+    final login = _MemoryLogin(storage);
+    final owner = await DiaryIdentity.current();
+
+    final first = await sync.createSpace(login);
+    final space = SpaceInfo.fromBytes((await storage.read(SpaceLayout.info))!);
+    expect(space.userId, owner.userId);
+    await sync.syncNow();
+    expect(sync.error, isNull);
+
+    // A chosen password must be long enough; a random one replaces the
+    // first code, which stops working.
+    expect(() => run('sync.recovery_code', {'password': 'short'}, true),
         refused('bad_args'));
-    expect(() => run('sync.reset_encryption', {'passphrase': 'a'}),
-        refused('needs_confirmation'));
-    expect(actions.find('sync.reset_encryption').risk, ActionRisk.destructive);
-    expect(actions.find('sync.unlock').risk, ActionRisk.write);
+    final second =
+        (await run('sync.recovery_code', {}, true))['recoveryCode'] as String;
+    expect(second, isNot(first));
+    final changed =
+        SpaceInfo.fromBytes((await storage.read(SpaceLayout.info))!);
+    expect(changed.recovery.unlock(owner.userId, first),
+        throwsA(isA<WrongKeyException>()));
+
+    // Another device: a user of its own, so the space is not its yet.
+    await sync.disconnect();
+    final stranger = DiaryIdentity.create();
+    await stranger.keep();
+    await expectLater(
+        sync.joinSpace(login, changed), throwsA(isA<NeedsKeyException>()));
+    expect(sync.pendingSpace?.id, changed.id);
+    expect(await run('sync.status'), containsPair('waitingForKey', true));
+
+    await expectLater(
+        sync.recover(login, changed, first), throwsA(isA<WrongKeyException>()));
+    await sync.recover(login, changed, second.toLowerCase());
+    expect(sync.pendingSpace, isNull);
+    final now = await DiaryIdentity.current();
+    expect(now.userId, owner.userId);
+    expect(now.masterKey, owner.masterKey);
+    expect(await sync.holdsKey(changed), isTrue);
   });
 }

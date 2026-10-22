@@ -5,6 +5,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:aid_diary/sync/identity.dart';
 import 'package:aid_diary/sync/sync_crypto.dart';
 import 'package:uuid/uuid.dart';
 
@@ -53,23 +54,50 @@ abstract final class SpaceLayout {
 
 /// A space's description file: its format, its id and, when it is end-to-end
 /// encrypted, the wrapped space key.
+/// A space's description (`space.json`): whose it is and its keys, sealed.
+/// Every space is end-to-end encrypted (sync/sync_crypto.dart).
 class SpaceInfo {
-  const SpaceInfo({required this.id, this.encryption, this.format = current});
+  const SpaceInfo(
+      {required this.id,
+      required this.userId,
+      required this.sealedDataKey,
+      required this.recovery,
+      this.format = current});
 
-  /// 2: packs of changes in place of one file per item.
-  static const int current = 2;
+  /// 2: packs of changes in place of one file per item. 3: always
+  /// encrypted, keys held by the user's devices rather than a passphrase.
+  static const int current = 3;
 
   final int format;
   final String id;
-  final SpaceEncryption? encryption;
 
-  bool get encrypted => encryption != null;
+  /// The user whose devices hold the master key that opens it.
+  final String userId;
+
+  /// The data key, sealed by the master key.
+  final Uint8List sealedDataKey;
+
+  /// The master key, sealed by the recovery code.
+  final RecoveryLock recovery;
+
+  /// The data key, or [WrongKeyException] for another user's master key.
+  Future<Uint8List> dataKey(Uint8List masterKey) =>
+      openDataKey(masterKey, sealedDataKey, id);
+
+  SpaceInfo withRecovery(RecoveryLock recovery) => SpaceInfo(
+      id: id,
+      userId: userId,
+      sealedDataKey: sealedDataKey,
+      recovery: recovery,
+      format: format);
 
   Uint8List toBytes() => Uint8List.fromList(utf8.encode(jsonEncode({
         'app': 'aid_diary',
         'format': format,
         'id': id,
-        if (encryption != null) 'encryption': encryption!.toJson(),
+        'user': userId,
+        'dataKey': base64.encode(sealedDataKey),
+        'recovery': recovery.toJson(),
       })));
 
   factory SpaceInfo.fromBytes(Uint8List bytes) {
@@ -78,21 +106,33 @@ class SpaceInfo {
     if (format != current) {
       throw UnsupportedError(format > current
           ? 'This space was made by a newer version of the app (format $format)'
-          : 'This space was made by an early test version of the app '
-              '(format $format); start a new one');
+          : 'This space was made by an older version of the app (format '
+              '$format), before devices held the keys; start a new one');
     }
     return SpaceInfo(
         id: json['id'] as String,
         format: format,
-        encryption: switch (json['encryption']) {
-          final Map encryption =>
-            SpaceEncryption.fromJson(encryption.cast<String, Object?>()),
-          _ => null,
-        });
+        userId: json['user'] as String,
+        sealedDataKey: base64.decode(json['dataKey'] as String),
+        recovery: RecoveryLock.fromJson(
+            (json['recovery'] as Map).cast<String, Object?>()));
   }
 
-  static SpaceInfo create({SpaceEncryption? encryption}) =>
-      SpaceInfo(id: const Uuid().v4(), encryption: encryption);
+  /// A new space of [identity] with a new data key, and its recovery
+  /// locked by [recoveryCode] ([generated] by the app or chosen).
+  static Future<SpaceInfo> create(DiaryIdentity identity,
+      {required String recoveryCode,
+      required bool generated,
+      required KdfParams kdf}) async {
+    final id = const Uuid().v4();
+    return SpaceInfo(
+        id: id,
+        userId: identity.userId,
+        sealedDataKey: await sealDataKey(identity.masterKey, newDataKey(), id),
+        recovery: await RecoveryLock.lock(
+            identity.masterKey, identity.userId, recoveryCode, kdf,
+            generated: generated));
+  }
 }
 
 /// A backend kept in memory, for tests.

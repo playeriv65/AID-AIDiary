@@ -106,6 +106,17 @@
       "apiUrl": "https://www.googleapis.com/drive/v3/",
       "uploadUrl": "https://www.googleapis.com/upload/drive/v3/",
       "signInTimeoutMinutes": 5
+    },
+    "recovery": {
+      "codeBytes": 20,
+      "minPasswordLength": 12,
+      "argon2MemoryKiB": 65536,
+      "argon2Iterations": 3
+    },
+    "pairing": {
+      "codeDigits": 8,
+      "pollMilliseconds": 1500,
+      "timeoutSeconds": 300
     }
   }
 }

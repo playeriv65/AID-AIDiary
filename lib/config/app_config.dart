@@ -196,6 +196,34 @@ class AppConfig {
 
   GoogleDriveConfig get googleDrive => GoogleDriveConfig._(
       (_section('sync')['googleDrive'] as Map).cast<String, dynamic>());
+
+  Map<String, dynamic> get _recovery =>
+      (_section('sync')['recovery'] as Map).cast<String, dynamic>();
+
+  /// Random bytes in a new recovery code (base32 in groups of four).
+  int get recoveryCodeBytes => _recovery['codeBytes'] as int;
+
+  /// The shortest recovery password a person may choose instead.
+  int get recoveryMinPasswordLength => _recovery['minPasswordLength'] as int;
+
+  /// Argon2id cost of the key that locks the master key in the space, which
+  /// anyone holding the space could try passwords against.
+  int get recoveryArgon2MemoryKiB => _recovery['argon2MemoryKiB'] as int;
+  int get recoveryArgon2Iterations => _recovery['argon2Iterations'] as int;
+
+  Map<String, dynamic> get _pairing =>
+      (_section('sync')['pairing'] as Map).cast<String, dynamic>();
+
+  /// Digits of a pairing code to type; a scanned code is longer.
+  int get pairingCodeDigits => _pairing['codeDigits'] as int;
+
+  /// How often a pairing looks for the other device's message.
+  Duration get pairingPoll =>
+      Duration(milliseconds: _pairing['pollMilliseconds'] as int);
+
+  /// How long a pairing waits for the other device.
+  Duration get pairingTimeout =>
+      Duration(seconds: _pairing['timeoutSeconds'] as int);
 }
 
 /// The app's Google Cloud registration and the endpoints it signs in and

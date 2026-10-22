@@ -3957,74 +3957,8 @@ abstract class AppLocalizations {
   /// No description provided for @syncNewSpaceDescription.
   ///
   /// In en, this message translates to:
-  /// **'There is no synced diary here yet. This diary will be uploaded.'**
+  /// **'There is no synced diary here yet. This diary will be uploaded, end-to-end encrypted with a key that stays on your devices.'**
   String get syncNewSpaceDescription;
-
-  /// No description provided for @syncEncrypt.
-  ///
-  /// In en, this message translates to:
-  /// **'End-to-end encryption'**
-  String get syncEncrypt;
-
-  /// No description provided for @syncEncryptDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Entries and photos are encrypted on your devices. Nobody else can read them, not even whoever stores them.'**
-  String get syncEncryptDescription;
-
-  /// No description provided for @syncPassphrase.
-  ///
-  /// In en, this message translates to:
-  /// **'Encryption passphrase'**
-  String get syncPassphrase;
-
-  /// No description provided for @syncPassphraseRepeat.
-  ///
-  /// In en, this message translates to:
-  /// **'Repeat the passphrase'**
-  String get syncPassphraseRepeat;
-
-  /// No description provided for @syncPassphraseTooShort.
-  ///
-  /// In en, this message translates to:
-  /// **'Use at least 8 characters'**
-  String get syncPassphraseTooShort;
-
-  /// No description provided for @syncPassphraseMismatch.
-  ///
-  /// In en, this message translates to:
-  /// **'The passphrases differ'**
-  String get syncPassphraseMismatch;
-
-  /// No description provided for @syncPassphraseNote.
-  ///
-  /// In en, this message translates to:
-  /// **'You need the passphrase or the recovery key to add another device. The diary on this device stays readable without them.'**
-  String get syncPassphraseNote;
-
-  /// No description provided for @syncRecoveryKeyTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Save your recovery key'**
-  String get syncRecoveryKeyTitle;
-
-  /// No description provided for @syncRecoveryKeyDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'If you forget the passphrase, this key opens your synced diary. Keep it in a password manager or on paper. It is shown only this once.'**
-  String get syncRecoveryKeyDescription;
-
-  /// No description provided for @syncRecoveryKeyCopied.
-  ///
-  /// In en, this message translates to:
-  /// **'Recovery key copied'**
-  String get syncRecoveryKeyCopied;
-
-  /// No description provided for @syncRecoveryKeySaved.
-  ///
-  /// In en, this message translates to:
-  /// **'I have saved it'**
-  String get syncRecoveryKeySaved;
 
   /// No description provided for @syncJoinTitle.
   ///
@@ -4032,40 +3966,10 @@ abstract class AppLocalizations {
   /// **'Join the synced diary'**
   String get syncJoinTitle;
 
-  /// No description provided for @syncJoinDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'A synced diary is already here. The entries on this device will be added to it.'**
-  String get syncJoinDescription;
-
-  /// No description provided for @syncJoinEncrypted.
-  ///
-  /// In en, this message translates to:
-  /// **'It is end-to-end encrypted. Enter its passphrase to open it.'**
-  String get syncJoinEncrypted;
-
-  /// No description provided for @syncUseRecoveryKey.
-  ///
-  /// In en, this message translates to:
-  /// **'Use the recovery key'**
-  String get syncUseRecoveryKey;
-
-  /// No description provided for @syncUsePassphrase.
-  ///
-  /// In en, this message translates to:
-  /// **'Use the passphrase'**
-  String get syncUsePassphrase;
-
-  /// No description provided for @syncRecoveryKey.
-  ///
-  /// In en, this message translates to:
-  /// **'Recovery key'**
-  String get syncRecoveryKey;
-
   /// No description provided for @syncWrongKey.
   ///
   /// In en, this message translates to:
-  /// **'This does not open the synced diary.'**
+  /// **'This recovery code does not open the synced diary.'**
   String get syncWrongKey;
 
   /// No description provided for @syncLastSynced.
@@ -4095,7 +3999,7 @@ abstract class AppLocalizations {
   /// No description provided for @syncLocked.
   ///
   /// In en, this message translates to:
-  /// **'The synced diary was reset on another device, or its key is missing here. Unlock it to keep syncing.'**
+  /// **'The synced diary now belongs to other devices, or was started over. Pair with one of them or use the recovery code to keep syncing.'**
   String get syncLocked;
 
   /// No description provided for @syncNow.
@@ -4116,36 +4020,6 @@ abstract class AppLocalizations {
   /// **'End-to-end encrypted'**
   String get syncEncrypted;
 
-  /// No description provided for @syncNotEncrypted.
-  ///
-  /// In en, this message translates to:
-  /// **'Not encrypted'**
-  String get syncNotEncrypted;
-
-  /// No description provided for @syncChangePassphrase.
-  ///
-  /// In en, this message translates to:
-  /// **'Change passphrase'**
-  String get syncChangePassphrase;
-
-  /// No description provided for @syncPassphraseChanged.
-  ///
-  /// In en, this message translates to:
-  /// **'Passphrase changed'**
-  String get syncPassphraseChanged;
-
-  /// No description provided for @syncResetEncryption.
-  ///
-  /// In en, this message translates to:
-  /// **'Reset encryption'**
-  String get syncResetEncryption;
-
-  /// No description provided for @syncResetEncryptionDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'For a forgotten passphrase: the encrypted synced copy is replaced by the diary on this device, under a new passphrase. Your other devices then join again with it.'**
-  String get syncResetEncryptionDescription;
-
   /// No description provided for @syncDisconnect.
   ///
   /// In en, this message translates to:
@@ -4157,6 +4031,222 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This device stops syncing. The diary here and the synced copy stay as they are.'**
   String get syncDisconnectDescription;
+
+  /// No description provided for @syncOwnRecoveryPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Use my own recovery password'**
+  String get syncOwnRecoveryPassword;
+
+  /// No description provided for @syncRecoveryPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Recovery password'**
+  String get syncRecoveryPassword;
+
+  /// No description provided for @syncRecoveryPasswordRepeat.
+  ///
+  /// In en, this message translates to:
+  /// **'Repeat the recovery password'**
+  String get syncRecoveryPasswordRepeat;
+
+  /// No description provided for @syncRecoveryPasswordTooShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Use at least {min} characters'**
+  String syncRecoveryPasswordTooShort(int min);
+
+  /// No description provided for @syncRecoveryPasswordMismatch.
+  ///
+  /// In en, this message translates to:
+  /// **'The passwords differ'**
+  String get syncRecoveryPasswordMismatch;
+
+  /// No description provided for @syncRecoveryCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Recovery code'**
+  String get syncRecoveryCode;
+
+  /// No description provided for @syncRecoveryCodeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Save your recovery code'**
+  String get syncRecoveryCodeTitle;
+
+  /// No description provided for @syncRecoveryCodeDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'If every device of yours is lost, this code restores your synced diary. Keep it in a password manager or on paper. It is shown only this once.'**
+  String get syncRecoveryCodeDescription;
+
+  /// No description provided for @syncRecoveryCodeCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Recovery code copied'**
+  String get syncRecoveryCodeCopied;
+
+  /// No description provided for @syncRecoveryCodeSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'I have saved it'**
+  String get syncRecoveryCodeSaved;
+
+  /// No description provided for @syncJoinNeedsKey.
+  ///
+  /// In en, this message translates to:
+  /// **'This synced diary belongs to your other devices. Pair with one of them, or use the recovery code. The entries on this device will be added to it.'**
+  String get syncJoinNeedsKey;
+
+  /// No description provided for @syncPairDevice.
+  ///
+  /// In en, this message translates to:
+  /// **'Pair with a device'**
+  String get syncPairDevice;
+
+  /// No description provided for @syncUseRecoveryCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Use the recovery code'**
+  String get syncUseRecoveryCode;
+
+  /// No description provided for @syncAddDevice.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a device'**
+  String get syncAddDevice;
+
+  /// No description provided for @syncChangeRecoveryCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Change the recovery code'**
+  String get syncChangeRecoveryCode;
+
+  /// No description provided for @syncChangeRecoveryDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'A new code replaces the current one, which stops working. Your data and other devices stay as they are.'**
+  String get syncChangeRecoveryDescription;
+
+  /// No description provided for @syncNewRandomCode.
+  ///
+  /// In en, this message translates to:
+  /// **'New random code'**
+  String get syncNewRandomCode;
+
+  /// No description provided for @syncRecoveryCodeChanged.
+  ///
+  /// In en, this message translates to:
+  /// **'Recovery code changed'**
+  String get syncRecoveryCodeChanged;
+
+  /// No description provided for @syncResetSpace.
+  ///
+  /// In en, this message translates to:
+  /// **'Start the synced diary over'**
+  String get syncResetSpace;
+
+  /// No description provided for @syncResetSpaceDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Only when no device and no recovery code opens it any more: the synced copy is replaced by the diary on this device, under this device\'s keys. Your other devices then pair again.'**
+  String get syncResetSpaceDescription;
+
+  /// No description provided for @syncPairTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pair devices'**
+  String get syncPairTitle;
+
+  /// No description provided for @syncPairShow.
+  ///
+  /// In en, this message translates to:
+  /// **'Show a code'**
+  String get syncPairShow;
+
+  /// No description provided for @syncPairEnter.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a code'**
+  String get syncPairEnter;
+
+  /// No description provided for @syncPairShowHint.
+  ///
+  /// In en, this message translates to:
+  /// **'On your other device, open Pair devices, choose Enter a code, and type or scan this.'**
+  String get syncPairShowHint;
+
+  /// No description provided for @syncPairEnterHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Type the code your other device shows, or scan it.'**
+  String get syncPairEnterHint;
+
+  /// No description provided for @syncPairCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Pairing code'**
+  String get syncPairCode;
+
+  /// No description provided for @syncPairScan.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan'**
+  String get syncPairScan;
+
+  /// No description provided for @syncPairStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Pair'**
+  String get syncPairStart;
+
+  /// No description provided for @syncPairWaiting.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for the other device…'**
+  String get syncPairWaiting;
+
+  /// No description provided for @syncPairDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Paired with {device}'**
+  String syncPairDone(String device);
+
+  /// No description provided for @syncPairWrongCode.
+  ///
+  /// In en, this message translates to:
+  /// **'The code did not match. Show a new code and try again.'**
+  String get syncPairWrongCode;
+
+  /// No description provided for @syncPairNoOffer.
+  ///
+  /// In en, this message translates to:
+  /// **'No device shows this code. It may have expired.'**
+  String get syncPairNoOffer;
+
+  /// No description provided for @syncPairTimedOut.
+  ///
+  /// In en, this message translates to:
+  /// **'The other device did not answer in time.'**
+  String get syncPairTimedOut;
+
+  /// No description provided for @syncPairNeither.
+  ///
+  /// In en, this message translates to:
+  /// **'Neither device is set up with this synced diary yet.'**
+  String get syncPairNeither;
+
+  /// No description provided for @syncPairBoth.
+  ///
+  /// In en, this message translates to:
+  /// **'Both devices already open this synced diary.'**
+  String get syncPairBoth;
+
+  /// No description provided for @syncPairFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Pairing failed: {error}'**
+  String syncPairFailed(String error);
 }
 
 class _AppLocalizationsDelegate

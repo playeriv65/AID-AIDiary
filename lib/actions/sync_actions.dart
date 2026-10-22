@@ -3,7 +3,9 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'package:aid_diary/actions/app_action.dart';
+import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/sync/google_auth.dart';
+import 'package:aid_diary/sync/pairing.dart';
 import 'package:aid_diary/sync/sync_crypto.dart';
 import 'package:aid_diary/sync/sync_service.dart';
 import 'package:aid_diary/l10n/shown_language.dart';
@@ -20,8 +22,9 @@ Map<String, Object?> syncStatus() {
       'provider': target.provider.name,
       if (target.server case final server?) 'server': server.toString(),
       'account': target.username,
-      'encrypted': target.encrypted,
     },
+    if (_sync.pendingSpace != null) 'waitingForKey': true,
+    if (_sync.pairing case final pairing?) 'pairing': pairingStatus(pairing),
     if (_sync.lastSync case final last?) 'lastSync': last.toIso8601String(),
     if (report != null)
       'lastReport': {
@@ -42,82 +45,116 @@ Map<String, Object?> syncStatus() {
   };
 }
 
-/// Runs [open], a try at opening the space with a key, and says when the
-/// key was wrong.
-Future<void> _withKey(Future<void> Function() open) async {
+Map<String, Object?> pairingStatus(PairingStatus pairing) => {
+      'stage': pairing.stage.name,
+      if (pairing.code case final code?) 'code': code.typed,
+      if (pairing.otherDevice case final device?) 'otherDevice': device,
+      if (pairing.joined) 'joined': true,
+      if (pairing.failure case final failure?) 'failure': failure.name,
+      if (pairing.error case final error?) 'error': '$error',
+    };
+
+/// Runs [open], which takes a key or code, and says what was wrong with it.
+Future<T> _withKey<T>(Future<T> Function() open) async {
   try {
-    await open();
+    return await open();
   } on WrongKeyException {
     throw const ActionException(
-        'wrong_key', 'That passphrase or recovery key does not open the space');
+        'wrong_key', 'That recovery code does not open the space');
+  } on WeakRecoveryCodeException catch (e) {
+    throw ActionException('bad_args', '$e');
+  } on NeedsKeyException catch (e) {
+    throw ActionException('needs_key', '$e');
+  } on StateError catch (e) {
+    throw ActionException('not_connected', e.message);
   }
 }
 
-/// The connected, encrypted and unlocked space a change of key needs.
-SyncTarget _keyedTarget() {
-  final target = _sync.target;
-  if (target == null) {
-    throw const ActionException('not_connected', 'Sync is not set up');
+/// [status] as the action's result, or why the pairing failed.
+Map<String, Object?> _paired(PairingStatus status) {
+  if (status.stage == PairingStage.failed) {
+    throw ActionException(
+        'pairing_failed',
+        status.failure != null
+            ? '${PairingException(status.failure!)}'
+            : '${status.error}');
   }
-  if (!target.encrypted) {
-    throw const ActionException('not_encrypted', 'The space is not encrypted');
-  }
-  if (_sync.state == SyncState.locked) {
-    throw const ActionException(
-        'locked', 'The space is locked: open it with sync.unlock first');
-  }
-  return target;
+  return {'pairing': pairingStatus(status), ...syncStatus()};
 }
 
-String _passphrase(ActionArgs args) {
-  final passphrase = args['passphrase'] as String;
-  if (passphrase.isEmpty) {
-    throw const ActionException('bad_args', 'passphrase must not be empty');
-  }
-  return passphrase;
-}
-
-/// Starts a space at [login], or joins the one there with the passphrase
-/// or recovery key, then waits for the first sync.
+/// Starts a space at [login], or joins the one there: directly when this
+/// device holds its key, else with a recovery or pairing code. Without
+/// either, the space waits for the key from `sync.pair_offer` or
+/// `sync.pair_accept`. Then waits for the first sync.
 Future<Map<String, Object?>> _open(SyncLogin login, ActionArgs args) async {
-  final passphrase = args['passphrase'] as String?;
-  final recoveryKey = args['recoveryKey'] as String?;
+  final recoveryCode = args['recoveryCode'] as String?;
+  final pairCode = args['pairCode'] as String?;
   final space = await _sync.probe(login);
-  String? newRecoveryKey;
+  String? newRecoveryCode;
   if (space == null) {
-    newRecoveryKey = await _sync.createSpace(login, passphrase: passphrase);
+    newRecoveryCode = await _withKey(() =>
+        _sync.createSpace(login, chosen: args['recoveryPassword'] as String?));
+  } else if (recoveryCode != null) {
+    await _withKey(() => _sync.recover(login, space, recoveryCode));
   } else {
-    if (space.encrypted && passphrase == null && recoveryKey == null) {
-      throw const ActionException('needs_key',
-          'The space here is encrypted: give passphrase or recoveryKey');
+    try {
+      await _sync.joinSpace(login, space);
+    } on NeedsKeyException {
+      if (pairCode == null) {
+        throw const ActionException(
+            'needs_key',
+            'This space belongs to other devices. Pair with one: run '
+                'sync.pair_offer here and type the code there, or give '
+                'pairCode from sync.pair_offer there; or give recoveryCode.');
+      }
+      _paired(await _acceptPairing(pairCode));
     }
-    await _withKey(() => _sync.joinSpace(login, space,
-        passphrase: passphrase, recoveryKey: recoveryKey));
   }
   final stopwatch = Stopwatch()..start();
   await _sync.syncNow();
   return {
     'created': space == null,
-    if (newRecoveryKey != null) 'recoveryKey': newRecoveryKey,
+    if (newRecoveryCode != null) 'recoveryCode': newRecoveryCode,
     'firstSyncMs': stopwatch.elapsedMilliseconds,
     ...syncStatus(),
   };
 }
 
-const _keyParams = [
-  ActionParam('passphrase', ParamType.string,
-      'Encrypts a new space, or opens an existing one; none for no encryption',
+Future<PairingStatus> _acceptPairing(String code) async {
+  try {
+    return await _withKey(() => _sync.acceptPairing(code));
+  } on FormatException {
+    throw const ActionException('bad_args',
+        'code is the digits the other device shows, such as 12-345678');
+  }
+}
+
+const _joinParams = [
+  ActionParam(
+      'recoveryCode',
+      ParamType.string,
+      "Joins a space this device has no key for with the space's recovery "
+          'code',
       required: false),
-  ActionParam('recoveryKey', ParamType.string,
-      'Opens an existing encrypted space instead of the passphrase',
+  ActionParam(
+      'pairCode',
+      ParamType.string,
+      'Joins a space this device has no key for with the code another '
+          'device of the space shows (sync.pair_offer there)',
+      required: false),
+  ActionParam(
+      'recoveryPassword',
+      ParamType.string,
+      'For a new space, a recovery password of your own instead of a '
+          'random code',
       required: false),
 ];
 
 final List<AppAction> syncActions = [
   AppAction(
     id: 'sync.status',
-    describe: 'Shows where this device syncs, how the last sync went and '
-        'how far a running one is.',
+    describe: 'Shows where this device syncs, how the last sync went, how '
+        'far a running one is, and the last pairing.',
     risk: ActionRisk.read,
     run: (context, args) async => syncStatus(),
   ),
@@ -136,14 +173,15 @@ final List<AppAction> syncActions = [
   ),
   AppAction(
     id: 'sync.connect_webdav',
-    describe: 'Starts syncing with a WebDAV server: makes a space there or '
-        'joins the one there, then syncs.',
+    describe: 'Starts syncing with a WebDAV server: makes an encrypted space '
+        'there, returning its recovery code, or joins the one there, then '
+        'syncs.',
     risk: ActionRisk.write,
     params: const [
       ActionParam('server', ParamType.string, 'The WebDAV address'),
       ActionParam('username', ParamType.string, 'The account name'),
       ActionParam('password', ParamType.string, 'The account password'),
-      ..._keyParams,
+      ..._joinParams,
     ],
     run: (context, args) async {
       final server = Uri.tryParse(args['server'] as String);
@@ -160,10 +198,11 @@ final List<AppAction> syncActions = [
   ),
   AppAction(
     id: 'sync.connect_google',
-    describe: "Starts syncing with the user's Google Drive. Google's account "
-        'chooser appears on the device and needs a person to pick an account.',
+    describe: "Starts syncing with the user's Google Drive, as "
+        "sync.connect_webdav does. Google's account chooser appears on the "
+        'device and needs a person to pick an account.',
     risk: ActionRisk.write,
-    params: _keyParams,
+    params: _joinParams,
     run: (context, args) async {
       if (!GoogleAuth.available) {
         throw const ActionException(
@@ -176,62 +215,98 @@ final List<AppAction> syncActions = [
     },
   ),
   AppAction(
-    id: 'sync.unlock',
-    describe: 'Opens an encrypted space this device lost the key of, after '
-        'it was reset elsewhere, with the passphrase or the recovery key, '
-        'then syncs.',
+    id: 'sync.pair_offer',
+    describe: 'Shows a pairing code for another device of the user to type '
+        '(sync.pair_accept) or scan. Works both ways: from a device that '
+        'syncs the space, or from one signed in to it and waiting for its '
+        'key. The pairing goes on in sync.status until the other device '
+        'answers or it expires.',
+    risk: ActionRisk.write,
+    run: (context, args) async {
+      final code = await _withKey(_sync.offerPairing);
+      return {
+        'code': code.typed,
+        'qr': code.scannable,
+        'expiresInSeconds': AppConfig.instance.pairingTimeout.inSeconds,
+      };
+    },
+  ),
+  AppAction(
+    id: 'sync.pair_accept',
+    describe: 'Pairs with the device that shows a pairing code '
+        '(sync.pair_offer there), and waits until the key has gone from the '
+        'device that holds it to the other.',
     risk: ActionRisk.write,
     params: const [
-      ActionParam('passphrase', ParamType.string, 'The space passphrase',
+      ActionParam('code', ParamType.string,
+          'The code the other device shows, typed or scanned'),
+    ],
+    run: (context, args) async =>
+        _paired(await _acceptPairing(args['code'] as String)),
+  ),
+  AppAction(
+    id: 'sync.pair_cancel',
+    describe: 'Stops the pairing this device offered while it waits.',
+    risk: ActionRisk.write,
+    run: (context, args) async {
+      _sync.cancelPairing();
+      return syncStatus();
+    },
+  ),
+  AppAction(
+    id: 'sync.unlock',
+    describe: 'Opens the space this device syncs again with its recovery '
+        'code, after it was started over elsewhere, then syncs.',
+    risk: ActionRisk.write,
+    params: const [
+      ActionParam(
+          'recoveryCode', ParamType.string, "The space's recovery code"),
+    ],
+    run: (context, args) async {
+      if (_sync.target == null) {
+        throw const ActionException('not_connected', 'Sync is not set up');
+      }
+      await _withKey(() => _sync.unlock(args['recoveryCode'] as String));
+      await _sync.syncNow();
+      return syncStatus();
+    },
+  ),
+  AppAction(
+    id: 'sync.recovery_code',
+    describe: 'Replaces the recovery code: a new random one, or a password '
+        'of your own. The old one stops working; the data and the other '
+        'devices stay as they are. Returns the new code to keep.',
+    risk: ActionRisk.destructive,
+    params: const [
+      ActionParam('password', ParamType.string,
+          'A recovery password of your own instead of a random code',
           required: false),
-      ActionParam('recoveryKey', ParamType.string,
-          'The recovery key, instead of the passphrase',
+    ],
+    run: (context, args) async => {
+      'recoveryCode': await _withKey(
+          () => _sync.changeRecoveryCode(chosen: args['password'] as String?)),
+    },
+  ),
+  AppAction(
+    id: 'sync.reset_space',
+    describe: "When no device and no recovery code opens the space: starts "
+        "it over from this device's diary under this device's keys. The old "
+        'copy is removed and the other devices pair again. Returns the new '
+        'recovery code.',
+    risk: ActionRisk.destructive,
+    params: const [
+      ActionParam('password', ParamType.string,
+          'A recovery password of your own instead of a random code',
           required: false),
     ],
     run: (context, args) async {
       if (_sync.target == null) {
         throw const ActionException('not_connected', 'Sync is not set up');
       }
-      final passphrase = args['passphrase'] as String?;
-      final recoveryKey = args['recoveryKey'] as String?;
-      if (passphrase == null && recoveryKey == null) {
-        throw const ActionException(
-            'bad_args', 'Give passphrase or recoveryKey');
-      }
-      await _withKey(
-          () => _sync.unlock(passphrase: passphrase, recoveryKey: recoveryKey));
+      final code = await _withKey(
+          () => _sync.resetSpace(chosen: args['password'] as String?));
       await _sync.syncNow();
-      return syncStatus();
-    },
-  ),
-  AppAction(
-    id: 'sync.change_passphrase',
-    describe: 'Locks the space key under a new passphrase; the synced data '
-        'and the other devices stay as they are.',
-    risk: ActionRisk.write,
-    params: const [
-      ActionParam('passphrase', ParamType.string, 'The new passphrase'),
-    ],
-    run: (context, args) async {
-      _keyedTarget();
-      await _sync.changePassphrase(_passphrase(args));
-      return syncStatus();
-    },
-  ),
-  AppAction(
-    id: 'sync.reset_encryption',
-    describe: 'For a forgotten passphrase: starts the space over from this '
-        "device's diary under a new key. The old copy is removed and the "
-        'other devices must join again. Returns the new recovery key.',
-    risk: ActionRisk.destructive,
-    params: const [
-      ActionParam('passphrase', ParamType.string, 'The new passphrase'),
-    ],
-    run: (context, args) async {
-      _keyedTarget();
-      final recoveryKey = await _sync.resetEncryption(_passphrase(args));
-      await _sync.syncNow();
-      return {'recoveryKey': recoveryKey, ...syncStatus()};
+      return {'recoveryCode': code, ...syncStatus()};
     },
   ),
   AppAction(

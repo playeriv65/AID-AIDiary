@@ -5,50 +5,73 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:aid_diary/sync/identity.dart';
+import 'package:aid_diary/sync/sync_backend.dart';
 import 'package:aid_diary/sync/sync_crypto.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  // Light Argon2id settings keep the tests quick; the app uses the defaults.
+  // Light Argon2id settings keep the tests quick; the app's are in
+  // app_config.json.
   const fast = KdfParams(memoryKiB: 1024, iterations: 1);
+  final owner = DiaryIdentity.create();
 
-  test('the passphrase and the recovery key both open the space', () async {
-    final created = await SpaceEncryption.create('correct horse', kdf: fast);
-    final stored = SpaceEncryption.fromJson(
-        jsonDecode(jsonEncode(created.encryption.toJson())));
+  test("a space's data key opens with its user's master key only", () async {
+    final space = SpaceInfo.fromBytes((await SpaceInfo.create(owner,
+            recoveryCode: 'ABCD-EFGH', generated: true, kdf: fast))
+        .toBytes());
 
-    expect(await stored.unlockWithPassphrase('correct horse'), created.key);
-    expect(
-        await stored.unlockWithRecoveryKey(created.recoveryKey), created.key);
-  });
-
-  test('a wrong passphrase or recovery key is refused', () async {
-    final created = await SpaceEncryption.create('correct horse', kdf: fast);
-    final other = await SpaceEncryption.create('x', kdf: fast);
-
-    expect(created.encryption.unlockWithPassphrase('wrong horse'),
-        throwsA(isA<WrongKeyException>()));
-    expect(created.encryption.unlockWithRecoveryKey(other.recoveryKey),
-        throwsA(isA<WrongKeyException>()));
-    expect(created.encryption.unlockWithRecoveryKey('not-a-key'),
+    expect(space.userId, owner.userId);
+    expect(await space.dataKey(owner.masterKey), hasLength(32));
+    expect(space.dataKey(DiaryIdentity.create().masterKey),
         throwsA(isA<WrongKeyException>()));
   });
 
-  test('a new passphrase keeps the key and retires the old one', () async {
-    final created = await SpaceEncryption.create('old', kdf: fast);
+  test('a sealed data key belongs to its own space', () async {
+    final dataKey = newDataKey();
+    final sealed = await sealDataKey(owner.masterKey, dataKey, 'space-1');
 
-    final changed = await created.encryption.withPassphrase(created.key, 'new');
+    expect(await openDataKey(owner.masterKey, sealed, 'space-1'), dataKey);
+    expect(openDataKey(owner.masterKey, sealed, 'space-2'),
+        throwsA(isA<WrongKeyException>()));
+  });
 
-    expect(await changed.unlockWithPassphrase('new'), created.key);
+  test('a generated recovery code opens however it is typed', () async {
+    final code = newRecoveryCode(20);
+    expect(code, matches(RegExp(r'^([A-Z2-7]{4}-){7}[A-Z2-7]{4}$')));
+    final lock = RecoveryLock.fromJson(jsonDecode(jsonEncode(
+        (await RecoveryLock.lock(owner.masterKey, owner.userId, code, fast,
+                generated: true))
+            .toJson())));
+
+    for (final typed in [
+      code,
+      code.toLowerCase(),
+      code.replaceAll('-', ' '),
+      ' ${code.replaceAll('-', '')} ',
+    ]) {
+      expect(await lock.unlock(owner.userId, typed), owner.masterKey,
+          reason: typed);
+    }
+    expect(lock.unlock(owner.userId, newRecoveryCode(20)),
+        throwsA(isA<WrongKeyException>()));
     expect(
-        await changed.unlockWithRecoveryKey(created.recoveryKey), created.key);
-    expect(
-        changed.unlockWithPassphrase('old'), throwsA(isA<WrongKeyException>()));
+        lock.unlock('another user', code), throwsA(isA<WrongKeyException>()));
+  });
+
+  test('a chosen recovery password opens only as chosen', () async {
+    final lock = await RecoveryLock.lock(
+        owner.masterKey, owner.userId, 'Correct Horse Battery', fast,
+        generated: false);
+
+    expect(await lock.unlock(owner.userId, ' Correct Horse Battery '),
+        owner.masterKey);
+    expect(lock.unlock(owner.userId, 'correct horse battery'),
+        throwsA(isA<WrongKeyException>()));
   });
 
   test('items open only under their own id', () async {
-    final created = await SpaceEncryption.create('p', kdf: fast);
-    final cipher = ItemCipher(created.key);
+    final cipher = ItemCipher(newDataKey());
     final plain = utf8.encode('{"text":"雨天散步"}');
 
     final sealed = await cipher.seal('entry-1', plain);
@@ -58,12 +81,14 @@ void main() {
     expect(cipher.open('entry-2', sealed), throwsA(isA<WrongKeyException>()));
   });
 
-  test('recovery keys survive case, spaces and dashes', () {
-    final bytes = Uint8List.fromList(List.generate(32, (i) => i * 7));
-    final text = formatRecoveryKey(bytes);
+  test('recovery codes are base32 in groups of four', () {
+    final text = formatRecoveryKey(Uint8List.fromList(List.filled(20, 0xff)));
+    expect(text, '7777-7777-7777-7777-7777-7777-7777-7777');
+  });
 
-    expect(text, matches(RegExp(r'^([A-Z2-7]{4}-)+[A-Z2-7]{1,4}$')));
-    expect(parseRecoveryKey(text), bytes);
-    expect(parseRecoveryKey(text.toLowerCase().replaceAll('-', ' ')), bytes);
+  test('a space of an earlier format asks to start a new one', () {
+    final old = utf8.encode(jsonEncode({'app': 'aid_diary', 'format': 2}));
+    expect(() => SpaceInfo.fromBytes(Uint8List.fromList(old)),
+        throwsA(isA<UnsupportedError>()));
   });
 }

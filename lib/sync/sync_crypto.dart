@@ -11,18 +11,21 @@ import 'package:aid_diary/utils/crypto_utils.dart';
 import 'package:cryptography/cryptography.dart';
 import 'package:cryptography/dart.dart';
 
-// End-to-end encryption for a sync space, as password managers and E2EE
-// note apps do it:
+// End-to-end encryption for a sync space. Every space is encrypted:
 //
-// * A random 256-bit space key encrypts every item and photo with AES-GCM.
-//   The item id is the associated data, so a ciphertext cannot be passed off
-//   as another item.
-// * The passphrase never encrypts data itself: Argon2id turns it into a key
-//   that wraps the space key. Changing it rewraps the space key only.
-// * A random recovery key wraps the space key a second time, for when the
-//   passphrase is forgotten. It is shown once for the user to keep.
-// * The space only ever holds wrapped keys and ciphertext. A wrong
-//   passphrase fails the AES-GCM tag, so no verifier is stored.
+// * Each device holds the user's master key (sync/identity.dart), never
+//   stored anywhere else in the clear.
+// * A space has its own random data key, sealed by the master key in the
+//   space's description. The data key encrypts every item and photo with
+//   AES-256-GCM, the item id as associated data, so a ciphertext cannot be
+//   passed off as another item. A new master or data key later rewraps a
+//   key, not the data.
+// * A recovery code, random unless the user picks a password, seals the
+//   master key a second time through Argon2id, for when every device is
+//   lost. It opens nothing else, and changing it rewraps the master key
+//   only.
+// * The space holds only sealed keys and ciphertext. A wrong key fails the
+//   AES-GCM tag, so no verifier is stored.
 
 const int _keyLength = 32;
 const int _nonceLength = 12;
@@ -35,16 +38,14 @@ final AesGcm _aes = Platform.isAndroid || Platform.isIOS
 
 class WrongKeyException implements Exception {
   @override
-  String toString() =>
-      'The passphrase or recovery key does not open this space';
+  String toString() => 'The key or recovery code does not open this space';
 }
 
-/// Argon2id settings, kept with the space so they can grow later.
 class KdfParams {
   const KdfParams(
-      {this.memoryKiB = defaultArgon2MemoryKiB,
-      this.iterations = defaultArgon2Iterations,
-      this.parallelism = defaultArgon2Parallelism});
+      {required this.memoryKiB,
+      required this.iterations,
+      this.parallelism = 1});
 
   final int memoryKiB;
   final int iterations;
@@ -68,99 +69,106 @@ class KdfParams {
   }
 }
 
-/// What a space stores about its encryption: the space key wrapped by the
-/// passphrase and by the recovery key.
-class SpaceEncryption {
-  const SpaceEncryption(
+/// A new random data key for a space.
+Uint8List newDataKey() => secureRandomBytes(_keyLength);
+
+/// [dataKey] sealed by [masterKey] for space [spaceId].
+Future<Uint8List> sealDataKey(
+        Uint8List masterKey, Uint8List dataKey, String spaceId) =>
+    sealBytes(masterKey, dataKey, 'data-key:$spaceId');
+
+/// The data key of space [spaceId], or [WrongKeyException] when
+/// [masterKey] is not the one that sealed it.
+Future<Uint8List> openDataKey(
+        Uint8List masterKey, Uint8List sealed, String spaceId) =>
+    openBytes(masterKey, sealed, 'data-key:$spaceId');
+
+/// A new recovery code: [bytes] random bytes in base32, grouped by four.
+String newRecoveryCode(int bytes) =>
+    formatRecoveryKey(secureRandomBytes(bytes));
+
+/// The master key sealed by a key drawn from the recovery code, kept in
+/// the space for when every device is gone.
+class RecoveryLock {
+  const RecoveryLock(
       {required this.kdf,
       required this.salt,
-      required this.byPassphrase,
-      required this.byRecoveryKey});
+      required this.sealedMasterKey,
+      required this.generated});
 
   final KdfParams kdf;
   final Uint8List salt;
-  final Uint8List byPassphrase;
-  final Uint8List byRecoveryKey;
+  final Uint8List sealedMasterKey;
+
+  /// A code the app made rather than a password the user chose: it opens
+  /// however it is typed, in any case and with or without its dashes.
+  final bool generated;
 
   Map<String, Object?> toJson() => {
         'kdf': kdf.toJson(),
         'salt': base64.encode(salt),
-        'byPassphrase': base64.encode(byPassphrase),
-        'byRecoveryKey': base64.encode(byRecoveryKey),
+        'masterKey': base64.encode(sealedMasterKey),
+        'generated': generated,
       };
 
-  factory SpaceEncryption.fromJson(Map<String, Object?> json) =>
-      SpaceEncryption(
-          kdf: KdfParams.fromJson((json['kdf'] as Map).cast()),
-          salt: base64.decode(json['salt'] as String),
-          byPassphrase: base64.decode(json['byPassphrase'] as String),
-          byRecoveryKey: base64.decode(json['byRecoveryKey'] as String));
+  factory RecoveryLock.fromJson(Map<String, Object?> json) => RecoveryLock(
+      kdf: KdfParams.fromJson((json['kdf'] as Map).cast()),
+      salt: base64.decode(json['salt'] as String),
+      sealedMasterKey: base64.decode(json['masterKey'] as String),
+      generated: json['generated'] as bool);
 
-  /// A new space key, wrapped by [passphrase] and by a new recovery key.
-  static Future<
-          ({SpaceEncryption encryption, Uint8List key, String recoveryKey})>
-      create(String passphrase, {KdfParams kdf = const KdfParams()}) async {
-    final key = secureRandomBytes(_keyLength);
-    final recovery = secureRandomBytes(_keyLength);
+  /// [masterKey] of [userId] locked by [code], which the app made when
+  /// [generated] and the user chose otherwise.
+  static Future<RecoveryLock> lock(
+      Uint8List masterKey, String userId, String code, KdfParams kdf,
+      {required bool generated}) async {
     final salt = secureRandomBytes(_saltLength);
-    final passphraseKey = await _derive(passphrase, salt, kdf);
-    return (
-      encryption: SpaceEncryption(
-          kdf: kdf,
-          salt: salt,
-          byPassphrase: await _seal(passphraseKey, key, _wrapLabel),
-          byRecoveryKey: await _seal(recovery, key, _wrapLabel)),
-      key: key,
-      recoveryKey: formatRecoveryKey(recovery),
-    );
-  }
-
-  /// The space key, or [WrongKeyException].
-  Future<Uint8List> unlockWithPassphrase(String passphrase) async =>
-      _open(await _derive(passphrase, salt, kdf), byPassphrase, _wrapLabel);
-
-  Future<Uint8List> unlockWithRecoveryKey(String recoveryKey) async =>
-      _open(parseRecoveryKey(recoveryKey), byRecoveryKey, _wrapLabel);
-
-  /// The same space key under a new passphrase; data stays as it is.
-  Future<SpaceEncryption> withPassphrase(
-      Uint8List key, String passphrase) async {
-    final newSalt = secureRandomBytes(_saltLength);
-    return SpaceEncryption(
+    return RecoveryLock(
         kdf: kdf,
-        salt: newSalt,
-        byPassphrase: await _seal(
-            await _derive(passphrase, newSalt, kdf), key, _wrapLabel),
-        byRecoveryKey: byRecoveryKey);
+        salt: salt,
+        generated: generated,
+        sealedMasterKey: await sealBytes(
+            await _derive(_normal(code, generated), salt, kdf),
+            masterKey,
+            'master-key:$userId'));
   }
+
+  /// The master key of [userId], or [WrongKeyException].
+  Future<Uint8List> unlock(String userId, String code) async => openBytes(
+      await _derive(_normal(code, generated), salt, kdf),
+      sealedMasterKey,
+      'master-key:$userId');
+
+  static String _normal(String code, bool generated) => generated
+      ? code.toUpperCase().replaceAll(RegExp(r'[\s-]'), '')
+      : code.trim();
 }
 
-const String _wrapLabel = 'space-key';
-
-/// Encrypts and decrypts items with a space key.
 class ItemCipher {
   ItemCipher(this._key);
 
   final Uint8List _key;
 
-  Future<Uint8List> seal(String id, List<int> plain) => _seal(_key, plain, id);
+  Future<Uint8List> seal(String id, List<int> plain) =>
+      sealBytes(_key, plain, id);
 
   Future<Uint8List> open(String id, Uint8List sealed) =>
-      _open(_key, sealed, id);
+      openBytes(_key, sealed, id);
 }
 
-Future<Uint8List> _derive(String passphrase, Uint8List salt, KdfParams kdf) =>
+Future<Uint8List> _derive(String code, Uint8List salt, KdfParams kdf) =>
     // Argon2id is slow on purpose; keep it off the UI isolate.
     Isolate.run(() => deriveArgon2idKey(
-        password: passphrase,
+        password: code,
         salt: salt,
         memoryKiB: kdf.memoryKiB,
         iterations: kdf.iterations,
         parallelism: kdf.parallelism,
         keyLength: _keyLength));
 
-/// version byte, nonce, ciphertext, tag.
-Future<Uint8List> _seal(List<int> key, List<int> plain, String aad) async {
+/// [plain] under [key] with AES-256-GCM, bound to [aad]: version byte,
+/// nonce, ciphertext, tag.
+Future<Uint8List> sealBytes(List<int> key, List<int> plain, String aad) async {
   final box = await _aes.encrypt(plain,
       secretKey: SecretKey(key),
       nonce: secureRandomBytes(_nonceLength),
@@ -169,7 +177,9 @@ Future<Uint8List> _seal(List<int> key, List<int> plain, String aad) async {
       [_sealVersion, ...box.nonce, ...box.cipherText, ...box.mac.bytes]);
 }
 
-Future<Uint8List> _open(List<int> key, Uint8List sealed, String aad) async {
+/// What [sealBytes] sealed, or [WrongKeyException] for another key or
+/// [aad].
+Future<Uint8List> openBytes(List<int> key, Uint8List sealed, String aad) async {
   if (sealed.length < 1 + _nonceLength + 16 || sealed[0] != _sealVersion) {
     throw const FormatException('Not an encrypted item');
   }
@@ -204,23 +214,4 @@ String formatRecoveryKey(Uint8List bytes) {
     for (var i = 0; i < text.length; i += 4)
       text.substring(i, i + 4 > text.length ? text.length : i + 4),
   ].join('-');
-}
-
-/// Reads a recovery key typed with any case, spaces or dashes.
-Uint8List parseRecoveryKey(String text) {
-  final clean = text.toUpperCase().replaceAll(RegExp(r'[\s-]'), '');
-  final out = <int>[];
-  var bits = 0, value = 0;
-  for (final char in clean.split('')) {
-    final digit = _base32.indexOf(char);
-    if (digit < 0) throw WrongKeyException();
-    value = (value << 5) | digit;
-    bits += 5;
-    if (bits >= 8) {
-      out.add((value >> (bits - 8)) & 0xff);
-      bits -= 8;
-    }
-  }
-  if (out.length != _keyLength) throw WrongKeyException();
-  return Uint8List.fromList(out);
 }

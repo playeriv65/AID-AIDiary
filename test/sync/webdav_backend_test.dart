@@ -201,8 +201,7 @@ void main() {
 
   test('two devices sync an encrypted diary through WebDAV', () async {
     final server = FakeDav();
-    final keys = await SpaceEncryption.create('passphrase',
-        kdf: const KdfParams(memoryKiB: 1024, iterations: 1));
+    final keys = newDataKey();
     final devices = <Database>[];
     for (var i = 0; i < 2; i++) {
       final db = await databaseFactoryFfi.openDatabase(inMemoryDatabasePath,
@@ -220,7 +219,7 @@ void main() {
             backend: backendFor(server),
             photos: FileStorePhotos(InMemoryFileStore()),
             limits: testLimits,
-            cipher: ItemCipher(keys.key))
+            cipher: ItemCipher(keys))
         .sync();
 
     await devices[0].insert(entriesTable, {

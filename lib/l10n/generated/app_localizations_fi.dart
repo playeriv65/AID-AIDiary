@@ -2150,66 +2150,14 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get syncNewSpaceDescription =>
-      'There is no synced diary here yet. This diary will be uploaded.';
-
-  @override
-  String get syncEncrypt => 'End-to-end encryption';
-
-  @override
-  String get syncEncryptDescription =>
-      'Entries and photos are encrypted on your devices. Nobody else can read them, not even whoever stores them.';
-
-  @override
-  String get syncPassphrase => 'Encryption passphrase';
-
-  @override
-  String get syncPassphraseRepeat => 'Repeat the passphrase';
-
-  @override
-  String get syncPassphraseTooShort => 'Use at least 8 characters';
-
-  @override
-  String get syncPassphraseMismatch => 'The passphrases differ';
-
-  @override
-  String get syncPassphraseNote =>
-      'You need the passphrase or the recovery key to add another device. The diary on this device stays readable without them.';
-
-  @override
-  String get syncRecoveryKeyTitle => 'Save your recovery key';
-
-  @override
-  String get syncRecoveryKeyDescription =>
-      'If you forget the passphrase, this key opens your synced diary. Keep it in a password manager or on paper. It is shown only this once.';
-
-  @override
-  String get syncRecoveryKeyCopied => 'Recovery key copied';
-
-  @override
-  String get syncRecoveryKeySaved => 'I have saved it';
+      'There is no synced diary here yet. This diary will be uploaded, end-to-end encrypted with a key that stays on your devices.';
 
   @override
   String get syncJoinTitle => 'Join the synced diary';
 
   @override
-  String get syncJoinDescription =>
-      'A synced diary is already here. The entries on this device will be added to it.';
-
-  @override
-  String get syncJoinEncrypted =>
-      'It is end-to-end encrypted. Enter its passphrase to open it.';
-
-  @override
-  String get syncUseRecoveryKey => 'Use the recovery key';
-
-  @override
-  String get syncUsePassphrase => 'Use the passphrase';
-
-  @override
-  String get syncRecoveryKey => 'Recovery key';
-
-  @override
-  String get syncWrongKey => 'This does not open the synced diary.';
+  String get syncWrongKey =>
+      'This recovery code does not open the synced diary.';
 
   @override
   String syncLastSynced(String time) {
@@ -2229,7 +2177,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get syncLocked =>
-      'The synced diary was reset on another device, or its key is missing here. Unlock it to keep syncing.';
+      'The synced diary now belongs to other devices, or was started over. Pair with one of them or use the recovery code to keep syncing.';
 
   @override
   String get syncNow => 'Sync now';
@@ -2241,25 +2189,132 @@ class AppLocalizationsFi extends AppLocalizations {
   String get syncEncrypted => 'End-to-end encrypted';
 
   @override
-  String get syncNotEncrypted => 'Not encrypted';
-
-  @override
-  String get syncChangePassphrase => 'Change passphrase';
-
-  @override
-  String get syncPassphraseChanged => 'Passphrase changed';
-
-  @override
-  String get syncResetEncryption => 'Reset encryption';
-
-  @override
-  String get syncResetEncryptionDescription =>
-      'For a forgotten passphrase: the encrypted synced copy is replaced by the diary on this device, under a new passphrase. Your other devices then join again with it.';
-
-  @override
   String get syncDisconnect => 'Stop syncing';
 
   @override
   String get syncDisconnectDescription =>
       'This device stops syncing. The diary here and the synced copy stay as they are.';
+
+  @override
+  String get syncOwnRecoveryPassword => 'Use my own recovery password';
+
+  @override
+  String get syncRecoveryPassword => 'Recovery password';
+
+  @override
+  String get syncRecoveryPasswordRepeat => 'Repeat the recovery password';
+
+  @override
+  String syncRecoveryPasswordTooShort(int min) {
+    return 'Use at least $min characters';
+  }
+
+  @override
+  String get syncRecoveryPasswordMismatch => 'The passwords differ';
+
+  @override
+  String get syncRecoveryCode => 'Recovery code';
+
+  @override
+  String get syncRecoveryCodeTitle => 'Save your recovery code';
+
+  @override
+  String get syncRecoveryCodeDescription =>
+      'If every device of yours is lost, this code restores your synced diary. Keep it in a password manager or on paper. It is shown only this once.';
+
+  @override
+  String get syncRecoveryCodeCopied => 'Recovery code copied';
+
+  @override
+  String get syncRecoveryCodeSaved => 'I have saved it';
+
+  @override
+  String get syncJoinNeedsKey =>
+      'This synced diary belongs to your other devices. Pair with one of them, or use the recovery code. The entries on this device will be added to it.';
+
+  @override
+  String get syncPairDevice => 'Pair with a device';
+
+  @override
+  String get syncUseRecoveryCode => 'Use the recovery code';
+
+  @override
+  String get syncAddDevice => 'Add a device';
+
+  @override
+  String get syncChangeRecoveryCode => 'Change the recovery code';
+
+  @override
+  String get syncChangeRecoveryDescription =>
+      'A new code replaces the current one, which stops working. Your data and other devices stay as they are.';
+
+  @override
+  String get syncNewRandomCode => 'New random code';
+
+  @override
+  String get syncRecoveryCodeChanged => 'Recovery code changed';
+
+  @override
+  String get syncResetSpace => 'Start the synced diary over';
+
+  @override
+  String get syncResetSpaceDescription =>
+      'Only when no device and no recovery code opens it any more: the synced copy is replaced by the diary on this device, under this device\'s keys. Your other devices then pair again.';
+
+  @override
+  String get syncPairTitle => 'Pair devices';
+
+  @override
+  String get syncPairShow => 'Show a code';
+
+  @override
+  String get syncPairEnter => 'Enter a code';
+
+  @override
+  String get syncPairShowHint =>
+      'On your other device, open Pair devices, choose Enter a code, and type or scan this.';
+
+  @override
+  String get syncPairEnterHint =>
+      'Type the code your other device shows, or scan it.';
+
+  @override
+  String get syncPairCode => 'Pairing code';
+
+  @override
+  String get syncPairScan => 'Scan';
+
+  @override
+  String get syncPairStart => 'Pair';
+
+  @override
+  String get syncPairWaiting => 'Waiting for the other device…';
+
+  @override
+  String syncPairDone(String device) {
+    return 'Paired with $device';
+  }
+
+  @override
+  String get syncPairWrongCode =>
+      'The code did not match. Show a new code and try again.';
+
+  @override
+  String get syncPairNoOffer =>
+      'No device shows this code. It may have expired.';
+
+  @override
+  String get syncPairTimedOut => 'The other device did not answer in time.';
+
+  @override
+  String get syncPairNeither =>
+      'Neither device is set up with this synced diary yet.';
+
+  @override
+  String get syncPairBoth => 'Both devices already open this synced diary.';
+
+  @override
+  String syncPairFailed(String error) {
+    return 'Pairing failed: $error';
+  }
 }

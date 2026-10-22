@@ -7,6 +7,7 @@ import 'dart:typed_data';
 
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/models/image.dart';
+import 'package:aid_diary/sync/identity.dart';
 import 'package:aid_diary/sync/sync_backend.dart';
 import 'package:aid_diary/sync/sync_crypto.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -19,7 +20,6 @@ import 'sync_device.dart';
 void liveSyncScenarios(SyncBackend Function() backend, {Object? skip}) {
   late Device phone;
   late Device laptop;
-  const passphrase = 'correct horse battery staple';
   const kdf = KdfParams(memoryKiB: 1024, iterations: 1);
 
   setUp(() async {
@@ -38,10 +38,12 @@ void liveSyncScenarios(SyncBackend Function() backend, {Object? skip}) {
     expect(await cloud.read(SpaceLayout.info), isNull);
 
     // The phone makes the space.
-    final keys = await SpaceEncryption.create(passphrase, kdf: kdf);
-    await cloud.write(SpaceLayout.info,
-        SpaceInfo.create(encryption: keys.encryption).toBytes());
-    final phoneCipher = ItemCipher(keys.key);
+    final owner = DiaryIdentity.create();
+    final recoveryCode = newRecoveryCode(20);
+    final made = await SpaceInfo.create(owner,
+        recoveryCode: recoveryCode, generated: true, kdf: kdf);
+    await cloud.write(SpaceLayout.info, made.toBytes());
+    final phoneCipher = ItemCipher(await made.dataKey(owner.masterKey));
     final entry = await phone.write('rainy walk by the river');
     await phone.db.update(
         entriesTable,
@@ -70,12 +72,12 @@ void liveSyncScenarios(SyncBackend Function() backend, {Object? skip}) {
           reason: file);
     }
 
-    // The laptop joins with the recovery key the phone was shown.
+    // The laptop joins with the recovery code the phone was shown.
     final space =
         SpaceInfo.fromBytes((await backend().read(SpaceLayout.info))!);
-    final laptopKey =
-        await space.encryption!.unlockWithRecoveryKey(keys.recoveryKey);
-    await laptop.sync(backend(), cipher: ItemCipher(laptopKey));
+    final masterKey = await space.recovery.unlock(space.userId, recoveryCode);
+    await laptop.sync(backend(),
+        cipher: ItemCipher(await space.dataKey(masterKey)));
     final received = (await laptop.db.query(entriesTable)).single;
     expect(received[EntryFields.text], 'rainy walk by the river');
     expect(received[EntryFields.diaryDate], '2026-10-19');
@@ -84,14 +86,13 @@ void liveSyncScenarios(SyncBackend Function() backend, {Object? skip}) {
     expect(await laptop.photos.read(image[EntryImageFields.imgPath] as String),
         [1, 2, 3]);
 
-    // A wrong passphrase opens nothing.
-    expect(space.encryption!.unlockWithPassphrase('wrong'),
+    // A wrong recovery code opens nothing.
+    expect(space.recovery.unlock(space.userId, newRecoveryCode(20)),
         throwsA(isA<WrongKeyException>()));
   }, skip: skip);
 
   test('a diary of 4000 entries goes up and comes down in moments', () async {
-    final keys = await SpaceEncryption.create(passphrase, kdf: kdf);
-    final cipher = ItemCipher(keys.key);
+    final cipher = ItemCipher(newDataKey());
     await phone.db.transaction((txn) async {
       for (var i = 0; i < 4000; i++) {
         await txn.insert(entriesTable, {
@@ -119,8 +120,7 @@ void liveSyncScenarios(SyncBackend Function() backend, {Object? skip}) {
   }, skip: skip, timeout: const Timeout(Duration(minutes: 5)));
 
   test('edits, conflicts and deletions travel both ways', () async {
-    final keys = await SpaceEncryption.create(passphrase, kdf: kdf);
-    final cipher = ItemCipher(keys.key);
+    final cipher = ItemCipher(newDataKey());
     final cloud = backend();
     await cloud.check();
 

@@ -99,6 +99,10 @@ class Spake2Keys {
   /// password or someone in between.
   bool verify(List<int> confirmation) => _equal(confirmation,
       _mac(role == Spake2Role.a ? _confirmB : _confirmA, _transcript));
+
+  /// A key of [length] bytes for [purpose], drawn from [sharedKey].
+  Uint8List derive(String purpose, int length) =>
+      _hkdf(sharedKey, utf8.encode(purpose), length);
 }
 
 Uint8List _mac(List<int> key, List<int> data) =>

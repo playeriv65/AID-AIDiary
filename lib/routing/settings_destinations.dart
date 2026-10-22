@@ -18,6 +18,7 @@ import 'package:aid_diary/pages/settings/notification_settings.dart';
 import 'package:aid_diary/pages/settings/security_settings.dart';
 import 'package:aid_diary/pages/settings/storage_settings.dart';
 import 'package:aid_diary/pages/settings/sync_settings.dart';
+import 'package:aid_diary/widgets/pairing_dialog.dart';
 import 'package:aid_diary/pages/settings/tags_settings.dart';
 import 'package:aid_diary/pages/settings/templates_page.dart';
 import 'package:aid_diary/pages/settings_page.dart';
@@ -47,6 +48,12 @@ final List<Destination> settingsDestinations = [
   pageDestination('settings/data', 'Sync, backup, storage, recently deleted',
       (_) => const DataSettings()),
   pageDestination('sync', 'Sync', (_) => const SyncSettings()),
+  Destination(
+      'sync/pairing',
+      'Pairs this device with another of the user\'s: shows a code or '
+          'takes one',
+      (context, args) => showPlaceDialog<void>(
+          context, 'sync/pairing', (_) => const PairingDialog())),
   pageDestination('settings/backup', 'Backup, restore, import and export',
       (_) => const BackupRestoreSettings()),
   Destination(

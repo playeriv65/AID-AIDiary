@@ -332,9 +332,8 @@ void main() {
 
   test('two devices sync an encrypted diary through Google Drive', () async {
     final drive = FakeDrive();
-    final keys = await SpaceEncryption.create('passphrase',
-        kdf: const KdfParams(memoryKiB: 1024, iterations: 1));
-    final cipher = ItemCipher(keys.key);
+    final keys = newDataKey();
+    final cipher = ItemCipher(keys);
     final phone = await Device.create();
     final laptop = await Device.create();
     addTearDown(() async {

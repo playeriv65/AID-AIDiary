@@ -196,9 +196,14 @@ class Settings {
   /// device, like the secrets that go with it.
   static const syncTarget = Setting<String>("syncTarget", "", secure: true);
 
-  /// The sync password and space key, as JSON.
+  /// The sync login's password or token, as JSON.
   static const syncSecrets =
       Setting<String>("syncSecrets", "", secure: true, secretStore: true);
+
+  /// Whose diary this is: the user id and master key every device of the
+  /// user shares (sync/identity.dart), as JSON.
+  static const identity =
+      Setting<String>("identity", "", secure: true, secretStore: true);
   static const lastSync = Setting<String>("lastSync", "", secure: true);
   // The agent API for the `aid` command line, in builds where it is not on
   // anyway.
@@ -286,6 +291,7 @@ class Settings {
     lastAutoBackup,
     syncTarget,
     syncSecrets,
+    identity,
     lastSync,
     agentApi,
   ];

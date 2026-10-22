@@ -85,6 +85,8 @@ dependencies:
   record: ^7.1.2
   home_widget: ^0.10.0
   google_sign_in: ^7.2.0
+  qr_flutter: ^4.1.0
+  mobile_scanner: ^7.4.2
 dev_dependencies:
   flutter_driver:
     sdk: flutter

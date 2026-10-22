@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'package:aid_diary/actions/app_action.dart';
+import 'package:aid_diary/routing/destinations.dart';
 import 'package:aid_diary/widgets/haptics.dart';
 import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/config/app_config.dart';
@@ -17,9 +19,6 @@ import 'package:aid_diary/widgets/progress_dialog.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:material_ui/material_ui.dart';
-
-/// Shortest passphrase accepted for a new or changed space key.
-const int _minPassphraseLength = 8;
 
 class SyncSettings extends StatefulWidget {
   const SyncSettings({super.key});
@@ -52,6 +51,7 @@ class _SyncSettingsState extends State<SyncSettings> {
           l10n.syncGoogleSignInAgain,
         GoogleDriveNotAllowed() => l10n.syncGoogleDriveNotAllowed,
         WrongKeyException() => l10n.syncWrongKey,
+        ActionException(:final message) => message,
         _ => l10n.syncConnectFailed('$error'),
       };
 
@@ -100,50 +100,77 @@ class _SyncSettingsState extends State<SyncSettings> {
     if (!probed || !mounted) return;
     if (space == null) {
       await _startSpace(login);
-    } else {
-      await _joinSpace(login, space);
+      return;
+    }
+    try {
+      await runWithProgress(context, (_) => _service.joinSpace(login, space));
+    } on NeedsKeyException {
+      if (mounted) await _askForKey(login, space);
+    } catch (error) {
+      if (mounted) _say(_describe(error, AppLocalizations.of(context)!));
     }
   }
 
   Future<void> _startSpace(SyncLogin login) async {
-    final choice = await showDialog<({String? passphrase})>(
+    final choice = await showDialog<({String? password})>(
         context: context, builder: (_) => const _NewSpaceDialog());
     if (choice == null || !mounted) return;
-    final recoveryKey = await _attempt(
-        () => _service.createSpace(login, passphrase: choice.passphrase));
-    if (recoveryKey != null && mounted) await _showRecoveryKey(recoveryKey);
-  }
-
-  Future<void> _joinSpace(SyncLogin login, SpaceInfo space) async {
-    final l10n = AppLocalizations.of(context)!;
-    if (!space.encrypted) {
-      final join = await _confirm(
-          l10n.syncJoinTitle, l10n.syncJoinDescription, l10n.syncConnect);
-      if (join && mounted) {
-        await _attempt(() => _service.joinSpace(login, space));
-      }
-      return;
+    final code = await _attempt(
+        () => _service.createSpace(login, chosen: choice.password));
+    if (code != null && choice.password == null && mounted) {
+      await _showRecoveryCode(code);
     }
-    await _unlockWith((key) => _service.joinSpace(login, space,
-        passphrase: key.passphrase, recoveryKey: key.recoveryKey));
   }
 
-  /// Asks for the passphrase or recovery key until one opens the space.
-  Future<void> _unlockWith(
-      Future<void> Function(({String? passphrase, String? recoveryKey}) key)
-          open) async {
+  /// The space belongs to the user's other devices: pair with one, or
+  /// open it with the recovery code.
+  Future<void> _askForKey(SyncLogin login, SpaceInfo space) async {
+    final l10n = AppLocalizations.of(context)!;
+    final choice = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.syncJoinTitle),
+        content: Text(l10n.syncJoinNeedsKey),
+        actions: [
+          TextButton(
+              key: const ValueKey('sync-use-recovery'),
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text(l10n.syncUseRecoveryCode)),
+          FilledButton(
+              key: const ValueKey('sync-pair'),
+              onPressed: () => Navigator.of(context).pop(true),
+              child: Text(l10n.syncPairDevice)),
+        ],
+      ),
+    );
+    if (choice == null || !mounted) return;
+    if (choice) {
+      await _pair();
+    } else {
+      await _recoverWith((code) => _service.recover(login, space, code));
+    }
+  }
+
+  Future<void> _pair() => openPlace(context, 'sync/pairing');
+
+  /// Asks for the recovery code until one opens the space.
+  Future<void> _recoverWith(Future<void> Function(String code) open) async {
     while (true) {
       if (!mounted) return;
-      final key = await showDialog<({String? passphrase, String? recoveryKey})>(
-          context: context, builder: (_) => const _UnlockDialog());
-      if (key == null || !mounted) return;
+      final code = await showDialog<String>(
+          context: context, builder: (_) => const _RecoveryCodeInputDialog());
+      if (code == null || !mounted) return;
       final l10n = AppLocalizations.of(context)!;
       try {
-        await runWithProgress(context, (update) => open(key));
+        await runWithProgress(context, (update) => open(code));
         return;
       } on WrongKeyException {
         Haptics.error();
         if (mounted) _say(l10n.syncWrongKey);
+      } on ActionException catch (error) {
+        Haptics.error();
+        if (mounted) _say(_describe(error, l10n));
+        if (error.code != 'wrong_key') return;
       } catch (error) {
         if (mounted) _say(_describe(error, l10n));
         return;
@@ -151,10 +178,10 @@ class _SyncSettingsState extends State<SyncSettings> {
     }
   }
 
-  Future<void> _showRecoveryKey(String recoveryKey) => showDialog(
+  Future<void> _showRecoveryCode(String code) => showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (_) => _RecoveryKeyDialog(recoveryKey));
+      builder: (_) => _RecoveryCodeDialog(code));
 
   Future<bool> _confirm(String title, String description, String action,
       {bool destructive = false}) async {
@@ -181,30 +208,34 @@ class _SyncSettingsState extends State<SyncSettings> {
     return confirmed ?? false;
   }
 
-  Future<void> _changePassphrase() async {
+  Future<void> _changeRecoveryCode() async {
     final l10n = AppLocalizations.of(context)!;
-    final passphrase = await showDialog<String>(
-        context: context,
-        builder: (_) => _PassphraseDialog(title: l10n.syncChangePassphrase));
-    if (passphrase == null || !mounted) return;
-    final done = await _attempt(
-        () => _service.changePassphrase(passphrase).then((_) => true));
-    if (done == true && mounted) _say(l10n.syncPassphraseChanged);
+    final choice = await showDialog<({String? password})>(
+        context: context, builder: (_) => const _ChangeRecoveryDialog());
+    if (choice == null || !mounted) return;
+    final result = await _attempt(() => AppActions.instance.run(
+        'sync.recovery_code',
+        {if (choice.password case final password?) 'password': password},
+        confirmed: true));
+    if (result is! Map || !mounted) return;
+    if (choice.password == null) {
+      await _showRecoveryCode(result['recoveryCode'] as String);
+    } else {
+      _say(l10n.syncRecoveryCodeChanged);
+    }
   }
 
-  Future<void> _resetEncryption() async {
+  Future<void> _resetSpace() async {
     final l10n = AppLocalizations.of(context)!;
-    final reset = await _confirm(l10n.syncResetEncryption,
-        l10n.syncResetEncryptionDescription, l10n.syncResetEncryption,
+    final reset = await _confirm(l10n.syncResetSpace,
+        l10n.syncResetSpaceDescription, l10n.syncResetSpace,
         destructive: true);
     if (!reset || !mounted) return;
-    final passphrase = await showDialog<String>(
-        context: context,
-        builder: (_) => _PassphraseDialog(title: l10n.syncResetEncryption));
-    if (passphrase == null || !mounted) return;
-    final recoveryKey =
-        await _attempt(() => _service.resetEncryption(passphrase));
-    if (recoveryKey != null && mounted) await _showRecoveryKey(recoveryKey);
+    final result = await _attempt(
+        () => AppActions.instance.run('sync.reset_space', {}, confirmed: true));
+    if (result is Map && mounted) {
+      await _showRecoveryCode(result['recoveryCode'] as String);
+    }
   }
 
   Future<void> _disconnect() async {
@@ -337,8 +368,7 @@ class _SyncSettingsState extends State<SyncSettings> {
             SyncProvider.googleDrive => Icons.add_to_drive_rounded,
           }),
           title: Text(target.server?.host ?? l10n.syncGoogleDrive),
-          subtitle: Text('${target.username} · '
-              '${target.encrypted ? l10n.syncEncrypted : l10n.syncNotEncrypted}'),
+          subtitle: Text('${target.username} · ${l10n.syncEncrypted}'),
         ),
         ListTile(
           leading: syncing
@@ -361,14 +391,21 @@ class _SyncSettingsState extends State<SyncSettings> {
             onTap: () => _attempt(() =>
                 _service.signInAgain(doneMessage: l10n.syncGoogleSignedIn)),
           ),
-        if (locked)
+        if (locked) ...[
           ListTile(
-            leading: const Icon(Icons.lock_open_rounded),
-            title: Text(l10n.syncUnlock),
-            onTap: () => _unlockWith((key) => _service.unlock(
-                passphrase: key.passphrase, recoveryKey: key.recoveryKey)),
-          )
-        else
+            key: const ValueKey('sync-pair'),
+            leading: const Icon(Icons.devices_rounded),
+            title: Text(l10n.syncPairDevice),
+            onTap: _pair,
+          ),
+          ListTile(
+            key: const ValueKey('sync-use-recovery'),
+            leading: const Icon(Icons.key_rounded),
+            title: Text(l10n.syncUseRecoveryCode),
+            onTap: () => _recoverWith((code) =>
+                AppActions.instance.run('sync.unlock', {'recoveryCode': code})),
+          ),
+        ] else ...[
           ListTile(
             key: const ValueKey('sync-now'),
             leading: const Icon(Icons.sync_rounded),
@@ -381,16 +418,23 @@ class _SyncSettingsState extends State<SyncSettings> {
                   : Haptics.success();
             },
           ),
-        if (target.encrypted && !locked) ...[
           ListTile(
-            leading: const Icon(Icons.password_rounded),
-            title: Text(l10n.syncChangePassphrase),
-            onTap: _changePassphrase,
+            key: const ValueKey('sync-add-device'),
+            leading: const Icon(Icons.devices_rounded),
+            title: Text(l10n.syncAddDevice),
+            onTap: _pair,
           ),
           ListTile(
+            key: const ValueKey('sync-change-recovery'),
+            leading: const Icon(Icons.key_rounded),
+            title: Text(l10n.syncChangeRecoveryCode),
+            onTap: _changeRecoveryCode,
+          ),
+          ListTile(
+            key: const ValueKey('sync-reset-space'),
             leading: const Icon(Icons.restart_alt_rounded),
-            title: Text(l10n.syncResetEncryption),
-            onTap: _resetEncryption,
+            title: Text(l10n.syncResetSpace),
+            onTap: _resetSpace,
           ),
         ],
         ListTile(
@@ -403,47 +447,47 @@ class _SyncSettingsState extends State<SyncSettings> {
   }
 }
 
-/// A new passphrase, typed twice.
-class _PassphraseFields extends StatelessWidget {
-  const _PassphraseFields(
-      {required this.passphrase,
-      required this.repeat,
-      this.showErrors = false});
+/// A recovery password of the user's own, typed twice.
+class _RecoveryPasswordFields extends StatelessWidget {
+  const _RecoveryPasswordFields(
+      {required this.password, required this.repeat, this.showErrors = false});
 
-  final TextEditingController passphrase;
+  final TextEditingController password;
   final TextEditingController repeat;
   final bool showErrors;
 
   static String? problem(
-          String passphrase, String repeat, AppLocalizations l10n) =>
-      passphrase.length < _minPassphraseLength
-          ? l10n.syncPassphraseTooShort
-          : passphrase != repeat
-              ? l10n.syncPassphraseMismatch
-              : null;
+      String password, String repeat, AppLocalizations l10n) {
+    final min = AppConfig.instance.recoveryMinPasswordLength;
+    return password.trim().length < min
+        ? l10n.syncRecoveryPasswordTooShort(min)
+        : password != repeat
+            ? l10n.syncRecoveryPasswordMismatch
+            : null;
+  }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final error =
-        showErrors ? problem(passphrase.text, repeat.text, l10n) : null;
+    final error = showErrors ? problem(password.text, repeat.text, l10n) : null;
     return Column(mainAxisSize: MainAxisSize.min, children: [
       TextField(
-        key: const ValueKey('sync-passphrase'),
-        controller: passphrase,
+        key: const ValueKey('sync-recovery-password'),
+        controller: password,
         obscureText: true,
         autocorrect: false,
         decoration: InputDecoration(
-            labelText: l10n.syncPassphrase, border: const OutlineInputBorder()),
+            labelText: l10n.syncRecoveryPassword,
+            border: const OutlineInputBorder()),
       ),
       const SizedBox(height: 12),
       TextField(
-        key: const ValueKey('sync-passphrase-repeat'),
+        key: const ValueKey('sync-recovery-password-repeat'),
         controller: repeat,
         obscureText: true,
         autocorrect: false,
         decoration: InputDecoration(
-            labelText: l10n.syncPassphraseRepeat,
+            labelText: l10n.syncRecoveryPasswordRepeat,
             errorText: error,
             border: const OutlineInputBorder()),
       ),
@@ -451,66 +495,69 @@ class _PassphraseFields extends StatelessWidget {
   }
 }
 
-/// Starts a space, end-to-end encrypted unless turned off.
-class _NewSpaceDialog extends StatefulWidget {
-  const _NewSpaceDialog();
+/// A random recovery code, or a password of the user's own: the choice a
+/// new space and a changed code both make. Pops `(password: null)` for a
+/// random code.
+class _RecoveryChoice extends StatefulWidget {
+  const _RecoveryChoice(
+      {required this.title, required this.description, required this.action});
+
+  final String title;
+  final String description;
+  final String action;
 
   @override
-  State<_NewSpaceDialog> createState() => _NewSpaceDialogState();
+  State<_RecoveryChoice> createState() => _RecoveryChoiceState();
 }
 
-class _NewSpaceDialogState extends State<_NewSpaceDialog> {
-  final _passphrase = TextEditingController();
+class _RecoveryChoiceState extends State<_RecoveryChoice> {
+  final _password = TextEditingController();
   final _repeat = TextEditingController();
-  var _encrypt = true;
+  var _own = false;
   var _showErrors = false;
 
   @override
   void dispose() {
-    _passphrase.dispose();
+    _password.dispose();
     _repeat.dispose();
     super.dispose();
   }
 
   void _done() {
     final l10n = AppLocalizations.of(context)!;
-    if (_encrypt &&
-        _PassphraseFields.problem(_passphrase.text, _repeat.text, l10n) !=
+    if (_own &&
+        _RecoveryPasswordFields.problem(_password.text, _repeat.text, l10n) !=
             null) {
       setState(() => _showErrors = true);
       return;
     }
-    Navigator.of(context).pop((passphrase: _encrypt ? _passphrase.text : null));
+    Navigator.of(context).pop((password: _own ? _password.text : null));
   }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return AlertDialog(
-      title: Text(l10n.syncNewSpaceTitle),
+      title: Text(widget.title),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(l10n.syncNewSpaceDescription),
+            Text(widget.description),
             SwitchListTile(
-              key: const ValueKey('sync-encrypt'),
+              key: const ValueKey('sync-own-recovery'),
               contentPadding: EdgeInsets.zero,
-              title: Text(l10n.syncEncrypt),
-              subtitle: Text(l10n.syncEncryptDescription),
-              value: _encrypt,
-              onChanged: (value) => setState(() => _encrypt = value),
+              title: Text(l10n.syncOwnRecoveryPassword),
+              value: _own,
+              onChanged: (value) => setState(() => _own = value),
             ),
-            if (_encrypt) ...[
+            if (_own) ...[
               const SizedBox(height: 8),
-              _PassphraseFields(
-                  passphrase: _passphrase,
+              _RecoveryPasswordFields(
+                  password: _password,
                   repeat: _repeat,
                   showErrors: _showErrors),
-              const SizedBox(height: 12),
-              Text(l10n.syncPassphraseNote,
-                  style: Theme.of(context).textTheme.bodySmall),
             ],
           ],
         ),
@@ -522,31 +569,56 @@ class _NewSpaceDialogState extends State<_NewSpaceDialog> {
         FilledButton(
             key: const ValueKey('sync-start'),
             onPressed: _done,
-            child: Text(l10n.syncConnect)),
+            child: Text(widget.action)),
       ],
     );
   }
 }
 
-/// A new passphrase for an existing space key.
-class _PassphraseDialog extends StatefulWidget {
-  const _PassphraseDialog({required this.title});
-
-  final String title;
+/// Starts a space: always end-to-end encrypted, with a random recovery code
+/// unless the user picks a password.
+class _NewSpaceDialog extends StatelessWidget {
+  const _NewSpaceDialog();
 
   @override
-  State<_PassphraseDialog> createState() => _PassphraseDialogState();
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return _RecoveryChoice(
+        title: l10n.syncNewSpaceTitle,
+        description: l10n.syncNewSpaceDescription,
+        action: l10n.syncConnect);
+  }
 }
 
-class _PassphraseDialogState extends State<_PassphraseDialog> {
-  final _passphrase = TextEditingController();
-  final _repeat = TextEditingController();
-  var _showErrors = false;
+/// A new recovery code in place of the current one.
+class _ChangeRecoveryDialog extends StatelessWidget {
+  const _ChangeRecoveryDialog();
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return _RecoveryChoice(
+        title: l10n.syncChangeRecoveryCode,
+        description: l10n.syncChangeRecoveryDescription,
+        action: l10n.syncChangeRecoveryCode);
+  }
+}
+
+/// The recovery code, or the recovery password, of a space.
+class _RecoveryCodeInputDialog extends StatefulWidget {
+  const _RecoveryCodeInputDialog();
+
+  @override
+  State<_RecoveryCodeInputDialog> createState() =>
+      _RecoveryCodeInputDialogState();
+}
+
+class _RecoveryCodeInputDialogState extends State<_RecoveryCodeInputDialog> {
+  final _code = TextEditingController();
 
   @override
   void dispose() {
-    _passphrase.dispose();
-    _repeat.dispose();
+    _code.dispose();
     super.dispose();
   }
 
@@ -554,77 +626,15 @@ class _PassphraseDialogState extends State<_PassphraseDialog> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return AlertDialog(
-      title: Text(widget.title),
-      content: _PassphraseFields(
-          passphrase: _passphrase, repeat: _repeat, showErrors: _showErrors),
-      actions: [
-        TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text(MaterialLocalizations.of(context).cancelButtonLabel)),
-        FilledButton(
-            onPressed: () {
-              if (_PassphraseFields.problem(
-                      _passphrase.text, _repeat.text, l10n) !=
-                  null) {
-                setState(() => _showErrors = true);
-                return;
-              }
-              Navigator.of(context).pop(_passphrase.text);
-            },
-            child: Text(MaterialLocalizations.of(context).okButtonLabel)),
-      ],
-    );
-  }
-}
-
-/// The passphrase, or the recovery key, of an encrypted space.
-class _UnlockDialog extends StatefulWidget {
-  const _UnlockDialog();
-
-  @override
-  State<_UnlockDialog> createState() => _UnlockDialogState();
-}
-
-class _UnlockDialogState extends State<_UnlockDialog> {
-  final _key = TextEditingController();
-  var _recovery = false;
-
-  @override
-  void dispose() {
-    _key.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    return AlertDialog(
-      title: Text(l10n.syncJoinTitle),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(l10n.syncJoinEncrypted),
-          const SizedBox(height: 16),
-          TextField(
-            key: const ValueKey('sync-unlock'),
-            controller: _key,
-            obscureText: !_recovery,
-            autocorrect: false,
-            decoration: InputDecoration(
-                labelText:
-                    _recovery ? l10n.syncRecoveryKey : l10n.syncPassphrase,
-                border: const OutlineInputBorder()),
-          ),
-          TextButton(
-            onPressed: () => setState(() {
-              _recovery = !_recovery;
-              _key.clear();
-            }),
-            child: Text(
-                _recovery ? l10n.syncUsePassphrase : l10n.syncUseRecoveryKey),
-          ),
-        ],
+      title: Text(l10n.syncUseRecoveryCode),
+      content: TextField(
+        key: const ValueKey('sync-recovery-input'),
+        controller: _code,
+        autocorrect: false,
+        decoration: InputDecoration(
+            labelText: l10n.syncRecoveryCode,
+            border: const OutlineInputBorder()),
+        onSubmitted: (code) => Navigator.of(context).pop(code),
       ),
       actions: [
         TextButton(
@@ -632,28 +642,25 @@ class _UnlockDialogState extends State<_UnlockDialog> {
             child: Text(MaterialLocalizations.of(context).cancelButtonLabel)),
         FilledButton(
             key: const ValueKey('sync-unlock-confirm'),
-            onPressed: () => Navigator.of(context).pop((
-                  passphrase: _recovery ? null : _key.text,
-                  recoveryKey: _recovery ? _key.text : null,
-                )),
+            onPressed: () => Navigator.of(context).pop(_code.text),
             child: Text(l10n.syncUnlock)),
       ],
     );
   }
 }
 
-/// Shows the recovery key once; it closes only after the user says it is
+/// Shows the recovery code once; it closes only after the user says it is
 /// kept.
-class _RecoveryKeyDialog extends StatefulWidget {
-  const _RecoveryKeyDialog(this.recoveryKey);
+class _RecoveryCodeDialog extends StatefulWidget {
+  const _RecoveryCodeDialog(this.code);
 
-  final String recoveryKey;
+  final String code;
 
   @override
-  State<_RecoveryKeyDialog> createState() => _RecoveryKeyDialogState();
+  State<_RecoveryCodeDialog> createState() => _RecoveryCodeDialogState();
 }
 
-class _RecoveryKeyDialogState extends State<_RecoveryKeyDialog> {
+class _RecoveryCodeDialogState extends State<_RecoveryCodeDialog> {
   var _saved = false;
 
   @override
@@ -662,12 +669,12 @@ class _RecoveryKeyDialogState extends State<_RecoveryKeyDialog> {
     return PopScope(
       canPop: false,
       child: AlertDialog(
-        title: Text(l10n.syncRecoveryKeyTitle),
+        title: Text(l10n.syncRecoveryCodeTitle),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(l10n.syncRecoveryKeyDescription),
+            Text(l10n.syncRecoveryCodeDescription),
             const SizedBox(height: 16),
             Container(
               padding: const EdgeInsets.all(12),
@@ -675,8 +682,8 @@ class _RecoveryKeyDialogState extends State<_RecoveryKeyDialog> {
                 color: Theme.of(context).colorScheme.surfaceContainerHighest,
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: SelectableText(widget.recoveryKey,
-                  key: const ValueKey('sync-recovery-key'),
+              child: SelectableText(widget.code,
+                  key: const ValueKey('sync-recovery-code'),
                   style: const TextStyle(
                       fontFamily: 'monospace', fontSize: 16, height: 1.5)),
             ),
@@ -686,12 +693,11 @@ class _RecoveryKeyDialogState extends State<_RecoveryKeyDialog> {
                 icon: const Icon(Icons.copy_rounded),
                 label: Text(MaterialLocalizations.of(context).copyButtonLabel),
                 onPressed: () async {
-                  await Clipboard.setData(
-                      ClipboardData(text: widget.recoveryKey));
+                  await Clipboard.setData(ClipboardData(text: widget.code));
                   Haptics.success();
                   if (context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(l10n.syncRecoveryKeyCopied)));
+                        SnackBar(content: Text(l10n.syncRecoveryCodeCopied)));
                   }
                 },
               ),
@@ -700,7 +706,7 @@ class _RecoveryKeyDialogState extends State<_RecoveryKeyDialog> {
               key: const ValueKey('sync-recovery-saved'),
               contentPadding: EdgeInsets.zero,
               value: _saved,
-              title: Text(l10n.syncRecoveryKeySaved),
+              title: Text(l10n.syncRecoveryCodeSaved),
               onChanged: (value) => setState(() => _saved = value ?? false),
             ),
           ],

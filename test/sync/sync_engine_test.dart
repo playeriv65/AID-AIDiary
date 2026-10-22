@@ -174,9 +174,8 @@ JOIN $entriesTable e ON e.id = l.${EntryTagFields.entryId}''');
   });
 
   test('an encrypted space holds no readable text', () async {
-    final keys = await SpaceEncryption.create('passphrase',
-        kdf: const KdfParams(memoryKiB: 1024, iterations: 1));
-    final cipher = ItemCipher(keys.key);
+    final keys = newDataKey();
+    final cipher = ItemCipher(keys);
     await phone.write('secret diary');
 
     await phone.sync(cloud, cipher: cipher);
@@ -185,14 +184,13 @@ JOIN $entriesTable e ON e.id = l.${EntryTagFields.entryId}''');
       expect(latin1.decode(bytes, allowInvalid: true),
           isNot(contains('secret diary')));
     }
-    await laptop.sync(cloud, cipher: ItemCipher(keys.key));
+    await laptop.sync(cloud, cipher: ItemCipher(keys));
     expect(await laptop.texts(), ['secret diary']);
 
     final stranger = await Device.create();
     addTearDown(stranger.db.close);
-    final wrong = await SpaceEncryption.create('other',
-        kdf: const KdfParams(memoryKiB: 1024, iterations: 1));
-    expect(stranger.sync(cloud, cipher: ItemCipher(wrong.key)),
+    final wrong = newDataKey();
+    expect(stranger.sync(cloud, cipher: ItemCipher(wrong)),
         throwsA(isA<WrongKeyException>()));
   });
 

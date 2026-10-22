@@ -2095,62 +2095,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get syncNewSpaceTitle => '开始同步';
 
   @override
-  String get syncNewSpaceDescription => '这里还没有同步的日记，将把这本日记上传上去。';
-
-  @override
-  String get syncEncrypt => '端到端加密';
-
-  @override
-  String get syncEncryptDescription => '日记和照片在你的设备上加密，别人都读不到，包括保存它们的服务商。';
-
-  @override
-  String get syncPassphrase => '加密口令';
-
-  @override
-  String get syncPassphraseRepeat => '再次输入口令';
-
-  @override
-  String get syncPassphraseTooShort => '至少 8 个字符';
-
-  @override
-  String get syncPassphraseMismatch => '两次输入的口令不一致';
-
-  @override
-  String get syncPassphraseNote => '添加其他设备时需要口令或恢复密钥。即使都忘了，这台设备上的日记仍然可以正常查看。';
-
-  @override
-  String get syncRecoveryKeyTitle => '保存恢复密钥';
-
-  @override
-  String get syncRecoveryKeyDescription =>
-      '如果忘了口令，可以用这串密钥打开同步的日记。请把它存进密码管理器或抄在纸上，它只显示这一次。';
-
-  @override
-  String get syncRecoveryKeyCopied => '已复制恢复密钥';
-
-  @override
-  String get syncRecoveryKeySaved => '我已保存';
+  String get syncNewSpaceDescription => '这里还没有同步的日记。本机日记会端到端加密后上传，密钥只保存在你的设备上。';
 
   @override
   String get syncJoinTitle => '加入已同步的日记';
 
   @override
-  String get syncJoinDescription => '这里已经有同步的日记，这台设备上的日记会合并进去。';
-
-  @override
-  String get syncJoinEncrypted => '它已端到端加密，请输入口令打开。';
-
-  @override
-  String get syncUseRecoveryKey => '改用恢复密钥';
-
-  @override
-  String get syncUsePassphrase => '改用口令';
-
-  @override
-  String get syncRecoveryKey => '恢复密钥';
-
-  @override
-  String get syncWrongKey => '无法用它打开同步的日记。';
+  String get syncWrongKey => '这个恢复码打不开同步的日记。';
 
   @override
   String syncLastSynced(String time) {
@@ -2169,7 +2120,7 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get syncLocked => '同步的日记在其他设备上重设过，或这台设备上的密钥丢失了。解锁后才能继续同步。';
+  String get syncLocked => '同步的日记已由其他设备持有，或已重新开始。与其中一台设备配对或使用恢复码，即可继续同步。';
 
   @override
   String get syncNow => '立即同步';
@@ -2181,26 +2132,126 @@ class AppLocalizationsZh extends AppLocalizations {
   String get syncEncrypted => '已端到端加密';
 
   @override
-  String get syncNotEncrypted => '未加密';
-
-  @override
-  String get syncChangePassphrase => '修改口令';
-
-  @override
-  String get syncPassphraseChanged => '口令已修改';
-
-  @override
-  String get syncResetEncryption => '重设加密';
-
-  @override
-  String get syncResetEncryptionDescription =>
-      '用于忘记口令时：同步的加密副本会被这台设备上的日记替换，并改用新口令加密。之后其他设备需要用新口令重新加入。';
-
-  @override
   String get syncDisconnect => '停止同步';
 
   @override
   String get syncDisconnectDescription => '这台设备将停止同步。这里的日记和同步的副本都保持原样。';
+
+  @override
+  String get syncOwnRecoveryPassword => '使用我自己的恢复密码';
+
+  @override
+  String get syncRecoveryPassword => '恢复密码';
+
+  @override
+  String get syncRecoveryPasswordRepeat => '再次输入恢复密码';
+
+  @override
+  String syncRecoveryPasswordTooShort(int min) {
+    return '至少 $min 个字符';
+  }
+
+  @override
+  String get syncRecoveryPasswordMismatch => '两次输入的密码不一致';
+
+  @override
+  String get syncRecoveryCode => '恢复码';
+
+  @override
+  String get syncRecoveryCodeTitle => '保存你的恢复码';
+
+  @override
+  String get syncRecoveryCodeDescription =>
+      '如果你的设备全部丢失，这个恢复码可以找回同步的日记。请存进密码管理器或写在纸上。它只显示这一次。';
+
+  @override
+  String get syncRecoveryCodeCopied => '恢复码已复制';
+
+  @override
+  String get syncRecoveryCodeSaved => '我已保存';
+
+  @override
+  String get syncJoinNeedsKey => '这份同步日记属于你的其他设备。与其中一台配对，或使用恢复码。本机的日记会合并进去。';
+
+  @override
+  String get syncPairDevice => '与设备配对';
+
+  @override
+  String get syncUseRecoveryCode => '使用恢复码';
+
+  @override
+  String get syncAddDevice => '添加设备';
+
+  @override
+  String get syncChangeRecoveryCode => '更改恢复码';
+
+  @override
+  String get syncChangeRecoveryDescription => '新的恢复码会取代当前的，旧码随即失效。数据和其他设备不受影响。';
+
+  @override
+  String get syncNewRandomCode => '生成新的随机码';
+
+  @override
+  String get syncRecoveryCodeChanged => '恢复码已更改';
+
+  @override
+  String get syncResetSpace => '重新开始同步日记';
+
+  @override
+  String get syncResetSpaceDescription =>
+      '仅在没有任何设备或恢复码能打开它时使用：同步副本会被本机日记取代，改用本机的密钥。其他设备之后需要重新配对。';
+
+  @override
+  String get syncPairTitle => '配对设备';
+
+  @override
+  String get syncPairShow => '显示配对码';
+
+  @override
+  String get syncPairEnter => '输入配对码';
+
+  @override
+  String get syncPairShowHint => '在另一台设备上打开“配对设备”，选择“输入配对码”，输入或扫描下面的码。';
+
+  @override
+  String get syncPairEnterHint => '输入另一台设备上显示的码，或扫码。';
+
+  @override
+  String get syncPairCode => '配对码';
+
+  @override
+  String get syncPairScan => '扫码';
+
+  @override
+  String get syncPairStart => '配对';
+
+  @override
+  String get syncPairWaiting => '等待另一台设备…';
+
+  @override
+  String syncPairDone(String device) {
+    return '已与 $device 配对';
+  }
+
+  @override
+  String get syncPairWrongCode => '配对码不匹配。请显示新的配对码再试一次。';
+
+  @override
+  String get syncPairNoOffer => '没有设备在显示这个码，它可能已经过期。';
+
+  @override
+  String get syncPairTimedOut => '另一台设备没有及时响应。';
+
+  @override
+  String get syncPairNeither => '两台设备都还没有加入这份同步日记。';
+
+  @override
+  String get syncPairBoth => '两台设备都已经能打开这份同步日记。';
+
+  @override
+  String syncPairFailed(String error) {
+    return '配对失败：$error';
+  }
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
