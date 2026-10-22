@@ -14,11 +14,12 @@
 # the frame budget and at most allowedSkippedShare of the refreshes while
 # something moved were skipped, against the refresh rate the user set (or
 # the display's). Scenarios and limits are in frame_rate.json. The numbers
-# land in build\frame_rate.json, pass or fail; the timeline of the run in
-# build\frame_rate_timeline.json and a slower pass with every widget build,
-# layout and paint in build\frame_rate_widgets_timeline.json (open them in
-# ui.perfetto.dev). Run it through `dev.ps1 frame-rate`, which sets up the
-# tools.
+# land in build\frame_rate.json, pass or fail; each scenario's timeline in
+# build\frame_rate_timeline\<scenario>.json and a slower pass with every
+# widget build, layout and paint in build\frame_rate_timeline\widgets.json
+# (open them in ui.perfetto.dev). The app starts afresh with an endless
+# timeline buffer, which otherwise keeps only the last seconds. Run it
+# through `dev.ps1 frame-rate`, which sets up the tools.
 param([Parameter(Mandatory)][string]$Device)
 $ErrorActionPreference = 'Stop'
 $config = Get-Content (Join-Path $PSScriptRoot 'frame_rate.json') -Raw | ConvertFrom-Json
@@ -130,6 +131,8 @@ try {
     $env:AID_DATA_DIR = $scratch
     $env:AID_API_INFO = Join-Path $scratch 'agent_api.json'
     $env:AID_BACKGROUND_WINDOW = '1'
+    $env:FLUTTER_ENGINE_SWITCHES = '1'
+    $env:FLUTTER_ENGINE_SWITCH_1 = 'endless-trace-buffer'
     $app = Start-Process build\windows\x64\runner\Profile\aid_diary.exe -PassThru
     $deadline = (Get-Date).AddSeconds($config.startTimeoutSeconds)
     while (-not (Test-Path $env:AID_API_INFO)) {
@@ -158,8 +161,11 @@ try {
 
   $targetHz = $null
   if (-not $onComputer) {
+    # Started afresh, as only a starting engine takes the buffer switch.
     $activity = (Invoke-Device cmd package resolve-activity --brief $package | Select-Object -Last 1).Trim()
-    Invoke-Device am start -n $activity | Out-Null
+    Invoke-Device am force-stop $package
+    Invoke-Device am start -n $activity --ez endless-trace-buffer true | Out-Null
+    Invoke-Aid app.status | Out-Null
     # The bar is the rate the user set (e.g. 120 on a 144 Hz panel), else
     # the display's fastest mode; not the current one, so a system that
     # holds the app at 60 Hz fails.
@@ -176,22 +182,24 @@ try {
   }
   Wait-Settle
 
-  New-Item -ItemType Directory -Force build | Out-Null
+  $timelines = 'build\frame_rate_timeline'
+  Remove-Item -LiteralPath $timelines -Recurse -Force -ErrorAction SilentlyContinue
+  New-Item -ItemType Directory -Force $timelines | Out-Null
   # What a slow frame did: every widget build, layout and paint, in a pass
   # of its own as recording them slows frames down.
   Invoke-Aid ui.navigate "to=$($config.widgetTrace.open)" | Out-Null
   Wait-Settle
   Invoke-Aid trace start widgets=true | Out-Null
   Invoke-Flings $config.widgetTrace.flings
-  Invoke-Aid trace stop "path=build\frame_rate_widgets_timeline.json" | Out-Null
+  Invoke-Aid trace stop "path=$timelines\widgets.json" | Out-Null
 
   $results = [ordered]@{}
-  Invoke-Aid trace start | Out-Null
   foreach ($scenario in $config.scenarios) {
     if ($scenario.open) {
       Invoke-Aid ui.navigate "to=$($scenario.open)" | Out-Null
       Wait-Settle
     }
+    Invoke-Aid trace start | Out-Null
     $results[$scenario.name] = Measure-Scenario {
       if ($scenario.flings) { Invoke-Flings $scenario.flings }
       foreach ($tab in $scenario.tabs) {
@@ -207,8 +215,8 @@ try {
         }
       }
     }
+    Invoke-Aid trace stop "path=$timelines\$($scenario.name).json" | Out-Null
   }
-  Invoke-Aid trace stop "path=build\frame_rate_timeline.json" | Out-Null
 } finally {
   if ($app -and -not $app.HasExited) { Stop-Process -Id $app.Id }
   if ($scratch) {
