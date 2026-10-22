@@ -1449,5 +1449,8 @@
   "syncPairBoth": "Both devices already open this synced diary.",
   "syncPairFailed": "Pairing failed: {error}",
   "@syncPairFailed": {"placeholders": {"error": {"type": "String"}}},
-  "@syncDisconnectDescription": {}
+  "@syncDisconnectDescription": {},
+  "syncMediaPending": "Diary synced · some media is still transferring",
+  "syncWaitingForDevices": "Diary synced · waiting for another device to transfer media",
+  "syncCacheNotice": "Cloud media is temporary. Keep the originals on your devices; syncing is not a backup."
 }

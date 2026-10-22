@@ -671,5 +671,8 @@
     "syncPairTimedOut": "另一台设备没有及时响应。",
     "syncPairNeither": "两台设备都还没有加入这份同步日记。",
     "syncPairBoth": "两台设备都已经能打开这份同步日记。",
-    "syncPairFailed": "配对失败：{error}"
+    "syncPairFailed": "配对失败：{error}",
+    "syncMediaPending": "日记已同步，部分媒体仍在传输",
+    "syncWaitingForDevices": "日记已同步，正在等待其他设备传输媒体",
+    "syncCacheNotice": "云端媒体缓存会过期。请保留设备上的原件；同步不等于备份。"
 }

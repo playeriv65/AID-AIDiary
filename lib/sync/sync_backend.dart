@@ -66,7 +66,7 @@ class SpaceInfo {
 
   /// 2: packs of changes in place of one file per item. 3: always
   /// encrypted, keys held by the user's devices rather than a passphrase.
-  static const int current = 3;
+  static const int current = 4;
 
   final int format;
   final String id;
@@ -106,8 +106,7 @@ class SpaceInfo {
     if (format != current) {
       throw UnsupportedError(format > current
           ? 'This space was made by a newer version of the app (format $format)'
-          : 'This space was made by an older version of the app (format '
-              '$format), before devices held the keys; start a new one');
+          : 'This space uses an older sync format ($format); start a new space');
     }
     return SpaceInfo(
         id: json['id'] as String,

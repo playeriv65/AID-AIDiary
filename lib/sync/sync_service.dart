@@ -6,6 +6,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:convert';
 import 'dart:typed_data';
+import 'dart:math';
 
 import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/config_provider.dart';
@@ -24,9 +25,15 @@ import 'package:aid_diary/sync/sync_backend.dart';
 import 'package:aid_diary/sync/sync_crypto.dart';
 import 'package:aid_diary/sync/sync_engine.dart';
 import 'package:aid_diary/sync/sync_schema.dart';
+import 'package:aid_diary/sync/connection_manager.dart';
+import 'package:aid_diary/sync/media_transfer.dart';
+import 'package:aid_diary/sync/lan_transport.dart';
+import 'package:aid_diary/sync/routed_backend.dart';
 import 'package:aid_diary/sync/webdav_backend.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
+import 'package:uuid/uuid.dart';
+import 'package:path/path.dart' as p;
 
 /// The kinds of place a space can live in.
 enum SyncProvider { webdav, googleDrive }
@@ -178,10 +185,12 @@ enum SyncState {
   /// The space was reset or belongs to another user's devices now: join it
   /// again by pairing or with the recovery code.
   locked,
+  mediaPending,
+  waitingForDevices,
 }
 
 /// Photos in the app's image folder, external folder included.
-class ImageStoragePhotos implements SyncPhotos {
+class ImageStoragePhotos implements SyncPhotos, SyncPhotoFiles {
   const ImageStoragePhotos();
 
   @override
@@ -199,6 +208,17 @@ class ImageStoragePhotos implements SyncPhotos {
 
   @override
   Future<void> delete(String name) => ImageStorage.instance.delete(name);
+
+  @override
+  Future<File?> file(String name) => ImageStorage.instance.localFile(name);
+
+  @override
+  Future<void> importFile(String name, File source) async {
+    final target =
+        File(p.join(await ImageStorage.instance.getInternalFolder(), name));
+    await source.copy(target.path);
+    ImageStorage.instance.invalidateCache();
+  }
 }
 
 /// Keeps this device's diary in step with its space: sets spaces up, runs
@@ -236,6 +256,57 @@ class SyncService with ChangeNotifier {
   Timer? _soon;
   Timer? _periodic;
   AppLifecycleListener? _lifecycle;
+  SyncConnectionManager? _connections;
+  LanMediaHost? _lan;
+  StreamSubscription<dynamic>? _lanPeers;
+  StreamSubscription<SyncRouteCandidate?>? _routeChanges;
+  final String _networkDeviceId = const Uuid().v4();
+  int _networkGeneration = 0;
+  int _failures = 0;
+  DateTime? _retryAt;
+  String? get activeRoute => _connections?.current?.type.name;
+  DateTime? get retryAt => _retryAt;
+  bool get temporaryMediaCache =>
+      (_storage is WebDavBackend && (_storage as WebDavBackend).boundedMedia) ||
+      target?.server == Uri.parse(AppConfig.instance.syncOfficialServer);
+  final _random = Random();
+
+  /// Operational details stay out of the everyday status label. A successful
+  /// cache upload is explicitly distinct from durable remote storage.
+  Future<Map<String, Object?>> networkStatus() async {
+    final db = AppDatabase.instance.database;
+    final tasks = db == null
+        ? <Map<String, Object?>>[]
+        : await db.query('sync_media_tasks',
+            columns: ['sending', 'completed', 'durable']);
+    return {
+      'route': activeRoute,
+      'availableRoutes': [
+        for (final route
+            in _connections?.healthyRoutes ?? <SyncRouteCandidate>[])
+          {
+            'type': route.type.name,
+            'stability': route.stability,
+            'throughput': route.throughput,
+            'cost': route.cost
+          }
+      ],
+      'pendingMedia': tasks.where((task) => task['completed'] == 0).length,
+      'durableRemoteMedia': tasks
+          .where((task) =>
+              task['completed'] == 1 &&
+              task['sending'] == 1 &&
+              task['durable'] == 1)
+          .length,
+      'temporaryOrUnconfirmedRemoteMedia': tasks
+          .where((task) =>
+              task['completed'] == 1 &&
+              task['sending'] == 1 &&
+              task['durable'] == 0)
+          .length,
+      if (_retryAt != null) 'retryAt': _retryAt!.toIso8601String(),
+    };
+  }
 
   SyncTarget? get target =>
       switch (ConfigProvider.instance.get(Settings.syncTarget)) {
@@ -257,6 +328,23 @@ class SyncService with ChangeNotifier {
   /// The login for the current target, kept so a cloud drive's tokens are
   /// reused between syncs.
   SyncLogin? _cachedLogin;
+  SyncBackend? _storage;
+  SyncLogin? _storageLogin;
+
+  SyncBackend _storageFor(SyncLogin login) {
+    if (identical(login, _storageLogin) && _storage != null) return _storage!;
+    _closeStorage();
+    _storageLogin = login;
+    return _storage = login.backend();
+  }
+
+  void _closeStorage() {
+    final backend = _storage;
+    if (backend is WebDavBackend) backend.close();
+    if (backend is GoogleDriveBackend) backend.close();
+    _storage = null;
+    _storageLogin = null;
+  }
 
   SyncLogin? get _login {
     final target = this.target;
@@ -290,7 +378,10 @@ class SyncService with ChangeNotifier {
     ]) {
       provider.addListener(_changed);
     }
-    _lifecycle ??= AppLifecycleListener(onResume: () => syncSoon());
+    _lifecycle ??= AppLifecycleListener(onResume: () {
+      unawaited(_connections?.refresh());
+      syncSoon();
+    });
     _periodic ??=
         Timer.periodic(AppConfig.instance.syncWhileOpen, (_) => syncSoon());
     if (target != null) {
@@ -307,6 +398,8 @@ class SyncService with ChangeNotifier {
   /// Syncs after [after], once, however often it is asked.
   void syncSoon({Duration after = Duration.zero}) {
     if (target == null) return;
+    final retry = _retryAt?.difference(DateTime.now());
+    if (retry != null && retry > after) after = retry;
     _soon?.cancel();
     _soon = Timer(after, () => unawaited(syncNow()));
   }
@@ -334,8 +427,31 @@ class SyncService with ChangeNotifier {
     _started = DateTime.now();
     _setState(SyncState.syncing);
     try {
-      final backend = login.backend();
-      final info = await _readSpace(backend);
+      final backend = _storageFor(login);
+      final vault = MediaVault(AppDatabase.instance.database!);
+      final stored = await vault.read(SpaceLayout.info);
+      if (stored != null) {
+        await _ensureConnections(SpaceInfo.fromBytes(stored), backend);
+      }
+      final routed = RoutedSyncBackend(
+          local: vault,
+          storage: backend,
+          storageAvailable: () =>
+              _connections == null ||
+              _connections!.healthyRoutes.any((route) => route.id == 'storage'),
+          onStorageFailure: () {
+            if (_connections?.healthyRoutes
+                    .any((route) => route.id == 'storage') ??
+                false) {
+              _connections?.markFailed('storage');
+            }
+          },
+          peers: () => [
+                for (final route
+                    in _connections?.healthyRoutes ?? <SyncRouteCandidate>[])
+                  if (route.isDirect) route.backend
+              ]);
+      final info = await _readSpace(routed);
       final dataKey = info == null || info.id != target.spaceId
           ? null
           : await _dataKey(info);
@@ -348,15 +464,92 @@ class SyncService with ChangeNotifier {
         _setState(SyncState.locked);
         return;
       }
+      await _ensureConnections(info, backend);
+      await routed.check();
+      await vault.write(SpaceLayout.info, info.toBytes());
+      await routed.drain();
+      final config = AppConfig.instance.syncTransfer;
+      var fileLimit = (config['cacheMaxFileMiB'] as int) << 20;
+      var transferLimit = (config['cacheTransferMiB'] as int) << 20;
+      var objectLimit = 1 << 62;
+      var manifestLimit = 256 * 1024;
+      var boundedCache =
+          target.server == Uri.parse(AppConfig.instance.syncOfficialServer);
+      if (backend is WebDavBackend) {
+        Map<String, dynamic>? policy;
+        if (_connections?.healthyRoutes.any((route) => route.id == 'storage') ??
+            false) {
+          try {
+            policy = await backend.mediaPolicy();
+          } catch (_) {
+            // A reachable direct route can keep working without the cloud.
+          }
+        }
+        boundedCache = boundedCache || backend.boundedMedia;
+        if (policy == null) {
+          // The operator must deploy limits before clients upload cache media.
+          if (boundedCache) {
+            fileLimit = transferLimit = 0;
+          }
+        } else {
+          transferLimit =
+              min(transferLimit, policy['transferRemainingBytes'] as int);
+          objectLimit = policy['maxObjectBytes'] as int;
+          manifestLimit = policy['maxManifestBytes'] as int;
+        }
+      }
+      final cache = MediaAllowance(
+          backend: backend,
+          route: boundedCache ? 'cache' : 'personal',
+          maxFileBytes: boundedCache ? fileLimit : 1 << 62,
+          remainingBytes: !(_connections?.healthyRoutes
+                      .any((route) => route.id == 'storage') ??
+                  false)
+              ? 0
+              : boundedCache
+                  ? transferLimit
+                  : 1 << 62,
+          maxObjectBytes: objectLimit,
+          maxManifestBytes: manifestLimit,
+          durable: !boundedCache);
+      final directAllowances = <String, MediaAllowance>{};
+      final peerPool = PeerSyncBackend(
+          current: () => _connections?.current?.backend,
+          sources: () => [
+                for (final route
+                    in _connections?.healthyRoutes ?? <SyncRouteCandidate>[])
+                  if (route.isDirect) route.backend
+              ]);
       final report = await SyncEngine(
           db: AppDatabase.instance.database!,
-          backend: backend,
+          backend: routed,
           photos: const ImageStoragePhotos(),
           limits: SyncLimits(
               packBytes: AppConfig.instance.syncPackBytes,
               compactAfter: AppConfig.instance.syncCompactAfterPacks,
               parallel: AppConfig.instance.syncParallelTransfers),
           cipher: ItemCipher(dataKey),
+          onMetadata: _reload,
+          mediaChunkBytes: (config['chunkKiB'] as int) * 1024,
+          mediaFallback: cache,
+          mediaAllowance: () {
+            final route = _connections?.current;
+            if (route == null || !route.isDirect) return cache;
+            return directAllowances.putIfAbsent(
+                route.id,
+                () => MediaAllowance(
+                    backend: peerPool,
+                    route: route.type.name,
+                    maxFileBytes: 1 << 62,
+                    remainingBytes: 1 << 62));
+          },
+          onMediaFailure: (error) {
+            _logger.fine('Media transfer will retry', error);
+            final route = _connections?.current;
+            if (route != null && route.isDirect) {
+              _connections?.markFailed(route.id);
+            }
+          },
           onProgress: _progressed,
           stopped: () => _stopping).sync();
       progress = null;
@@ -366,14 +559,119 @@ class SyncService with ChangeNotifier {
           .set(Settings.lastSync, DateTime.now().toIso8601String());
       error = null;
       unsyncedEntryIds = const {};
-      _setState(SyncState.idle);
+      if (report.pendingMedia == 0 || report.mediaCompleted > 0) _failures = 0;
+      _retryAt = null;
+      _setState(report.pendingMedia == 0
+          ? SyncState.idle
+          : report.waitingForPeer
+              ? SyncState.waitingForDevices
+              : SyncState.mediaPending);
+      if (report.pendingMedia > 0) _retry();
     } catch (e, stackTrace) {
       _logger.warning('Sync failed', e, stackTrace);
       progress = null;
       error = e;
       await _markUnsynced();
       _setState(SyncState.failed);
+      _retry();
     }
+  }
+
+  /// Retry quietly, with jitter and a ceiling; diary edits cannot reset it.
+  void _retry() {
+    final config = AppConfig.instance.syncTransfer;
+    final base = config['retryBaseSeconds'] as int;
+    final maximum = config['retryMaxSeconds'] as int;
+    final delay = min(maximum, base * pow(2, min(_failures++, 20))).toDouble();
+    _retryAt = DateTime.now().add(Duration(
+        milliseconds: (min(maximum.toDouble(),
+                    delay * (0.8 + _random.nextDouble() * 0.4)) *
+                1000)
+            .round()));
+    syncSoon();
+  }
+
+  Future<void> _ensureConnections(SpaceInfo info, SyncBackend backend) async {
+    if (_connections?.spaceId == info.id) return;
+    await _closeConnections();
+    final identity = await DiaryIdentity.current();
+    final config = AppConfig.instance.syncTransfer;
+    final manager = SyncConnectionManager(
+        userId: info.userId,
+        spaceId: info.id,
+        policy: SyncConnectionPolicy(
+            probeTimeout:
+                Duration(seconds: config['probeTimeoutSeconds'] as int),
+            reprobeInterval: Duration(seconds: config['reprobeSeconds'] as int),
+            retryBase: Duration(seconds: config['retryBaseSeconds'] as int),
+            retryMax: Duration(seconds: config['retryMaxSeconds'] as int),
+            minimumDwell:
+                Duration(seconds: config['minimumDwellSeconds'] as int),
+            switchImprovement: (config['switchImprovement'] as num).toDouble()),
+        probe: (candidate) => candidate.backend.check());
+    _connections = manager;
+    await manager.start([
+      SyncRouteCandidate(
+          id: 'storage',
+          backend: backend,
+          type: SyncRouteType.cache,
+          userId: info.userId,
+          spaceId: info.id,
+          cost: 1)
+    ]);
+    _routeChanges = manager.changes.listen((route) {
+      if (route?.isDirect ?? false) {
+        _retryAt = null;
+        syncSoon();
+      }
+      notifyListeners();
+    });
+    // Fake stores in unit and action tests do not open network listeners.
+    if (_login is! WebDavLogin && _login is! GoogleDriveLogin) return;
+    final generation = _networkGeneration;
+    unawaited(() async {
+      LanMediaHost? host;
+      try {
+        host = LanMediaHost(
+            vault: MediaVault(AppDatabase.instance.database!),
+            deviceId: _networkDeviceId,
+            userId: identity.userId,
+            spaceId: info.id,
+            masterKey: identity.masterKey,
+            serviceType: config['mdnsType'] as String);
+        if (generation != _networkGeneration) {
+          await host.close();
+          return;
+        }
+        _lan = host;
+        _lanPeers = host.peers.listen((peer) {
+          if (generation != _networkGeneration) return;
+          unawaited(manager.addVerifiedCandidate(SyncRouteCandidate(
+              id: peer.id,
+              backend: peer.backend,
+              type: SyncRouteType.lan,
+              userId: peer.userId,
+              spaceId: peer.spaceId)));
+        });
+        await host.start();
+      } catch (error) {
+        _logger.fine(
+            'LAN discovery unavailable; storage sync continues', error);
+        await host?.close();
+      }
+    }());
+  }
+
+  Future<void> _closeConnections() async {
+    _networkGeneration++;
+    await _lanPeers?.cancel();
+    await _routeChanges?.cancel();
+    await _lan?.close();
+    await _connections?.close();
+    _lan = null;
+    _connections = null;
+    _lanPeers = null;
+    _routeChanges = null;
   }
 
   /// Passes on how far a slow sync is, a few times a second at most.
@@ -403,6 +701,9 @@ class SyncService with ChangeNotifier {
     try {
       await EntriesProvider.instance.load();
       await EntryImagesProvider.instance.load();
+      if (ImageStorage.instance.usingExternalLocation()) {
+        await ImageStorage.instance.syncImageFolder(false);
+      }
       await TagsProvider.instance.load();
       await TemplatesProvider.instance.load();
       await AppDatabase.instance.updateExternalDatabase();
@@ -632,6 +933,7 @@ class SyncService with ChangeNotifier {
   }
 
   Future<void> _connect(SyncLogin login, SpaceInfo space) async {
+    await _stop();
     _pendingJoin = null;
     final db = AppDatabase.instance.database!;
     await clearSyncState(db);
@@ -659,6 +961,9 @@ class SyncService with ChangeNotifier {
     } finally {
       _stopping = false;
     }
+    _soon?.cancel();
+    await _closeConnections();
+    _closeStorage();
   }
 
   /// Signs in to the cloud drive again after Google asked for it, keeping
@@ -680,6 +985,8 @@ class SyncService with ChangeNotifier {
     await ConfigProvider.instance.set(Settings.lastSync, '');
     _cachedLogin = null;
     lastReport = null;
+    _failures = 0;
+    _retryAt = null;
     error = null;
     unsyncedEntryIds = const {};
     _setState(SyncState.off);
@@ -716,6 +1023,7 @@ class SyncService with ChangeNotifier {
         await backend.delete(path);
       }
     }
+    await backend.delete('media');
     final recovery = _recoveryCode(chosen);
     final info = await SpaceInfo.create(await DiaryIdentity.current(),
         recoveryCode: recovery.code,

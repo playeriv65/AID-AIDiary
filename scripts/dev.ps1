@@ -1,5 +1,5 @@
 param(
-  [ValidateSet('windows','windows-background','windows-driver','android','apk','profile','release','test','test-unit','test-widget','test-integration','test-server','cli','test-cli','frame-rate','analyze','pub','screenshots')][string]$Target='windows',
+  [ValidateSet('windows','windows-build','windows-background','windows-driver','android','apk','profile','release','test','test-unit','test-widget','test-integration','test-server','cli','test-cli','frame-rate','analyze','pub','screenshots')][string]$Target='windows',
   # Flutter device id for 'android', e.g. a wireless adb serial from `flutter devices`.
   [string]$Device='emulator-5554'
 )
@@ -50,8 +50,25 @@ if ($Target -in 'android', 'apk', 'profile', 'release' -and
   Write-Error 'android/key.properties is missing: copy it from the main checkout, or make your own key from android/key.properties.example (docs/SETUP.md).'
   exit 1
 }
+# Flutter stages platform assets in a shared directory in this checkout.
+# Concurrent native builds can silently package another platform's bundle.
+$buildLock = $null
+if ($Target -in 'windows', 'windows-build', 'windows-background', 'windows-driver',
+    'android', 'apk', 'profile', 'release', 'frame-rate') {
+  $lockPath = Join-Path (Get-Location) '.dart_tool/dev-build.lock'
+  New-Item -ItemType Directory -Force (Split-Path $lockPath -Parent) | Out-Null
+  try {
+    $buildLock = [System.IO.File]::Open($lockPath, [System.IO.FileMode]::OpenOrCreate,
+      [System.IO.FileAccess]::ReadWrite, [System.IO.FileShare]::None)
+  } catch [System.IO.IOException] {
+    Write-Error "Cannot acquire the Flutter build lock. Stop the other run/build in this checkout, or use another worktree. $($_.Exception.Message)"
+    exit 1
+  }
+}
+try {
 switch ($Target) {
   'windows' { flutter run -d windows }
+  'windows-build' { flutter build windows --debug --dart-define=AID_DEV_BUILD=true }
   # For agents: window off screen and never focused; prints the DTD URI for
   # the Dart MCP server (hot reload, widget tree, driver screenshots).
   'windows-background' {
@@ -109,7 +126,12 @@ switch ($Target) {
     # fails with INSTALL_FAILED_USER_RESTRICTED.
     if ($failed) { Write-Error "Install failed on: $($failed -join ', ')"; exit 1 }
   }
-  'pub' { flutter pub get }
+  'pub' {
+    flutter pub get
+    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+    Push-Location cli
+    try { dart pub get } finally { Pop-Location }
+  }
   # Test layers (see dart_test.yaml). Four workers keep runs from pinning
   # every core. Unit tests while iterating; all layers before committing.
   'test-unit' { flutter test -j 4 --exclude-tags widget,integration }
@@ -140,8 +162,17 @@ switch ($Target) {
     } finally { Pop-Location }
   }
   'test' { flutter test -j 4 }
-  'analyze' { flutter analyze }
+  'analyze' {
+    # The root analyzer also sees the CLI package on a new checkout.
+    Push-Location cli
+    try { dart pub get } finally { Pop-Location }
+    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+    flutter analyze
+  }
   # Renders artifacts/ui-*.png in widget tests; no window opens.
   'screenshots' { flutter test tool/screenshots/ }
+}
+} finally {
+  if ($null -ne $buildLock) { $buildLock.Dispose() }
 }
 exit $LASTEXITCODE

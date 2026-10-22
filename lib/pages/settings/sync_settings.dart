@@ -261,6 +261,8 @@ class _SyncSettingsState extends State<SyncSettings> {
       SyncState.failed =>
         l10n.syncFailed(_describe(_service.error ?? '', l10n)),
       SyncState.locked => l10n.syncLocked,
+      SyncState.mediaPending => l10n.syncMediaPending,
+      SyncState.waitingForDevices => l10n.syncWaitingForDevices,
       _ when last == null => l10n.syncNever,
       _ => l10n.syncLastSynced('${TimeManager.formatDate(last, context)} '
           '${TimeManager.timeOfDayString(context, TimeOfDay.fromDateTime(last))}'),
@@ -370,6 +372,8 @@ class _SyncSettingsState extends State<SyncSettings> {
           title: Text(target.server?.host ?? l10n.syncGoogleDrive),
           subtitle: Text('${target.username} · ${l10n.syncEncrypted}'),
         ),
+        if (_service.temporaryMediaCache)
+          ListTile(subtitle: Text(l10n.syncCacheNotice)),
         ListTile(
           leading: syncing
               ? const SizedBox.square(

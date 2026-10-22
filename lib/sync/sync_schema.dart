@@ -87,6 +87,7 @@ CREATE TABLE $syncSeenTable (
   version TEXT NOT NULL
 )''');
   await addSyncItemsTable(db);
+  await addSyncMediaSchema(db);
   await db.execute('CREATE TABLE $syncGuardTable (active INTEGER NOT NULL)');
   await db.execute('INSERT INTO $syncGuardTable (active) VALUES (0)');
 
@@ -170,4 +171,22 @@ Future<void> clearSyncState(DatabaseExecutor db) async {
   await db.delete(syncChangesTable);
   await db.delete(syncSeenTable);
   await db.delete(syncItemsTable);
+  await db.delete('sync_media_tasks');
+  await db.delete('sync_media_objects');
+}
+
+/// Transfer state belongs to the diary, not to a connection or a process.
+Future<void> addSyncMediaSchema(DatabaseExecutor db) async {
+  await db.execute('''CREATE TABLE sync_media_tasks (
+    id TEXT NOT NULL PRIMARY KEY,
+    name TEXT NOT NULL,
+    sending INTEGER NOT NULL,
+    manifest TEXT,
+    completed INTEGER NOT NULL DEFAULT 0,
+    durable INTEGER NOT NULL DEFAULT 0
+  )''');
+  await db.execute('''CREATE TABLE sync_media_objects (
+    path TEXT NOT NULL PRIMARY KEY,
+    bytes BLOB NOT NULL
+  )''');
 }

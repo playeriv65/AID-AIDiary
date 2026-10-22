@@ -18,6 +18,8 @@ Map<String, Object?> syncStatus() {
   final progress = _sync.progress;
   return {
     'state': _sync.state.name,
+    if (_sync.activeRoute case final route?) 'route': route,
+    if (_sync.retryAt case final retry?) 'retryAt': retry.toIso8601String(),
     if (target != null) ...{
       'provider': target.provider.name,
       if (target.server case final server?) 'server': server.toString(),
@@ -31,6 +33,10 @@ Map<String, Object?> syncStatus() {
         'received': report.received,
         'sent': report.sent,
         'keptConflicts': report.keptConflicts,
+        'pendingMedia': report.pendingMedia,
+        'mediaCompleted': report.mediaCompleted,
+        'mediaFailures': report.mediaFailures,
+        'waitingForPeer': report.waitingForPeer,
       },
     if (progress != null)
       'progress': {
@@ -151,6 +157,13 @@ const _joinParams = [
 ];
 
 final List<AppAction> syncActions = [
+  AppAction(
+    id: 'sync.network',
+    describe: 'Advanced network diagnostics: selected and available routes, '
+        'pending media and durable versus temporary remote copies.',
+    risk: ActionRisk.read,
+    run: (context, args) => _sync.networkStatus(),
+  ),
   AppAction(
     id: 'sync.status',
     describe: 'Shows where this device syncs, how the last sync went, how '

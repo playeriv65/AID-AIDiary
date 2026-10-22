@@ -185,6 +185,9 @@ class AppConfig {
   /// Files a sync moves at the same time.
   int get syncParallelTransfers => _section('sync')['parallelTransfers'] as int;
 
+  Map<String, dynamic> get syncTransfer =>
+      (_section('sync')['transfer'] as Map).cast<String, dynamic>();
+
   /// The AID sync server's WebDAV address (server/ in this repository).
   String get syncOfficialServer => _section('sync')['officialServer'] as String;
 

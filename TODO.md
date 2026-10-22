@@ -36,31 +36,51 @@ Measured with `./scripts/dev.ps1 frame-rate` on the Xiaomi tablet (3200×2136, 1
 - On wide layouts tapping an entry shows it in the detail pane, while `ui.navigate to=entry` always pushes a full page; decide whether navigation should follow the layout as the tap does.
 - Skia draws the open-entry transition about 3× faster than Impeller here (4× MSAA offscreen layers); staying on Impeller, as Skia's opt-out is deprecated.
 
-## Sync, identity and encryption (plan of 2026-10-21)
-Local-first, end-to-end encrypted, device-first, with replaceable cloud storage. No sign-up, login or password: open the app and write. Devices hold the identity and the keys; the cloud only stores and syncs ciphertext.
+## Sync, identity and encryption (state of 2026-10-22)
 
-- Identity: a random `User ID` made on first use, shared by all of one user's devices. No email, password or Google account. Google OAuth only reaches Google Drive and plays no part in who the user is.
-- Encryption: a random 256-bit master key `MK` on the device protects the data keys (`DEK`); entries are sealed with AES-256-GCM or XChaCha20-Poly1305. Each device keeps MK in Android Keystore / iOS Keychain. Servers hold ciphertext only and cannot decrypt.
-- New device: it makes a temporary key pair and shows a QR code; an existing device scans it, approves, and sends `User ID + MK` over a channel encrypted to that public key. The new device stores MK itself and joins the trusted-device list. No hardware-bound key is ever moved.
-- Server authentication: each device has its own long-term P-256 ECDSA key pair, private key kept non-exportable where the platform allows. The device signs a server challenge, the server checks the device's public key and issues a short Access Token (e.g. 15 minutes); on expiry the app signs again in the background. No refresh tokens, passkeys, SRP or login screen. Approving a new device approves its authentication key and hands over MK in one step.
-- Storage backends, all receiving only E2EE ciphertext, with sync, versions and conflicts handled by the client:
+Local-first, always end-to-end encrypted, with identity and keys held by
+devices. The approved policy and exact implementation boundaries are in
+[docs/SYNC_NETWORK.md](docs/SYNC_NETWORK.md); decisions are in
+[docs/DECISIONS.md](docs/DECISIONS.md).
 
-  | Storage | Authentication |
-  | --- | --- |
-  | Own Go server | Device signature + Access Token |
-  | Google Drive | Google OAuth |
-  | WebDAV / S3 | Their own |
-  | Local only | None |
+Implemented: encrypted spaces on Google Drive, WebDAV and the AID server;
+platform-stored identity/MK, wrapped data keys and Argon2id recovery;
+symmetric SPAKE2 pairing through shared storage; concurrent route selection
+with upgrades, dwell and quiet retries; HMAC-authenticated IPv4/IPv6 LAN
+transport integrated with shared storage; persistent encrypted media chunks
+and task queues; metadata-first sync and bounded operator-cache media.
+New remote spaces use format 4; older formats require a new space or an
+explicitly approved reset, never an automatic deletion or migration.
 
-- Recovery and security:
-  - Usual phone change: the old device approves the new one by QR code.
-  - A lost device: any other trusted device can approve a new one.
-  - All devices lost: needs a recovery credential saved beforehand, restoring both MK and control of the anonymous account. A random recovery code by default, or a password of the user's own.
-  - Revoking a device removes its server access; an MK it already holds cannot be taken back by revoking tokens.
-  - Generic phone-cloning tools cannot carry hardware-bound keys, so they are not a migration path.
-- Principle: the user owns identity and keys, devices trust each other, servers only provide replaceable sync and storage.
-- Done in the first milestone (2026-10-22), on the storage backends there are (Google Drive, WebDAV, the AID server as WebDAV): every space encrypted; user id and master key made on first use and kept in the platform's secure storage; a per-space data key sealed by the master key; a recovery code, random by default or a password of the user's own (Argon2id), sealing the master key in the space; pairing either way round, by typed or scanned code, over the space's storage with SPAKE2 (RFC 9382); passphrases and unencrypted spaces removed.
-- Next: discovery and pairing on the local network; device keys and short tokens on the AID server in place of WebDAV passwords; media synced directly between devices on one network; revoking devices; key rotation; sync conflicts beyond newer-wins.
+Remaining work:
+
+- Validate Windows-to-Android mDNS discovery and path changes on the physical
+  test devices. Native discovery between isolated Windows clients, LAN media
+  hash verification and metadata sync with the test cloud offline pass.
+- Public address directory and reachable IPv4/IPv6 candidates outside LAN;
+  ICE/STUN and UDP connectivity checks; bounded live relay. Selector types
+  alone do not implement these paths. Keep live relay distinct from the
+  asynchronous media cache that already exists.
+- First-time offline QR trust and MK transfer, a nearby migration flow,
+  Wi-Fi Direct/hotspot assistance and platform permission handling. Reuse
+  chunk semantics and prefer direct transfer; assistance can require user
+  interaction. Current storage-based pairing remains necessary to establish
+  the shared MK before LAN authentication.
+- Per-device P-256 signing keys and server challenges/short-lived access
+  tokens instead of the AID server's WebDAV passwords; authorization and
+  revocation of individual devices, then key rotation. Current LAN HMAC
+  proves a shared MK, so it cannot revoke one device independently. Revoking
+  tokens cannot take away an MK already held by a lost device. Keep signing
+  keys non-exportable where supported: approving a new device authorizes
+  its own key and transfers MK, rather than copying a hardware-bound key.
+- Advanced network diagnostics UI. `sync.status` and `sync.network` already
+  expose routes, retry times and media/durability counts to the CLI.
+- A user-facing durable-copy view, separate from transfer completion. The
+  operator cache can expire; successful transfer does not by itself prove
+  a reliable backup, and a peer's retention is not guaranteed.
+- Conflict handling beyond newer-wins with the losing local entry kept in
+  Recently deleted. Field merging and a hybrid logical clock remain open
+  product decisions.
 
 ## Decided against for now
 - App lock timeout: phones' own app-lock features cover it.

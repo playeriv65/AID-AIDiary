@@ -369,8 +369,7 @@ JOIN $entriesTable e ON e.id = l.${EntryTagFields.entryId}''');
     expect(await tablet.texts(), ['kept and edited']);
   });
 
-  test('an item whose photo is missing waits, and everything read with it',
-      () async {
+  test('missing media waits without delaying entries in its pack', () async {
     final entry = await phone.write('beach');
     await phone.photos.write('aid_diary_1.jpg', Uint8List.fromList([1, 2]));
     await phone.db.insert(imagesTable, {
@@ -380,13 +379,16 @@ JOIN $entriesTable e ON e.id = l.${EntryTagFields.entryId}''');
     });
     await phone.write('plain');
     await phone.sync(cloud);
-    final blob = filesIn(SpaceLayout.blobs).single;
-    final held = cloud.files.remove(SpaceLayout.blob(blob))!;
+    final blob =
+        cloud.files.keys.firstWhere((path) => path.startsWith('media/chunks/'));
+    final held = cloud.files.remove(blob)!;
 
-    await laptop.sync(cloud);
-    expect(await laptop.texts(), ['plain']);
+    final report = await laptop.sync(cloud);
+    expect(await laptop.texts(), ['beach', 'plain']);
+    expect(report.pendingMedia, 1);
+    expect(await laptop.photos.exists('aid_diary_1.jpg'), isFalse);
 
-    cloud.files[SpaceLayout.blob(blob)] = held;
+    cloud.files[blob] = held;
     await laptop.sync(cloud);
     expect(await laptop.texts(), ['beach', 'plain']);
     expect(await laptop.db.query(imagesTable), hasLength(1));

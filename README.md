@@ -35,14 +35,14 @@ The layout follows the Journey diary app: a bottom bar on phones, a navigation r
 - **Search**: text plus inline tag, starred and mood filters (and activity, for imported entries that have one).
 - **Statistics**: streaks, mood over time, "What makes me feel…" (the activities and tags most often seen with a mood) and Year in Pixels.
 - **Recently deleted**: deleted entries wait 30 days (configurable) before they are erased; restore or erase them early.
-- **Sync** (optional): keeps the diary, its photos, tags and templates the same on every device through your own Google Drive (the app sees only its `AID Diary` folder), a WebDAV server of your choice (Nextcloud, Synology, 坚果云 and others) or the AID sync server in `server/`. Always end-to-end encrypted, with no account or password: each device holds the user's key, a new device gets it by pairing with one already set up (show a code on either, type or scan it on the other), and a recovery code, random or your own, restores it when every device is lost. The storage only ever holds ciphertext. Edits sync a few seconds later and while the app is open; when two devices change the same entry the newer wins and the other is kept in Recently deleted. Only entries that failed to sync are marked, with a small crossed-out cloud.
+- **Sync** (optional): keeps the diary, its photos, tags and templates the same on every device through your own Google Drive (the app sees only its `AID Diary` folder), a WebDAV server of your choice (Nextcloud, Synology, 坚果云 and others) or the AID sync server in `server/`. Always end-to-end encrypted, with no diary account or password: each device holds the user's key, a new device gets it by pairing with one already set up (show a code on either, type or scan it on the other), and a recovery code, random or your own, restores it when every device is lost. The storage only ever holds ciphertext. Trusted nearby devices can exchange data directly. Diary text syncs first; media follows when a device and the transfer allowance are available. Status distinguishes a synced diary, some media still transferring, and waiting for another device. The AID server's temporary media cache is limited and is not a backup. Edits sync a few seconds later and while the app is open; when two devices change the same entry the newer wins and the other is kept in Recently deleted. Only entries that failed to sync are marked, with a small crossed-out cloud.
 - **Export**: JSON (every entry with place, weather, activity, tags and attachment names; the JSON import reads it back), Markdown, and Journey and Day One archives that those apps import, besides the full backup.
 - **Import**: Journey backups (both schemas) and Day One JSON exports with photos, tags, stars, place and weather, plus Daybook, Daylio, Diarium, Diaro, My Brain, OneShot and Pixels.
 - **Settings**: general (theme, wallpaper, entry font, size and line spacing, units, 12/24-hour time, the hours that pick a new entry's diary day, add place and weather automatically), data and storage (backup, export, Recently deleted), stories (morning and evening prompts, throwbacks), notifications (Android: reminders with weekdays, on this day, a nudge after a few quiet days, a lasting quick-write notification), security, help (FAQ, privacy) and about.
 - **Command line and agents**: every feature is an action that the app's buttons, its command palette (Ctrl+K on Windows; Settings → Command line → All commands) and the `aid` command line all run, so what a script or an AI agent does shows in the app as it happens. Off in release builds until Settings → Command line is turned on; the API listens on this device only, with a new token each start.
 - **Android home screen widgets**: today's status (date, whether today has an entry, the latest entry's first line, the streak and a Write button), and a photo from the diary, a different one each day, that opens its entry.
 
-Entries, photos and coordinates stay on the device unless sync is turned on, and then reach only the chosen server, encrypted. Network use, all optional and configured in [assets/config/app_config.json](assets/config/app_config.json):
+Entries, photos and coordinates stay on the device unless sync is turned on, and then reach the chosen storage and trusted devices, encrypted. Network use, all optional and configured in [assets/config/app_config.json](assets/config/app_config.json):
 
 - OpenStreetMap map tiles, and Nominatim for place names and place search.
 - Overpass (OpenStreetMap) for named places near the current position, only when the location picker opens with a position.
@@ -53,13 +53,15 @@ Android permissions beyond storage and notifications: location (place, asked for
 
 ## Development
 
-Windows is the main development environment (no WSL, no SDK submodule). [docs/SETUP.md](docs/SETUP.md) sets up a new computer (toolchain versions, `scripts/dev.env`, the signing key) and lists the test devices and the outside accounts the app depends on. The code is organized after Flutter's official architecture guide; [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) describes the layers and the rules the tests enforce. [docs/DECISIONS.md](docs/DECISIONS.md) records the product decisions and the open questions.
+Windows is the main development environment (no WSL, no SDK submodule). [docs/SETUP.md](docs/SETUP.md) sets up a new computer (toolchain versions, `scripts/dev.env`, the signing key) and lists the test devices and the outside accounts the app depends on. The code is organized after Flutter's official architecture guide; [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) describes the layers and the rules the tests enforce. [docs/DECISIONS.md](docs/DECISIONS.md) records the product decisions and the open questions. [docs/SYNC_NETWORK.md](docs/SYNC_NETWORK.md) describes automatic paths, resumable media, server budgets and the network features still to build.
 
 ```powershell
+./scripts/dev.ps1 pub          # resolve app and CLI dependencies on a new checkout
 ./scripts/dev.ps1 test         # all tests
 ./scripts/dev.ps1 analyze      # static analysis
 ./scripts/dev.ps1 screenshots  # regenerate artifacts/ui-*.png headlessly
 ./scripts/dev.ps1 windows      # run the Windows app
+./scripts/dev.ps1 windows-build # build Windows without opening a window
 ./scripts/dev.ps1 android      # run on the emulator
 ./scripts/dev.ps1 apk          # build the debug APK (dev flavor)
 ./scripts/dev.ps1 profile -Device <serial>     # install the dev app in profile mode

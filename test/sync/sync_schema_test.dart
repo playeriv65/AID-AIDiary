@@ -202,6 +202,20 @@ void main() {
         hasLength(1));
   });
 
+  test('version 12 adds transfer state without touching diary changes',
+      () async {
+    await AppDatabase.instance.createSchema(db);
+    await db.execute('DROP TABLE sync_media_tasks');
+    await db.execute('DROP TABLE sync_media_objects');
+    await addEntry('kept locally');
+    final before = await changes();
+    await AppDatabase.instance.upgradeSchema(db, 12, 13);
+    expect(await db.query('sync_media_tasks'), isEmpty);
+    expect(await db.query('sync_media_objects'), isEmpty);
+    expect(await changes(), before);
+    expect(await db.query(entriesTable), hasLength(1));
+  });
+
   test('the built-in icons are the ones the defaults use', () async {
     await AppDatabase.instance.createSchema(db);
     await TagsProvider.instance.createDefaultTags();

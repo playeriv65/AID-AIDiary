@@ -43,6 +43,7 @@ type settings struct {
 	failWindow     time.Duration
 	credentialTTL  time.Duration
 	trustProxy     bool
+	media          server.MediaLimits
 }
 
 func load() (settings, error) {
@@ -59,11 +60,21 @@ func load() (settings, error) {
 	}{
 		{"AID_SYNC_DEFAULT_QUOTA_MB", &s.defaultQuotaMB, 2048},
 		{"AID_SYNC_MAX_UPLOAD_MB", &s.maxUploadMB, 256},
+		{"AID_SYNC_MEDIA_MAX_OBJECT_BYTES", &s.media.MaxObjectBytes, 2 << 20},
+		{"AID_SYNC_MEDIA_MAX_MANIFEST_BYTES", &s.media.MaxManifestBytes, 256 << 10},
+		{"AID_SYNC_MEDIA_CACHE_BYTES", &s.media.CacheBytes, 128 << 20},
+		{"AID_SYNC_MEDIA_DAILY_TRANSFER_BYTES", &s.media.DailyTransferBytes, 256 << 20},
 	}
 	for _, v := range ints {
 		if *v.into, err = strconv.ParseInt(env(v.name, strconv.FormatInt(v.def, 10)), 10, 64); err != nil {
 			return s, fmt.Errorf("%s: %w", v.name, err)
 		}
+		if *v.into < 0 || (strings.HasPrefix(v.name, "AID_SYNC_MEDIA_") && *v.into == 0) {
+			return s, fmt.Errorf("%s must be positive (quota may be zero)", v.name)
+		}
+	}
+	if s.media.CacheTTL, err = time.ParseDuration(env("AID_SYNC_MEDIA_CACHE_TTL", "168h")); err != nil || s.media.CacheTTL <= 0 {
+		return s, fmt.Errorf("AID_SYNC_MEDIA_CACHE_TTL must be a positive duration")
 	}
 	if s.minPassword, err = strconv.Atoi(env("AID_SYNC_MIN_PASSWORD", "12")); err != nil {
 		return s, fmt.Errorf("AID_SYNC_MIN_PASSWORD: %w", err)
@@ -194,6 +205,7 @@ func serve(s settings, store *accounts.Store) error {
 	handler := server.New(server.Config{
 		DataDir:        s.dataDir,
 		MaxUploadBytes: s.maxUploadMB << 20,
+		Media:          s.media,
 		CredentialTTL:  s.credentialTTL,
 		FailLimit:      s.failLimit,
 		FailWindow:     s.failWindow,

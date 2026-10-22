@@ -593,5 +593,8 @@
     "toolbarUndo": "復原",
     "toolbarRedo": "重做",
     "toolbarInsertDate": "插入日期",
-    "toolbarInsertTime": "插入時間"
+    "toolbarInsertTime": "插入時間",
+    "syncMediaPending": "日記已同步，部分媒體仍在傳輸",
+    "syncWaitingForDevices": "日記已同步，正在等待其他裝置傳輸媒體",
+    "syncCacheNotice": "雲端媒體暫存會過期。請保留裝置上的原始檔案；同步不等於備份。"
 }

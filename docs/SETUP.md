@@ -30,9 +30,42 @@ Development happens natively on Windows (no WSL). Versions in use on
 3. `flutter config --android-sdk <ANDROID_HOME>`, so Flutter and Gradle use
    the same SDK.
 4. The signing key, for any Android build (next section).
-5. `./scripts/dev.ps1 test` and `./scripts/dev.ps1 windows` to check.
+5. `./scripts/dev.ps1 pub` resolves dependencies for both the Flutter app and
+   the separate `cli/` Dart package. Run it in every new checkout/worktree
+   before analysis or tests; the root analyzer also reads CLI sources.
+6. `./scripts/dev.ps1 test` and `./scripts/dev.ps1 windows` to check.
+
+## Sync development
+
+[SYNC_NETWORK.md](SYNC_NETWORK.md) records the path policy, encrypted chunk
+protocol, persistent queue and remaining network work. Use a local server
+and scratch diary data for protocol tests; [the server guide](../server/README.md)
+owns deployment variables and authoritative media-cache limits. `aid sync.status`
+reports normal progress; `aid sync.network` adds candidate routes, retry
+timing and durable versus temporary/unconfirmed media delivery counts.
+
+Spaces created now use format 4. Earlier remote formats are rejected without
+migration or automatic reset. Starting over on a live server is a destructive
+owner decision: use a new space or the explicitly authorized
+`sync.reset_space` action, preserve the local diary and arrange re-pairing.
+Do not turn an unsupported-format error into cleanup of the remote data.
+
+LAN discovery uses native DNS-SD on Windows and Android for devices already
+sharing the user/space keys. Native discovery has been checked between two
+isolated hidden Windows clients; validate Windows-to-tablet discovery and
+network changes on the physical test devices separately. The app targets Android SDK 36
+while compiling against SDK 37; local-network permission handling for a
+future target-SDK upgrade remains follow-up work. Do not change global
+cleartext policy merely to enable Dart-owned LAN HTTP sockets.
 
 ## Signing key
+
+Native Flutter run/build targets take an exclusive per-checkout file lock.
+Windows and Android builds share Flutter asset staging and must not run
+concurrently in the same checkout: this can produce an APK without its Dart
+kernel. `./scripts/dev.ps1 windows-build` builds without opening a window;
+use another worktree for concurrent platform builds. An existing lock file
+does not block a build when its owning process has closed it.
 
 Every Android build, debug and profile included, is signed with the
 release key whenever `android/key.properties` exists (template:

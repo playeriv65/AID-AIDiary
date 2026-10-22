@@ -124,6 +124,48 @@ class FakeDav {
 }
 
 void main() {
+  test('a self-hosted AID server advertises expiring media policy', () async {
+    final client = MockClient((request) async {
+      expect(request.url.path, '/api/sync/policy');
+      expect(request.headers['Authorization'], startsWith('Basic '));
+      return http.Response(
+          jsonEncode({
+            'media': {
+              'maxObjectBytes': 2048,
+              'maxManifestBytes': 1024,
+              'transferRemainingBytes': 4096,
+              'cacheTtlSeconds': 60,
+              'cacheBytes': 8192,
+            }
+          }),
+          200);
+    });
+    final backend = WebDavBackend(
+        server: Uri.parse('https://own.example/dav/'),
+        username: 'diary',
+        password: 'test',
+        client: client);
+    addTearDown(backend.close);
+    expect((await backend.mediaPolicy())!['cacheTtlSeconds'], 60);
+    expect(backend.boundedMedia, isTrue);
+  });
+
+  test('personal WebDAV does not repeatedly probe an absent policy', () async {
+    var calls = 0;
+    final backend = WebDavBackend(
+        server: Uri.parse('https://own.example/dav/'),
+        username: 'diary',
+        password: 'test',
+        client: MockClient((_) async {
+          calls++;
+          return http.Response('', 404);
+        }));
+    addTearDown(backend.close);
+    expect(await backend.mediaPolicy(), isNull);
+    expect(await backend.mediaPolicy(), isNull);
+    expect(calls, 1);
+    expect(backend.boundedMedia, isFalse);
+  });
   setUpAll(() {
     TestWidgetsFlutterBinding.ensureInitialized();
     sqfliteFfiInit();

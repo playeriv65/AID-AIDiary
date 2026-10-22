@@ -184,6 +184,42 @@ P-256) with the code as password, so the storage sees only protocol
 messages and ciphertext, a wrong code ends the channel after one try, and
 the key is sent only after both sides have confirmed the same code.
 
+The network and media design is specified in [SYNC_NETWORK.md](SYNC_NETWORK.md).
+The data layer separates these owners:
+
+| Module | Responsibility |
+| --- | --- |
+| `sync_service.dart` | Compose storage, identity, discovery and the engine; expose diary/media states; schedule quiet retries |
+| `connection_manager.dart` | Probe verified candidates concurrently, choose a usable route, upgrade with dwell/hysteresis and fence stale network results |
+| `lan_transport.dart` | Native DNS-SD hints and HMAC-authenticated IPv4/IPv6 object transport for devices already sharing MK |
+| `routed_backend.dart` | One metadata backend across authenticated peers, shared storage and a persistent ciphertext outbox; require remote acknowledgements |
+| `sync_engine.dart` | Merge versioned packs and snapshots first, queue missing attachments and retain conflict copies |
+| `media_transfer.dart` | Encrypted immutable chunks/manifests, integrity checks, per-route allowances and resumable transfers |
+| `sync_schema.dart` | SQLite change/version state, media task queue and ciphertext vault |
+
+Metadata has one identity and version history across paths. A local outbox
+write does not acknowledge remote delivery. Compaction removes old packs
+from a route only after it acknowledges the replacement snapshot. Media
+progress is owned by SQLite, not by a socket; 1 MiB plaintext chunks are
+encrypted once and reused through path changes and process restarts. A
+media source pool can try other authenticated online devices when the
+selected peer lacks an object. Operator-cache traffic stays separately
+budgeted from direct transfers and personal storage.
+
+Diary metadata may be synchronized while attachment bytes remain pending.
+Temporary cache receipt and durable remote storage are distinct facts;
+neither a route change nor a successful cache upload changes that distinction.
+The GUI shows simple sync/media states. `sync.status` and `sync.network`
+actions expose route, retry and media diagnostics; no advanced diagnostics
+page exists yet.
+
+Current remote spaces use format 4. Older formats fail explicitly rather
+than being migrated or reset automatically; local database schema updates
+only add queue/vault state. Device-key authentication and revocation,
+public address discovery, ICE/STUN, live relay, offline first-time QR trust
+and Wi-Fi Direct/hotspot assistance remain unimplemented. The selector has
+types for future paths without claiming those transports exist.
+
 ## Dependencies
 
 Stores and services are app-wide singletons (`EntryStore.instance` and so

@@ -10,6 +10,7 @@ library;
 
 import 'package:aid_diary/actions/app_action.dart';
 import 'package:aid_diary/actions/app_actions.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -37,14 +38,21 @@ void main() {
               SizedBox(height: 60, child: Text('Row $index'))),
     ));
 
-    await tester.runAsync(() => actions.run('ui.fling', {}));
+    Future<void> fling(Map<String, Object?> args) async {
+      final action = actions.run('ui.fling', args);
+      for (var step = 0; step < 10; step++) {
+        await tester.pump(const Duration(milliseconds: 8));
+      }
+      await action;
+    }
+
+    await fling({});
     final lifted = list.offset;
     expect(lifted, greaterThan(0));
     await tester.pumpAndSettle();
     expect(list.offset, greaterThan(lifted), reason: 'a fling carries on');
 
-    await tester
-        .runAsync(() => actions.run('ui.fling', {'from': '0.2', 'to': '0.8'}));
+    await fling({'from': '0.2', 'to': '0.8'});
     await tester.pumpAndSettle();
     expect(list.offset, lessThan(lifted));
 
@@ -52,6 +60,44 @@ void main() {
         () => actions.run('ui.fling', {'x': '1.5'}),
         throwsA(isA<ActionException>()
             .having((error) => error.code, 'code', 'bad_args')));
+  });
+
+  testWidgets('ui.fling keeps requested event timing across delayed frames',
+      (tester) async {
+    final actions = AppActions(screen: _Screen());
+    await tester.pumpWidget(const MaterialApp(home: SizedBox.expand()));
+    final events = <PointerEvent>[];
+    void capture(PointerEvent event) => events.add(event);
+    GestureBinding.instance.pointerRouter.addGlobalRoute(capture);
+    addTearDown(
+        () => GestureBinding.instance.pointerRouter.removeGlobalRoute(capture));
+
+    final action = actions.run('ui.fling', {'duration_ms': '96'});
+    expect(events.whereType<PointerMoveEvent>(), isEmpty);
+    await tester.pump(const Duration(milliseconds: 7));
+    expect(events.whereType<PointerMoveEvent>(), isEmpty,
+        reason: 'real timers still pace delivery before the first sample');
+    // Rendering need not keep up with the requested synthetic event cadence.
+    await tester.pump(const Duration(milliseconds: 65));
+    await tester.pump(const Duration(milliseconds: 70));
+    await action;
+
+    final down = events.whereType<PointerDownEvent>().single;
+    final moves = events.whereType<PointerMoveEvent>().toList();
+    final up = events.whereType<PointerUpEvent>().single;
+    expect(down.timeStamp, Duration.zero);
+    expect(moves.length, greaterThanOrEqualTo(3));
+    var previousTime = down.timeStamp;
+    for (final move in moves) {
+      expect(move.pointer, down.pointer);
+      expect(move.timeStamp, greaterThan(previousTime));
+      expect(move.timeStamp - previousTime,
+          lessThanOrEqualTo(const Duration(milliseconds: 9)));
+      previousTime = move.timeStamp;
+    }
+    expect(up.timeStamp, const Duration(milliseconds: 96));
+    expect(up.timeStamp, moves.last.timeStamp);
+    expect(up.position, moves.last.position);
   });
 
   testWidgets('perf.stop reports what perf.start counted', (tester) async {

@@ -69,8 +69,9 @@ asks again. Dates are when it was settled. Ideas not built yet are in
 
 ## Sync and encryption
 
-The plan is in `TODO.md` ("Sync, identity and encryption"); the first
-milestone is built (2026-10-22). Decided along the way:
+The remaining work is in `TODO.md` ("Sync, identity and encryption").
+[SYNC_NETWORK.md](SYNC_NETWORK.md) describes the network policy and the
+current implementation. Decided along the way:
 
 - No sign-up, login or password for the diary itself. Devices hold the
   user id and master key; storage only ever holds ciphertext.
@@ -87,6 +88,50 @@ milestone is built (2026-10-22). Decided along the way:
 - Build on the existing storage backends first (Google Drive, WebDAV, the
   AID server); device keys and short-lived tokens on the AID server come
   next.
+
+### Automatic paths and bounded media (2026-10-22)
+
+- Daily sync is best effort: discover, probe paths together, start work on
+  an available connection, upgrade when a worthwhile direct path appears,
+  and retry quietly after failure. Avoid strict LAN-then-IPv6-then-UDP-then-
+  relay timeout chains. Stability, cost and throughput matter; use dwell
+  and hysteresis to avoid frequent path changes.
+- LAN, public direct, ICE, live relay and asynchronous cache are path types,
+  not sequential stages. Live relay needs both devices online; asynchronous
+  cache does not. Operator servers must never default to unlimited media
+  relay or storage.
+- Connection selection and sync work are separate. All paths share item
+  IDs, ciphertext hashes, versions and acknowledgement semantics. Transfer
+  media as verified resumable chunks so changing networks does not restart
+  the entire attachment.
+- Sync diary text and indexes first, then media permitted by the current
+  path and budget. A synced diary with media waiting is normal. Large media
+  waits for direct transfer when the operator-cache allowance is too small;
+  it must not silently consume unlimited paid server traffic. Personal
+  storage has its own provider limits, separate from the operator budget.
+- Keep ordinary status simple: synced, some media pending, or waiting for
+  another device. Background failures back off without immediate popups.
+  Protocol and route details belong in diagnostics, not the daily workflow.
+- Nearby device migration should favor direct transfer while reusing
+  discovery, authentication and chunk protocols. The intended flow is scan,
+  find a fast connection, transfer and verify. Same-Wi-Fi or hotspot
+  assistance may require user action; arbitrary cross-platform offline
+  connections without interaction are not promised.
+- A temporary cache is not a backup. Transfer completion and the existence
+  of durable copies must remain separate concepts. Do not discard the last
+  intended persistent media copy merely because the cache accepted it.
+- New spaces use format 4; older sync formats are rejected. Unsupported
+  formats do not authorize deleting a diary or resetting a live remote
+  space. Start a new space or use an explicitly approved reset; there is no
+  automatic migration.
+
+Implemented now: the path selector, authenticated LAN transport integrated
+with shared storage, persistent chunk tasks and operator-cache limits.
+Public address discovery, ICE/STUN, live relay, offline first-time trust,
+Wi-Fi Direct/hotspot assistance and individual device-key revocation remain
+future work. LAN currently authenticates possession of the same MK, rather
+than a separate device signing key. The new nearby migration flow and an
+advanced GUI diagnostics page have not been implemented.
 
 ## Testing
 

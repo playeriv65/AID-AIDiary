@@ -2314,6 +2314,18 @@ class AppLocalizationsPt extends AppLocalizations {
   String syncPairFailed(String error) {
     return 'Pairing failed: $error';
   }
+
+  @override
+  String get syncMediaPending =>
+      'Diary synced · some media is still transferring';
+
+  @override
+  String get syncWaitingForDevices =>
+      'Diary synced · waiting for another device to transfer media';
+
+  @override
+  String get syncCacheNotice =>
+      'Cloud media is temporary. Keep the originals on your devices; syncing is not a backup.';
 }
 
 /// The translations for Portuguese, as used in Brazil (`pt_BR`).

@@ -47,6 +47,8 @@ class WebDavBackend implements SyncBackend {
   final String folder;
   final String _authorization;
   final http.Client _client;
+  bool? _hasMediaPolicy;
+  bool get boundedMedia => _hasMediaPolicy == true;
 
   /// Folders made, or being made, in this session. Writes in parallel wait
   /// on the same MKCOL: servers lock a folder while one is made, and answer
@@ -207,6 +209,24 @@ class WebDavBackend implements SyncBackend {
   }
 
   void close() => _client.close();
+
+  /// The operator's limits, authenticated at the same origin as WebDAV.
+  /// A personal WebDAV server may not expose the AID policy endpoint.
+  Future<Map<String, dynamic>?> mediaPolicy() async {
+    if (_hasMediaPolicy == false) return null;
+    final response = await _send('GET',
+        _server.replace(path: '/api/sync/policy', query: '', fragment: ''));
+    if (response.statusCode == 404 || response.statusCode == 405) {
+      _hasMediaPolicy = false;
+      return null;
+    }
+    if (response.statusCode != 200) {
+      throw _failure('GET', '/api/sync/policy', response);
+    }
+    _hasMediaPolicy = true;
+    return (jsonDecode(response.body) as Map<String, dynamic>)['media']
+        as Map<String, dynamic>;
+  }
 }
 
 const String _propfindBody = '<?xml version="1.0" encoding="utf-8"?>'

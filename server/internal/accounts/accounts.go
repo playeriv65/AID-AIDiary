@@ -78,6 +78,15 @@ func Open(path string, hashing Hashing, minPassword int) (*Store, error) {
 		db.Close()
 		return nil, err
 	}
+	if _, err := db.Exec(`CREATE TABLE IF NOT EXISTS media_transfer (
+  user_id INTEGER NOT NULL,
+  day TEXT NOT NULL,
+  bytes INTEGER NOT NULL CHECK (bytes >= 0),
+  PRIMARY KEY (user_id, day)
+)`); err != nil {
+		db.Close()
+		return nil, err
+	}
 	return &Store{db: db, hashing: hashing, minPassword: minPassword}, nil
 }
 

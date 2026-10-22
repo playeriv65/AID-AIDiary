@@ -8,53 +8,31 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:aid_diary/models/image.dart';
-import 'package:aid_diary/storage/file_store.dart';
+import 'package:aid_diary/sync/media_transfer.dart';
 import 'package:aid_diary/sync/sync_backend.dart';
 import 'package:aid_diary/sync/sync_crypto.dart';
 import 'package:aid_diary/sync/sync_records.dart';
 import 'package:aid_diary/sync/sync_schema.dart';
+import 'package:aid_diary/sync/sync_photos.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:uuid/uuid.dart';
 
-/// The photo files on this device, as sync uses them.
-abstract interface class SyncPhotos {
-  Future<bool> exists(String name);
-
-  /// Null when there is no such file.
-  Future<Uint8List?> read(String name);
-
-  /// Throws when the file could not be written.
-  Future<void> write(String name, Uint8List bytes);
-
-  Future<void> delete(String name);
-}
-
-/// Photos kept in a [FileStore].
-class FileStorePhotos implements SyncPhotos {
-  const FileStorePhotos(this.store);
-
-  final FileStore store;
-
-  @override
-  Future<bool> exists(String name) => store.exists(name);
-
-  @override
-  Future<Uint8List?> read(String name) => store.read(name);
-
-  @override
-  Future<void> write(String name, Uint8List bytes) async {
-    if (!await store.write(name, bytes)) {
-      throw FileSystemException('Could not write the photo', name);
-    }
-  }
-
-  @override
-  Future<void> delete(String name) => store.delete(name);
-}
+export 'sync_photos.dart';
 
 /// What one sync did.
 class SyncReport {
-  const SyncReport({this.received = 0, this.sent = 0, this.keptConflicts = 0});
+  const SyncReport(
+      {this.received = 0,
+      this.sent = 0,
+      this.keptConflicts = 0,
+      this.pendingMedia = 0,
+      this.mediaCompleted = 0,
+      this.mediaFailures = 0,
+      this.waitingForPeer = false});
+  final int pendingMedia;
+  final int mediaCompleted;
+  final int mediaFailures;
+  final bool waitingForPeer;
 
   /// Remote items written into the diary.
   final int received;
@@ -67,7 +45,8 @@ class SyncReport {
   final int keptConflicts;
 
   /// Whether the diary on this device changed.
-  bool get changedLocally => received > 0 || keptConflicts > 0;
+  bool get changedLocally =>
+      received > 0 || keptConflicts > 0 || mediaCompleted > 0;
 }
 
 /// How far a sync is: [done] of [total] files received, or sent.
@@ -97,9 +76,9 @@ class SyncLimits {
 /// is newer than what the diary has, and sends its own changes as one new
 /// pack. Items are compared by the time they last changed: the newer side
 /// wins, whatever order packs arrive in, and a local entry that loses is kept
-/// in Recently deleted rather than dropped. Photos travel as separate blobs,
-/// sent before the packs that use them and fetched before those items are
-/// written.
+/// in Recently deleted rather than dropped. Attachment rows travel with the
+/// diary; their independently encrypted blocks follow through a persistent
+/// queue according to the current route and its transfer allowance.
 class SyncEngine {
   SyncEngine(
       {required this.db,
@@ -107,6 +86,11 @@ class SyncEngine {
       required this.photos,
       required this.limits,
       this.cipher,
+      this.mediaAllowance,
+      this.mediaFallback,
+      this.onMediaFailure,
+      this.onMetadata,
+      this.mediaChunkBytes = 1024 * 1024,
       this.onProgress,
       this.stopped,
       DateTime Function()? now})
@@ -122,6 +106,21 @@ class SyncEngine {
 
   /// Null for a space that is not end-to-end encrypted.
   final ItemCipher? cipher;
+  final MediaAllowance Function()? mediaAllowance;
+  final MediaAllowance? mediaFallback;
+  final void Function(Object error)? onMediaFailure;
+  final Future<void> Function()? onMetadata;
+  final int mediaChunkBytes;
+  late final _media = MediaTransfers(
+      db: db,
+      photos: photos,
+      backend: backend,
+      chunkBytes: mediaChunkBytes,
+      cipher: cipher,
+      allowance: mediaAllowance,
+      fallbackAllowance: mediaFallback,
+      stopped: stopped,
+      onFailure: onMediaFailure);
 
   /// Told before each file, so a long sync can show how far it is.
   final void Function(SyncProgress progress)? onProgress;
@@ -139,9 +138,17 @@ class SyncEngine {
     // newer one; that waits for a sync that reads everything.
     if (received == null) return const SyncReport();
     final sent = await _push();
+    if (received.applied > 0 || received.kept > 0) await onMetadata?.call();
     if (!_stopped) await _compact();
+    final media = await _media.run();
     return SyncReport(
-        received: received.applied, sent: sent, keptConflicts: received.kept);
+        received: received.applied,
+        sent: sent,
+        keptConflicts: received.kept,
+        pendingMedia: media.pending,
+        mediaCompleted: media.completed,
+        mediaFailures: media.failures,
+        waitingForPeer: media.waitingForPeer);
   }
 
   /// Takes in the packs and snapshots not read yet; null when it could not
@@ -208,13 +215,11 @@ class SyncEngine {
       toApply.add(record);
     }
 
-    // Photos first, so entries never point at missing files. An item whose
-    // photo is not in the space yet waits, and so does everything read with
-    // it, until a later sync.
+    // Attachment rows describe the diary even while their bytes are absent.
+    // Their transfer queue survives receiving packs and changing connections.
     final photoFiles = <String, String>{};
-    final waiting = <String>{};
     final names = <String>{};
-    final fetches = <({String key, String id, String name})>[];
+    final fetches = <({String id, String name})>[];
     for (final record in toApply) {
       for (final photo in record.photos) {
         if (photoFiles.containsKey(photo.id) ||
@@ -227,25 +232,15 @@ class SyncEngine {
         final name = localNameFor(photo.id, photo.file, taken);
         names.add(name);
         fetches.add((
-          key: _key(record.kind, record.id),
           id: photo.id,
           name: name,
         ));
       }
     }
-    await _parallel(fetches, (fetch) async {
-      final sealed = await backend.read(SpaceLayout.blob(fetch.id));
-      if (sealed == null) {
-        waiting.add(fetch.key);
-        return;
-      }
-      await photos.write(fetch.name, await _open(fetch.id, sealed));
+    for (final fetch in fetches) {
       photoFiles[fetch.id] = fetch.name;
-    });
-    final ready = [
-      for (final record in toApply)
-        if (!waiting.contains(_key(record.kind, record.id))) record,
-    ]..sort((a, b) => a.kind.index.compareTo(b.kind.index));
+    }
+    final ready = toApply..sort((a, b) => a.kind.index.compareTo(b.kind.index));
 
     final losers = <SyncRecord>[];
     for (final record in ready) {
@@ -261,6 +256,10 @@ class SyncEngine {
     }
     final unused = await withoutRecording(db, (txn) async {
       final writer = RecordWriter(txn, fileOf: (id) => photoFiles[id]!);
+      for (final fetch in fetches) {
+        await _media.queue(fetch.id, fetch.name,
+            sending: false, transaction: txn);
+      }
       for (final record in ready) {
         await writer.apply(record);
         await _know(txn, record);
@@ -268,21 +267,18 @@ class SyncEngine {
           await _clearChange(txn, local);
         }
       }
-      if (waiting.isEmpty) {
-        for (final path in read) {
-          await _see(txn, path);
-        }
+      for (final path in read) {
+        await _see(txn, path);
       }
       return writer.unusedFiles();
     });
     for (final file in unused) {
       await photos.delete(file);
     }
-    if (waiting.isNotEmpty) return null;
     return (applied: ready.length, kept: losers.length);
   }
 
-  /// Sends every local change: photos first, then the items in packs.
+  /// Publishes diary changes before any potentially expensive media transfer.
   Future<int> _push() async {
     final pending = (await _pending()).values.toList();
     if (pending.isEmpty || _stopped) return 0;
@@ -293,23 +289,14 @@ class SyncEngine {
           record: await exportRecord(db, local.kind, local.id, local.changedAt)
         ),
     ];
-    final blobs = await backend.list(SpaceLayout.blobs);
-    final uploads = {
-      for (final change in changes)
-        for (final photo in change.record.photos)
-          if (!blobs.containsKey(SpaceLayout.blob(photo.id))) photo.id: photo,
-    };
+    for (final change in changes) {
+      for (final photo in change.record.photos) {
+        await _media.queue(photo.id, photo.file, sending: true);
+      }
+    }
     final packs = _chunks(changes);
-    final total = uploads.length + packs.length;
+    final total = packs.length;
     var done = 0;
-    await _parallel(uploads.values, (photo) async {
-      if (_stopped) return;
-      onProgress?.call((sending: true, done: done++, total: total));
-      final bytes = await photos.read(photo.file);
-      if (bytes == null) return;
-      await backend.write(
-          SpaceLayout.blob(photo.id), await _seal(photo.id, bytes));
-    });
 
     var sent = 0;
     for (final pack in packs) {

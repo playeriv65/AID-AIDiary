@@ -37,6 +37,8 @@ type Config struct {
 	DataDir string
 	// MaxUploadBytes caps a single file.
 	MaxUploadBytes int64
+	// Media is a bounded, temporary cache, separate from durable metadata.
+	Media MediaLimits
 	// CredentialTTL is how long a checked password is trusted before it is
 	// checked again; a changed password takes effect within it.
 	CredentialTTL time.Duration
@@ -82,6 +84,7 @@ func New(cfg Config, store *accounts.Store, log *slog.Logger) *Server {
 	if cfg.Now == nil {
 		cfg.Now = time.Now
 	}
+	cfg.Media = cfg.Media.defaults()
 	return &Server{
 		cfg:      cfg,
 		accounts: store,
@@ -96,6 +99,7 @@ func New(cfg Config, store *accounts.Store, log *slog.Logger) *Server {
 func (s *Server) Handler() http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /healthz", s.health)
+	mux.HandleFunc("GET /api/sync/policy", s.policy)
 	mux.HandleFunc(Prefix+"/", s.dav)
 	return s.logged(mux)
 }
@@ -109,6 +113,16 @@ func (s *Server) health(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) dav(w http.ResponseWriter, r *http.Request) {
+	if strings.ContainsAny(r.URL.Path, "\\:\x00") {
+		http.Error(w, "invalid path separator", http.StatusBadRequest)
+		return
+	}
+	for _, component := range strings.Split(r.URL.Path, "/") {
+		if component != "." && component != ".." && strings.TrimRight(component, " .") != component {
+			http.Error(w, "ambiguous path component", http.StatusBadRequest)
+			return
+		}
+	}
 	user, ok := s.authenticate(w, r)
 	if !ok {
 		return
@@ -119,17 +133,31 @@ func (s *Server) dav(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "storage unavailable", http.StatusInternalServerError)
 		return
 	}
+	f.mu.Lock()
+	defer f.mu.Unlock()
+	if err := s.expireMedia(f); err != nil {
+		s.log.Error("expire media", "err", err)
+		http.Error(w, "storage unavailable", http.StatusInternalServerError)
+		return
+	}
+	if isMedia(r.URL.Path) {
+		switch r.Method {
+		case http.MethodPut:
+			s.putMedia(w, r, user, f)
+			return
+		case http.MethodGet, http.MethodHead:
+			s.getMedia(w, r, user, f)
+			return
+		}
+	}
 	switch r.Method {
 	case http.MethodPut:
 		s.put(w, r, user, f)
 	case http.MethodDelete:
 		s.remove(w, r, f)
 	case "COPY", "MOVE":
-		f.mu.Lock()
-		defer f.mu.Unlock()
-		f.handler.ServeHTTP(w, r)
-		// Rare for the app; recount rather than track.
-		f.used = usage(f.root)
+		// Moving or copying a parent directory could bypass media policy, too.
+		http.Error(w, "copy and move are disabled; use put", http.StatusMethodNotAllowed)
 	default:
 		f.handler.ServeHTTP(w, r)
 	}
@@ -137,8 +165,6 @@ func (s *Server) dav(w http.ResponseWriter, r *http.Request) {
 
 // put writes a file within the user's quota and the upload limit.
 func (s *Server) put(w http.ResponseWriter, r *http.Request, user accounts.User, f *folder) {
-	f.mu.Lock()
-	defer f.mu.Unlock()
 	if r.ContentLength > s.cfg.MaxUploadBytes {
 		http.Error(w, "file too large", http.StatusRequestEntityTooLarge)
 		return
@@ -164,8 +190,6 @@ func (s *Server) put(w http.ResponseWriter, r *http.Request, user accounts.User,
 
 // remove deletes a file or folder and gives its space back.
 func (s *Server) remove(w http.ResponseWriter, r *http.Request, f *folder) {
-	f.mu.Lock()
-	defer f.mu.Unlock()
 	freed := usage(f.path(r.URL.Path))
 	recorder := &statusRecorder{ResponseWriter: w, status: http.StatusOK}
 	f.handler.ServeHTTP(recorder, r)

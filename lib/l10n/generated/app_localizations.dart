@@ -4247,6 +4247,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Pairing failed: {error}'**
   String syncPairFailed(String error);
+
+  /// No description provided for @syncMediaPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Diary synced · some media is still transferring'**
+  String get syncMediaPending;
+
+  /// No description provided for @syncWaitingForDevices.
+  ///
+  /// In en, this message translates to:
+  /// **'Diary synced · waiting for another device to transfer media'**
+  String get syncWaitingForDevices;
+
+  /// No description provided for @syncCacheNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'Cloud media is temporary. Keep the originals on your devices; syncing is not a backup.'**
+  String get syncCacheNotice;
 }
 
 class _AppLocalizationsDelegate

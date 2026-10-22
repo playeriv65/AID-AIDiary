@@ -22,10 +22,12 @@ Future<void> _swipe(Offset from, Offset to, Duration duration) async {
   final binding = GestureBinding.instance;
   final view = PlatformDispatcher.instance.implicitView!;
   final pointer = _nextPointer++;
-  final clock = Stopwatch()..start();
+  // This is a synthetic trajectory: timestamps describe its requested duration,
+  // independent of host timer jitter. Real delays still pace event delivery.
+  var time = Duration.zero;
   var position = from;
   void send(PointerEvent Function(Duration time) event) =>
-      binding.handlePointerEvent(event(clock.elapsed));
+      binding.handlePointerEvent(event(time));
   send((time) => PointerDownEvent(
       timeStamp: time,
       viewId: view.viewId,
@@ -36,6 +38,7 @@ Future<void> _swipe(Offset from, Offset to, Duration duration) async {
   final steps = max(2, duration.inMilliseconds ~/ 8);
   for (var step = 1; step <= steps; step++) {
     await Future<void>.delayed(duration ~/ steps);
+    time = Duration(microseconds: duration.inMicroseconds * step ~/ steps);
     final next = Offset.lerp(from, to, step / steps)!;
     final delta = next - position;
     position = next;

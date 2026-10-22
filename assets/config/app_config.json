@@ -95,6 +95,18 @@
     "compactAfterPacks": 20,
     "parallelTransfers": 3,
     "progressAfterSeconds": 3,
+    "transfer": {
+      "chunkKiB": 1024,
+      "cacheMaxFileMiB": 16,
+      "cacheTransferMiB": 32,
+      "retryBaseSeconds": 15,
+      "retryMaxSeconds": 600,
+      "probeTimeoutSeconds": 4,
+      "reprobeSeconds": 30,
+      "minimumDwellSeconds": 15,
+      "switchImprovement": 0.2,
+      "mdnsType": "_aid-diary._tcp"
+    },
     "officialServer": "https://aid.playeriv65.com/dav/",
     "exampleServer": "https://dav.jianguoyun.com/dav/",
     "googleDrive": {

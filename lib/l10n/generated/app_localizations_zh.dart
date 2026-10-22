@@ -2252,6 +2252,15 @@ class AppLocalizationsZh extends AppLocalizations {
   String syncPairFailed(String error) {
     return '配对失败：$error';
   }
+
+  @override
+  String get syncMediaPending => '日记已同步，部分媒体仍在传输';
+
+  @override
+  String get syncWaitingForDevices => '日记已同步，正在等待其他设备传输媒体';
+
+  @override
+  String get syncCacheNotice => '云端媒体缓存会过期。请保留设备上的原件；同步不等于备份。';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -4222,4 +4231,13 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get toolbarInsertTime => '插入時間';
+
+  @override
+  String get syncMediaPending => '日記已同步，部分媒體仍在傳輸';
+
+  @override
+  String get syncWaitingForDevices => '日記已同步，正在等待其他裝置傳輸媒體';
+
+  @override
+  String get syncCacheNotice => '雲端媒體暫存會過期。請保留裝置上的原始檔案；同步不等於備份。';
 }
