@@ -3,6 +3,7 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'dart:convert';
+import 'package:aid_diary/database/hidden_entry_policy.dart';
 import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
@@ -137,6 +138,7 @@ class SyncEngine {
   final DateTime Function() _now;
 
   Future<SyncReport> sync() async {
+    await requireHiddenCompatibleSync(db);
     final received = await _receive();
     // Sending over changes not yet taken in could put an older edit over a
     // newer one; that waits for a sync that reads everything.

@@ -65,6 +65,11 @@ account was removed and the existing account retained (`docs/SYNC_NETWORK.md`).
 
 Remaining work:
 
+- Add a negotiated, backward-safe hidden-entry sync protocol. Current hidden
+  entries remain local; sync and nearby diary transfer fail closed while any
+  hidden row exists, including Recently deleted. Encrypted backups preserve
+  them. Never send a visibility flag that an older client silently ignores.
+
 - Extend the same-Wi-Fi Windows/Pad validation to another network. LAN,
   global-IPv6 direct, UDP
   ICE media, small live-relay media, quota refusal and automatic LAN upgrade

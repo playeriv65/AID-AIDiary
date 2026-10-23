@@ -743,6 +743,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get formatMyBrain => 'My Brain';
 
   @override
+  String get formatOneDiary => '一本日记';
+
+  @override
   String get formatOneShot => 'OneShot';
 
   @override
@@ -2643,6 +2646,27 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get editorDiaryDayHint => '决定这篇日记归属哪一天。修改日记日不会改变创建时间。';
+
+  @override
+  String get hiddenDiaryTitle => '隐藏日记';
+
+  @override
+  String get hiddenDiaryHide => '隐藏日记';
+
+  @override
+  String get hiddenDiaryShow => '取消隐藏';
+
+  @override
+  String get hiddenDiaryEmpty => '没有隐藏的日记';
+
+  @override
+  String get hiddenDiaryUnlock => '解锁隐藏日记';
+
+  @override
+  String get hiddenDiaryAuthHint => '请使用应用锁或设备屏幕锁解锁。';
+
+  @override
+  String get hiddenDiaryLocalOnly => '隐藏日记仅保存在本机，同步会暂停。请使用加密备份；其他设备上已有的副本不会改变。';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -3382,6 +3406,9 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get formatMyBrain => 'My Brain';
+
+  @override
+  String get formatOneDiary => '一本日記';
 
   @override
   String get formatOneShot => 'OneShot';
@@ -5287,4 +5314,25 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get editorDiaryDayHint => '決定這篇日記歸屬哪一天。修改日記日不會改變建立時間。';
+
+  @override
+  String get hiddenDiaryTitle => '隱藏日記';
+
+  @override
+  String get hiddenDiaryHide => '隱藏日記';
+
+  @override
+  String get hiddenDiaryShow => '取消隱藏';
+
+  @override
+  String get hiddenDiaryEmpty => '沒有隱藏的日記';
+
+  @override
+  String get hiddenDiaryUnlock => '解鎖隱藏日記';
+
+  @override
+  String get hiddenDiaryAuthHint => '請使用應用程式鎖或裝置螢幕鎖解鎖。';
+
+  @override
+  String get hiddenDiaryLocalOnly => '隱藏日記僅儲存在本機，同步會暫停。請使用加密備份；其他裝置上已有的副本不會改變。';
 }

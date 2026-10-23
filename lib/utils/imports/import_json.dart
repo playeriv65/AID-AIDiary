@@ -59,6 +59,7 @@ List<ImportedEntry> decodeJsonEntries(Uint8List bytes) {
               _ => null,
             },
             activity: EntryActivity.fromName(entry['activity'] as String?),
+            isHidden: entry['isHidden'] == true,
             openAt: switch (entry['openAt']) {
               final String at => parseLocalTime(at),
               _ => null,
@@ -66,6 +67,18 @@ List<ImportedEntry> decodeJsonEntries(Uint8List bytes) {
         tags: [
           for (final tag in entry['tags'] as List? ?? const [])
             (name: tag['name'] as String, value: tag['value'] as String?),
+        ],
+        source: switch (entry['importSource']) {
+          final Map source => ImportedSource(
+              format: source['format'] as String,
+              id: source['id'] as String,
+              hash: source['hash'] as String,
+              json: json.encode(source['metadata'])),
+          _ => null,
+        },
+        photos: [
+          for (final photo in entry['photos'] as List? ?? const [])
+            _photo(photo as Map),
         ],
         images: [
           if (entry['images'] != null)
@@ -78,4 +91,13 @@ List<ImportedEntry> decodeJsonEntries(Uint8List bytes) {
         ],
       ),
   ];
+}
+
+ImportedPhoto _photo(Map photo) {
+  final name = photo['name'] as String;
+  final bytes = base64.decode(photo['base64'] as String);
+  if (name.isEmpty || bytes.isEmpty) {
+    throw const FormatException('Invalid JSON import attachment');
+  }
+  return ImportedPhoto(name, () async => bytes);
 }

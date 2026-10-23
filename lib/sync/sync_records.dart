@@ -3,6 +3,7 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'package:aid_diary/models/entry.dart';
+import 'package:aid_diary/database/hidden_entry_policy.dart';
 import 'package:aid_diary/models/image.dart';
 import 'package:aid_diary/models/tag.dart';
 import 'package:aid_diary/models/tag_category.dart';
@@ -62,6 +63,9 @@ Future<SyncRecord> exportRecord(
       where: '$syncIdColumn = ?', whereArgs: [id], limit: 1);
   if (rows.isEmpty) return SyncRecord(kind, id, modified, null);
   final row = rows.single;
+  if (kind == SyncKind.entry && row[EntryFields.isHidden] == 1) {
+    await requireHiddenCompatibleSync(db);
+  }
   final rowId = row['id'] as int;
   final data = _ownFields(row);
 

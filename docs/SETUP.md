@@ -50,6 +50,24 @@ each commit. Native and live checks have separate environments and claims.
    the test environment. Run `./scripts/dev.ps1 windows` when ready to open
    the app; use `test-all` if a full baseline is needed.
 
+## Windows personal installation
+
+`./scripts/dev.ps1 windows-release-build` builds a release bundle without
+launching or installing anything. Keep the entire
+`build/windows/x64/runner/Release` directory together when installing it at
+a permanent path outside disposable build/worktree folders; DLLs and `data/`
+are required. This target does not build or install Android APKs. Do not use
+the Android `release` target as a Windows build command.
+
+An app lock and the platform secret store do not encrypt a plain SQLite
+database by themselves. Windows OS filesystem encryption, a database's own
+encryption and Windows Hello authentication are different mechanisms; record
+which one an installation actually uses and verify it before importing
+personal records. Passkeys authenticate; they are not a replacement for
+database encryption. Keep device-specific paths and encryption/recovery
+material out of git. [One Diary import](ONE_DIARY_IMPORT.md) owns its backup
+format and decode-only validation procedure.
+
 ## Sync development
 
 [SYNC_NETWORK.md](SYNC_NETWORK.md) records the path policy, encrypted chunk

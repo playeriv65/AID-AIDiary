@@ -79,6 +79,7 @@
     "errorTitle": "错误",
     "imageFolderErrorDescription": "无法更改图片目录！",
     "logFormatTitle": "选择格式",
+  "formatOneDiary": "一本日记",
     "formatOneShot": "OneShot",
     "settingsDeleteAllLogsTitle": "删除全部日记",
     "settingsDeleteAllLogsDescription": "您确定要删除全部的日记吗？",
@@ -836,5 +837,12 @@
     "formatPixels": "Pixels",
     "editorDiaryDay": "日记日",
     "editorDiaryDayPicker": "日记日·创建不变",
-    "editorDiaryDayHint": "决定这篇日记归属哪一天。修改日记日不会改变创建时间。"
+    "editorDiaryDayHint": "决定这篇日记归属哪一天。修改日记日不会改变创建时间。",
+  "hiddenDiaryTitle": "隐藏日记",
+  "hiddenDiaryHide": "隐藏日记",
+  "hiddenDiaryShow": "取消隐藏",
+  "hiddenDiaryEmpty": "没有隐藏的日记",
+  "hiddenDiaryUnlock": "解锁隐藏日记",
+  "hiddenDiaryAuthHint": "请使用应用锁或设备屏幕锁解锁。",
+  "hiddenDiaryLocalOnly": "隐藏日记仅保存在本机，同步会暂停。请使用加密备份；其他设备上已有的副本不会改变。"
 }

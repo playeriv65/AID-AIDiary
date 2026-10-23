@@ -233,6 +233,7 @@
     "formatDiaro": "Diaro",
     "formatJourney": "Journey",
     "formatMyBrain": "My Brain",
+  "formatOneDiary": "One Diary",
     "formatOneShot": "OneShot",
     "formatPixels": "Pixels",
     "settingsOpenSourceLicenses": "Licenze Open Source",
@@ -805,5 +806,12 @@
     "tutorialPrivacyText": "Le voci del diario rimangono su questo dispositivo a meno che non abiliti la sincronizzazione o le condividi o le esporti. La sincronizzazione è crittografata end-to-end. In Impostazioni puoi anche impostare un passcode per l'app, creare backup e riaprire questo tutorial.",
     "editorDiaryDay": "Giorno del diario",
     "editorDiaryDayPicker": "Giorno del diario · creazione invariata",
-    "editorDiaryDayHint": "Il giorno a cui appartiene questa voce. Modificarlo non cambia la data o l’ora di creazione."
+    "editorDiaryDayHint": "Il giorno a cui appartiene questa voce. Modificarlo non cambia la data o l’ora di creazione.",
+  "hiddenDiaryTitle": "Voci nascoste",
+  "hiddenDiaryHide": "Nascondi voce",
+  "hiddenDiaryShow": "Mostra voce",
+  "hiddenDiaryEmpty": "Nessuna voce nascosta",
+  "hiddenDiaryUnlock": "Sblocca le voci nascoste",
+  "hiddenDiaryAuthHint": "Usa il blocco dell’app o dello schermo del dispositivo.",
+  "hiddenDiaryLocalOnly": "Le voci nascoste restano su questo dispositivo e sospendono la sincronizzazione. Usa backup crittografati. Le copie esistenti altrove restano invariate."
 }

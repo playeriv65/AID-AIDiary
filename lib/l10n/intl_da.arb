@@ -212,6 +212,7 @@
     "formatDiaro": "Diaro",
     "formatJourney": "Journey",
     "formatMyBrain": "My Brain",
+  "formatOneDiary": "One Diary",
     "formatOneShot": "OneShot",
     "formatPixels": "Pixels",
     "formatMarkdown": "Markdown",
@@ -805,5 +806,12 @@
     "tutorialPrivacyText": "Dagbogsoptegnelser forbliver på denne enhed, medmindre du aktiverer synkronisering eller deler eller eksporterer dem. Synkronisering er ende-til-ende-krypteret. I Indstillinger kan du også indstille en app-adgangskode, oprette sikkerhedskopier og genåbne denne vejledning.",
     "editorDiaryDay": "Dagbogsdato",
     "editorDiaryDayPicker": "Dagbogsdato · oprettelsestid bevares",
-    "editorDiaryDayHint": "Den dag, dette indlæg hører til. En ændring ændrer ikke tidspunktet, hvor indlægget blev oprettet."
+    "editorDiaryDayHint": "Den dag, dette indlæg hører til. En ændring ændrer ikke tidspunktet, hvor indlægget blev oprettet.",
+  "hiddenDiaryTitle": "Skjulte indlæg",
+  "hiddenDiaryHide": "Skjul indlæg",
+  "hiddenDiaryShow": "Vis indlæg",
+  "hiddenDiaryEmpty": "Ingen skjulte indlæg",
+  "hiddenDiaryUnlock": "Lås skjulte indlæg op",
+  "hiddenDiaryAuthHint": "Brug appens lås eller enhedens skærmlås.",
+  "hiddenDiaryLocalOnly": "Skjulte indlæg bliver på denne enhed, og synkronisering sættes på pause. Brug krypterede sikkerhedskopier. Eksisterende kopier andre steder ændres ikke."
 }

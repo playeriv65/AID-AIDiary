@@ -149,7 +149,7 @@ class JourneyExportWriter implements ArchiveExportWriter {
   @override
   Future<void> write(ExportedEntry exported) async {
     final entry = exported.entry;
-    if (entry.isSealed) return;
+    if (entry.isSealed || entry.isHidden) return;
     final created = entry.journalInstant.millisecondsSinceEpoch;
     // Journey ids are the creation time and a hex suffix.
     final id =

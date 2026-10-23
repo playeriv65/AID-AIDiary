@@ -67,6 +67,7 @@
     "writeSomethingHint": "Escribe algo…",
     "titleHint": "Título…",
     "noTemplatesDescription": "Aún no se han creado plantillas…",
+  "formatOneDiary": "One Diary",
     "formatOneShot": "OneShot",
     "logFolderErrorDescription": "¡No se pudo cambiar la carpeta de registro!",
     "logFormatTitle": "Elija Formato",
@@ -806,5 +807,12 @@
     "tutorialPrivacyText": "Las entradas del diario permanecen en este dispositivo a menos que habilites la sincronización, las compartas o las exportes. La sincronización está cifrada de extremo a extremo. En Configuración también puedes establecer un código de acceso a la aplicación, crear copias de seguridad y volver a abrir este tutorial.",
     "editorDiaryDay": "Día del diario",
     "editorDiaryDayPicker": "Día del diario · creación sin cambios",
-    "editorDiaryDayHint": "El día al que pertenece esta entrada. Cambiarlo no modifica su fecha ni hora de creación."
+    "editorDiaryDayHint": "El día al que pertenece esta entrada. Cambiarlo no modifica su fecha ni hora de creación.",
+  "hiddenDiaryTitle": "Entradas ocultas",
+  "hiddenDiaryHide": "Ocultar entrada",
+  "hiddenDiaryShow": "Mostrar entrada",
+  "hiddenDiaryEmpty": "No hay entradas ocultas",
+  "hiddenDiaryUnlock": "Desbloquear entradas ocultas",
+  "hiddenDiaryAuthHint": "Usa el bloqueo de la aplicación o de la pantalla del dispositivo.",
+  "hiddenDiaryLocalOnly": "Las entradas ocultas permanecen en este dispositivo y pausan la sincronización. Usa copias de seguridad cifradas. Las copias existentes en otros lugares no cambian."
 }

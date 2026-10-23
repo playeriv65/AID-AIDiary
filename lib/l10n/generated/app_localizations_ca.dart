@@ -760,6 +760,9 @@ class AppLocalizationsCa extends AppLocalizations {
   String get formatMyBrain => 'My Brain';
 
   @override
+  String get formatOneDiary => 'One Diary';
+
+  @override
   String get formatOneShot => 'OneShot';
 
   @override
@@ -2766,4 +2769,27 @@ class AppLocalizationsCa extends AppLocalizations {
   @override
   String get editorDiaryDayHint =>
       'El dia al qual pertany aquesta entrada. Canviar-lo no modifica la data ni l’hora de creació.';
+
+  @override
+  String get hiddenDiaryTitle => 'Entrades ocultes';
+
+  @override
+  String get hiddenDiaryHide => 'Amaga l’entrada';
+
+  @override
+  String get hiddenDiaryShow => 'Mostra l’entrada';
+
+  @override
+  String get hiddenDiaryEmpty => 'No hi ha entrades ocultes';
+
+  @override
+  String get hiddenDiaryUnlock => 'Desbloca les entrades ocultes';
+
+  @override
+  String get hiddenDiaryAuthHint =>
+      'Utilitza el bloqueig de l’aplicació o de la pantalla del dispositiu.';
+
+  @override
+  String get hiddenDiaryLocalOnly =>
+      'Les entrades ocultes es queden en aquest dispositiu i aturen la sincronització. Utilitza còpies de seguretat xifrades. Les còpies existents en altres llocs no canvien.';
 }

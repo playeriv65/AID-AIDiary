@@ -1386,6 +1386,12 @@ abstract class AppLocalizations {
   /// **'My Brain'**
   String get formatMyBrain;
 
+  /// No description provided for @formatOneDiary.
+  ///
+  /// In en, this message translates to:
+  /// **'One Diary'**
+  String get formatOneDiary;
+
   /// No description provided for @formatOneShot.
   ///
   /// In en, this message translates to:
@@ -5003,6 +5009,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The day this entry belongs to. Changing it does not change its creation time.'**
   String get editorDiaryDayHint;
+
+  /// No description provided for @hiddenDiaryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Hidden entries'**
+  String get hiddenDiaryTitle;
+
+  /// No description provided for @hiddenDiaryHide.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide entry'**
+  String get hiddenDiaryHide;
+
+  /// No description provided for @hiddenDiaryShow.
+  ///
+  /// In en, this message translates to:
+  /// **'Unhide entry'**
+  String get hiddenDiaryShow;
+
+  /// No description provided for @hiddenDiaryEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No hidden entries'**
+  String get hiddenDiaryEmpty;
+
+  /// No description provided for @hiddenDiaryUnlock.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock hidden entries'**
+  String get hiddenDiaryUnlock;
+
+  /// No description provided for @hiddenDiaryAuthHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Use the app lock or your device\'s screen lock to unlock.'**
+  String get hiddenDiaryAuthHint;
+
+  /// No description provided for @hiddenDiaryLocalOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Hidden entries stay on this device and pause sync. Use encrypted backups. Existing copies elsewhere are unchanged.'**
+  String get hiddenDiaryLocalOnly;
 }
 
 class _AppLocalizationsDelegate

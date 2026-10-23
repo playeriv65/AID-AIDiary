@@ -12,6 +12,7 @@ import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/models/image.dart';
 import 'package:aid_diary/models/tag.dart';
 import 'package:aid_diary/models/template.dart';
+import 'package:aid_diary/widgets/hidden_diary_scope.dart';
 import 'package:aid_diary/notification_manager.dart';
 import 'package:aid_diary/pages/edit_entry_view_model.dart';
 import 'package:aid_diary/pages/full_screen_text_editor_page.dart';
@@ -174,12 +175,14 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
         await Navigator.of(context, rootNavigator: true).push<String>(
       MaterialPageRoute(
         allowSnapshotting: false,
-        builder: (context) => FullScreenTextEditorPage(
-          initialText: _textEditingController.text,
-        ),
+        builder: HiddenDiaryScope.protectRoute(
+            context,
+            (_) => FullScreenTextEditorPage(
+                  initialText: _textEditingController.text,
+                )),
       ),
     );
-    if (result != null) {
+    if (mounted && result != null) {
       _textEditingController.text = result;
     }
   }
@@ -233,6 +236,7 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
                   Text(MaterialLocalizations.of(context).deleteButtonTooltip),
               onPressed: () async {
                 final navigator = Navigator.of(context);
+                final hiddenSession = HiddenDiaryScope.of(context);
                 final entryToDelete = await _model.prepareDelete();
                 // Pop dialog
                 navigator.pop();
@@ -242,9 +246,13 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
                   // Pop view page
                   navigator.pop();
                 }
-                await AppActions.instance.run(
-                    'entry.delete', {'id': entryToDelete.id},
-                    confirmed: true);
+                if (entryToDelete.isHidden) {
+                  await hiddenSession!.delete(entryToDelete);
+                } else {
+                  await AppActions.instance.run(
+                      'entry.delete', {'id': entryToDelete.id},
+                      confirmed: true);
+                }
               },
             ),
             TextButton(

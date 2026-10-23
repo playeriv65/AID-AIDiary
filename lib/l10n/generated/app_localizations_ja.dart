@@ -745,6 +745,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get formatMyBrain => 'My Brain';
 
   @override
+  String get formatOneDiary => 'One Diary';
+
+  @override
   String get formatOneShot => 'ワンショット';
 
   @override
@@ -2679,4 +2682,26 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get editorDiaryDayHint => 'この日記をどの日に分類するかを指定します。変更しても作成日時は変わりません。';
+
+  @override
+  String get hiddenDiaryTitle => '非表示の日記';
+
+  @override
+  String get hiddenDiaryHide => '日記を非表示にする';
+
+  @override
+  String get hiddenDiaryShow => '日記を再表示する';
+
+  @override
+  String get hiddenDiaryEmpty => '非表示の日記はありません';
+
+  @override
+  String get hiddenDiaryUnlock => '非表示の日記をロック解除';
+
+  @override
+  String get hiddenDiaryAuthHint => 'アプリロックまたは端末の画面ロックで解除してください。';
+
+  @override
+  String get hiddenDiaryLocalOnly =>
+      '非表示の日記はこの端末に保存され、同期は一時停止します。暗号化バックアップを使用してください。他の端末にある既存のコピーは変更されません。';
 }

@@ -7,6 +7,7 @@ import 'dart:io';
 
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/database/app_database.dart';
+import 'package:aid_diary/database/hidden_entry_policy.dart';
 import 'package:aid_diary/database/image_storage.dart';
 import 'package:aid_diary/notification_manager.dart';
 import 'package:aid_diary/storage/file_store.dart';
@@ -70,6 +71,13 @@ class BackupRestoreUtils {
     required BackupProgress onProgress,
     CancellationToken? cancellationToken,
   }) async {
+    final database = AppDatabase.instance.database;
+    if (database != null &&
+        await hasHiddenEntries(database) &&
+        _backupPassword() == null) {
+      throw StateError('Hidden entries require an encrypted backup. Set a '
+          'backup password in Settings > Data > Backup before backing up.');
+    }
     final tempDir = await getTemporaryDirectory();
     final stagedArchive = File(join(tempDir.path, name));
     final encryptedArchive = File('${stagedArchive.path}.enc');

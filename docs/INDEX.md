@@ -18,6 +18,7 @@ results describe the revision and environment that were actually checked.
 | How does sync work, and what has been verified? | [Sync networking](SYNC_NETWORK.md) | Protocol design, current capability, dated acceptance evidence and network limits |
 | How do I configure or deploy the Go service? | [Server README](../server/README.md) | Server commands, policy variables, wire/API reference and deployment procedure |
 | How is Google Drive configured? | [Google Drive](GOOGLE_DRIVE.md) | Provider-specific OAuth and setup |
+| How do I import a One Diary backup safely? | [One Diary import](ONE_DIARY_IMPORT.md) | Backup compatibility, independent diary dates, timezone evidence and verification |
 | Why is a Xiaomi build stuck at 60 Hz? | [Refresh rate](REFRESH_RATE.md) | OEM diagnosis and the profile measurement procedure |
 | What is still proposed or deferred? | [TODO](../TODO.md) | Remaining ideas and work; not an implementation or approval claim |
 | What is upstream, and which license applies? | [Source](../SOURCE.md), [license](../LICENSE.txt), [additional terms](../ADDITIONAL_TERMS.md) | Provenance and legal terms |

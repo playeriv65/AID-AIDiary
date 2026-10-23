@@ -3,6 +3,8 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/config/one_diary_config.dart';
+import 'package:aid_diary/utils/formats/one_diary_format.dart';
 import 'package:aid_diary/providers/entries_provider.dart';
 import 'package:aid_diary/storage/storage_picker.dart';
 import 'package:aid_diary/utils/formats/day_one_format.dart';
@@ -114,6 +116,19 @@ class ImportRegistry {
           oneshot.importFromOneShot(file, updateStatus),
       extensions: _jsonExtensions,
       mimeTypes: _jsonMimeTypes,
+    ),
+    ImportFormatOption(
+      ImportFormat.oneDiary,
+      (localizations) => localizations.formatOneDiary,
+      (file, localizations, updateStatus) async => importArchive(
+          file,
+          localizations,
+          updateStatus,
+          (files) async =>
+              decodeOneDiaryArchive(files, await loadOneDiaryProtocol()),
+          singleFileName: 'source.json'),
+      extensions: const ['zip'],
+      mimeTypes: const ['application/zip'],
     ),
     ImportFormatOption(
       ImportFormat.pixels,

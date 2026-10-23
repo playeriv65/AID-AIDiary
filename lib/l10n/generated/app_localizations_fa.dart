@@ -750,6 +750,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get formatMyBrain => 'My Brain';
 
   @override
+  String get formatOneDiary => 'One Diary';
+
+  @override
   String get formatOneShot => 'OneShot';
 
   @override
@@ -2736,4 +2739,27 @@ class AppLocalizationsFa extends AppLocalizations {
   @override
   String get editorDiaryDayHint =>
       'روزی که این یادداشت به آن تعلق دارد. تغییر آن، زمان ایجاد یادداشت را تغییر نمی‌دهد.';
+
+  @override
+  String get hiddenDiaryTitle => 'یادداشت‌های پنهان';
+
+  @override
+  String get hiddenDiaryHide => 'پنهان کردن یادداشت';
+
+  @override
+  String get hiddenDiaryShow => 'نمایش یادداشت';
+
+  @override
+  String get hiddenDiaryEmpty => 'یادداشت پنهانی وجود ندارد';
+
+  @override
+  String get hiddenDiaryUnlock => 'باز کردن یادداشت‌های پنهان';
+
+  @override
+  String get hiddenDiaryAuthHint =>
+      'از قفل برنامه یا قفل صفحهٔ دستگاه استفاده کنید.';
+
+  @override
+  String get hiddenDiaryLocalOnly =>
+      'یادداشت‌های پنهان در این دستگاه می‌مانند و همگام‌سازی متوقف می‌شود. از پشتیبان رمزگذاری‌شده استفاده کنید. نسخه‌های موجود در دستگاه‌های دیگر تغییر نمی‌کنند.';
 }

@@ -228,6 +228,7 @@
     "formatDiaro": "Diaro",
     "formatJourney": "Journey",
     "formatMyBrain": "My Brain",
+  "formatOneDiary": "One Diary",
     "formatOneShot": "OneShot",
     "formatPixels": "Pixels",
     "settingsOpenSourceLicenses": "Lesen Sumber Terbuka",
@@ -805,5 +806,12 @@
     "tutorialPrivacyText": "Entri diari kekal pada peranti ini melainkan anda mendayakan penyegerakan atau berkongsi atau mengeksportnya. Penyegerakan disulitkan dari hujung ke hujung. Dalam Tetapan anda juga boleh menetapkan kod laluan apl, membuat sandaran dan membuka semula tutorial ini.",
     "editorDiaryDay": "Hari diari",
     "editorDiaryDayPicker": "Hari diari · masa penciptaan kekal",
-    "editorDiaryDayHint": "Hari yang ditetapkan untuk catatan ini. Mengubahnya tidak mengubah masa catatan dicipta."
+    "editorDiaryDayHint": "Hari yang ditetapkan untuk catatan ini. Mengubahnya tidak mengubah masa catatan dicipta.",
+  "hiddenDiaryTitle": "Catatan tersembunyi",
+  "hiddenDiaryHide": "Sembunyikan catatan",
+  "hiddenDiaryShow": "Paparkan catatan",
+  "hiddenDiaryEmpty": "Tiada catatan tersembunyi",
+  "hiddenDiaryUnlock": "Buka kunci catatan tersembunyi",
+  "hiddenDiaryAuthHint": "Gunakan kunci aplikasi atau kunci skrin peranti anda.",
+  "hiddenDiaryLocalOnly": "Catatan tersembunyi kekal pada peranti ini dan penyegerakan dijeda. Gunakan sandaran disulitkan. Salinan sedia ada di tempat lain tidak berubah."
 }

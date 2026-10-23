@@ -59,6 +59,7 @@
     "settingsDeleteAllLogsTitle": "Tüm Kayıtları Sil",
     "settingsDeleteAllLogsDescription": "Tüm kayıtlarınızı silmek istiyor musunuz?",
     "settingsAboutTitle": "Hakkında",
+  "formatOneDiary": "One Diary",
     "formatOneShot": "Tek çekim",
     "writeSomethingHint": "Bir şeyler yaz…",
     "logFolderErrorDescription": "Günlük klasörü değiştirilemedi!",
@@ -805,5 +806,12 @@
     "tutorialPrivacyText": "Senkronizasyonu etkinleştirmediğiniz, paylaşmadığınız veya dışa aktarmadığınız sürece günlük girişleri bu cihazda kalır. Senkronizasyon uçtan uca şifrelenir. Ayarlar'da ayrıca bir uygulama şifresi ayarlayabilir, yedeklemeler oluşturabilir ve bu öğreticiyi yeniden açabilirsiniz.",
     "editorDiaryDay": "Günlük günü",
     "editorDiaryDayPicker": "Günlük günü · oluşturma zamanı değişmez",
-    "editorDiaryDayHint": "Bu kaydın ait olduğu gün. Bunu değiştirmek kaydın oluşturulma zamanını değiştirmez."
+    "editorDiaryDayHint": "Bu kaydın ait olduğu gün. Bunu değiştirmek kaydın oluşturulma zamanını değiştirmez.",
+  "hiddenDiaryTitle": "Gizli kayıtlar",
+  "hiddenDiaryHide": "Kaydı gizle",
+  "hiddenDiaryShow": "Kaydı göster",
+  "hiddenDiaryEmpty": "Gizli kayıt yok",
+  "hiddenDiaryUnlock": "Gizli kayıtların kilidini aç",
+  "hiddenDiaryAuthHint": "Uygulama kilidini veya cihazınızın ekran kilidini kullanın.",
+  "hiddenDiaryLocalOnly": "Gizli kayıtlar bu cihazda kalır ve eşitleme duraklatılır. Şifreli yedekler kullanın. Başka yerlerdeki mevcut kopyalar değişmez."
 }

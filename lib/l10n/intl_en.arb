@@ -396,6 +396,7 @@
   "@formatJourney": {},
   "formatMyBrain": "My Brain",
   "@formatMyBrain": {},
+  "formatOneDiary": "One Diary",
   "formatOneShot": "OneShot",
   "@formatOneShot": {},
   "formatPixels": "Pixels",
@@ -1614,5 +1615,12 @@
   "editorDiaryDayHint": "The day this entry belongs to. Changing it does not change its creation time.",
   "@editorDiaryDayHint": {
     "description": "The logical diary date, independent of the immutable entry creation timestamp."
-  }
+  },
+  "hiddenDiaryTitle": "Hidden entries",
+  "hiddenDiaryHide": "Hide entry",
+  "hiddenDiaryShow": "Unhide entry",
+  "hiddenDiaryEmpty": "No hidden entries",
+  "hiddenDiaryUnlock": "Unlock hidden entries",
+  "hiddenDiaryAuthHint": "Use the app lock or your device's screen lock to unlock.",
+  "hiddenDiaryLocalOnly": "Hidden entries stay on this device and pause sync. Use encrypted backups. Existing copies elsewhere are unchanged."
 }

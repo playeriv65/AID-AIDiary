@@ -748,6 +748,9 @@ class AppLocalizationsCs extends AppLocalizations {
   String get formatMyBrain => 'My Brain';
 
   @override
+  String get formatOneDiary => 'One Diary';
+
+  @override
   String get formatOneShot => 'OneShot';
 
   @override
@@ -2738,4 +2741,27 @@ class AppLocalizationsCs extends AppLocalizations {
   @override
   String get editorDiaryDayHint =>
       'Den, ke kterému tento záznam patří. Jeho změna nezmění čas vytvoření záznamu.';
+
+  @override
+  String get hiddenDiaryTitle => 'Skryté zápisy';
+
+  @override
+  String get hiddenDiaryHide => 'Skrýt zápis';
+
+  @override
+  String get hiddenDiaryShow => 'Odkrýt zápis';
+
+  @override
+  String get hiddenDiaryEmpty => 'Žádné skryté zápisy';
+
+  @override
+  String get hiddenDiaryUnlock => 'Odemknout skryté zápisy';
+
+  @override
+  String get hiddenDiaryAuthHint =>
+      'Použijte zámek aplikace nebo obrazovky zařízení.';
+
+  @override
+  String get hiddenDiaryLocalOnly =>
+      'Skryté zápisy zůstávají na tomto zařízení a synchronizace se pozastaví. Používejte šifrované zálohy. Existující kopie jinde se nemění.';
 }

@@ -753,6 +753,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get formatMyBrain => 'My Brain';
 
   @override
+  String get formatOneDiary => 'One Diary';
+
+  @override
   String get formatOneShot => 'Tek çekim';
 
   @override
@@ -2744,4 +2747,27 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get editorDiaryDayHint =>
       'Bu kaydın ait olduğu gün. Bunu değiştirmek kaydın oluşturulma zamanını değiştirmez.';
+
+  @override
+  String get hiddenDiaryTitle => 'Gizli kayıtlar';
+
+  @override
+  String get hiddenDiaryHide => 'Kaydı gizle';
+
+  @override
+  String get hiddenDiaryShow => 'Kaydı göster';
+
+  @override
+  String get hiddenDiaryEmpty => 'Gizli kayıt yok';
+
+  @override
+  String get hiddenDiaryUnlock => 'Gizli kayıtların kilidini aç';
+
+  @override
+  String get hiddenDiaryAuthHint =>
+      'Uygulama kilidini veya cihazınızın ekran kilidini kullanın.';
+
+  @override
+  String get hiddenDiaryLocalOnly =>
+      'Gizli kayıtlar bu cihazda kalır ve eşitleme duraklatılır. Şifreli yedekler kullanın. Başka yerlerdeki mevcut kopyalar değişmez.';
 }

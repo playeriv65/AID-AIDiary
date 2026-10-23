@@ -63,6 +63,7 @@
     "logFolderWarningDescription": "如果選定的資料夾中已經包含一個 'aid_diary.db' 文件，它將覆蓋您現有的紀錄！",
     "errorTitle": "錯誤",
     "logFormatTitle": "選擇格式",
+  "formatOneDiary": "一本日記",
     "formatOneShot": "OneShot",
     "settingsDeleteAllLogsTitle": "刪除所有紀錄",
     "settingsDeleteAllLogsDescription": "您要刪除所有紀錄嗎？",
@@ -836,5 +837,12 @@
     "syncPairFailed": "配對失敗：{error}",
     "editorDiaryDay": "日記日",
     "editorDiaryDayPicker": "日記日·建立不變",
-    "editorDiaryDayHint": "決定這篇日記歸屬哪一天。修改日記日不會改變建立時間。"
+    "editorDiaryDayHint": "決定這篇日記歸屬哪一天。修改日記日不會改變建立時間。",
+  "hiddenDiaryTitle": "隱藏日記",
+  "hiddenDiaryHide": "隱藏日記",
+  "hiddenDiaryShow": "取消隱藏",
+  "hiddenDiaryEmpty": "沒有隱藏的日記",
+  "hiddenDiaryUnlock": "解鎖隱藏日記",
+  "hiddenDiaryAuthHint": "請使用應用程式鎖或裝置螢幕鎖解鎖。",
+  "hiddenDiaryLocalOnly": "隱藏日記僅儲存在本機，同步會暫停。請使用加密備份；其他裝置上已有的副本不會改變。"
 }

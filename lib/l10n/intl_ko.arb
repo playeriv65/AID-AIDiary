@@ -228,6 +228,7 @@
     "formatDiaro": "Diaro",
     "formatJourney": "Journey",
     "formatMyBrain": "My Brain",
+  "formatOneDiary": "One Diary",
     "formatOneShot": "원샷",
     "formatPixels": "Pixels",
     "settingsOpenSourceLicenses": "오픈 소스 라이선스",
@@ -805,5 +806,12 @@
     "tutorialPrivacyText": "일기 항목은 동기화, 공유 또는 내보내기를 활성화하지 않는 한 이 기기에 유지됩니다. 동기화는 종단 간 암호화됩니다. 설정에서 앱 비밀번호를 설정하고, 백업을 생성하고, 이 튜토리얼을 다시 열 수도 있습니다.",
     "editorDiaryDay": "일기 날짜",
     "editorDiaryDayPicker": "일기 날짜 · 생성 시간은 유지됩니다",
-    "editorDiaryDayHint": "이 일기가 속하는 날짜입니다. 날짜를 바꿔도 생성 시간은 바뀌지 않습니다."
+    "editorDiaryDayHint": "이 일기가 속하는 날짜입니다. 날짜를 바꿔도 생성 시간은 바뀌지 않습니다.",
+  "hiddenDiaryTitle": "숨긴 일기",
+  "hiddenDiaryHide": "일기 숨기기",
+  "hiddenDiaryShow": "일기 숨기기 해제",
+  "hiddenDiaryEmpty": "숨긴 일기가 없습니다",
+  "hiddenDiaryUnlock": "숨긴 일기 잠금 해제",
+  "hiddenDiaryAuthHint": "앱 잠금 또는 기기의 화면 잠금을 사용하세요.",
+  "hiddenDiaryLocalOnly": "숨긴 일기는 이 기기에 보관되며 동기화가 일시 중지됩니다. 암호화된 백업을 사용하세요. 다른 곳에 있는 기존 사본은 변경되지 않습니다."
 }

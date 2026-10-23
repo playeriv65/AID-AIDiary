@@ -34,7 +34,9 @@ class HomeWidgetSnapshot {
 
   /// [entries] must be newest first, as the entries provider keeps them.
   factory HomeWidgetSnapshot.from(List<Entry> entries, AppLocalizations l10n) {
-    final visible = entries.where((entry) => !entry.isSealed).toList()
+    final visible = entries
+        .where((entry) => !entry.isSealed && !entry.isHidden)
+        .toList()
       ..sort((a, b) => b.day.compareTo(a.day));
     final latest = visible.firstOrNull;
     final streak = calculateStreaks(visible).current;
@@ -99,7 +101,7 @@ List<PhotoWidgetChoice> photoCandidates(List<Entry> entries,
     List<EntryImage> Function(Entry entry) imagesOf, int limit) {
   final photos = [
     for (final entry in entries)
-      if (!entry.isSealed)
+      if (!entry.isSealed && !entry.isHidden)
         for (final image in imagesOf(entry))
           if (image.isImage) (entry: entry, image: image),
   ];

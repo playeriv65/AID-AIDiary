@@ -5,6 +5,7 @@
 import 'dart:math';
 
 import 'package:aid_diary/database/app_database.dart';
+import 'package:aid_diary/database/entry_store.dart';
 import 'package:aid_diary/database/entry_tag_dao.dart';
 import 'package:aid_diary/database/tag_category_dao.dart';
 import 'package:aid_diary/database/tag_dao.dart';
@@ -290,8 +291,10 @@ class TagsProvider with ChangeNotifier {
   }
 
   int entryCountForTag(int tagId) {
+    final visibleIds = EntryStore.instance.visibleEntryIds;
     return entryTags
-        .where((entryTag) => entryTag.tagId == tagId)
+        .where((entryTag) =>
+            entryTag.tagId == tagId && visibleIds.contains(entryTag.entryId))
         .map((entryTag) => entryTag.entryId)
         .toSet()
         .length;

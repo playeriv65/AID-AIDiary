@@ -3,9 +3,12 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'dart:typed_data';
+import 'dart:math' show min;
 
 import 'package:aid_diary/database/entry_tag_dao.dart';
 import 'package:aid_diary/database/image_storage.dart';
+import 'package:aid_diary/database/import_source_dao.dart';
+import 'package:aid_diary/database/entry_store.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/models/image.dart';
 import 'package:aid_diary/models/tag.dart';
@@ -24,6 +27,19 @@ class ImportedPhoto {
   final Future<Uint8List?> Function() read;
 }
 
+/// The external identity and exact revision, independent of its date/time.
+class ImportedSource {
+  const ImportedSource(
+      {required this.format,
+      required this.id,
+      required this.hash,
+      required this.json});
+  final String format;
+  final String id;
+  final String hash;
+  final String json;
+}
+
 /// An entry decoded from an import file, before it reaches the database.
 /// [images] are already in the image folder and carry no entry id until the
 /// entry is added; [photos] are stored as new images then.
@@ -32,6 +48,7 @@ class ImportedEntry {
       {this.images = const [],
       this.photos = const [],
       this.tags = const [],
+      this.source,
       this.favorite = false});
 
   final Entry entry;
@@ -42,6 +59,7 @@ class ImportedEntry {
   /// labels when missing, each with an optional value.
   final List<({String name, String? value})> tags;
   final bool favorite;
+  final ImportedSource? source;
 }
 
 Future<void> addImportedEntries(
@@ -55,48 +73,80 @@ Future<void> addImportedEntries(
   final tags = _TagResolver();
 
   for (final imported in importedEntries) {
-    if (taken.add(imported.entry.timeCreate)) {
+    final source = imported.source;
+    final shouldAdd = source == null
+        ? taken.add(imported.entry.timeCreate)
+        : !await ImportSourceDao.contains(
+            source.format, source.id, source.hash);
+    if (shouldAdd) {
       final addedEntry =
           await EntriesProvider.instance.add(imported.entry, skipUpdate: true);
-      for (final image in imported.images) {
-        await EntryImagesProvider.instance
-            .add(image.copy(entryId: addedEntry.id), skipUpdate: true);
-      }
-      var rank = imported.images.length;
-      for (final photo in imported.photos) {
-        final bytes = await photo.read();
-        if (bytes == null || bytes.isEmpty) continue;
-        final name = await ImageStorage.instance.create(null, bytes,
-            currTime: addedEntry.timeCreate,
-            skipExternalUpload: true,
-            fileExtension: p.extension(photo.name).isEmpty
-                ? '.jpg'
-                : p.extension(photo.name).toLowerCase());
-        if (name == null) continue;
-        await EntryImagesProvider.instance.add(
-            EntryImage(
-                entryId: addedEntry.id,
-                imgPath: name,
-                imgRank: rank++,
-                timeCreate: addedEntry.timeCreate),
-            skipUpdate: true);
-      }
-      for (final tag in imported.tags) {
-        final tagId = await tags.idFor(tag.name);
-        if (tagId == null) continue;
-        await EntryTagDao.add(EntryTag(
-            entryId: addedEntry.id!,
-            tagId: tagId,
-            value: tag.value,
-            timeCreate: addedEntry.timeCreate));
-      }
-      if (imported.favorite) {
-        if (TagsProvider.instance.favoriteTag?.id case final favoriteId?) {
+      try {
+        for (final image in imported.images) {
+          await EntryImagesProvider.instance
+              .add(image.copy(entryId: addedEntry.id), skipUpdate: true);
+        }
+        // The UI sorts descending; photos follow existing images in the
+        // source order rather than appearing reversed.
+        var rank = imported.images.isEmpty
+            ? imported.photos.length - 1
+            : imported.images.map((image) => image.imgRank).reduce(min) - 1;
+        for (final photo in imported.photos) {
+          final bytes = await photo.read();
+          if (bytes == null || bytes.isEmpty) {
+            if (source != null) {
+              throw StateError('An import attachment could not be read');
+            }
+            continue;
+          }
+          final name = await ImageStorage.instance.create(null, bytes,
+              currTime: addedEntry.timeCreate,
+              skipExternalUpload: true,
+              fileExtension: p.extension(photo.name).isEmpty
+                  ? '.jpg'
+                  : p.extension(photo.name).toLowerCase());
+          if (name == null) {
+            if (source != null) {
+              throw StateError('An import attachment could not be stored');
+            }
+            continue;
+          }
+          await EntryImagesProvider.instance.add(
+              EntryImage(
+                  entryId: addedEntry.id,
+                  imgPath: name,
+                  imgRank: rank--,
+                  timeCreate: addedEntry.timeCreate),
+              skipUpdate: true);
+        }
+        for (final tag in imported.tags) {
+          final tagId = await tags.idFor(tag.name);
+          if (tagId == null) continue;
           await EntryTagDao.add(EntryTag(
               entryId: addedEntry.id!,
-              tagId: favoriteId,
+              tagId: tagId,
+              value: tag.value,
               timeCreate: addedEntry.timeCreate));
         }
+        if (imported.favorite) {
+          if (TagsProvider.instance.favoriteTag?.id case final favoriteId?) {
+            await EntryTagDao.add(EntryTag(
+                entryId: addedEntry.id!,
+                tagId: favoriteId,
+                timeCreate: addedEntry.timeCreate));
+          }
+        }
+        if (source != null) {
+          await ImportSourceDao.add(
+              format: source.format,
+              id: source.id,
+              hash: source.hash,
+              entryId: addedEntry.id!,
+              json: source.json);
+        }
+      } catch (_) {
+        if (source != null) await EntryStore.instance.erase(addedEntry);
+        rethrow;
       }
     }
     processedEntries += 1;

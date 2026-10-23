@@ -763,6 +763,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get formatMyBrain => 'My Brain';
 
   @override
+  String get formatOneDiary => 'One Diary';
+
+  @override
   String get formatOneShot => 'ون شوت';
 
   @override
@@ -2739,4 +2742,27 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get editorDiaryDayHint =>
       'اليوم الذي تنتمي إليه هذه التدوينة. تغييره لا يغيّر وقت إنشائها.';
+
+  @override
+  String get hiddenDiaryTitle => 'اليوميات المخفية';
+
+  @override
+  String get hiddenDiaryHide => 'إخفاء اليومية';
+
+  @override
+  String get hiddenDiaryShow => 'إظهار اليومية';
+
+  @override
+  String get hiddenDiaryEmpty => 'لا توجد يوميات مخفية';
+
+  @override
+  String get hiddenDiaryUnlock => 'فتح اليوميات المخفية';
+
+  @override
+  String get hiddenDiaryAuthHint =>
+      'استخدم قفل التطبيق أو قفل شاشة جهازك للفتح.';
+
+  @override
+  String get hiddenDiaryLocalOnly =>
+      'تبقى اليوميات المخفية على هذا الجهاز وتتوقف المزامنة. استخدم نسخًا احتياطية مشفرة. لا تتغير النسخ الموجودة على الأجهزة الأخرى.';
 }

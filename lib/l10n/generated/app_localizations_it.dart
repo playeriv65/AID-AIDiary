@@ -758,6 +758,9 @@ class AppLocalizationsIt extends AppLocalizations {
   String get formatMyBrain => 'My Brain';
 
   @override
+  String get formatOneDiary => 'One Diary';
+
+  @override
   String get formatOneShot => 'OneShot';
 
   @override
@@ -2770,4 +2773,27 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get editorDiaryDayHint =>
       'Il giorno a cui appartiene questa voce. Modificarlo non cambia la data o l’ora di creazione.';
+
+  @override
+  String get hiddenDiaryTitle => 'Voci nascoste';
+
+  @override
+  String get hiddenDiaryHide => 'Nascondi voce';
+
+  @override
+  String get hiddenDiaryShow => 'Mostra voce';
+
+  @override
+  String get hiddenDiaryEmpty => 'Nessuna voce nascosta';
+
+  @override
+  String get hiddenDiaryUnlock => 'Sblocca le voci nascoste';
+
+  @override
+  String get hiddenDiaryAuthHint =>
+      'Usa il blocco dell’app o dello schermo del dispositivo.';
+
+  @override
+  String get hiddenDiaryLocalOnly =>
+      'Le voci nascoste restano su questo dispositivo e sospendono la sincronizzazione. Usa backup crittografati. Le copie esistenti altrove restano invariate.';
 }

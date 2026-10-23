@@ -282,7 +282,9 @@ final List<AppAction> settingsActions = [
                 : 'debug',
         'platform': Platform.operatingSystem,
         'entries': store.entries.length,
-        'media': EntryImagesProvider.instance.images.length,
+        'media': EntryImagesProvider.instance.images
+            .where((image) => store.visibleEntryIds.contains(image.entryId))
+            .length,
         'days': store.getEntryDayCount(),
         'sync': syncStatus()['state'],
         if (context.screen case final screen?) 'screen': screen.current,

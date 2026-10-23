@@ -203,6 +203,7 @@
     "formatDiaro": "Diaro",
     "formatJourney": "Journey",
     "formatMyBrain": "My Brain",
+  "formatOneDiary": "One Diary",
     "formatOneShot": "OneShot",
     "formatPixels": "Pixels",
     "formatMarkdown": "Markdown",
@@ -805,5 +806,12 @@
     "tutorialPrivacyText": "Înregistrările din jurnal rămân pe acest dispozitiv, cu excepția cazului în care le activați sincronizarea, le distribuiți sau le exportați. Sincronizarea este criptată de la capăt la capăt. În Setări, puteți, de asemenea, să setați o parolă pentru aplicație, să creați copii de rezervă și să redeschideți acest tutorial.",
     "editorDiaryDay": "Ziua însemnării",
     "editorDiaryDayPicker": "Ziua însemnării · crearea nu se modifică",
-    "editorDiaryDayHint": "Ziua căreia îi aparține această însemnare. Modificarea ei nu schimbă data sau ora creării."
+    "editorDiaryDayHint": "Ziua căreia îi aparține această însemnare. Modificarea ei nu schimbă data sau ora creării.",
+  "hiddenDiaryTitle": "Însemnări ascunse",
+  "hiddenDiaryHide": "Ascunde însemnarea",
+  "hiddenDiaryShow": "Afișează însemnarea",
+  "hiddenDiaryEmpty": "Nicio însemnare ascunsă",
+  "hiddenDiaryUnlock": "Deblochează însemnările ascunse",
+  "hiddenDiaryAuthHint": "Folosește blocarea aplicației sau a ecranului dispozitivului.",
+  "hiddenDiaryLocalOnly": "Însemnările ascunse rămân pe acest dispozitiv și suspendă sincronizarea. Folosește copii de siguranță criptate. Copiile existente în alte locuri nu se modifică."
 }

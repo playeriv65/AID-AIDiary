@@ -6,6 +6,20 @@ asks again. Dates are when it was settled. Ideas not built yet are in
 
 ## What the app is
 
+- Hidden diaries (2026-10-22): preserve the hidden designation when importing
+  One Diary backups. Keep hidden entries out of everyday views, search,
+  statistics, widgets, ordinary exports and CLI content. Reading or revealing
+  them requires local authentication in Settings > Security; backgrounding
+  removes the protected content again. Full encrypted backups preserve them.
+  Cross-device compatibility is an implementation limitation, documented in
+  [Architecture](ARCHITECTURE.md#hidden-entries), not a completed sync feature.
+
+- Personal migration (2026-10-22): prioritize a usable local installation,
+  diary text and correct diary days/timezones. Defer additional local-encryption
+  work. Preserve original sources; do not attach scanned handwritten pages to
+  the imported entries. Owner-provided travel dates are sufficient for missing
+  timezone evidence; do not expand the migration into forensic research.
+
 - Personal-use boundary (2026-10-22): the owner is starting real use and
   importing personal entries into the Android release app (`dev.aid.diary`,
   displayed as AID Diary). Preserve its data, keys, preferences and live sync

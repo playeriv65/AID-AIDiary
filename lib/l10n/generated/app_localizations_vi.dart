@@ -758,6 +758,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get formatMyBrain => 'My Brain';
 
   @override
+  String get formatOneDiary => 'One Diary';
+
+  @override
   String get formatOneShot => 'OneShot';
 
   @override
@@ -2757,4 +2760,27 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get editorDiaryDayHint =>
       'Ngày mà mục nhật ký này thuộc về. Thay đổi ngày này không làm thay đổi thời điểm tạo mục.';
+
+  @override
+  String get hiddenDiaryTitle => 'Nhật ký ẩn';
+
+  @override
+  String get hiddenDiaryHide => 'Ẩn nhật ký';
+
+  @override
+  String get hiddenDiaryShow => 'Bỏ ẩn nhật ký';
+
+  @override
+  String get hiddenDiaryEmpty => 'Không có nhật ký ẩn';
+
+  @override
+  String get hiddenDiaryUnlock => 'Mở khóa nhật ký ẩn';
+
+  @override
+  String get hiddenDiaryAuthHint =>
+      'Sử dụng khóa ứng dụng hoặc khóa màn hình thiết bị.';
+
+  @override
+  String get hiddenDiaryLocalOnly =>
+      'Nhật ký ẩn được giữ trên thiết bị này và quá trình đồng bộ tạm dừng. Hãy dùng bản sao lưu mã hóa. Các bản sao hiện có ở nơi khác không thay đổi.';
 }

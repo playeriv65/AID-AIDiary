@@ -43,7 +43,7 @@ class EntryFilter {
   /// Whether [entry] matches. A sealed time capsule never does: filtering
   /// must not give away what it holds.
   bool matches(Entry entry) {
-    if (entry.isSealed) return false;
+    if (entry.isSealed || entry.isHidden) return false;
     if (query.isNotEmpty &&
         !entry.text.toLowerCase().contains(query) &&
         !(entry.location?.name?.toLowerCase().contains(query) ?? false)) {

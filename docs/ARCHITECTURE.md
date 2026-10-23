@@ -314,6 +314,37 @@ retention parameters are opt-in, with no domain-based client behavior.
 Implementation and validation/deployment evidence are tracked separately in
 [SYNC_NETWORK.md](SYNC_NETWORK.md).
 
+## Hidden entries
+
+`Entry.isHidden` is an explicit column, defaulting to false for earlier diaries.
+`EntryStore.entries` and its day indexes contain only ordinary entries. The
+store retains `allEntries` for internal persistence and import reconciliation;
+UI lists, search, statistics, widgets and actions must not use that raw list.
+Tags and ordinary status counts also use the visible entry IDs.
+
+Settings > Security > Hidden entries requires a fresh local app-lock or device
+authentication. Its short-lived `HiddenDiarySession` never becomes a setting,
+action argument or global unlocked flag. Backgrounding revokes it; guarded
+reader, editor and attachment routes remove their content. Revealing, restoring,
+opening a hidden capsule and deleting hidden entries are deliberately local
+authenticated operations, like app-lock changes. The ordinary `entry.hide`
+action can conceal a visible entry, but actions cannot read or reveal it.
+Sharing, duplication and template creation require making the entry ordinary
+first; this avoids implicit copies outside the protected section.
+
+Ordinary exports omit hidden entries. Full database backups preserve them and
+therefore require backup-password encryption while any hidden row exists,
+including Recently deleted. Hidden is an application visibility feature, not a
+claim that a plaintext SQLite file is independently encrypted.
+
+Compatibility limitation: older sync clients ignore unfamiliar columns and
+would expose a hidden row. Until there is a negotiated compatible protocol,
+sync and nearby diary transfer fail before publishing whenever hidden rows
+exist, including Recently deleted. No space format bump, reset, remote deletion
+or automatic unhide is performed. The hidden section explains local storage,
+paused sync and encrypted backups. Hiding cannot recall earlier copies or
+history already on another device; those copies remain unchanged.
+
 ## Internationalization
 
 Keep Flutter's `flutter_localizations`, `intl` and `gen-l10n` pipeline;

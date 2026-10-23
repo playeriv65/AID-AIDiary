@@ -204,6 +204,7 @@
     "formatDiaro": "Diaro",
     "formatJourney": "Journey",
     "formatMyBrain": "My Brain",
+  "formatOneDiary": "One Diary",
     "formatOneShot": "OneShot",
     "formatPixels": "Pixels",
     "formatMarkdown": "Markdown",
@@ -805,5 +806,12 @@
     "tutorialPrivacyText": "Các mục nhật ký vẫn còn trên thiết bị này trừ khi bạn bật đồng bộ hóa, chia sẻ hoặc xuất chúng. Đồng bộ hóa được mã hóa hai đầu. Trong Cài đặt, bạn cũng có thể đặt mật mã ứng dụng, tạo bản sao lưu và mở lại hướng dẫn này.",
     "editorDiaryDay": "Ngày nhật ký",
     "editorDiaryDayPicker": "Ngày nhật ký · giữ nguyên thời điểm tạo",
-    "editorDiaryDayHint": "Ngày mà mục nhật ký này thuộc về. Thay đổi ngày này không làm thay đổi thời điểm tạo mục."
+    "editorDiaryDayHint": "Ngày mà mục nhật ký này thuộc về. Thay đổi ngày này không làm thay đổi thời điểm tạo mục.",
+  "hiddenDiaryTitle": "Nhật ký ẩn",
+  "hiddenDiaryHide": "Ẩn nhật ký",
+  "hiddenDiaryShow": "Bỏ ẩn nhật ký",
+  "hiddenDiaryEmpty": "Không có nhật ký ẩn",
+  "hiddenDiaryUnlock": "Mở khóa nhật ký ẩn",
+  "hiddenDiaryAuthHint": "Sử dụng khóa ứng dụng hoặc khóa màn hình thiết bị.",
+  "hiddenDiaryLocalOnly": "Nhật ký ẩn được giữ trên thiết bị này và quá trình đồng bộ tạm dừng. Hãy dùng bản sao lưu mã hóa. Các bản sao hiện có ở nơi khác không thay đổi."
 }

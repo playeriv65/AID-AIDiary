@@ -227,6 +227,7 @@
     "formatDiaro": "Diaro",
     "formatJourney": "Journey",
     "formatMyBrain": "My Brain",
+  "formatOneDiary": "One Diary",
     "formatOneShot": "OneShot",
     "formatPixels": "Pixels",
     "formatMarkdown": "Markdown",
@@ -805,5 +806,12 @@
     "tutorialPrivacyText": "Päiväkirjamerkinnät pysyvät tällä laitteella, ellet ota synkronointia käyttöön tai jaa tai vie niitä. Synkronointi on päästä päähän -salattu. Asetuksissa voit myös asettaa sovelluksen pääsykoodin, luoda varmuuskopioita ja avata tämän opetusohjelman uudelleen.",
     "editorDiaryDay": "Päiväkirjapäivä",
     "editorDiaryDayPicker": "Päiväkirjapäivä · luontiaika säilyy",
-    "editorDiaryDayHint": "Päivä, johon tämä merkintä kuuluu. Sen muuttaminen ei muuta merkinnän luontiaikaa."
+    "editorDiaryDayHint": "Päivä, johon tämä merkintä kuuluu. Sen muuttaminen ei muuta merkinnän luontiaikaa.",
+  "hiddenDiaryTitle": "Piilotetut merkinnät",
+  "hiddenDiaryHide": "Piilota merkintä",
+  "hiddenDiaryShow": "Näytä merkintä",
+  "hiddenDiaryEmpty": "Ei piilotettuja merkintöjä",
+  "hiddenDiaryUnlock": "Avaa piilotetut merkinnät",
+  "hiddenDiaryAuthHint": "Käytä sovelluksen lukitusta tai laitteen näytön lukitusta.",
+  "hiddenDiaryLocalOnly": "Piilotetut merkinnät pysyvät tällä laitteella ja synkronointi keskeytyy. Käytä salattuja varmuuskopioita. Muualla olevat kopiot eivät muutu."
 }

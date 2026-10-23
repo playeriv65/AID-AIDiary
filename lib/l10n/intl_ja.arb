@@ -228,6 +228,7 @@
     "formatDiaro": "Diaro",
     "formatJourney": "Journey",
     "formatMyBrain": "My Brain",
+  "formatOneDiary": "One Diary",
     "formatOneShot": "ワンショット",
     "formatPixels": "Pixels",
     "settingsOpenSourceLicenses": "オープンソースライセンス",
@@ -805,5 +806,12 @@
     "tutorialPrivacyText": "日記エントリは、同期、共有、またはエクスポートを有効にしない限り、このデバイスに残ります。同期はエンドツーエンドで暗号化されます。 [設定] では、アプリのパスコードを設定したり、バックアップを作成したり、このチュートリアルを再度開いたりすることもできます。",
     "editorDiaryDay": "日記の日付",
     "editorDiaryDayPicker": "日記の日付 · 作成日時は変更しません",
-    "editorDiaryDayHint": "この日記をどの日に分類するかを指定します。変更しても作成日時は変わりません。"
+    "editorDiaryDayHint": "この日記をどの日に分類するかを指定します。変更しても作成日時は変わりません。",
+  "hiddenDiaryTitle": "非表示の日記",
+  "hiddenDiaryHide": "日記を非表示にする",
+  "hiddenDiaryShow": "日記を再表示する",
+  "hiddenDiaryEmpty": "非表示の日記はありません",
+  "hiddenDiaryUnlock": "非表示の日記をロック解除",
+  "hiddenDiaryAuthHint": "アプリロックまたは端末の画面ロックで解除してください。",
+  "hiddenDiaryLocalOnly": "非表示の日記はこの端末に保存され、同期は一時停止します。暗号化バックアップを使用してください。他の端末にある既存のコピーは変更されません。"
 }

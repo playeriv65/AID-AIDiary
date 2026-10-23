@@ -129,7 +129,19 @@ class EntryStore with ChangeNotifier {
 
   List<Entry> _entries = List.empty(growable: true);
 
-  List<Entry> get entries => _entries;
+  List<Entry> _visibleEntries = const [];
+  Set<int> _visibleEntryIds = const {};
+
+  /// Ordinary views never receive hidden entries, even after a local reveal.
+  List<Entry> get entries => _visibleEntries;
+
+  Set<int> get visibleEntryIds => _visibleEntryIds;
+
+  /// Complete storage contents for backup/import bookkeeping, never a UI list.
+  List<Entry> get allEntries => _entries;
+
+  List<Entry> get hiddenEntries =>
+      _entries.where((entry) => entry.isHidden).toList(growable: false);
 
   @visibleForTesting
   set entries(List<Entry> entries) {
@@ -194,7 +206,25 @@ class EntryStore with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<List<DeletedEntry>> deleted() => EntryDao.getDeleted();
+  Future<List<DeletedEntry>> deleted({bool includeHidden = false}) async => [
+        for (final item in await EntryDao.getDeleted())
+          if (includeHidden || !item.entry.isHidden) item,
+      ];
+
+  /// Visibility is stored with the entry; revealing requires the local UI.
+  Future<Entry> setHidden(Entry entry, bool hidden) async {
+    await _complete;
+    final updated = entry.copy(isHidden: hidden, timeModified: DateTime.now());
+    await EntryDao.update(updated);
+    _entries = [
+      for (final existing in _entries)
+        existing.id == entry.id ? updated : existing,
+    ];
+    _indexEntriesByDay();
+    await AppDatabase.instance.updateExternalDatabase();
+    notifyListeners();
+    return updated;
+  }
 
   /// Seals an entry as a time capsule until [openAt], or opens it with null.
   Future<Entry> setOpenAt(Entry entry, DateTime? openAt) async {
@@ -315,7 +345,7 @@ class EntryStore with ChangeNotifier {
     await _complete;
     updateStatus("0%");
     final allEntries = [
-      ...entries,
+      ...this.allEntries,
       for (final item in await EntryDao.getDeleted()) item.entry,
     ];
     await eraseMany(allEntries,
@@ -328,7 +358,7 @@ class EntryStore with ChangeNotifier {
   }
 
   int getIndexOfEntry(int entryId) {
-    return entries.indexWhere((entry) => entry.id == entryId);
+    return _entries.indexWhere((entry) => entry.id == entryId);
   }
 
   Entry? getEntryForToday() {
@@ -358,7 +388,7 @@ class EntryStore with ChangeNotifier {
   int getEntryDayCount() => _entriesByDay.length;
 
   bool hasEntryAtTimestamp(DateTime timestamp) {
-    return entries.any((entry) => entry.timeCreate == timestamp);
+    return _entries.any((entry) => entry.timeCreate == timestamp);
   }
 
   /// Writes [draft]; attachment files it drops go to [removedFiles] for the
@@ -409,7 +439,7 @@ class EntryStore with ChangeNotifier {
     if (entry.id == null) return true;
     final index = getIndexOfEntry(entry.id!);
     if (index == -1) return true;
-    final stored = entries[index];
+    final stored = _entries[index];
     return !mapEquals(stored.toJson(), entry.toJson());
   }
 
@@ -516,8 +546,12 @@ class EntryStore with ChangeNotifier {
   }
 
   void _indexEntriesByDay() {
+    _visibleEntries =
+        List.unmodifiable(_entries.where((entry) => !entry.isHidden));
+    _visibleEntryIds = Set.unmodifiable(
+        _visibleEntries.map((entry) => entry.id).whereType<int>());
     final index = <DateTime, List<Entry>>{};
-    for (final entry in _entries) {
+    for (final entry in _visibleEntries) {
       index.putIfAbsent(entry.day, () => []).add(entry);
     }
     _entriesByDay = index;

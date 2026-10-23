@@ -757,6 +757,9 @@ class AppLocalizationsHi extends AppLocalizations {
   String get formatMyBrain => 'My Brain';
 
   @override
+  String get formatOneDiary => 'One Diary';
+
+  @override
   String get formatOneShot => 'वनशॉट';
 
   @override
@@ -2743,4 +2746,27 @@ class AppLocalizationsHi extends AppLocalizations {
   @override
   String get editorDiaryDayHint =>
       'वह दिन जिससे यह प्रविष्टि संबंधित है। इसे बदलने से प्रविष्टि बनाने का समय नहीं बदलता।';
+
+  @override
+  String get hiddenDiaryTitle => 'छिपी हुई प्रविष्टियाँ';
+
+  @override
+  String get hiddenDiaryHide => 'प्रविष्टि छिपाएँ';
+
+  @override
+  String get hiddenDiaryShow => 'प्रविष्टि दिखाएँ';
+
+  @override
+  String get hiddenDiaryEmpty => 'कोई छिपी हुई प्रविष्टि नहीं';
+
+  @override
+  String get hiddenDiaryUnlock => 'छिपी हुई प्रविष्टियाँ अनलॉक करें';
+
+  @override
+  String get hiddenDiaryAuthHint =>
+      'ऐप लॉक या अपने डिवाइस के स्क्रीन लॉक का उपयोग करें।';
+
+  @override
+  String get hiddenDiaryLocalOnly =>
+      'छिपी हुई प्रविष्टियाँ इस डिवाइस पर रहती हैं और सिंक रुक जाता है। एन्क्रिप्ट किए गए बैकअप उपयोग करें। अन्य जगह मौजूद प्रतियाँ नहीं बदलतीं।';
 }

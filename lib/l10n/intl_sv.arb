@@ -203,6 +203,7 @@
     "formatDiaro": "Diaro",
     "formatJourney": "Journey",
     "formatMyBrain": "My Brain",
+  "formatOneDiary": "One Diary",
     "formatOneShot": "OneShot",
     "formatPixels": "Pixels",
     "formatMarkdown": "Markdown",
@@ -805,5 +806,12 @@
     "tutorialPrivacyText": "Dagboksanteckningar finns kvar på den här enheten om du inte aktiverar synkronisering eller delar eller exporterar dem. Synkronisering är krypterad från ände till ände. I Inställningar kan du också ställa in ett applösenord, skapa säkerhetskopior och öppna den här handledningen igen.",
     "editorDiaryDay": "Dagboksdatum",
     "editorDiaryDayPicker": "Dagboksdatum · skapandetiden behålls",
-    "editorDiaryDayHint": "Dagen som det här inlägget hör till. En ändring ändrar inte tidpunkten då inlägget skapades."
+    "editorDiaryDayHint": "Dagen som det här inlägget hör till. En ändring ändrar inte tidpunkten då inlägget skapades.",
+  "hiddenDiaryTitle": "Dolda inlägg",
+  "hiddenDiaryHide": "Dölj inlägg",
+  "hiddenDiaryShow": "Visa inlägg",
+  "hiddenDiaryEmpty": "Inga dolda inlägg",
+  "hiddenDiaryUnlock": "Lås upp dolda inlägg",
+  "hiddenDiaryAuthHint": "Använd appens lås eller enhetens skärmlås.",
+  "hiddenDiaryLocalOnly": "Dolda inlägg stannar på denna enhet och synkroniseringen pausas. Använd krypterade säkerhetskopior. Befintliga kopior på andra platser ändras inte."
 }

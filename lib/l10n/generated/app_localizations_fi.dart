@@ -757,6 +757,9 @@ class AppLocalizationsFi extends AppLocalizations {
   String get formatMyBrain => 'My Brain';
 
   @override
+  String get formatOneDiary => 'One Diary';
+
+  @override
   String get formatOneShot => 'OneShot';
 
   @override
@@ -2750,4 +2753,27 @@ class AppLocalizationsFi extends AppLocalizations {
   @override
   String get editorDiaryDayHint =>
       'Päivä, johon tämä merkintä kuuluu. Sen muuttaminen ei muuta merkinnän luontiaikaa.';
+
+  @override
+  String get hiddenDiaryTitle => 'Piilotetut merkinnät';
+
+  @override
+  String get hiddenDiaryHide => 'Piilota merkintä';
+
+  @override
+  String get hiddenDiaryShow => 'Näytä merkintä';
+
+  @override
+  String get hiddenDiaryEmpty => 'Ei piilotettuja merkintöjä';
+
+  @override
+  String get hiddenDiaryUnlock => 'Avaa piilotetut merkinnät';
+
+  @override
+  String get hiddenDiaryAuthHint =>
+      'Käytä sovelluksen lukitusta tai laitteen näytön lukitusta.';
+
+  @override
+  String get hiddenDiaryLocalOnly =>
+      'Piilotetut merkinnät pysyvät tällä laitteella ja synkronointi keskeytyy. Käytä salattuja varmuuskopioita. Muualla olevat kopiot eivät muutu.';
 }

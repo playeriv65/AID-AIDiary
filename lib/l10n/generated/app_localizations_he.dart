@@ -764,6 +764,9 @@ class AppLocalizationsHe extends AppLocalizations {
   String get formatMyBrain => 'My Brain';
 
   @override
+  String get formatOneDiary => 'One Diary';
+
+  @override
   String get formatOneShot => 'OneShot';
 
   @override
@@ -2722,4 +2725,27 @@ class AppLocalizationsHe extends AppLocalizations {
   @override
   String get editorDiaryDayHint =>
       'היום שאליו שייכת הרשומה. שינוי היום אינו משנה את זמן יצירת הרשומה.';
+
+  @override
+  String get hiddenDiaryTitle => 'רשומות מוסתרות';
+
+  @override
+  String get hiddenDiaryHide => 'הסתרת רשומה';
+
+  @override
+  String get hiddenDiaryShow => 'ביטול הסתרת רשומה';
+
+  @override
+  String get hiddenDiaryEmpty => 'אין רשומות מוסתרות';
+
+  @override
+  String get hiddenDiaryUnlock => 'פתיחת רשומות מוסתרות';
+
+  @override
+  String get hiddenDiaryAuthHint =>
+      'יש להשתמש בנעילת היישום או בנעילת המסך של המכשיר.';
+
+  @override
+  String get hiddenDiaryLocalOnly =>
+      'רשומות מוסתרות נשארות במכשיר זה והסנכרון מושהה. יש להשתמש בגיבויים מוצפנים. עותקים קיימים במכשירים אחרים אינם משתנים.';
 }

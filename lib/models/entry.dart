@@ -25,6 +25,7 @@ class EntryFields {
     openAt,
     utcOffset,
     diaryDate,
+    isHidden,
   ];
   static const String id = 'id';
   static const String text = 'text';
@@ -40,6 +41,7 @@ class EntryFields {
   static const String openAt = 'open_at';
   static const String utcOffset = 'utc_offset';
   static const String diaryDate = 'diary_date';
+  static const String isHidden = 'is_hidden';
 
   /// Set while an entry sits in Recently deleted; not part of [Entry].
   static const String deletedAt = 'deleted_at';
@@ -118,6 +120,9 @@ class Entry {
   /// A time capsule stays sealed until this moment.
   final DateTime? openAt;
 
+  /// Hidden entries are only shown after opening the protected diary section.
+  final bool isHidden;
+
   /// Minutes ahead of UTC where the entry was written. [timeCreate] is the
   /// wall-clock time there, so it reads the same after the device moves to
   /// another time zone; this pins down the moment for formats that need
@@ -140,6 +145,7 @@ class Entry {
     this.weather,
     this.activity,
     this.openAt,
+    this.isHidden = false,
     this.utcOffset,
     DateTime? day,
   }) : day = day == null
@@ -218,6 +224,7 @@ class Entry {
     Object? weather = _unset,
     Object? activity = _unset,
     Object? openAt = _unset,
+    bool? isHidden,
     Object? utcOffset = _unset,
     DateTime? day,
   }) =>
@@ -233,6 +240,7 @@ class Entry {
         activity:
             activity == _unset ? this.activity : activity as EntryActivity?,
         openAt: openAt == _unset ? this.openAt : openAt as DateTime?,
+        isHidden: isHidden ?? this.isHidden,
         utcOffset: utcOffset == _unset ? this.utcOffset : utcOffset as int?,
         // A new written time leaves the diary day as it was.
         day: day ?? this.day,
@@ -263,6 +271,8 @@ class Entry {
         _ => null,
       },
       utcOffset: json[EntryFields.utcOffset] as int?,
+      isHidden:
+          json[EntryFields.isHidden] == 1 || json[EntryFields.isHidden] == true,
       day: DiaryDay.parse(json[EntryFields.diaryDate] as String?),
     );
   }
@@ -282,6 +292,7 @@ class Entry {
         EntryFields.openAt: openAt?.toIso8601String(),
         EntryFields.utcOffset: utcOffset,
         EntryFields.diaryDate: DiaryDay.format(day),
+        EntryFields.isHidden: isHidden ? 1 : 0,
       };
 }
 

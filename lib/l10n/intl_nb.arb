@@ -203,6 +203,7 @@
     "formatDiaro": "Diaro",
     "formatJourney": "Journey",
     "formatMyBrain": "My Brain",
+  "formatOneDiary": "One Diary",
     "formatOneShot": "OneShot",
     "formatPixels": "Pixels",
     "formatMarkdown": "Markdown",
@@ -805,5 +806,12 @@
     "tutorialPrivacyText": "Dagbokoppføringer forblir på denne enheten med mindre du aktiverer synkronisering eller deler eller eksporterer dem. Synkronisering er ende-til-ende-kryptert. I Innstillinger kan du også angi en app-passord, lage sikkerhetskopier og åpne denne opplæringen på nytt.",
     "editorDiaryDay": "Dagbokdato",
     "editorDiaryDayPicker": "Dagbokdato · opprettelsestid beholdes",
-    "editorDiaryDayHint": "Dagen dette innlegget tilhører. En endring endrer ikke tidspunktet innlegget ble opprettet."
+    "editorDiaryDayHint": "Dagen dette innlegget tilhører. En endring endrer ikke tidspunktet innlegget ble opprettet.",
+  "hiddenDiaryTitle": "Skjulte innlegg",
+  "hiddenDiaryHide": "Skjul innlegg",
+  "hiddenDiaryShow": "Vis innlegg",
+  "hiddenDiaryEmpty": "Ingen skjulte innlegg",
+  "hiddenDiaryUnlock": "Lås opp skjulte innlegg",
+  "hiddenDiaryAuthHint": "Bruk applåsen eller enhetens skjermlås.",
+  "hiddenDiaryLocalOnly": "Skjulte innlegg blir på denne enheten, og synkronisering settes på pause. Bruk krypterte sikkerhetskopier. Eksisterende kopier andre steder endres ikke."
 }

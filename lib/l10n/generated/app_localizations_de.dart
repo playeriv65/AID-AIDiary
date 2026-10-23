@@ -759,6 +759,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get formatMyBrain => 'My Brain';
 
   @override
+  String get formatOneDiary => 'One Diary';
+
+  @override
   String get formatOneShot => 'OneShot';
 
   @override
@@ -2777,4 +2780,27 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get editorDiaryDayHint =>
       'Der Tag, zu dem dieser Eintrag gehört. Eine Änderung lässt den Erstellungszeitpunkt unverändert.';
+
+  @override
+  String get hiddenDiaryTitle => 'Verborgene Einträge';
+
+  @override
+  String get hiddenDiaryHide => 'Eintrag verbergen';
+
+  @override
+  String get hiddenDiaryShow => 'Eintrag einblenden';
+
+  @override
+  String get hiddenDiaryEmpty => 'Keine verborgenen Einträge';
+
+  @override
+  String get hiddenDiaryUnlock => 'Verborgene Einträge entsperren';
+
+  @override
+  String get hiddenDiaryAuthHint =>
+      'Verwende die App-Sperre oder die Bildschirmsperre deines Geräts.';
+
+  @override
+  String get hiddenDiaryLocalOnly =>
+      'Verborgene Einträge bleiben auf diesem Gerät und pausieren die Synchronisierung. Verwende verschlüsselte Sicherungen. Bestehende Kopien auf anderen Geräten bleiben unverändert.';
 }

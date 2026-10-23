@@ -765,6 +765,9 @@ class AppLocalizationsTa extends AppLocalizations {
   String get formatMyBrain => 'My Brain';
 
   @override
+  String get formatOneDiary => 'One Diary';
+
+  @override
   String get formatOneShot => 'ஒன்ஷாட்';
 
   @override
@@ -2786,4 +2789,27 @@ class AppLocalizationsTa extends AppLocalizations {
   @override
   String get editorDiaryDayHint =>
       'இந்தப் பதிவு எந்த நாளைச் சேர்ந்தது என்பதைத் தீர்மானிக்கிறது. இதை மாற்றினாலும் பதிவு உருவாக்கப்பட்ட நேரம் மாறாது.';
+
+  @override
+  String get hiddenDiaryTitle => 'மறைக்கப்பட்ட பதிவுகள்';
+
+  @override
+  String get hiddenDiaryHide => 'பதிவை மறை';
+
+  @override
+  String get hiddenDiaryShow => 'பதிவைக் காட்டு';
+
+  @override
+  String get hiddenDiaryEmpty => 'மறைக்கப்பட்ட பதிவுகள் இல்லை';
+
+  @override
+  String get hiddenDiaryUnlock => 'மறைக்கப்பட்ட பதிவுகளைத் திற';
+
+  @override
+  String get hiddenDiaryAuthHint =>
+      'செயலிப் பூட்டு அல்லது சாதனத் திரைப் பூட்டைப் பயன்படுத்தவும்.';
+
+  @override
+  String get hiddenDiaryLocalOnly =>
+      'மறைக்கப்பட்ட பதிவுகள் இந்தச் சாதனத்தில் இருக்கும்; ஒத்திசைவு இடைநிறுத்தப்படும். மறையாக்கப்பட்ட காப்புப்பிரதிகளைப் பயன்படுத்தவும். மற்ற இடங்களில் உள்ள பிரதிகள் மாறாது.';
 }

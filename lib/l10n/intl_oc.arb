@@ -208,6 +208,7 @@
     "formatDiaro": "Diaro",
     "formatJourney": "Journey",
     "formatMyBrain": "My Brain",
+  "formatOneDiary": "One Diary",
     "formatOneShot": "OneShot",
     "formatPixels": "Pixels",
     "formatMarkdown": "Markdown",
@@ -805,5 +806,12 @@
     "tutorialPrivacyText": "Las entradas del jornal demòran sus aqueste periferic levat se las activatz la sincronizacion o la partatge o las exportacion. La sincronizacion es chifrada de punta a punta. Dins los Paramètres podètz tanben definir un senhal d'aplicacion, crear de còpias de seguretat e tornar dobrir aqueste tutorial.",
     "editorDiaryDay": "Jorn del jornal",
     "editorDiaryDayPicker": "Jorn del jornal · creacion sens cambiament",
-    "editorDiaryDayHint": "Lo jorn al qual aparten aquesta nòta. Lo cambiar modifica pas sa data e ora de creacion."
+    "editorDiaryDayHint": "Lo jorn al qual aparten aquesta nòta. Lo cambiar modifica pas sa data e ora de creacion.",
+  "hiddenDiaryTitle": "Entradas amagadas",
+  "hiddenDiaryHide": "Amagar l’entrada",
+  "hiddenDiaryShow": "Mostrar l’entrada",
+  "hiddenDiaryEmpty": "Cap d’entrada amagada",
+  "hiddenDiaryUnlock": "Desverrolhar las entradas amagadas",
+  "hiddenDiaryAuthHint": "Utilizatz lo verrolhatge de l’aplicacion o de l’ecran de l’aparelh.",
+  "hiddenDiaryLocalOnly": "Las entradas amagadas demòran sus aqueste aparelh e la sincronizacion es en pausa. Utilizatz de salvagardas chifradas. Las còpias existentas endacòm mai càmbian pas."
 }

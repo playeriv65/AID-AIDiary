@@ -1,0 +1,35 @@
+{
+  "version": 3,
+  "coordinateScale": 1000,
+  "weatherCodes": {
+    "晴": 0,
+    "Clear": 0,
+    "晴间多云": 2,
+    "Partly Cloudy": 2,
+    "多云": 3,
+    "阴": 3,
+    "Cloudy": 3,
+    "雾": 45,
+    "Fog": 45,
+    "小雨": 61,
+    "Light Rain": 61,
+    "中雨": 63,
+    "Moderate Rain": 63,
+    "大雨": 65,
+    "Heavy Rain": 65,
+    "阵雨": 80,
+    "Shower Rain": 80,
+    "小雪": 71,
+    "Light Snow": 71,
+    "雷阵雨": 95,
+    "Thundershower": 95,
+    "Thunderstorm": 95
+  },
+  "payloadKeys": {
+    "version": "uqwjhd0l",
+    "source.json": "wxaj19sd",
+    "category.json": "usdfi8op",
+    "tag.json": "91knu3nj",
+    "model.json": "ssd00dsd"
+  }
+}

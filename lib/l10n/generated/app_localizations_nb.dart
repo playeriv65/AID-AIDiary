@@ -763,6 +763,9 @@ class AppLocalizationsNb extends AppLocalizations {
   String get formatMyBrain => 'My Brain';
 
   @override
+  String get formatOneDiary => 'One Diary';
+
+  @override
   String get formatOneShot => 'OneShot';
 
   @override
@@ -2747,4 +2750,26 @@ class AppLocalizationsNb extends AppLocalizations {
   @override
   String get editorDiaryDayHint =>
       'Dagen dette innlegget tilhører. En endring endrer ikke tidspunktet innlegget ble opprettet.';
+
+  @override
+  String get hiddenDiaryTitle => 'Skjulte innlegg';
+
+  @override
+  String get hiddenDiaryHide => 'Skjul innlegg';
+
+  @override
+  String get hiddenDiaryShow => 'Vis innlegg';
+
+  @override
+  String get hiddenDiaryEmpty => 'Ingen skjulte innlegg';
+
+  @override
+  String get hiddenDiaryUnlock => 'Lås opp skjulte innlegg';
+
+  @override
+  String get hiddenDiaryAuthHint => 'Bruk applåsen eller enhetens skjermlås.';
+
+  @override
+  String get hiddenDiaryLocalOnly =>
+      'Skjulte innlegg blir på denne enheten, og synkronisering settes på pause. Bruk krypterte sikkerhetskopier. Eksisterende kopier andre steder endres ikke.';
 }

@@ -39,6 +39,7 @@ class AppDatabase {
       executor ?? instance.database!;
 
   static const String databaseFileName = 'aid_diary.db';
+  static const int currentVersion = 14;
 
   static final Logger _logger = Logger('AppDatabase');
 
@@ -87,7 +88,7 @@ class AppDatabase {
 
   Future<void> open({int? firstScreen}) async {
     _database = await openDatabase(_internalPath!,
-        version: 13, onCreate: _createDatabase, onUpgrade: _onUpgrade);
+        version: currentVersion, onCreate: _createDatabase, onUpgrade: _onUpgrade);
 
     await EntriesProvider.instance.load(firstScreen: firstScreen);
     await EntryImagesProvider.instance.load();
@@ -312,6 +313,7 @@ class AppDatabase {
   Future<void> createSchema(Database db) async {
     await createVersion10Schema(db);
     await addSyncSchema(db);
+    await _addHiddenAndImportSchema(db);
   }
 
   /// The tables as they were before sync, for upgrade tests.
@@ -550,6 +552,24 @@ DROP TABLE old_entries;
     if (oldVersion >= 11 && oldVersion < 13 && newVersion >= 13) {
       await addSyncMediaSchema(db);
     }
+    if (oldVersion < 14 && newVersion >= 14) {
+      await _addHiddenAndImportSchema(db);
+    }
+  }
+
+  Future<void> _addHiddenAndImportSchema(Database db) async {
+    await db.execute('ALTER TABLE $entriesTable ADD COLUMN '
+        '${EntryFields.isHidden} INTEGER NOT NULL DEFAULT 0 '
+        'CHECK (${EntryFields.isHidden} IN (0, 1))');
+    await db.execute('''
+CREATE TABLE import_sources (
+  source_format TEXT NOT NULL,
+  source_id TEXT NOT NULL,
+  source_hash TEXT NOT NULL,
+  entry_id INTEGER NOT NULL REFERENCES $entriesTable(id) ON DELETE CASCADE,
+  source_json TEXT NOT NULL,
+  PRIMARY KEY (source_format, source_id, source_hash)
+)''');
   }
 
   Future<void> _addEntryLocationColumns(Database db) async {

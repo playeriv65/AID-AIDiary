@@ -228,6 +228,7 @@
     "formatDiaro": "Diaro",
     "formatJourney": "Journey",
     "formatMyBrain": "My Brain",
+  "formatOneDiary": "One Diary",
     "formatOneShot": "OneShot",
     "formatPixels": "Pixels",
     "settingsOpenSourceLicenses": "Licenças de código aberto",
@@ -805,5 +806,12 @@
     "tutorialPrivacyText": "As entradas do diário permanecem neste dispositivo, a menos que ative a sincronização, partilhe ou exporte-as. A sincronização é encriptada de ponta a ponta. Em Definições também pode definir uma palavra-passe de aplicação, criar cópias de segurança e reabrir este tutorial.",
     "editorDiaryDay": "Dia do diário",
     "editorDiaryDayPicker": "Dia do diário · criação inalterada",
-    "editorDiaryDayHint": "O dia a que pertence esta entrada. Alterá-lo não muda a data nem a hora de criação."
+    "editorDiaryDayHint": "O dia a que pertence esta entrada. Alterá-lo não muda a data nem a hora de criação.",
+  "hiddenDiaryTitle": "Entradas ocultas",
+  "hiddenDiaryHide": "Ocultar entrada",
+  "hiddenDiaryShow": "Mostrar entrada",
+  "hiddenDiaryEmpty": "Sem entradas ocultas",
+  "hiddenDiaryUnlock": "Desbloquear entradas ocultas",
+  "hiddenDiaryAuthHint": "Utiliza o bloqueio da aplicação ou do ecrã do dispositivo.",
+  "hiddenDiaryLocalOnly": "As entradas ocultas ficam neste dispositivo e suspendem a sincronização. Utiliza cópias de segurança encriptadas. As cópias existentes noutros locais não mudam."
 }

@@ -13,5 +13,6 @@ enum ImportFormat {
   journey,
   myBrain,
   oneShot,
+  oneDiary,
   pixels,
 }

@@ -1,5 +1,5 @@
 param(
-  [ValidateSet('windows','windows-build','windows-stage','windows-background','windows-driver','android','apk','profile','release','test','test-all','test-unit','test-widget','test-integration','test-live','test-server','cli','test-cli','frame-rate','analyze','pub','l10n','screenshots')][string]$Target='windows',
+  [ValidateSet('windows','windows-build','windows-release-build','windows-stage','windows-background','windows-driver','android','apk','profile','release','test','test-all','test-unit','test-widget','test-integration','test-live','test-server','cli','test-cli','frame-rate','analyze','pub','l10n','screenshots')][string]$Target='windows',
   # Flutter device id for 'android', e.g. a wireless adb serial from `flutter devices`.
   [string]$Device='emulator-5554',
   # Files or directories; required for test, optional for layers/screenshots.
@@ -64,7 +64,7 @@ if ($Target -in 'android', 'apk', 'profile', 'release' -and
 # Concurrent builds/tests can stage another platform's bundle or replace a
 # native test DLL while it is loaded. Serialize all Flutter workspace writers.
 $buildLock = $null
-if ($Target -in 'windows', 'windows-build', 'windows-stage', 'windows-background', 'windows-driver',
+if ($Target -in 'windows', 'windows-build', 'windows-release-build', 'windows-stage', 'windows-background', 'windows-driver',
     'android', 'apk', 'profile', 'release', 'frame-rate', 'test', 'test-all', 'test-unit',
     'test-widget', 'test-integration', 'test-live', 'screenshots', 'pub', 'l10n', 'analyze') {
   $lockPath = Join-Path (Get-Location) '.dart_tool/dev-build.lock'
@@ -81,6 +81,7 @@ try {
 switch ($Target) {
   'windows' { flutter run -d windows }
   'windows-build' { flutter build windows --debug --dart-define=AID_DEV_BUILD=true }
+  'windows-release-build' { flutter build windows --release }
   'windows-stage' {
     $runtime = $tools['DEV_WINDOWS_RUNTIME']
     if (-not $runtime -or -not [IO.Path]::IsPathFullyQualified($runtime)) {

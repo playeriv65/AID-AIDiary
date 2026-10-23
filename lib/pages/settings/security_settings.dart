@@ -8,6 +8,7 @@ import 'package:aid_diary/utils/password_store.dart';
 import 'package:aid_diary/widgets/auth_popup.dart';
 import 'package:aid_diary/widgets/settings_icon_action.dart';
 import 'package:aid_diary/widgets/settings_toggle.dart';
+import 'package:aid_diary/routing/destinations.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:flutter/services.dart';
@@ -50,6 +51,11 @@ class SecuritySettingsPageState extends State<SecuritySettings> {
       ),
       body: ListView(
         children: [
+          ListTile(
+              leading: const Icon(Icons.visibility_off_outlined),
+              title: Text(AppLocalizations.of(context)!.hiddenDiaryTitle),
+              trailing: const Icon(Icons.chevron_right_rounded),
+              onTap: () => openPlace(context, 'hidden_entries')),
           SettingsToggle(
               title:
                   AppLocalizations.of(context)!.settingsSecurityRequirePassword,

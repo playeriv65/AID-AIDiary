@@ -234,6 +234,7 @@
     "formatDiaro": "Diaro",
     "formatJourney": "Journey",
     "formatMyBrain": "My Brain",
+  "formatOneDiary": "One Diary",
     "formatOneShot": "OneShot",
     "formatPixels": "Pixels",
     "shareAddToLogPickerTitle": "Trieu una entrada al diari",
@@ -805,5 +806,12 @@
     "tutorialPrivacyText": "Les entrades del diari romanen en aquest dispositiu tret que les activeu la sincronització, les compartiu o les exporteu. La sincronització està xifrada d'extrem a extrem. A Configuració també podeu establir una contrasenya d'aplicació, crear còpies de seguretat i tornar a obrir aquest tutorial.",
     "editorDiaryDay": "Dia del diari",
     "editorDiaryDayPicker": "Dia del diari · creació sense canvis",
-    "editorDiaryDayHint": "El dia al qual pertany aquesta entrada. Canviar-lo no modifica la data ni l’hora de creació."
+    "editorDiaryDayHint": "El dia al qual pertany aquesta entrada. Canviar-lo no modifica la data ni l’hora de creació.",
+  "hiddenDiaryTitle": "Entrades ocultes",
+  "hiddenDiaryHide": "Amaga l’entrada",
+  "hiddenDiaryShow": "Mostra l’entrada",
+  "hiddenDiaryEmpty": "No hi ha entrades ocultes",
+  "hiddenDiaryUnlock": "Desbloca les entrades ocultes",
+  "hiddenDiaryAuthHint": "Utilitza el bloqueig de l’aplicació o de la pantalla del dispositiu.",
+  "hiddenDiaryLocalOnly": "Les entrades ocultes es queden en aquest dispositiu i aturen la sincronització. Utilitza còpies de seguretat xifrades. Les còpies existents en altres llocs no canvien."
 }

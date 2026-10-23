@@ -761,6 +761,9 @@ class AppLocalizationsOc extends AppLocalizations {
   String get formatMyBrain => 'My Brain';
 
   @override
+  String get formatOneDiary => 'One Diary';
+
+  @override
   String get formatOneShot => 'OneShot';
 
   @override
@@ -2770,4 +2773,27 @@ class AppLocalizationsOc extends AppLocalizations {
   @override
   String get editorDiaryDayHint =>
       'Lo jorn al qual aparten aquesta nòta. Lo cambiar modifica pas sa data e ora de creacion.';
+
+  @override
+  String get hiddenDiaryTitle => 'Entradas amagadas';
+
+  @override
+  String get hiddenDiaryHide => 'Amagar l’entrada';
+
+  @override
+  String get hiddenDiaryShow => 'Mostrar l’entrada';
+
+  @override
+  String get hiddenDiaryEmpty => 'Cap d’entrada amagada';
+
+  @override
+  String get hiddenDiaryUnlock => 'Desverrolhar las entradas amagadas';
+
+  @override
+  String get hiddenDiaryAuthHint =>
+      'Utilizatz lo verrolhatge de l’aplicacion o de l’ecran de l’aparelh.';
+
+  @override
+  String get hiddenDiaryLocalOnly =>
+      'Las entradas amagadas demòran sus aqueste aparelh e la sincronizacion es en pausa. Utilizatz de salvagardas chifradas. Las còpias existentas endacòm mai càmbian pas.';
 }

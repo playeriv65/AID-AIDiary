@@ -778,6 +778,9 @@ class AppLocalizationsLt extends AppLocalizations {
   String get formatMyBrain => 'My Brain';
 
   @override
+  String get formatOneDiary => 'One Diary';
+
+  @override
   String get formatOneShot => 'OneShot';
 
   @override
@@ -2774,4 +2777,27 @@ class AppLocalizationsLt extends AppLocalizations {
   @override
   String get editorDiaryDayHint =>
       'Diena, kuriai priklauso šis įrašas. Ją pakeitus įrašo sukūrimo laikas nesikeičia.';
+
+  @override
+  String get hiddenDiaryTitle => 'Paslėpti įrašai';
+
+  @override
+  String get hiddenDiaryHide => 'Slėpti įrašą';
+
+  @override
+  String get hiddenDiaryShow => 'Rodyti įrašą';
+
+  @override
+  String get hiddenDiaryEmpty => 'Paslėptų įrašų nėra';
+
+  @override
+  String get hiddenDiaryUnlock => 'Atrakinti paslėptus įrašus';
+
+  @override
+  String get hiddenDiaryAuthHint =>
+      'Naudokite programėlės arba įrenginio ekrano užraktą.';
+
+  @override
+  String get hiddenDiaryLocalOnly =>
+      'Paslėpti įrašai lieka šiame įrenginyje, o sinchronizavimas pristabdomas. Naudokite šifruotas atsargines kopijas. Kitur esančios kopijos nesikeičia.';
 }

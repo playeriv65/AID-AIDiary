@@ -228,6 +228,7 @@
     "formatDiaro": "Diaro",
     "formatJourney": "Journey",
     "formatMyBrain": "My Brain",
+  "formatOneDiary": "One Diary",
     "formatOneShot": "ون شوت",
     "formatPixels": "Pixels",
     "settingsOpenSourceLicenses": "تراخيص مفتوحة المصدر",
@@ -805,5 +806,12 @@
     "tutorialPrivacyText": "تظل إدخالات اليوميات على هذا الجهاز ما لم تقم بتمكين مزامنتها أو مشاركتها أو تصديرها. المزامنة مشفرة من طرف إلى طرف. في الإعدادات، يمكنك أيضًا تعيين رمز مرور التطبيق وإنشاء نسخ احتياطية وإعادة فتح هذا البرنامج التعليمي.",
     "editorDiaryDay": "يوم التدوينة",
     "editorDiaryDayPicker": "يوم التدوينة · وقت الإنشاء ثابت",
-    "editorDiaryDayHint": "اليوم الذي تنتمي إليه هذه التدوينة. تغييره لا يغيّر وقت إنشائها."
+    "editorDiaryDayHint": "اليوم الذي تنتمي إليه هذه التدوينة. تغييره لا يغيّر وقت إنشائها.",
+  "hiddenDiaryTitle": "اليوميات المخفية",
+  "hiddenDiaryHide": "إخفاء اليومية",
+  "hiddenDiaryShow": "إظهار اليومية",
+  "hiddenDiaryEmpty": "لا توجد يوميات مخفية",
+  "hiddenDiaryUnlock": "فتح اليوميات المخفية",
+  "hiddenDiaryAuthHint": "استخدم قفل التطبيق أو قفل شاشة جهازك للفتح.",
+  "hiddenDiaryLocalOnly": "تبقى اليوميات المخفية على هذا الجهاز وتتوقف المزامنة. استخدم نسخًا احتياطية مشفرة. لا تتغير النسخ الموجودة على الأجهزة الأخرى."
 }

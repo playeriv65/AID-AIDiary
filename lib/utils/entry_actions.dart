@@ -23,6 +23,7 @@ class EntryActions {
     final copy = await EntriesProvider.instance.add(
         Entry(
             text: entry.text,
+            isHidden: entry.isHidden,
             mood: entry.mood,
             day: entry.day,
             weather: entry.weather,

@@ -6,6 +6,7 @@ import 'package:aid_diary/device_info_service.dart';
 import 'package:aid_diary/actions/app_action.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/pages/recently_deleted_page.dart';
+import 'package:aid_diary/pages/hidden_entries_page.dart';
 import 'package:aid_diary/pages/search_page.dart';
 import 'package:aid_diary/pages/settings/about_settings.dart';
 import 'package:aid_diary/pages/settings/appearance_settings.dart';
@@ -94,6 +95,8 @@ final List<Destination> settingsDestinations = [
       (_) => const StorageSettings()),
   pageDestination('recently_deleted', 'Entries deleted in the last days',
       (_) => const RecentlyDeletedPage()),
+  pageDestination('hidden_entries', 'Hidden entries; requires local unlock',
+      (_) => const HiddenEntriesPage()),
   pageDestination('settings/stories', 'Flashbacks and stories',
       (_) => const FlashbackSettings()),
   pageDestination('settings/notifications', 'Reminders (Android)',

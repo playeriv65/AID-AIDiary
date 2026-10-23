@@ -771,6 +771,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get formatMyBrain => 'My Brain';
 
   @override
+  String get formatOneDiary => 'One Diary';
+
+  @override
   String get formatOneShot => 'OneShot';
 
   @override
@@ -2775,4 +2778,27 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get editorDiaryDayHint =>
       'День, к которому относится эта запись. Его изменение не меняет время создания записи.';
+
+  @override
+  String get hiddenDiaryTitle => 'Скрытые записи';
+
+  @override
+  String get hiddenDiaryHide => 'Скрыть запись';
+
+  @override
+  String get hiddenDiaryShow => 'Показать запись';
+
+  @override
+  String get hiddenDiaryEmpty => 'Нет скрытых записей';
+
+  @override
+  String get hiddenDiaryUnlock => 'Разблокировать скрытые записи';
+
+  @override
+  String get hiddenDiaryAuthHint =>
+      'Используйте блокировку приложения или экрана устройства.';
+
+  @override
+  String get hiddenDiaryLocalOnly =>
+      'Скрытые записи остаются на этом устройстве; синхронизация приостанавливается. Используйте зашифрованные резервные копии. Существующие копии в других местах не меняются.';
 }

@@ -19,6 +19,7 @@ import 'package:aid_diary/pages/entry_share_page.dart';
 import 'package:aid_diary/pages/entry_timeline_page.dart';
 import 'package:aid_diary/pages/image_view_page.dart';
 import 'package:aid_diary/widgets/media_attachment.dart';
+import 'package:aid_diary/widgets/hidden_diary_scope.dart';
 import 'package:aid_diary/providers/entries_provider.dart';
 import 'package:aid_diary/providers/entry_images_provider.dart';
 import 'package:aid_diary/time_manager.dart';
@@ -36,17 +37,19 @@ class EntryNavigation {
     return Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
       settings: routeFor('editor', entry?.id),
       allowSnapshotting: false,
-      builder: (context) => AddEditEntryPage(
-        entry: entry,
-        openCamera: openCamera,
-        images: images ??
-            (entry != null
-                ? EntryImagesProvider.instance.getForEntry(entry)
-                : const []),
-        diaryDay: diaryDay,
-        initialMood: initialMood,
-        template: template,
-      ),
+      builder: HiddenDiaryScope.protectRoute(
+          context,
+          (_) => AddEditEntryPage(
+                entry: entry,
+                openCamera: openCamera,
+                images: images ??
+                    (entry != null
+                        ? EntryImagesProvider.instance.getForEntry(entry)
+                        : const []),
+                diaryDay: diaryDay,
+                initialMood: initialMood,
+                template: template,
+              )),
     ));
   }
 
@@ -66,8 +69,10 @@ class EntryNavigation {
         context,
         'entry',
         id: entry.id,
-        (context) => EntriesListPage(
-            index: index < 0 ? 0 : index, getEntries: getEntries));
+        HiddenDiaryScope.protectRoute(
+            context,
+            (_) => EntriesListPage(
+                index: index < 0 ? 0 : index, getEntries: getEntries)));
   }
 
   /// Every entry of [date], newest first.
@@ -125,9 +130,12 @@ class EntryNavigation {
         'attachment',
         id: '${entry.id}/$index',
         fullscreenDialog: true,
-        (context) => attachment.isImage
-            ? ImageViewPage(images: photos, index: photos.indexOf(attachment))
-            : MediaPlayerPage(name: attachment.imgPath));
+        HiddenDiaryScope.protectRoute(
+            context,
+            (_) => attachment.isImage
+                ? ImageViewPage(
+                    images: photos, index: photos.indexOf(attachment))
+                : MediaPlayerPage(name: attachment.imgPath)));
   }
 
   /// Today's flashback number [index], as `flashback.list` counts them.

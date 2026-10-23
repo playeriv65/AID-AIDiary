@@ -228,6 +228,7 @@
     "formatDiaro": "Diaro",
     "formatJourney": "Journey",
     "formatMyBrain": "My Brain",
+  "formatOneDiary": "One Diary",
     "formatOneShot": "EénShot",
     "formatPixels": "Pixels",
     "settingsOpenSourceLicenses": "Open Source-licenties",
@@ -805,5 +806,12 @@
     "tutorialPrivacyText": "Dagboekaantekeningen blijven op dit apparaat staan, tenzij u synchronisatie inschakelt of ze deelt of exporteert. De synchronisatie is end-to-end gecodeerd. In Instellingen kunt u ook een app-toegangscode instellen, back-ups maken en deze tutorial opnieuw openen.",
     "editorDiaryDay": "Dagboekdag",
     "editorDiaryDayPicker": "Dagboekdag · aanmaaktijd blijft",
-    "editorDiaryDayHint": "De dag waarbij deze notitie hoort. Een wijziging verandert het aanmaaktijdstip niet."
+    "editorDiaryDayHint": "De dag waarbij deze notitie hoort. Een wijziging verandert het aanmaaktijdstip niet.",
+  "hiddenDiaryTitle": "Verborgen berichten",
+  "hiddenDiaryHide": "Bericht verbergen",
+  "hiddenDiaryShow": "Bericht weergeven",
+  "hiddenDiaryEmpty": "Geen verborgen berichten",
+  "hiddenDiaryUnlock": "Verborgen berichten ontgrendelen",
+  "hiddenDiaryAuthHint": "Gebruik de appvergrendeling of schermvergrendeling van je apparaat.",
+  "hiddenDiaryLocalOnly": "Verborgen berichten blijven op dit apparaat en pauzeren de synchronisatie. Gebruik versleutelde back-ups. Bestaande kopieën elders blijven ongewijzigd."
 }

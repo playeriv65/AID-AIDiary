@@ -761,6 +761,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get formatMyBrain => 'My Brain';
 
   @override
+  String get formatOneDiary => 'One Diary';
+
+  @override
   String get formatOneShot => 'EénShot';
 
   @override
@@ -2761,4 +2764,27 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String get editorDiaryDayHint =>
       'De dag waarbij deze notitie hoort. Een wijziging verandert het aanmaaktijdstip niet.';
+
+  @override
+  String get hiddenDiaryTitle => 'Verborgen berichten';
+
+  @override
+  String get hiddenDiaryHide => 'Bericht verbergen';
+
+  @override
+  String get hiddenDiaryShow => 'Bericht weergeven';
+
+  @override
+  String get hiddenDiaryEmpty => 'Geen verborgen berichten';
+
+  @override
+  String get hiddenDiaryUnlock => 'Verborgen berichten ontgrendelen';
+
+  @override
+  String get hiddenDiaryAuthHint =>
+      'Gebruik de appvergrendeling of schermvergrendeling van je apparaat.';
+
+  @override
+  String get hiddenDiaryLocalOnly =>
+      'Verborgen berichten blijven op dit apparaat en pauzeren de synchronisatie. Gebruik versleutelde back-ups. Bestaande kopieën elders blijven ongewijzigd.';
 }

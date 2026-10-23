@@ -228,6 +228,7 @@
     "formatDiaro": "Diaro",
     "formatJourney": "Journey",
     "formatMyBrain": "My Brain",
+  "formatOneDiary": "One Diary",
     "formatOneShot": "OneShot",
     "formatPixels": "Pixels",
     "settingsOpenSourceLicenses": "Atvirojo kodo licencijos",
@@ -805,5 +806,12 @@
     "tutorialPrivacyText": "Dienoraščio įrašai lieka šiame įrenginyje, nebent įgalinsite sinchronizavimą, bendrinsite arba eksportuosite juos. Sinchronizavimas yra visiškai užšifruotas. Nustatymuose taip pat galite nustatyti programos prieigos kodą, kurti atsargines kopijas ir iš naujo atidaryti šią mokymo programą.",
     "editorDiaryDay": "Dienoraščio diena",
     "editorDiaryDayPicker": "Dienoraščio diena · sukūrimo laikas nekinta",
-    "editorDiaryDayHint": "Diena, kuriai priklauso šis įrašas. Ją pakeitus įrašo sukūrimo laikas nesikeičia."
+    "editorDiaryDayHint": "Diena, kuriai priklauso šis įrašas. Ją pakeitus įrašo sukūrimo laikas nesikeičia.",
+  "hiddenDiaryTitle": "Paslėpti įrašai",
+  "hiddenDiaryHide": "Slėpti įrašą",
+  "hiddenDiaryShow": "Rodyti įrašą",
+  "hiddenDiaryEmpty": "Paslėptų įrašų nėra",
+  "hiddenDiaryUnlock": "Atrakinti paslėptus įrašus",
+  "hiddenDiaryAuthHint": "Naudokite programėlės arba įrenginio ekrano užraktą.",
+  "hiddenDiaryLocalOnly": "Paslėpti įrašai lieka šiame įrenginyje, o sinchronizavimas pristabdomas. Naudokite šifruotas atsargines kopijas. Kitur esančios kopijos nesikeičia."
 }

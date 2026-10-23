@@ -38,6 +38,7 @@
     "settingsAboutTitle": "O aplikacji",
     "warningTitle": "Ostrzeżenie",
     "lastModified": "Zmodyfikowane",
+  "formatOneDiary": "One Diary",
     "formatOneShot": "OneShot",
     "settingsStorageTitle": "Pamięć",
     "imageQualityHigh": "Wysoka",
@@ -805,5 +806,12 @@
     "tutorialPrivacyText": "Wpisy dziennika pozostają na tym urządzeniu, chyba że włączysz synchronizację, udostępnisz je lub wyeksportujesz. Synchronizacja jest szyfrowana od początku do końca. W Ustawieniach możesz także ustawić hasło do aplikacji, utworzyć kopie zapasowe i ponownie otworzyć ten samouczek.",
     "editorDiaryDay": "Dzień dziennika",
     "editorDiaryDayPicker": "Dzień dziennika · czas utworzenia bez zmian",
-    "editorDiaryDayHint": "Dzień, do którego należy ten wpis. Jego zmiana nie zmienia czasu utworzenia wpisu."
+    "editorDiaryDayHint": "Dzień, do którego należy ten wpis. Jego zmiana nie zmienia czasu utworzenia wpisu.",
+  "hiddenDiaryTitle": "Ukryte wpisy",
+  "hiddenDiaryHide": "Ukryj wpis",
+  "hiddenDiaryShow": "Odkryj wpis",
+  "hiddenDiaryEmpty": "Brak ukrytych wpisów",
+  "hiddenDiaryUnlock": "Odblokuj ukryte wpisy",
+  "hiddenDiaryAuthHint": "Użyj blokady aplikacji lub ekranu urządzenia.",
+  "hiddenDiaryLocalOnly": "Ukryte wpisy pozostają na tym urządzeniu i wstrzymują synchronizację. Używaj szyfrowanych kopii zapasowych. Istniejące kopie w innych miejscach pozostają bez zmian."
 }

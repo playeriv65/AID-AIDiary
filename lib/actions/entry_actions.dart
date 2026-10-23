@@ -501,6 +501,18 @@ final List<AppAction> entryActions = [
     },
   ),
   AppAction(
+    id: 'entry.hide',
+    describe: 'Hides an entry from ordinary views. Revealing or reading it '
+        'requires local authentication in Settings > Security > Hidden entries.',
+    risk: ActionRisk.write,
+    params: const [entryIdParam],
+    run: (context, args) async {
+      final entry = await entryOf(args);
+      await _store.setHidden(entry, true);
+      return {'id': entry.id, 'hidden': true};
+    },
+  ),
+  AppAction(
     id: 'entry.favorite',
     describe: 'Stars an entry, or takes the star off.',
     risk: ActionRisk.write,

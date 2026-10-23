@@ -20,6 +20,9 @@ const Map<String, String> _writesDirectly = {
       'the app lock stays in the GUI on purpose (docs/ARCHITECTURE.md)',
   'widgets/auth_popup.dart':
       'sets the app lock and backup passwords, which stay in the GUI',
+  'widgets/hidden_diary_scope.dart':
+      'hidden-entry reveal, restore and deletion require a short-lived local '
+          'authentication capability; actions cannot bypass that boundary',
 };
 
 /// The stores and services that hold the app's data, and the ones the GUI

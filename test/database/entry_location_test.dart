@@ -10,6 +10,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
   setUpAll(sqfliteFfiInit);
 
   test('version 5 databases gain empty location, weather and activity',
@@ -19,6 +20,10 @@ void main() {
       AppDatabase.instance.database = null;
       await db.close();
     });
+    // Retain the legacy auxiliary tables while constructing the old entry
+    // schema. The current DAO requires the complete current migration chain.
+    await AppDatabase.instance.createVersion10Schema(db);
+    await db.execute('DROP TABLE entries');
     await db.execute('''
 CREATE TABLE entries (
   id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
@@ -36,7 +41,7 @@ CREATE TABLE entries (
     // Backfilled days follow the default for when each was written.
     DiaryDay.startHour = 4;
     addTearDown(() => DiaryDay.startHour = 0);
-    await AppDatabase.instance.upgradeSchema(db, 5, 10);
+    await AppDatabase.instance.upgradeSchema(db, 5, AppDatabase.currentVersion);
 
     final old = (await EntryDao.getAll()).single;
     expect(old.text, 'old entry');

@@ -43,6 +43,7 @@ dependencies:
 
   intl: ^0.20.0
   timezone: ^0.11.1
+  lat_lng_to_timezone: 0.2.0
   logging: ^1.3.0
   share_plus: ^13.3.1
   time_range_picker: ^2.3.0
@@ -110,6 +111,7 @@ flutter:
     - ADDITIONAL_TERMS.md
     - assets/icons/
     - assets/config/app_config.json
+    - assets/config/one_diary_v3.json
 
 icons_launcher:
   image_path: "assets/logo.png"

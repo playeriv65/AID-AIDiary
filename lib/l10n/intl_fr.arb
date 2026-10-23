@@ -72,6 +72,7 @@
     "logFolderWarningDescription": "Si le dossier sélectionné contient déjà un fichier 'aid_diary.db', celui-ci sera utilisé pour écraser vos enregistrements existants !",
     "logFormatTitle": "Choisissez le format",
     "tagMoodTitle": "Humeur",
+  "formatOneDiary": "One Diary",
     "formatOneShot": "OneShot",
     "settingsVersion": "Version",
     "settingsDeleteAllLogsDescription": "Voulez-vous supprimer tous vos enregistrements ?",
@@ -805,5 +806,12 @@
     "tutorialPrivacyText": "Les entrées du journal restent sur cet appareil, sauf si vous activez la synchronisation, les partagez ou les exportez. La synchronisation est chiffrée de bout en bout. Dans Paramètres, vous pouvez également définir un mot de passe pour l'application, créer des sauvegardes et rouvrir ce didacticiel.",
     "editorDiaryDay": "Jour du journal",
     "editorDiaryDayPicker": "Jour du journal · création inchangée",
-    "editorDiaryDayHint": "Le jour auquel cette entrée appartient. Le modifier ne change ni sa date ni son heure de création."
+    "editorDiaryDayHint": "Le jour auquel cette entrée appartient. Le modifier ne change ni sa date ni son heure de création.",
+  "hiddenDiaryTitle": "Entrées masquées",
+  "hiddenDiaryHide": "Masquer l’entrée",
+  "hiddenDiaryShow": "Afficher l’entrée",
+  "hiddenDiaryEmpty": "Aucune entrée masquée",
+  "hiddenDiaryUnlock": "Déverrouiller les entrées masquées",
+  "hiddenDiaryAuthHint": "Utilisez le verrouillage de l’application ou de l’écran de votre appareil.",
+  "hiddenDiaryLocalOnly": "Les entrées masquées restent sur cet appareil et suspendent la synchronisation. Utilisez des sauvegardes chiffrées. Les copies existantes ailleurs restent inchangées."
 }

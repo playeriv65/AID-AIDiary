@@ -233,6 +233,7 @@
     "formatDiaro": "Diaro",
     "formatJourney": "Journey",
     "formatMyBrain": "My Brain",
+  "formatOneDiary": "One Diary",
     "formatOneShot": "OneShot",
     "formatPixels": "Pixels",
     "settingsOpenSourceLicenses": "Open Source licence",
@@ -805,5 +806,12 @@
     "tutorialPrivacyText": "Záznamy v deníku zůstanou na tomto zařízení, pokud nepovolíte synchronizaci, sdílení nebo export. Synchronizace je šifrována end-to-end. V Nastavení můžete také nastavit přístupový kód aplikace, vytvořit zálohy a znovu otevřít tento výukový program.",
     "editorDiaryDay": "Den deníku",
     "editorDiaryDayPicker": "Den deníku · čas vytvoření zůstává",
-    "editorDiaryDayHint": "Den, ke kterému tento záznam patří. Jeho změna nezmění čas vytvoření záznamu."
+    "editorDiaryDayHint": "Den, ke kterému tento záznam patří. Jeho změna nezmění čas vytvoření záznamu.",
+  "hiddenDiaryTitle": "Skryté zápisy",
+  "hiddenDiaryHide": "Skrýt zápis",
+  "hiddenDiaryShow": "Odkrýt zápis",
+  "hiddenDiaryEmpty": "Žádné skryté zápisy",
+  "hiddenDiaryUnlock": "Odemknout skryté zápisy",
+  "hiddenDiaryAuthHint": "Použijte zámek aplikace nebo obrazovky zařízení.",
+  "hiddenDiaryLocalOnly": "Skryté zápisy zůstávají na tomto zařízení a synchronizace se pozastaví. Používejte šifrované zálohy. Existující kopie jinde se nemění."
 }

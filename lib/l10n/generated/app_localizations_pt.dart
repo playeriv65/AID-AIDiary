@@ -761,6 +761,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get formatMyBrain => 'My Brain';
 
   @override
+  String get formatOneDiary => 'One Diary';
+
+  @override
   String get formatOneShot => 'OneShot';
 
   @override
@@ -2763,6 +2766,29 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get editorDiaryDayHint =>
       'O dia a que pertence esta entrada. Alterá-lo não muda a data nem a hora de criação.';
+
+  @override
+  String get hiddenDiaryTitle => 'Entradas ocultas';
+
+  @override
+  String get hiddenDiaryHide => 'Ocultar entrada';
+
+  @override
+  String get hiddenDiaryShow => 'Mostrar entrada';
+
+  @override
+  String get hiddenDiaryEmpty => 'Sem entradas ocultas';
+
+  @override
+  String get hiddenDiaryUnlock => 'Desbloquear entradas ocultas';
+
+  @override
+  String get hiddenDiaryAuthHint =>
+      'Utiliza o bloqueio da aplicação ou do ecrã do dispositivo.';
+
+  @override
+  String get hiddenDiaryLocalOnly =>
+      'As entradas ocultas ficam neste dispositivo e suspendem a sincronização. Utiliza cópias de segurança encriptadas. As cópias existentes noutros locais não mudam.';
 }
 
 /// The translations for Portuguese, as used in Brazil (`pt_BR`).
@@ -3517,6 +3543,9 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
 
   @override
   String get formatMyBrain => 'My Brain';
+
+  @override
+  String get formatOneDiary => 'One Diary';
 
   @override
   String get formatOneShot => 'OneShot';
@@ -5524,4 +5553,27 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
   @override
   String get editorDiaryDayHint =>
       'O dia ao qual esta entrada pertence. Alterá-lo não muda a data nem a hora de criação.';
+
+  @override
+  String get hiddenDiaryTitle => 'Entradas ocultas';
+
+  @override
+  String get hiddenDiaryHide => 'Ocultar entrada';
+
+  @override
+  String get hiddenDiaryShow => 'Mostrar entrada';
+
+  @override
+  String get hiddenDiaryEmpty => 'Nenhuma entrada oculta';
+
+  @override
+  String get hiddenDiaryUnlock => 'Desbloquear entradas ocultas';
+
+  @override
+  String get hiddenDiaryAuthHint =>
+      'Use o bloqueio do aplicativo ou da tela do dispositivo.';
+
+  @override
+  String get hiddenDiaryLocalOnly =>
+      'As entradas ocultas ficam neste dispositivo e pausam a sincronização. Use backups criptografados. As cópias existentes em outros locais não mudam.';
 }

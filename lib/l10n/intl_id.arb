@@ -51,6 +51,7 @@
     "settingsDailyReminderDescription": "Pengingat lembut setiap hari",
     "warningTitle": "Hati hati",
     "errorTitle": "Eror",
+  "formatOneDiary": "One Diary",
     "formatOneShot": "Satu kali photo",
     "settingsAboutTitle": "Tentang",
     "settingsVersion": "Versi",
@@ -805,5 +806,12 @@
     "tutorialPrivacyText": "Entri buku harian tetap ada di perangkat ini kecuali Anda mengaktifkan sinkronisasi atau berbagi atau mengekspornya. Sinkronisasi dienkripsi ujung ke ujung. Di Pengaturan Anda juga dapat mengatur kode sandi aplikasi, membuat cadangan, dan membuka kembali tutorial ini.",
     "editorDiaryDay": "Hari catatan",
     "editorDiaryDayPicker": "Hari catatan · waktu dibuat tetap",
-    "editorDiaryDayHint": "Hari yang menjadi acuan entri ini. Mengubahnya tidak mengubah waktu pembuatan entri."
+    "editorDiaryDayHint": "Hari yang menjadi acuan entri ini. Mengubahnya tidak mengubah waktu pembuatan entri.",
+  "hiddenDiaryTitle": "Catatan tersembunyi",
+  "hiddenDiaryHide": "Sembunyikan catatan",
+  "hiddenDiaryShow": "Tampilkan catatan",
+  "hiddenDiaryEmpty": "Tidak ada catatan tersembunyi",
+  "hiddenDiaryUnlock": "Buka catatan tersembunyi",
+  "hiddenDiaryAuthHint": "Gunakan kunci aplikasi atau kunci layar perangkat Anda.",
+  "hiddenDiaryLocalOnly": "Catatan tersembunyi tetap di perangkat ini dan sinkronisasi dijeda. Gunakan cadangan terenkripsi. Salinan yang sudah ada di tempat lain tidak berubah."
 }

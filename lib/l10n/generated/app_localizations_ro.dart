@@ -772,6 +772,9 @@ class AppLocalizationsRo extends AppLocalizations {
   String get formatMyBrain => 'My Brain';
 
   @override
+  String get formatOneDiary => 'One Diary';
+
+  @override
   String get formatOneShot => 'OneShot';
 
   @override
@@ -2774,4 +2777,27 @@ class AppLocalizationsRo extends AppLocalizations {
   @override
   String get editorDiaryDayHint =>
       'Ziua căreia îi aparține această însemnare. Modificarea ei nu schimbă data sau ora creării.';
+
+  @override
+  String get hiddenDiaryTitle => 'Însemnări ascunse';
+
+  @override
+  String get hiddenDiaryHide => 'Ascunde însemnarea';
+
+  @override
+  String get hiddenDiaryShow => 'Afișează însemnarea';
+
+  @override
+  String get hiddenDiaryEmpty => 'Nicio însemnare ascunsă';
+
+  @override
+  String get hiddenDiaryUnlock => 'Deblochează însemnările ascunse';
+
+  @override
+  String get hiddenDiaryAuthHint =>
+      'Folosește blocarea aplicației sau a ecranului dispozitivului.';
+
+  @override
+  String get hiddenDiaryLocalOnly =>
+      'Însemnările ascunse rămân pe acest dispozitiv și suspendă sincronizarea. Folosește copii de siguranță criptate. Copiile existente în alte locuri nu se modifică.';
 }

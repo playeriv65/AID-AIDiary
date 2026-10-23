@@ -104,7 +104,7 @@ String encodeJsonEntries(List<Entry> entries,
         tagsOf}) {
   return const JsonEncoder.withIndent('  ').convert([
     for (final entry in entries)
-      if (!entry.isSealed)
+      if (!entry.isSealed && !entry.isHidden)
         {
           'text': entry.text,
           'mood': entry.mood,
@@ -206,7 +206,7 @@ class ExportUtils {
       final favoriteName = TagsProvider.instance.favoriteTag?.name;
       await EntriesProvider.instance.complete;
       final entries = EntriesProvider.instance.entries
-          .where((entry) => !entry.isSealed)
+          .where((entry) => !entry.isSealed && !entry.isHidden)
           .toList();
       for (final (index, entry) in entries.indexed) {
         final images = <(EntryImage, Uint8List)>[];
@@ -266,7 +266,7 @@ class MarkdownExportWriter implements ArchiveExportWriter {
   @override
   Future<void> write(ExportedEntry exported) async {
     final entry = exported.entry;
-    if (entry.isSealed) return;
+    if (entry.isSealed || entry.isHidden) return;
     final timestamp = DateFormat("yyyy-MM-dd", locale).format(entry.day);
     _timestampCount[timestamp] = (_timestampCount[timestamp] ?? 0) + 1;
     final index = _timestampCount[timestamp]!;

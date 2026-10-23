@@ -702,6 +702,9 @@ class AppLocalizationsMs extends AppLocalizations {
   String get formatMyBrain => 'My Brain';
 
   @override
+  String get formatOneDiary => 'One Diary';
+
+  @override
   String get formatOneShot => 'OneShot';
 
   @override
@@ -2706,4 +2709,27 @@ class AppLocalizationsMs extends AppLocalizations {
   @override
   String get editorDiaryDayHint =>
       'Hari yang ditetapkan untuk catatan ini. Mengubahnya tidak mengubah masa catatan dicipta.';
+
+  @override
+  String get hiddenDiaryTitle => 'Catatan tersembunyi';
+
+  @override
+  String get hiddenDiaryHide => 'Sembunyikan catatan';
+
+  @override
+  String get hiddenDiaryShow => 'Paparkan catatan';
+
+  @override
+  String get hiddenDiaryEmpty => 'Tiada catatan tersembunyi';
+
+  @override
+  String get hiddenDiaryUnlock => 'Buka kunci catatan tersembunyi';
+
+  @override
+  String get hiddenDiaryAuthHint =>
+      'Gunakan kunci aplikasi atau kunci skrin peranti anda.';
+
+  @override
+  String get hiddenDiaryLocalOnly =>
+      'Catatan tersembunyi kekal pada peranti ini dan penyegerakan dijeda. Gunakan sandaran disulitkan. Salinan sedia ada di tempat lain tidak berubah.';
 }

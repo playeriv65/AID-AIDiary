@@ -7,6 +7,7 @@ import 'dart:typed_data';
 
 import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/database/image_storage.dart';
+import 'package:aid_diary/database/entry_store.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/models/image.dart';
@@ -21,6 +22,7 @@ import 'package:aid_diary/utils/entry_share.dart';
 import 'package:aid_diary/utils/entry_typography.dart';
 import 'package:aid_diary/utils/time_capsule.dart';
 import 'package:aid_diary/widgets/delete_confirm_dialog.dart';
+import 'package:aid_diary/widgets/hidden_diary_scope.dart';
 import 'package:aid_diary/widgets/entry_tag_chips.dart';
 import 'package:aid_diary/widgets/local_image_loader.dart';
 import 'package:aid_diary/widgets/mood_icon.dart';
@@ -53,9 +55,11 @@ class EntryViewPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final entry = context
-        .watch<EntriesProvider>()
-        .entries
+    final visible = context.watch<EntriesProvider>().entries;
+    final hiddenSession = HiddenDiaryScope.of(context);
+    final entry = (hiddenSession?.unlocked == true
+            ? EntryStore.instance.allEntries
+            : visible)
         .where((e) => e.id == entryId)
         .firstOrNull;
     if (entry == null) return const Scaffold();
@@ -72,13 +76,14 @@ class EntryViewPage extends StatelessWidget {
         backgroundColor: Theme.of(context).colorScheme.surfaceContainerLowest,
         actions: [
           if (!sealed) ...[
-            IconButton(
-              key: const ValueKey('entry-share'),
-              tooltip: l10n.entryShare,
-              icon: const Icon(Icons.share_rounded),
-              onPressed: () => _share(context, entry, images),
-            ),
-            if (tags.favoriteTag != null)
+            if (!entry.isHidden)
+              IconButton(
+                key: const ValueKey('entry-share'),
+                tooltip: l10n.entryShare,
+                icon: const Icon(Icons.share_rounded),
+                onPressed: () => _share(context, entry, images),
+              ),
+            if (!entry.isHidden && tags.favoriteTag != null)
               IconButton(
                 key: const ValueKey('entry-favorite'),
                 tooltip: l10n.entryFavorite,
@@ -101,10 +106,21 @@ class EntryViewPage extends StatelessWidget {
               'duplicate' => _duplicate(context, entry),
               'template' => _saveAsTemplate(context, entry),
               'capsule' => _seal(context, entry),
+              'hide' => _hide(context, entry),
               _ => _delete(context, entry),
             },
             itemBuilder: (context) => [
-              if (!sealed) ...[
+              PopupMenuItem(
+                  key: const ValueKey('entry-hide'),
+                  value: 'hide',
+                  child: ListTile(
+                      leading: Icon(entry.isHidden
+                          ? Icons.visibility_outlined
+                          : Icons.visibility_off_outlined),
+                      title: Text(entry.isHidden
+                          ? l10n.hiddenDiaryShow
+                          : l10n.hiddenDiaryHide))),
+              if (!sealed && !entry.isHidden) ...[
                 PopupMenuItem(
                     key: const ValueKey('entry-capsule'),
                     value: 'capsule',
@@ -194,6 +210,17 @@ class EntryViewPage extends StatelessWidget {
     onEntryEdited?.call(entry.id!);
   }
 
+  Future<void> _hide(BuildContext context, Entry entry) async {
+    if (entry.isHidden) {
+      await HiddenDiaryScope.of(context)!.unhide(entry);
+    } else {
+      await AppActions.instance.run('entry.hide', {'id': entry.id});
+    }
+    if (context.mounted && !embedded && Navigator.of(context).canPop()) {
+      Navigator.of(context).pop();
+    }
+  }
+
   Future<void> _duplicate(BuildContext context, Entry entry) async {
     final messenger = ScaffoldMessenger.of(context);
     final message = AppLocalizations.of(context)!.entryDuplicated;
@@ -226,12 +253,17 @@ class EntryViewPage extends StatelessWidget {
 
   Future<void> _delete(BuildContext context, Entry entry) async {
     final navigator = Navigator.of(context);
+    final hiddenSession = HiddenDiaryScope.of(context);
     final confirmed = await showDeleteConfirmDialog(context,
         message: AppLocalizations.of(context)!.deleteLogDescription);
     if (!confirmed) return;
     if (!embedded && navigator.canPop()) navigator.pop();
-    await AppActions.instance
-        .run('entry.delete', {'id': entry.id}, confirmed: true);
+    if (entry.isHidden) {
+      await hiddenSession!.delete(entry);
+    } else {
+      await AppActions.instance
+          .run('entry.delete', {'id': entry.id}, confirmed: true);
+    }
   }
 
   /// "Share as…" like Journey: the picture card, a ZIP with the original
@@ -380,8 +412,14 @@ class _SealedCapsule extends StatelessWidget {
       ),
     );
     if (open == true) {
-      await AppActions.instance
-          .run('entry.unseal', {'id': entry.id}, confirmed: true);
+      if (entry.isHidden &&
+          context.mounted &&
+          HiddenDiaryScope.of(context)?.unlocked == true) {
+        await HiddenDiaryScope.of(context)!.unseal(entry);
+      } else if (!entry.isHidden) {
+        await AppActions.instance
+            .run('entry.unseal', {'id': entry.id}, confirmed: true);
+      }
     }
   }
 

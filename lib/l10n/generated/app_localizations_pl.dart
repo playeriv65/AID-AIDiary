@@ -767,6 +767,9 @@ class AppLocalizationsPl extends AppLocalizations {
   String get formatMyBrain => 'My Brain';
 
   @override
+  String get formatOneDiary => 'One Diary';
+
+  @override
   String get formatOneShot => 'OneShot';
 
   @override
@@ -2770,4 +2773,27 @@ class AppLocalizationsPl extends AppLocalizations {
   @override
   String get editorDiaryDayHint =>
       'Dzień, do którego należy ten wpis. Jego zmiana nie zmienia czasu utworzenia wpisu.';
+
+  @override
+  String get hiddenDiaryTitle => 'Ukryte wpisy';
+
+  @override
+  String get hiddenDiaryHide => 'Ukryj wpis';
+
+  @override
+  String get hiddenDiaryShow => 'Odkryj wpis';
+
+  @override
+  String get hiddenDiaryEmpty => 'Brak ukrytych wpisów';
+
+  @override
+  String get hiddenDiaryUnlock => 'Odblokuj ukryte wpisy';
+
+  @override
+  String get hiddenDiaryAuthHint =>
+      'Użyj blokady aplikacji lub ekranu urządzenia.';
+
+  @override
+  String get hiddenDiaryLocalOnly =>
+      'Ukryte wpisy pozostają na tym urządzeniu i wstrzymują synchronizację. Używaj szyfrowanych kopii zapasowych. Istniejące kopie w innych miejscach pozostają bez zmian.';
 }

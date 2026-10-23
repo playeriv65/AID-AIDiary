@@ -220,6 +220,7 @@
     "formatDiaro": "Diaro",
     "formatJourney": "Journey",
     "formatMyBrain": "My Brain",
+  "formatOneDiary": "One Diary",
     "formatOneShot": "OneShot",
     "formatPixels": "Pixels",
     "formatMarkdown": "Markdown",
@@ -822,5 +823,12 @@
     "tutorialPrivacyText": "רשומות יומן נשארות במכשיר הזה אלא אם תפעיל סנכרון או שתף או ייצא אותן. הסנכרון מוצפן מקצה לקצה. בהגדרות תוכל גם להגדיר קוד גישה לאפליקציה, ליצור גיבויים ולפתוח מחדש את המדריך הזה.",
     "editorDiaryDay": "יום ביומן",
     "editorDiaryDayPicker": "יום ביומן · זמן היצירה נשמר",
-    "editorDiaryDayHint": "היום שאליו שייכת הרשומה. שינוי היום אינו משנה את זמן יצירת הרשומה."
+    "editorDiaryDayHint": "היום שאליו שייכת הרשומה. שינוי היום אינו משנה את זמן יצירת הרשומה.",
+  "hiddenDiaryTitle": "רשומות מוסתרות",
+  "hiddenDiaryHide": "הסתרת רשומה",
+  "hiddenDiaryShow": "ביטול הסתרת רשומה",
+  "hiddenDiaryEmpty": "אין רשומות מוסתרות",
+  "hiddenDiaryUnlock": "פתיחת רשומות מוסתרות",
+  "hiddenDiaryAuthHint": "יש להשתמש בנעילת היישום או בנעילת המסך של המכשיר.",
+  "hiddenDiaryLocalOnly": "רשומות מוסתרות נשארות במכשיר זה והסנכרון מושהה. יש להשתמש בגיבויים מוצפנים. עותקים קיימים במכשירים אחרים אינם משתנים."
 }
