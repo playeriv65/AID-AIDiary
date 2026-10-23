@@ -12,67 +12,67 @@ class AppLocalizationsSv extends AppLocalizations {
   String get appTitle => 'AID Diary';
 
   @override
-  String get themeColorTitle => 'Theme color';
+  String get themeColorTitle => 'Tema färg';
 
   @override
-  String get themeColorHint => 'Choose a color for this palette.';
+  String get themeColorHint => 'Välj en färg för denna palett.';
 
   @override
-  String get themeColorBlue => 'Sky blue';
+  String get themeColorBlue => 'Himmelsblå';
 
   @override
-  String get themeColorGreen => 'Forest green';
+  String get themeColorGreen => 'Skogsgrönt';
 
   @override
-  String get themeColorBrown => 'Warm coffee';
+  String get themeColorBrown => 'Varmt kaffe';
 
   @override
-  String get themeColorPurple => 'Lavender';
+  String get themeColorPurple => 'Lavendel';
 
   @override
-  String get themeColorRose => 'Dusty rose';
+  String get themeColorRose => 'Dammig ros';
 
   @override
-  String get themeColorAmber => 'Amber';
+  String get themeColorAmber => 'Bärnsten';
 
   @override
-  String get themeColorPreview => 'A little every day';
+  String get themeColorPreview => 'Lite varje dag';
 
   @override
-  String get themeTintBackgroundTitle => 'Tint backgrounds with theme color';
+  String get themeTintBackgroundTitle => 'Tint bakgrunder med tema färg';
 
   @override
   String get themeTintBackgroundHint =>
-      'Turn off for neutral gray backgrounds; buttons keep your chosen color.';
+      'Stäng av för neutral grå bakgrund; knappar behåller din valda färg.';
 
   @override
   String get dailyReminderTitle => 'Logga dagen!';
 
   @override
-  String get dailyReminderDescription => 'Take your daily log…';
+  String get dailyReminderDescription => 'Ta din dagliga dagboksanteckning...';
 
   @override
-  String get actionTakePhoto => 'Take photo';
+  String get actionTakePhoto => 'Ta foto';
 
   @override
-  String get flashbacksTitle => 'Flashbacks';
+  String get flashbacksTitle => 'Återblickar';
 
   @override
-  String get settingsFlashbacksExcludeBadDays => 'Exclude bad days';
+  String get settingsFlashbacksExcludeBadDays => 'Uteslut dåliga dagar';
 
   @override
-  String get flashbackGoodDay => 'A Good Day';
+  String get flashbackGoodDay => 'En bra dag';
 
   @override
-  String get flashbackRandomDay => 'A Random Day';
+  String get flashbackRandomDay => 'En slumpmässig dag';
 
   @override
   String flashbackWeek(num count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count Weeks Ago',
-      one: '$count Week Ago',
+      other: '$count veckor sedan',
+      one: '$count vecka sedan',
     );
     return '$_temp0';
   }
@@ -82,8 +82,8 @@ class AppLocalizationsSv extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count Months Ago',
-      one: '$count Month Ago',
+      other: '$count månader sedan',
+      one: '$count månad sedan',
     );
     return '$_temp0';
   }
@@ -93,25 +93,25 @@ class AppLocalizationsSv extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count Years Ago',
-      one: '$count Year Ago',
+      other: '$count år sedan',
+      one: '$count år sedan',
     );
     return '$_temp0';
   }
 
   @override
-  String get flashbackOnThisDay => 'On This Day';
+  String get flashbackOnThisDay => 'På denna dag';
 
   @override
-  String get searchLogsHint => 'Search Logs…';
+  String get searchLogsHint => 'Sök i dagboksposter...';
 
   @override
   String logCount(num count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count logs',
-      one: '$count log',
+      other: '$count dagboksanteckningar',
+      one: '$count dagboksanteckning',
     );
     return '$_temp0';
   }
@@ -121,8 +121,8 @@ class AppLocalizationsSv extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count days',
-      one: '$count day',
+      other: '$count dagar',
+      one: '$count dag',
     );
     return '$_temp0';
   }
@@ -132,81 +132,82 @@ class AppLocalizationsSv extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count words',
-      one: '$count word',
+      other: '$count ord',
+      one: '$count ord',
     );
     return '$_temp0';
   }
 
   @override
-  String get noLogs => 'No Logs…';
+  String get noLogs => 'Inga dagboksanteckningar...';
 
   @override
-  String get noResults => 'No Results…';
+  String get noResults => 'Inga resultat...';
 
   @override
-  String get sortOrderAscendingTitle => 'Ascending';
+  String get sortOrderAscendingTitle => 'Stigande';
 
   @override
-  String get sortOrderDescendingTitle => 'Descending';
+  String get sortOrderDescendingTitle => 'Fallande';
 
   @override
-  String get pageStatisticsTitle => 'Statistics';
+  String get pageStatisticsTitle => 'Statistik';
 
   @override
-  String get statisticsNotEnoughData => 'Not enough data…';
+  String get statisticsNotEnoughData => 'Inte tillräckligt med data...';
 
   @override
-  String get statisticsRangeOneMonth => '1 Month';
+  String get statisticsRangeOneMonth => '1 månad';
 
   @override
-  String get statisticsRangeSixMonths => '6 Months';
+  String get statisticsRangeSixMonths => '6 månader';
 
   @override
-  String get statisticsRangeOneYear => '1 Year';
+  String get statisticsRangeOneYear => '1 år';
 
   @override
-  String get statisticsRangeAllTime => 'All Time';
+  String get statisticsRangeAllTime => 'Hela tiden';
 
   @override
   String chartSummaryTitle(Object tag) {
-    return '$tag Summary';
+    return '$tag Sammanfattning';
   }
 
   @override
   String chartByDayTitle(Object tag) {
-    return '$tag By Day';
+    return '$tag per dag';
   }
 
   @override
   String chartOverTimeTitle(Object tag) {
-    return '$tag Over Time';
+    return '$tag över tid';
   }
 
   @override
-  String get chartGroupingLabel => 'Group by';
+  String get chartGroupingLabel => 'Gruppera efter';
 
   @override
-  String get chartGroupingDay => 'Day';
+  String get chartGroupingDay => 'dag';
 
   @override
-  String get chartGroupingWeek => 'Week';
+  String get chartGroupingWeek => 'Vecka';
 
   @override
-  String get chartGroupingMonth => 'Month';
+  String get chartGroupingMonth => 'Månad';
 
   @override
-  String get chartGroupingYear => 'Year';
+  String get chartGroupingYear => 'år';
 
   @override
-  String get chartSmoothingLabel => 'Smoothing';
+  String get chartSmoothingLabel => 'Utjämning';
 
   @override
   String streakCurrent(num count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Current Streak $count',
+      other: 'Aktuell rad $count',
+      one: 'Aktuell serie $count',
     );
     return '$_temp0';
   }
@@ -216,7 +217,8 @@ class AppLocalizationsSv extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Longest Streak $count',
+      other: 'Längsta rad $count',
+      one: 'Längsta rad $count',
     );
     return '$_temp0';
   }
@@ -226,7 +228,8 @@ class AppLocalizationsSv extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Great Days $count',
+      other: 'Stora dagar $count',
+      one: 'Stora dagar $count',
     );
     return '$_temp0';
   }
@@ -236,143 +239,143 @@ class AppLocalizationsSv extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Days Since a Bad Day $count',
+      other: 'Dagar sedan en dålig dag $count',
+      one: 'Dagar sedan en dålig dag $count',
     );
     return '$_temp0';
   }
 
   @override
   String get errorExternalStorageAccessTitle =>
-      'Can\'t Access External Storage';
+      'Kan inte komma åt extern lagring';
 
   @override
   String get errorExternalStorageAccessDescription =>
-      'If you are using network storage make sure the service is online and you have network access.\n\nOtherwise, the app may have lost permissions for the external folder. Go to settings, and reselect the external folder to grant access.\n\nWarning, changes will not be synced until you restore access to the external storage location!';
+      'Om du använder nätverkslagring se till att tjänsten är online och att du har nätverksåtkomst.\n\nAnnars kan appen ha förlorat behörigheter för den externa mappen. Gå till inställningar och välj den externa mappen igen för att ge åtkomst.\n\nVarning, ändringar kommer inte att synkroniseras förrän du återställer åtkomsten till den externa lagringsplatsen!';
 
   @override
-  String get errorExternalStorageAccessContinue =>
-      'Continue With Local Database';
+  String get errorExternalStorageAccessContinue => 'Fortsätt med lokal databas';
 
   @override
-  String get lastModified => 'Modified';
+  String get lastModified => 'Modifierad';
 
   @override
-  String get writeSomethingHint => 'Write something…';
+  String get writeSomethingHint => 'Skriv något...';
 
   @override
-  String get titleHint => 'Title…';
+  String get titleHint => 'Titel...';
 
   @override
-  String get deleteLogTitle => 'Delete Log';
+  String get deleteLogTitle => 'Ta bort dagboksinlägg';
 
   @override
   String get deleteLogDescription =>
-      'The entry moves to Recently deleted, where you can restore it.';
+      'Posten flyttas till Nyligen raderad, där du kan återställa den.';
 
   @override
-  String get deletePhotoTitle => 'Delete attachment';
+  String get deletePhotoTitle => 'Ta bort bilaga';
 
   @override
   String get deletePhotoDescription =>
-      'Are you sure you want to delete this attachment?';
+      'Är du säker på att du vill ta bort den här bilagan?';
 
   @override
-  String get pageSettingsTitle => 'Settings';
+  String get pageSettingsTitle => 'Inställningar';
 
   @override
-  String get settingsTheme => 'Theme';
+  String get settingsTheme => 'Tema';
 
   @override
   String get themeSystem => 'System';
 
   @override
-  String get themeLight => 'Light';
+  String get themeLight => 'Ljus';
 
   @override
-  String get themeDark => 'Dark';
+  String get themeDark => 'Mörkt';
 
   @override
   String get themeAmoled => 'AMOLED';
 
   @override
-  String get settingsFirstDayOfWeek => 'First Day Of Week';
+  String get settingsFirstDayOfWeek => 'Veckans första dag';
 
   @override
-  String get settingsCalendarSystem => 'Calendar System';
+  String get settingsCalendarSystem => 'Kalendersystem';
 
   @override
-  String get calendarSystemGregorian => 'Gregorian';
+  String get calendarSystemGregorian => 'gregoriansk';
 
   @override
   String get calendarSystemJalali => 'Jalali';
 
   @override
-  String get settingsUseSystemAccentColor => 'Use System Accent Color';
+  String get settingsUseSystemAccentColor => 'Använd System Accent Color';
 
   @override
-  String get settingsCustomAccentColor => 'Custom Accent Color';
+  String get settingsCustomAccentColor => 'Anpassad accentfärg';
 
   @override
-  String get settingsShowFlashbacks => 'Show Flashbacks';
+  String get settingsShowFlashbacks => 'Visa tillbakablickar';
 
   @override
-  String get settingsChangeMoodIcons => 'Change Mood Icons';
+  String get settingsChangeMoodIcons => 'Ändra humör ikoner';
 
   @override
-  String get moodIconPrompt => 'Enter an icon';
+  String get moodIconPrompt => 'Ange en ikon';
 
   @override
-  String get settingsHideImages => 'Hide Images';
+  String get settingsHideImages => 'Dölj bilder';
 
   @override
-  String get pageCalendarTitle => 'Calendar';
+  String get pageCalendarTitle => 'Kalender';
 
   @override
-  String get settingsNotificationsTitle => 'Notifications';
+  String get settingsNotificationsTitle => 'Aviseringar';
 
   @override
-  String get settingsDailyReminderTitle => 'Daily Reminder';
+  String get settingsDailyReminderTitle => 'Daglig påminnelse';
 
   @override
-  String get settingsOnThisDayDescription => 'Revisit past memories';
+  String get settingsOnThisDayDescription => 'Återbesök tidigare minnen';
 
   @override
-  String get settingsDailyReminderDescription => 'A gentle reminder each day';
+  String get settingsDailyReminderDescription => 'En mild påminnelse varje dag';
 
   @override
-  String get settingsReminderTime => 'Reminder Time';
+  String get settingsReminderTime => 'Påminnelsetid';
 
   @override
-  String get settingsFixedReminderTimeTitle => 'Fixed Reminder Time';
+  String get settingsFixedReminderTimeTitle => 'Fast påminnelsetid';
 
   @override
   String get settingsFixedReminderTimeDescription =>
-      'Pick a fixed time for the reminder';
+      'Välj en fast tid för påminnelsen';
 
   @override
-  String get settingsAlwaysSendReminderTitle => 'Always Send Reminder';
+  String get settingsAlwaysSendReminderTitle => 'Skicka alltid påminnelse';
 
   @override
   String get settingsAlwaysSendReminderDescription =>
-      'Send reminder even if a log was already started';
+      'Skicka påminnelse även om en dagboksanteckning redan har påbörjats';
 
   @override
-  String get settingsCustomizeNotificationTitle => 'Customize Notifications';
+  String get settingsCustomizeNotificationTitle => 'Anpassa aviseringar';
 
   @override
-  String get settingsTemplatesTitle => 'Templates';
+  String get settingsTemplatesTitle => 'Mallar';
 
   @override
-  String get manageTemplates => 'Manage Templates';
+  String get manageTemplates => 'Hantera mallar';
 
   @override
-  String get noTemplateTitle => 'None';
+  String get noTemplateTitle => 'Inga';
 
   @override
-  String get noTemplatesDescription => 'No templates created yet…';
+  String get noTemplatesDescription => 'Inga mallar har skapats ännu...';
 
   @override
-  String get templateDefaultTimestampTitle => 'Timestamp';
+  String get templateDefaultTimestampTitle => 'Tidsstämpel';
 
   @override
   String templateDefaultTimestampBody(Object date, Object time) {
@@ -380,115 +383,116 @@ class AppLocalizationsSv extends AppLocalizations {
   }
 
   @override
-  String get templateDefaultSummaryTitle => 'Day Summary';
+  String get templateDefaultSummaryTitle => 'Dagens sammanfattning';
 
   @override
-  String get templateDefaultSummaryBody => '### Summary\n- \n\n### Quote\n> ';
+  String get templateDefaultSummaryBody =>
+      '### Sammanfattning\n- \n\n### Citat\n> ';
 
   @override
-  String get templateDefaultReflectionTitle => 'Reflection';
+  String get templateDefaultReflectionTitle => 'Reflektion';
 
   @override
   String get templateDefaultReflectionBody =>
-      '### What did you enjoy about today?\n- \n\n### What are you thankful for?\n- \n\n### What are you looking forward to?\n- ';
+      '### Vad tyckte du om idag?\n- \n\n### Vad är du tacksam för?\n- \n\n### Vad ser du fram emot?\n- ';
 
   @override
-  String get settingsTagsTitle => 'Tags';
+  String get settingsTagsTitle => 'Taggar';
 
   @override
-  String get manageTags => 'Manage Tags';
+  String get manageTags => 'Hantera taggar';
 
   @override
-  String get tagTypeLabelTitle => 'Label';
+  String get tagTypeLabelTitle => 'Etikett';
 
   @override
-  String get tagTypeTrackerTitle => 'Tracker';
+  String get tagTypeTrackerTitle => 'Spårare';
 
   @override
-  String get nameHint => 'Name';
+  String get nameHint => 'Namn';
 
   @override
-  String get tagColorLabel => 'Color';
+  String get tagColorLabel => 'Färg';
 
   @override
-  String get iconPickerTitle => 'Choose Icon';
+  String get iconPickerTitle => 'Välj ikon';
 
   @override
-  String get iconPickerIconsTab => 'Icons';
+  String get iconPickerIconsTab => 'Ikoner';
 
   @override
-  String get iconPickerCustomTab => 'Custom';
+  String get iconPickerCustomTab => 'Anpassad';
 
   @override
-  String get iconPickerSearchHint => 'Search icons…';
+  String get iconPickerSearchHint => 'Sökikoner...';
 
   @override
-  String get colorPickerTitle => 'Choose Color';
+  String get colorPickerTitle => 'Välj Färg';
 
   @override
-  String get colorPickerPaletteTab => 'Colors';
+  String get colorPickerPaletteTab => 'Färger';
 
   @override
-  String get iconGroupMoodPeople => 'Mood & People';
+  String get iconGroupMoodPeople => 'Humör & Människor';
 
   @override
-  String get iconGroupHealth => 'Health';
+  String get iconGroupHealth => 'Hälsa';
 
   @override
-  String get iconGroupWorkFinance => 'Work & Finance';
+  String get iconGroupWorkFinance => 'Arbete & Ekonomi';
 
   @override
-  String get iconGroupHabitsGoals => 'Habits & Goals';
+  String get iconGroupHabitsGoals => 'Vanor & mål';
 
   @override
-  String get iconGroupNature => 'Nature';
+  String get iconGroupNature => 'Naturen';
 
   @override
-  String get iconGroupFoodDrink => 'Food & Drink';
+  String get iconGroupFoodDrink => 'Mat & Dryck';
 
   @override
-  String get iconGroupHome => 'Home';
+  String get iconGroupHome => 'Hem';
 
   @override
-  String get iconGroupTravel => 'Travel';
+  String get iconGroupTravel => 'Resor';
 
   @override
-  String get iconGroupSymbols => 'Symbols';
+  String get iconGroupSymbols => 'Symboler';
 
   @override
-  String get tagCategoryLabel => 'Category';
+  String get tagCategoryLabel => 'Kategori';
 
   @override
-  String get tagLabel => 'Tag';
+  String get tagLabel => 'Tagga';
 
   @override
-  String get tagCategoryUncategorized => 'Uncategorized';
+  String get tagCategoryUncategorized => 'Okategoriserad';
 
   @override
-  String get newCategoryTitle => 'New Category';
+  String get newCategoryTitle => 'Ny kategori';
 
   @override
-  String get shareButtonLabel => 'Share';
+  String get shareButtonLabel => 'Dela';
 
   @override
-  String get importErrorDescription => 'Failed to import file!';
+  String get importErrorDescription => 'Det gick inte att importera filen!';
 
   @override
-  String get exportErrorDescription => 'Failed to export file!';
+  String get exportErrorDescription => 'Det gick inte att exportera filen!';
 
   @override
-  String get deleteTitle => 'Delete';
+  String get deleteTitle => 'Ta bort';
 
   @override
   String deleteTagMessage(num count, Object name) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: ' It is used in $count logs.',
-      one: ' It is used in 1 log.',
+      other: ' Den används i $count dagboksanteckningar.',
+      one: ' Den används i $count dagboksanteckning.',
       zero: '',
     );
-    return 'Delete \"$name\"?$_temp0';
+    return 'Ta bort \"$name\"?$_temp0';
   }
 
   @override
@@ -496,239 +500,244 @@ class AppLocalizationsSv extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: ' Its $count tags will also be deleted.',
-      one: ' Its 1 tag will also be deleted.',
+      other: ' Dess $count-taggar kommer också att raderas.',
+      one: ' Dess $count-tagg kommer också att raderas.',
       zero: '',
     );
-    return 'Delete \"$name\"?$_temp0';
+    return 'Ta bort \"$name\"?$_temp0';
   }
 
   @override
-  String get tagNameExists => 'There is a tag with this name already';
+  String get tagNameExists => 'Det finns redan en tagg med detta namn';
 
   @override
-  String get categoryNameExists => 'There is a category with this name already';
+  String get categoryNameExists => 'Det finns redan en kategori med detta namn';
 
   @override
   String deleteTemplateMessage(Object name) {
-    return 'Delete \"$name\"?';
+    return 'Ta bort \"$name\"?';
   }
 
   @override
-  String get addTagsTitle => 'Add Tags';
+  String get addTagsTitle => 'Lägg till taggar';
 
   @override
-  String get addTagsSearchHint => 'Search tags…';
+  String get addTagsSearchHint => 'Sök taggar...';
 
   @override
-  String get tagPickerSortManualLabel => 'Manual order';
+  String get tagPickerSortManualLabel => 'Manuell beställning';
 
   @override
-  String get tagPickerSortUsageLabel => 'Sort by usage';
+  String get tagPickerSortUsageLabel => 'Sortera efter användning';
 
   @override
-  String get tagFavoriteName => 'Favorite';
+  String get tagFavoriteName => 'Favorit';
 
   @override
-  String get tagEnergyName => 'Energy';
+  String get tagEnergyName => 'Energi';
 
   @override
-  String get tagCategoryActivitiesName => 'Activities';
+  String get tagCategoryActivitiesName => 'Aktiviteter';
 
   @override
-  String get tagExerciseName => 'Exercise';
+  String get tagExerciseName => 'Träning';
 
   @override
-  String get tagSocializingName => 'Socializing';
+  String get tagSocializingName => 'Umgås';
 
   @override
   String get tagHobbyName => 'Hobby';
 
   @override
-  String get tagEntertainmentName => 'Entertainment';
+  String get tagEntertainmentName => 'Underhållning';
 
   @override
-  String get tagDiningName => 'Dining';
+  String get tagDiningName => 'Matsal';
 
   @override
-  String get tagChoresName => 'Chores';
+  String get tagChoresName => 'Sysslor';
 
   @override
-  String get tagCategoryEmotionsName => 'Emotions';
+  String get tagCategoryEmotionsName => 'Känslor';
 
   @override
-  String get tagExcitedName => 'Excited';
+  String get tagExcitedName => 'Upphetsad';
 
   @override
-  String get tagGratefulName => 'Grateful';
+  String get tagGratefulName => 'Tacksam';
 
   @override
-  String get tagCalmName => 'Calm';
+  String get tagCalmName => 'Lugn';
 
   @override
-  String get tagTiredName => 'Tired';
+  String get tagTiredName => 'Trött';
 
   @override
-  String get tagAnxiousName => 'Anxious';
+  String get tagAnxiousName => 'Orolig';
 
   @override
-  String get tagAnnoyedName => 'Annoyed';
+  String get tagAnnoyedName => 'Irriterad';
 
   @override
-  String get settingsStorageTitle => 'Storage';
+  String get settingsStorageTitle => 'Förvaring';
 
   @override
-  String get settingsImageQuality => 'Image Quality';
+  String get settingsImageQuality => 'Bildkvalitet';
 
   @override
-  String get imageQualityHigh => 'High';
+  String get imageQualityHigh => 'Hög';
 
   @override
   String get imageQualityMedium => 'Medium';
 
   @override
-  String get imageQualityLow => 'Low';
+  String get imageQualityLow => 'Låg';
 
   @override
-  String get imageQualityNoCompression => 'No Compression';
+  String get imageQualityNoCompression => 'Ingen kompression';
 
   @override
-  String get settingsLogFolder => 'Log Folder';
+  String get settingsLogFolder => 'dagboksanteckning Mapp';
 
   @override
-  String get settingsImageFolder => 'Image Folder';
+  String get settingsImageFolder => 'Bildmapp';
 
   @override
-  String get warningTitle => 'Warning';
+  String get warningTitle => 'Varning';
 
   @override
   String get logFolderWarningDescription =>
-      'If the selected folder already contains a \'aid_diary.db\' file, it will be used to overwrite your existing logs!';
+      'Om den valda mappen redan innehåller en \'aid_diary.db\'-fil, kommer den att användas för att skriva över dina befintliga dagboksposter!';
 
   @override
-  String get errorTitle => 'Error';
+  String get errorTitle => 'Fel';
 
   @override
-  String get logFolderErrorDescription => 'Failed to change log folder!';
+  String get logFolderErrorDescription =>
+      'Det gick inte att ändra dagbokspostmapp!';
 
   @override
-  String get imageFolderErrorDescription => 'Failed to change image folder!';
+  String get imageFolderErrorDescription => 'Det gick inte att ändra bildmapp!';
 
   @override
-  String get backupErrorDescription => 'Failed to create backup!';
+  String get backupErrorDescription =>
+      'Det gick inte att skapa säkerhetskopia!';
 
   @override
-  String get restoreErrorDescription => 'Failed to restore backup!';
+  String get restoreErrorDescription =>
+      'Det gick inte att återställa säkerhetskopian!';
 
   @override
-  String get settingsBackupRestoreTitle => 'Backup & Restore';
+  String get settingsBackupRestoreTitle => 'Säkerhetskopiera och återställa';
 
   @override
-  String get settingsBackup => 'Backup';
+  String get settingsBackup => 'Säkerhetskopiering';
 
   @override
-  String get settingsRestore => 'Restore';
+  String get settingsRestore => 'Återställ';
 
   @override
   String get settingsRestorePromptDescription =>
-      'Restoring a backup will overwrite your existing data!';
+      'Att återställa en säkerhetskopia kommer att skriva över dina befintliga data!';
 
   @override
-  String get settingsBackupPasswordProtect => 'Password Protect Backups';
+  String get settingsBackupPasswordProtect =>
+      'Lösenordsskyddade säkerhetskopior';
 
   @override
-  String get backupEncryptedTitle => 'Encrypted Backup';
+  String get backupEncryptedTitle => 'Krypterad säkerhetskopiering';
 
   @override
-  String get backupEncryptedContent => 'This backup is password protected.';
+  String get backupEncryptedContent =>
+      'Denna säkerhetskopia är lösenordsskyddad.';
 
   @override
-  String get settingsAutoBackup => 'Automatic Backups';
+  String get settingsAutoBackup => 'Automatiska säkerhetskopieringar';
 
   @override
-  String get settingsAutoBackupLocation => 'Backup Location';
+  String get settingsAutoBackupLocation => 'Säkerhetskopieringsplats';
 
   @override
-  String get settingsAutoBackupInterval => 'Backup Interval';
+  String get settingsAutoBackupInterval => 'Backup intervall';
 
   @override
-  String get settingsAutoBackupIntervalDaily => 'Daily';
+  String get settingsAutoBackupIntervalDaily => 'Dagligen';
 
   @override
-  String get settingsAutoBackupIntervalWeekly => 'Weekly';
+  String get settingsAutoBackupIntervalWeekly => 'Varje vecka';
 
   @override
-  String get settingsAutoBackupIntervalMonthly => 'Monthly';
+  String get settingsAutoBackupIntervalMonthly => 'Månadsvis';
 
   @override
-  String get settingsAutoBackupMaxCount => 'Backups To Keep';
+  String get settingsAutoBackupMaxCount => 'Säkerhetskopieringar att behålla';
 
   @override
-  String get settingsAutoBackupRequireCharging => 'Only While Charging';
+  String get settingsAutoBackupRequireCharging => 'Endast under laddning';
 
   @override
   String settingsBackupLast(Object time) {
-    return 'Last backup $time';
+    return 'Senaste säkerhetskopian $time';
   }
 
   @override
-  String get settingsBackupNever => 'Never backed up';
+  String get settingsBackupNever => 'Aldrig säkerhetskopierat';
 
   @override
   String settingsAutoBackupNext(Object time) {
-    return 'Next backup $time';
+    return 'Nästa säkerhetskopia $time';
   }
 
   @override
-  String get settingsAutoBackupKeepAll => 'All';
+  String get settingsAutoBackupKeepAll => 'Alla';
 
   @override
-  String get autoBackupFailedTitle => 'Backup Failed';
+  String get autoBackupFailedTitle => 'Säkerhetskopieringen misslyckades';
 
   @override
   String tranferStatus(Object percent) {
-    return 'Transferring… $percent%';
+    return 'Överför... $percent %';
   }
 
   @override
   String creatingBackupStatus(Object percent) {
-    return 'Creating Backup… $percent%';
+    return 'Skapar säkerhetskopia... $percent%';
   }
 
   @override
   String restoringBackupStatus(Object percent) {
-    return 'Restoring Backup… $percent%';
+    return 'Återställer säkerhetskopia... $percent%';
   }
 
   @override
   String encryptingBackupStatus(Object percent) {
-    return 'Encrypting Backup… $percent%';
+    return 'Krypterar säkerhetskopia... $percent%';
   }
 
   @override
   String decryptingBackupStatus(Object percent) {
-    return 'Decrypting Backup… $percent%';
+    return 'Dekrypterar säkerhetskopia... $percent%';
   }
 
   @override
-  String get cleanUpStatus => 'Cleaning Up…';
+  String get cleanUpStatus => 'Städar upp...';
 
   @override
-  String get settingsExportToAnotherFormat => 'Export To Another Format';
+  String get settingsExportToAnotherFormat => 'Exportera till ett annat format';
 
   @override
   String get settingsExportFormatDescription =>
-      'This should not be used as a backup!';
+      'Detta bör inte användas som backup!';
 
   @override
-  String get settingsImportFromAnotherApp => 'Import From Another App';
+  String get settingsImportFromAnotherApp => 'Importera från en annan app';
 
   @override
-  String get logFormatTitle => 'Choose Format';
+  String get logFormatTitle => 'Välj Format';
 
   @override
   String get logFormatDescription =>
-      'Another app\'s format may not support all features. Please report any issues since third party formats may change at any time. This will not impact existing logs!';
+      'En annan app format kanske inte stöder alla funktioner. Vänligen rapportera eventuella problem eftersom tredje parts format kan ändras när som helst. Detta påverkar inte befintliga dagboksanteckningar!';
 
   @override
   String get formatDayOne => 'Day One';
@@ -761,94 +770,95 @@ class AppLocalizationsSv extends AppLocalizations {
   String get formatMarkdown => 'Markdown';
 
   @override
-  String get settingsDeleteAllLogsTitle => 'Delete All Logs';
+  String get settingsDeleteAllLogsTitle => 'Ta bort alla dagboksposter';
 
   @override
   String get settingsDeleteAllLogsDescription =>
-      'Do you want to delete all of your logs?';
+      'Vill du radera alla dina dagboksanteckningar?';
 
   @override
   String settingsDeleteAllLogsPrompt(Object prompt) {
-    return 'Enter \'$prompt\' to confirm. This cannot be undone!';
+    return 'Ange \'$prompt\' för att bekräfta. Detta kan inte ångras!';
   }
 
   @override
-  String get settingsLanguageTitle => 'Language';
+  String get settingsLanguageTitle => 'Språk';
 
   @override
-  String get settingsAppLanguageTitle => 'App Language';
+  String get settingsAppLanguageTitle => 'Appens språk';
 
   @override
-  String get settingsOverrideAppLanguageTitle => 'Override App Language';
+  String get settingsOverrideAppLanguageTitle => 'Åsidosätt appspråk';
 
   @override
-  String get settingsSecurityTitle => 'Security';
+  String get settingsSecurityTitle => 'Säkerhet';
 
   @override
-  String get settingsSecurityRequirePassword => 'Require Password';
+  String get settingsSecurityRequirePassword => 'Kräv lösenord';
 
   @override
-  String get settingsSecurityEnterPassword => 'Enter Password';
+  String get settingsSecurityEnterPassword => 'Ange lösenord';
 
   @override
-  String get settingsSecuritySetPassword => 'Set Password';
+  String get settingsSecuritySetPassword => 'Ange lösenord';
 
   @override
-  String get settingsSecurityChangePassword => 'Change Password';
+  String get settingsSecurityChangePassword => 'Ändra lösenord';
 
   @override
-  String get settingsSecurityPassword => 'Password';
+  String get settingsSecurityPassword => 'Lösenord';
 
   @override
-  String get settingsSecurityConfirmPassword => 'Confirm Password';
+  String get settingsSecurityConfirmPassword => 'Bekräfta lösenord';
 
   @override
-  String get settingsSecurityOldPassword => 'Old Password';
+  String get settingsSecurityOldPassword => 'Gammalt lösenord';
 
   @override
-  String get settingsSecurityIncorrectPassword => 'Incorrect Password';
+  String get settingsSecurityIncorrectPassword => 'Felaktigt lösenord';
 
   @override
-  String get settingsSecurityPasswordsDoNotMatch => 'Passwords do not match';
+  String get settingsSecurityPasswordsDoNotMatch =>
+      'Lösenord stämmer inte överens';
 
   @override
-  String get requiredPrompt => 'Required';
+  String get requiredPrompt => 'Obligatoriskt';
 
   @override
-  String get settingsSecurityBiometricUnlock => 'Biometric Unlock';
+  String get settingsSecurityBiometricUnlock => 'Biometrisk upplåsning';
 
   @override
-  String get unlockAppPrompt => 'Unlock the app';
+  String get unlockAppPrompt => 'Lås upp appen';
 
   @override
-  String get settingsAboutTitle => 'About';
+  String get settingsAboutTitle => 'Om';
 
   @override
   String get settingsVersion => 'Version';
 
   @override
-  String get settingsLicense => 'License';
+  String get settingsLicense => 'Licens';
 
   @override
   String get licenseGPLv3 => 'GPL-3.0';
 
   @override
-  String get settingsOpenSourceLicenses => 'Open Source Licenses';
+  String get settingsOpenSourceLicenses => 'Licenser med öppen källkod';
 
   @override
-  String get tagMoodTitle => 'Mood';
+  String get tagMoodTitle => 'Humör';
 
   @override
-  String get selectTagTitle => 'Select Tag';
+  String get selectTagTitle => 'Välj Tag';
 
   @override
-  String get labelPresentLabel => 'Present';
+  String get labelPresentLabel => 'Närvarande';
 
   @override
-  String get labelAbsentLabel => 'Absent';
+  String get labelAbsentLabel => 'Frånvarande';
 
   @override
-  String get labelCoverageLabel => 'Coverage';
+  String get labelCoverageLabel => 'Täckning';
 
   @override
   String chartDistributionTitle(Object tag) {
@@ -856,49 +866,49 @@ class AppLocalizationsSv extends AppLocalizations {
   }
 
   @override
-  String get shareAddToLogPickerTitle => 'Choose a log';
+  String get shareAddToLogPickerTitle => 'Välj en dagboksanteckning';
 
   @override
-  String get adaptiveEmptyDay => 'No entries for this day yet';
+  String get adaptiveEmptyDay => 'Inga anmälningar för denna dag än';
 
   @override
-  String get adaptiveNewEntry => 'Write an entry';
+  String get adaptiveNewEntry => 'Skriv ett inlägg';
 
   @override
-  String get pageJournalTitle => 'Journal';
+  String get pageJournalTitle => 'Dagbok';
 
   @override
-  String get coachPrompt1 => 'What made you smile today?';
+  String get coachPrompt1 => 'Vad fick dig att le idag?';
 
   @override
-  String get coachPrompt2 => 'What is one thing you learned today?';
+  String get coachPrompt2 => 'Vad är en sak du lärde dig idag?';
 
   @override
-  String get coachPrompt3 => 'Who did you talk to today, and how did it feel?';
+  String get coachPrompt3 => 'Vem pratade du med idag och hur kändes det?';
 
   @override
-  String get coachPrompt4 => 'What are you grateful for right now?';
+  String get coachPrompt4 => 'Vad är du tacksam för just nu?';
 
   @override
-  String get coachPrompt5 => 'What took most of your energy today?';
+  String get coachPrompt5 => 'Vad tog mest av din energi idag?';
 
   @override
-  String get coachPrompt6 => 'Describe a small moment you want to remember.';
+  String get coachPrompt6 => 'Beskriv ett litet ögonblick du vill minnas.';
 
   @override
-  String get coachPrompt7 => 'What would make tomorrow a good day?';
+  String get coachPrompt7 => 'Vad skulle göra morgondagen till en bra dag?';
 
   @override
-  String get coachPrompt8 => 'What has been on your mind lately?';
+  String get coachPrompt8 => 'Vad har du tänkt på den senaste tiden?';
 
   @override
-  String get coachPrompt9 => 'What did you do today just for yourself?';
+  String get coachPrompt9 => 'Vad gjorde du idag bara för dig själv?';
 
   @override
-  String get coachPrompt10 => 'If today had a title, what would it be?';
+  String get coachPrompt10 => 'Om idag hade en titel, vad skulle det vara?';
 
   @override
-  String get pageMediaTitle => 'Media';
+  String get pageMediaTitle => 'Medier';
 
   @override
   String get pageAtlasTitle => 'Atlas';
@@ -907,324 +917,327 @@ class AppLocalizationsSv extends AppLocalizations {
   String get pageCoachTitle => 'Coach';
 
   @override
-  String get noEntrySelected => 'No entry selected.';
+  String get noEntrySelected => 'Ingen post har valts.';
 
   @override
-  String get entryShare => 'Share';
+  String get entryShare => 'Dela';
 
   @override
-  String get entryFavorite => 'Star';
+  String get entryFavorite => 'Stjärna';
 
   @override
-  String get entryEdit => 'Edit';
+  String get entryEdit => 'Redigera';
 
   @override
-  String get entryPrevious => 'Previous entry';
+  String get entryPrevious => 'Tidigare inlägg';
 
   @override
-  String get entryNext => 'Next entry';
+  String get entryNext => 'Nästa inlägg';
 
   @override
-  String get journalStories => 'Stories';
+  String get journalStories => 'Berättelser';
 
   @override
-  String get journalEntries => 'Entries';
+  String get journalEntries => 'Inlägg';
 
   @override
-  String get journalEmptyHint => 'Begin your diary by adding a new entry.';
+  String get journalEmptyHint =>
+      'Börja din dagbok genom att lägga till en ny post.';
 
   @override
-  String get storyToday => 'Today';
+  String get storyToday => 'Idag';
 
   @override
-  String get storyThrowback => 'Throwback';
+  String get storyThrowback => 'Tillbakablick';
 
   @override
-  String get storyNoThrowback => 'No throwback today';
+  String get storyNoThrowback => 'Ingen återgång idag';
 
   @override
-  String get mediaFiles => 'Media files';
+  String get mediaFiles => 'Mediafiler';
 
   @override
-  String get mediaEmpty => 'No photos yet.';
+  String get mediaEmpty => 'Inga foton än.';
 
   @override
-  String get mediaEmptyHint => 'Photos attached to entries will be shown here.';
+  String get mediaEmptyHint => 'Foton som bifogas bidrag kommer att visas här.';
 
   @override
-  String get atlasEmpty => 'No entries with a location.';
+  String get atlasEmpty => 'Inga poster med en plats.';
 
   @override
-  String get atlasEmptyHint => 'Entries with a location will be shown here.';
+  String get atlasEmptyHint => 'Poster med en plats kommer att visas här.';
 
   @override
-  String get atlasShowAll => 'Show all entries';
+  String get atlasShowAll => 'Visa alla poster';
 
   @override
-  String get atlasMyLocation => 'My location';
+  String get atlasMyLocation => 'Min plats';
 
   @override
-  String get coachAll => 'All';
+  String get coachAll => 'Alla';
 
   @override
-  String get coachPrograms => 'Programs';
+  String get coachPrograms => 'Program';
 
   @override
-  String get coachTemplates => 'Templates';
+  String get coachTemplates => 'Mallar';
 
   @override
   String get coachKindProgram => 'Program';
 
   @override
-  String get coachKindTemplate => 'Template';
+  String get coachKindTemplate => 'Mall';
 
   @override
-  String get coachNoTemplates => 'No programs or templates.';
+  String get coachNoTemplates => 'Inga program eller mallar.';
 
   @override
-  String get coachUseTemplate => 'Write with this template';
+  String get coachUseTemplate => 'Skriv med denna mall';
 
   @override
-  String get coachProgramEverydayTitle => 'Everyday moments';
+  String get coachProgramEverydayTitle => 'Vardagliga stunder';
 
   @override
   String get coachProgramEverydayDescription =>
-      'Five short questions, one a day. Each takes a minute or two and helps you see what made the day yours. A gentle way to build the habit of writing a little every day.';
+      'Fem korta frågor, en om dagen. Varje tar en minut eller två och hjälper dig att se vad som gjorde dagen till din. Ett skonsamt sätt att bygga upp vanan att skriva lite varje dag.';
 
   @override
-  String get coachProgramReflectTitle => 'Looking inward';
+  String get coachProgramReflectTitle => 'Tittar inåt';
 
   @override
   String get coachProgramReflectDescription =>
-      'One deeper question a week, for five weeks. Take your time with each: how you have been feeling, what wears you out, what you are grateful for.';
+      'En djupare fråga i veckan, i fem veckor. Ta dig tid med var och en: hur du har mått, vad sliter ut dig, vad du är tacksam för.';
 
   @override
-  String get searchFilters => 'Filters';
+  String get searchFilters => 'Filter';
 
   @override
-  String get searchFilterTags => 'Tags';
+  String get searchFilterTags => 'Taggar';
 
   @override
-  String get searchFilterStarred => 'Starred';
+  String get searchFilterStarred => 'Stjärnmärkt';
 
   @override
-  String get searchHint => 'Type to search, or pick a filter.';
+  String get searchHint => 'Skriv för att söka eller välj ett filter.';
 
   @override
-  String get locationTitle => 'Location';
+  String get locationTitle => 'Plats';
 
   @override
-  String get locationName => 'Place name';
+  String get locationName => 'Ortsnamn';
 
   @override
-  String get locationRemove => 'Remove';
+  String get locationRemove => 'Ta bort';
 
   @override
-  String get locationServiceDisabled => 'Location services are turned off.';
+  String get locationServiceDisabled => 'Platstjänster är avstängda.';
 
   @override
-  String get locationPermissionDenied => 'Location permission was denied.';
+  String get locationPermissionDenied => 'Platstillstånd nekades.';
 
   @override
-  String get locationUnavailable => 'Could not get the current location.';
+  String get locationUnavailable =>
+      'Det gick inte att hämta den aktuella platsen.';
 
   @override
-  String get calendarJumpToToday => 'Jump to today';
+  String get calendarJumpToToday => 'Hoppa till idag';
 
   @override
-  String get editorStartWriting => 'Start writing or choose a ';
+  String get editorStartWriting => 'Börja skriva eller välj ett ';
 
   @override
-  String get editorTemplateLink => 'Template';
+  String get editorTemplateLink => 'Mall';
 
   @override
   String get editorStartWritingEnd => '.';
 
   @override
-  String get templatePickerTitle => 'Choose a template';
+  String get templatePickerTitle => 'Välj en mall';
 
   @override
-  String get templateFeatured => 'Featured templates';
+  String get templateFeatured => 'Utvalda mallar';
 
   @override
-  String get templateMine => 'My templates';
+  String get templateMine => 'Mina mallar';
 
   @override
-  String get templateDailyName => 'Daily review';
+  String get templateDailyName => 'Daglig genomgång';
 
   @override
   String get templateDailyDescription =>
-      'What happened, how it felt, and what comes next.';
+      'Vad hände, hur det kändes och vad som kommer härnäst.';
 
   @override
   String get templateDailyText =>
-      '## What happened today\n\n\n## How I felt\n\n\n## Three things I\'m grateful for\n1. \n2. \n3. \n\n## Tomorrow\n';
+      '## Vad hände idag\n\n\n## Hur jag kände mig\n\n\n## Tre saker jag är tacksam för\n1. \n2. \n3. \n\n## Imorgon\n';
 
   @override
-  String get templateTravelName => 'Travel log';
+  String get templateTravelName => 'Resedagboksanteckning';
 
   @override
   String get templateTravelDescription =>
-      'Places, moments and food from the road.';
+      'Platser, stunder och mat från vägen.';
 
   @override
   String get templateTravelText =>
-      '## Where I went\n\n\n## The moment I remember most\n\n\n## What I ate\n\n\n## Plans for tomorrow\n';
+      '## Vart jag gick\n\n\n## Det ögonblick jag minns mest\n\n\n## Vad jag åt\n\n\n## Planer för morgondagen\n';
 
   @override
-  String get templateReadingName => 'Reading notes';
+  String get templateReadingName => 'Läser anteckningar';
 
   @override
   String get templateReadingDescription =>
-      'Quotes and thoughts from what you read.';
+      'Citat och tankar från det du läser.';
 
   @override
   String get templateReadingText =>
-      '## Book\n\n\n## Where I am\n\n\n## Quotes\n> \n\n## My thoughts\n';
+      '## Bok\n\n\n## Där jag är\n\n\n## Citat\n> \n\n## Mina tankar\n';
 
   @override
-  String get templateWeeklyName => 'Weekly review';
+  String get templateWeeklyName => 'Veckoöversyn';
 
   @override
   String get templateWeeklyDescription =>
-      'Highlights, struggles and next week\'s focus.';
+      'Höjdpunkter, kämpar och nästa veckas fokus.';
 
   @override
   String get templateWeeklyText =>
-      '## Highlights\n\n\n## What was hard\n\n\n## What I learned\n\n\n## Focus for next week\n';
+      '## Höjdpunkter\n\n\n## Vad var svårt\n\n\n## Vad jag lärde mig\n\n\n## Fokus för nästa vecka\n';
 
   @override
-  String get entryDuplicate => 'Duplicate';
+  String get entryDuplicate => 'Duplicera';
 
   @override
-  String get entryDuplicated => 'Entry duplicated';
+  String get entryDuplicated => 'Posten duplicerad';
 
   @override
-  String get entrySaveAsTemplate => 'Save as template';
+  String get entrySaveAsTemplate => 'Spara som mall';
 
   @override
-  String get entrySavedAsTemplate => 'Saved as a template';
+  String get entrySavedAsTemplate => 'Sparad som mall';
 
   @override
-  String get storyStatistics => 'Statistics';
+  String get storyStatistics => 'Statistik';
 
   @override
-  String get storyMoodChart => 'Mood chart';
+  String get storyMoodChart => 'Humördiagram';
 
   @override
   String storyEntriesAndDays(Object days, Object entries) {
-    return '$entries entries · $days days';
+    return '$entries-poster · $days dagar';
   }
 
   @override
-  String get storyThisYear => 'This year';
+  String get storyThisYear => 'I år';
 
   @override
-  String get storyLastYear => 'Last year';
+  String get storyLastYear => 'Förra året';
 
   @override
-  String get storyTapToOpen => 'Tap a day to open it';
+  String get storyTapToOpen => 'Tryck på en dag för att öppna den';
 
   @override
-  String get settingsGeneralTitle => 'General';
+  String get settingsGeneralTitle => 'Allmänt';
 
   @override
-  String get settingsDataTitle => 'Data & storage';
+  String get settingsDataTitle => 'Data & lagring';
 
   @override
-  String get settingsStoriesTitle => 'Stories';
+  String get settingsStoriesTitle => 'Berättelser';
 
   @override
-  String get settingsHelpTitle => 'Help & about';
+  String get settingsHelpTitle => 'Hjälp & om';
 
   @override
-  String get weatherTitle => 'Weather';
+  String get weatherTitle => 'Väder';
 
   @override
-  String get weatherClear => 'Clear';
+  String get weatherClear => 'Rensa';
 
   @override
-  String get weatherPartlyCloudy => 'Partly cloudy';
+  String get weatherPartlyCloudy => 'Delvis molnigt';
 
   @override
-  String get weatherCloudy => 'Cloudy';
+  String get weatherCloudy => 'Molnigt';
 
   @override
-  String get weatherFog => 'Fog';
+  String get weatherFog => 'Dimma';
 
   @override
-  String get weatherDrizzle => 'Drizzle';
+  String get weatherDrizzle => 'Duggregn';
 
   @override
-  String get weatherRain => 'Rain';
+  String get weatherRain => 'Regn';
 
   @override
-  String get weatherSnow => 'Snow';
+  String get weatherSnow => 'Snö';
 
   @override
-  String get weatherStorm => 'Thunderstorm';
+  String get weatherStorm => 'Åskväder';
 
   @override
-  String get weatherFetch => 'Get weather for this entry';
+  String get weatherFetch => 'Få väder för detta inlägg';
 
   @override
-  String get weatherNeedsLocation => 'Add a location with coordinates first.';
+  String get weatherNeedsLocation =>
+      'Lägg till en plats med koordinater först.';
 
   @override
   String get weatherUnavailable =>
-      'Weather is unavailable for this place and time.';
+      'Vädret är inte tillgängligt för denna plats och tid.';
 
   @override
-  String get weatherRemove => 'Remove weather';
+  String get weatherRemove => 'Ta bort väder';
 
   @override
-  String get activityTitle => 'Activity';
+  String get activityTitle => 'Aktivitet';
 
   @override
-  String get activityStill => 'Still';
+  String get activityStill => 'Ändå';
 
   @override
-  String get activityWalking => 'Walking';
+  String get activityWalking => 'Promenader';
 
   @override
-  String get activityRunning => 'Running';
+  String get activityRunning => 'Löpning';
 
   @override
-  String get activityCycling => 'Cycling';
+  String get activityCycling => 'Cykling';
 
   @override
-  String get activityVehicle => 'In a vehicle';
+  String get activityVehicle => 'I ett fordon';
 
   @override
-  String get activityFlying => 'Flying';
+  String get activityFlying => 'Flygande';
 
   @override
-  String get activityExercise => 'Exercise';
+  String get activityExercise => 'Träning';
 
   @override
-  String get activityDetect => 'Detect current activity';
+  String get activityDetect => 'Upptäck aktuell aktivitet';
 
   @override
-  String get activityDetectFailed => 'Couldn\'t detect an activity.';
+  String get activityDetectFailed => 'Det gick inte att upptäcka en aktivitet.';
 
   @override
-  String get activityRemove => 'Remove activity';
+  String get activityRemove => 'Ta bort aktivitet';
 
   @override
-  String get settingsAutoAddTitle => 'Add automatically';
+  String get settingsAutoAddTitle => 'Lägg till automatiskt';
 
   @override
-  String get settingsAutoAddLocation => 'Location';
+  String get settingsAutoAddLocation => 'Plats';
 
   @override
-  String get settingsAutoAddWeather => 'Weather';
+  String get settingsAutoAddWeather => 'Väder';
 
   @override
   String get settingsAutoAddHint =>
-      'New entries get these filled in when they are created.';
+      'Nya poster får dessa ifyllda när de skapas.';
 
   @override
-  String get settingsTemperatureUnit => 'Temperature unit';
+  String get settingsTemperatureUnit => 'Temperaturenhet';
 
   @override
   String get settingsCelsius => 'Celsius (°C)';
@@ -1233,46 +1246,46 @@ class AppLocalizationsSv extends AppLocalizations {
   String get settingsFahrenheit => 'Fahrenheit (°F)';
 
   @override
-  String get moodGreat => 'Great';
+  String get moodGreat => 'Bra';
 
   @override
-  String get moodGood => 'Good';
+  String get moodGood => 'Bra';
 
   @override
-  String get moodOkay => 'Okay';
+  String get moodOkay => 'Okej';
 
   @override
-  String get moodBad => 'Bad';
+  String get moodBad => 'Dåligt';
 
   @override
-  String get moodAwful => 'Awful';
+  String get moodAwful => 'Hemskt';
 
   @override
-  String get locationSearchHint => 'Search for a place';
+  String get locationSearchHint => 'Sök efter en plats';
 
   @override
-  String get locationSearchEmpty => 'No places found';
+  String get locationSearchEmpty => 'Inga platser hittades';
 
   @override
-  String get settingsWallpaper => 'Wallpaper';
+  String get settingsWallpaper => 'Bakgrund';
 
   @override
-  String get wallpaperNone => 'None';
+  String get wallpaperNone => 'Inga';
 
   @override
-  String get wallpaperDots => 'Dots';
+  String get wallpaperDots => 'Prickar';
 
   @override
   String get wallpaperGrid => 'Grid';
 
   @override
-  String get wallpaperLines => 'Lines';
+  String get wallpaperLines => 'Linjer';
 
   @override
-  String get wallpaperPhoto => 'Photo…';
+  String get wallpaperPhoto => 'Foto...';
 
   @override
-  String get settingsFontFamily => 'Font';
+  String get settingsFontFamily => 'Teckensnitt';
 
   @override
   String get fontSystem => 'System';
@@ -1284,110 +1297,110 @@ class AppLocalizationsSv extends AppLocalizations {
   String get fontMono => 'Monospace';
 
   @override
-  String get settingsFontSize => 'Font size';
+  String get settingsFontSize => 'Teckenstorlek';
 
   @override
-  String get fontSizeSmall => 'Small';
+  String get fontSizeSmall => 'Liten';
 
   @override
   String get fontSizeMedium => 'Medium';
 
   @override
-  String get fontSizeLarge => 'Large';
+  String get fontSizeLarge => 'Stora';
 
   @override
-  String get fontSizeExtraLarge => 'Extra large';
+  String get fontSizeExtraLarge => 'Extra stor';
 
   @override
-  String get settingsLineSpacing => 'Line spacing';
+  String get settingsLineSpacing => 'Radavstånd';
 
   @override
-  String get lineSpacingCompact => 'Compact';
+  String get lineSpacingCompact => 'Kompakt';
 
   @override
   String get lineSpacingNormal => 'Normal';
 
   @override
-  String get lineSpacingRelaxed => 'Relaxed';
+  String get lineSpacingRelaxed => 'Avslappnad';
 
   @override
-  String get moodAssociationsTitle => 'What makes me feel…';
+  String get moodAssociationsTitle => 'Vad får mig att känna...';
 
   @override
   String moodAssociationsCount(int matching, int total) {
-    return '$matching of $total entries';
+    return '$matching av $total-poster';
   }
 
   @override
-  String get videoRecord => 'Record a video';
+  String get videoRecord => 'Spela in en video';
 
   @override
-  String get videoChoose => 'Choose a video';
+  String get videoChoose => 'Välj en video';
 
   @override
-  String get audioRecordTitle => 'Record a voice note';
+  String get audioRecordTitle => 'Spela in en röstanteckning';
 
   @override
-  String get audioChoose => 'Choose an audio file';
+  String get audioChoose => 'Välj en ljudfil';
 
   @override
-  String get audioStart => 'Record';
+  String get audioStart => 'Spela in';
 
   @override
-  String get audioStop => 'Stop and save';
+  String get audioStop => 'Stanna och spara';
 
   @override
   String get audioPermissionDenied =>
-      'Microphone access is off. Allow it in the system settings.';
+      'Mikrofonåtkomst är avstängd. Tillåt det i systeminställningarna.';
 
   @override
-  String get mediaTooLarge => 'This video is too large to attach.';
+  String get mediaTooLarge => 'Den här videon är för stor för att bifoga.';
 
   @override
   String get mediaUnavailable =>
-      'This attachment is not available on this device.';
+      'Den här bilagan är inte tillgänglig på den här enheten.';
 
   @override
-  String get widgetDone => 'Today\'s entry is written';
+  String get widgetDone => 'Dagens inlägg är skrivet';
 
   @override
-  String get widgetPending => 'How was your day?';
+  String get widgetPending => 'Hur var din dag?';
 
   @override
-  String get widgetWrite => 'Write';
+  String get widgetWrite => 'Skriv';
 
   @override
-  String get insertChecklist => 'Checklist';
+  String get insertChecklist => 'Checklista';
 
   @override
-  String get insertNumberedList => 'Numbered list';
+  String get insertNumberedList => 'Numrerad lista';
 
   @override
-  String get insertTable => 'Table';
+  String get insertTable => 'Tabell';
 
   @override
-  String get insertDivider => 'Divider';
+  String get insertDivider => 'Avdelare';
 
   @override
-  String get insertCodeBlock => 'Code block';
+  String get insertCodeBlock => 'Kodblock';
 
   @override
-  String get journalSortTitle => 'Sort entries';
+  String get journalSortTitle => 'Sortera poster';
 
   @override
-  String get journalSortUpdated => 'Last updated';
+  String get journalSortUpdated => 'Senast uppdaterad';
 
   @override
-  String get settingsTimeFormat => 'Time format';
+  String get settingsTimeFormat => 'Tidsformat';
 
   @override
-  String get settingsDayStart => 'New entries count for the day before until';
+  String get settingsDayStart => 'Nya anmälningar räknas för dagen innan t.o.m';
 
   @override
-  String get settingsDayAskUntil => 'Then ask which day until';
+  String get settingsDayAskUntil => 'Fråga sedan vilken dag fram till';
 
   @override
-  String get settingsDayStartMidnight => 'Off';
+  String get settingsDayStartMidnight => 'Av';
 
   @override
   String settingsDayStartAt(int hour) {
@@ -1396,268 +1409,269 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get settingsDayStartHint =>
-      'Every entry keeps the day it belongs to next to the time it was written, and you can change that day in the editor at any time. These hours only pick the day for new entries, so changing them moves no existing entry.';
+      'Varje post behåller dagen den tillhör bredvid tiden den skrevs, och du kan ändra den dagen i editorn när som helst. Dessa timmar väljer bara dagen för nya poster, så om du ändrar dem flyttas ingen befintlig post.';
 
   @override
   String get lateNightBadge =>
-      'Written late at night, counted for the day before';
+      'Skrivet sent på kvällen, räknat för dagen innan';
 
   @override
   String editorDayAsk(String time) {
-    return 'Written at $time. Which day is it for?';
+    return 'Skrivet på $time. Vilken dag är det för?';
   }
 
   @override
   String editorDayYesterday(String date) {
-    return '$date (yesterday)';
+    return '$date (igår)';
   }
 
   @override
   String editorDayToday(String date) {
-    return '$date (today)';
+    return '$date (idag)';
   }
 
   @override
   String editorWrittenAt(String when) {
-    return 'Written $when';
+    return 'Skrivet $when';
   }
 
   @override
-  String get timeFormat12 => '12-hour';
+  String get timeFormat12 => '12 timmar';
 
   @override
-  String get timeFormat24 => '24-hour';
+  String get timeFormat24 => '24 timmar om dygnet';
 
   @override
-  String get settingsReminderDays => 'Remind me on';
+  String get settingsReminderDays => 'Påminn mig om';
 
   @override
-  String get locationRecent => 'Recent places';
+  String get locationRecent => 'Senaste platserna';
 
   @override
-  String get shareImage => 'Share image';
+  String get shareImage => 'Dela bild';
 
   @override
-  String get shareSaveImage => 'Save image';
+  String get shareSaveImage => 'Spara bild';
 
   @override
-  String get shareSaved => 'Image saved';
+  String get shareSaved => 'Bilden sparad';
 
   @override
-  String get deletedTitle => 'Recently deleted';
+  String get deletedTitle => 'Nyligen raderad';
 
   @override
-  String get deletedNone => 'Nothing deleted recently';
+  String get deletedNone => 'Inget har raderats nyligen';
 
   @override
   String deletedHint(int days) {
-    return 'Deleted entries stay here for $days days, then are erased.';
+    return 'Raderade poster stannar här i $days dagar och raderas sedan.';
   }
 
   @override
   String deletedDaysLeft(int days) {
-    return '$days days left';
+    return '$days dagar kvar';
   }
 
   @override
-  String get deletedRestore => 'Restore';
+  String get deletedRestore => 'Återställ';
 
   @override
-  String get deletedDeleteForever => 'Delete forever';
+  String get deletedDeleteForever => 'Ta bort för alltid';
 
   @override
   String get deletedDeleteForeverDescription =>
-      'The entry and its attachments are erased. This cannot be undone.';
+      'Posten och dess bilagor raderas. Detta kan inte ångras.';
 
   @override
-  String get deletedEmpty => 'Empty';
+  String get deletedEmpty => 'Tom';
 
   @override
   String get deletedEmptyDescription =>
-      'Erase every entry in Recently deleted? This cannot be undone.';
+      'Radera varje post i Nyligen raderad? Detta kan inte ångras.';
 
   @override
   String get formatJson => 'JSON';
 
   @override
-  String get randomTitle => 'Random walk';
+  String get randomTitle => 'Slumpmässig promenad';
 
   @override
-  String get randomSubtitle => 'Open a past entry';
+  String get randomSubtitle => 'Öppna en tidigare post';
 
   @override
-  String get randomNext => 'Another';
+  String get randomNext => 'En annan';
 
   @override
-  String get randomAll => 'All';
+  String get randomAll => 'Alla';
 
   @override
-  String get randomWithPhotos => 'With photos';
+  String get randomWithPhotos => 'Med foton';
 
   @override
-  String get randomGoodDays => 'Good days';
+  String get randomGoodDays => 'Bra dagar';
 
   @override
-  String get randomEmpty => 'No entries to pick from';
+  String get randomEmpty => 'Inga poster att välja på';
 
   @override
-  String get reviewWeekTitle => 'This week';
+  String get reviewWeekTitle => 'Denna vecka';
 
   @override
-  String get reviewWeekSubtitle => 'Your week so far';
+  String get reviewWeekSubtitle => 'Din vecka hittills';
 
   @override
-  String get reviewYearTitle => 'This year';
+  String get reviewYearTitle => 'I år';
 
   @override
-  String get reviewEmpty => 'Nothing written yet';
+  String get reviewEmpty => 'Inget skrivet ännu';
 
   @override
-  String get reviewEntries => 'Entries';
+  String get reviewEntries => 'Inlägg';
 
   @override
-  String get reviewDaysWritten => 'Days written';
+  String get reviewDaysWritten => 'Dagar skrivna';
 
   @override
-  String get reviewWords => 'Words';
+  String get reviewWords => 'Ord';
 
   @override
-  String get reviewPhotos => 'Photos';
+  String get reviewPhotos => 'Foton';
 
   @override
-  String get reviewLongestRun => 'Longest run of days';
+  String get reviewLongestRun => 'Längsta loppet av dagar';
 
   @override
-  String get reviewAverageMood => 'Average mood';
+  String get reviewAverageMood => 'Genomsnittligt humör';
 
   @override
-  String get reviewFavorites => 'Most often';
+  String get reviewFavorites => 'Oftast';
 
   @override
-  String get reviewByMonth => 'By month';
+  String get reviewByMonth => 'Efter månad';
 
   @override
-  String get reviewHighlight => 'Highlight';
+  String get reviewHighlight => 'Markera';
 
   @override
-  String get yearInPixels => 'Year in pixels';
+  String get yearInPixels => 'År i pixlar';
 
   @override
-  String get capsuleSeal => 'Seal as a time capsule';
+  String get capsuleSeal => 'Försegla som en tidskapsel';
 
   @override
-  String get capsuleTitle => 'Time capsule';
+  String get capsuleTitle => 'Tidskapsel';
 
   @override
   String capsuleOpensOn(Object date) {
-    return 'Opens on $date';
+    return 'Öppnar på $date';
   }
 
   @override
   String capsuleWrittenOn(Object date) {
-    return 'Written on $date';
+    return 'Skrivet på $date';
   }
 
   @override
-  String get capsuleOpenEarly => 'Open early';
+  String get capsuleOpenEarly => 'Öppet tidigt';
 
   @override
   String get capsuleOpenEarlyDescription =>
-      'The capsule opens now and stays open.';
+      'Kapseln öppnas nu och förblir öppen.';
 
   @override
-  String get capsuleOpened => 'Time capsule opened';
+  String get capsuleOpened => 'Tidskapsel öppnad';
 
   @override
-  String get templateMorningName => 'Morning pages';
+  String get templateMorningName => 'Morgonsidor';
 
   @override
-  String get templateMorningDescription => 'Set up the day in three minutes';
+  String get templateMorningDescription => 'Ställ in dagen på tre minuter';
 
   @override
   String get templateMorningText =>
-      '## Three things I want to do well today\n1. \n2. \n3. \n\n## Something I look forward to\n\n## A note to myself\n';
+      '## Tre saker jag vill göra bra idag\n1. \n2. \n3. \n\n## Något jag ser fram emot\n\n## En anteckning till mig själv\n';
 
   @override
-  String get templateEveningName => 'Evening review';
+  String get templateEveningName => 'Kvällsrecension';
 
   @override
-  String get templateEveningDescription => 'Close the day with what went well';
+  String get templateEveningDescription => 'Avsluta dagen med vad som gick bra';
 
   @override
   String get templateEveningText =>
-      '## Three good things today\n1. \n2. \n3. \n\n## What I learned\n\n## What could go better tomorrow\n';
+      '## Tre bra saker idag\n1. \n2. \n3. \n\n## Vad jag lärde mig\n\n## Vad kan gå bättre imorgon\n';
 
   @override
-  String get routineMorning => 'Good morning';
+  String get routineMorning => 'God morgon';
 
   @override
-  String get routineEvening => 'Evening review';
+  String get routineEvening => 'Kvällsrecension';
 
   @override
-  String get settingsRoutinePrompts => 'Morning and evening prompts';
+  String get settingsRoutinePrompts => 'Uppmaningar morgon och kväll';
 
   @override
   String get settingsRoutinePromptsHint =>
-      'Suggest the morning or evening template in Stories';
+      'Föreslå morgon- eller kvällsmallen i Stories';
 
   @override
-  String get checkInTitle => 'Quick check-in';
+  String get checkInTitle => 'Snabb incheckning';
 
   @override
-  String get checkInSubtitle => 'Mood in two taps';
+  String get checkInSubtitle => 'Humör i två tryck';
 
   @override
-  String get checkInMood => 'How do you feel?';
+  String get checkInMood => 'Hur känner du dig?';
 
   @override
-  String get checkInActivity => 'What are you doing?';
+  String get checkInActivity => 'Vad gör du?';
 
   @override
-  String get checkInNote => 'A line about it (optional)';
+  String get checkInNote => 'En rad om det (valfritt)';
 
   @override
-  String get checkInSave => 'Save';
+  String get checkInSave => 'Spara';
 
   @override
   String editorWordCount(int words, int characters) {
-    return '$words words · $characters characters';
+    return '$words ord · $characters tecken';
   }
 
   @override
-  String get coachProgramEverydayTagline => 'Notice the small things in a day.';
+  String get coachProgramEverydayTagline =>
+      'Lägg märke till de små sakerna på en dag.';
 
   @override
-  String get coachProgramReflectTagline => 'Slow down and listen to yourself.';
+  String get coachProgramReflectTagline => 'Sakta ner och lyssna på dig själv.';
 
   @override
-  String get coachDuration => 'Duration';
+  String get coachDuration => 'Varaktighet';
 
   @override
-  String get coachInterval => 'Interval';
+  String get coachInterval => 'Intervall';
 
   @override
-  String get coachDifficulty => 'Difficulty';
+  String get coachDifficulty => 'Svårighet';
 
   @override
-  String get coachIntervalDaily => 'Daily';
+  String get coachIntervalDaily => 'Dagligen';
 
   @override
-  String get coachIntervalWeekly => 'Weekly';
+  String get coachIntervalWeekly => 'Varje vecka';
 
   @override
-  String get coachDifficultyBeginner => 'Beginner';
+  String get coachDifficultyBeginner => 'Nybörjare';
 
   @override
-  String get coachDifficultyIntermediate => 'Intermediate';
+  String get coachDifficultyIntermediate => 'Mellanliggande';
 
   @override
   String coachDurationDays(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count days',
-      one: '1 day',
+      other: '$count dagar',
+      one: '$count dag',
     );
     return '$_temp0';
   }
@@ -1667,658 +1681,662 @@ class AppLocalizationsSv extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count weeks',
-      one: '1 week',
+      other: '$count veckor',
+      one: '$count vecka',
     );
     return '$_temp0';
   }
 
   @override
   String coachDayN(int n) {
-    return 'Day $n';
+    return 'Dag $n';
   }
 
   @override
   String coachWeekN(int n) {
-    return 'Week $n';
+    return 'Vecka $n';
   }
 
   @override
-  String get coachEnroll => 'Enroll';
+  String get coachEnroll => 'Anmäl dig';
 
   @override
-  String get coachEndProgram => 'End program';
+  String get coachEndProgram => 'Avsluta programmet';
 
   @override
-  String get coachAuthor => 'Author';
+  String get coachAuthor => 'Författare';
 
   @override
-  String get coachAuthorBio => 'Prompts written for this app.';
+  String get coachAuthorBio => 'Uppmaningar skrivna för den här appen.';
 
   @override
   String get coachEnrolledTip =>
-      'All set! Your questions will show up in Stories.';
+      'Allt klart! Dina frågor kommer att dyka upp i Stories.';
 
   @override
-  String get coachGoToStories => 'Go to Stories';
+  String get coachGoToStories => 'Gå till Stories';
 
   @override
-  String get coachAnswerHint => 'Write your answer…';
+  String get coachAnswerHint => 'Skriv ditt svar...';
 
   @override
-  String get storyWrapUp => 'That\'s all for today.';
+  String get storyWrapUp => 'Det var allt för idag.';
 
   @override
-  String get storyTapToClose => 'Tap to close';
+  String get storyTapToClose => 'Tryck för att stänga';
 
   @override
-  String get coachAnswerDone => 'Done';
+  String get coachAnswerDone => 'Klart';
 
   @override
-  String get coachAnswered => 'Answered, tap to open';
+  String get coachAnswered => 'Besvarade, tryck för att öppna';
 
   @override
-  String get coachAnsweredEarlier => 'Answered';
+  String get coachAnsweredEarlier => 'Svarade';
 
   @override
-  String get locationLocating => 'Locating…';
+  String get locationLocating => 'Hittar...';
 
   @override
-  String get locationPickPlace => 'Pick a place';
+  String get locationPickPlace => 'Välj en plats';
 
   @override
-  String get locationPlacesHint => 'Address or name of the place';
+  String get locationPlacesHint => 'Adress eller namn på platsen';
 
   @override
-  String get locationCustom => 'Custom place';
+  String get locationCustom => 'Anpassad plats';
 
   @override
-  String get locationCurrent => 'Current location';
+  String get locationCurrent => 'Nuvarande plats';
 
   @override
-  String get locationSaved => 'Saved places';
+  String get locationSaved => 'Sparade platser';
 
   @override
-  String get locationSearchResults => 'Search results';
+  String get locationSearchResults => 'Sökresultat';
 
   @override
-  String get locationNearby => 'Nearby places';
+  String get locationNearby => 'Närliggande platser';
 
   @override
-  String get locationRename => 'Rename';
+  String get locationRename => 'Byt namn';
 
   @override
-  String get locationSavePlace => 'Save place';
+  String get locationSavePlace => 'Spara plats';
 
   @override
-  String get locationUnsavePlace => 'Remove from saved places';
+  String get locationUnsavePlace => 'Ta bort från sparade platser';
 
   @override
-  String get shareAs => 'Share as…';
+  String get shareAs => 'Dela som...';
 
   @override
-  String get shareAsImage => 'Image';
+  String get shareAsImage => 'Bild';
 
   @override
-  String get shareAsZip => 'ZIP with the original media';
+  String get shareAsZip => 'ZIP med originalmediet';
 
   @override
-  String get shareAsPlainText => 'Plain text';
+  String get shareAsPlainText => 'Vanlig text';
 
   @override
   String get shareAsHtml => 'HTML';
 
   @override
-  String get onboardWelcomeTitle => 'Welcome to AID Diary';
+  String get onboardWelcomeTitle => 'Välkommen till AID Diary';
 
   @override
   String get onboardWelcomeText =>
-      'Start here, or connect this device to one you already use.';
+      'Börja här eller anslut den här enheten till en du redan använder.';
 
   @override
-  String get onboardStart => 'Start writing';
+  String get onboardStart => 'Börja skriva';
 
   @override
-  String get helpFaq => 'Frequently asked questions';
+  String get helpFaq => 'Vanliga frågor';
 
   @override
-  String get helpFaq1Q => 'Where is my diary stored?';
+  String get helpFaq1Q => 'Var förvaras min dagbok?';
 
   @override
   String get helpFaq1A =>
-      'Your diary is stored on this device. It reaches other devices or storage only when you enable sync, share or export it. Sync is end-to-end encrypted.';
+      'Din dagbok lagras på den här enheten. Den når andra enheter eller lagring endast när du aktiverar synkronisering, dela eller exportera den. Synkronisering är krypterad från ände till ände.';
 
   @override
-  String get helpFaq2Q => 'How do I keep a copy or move to a new device?';
+  String get helpFaq2Q =>
+      'Hur behåller jag en kopia eller flyttar till en ny enhet?';
 
   @override
   String get helpFaq2A =>
-      'Connect to an existing device in Settings → Data & storage → Sync and confirm authorization on the device that has your diary. Both devices remain usable. You can also create a backup and restore it on another device.';
+      'Anslut till en befintlig enhet i Inställningar → Data & lagring → Synkronisera och bekräfta auktorisering på enheten som har din dagbok. Båda enheterna förblir användbara. Du kan också skapa en säkerhetskopia och återställa den på en annan enhet.';
 
   @override
-  String get helpFaq3Q => 'Can I bring in entries from other diary apps?';
+  String get helpFaq3Q => 'Kan jag ta in poster från andra dagboksappar?';
 
   @override
   String get helpFaq3A =>
-      'Yes: in Settings → Data & storage, import exports from Daylio, Diarium, Diaro, DayBook, My Brain, OneShot and Pixels, or a JSON export.';
+      'Ja: i Inställningar → Data & lagring, importera exporter från Daylio, Diarium, Diaro, DayBook, My Brain, OneShot och Pixels, eller en JSON-export.';
 
   @override
-  String get helpFaq4Q => 'How do coach programs work?';
+  String get helpFaq4Q => 'Hur fungerar coachprogram?';
 
   @override
   String get helpFaq4A =>
-      'Enroll in a program on the Coach page. Each day or week a new question waits in Stories; your answer is saved as an entry.';
+      'Anmäl dig till ett program på Coach-sidan. Varje dag eller vecka väntar en ny fråga i Stories; ditt svar sparas som en post.';
 
   @override
-  String get helpFaq5Q => 'What if I forget my passcode?';
+  String get helpFaq5Q => 'Vad händer om jag glömmer mitt lösenord?';
 
   @override
   String get helpFaq5A =>
-      'The passcode cannot be recovered, so keep a backup of your diary.';
+      'Lösenordet kan inte återställas, så behåll en säkerhetskopia av din dagbok.';
 
   @override
-  String get helpPrivacy => 'Privacy';
+  String get helpPrivacy => 'Sekretess';
 
   @override
   String get helpPrivacyText =>
-      'Diary content and media stay on this device unless you enable encrypted sync or share/export them. Maps, place lookup and weather use the configured services and send the location or search query needed for that request, not diary text.';
+      'Dagboksinnehåll och media finns kvar på den här enheten om du inte aktiverar krypterad synkronisering eller delar/exporterar dem. Kartor, platssökning och väder använder de konfigurerade tjänsterna och skickar platsen eller sökfrågan som behövs för den begäran, inte dagbokstext.';
 
   @override
-  String get photoMetaTitle => 'Use the photo\'s details?';
+  String get photoMetaTitle => 'Använd fotots detaljer?';
 
   @override
   String photoMetaDateAndPlace(String date, String place) {
-    return 'Count this entry for $date and set its place to $place, as recorded in the photo?';
+    return 'Räkna den här posten för $date och ställ in dess plats på $place, enligt bilden?';
   }
 
   @override
   String photoMetaDate(String date) {
-    return 'Count this entry for $date, when the photo was taken?';
+    return 'Räkna denna post för $date, när bilden togs?';
   }
 
   @override
   String photoMetaPlace(String place) {
-    return 'Set this entry\'s place to $place, where the photo was taken?';
+    return 'Ställ in denna posts plats till $place, var bilden togs?';
   }
 
   @override
-  String get photoMetaApply => 'Use them';
+  String get photoMetaApply => 'Använd dem';
 
   @override
-  String get quickWriteTitle => 'Quick write';
+  String get quickWriteTitle => 'Skriv snabbt';
 
   @override
-  String get quickWriteText => 'Tap to start a new entry.';
+  String get quickWriteText => 'Tryck för att starta en ny post.';
 
   @override
-  String get settingsQuickWriteTitle => 'Quick write in notifications';
+  String get settingsQuickWriteTitle => 'Skriv snabbt i aviseringar';
 
   @override
   String get settingsQuickWriteDescription =>
-      'Keep a notification that opens a new entry.';
+      'Behåll en avisering som öppnar en ny post.';
 
   @override
-  String get settingsNudgesTitle => 'Nudge me after a quiet stretch';
+  String get settingsNudgesTitle => 'Knuffa mig efter en lugn sträcka';
 
   @override
   String settingsNudgesDescription(int days) {
-    return 'A gentle reminder when you haven\'t written for $days days.';
+    return 'En mild påminnelse när du inte har skrivit på $days dagar.';
   }
 
   @override
-  String get nudgeTitle => 'It\'s been a while';
+  String get nudgeTitle => 'Det var ett tag sedan';
 
   @override
-  String get nudgeMonday => 'A new week: what are you looking forward to?';
+  String get nudgeMonday => 'En ny vecka: vad ser du fram emot?';
 
   @override
-  String get nudgeTuesday => 'Two lines are enough. How are you today?';
+  String get nudgeTuesday => 'Två rader räcker. Hur mår du idag?';
 
   @override
-  String get nudgeWednesday =>
-      'Halfway through the week. What stood out so far?';
+  String get nudgeWednesday => 'Halvvägs i veckan. Vad stack ut så här långt?';
 
   @override
-  String get nudgeThursday => 'Anything small worth keeping from today?';
+  String get nudgeThursday => 'Något litet värt att behålla från idag?';
 
   @override
-  String get nudgeFriday => 'The week is wrapping up. Note one good moment.';
+  String get nudgeFriday =>
+      'Veckan går mot sitt slut. Notera ett bra ögonblick.';
 
   @override
-  String get nudgeSaturday => 'A slow Saturday is a good day to write.';
+  String get nudgeSaturday => 'En långsam lördag är en bra dag att skriva.';
 
   @override
-  String get nudgeSunday => 'Look back on the week before it ends.';
+  String get nudgeSunday => 'Se tillbaka på veckan innan den tar slut.';
 
   @override
-  String get photoWidgetEmpty => 'Photos you add to entries show up here.';
+  String get photoWidgetEmpty => 'Foton du lägger till i poster visas här.';
 
   @override
-  String get channelReminders => 'Reminders';
+  String get channelReminders => 'Påminnelser';
 
   @override
-  String get channelOnThisDay => 'On this day';
+  String get channelOnThisDay => 'På denna dag';
 
   @override
-  String get channelCoach => 'Coach prompts';
+  String get channelCoach => 'Coach uppmaningar';
 
   @override
-  String get channelNudges => 'Nudges after quiet days';
+  String get channelNudges => 'Knuffar efter lugna dagar';
 
   @override
-  String get channelQuickWrite => 'Quick write';
+  String get channelQuickWrite => 'Skriv snabbt';
 
   @override
-  String get channelBackup => 'Backups';
+  String get channelBackup => 'Säkerhetskopieringar';
 
   @override
-  String get formatJsonExport => 'JSON (AID Diary export)';
+  String get formatJsonExport => 'JSON (export från AID Diary)';
 
   @override
   String get aboutModifiedNotice =>
-      'A modified version of Daily You by Demizo and contributors. It is not the official Daily You app.';
+      'En modifierad version av Daily You av Demizo och bidragsgivare. Det är inte den officiella Daily You-appen.';
 
   @override
-  String get toolbarPhotos => 'Add photos';
+  String get toolbarPhotos => 'Lägg till foton';
 
   @override
-  String get toolbarMedia => 'Photos and videos';
+  String get toolbarMedia => 'Foton och videor';
 
   @override
-  String get mediaFromGallery => 'Choose from gallery';
+  String get mediaFromGallery => 'Välj från galleri';
 
   @override
-  String get mediaFromFiles => 'Choose from files';
+  String get mediaFromFiles => 'Välj bland filer';
 
   @override
-  String get editorLeaveTitle => 'Save this entry?';
+  String get editorLeaveTitle => 'Spara denna post?';
 
   @override
-  String get editorLeaveDiscard => 'Don\'t save';
+  String get editorLeaveDiscard => 'Spara inte';
 
   @override
-  String get editorTitleHint => 'Title';
+  String get editorTitleHint => 'Titel';
 
   @override
-  String get editorLocating => 'Locating…';
+  String get editorLocating => 'Hittar...';
 
   @override
   String get toolbarVideo => 'Video';
 
   @override
-  String get toolbarAudio => 'Voice note';
+  String get toolbarAudio => 'Röstanteckning';
 
   @override
-  String get toolbarTags => 'Tags';
+  String get toolbarTags => 'Taggar';
 
   @override
-  String get toolbarBulletList => 'Bulleted list';
+  String get toolbarBulletList => 'Punktlista';
 
   @override
-  String get toolbarHeading => 'Heading';
+  String get toolbarHeading => 'Rubrik';
 
   @override
-  String get toolbarBold => 'Bold';
+  String get toolbarBold => 'Fet';
 
   @override
-  String get toolbarItalic => 'Italic';
+  String get toolbarItalic => 'Kursiv';
 
   @override
-  String get toolbarHighlight => 'Highlight';
+  String get toolbarHighlight => 'Markera';
 
   @override
-  String get toolbarStrikethrough => 'Strikethrough';
+  String get toolbarStrikethrough => 'Genomstruken';
 
   @override
-  String get toolbarQuote => 'Quote';
+  String get toolbarQuote => 'Citat';
 
   @override
-  String get toolbarLink => 'Link';
+  String get toolbarLink => 'Länk';
 
   @override
-  String get toolbarInsert => 'Insert';
+  String get toolbarInsert => 'Sätt in';
 
   @override
-  String get toolbarUndo => 'Undo';
+  String get toolbarUndo => 'Ångra';
 
   @override
-  String get toolbarRedo => 'Redo';
+  String get toolbarRedo => 'Gör om';
 
   @override
-  String get toolbarInsertDate => 'Insert the date';
+  String get toolbarInsertDate => 'Sätt in datumet';
 
   @override
-  String get toolbarInsertTime => 'Insert the time';
+  String get toolbarInsertTime => 'Sätt in tiden';
 
   @override
-  String get settingsSyncTitle => 'Cloud Sync';
+  String get settingsSyncTitle => 'Molnsynkronisering';
 
   @override
   String get syncOffDescription =>
-      'Keep this diary the same on all your devices through Google Drive or a WebDAV server, such as Nextcloud, Synology or Jianguoyun.';
+      'Håll den här dagboken likadan på alla dina enheter via Google Drive eller en WebDAV-server, som Nextcloud, Synology eller Jianguoyun.';
 
   @override
-  String get syncUseGoogleDrive => 'Sync with Google Drive';
+  String get syncUseGoogleDrive => 'Synkronisera med Google Drive';
 
   @override
-  String get syncOrWebDav => 'Or a WebDAV server';
+  String get syncOrWebDav => 'Eller en WebDAV-server';
 
   @override
   String get syncGoogleDrive => 'Google Drive';
 
   @override
-  String get syncGoogleSignedIn => 'Signed in. You can go back to AID Diary.';
+  String get syncGoogleSignedIn =>
+      'Inloggad. Du kan gå tillbaka till AID Diary.';
 
   @override
-  String get syncGoogleSignInAgain => 'Google needs you to sign in again.';
+  String get syncGoogleSignInAgain => 'Google kräver att du loggar in igen.';
 
   @override
-  String get syncSignInAgain => 'Sign in again';
+  String get syncSignInAgain => 'Logga in igen';
 
   @override
-  String get settingsCommandLineTitle => 'Command line';
+  String get settingsCommandLineTitle => 'Kommandorad';
 
   @override
-  String get commandLineToggle => 'Command line interface';
+  String get commandLineToggle => 'Kommandoradsgränssnitt';
 
   @override
   String get commandLineToggleHint =>
-      'Lets the aid command and other programs on this device use the app\'s commands.';
+      'Låter hjälpkommandot och andra program på den här enheten använda appens kommandon.';
 
   @override
-  String get commandLineAlwaysOn => 'Always on in development builds.';
+  String get commandLineAlwaysOn => 'Alltid på i utvecklingsbyggen.';
 
   @override
   String commandLineListening(int port) {
-    return 'Listening on port $port';
+    return 'Lyssnar på port $port';
   }
 
   @override
-  String get commandPaletteTitle => 'All commands';
+  String get commandPaletteTitle => 'Alla kommandon';
 
   @override
-  String get commandPaletteSearch => 'Search commands';
+  String get commandPaletteSearch => 'Sökkommandon';
 
   @override
-  String get commandPaletteRun => 'Run';
+  String get commandPaletteRun => 'Kör';
 
   @override
-  String get commandPaletteConfirm => 'This cannot simply be undone. Run it?';
+  String get commandPaletteConfirm => 'Detta kan inte bara ångras. Kör den?';
 
   @override
   String syncReceiving(int done, int total) {
-    return 'Receiving $done of $total…';
+    return 'Tar emot $done av $total...';
   }
 
   @override
   String syncSending(int done, int total) {
-    return 'Sending $done of $total…';
+    return 'Skickar $done av $total...';
   }
 
   @override
   String get syncGoogleDriveNotAllowed =>
-      'Access to Google Drive was not allowed. Connect again and tick Google Drive on Google\'s page.';
+      'Åtkomst till Google Drive var inte tillåten. Anslut igen och markera Google Drive på Googles sida.';
 
   @override
   String get syncEntryUnsynced =>
-      'Not synced: the last sync did not go through';
+      'Ej synkroniserad: den senaste synkroniseringen gick inte igenom';
 
   @override
-  String get syncUseOfficial => 'Use the AID sync server';
+  String get syncUseOfficial => 'Använd AID-synkroniseringsservern';
 
   @override
-  String get syncServer => 'Server address';
+  String get syncServer => 'Serveradress';
 
   @override
-  String get syncUsername => 'Username';
+  String get syncUsername => 'Användarnamn';
 
   @override
-  String get syncPassword => 'Password';
+  String get syncPassword => 'Lösenord';
 
   @override
-  String get syncConnect => 'Connect';
+  String get syncConnect => 'Anslut';
 
   @override
-  String get syncConnecting => 'Connecting…';
+  String get syncConnecting => 'Ansluter...';
 
   @override
   String get syncSignInFailed =>
-      'Could not sign in. Check the address, the username and the password.';
+      'Det gick inte att logga in. Kontrollera adressen, användarnamnet och lösenordet.';
 
   @override
   String syncConnectFailed(String error) {
-    return 'Could not connect: $error';
+    return 'Kunde inte ansluta: $error';
   }
 
   @override
-  String get syncNewSpaceTitle => 'Start syncing';
+  String get syncNewSpaceTitle => 'Börja synkronisera';
 
   @override
   String get syncNewSpaceDescription =>
-      'There is no synced diary here yet. This diary will be uploaded, end-to-end encrypted with a key that stays on your devices.';
+      'Det finns ingen synkroniserad dagbok här ännu. Den här dagboken kommer att laddas upp, krypterad från början med en nyckel som finns kvar på dina enheter.';
 
   @override
-  String get syncJoinTitle => 'Join the synced diary';
+  String get syncJoinTitle => 'Gå med i den synkroniserade dagboken';
 
   @override
   String get syncWrongKey =>
-      'This recovery code does not open the synced diary.';
+      'Denna återställningskod öppnar inte den synkroniserade dagboken.';
 
   @override
   String syncLastSynced(String time) {
-    return 'Last synced $time';
+    return 'Senast synkroniserade $time';
   }
 
   @override
-  String get syncNever => 'Not synced yet';
+  String get syncNever => 'Inte synkroniserat ännu';
 
   @override
-  String get syncSyncing => 'Syncing…';
+  String get syncSyncing => 'Synkroniseras...';
 
   @override
   String syncFailed(String error) {
-    return 'The last sync failed: $error';
+    return 'Den senaste synkroniseringen misslyckades: $error';
   }
 
   @override
   String get syncLocked =>
-      'The synced diary now belongs to other devices, or was started over. Pair with one of them or use the recovery code to keep syncing.';
+      'Den synkroniserade dagboken tillhör nu andra enheter eller har startat om. Para ihop med en av dem eller använd återställningskoden för att fortsätta synkronisera.';
 
   @override
-  String get syncNow => 'Sync now';
+  String get syncNow => 'Synkronisera nu';
 
   @override
-  String get syncUnlock => 'Unlock';
+  String get syncUnlock => 'Lås upp';
 
   @override
-  String get syncEncrypted => 'End-to-end encrypted';
+  String get syncEncrypted => 'End-to-end krypterad';
 
   @override
-  String get syncDisconnect => 'Stop syncing';
+  String get syncDisconnect => 'Sluta synkronisera';
 
   @override
   String get syncDisconnectDescription =>
-      'This device stops syncing. The diary here and the synced copy stay as they are.';
+      'Den här enheten slutar synkronisera. Dagboken här och den synkroniserade kopian stannar som de är.';
 
   @override
-  String get syncOwnRecoveryPassword => 'Use my own recovery password';
+  String get syncOwnRecoveryPassword =>
+      'Använd mitt eget återställningslösenord';
 
   @override
-  String get syncRecoveryPassword => 'Recovery password';
+  String get syncRecoveryPassword => 'Återställningslösenord';
 
   @override
-  String get syncRecoveryPasswordRepeat => 'Repeat the recovery password';
+  String get syncRecoveryPasswordRepeat => 'Upprepa återställningslösenordet';
 
   @override
   String syncRecoveryPasswordTooShort(int min) {
-    return 'Use at least $min characters';
+    return 'Använd minst $min-tecken';
   }
 
   @override
-  String get syncRecoveryPasswordMismatch => 'The passwords differ';
+  String get syncRecoveryPasswordMismatch => 'Lösenorden skiljer sig åt';
 
   @override
-  String get syncRecoveryCode => 'Recovery code';
+  String get syncRecoveryCode => 'Återställningskod';
 
   @override
-  String get syncRecoveryCodeTitle => 'Save your recovery code';
+  String get syncRecoveryCodeTitle => 'Spara din återställningskod';
 
   @override
   String get syncRecoveryCodeDescription =>
-      'If every device of yours is lost, this code restores your synced diary. Keep it in a password manager or on paper. It is shown only this once.';
+      'Om alla dina enheter tappas bort, återställer den här koden din synkroniserade dagbok. Förvara det i en lösenordshanterare eller på papper. Den visas bara denna gång.';
 
   @override
-  String get syncRecoveryCodeCopied => 'Recovery code copied';
+  String get syncRecoveryCodeCopied => 'Återställningskoden har kopierats';
 
   @override
-  String get syncRecoveryCodeSaved => 'I have saved it';
+  String get syncRecoveryCodeSaved => 'Jag har sparat den';
 
   @override
   String get syncJoinNeedsKey =>
-      'This synced diary belongs to your other devices. Pair with one of them, or use the recovery code. The entries on this device will be added to it.';
+      'Den här synkroniserade dagboken tillhör dina andra enheter. Para ihop med en av dem eller använd återställningskoden. Posterna på den här enheten kommer att läggas till den.';
 
   @override
-  String get syncPairDevice => 'Pair with a device';
+  String get syncPairDevice => 'Para ihop med en enhet';
 
   @override
-  String get syncUseRecoveryCode => 'Use the recovery code';
+  String get syncUseRecoveryCode => 'Använd återställningskoden';
 
   @override
-  String get syncAddDevice => 'Add a device';
+  String get syncAddDevice => 'Lägg till en enhet';
 
   @override
-  String get syncChangeRecoveryCode => 'Change the recovery code';
+  String get syncChangeRecoveryCode => 'Ändra återställningskoden';
 
   @override
   String get syncChangeRecoveryDescription =>
-      'A new code replaces the current one, which stops working. Your data and other devices stay as they are.';
+      'En ny kod ersätter den nuvarande, som slutar fungera. Din data och andra enheter förblir som de är.';
 
   @override
-  String get syncNewRandomCode => 'New random code';
+  String get syncNewRandomCode => 'Ny slumpmässig kod';
 
   @override
-  String get syncRecoveryCodeChanged => 'Recovery code changed';
+  String get syncRecoveryCodeChanged => 'Återställningskoden har ändrats';
 
   @override
-  String get syncResetSpace => 'Start the synced diary over';
+  String get syncResetSpace => 'Starta om den synkroniserade dagboken';
 
   @override
   String get syncResetSpaceDescription =>
-      'Only when no device and no recovery code opens it any more: the synced copy is replaced by the diary on this device, under this device\'s keys. Your other devices then pair again.';
+      'Endast när ingen enhet och ingen återställningskod öppnar den längre: den synkroniserade kopian ersätts av dagboken på den här enheten, under enhetens nycklar. Dina andra enheter kopplas sedan ihop igen.';
 
   @override
-  String get syncPairTitle => 'Pair devices';
+  String get syncPairTitle => 'Para ihop enheter';
 
   @override
-  String get syncPairShow => 'Show a code';
+  String get syncPairShow => 'Visa en kod';
 
   @override
-  String get syncPairEnter => 'Enter a code';
+  String get syncPairEnter => 'Ange en kod';
 
   @override
   String get syncPairShowHint =>
-      'On your other device, open Pair devices, choose Enter a code, and type or scan this.';
+      'Öppna Koppla enheter på din andra enhet, välj Ange en kod och skriv eller skanna detta.';
 
   @override
   String get syncPairEnterHint =>
-      'Type the code your other device shows, or scan it.';
+      'Skriv in koden som din andra enhet visar eller skanna den.';
 
   @override
-  String get syncPairCode => 'Pairing code';
+  String get syncPairCode => 'Parningskod';
 
   @override
-  String get syncPairScan => 'Scan';
+  String get syncPairScan => 'Skanna';
 
   @override
-  String get syncPairStart => 'Pair';
+  String get syncPairStart => 'Par';
 
   @override
-  String get syncPairWaiting => 'Waiting for the other device…';
+  String get syncPairWaiting => 'Väntar på den andra enheten...';
 
   @override
   String syncPairDone(String device) {
-    return 'Paired with $device';
+    return 'Parat med $device';
   }
 
   @override
   String get syncPairWrongCode =>
-      'The code did not match. Show a new code and try again.';
+      'Koden stämde inte. Visa en ny kod och försök igen.';
 
   @override
   String get syncPairNoOffer =>
-      'No device shows this code. It may have expired.';
+      'Ingen enhet visar denna kod. Det kan ha gått ut.';
 
   @override
-  String get syncPairTimedOut => 'The other device did not answer in time.';
+  String get syncPairTimedOut => 'Den andra enheten svarade inte i tid.';
 
   @override
   String get syncPairNeither =>
-      'Neither device is set up with this synced diary yet.';
+      'Ingen av enheterna har konfigurerats med denna synkroniserade dagbok ännu.';
 
   @override
-  String get syncPairBoth => 'Both devices already open this synced diary.';
+  String get syncPairBoth =>
+      'Båda enheterna öppnar redan denna synkroniserade dagbok.';
 
   @override
   String syncPairFailed(String error) {
-    return 'Pairing failed: $error';
+    return 'Parning misslyckades: $error';
   }
 
   @override
   String get syncMediaPending =>
-      'Diary synced · some media is still transferring';
+      'Dagbok synkroniserad · en del media överförs fortfarande';
 
   @override
   String get syncWaitingForDevices =>
-      'Diary synced · waiting for another device to transfer media';
+      'Dagbok synkroniserad · väntar på att en annan enhet ska överföra media';
 
   @override
   String get syncCacheNotice =>
-      'Cloud media is temporary. Keep the originals on your devices; syncing is not a backup.';
+      'Molnmedia är tillfälligt. Behåll originalen på dina enheter; synkronisering är inte en säkerhetskopia.';
 
   @override
-  String get paperTitle => 'Letter paper';
+  String get paperTitle => 'Brevpapper';
 
   @override
-  String get paperPlain => 'Plain';
+  String get paperPlain => 'Vanligt';
 
   @override
-  String get paperLined => 'Lined';
+  String get paperLined => 'Fodrad';
 
   @override
   String get paperGrid => 'Grid';
 
   @override
-  String get paperTinted => 'Tinted';
+  String get paperTinted => 'Tonade';
 
   @override
-  String get paperDecorationTitle => 'Decorations';
+  String get paperDecorationTitle => 'Dekorationer';
 
   @override
-  String get paperDecorationNone => 'None';
+  String get paperDecorationNone => 'Inga';
 
   @override
-  String get paperDecorationBotanical => 'Leaves';
+  String get paperDecorationBotanical => 'Blad';
 
   @override
-  String get paperDecorationStars => 'Stars';
+  String get paperDecorationStars => 'Stjärnor';
 
   @override
-  String get paperDecorationWashi => 'Washi tape';
+  String get paperDecorationWashi => 'Washi tejp';
 
   @override
-  String get themeDarkChoice => 'Dark appearance';
+  String get themeDarkChoice => 'Mörkt utseende';
 
   @override
-  String get themeDarkSame => 'Follow light palette';
+  String get themeDarkSame => 'Följ ljus palett';
 
   @override
-  String get themeDarkCustom => 'Separate palette';
+  String get themeDarkCustom => 'Separat palett';
 
   @override
-  String get themeDarkAccent => 'Dark accent colour';
+  String get themeDarkAccent => 'Mörk accentfärg';
 
   @override
-  String get themeColorTeal => 'Teal';
+  String get themeColorTeal => 'Kricka';
 
   @override
   String get themeColorCyan => 'Cyan';
@@ -2327,395 +2345,397 @@ class AppLocalizationsSv extends AppLocalizations {
   String get themeColorIndigo => 'Indigo';
 
   @override
-  String get themeColorCoral => 'Coral';
+  String get themeColorCoral => 'Korall';
 
   @override
-  String get themeColorOlive => 'Olive';
+  String get themeColorOlive => 'Oliv';
 
   @override
-  String get themeColorSlate => 'Slate';
+  String get themeColorSlate => 'Skiffer';
 
   @override
-  String get drawingTitle => 'Drawing';
+  String get drawingTitle => 'Ritning';
 
   @override
-  String get drawingPen => 'Pen';
+  String get drawingPen => 'Penna';
 
   @override
-  String get drawingEraser => 'Eraser';
+  String get drawingEraser => 'Suddgummi';
 
   @override
-  String get drawingUndo => 'Undo';
+  String get drawingUndo => 'Ångra';
 
   @override
-  String get drawingClear => 'Clear';
+  String get drawingClear => 'Rensa';
 
   @override
-  String get drawingWidth => 'Pen width';
+  String get drawingWidth => 'Pennans bredd';
 
   @override
-  String get drawingStylusOnly => 'Stylus only';
+  String get drawingStylusOnly => 'Endast penna';
 
   @override
-  String get drawingDiscardTitle => 'Discard drawing?';
+  String get drawingDiscardTitle => 'Släng ritningen?';
 
   @override
-  String get drawingDiscardBody => 'This drawing has not been saved.';
+  String get drawingDiscardBody => 'Denna ritning har inte sparats.';
 
   @override
-  String get drawingSaveError => 'Could not save the drawing.';
+  String get drawingSaveError => 'Det gick inte att spara ritningen.';
 
   @override
-  String get syncNetworkTitle => 'Network diagnostics';
+  String get syncNetworkTitle => 'Nätverksdiagnostik';
 
   @override
-  String get syncNetworkRefresh => 'Refresh';
+  String get syncNetworkRefresh => 'Uppdatera';
 
   @override
-  String get syncNetworkSelectedRoute => 'Current path';
+  String get syncNetworkSelectedRoute => 'Aktuell väg';
 
   @override
-  String get syncNetworkAvailableRoutes => 'Available paths';
+  String get syncNetworkAvailableRoutes => 'Tillgängliga vägar';
 
   @override
-  String get syncNetworkSignaling => 'Device directory connection';
+  String get syncNetworkSignaling => 'Enhetskataloganslutning';
 
   @override
-  String get syncNetworkRelayRemaining => 'Remaining relay allowance';
+  String get syncNetworkRelayRemaining => 'Återstående stafettpeng';
 
   @override
-  String get syncNetworkIcePair => 'Direct connection candidates';
+  String get syncNetworkIcePair => 'Direktanslutna kandidater';
 
   @override
-  String get syncNetworkPeerTrusted => 'Authenticated device';
+  String get syncNetworkPeerTrusted => 'Autentiserad enhet';
 
   @override
-  String get syncNetworkNoRoute => 'Waiting for a connection';
+  String get syncNetworkNoRoute => 'Väntar på en anslutning';
 
   @override
-  String get syncNetworkUnavailable => 'Diagnostics are unavailable';
+  String get syncNetworkUnavailable => 'Diagnostik är inte tillgänglig';
 
   @override
-  String get syncMediaCopiesTitle => 'Media delivery and copies';
+  String get syncMediaCopiesTitle => 'Medialeverans och kopior';
 
   @override
-  String get syncMediaPendingCount => 'Waiting to transfer';
+  String get syncMediaPendingCount => 'Väntar på överföring';
 
   @override
-  String get syncMediaDurableCount => 'Delivered to personal storage';
+  String get syncMediaDurableCount => 'Levereras till personlig förvaring';
 
   @override
-  String get syncMediaTemporaryCount => 'Temporary or unconfirmed copies';
+  String get syncMediaTemporaryCount => 'Tillfälliga eller obekräftade kopior';
 
   @override
   String get syncMediaReceiptExplanation =>
-      'These counts describe completed deliveries, not a fresh audit of surviving backups.';
+      'Dessa siffror beskriver genomförda leveranser, inte en ny granskning av överlevande säkerhetskopior.';
 
   @override
   String get syncMediaCacheExplanation =>
-      'Temporary cloud media can expire. Keep your originals or a separate backup.';
+      'Tillfälliga molnmedia kan upphöra att gälla. Behåll dina original eller en separat säkerhetskopia.';
 
   @override
-  String get momentsTitle => 'Photo moments';
+  String get momentsTitle => 'Fotoögonblick';
 
   @override
   String get momentsHint =>
-      'Find groups using local photo times and optional coordinates. Photos are attached only when you choose a card.';
+      'Hitta grupper med hjälp av lokala fototider och valfria koordinater. Bilder bifogas endast när du väljer ett kort.';
 
   @override
-  String get momentsScan => 'Find moments';
+  String get momentsScan => 'Hitta ögonblick';
 
   @override
-  String get momentsChooseFolder => 'Choose photo folder';
+  String get momentsChooseFolder => 'Välj fotomapp';
 
   @override
-  String get momentsLocation => 'Include photo locations';
+  String get momentsLocation => 'Inkludera fotoplatser';
 
   @override
-  String get momentsEmpty => 'No recent photo groups.';
+  String get momentsEmpty => 'Inga nya fotogrupper.';
 
   @override
-  String get momentsCreate => 'Write about these photos';
+  String get momentsCreate => 'Skriv om dessa bilder';
 
   @override
-  String get momentsDismiss => 'Dismiss';
+  String get momentsDismiss => 'Avvisa';
 
   @override
-  String get momentsError => 'Could not read local photos.';
+  String get momentsError => 'Kunde inte läsa lokala bilder.';
 
   @override
-  String get momentsCreated => 'Photo entry created.';
+  String get momentsCreated => 'Fotopost skapad.';
 
   @override
   String get momentsPermission =>
-      'Allow access to photos to find local suggestions.';
+      'Tillåt åtkomst till foton för att hitta lokala förslag.';
 
   @override
   String get momentsScope =>
-      'Recent photos only; at most 500 photos and 20 photos per card.';
+      'Endast senaste foton; högst 500 bilder och 20 bilder per kort.';
 
   @override
   String momentsPhotoCount(int count) {
-    return '$count photos';
+    return '$count bilder';
   }
 
   @override
-  String get nearbyTitle => 'Connect devices';
+  String get nearbyTitle => 'Anslut enheter';
 
   @override
-  String get nearbySend => 'Authorize another device';
+  String get nearbySend => 'Auktorisera en annan enhet';
 
   @override
-  String get nearbyReceive => 'Connect to an existing device';
+  String get nearbyReceive => 'Anslut till en befintlig enhet';
 
   @override
   String get nearbyInstructions =>
-      'Connect both devices to the same Wi-Fi or to each other’s hotspot. Confirm authorization on the existing device; both devices remain usable. No internet is required.';
+      'Anslut båda enheterna till samma Wi-Fi eller till varandras hotspot. Bekräfta auktorisering på den befintliga enheten; båda enheterna förblir användbara. Inget internet krävs.';
 
   @override
   String get nearbyCompare =>
-      'Compare this code on both devices before approving.';
+      'Jämför den här koden på båda enheterna innan du godkänner.';
 
   @override
-  String get nearbyConfirm => 'The codes match';
+  String get nearbyConfirm => 'Koderna matchar';
 
   @override
-  String get nearbyScan => 'Scan the other device’s code';
+  String get nearbyScan => 'Skanna den andra enhetens kod';
 
   @override
-  String get nearbyPaste => 'Paste invitation';
+  String get nearbyPaste => 'Klistra in inbjudan';
 
   @override
-  String get nearbyWaiting => 'Waiting for approval on the other device';
+  String get nearbyWaiting => 'Väntar på godkännande på den andra enheten';
 
   @override
   String get nearbyWorking =>
-      'Authorizing and syncing your diary and attachments…';
+      'Auktorisera och synkronisera din dagbok och bilagor...';
 
   @override
   String get nearbyPending =>
-      'Some attachments still need syncing. Keep the other device online and try again.';
+      'Vissa bilagor behöver fortfarande synkroniseras. Håll den andra enheten online och försök igen.';
 
   @override
-  String get nearbyComplete => 'Device connected; diary and attachments synced';
+  String get nearbyComplete =>
+      'Enhet ansluten; dagbok och bilagor synkroniserade';
 
   @override
   String get nearbyFailed =>
-      'Connection did not finish. Check the local connection and try again.';
+      'Anslutningen slutfördes inte. Kontrollera den lokala anslutningen och försök igen.';
 
   @override
   String get nearbyEmptyRequired =>
-      'Use a device with an empty diary that is not connected to sync yet.';
+      'Använd en enhet med en tom dagbok som inte är ansluten till synkronisering ännu.';
 
   @override
-  String get nearbyRetry => 'Continue syncing';
+  String get nearbyRetry => 'Fortsätt synkronisera';
 
   @override
-  String get nearbyWifi => 'Wi-Fi settings';
+  String get nearbyWifi => 'Wi-Fi-inställningar';
 
   @override
-  String get nearbyHotspot => 'Hotspot settings';
+  String get nearbyHotspot => 'Hotspot-inställningar';
 
   @override
   String get nearbyKeepOpen =>
-      'Keep this page open until the new device finishes. The invitation expires after two minutes.';
+      'Håll den här sidan öppen tills den nya enheten är klar. Inbjudan upphör efter två minuter.';
 
   @override
-  String get syncDevicesTitle => 'Authorized devices';
+  String get syncDevicesTitle => 'Auktoriserade enheter';
 
   @override
   String get syncDevicesDescription =>
-      'Only approved devices can access this AID account. Revoking a device blocks the server but cannot erase a master key or diary already copied to it.';
+      'Endast godkända enheter kan komma åt detta AID-konto. Att återkalla en enhet blockerar servern men kan inte radera en huvudnyckel eller dagbok som redan har kopierats till den.';
 
   @override
   String get syncDeviceRequest =>
-      'Show this authorization QR to an approved device';
+      'Visa denna auktoriserings-QR för en godkänd enhet';
 
   @override
-  String get syncDeviceAuthorize => 'Authorize a device';
+  String get syncDeviceAuthorize => 'Auktorisera en enhet';
 
   @override
   String get syncDeviceAuthorizeDescription =>
-      'Scan or paste the new device’s authorization request.';
+      'Skanna eller klistra in den nya enhetens auktoriseringsbegäran.';
 
   @override
-  String get syncDeviceRevoke => 'Revoke';
+  String get syncDeviceRevoke => 'Återkalla';
 
   @override
-  String get syncDeviceRotate => 'Rotate this device’s signing key';
+  String get syncDeviceRotate => 'Rotera enhetens signeringsnyckel';
 
   @override
-  String get syncDeviceCheck => 'Check authorization';
+  String get syncDeviceCheck => 'Kontrollera behörigheten';
 
   @override
-  String get syncDeviceHardware => 'Hardware-backed signing key';
+  String get syncDeviceHardware => 'Maskinvarustödd signeringsnyckel';
 
   @override
-  String get syncDeviceSoftware => 'Non-exportable software signing key';
+  String get syncDeviceSoftware => 'Icke-exporterbar mjukvarusigneringsnyckel';
 
   @override
   String get syncDeviceUnavailable =>
-      'Device authorization is unavailable. Approve this device from another authorized device and retry.';
+      'Enhetsauktorisering är inte tillgänglig. Godkänn den här enheten från en annan auktoriserad enhet och försök igen.';
 
   @override
-  String get syncDeviceRevoked => 'Revoked';
+  String get syncDeviceRevoked => 'Återkallad';
 
   @override
-  String get syncDeviceLocal => 'This device';
+  String get syncDeviceLocal => 'Denna enhet';
 
   @override
-  String get cloudTrafficTitle => 'Monthly cloud media allowance';
+  String get cloudTrafficTitle =>
+      'Månatlig molndataöverföringskvot för mediafiler';
 
   @override
-  String get cloudTrafficLimit => 'Monthly allowance';
+  String get cloudTrafficLimit => 'Månatlig dataöverföringskvot';
 
   @override
-  String get cloudTrafficUsed => 'Used';
+  String get cloudTrafficUsed => 'Dataöverföring används';
 
   @override
-  String get cloudTrafficRemaining => 'Remaining';
+  String get cloudTrafficRemaining => 'Dataöverföring kvar';
 
   @override
   String cloudTrafficResetsAt(String time) {
-    return 'Resets $time';
+    return 'Dataöverföringskvoten återställer $time';
   }
 
   @override
   String get cloudTrafficExhausted =>
-      'Cloud media allowance used up. Missing media will resume automatically over a direct connection or when the allowance resets.';
+      'Molndataöverföringskvoten för mediefiler har förbrukats. Saknade mediefiler synkroniseras automatiskt när en direktanslutning är tillgänglig eller kvoten återställs.';
 
   @override
   String get cloudTrafficExplanation =>
-      'Media cache and live relay share this allowance. Direct connections do not use it. Diary text and connection control have separate small daily limits.';
+      'Mediafilcachning och liverelä delar denna dataöverföringskvot. Direktanslutningar förbrukar inte det. Dagbokstext och anslutningskontrollmeddelanden har separata små dagliga gränser.';
 
   @override
-  String get appearanceThemeSection => 'App theme';
+  String get appearanceThemeSection => 'App-tema';
 
   @override
-  String get appearancePaperSection => 'Diary paper';
+  String get appearancePaperSection => 'Dagbokspapper';
 
   @override
-  String get appearanceTypographySection => 'Diary text';
+  String get appearanceTypographySection => 'Dagbokstext';
 
   @override
-  String get appearancePreferencesSection => 'General preferences';
+  String get appearancePreferencesSection => 'Allmänna preferenser';
 
   @override
   String get themeSystemAccentHint =>
-      'Uses the system palette instead of custom colors. Turn it off to choose your own.';
+      'Använder systempaletten istället för anpassade färger. Stäng av den för att välja din egen.';
 
   @override
   String get syncDeviceNameSaveFailed =>
-      'Could not save the device name. Please try again.';
+      'Det gick inte att spara enhetsnamnet. Försök igen.';
 
   @override
-  String get nearbyConnectionHelp => 'Connection help';
+  String get nearbyConnectionHelp => 'Anslutningshjälp';
 
   @override
-  String get syncAllSynced => 'Everything synced';
+  String get syncAllSynced => 'Allt synkroniserat';
 
   @override
-  String get syncDetailsTitle => 'Sync details';
+  String get syncDetailsTitle => 'Synkronisera detaljer';
 
   @override
-  String get syncMore => 'More options';
+  String get syncMore => 'Fler alternativ';
 
   @override
-  String get syncDeviceName => 'Device name';
+  String get syncDeviceName => 'Enhetens namn';
 
   @override
-  String get syncDeviceNameHint => 'For example: My tablet';
+  String get syncDeviceNameHint => 'Till exempel: Min surfplatta';
 
   @override
-  String get syncDeviceNameInvalid => 'Use 1 to 32 characters';
+  String get syncDeviceNameInvalid => 'Använd 1 till 32 tecken';
 
   @override
-  String get syncDeviceKeyDetails => 'Security details';
+  String get syncDeviceKeyDetails => 'Säkerhetsdetaljer';
 
   @override
   String get syncConnectionProblem =>
-      'Unable to sync for now. Retrying automatically.';
+      'Det går inte att synkronisera just nu. Försöker igen automatiskt.';
 
   @override
-  String get syncCopyComplete => 'Complete copy';
+  String get syncCopyComplete => 'Komplett kopia av din dagbok och mediefiler';
 
   @override
-  String get syncCopyPartial => 'Some media is still missing';
+  String get syncCopyPartial => 'Vissa medier saknas fortfarande';
 
   @override
-  String get syncCopyOlder => 'New changes are waiting to sync';
+  String get syncCopyOlder => 'Nya ändringar väntar på att synkroniseras';
 
   @override
   String get syncCopyUnavailable =>
-      'Copy details are unavailable. Try again later.';
+      'Kopieringsinformation är inte tillgänglig. Försök igen senare.';
 
   @override
   String get syncCopyLastKnown =>
-      'Other devices show their last confirmed copy. Offline devices cannot be checked now.';
+      'Andra enheter visar sin senaste bekräftade kopia. Offlineenheter kan inte kontrolleras nu.';
 
   @override
   String get syncCopyTemporary =>
-      'Temporary cache. Keep the originals on your devices.';
+      'Tillfällig cache. Behåll originalen på dina enheter.';
 
   @override
   String get syncCopyStorage =>
-      'Your sync storage. Completed media uploads are listed in diagnostics.';
+      'Din synkroniseringslagring. Slutförda mediauppladdningar listas i diagnostik.';
 
   @override
   String syncCopyChecked(String time) {
-    return 'Last confirmed $time';
+    return 'Senast bekräftad $time';
   }
 
   @override
   String cloudTrafficSummary(String remaining, String limit) {
-    return 'Available this month: $remaining / $limit';
+    return 'Dataöverföring kvar denna månad: $remaining / $limit';
   }
 
   @override
-  String get onboardNewDiary => 'Start here';
+  String get onboardNewDiary => 'Börja här';
 
   @override
-  String get onboardConnect => 'Connect to an existing device';
+  String get onboardConnect => 'Anslut till en befintlig enhet';
 
   @override
   String get onboardFailed =>
-      'Setup could not be completed. Your diary is safe; please try again.';
+      'Installationen kunde inte slutföras. Din dagbok är säker; försök igen.';
 
   @override
-  String get tutorialTitle => 'How to use the diary';
+  String get tutorialTitle => 'Hur man använder dagboken';
 
   @override
-  String get tutorialWriteTitle => 'Write your first entry';
+  String get tutorialWriteTitle => 'Skriv ditt första dagboksinlägg';
 
   @override
   String get tutorialWriteText =>
-      'Tap + to write. Add a title if you want, choose the diary day and tap the check mark to save. You can edit it again at any time.';
+      'Tryck på + för att skriva en dagboksanteckning. Lägg till en valfri titel, välj dagboksdatum och tryck på bockmarkeringen för att spara. Du kan när som helst redigera din dagboksanteckning igen.';
 
   @override
-  String get tutorialMediaTitle => 'Add photos, audio or handwriting';
+  String get tutorialMediaTitle => 'Lägg till foton, ljud eller handstil';
 
   @override
   String get tutorialMediaText =>
-      'Use + in the editor to attach photos, videos or a voice note, or open the pen canvas. These attachments stay with the entry.';
+      'Använd + i dagboksredigeraren för att bifoga foton, videor eller en röstinspelning, eller för att öppna handskriftsduken. Dessa bilagor sparas med dagboksanteckningen.';
 
   @override
-  String get tutorialReviewTitle => 'Find a day again';
+  String get tutorialReviewTitle => 'Hitta en dag igen';
 
   @override
   String get tutorialReviewText =>
-      'Browse the journal or calendar, search your writing and use tags to organize it. Media and Atlas help you look back by photo or place.';
+      'Bläddra i din dagbok eller kalender, sök efter dina texter och organisera poster med taggar. Media- och Atlas-sidorna låter dig hitta tidigare bidrag efter foto eller plats.';
 
   @override
-  String get tutorialSyncTitle => 'Use more than one device';
+  String get tutorialSyncTitle => 'Använd mer än en enhet';
 
   @override
   String get tutorialSyncText =>
-      'In Settings → Data & storage → Sync, connect to an existing device and confirm authorization there. Both devices can keep using the diary. Text syncs first; media follows as the connection and allowance permit.';
+      'I Inställningar → Data & lagring → Synkronisera, anslut till en befintlig enhet och bekräfta auktorisering på den enheten. Båda enheterna kan fortsätta använda dagboken. Dagbokstext synkroniseras först. Mediafiler synkroniseras härnäst när nätverksanslutningen och återstående dataöverföringskvot tillåter det.';
 
   @override
-  String get tutorialPrivacyTitle => 'Keep your diary safe';
+  String get tutorialPrivacyTitle => 'Håll din dagbok säker';
 
   @override
   String get tutorialPrivacyText =>
-      'Entries stay on this device unless you enable sync or share/export them. Sync is end-to-end encrypted. Settings also offers an app passcode and backups; you can reopen this tutorial there.';
+      'Dagboksanteckningar finns kvar på den här enheten om du inte aktiverar synkronisering eller delar eller exporterar dem. Synkronisering är krypterad från ände till ände. I Inställningar kan du också ställa in ett applösenord, skapa säkerhetskopior och öppna den här handledningen igen.';
 }

@@ -12,38 +12,38 @@ class AppLocalizationsRo extends AppLocalizations {
   String get appTitle => 'AID Diary';
 
   @override
-  String get themeColorTitle => 'Theme color';
+  String get themeColorTitle => 'Culoarea temei';
 
   @override
-  String get themeColorHint => 'Choose a color for this palette.';
+  String get themeColorHint => 'Alegeți o culoare pentru această paletă.';
 
   @override
-  String get themeColorBlue => 'Sky blue';
+  String get themeColorBlue => 'Albastru cer';
 
   @override
-  String get themeColorGreen => 'Forest green';
+  String get themeColorGreen => 'Verde de pădure';
 
   @override
-  String get themeColorBrown => 'Warm coffee';
+  String get themeColorBrown => 'Cafea caldă';
 
   @override
-  String get themeColorPurple => 'Lavender';
+  String get themeColorPurple => 'Lavandă';
 
   @override
-  String get themeColorRose => 'Dusty rose';
+  String get themeColorRose => 'Trandafir prafuit';
 
   @override
-  String get themeColorAmber => 'Amber';
+  String get themeColorAmber => 'chihlimbar';
 
   @override
-  String get themeColorPreview => 'A little every day';
+  String get themeColorPreview => 'Puțin în fiecare zi';
 
   @override
-  String get themeTintBackgroundTitle => 'Tint backgrounds with theme color';
+  String get themeTintBackgroundTitle => 'Nuanța fundalului cu culoarea temei';
 
   @override
   String get themeTintBackgroundHint =>
-      'Turn off for neutral gray backgrounds; buttons keep your chosen color.';
+      'Dezactivați pentru fundaluri gri neutre; butoanele păstrează culoarea aleasă.';
 
   @override
   String get dailyReminderTitle => 'Înregistrează-te astăzi!';
@@ -71,8 +71,9 @@ class AppLocalizationsRo extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count Weeks Ago',
-      one: '$count Week Ago',
+      other: 'Acum $count de săptămâni',
+      one: 'Acum $count saptamana',
+      few: 'Acum $count săptămâni',
     );
     return '$_temp0';
   }
@@ -82,8 +83,9 @@ class AppLocalizationsRo extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count Months Ago',
-      one: '$count Month Ago',
+      other: 'Acum $count de luni',
+      one: 'Acum $count lună',
+      few: 'Acum $count luni',
     );
     return '$_temp0';
   }
@@ -93,8 +95,9 @@ class AppLocalizationsRo extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count Years Ago',
-      one: '$count Year Ago',
+      other: 'Acum $count de ani',
+      one: 'Acum $count an',
+      few: '$count ani în urmă',
     );
     return '$_temp0';
   }
@@ -110,8 +113,9 @@ class AppLocalizationsRo extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count logs',
-      one: '$count log',
+      other: '$count de înregistrări în jurnal',
+      one: '$count înregistrare în jurnal',
+      few: '$count intrări în jurnal',
     );
     return '$_temp0';
   }
@@ -121,8 +125,9 @@ class AppLocalizationsRo extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count days',
-      one: '$count day',
+      other: '$count de zile',
+      one: '$count zi',
+      few: '$count zile',
     );
     return '$_temp0';
   }
@@ -132,8 +137,9 @@ class AppLocalizationsRo extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count words',
-      one: '$count word',
+      other: '$count de cuvinte',
+      one: '$count cuvânt',
+      few: '$count cuvinte',
     );
     return '$_temp0';
   }
@@ -206,7 +212,9 @@ class AppLocalizationsRo extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Current Streak $count',
+      other: 'Serie actuală $count',
+      one: 'Serie actuală $count',
+      few: 'Serie curentă $count',
     );
     return '$_temp0';
   }
@@ -216,7 +224,9 @@ class AppLocalizationsRo extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Longest Streak $count',
+      other: 'Cea mai lungă serie $count',
+      one: 'Cea mai lungă serie $count',
+      few: 'Cea mai lungă serie $count',
     );
     return '$_temp0';
   }
@@ -226,7 +236,9 @@ class AppLocalizationsRo extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Great Days $count',
+      other: 'Zilele Mari $count',
+      one: 'Zilele grozave $count',
+      few: 'Zilele grozave $count',
     );
     return '$_temp0';
   }
@@ -236,7 +248,9 @@ class AppLocalizationsRo extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Days Since a Bad Day $count',
+      other: 'Zile de la o zi proastă $count',
+      one: 'Zile de la o zi proastă $count',
+      few: 'Zile de la o zi proastă $count',
     );
     return '$_temp0';
   }
@@ -390,105 +404,106 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get templateDefaultReflectionBody =>
-      '### What did you enjoy about today?\n- \n\n### What are you thankful for?\n- \n\n### What are you looking forward to?\n- ';
+      '### Ce ți-a plăcut astăzi?\n- \n\n### Pentru ce ești recunoscător?\n- \n\n### Ce aștepți cu nerăbdare?\n- ';
 
   @override
-  String get settingsTagsTitle => 'Tags';
+  String get settingsTagsTitle => 'Etichete';
 
   @override
-  String get manageTags => 'Manage Tags';
+  String get manageTags => 'Gestionați etichetele';
 
   @override
-  String get tagTypeLabelTitle => 'Label';
+  String get tagTypeLabelTitle => 'Etichetă';
 
   @override
   String get tagTypeTrackerTitle => 'Tracker';
 
   @override
-  String get nameHint => 'Name';
+  String get nameHint => 'Nume';
 
   @override
-  String get tagColorLabel => 'Color';
+  String get tagColorLabel => 'Culoare';
 
   @override
-  String get iconPickerTitle => 'Choose Icon';
+  String get iconPickerTitle => 'Alegeți pictograma';
 
   @override
-  String get iconPickerIconsTab => 'Icons';
+  String get iconPickerIconsTab => 'Pictograme';
 
   @override
-  String get iconPickerCustomTab => 'Custom';
+  String get iconPickerCustomTab => 'Personalizat';
 
   @override
-  String get iconPickerSearchHint => 'Search icons…';
+  String get iconPickerSearchHint => 'Pictograme de căutare...';
 
   @override
-  String get colorPickerTitle => 'Choose Color';
+  String get colorPickerTitle => 'Alegeți Culoare';
 
   @override
-  String get colorPickerPaletteTab => 'Colors';
+  String get colorPickerPaletteTab => 'Culori';
 
   @override
-  String get iconGroupMoodPeople => 'Mood & People';
+  String get iconGroupMoodPeople => 'Dispoziție și oameni';
 
   @override
-  String get iconGroupHealth => 'Health';
+  String get iconGroupHealth => 'Sănătate';
 
   @override
-  String get iconGroupWorkFinance => 'Work & Finance';
+  String get iconGroupWorkFinance => 'Muncă și finanțe';
 
   @override
-  String get iconGroupHabitsGoals => 'Habits & Goals';
+  String get iconGroupHabitsGoals => 'Obiceiuri și obiective';
 
   @override
-  String get iconGroupNature => 'Nature';
+  String get iconGroupNature => 'Natura';
 
   @override
-  String get iconGroupFoodDrink => 'Food & Drink';
+  String get iconGroupFoodDrink => 'Mâncare și băutură';
 
   @override
-  String get iconGroupHome => 'Home';
+  String get iconGroupHome => 'Acasă';
 
   @override
-  String get iconGroupTravel => 'Travel';
+  String get iconGroupTravel => 'Călătorie';
 
   @override
-  String get iconGroupSymbols => 'Symbols';
+  String get iconGroupSymbols => 'Simboluri';
 
   @override
-  String get tagCategoryLabel => 'Category';
+  String get tagCategoryLabel => 'categorie';
 
   @override
-  String get tagLabel => 'Tag';
+  String get tagLabel => 'Etichetați';
 
   @override
-  String get tagCategoryUncategorized => 'Uncategorized';
+  String get tagCategoryUncategorized => 'Necategorizat';
 
   @override
-  String get newCategoryTitle => 'New Category';
+  String get newCategoryTitle => 'Noua categorie';
 
   @override
-  String get shareButtonLabel => 'Share';
+  String get shareButtonLabel => 'Distribuie';
 
   @override
-  String get importErrorDescription => 'Failed to import file!';
+  String get importErrorDescription => 'Nu s-a putut importa fișierul!';
 
   @override
-  String get exportErrorDescription => 'Failed to export file!';
+  String get exportErrorDescription => 'Nu s-a putut exporta fișierul!';
 
   @override
-  String get deleteTitle => 'Delete';
+  String get deleteTitle => 'Ștergeți';
 
   @override
   String deleteTagMessage(num count, Object name) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: ' It is used in $count logs.',
-      one: ' It is used in 1 log.',
+      other: ' Este folosit în $count de înregistrări din jurnal.',
+      one: ' Este folosit într-o intrare de jurnal.',
+      few: ' Este folosit în $count înregistrări din jurnal.',
       zero: '',
     );
-    return 'Delete \"$name\"?$_temp0';
+    return 'Ștergeți „$name”?$_temp0';
   }
 
   @override
@@ -496,239 +511,244 @@ class AppLocalizationsRo extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: ' Its $count tags will also be deleted.',
-      one: ' Its 1 tag will also be deleted.',
+      other: ' Cele $count de etichete ale sale vor fi, de asemenea, șterse.',
+      one: ' Eticheta sa $count va fi, de asemenea, ștearsă.',
+      few: ' Etichetele sale $count vor fi, de asemenea, șterse.',
       zero: '',
     );
-    return 'Delete \"$name\"?$_temp0';
+    return 'Ștergeți „$name”?$_temp0';
   }
 
   @override
-  String get tagNameExists => 'There is a tag with this name already';
+  String get tagNameExists => 'Există deja o etichetă cu acest nume';
 
   @override
-  String get categoryNameExists => 'There is a category with this name already';
+  String get categoryNameExists => 'Există deja o categorie cu acest nume';
 
   @override
   String deleteTemplateMessage(Object name) {
-    return 'Delete \"$name\"?';
+    return 'Ștergeți „$name”?';
   }
 
   @override
-  String get addTagsTitle => 'Add Tags';
+  String get addTagsTitle => 'Adăugați etichete';
 
   @override
-  String get addTagsSearchHint => 'Search tags…';
+  String get addTagsSearchHint => 'Etichete de căutare...';
 
   @override
-  String get tagPickerSortManualLabel => 'Manual order';
+  String get tagPickerSortManualLabel => 'Comanda manuala';
 
   @override
-  String get tagPickerSortUsageLabel => 'Sort by usage';
+  String get tagPickerSortUsageLabel => 'Sortați după utilizare';
 
   @override
-  String get tagFavoriteName => 'Favorite';
+  String get tagFavoriteName => 'Favorit';
 
   @override
-  String get tagEnergyName => 'Energy';
+  String get tagEnergyName => 'Energie';
 
   @override
-  String get tagCategoryActivitiesName => 'Activities';
+  String get tagCategoryActivitiesName => 'Activități';
 
   @override
-  String get tagExerciseName => 'Exercise';
+  String get tagExerciseName => 'Exercițiu';
 
   @override
-  String get tagSocializingName => 'Socializing';
+  String get tagSocializingName => 'Socializarea';
 
   @override
   String get tagHobbyName => 'Hobby';
 
   @override
-  String get tagEntertainmentName => 'Entertainment';
+  String get tagEntertainmentName => 'Divertisment';
 
   @override
-  String get tagDiningName => 'Dining';
+  String get tagDiningName => 'mese';
 
   @override
-  String get tagChoresName => 'Chores';
+  String get tagChoresName => 'Treburi';
 
   @override
-  String get tagCategoryEmotionsName => 'Emotions';
+  String get tagCategoryEmotionsName => 'Emoții';
 
   @override
-  String get tagExcitedName => 'Excited';
+  String get tagExcitedName => 'Emotionat';
 
   @override
-  String get tagGratefulName => 'Grateful';
+  String get tagGratefulName => 'recunoscător';
 
   @override
   String get tagCalmName => 'Calm';
 
   @override
-  String get tagTiredName => 'Tired';
+  String get tagTiredName => 'obosit';
 
   @override
-  String get tagAnxiousName => 'Anxious';
+  String get tagAnxiousName => 'anxios';
 
   @override
-  String get tagAnnoyedName => 'Annoyed';
+  String get tagAnnoyedName => 'enervat';
 
   @override
-  String get settingsStorageTitle => 'Storage';
+  String get settingsStorageTitle => 'Depozitare';
 
   @override
-  String get settingsImageQuality => 'Image Quality';
+  String get settingsImageQuality => 'Calitatea imaginii';
 
   @override
-  String get imageQualityHigh => 'High';
+  String get imageQualityHigh => 'Înalt';
 
   @override
-  String get imageQualityMedium => 'Medium';
+  String get imageQualityMedium => 'Mediu';
 
   @override
-  String get imageQualityLow => 'Low';
+  String get imageQualityLow => 'Scăzut';
 
   @override
-  String get imageQualityNoCompression => 'No Compression';
+  String get imageQualityNoCompression => 'Fără compresie';
 
   @override
-  String get settingsLogFolder => 'Log Folder';
+  String get settingsLogFolder => 'dosar de intrare în jurnal';
 
   @override
-  String get settingsImageFolder => 'Image Folder';
+  String get settingsImageFolder => 'Dosar imagine';
 
   @override
-  String get warningTitle => 'Warning';
+  String get warningTitle => 'Avertisment';
 
   @override
   String get logFolderWarningDescription =>
-      'If the selected folder already contains a \'aid_diary.db\' file, it will be used to overwrite your existing logs!';
+      'Dacă folderul selectat conține deja un fișier „aid_diary.db”, acesta va fi folosit pentru a suprascrie intrările existente din jurnal!';
 
   @override
-  String get errorTitle => 'Error';
+  String get errorTitle => 'Eroare';
 
   @override
-  String get logFolderErrorDescription => 'Failed to change log folder!';
+  String get logFolderErrorDescription =>
+      'Nu s-a putut schimba folderul de introducere a jurnalului!';
 
   @override
-  String get imageFolderErrorDescription => 'Failed to change image folder!';
+  String get imageFolderErrorDescription =>
+      'Nu s-a putut schimba folderul de imagini!';
 
   @override
-  String get backupErrorDescription => 'Failed to create backup!';
+  String get backupErrorDescription => 'Nu s-a putut crea backup!';
 
   @override
-  String get restoreErrorDescription => 'Failed to restore backup!';
+  String get restoreErrorDescription => 'Nu s-a restabilit backupul!';
 
   @override
-  String get settingsBackupRestoreTitle => 'Backup & Restore';
+  String get settingsBackupRestoreTitle => 'Backup și restaurare';
 
   @override
   String get settingsBackup => 'Backup';
 
   @override
-  String get settingsRestore => 'Restore';
+  String get settingsRestore => 'Restaurați';
 
   @override
   String get settingsRestorePromptDescription =>
-      'Restoring a backup will overwrite your existing data!';
+      'Restaurarea unei copii de rezervă va suprascrie datele existente!';
 
   @override
-  String get settingsBackupPasswordProtect => 'Password Protect Backups';
+  String get settingsBackupPasswordProtect =>
+      'Copii de rezervă protejate cu parolă';
 
   @override
-  String get backupEncryptedTitle => 'Encrypted Backup';
+  String get backupEncryptedTitle => 'Backup criptat';
 
   @override
-  String get backupEncryptedContent => 'This backup is password protected.';
+  String get backupEncryptedContent =>
+      'Această copie de rezervă este protejată prin parolă.';
 
   @override
-  String get settingsAutoBackup => 'Automatic Backups';
+  String get settingsAutoBackup => 'Backup-uri automate';
 
   @override
-  String get settingsAutoBackupLocation => 'Backup Location';
+  String get settingsAutoBackupLocation => 'Locație de rezervă';
 
   @override
-  String get settingsAutoBackupInterval => 'Backup Interval';
+  String get settingsAutoBackupInterval => 'Interval de backup';
 
   @override
-  String get settingsAutoBackupIntervalDaily => 'Daily';
+  String get settingsAutoBackupIntervalDaily => 'Zilnic';
 
   @override
-  String get settingsAutoBackupIntervalWeekly => 'Weekly';
+  String get settingsAutoBackupIntervalWeekly => 'Săptămânal';
 
   @override
-  String get settingsAutoBackupIntervalMonthly => 'Monthly';
+  String get settingsAutoBackupIntervalMonthly => 'Lunar';
 
   @override
-  String get settingsAutoBackupMaxCount => 'Backups To Keep';
+  String get settingsAutoBackupMaxCount => 'Backup-uri de păstrat';
 
   @override
-  String get settingsAutoBackupRequireCharging => 'Only While Charging';
+  String get settingsAutoBackupRequireCharging => 'Numai în timpul încărcării';
 
   @override
   String settingsBackupLast(Object time) {
-    return 'Last backup $time';
+    return 'Ultima copie de rezervă $time';
   }
 
   @override
-  String get settingsBackupNever => 'Never backed up';
+  String get settingsBackupNever => 'Niciodată nu a făcut rezervă';
 
   @override
   String settingsAutoBackupNext(Object time) {
-    return 'Next backup $time';
+    return 'Următorul backup $time';
   }
 
   @override
-  String get settingsAutoBackupKeepAll => 'All';
+  String get settingsAutoBackupKeepAll => 'Toate';
 
   @override
-  String get autoBackupFailedTitle => 'Backup Failed';
+  String get autoBackupFailedTitle => 'Backup eșuat';
 
   @override
   String tranferStatus(Object percent) {
-    return 'Transferring… $percent%';
+    return 'Se transferă... $percent%';
   }
 
   @override
   String creatingBackupStatus(Object percent) {
-    return 'Creating Backup… $percent%';
+    return 'Se creează o copie de rezervă... $percent%';
   }
 
   @override
   String restoringBackupStatus(Object percent) {
-    return 'Restoring Backup… $percent%';
+    return 'Se restabilește backupul... $percent%';
   }
 
   @override
   String encryptingBackupStatus(Object percent) {
-    return 'Encrypting Backup… $percent%';
+    return 'Se criptează backupul... $percent%';
   }
 
   @override
   String decryptingBackupStatus(Object percent) {
-    return 'Decrypting Backup… $percent%';
+    return 'Se decriptează backupul... $percent%';
   }
 
   @override
-  String get cleanUpStatus => 'Cleaning Up…';
+  String get cleanUpStatus => 'Curățare…';
 
   @override
-  String get settingsExportToAnotherFormat => 'Export To Another Format';
+  String get settingsExportToAnotherFormat => 'Exportați într-un alt format';
 
   @override
   String get settingsExportFormatDescription =>
-      'This should not be used as a backup!';
+      'Aceasta nu ar trebui folosită ca rezervă!';
 
   @override
-  String get settingsImportFromAnotherApp => 'Import From Another App';
+  String get settingsImportFromAnotherApp => 'Importați dintr-o altă aplicație';
 
   @override
-  String get logFormatTitle => 'Choose Format';
+  String get logFormatTitle => 'Alegeți Format';
 
   @override
   String get logFormatDescription =>
-      'Another app\'s format may not support all features. Please report any issues since third party formats may change at any time. This will not impact existing logs!';
+      'Este posibil ca formatul unei alte aplicații să nu accepte toate funcțiile. Vă rugăm să raportați orice problemă, deoarece formatele terților se pot schimba în orice moment. Acest lucru nu va afecta înregistrările existente în jurnal!';
 
   @override
   String get formatDayOne => 'Day One';
@@ -761,141 +781,145 @@ class AppLocalizationsRo extends AppLocalizations {
   String get formatMarkdown => 'Markdown';
 
   @override
-  String get settingsDeleteAllLogsTitle => 'Delete All Logs';
+  String get settingsDeleteAllLogsTitle =>
+      'Ștergeți toate înregistrările din jurnal';
 
   @override
   String get settingsDeleteAllLogsDescription =>
-      'Do you want to delete all of your logs?';
+      'Doriți să ștergeți toate înregistrările din jurnal?';
 
   @override
   String settingsDeleteAllLogsPrompt(Object prompt) {
-    return 'Enter \'$prompt\' to confirm. This cannot be undone!';
+    return 'Introdu „$prompt” pentru a confirma. Acest lucru nu poate fi anulat!';
   }
 
   @override
-  String get settingsLanguageTitle => 'Language';
+  String get settingsLanguageTitle => 'Limba';
 
   @override
-  String get settingsAppLanguageTitle => 'App Language';
+  String get settingsAppLanguageTitle => 'Limba aplicației';
 
   @override
-  String get settingsOverrideAppLanguageTitle => 'Override App Language';
+  String get settingsOverrideAppLanguageTitle => 'Ignorați limba aplicației';
 
   @override
-  String get settingsSecurityTitle => 'Security';
+  String get settingsSecurityTitle => 'Securitate';
 
   @override
-  String get settingsSecurityRequirePassword => 'Require Password';
+  String get settingsSecurityRequirePassword => 'Solicitați parola';
 
   @override
-  String get settingsSecurityEnterPassword => 'Enter Password';
+  String get settingsSecurityEnterPassword => 'Introduceți parola';
 
   @override
-  String get settingsSecuritySetPassword => 'Set Password';
+  String get settingsSecuritySetPassword => 'Setați parola';
 
   @override
-  String get settingsSecurityChangePassword => 'Change Password';
+  String get settingsSecurityChangePassword => 'Schimbați parola';
 
   @override
-  String get settingsSecurityPassword => 'Password';
+  String get settingsSecurityPassword => 'Parolă';
 
   @override
-  String get settingsSecurityConfirmPassword => 'Confirm Password';
+  String get settingsSecurityConfirmPassword => 'Confirmați parola';
 
   @override
-  String get settingsSecurityOldPassword => 'Old Password';
+  String get settingsSecurityOldPassword => 'Parolă veche';
 
   @override
-  String get settingsSecurityIncorrectPassword => 'Incorrect Password';
+  String get settingsSecurityIncorrectPassword => 'Parolă incorectă';
 
   @override
-  String get settingsSecurityPasswordsDoNotMatch => 'Passwords do not match';
+  String get settingsSecurityPasswordsDoNotMatch => 'Parolele nu se potrivesc';
 
   @override
-  String get requiredPrompt => 'Required';
+  String get requiredPrompt => 'Necesar';
 
   @override
-  String get settingsSecurityBiometricUnlock => 'Biometric Unlock';
+  String get settingsSecurityBiometricUnlock => 'Deblocare biometrică';
 
   @override
-  String get unlockAppPrompt => 'Unlock the app';
+  String get unlockAppPrompt => 'Deblocați aplicația';
 
   @override
-  String get settingsAboutTitle => 'About';
+  String get settingsAboutTitle => 'Despre';
 
   @override
-  String get settingsVersion => 'Version';
+  String get settingsVersion => 'Versiune';
 
   @override
-  String get settingsLicense => 'License';
+  String get settingsLicense => 'Licență';
 
   @override
   String get licenseGPLv3 => 'GPL-3.0';
 
   @override
-  String get settingsOpenSourceLicenses => 'Open Source Licenses';
+  String get settingsOpenSourceLicenses => 'Licențe Open Source';
 
   @override
-  String get tagMoodTitle => 'Mood';
+  String get tagMoodTitle => 'Starea de spirit';
 
   @override
-  String get selectTagTitle => 'Select Tag';
+  String get selectTagTitle => 'Selectați Etichetă';
 
   @override
-  String get labelPresentLabel => 'Present';
+  String get labelPresentLabel => 'Prezent';
 
   @override
-  String get labelAbsentLabel => 'Absent';
+  String get labelAbsentLabel => 'absent';
 
   @override
-  String get labelCoverageLabel => 'Coverage';
+  String get labelCoverageLabel => 'Acoperire';
 
   @override
   String chartDistributionTitle(Object tag) {
-    return '$tag Distribution';
+    return '$tag Distribuție';
   }
 
   @override
-  String get shareAddToLogPickerTitle => 'Choose a log';
+  String get shareAddToLogPickerTitle => 'Alegeți o înregistrare în jurnal';
 
   @override
-  String get adaptiveEmptyDay => 'No entries for this day yet';
+  String get adaptiveEmptyDay =>
+      'Încă nu există înregistrări pentru această zi';
 
   @override
-  String get adaptiveNewEntry => 'Write an entry';
+  String get adaptiveNewEntry => 'Scrieți o intrare';
 
   @override
-  String get pageJournalTitle => 'Journal';
+  String get pageJournalTitle => 'Jurnal';
 
   @override
-  String get coachPrompt1 => 'What made you smile today?';
+  String get coachPrompt1 => 'Ce te-a făcut să zâmbești astăzi?';
 
   @override
-  String get coachPrompt2 => 'What is one thing you learned today?';
+  String get coachPrompt2 => 'Care este un lucru pe care l-ai învățat astăzi?';
 
   @override
-  String get coachPrompt3 => 'Who did you talk to today, and how did it feel?';
+  String get coachPrompt3 => 'Cu cine ai vorbit astăzi și cum te-ai simțit?';
 
   @override
-  String get coachPrompt4 => 'What are you grateful for right now?';
+  String get coachPrompt4 => 'Pentru ce ești recunoscător acum?';
 
   @override
-  String get coachPrompt5 => 'What took most of your energy today?';
+  String get coachPrompt5 =>
+      'Ce ți-a luat cea mai mare parte a energiei astăzi?';
 
   @override
-  String get coachPrompt6 => 'Describe a small moment you want to remember.';
+  String get coachPrompt6 =>
+      'Descrieți un mic moment pe care doriți să-l amintiți.';
 
   @override
-  String get coachPrompt7 => 'What would make tomorrow a good day?';
+  String get coachPrompt7 => 'Ce ar face mâine o zi bună?';
 
   @override
-  String get coachPrompt8 => 'What has been on your mind lately?';
+  String get coachPrompt8 => 'Ce ți-a trecut prin cap în ultima vreme?';
 
   @override
-  String get coachPrompt9 => 'What did you do today just for yourself?';
+  String get coachPrompt9 => 'Ce ai făcut azi doar pentru tine?';
 
   @override
-  String get coachPrompt10 => 'If today had a title, what would it be?';
+  String get coachPrompt10 => 'Dacă azi ar avea un titlu, care ar fi acesta?';
 
   @override
   String get pageMediaTitle => 'Media';
@@ -904,327 +928,332 @@ class AppLocalizationsRo extends AppLocalizations {
   String get pageAtlasTitle => 'Atlas';
 
   @override
-  String get pageCoachTitle => 'Coach';
+  String get pageCoachTitle => 'Antrenor';
 
   @override
-  String get noEntrySelected => 'No entry selected.';
+  String get noEntrySelected => 'Nicio intrare selectată.';
 
   @override
-  String get entryShare => 'Share';
+  String get entryShare => 'Distribuie';
 
   @override
-  String get entryFavorite => 'Star';
+  String get entryFavorite => 'Steaua';
 
   @override
-  String get entryEdit => 'Edit';
+  String get entryEdit => 'Editați';
 
   @override
-  String get entryPrevious => 'Previous entry';
+  String get entryPrevious => 'Intrarea anterioară';
 
   @override
-  String get entryNext => 'Next entry';
+  String get entryNext => 'Următoarea intrare';
 
   @override
-  String get journalStories => 'Stories';
+  String get journalStories => 'Povești';
 
   @override
-  String get journalEntries => 'Entries';
+  String get journalEntries => 'Intrări';
 
   @override
-  String get journalEmptyHint => 'Begin your diary by adding a new entry.';
+  String get journalEmptyHint =>
+      'Începeți-vă jurnalul adăugând o nouă intrare.';
 
   @override
-  String get storyToday => 'Today';
+  String get storyToday => 'Astăzi';
 
   @override
-  String get storyThrowback => 'Throwback';
+  String get storyThrowback => 'Revenire';
 
   @override
-  String get storyNoThrowback => 'No throwback today';
+  String get storyNoThrowback => 'Nicio întoarcere azi';
 
   @override
-  String get mediaFiles => 'Media files';
+  String get mediaFiles => 'Fișiere media';
 
   @override
-  String get mediaEmpty => 'No photos yet.';
+  String get mediaEmpty => 'Nicio fotografie încă.';
 
   @override
-  String get mediaEmptyHint => 'Photos attached to entries will be shown here.';
+  String get mediaEmptyHint =>
+      'Fotografiile atașate la intrări vor fi afișate aici.';
 
   @override
-  String get atlasEmpty => 'No entries with a location.';
+  String get atlasEmpty => 'Nu există intrări cu o locație.';
 
   @override
-  String get atlasEmptyHint => 'Entries with a location will be shown here.';
+  String get atlasEmptyHint => 'Intrările cu o locație vor fi afișate aici.';
 
   @override
-  String get atlasShowAll => 'Show all entries';
+  String get atlasShowAll => 'Afișați toate intrările';
 
   @override
-  String get atlasMyLocation => 'My location';
+  String get atlasMyLocation => 'Locația mea';
 
   @override
-  String get coachAll => 'All';
+  String get coachAll => 'Toate';
 
   @override
-  String get coachPrograms => 'Programs';
+  String get coachPrograms => 'Programe';
 
   @override
-  String get coachTemplates => 'Templates';
+  String get coachTemplates => 'Șabloane';
 
   @override
   String get coachKindProgram => 'Program';
 
   @override
-  String get coachKindTemplate => 'Template';
+  String get coachKindTemplate => 'Șablon';
 
   @override
-  String get coachNoTemplates => 'No programs or templates.';
+  String get coachNoTemplates => 'Fără programe sau șabloane.';
 
   @override
-  String get coachUseTemplate => 'Write with this template';
+  String get coachUseTemplate => 'Scrieți cu acest șablon';
 
   @override
-  String get coachProgramEverydayTitle => 'Everyday moments';
+  String get coachProgramEverydayTitle => 'Momente de zi cu zi';
 
   @override
   String get coachProgramEverydayDescription =>
-      'Five short questions, one a day. Each takes a minute or two and helps you see what made the day yours. A gentle way to build the habit of writing a little every day.';
+      'Cinci întrebări scurte, una pe zi. Fiecare durează un minut sau două și te ajută să vezi ce a făcut ziua ta. O modalitate blândă de a construi obiceiul de a scrie puțin în fiecare zi.';
 
   @override
-  String get coachProgramReflectTitle => 'Looking inward';
+  String get coachProgramReflectTitle => 'Privind înăuntru';
 
   @override
   String get coachProgramReflectDescription =>
-      'One deeper question a week, for five weeks. Take your time with each: how you have been feeling, what wears you out, what you are grateful for.';
+      'O întrebare mai profundă pe săptămână, timp de cinci săptămâni. Fă-ți timp cu fiecare: cum te-ai simțit, ce te epuizează, pentru ce ești recunoscător.';
 
   @override
-  String get searchFilters => 'Filters';
+  String get searchFilters => 'Filtre';
 
   @override
-  String get searchFilterTags => 'Tags';
+  String get searchFilterTags => 'Etichete';
 
   @override
-  String get searchFilterStarred => 'Starred';
+  String get searchFilterStarred => 'Cu stea';
 
   @override
-  String get searchHint => 'Type to search, or pick a filter.';
+  String get searchHint => 'Tastați pentru a căuta sau alegeți un filtru.';
 
   @override
-  String get locationTitle => 'Location';
+  String get locationTitle => 'Locație';
 
   @override
-  String get locationName => 'Place name';
+  String get locationName => 'Numele locului';
 
   @override
-  String get locationRemove => 'Remove';
+  String get locationRemove => 'Eliminați';
 
   @override
-  String get locationServiceDisabled => 'Location services are turned off.';
+  String get locationServiceDisabled =>
+      'Serviciile de localizare sunt dezactivate.';
 
   @override
-  String get locationPermissionDenied => 'Location permission was denied.';
+  String get locationPermissionDenied =>
+      'Permisiunea de locație a fost refuzată.';
 
   @override
-  String get locationUnavailable => 'Could not get the current location.';
+  String get locationUnavailable => 'Nu s-a putut obține locația actuală.';
 
   @override
-  String get calendarJumpToToday => 'Jump to today';
+  String get calendarJumpToToday => 'Sari la azi';
 
   @override
-  String get editorStartWriting => 'Start writing or choose a ';
+  String get editorStartWriting => 'Începeți să scrieți sau alegeți a ';
 
   @override
-  String get editorTemplateLink => 'Template';
+  String get editorTemplateLink => 'Șablon';
 
   @override
   String get editorStartWritingEnd => '.';
 
   @override
-  String get templatePickerTitle => 'Choose a template';
+  String get templatePickerTitle => 'Alegeți un șablon';
 
   @override
-  String get templateFeatured => 'Featured templates';
+  String get templateFeatured => 'Șabloane recomandate';
 
   @override
-  String get templateMine => 'My templates';
+  String get templateMine => 'Șabloanele mele';
 
   @override
-  String get templateDailyName => 'Daily review';
+  String get templateDailyName => 'Revizuire zilnică';
 
   @override
   String get templateDailyDescription =>
-      'What happened, how it felt, and what comes next.';
+      'Ce s-a întâmplat, cum s-a simțit și ce urmează.';
 
   @override
   String get templateDailyText =>
-      '## What happened today\n\n\n## How I felt\n\n\n## Three things I\'m grateful for\n1. \n2. \n3. \n\n## Tomorrow\n';
+      '## Ce s-a întâmplat astăzi\n\n\n## Cum m-am simțit\n\n\n## Trei lucruri pentru care sunt recunoscător\n1. \n2. \n3. \n\n## Mâine\n';
 
   @override
-  String get templateTravelName => 'Travel log';
+  String get templateTravelName => 'Intrare în jurnal de călătorie';
 
   @override
   String get templateTravelDescription =>
-      'Places, moments and food from the road.';
+      'Locuri, momente și mâncare din drum.';
 
   @override
   String get templateTravelText =>
-      '## Where I went\n\n\n## The moment I remember most\n\n\n## What I ate\n\n\n## Plans for tomorrow\n';
+      '## Unde am fost\n\n\n## Momentul pe care mi-l amintesc cel mai mult\n\n\n## Ce am mâncat\n\n\n## Planuri pentru mâine\n';
 
   @override
-  String get templateReadingName => 'Reading notes';
+  String get templateReadingName => 'Note de lectură';
 
   @override
   String get templateReadingDescription =>
-      'Quotes and thoughts from what you read.';
+      'Citate și gânduri din ceea ce ați citit.';
 
   @override
   String get templateReadingText =>
-      '## Book\n\n\n## Where I am\n\n\n## Quotes\n> \n\n## My thoughts\n';
+      '## Cartea\n\n\n## Unde sunt\n\n\n## Citate\n> \n\n## Gândurile mele\n';
 
   @override
-  String get templateWeeklyName => 'Weekly review';
+  String get templateWeeklyName => 'Revizuire săptămânală';
 
   @override
   String get templateWeeklyDescription =>
-      'Highlights, struggles and next week\'s focus.';
+      'Repere, lupte și concentrarea săptămânii viitoare.';
 
   @override
   String get templateWeeklyText =>
-      '## Highlights\n\n\n## What was hard\n\n\n## What I learned\n\n\n## Focus for next week\n';
+      '## Repere\n\n\n## Ce a fost greu\n\n\n## Ce am învățat\n\n\n## Concentrați-vă pentru săptămâna viitoare\n';
 
   @override
-  String get entryDuplicate => 'Duplicate';
+  String get entryDuplicate => 'Duplicat';
 
   @override
-  String get entryDuplicated => 'Entry duplicated';
+  String get entryDuplicated => 'Intrare duplicat';
 
   @override
-  String get entrySaveAsTemplate => 'Save as template';
+  String get entrySaveAsTemplate => 'Salvați ca șablon';
 
   @override
-  String get entrySavedAsTemplate => 'Saved as a template';
+  String get entrySavedAsTemplate => 'Salvat ca șablon';
 
   @override
-  String get storyStatistics => 'Statistics';
+  String get storyStatistics => 'Statistici';
 
   @override
-  String get storyMoodChart => 'Mood chart';
+  String get storyMoodChart => 'Diagrama de dispoziție';
 
   @override
   String storyEntriesAndDays(Object days, Object entries) {
-    return '$entries entries · $days days';
+    return '$entries intrări · $days zile';
   }
 
   @override
-  String get storyThisYear => 'This year';
+  String get storyThisYear => 'Anul acesta';
 
   @override
-  String get storyLastYear => 'Last year';
+  String get storyLastYear => 'Anul trecut';
 
   @override
-  String get storyTapToOpen => 'Tap a day to open it';
+  String get storyTapToOpen => 'Atingeți o zi pentru a o deschide';
 
   @override
-  String get settingsGeneralTitle => 'General';
+  String get settingsGeneralTitle => 'general';
 
   @override
-  String get settingsDataTitle => 'Data & storage';
+  String get settingsDataTitle => 'Date și stocare';
 
   @override
-  String get settingsStoriesTitle => 'Stories';
+  String get settingsStoriesTitle => 'Povești';
 
   @override
-  String get settingsHelpTitle => 'Help & about';
+  String get settingsHelpTitle => 'Ajutor și despre';
 
   @override
-  String get weatherTitle => 'Weather';
+  String get weatherTitle => 'Vremea';
 
   @override
-  String get weatherClear => 'Clear';
+  String get weatherClear => 'Clar';
 
   @override
-  String get weatherPartlyCloudy => 'Partly cloudy';
+  String get weatherPartlyCloudy => 'Parţial noros';
 
   @override
-  String get weatherCloudy => 'Cloudy';
+  String get weatherCloudy => 'Înnorat';
 
   @override
-  String get weatherFog => 'Fog';
+  String get weatherFog => 'Ceață';
 
   @override
-  String get weatherDrizzle => 'Drizzle';
+  String get weatherDrizzle => 'Burniță';
 
   @override
-  String get weatherRain => 'Rain';
+  String get weatherRain => 'ploaie';
 
   @override
-  String get weatherSnow => 'Snow';
+  String get weatherSnow => 'Zăpadă';
 
   @override
-  String get weatherStorm => 'Thunderstorm';
+  String get weatherStorm => 'Furtună';
 
   @override
-  String get weatherFetch => 'Get weather for this entry';
+  String get weatherFetch => 'Obțineți vremea pentru această intrare';
 
   @override
-  String get weatherNeedsLocation => 'Add a location with coordinates first.';
+  String get weatherNeedsLocation =>
+      'Adăugați mai întâi o locație cu coordonate.';
 
   @override
   String get weatherUnavailable =>
-      'Weather is unavailable for this place and time.';
+      'Vremea nu este disponibilă pentru acest loc și oră.';
 
   @override
-  String get weatherRemove => 'Remove weather';
+  String get weatherRemove => 'Îndepărtați vremea';
 
   @override
-  String get activityTitle => 'Activity';
+  String get activityTitle => 'Activitate';
 
   @override
-  String get activityStill => 'Still';
+  String get activityStill => 'Totuşi';
 
   @override
-  String get activityWalking => 'Walking';
+  String get activityWalking => 'Mersul pe jos';
 
   @override
-  String get activityRunning => 'Running';
+  String get activityRunning => 'Alergarea';
 
   @override
-  String get activityCycling => 'Cycling';
+  String get activityCycling => 'Ciclism';
 
   @override
-  String get activityVehicle => 'In a vehicle';
+  String get activityVehicle => 'Într-un vehicul';
 
   @override
-  String get activityFlying => 'Flying';
+  String get activityFlying => 'Zburând';
 
   @override
-  String get activityExercise => 'Exercise';
+  String get activityExercise => 'Exercițiu';
 
   @override
-  String get activityDetect => 'Detect current activity';
+  String get activityDetect => 'Detectează activitatea curentă';
 
   @override
-  String get activityDetectFailed => 'Couldn\'t detect an activity.';
+  String get activityDetectFailed => 'Nu s-a putut detecta o activitate.';
 
   @override
-  String get activityRemove => 'Remove activity';
+  String get activityRemove => 'Eliminați activitatea';
 
   @override
-  String get settingsAutoAddTitle => 'Add automatically';
+  String get settingsAutoAddTitle => 'Adăugați automat';
 
   @override
-  String get settingsAutoAddLocation => 'Location';
+  String get settingsAutoAddLocation => 'Locație';
 
   @override
-  String get settingsAutoAddWeather => 'Weather';
+  String get settingsAutoAddWeather => 'Vremea';
 
   @override
   String get settingsAutoAddHint =>
-      'New entries get these filled in when they are created.';
+      'Noile intrări sunt completate atunci când sunt create.';
 
   @override
-  String get settingsTemperatureUnit => 'Temperature unit';
+  String get settingsTemperatureUnit => 'Unitate de temperatură';
 
   @override
   String get settingsCelsius => 'Celsius (°C)';
@@ -1233,73 +1262,73 @@ class AppLocalizationsRo extends AppLocalizations {
   String get settingsFahrenheit => 'Fahrenheit (°F)';
 
   @override
-  String get moodGreat => 'Great';
+  String get moodGreat => 'grozav';
 
   @override
-  String get moodGood => 'Good';
+  String get moodGood => 'Bun';
 
   @override
-  String get moodOkay => 'Okay';
+  String get moodOkay => 'Bine';
 
   @override
-  String get moodBad => 'Bad';
+  String get moodBad => 'Rău';
 
   @override
-  String get moodAwful => 'Awful';
+  String get moodAwful => 'îngrozitor';
 
   @override
-  String get locationSearchHint => 'Search for a place';
+  String get locationSearchHint => 'Caută un loc';
 
   @override
-  String get locationSearchEmpty => 'No places found';
+  String get locationSearchEmpty => 'Nu s-au găsit locuri';
 
   @override
-  String get settingsWallpaper => 'Wallpaper';
+  String get settingsWallpaper => 'Tapet';
 
   @override
-  String get wallpaperNone => 'None';
+  String get wallpaperNone => 'Niciuna';
 
   @override
-  String get wallpaperDots => 'Dots';
+  String get wallpaperDots => 'Puncte';
 
   @override
-  String get wallpaperGrid => 'Grid';
+  String get wallpaperGrid => 'Grilă';
 
   @override
-  String get wallpaperLines => 'Lines';
+  String get wallpaperLines => 'Linii';
 
   @override
-  String get wallpaperPhoto => 'Photo…';
+  String get wallpaperPhoto => 'Fotografie…';
 
   @override
   String get settingsFontFamily => 'Font';
 
   @override
-  String get fontSystem => 'System';
+  String get fontSystem => 'Sistem';
 
   @override
   String get fontSerif => 'Serif';
 
   @override
-  String get fontMono => 'Monospace';
+  String get fontMono => 'Monospațiu';
 
   @override
-  String get settingsFontSize => 'Font size';
+  String get settingsFontSize => 'Dimensiunea fontului';
 
   @override
-  String get fontSizeSmall => 'Small';
+  String get fontSizeSmall => 'Mic';
 
   @override
-  String get fontSizeMedium => 'Medium';
+  String get fontSizeMedium => 'Mediu';
 
   @override
-  String get fontSizeLarge => 'Large';
+  String get fontSizeLarge => 'Mare';
 
   @override
-  String get fontSizeExtraLarge => 'Extra large';
+  String get fontSizeExtraLarge => 'Foarte mare';
 
   @override
-  String get settingsLineSpacing => 'Line spacing';
+  String get settingsLineSpacing => 'Spațiere între linii';
 
   @override
   String get lineSpacingCompact => 'Compact';
@@ -1308,86 +1337,88 @@ class AppLocalizationsRo extends AppLocalizations {
   String get lineSpacingNormal => 'Normal';
 
   @override
-  String get lineSpacingRelaxed => 'Relaxed';
+  String get lineSpacingRelaxed => 'Relaxat';
 
   @override
-  String get moodAssociationsTitle => 'What makes me feel…';
+  String get moodAssociationsTitle => 'Ce ma face sa simt...';
 
   @override
   String moodAssociationsCount(int matching, int total) {
-    return '$matching of $total entries';
+    return '$matching a intrărilor $total';
   }
 
   @override
-  String get videoRecord => 'Record a video';
+  String get videoRecord => 'Înregistrați un videoclip';
 
   @override
-  String get videoChoose => 'Choose a video';
+  String get videoChoose => 'Alegeți un videoclip';
 
   @override
-  String get audioRecordTitle => 'Record a voice note';
+  String get audioRecordTitle => 'Înregistrați o notă vocală';
 
   @override
-  String get audioChoose => 'Choose an audio file';
+  String get audioChoose => 'Alegeți un fișier audio';
 
   @override
-  String get audioStart => 'Record';
+  String get audioStart => 'Înregistrează';
 
   @override
-  String get audioStop => 'Stop and save';
+  String get audioStop => 'Oprește-te și salvează';
 
   @override
   String get audioPermissionDenied =>
-      'Microphone access is off. Allow it in the system settings.';
+      'Accesul la microfon este dezactivat. Permiteți-l în setările sistemului.';
 
   @override
-  String get mediaTooLarge => 'This video is too large to attach.';
+  String get mediaTooLarge =>
+      'Acest videoclip este prea mare pentru a fi atașat.';
 
   @override
   String get mediaUnavailable =>
-      'This attachment is not available on this device.';
+      'Acest atașament nu este disponibil pe acest dispozitiv.';
 
   @override
-  String get widgetDone => 'Today\'s entry is written';
+  String get widgetDone => 'Intrarea de azi este scrisă';
 
   @override
-  String get widgetPending => 'How was your day?';
+  String get widgetPending => 'Cum a fost ziua ta?';
 
   @override
-  String get widgetWrite => 'Write';
+  String get widgetWrite => 'Scrie';
 
   @override
-  String get insertChecklist => 'Checklist';
+  String get insertChecklist => 'Lista de verificare';
 
   @override
-  String get insertNumberedList => 'Numbered list';
+  String get insertNumberedList => 'Lista numerotata';
 
   @override
-  String get insertTable => 'Table';
+  String get insertTable => 'Tabelul';
 
   @override
-  String get insertDivider => 'Divider';
+  String get insertDivider => 'Divizor';
 
   @override
-  String get insertCodeBlock => 'Code block';
+  String get insertCodeBlock => 'Bloc de cod';
 
   @override
-  String get journalSortTitle => 'Sort entries';
+  String get journalSortTitle => 'Sortați intrările';
 
   @override
-  String get journalSortUpdated => 'Last updated';
+  String get journalSortUpdated => 'Ultima actualizare';
 
   @override
-  String get settingsTimeFormat => 'Time format';
+  String get settingsTimeFormat => 'Format de timp';
 
   @override
-  String get settingsDayStart => 'New entries count for the day before until';
+  String get settingsDayStart =>
+      'Noile intrări contează pentru o zi înainte până la';
 
   @override
-  String get settingsDayAskUntil => 'Then ask which day until';
+  String get settingsDayAskUntil => 'Apoi intreaba pana in ce zi';
 
   @override
-  String get settingsDayStartMidnight => 'Off';
+  String get settingsDayStartMidnight => 'Oprit';
 
   @override
   String settingsDayStartAt(int hour) {
@@ -1396,268 +1427,270 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get settingsDayStartHint =>
-      'Every entry keeps the day it belongs to next to the time it was written, and you can change that day in the editor at any time. These hours only pick the day for new entries, so changing them moves no existing entry.';
+      'Fiecare intrare păstrează ziua căreia îi aparține alături de ora la care a fost scrisă și o poți schimba oricând în editor. Aceste ore aleg doar ziua pentru noile intrări, așa că modificarea lor nu mută nicio intrare existentă.';
 
   @override
-  String get lateNightBadge =>
-      'Written late at night, counted for the day before';
+  String get lateNightBadge => 'Scris noaptea târziu, socotit cu o zi înainte';
 
   @override
   String editorDayAsk(String time) {
-    return 'Written at $time. Which day is it for?';
+    return 'Scris la $time. Pentru care zi este?';
   }
 
   @override
   String editorDayYesterday(String date) {
-    return '$date (yesterday)';
+    return '$date (ieri)';
   }
 
   @override
   String editorDayToday(String date) {
-    return '$date (today)';
+    return '$date (azi)';
   }
 
   @override
   String editorWrittenAt(String when) {
-    return 'Written $when';
+    return 'Scris $when';
   }
 
   @override
-  String get timeFormat12 => '12-hour';
+  String get timeFormat12 => '12 ore';
 
   @override
-  String get timeFormat24 => '24-hour';
+  String get timeFormat24 => '24 de ore';
 
   @override
-  String get settingsReminderDays => 'Remind me on';
+  String get settingsReminderDays => 'Amintește-mi';
 
   @override
-  String get locationRecent => 'Recent places';
+  String get locationRecent => 'Locuri recente';
 
   @override
-  String get shareImage => 'Share image';
+  String get shareImage => 'Distribuiți imaginea';
 
   @override
-  String get shareSaveImage => 'Save image';
+  String get shareSaveImage => 'Salvați imaginea';
 
   @override
-  String get shareSaved => 'Image saved';
+  String get shareSaved => 'Imaginea salvată';
 
   @override
-  String get deletedTitle => 'Recently deleted';
+  String get deletedTitle => 'Șters recent';
 
   @override
-  String get deletedNone => 'Nothing deleted recently';
+  String get deletedNone => 'Nimic nu a fost șters recent';
 
   @override
   String deletedHint(int days) {
-    return 'Deleted entries stay here for $days days, then are erased.';
+    return 'Intrările șterse rămân aici pentru zile $days, apoi sunt șterse.';
   }
 
   @override
   String deletedDaysLeft(int days) {
-    return '$days days left';
+    return '$days zile rămase';
   }
 
   @override
-  String get deletedRestore => 'Restore';
+  String get deletedRestore => 'Restaurați';
 
   @override
-  String get deletedDeleteForever => 'Delete forever';
+  String get deletedDeleteForever => 'Ștergeți pentru totdeauna';
 
   @override
   String get deletedDeleteForeverDescription =>
-      'The entry and its attachments are erased. This cannot be undone.';
+      'Înregistrarea și atașamentele sale sunt șterse. Acest lucru nu poate fi anulat.';
 
   @override
-  String get deletedEmpty => 'Empty';
+  String get deletedEmpty => 'Gol';
 
   @override
   String get deletedEmptyDescription =>
-      'Erase every entry in Recently deleted? This cannot be undone.';
+      'Ștergeți fiecare intrare din Ștergerea recentă? Acest lucru nu poate fi anulat.';
 
   @override
   String get formatJson => 'JSON';
 
   @override
-  String get randomTitle => 'Random walk';
+  String get randomTitle => 'Plimbare aleatorie';
 
   @override
-  String get randomSubtitle => 'Open a past entry';
+  String get randomSubtitle => 'Deschideți o intrare anterioară';
 
   @override
-  String get randomNext => 'Another';
+  String get randomNext => 'Altul';
 
   @override
-  String get randomAll => 'All';
+  String get randomAll => 'Toate';
 
   @override
-  String get randomWithPhotos => 'With photos';
+  String get randomWithPhotos => 'Cu fotografii';
 
   @override
-  String get randomGoodDays => 'Good days';
+  String get randomGoodDays => 'Zile bune';
 
   @override
-  String get randomEmpty => 'No entries to pick from';
+  String get randomEmpty => 'Nu există intrări din care să alegeți';
 
   @override
-  String get reviewWeekTitle => 'This week';
+  String get reviewWeekTitle => 'Săptămâna aceasta';
 
   @override
-  String get reviewWeekSubtitle => 'Your week so far';
+  String get reviewWeekSubtitle => 'Săptămâna ta de până acum';
 
   @override
-  String get reviewYearTitle => 'This year';
+  String get reviewYearTitle => 'Anul acesta';
 
   @override
-  String get reviewEmpty => 'Nothing written yet';
+  String get reviewEmpty => 'Nimic încă scris';
 
   @override
-  String get reviewEntries => 'Entries';
+  String get reviewEntries => 'Intrări';
 
   @override
-  String get reviewDaysWritten => 'Days written';
+  String get reviewDaysWritten => 'Zile scrise';
 
   @override
-  String get reviewWords => 'Words';
+  String get reviewWords => 'Cuvinte';
 
   @override
-  String get reviewPhotos => 'Photos';
+  String get reviewPhotos => 'Fotografii';
 
   @override
-  String get reviewLongestRun => 'Longest run of days';
+  String get reviewLongestRun => 'Cel mai lung ciclu de zile';
 
   @override
-  String get reviewAverageMood => 'Average mood';
+  String get reviewAverageMood => 'Dispoziție medie';
 
   @override
-  String get reviewFavorites => 'Most often';
+  String get reviewFavorites => 'Cel mai adesea';
 
   @override
-  String get reviewByMonth => 'By month';
+  String get reviewByMonth => 'Pe lună';
 
   @override
-  String get reviewHighlight => 'Highlight';
+  String get reviewHighlight => 'Evidențiați';
 
   @override
-  String get yearInPixels => 'Year in pixels';
+  String get yearInPixels => 'Anul în pixeli';
 
   @override
-  String get capsuleSeal => 'Seal as a time capsule';
+  String get capsuleSeal => 'Sigilați ca o capsulă a timpului';
 
   @override
-  String get capsuleTitle => 'Time capsule';
+  String get capsuleTitle => 'Capsula timpului';
 
   @override
   String capsuleOpensOn(Object date) {
-    return 'Opens on $date';
+    return 'Se deschide pe $date';
   }
 
   @override
   String capsuleWrittenOn(Object date) {
-    return 'Written on $date';
+    return 'Scris pe $date';
   }
 
   @override
-  String get capsuleOpenEarly => 'Open early';
+  String get capsuleOpenEarly => 'Deschide devreme';
 
   @override
   String get capsuleOpenEarlyDescription =>
-      'The capsule opens now and stays open.';
+      'Capsula se deschide acum și rămâne deschisă.';
 
   @override
-  String get capsuleOpened => 'Time capsule opened';
+  String get capsuleOpened => 'Capsula timpului deschisă';
 
   @override
-  String get templateMorningName => 'Morning pages';
+  String get templateMorningName => 'Pagini de dimineață';
 
   @override
-  String get templateMorningDescription => 'Set up the day in three minutes';
+  String get templateMorningDescription => 'Configurați ziua în trei minute';
 
   @override
   String get templateMorningText =>
-      '## Three things I want to do well today\n1. \n2. \n3. \n\n## Something I look forward to\n\n## A note to myself\n';
+      '## Trei lucruri pe care vreau să le fac bine astăzi\n1. \n2. \n3. \n\n## Ceva pe care îl aștept cu nerăbdare\n\n## O notă pentru mine\n';
 
   @override
-  String get templateEveningName => 'Evening review';
+  String get templateEveningName => 'Recenzie de seară';
 
   @override
-  String get templateEveningDescription => 'Close the day with what went well';
+  String get templateEveningDescription =>
+      'Închideți ziua cu ceea ce a mers bine';
 
   @override
   String get templateEveningText =>
-      '## Three good things today\n1. \n2. \n3. \n\n## What I learned\n\n## What could go better tomorrow\n';
+      '## Trei lucruri bune astăzi\n1. \n2. \n3. \n\n## Ce am învățat\n\n## Ce ar putea merge mai bine mâine\n';
 
   @override
-  String get routineMorning => 'Good morning';
+  String get routineMorning => 'Bună dimineața';
 
   @override
-  String get routineEvening => 'Evening review';
+  String get routineEvening => 'Recenzie de seară';
 
   @override
-  String get settingsRoutinePrompts => 'Morning and evening prompts';
+  String get settingsRoutinePrompts => 'Îndemnuri de dimineață și de seară';
 
   @override
   String get settingsRoutinePromptsHint =>
-      'Suggest the morning or evening template in Stories';
+      'Sugerați șablonul de dimineață sau de seară în Povestiri';
 
   @override
-  String get checkInTitle => 'Quick check-in';
+  String get checkInTitle => 'Check-in rapid';
 
   @override
-  String get checkInSubtitle => 'Mood in two taps';
+  String get checkInSubtitle => 'Dispoziție în două atingeri';
 
   @override
-  String get checkInMood => 'How do you feel?';
+  String get checkInMood => 'Cum te simți?';
 
   @override
-  String get checkInActivity => 'What are you doing?';
+  String get checkInActivity => 'ce faci?';
 
   @override
-  String get checkInNote => 'A line about it (optional)';
+  String get checkInNote => 'Un rând despre asta (opțional)';
 
   @override
-  String get checkInSave => 'Save';
+  String get checkInSave => 'Salvați';
 
   @override
   String editorWordCount(int words, int characters) {
-    return '$words words · $characters characters';
+    return '$words cuvinte · $characters caractere';
   }
 
   @override
-  String get coachProgramEverydayTagline => 'Notice the small things in a day.';
+  String get coachProgramEverydayTagline =>
+      'Observați lucrurile mici într-o zi.';
 
   @override
-  String get coachProgramReflectTagline => 'Slow down and listen to yourself.';
+  String get coachProgramReflectTagline => 'Încetinește și ascultă-te pe tine.';
 
   @override
-  String get coachDuration => 'Duration';
+  String get coachDuration => 'Durata';
 
   @override
   String get coachInterval => 'Interval';
 
   @override
-  String get coachDifficulty => 'Difficulty';
+  String get coachDifficulty => 'Dificultate';
 
   @override
-  String get coachIntervalDaily => 'Daily';
+  String get coachIntervalDaily => 'Zilnic';
 
   @override
-  String get coachIntervalWeekly => 'Weekly';
+  String get coachIntervalWeekly => 'Săptămânal';
 
   @override
-  String get coachDifficultyBeginner => 'Beginner';
+  String get coachDifficultyBeginner => 'începător';
 
   @override
-  String get coachDifficultyIntermediate => 'Intermediate';
+  String get coachDifficultyIntermediate => 'Intermediar';
 
   @override
   String coachDurationDays(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count days',
-      one: '1 day',
+      other: '$count de zile',
+      one: '$count zi',
+      few: '$count zile',
     );
     return '$_temp0';
   }
@@ -1667,655 +1700,664 @@ class AppLocalizationsRo extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count weeks',
-      one: '1 week',
+      other: '$count de săptămâni',
+      one: '$count saptamana',
+      few: '$count săptămâni',
     );
     return '$_temp0';
   }
 
   @override
   String coachDayN(int n) {
-    return 'Day $n';
+    return 'Ziua $n';
   }
 
   @override
   String coachWeekN(int n) {
-    return 'Week $n';
+    return 'Săptămâna $n';
   }
 
   @override
-  String get coachEnroll => 'Enroll';
+  String get coachEnroll => 'Înscrie-te';
 
   @override
-  String get coachEndProgram => 'End program';
+  String get coachEndProgram => 'Încheiați programul';
 
   @override
-  String get coachAuthor => 'Author';
+  String get coachAuthor => 'autor';
 
   @override
-  String get coachAuthorBio => 'Prompts written for this app.';
+  String get coachAuthorBio => 'Solicitări scrise pentru această aplicație.';
 
   @override
   String get coachEnrolledTip =>
-      'All set! Your questions will show up in Stories.';
+      'Toate gata! Întrebările tale vor apărea în Stories.';
 
   @override
-  String get coachGoToStories => 'Go to Stories';
+  String get coachGoToStories => 'Accesați Povești';
 
   @override
-  String get coachAnswerHint => 'Write your answer…';
+  String get coachAnswerHint => 'Scrie răspunsul tău...';
 
   @override
-  String get storyWrapUp => 'That\'s all for today.';
+  String get storyWrapUp => 'Asta e tot pentru azi.';
 
   @override
-  String get storyTapToClose => 'Tap to close';
+  String get storyTapToClose => 'Atingeți pentru a închide';
 
   @override
-  String get coachAnswerDone => 'Done';
+  String get coachAnswerDone => 'Gata';
 
   @override
-  String get coachAnswered => 'Answered, tap to open';
+  String get coachAnswered => 'Răspuns, atingeți pentru a deschide';
 
   @override
-  String get coachAnsweredEarlier => 'Answered';
+  String get coachAnsweredEarlier => 'Răspuns';
 
   @override
-  String get locationLocating => 'Locating…';
+  String get locationLocating => 'Se localizează…';
 
   @override
-  String get locationPickPlace => 'Pick a place';
+  String get locationPickPlace => 'Alege un loc';
 
   @override
-  String get locationPlacesHint => 'Address or name of the place';
+  String get locationPlacesHint => 'Adresa sau numele locului';
 
   @override
-  String get locationCustom => 'Custom place';
+  String get locationCustom => 'Loc personalizat';
 
   @override
-  String get locationCurrent => 'Current location';
+  String get locationCurrent => 'Locația actuală';
 
   @override
-  String get locationSaved => 'Saved places';
+  String get locationSaved => 'Locuri salvate';
 
   @override
-  String get locationSearchResults => 'Search results';
+  String get locationSearchResults => 'Rezultatele căutării';
 
   @override
-  String get locationNearby => 'Nearby places';
+  String get locationNearby => 'Locuri din apropiere';
 
   @override
-  String get locationRename => 'Rename';
+  String get locationRename => 'Redenumiți';
 
   @override
-  String get locationSavePlace => 'Save place';
+  String get locationSavePlace => 'Salvați locul';
 
   @override
-  String get locationUnsavePlace => 'Remove from saved places';
+  String get locationUnsavePlace => 'Eliminați din locurile salvate';
 
   @override
-  String get shareAs => 'Share as…';
+  String get shareAs => 'Distribuie ca...';
 
   @override
-  String get shareAsImage => 'Image';
+  String get shareAsImage => 'Imagine';
 
   @override
-  String get shareAsZip => 'ZIP with the original media';
+  String get shareAsZip => 'ZIP cu suportul media original';
 
   @override
-  String get shareAsPlainText => 'Plain text';
+  String get shareAsPlainText => 'Text simplu';
 
   @override
   String get shareAsHtml => 'HTML';
 
   @override
-  String get onboardWelcomeTitle => 'Welcome to AID Diary';
+  String get onboardWelcomeTitle => 'Bun venit la AID Diary';
 
   @override
   String get onboardWelcomeText =>
-      'Start here, or connect this device to one you already use.';
+      'Începeți de aici sau conectați acest dispozitiv la unul pe care îl utilizați deja.';
 
   @override
-  String get onboardStart => 'Start writing';
+  String get onboardStart => 'Începeți să scrieți';
 
   @override
-  String get helpFaq => 'Frequently asked questions';
+  String get helpFaq => 'Întrebări frecvente';
 
   @override
-  String get helpFaq1Q => 'Where is my diary stored?';
+  String get helpFaq1Q => 'Unde este păstrat jurnalul meu?';
 
   @override
   String get helpFaq1A =>
-      'Your diary is stored on this device. It reaches other devices or storage only when you enable sync, share or export it. Sync is end-to-end encrypted.';
+      'Jurnalul dvs. este stocat pe acest dispozitiv. Acesta ajunge la alte dispozitive sau stocare numai atunci când activați sincronizarea, partajarea sau exportul. Sincronizarea este criptată de la capăt la capăt.';
 
   @override
-  String get helpFaq2Q => 'How do I keep a copy or move to a new device?';
+  String get helpFaq2Q => 'Cum păstrez o copie sau trec pe un dispozitiv nou?';
 
   @override
   String get helpFaq2A =>
-      'Connect to an existing device in Settings → Data & storage → Sync and confirm authorization on the device that has your diary. Both devices remain usable. You can also create a backup and restore it on another device.';
+      'Conectați-vă la un dispozitiv existent în Setări → Date și stocare → Sincronizare și confirmați autorizarea pe dispozitivul care are jurnalul dvs. Ambele dispozitive rămân utilizabile. De asemenea, puteți crea o copie de rezervă și o puteți restaura pe alt dispozitiv.';
 
   @override
-  String get helpFaq3Q => 'Can I bring in entries from other diary apps?';
+  String get helpFaq3Q =>
+      'Pot introduce înregistrări din alte aplicații de jurnal?';
 
   @override
   String get helpFaq3A =>
-      'Yes: in Settings → Data & storage, import exports from Daylio, Diarium, Diaro, DayBook, My Brain, OneShot and Pixels, or a JSON export.';
+      'Da: în Setări → Date și stocare, importați exporturi de la Daylio, Diarium, Diaro, DayBook, My Brain, OneShot și Pixels sau un export JSON.';
 
   @override
-  String get helpFaq4Q => 'How do coach programs work?';
+  String get helpFaq4Q => 'Cum funcționează programele de antrenor?';
 
   @override
   String get helpFaq4A =>
-      'Enroll in a program on the Coach page. Each day or week a new question waits in Stories; your answer is saved as an entry.';
+      'Înscrie-te într-un program pe pagina Antrenor. În fiecare zi sau săptămână o nouă întrebare așteaptă în Povestiri; răspunsul dvs. este salvat ca intrare.';
 
   @override
-  String get helpFaq5Q => 'What if I forget my passcode?';
+  String get helpFaq5Q => 'Ce se întâmplă dacă îmi uit parola?';
 
   @override
   String get helpFaq5A =>
-      'The passcode cannot be recovered, so keep a backup of your diary.';
+      'Parola nu poate fi recuperată, așa că păstrați o copie de rezervă a jurnalului.';
 
   @override
-  String get helpPrivacy => 'Privacy';
+  String get helpPrivacy => 'Confidențialitate';
 
   @override
   String get helpPrivacyText =>
-      'Diary content and media stay on this device unless you enable encrypted sync or share/export them. Maps, place lookup and weather use the configured services and send the location or search query needed for that request, not diary text.';
+      'Conținutul jurnalului și conținutul media rămân pe acest dispozitiv, cu excepția cazului în care activați sincronizarea criptată sau le partajați/exportați. Hărțile, căutarea locului și vremea folosesc serviciile configurate și trimit locația sau interogarea de căutare necesară pentru acea solicitare, nu textul jurnalului.';
 
   @override
-  String get photoMetaTitle => 'Use the photo\'s details?';
+  String get photoMetaTitle => 'Folosiți detaliile fotografiei?';
 
   @override
   String photoMetaDateAndPlace(String date, String place) {
-    return 'Count this entry for $date and set its place to $place, as recorded in the photo?';
+    return 'Numărați această intrare pentru $date și setați-i locul la $place, așa cum este înregistrat în fotografie?';
   }
 
   @override
   String photoMetaDate(String date) {
-    return 'Count this entry for $date, when the photo was taken?';
+    return 'Numărați această intrare pentru $date, când a fost făcută fotografia?';
   }
 
   @override
   String photoMetaPlace(String place) {
-    return 'Set this entry\'s place to $place, where the photo was taken?';
+    return 'Setați locul acestei intrări la $place, unde a fost făcută fotografia?';
   }
 
   @override
-  String get photoMetaApply => 'Use them';
+  String get photoMetaApply => 'Folosește-le';
 
   @override
-  String get quickWriteTitle => 'Quick write';
+  String get quickWriteTitle => 'Scrie rapid';
 
   @override
-  String get quickWriteText => 'Tap to start a new entry.';
+  String get quickWriteText => 'Atingeți pentru a începe o nouă intrare.';
 
   @override
-  String get settingsQuickWriteTitle => 'Quick write in notifications';
+  String get settingsQuickWriteTitle => 'Scrie rapid în notificări';
 
   @override
   String get settingsQuickWriteDescription =>
-      'Keep a notification that opens a new entry.';
+      'Păstrați o notificare care deschide o nouă intrare.';
 
   @override
-  String get settingsNudgesTitle => 'Nudge me after a quiet stretch';
+  String get settingsNudgesTitle =>
+      'Dă-mi un ghiont după o întindere liniștită';
 
   @override
   String settingsNudgesDescription(int days) {
-    return 'A gentle reminder when you haven\'t written for $days days.';
+    return 'Un memento blând când nu ați scris de zile $days.';
   }
 
   @override
-  String get nudgeTitle => 'It\'s been a while';
+  String get nudgeTitle => 'A trecut ceva timp';
 
   @override
-  String get nudgeMonday => 'A new week: what are you looking forward to?';
+  String get nudgeMonday => 'O nouă săptămână: ce aștepți cu nerăbdare?';
 
   @override
-  String get nudgeTuesday => 'Two lines are enough. How are you today?';
+  String get nudgeTuesday => 'Două rânduri sunt suficiente. Cum te simți azi?';
 
   @override
   String get nudgeWednesday =>
-      'Halfway through the week. What stood out so far?';
+      'La jumătatea săptămânii. Ce s-a remarcat până acum?';
 
   @override
-  String get nudgeThursday => 'Anything small worth keeping from today?';
+  String get nudgeThursday => 'Ceva mic care merită păstrat de astăzi?';
 
   @override
-  String get nudgeFriday => 'The week is wrapping up. Note one good moment.';
+  String get nudgeFriday => 'Săptămâna se încheie. Rețineți un moment bun.';
 
   @override
-  String get nudgeSaturday => 'A slow Saturday is a good day to write.';
+  String get nudgeSaturday => 'O sâmbătă lentă este o zi bună pentru a scrie.';
 
   @override
-  String get nudgeSunday => 'Look back on the week before it ends.';
+  String get nudgeSunday =>
+      'Priviți înapoi la săptămâna înainte de a se termina.';
 
   @override
-  String get photoWidgetEmpty => 'Photos you add to entries show up here.';
+  String get photoWidgetEmpty =>
+      'Fotografiile pe care le adăugați la intrări apar aici.';
 
   @override
-  String get channelReminders => 'Reminders';
+  String get channelReminders => 'Mementouri';
 
   @override
-  String get channelOnThisDay => 'On this day';
+  String get channelOnThisDay => 'În această zi';
 
   @override
-  String get channelCoach => 'Coach prompts';
+  String get channelCoach => 'Antrenorul solicită';
 
   @override
-  String get channelNudges => 'Nudges after quiet days';
+  String get channelNudges => 'Înghionturi după zile liniștite';
 
   @override
-  String get channelQuickWrite => 'Quick write';
+  String get channelQuickWrite => 'Scrie rapid';
 
   @override
-  String get channelBackup => 'Backups';
+  String get channelBackup => 'Backup-uri';
 
   @override
-  String get formatJsonExport => 'JSON (AID Diary export)';
+  String get formatJsonExport => 'JSON (export AID Diary)';
 
   @override
   String get aboutModifiedNotice =>
-      'A modified version of Daily You by Demizo and contributors. It is not the official Daily You app.';
+      'O versiune modificată a Daily You de către Demizo și colaboratori. Nu este aplicația oficială Daily You.';
 
   @override
-  String get toolbarPhotos => 'Add photos';
+  String get toolbarPhotos => 'Adăugați fotografii';
 
   @override
-  String get toolbarMedia => 'Photos and videos';
+  String get toolbarMedia => 'Fotografii și videoclipuri';
 
   @override
-  String get mediaFromGallery => 'Choose from gallery';
+  String get mediaFromGallery => 'Alegeți din galerie';
 
   @override
-  String get mediaFromFiles => 'Choose from files';
+  String get mediaFromFiles => 'Alegeți dintre fișiere';
 
   @override
-  String get editorLeaveTitle => 'Save this entry?';
+  String get editorLeaveTitle => 'Salvați această intrare?';
 
   @override
-  String get editorLeaveDiscard => 'Don\'t save';
+  String get editorLeaveDiscard => 'Nu salva';
 
   @override
-  String get editorTitleHint => 'Title';
+  String get editorTitleHint => 'Titlu';
 
   @override
-  String get editorLocating => 'Locating…';
+  String get editorLocating => 'Se localizează…';
 
   @override
   String get toolbarVideo => 'Video';
 
   @override
-  String get toolbarAudio => 'Voice note';
+  String get toolbarAudio => 'Notă vocală';
 
   @override
-  String get toolbarTags => 'Tags';
+  String get toolbarTags => 'Etichete';
 
   @override
-  String get toolbarBulletList => 'Bulleted list';
+  String get toolbarBulletList => 'Lista cu marcatori';
 
   @override
-  String get toolbarHeading => 'Heading';
+  String get toolbarHeading => 'Titlu';
 
   @override
-  String get toolbarBold => 'Bold';
+  String get toolbarBold => 'Îndrăzneț';
 
   @override
-  String get toolbarItalic => 'Italic';
+  String get toolbarItalic => 'cursiv';
 
   @override
-  String get toolbarHighlight => 'Highlight';
+  String get toolbarHighlight => 'Evidențiați';
 
   @override
-  String get toolbarStrikethrough => 'Strikethrough';
+  String get toolbarStrikethrough => 'Striat';
 
   @override
-  String get toolbarQuote => 'Quote';
+  String get toolbarQuote => 'citat';
 
   @override
   String get toolbarLink => 'Link';
 
   @override
-  String get toolbarInsert => 'Insert';
+  String get toolbarInsert => 'Inserați';
 
   @override
-  String get toolbarUndo => 'Undo';
+  String get toolbarUndo => 'Anulați';
 
   @override
-  String get toolbarRedo => 'Redo';
+  String get toolbarRedo => 'Reface';
 
   @override
-  String get toolbarInsertDate => 'Insert the date';
+  String get toolbarInsertDate => 'Introduceți data';
 
   @override
-  String get toolbarInsertTime => 'Insert the time';
+  String get toolbarInsertTime => 'Introduceți ora';
 
   @override
-  String get settingsSyncTitle => 'Cloud Sync';
+  String get settingsSyncTitle => 'Sincronizare în cloud';
 
   @override
   String get syncOffDescription =>
-      'Keep this diary the same on all your devices through Google Drive or a WebDAV server, such as Nextcloud, Synology or Jianguoyun.';
+      'Păstrați același jurnal pe toate dispozitivele dvs. prin Google Drive sau un server WebDAV, cum ar fi Nextcloud, Synology sau Jianguoyun.';
 
   @override
-  String get syncUseGoogleDrive => 'Sync with Google Drive';
+  String get syncUseGoogleDrive => 'Sincronizați cu Google Drive';
 
   @override
-  String get syncOrWebDav => 'Or a WebDAV server';
+  String get syncOrWebDav => 'Sau un server WebDAV';
 
   @override
   String get syncGoogleDrive => 'Google Drive';
 
   @override
-  String get syncGoogleSignedIn => 'Signed in. You can go back to AID Diary.';
+  String get syncGoogleSignedIn => 'Conectat. Puteți reveni la AID Diary.';
 
   @override
-  String get syncGoogleSignInAgain => 'Google needs you to sign in again.';
+  String get syncGoogleSignInAgain =>
+      'Google are nevoie să vă conectați din nou.';
 
   @override
-  String get syncSignInAgain => 'Sign in again';
+  String get syncSignInAgain => 'Conectați-vă din nou';
 
   @override
-  String get settingsCommandLineTitle => 'Command line';
+  String get settingsCommandLineTitle => 'Linia de comandă';
 
   @override
-  String get commandLineToggle => 'Command line interface';
+  String get commandLineToggle => 'Interfață de linie de comandă';
 
   @override
   String get commandLineToggleHint =>
-      'Lets the aid command and other programs on this device use the app\'s commands.';
+      'Permite comanda de ajutor și alte programe de pe acest dispozitiv să utilizeze comenzile aplicației.';
 
   @override
-  String get commandLineAlwaysOn => 'Always on in development builds.';
+  String get commandLineAlwaysOn => 'Întotdeauna în curs de dezvoltare.';
 
   @override
   String commandLineListening(int port) {
-    return 'Listening on port $port';
+    return 'Ascultare pe portul $port';
   }
 
   @override
-  String get commandPaletteTitle => 'All commands';
+  String get commandPaletteTitle => 'Toate comenzile';
 
   @override
-  String get commandPaletteSearch => 'Search commands';
+  String get commandPaletteSearch => 'Comenzi de căutare';
 
   @override
-  String get commandPaletteRun => 'Run';
+  String get commandPaletteRun => 'Fugi';
 
   @override
-  String get commandPaletteConfirm => 'This cannot simply be undone. Run it?';
+  String get commandPaletteConfirm =>
+      'Acest lucru nu poate fi anulat pur și simplu. Rulează-l?';
 
   @override
   String syncReceiving(int done, int total) {
-    return 'Receiving $done of $total…';
+    return 'Se primește $done din $total...';
   }
 
   @override
   String syncSending(int done, int total) {
-    return 'Sending $done of $total…';
+    return 'Se trimite $done de $total...';
   }
 
   @override
   String get syncGoogleDriveNotAllowed =>
-      'Access to Google Drive was not allowed. Connect again and tick Google Drive on Google\'s page.';
+      'Accesul la Google Drive nu a fost permis. Conectați-vă din nou și bifați Google Drive pe pagina Google.';
 
   @override
   String get syncEntryUnsynced =>
-      'Not synced: the last sync did not go through';
+      'Nesincronizat: ultima sincronizare nu a fost finalizată';
 
   @override
-  String get syncUseOfficial => 'Use the AID sync server';
+  String get syncUseOfficial => 'Utilizați serverul de sincronizare AID';
 
   @override
-  String get syncServer => 'Server address';
+  String get syncServer => 'Adresa serverului';
 
   @override
-  String get syncUsername => 'Username';
+  String get syncUsername => 'Nume de utilizator';
 
   @override
-  String get syncPassword => 'Password';
+  String get syncPassword => 'Parolă';
 
   @override
-  String get syncConnect => 'Connect';
+  String get syncConnect => 'Conectați-vă';
 
   @override
-  String get syncConnecting => 'Connecting…';
+  String get syncConnecting => 'Se conectează…';
 
   @override
   String get syncSignInFailed =>
-      'Could not sign in. Check the address, the username and the password.';
+      'Nu s-a putut conecta. Verificați adresa, numele de utilizator și parola.';
 
   @override
   String syncConnectFailed(String error) {
-    return 'Could not connect: $error';
+    return 'Nu s-a putut conecta: $error';
   }
 
   @override
-  String get syncNewSpaceTitle => 'Start syncing';
+  String get syncNewSpaceTitle => 'Începeți sincronizarea';
 
   @override
   String get syncNewSpaceDescription =>
-      'There is no synced diary here yet. This diary will be uploaded, end-to-end encrypted with a key that stays on your devices.';
+      'Nu există încă un jurnal sincronizat aici. Acest jurnal va fi încărcat, criptat de la capăt la capăt cu o cheie care rămâne pe dispozitivele dvs.';
 
   @override
-  String get syncJoinTitle => 'Join the synced diary';
+  String get syncJoinTitle => 'Alăturați-vă jurnalului sincronizat';
 
   @override
   String get syncWrongKey =>
-      'This recovery code does not open the synced diary.';
+      'Acest cod de recuperare nu deschide jurnalul sincronizat.';
 
   @override
   String syncLastSynced(String time) {
-    return 'Last synced $time';
+    return 'Ultima sincronizare $time';
   }
 
   @override
-  String get syncNever => 'Not synced yet';
+  String get syncNever => 'Nu s-a sincronizat încă';
 
   @override
-  String get syncSyncing => 'Syncing…';
+  String get syncSyncing => 'Se sincronizează…';
 
   @override
   String syncFailed(String error) {
-    return 'The last sync failed: $error';
+    return 'Ultima sincronizare a eșuat: $error';
   }
 
   @override
   String get syncLocked =>
-      'The synced diary now belongs to other devices, or was started over. Pair with one of them or use the recovery code to keep syncing.';
+      'Jurnalul sincronizat aparține acum altor dispozitive sau a fost reluat. Asociați-vă cu unul dintre ele sau utilizați codul de recuperare pentru a continua sincronizarea.';
 
   @override
-  String get syncNow => 'Sync now';
+  String get syncNow => 'Sincronizează acum';
 
   @override
-  String get syncUnlock => 'Unlock';
+  String get syncUnlock => 'Deblocați';
 
   @override
-  String get syncEncrypted => 'End-to-end encrypted';
+  String get syncEncrypted => 'Criptat de la capăt la capăt';
 
   @override
-  String get syncDisconnect => 'Stop syncing';
+  String get syncDisconnect => 'Opriți sincronizarea';
 
   @override
   String get syncDisconnectDescription =>
-      'This device stops syncing. The diary here and the synced copy stay as they are.';
+      'Acest dispozitiv se oprește sincronizarea. Jurnalul de aici și copia sincronizată rămân așa cum sunt.';
 
   @override
-  String get syncOwnRecoveryPassword => 'Use my own recovery password';
+  String get syncOwnRecoveryPassword =>
+      'Folosește propria mea parolă de recuperare';
 
   @override
-  String get syncRecoveryPassword => 'Recovery password';
+  String get syncRecoveryPassword => 'Parola de recuperare';
 
   @override
-  String get syncRecoveryPasswordRepeat => 'Repeat the recovery password';
+  String get syncRecoveryPasswordRepeat => 'Repetați parola de recuperare';
 
   @override
   String syncRecoveryPasswordTooShort(int min) {
-    return 'Use at least $min characters';
+    return 'Utilizați cel puțin caractere $min';
   }
 
   @override
-  String get syncRecoveryPasswordMismatch => 'The passwords differ';
+  String get syncRecoveryPasswordMismatch => 'Parolele diferă';
 
   @override
-  String get syncRecoveryCode => 'Recovery code';
+  String get syncRecoveryCode => 'Cod de recuperare';
 
   @override
-  String get syncRecoveryCodeTitle => 'Save your recovery code';
+  String get syncRecoveryCodeTitle => 'Salvați codul de recuperare';
 
   @override
   String get syncRecoveryCodeDescription =>
-      'If every device of yours is lost, this code restores your synced diary. Keep it in a password manager or on paper. It is shown only this once.';
+      'Dacă fiecare dispozitiv al dvs. este pierdut, acest cod vă restabilește jurnalul sincronizat. Păstrați-l într-un manager de parole sau pe hârtie. Se afișează o singură dată.';
 
   @override
-  String get syncRecoveryCodeCopied => 'Recovery code copied';
+  String get syncRecoveryCodeCopied => 'Codul de recuperare a fost copiat';
 
   @override
-  String get syncRecoveryCodeSaved => 'I have saved it';
+  String get syncRecoveryCodeSaved => 'L-am salvat';
 
   @override
   String get syncJoinNeedsKey =>
-      'This synced diary belongs to your other devices. Pair with one of them, or use the recovery code. The entries on this device will be added to it.';
+      'Acest jurnal sincronizat aparține celorlalte dispozitive ale dvs. Asociați-vă cu unul dintre ele sau utilizați codul de recuperare. Înregistrările de pe acest dispozitiv vor fi adăugate acestuia.';
 
   @override
-  String get syncPairDevice => 'Pair with a device';
+  String get syncPairDevice => 'Asociați cu un dispozitiv';
 
   @override
-  String get syncUseRecoveryCode => 'Use the recovery code';
+  String get syncUseRecoveryCode => 'Utilizați codul de recuperare';
 
   @override
-  String get syncAddDevice => 'Add a device';
+  String get syncAddDevice => 'Adăugați un dispozitiv';
 
   @override
-  String get syncChangeRecoveryCode => 'Change the recovery code';
+  String get syncChangeRecoveryCode => 'Schimbați codul de recuperare';
 
   @override
   String get syncChangeRecoveryDescription =>
-      'A new code replaces the current one, which stops working. Your data and other devices stay as they are.';
+      'Un nou cod îl înlocuiește pe cel actual, care nu mai funcționează. Datele dvs. și alte dispozitive rămân așa cum sunt.';
 
   @override
-  String get syncNewRandomCode => 'New random code';
+  String get syncNewRandomCode => 'Cod nou aleatoriu';
 
   @override
-  String get syncRecoveryCodeChanged => 'Recovery code changed';
+  String get syncRecoveryCodeChanged => 'Codul de recuperare a fost modificat';
 
   @override
-  String get syncResetSpace => 'Start the synced diary over';
+  String get syncResetSpace => 'Reîncepeți jurnalul sincronizat';
 
   @override
   String get syncResetSpaceDescription =>
-      'Only when no device and no recovery code opens it any more: the synced copy is replaced by the diary on this device, under this device\'s keys. Your other devices then pair again.';
+      'Numai când niciun dispozitiv și niciun cod de recuperare nu îl mai deschide: copia sincronizată este înlocuită cu jurnalul de pe acest dispozitiv, sub cheile acestui dispozitiv. Celelalte dispozitive ale dvs. apoi se asociază din nou.';
 
   @override
-  String get syncPairTitle => 'Pair devices';
+  String get syncPairTitle => 'Asociați dispozitivele';
 
   @override
-  String get syncPairShow => 'Show a code';
+  String get syncPairShow => 'Afișează un cod';
 
   @override
-  String get syncPairEnter => 'Enter a code';
+  String get syncPairEnter => 'Introduceți un cod';
 
   @override
   String get syncPairShowHint =>
-      'On your other device, open Pair devices, choose Enter a code, and type or scan this.';
+      'Pe celălalt dispozitiv, deschideți Asociere dispozitive, alegeți Introduceți un cod și tastați sau scanați-l.';
 
   @override
   String get syncPairEnterHint =>
-      'Type the code your other device shows, or scan it.';
+      'Introdu codul pe care îl arată celălalt dispozitiv sau scanează-l.';
 
   @override
-  String get syncPairCode => 'Pairing code';
+  String get syncPairCode => 'Cod de împerechere';
 
   @override
-  String get syncPairScan => 'Scan';
+  String get syncPairScan => 'Scanează';
 
   @override
-  String get syncPairStart => 'Pair';
+  String get syncPairStart => 'Pereche';
 
   @override
-  String get syncPairWaiting => 'Waiting for the other device…';
+  String get syncPairWaiting => 'În așteptarea celuilalt dispozitiv...';
 
   @override
   String syncPairDone(String device) {
-    return 'Paired with $device';
+    return 'Asociat cu $device';
   }
 
   @override
   String get syncPairWrongCode =>
-      'The code did not match. Show a new code and try again.';
+      'Codul nu se potrivea. Afișați un cod nou și încercați din nou.';
 
   @override
   String get syncPairNoOffer =>
-      'No device shows this code. It may have expired.';
+      'Niciun dispozitiv nu afișează acest cod. Este posibil să fi expirat.';
 
   @override
-  String get syncPairTimedOut => 'The other device did not answer in time.';
+  String get syncPairTimedOut => 'Celălalt dispozitiv nu a răspuns la timp.';
 
   @override
   String get syncPairNeither =>
-      'Neither device is set up with this synced diary yet.';
+      'Niciun dispozitiv nu este încă configurat cu acest jurnal sincronizat.';
 
   @override
-  String get syncPairBoth => 'Both devices already open this synced diary.';
+  String get syncPairBoth =>
+      'Ambele dispozitive deschid deja acest jurnal sincronizat.';
 
   @override
   String syncPairFailed(String error) {
-    return 'Pairing failed: $error';
+    return 'Asocierea eșuată: $error';
   }
 
   @override
   String get syncMediaPending =>
-      'Diary synced · some media is still transferring';
+      'Agenda sincronizată · unele media sunt încă transferate';
 
   @override
   String get syncWaitingForDevices =>
-      'Diary synced · waiting for another device to transfer media';
+      'Jurnalul sincronizat · se așteaptă ca un alt dispozitiv să transfere media';
 
   @override
   String get syncCacheNotice =>
-      'Cloud media is temporary. Keep the originals on your devices; syncing is not a backup.';
+      'Media cloud este temporară. Păstrați originalele pe dispozitivele dvs.; sincronizarea nu este o copie de rezervă.';
 
   @override
-  String get paperTitle => 'Letter paper';
+  String get paperTitle => 'Hârtie de scrisori';
 
   @override
-  String get paperPlain => 'Plain';
+  String get paperPlain => 'simplu';
 
   @override
-  String get paperLined => 'Lined';
+  String get paperLined => 'Căptușită';
 
   @override
-  String get paperGrid => 'Grid';
+  String get paperGrid => 'Grilă';
 
   @override
-  String get paperTinted => 'Tinted';
+  String get paperTinted => 'Nuanțat';
 
   @override
-  String get paperDecorationTitle => 'Decorations';
+  String get paperDecorationTitle => 'Decoratiuni';
 
   @override
-  String get paperDecorationNone => 'None';
+  String get paperDecorationNone => 'Niciuna';
 
   @override
-  String get paperDecorationBotanical => 'Leaves';
+  String get paperDecorationBotanical => 'frunze';
 
   @override
-  String get paperDecorationStars => 'Stars';
+  String get paperDecorationStars => 'Stele';
 
   @override
-  String get paperDecorationWashi => 'Washi tape';
+  String get paperDecorationWashi => 'Banda Washi';
 
   @override
-  String get themeDarkChoice => 'Dark appearance';
+  String get themeDarkChoice => 'Aspect întunecat';
 
   @override
-  String get themeDarkSame => 'Follow light palette';
+  String get themeDarkSame => 'Urmăriți paleta luminoasă';
 
   @override
-  String get themeDarkCustom => 'Separate palette';
+  String get themeDarkCustom => 'Paletă separată';
 
   @override
-  String get themeDarkAccent => 'Dark accent colour';
+  String get themeDarkAccent => 'Culoare de accent închisă';
 
   @override
   String get themeColorTeal => 'Teal';
@@ -2330,392 +2372,396 @@ class AppLocalizationsRo extends AppLocalizations {
   String get themeColorCoral => 'Coral';
 
   @override
-  String get themeColorOlive => 'Olive';
+  String get themeColorOlive => 'măsline';
 
   @override
-  String get themeColorSlate => 'Slate';
+  String get themeColorSlate => 'Ardezie';
 
   @override
-  String get drawingTitle => 'Drawing';
+  String get drawingTitle => 'Desen';
 
   @override
-  String get drawingPen => 'Pen';
+  String get drawingPen => 'Pix';
 
   @override
-  String get drawingEraser => 'Eraser';
+  String get drawingEraser => 'Radieră';
 
   @override
-  String get drawingUndo => 'Undo';
+  String get drawingUndo => 'Anulați';
 
   @override
-  String get drawingClear => 'Clear';
+  String get drawingClear => 'Clar';
 
   @override
-  String get drawingWidth => 'Pen width';
+  String get drawingWidth => 'Lățimea stiloului';
 
   @override
-  String get drawingStylusOnly => 'Stylus only';
+  String get drawingStylusOnly => 'Doar stylus';
 
   @override
-  String get drawingDiscardTitle => 'Discard drawing?';
+  String get drawingDiscardTitle => 'Renunțați la desen?';
 
   @override
-  String get drawingDiscardBody => 'This drawing has not been saved.';
+  String get drawingDiscardBody => 'Acest desen nu a fost salvat.';
 
   @override
-  String get drawingSaveError => 'Could not save the drawing.';
+  String get drawingSaveError => 'Nu s-a putut salva desenul.';
 
   @override
-  String get syncNetworkTitle => 'Network diagnostics';
+  String get syncNetworkTitle => 'Diagnosticarea rețelei';
 
   @override
-  String get syncNetworkRefresh => 'Refresh';
+  String get syncNetworkRefresh => 'Reîmprospătați';
 
   @override
-  String get syncNetworkSelectedRoute => 'Current path';
+  String get syncNetworkSelectedRoute => 'Calea curentă';
 
   @override
-  String get syncNetworkAvailableRoutes => 'Available paths';
+  String get syncNetworkAvailableRoutes => 'Căi disponibile';
 
   @override
-  String get syncNetworkSignaling => 'Device directory connection';
+  String get syncNetworkSignaling => 'Conexiune la directorul dispozitivului';
 
   @override
-  String get syncNetworkRelayRemaining => 'Remaining relay allowance';
+  String get syncNetworkRelayRemaining => 'Alocația de releu rămasă';
 
   @override
-  String get syncNetworkIcePair => 'Direct connection candidates';
+  String get syncNetworkIcePair => 'Candidați pentru conexiune directă';
 
   @override
-  String get syncNetworkPeerTrusted => 'Authenticated device';
+  String get syncNetworkPeerTrusted => 'Dispozitiv autentificat';
 
   @override
-  String get syncNetworkNoRoute => 'Waiting for a connection';
+  String get syncNetworkNoRoute => 'În așteptarea unei conexiuni';
 
   @override
-  String get syncNetworkUnavailable => 'Diagnostics are unavailable';
+  String get syncNetworkUnavailable => 'Diagnosticele nu sunt disponibile';
 
   @override
-  String get syncMediaCopiesTitle => 'Media delivery and copies';
+  String get syncMediaCopiesTitle => 'Livrare media și copii';
 
   @override
-  String get syncMediaPendingCount => 'Waiting to transfer';
+  String get syncMediaPendingCount => 'În așteptarea transferului';
 
   @override
-  String get syncMediaDurableCount => 'Delivered to personal storage';
+  String get syncMediaDurableCount => 'Livrat la depozitul personal';
 
   @override
-  String get syncMediaTemporaryCount => 'Temporary or unconfirmed copies';
+  String get syncMediaTemporaryCount => 'Copii temporare sau neconfirmate';
 
   @override
   String get syncMediaReceiptExplanation =>
-      'These counts describe completed deliveries, not a fresh audit of surviving backups.';
+      'Aceste numărări descriu livrările finalizate, nu un nou audit al backup-urilor supraviețuitoare.';
 
   @override
   String get syncMediaCacheExplanation =>
-      'Temporary cloud media can expire. Keep your originals or a separate backup.';
+      'Media cloud temporară poate expira. Păstrați originalele sau o copie de rezervă separată.';
 
   @override
-  String get momentsTitle => 'Photo moments';
+  String get momentsTitle => 'Momente foto';
 
   @override
   String get momentsHint =>
-      'Find groups using local photo times and optional coordinates. Photos are attached only when you choose a card.';
+      'Găsiți grupuri folosind orele locale ale fotografiilor și coordonatele opționale. Fotografiile sunt atașate numai atunci când alegeți un card.';
 
   @override
-  String get momentsScan => 'Find moments';
+  String get momentsScan => 'Găsiți momente';
 
   @override
-  String get momentsChooseFolder => 'Choose photo folder';
+  String get momentsChooseFolder => 'Alegeți folderul cu fotografii';
 
   @override
-  String get momentsLocation => 'Include photo locations';
+  String get momentsLocation => 'Includeți locațiile fotografiilor';
 
   @override
-  String get momentsEmpty => 'No recent photo groups.';
+  String get momentsEmpty => 'Nu există grupuri foto recente.';
 
   @override
-  String get momentsCreate => 'Write about these photos';
+  String get momentsCreate => 'Scrieți despre aceste fotografii';
 
   @override
-  String get momentsDismiss => 'Dismiss';
+  String get momentsDismiss => 'Respingeți';
 
   @override
-  String get momentsError => 'Could not read local photos.';
+  String get momentsError => 'Nu s-au putut citi fotografiile locale.';
 
   @override
-  String get momentsCreated => 'Photo entry created.';
+  String get momentsCreated => 'Intrarea foto a fost creată.';
 
   @override
   String get momentsPermission =>
-      'Allow access to photos to find local suggestions.';
+      'Permiteți accesul la fotografii pentru a găsi sugestii locale.';
 
   @override
   String get momentsScope =>
-      'Recent photos only; at most 500 photos and 20 photos per card.';
+      'Numai fotografii recente; cel mult 500 de fotografii și 20 de fotografii pe card.';
 
   @override
   String momentsPhotoCount(int count) {
-    return '$count photos';
+    return 'fotografii $count';
   }
 
   @override
-  String get nearbyTitle => 'Connect devices';
+  String get nearbyTitle => 'Conectați dispozitive';
 
   @override
-  String get nearbySend => 'Authorize another device';
+  String get nearbySend => 'Autorizați un alt dispozitiv';
 
   @override
-  String get nearbyReceive => 'Connect to an existing device';
+  String get nearbyReceive => 'Conectați-vă la un dispozitiv existent';
 
   @override
   String get nearbyInstructions =>
-      'Connect both devices to the same Wi-Fi or to each other’s hotspot. Confirm authorization on the existing device; both devices remain usable. No internet is required.';
+      'Conectați ambele dispozitive la același Wi-Fi sau la hotspot-ul celuilalt. Confirmați autorizarea pe dispozitivul existent; ambele dispozitive rămân utilizabile. Nu este nevoie de internet.';
 
   @override
   String get nearbyCompare =>
-      'Compare this code on both devices before approving.';
+      'Comparați acest cod pe ambele dispozitive înainte de aprobare.';
 
   @override
-  String get nearbyConfirm => 'The codes match';
+  String get nearbyConfirm => 'Codurile se potrivesc';
 
   @override
-  String get nearbyScan => 'Scan the other device’s code';
+  String get nearbyScan => 'Scanați codul celuilalt dispozitiv';
 
   @override
-  String get nearbyPaste => 'Paste invitation';
+  String get nearbyPaste => 'Lipiți invitația';
 
   @override
-  String get nearbyWaiting => 'Waiting for approval on the other device';
+  String get nearbyWaiting => 'Se așteaptă aprobarea pe celălalt dispozitiv';
 
   @override
   String get nearbyWorking =>
-      'Authorizing and syncing your diary and attachments…';
+      'Se autorizează și se sincronizează jurnalul și atașamentele...';
 
   @override
   String get nearbyPending =>
-      'Some attachments still need syncing. Keep the other device online and try again.';
+      'Unele atașamente mai necesită sincronizare. Păstrați celălalt dispozitiv online și încercați din nou.';
 
   @override
-  String get nearbyComplete => 'Device connected; diary and attachments synced';
+  String get nearbyComplete =>
+      'Dispozitiv conectat; jurnal și atașamente sincronizate';
 
   @override
   String get nearbyFailed =>
-      'Connection did not finish. Check the local connection and try again.';
+      'Conexiunea nu s-a terminat. Verificați conexiunea locală și încercați din nou.';
 
   @override
   String get nearbyEmptyRequired =>
-      'Use a device with an empty diary that is not connected to sync yet.';
+      'Utilizați un dispozitiv cu un jurnal gol care nu este încă conectat la sincronizare.';
 
   @override
-  String get nearbyRetry => 'Continue syncing';
+  String get nearbyRetry => 'Continuați sincronizarea';
 
   @override
-  String get nearbyWifi => 'Wi-Fi settings';
+  String get nearbyWifi => 'Setări Wi-Fi';
 
   @override
-  String get nearbyHotspot => 'Hotspot settings';
+  String get nearbyHotspot => 'Setări hotspot';
 
   @override
   String get nearbyKeepOpen =>
-      'Keep this page open until the new device finishes. The invitation expires after two minutes.';
+      'Păstrați această pagină deschisă până când se termină noul dispozitiv. Invitația expiră după două minute.';
 
   @override
-  String get syncDevicesTitle => 'Authorized devices';
+  String get syncDevicesTitle => 'Dispozitive autorizate';
 
   @override
   String get syncDevicesDescription =>
-      'Only approved devices can access this AID account. Revoking a device blocks the server but cannot erase a master key or diary already copied to it.';
+      'Numai dispozitivele aprobate pot accesa acest cont AID. Revocarea unui dispozitiv blochează serverul, dar nu poate șterge o cheie principală sau un jurnal deja copiat pe acesta.';
 
   @override
   String get syncDeviceRequest =>
-      'Show this authorization QR to an approved device';
+      'Afișați acest QR de autorizare pe un dispozitiv aprobat';
 
   @override
-  String get syncDeviceAuthorize => 'Authorize a device';
+  String get syncDeviceAuthorize => 'Autorizați un dispozitiv';
 
   @override
   String get syncDeviceAuthorizeDescription =>
-      'Scan or paste the new device’s authorization request.';
+      'Scanați sau inserați cererea de autorizare a noului dispozitiv.';
 
   @override
-  String get syncDeviceRevoke => 'Revoke';
+  String get syncDeviceRevoke => 'Revocați';
 
   @override
-  String get syncDeviceRotate => 'Rotate this device’s signing key';
+  String get syncDeviceRotate => 'Rotiți cheia de semnare a acestui dispozitiv';
 
   @override
-  String get syncDeviceCheck => 'Check authorization';
+  String get syncDeviceCheck => 'Verificați autorizația';
 
   @override
-  String get syncDeviceHardware => 'Hardware-backed signing key';
+  String get syncDeviceHardware => 'Cheie de semnare susținută de hardware';
 
   @override
-  String get syncDeviceSoftware => 'Non-exportable software signing key';
+  String get syncDeviceSoftware => 'Cheie de semnare software neexportabilă';
 
   @override
   String get syncDeviceUnavailable =>
-      'Device authorization is unavailable. Approve this device from another authorized device and retry.';
+      'Autorizarea dispozitivului nu este disponibilă. Aprobați acest dispozitiv de pe alt dispozitiv autorizat și încercați din nou.';
 
   @override
-  String get syncDeviceRevoked => 'Revoked';
+  String get syncDeviceRevoked => 'Revocat';
 
   @override
-  String get syncDeviceLocal => 'This device';
+  String get syncDeviceLocal => 'Acest dispozitiv';
 
   @override
-  String get cloudTrafficTitle => 'Monthly cloud media allowance';
+  String get cloudTrafficTitle =>
+      'Cotă lunară de transfer de date în cloud pentru fișierele media';
 
   @override
-  String get cloudTrafficLimit => 'Monthly allowance';
+  String get cloudTrafficLimit => 'Cotă lunară de transfer de date';
 
   @override
-  String get cloudTrafficUsed => 'Used';
+  String get cloudTrafficUsed => 'Transfer de date utilizat';
 
   @override
-  String get cloudTrafficRemaining => 'Remaining';
+  String get cloudTrafficRemaining => 'Transfer de date rămase';
 
   @override
   String cloudTrafficResetsAt(String time) {
-    return 'Resets $time';
+    return 'Cota de transfer de date resetează $time';
   }
 
   @override
   String get cloudTrafficExhausted =>
-      'Cloud media allowance used up. Missing media will resume automatically over a direct connection or when the allowance resets.';
+      'Cota de transfer de date în cloud pentru fișierele media a fost epuizată. Fișierele media lipsă se vor sincroniza automat atunci când este disponibilă o conexiune directă sau cota se resetează.';
 
   @override
   String get cloudTrafficExplanation =>
-      'Media cache and live relay share this allowance. Direct connections do not use it. Diary text and connection control have separate small daily limits.';
+      'Memorarea în cache a fișierelor media și transmisia live partajează această cotă de transfer de date. Conexiunile directe nu o consumă. Textul din jurnal și mesajele de control al conexiunii au limite zilnice mici separate.';
 
   @override
-  String get appearanceThemeSection => 'App theme';
+  String get appearanceThemeSection => 'Tema aplicației';
 
   @override
-  String get appearancePaperSection => 'Diary paper';
+  String get appearancePaperSection => 'Hârtie de jurnal';
 
   @override
-  String get appearanceTypographySection => 'Diary text';
+  String get appearanceTypographySection => 'Text de jurnal';
 
   @override
-  String get appearancePreferencesSection => 'General preferences';
+  String get appearancePreferencesSection => 'Preferințe generale';
 
   @override
   String get themeSystemAccentHint =>
-      'Uses the system palette instead of custom colors. Turn it off to choose your own.';
+      'Folosește paleta de sistem în loc de culori personalizate. Dezactivează-l pentru a-ți alege pe al tău.';
 
   @override
   String get syncDeviceNameSaveFailed =>
-      'Could not save the device name. Please try again.';
+      'Nu s-a putut salva numele dispozitivului. Vă rugăm să încercați din nou.';
 
   @override
-  String get nearbyConnectionHelp => 'Connection help';
+  String get nearbyConnectionHelp => 'Ajutor pentru conectare';
 
   @override
-  String get syncAllSynced => 'Everything synced';
+  String get syncAllSynced => 'Totul sincronizat';
 
   @override
-  String get syncDetailsTitle => 'Sync details';
+  String get syncDetailsTitle => 'Detalii de sincronizare';
 
   @override
-  String get syncMore => 'More options';
+  String get syncMore => 'Mai multe opțiuni';
 
   @override
-  String get syncDeviceName => 'Device name';
+  String get syncDeviceName => 'Numele dispozitivului';
 
   @override
-  String get syncDeviceNameHint => 'For example: My tablet';
+  String get syncDeviceNameHint => 'De exemplu: Tableta mea';
 
   @override
-  String get syncDeviceNameInvalid => 'Use 1 to 32 characters';
+  String get syncDeviceNameInvalid => 'Utilizați 1 până la 32 de caractere';
 
   @override
-  String get syncDeviceKeyDetails => 'Security details';
+  String get syncDeviceKeyDetails => 'Detalii de securitate';
 
   @override
   String get syncConnectionProblem =>
-      'Unable to sync for now. Retrying automatically.';
+      'Nu se poate sincroniza deocamdată. Se reîncercă automat.';
 
   @override
-  String get syncCopyComplete => 'Complete copy';
+  String get syncCopyComplete =>
+      'Copie completă a jurnalului și a fișierelor media';
 
   @override
-  String get syncCopyPartial => 'Some media is still missing';
+  String get syncCopyPartial => 'Unele mass-media încă lipsesc';
 
   @override
-  String get syncCopyOlder => 'New changes are waiting to sync';
+  String get syncCopyOlder => 'Noi modificări așteaptă să fie sincronizate';
 
   @override
   String get syncCopyUnavailable =>
-      'Copy details are unavailable. Try again later.';
+      'Detaliile de copiere nu sunt disponibile. Încercați din nou mai târziu.';
 
   @override
   String get syncCopyLastKnown =>
-      'Other devices show their last confirmed copy. Offline devices cannot be checked now.';
+      'Alte dispozitive afișează ultima copie confirmată. Dispozitivele offline nu pot fi verificate acum.';
 
   @override
   String get syncCopyTemporary =>
-      'Temporary cache. Keep the originals on your devices.';
+      'Cache temporară. Păstrați originalele pe dispozitivele dvs.';
 
   @override
   String get syncCopyStorage =>
-      'Your sync storage. Completed media uploads are listed in diagnostics.';
+      'Stocarea dvs. de sincronizare. Încărcările media finalizate sunt listate în diagnosticare.';
 
   @override
   String syncCopyChecked(String time) {
-    return 'Last confirmed $time';
+    return 'Ultima confirmare $time';
   }
 
   @override
   String cloudTrafficSummary(String remaining, String limit) {
-    return 'Available this month: $remaining / $limit';
+    return 'Transfer de date rămas în această lună: $remaining / $limit';
   }
 
   @override
-  String get onboardNewDiary => 'Start here';
+  String get onboardNewDiary => 'Începeți de aici';
 
   @override
-  String get onboardConnect => 'Connect to an existing device';
+  String get onboardConnect => 'Conectați-vă la un dispozitiv existent';
 
   @override
   String get onboardFailed =>
-      'Setup could not be completed. Your diary is safe; please try again.';
+      'Configurarea nu a putut fi finalizată. Jurnalul tău este în siguranță; vă rugăm să încercați din nou.';
 
   @override
-  String get tutorialTitle => 'How to use the diary';
+  String get tutorialTitle => 'Cum se folosește jurnalul';
 
   @override
-  String get tutorialWriteTitle => 'Write your first entry';
+  String get tutorialWriteTitle => 'Scrieți prima intrare în jurnal';
 
   @override
   String get tutorialWriteText =>
-      'Tap + to write. Add a title if you want, choose the diary day and tap the check mark to save. You can edit it again at any time.';
+      'Atingeți + pentru a scrie o înregistrare în jurnal. Adăugați un titlu opțional, alegeți data jurnalului și atingeți bifa pentru a salva. Puteți edita din nou înregistrarea din jurnal în orice moment.';
 
   @override
-  String get tutorialMediaTitle => 'Add photos, audio or handwriting';
+  String get tutorialMediaTitle =>
+      'Adăugați fotografii, audio sau scris de mână';
 
   @override
   String get tutorialMediaText =>
-      'Use + in the editor to attach photos, videos or a voice note, or open the pen canvas. These attachments stay with the entry.';
+      'Folosiți + în editorul de jurnal pentru a atașa fotografii, videoclipuri sau o înregistrare vocală sau pentru a deschide pânza scrisă de mână. Aceste atașamente sunt salvate împreună cu înregistrarea din jurnal.';
 
   @override
-  String get tutorialReviewTitle => 'Find a day again';
+  String get tutorialReviewTitle => 'Găsiți din nou o zi';
 
   @override
   String get tutorialReviewText =>
-      'Browse the journal or calendar, search your writing and use tags to organize it. Media and Atlas help you look back by photo or place.';
+      'Răsfoiți jurnalul sau calendarul dvs., căutați scrisul și organizați intrările cu etichete. Paginile Media și Atlas vă permit să găsiți intrări anterioare după fotografie sau locație.';
 
   @override
-  String get tutorialSyncTitle => 'Use more than one device';
+  String get tutorialSyncTitle => 'Utilizați mai mult de un dispozitiv';
 
   @override
   String get tutorialSyncText =>
-      'In Settings → Data & storage → Sync, connect to an existing device and confirm authorization there. Both devices can keep using the diary. Text syncs first; media follows as the connection and allowance permit.';
+      'În Setări → Date și stocare → Sincronizare, conectați-vă la un dispozitiv existent și confirmați autorizarea pe acel dispozitiv. Ambele dispozitive pot continua să folosească jurnalul. Textul jurnalului se sincronizează mai întâi. Fișierele media se sincronizează în continuare când conexiunea la rețea și cota de transfer de date rămasă o permit.';
 
   @override
-  String get tutorialPrivacyTitle => 'Keep your diary safe';
+  String get tutorialPrivacyTitle => 'Păstrează-ți jurnalul în siguranță';
 
   @override
   String get tutorialPrivacyText =>
-      'Entries stay on this device unless you enable sync or share/export them. Sync is end-to-end encrypted. Settings also offers an app passcode and backups; you can reopen this tutorial there.';
+      'Înregistrările din jurnal rămân pe acest dispozitiv, cu excepția cazului în care le activați sincronizarea, le distribuiți sau le exportați. Sincronizarea este criptată de la capăt la capăt. În Setări, puteți, de asemenea, să setați o parolă pentru aplicație, să creați copii de rezervă și să redeschideți acest tutorial.';
 }

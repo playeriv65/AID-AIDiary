@@ -12,38 +12,38 @@ class AppLocalizationsAr extends AppLocalizations {
   String get appTitle => 'AID Diary';
 
   @override
-  String get themeColorTitle => 'Theme color';
+  String get themeColorTitle => 'لون الموضوع';
 
   @override
-  String get themeColorHint => 'Choose a color for this palette.';
+  String get themeColorHint => 'اختر لونًا لهذه اللوحة.';
 
   @override
-  String get themeColorBlue => 'Sky blue';
+  String get themeColorBlue => 'السماء الزرقاء';
 
   @override
-  String get themeColorGreen => 'Forest green';
+  String get themeColorGreen => 'الغابة الخضراء';
 
   @override
-  String get themeColorBrown => 'Warm coffee';
+  String get themeColorBrown => 'قهوة دافئة';
 
   @override
-  String get themeColorPurple => 'Lavender';
+  String get themeColorPurple => 'لافندر';
 
   @override
-  String get themeColorRose => 'Dusty rose';
+  String get themeColorRose => 'وردة مغبرة';
 
   @override
-  String get themeColorAmber => 'Amber';
+  String get themeColorAmber => 'العنبر';
 
   @override
-  String get themeColorPreview => 'A little every day';
+  String get themeColorPreview => 'قليلا كل يوم';
 
   @override
-  String get themeTintBackgroundTitle => 'Tint backgrounds with theme color';
+  String get themeTintBackgroundTitle => 'صبغ الخلفيات مع لون الموضوع';
 
   @override
   String get themeTintBackgroundHint =>
-      'Turn off for neutral gray backgrounds; buttons keep your chosen color.';
+      'قم بإيقاف تشغيله للحصول على خلفيات رمادية محايدة؛ تحافظ الأزرار على اللون الذي اخترته.';
 
   @override
   String get dailyReminderTitle => 'سَجِّل اليوم!';
@@ -441,13 +441,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get iconGroupWorkFinance => 'العمل';
 
   @override
-  String get iconGroupHabitsGoals => 'Habits & Goals';
+  String get iconGroupHabitsGoals => 'العادات والأهداف';
 
   @override
-  String get iconGroupNature => 'Nature';
+  String get iconGroupNature => 'الطبيعة';
 
   @override
-  String get iconGroupFoodDrink => 'Food & Drink';
+  String get iconGroupFoodDrink => 'الطعام والشراب';
 
   @override
   String get iconGroupHome => 'الرئيسية';
@@ -487,11 +487,14 @@ class AppLocalizationsAr extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: ' It is used in $count logs.',
-      one: ' It is used in 1 log.',
+      two: ' يتم استخدامه في $count إدخالات اليوميات.',
+      other: ' يتم استخدامه في $count إدخالات يومية.',
+      one: ' يتم استخدامه في إدخال يوميات واحد.',
+      many: ' يتم استخدامه في $count إدخالات يومية.',
+      few: ' يتم استخدامه في $count إدخالات يومية.',
       zero: '',
     );
-    return 'Delete \"$name\"?$_temp0';
+    return 'هل تريد حذف \"$name\"؟$_temp0';
   }
 
   @override
@@ -499,18 +502,21 @@ class AppLocalizationsAr extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: ' Its $count tags will also be deleted.',
-      one: ' Its 1 tag will also be deleted.',
+      two: ' سيتم أيضًا حذف علامتيها.',
+      other: ' سيتم أيضًا حذف علاماتها الـ $count.',
+      one: ' سيتم أيضًا حذف علامة $count الخاصة به.',
+      many: ' سيتم أيضًا حذف علاماتها الـ $count.',
+      few: ' ستُحذف أيضًا وسومه الـ $count.',
       zero: '',
     );
-    return 'Delete \"$name\"?$_temp0';
+    return 'هل تريد حذف \"$name\"؟$_temp0';
   }
 
   @override
-  String get tagNameExists => 'There is a tag with this name already';
+  String get tagNameExists => 'هناك علامة بهذا الاسم بالفعل';
 
   @override
-  String get categoryNameExists => 'There is a category with this name already';
+  String get categoryNameExists => 'هناك فئة بهذا الاسم بالفعل';
 
   @override
   String deleteTemplateMessage(Object name) {
@@ -557,25 +563,25 @@ class AppLocalizationsAr extends AppLocalizations {
   String get tagChoresName => 'الأعمال اليومية';
 
   @override
-  String get tagCategoryEmotionsName => 'Emotions';
+  String get tagCategoryEmotionsName => 'العواطف';
 
   @override
-  String get tagExcitedName => 'Excited';
+  String get tagExcitedName => 'متحمس';
 
   @override
-  String get tagGratefulName => 'Grateful';
+  String get tagGratefulName => 'ممتن';
 
   @override
-  String get tagCalmName => 'Calm';
+  String get tagCalmName => 'الهدوء';
 
   @override
-  String get tagTiredName => 'Tired';
+  String get tagTiredName => 'متعب';
 
   @override
-  String get tagAnxiousName => 'Anxious';
+  String get tagAnxiousName => 'قلق';
 
   @override
-  String get tagAnnoyedName => 'Annoyed';
+  String get tagAnnoyedName => 'منزعج';
 
   @override
   String get settingsStorageTitle => 'التخزين';
@@ -637,56 +643,58 @@ class AppLocalizationsAr extends AppLocalizations {
       'إن استعادة النسخة الاحتياطية سوف يؤدي إلى استبدال بياناتك الحالية!';
 
   @override
-  String get settingsBackupPasswordProtect => 'Password Protect Backups';
+  String get settingsBackupPasswordProtect =>
+      'حماية النسخ الاحتياطية بكلمة مرور';
 
   @override
-  String get backupEncryptedTitle => 'Encrypted Backup';
+  String get backupEncryptedTitle => 'النسخ الاحتياطي المشفرة';
 
   @override
-  String get backupEncryptedContent => 'This backup is password protected.';
+  String get backupEncryptedContent =>
+      'هذه النسخة الاحتياطية محمية بكلمة مرور.';
 
   @override
-  String get settingsAutoBackup => 'Automatic Backups';
+  String get settingsAutoBackup => 'النسخ الاحتياطية التلقائية';
 
   @override
-  String get settingsAutoBackupLocation => 'Backup Location';
+  String get settingsAutoBackupLocation => 'موقع النسخ الاحتياطي';
 
   @override
-  String get settingsAutoBackupInterval => 'Backup Interval';
+  String get settingsAutoBackupInterval => 'الفاصل الزمني للنسخ الاحتياطي';
 
   @override
-  String get settingsAutoBackupIntervalDaily => 'Daily';
+  String get settingsAutoBackupIntervalDaily => 'يوميا';
 
   @override
-  String get settingsAutoBackupIntervalWeekly => 'Weekly';
+  String get settingsAutoBackupIntervalWeekly => 'أسبوعيا';
 
   @override
-  String get settingsAutoBackupIntervalMonthly => 'Monthly';
+  String get settingsAutoBackupIntervalMonthly => 'شهريا';
 
   @override
-  String get settingsAutoBackupMaxCount => 'Backups To Keep';
+  String get settingsAutoBackupMaxCount => 'النسخ الاحتياطية للاحتفاظ بها';
 
   @override
-  String get settingsAutoBackupRequireCharging => 'Only While Charging';
+  String get settingsAutoBackupRequireCharging => 'فقط أثناء الشحن';
 
   @override
   String settingsBackupLast(Object time) {
-    return 'Last backup $time';
+    return 'آخر نسخة احتياطية $time';
   }
 
   @override
-  String get settingsBackupNever => 'Never backed up';
+  String get settingsBackupNever => 'لم يتم الاحتفاظ بنسخة احتياطية أبدًا';
 
   @override
   String settingsAutoBackupNext(Object time) {
-    return 'Next backup $time';
+    return 'النسخ الاحتياطي التالي $time';
   }
 
   @override
-  String get settingsAutoBackupKeepAll => 'All';
+  String get settingsAutoBackupKeepAll => 'الكل';
 
   @override
-  String get autoBackupFailedTitle => 'Backup Failed';
+  String get autoBackupFailedTitle => 'فشل النسخ الاحتياطي';
 
   @override
   String tranferStatus(Object percent) {
@@ -705,12 +713,12 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String encryptingBackupStatus(Object percent) {
-    return 'Encrypting Backup… $percent%';
+    return 'تشفير النسخة الاحتياطية… $percent%';
   }
 
   @override
   String decryptingBackupStatus(Object percent) {
-    return 'Decrypting Backup… $percent%';
+    return 'فك تشفير النسخة الاحتياطية… $percent%';
   }
 
   @override
@@ -755,7 +763,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get formatMyBrain => 'My Brain';
 
   @override
-  String get formatOneShot => 'OneShot';
+  String get formatOneShot => 'ون شوت';
 
   @override
   String get formatPixels => 'Pixels';
@@ -836,561 +844,557 @@ class AppLocalizationsAr extends AppLocalizations {
   String get licenseGPLv3 => 'GPL-3.0';
 
   @override
-  String get settingsOpenSourceLicenses => 'Open Source Licenses';
+  String get settingsOpenSourceLicenses => 'تراخيص مفتوحة المصدر';
 
   @override
   String get tagMoodTitle => 'المزاج';
 
   @override
-  String get selectTagTitle => 'Select Tag';
+  String get selectTagTitle => 'حدد العلامة';
 
   @override
-  String get labelPresentLabel => 'Present';
+  String get labelPresentLabel => 'الحاضر';
 
   @override
-  String get labelAbsentLabel => 'Absent';
+  String get labelAbsentLabel => 'غائب';
 
   @override
-  String get labelCoverageLabel => 'Coverage';
+  String get labelCoverageLabel => 'التغطية';
 
   @override
   String chartDistributionTitle(Object tag) {
-    return '$tag Distribution';
+    return 'توزيع $tag';
   }
 
   @override
-  String get shareAddToLogPickerTitle => 'Choose a log';
+  String get shareAddToLogPickerTitle => 'اختر إدخال اليوميات';
 
   @override
-  String get adaptiveEmptyDay => 'No entries for this day yet';
+  String get adaptiveEmptyDay => 'لا توجد إدخالات لهذا اليوم حتى الآن';
 
   @override
-  String get adaptiveNewEntry => 'Write an entry';
+  String get adaptiveNewEntry => 'اكتب إدخالا';
 
   @override
-  String get pageJournalTitle => 'Journal';
+  String get pageJournalTitle => 'مجلة';
 
   @override
-  String get coachPrompt1 => 'What made you smile today?';
+  String get coachPrompt1 => 'ما الذي جعلك تبتسم اليوم؟';
 
   @override
-  String get coachPrompt2 => 'What is one thing you learned today?';
+  String get coachPrompt2 => 'ما هو الشيء الوحيد الذي تعلمته اليوم؟';
 
   @override
-  String get coachPrompt3 => 'Who did you talk to today, and how did it feel?';
+  String get coachPrompt3 => 'مع من تحدثت اليوم وكيف كان شعورك؟';
 
   @override
-  String get coachPrompt4 => 'What are you grateful for right now?';
+  String get coachPrompt4 => 'ما الذي أنت ممتن له الآن؟';
 
   @override
-  String get coachPrompt5 => 'What took most of your energy today?';
+  String get coachPrompt5 => 'ما الذي استهلك معظم طاقتك اليوم؟';
 
   @override
-  String get coachPrompt6 => 'Describe a small moment you want to remember.';
+  String get coachPrompt6 => 'صف لحظة صغيرة تريد أن تتذكرها.';
 
   @override
-  String get coachPrompt7 => 'What would make tomorrow a good day?';
+  String get coachPrompt7 => 'ما الذي يجعل الغد يومًا جيدًا؟';
 
   @override
-  String get coachPrompt8 => 'What has been on your mind lately?';
+  String get coachPrompt8 => 'ما الذي كان يدور في ذهنك في الآونة الأخيرة؟';
 
   @override
-  String get coachPrompt9 => 'What did you do today just for yourself?';
+  String get coachPrompt9 => 'ماذا فعلت اليوم من أجل نفسك فقط؟';
 
   @override
-  String get coachPrompt10 => 'If today had a title, what would it be?';
+  String get coachPrompt10 => 'لو كان لليوم عنوان، ماذا سيكون؟';
 
   @override
-  String get pageMediaTitle => 'Media';
+  String get pageMediaTitle => 'وسائل الإعلام';
 
   @override
-  String get pageAtlasTitle => 'Atlas';
+  String get pageAtlasTitle => 'أطلس';
 
   @override
-  String get pageCoachTitle => 'Coach';
+  String get pageCoachTitle => 'مدرب';
 
   @override
-  String get noEntrySelected => 'No entry selected.';
+  String get noEntrySelected => 'لم يتم تحديد إدخال.';
 
   @override
-  String get entryShare => 'Share';
+  String get entryShare => 'شارك';
 
   @override
-  String get entryFavorite => 'Star';
+  String get entryFavorite => 'نجمة';
 
   @override
-  String get entryEdit => 'Edit';
+  String get entryEdit => 'تحرير';
 
   @override
-  String get entryPrevious => 'Previous entry';
+  String get entryPrevious => 'الإدخال السابق';
 
   @override
-  String get entryNext => 'Next entry';
+  String get entryNext => 'الإدخال التالي';
 
   @override
-  String get journalStories => 'Stories';
+  String get journalStories => 'قصص';
 
   @override
-  String get journalEntries => 'Entries';
+  String get journalEntries => 'إدخالات';
 
   @override
-  String get journalEmptyHint => 'Begin your diary by adding a new entry.';
+  String get journalEmptyHint => 'ابدأ يومياتك بإضافة إدخال جديد.';
 
   @override
-  String get storyToday => 'Today';
+  String get storyToday => 'اليوم';
 
   @override
-  String get storyThrowback => 'Throwback';
+  String get storyThrowback => 'إرتداد';
 
   @override
-  String get storyNoThrowback => 'No throwback today';
+  String get storyNoThrowback => 'لا يوجد ارتداد اليوم';
 
   @override
-  String get mediaFiles => 'Media files';
+  String get mediaFiles => 'ملفات الوسائط';
 
   @override
-  String get mediaEmpty => 'No photos yet.';
+  String get mediaEmpty => 'لا توجد صور بعد.';
 
   @override
-  String get mediaEmptyHint => 'Photos attached to entries will be shown here.';
+  String get mediaEmptyHint => 'سيتم عرض الصور المرفقة بالإدخالات هنا.';
 
   @override
-  String get atlasEmpty => 'No entries with a location.';
+  String get atlasEmpty => 'لا توجد إدخالات مع الموقع.';
 
   @override
-  String get atlasEmptyHint => 'Entries with a location will be shown here.';
+  String get atlasEmptyHint => 'سيتم عرض الإدخالات مع الموقع هنا.';
 
   @override
-  String get atlasShowAll => 'Show all entries';
+  String get atlasShowAll => 'إظهار كافة الإدخالات';
 
   @override
-  String get atlasMyLocation => 'My location';
+  String get atlasMyLocation => 'موقعي';
 
   @override
-  String get coachAll => 'All';
+  String get coachAll => 'الكل';
 
   @override
-  String get coachPrograms => 'Programs';
+  String get coachPrograms => 'البرامج';
 
   @override
-  String get coachTemplates => 'Templates';
+  String get coachTemplates => 'قوالب';
 
   @override
-  String get coachKindProgram => 'Program';
+  String get coachKindProgram => 'البرنامج';
 
   @override
-  String get coachKindTemplate => 'Template';
+  String get coachKindTemplate => 'القالب';
 
   @override
-  String get coachNoTemplates => 'No programs or templates.';
+  String get coachNoTemplates => 'لا توجد برامج أو قوالب.';
 
   @override
-  String get coachUseTemplate => 'Write with this template';
+  String get coachUseTemplate => 'اكتب بهذا القالب';
 
   @override
-  String get coachProgramEverydayTitle => 'Everyday moments';
+  String get coachProgramEverydayTitle => 'لحظات كل يوم';
 
   @override
   String get coachProgramEverydayDescription =>
-      'Five short questions, one a day. Each takes a minute or two and helps you see what made the day yours. A gentle way to build the habit of writing a little every day.';
+      'خمسة أسئلة قصيرة، واحد في اليوم. يستغرق كل منها دقيقة أو دقيقتين ويساعدك على معرفة ما الذي جعل يومك مميزًا. طريقة لطيفة لبناء عادة الكتابة قليلاً كل يوم.';
 
   @override
-  String get coachProgramReflectTitle => 'Looking inward';
+  String get coachProgramReflectTitle => 'النظر إلى الداخل';
 
   @override
   String get coachProgramReflectDescription =>
-      'One deeper question a week, for five weeks. Take your time with each: how you have been feeling, what wears you out, what you are grateful for.';
+      'سؤال أعمق في الأسبوع، لمدة خمسة أسابيع. خذ وقتك مع كل منها: ما الذي كنت تشعر به، ما الذي يرهقك، ما الذي تشعر بالامتنان له.';
 
   @override
-  String get searchFilters => 'Filters';
+  String get searchFilters => 'المرشحات';
 
   @override
-  String get searchFilterTags => 'Tags';
+  String get searchFilterTags => 'العلامات';
 
   @override
-  String get searchFilterStarred => 'Starred';
+  String get searchFilterStarred => 'المميزة بنجمة';
 
   @override
-  String get searchHint => 'Type to search, or pick a filter.';
+  String get searchHint => 'اكتب للبحث، أو اختر مرشحًا.';
 
   @override
-  String get locationTitle => 'Location';
+  String get locationTitle => 'الموقع';
 
   @override
-  String get locationName => 'Place name';
+  String get locationName => 'اسم المكان';
 
   @override
-  String get locationRemove => 'Remove';
+  String get locationRemove => 'إزالة';
 
   @override
-  String get locationServiceDisabled => 'Location services are turned off.';
+  String get locationServiceDisabled => 'تم إيقاف خدمات الموقع.';
 
   @override
-  String get locationPermissionDenied => 'Location permission was denied.';
+  String get locationPermissionDenied => 'تم رفض إذن تحديد الموقع.';
 
   @override
-  String get locationUnavailable => 'Could not get the current location.';
+  String get locationUnavailable => 'تعذر الحصول على الموقع الحالي.';
 
   @override
-  String get calendarJumpToToday => 'Jump to today';
+  String get calendarJumpToToday => 'انتقل إلى اليوم';
 
   @override
-  String get editorStartWriting => 'Start writing or choose a ';
+  String get editorStartWriting => 'ابدأ بالكتابة أو اختر أ ';
 
   @override
-  String get editorTemplateLink => 'Template';
+  String get editorTemplateLink => 'القالب';
 
   @override
   String get editorStartWritingEnd => '.';
 
   @override
-  String get templatePickerTitle => 'Choose a template';
+  String get templatePickerTitle => 'اختر قالبًا';
 
   @override
-  String get templateFeatured => 'Featured templates';
+  String get templateFeatured => 'قوالب مميزة';
 
   @override
-  String get templateMine => 'My templates';
+  String get templateMine => 'القوالب الخاصة بي';
 
   @override
-  String get templateDailyName => 'Daily review';
+  String get templateDailyName => 'المراجعة اليومية';
 
   @override
   String get templateDailyDescription =>
-      'What happened, how it felt, and what comes next.';
+      'ماذا حدث وكيف شعرت وماذا سيأتي بعد ذلك.';
 
   @override
   String get templateDailyText =>
-      '## What happened today\n\n\n## How I felt\n\n\n## Three things I\'m grateful for\n1. \n2. \n3. \n\n## Tomorrow\n';
+      '## ماذا حدث اليوم\n\n\n## كيف شعرت\n\n\n## ثلاثة أشياء أنا ممتن لها\n1. \n2. \n3. \n\n## غدا\n';
 
   @override
-  String get templateTravelName => 'Travel log';
+  String get templateTravelName => 'إدخال مذكرات السفر';
 
   @override
-  String get templateTravelDescription =>
-      'Places, moments and food from the road.';
+  String get templateTravelDescription => 'الأماكن واللحظات والطعام من الطريق.';
 
   @override
   String get templateTravelText =>
-      '## Where I went\n\n\n## The moment I remember most\n\n\n## What I ate\n\n\n## Plans for tomorrow\n';
+      '## أين ذهبت\n\n\n## أكثر لحظة أتذكرها\n\n\n## ما أكلته\n\n\n## خطط للغد\n';
 
   @override
-  String get templateReadingName => 'Reading notes';
+  String get templateReadingName => 'قراءة الملاحظات';
 
   @override
-  String get templateReadingDescription =>
-      'Quotes and thoughts from what you read.';
+  String get templateReadingDescription => 'اقتباسات وأفكار من ما تقرأه.';
 
   @override
   String get templateReadingText =>
-      '## Book\n\n\n## Where I am\n\n\n## Quotes\n> \n\n## My thoughts\n';
+      '## كتاب\n\n\n## أين أنا\n\n\n## اقتباسات\n> \n\n## أفكاري\n';
 
   @override
-  String get templateWeeklyName => 'Weekly review';
+  String get templateWeeklyName => 'مراجعة أسبوعية';
 
   @override
   String get templateWeeklyDescription =>
-      'Highlights, struggles and next week\'s focus.';
+      'أبرز الأحداث والنضالات والتركيز في الأسبوع المقبل.';
 
   @override
   String get templateWeeklyText =>
-      '## Highlights\n\n\n## What was hard\n\n\n## What I learned\n\n\n## Focus for next week\n';
+      '## أبرز\n\n\n##ما كان صعبا\n\n\n## ما تعلمته\n\n\n## التركيز للأسبوع المقبل\n';
 
   @override
-  String get entryDuplicate => 'Duplicate';
+  String get entryDuplicate => 'مكررة';
 
   @override
-  String get entryDuplicated => 'Entry duplicated';
+  String get entryDuplicated => 'الإدخال مكرر';
 
   @override
-  String get entrySaveAsTemplate => 'Save as template';
+  String get entrySaveAsTemplate => 'حفظ كقالب';
 
   @override
-  String get entrySavedAsTemplate => 'Saved as a template';
+  String get entrySavedAsTemplate => 'تم الحفظ كقالب';
 
   @override
-  String get storyStatistics => 'Statistics';
+  String get storyStatistics => 'الإحصائيات';
 
   @override
-  String get storyMoodChart => 'Mood chart';
+  String get storyMoodChart => 'مخطط المزاج';
 
   @override
   String storyEntriesAndDays(Object days, Object entries) {
-    return '$entries entries · $days days';
+    return 'إدخالات $entries · أيام $days';
   }
 
   @override
-  String get storyThisYear => 'This year';
+  String get storyThisYear => 'هذا العام';
 
   @override
-  String get storyLastYear => 'Last year';
+  String get storyLastYear => 'العام الماضي';
 
   @override
-  String get storyTapToOpen => 'Tap a day to open it';
+  String get storyTapToOpen => 'اضغط على يوم لفتحه';
 
   @override
-  String get settingsGeneralTitle => 'General';
+  String get settingsGeneralTitle => 'عام';
 
   @override
-  String get settingsDataTitle => 'Data & storage';
+  String get settingsDataTitle => 'البيانات والتخزين';
 
   @override
-  String get settingsStoriesTitle => 'Stories';
+  String get settingsStoriesTitle => 'قصص';
 
   @override
-  String get settingsHelpTitle => 'Help & about';
+  String get settingsHelpTitle => 'مساعدة وحول';
 
   @override
-  String get weatherTitle => 'Weather';
+  String get weatherTitle => 'الطقس';
 
   @override
-  String get weatherClear => 'Clear';
+  String get weatherClear => 'واضح';
 
   @override
-  String get weatherPartlyCloudy => 'Partly cloudy';
+  String get weatherPartlyCloudy => 'غائم جزئيا';
 
   @override
-  String get weatherCloudy => 'Cloudy';
+  String get weatherCloudy => 'غائم';
 
   @override
-  String get weatherFog => 'Fog';
+  String get weatherFog => 'ضباب';
 
   @override
-  String get weatherDrizzle => 'Drizzle';
+  String get weatherDrizzle => 'رذاذ';
 
   @override
-  String get weatherRain => 'Rain';
+  String get weatherRain => 'المطر';
 
   @override
-  String get weatherSnow => 'Snow';
+  String get weatherSnow => 'ثلج';
 
   @override
-  String get weatherStorm => 'Thunderstorm';
+  String get weatherStorm => 'عاصفة رعدية';
 
   @override
-  String get weatherFetch => 'Get weather for this entry';
+  String get weatherFetch => 'الحصول على الطقس لهذا الإدخال';
 
   @override
-  String get weatherNeedsLocation => 'Add a location with coordinates first.';
+  String get weatherNeedsLocation => 'أضف موقعًا بالإحداثيات أولاً.';
 
   @override
-  String get weatherUnavailable =>
-      'Weather is unavailable for this place and time.';
+  String get weatherUnavailable => 'الطقس غير متوفر لهذا المكان والوقت.';
 
   @override
-  String get weatherRemove => 'Remove weather';
+  String get weatherRemove => 'إزالة الطقس';
 
   @override
-  String get activityTitle => 'Activity';
+  String get activityTitle => 'النشاط';
 
   @override
-  String get activityStill => 'Still';
+  String get activityStill => 'لا يزال';
 
   @override
-  String get activityWalking => 'Walking';
+  String get activityWalking => 'المشي';
 
   @override
-  String get activityRunning => 'Running';
+  String get activityRunning => 'الجري';
 
   @override
-  String get activityCycling => 'Cycling';
+  String get activityCycling => 'ركوب الدراجات';
 
   @override
-  String get activityVehicle => 'In a vehicle';
+  String get activityVehicle => 'في مركبة';
 
   @override
-  String get activityFlying => 'Flying';
+  String get activityFlying => 'الطيران';
 
   @override
-  String get activityExercise => 'Exercise';
+  String get activityExercise => 'تمرين';
 
   @override
-  String get activityDetect => 'Detect current activity';
+  String get activityDetect => 'كشف النشاط الحالي';
 
   @override
-  String get activityDetectFailed => 'Couldn\'t detect an activity.';
+  String get activityDetectFailed => 'تعذر اكتشاف النشاط.';
 
   @override
-  String get activityRemove => 'Remove activity';
+  String get activityRemove => 'إزالة النشاط';
 
   @override
-  String get settingsAutoAddTitle => 'Add automatically';
+  String get settingsAutoAddTitle => 'أضف تلقائيا';
 
   @override
-  String get settingsAutoAddLocation => 'Location';
+  String get settingsAutoAddLocation => 'الموقع';
 
   @override
-  String get settingsAutoAddWeather => 'Weather';
+  String get settingsAutoAddWeather => 'الطقس';
 
   @override
-  String get settingsAutoAddHint =>
-      'New entries get these filled in when they are created.';
+  String get settingsAutoAddHint => 'يتم ملء الإدخالات الجديدة عند إنشائها.';
 
   @override
-  String get settingsTemperatureUnit => 'Temperature unit';
+  String get settingsTemperatureUnit => 'وحدة درجة الحرارة';
 
   @override
-  String get settingsCelsius => 'Celsius (°C)';
+  String get settingsCelsius => 'مئوية (درجة مئوية)';
 
   @override
-  String get settingsFahrenheit => 'Fahrenheit (°F)';
+  String get settingsFahrenheit => 'فهرنهايت (درجة فهرنهايت)';
 
   @override
-  String get moodGreat => 'Great';
+  String get moodGreat => 'عظيم';
 
   @override
-  String get moodGood => 'Good';
+  String get moodGood => 'جيد';
 
   @override
-  String get moodOkay => 'Okay';
+  String get moodOkay => 'حسنا';
 
   @override
-  String get moodBad => 'Bad';
+  String get moodBad => 'سيئة';
 
   @override
-  String get moodAwful => 'Awful';
+  String get moodAwful => 'فظيعة';
 
   @override
-  String get locationSearchHint => 'Search for a place';
+  String get locationSearchHint => 'ابحث عن مكان';
 
   @override
-  String get locationSearchEmpty => 'No places found';
+  String get locationSearchEmpty => 'لم يتم العثور على أماكن';
 
   @override
-  String get settingsWallpaper => 'Wallpaper';
+  String get settingsWallpaper => 'ورق جدران';
 
   @override
-  String get wallpaperNone => 'None';
+  String get wallpaperNone => 'لا شيء';
 
   @override
-  String get wallpaperDots => 'Dots';
+  String get wallpaperDots => 'النقاط';
 
   @override
-  String get wallpaperGrid => 'Grid';
+  String get wallpaperGrid => 'الشبكة';
 
   @override
-  String get wallpaperLines => 'Lines';
+  String get wallpaperLines => 'خطوط';
 
   @override
-  String get wallpaperPhoto => 'Photo…';
+  String get wallpaperPhoto => 'الصورة…';
 
   @override
-  String get settingsFontFamily => 'Font';
+  String get settingsFontFamily => 'الخط';
 
   @override
-  String get fontSystem => 'System';
+  String get fontSystem => 'النظام';
 
   @override
-  String get fontSerif => 'Serif';
+  String get fontSerif => 'شريف';
 
   @override
-  String get fontMono => 'Monospace';
+  String get fontMono => 'مونوسبيس';
 
   @override
-  String get settingsFontSize => 'Font size';
+  String get settingsFontSize => 'حجم الخط';
 
   @override
-  String get fontSizeSmall => 'Small';
+  String get fontSizeSmall => 'صغير';
 
   @override
-  String get fontSizeMedium => 'Medium';
+  String get fontSizeMedium => 'متوسط';
 
   @override
-  String get fontSizeLarge => 'Large';
+  String get fontSizeLarge => 'كبير';
 
   @override
-  String get fontSizeExtraLarge => 'Extra large';
+  String get fontSizeExtraLarge => 'كبيرة جدًا';
 
   @override
-  String get settingsLineSpacing => 'Line spacing';
+  String get settingsLineSpacing => 'تباعد الأسطر';
 
   @override
-  String get lineSpacingCompact => 'Compact';
+  String get lineSpacingCompact => 'مدمج';
 
   @override
-  String get lineSpacingNormal => 'Normal';
+  String get lineSpacingNormal => 'عادي';
 
   @override
-  String get lineSpacingRelaxed => 'Relaxed';
+  String get lineSpacingRelaxed => 'استرخاء';
 
   @override
-  String get moodAssociationsTitle => 'What makes me feel…';
+  String get moodAssociationsTitle => 'ما الذي يجعلني أشعر…';
 
   @override
   String moodAssociationsCount(int matching, int total) {
-    return '$matching of $total entries';
+    return '$matching لإدخالات $total';
   }
 
   @override
-  String get videoRecord => 'Record a video';
+  String get videoRecord => 'سجل مقطع فيديو';
 
   @override
-  String get videoChoose => 'Choose a video';
+  String get videoChoose => 'اختر فيديو';
 
   @override
-  String get audioRecordTitle => 'Record a voice note';
+  String get audioRecordTitle => 'سجل ملاحظة صوتية';
 
   @override
-  String get audioChoose => 'Choose an audio file';
+  String get audioChoose => 'اختر ملفًا صوتيًا';
 
   @override
-  String get audioStart => 'Record';
+  String get audioStart => 'سجل';
 
   @override
-  String get audioStop => 'Stop and save';
+  String get audioStop => 'توقف واحفظ';
 
   @override
   String get audioPermissionDenied =>
-      'Microphone access is off. Allow it in the system settings.';
+      'تم إيقاف الوصول إلى الميكروفون. السماح بذلك في إعدادات النظام.';
 
   @override
-  String get mediaTooLarge => 'This video is too large to attach.';
+  String get mediaTooLarge => 'هذا الفيديو كبير جدًا بحيث لا يمكن إرفاقه.';
 
   @override
-  String get mediaUnavailable =>
-      'This attachment is not available on this device.';
+  String get mediaUnavailable => 'هذا المرفق غير متوفر على هذا الجهاز.';
 
   @override
-  String get widgetDone => 'Today\'s entry is written';
+  String get widgetDone => 'دخول اليوم مكتوب';
 
   @override
-  String get widgetPending => 'How was your day?';
+  String get widgetPending => 'كيف كان يومك؟';
 
   @override
-  String get widgetWrite => 'Write';
+  String get widgetWrite => 'اكتب';
 
   @override
-  String get insertChecklist => 'Checklist';
+  String get insertChecklist => 'قائمة التحقق';
 
   @override
-  String get insertNumberedList => 'Numbered list';
+  String get insertNumberedList => 'قائمة مرقمة';
 
   @override
-  String get insertTable => 'Table';
+  String get insertTable => 'الجدول';
 
   @override
-  String get insertDivider => 'Divider';
+  String get insertDivider => 'مقسم';
 
   @override
-  String get insertCodeBlock => 'Code block';
+  String get insertCodeBlock => 'كتلة التعليمات البرمجية';
 
   @override
-  String get journalSortTitle => 'Sort entries';
+  String get journalSortTitle => 'فرز الإدخالات';
 
   @override
-  String get journalSortUpdated => 'Last updated';
+  String get journalSortUpdated => 'آخر تحديث';
 
   @override
-  String get settingsTimeFormat => 'Time format';
+  String get settingsTimeFormat => 'تنسيق الوقت';
 
   @override
-  String get settingsDayStart => 'New entries count for the day before until';
+  String get settingsDayStart =>
+      'يتم احتساب الإدخالات الجديدة لليوم السابق حتى';
 
   @override
-  String get settingsDayAskUntil => 'Then ask which day until';
+  String get settingsDayAskUntil => 'ثم اسأل في أي يوم حتى';
 
   @override
-  String get settingsDayStartMidnight => 'Off';
+  String get settingsDayStartMidnight => 'إيقاف';
 
   @override
   String settingsDayStartAt(int hour) {
@@ -1399,268 +1403,271 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get settingsDayStartHint =>
-      'Every entry keeps the day it belongs to next to the time it was written, and you can change that day in the editor at any time. These hours only pick the day for new entries, so changing them moves no existing entry.';
+      'يحتفظ كل إدخال باليوم الذي ينتمي إليه بجوار وقت كتابته، ويمكنك تغيير ذلك اليوم في المحرر في أي وقت. تختار هذه الساعات اليوم للإدخالات الجديدة فقط، لذا فإن تغييرها لا يؤدي إلى نقل أي إدخال موجود.';
 
   @override
   String get lateNightBadge =>
-      'Written late at night, counted for the day before';
+      'مكتوب في وقت متأخر من الليل، ويحسب لليوم السابق';
 
   @override
   String editorDayAsk(String time) {
-    return 'Written at $time. Which day is it for?';
+    return 'مكتوب في $time. لأي يوم هو؟';
   }
 
   @override
   String editorDayYesterday(String date) {
-    return '$date (yesterday)';
+    return '$date (أمس)';
   }
 
   @override
   String editorDayToday(String date) {
-    return '$date (today)';
+    return '$date (اليوم)';
   }
 
   @override
   String editorWrittenAt(String when) {
-    return 'Written $when';
+    return 'مكتوب $when';
   }
 
   @override
-  String get timeFormat12 => '12-hour';
+  String get timeFormat12 => '12 ساعة';
 
   @override
-  String get timeFormat24 => '24-hour';
+  String get timeFormat24 => '24 ساعة';
 
   @override
-  String get settingsReminderDays => 'Remind me on';
+  String get settingsReminderDays => 'ذكرني على';
 
   @override
-  String get locationRecent => 'Recent places';
+  String get locationRecent => 'الأماكن الأخيرة';
 
   @override
-  String get shareImage => 'Share image';
+  String get shareImage => 'مشاركة الصورة';
 
   @override
-  String get shareSaveImage => 'Save image';
+  String get shareSaveImage => 'حفظ الصورة';
 
   @override
-  String get shareSaved => 'Image saved';
+  String get shareSaved => 'تم حفظ الصورة';
 
   @override
-  String get deletedTitle => 'Recently deleted';
+  String get deletedTitle => 'تم حذفه مؤخرًا';
 
   @override
-  String get deletedNone => 'Nothing deleted recently';
+  String get deletedNone => 'لم يتم حذف أي شيء مؤخرًا';
 
   @override
   String deletedHint(int days) {
-    return 'Deleted entries stay here for $days days, then are erased.';
+    return 'تبقى الإدخالات المحذوفة هنا لمدة $days، ثم يتم مسحها.';
   }
 
   @override
   String deletedDaysLeft(int days) {
-    return '$days days left';
+    return '$days أيام متبقية';
   }
 
   @override
-  String get deletedRestore => 'Restore';
+  String get deletedRestore => 'استعادة';
 
   @override
-  String get deletedDeleteForever => 'Delete forever';
+  String get deletedDeleteForever => 'حذف إلى الأبد';
 
   @override
   String get deletedDeleteForeverDescription =>
-      'The entry and its attachments are erased. This cannot be undone.';
+      'يتم مسح الإدخال ومرفقاته. لا يمكن التراجع عن هذا.';
 
   @override
-  String get deletedEmpty => 'Empty';
+  String get deletedEmpty => 'فارغ';
 
   @override
   String get deletedEmptyDescription =>
-      'Erase every entry in Recently deleted? This cannot be undone.';
+      'هل تريد مسح كل إدخال في المحذوفة مؤخرًا؟ لا يمكن التراجع عن هذا.';
 
   @override
   String get formatJson => 'JSON';
 
   @override
-  String get randomTitle => 'Random walk';
+  String get randomTitle => 'المشي العشوائي';
 
   @override
-  String get randomSubtitle => 'Open a past entry';
+  String get randomSubtitle => 'افتح الإدخال السابق';
 
   @override
-  String get randomNext => 'Another';
+  String get randomNext => 'آخر';
 
   @override
-  String get randomAll => 'All';
+  String get randomAll => 'الكل';
 
   @override
-  String get randomWithPhotos => 'With photos';
+  String get randomWithPhotos => 'مع الصور';
 
   @override
-  String get randomGoodDays => 'Good days';
+  String get randomGoodDays => 'أيام جيدة';
 
   @override
-  String get randomEmpty => 'No entries to pick from';
+  String get randomEmpty => 'لا توجد إدخالات للاختيار من بينها';
 
   @override
-  String get reviewWeekTitle => 'This week';
+  String get reviewWeekTitle => 'هذا الاسبوع';
 
   @override
-  String get reviewWeekSubtitle => 'Your week so far';
+  String get reviewWeekSubtitle => 'أسبوعك حتى الآن';
 
   @override
-  String get reviewYearTitle => 'This year';
+  String get reviewYearTitle => 'هذا العام';
 
   @override
-  String get reviewEmpty => 'Nothing written yet';
+  String get reviewEmpty => 'لا شيء مكتوب بعد';
 
   @override
-  String get reviewEntries => 'Entries';
+  String get reviewEntries => 'إدخالات';
 
   @override
-  String get reviewDaysWritten => 'Days written';
+  String get reviewDaysWritten => 'أيام مكتوبة';
 
   @override
-  String get reviewWords => 'Words';
+  String get reviewWords => 'كلمات';
 
   @override
-  String get reviewPhotos => 'Photos';
+  String get reviewPhotos => 'صور';
 
   @override
-  String get reviewLongestRun => 'Longest run of days';
+  String get reviewLongestRun => 'أطول فترة من الأيام';
 
   @override
-  String get reviewAverageMood => 'Average mood';
+  String get reviewAverageMood => 'متوسط المزاج';
 
   @override
-  String get reviewFavorites => 'Most often';
+  String get reviewFavorites => 'في أغلب الأحيان';
 
   @override
-  String get reviewByMonth => 'By month';
+  String get reviewByMonth => 'بالشهر';
 
   @override
-  String get reviewHighlight => 'Highlight';
+  String get reviewHighlight => 'تسليط الضوء';
 
   @override
-  String get yearInPixels => 'Year in pixels';
+  String get yearInPixels => 'السنة بالبكسل';
 
   @override
-  String get capsuleSeal => 'Seal as a time capsule';
+  String get capsuleSeal => 'ختم ككبسولة زمنية';
 
   @override
-  String get capsuleTitle => 'Time capsule';
+  String get capsuleTitle => 'كبسولة زمنية';
 
   @override
   String capsuleOpensOn(Object date) {
-    return 'Opens on $date';
+    return 'يفتح على $date';
   }
 
   @override
   String capsuleWrittenOn(Object date) {
-    return 'Written on $date';
+    return 'مكتوب على $date';
   }
 
   @override
-  String get capsuleOpenEarly => 'Open early';
+  String get capsuleOpenEarly => 'فتح في وقت مبكر';
 
   @override
-  String get capsuleOpenEarlyDescription =>
-      'The capsule opens now and stays open.';
+  String get capsuleOpenEarlyDescription => 'تفتح الكبسولة الآن وتبقى مفتوحة.';
 
   @override
-  String get capsuleOpened => 'Time capsule opened';
+  String get capsuleOpened => 'فتحت كبسولة الزمن';
 
   @override
-  String get templateMorningName => 'Morning pages';
+  String get templateMorningName => 'صفحات الصباح';
 
   @override
-  String get templateMorningDescription => 'Set up the day in three minutes';
+  String get templateMorningDescription => 'قم بإعداد اليوم في ثلاث دقائق';
 
   @override
   String get templateMorningText =>
-      '## Three things I want to do well today\n1. \n2. \n3. \n\n## Something I look forward to\n\n## A note to myself\n';
+      '## ثلاثة أشياء أريد أن أفعلها بشكل جيد اليوم\n1. \n2. \n3. \n\n## شيء أتطلع إليه\n\n##ملاحظة لنفسي\n';
 
   @override
-  String get templateEveningName => 'Evening review';
+  String get templateEveningName => 'مراجعة مسائية';
 
   @override
-  String get templateEveningDescription => 'Close the day with what went well';
+  String get templateEveningDescription => 'اختتم اليوم بما سار على ما يرام';
 
   @override
   String get templateEveningText =>
-      '## Three good things today\n1. \n2. \n3. \n\n## What I learned\n\n## What could go better tomorrow\n';
+      '## ثلاثة أشياء جيدة اليوم\n1. \n2. \n3. \n\n## ما تعلمته\n\n## ما الذي يمكن أن يكون أفضل غدًا\n';
 
   @override
-  String get routineMorning => 'Good morning';
+  String get routineMorning => 'صباح الخير';
 
   @override
-  String get routineEvening => 'Evening review';
+  String get routineEvening => 'مراجعة مسائية';
 
   @override
-  String get settingsRoutinePrompts => 'Morning and evening prompts';
+  String get settingsRoutinePrompts => 'أذكار الصباح والمساء';
 
   @override
   String get settingsRoutinePromptsHint =>
-      'Suggest the morning or evening template in Stories';
+      'اقترح قالب الصباح أو المساء في القصص';
 
   @override
-  String get checkInTitle => 'Quick check-in';
+  String get checkInTitle => 'تسجيل وصول سريع';
 
   @override
-  String get checkInSubtitle => 'Mood in two taps';
+  String get checkInSubtitle => 'المزاج في نقرتين';
 
   @override
-  String get checkInMood => 'How do you feel?';
+  String get checkInMood => 'كيف تشعر؟';
 
   @override
-  String get checkInActivity => 'What are you doing?';
+  String get checkInActivity => 'ماذا تفعل؟';
 
   @override
-  String get checkInNote => 'A line about it (optional)';
+  String get checkInNote => 'سطر عنها (اختياري)';
 
   @override
-  String get checkInSave => 'Save';
+  String get checkInSave => 'حفظ';
 
   @override
   String editorWordCount(int words, int characters) {
-    return '$words words · $characters characters';
+    return 'كلمات $words · أحرف $characters';
   }
 
   @override
-  String get coachProgramEverydayTagline => 'Notice the small things in a day.';
+  String get coachProgramEverydayTagline => 'لاحظ الأشياء الصغيرة في يوم واحد.';
 
   @override
-  String get coachProgramReflectTagline => 'Slow down and listen to yourself.';
+  String get coachProgramReflectTagline => 'تمهل واستمع لنفسك.';
 
   @override
-  String get coachDuration => 'Duration';
+  String get coachDuration => 'المدة';
 
   @override
-  String get coachInterval => 'Interval';
+  String get coachInterval => 'الفاصل الزمني';
 
   @override
-  String get coachDifficulty => 'Difficulty';
+  String get coachDifficulty => 'صعوبة';
 
   @override
-  String get coachIntervalDaily => 'Daily';
+  String get coachIntervalDaily => 'يوميا';
 
   @override
-  String get coachIntervalWeekly => 'Weekly';
+  String get coachIntervalWeekly => 'أسبوعيا';
 
   @override
-  String get coachDifficultyBeginner => 'Beginner';
+  String get coachDifficultyBeginner => 'مبتدئ';
 
   @override
-  String get coachDifficultyIntermediate => 'Intermediate';
+  String get coachDifficultyIntermediate => 'متوسط';
 
   @override
   String coachDurationDays(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count days',
-      one: '1 day',
+      other: '$count يوم',
+      many: '$count يومًا',
+      few: '$count أيام',
+      two: 'يومان',
+      one: 'يوم واحد',
+      zero: '$count يوم',
     );
     return '$_temp0';
   }
@@ -1670,1055 +1677,1056 @@ class AppLocalizationsAr extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count weeks',
-      one: '1 week',
+      other: '$count أسبوع',
+      many: '$count أسبوعًا',
+      few: '$count أسابيع',
+      two: 'أسبوعان',
+      one: 'أسبوع واحد',
+      zero: '$count أسبوع',
     );
     return '$_temp0';
   }
 
   @override
   String coachDayN(int n) {
-    return 'Day $n';
+    return 'يوم $n';
   }
 
   @override
   String coachWeekN(int n) {
-    return 'Week $n';
+    return 'الأسبوع $n';
   }
 
   @override
-  String get coachEnroll => 'Enroll';
+  String get coachEnroll => 'تسجيل';
 
   @override
-  String get coachEndProgram => 'End program';
+  String get coachEndProgram => 'نهاية البرنامج';
 
   @override
-  String get coachAuthor => 'Author';
+  String get coachAuthor => 'المؤلف';
 
   @override
-  String get coachAuthorBio => 'Prompts written for this app.';
+  String get coachAuthorBio => 'المطالبات المكتوبة لهذا التطبيق.';
 
   @override
-  String get coachEnrolledTip =>
-      'All set! Your questions will show up in Stories.';
+  String get coachEnrolledTip => 'كل شيء جاهز! ستظهر أسئلتك في القصص.';
 
   @override
-  String get coachGoToStories => 'Go to Stories';
+  String get coachGoToStories => 'اذهب إلى القصص';
 
   @override
-  String get coachAnswerHint => 'Write your answer…';
+  String get coachAnswerHint => 'أكتب إجابتك...';
 
   @override
-  String get storyWrapUp => 'That\'s all for today.';
+  String get storyWrapUp => 'هذا كل شيء لهذا اليوم.';
 
   @override
-  String get storyTapToClose => 'Tap to close';
+  String get storyTapToClose => 'انقر للإغلاق';
 
   @override
-  String get coachAnswerDone => 'Done';
+  String get coachAnswerDone => 'تم';
 
   @override
-  String get coachAnswered => 'Answered, tap to open';
+  String get coachAnswered => 'تمت الإجابة، انقر للفتح';
 
   @override
-  String get coachAnsweredEarlier => 'Answered';
+  String get coachAnsweredEarlier => 'أجاب';
 
   @override
-  String get locationLocating => 'Locating…';
+  String get locationLocating => 'تحديد موقع…';
 
   @override
-  String get locationPickPlace => 'Pick a place';
+  String get locationPickPlace => 'اختر مكانا';
 
   @override
-  String get locationPlacesHint => 'Address or name of the place';
+  String get locationPlacesHint => 'العنوان أو إسم المكان';
 
   @override
-  String get locationCustom => 'Custom place';
+  String get locationCustom => 'مكان مخصص';
 
   @override
-  String get locationCurrent => 'Current location';
+  String get locationCurrent => 'الموقع الحالي';
 
   @override
-  String get locationSaved => 'Saved places';
+  String get locationSaved => 'الأماكن المحفوظة';
 
   @override
-  String get locationSearchResults => 'Search results';
+  String get locationSearchResults => 'نتائج البحث';
 
   @override
-  String get locationNearby => 'Nearby places';
+  String get locationNearby => 'الأماكن القريبة';
 
   @override
-  String get locationRename => 'Rename';
+  String get locationRename => 'إعادة تسمية';
 
   @override
-  String get locationSavePlace => 'Save place';
+  String get locationSavePlace => 'حفظ المكان';
 
   @override
-  String get locationUnsavePlace => 'Remove from saved places';
+  String get locationUnsavePlace => 'إزالة من الأماكن المحفوظة';
 
   @override
-  String get shareAs => 'Share as…';
+  String get shareAs => 'مشاركة باسم...';
 
   @override
-  String get shareAsImage => 'Image';
+  String get shareAsImage => 'صورة';
 
   @override
-  String get shareAsZip => 'ZIP with the original media';
+  String get shareAsZip => 'ZIP مع الوسائط الأصلية';
 
   @override
-  String get shareAsPlainText => 'Plain text';
+  String get shareAsPlainText => 'نص عادي';
 
   @override
   String get shareAsHtml => 'HTML';
 
   @override
-  String get onboardWelcomeTitle => 'Welcome to AID Diary';
+  String get onboardWelcomeTitle => 'مرحبا بكم في AID Diary';
 
   @override
   String get onboardWelcomeText =>
-      'Start here, or connect this device to one you already use.';
+      'ابدأ هنا، أو قم بتوصيل هذا الجهاز بجهاز تستخدمه بالفعل.';
 
   @override
-  String get onboardStart => 'Start writing';
+  String get onboardStart => 'ابدأ بالكتابة';
 
   @override
-  String get helpFaq => 'Frequently asked questions';
+  String get helpFaq => 'الأسئلة المتداولة';
 
   @override
-  String get helpFaq1Q => 'Where is my diary stored?';
+  String get helpFaq1Q => 'أين يتم تخزين مذكراتي؟';
 
   @override
   String get helpFaq1A =>
-      'Your diary is stored on this device. It reaches other devices or storage only when you enable sync, share or export it. Sync is end-to-end encrypted.';
+      'يتم تخزين يومياتك على هذا الجهاز. ولا يصل إلى الأجهزة أو وحدات التخزين الأخرى إلا عند تمكين المزامنة أو المشاركة أو التصدير. المزامنة مشفرة من طرف إلى طرف.';
 
   @override
-  String get helpFaq2Q => 'How do I keep a copy or move to a new device?';
+  String get helpFaq2Q => 'كيف يمكنني الاحتفاظ بنسخة أو نقلها إلى جهاز جديد؟';
 
   @override
   String get helpFaq2A =>
-      'Connect to an existing device in Settings → Data & storage → Sync and confirm authorization on the device that has your diary. Both devices remain usable. You can also create a backup and restore it on another device.';
+      'اتصل بجهاز موجود في الإعدادات → البيانات والتخزين → مزامنة وتأكيد التفويض على الجهاز الذي يحتوي على مذكراتك. يبقى كلا الجهازين صالحين للاستخدام. يمكنك أيضًا إنشاء نسخة احتياطية واستعادتها على جهاز آخر.';
 
   @override
-  String get helpFaq3Q => 'Can I bring in entries from other diary apps?';
+  String get helpFaq3Q => 'هل يمكنني إحضار إدخالات من تطبيقات اليوميات الأخرى؟';
 
   @override
   String get helpFaq3A =>
-      'Yes: in Settings → Data & storage, import exports from Daylio, Diarium, Diaro, DayBook, My Brain, OneShot and Pixels, or a JSON export.';
+      'نعم: في الإعدادات ← البيانات والتخزين، قم باستيراد الصادرات من Daylio، وDiarium، وDiaro، وDayBook، وMy Brain، وOneShot، وPixels، أو تصدير JSON.';
 
   @override
-  String get helpFaq4Q => 'How do coach programs work?';
+  String get helpFaq4Q => 'كيف تعمل برامج المدرب؟';
 
   @override
   String get helpFaq4A =>
-      'Enroll in a program on the Coach page. Each day or week a new question waits in Stories; your answer is saved as an entry.';
+      'قم بالتسجيل في برنامج على صفحة المدرب. كل يوم أو أسبوع ينتظرك سؤال جديد في القصص؛ يتم حفظ إجابتك كإدخال.';
 
   @override
-  String get helpFaq5Q => 'What if I forget my passcode?';
+  String get helpFaq5Q => 'ماذا لو نسيت رمز المرور الخاص بي؟';
 
   @override
   String get helpFaq5A =>
-      'The passcode cannot be recovered, so keep a backup of your diary.';
+      'لا يمكن استعادة رمز المرور، لذا احتفظ بنسخة احتياطية من مذكراتك.';
 
   @override
-  String get helpPrivacy => 'Privacy';
+  String get helpPrivacy => 'الخصوصية';
 
   @override
   String get helpPrivacyText =>
-      'Diary content and media stay on this device unless you enable encrypted sync or share/export them. Maps, place lookup and weather use the configured services and send the location or search query needed for that request, not diary text.';
+      'يظل محتوى اليوميات والوسائط على هذا الجهاز ما لم تقم بتمكين المزامنة المشفرة أو مشاركتها/تصديرها. تستخدم الخرائط والبحث عن الأماكن والطقس الخدمات التي تم تكوينها وترسل الموقع أو استعلام البحث المطلوب لهذا الطلب، وليس نص اليوميات.';
 
   @override
-  String get photoMetaTitle => 'Use the photo\'s details?';
+  String get photoMetaTitle => 'استخدام تفاصيل الصورة؟';
 
   @override
   String photoMetaDateAndPlace(String date, String place) {
-    return 'Count this entry for $date and set its place to $place, as recorded in the photo?';
+    return 'إحسب هذا الإدخال لـ $date وأضع مكانه $place كما هو مسجل في الصورة؟';
   }
 
   @override
   String photoMetaDate(String date) {
-    return 'Count this entry for $date, when the photo was taken?';
+    return 'احسب هذا الإدخال لـ $date، متى تم التقاط الصورة؟';
   }
 
   @override
   String photoMetaPlace(String place) {
-    return 'Set this entry\'s place to $place, where the photo was taken?';
+    return 'اضبط مكان هذا الإدخال على $place، أين تم التقاط الصورة؟';
   }
 
   @override
-  String get photoMetaApply => 'Use them';
+  String get photoMetaApply => 'استخدمها';
 
   @override
-  String get quickWriteTitle => 'Quick write';
+  String get quickWriteTitle => 'الكتابة السريعة';
 
   @override
-  String get quickWriteText => 'Tap to start a new entry.';
+  String get quickWriteText => 'انقر لبدء إدخال جديد.';
 
   @override
-  String get settingsQuickWriteTitle => 'Quick write in notifications';
+  String get settingsQuickWriteTitle => 'الكتابة السريعة في الإخطارات';
 
   @override
   String get settingsQuickWriteDescription =>
-      'Keep a notification that opens a new entry.';
+      'احتفظ بإشعار يفتح إدخالاً جديدًا.';
 
   @override
-  String get settingsNudgesTitle => 'Nudge me after a quiet stretch';
+  String get settingsNudgesTitle => 'ادفعني بعد فترة هادئة';
 
   @override
   String settingsNudgesDescription(int days) {
-    return 'A gentle reminder when you haven\'t written for $days days.';
+    return 'تذكير لطيف عندما لا تكتب لأيام $days.';
   }
 
   @override
-  String get nudgeTitle => 'It\'s been a while';
+  String get nudgeTitle => 'لقد مضى وقت طويل';
 
   @override
-  String get nudgeMonday => 'A new week: what are you looking forward to?';
+  String get nudgeMonday => 'أسبوع جديد: ما الذي تتطلع إليه؟';
 
   @override
-  String get nudgeTuesday => 'Two lines are enough. How are you today?';
+  String get nudgeTuesday => 'سطرين يكفي . كيف حالك اليوم؟';
 
   @override
-  String get nudgeWednesday =>
-      'Halfway through the week. What stood out so far?';
+  String get nudgeWednesday => 'في منتصف الأسبوع. ما الذي برز حتى الآن؟';
 
   @override
-  String get nudgeThursday => 'Anything small worth keeping from today?';
+  String get nudgeThursday => 'أي شيء صغير يستحق الاحتفاظ به من اليوم؟';
 
   @override
-  String get nudgeFriday => 'The week is wrapping up. Note one good moment.';
+  String get nudgeFriday => 'الأسبوع على وشك الانتهاء. لاحظ لحظة واحدة جيدة.';
 
   @override
-  String get nudgeSaturday => 'A slow Saturday is a good day to write.';
+  String get nudgeSaturday => 'يوم السبت البطيء هو يوم جيد للكتابة.';
 
   @override
-  String get nudgeSunday => 'Look back on the week before it ends.';
+  String get nudgeSunday => 'انظر إلى الوراء في الأسبوع الذي سبق أن ينتهي.';
 
   @override
-  String get photoWidgetEmpty => 'Photos you add to entries show up here.';
+  String get photoWidgetEmpty => 'تظهر هنا الصور التي تضيفها إلى الإدخالات.';
 
   @override
-  String get channelReminders => 'Reminders';
+  String get channelReminders => 'تذكيرات';
 
   @override
-  String get channelOnThisDay => 'On this day';
+  String get channelOnThisDay => 'في هذا اليوم';
 
   @override
-  String get channelCoach => 'Coach prompts';
+  String get channelCoach => 'يطالب المدرب';
 
   @override
-  String get channelNudges => 'Nudges after quiet days';
+  String get channelNudges => 'دفعات بعد أيام هادئة';
 
   @override
-  String get channelQuickWrite => 'Quick write';
+  String get channelQuickWrite => 'الكتابة السريعة';
 
   @override
-  String get channelBackup => 'Backups';
+  String get channelBackup => 'النسخ الاحتياطية';
 
   @override
-  String get formatJsonExport => 'JSON (AID Diary export)';
+  String get formatJsonExport => 'JSON (تصدير AID Diary)';
 
   @override
   String get aboutModifiedNotice =>
-      'A modified version of Daily You by Demizo and contributors. It is not the official Daily You app.';
+      'نسخة معدلة من Daily You من تأليف Demizo والمساهمين. إنه ليس تطبيق Daily You الرسمي.';
 
   @override
-  String get toolbarPhotos => 'Add photos';
+  String get toolbarPhotos => 'أضف الصور';
 
   @override
-  String get toolbarMedia => 'Photos and videos';
+  String get toolbarMedia => 'الصور ومقاطع الفيديو';
 
   @override
-  String get mediaFromGallery => 'Choose from gallery';
+  String get mediaFromGallery => 'اختر من المعرض';
 
   @override
-  String get mediaFromFiles => 'Choose from files';
+  String get mediaFromFiles => 'اختر من الملفات';
 
   @override
-  String get editorLeaveTitle => 'Save this entry?';
+  String get editorLeaveTitle => 'هل تريد حفظ هذا الإدخال؟';
 
   @override
-  String get editorLeaveDiscard => 'Don\'t save';
+  String get editorLeaveDiscard => 'لا تحفظ';
 
   @override
-  String get editorTitleHint => 'Title';
+  String get editorTitleHint => 'العنوان';
 
   @override
-  String get editorLocating => 'Locating…';
+  String get editorLocating => 'تحديد موقع…';
 
   @override
-  String get toolbarVideo => 'Video';
+  String get toolbarVideo => 'فيديو';
 
   @override
-  String get toolbarAudio => 'Voice note';
+  String get toolbarAudio => 'ملاحظة صوتية';
 
   @override
-  String get toolbarTags => 'Tags';
+  String get toolbarTags => 'العلامات';
 
   @override
-  String get toolbarBulletList => 'Bulleted list';
+  String get toolbarBulletList => 'قائمة نقطية';
 
   @override
-  String get toolbarHeading => 'Heading';
+  String get toolbarHeading => 'العنوان';
 
   @override
-  String get toolbarBold => 'Bold';
+  String get toolbarBold => 'جريئة';
 
   @override
-  String get toolbarItalic => 'Italic';
+  String get toolbarItalic => 'مائل';
 
   @override
-  String get toolbarHighlight => 'Highlight';
+  String get toolbarHighlight => 'تسليط الضوء';
 
   @override
-  String get toolbarStrikethrough => 'Strikethrough';
+  String get toolbarStrikethrough => 'يتوسطه خط';
 
   @override
-  String get toolbarQuote => 'Quote';
+  String get toolbarQuote => 'اقتباس';
 
   @override
-  String get toolbarLink => 'Link';
+  String get toolbarLink => 'رابط';
 
   @override
-  String get toolbarInsert => 'Insert';
+  String get toolbarInsert => 'إدراج';
 
   @override
-  String get toolbarUndo => 'Undo';
+  String get toolbarUndo => 'تراجع';
 
   @override
-  String get toolbarRedo => 'Redo';
+  String get toolbarRedo => 'إعادة';
 
   @override
-  String get toolbarInsertDate => 'Insert the date';
+  String get toolbarInsertDate => 'أدخل التاريخ';
 
   @override
-  String get toolbarInsertTime => 'Insert the time';
+  String get toolbarInsertTime => 'أدخل الوقت';
 
   @override
-  String get settingsSyncTitle => 'Cloud Sync';
+  String get settingsSyncTitle => 'مزامنة السحابة';
 
   @override
   String get syncOffDescription =>
-      'Keep this diary the same on all your devices through Google Drive or a WebDAV server, such as Nextcloud, Synology or Jianguoyun.';
+      'احتفظ بهذه اليوميات كما هي على جميع أجهزتك من خلال Google Drive أو خادم WebDAV، مثل Nextcloud أو Synology أو Jianguoyun.';
 
   @override
-  String get syncUseGoogleDrive => 'Sync with Google Drive';
+  String get syncUseGoogleDrive => 'مزامنة مع Google Drive';
 
   @override
-  String get syncOrWebDav => 'Or a WebDAV server';
+  String get syncOrWebDav => 'أو خادم WebDAV';
 
   @override
   String get syncGoogleDrive => 'Google Drive';
 
   @override
-  String get syncGoogleSignedIn => 'Signed in. You can go back to AID Diary.';
+  String get syncGoogleSignedIn =>
+      'تم تسجيل الدخول. يمكنك العودة إلى AID Diary.';
 
   @override
-  String get syncGoogleSignInAgain => 'Google needs you to sign in again.';
+  String get syncGoogleSignInAgain => 'يحتاج Google منك تسجيل الدخول مرة أخرى.';
 
   @override
-  String get syncSignInAgain => 'Sign in again';
+  String get syncSignInAgain => 'قم بتسجيل الدخول مرة أخرى';
 
   @override
-  String get settingsCommandLineTitle => 'Command line';
+  String get settingsCommandLineTitle => 'سطر الأوامر';
 
   @override
-  String get commandLineToggle => 'Command line interface';
+  String get commandLineToggle => 'واجهة سطر الأوامر';
 
   @override
   String get commandLineToggleHint =>
-      'Lets the aid command and other programs on this device use the app\'s commands.';
+      'يتيح لأمر المساعدة والبرامج الأخرى الموجودة على هذا الجهاز استخدام أوامر التطبيق.';
 
   @override
-  String get commandLineAlwaysOn => 'Always on in development builds.';
+  String get commandLineAlwaysOn => 'دائما في تطوير يبني.';
 
   @override
   String commandLineListening(int port) {
-    return 'Listening on port $port';
+    return 'الاستماع على المنفذ $port';
   }
 
   @override
-  String get commandPaletteTitle => 'All commands';
+  String get commandPaletteTitle => 'جميع الأوامر';
 
   @override
-  String get commandPaletteSearch => 'Search commands';
+  String get commandPaletteSearch => 'أوامر البحث';
 
   @override
-  String get commandPaletteRun => 'Run';
+  String get commandPaletteRun => 'تشغيل';
 
   @override
-  String get commandPaletteConfirm => 'This cannot simply be undone. Run it?';
+  String get commandPaletteConfirm =>
+      'لا يمكن التراجع عن هذا الأمر ببساطة. تشغيله؟';
 
   @override
   String syncReceiving(int done, int total) {
-    return 'Receiving $done of $total…';
+    return 'جارٍ استلام $done من $total...';
   }
 
   @override
   String syncSending(int done, int total) {
-    return 'Sending $done of $total…';
+    return 'جارٍ إرسال $done من $total...';
   }
 
   @override
   String get syncGoogleDriveNotAllowed =>
-      'Access to Google Drive was not allowed. Connect again and tick Google Drive on Google\'s page.';
+      'لم يسمح بالوصول إلى Google Drive. اتصل مرة أخرى وحدد Google Drive على صفحة Google.';
 
   @override
-  String get syncEntryUnsynced =>
-      'Not synced: the last sync did not go through';
+  String get syncEntryUnsynced => 'لم تتم المزامنة: لم تتم المزامنة الأخيرة';
 
   @override
-  String get syncUseOfficial => 'Use the AID sync server';
+  String get syncUseOfficial => 'استخدم خادم مزامنة AID';
 
   @override
-  String get syncServer => 'Server address';
+  String get syncServer => 'عنوان الخادم';
 
   @override
-  String get syncUsername => 'Username';
+  String get syncUsername => 'اسم المستخدم';
 
   @override
-  String get syncPassword => 'Password';
+  String get syncPassword => 'كلمة المرور';
 
   @override
-  String get syncConnect => 'Connect';
+  String get syncConnect => 'الاتصال';
 
   @override
-  String get syncConnecting => 'Connecting…';
+  String get syncConnecting => 'جارٍ الاتصال…';
 
   @override
   String get syncSignInFailed =>
-      'Could not sign in. Check the address, the username and the password.';
+      'تعذر تسجيل الدخول. تحقق من العنوان واسم المستخدم وكلمة المرور.';
 
   @override
   String syncConnectFailed(String error) {
-    return 'Could not connect: $error';
+    return 'تعذر الاتصال: $error';
   }
 
   @override
-  String get syncNewSpaceTitle => 'Start syncing';
+  String get syncNewSpaceTitle => 'ابدأ المزامنة';
 
   @override
   String get syncNewSpaceDescription =>
-      'There is no synced diary here yet. This diary will be uploaded, end-to-end encrypted with a key that stays on your devices.';
+      'لا توجد مذكرات متزامنة هنا حتى الآن. سيتم تحميل هذه اليوميات وتشفيرها بالكامل باستخدام مفتاح يبقى على أجهزتك.';
 
   @override
-  String get syncJoinTitle => 'Join the synced diary';
+  String get syncJoinTitle => 'انضم إلى اليوميات المتزامنة';
 
   @override
-  String get syncWrongKey =>
-      'This recovery code does not open the synced diary.';
+  String get syncWrongKey => 'لا يفتح رمز الاسترداد هذا اليوميات المتزامنة.';
 
   @override
   String syncLastSynced(String time) {
-    return 'Last synced $time';
+    return 'آخر مزامنة $time';
   }
 
   @override
-  String get syncNever => 'Not synced yet';
+  String get syncNever => 'لم تتم المزامنة بعد';
 
   @override
-  String get syncSyncing => 'Syncing…';
+  String get syncSyncing => 'جارٍ المزامنة…';
 
   @override
   String syncFailed(String error) {
-    return 'The last sync failed: $error';
+    return 'فشلت آخر مزامنة: $error';
   }
 
   @override
   String get syncLocked =>
-      'The synced diary now belongs to other devices, or was started over. Pair with one of them or use the recovery code to keep syncing.';
+      'تنتمي اليوميات التي تمت مزامنتها الآن إلى أجهزة أخرى، أو تم بدء تشغيلها من جديد. قم بالاقتران بأحدهم أو استخدم رمز الاسترداد لمواصلة المزامنة.';
 
   @override
-  String get syncNow => 'Sync now';
+  String get syncNow => 'مزامنة الآن';
 
   @override
-  String get syncUnlock => 'Unlock';
+  String get syncUnlock => 'فتح';
 
   @override
-  String get syncEncrypted => 'End-to-end encrypted';
+  String get syncEncrypted => 'مشفرة من طرف إلى طرف';
 
   @override
-  String get syncDisconnect => 'Stop syncing';
+  String get syncDisconnect => 'توقف عن المزامنة';
 
   @override
   String get syncDisconnectDescription =>
-      'This device stops syncing. The diary here and the synced copy stay as they are.';
+      'يتوقف هذا الجهاز عن المزامنة. تبقى اليوميات هنا والنسخة المتزامنة كما هي.';
 
   @override
-  String get syncOwnRecoveryPassword => 'Use my own recovery password';
+  String get syncOwnRecoveryPassword => 'استخدم كلمة مرور الاسترداد الخاصة بي';
 
   @override
-  String get syncRecoveryPassword => 'Recovery password';
+  String get syncRecoveryPassword => 'كلمة مرور الاسترداد';
 
   @override
-  String get syncRecoveryPasswordRepeat => 'Repeat the recovery password';
+  String get syncRecoveryPasswordRepeat => 'كرر كلمة مرور الاسترداد';
 
   @override
   String syncRecoveryPasswordTooShort(int min) {
-    return 'Use at least $min characters';
+    return 'استخدم أحرف $min على الأقل';
   }
 
   @override
-  String get syncRecoveryPasswordMismatch => 'The passwords differ';
+  String get syncRecoveryPasswordMismatch => 'تختلف كلمات المرور';
 
   @override
-  String get syncRecoveryCode => 'Recovery code';
+  String get syncRecoveryCode => 'رمز الاسترداد';
 
   @override
-  String get syncRecoveryCodeTitle => 'Save your recovery code';
+  String get syncRecoveryCodeTitle => 'احفظ رمز الاسترداد الخاص بك';
 
   @override
   String get syncRecoveryCodeDescription =>
-      'If every device of yours is lost, this code restores your synced diary. Keep it in a password manager or on paper. It is shown only this once.';
+      'إذا فقدت كل جهاز خاص بك، فسيقوم هذا الرمز باستعادة يومياتك التي تمت مزامنتها. احتفظ بها في مدير كلمات المرور أو على الورق. ويظهر هذه المرة فقط.';
 
   @override
-  String get syncRecoveryCodeCopied => 'Recovery code copied';
+  String get syncRecoveryCodeCopied => 'تم نسخ رمز الاسترداد';
 
   @override
-  String get syncRecoveryCodeSaved => 'I have saved it';
+  String get syncRecoveryCodeSaved => 'لقد أنقذته';
 
   @override
   String get syncJoinNeedsKey =>
-      'This synced diary belongs to your other devices. Pair with one of them, or use the recovery code. The entries on this device will be added to it.';
+      'تنتمي هذه اليوميات المتزامنة إلى أجهزتك الأخرى. قم بالاقتران مع واحد منهم، أو استخدم رمز الاسترداد. ستتم إضافة الإدخالات الموجودة على هذا الجهاز إليه.';
 
   @override
-  String get syncPairDevice => 'Pair with a device';
+  String get syncPairDevice => 'إقران مع جهاز';
 
   @override
-  String get syncUseRecoveryCode => 'Use the recovery code';
+  String get syncUseRecoveryCode => 'استخدم رمز الاسترداد';
 
   @override
-  String get syncAddDevice => 'Add a device';
+  String get syncAddDevice => 'أضف جهازًا';
 
   @override
-  String get syncChangeRecoveryCode => 'Change the recovery code';
+  String get syncChangeRecoveryCode => 'تغيير رمز الاسترداد';
 
   @override
   String get syncChangeRecoveryDescription =>
-      'A new code replaces the current one, which stops working. Your data and other devices stay as they are.';
+      'يحل الرمز الجديد محل الرمز الحالي، والذي يتوقف عن العمل. تظل بياناتك وأجهزتك الأخرى كما هي.';
 
   @override
-  String get syncNewRandomCode => 'New random code';
+  String get syncNewRandomCode => 'كود عشوائي جديد';
 
   @override
-  String get syncRecoveryCodeChanged => 'Recovery code changed';
+  String get syncRecoveryCodeChanged => 'تم تغيير رمز الاسترداد';
 
   @override
-  String get syncResetSpace => 'Start the synced diary over';
+  String get syncResetSpace => 'ابدأ تشغيل اليوميات المتزامنة';
 
   @override
   String get syncResetSpaceDescription =>
-      'Only when no device and no recovery code opens it any more: the synced copy is replaced by the diary on this device, under this device\'s keys. Your other devices then pair again.';
+      'فقط في حالة عدم فتح أي جهاز أو رمز استرداد مرة أخرى: يتم استبدال النسخة المتزامنة بالمذكرات الموجودة على هذا الجهاز، أسفل مفاتيح هذا الجهاز. ثم يتم إقران أجهزتك الأخرى مرة أخرى.';
 
   @override
-  String get syncPairTitle => 'Pair devices';
+  String get syncPairTitle => 'إقران الأجهزة';
 
   @override
-  String get syncPairShow => 'Show a code';
+  String get syncPairShow => 'إظهار الرمز';
 
   @override
-  String get syncPairEnter => 'Enter a code';
+  String get syncPairEnter => 'أدخل رمزا';
 
   @override
   String get syncPairShowHint =>
-      'On your other device, open Pair devices, choose Enter a code, and type or scan this.';
+      'على جهازك الآخر، افتح \"إقران الأجهزة\"، واختر \"إدخال رمز\"، ثم اكتب هذا الرمز أو قم بمسحه ضوئيًا.';
 
   @override
   String get syncPairEnterHint =>
-      'Type the code your other device shows, or scan it.';
+      'اكتب الرمز الذي يعرضه جهازك الآخر، أو قم بمسحه ضوئيًا.';
 
   @override
-  String get syncPairCode => 'Pairing code';
+  String get syncPairCode => 'رمز الاقتران';
 
   @override
-  String get syncPairScan => 'Scan';
+  String get syncPairScan => 'مسح';
 
   @override
-  String get syncPairStart => 'Pair';
+  String get syncPairStart => 'زوج';
 
   @override
-  String get syncPairWaiting => 'Waiting for the other device…';
+  String get syncPairWaiting => 'في انتظار الجهاز الآخر...';
 
   @override
   String syncPairDone(String device) {
-    return 'Paired with $device';
+    return 'يقترن مع $device';
   }
 
   @override
   String get syncPairWrongCode =>
-      'The code did not match. Show a new code and try again.';
+      'الرمز غير متطابق. أظهر الرمز الجديد وحاول مرة أخرى.';
 
   @override
   String get syncPairNoOffer =>
-      'No device shows this code. It may have expired.';
+      'لا يوجد جهاز يعرض هذا الرمز. ربما تكون قد انتهت صلاحيتها.';
 
   @override
-  String get syncPairTimedOut => 'The other device did not answer in time.';
+  String get syncPairTimedOut => 'الجهاز الآخر لم يرد في الوقت المناسب.';
 
   @override
   String get syncPairNeither =>
-      'Neither device is set up with this synced diary yet.';
+      'لم يتم إعداد أي جهاز بهذه اليوميات المتزامنة حتى الآن.';
 
   @override
-  String get syncPairBoth => 'Both devices already open this synced diary.';
+  String get syncPairBoth => 'يفتح كلا الجهازين هذه اليوميات المتزامنة بالفعل.';
 
   @override
   String syncPairFailed(String error) {
-    return 'Pairing failed: $error';
+    return 'فشل الاقتران: $error';
   }
 
   @override
   String get syncMediaPending =>
-      'Diary synced · some media is still transferring';
+      'تمت مزامنة اليوميات · لا تزال بعض الوسائط قيد النقل';
 
   @override
   String get syncWaitingForDevices =>
-      'Diary synced · waiting for another device to transfer media';
+      'تمت مزامنة اليوميات · في انتظار جهاز آخر لنقل الوسائط';
 
   @override
   String get syncCacheNotice =>
-      'Cloud media is temporary. Keep the originals on your devices; syncing is not a backup.';
+      'الوسائط السحابية مؤقتة. احتفظ بالنسخ الأصلية على أجهزتك؛ المزامنة ليست نسخة احتياطية.';
 
   @override
-  String get paperTitle => 'Letter paper';
+  String get paperTitle => 'ورقة الرسالة';
 
   @override
-  String get paperPlain => 'Plain';
+  String get paperPlain => 'عادي';
 
   @override
-  String get paperLined => 'Lined';
+  String get paperLined => 'مبطن';
 
   @override
-  String get paperGrid => 'Grid';
+  String get paperGrid => 'الشبكة';
 
   @override
-  String get paperTinted => 'Tinted';
+  String get paperTinted => 'ملون';
 
   @override
-  String get paperDecorationTitle => 'Decorations';
+  String get paperDecorationTitle => 'الأوسمة';
 
   @override
-  String get paperDecorationNone => 'None';
+  String get paperDecorationNone => 'لا شيء';
 
   @override
-  String get paperDecorationBotanical => 'Leaves';
+  String get paperDecorationBotanical => 'أوراق';
 
   @override
-  String get paperDecorationStars => 'Stars';
+  String get paperDecorationStars => 'النجوم';
 
   @override
-  String get paperDecorationWashi => 'Washi tape';
+  String get paperDecorationWashi => 'شريط واشي';
 
   @override
-  String get themeDarkChoice => 'Dark appearance';
+  String get themeDarkChoice => 'مظهر داكن';
 
   @override
-  String get themeDarkSame => 'Follow light palette';
+  String get themeDarkSame => 'اتبع لوحة الضوء';
 
   @override
-  String get themeDarkCustom => 'Separate palette';
+  String get themeDarkCustom => 'لوحة منفصلة';
 
   @override
-  String get themeDarkAccent => 'Dark accent colour';
+  String get themeDarkAccent => 'لون لهجة داكنة';
 
   @override
-  String get themeColorTeal => 'Teal';
+  String get themeColorTeal => 'البط البري';
 
   @override
-  String get themeColorCyan => 'Cyan';
+  String get themeColorCyan => 'سماوي';
 
   @override
-  String get themeColorIndigo => 'Indigo';
+  String get themeColorIndigo => 'نيلي';
 
   @override
-  String get themeColorCoral => 'Coral';
+  String get themeColorCoral => 'المرجان';
 
   @override
-  String get themeColorOlive => 'Olive';
+  String get themeColorOlive => 'زيتون';
 
   @override
-  String get themeColorSlate => 'Slate';
+  String get themeColorSlate => 'لائحة';
 
   @override
-  String get drawingTitle => 'Drawing';
+  String get drawingTitle => 'الرسم';
 
   @override
-  String get drawingPen => 'Pen';
+  String get drawingPen => 'قلم';
 
   @override
-  String get drawingEraser => 'Eraser';
+  String get drawingEraser => 'ممحاة';
 
   @override
-  String get drawingUndo => 'Undo';
+  String get drawingUndo => 'تراجع';
 
   @override
-  String get drawingClear => 'Clear';
+  String get drawingClear => 'واضح';
 
   @override
-  String get drawingWidth => 'Pen width';
+  String get drawingWidth => 'عرض القلم';
 
   @override
-  String get drawingStylusOnly => 'Stylus only';
+  String get drawingStylusOnly => 'القلم فقط';
 
   @override
-  String get drawingDiscardTitle => 'Discard drawing?';
+  String get drawingDiscardTitle => 'هل تريد تجاهل الرسم؟';
 
   @override
-  String get drawingDiscardBody => 'This drawing has not been saved.';
+  String get drawingDiscardBody => 'لم يتم حفظ هذا الرسم.';
 
   @override
-  String get drawingSaveError => 'Could not save the drawing.';
+  String get drawingSaveError => 'لا يمكن حفظ الرسم.';
 
   @override
-  String get syncNetworkTitle => 'Network diagnostics';
+  String get syncNetworkTitle => 'تشخيص الشبكة';
 
   @override
-  String get syncNetworkRefresh => 'Refresh';
+  String get syncNetworkRefresh => 'تحديث';
 
   @override
-  String get syncNetworkSelectedRoute => 'Current path';
+  String get syncNetworkSelectedRoute => 'المسار الحالي';
 
   @override
-  String get syncNetworkAvailableRoutes => 'Available paths';
+  String get syncNetworkAvailableRoutes => 'المسارات المتاحة';
 
   @override
-  String get syncNetworkSignaling => 'Device directory connection';
+  String get syncNetworkSignaling => 'اتصال دليل الجهاز';
 
   @override
-  String get syncNetworkRelayRemaining => 'Remaining relay allowance';
+  String get syncNetworkRelayRemaining => 'بدل التتابع المتبقي';
 
   @override
-  String get syncNetworkIcePair => 'Direct connection candidates';
+  String get syncNetworkIcePair => 'مرشحي الاتصال المباشر';
 
   @override
-  String get syncNetworkPeerTrusted => 'Authenticated device';
+  String get syncNetworkPeerTrusted => 'جهاز مصادق عليه';
 
   @override
-  String get syncNetworkNoRoute => 'Waiting for a connection';
+  String get syncNetworkNoRoute => 'في انتظار اتصال';
 
   @override
-  String get syncNetworkUnavailable => 'Diagnostics are unavailable';
+  String get syncNetworkUnavailable => 'التشخيص غير متوفر';
 
   @override
-  String get syncMediaCopiesTitle => 'Media delivery and copies';
+  String get syncMediaCopiesTitle => 'تسليم وسائل الإعلام والنسخ';
 
   @override
-  String get syncMediaPendingCount => 'Waiting to transfer';
+  String get syncMediaPendingCount => 'في انتظار النقل';
 
   @override
-  String get syncMediaDurableCount => 'Delivered to personal storage';
+  String get syncMediaDurableCount => 'تسليمها إلى التخزين الشخصي';
 
   @override
-  String get syncMediaTemporaryCount => 'Temporary or unconfirmed copies';
+  String get syncMediaTemporaryCount => 'نسخ مؤقتة أو غير مؤكدة';
 
   @override
   String get syncMediaReceiptExplanation =>
-      'These counts describe completed deliveries, not a fresh audit of surviving backups.';
+      'تصف هذه الأعداد عمليات التسليم المكتملة، وليس مراجعة جديدة للنسخ الاحتياطية الباقية.';
 
   @override
   String get syncMediaCacheExplanation =>
-      'Temporary cloud media can expire. Keep your originals or a separate backup.';
+      'يمكن أن تنتهي صلاحية الوسائط السحابية المؤقتة. احتفظ بنسخك الأصلية أو نسخة احتياطية منفصلة.';
 
   @override
-  String get momentsTitle => 'Photo moments';
+  String get momentsTitle => 'لحظات الصور';
 
   @override
   String get momentsHint =>
-      'Find groups using local photo times and optional coordinates. Photos are attached only when you choose a card.';
+      'ابحث عن المجموعات باستخدام أوقات الصور المحلية والإحداثيات الاختيارية. يتم إرفاق الصور فقط عند اختيار البطاقة.';
 
   @override
-  String get momentsScan => 'Find moments';
+  String get momentsScan => 'البحث عن لحظات';
 
   @override
-  String get momentsChooseFolder => 'Choose photo folder';
+  String get momentsChooseFolder => 'اختر مجلد الصور';
 
   @override
-  String get momentsLocation => 'Include photo locations';
+  String get momentsLocation => 'تضمين مواقع الصور';
 
   @override
-  String get momentsEmpty => 'No recent photo groups.';
+  String get momentsEmpty => 'لا توجد مجموعات صور حديثة.';
 
   @override
-  String get momentsCreate => 'Write about these photos';
+  String get momentsCreate => 'اكتب عن هذه الصور';
 
   @override
-  String get momentsDismiss => 'Dismiss';
+  String get momentsDismiss => 'استبعاد';
 
   @override
-  String get momentsError => 'Could not read local photos.';
+  String get momentsError => 'لا يمكن قراءة الصور المحلية.';
 
   @override
-  String get momentsCreated => 'Photo entry created.';
+  String get momentsCreated => 'تم إنشاء إدخال الصورة.';
 
   @override
   String get momentsPermission =>
-      'Allow access to photos to find local suggestions.';
+      'السماح بالوصول إلى الصور للعثور على اقتراحات محلية.';
 
   @override
   String get momentsScope =>
-      'Recent photos only; at most 500 photos and 20 photos per card.';
+      'الصور الحديثة فقط؛ بحد أقصى 500 صورة و20 صورة لكل بطاقة.';
 
   @override
   String momentsPhotoCount(int count) {
-    return '$count photos';
+    return 'صور $count';
   }
 
   @override
-  String get nearbyTitle => 'Connect devices';
+  String get nearbyTitle => 'توصيل الأجهزة';
 
   @override
-  String get nearbySend => 'Authorize another device';
+  String get nearbySend => 'تخويل جهاز آخر';
 
   @override
-  String get nearbyReceive => 'Connect to an existing device';
+  String get nearbyReceive => 'الاتصال بجهاز موجود';
 
   @override
   String get nearbyInstructions =>
-      'Connect both devices to the same Wi-Fi or to each other’s hotspot. Confirm authorization on the existing device; both devices remain usable. No internet is required.';
+      'قم بتوصيل كلا الجهازين بنفس Wi-Fi أو بنقطة الاتصال الخاصة ببعضهما البعض. تأكيد الترخيص على الجهاز الموجود؛ يبقى كلا الجهازين صالحين للاستخدام. لا يلزم الإنترنت.';
 
   @override
   String get nearbyCompare =>
-      'Compare this code on both devices before approving.';
+      'قارن هذا الرمز على كلا الجهازين قبل الموافقة عليه.';
 
   @override
-  String get nearbyConfirm => 'The codes match';
+  String get nearbyConfirm => 'تتطابق الرموز';
 
   @override
-  String get nearbyScan => 'Scan the other device’s code';
+  String get nearbyScan => 'قم بمسح رمز الجهاز الآخر';
 
   @override
-  String get nearbyPaste => 'Paste invitation';
+  String get nearbyPaste => 'لصق الدعوة';
 
   @override
-  String get nearbyWaiting => 'Waiting for approval on the other device';
+  String get nearbyWaiting => 'في انتظار الموافقة على الجهاز الآخر';
 
   @override
-  String get nearbyWorking =>
-      'Authorizing and syncing your diary and attachments…';
+  String get nearbyWorking => 'اعتماد ومزامنة يومياتك ومرفقاتك...';
 
   @override
   String get nearbyPending =>
-      'Some attachments still need syncing. Keep the other device online and try again.';
+      'لا تزال بعض المرفقات بحاجة إلى المزامنة. احتفظ بالجهاز الآخر متصلاً بالإنترنت وحاول مرة أخرى.';
 
   @override
-  String get nearbyComplete => 'Device connected; diary and attachments synced';
+  String get nearbyComplete => 'الجهاز متصل؛ مزامنة اليوميات والمرفقات';
 
   @override
   String get nearbyFailed =>
-      'Connection did not finish. Check the local connection and try again.';
+      'لم ينته الاتصال. تحقق من الاتصال المحلي وحاول مرة أخرى.';
 
   @override
   String get nearbyEmptyRequired =>
-      'Use a device with an empty diary that is not connected to sync yet.';
+      'استخدم جهازًا يحتوي على مذكرات فارغة ولم يتم توصيله للمزامنة بعد.';
 
   @override
-  String get nearbyRetry => 'Continue syncing';
+  String get nearbyRetry => 'متابعة المزامنة';
 
   @override
-  String get nearbyWifi => 'Wi-Fi settings';
+  String get nearbyWifi => 'إعدادات Wi-Fi';
 
   @override
-  String get nearbyHotspot => 'Hotspot settings';
+  String get nearbyHotspot => 'إعدادات نقطة الاتصال';
 
   @override
   String get nearbyKeepOpen =>
-      'Keep this page open until the new device finishes. The invitation expires after two minutes.';
+      'أبقِ هذه الصفحة مفتوحة حتى ينتهي الجهاز الجديد. تنتهي صلاحية الدعوة بعد دقيقتين.';
 
   @override
-  String get syncDevicesTitle => 'Authorized devices';
+  String get syncDevicesTitle => 'الأجهزة المعتمدة';
 
   @override
   String get syncDevicesDescription =>
-      'Only approved devices can access this AID account. Revoking a device blocks the server but cannot erase a master key or diary already copied to it.';
+      'يمكن للأجهزة المعتمدة فقط الوصول إلى حساب AID هذا. يؤدي إبطال الجهاز إلى حظر الخادم ولكن لا يمكنه مسح المفتاح الرئيسي أو اليوميات التي تم نسخها إليه بالفعل.';
 
   @override
-  String get syncDeviceRequest =>
-      'Show this authorization QR to an approved device';
+  String get syncDeviceRequest => 'أظهر هذا التفويض QR لجهاز معتمد';
 
   @override
-  String get syncDeviceAuthorize => 'Authorize a device';
+  String get syncDeviceAuthorize => 'تخويل جهاز';
 
   @override
   String get syncDeviceAuthorizeDescription =>
-      'Scan or paste the new device’s authorization request.';
+      'قم بمسح أو لصق طلب ترخيص الجهاز الجديد.';
 
   @override
-  String get syncDeviceRevoke => 'Revoke';
+  String get syncDeviceRevoke => 'إبطال';
 
   @override
-  String get syncDeviceRotate => 'Rotate this device’s signing key';
+  String get syncDeviceRotate => 'قم بتدوير مفتاح التوقيع لهذا الجهاز';
 
   @override
-  String get syncDeviceCheck => 'Check authorization';
+  String get syncDeviceCheck => 'التحقق من الترخيص';
 
   @override
-  String get syncDeviceHardware => 'Hardware-backed signing key';
+  String get syncDeviceHardware => 'مفتاح التوقيع المدعوم بالأجهزة';
 
   @override
-  String get syncDeviceSoftware => 'Non-exportable software signing key';
+  String get syncDeviceSoftware => 'مفتاح توقيع البرامج غير القابلة للتصدير';
 
   @override
   String get syncDeviceUnavailable =>
-      'Device authorization is unavailable. Approve this device from another authorized device and retry.';
+      'ترخيص الجهاز غير متوفر. قم بالموافقة على هذا الجهاز من جهاز معتمد آخر ثم أعد المحاولة.';
 
   @override
-  String get syncDeviceRevoked => 'Revoked';
+  String get syncDeviceRevoked => 'تم إبطاله';
 
   @override
-  String get syncDeviceLocal => 'This device';
+  String get syncDeviceLocal => 'هذا الجهاز';
 
   @override
-  String get cloudTrafficTitle => 'Monthly cloud media allowance';
+  String get cloudTrafficTitle =>
+      'حصة نقل البيانات السحابية الشهرية لملفات الوسائط';
 
   @override
-  String get cloudTrafficLimit => 'Monthly allowance';
+  String get cloudTrafficLimit => 'حصة نقل البيانات الشهرية';
 
   @override
-  String get cloudTrafficUsed => 'Used';
+  String get cloudTrafficUsed => 'نقل البيانات المستخدمة';
 
   @override
-  String get cloudTrafficRemaining => 'Remaining';
+  String get cloudTrafficRemaining => 'نقل البيانات المتبقية';
 
   @override
   String cloudTrafficResetsAt(String time) {
-    return 'Resets $time';
+    return 'تقوم حصة نقل البيانات بإعادة تعيين $time';
   }
 
   @override
   String get cloudTrafficExhausted =>
-      'Cloud media allowance used up. Missing media will resume automatically over a direct connection or when the allowance resets.';
+      'تم استنفاد حصة نقل البيانات السحابية لملفات الوسائط. ستتم مزامنة ملفات الوسائط المفقودة تلقائيًا عند توفر اتصال مباشر أو إعادة تعيين الحصة النسبية.';
 
   @override
   String get cloudTrafficExplanation =>
-      'Media cache and live relay share this allowance. Direct connections do not use it. Diary text and connection control have separate small daily limits.';
+      'يقوم التخزين المؤقت لملفات الوسائط والترحيل المباشر بمشاركة حصة نقل البيانات هذه. الاتصالات المباشرة لا تستهلكه. تحتوي رسائل اليوميات النصية ورسائل التحكم في الاتصال على حدود يومية صغيرة منفصلة.';
 
   @override
-  String get appearanceThemeSection => 'App theme';
+  String get appearanceThemeSection => 'موضوع التطبيق';
 
   @override
-  String get appearancePaperSection => 'Diary paper';
+  String get appearancePaperSection => 'ورقة مذكرات';
 
   @override
-  String get appearanceTypographySection => 'Diary text';
+  String get appearanceTypographySection => 'نص اليوميات';
 
   @override
-  String get appearancePreferencesSection => 'General preferences';
+  String get appearancePreferencesSection => 'التفضيلات العامة';
 
   @override
   String get themeSystemAccentHint =>
-      'Uses the system palette instead of custom colors. Turn it off to choose your own.';
+      'يستخدم لوحة النظام بدلاً من الألوان المخصصة. قم بإيقاف تشغيله لاختيار ما يناسبك.';
 
   @override
   String get syncDeviceNameSaveFailed =>
-      'Could not save the device name. Please try again.';
+      'لا يمكن حفظ اسم الجهاز. يرجى المحاولة مرة أخرى.';
 
   @override
-  String get nearbyConnectionHelp => 'Connection help';
+  String get nearbyConnectionHelp => 'مساعدة الاتصال';
 
   @override
-  String get syncAllSynced => 'Everything synced';
+  String get syncAllSynced => 'تمت مزامنة كل شيء';
 
   @override
-  String get syncDetailsTitle => 'Sync details';
+  String get syncDetailsTitle => 'تفاصيل المزامنة';
 
   @override
-  String get syncMore => 'More options';
+  String get syncMore => 'المزيد من الخيارات';
 
   @override
-  String get syncDeviceName => 'Device name';
+  String get syncDeviceName => 'اسم الجهاز';
 
   @override
-  String get syncDeviceNameHint => 'For example: My tablet';
+  String get syncDeviceNameHint => 'على سبيل المثال: جهازي اللوحي';
 
   @override
-  String get syncDeviceNameInvalid => 'Use 1 to 32 characters';
+  String get syncDeviceNameInvalid => 'استخدم من 1 إلى 32 حرفًا';
 
   @override
-  String get syncDeviceKeyDetails => 'Security details';
+  String get syncDeviceKeyDetails => 'تفاصيل أمنية';
 
   @override
   String get syncConnectionProblem =>
-      'Unable to sync for now. Retrying automatically.';
+      'غير قادر على المزامنة في الوقت الحالي. إعادة المحاولة تلقائيًا.';
 
   @override
-  String get syncCopyComplete => 'Complete copy';
+  String get syncCopyComplete => 'نسخة كاملة من يومياتك وملفات الوسائط';
 
   @override
-  String get syncCopyPartial => 'Some media is still missing';
+  String get syncCopyPartial => 'بعض وسائل الإعلام لا تزال مفقودة';
 
   @override
-  String get syncCopyOlder => 'New changes are waiting to sync';
+  String get syncCopyOlder => 'التغييرات الجديدة في انتظار المزامنة';
 
   @override
   String get syncCopyUnavailable =>
-      'Copy details are unavailable. Try again later.';
+      'تفاصيل النسخ غير متوفرة. حاول مرة أخرى لاحقًا.';
 
   @override
   String get syncCopyLastKnown =>
-      'Other devices show their last confirmed copy. Offline devices cannot be checked now.';
+      'تعرض الأجهزة الأخرى آخر نسخة مؤكدة لها. لا يمكن التحقق من الأجهزة غير المتصلة بالإنترنت الآن.';
 
   @override
   String get syncCopyTemporary =>
-      'Temporary cache. Keep the originals on your devices.';
+      'ذاكرة التخزين المؤقتة. احتفظ بالنسخ الأصلية على أجهزتك.';
 
   @override
   String get syncCopyStorage =>
-      'Your sync storage. Completed media uploads are listed in diagnostics.';
+      'تخزين المزامنة الخاصة بك. يتم إدراج تحميلات الوسائط المكتملة في التشخيص.';
 
   @override
   String syncCopyChecked(String time) {
-    return 'Last confirmed $time';
+    return 'آخر تأكيد $time';
   }
 
   @override
   String cloudTrafficSummary(String remaining, String limit) {
-    return 'Available this month: $remaining / $limit';
+    return 'المتبقي من نقل البيانات هذا الشهر: $remaining / $limit';
   }
 
   @override
-  String get onboardNewDiary => 'Start here';
+  String get onboardNewDiary => 'ابدأ هنا';
 
   @override
-  String get onboardConnect => 'Connect to an existing device';
+  String get onboardConnect => 'الاتصال بجهاز موجود';
 
   @override
   String get onboardFailed =>
-      'Setup could not be completed. Your diary is safe; please try again.';
+      'لا يمكن إكمال الإعداد. يومياتك آمنة. يرجى المحاولة مرة أخرى.';
 
   @override
-  String get tutorialTitle => 'How to use the diary';
+  String get tutorialTitle => 'كيفية استخدام اليوميات';
 
   @override
-  String get tutorialWriteTitle => 'Write your first entry';
+  String get tutorialWriteTitle => 'اكتب أول تدوينة';
 
   @override
   String get tutorialWriteText =>
-      'Tap + to write. Add a title if you want, choose the diary day and tap the check mark to save. You can edit it again at any time.';
+      'اضغط على + لكتابة تدوينة. أضف عنوانًا إن أردت، واختر تاريخ التدوينة، ثم اضغط على علامة الصح للحفظ. يمكنك تعديلها في أي وقت.';
 
   @override
-  String get tutorialMediaTitle => 'Add photos, audio or handwriting';
+  String get tutorialMediaTitle => 'إضافة الصور والصوت أو الكتابة اليدوية';
 
   @override
   String get tutorialMediaText =>
-      'Use + in the editor to attach photos, videos or a voice note, or open the pen canvas. These attachments stay with the entry.';
+      'استخدم + في محرر اليوميات لإرفاق الصور أو مقاطع الفيديو أو التسجيل الصوتي، أو لفتح لوحة الكتابة اليدوية. يتم حفظ هذه المرفقات مع إدخال اليوميات.';
 
   @override
-  String get tutorialReviewTitle => 'Find a day again';
+  String get tutorialReviewTitle => 'العثور على يوم مرة أخرى';
 
   @override
   String get tutorialReviewText =>
-      'Browse the journal or calendar, search your writing and use tags to organize it. Media and Atlas help you look back by photo or place.';
+      'تصفح يومياتك أو تقويمك، وابحث في كتاباتك، وقم بتنظيم الإدخالات باستخدام العلامات. تتيح لك صفحات الوسائط والأطلس العثور على الإدخالات السابقة حسب الصورة أو الموقع.';
 
   @override
-  String get tutorialSyncTitle => 'Use more than one device';
+  String get tutorialSyncTitle => 'استخدام أكثر من جهاز';
 
   @override
   String get tutorialSyncText =>
-      'In Settings → Data & storage → Sync, connect to an existing device and confirm authorization there. Both devices can keep using the diary. Text syncs first; media follows as the connection and allowance permit.';
+      'من الإعدادات ← البيانات والتخزين ← المزامنة، اتصل بجهاز موجود وأكّد التفويض على ذلك الجهاز. يمكنك الاستمرار في استخدام الجهازين. يُزامَن نص اليوميات أولًا، ثم تُزامَن المرفقات حسب الاتصال وحصة نقل البيانات المتبقية.';
 
   @override
-  String get tutorialPrivacyTitle => 'Keep your diary safe';
+  String get tutorialPrivacyTitle => 'حافظ على يومياتك آمنة';
 
   @override
   String get tutorialPrivacyText =>
-      'Entries stay on this device unless you enable sync or share/export them. Sync is end-to-end encrypted. Settings also offers an app passcode and backups; you can reopen this tutorial there.';
+      'تظل إدخالات اليوميات على هذا الجهاز ما لم تقم بتمكين مزامنتها أو مشاركتها أو تصديرها. المزامنة مشفرة من طرف إلى طرف. في الإعدادات، يمكنك أيضًا تعيين رمز مرور التطبيق وإنشاء نسخ احتياطية وإعادة فتح هذا البرنامج التعليمي.';
 }

@@ -88,6 +88,7 @@ analysis and formatting accompany source changes; they are not behavior tests.
 |---|---|---|
 | Documentation or comments only | Links, command examples, consistency | Executable examples, manifests or configuration actually change behavior |
 | Pure validation, calculations or transformations | Affected unit cases, boundaries and direct callers | Return values, serialized output or a shared contract changes |
+| ARB catalogs or locale matching | `l10n` regeneration, `test/l10n/`, relevant pages and representative long-text/RTL renders | Broad changes to generated app localizations need full offline Flutter regression; native language/font behavior remains a separate device check |
 | A page's rendering or interaction | Affected widget tests; render and inspect affected phone/wide views for layout changes | Navigation, state persistence or multiple pages interact |
 | Action, view model or service | Owning tests plus caller behavior; use real local dependencies where the contract requires them | Work crosses GUI/CLI, storage or sync boundaries |
 | Files, config persistence, SQLite, backup/import/export | Relevant host integration; round trips, failures and retained data | Schema, archive format, shared stores or migrations change: full app offline regression |

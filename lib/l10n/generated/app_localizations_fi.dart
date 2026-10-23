@@ -12,38 +12,38 @@ class AppLocalizationsFi extends AppLocalizations {
   String get appTitle => 'AID Diary';
 
   @override
-  String get themeColorTitle => 'Theme color';
+  String get themeColorTitle => 'Teeman väri';
 
   @override
-  String get themeColorHint => 'Choose a color for this palette.';
+  String get themeColorHint => 'Valitse väri tälle paletille.';
 
   @override
-  String get themeColorBlue => 'Sky blue';
+  String get themeColorBlue => 'Taivaansininen';
 
   @override
-  String get themeColorGreen => 'Forest green';
+  String get themeColorGreen => 'Metsän vihreä';
 
   @override
-  String get themeColorBrown => 'Warm coffee';
+  String get themeColorBrown => 'Lämmin kahvi';
 
   @override
-  String get themeColorPurple => 'Lavender';
+  String get themeColorPurple => 'Laventeli';
 
   @override
-  String get themeColorRose => 'Dusty rose';
+  String get themeColorRose => 'Pölyinen ruusu';
 
   @override
-  String get themeColorAmber => 'Amber';
+  String get themeColorAmber => 'Meripihka';
 
   @override
-  String get themeColorPreview => 'A little every day';
+  String get themeColorPreview => 'Joka päivä vähän';
 
   @override
-  String get themeTintBackgroundTitle => 'Tint backgrounds with theme color';
+  String get themeTintBackgroundTitle => 'Sävytä taustat teemaväreillä';
 
   @override
   String get themeTintBackgroundHint =>
-      'Turn off for neutral gray backgrounds; buttons keep your chosen color.';
+      'Sammuta neutraali harmaa tausta; painikkeet säilyttävät valitsemasi värin.';
 
   @override
   String get dailyReminderTitle => 'Täytä päiväkirja tänään!';
@@ -101,7 +101,7 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get flashbackOnThisDay => 'On This Day';
+  String get flashbackOnThisDay => 'Tänä päivänä';
 
   @override
   String get searchLogsHint => 'Hae lokeista…';
@@ -122,8 +122,8 @@ class AppLocalizationsFi extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count days',
-      one: '$count day',
+      other: '$count päivää',
+      one: '$count päivä',
     );
     return '$_temp0';
   }
@@ -143,7 +143,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get noLogs => 'Ei lokeja…';
 
   @override
-  String get noResults => 'No Results…';
+  String get noResults => 'Ei tuloksia…';
 
   @override
   String get sortOrderAscendingTitle => 'Nouseva';
@@ -181,26 +181,26 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String chartOverTimeTitle(Object tag) {
-    return '$tag Over Time';
+    return '$tag ajan myötä';
   }
 
   @override
-  String get chartGroupingLabel => 'Group by';
+  String get chartGroupingLabel => 'Ryhmittelyperuste';
 
   @override
-  String get chartGroupingDay => 'Day';
+  String get chartGroupingDay => 'päivä';
 
   @override
-  String get chartGroupingWeek => 'Week';
+  String get chartGroupingWeek => 'Viikko';
 
   @override
-  String get chartGroupingMonth => 'Month';
+  String get chartGroupingMonth => 'Kuukausi';
 
   @override
-  String get chartGroupingYear => 'Year';
+  String get chartGroupingYear => 'vuosi';
 
   @override
-  String get chartSmoothingLabel => 'Smoothing';
+  String get chartSmoothingLabel => 'Tasoitus';
 
   @override
   String streakCurrent(num count) {
@@ -227,7 +227,8 @@ class AppLocalizationsFi extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Great Days $count',
+      other: 'Hienoja päiviä $count',
+      one: 'Hienoja päiviä $count',
     );
     return '$_temp0';
   }
@@ -297,10 +298,10 @@ class AppLocalizationsFi extends AppLocalizations {
   String get settingsFirstDayOfWeek => 'Viikon ensimmäinen päivä';
 
   @override
-  String get settingsCalendarSystem => 'Calendar System';
+  String get settingsCalendarSystem => 'Kalenterijärjestelmä';
 
   @override
-  String get calendarSystemGregorian => 'Gregorian';
+  String get calendarSystemGregorian => 'gregoriaaninen';
 
   @override
   String get calendarSystemJalali => 'Jalali';
@@ -321,10 +322,10 @@ class AppLocalizationsFi extends AppLocalizations {
   String get moodIconPrompt => 'Syötä kuvake';
 
   @override
-  String get settingsHideImages => 'Hide Images';
+  String get settingsHideImages => 'Piilota kuvat';
 
   @override
-  String get pageCalendarTitle => 'Calendar';
+  String get pageCalendarTitle => 'Kalenteri';
 
   @override
   String get settingsNotificationsTitle => 'Ilmoitukset';
@@ -333,7 +334,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get settingsDailyReminderTitle => 'Päivittäinen muistutus';
 
   @override
-  String get settingsOnThisDayDescription => 'Revisit past memories';
+  String get settingsOnThisDayDescription => 'Palaa menneisiin muistoihin';
 
   @override
   String get settingsDailyReminderDescription => 'Lempeä muistutus joka päivä';
@@ -393,102 +394,102 @@ class AppLocalizationsFi extends AppLocalizations {
       '### Mistä nautit tänään?\n- \n\n### Mistä olet kiitollinen?\n- \n\n### Mitä odotat innolla?\n- ';
 
   @override
-  String get settingsTagsTitle => 'Tags';
+  String get settingsTagsTitle => 'Tunnisteet';
 
   @override
-  String get manageTags => 'Manage Tags';
+  String get manageTags => 'Hallitse tunnisteita';
 
   @override
-  String get tagTypeLabelTitle => 'Label';
+  String get tagTypeLabelTitle => 'Tunniste';
 
   @override
-  String get tagTypeTrackerTitle => 'Tracker';
+  String get tagTypeTrackerTitle => 'Seuranta';
 
   @override
-  String get nameHint => 'Name';
+  String get nameHint => 'Nimi';
 
   @override
-  String get tagColorLabel => 'Color';
+  String get tagColorLabel => 'Väri';
 
   @override
-  String get iconPickerTitle => 'Choose Icon';
+  String get iconPickerTitle => 'Valitse kuvake';
 
   @override
-  String get iconPickerIconsTab => 'Icons';
+  String get iconPickerIconsTab => 'Kuvakkeet';
 
   @override
-  String get iconPickerCustomTab => 'Custom';
+  String get iconPickerCustomTab => 'Mukautettu';
 
   @override
-  String get iconPickerSearchHint => 'Search icons…';
+  String get iconPickerSearchHint => 'Hae kuvakkeita…';
 
   @override
-  String get colorPickerTitle => 'Choose Color';
+  String get colorPickerTitle => 'Valitse Väri';
 
   @override
-  String get colorPickerPaletteTab => 'Colors';
+  String get colorPickerPaletteTab => 'värit';
 
   @override
-  String get iconGroupMoodPeople => 'Mood & People';
+  String get iconGroupMoodPeople => 'Tunnelma & Ihmiset';
 
   @override
-  String get iconGroupHealth => 'Health';
+  String get iconGroupHealth => 'Terveys';
 
   @override
-  String get iconGroupWorkFinance => 'Work & Finance';
+  String get iconGroupWorkFinance => 'Työ & talous';
 
   @override
-  String get iconGroupHabitsGoals => 'Habits & Goals';
+  String get iconGroupHabitsGoals => 'Tottumukset ja tavoitteet';
 
   @override
-  String get iconGroupNature => 'Nature';
+  String get iconGroupNature => 'Luonto';
 
   @override
-  String get iconGroupFoodDrink => 'Food & Drink';
+  String get iconGroupFoodDrink => 'Ruoka & Juoma';
 
   @override
-  String get iconGroupHome => 'Home';
+  String get iconGroupHome => 'Kotiin';
 
   @override
-  String get iconGroupTravel => 'Travel';
+  String get iconGroupTravel => 'Matkustaa';
 
   @override
-  String get iconGroupSymbols => 'Symbols';
+  String get iconGroupSymbols => 'Symbolit';
 
   @override
-  String get tagCategoryLabel => 'Category';
+  String get tagCategoryLabel => 'Luokka';
 
   @override
-  String get tagLabel => 'Tag';
+  String get tagLabel => 'Tunniste';
 
   @override
-  String get tagCategoryUncategorized => 'Uncategorized';
+  String get tagCategoryUncategorized => 'Luokittelematon';
 
   @override
-  String get newCategoryTitle => 'New Category';
+  String get newCategoryTitle => 'Uusi luokka';
 
   @override
-  String get shareButtonLabel => 'Share';
+  String get shareButtonLabel => 'Jaa';
 
   @override
-  String get importErrorDescription => 'Failed to import file!';
+  String get importErrorDescription => 'Tiedoston tuonti epäonnistui!';
 
   @override
-  String get exportErrorDescription => 'Failed to export file!';
+  String get exportErrorDescription => 'Tiedoston vienti epäonnistui!';
 
   @override
-  String get deleteTitle => 'Delete';
+  String get deleteTitle => 'Poista';
 
   @override
   String deleteTagMessage(num count, Object name) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: ' It is used in $count logs.',
-      one: ' It is used in 1 log.',
+      other: ' Sitä käytetään $count päiväkirjamerkinnässä.',
+      one: ' Sitä käytetään $count päiväkirjamerkinnässä.',
       zero: '',
     );
-    return 'Delete \"$name\"?$_temp0';
+    return 'Poistetaanko \"$name\"?$_temp0';
   }
 
   @override
@@ -496,83 +497,83 @@ class AppLocalizationsFi extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: ' Its $count tags will also be deleted.',
-      one: ' Its 1 tag will also be deleted.',
+      other: ' Myös sen $count-tunnisteet poistetaan.',
+      one: ' Myös sen $count-tunniste poistetaan.',
       zero: '',
     );
-    return 'Delete \"$name\"?$_temp0';
+    return 'Poistetaanko \"$name\"?$_temp0';
   }
 
   @override
-  String get tagNameExists => 'There is a tag with this name already';
+  String get tagNameExists => 'Tällä nimellä on jo tunniste';
 
   @override
-  String get categoryNameExists => 'There is a category with this name already';
+  String get categoryNameExists => 'Tällä nimellä on jo luokka';
 
   @override
   String deleteTemplateMessage(Object name) {
-    return 'Delete \"$name\"?';
+    return 'Poistetaanko \"$name\"?';
   }
 
   @override
-  String get addTagsTitle => 'Add Tags';
+  String get addTagsTitle => 'Lisää tunnisteita';
 
   @override
-  String get addTagsSearchHint => 'Search tags…';
+  String get addTagsSearchHint => 'Hae tunnisteita…';
 
   @override
-  String get tagPickerSortManualLabel => 'Manual order';
+  String get tagPickerSortManualLabel => 'Manuaalinen tilaus';
 
   @override
-  String get tagPickerSortUsageLabel => 'Sort by usage';
+  String get tagPickerSortUsageLabel => 'Lajittele käytön mukaan';
 
   @override
-  String get tagFavoriteName => 'Favorite';
+  String get tagFavoriteName => 'Suosikki';
 
   @override
-  String get tagEnergyName => 'Energy';
+  String get tagEnergyName => 'Energiaa';
 
   @override
-  String get tagCategoryActivitiesName => 'Activities';
+  String get tagCategoryActivitiesName => 'Aktiviteetit';
 
   @override
-  String get tagExerciseName => 'Exercise';
+  String get tagExerciseName => 'Harjoittele';
 
   @override
-  String get tagSocializingName => 'Socializing';
+  String get tagSocializingName => 'Seurustelu';
 
   @override
-  String get tagHobbyName => 'Hobby';
+  String get tagHobbyName => 'Harrastus';
 
   @override
-  String get tagEntertainmentName => 'Entertainment';
+  String get tagEntertainmentName => 'Viihde';
 
   @override
-  String get tagDiningName => 'Dining';
+  String get tagDiningName => 'Ruokailu';
 
   @override
-  String get tagChoresName => 'Chores';
+  String get tagChoresName => 'Askareita';
 
   @override
-  String get tagCategoryEmotionsName => 'Emotions';
+  String get tagCategoryEmotionsName => 'Tunteet';
 
   @override
-  String get tagExcitedName => 'Excited';
+  String get tagExcitedName => 'Innostunut';
 
   @override
-  String get tagGratefulName => 'Grateful';
+  String get tagGratefulName => 'Kiitollinen';
 
   @override
-  String get tagCalmName => 'Calm';
+  String get tagCalmName => 'Rauhallinen';
 
   @override
-  String get tagTiredName => 'Tired';
+  String get tagTiredName => 'Väsynyt';
 
   @override
-  String get tagAnxiousName => 'Anxious';
+  String get tagAnxiousName => 'Ahdistunut';
 
   @override
-  String get tagAnnoyedName => 'Annoyed';
+  String get tagAnnoyedName => 'ärsyyntynyt';
 
   @override
   String get settingsStorageTitle => 'Tallennustila';
@@ -637,56 +638,57 @@ class AppLocalizationsFi extends AppLocalizations {
       'Varmuuskopion palauttaminen korvaa olemassa olevat tiedot!';
 
   @override
-  String get settingsBackupPasswordProtect => 'Password Protect Backups';
+  String get settingsBackupPasswordProtect => 'Salasanasuojatut varmuuskopiot';
 
   @override
-  String get backupEncryptedTitle => 'Encrypted Backup';
+  String get backupEncryptedTitle => 'Salattu varmuuskopio';
 
   @override
-  String get backupEncryptedContent => 'This backup is password protected.';
+  String get backupEncryptedContent =>
+      'Tämä varmuuskopio on suojattu salasanalla.';
 
   @override
-  String get settingsAutoBackup => 'Automatic Backups';
+  String get settingsAutoBackup => 'Automaattiset varmuuskopiot';
 
   @override
-  String get settingsAutoBackupLocation => 'Backup Location';
+  String get settingsAutoBackupLocation => 'Varmuuskopiointipaikka';
 
   @override
-  String get settingsAutoBackupInterval => 'Backup Interval';
+  String get settingsAutoBackupInterval => 'Varmuuskopiointiväli';
 
   @override
-  String get settingsAutoBackupIntervalDaily => 'Daily';
+  String get settingsAutoBackupIntervalDaily => 'Päivittäin';
 
   @override
-  String get settingsAutoBackupIntervalWeekly => 'Weekly';
+  String get settingsAutoBackupIntervalWeekly => 'viikoittain';
 
   @override
-  String get settingsAutoBackupIntervalMonthly => 'Monthly';
+  String get settingsAutoBackupIntervalMonthly => 'Kuukausittain';
 
   @override
-  String get settingsAutoBackupMaxCount => 'Backups To Keep';
+  String get settingsAutoBackupMaxCount => 'Varmuuskopiot säilytettäväksi';
 
   @override
-  String get settingsAutoBackupRequireCharging => 'Only While Charging';
+  String get settingsAutoBackupRequireCharging => 'Vain latauksen aikana';
 
   @override
   String settingsBackupLast(Object time) {
-    return 'Last backup $time';
+    return 'Viimeisin varmuuskopio $time';
   }
 
   @override
-  String get settingsBackupNever => 'Never backed up';
+  String get settingsBackupNever => 'Ei koskaan varmuuskopioitu';
 
   @override
   String settingsAutoBackupNext(Object time) {
-    return 'Next backup $time';
+    return 'Seuraava varmuuskopio $time';
   }
 
   @override
-  String get settingsAutoBackupKeepAll => 'All';
+  String get settingsAutoBackupKeepAll => 'Kaikki';
 
   @override
-  String get autoBackupFailedTitle => 'Backup Failed';
+  String get autoBackupFailedTitle => 'Varmuuskopiointi epäonnistui';
 
   @override
   String tranferStatus(Object percent) {
@@ -705,12 +707,12 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String encryptingBackupStatus(Object percent) {
-    return 'Encrypting Backup… $percent%';
+    return 'Salataan varmuuskopiota… $percent%';
   }
 
   @override
   String decryptingBackupStatus(Object percent) {
-    return 'Decrypting Backup… $percent%';
+    return 'Puretaan varmuuskopion salausta… $percent%';
   }
 
   @override
@@ -837,69 +839,69 @@ class AppLocalizationsFi extends AppLocalizations {
   String get licenseGPLv3 => 'GPL-v. 3.0';
 
   @override
-  String get settingsOpenSourceLicenses => 'Open Source Licenses';
+  String get settingsOpenSourceLicenses => 'Avoimen lähdekoodin lisenssit';
 
   @override
   String get tagMoodTitle => 'Mieliala';
 
   @override
-  String get selectTagTitle => 'Select Tag';
+  String get selectTagTitle => 'Valitse Tunniste';
 
   @override
-  String get labelPresentLabel => 'Present';
+  String get labelPresentLabel => 'läsnä';
 
   @override
-  String get labelAbsentLabel => 'Absent';
+  String get labelAbsentLabel => 'Poissa';
 
   @override
-  String get labelCoverageLabel => 'Coverage';
+  String get labelCoverageLabel => 'Kattavuus';
 
   @override
   String chartDistributionTitle(Object tag) {
-    return '$tag Distribution';
+    return '$tag Jakelu';
   }
 
   @override
-  String get shareAddToLogPickerTitle => 'Choose a log';
+  String get shareAddToLogPickerTitle => 'Valitse päiväkirjamerkintä';
 
   @override
-  String get adaptiveEmptyDay => 'No entries for this day yet';
+  String get adaptiveEmptyDay => 'Ei vielä merkintöjä tälle päivälle';
 
   @override
-  String get adaptiveNewEntry => 'Write an entry';
+  String get adaptiveNewEntry => 'Kirjoita merkintä';
 
   @override
-  String get pageJournalTitle => 'Journal';
+  String get pageJournalTitle => 'Päiväkirja';
 
   @override
-  String get coachPrompt1 => 'What made you smile today?';
+  String get coachPrompt1 => 'Mikä sai sinut hymyilemään tänään?';
 
   @override
-  String get coachPrompt2 => 'What is one thing you learned today?';
+  String get coachPrompt2 => 'Mikä on yksi asia, jonka opit tänään?';
 
   @override
-  String get coachPrompt3 => 'Who did you talk to today, and how did it feel?';
+  String get coachPrompt3 => 'Kenen kanssa puhuit tänään ja miltä se tuntui?';
 
   @override
-  String get coachPrompt4 => 'What are you grateful for right now?';
+  String get coachPrompt4 => 'Mistä olet kiitollinen juuri nyt?';
 
   @override
-  String get coachPrompt5 => 'What took most of your energy today?';
+  String get coachPrompt5 => 'Mikä vie eniten energiaasi tänään?';
 
   @override
-  String get coachPrompt6 => 'Describe a small moment you want to remember.';
+  String get coachPrompt6 => 'Kuvaile pieni hetki, jonka haluat muistaa.';
 
   @override
-  String get coachPrompt7 => 'What would make tomorrow a good day?';
+  String get coachPrompt7 => 'Mikä tekisi huomisesta hyvän päivän?';
 
   @override
-  String get coachPrompt8 => 'What has been on your mind lately?';
+  String get coachPrompt8 => 'Mitä on ollut mielessäsi viime aikoina?';
 
   @override
-  String get coachPrompt9 => 'What did you do today just for yourself?';
+  String get coachPrompt9 => 'Mitä teit tänään vain itseäsi varten?';
 
   @override
-  String get coachPrompt10 => 'If today had a title, what would it be?';
+  String get coachPrompt10 => 'Jos päivällä olisi otsikko, mikä se olisi?';
 
   @override
   String get pageMediaTitle => 'Media';
@@ -908,327 +910,330 @@ class AppLocalizationsFi extends AppLocalizations {
   String get pageAtlasTitle => 'Atlas';
 
   @override
-  String get pageCoachTitle => 'Coach';
+  String get pageCoachTitle => 'Valmentaja';
 
   @override
-  String get noEntrySelected => 'No entry selected.';
+  String get noEntrySelected => 'Ei valittuna.';
 
   @override
-  String get entryShare => 'Share';
+  String get entryShare => 'Jaa';
 
   @override
-  String get entryFavorite => 'Star';
+  String get entryFavorite => 'Tähti';
 
   @override
-  String get entryEdit => 'Edit';
+  String get entryEdit => 'Muokkaa';
 
   @override
-  String get entryPrevious => 'Previous entry';
+  String get entryPrevious => 'Edellinen merkintä';
 
   @override
-  String get entryNext => 'Next entry';
+  String get entryNext => 'Seuraava merkintä';
 
   @override
-  String get journalStories => 'Stories';
+  String get journalStories => 'Tarinoita';
 
   @override
-  String get journalEntries => 'Entries';
+  String get journalEntries => 'merkinnät';
 
   @override
-  String get journalEmptyHint => 'Begin your diary by adding a new entry.';
+  String get journalEmptyHint =>
+      'Aloita päiväkirjasi lisäämällä uusi merkintä.';
 
   @override
-  String get storyToday => 'Today';
+  String get storyToday => 'Tänään';
 
   @override
-  String get storyThrowback => 'Throwback';
+  String get storyThrowback => 'Takaisinheitto';
 
   @override
-  String get storyNoThrowback => 'No throwback today';
+  String get storyNoThrowback => 'Ei paluuta tänään';
 
   @override
-  String get mediaFiles => 'Media files';
+  String get mediaFiles => 'Mediatiedostot';
 
   @override
-  String get mediaEmpty => 'No photos yet.';
+  String get mediaEmpty => 'Ei kuvia vielä.';
 
   @override
-  String get mediaEmptyHint => 'Photos attached to entries will be shown here.';
+  String get mediaEmptyHint => 'Ilmoituksiin liitetyt kuvat näkyvät täällä.';
 
   @override
-  String get atlasEmpty => 'No entries with a location.';
+  String get atlasEmpty => 'Ei merkintöjä sijainnilla.';
 
   @override
-  String get atlasEmptyHint => 'Entries with a location will be shown here.';
+  String get atlasEmptyHint =>
+      'Kirjoitukset, joissa on sijainti, näkyvät tässä.';
 
   @override
-  String get atlasShowAll => 'Show all entries';
+  String get atlasShowAll => 'Näytä kaikki merkinnät';
 
   @override
-  String get atlasMyLocation => 'My location';
+  String get atlasMyLocation => 'Minun sijaintini';
 
   @override
-  String get coachAll => 'All';
+  String get coachAll => 'Kaikki';
 
   @override
-  String get coachPrograms => 'Programs';
+  String get coachPrograms => 'Ohjelmat';
 
   @override
-  String get coachTemplates => 'Templates';
+  String get coachTemplates => 'Mallit';
 
   @override
-  String get coachKindProgram => 'Program';
+  String get coachKindProgram => 'Ohjelma';
 
   @override
-  String get coachKindTemplate => 'Template';
+  String get coachKindTemplate => 'Malli';
 
   @override
-  String get coachNoTemplates => 'No programs or templates.';
+  String get coachNoTemplates => 'Ei ohjelmia tai malleja.';
 
   @override
-  String get coachUseTemplate => 'Write with this template';
+  String get coachUseTemplate => 'Kirjoita tällä mallilla';
 
   @override
-  String get coachProgramEverydayTitle => 'Everyday moments';
+  String get coachProgramEverydayTitle => 'Arjen hetkiä';
 
   @override
   String get coachProgramEverydayDescription =>
-      'Five short questions, one a day. Each takes a minute or two and helps you see what made the day yours. A gentle way to build the habit of writing a little every day.';
+      'Viisi lyhyttä kysymystä, yksi päivässä. Jokainen niistä kestää minuutin tai kaksi ja auttaa sinua näkemään, mikä teki päivästä sinun. Hellävarainen tapa rakentaa tapa kirjoittaa vähän joka päivä.';
 
   @override
-  String get coachProgramReflectTitle => 'Looking inward';
+  String get coachProgramReflectTitle => 'Sisäänpäin katsottuna';
 
   @override
   String get coachProgramReflectDescription =>
-      'One deeper question a week, for five weeks. Take your time with each: how you have been feeling, what wears you out, what you are grateful for.';
+      'Yksi syvällisempi kysymys viikossa, viiden viikon ajan. Ota aikaa jokaisen kanssa: miltä sinusta on tuntunut, mikä väsyttää, mistä olet kiitollinen.';
 
   @override
-  String get searchFilters => 'Filters';
+  String get searchFilters => 'Suodattimet';
 
   @override
-  String get searchFilterTags => 'Tags';
+  String get searchFilterTags => 'Tunnisteet';
 
   @override
-  String get searchFilterStarred => 'Starred';
+  String get searchFilterStarred => 'tähdellä merkitty';
 
   @override
-  String get searchHint => 'Type to search, or pick a filter.';
+  String get searchHint => 'Hae kirjoittamalla tai valitse suodatin.';
 
   @override
-  String get locationTitle => 'Location';
+  String get locationTitle => 'Sijainti';
 
   @override
-  String get locationName => 'Place name';
+  String get locationName => 'Paikan nimi';
 
   @override
-  String get locationRemove => 'Remove';
+  String get locationRemove => 'Poista';
 
   @override
-  String get locationServiceDisabled => 'Location services are turned off.';
+  String get locationServiceDisabled =>
+      'Sijaintipalvelut on kytketty pois päältä.';
 
   @override
-  String get locationPermissionDenied => 'Location permission was denied.';
+  String get locationPermissionDenied => 'Sijaintilupa evättiin.';
 
   @override
-  String get locationUnavailable => 'Could not get the current location.';
+  String get locationUnavailable => 'Nykyistä sijaintia ei voitu hakea.';
 
   @override
-  String get calendarJumpToToday => 'Jump to today';
+  String get calendarJumpToToday => 'Hyppää tähän päivään';
 
   @override
-  String get editorStartWriting => 'Start writing or choose a ';
+  String get editorStartWriting => 'Aloita kirjoittaminen tai valitse a ';
 
   @override
-  String get editorTemplateLink => 'Template';
+  String get editorTemplateLink => 'Malli';
 
   @override
   String get editorStartWritingEnd => '.';
 
   @override
-  String get templatePickerTitle => 'Choose a template';
+  String get templatePickerTitle => 'Valitse malli';
 
   @override
-  String get templateFeatured => 'Featured templates';
+  String get templateFeatured => 'Suositellut mallit';
 
   @override
-  String get templateMine => 'My templates';
+  String get templateMine => 'Omat mallit';
 
   @override
-  String get templateDailyName => 'Daily review';
+  String get templateDailyName => 'Päivittäinen arvostelu';
 
   @override
   String get templateDailyDescription =>
-      'What happened, how it felt, and what comes next.';
+      'Mitä tapahtui, miltä tuntui ja mitä siitä seuraa.';
 
   @override
   String get templateDailyText =>
-      '## What happened today\n\n\n## How I felt\n\n\n## Three things I\'m grateful for\n1. \n2. \n3. \n\n## Tomorrow\n';
+      '## Mitä tänään tapahtui\n\n\n## Miltä minusta tuntui\n\n\n## Kolme asiaa, joista olen kiitollinen\n1. \n2. \n3. \n\n## Huomenna\n';
 
   @override
-  String get templateTravelName => 'Travel log';
+  String get templateTravelName => 'Matkapäiväkirjamerkintä';
 
   @override
   String get templateTravelDescription =>
-      'Places, moments and food from the road.';
+      'Paikkoja, hetkiä ja ruokaa tien varrelta.';
 
   @override
   String get templateTravelText =>
-      '## Where I went\n\n\n## The moment I remember most\n\n\n## What I ate\n\n\n## Plans for tomorrow\n';
+      '## Minne menin\n\n\n## Hetki, jonka muistan eniten\n\n\n## Mitä söin\n\n\n## Suunnitelmia huomiselle\n';
 
   @override
-  String get templateReadingName => 'Reading notes';
+  String get templateReadingName => 'Muistiinpanojen lukeminen';
 
   @override
   String get templateReadingDescription =>
-      'Quotes and thoughts from what you read.';
+      'Lainauksia ja ajatuksia lukemastasi.';
 
   @override
   String get templateReadingText =>
-      '## Book\n\n\n## Where I am\n\n\n## Quotes\n> \n\n## My thoughts\n';
+      '## Kirja\n\n\n## Missä olen\n\n\n## Lainaukset\n> \n\n## Ajatukseni\n';
 
   @override
-  String get templateWeeklyName => 'Weekly review';
+  String get templateWeeklyName => 'Viikkokatsaus';
 
   @override
   String get templateWeeklyDescription =>
-      'Highlights, struggles and next week\'s focus.';
+      'Kohokohdat, kamppailut ja ensi viikon painopiste.';
 
   @override
   String get templateWeeklyText =>
-      '## Highlights\n\n\n## What was hard\n\n\n## What I learned\n\n\n## Focus for next week\n';
+      '## Kohokohdat\n\n\n## Mikä oli vaikeaa\n\n\n## Mitä opin\n\n\n## Keskity ensi viikkoon\n';
 
   @override
-  String get entryDuplicate => 'Duplicate';
+  String get entryDuplicate => 'Kopioi';
 
   @override
-  String get entryDuplicated => 'Entry duplicated';
+  String get entryDuplicated => 'Merkintä kopioitu';
 
   @override
-  String get entrySaveAsTemplate => 'Save as template';
+  String get entrySaveAsTemplate => 'Tallenna mallina';
 
   @override
-  String get entrySavedAsTemplate => 'Saved as a template';
+  String get entrySavedAsTemplate => 'Tallennettu mallina';
 
   @override
-  String get storyStatistics => 'Statistics';
+  String get storyStatistics => 'Tilastot';
 
   @override
-  String get storyMoodChart => 'Mood chart';
+  String get storyMoodChart => 'Tunnelmakaavio';
 
   @override
   String storyEntriesAndDays(Object days, Object entries) {
-    return '$entries entries · $days days';
+    return '$entries-merkinnät · $days päivää';
   }
 
   @override
-  String get storyThisYear => 'This year';
+  String get storyThisYear => 'Tänä vuonna';
 
   @override
-  String get storyLastYear => 'Last year';
+  String get storyLastYear => 'Viime vuonna';
 
   @override
-  String get storyTapToOpen => 'Tap a day to open it';
+  String get storyTapToOpen => 'Avaa se napauttamalla päivää';
 
   @override
-  String get settingsGeneralTitle => 'General';
+  String get settingsGeneralTitle => 'Kenraali';
 
   @override
-  String get settingsDataTitle => 'Data & storage';
+  String get settingsDataTitle => 'Data ja tallennustila';
 
   @override
-  String get settingsStoriesTitle => 'Stories';
+  String get settingsStoriesTitle => 'Tarinoita';
 
   @override
-  String get settingsHelpTitle => 'Help & about';
+  String get settingsHelpTitle => 'Apua ja tietoa';
 
   @override
-  String get weatherTitle => 'Weather';
+  String get weatherTitle => 'Sää';
 
   @override
-  String get weatherClear => 'Clear';
+  String get weatherClear => 'Selkeä';
 
   @override
-  String get weatherPartlyCloudy => 'Partly cloudy';
+  String get weatherPartlyCloudy => 'Puolipilvistä';
 
   @override
-  String get weatherCloudy => 'Cloudy';
+  String get weatherCloudy => 'Pilvistä';
 
   @override
-  String get weatherFog => 'Fog';
+  String get weatherFog => 'Sumua';
 
   @override
-  String get weatherDrizzle => 'Drizzle';
+  String get weatherDrizzle => 'Tihkusadetta';
 
   @override
-  String get weatherRain => 'Rain';
+  String get weatherRain => 'Sade';
 
   @override
-  String get weatherSnow => 'Snow';
+  String get weatherSnow => 'Lunta';
 
   @override
-  String get weatherStorm => 'Thunderstorm';
+  String get weatherStorm => 'Ukkosmyrsky';
 
   @override
-  String get weatherFetch => 'Get weather for this entry';
+  String get weatherFetch => 'Hanki sää tälle merkinnälle';
 
   @override
-  String get weatherNeedsLocation => 'Add a location with coordinates first.';
+  String get weatherNeedsLocation => 'Lisää ensin sijainti koordinaatteineen.';
 
   @override
   String get weatherUnavailable =>
-      'Weather is unavailable for this place and time.';
+      'Sää ei ole saatavilla tälle paikalle ja ajalle.';
 
   @override
-  String get weatherRemove => 'Remove weather';
+  String get weatherRemove => 'Poista sää';
 
   @override
-  String get activityTitle => 'Activity';
+  String get activityTitle => 'Toiminta';
 
   @override
-  String get activityStill => 'Still';
+  String get activityStill => 'Silti';
 
   @override
-  String get activityWalking => 'Walking';
+  String get activityWalking => 'Kävely';
 
   @override
-  String get activityRunning => 'Running';
+  String get activityRunning => 'Juoksemassa';
 
   @override
-  String get activityCycling => 'Cycling';
+  String get activityCycling => 'Pyöräily';
 
   @override
-  String get activityVehicle => 'In a vehicle';
+  String get activityVehicle => 'Ajoneuvossa';
 
   @override
-  String get activityFlying => 'Flying';
+  String get activityFlying => 'Lentäminen';
 
   @override
-  String get activityExercise => 'Exercise';
+  String get activityExercise => 'Harjoittele';
 
   @override
-  String get activityDetect => 'Detect current activity';
+  String get activityDetect => 'Tunnista nykyinen toiminta';
 
   @override
-  String get activityDetectFailed => 'Couldn\'t detect an activity.';
+  String get activityDetectFailed => 'Toimintoa ei voitu havaita.';
 
   @override
-  String get activityRemove => 'Remove activity';
+  String get activityRemove => 'Poista toiminta';
 
   @override
-  String get settingsAutoAddTitle => 'Add automatically';
+  String get settingsAutoAddTitle => 'Lisää automaattisesti';
 
   @override
-  String get settingsAutoAddLocation => 'Location';
+  String get settingsAutoAddLocation => 'Sijainti';
 
   @override
-  String get settingsAutoAddWeather => 'Weather';
+  String get settingsAutoAddWeather => 'Sää';
 
   @override
   String get settingsAutoAddHint =>
-      'New entries get these filled in when they are created.';
+      'Uudet merkinnät täytetään, kun ne luodaan.';
 
   @override
-  String get settingsTemperatureUnit => 'Temperature unit';
+  String get settingsTemperatureUnit => 'Lämpötilayksikkö';
 
   @override
   String get settingsCelsius => 'Celsius (°C)';
@@ -1237,49 +1242,49 @@ class AppLocalizationsFi extends AppLocalizations {
   String get settingsFahrenheit => 'Fahrenheit (°F)';
 
   @override
-  String get moodGreat => 'Great';
+  String get moodGreat => 'Hienoa';
 
   @override
-  String get moodGood => 'Good';
+  String get moodGood => 'Hyvä';
 
   @override
-  String get moodOkay => 'Okay';
+  String get moodOkay => 'Okei';
 
   @override
-  String get moodBad => 'Bad';
+  String get moodBad => 'Huono';
 
   @override
-  String get moodAwful => 'Awful';
+  String get moodAwful => 'Kamalaa';
 
   @override
-  String get locationSearchHint => 'Search for a place';
+  String get locationSearchHint => 'Etsi paikka';
 
   @override
-  String get locationSearchEmpty => 'No places found';
+  String get locationSearchEmpty => 'Paikkoja ei löytynyt';
 
   @override
-  String get settingsWallpaper => 'Wallpaper';
+  String get settingsWallpaper => 'Taustakuva';
 
   @override
-  String get wallpaperNone => 'None';
+  String get wallpaperNone => 'Ei mitään';
 
   @override
-  String get wallpaperDots => 'Dots';
+  String get wallpaperDots => 'Pisteitä';
 
   @override
-  String get wallpaperGrid => 'Grid';
+  String get wallpaperGrid => 'Ruudukko';
 
   @override
-  String get wallpaperLines => 'Lines';
+  String get wallpaperLines => 'Linjat';
 
   @override
-  String get wallpaperPhoto => 'Photo…';
+  String get wallpaperPhoto => 'Valokuva…';
 
   @override
-  String get settingsFontFamily => 'Font';
+  String get settingsFontFamily => 'Fontti';
 
   @override
-  String get fontSystem => 'System';
+  String get fontSystem => 'Järjestelmä';
 
   @override
   String get fontSerif => 'Serif';
@@ -1288,110 +1293,111 @@ class AppLocalizationsFi extends AppLocalizations {
   String get fontMono => 'Monospace';
 
   @override
-  String get settingsFontSize => 'Font size';
+  String get settingsFontSize => 'Fontin koko';
 
   @override
-  String get fontSizeSmall => 'Small';
+  String get fontSizeSmall => 'Pieni';
 
   @override
-  String get fontSizeMedium => 'Medium';
+  String get fontSizeMedium => 'Keskikokoinen';
 
   @override
-  String get fontSizeLarge => 'Large';
+  String get fontSizeLarge => 'Suuri';
 
   @override
-  String get fontSizeExtraLarge => 'Extra large';
+  String get fontSizeExtraLarge => 'Erittäin suuri';
 
   @override
-  String get settingsLineSpacing => 'Line spacing';
+  String get settingsLineSpacing => 'Rivivälit';
 
   @override
-  String get lineSpacingCompact => 'Compact';
+  String get lineSpacingCompact => 'Kompakti';
 
   @override
-  String get lineSpacingNormal => 'Normal';
+  String get lineSpacingNormal => 'Normaali';
 
   @override
-  String get lineSpacingRelaxed => 'Relaxed';
+  String get lineSpacingRelaxed => 'Rentoutunut';
 
   @override
-  String get moodAssociationsTitle => 'What makes me feel…';
+  String get moodAssociationsTitle => 'Mikä saa minut tuntemaan…';
 
   @override
   String moodAssociationsCount(int matching, int total) {
-    return '$matching of $total entries';
+    return '$matching $total-merkinnöistä';
   }
 
   @override
-  String get videoRecord => 'Record a video';
+  String get videoRecord => 'Tallenna video';
 
   @override
-  String get videoChoose => 'Choose a video';
+  String get videoChoose => 'Valitse video';
 
   @override
-  String get audioRecordTitle => 'Record a voice note';
+  String get audioRecordTitle => 'Nauhoita äänimuistiinpano';
 
   @override
-  String get audioChoose => 'Choose an audio file';
+  String get audioChoose => 'Valitse äänitiedosto';
 
   @override
-  String get audioStart => 'Record';
+  String get audioStart => 'Nauhoita';
 
   @override
-  String get audioStop => 'Stop and save';
+  String get audioStop => 'Pysähdy ja säästä';
 
   @override
   String get audioPermissionDenied =>
-      'Microphone access is off. Allow it in the system settings.';
+      'Mikrofonin käyttö on pois päältä. Salli se järjestelmäasetuksissa.';
 
   @override
-  String get mediaTooLarge => 'This video is too large to attach.';
+  String get mediaTooLarge => 'Tämä video on liian suuri liitettäväksi.';
 
   @override
   String get mediaUnavailable =>
-      'This attachment is not available on this device.';
+      'Tämä liite ei ole käytettävissä tällä laitteella.';
 
   @override
-  String get widgetDone => 'Today\'s entry is written';
+  String get widgetDone => 'Tämän päivän kirjoitus on kirjoitettu';
 
   @override
-  String get widgetPending => 'How was your day?';
+  String get widgetPending => 'Millainen päiväsi meni?';
 
   @override
-  String get widgetWrite => 'Write';
+  String get widgetWrite => 'Kirjoita';
 
   @override
-  String get insertChecklist => 'Checklist';
+  String get insertChecklist => 'Tarkistuslista';
 
   @override
-  String get insertNumberedList => 'Numbered list';
+  String get insertNumberedList => 'Numeroitu luettelo';
 
   @override
-  String get insertTable => 'Table';
+  String get insertTable => 'Taulukko';
 
   @override
-  String get insertDivider => 'Divider';
+  String get insertDivider => 'Jakaja';
 
   @override
-  String get insertCodeBlock => 'Code block';
+  String get insertCodeBlock => 'Koodilohko';
 
   @override
-  String get journalSortTitle => 'Sort entries';
+  String get journalSortTitle => 'Lajittele merkinnät';
 
   @override
-  String get journalSortUpdated => 'Last updated';
+  String get journalSortUpdated => 'Viimeksi päivitetty';
 
   @override
-  String get settingsTimeFormat => 'Time format';
+  String get settingsTimeFormat => 'Aikamuoto';
 
   @override
-  String get settingsDayStart => 'New entries count for the day before until';
+  String get settingsDayStart =>
+      'Uudet merkinnät lasketaan edellisenä päivänä asti';
 
   @override
-  String get settingsDayAskUntil => 'Then ask which day until';
+  String get settingsDayAskUntil => 'Kysy sitten mihin päivään asti';
 
   @override
-  String get settingsDayStartMidnight => 'Off';
+  String get settingsDayStartMidnight => 'Pois päältä';
 
   @override
   String settingsDayStartAt(int hour) {
@@ -1400,268 +1406,268 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get settingsDayStartHint =>
-      'Every entry keeps the day it belongs to next to the time it was written, and you can change that day in the editor at any time. These hours only pick the day for new entries, so changing them moves no existing entry.';
+      'Jokainen merkintä säilyttää päivämäärän, johon se kuuluu, kirjoitusajan vieressä, ja voit muuttaa sitä milloin tahansa editorissa. Nämä aukioloajat valitsevat vain päivän uusille merkinnöille, joten niiden muuttaminen ei siirrä olemassa olevia merkintöjä.';
 
   @override
   String get lateNightBadge =>
-      'Written late at night, counted for the day before';
+      'Kirjoitettu myöhään illalla, laskettu edellisenä päivänä';
 
   @override
   String editorDayAsk(String time) {
-    return 'Written at $time. Which day is it for?';
+    return 'Kirjoitettu osoitteessa $time. Mille päivälle se on tarkoitettu?';
   }
 
   @override
   String editorDayYesterday(String date) {
-    return '$date (yesterday)';
+    return '$date (eilen)';
   }
 
   @override
   String editorDayToday(String date) {
-    return '$date (today)';
+    return '$date (tänään)';
   }
 
   @override
   String editorWrittenAt(String when) {
-    return 'Written $when';
+    return 'Kirjoitettu $when';
   }
 
   @override
-  String get timeFormat12 => '12-hour';
+  String get timeFormat12 => '12 tuntia';
 
   @override
-  String get timeFormat24 => '24-hour';
+  String get timeFormat24 => '24 tuntia';
 
   @override
-  String get settingsReminderDays => 'Remind me on';
+  String get settingsReminderDays => 'Muistuta minua';
 
   @override
-  String get locationRecent => 'Recent places';
+  String get locationRecent => 'Viimeaikaiset paikat';
 
   @override
-  String get shareImage => 'Share image';
+  String get shareImage => 'Jaa kuva';
 
   @override
-  String get shareSaveImage => 'Save image';
+  String get shareSaveImage => 'Tallenna kuva';
 
   @override
-  String get shareSaved => 'Image saved';
+  String get shareSaved => 'Kuva tallennettu';
 
   @override
-  String get deletedTitle => 'Recently deleted';
+  String get deletedTitle => 'Äskettäin poistettu';
 
   @override
-  String get deletedNone => 'Nothing deleted recently';
+  String get deletedNone => 'Mitään ei ole poistettu äskettäin';
 
   @override
   String deletedHint(int days) {
-    return 'Deleted entries stay here for $days days, then are erased.';
+    return 'Poistetut merkinnät pysyvät täällä $days päivää, minkä jälkeen ne poistetaan.';
   }
 
   @override
   String deletedDaysLeft(int days) {
-    return '$days days left';
+    return '$days päivää jäljellä';
   }
 
   @override
-  String get deletedRestore => 'Restore';
+  String get deletedRestore => 'Palauta';
 
   @override
-  String get deletedDeleteForever => 'Delete forever';
+  String get deletedDeleteForever => 'Poista ikuisesti';
 
   @override
   String get deletedDeleteForeverDescription =>
-      'The entry and its attachments are erased. This cannot be undone.';
+      'Merkintä ja sen liitteet poistetaan. Tätä ei voi kumota.';
 
   @override
-  String get deletedEmpty => 'Empty';
+  String get deletedEmpty => 'Tyhjä';
 
   @override
   String get deletedEmptyDescription =>
-      'Erase every entry in Recently deleted? This cannot be undone.';
+      'Poistetaanko kaikki merkinnät äskettäin poistettu? Tätä ei voi kumota.';
 
   @override
   String get formatJson => 'JSON';
 
   @override
-  String get randomTitle => 'Random walk';
+  String get randomTitle => 'Satunnainen kävely';
 
   @override
-  String get randomSubtitle => 'Open a past entry';
+  String get randomSubtitle => 'Avaa mennyt merkintä';
 
   @override
-  String get randomNext => 'Another';
+  String get randomNext => 'Toinen';
 
   @override
-  String get randomAll => 'All';
+  String get randomAll => 'Kaikki';
 
   @override
-  String get randomWithPhotos => 'With photos';
+  String get randomWithPhotos => 'Valokuvien kanssa';
 
   @override
-  String get randomGoodDays => 'Good days';
+  String get randomGoodDays => 'Hyviä päiviä';
 
   @override
-  String get randomEmpty => 'No entries to pick from';
+  String get randomEmpty => 'Ei merkintöjä, joista valita';
 
   @override
-  String get reviewWeekTitle => 'This week';
+  String get reviewWeekTitle => 'Tällä viikolla';
 
   @override
-  String get reviewWeekSubtitle => 'Your week so far';
+  String get reviewWeekSubtitle => 'Viikkosi tähän mennessä';
 
   @override
-  String get reviewYearTitle => 'This year';
+  String get reviewYearTitle => 'Tänä vuonna';
 
   @override
-  String get reviewEmpty => 'Nothing written yet';
+  String get reviewEmpty => 'Ei vielä kirjoitettu mitään';
 
   @override
-  String get reviewEntries => 'Entries';
+  String get reviewEntries => 'merkinnät';
 
   @override
-  String get reviewDaysWritten => 'Days written';
+  String get reviewDaysWritten => 'Päivät kirjoitettu';
 
   @override
-  String get reviewWords => 'Words';
+  String get reviewWords => 'Sanat';
 
   @override
-  String get reviewPhotos => 'Photos';
+  String get reviewPhotos => 'Valokuvat';
 
   @override
-  String get reviewLongestRun => 'Longest run of days';
+  String get reviewLongestRun => 'Päivän pisin juoksu';
 
   @override
-  String get reviewAverageMood => 'Average mood';
+  String get reviewAverageMood => 'Keskimääräinen mieliala';
 
   @override
-  String get reviewFavorites => 'Most often';
+  String get reviewFavorites => 'Useimmiten';
 
   @override
-  String get reviewByMonth => 'By month';
+  String get reviewByMonth => 'Kuukauden mukaan';
 
   @override
-  String get reviewHighlight => 'Highlight';
+  String get reviewHighlight => 'Korosta';
 
   @override
-  String get yearInPixels => 'Year in pixels';
+  String get yearInPixels => 'Vuosi pikseleinä';
 
   @override
-  String get capsuleSeal => 'Seal as a time capsule';
+  String get capsuleSeal => 'Tiiviste aikakapselina';
 
   @override
-  String get capsuleTitle => 'Time capsule';
+  String get capsuleTitle => 'Aikakapseli';
 
   @override
   String capsuleOpensOn(Object date) {
-    return 'Opens on $date';
+    return 'Avautuu malliin $date';
   }
 
   @override
   String capsuleWrittenOn(Object date) {
-    return 'Written on $date';
+    return 'Kirjoitettu $date:lle';
   }
 
   @override
-  String get capsuleOpenEarly => 'Open early';
+  String get capsuleOpenEarly => 'Avoinna aikaisin';
 
   @override
   String get capsuleOpenEarlyDescription =>
-      'The capsule opens now and stays open.';
+      'Kapseli avautuu nyt ja pysyy auki.';
 
   @override
-  String get capsuleOpened => 'Time capsule opened';
+  String get capsuleOpened => 'Aikakapseli avattu';
 
   @override
-  String get templateMorningName => 'Morning pages';
+  String get templateMorningName => 'Aamun sivut';
 
   @override
-  String get templateMorningDescription => 'Set up the day in three minutes';
+  String get templateMorningDescription => 'Aseta päivä kolmessa minuutissa';
 
   @override
   String get templateMorningText =>
-      '## Three things I want to do well today\n1. \n2. \n3. \n\n## Something I look forward to\n\n## A note to myself\n';
+      '## Kolme asiaa, jotka haluan tehdä hyvin tänään\n1. \n2. \n3. \n\n## Jotain mitä odotan\n\n## Huomautus itselleni\n';
 
   @override
-  String get templateEveningName => 'Evening review';
+  String get templateEveningName => 'Iltakatsaus';
 
   @override
-  String get templateEveningDescription => 'Close the day with what went well';
+  String get templateEveningDescription => 'Päivän päätteeksi mikä meni hyvin';
 
   @override
   String get templateEveningText =>
-      '## Three good things today\n1. \n2. \n3. \n\n## What I learned\n\n## What could go better tomorrow\n';
+      '## Kolme hyvää asiaa tänään\n1. \n2. \n3. \n\n## Mitä opin\n\n## Mikä voisi mennä paremmin huomenna\n';
 
   @override
-  String get routineMorning => 'Good morning';
+  String get routineMorning => 'Hyvää huomenta';
 
   @override
-  String get routineEvening => 'Evening review';
+  String get routineEvening => 'Iltakatsaus';
 
   @override
-  String get settingsRoutinePrompts => 'Morning and evening prompts';
+  String get settingsRoutinePrompts => 'Aamu- ja iltaohjeet';
 
   @override
   String get settingsRoutinePromptsHint =>
-      'Suggest the morning or evening template in Stories';
+      'Ehdota aamu- tai iltamalli Tarinoissa';
 
   @override
-  String get checkInTitle => 'Quick check-in';
+  String get checkInTitle => 'Nopea sisäänkirjautuminen';
 
   @override
-  String get checkInSubtitle => 'Mood in two taps';
+  String get checkInSubtitle => 'Tunnelma kahdella napautuksella';
 
   @override
-  String get checkInMood => 'How do you feel?';
+  String get checkInMood => 'Miltä sinusta tuntuu?';
 
   @override
-  String get checkInActivity => 'What are you doing?';
+  String get checkInActivity => 'Mitä sinä teet?';
 
   @override
-  String get checkInNote => 'A line about it (optional)';
+  String get checkInNote => 'Rivi siitä (valinnainen)';
 
   @override
-  String get checkInSave => 'Save';
+  String get checkInSave => 'Tallenna';
 
   @override
   String editorWordCount(int words, int characters) {
-    return '$words words · $characters characters';
+    return '$words sanat · $characters merkit';
   }
 
   @override
-  String get coachProgramEverydayTagline => 'Notice the small things in a day.';
+  String get coachProgramEverydayTagline => 'Huomaa pienet asiat päivässä.';
 
   @override
-  String get coachProgramReflectTagline => 'Slow down and listen to yourself.';
+  String get coachProgramReflectTagline => 'Hidasta ja kuuntele itseäsi.';
 
   @override
-  String get coachDuration => 'Duration';
+  String get coachDuration => 'Kesto';
 
   @override
-  String get coachInterval => 'Interval';
+  String get coachInterval => 'Intervalli';
 
   @override
-  String get coachDifficulty => 'Difficulty';
+  String get coachDifficulty => 'Vaikeus';
 
   @override
-  String get coachIntervalDaily => 'Daily';
+  String get coachIntervalDaily => 'Päivittäin';
 
   @override
-  String get coachIntervalWeekly => 'Weekly';
+  String get coachIntervalWeekly => 'viikoittain';
 
   @override
-  String get coachDifficultyBeginner => 'Beginner';
+  String get coachDifficultyBeginner => 'Aloittelija';
 
   @override
-  String get coachDifficultyIntermediate => 'Intermediate';
+  String get coachDifficultyIntermediate => 'Keskitason';
 
   @override
   String coachDurationDays(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count days',
-      one: '1 day',
+      other: '$count päivää',
+      one: '$count päivä',
     );
     return '$_temp0';
   }
@@ -1671,1055 +1677,1067 @@ class AppLocalizationsFi extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count weeks',
-      one: '1 week',
+      other: '$count viikkoa',
+      one: '$count viikko',
     );
     return '$_temp0';
   }
 
   @override
   String coachDayN(int n) {
-    return 'Day $n';
+    return 'Päivä $n';
   }
 
   @override
   String coachWeekN(int n) {
-    return 'Week $n';
+    return 'Viikko $n';
   }
 
   @override
-  String get coachEnroll => 'Enroll';
+  String get coachEnroll => 'Ilmoittaudu mukaan';
 
   @override
-  String get coachEndProgram => 'End program';
+  String get coachEndProgram => 'Lopeta ohjelma';
 
   @override
-  String get coachAuthor => 'Author';
+  String get coachAuthor => 'Tekijä';
 
   @override
-  String get coachAuthorBio => 'Prompts written for this app.';
+  String get coachAuthorBio => 'Tätä sovellusta varten kirjoitetut kehotteet.';
 
   @override
   String get coachEnrolledTip =>
-      'All set! Your questions will show up in Stories.';
+      'Kaikki valmiina! Kysymyksesi näkyvät Tarinoissa.';
 
   @override
-  String get coachGoToStories => 'Go to Stories';
+  String get coachGoToStories => 'Siirry Tarinoihin';
 
   @override
-  String get coachAnswerHint => 'Write your answer…';
+  String get coachAnswerHint => 'Kirjoita vastauksesi…';
 
   @override
-  String get storyWrapUp => 'That\'s all for today.';
+  String get storyWrapUp => 'Siinä kaikki tälle päivälle.';
 
   @override
-  String get storyTapToClose => 'Tap to close';
+  String get storyTapToClose => 'Sulje napauttamalla';
 
   @override
-  String get coachAnswerDone => 'Done';
+  String get coachAnswerDone => 'Valmis';
 
   @override
-  String get coachAnswered => 'Answered, tap to open';
+  String get coachAnswered => 'Vastattu, avaa napauttamalla';
 
   @override
-  String get coachAnsweredEarlier => 'Answered';
+  String get coachAnsweredEarlier => 'Vastattu';
 
   @override
-  String get locationLocating => 'Locating…';
+  String get locationLocating => 'Haetaan…';
 
   @override
-  String get locationPickPlace => 'Pick a place';
+  String get locationPickPlace => 'Valitse paikka';
 
   @override
-  String get locationPlacesHint => 'Address or name of the place';
+  String get locationPlacesHint => 'Paikan osoite tai nimi';
 
   @override
-  String get locationCustom => 'Custom place';
+  String get locationCustom => 'Mukautettu paikka';
 
   @override
-  String get locationCurrent => 'Current location';
+  String get locationCurrent => 'Nykyinen sijainti';
 
   @override
-  String get locationSaved => 'Saved places';
+  String get locationSaved => 'Tallennetut paikat';
 
   @override
-  String get locationSearchResults => 'Search results';
+  String get locationSearchResults => 'Hakutulokset';
 
   @override
-  String get locationNearby => 'Nearby places';
+  String get locationNearby => 'Läheisiä paikkoja';
 
   @override
-  String get locationRename => 'Rename';
+  String get locationRename => 'Nimeä uudelleen';
 
   @override
-  String get locationSavePlace => 'Save place';
+  String get locationSavePlace => 'Tallenna paikka';
 
   @override
-  String get locationUnsavePlace => 'Remove from saved places';
+  String get locationUnsavePlace => 'Poista tallennetuista paikoista';
 
   @override
-  String get shareAs => 'Share as…';
+  String get shareAs => 'Jaa nimellä…';
 
   @override
-  String get shareAsImage => 'Image';
+  String get shareAsImage => 'Kuva';
 
   @override
-  String get shareAsZip => 'ZIP with the original media';
+  String get shareAsZip => 'ZIP alkuperäisellä materiaalilla';
 
   @override
-  String get shareAsPlainText => 'Plain text';
+  String get shareAsPlainText => 'Pelkkää tekstiä';
 
   @override
   String get shareAsHtml => 'HTML';
 
   @override
-  String get onboardWelcomeTitle => 'Welcome to AID Diary';
+  String get onboardWelcomeTitle => 'Tervetuloa AID Diary:ään';
 
   @override
   String get onboardWelcomeText =>
-      'Start here, or connect this device to one you already use.';
+      'Aloita tästä tai yhdistä tämä laite jo käyttämääsi laitteeseen.';
 
   @override
-  String get onboardStart => 'Start writing';
+  String get onboardStart => 'Aloita kirjoittaminen';
 
   @override
-  String get helpFaq => 'Frequently asked questions';
+  String get helpFaq => 'Usein kysytyt kysymykset';
 
   @override
-  String get helpFaq1Q => 'Where is my diary stored?';
+  String get helpFaq1Q => 'Missä päiväkirjaani on tallennettu?';
 
   @override
   String get helpFaq1A =>
-      'Your diary is stored on this device. It reaches other devices or storage only when you enable sync, share or export it. Sync is end-to-end encrypted.';
+      'Päiväkirjasi on tallennettu tälle laitteelle. Se saavuttaa muut laitteet tai tallennustilan vain, kun otat synkronoinnin, jaat tai viet sen. Synkronointi on päästä päähän -salattu.';
 
   @override
-  String get helpFaq2Q => 'How do I keep a copy or move to a new device?';
+  String get helpFaq2Q =>
+      'Kuinka säilytän kopion tai siirrän uuteen laitteeseen?';
 
   @override
   String get helpFaq2A =>
-      'Connect to an existing device in Settings → Data & storage → Sync and confirm authorization on the device that has your diary. Both devices remain usable. You can also create a backup and restore it on another device.';
+      'Muodosta yhteys olemassa olevaan laitteeseen kohdassa Asetukset → Tiedot ja tallennus → Synkronoi ja vahvista päiväkirjasi sisältävän laitteen valtuutus. Molemmat laitteet ovat edelleen käyttökelpoisia. Voit myös luoda varmuuskopion ja palauttaa sen toiselle laitteelle.';
 
   @override
-  String get helpFaq3Q => 'Can I bring in entries from other diary apps?';
+  String get helpFaq3Q =>
+      'Voinko tuoda merkintöjä muista päiväkirjasovelluksista?';
 
   @override
   String get helpFaq3A =>
-      'Yes: in Settings → Data & storage, import exports from Daylio, Diarium, Diaro, DayBook, My Brain, OneShot and Pixels, or a JSON export.';
+      'Kyllä: kohdassa Asetukset → Tiedot ja tallennus, tuo Daylio-, Diarium-, Diaro-, DayBook-, My Brain-, OneShot- ja Pixels-vienti tai JSON-vienti.';
 
   @override
-  String get helpFaq4Q => 'How do coach programs work?';
+  String get helpFaq4Q => 'Miten valmentajaohjelmat toimivat?';
 
   @override
   String get helpFaq4A =>
-      'Enroll in a program on the Coach page. Each day or week a new question waits in Stories; your answer is saved as an entry.';
+      'Ilmoittaudu ohjelmaan Valmentaja-sivulla. Joka päivä tai viikko uusi kysymys odottaa Tarinoissa; vastauksesi tallennetaan merkinnäksi.';
 
   @override
-  String get helpFaq5Q => 'What if I forget my passcode?';
+  String get helpFaq5Q => 'Entä jos unohdan salasanani?';
 
   @override
   String get helpFaq5A =>
-      'The passcode cannot be recovered, so keep a backup of your diary.';
+      'Pääsykoodia ei voi palauttaa, joten pidä varmuuskopio päiväkirjastasi.';
 
   @override
-  String get helpPrivacy => 'Privacy';
+  String get helpPrivacy => 'Yksityisyys';
 
   @override
   String get helpPrivacyText =>
-      'Diary content and media stay on this device unless you enable encrypted sync or share/export them. Maps, place lookup and weather use the configured services and send the location or search query needed for that request, not diary text.';
+      'Päiväkirjan sisältö ja media säilyvät tällä laitteella, ellet ota salattua synkronointia käyttöön tai jaa/vie niitä. Kartat, paikkahaku ja sää käyttävät määritettyjä palveluita ja lähettävät pyyntöön tarvittavan sijainnin tai hakukyselyn, ei päiväkirjatekstiä.';
 
   @override
-  String get photoMetaTitle => 'Use the photo\'s details?';
+  String get photoMetaTitle => 'Käytätkö kuvan tietoja?';
 
   @override
   String photoMetaDateAndPlace(String date, String place) {
-    return 'Count this entry for $date and set its place to $place, as recorded in the photo?';
+    return 'Lasketaanko tämä merkintä $date:lle ja asetetaan sen tilaksi $place, kuten kuvassa on?';
   }
 
   @override
   String photoMetaDate(String date) {
-    return 'Count this entry for $date, when the photo was taken?';
+    return 'Lasketaanko tämä merkintä $date:lle, kun valokuva on otettu?';
   }
 
   @override
   String photoMetaPlace(String place) {
-    return 'Set this entry\'s place to $place, where the photo was taken?';
+    return 'Asetetaanko tämän merkinnän paikkaksi $place, missä kuva on otettu?';
   }
 
   @override
-  String get photoMetaApply => 'Use them';
+  String get photoMetaApply => 'Käytä niitä';
 
   @override
-  String get quickWriteTitle => 'Quick write';
+  String get quickWriteTitle => 'Nopea kirjoitus';
 
   @override
-  String get quickWriteText => 'Tap to start a new entry.';
+  String get quickWriteText => 'Aloita uusi merkintä napauttamalla.';
 
   @override
-  String get settingsQuickWriteTitle => 'Quick write in notifications';
+  String get settingsQuickWriteTitle => 'Nopea kirjoitus ilmoituksiin';
 
   @override
   String get settingsQuickWriteDescription =>
-      'Keep a notification that opens a new entry.';
+      'Pidä ilmoitus, joka avaa uuden merkinnän.';
 
   @override
-  String get settingsNudgesTitle => 'Nudge me after a quiet stretch';
+  String get settingsNudgesTitle => 'Työnnä minua hiljaisen venytyksen jälkeen';
 
   @override
   String settingsNudgesDescription(int days) {
-    return 'A gentle reminder when you haven\'t written for $days days.';
+    return 'Lempeä muistutus, kun et ole kirjoittanut $days päivään.';
   }
 
   @override
-  String get nudgeTitle => 'It\'s been a while';
+  String get nudgeTitle => 'Siitä on aikaa';
 
   @override
-  String get nudgeMonday => 'A new week: what are you looking forward to?';
+  String get nudgeMonday => 'Uusi viikko: mitä odotat?';
 
   @override
-  String get nudgeTuesday => 'Two lines are enough. How are you today?';
+  String get nudgeTuesday => 'Kaksi riviä riittää. Miten voit tänään?';
 
   @override
   String get nudgeWednesday =>
-      'Halfway through the week. What stood out so far?';
+      'Viikon puolivälissä. Mikä on tähän mennessä eronnut?';
 
   @override
-  String get nudgeThursday => 'Anything small worth keeping from today?';
+  String get nudgeThursday =>
+      'Onko jotain pientä säilyttämisen arvoista tältä päivältä?';
 
   @override
-  String get nudgeFriday => 'The week is wrapping up. Note one good moment.';
+  String get nudgeFriday => 'Viikko on lopuillaan. Huomaa yksi hyvä hetki.';
 
   @override
-  String get nudgeSaturday => 'A slow Saturday is a good day to write.';
+  String get nudgeSaturday => 'Hidas lauantai on hyvä päivä kirjoittaa.';
 
   @override
-  String get nudgeSunday => 'Look back on the week before it ends.';
+  String get nudgeSunday => 'Katso taaksepäin viikkoa ennen sen päättymistä.';
 
   @override
-  String get photoWidgetEmpty => 'Photos you add to entries show up here.';
+  String get photoWidgetEmpty =>
+      'Merkintöihin lisäämäsi valokuvat näkyvät täällä.';
 
   @override
-  String get channelReminders => 'Reminders';
+  String get channelReminders => 'Muistutukset';
 
   @override
-  String get channelOnThisDay => 'On this day';
+  String get channelOnThisDay => 'Tänä päivänä';
 
   @override
-  String get channelCoach => 'Coach prompts';
+  String get channelCoach => 'Valmentaja kehottaa';
 
   @override
-  String get channelNudges => 'Nudges after quiet days';
+  String get channelNudges => 'Nyökytyksiä hiljaisten päivien jälkeen';
 
   @override
-  String get channelQuickWrite => 'Quick write';
+  String get channelQuickWrite => 'Nopea kirjoitus';
 
   @override
-  String get channelBackup => 'Backups';
+  String get channelBackup => 'Varmuuskopiot';
 
   @override
-  String get formatJsonExport => 'JSON (AID Diary export)';
+  String get formatJsonExport => 'JSON (AID Diary vienti)';
 
   @override
   String get aboutModifiedNotice =>
-      'A modified version of Daily You by Demizo and contributors. It is not the official Daily You app.';
+      'Demizon ja avustajien muokattu versio Daily Yousta. Se ei ole virallinen Daily You -sovellus.';
 
   @override
-  String get toolbarPhotos => 'Add photos';
+  String get toolbarPhotos => 'Lisää kuvia';
 
   @override
-  String get toolbarMedia => 'Photos and videos';
+  String get toolbarMedia => 'Valokuvia ja videoita';
 
   @override
-  String get mediaFromGallery => 'Choose from gallery';
+  String get mediaFromGallery => 'Valitse galleriasta';
 
   @override
-  String get mediaFromFiles => 'Choose from files';
+  String get mediaFromFiles => 'Valitse tiedostoista';
 
   @override
-  String get editorLeaveTitle => 'Save this entry?';
+  String get editorLeaveTitle => 'Tallennetaanko tämä merkintä?';
 
   @override
-  String get editorLeaveDiscard => 'Don\'t save';
+  String get editorLeaveDiscard => 'Älä säästä';
 
   @override
-  String get editorTitleHint => 'Title';
+  String get editorTitleHint => 'Otsikko';
 
   @override
-  String get editorLocating => 'Locating…';
+  String get editorLocating => 'Haetaan…';
 
   @override
   String get toolbarVideo => 'Video';
 
   @override
-  String get toolbarAudio => 'Voice note';
+  String get toolbarAudio => 'Äänimuistiinpano';
 
   @override
-  String get toolbarTags => 'Tags';
+  String get toolbarTags => 'Tunnisteet';
 
   @override
-  String get toolbarBulletList => 'Bulleted list';
+  String get toolbarBulletList => 'Luettelomerkitty luettelo';
 
   @override
-  String get toolbarHeading => 'Heading';
+  String get toolbarHeading => 'Otsikko';
 
   @override
-  String get toolbarBold => 'Bold';
+  String get toolbarBold => 'Lihavoitu';
 
   @override
-  String get toolbarItalic => 'Italic';
+  String get toolbarItalic => 'Kursiivi';
 
   @override
-  String get toolbarHighlight => 'Highlight';
+  String get toolbarHighlight => 'Korosta';
 
   @override
-  String get toolbarStrikethrough => 'Strikethrough';
+  String get toolbarStrikethrough => 'Yliviivattu';
 
   @override
-  String get toolbarQuote => 'Quote';
+  String get toolbarQuote => 'Lainaus';
 
   @override
-  String get toolbarLink => 'Link';
+  String get toolbarLink => 'Linkki';
 
   @override
-  String get toolbarInsert => 'Insert';
+  String get toolbarInsert => 'Lisää';
 
   @override
-  String get toolbarUndo => 'Undo';
+  String get toolbarUndo => 'Kumoa';
 
   @override
-  String get toolbarRedo => 'Redo';
+  String get toolbarRedo => 'Toista';
 
   @override
-  String get toolbarInsertDate => 'Insert the date';
+  String get toolbarInsertDate => 'Lisää päivämäärä';
 
   @override
-  String get toolbarInsertTime => 'Insert the time';
+  String get toolbarInsertTime => 'Aseta aika';
 
   @override
-  String get settingsSyncTitle => 'Cloud Sync';
+  String get settingsSyncTitle => 'Pilvisynkronointi';
 
   @override
   String get syncOffDescription =>
-      'Keep this diary the same on all your devices through Google Drive or a WebDAV server, such as Nextcloud, Synology or Jianguoyun.';
+      'Pidä tämä päiväkirja samana kaikilla laitteillasi Google Drive- tai WebDAV-palvelimen, kuten Nextcloudin, Synologyn tai Jianguoyunin, kautta.';
 
   @override
-  String get syncUseGoogleDrive => 'Sync with Google Drive';
+  String get syncUseGoogleDrive => 'Synkronoi Google Drive:n kanssa';
 
   @override
-  String get syncOrWebDav => 'Or a WebDAV server';
+  String get syncOrWebDav => 'Tai WebDAV-palvelin';
 
   @override
   String get syncGoogleDrive => 'Google Drive';
 
   @override
-  String get syncGoogleSignedIn => 'Signed in. You can go back to AID Diary.';
+  String get syncGoogleSignedIn =>
+      'Kirjautunut sisään. Voit palata sivulle AID Diary.';
 
   @override
-  String get syncGoogleSignInAgain => 'Google needs you to sign in again.';
+  String get syncGoogleSignInAgain =>
+      'Google tarvitsee sinun kirjautuvan uudelleen sisään.';
 
   @override
-  String get syncSignInAgain => 'Sign in again';
+  String get syncSignInAgain => 'Kirjaudu uudelleen sisään';
 
   @override
-  String get settingsCommandLineTitle => 'Command line';
+  String get settingsCommandLineTitle => 'Komentorivi';
 
   @override
-  String get commandLineToggle => 'Command line interface';
+  String get commandLineToggle => 'Komentorivikäyttöliittymä';
 
   @override
   String get commandLineToggleHint =>
-      'Lets the aid command and other programs on this device use the app\'s commands.';
+      'Antaa aid-komennon ja muiden tämän laitteen ohjelmien käyttää sovelluksen komentoja.';
 
   @override
-  String get commandLineAlwaysOn => 'Always on in development builds.';
+  String get commandLineAlwaysOn => 'Aina kehitysvaiheessa.';
 
   @override
   String commandLineListening(int port) {
-    return 'Listening on port $port';
+    return 'Kuuntele portista $port';
   }
 
   @override
-  String get commandPaletteTitle => 'All commands';
+  String get commandPaletteTitle => 'Kaikki komennot';
 
   @override
-  String get commandPaletteSearch => 'Search commands';
+  String get commandPaletteSearch => 'Hakukomennot';
 
   @override
-  String get commandPaletteRun => 'Run';
+  String get commandPaletteRun => 'Juokse';
 
   @override
-  String get commandPaletteConfirm => 'This cannot simply be undone. Run it?';
+  String get commandPaletteConfirm =>
+      'Tätä ei voi yksinkertaisesti kumota. Suorita se?';
 
   @override
   String syncReceiving(int done, int total) {
-    return 'Receiving $done of $total…';
+    return 'Vastaanotetaan $done/$total…';
   }
 
   @override
   String syncSending(int done, int total) {
-    return 'Sending $done of $total…';
+    return 'Lähetetään $done/$total…';
   }
 
   @override
   String get syncGoogleDriveNotAllowed =>
-      'Access to Google Drive was not allowed. Connect again and tick Google Drive on Google\'s page.';
+      'Pääsyä kohteeseen Google Drive ei sallittu. Yhdistä uudelleen ja valitse Google Drive Googlen sivulla.';
 
   @override
   String get syncEntryUnsynced =>
-      'Not synced: the last sync did not go through';
+      'Ei synkronoitu: viimeisin synkronointi ei mennyt läpi';
 
   @override
-  String get syncUseOfficial => 'Use the AID sync server';
+  String get syncUseOfficial => 'Käytä AID-synkronointipalvelinta';
 
   @override
-  String get syncServer => 'Server address';
+  String get syncServer => 'Palvelimen osoite';
 
   @override
-  String get syncUsername => 'Username';
+  String get syncUsername => 'Käyttäjätunnus';
 
   @override
-  String get syncPassword => 'Password';
+  String get syncPassword => 'Salasana';
 
   @override
-  String get syncConnect => 'Connect';
+  String get syncConnect => 'Yhdistä';
 
   @override
-  String get syncConnecting => 'Connecting…';
+  String get syncConnecting => 'Yhdistetään…';
 
   @override
   String get syncSignInFailed =>
-      'Could not sign in. Check the address, the username and the password.';
+      'Kirjautuminen ei onnistunut. Tarkista osoite, käyttäjätunnus ja salasana.';
 
   @override
   String syncConnectFailed(String error) {
-    return 'Could not connect: $error';
+    return 'Ei voitu yhdistää: $error';
   }
 
   @override
-  String get syncNewSpaceTitle => 'Start syncing';
+  String get syncNewSpaceTitle => 'Aloita synkronointi';
 
   @override
   String get syncNewSpaceDescription =>
-      'There is no synced diary here yet. This diary will be uploaded, end-to-end encrypted with a key that stays on your devices.';
+      'Täällä ei ole vielä synkronoitua päiväkirjaa. Tämä päiväkirja ladataan päästä päähän salattuna avaimella, joka pysyy laitteissasi.';
 
   @override
-  String get syncJoinTitle => 'Join the synced diary';
+  String get syncJoinTitle => 'Liity synkronoituun päiväkirjaan';
 
   @override
   String get syncWrongKey =>
-      'This recovery code does not open the synced diary.';
+      'Tämä palautuskoodi ei avaa synkronoitua päiväkirjaa.';
 
   @override
   String syncLastSynced(String time) {
-    return 'Last synced $time';
+    return 'Viimeksi synkronoitu $time';
   }
 
   @override
-  String get syncNever => 'Not synced yet';
+  String get syncNever => 'Ei vielä synkronoitu';
 
   @override
-  String get syncSyncing => 'Syncing…';
+  String get syncSyncing => 'Synkronoidaan…';
 
   @override
   String syncFailed(String error) {
-    return 'The last sync failed: $error';
+    return 'Viimeisin synkronointi epäonnistui: $error';
   }
 
   @override
   String get syncLocked =>
-      'The synced diary now belongs to other devices, or was started over. Pair with one of them or use the recovery code to keep syncing.';
+      'Synkronoitu päiväkirja kuuluu nyt muille laitteille tai aloitettiin alusta. Muodosta laitepari yhden kanssa tai käytä palautuskoodia synkronoinnin jatkamiseen.';
 
   @override
-  String get syncNow => 'Sync now';
+  String get syncNow => 'Synkronoi nyt';
 
   @override
-  String get syncUnlock => 'Unlock';
+  String get syncUnlock => 'Avaa lukitus';
 
   @override
-  String get syncEncrypted => 'End-to-end encrypted';
+  String get syncEncrypted => 'Päästä päähän salattu';
 
   @override
-  String get syncDisconnect => 'Stop syncing';
+  String get syncDisconnect => 'Lopeta synkronointi';
 
   @override
   String get syncDisconnectDescription =>
-      'This device stops syncing. The diary here and the synced copy stay as they are.';
+      'Tämä laite lopettaa synkronoinnin. Päiväkirja täällä ja synkronoitu kopio pysyvät ennallaan.';
 
   @override
-  String get syncOwnRecoveryPassword => 'Use my own recovery password';
+  String get syncOwnRecoveryPassword => 'Käytä omaa palautussalasanaani';
 
   @override
-  String get syncRecoveryPassword => 'Recovery password';
+  String get syncRecoveryPassword => 'Palautussalasana';
 
   @override
-  String get syncRecoveryPasswordRepeat => 'Repeat the recovery password';
+  String get syncRecoveryPasswordRepeat => 'Toista palautussalasana';
 
   @override
   String syncRecoveryPasswordTooShort(int min) {
-    return 'Use at least $min characters';
+    return 'Käytä vähintään $min-merkkejä';
   }
 
   @override
-  String get syncRecoveryPasswordMismatch => 'The passwords differ';
+  String get syncRecoveryPasswordMismatch => 'Salasanat ovat erilaisia';
 
   @override
-  String get syncRecoveryCode => 'Recovery code';
+  String get syncRecoveryCode => 'Palautuskoodi';
 
   @override
-  String get syncRecoveryCodeTitle => 'Save your recovery code';
+  String get syncRecoveryCodeTitle => 'Tallenna palautuskoodisi';
 
   @override
   String get syncRecoveryCodeDescription =>
-      'If every device of yours is lost, this code restores your synced diary. Keep it in a password manager or on paper. It is shown only this once.';
+      'Jos kaikki laitteesi katoavat, tämä koodi palauttaa synkronoidun päiväkirjasi. Säilytä se salasanan hallinnassa tai paperilla. Se näytetään vain tämän kerran.';
 
   @override
-  String get syncRecoveryCodeCopied => 'Recovery code copied';
+  String get syncRecoveryCodeCopied => 'Palautuskoodi kopioitu';
 
   @override
-  String get syncRecoveryCodeSaved => 'I have saved it';
+  String get syncRecoveryCodeSaved => 'Olen tallentanut sen';
 
   @override
   String get syncJoinNeedsKey =>
-      'This synced diary belongs to your other devices. Pair with one of them, or use the recovery code. The entries on this device will be added to it.';
+      'Tämä synkronoitu päiväkirja kuuluu muille laitteillesi. Muodosta laitepari yhden kanssa tai käytä palautuskoodia. Tämän laitteen merkinnät lisätään siihen.';
 
   @override
-  String get syncPairDevice => 'Pair with a device';
+  String get syncPairDevice => 'Muodosta laitepari laitteen kanssa';
 
   @override
-  String get syncUseRecoveryCode => 'Use the recovery code';
+  String get syncUseRecoveryCode => 'Käytä palautuskoodia';
 
   @override
-  String get syncAddDevice => 'Add a device';
+  String get syncAddDevice => 'Lisää laite';
 
   @override
-  String get syncChangeRecoveryCode => 'Change the recovery code';
+  String get syncChangeRecoveryCode => 'Vaihda palautuskoodi';
 
   @override
   String get syncChangeRecoveryDescription =>
-      'A new code replaces the current one, which stops working. Your data and other devices stay as they are.';
+      'Uusi koodi korvaa nykyisen, joka lakkaa toimimasta. Tietosi ja muut laitteesi pysyvät ennallaan.';
 
   @override
-  String get syncNewRandomCode => 'New random code';
+  String get syncNewRandomCode => 'Uusi satunnainen koodi';
 
   @override
-  String get syncRecoveryCodeChanged => 'Recovery code changed';
+  String get syncRecoveryCodeChanged => 'Palautuskoodi vaihdettu';
 
   @override
-  String get syncResetSpace => 'Start the synced diary over';
+  String get syncResetSpace => 'Aloita synkronoitu päiväkirja alusta';
 
   @override
   String get syncResetSpaceDescription =>
-      'Only when no device and no recovery code opens it any more: the synced copy is replaced by the diary on this device, under this device\'s keys. Your other devices then pair again.';
+      'Vain silloin, kun mikään laite tai palautuskoodi ei avaa sitä enää: synkronoitu kopio korvataan tämän laitteen päiväkirjalla tämän laitteen avainten alla. Muut laitteesi muodostaa sitten laiteparin uudelleen.';
 
   @override
-  String get syncPairTitle => 'Pair devices';
+  String get syncPairTitle => 'Yhdistä laitteet';
 
   @override
-  String get syncPairShow => 'Show a code';
+  String get syncPairShow => 'Näytä koodi';
 
   @override
-  String get syncPairEnter => 'Enter a code';
+  String get syncPairEnter => 'Syötä koodi';
 
   @override
   String get syncPairShowHint =>
-      'On your other device, open Pair devices, choose Enter a code, and type or scan this.';
+      'Avaa toisella laitteellasi Yhdistä laitteet, valitse Anna koodi ja kirjoita tai skannaa tämä.';
 
   @override
   String get syncPairEnterHint =>
-      'Type the code your other device shows, or scan it.';
+      'Kirjoita toisen laitteen näyttämä koodi tai skannaa se.';
 
   @override
-  String get syncPairCode => 'Pairing code';
+  String get syncPairCode => 'Pariliitoskoodi';
 
   @override
-  String get syncPairScan => 'Scan';
+  String get syncPairScan => 'Skannaa';
 
   @override
-  String get syncPairStart => 'Pair';
+  String get syncPairStart => 'Pari';
 
   @override
-  String get syncPairWaiting => 'Waiting for the other device…';
+  String get syncPairWaiting => 'Odotetaan toista laitetta…';
 
   @override
   String syncPairDone(String device) {
-    return 'Paired with $device';
+    return 'Yhdistetty $device:n kanssa';
   }
 
   @override
   String get syncPairWrongCode =>
-      'The code did not match. Show a new code and try again.';
+      'Koodi ei täsmää. Näytä uusi koodi ja yritä uudelleen.';
 
   @override
   String get syncPairNoOffer =>
-      'No device shows this code. It may have expired.';
+      'Mikään laite ei näytä tätä koodia. Se voi olla vanhentunut.';
 
   @override
-  String get syncPairTimedOut => 'The other device did not answer in time.';
+  String get syncPairTimedOut => 'Toinen laite ei vastannut ajoissa.';
 
   @override
   String get syncPairNeither =>
-      'Neither device is set up with this synced diary yet.';
+      'Kumpaankaan laitteeseen ei ole vielä määritetty tätä synkronoitua päiväkirjaa.';
 
   @override
-  String get syncPairBoth => 'Both devices already open this synced diary.';
+  String get syncPairBoth =>
+      'Molemmat laitteet avaavat jo tämän synkronoidun päiväkirjan.';
 
   @override
   String syncPairFailed(String error) {
-    return 'Pairing failed: $error';
+    return 'Pariliitos epäonnistui: $error';
   }
 
   @override
   String get syncMediaPending =>
-      'Diary synced · some media is still transferring';
+      'Päiväkirja synkronoitu · Joitakin mediatiedostoja siirretään edelleen';
 
   @override
   String get syncWaitingForDevices =>
-      'Diary synced · waiting for another device to transfer media';
+      'Päiväkirja synkronoitu · odottaa, että toinen laite siirtää mediaa';
 
   @override
   String get syncCacheNotice =>
-      'Cloud media is temporary. Keep the originals on your devices; syncing is not a backup.';
+      'Pilvimedia on väliaikainen. Pidä alkuperäiset laitteissasi; synkronointi ei ole varmuuskopio.';
 
   @override
-  String get paperTitle => 'Letter paper';
+  String get paperTitle => 'Kirjepaperi';
 
   @override
-  String get paperPlain => 'Plain';
+  String get paperPlain => 'Tavallinen';
 
   @override
-  String get paperLined => 'Lined';
+  String get paperLined => 'Vuorattu';
 
   @override
-  String get paperGrid => 'Grid';
+  String get paperGrid => 'Ruudukko';
 
   @override
-  String get paperTinted => 'Tinted';
+  String get paperTinted => 'Sävytetty';
 
   @override
-  String get paperDecorationTitle => 'Decorations';
+  String get paperDecorationTitle => 'Koristeet';
 
   @override
-  String get paperDecorationNone => 'None';
+  String get paperDecorationNone => 'Ei mitään';
 
   @override
-  String get paperDecorationBotanical => 'Leaves';
+  String get paperDecorationBotanical => 'Lehdet';
 
   @override
-  String get paperDecorationStars => 'Stars';
+  String get paperDecorationStars => 'Tähdet';
 
   @override
-  String get paperDecorationWashi => 'Washi tape';
+  String get paperDecorationWashi => 'Washi teippi';
 
   @override
-  String get themeDarkChoice => 'Dark appearance';
+  String get themeDarkChoice => 'Tumma ulkonäkö';
 
   @override
-  String get themeDarkSame => 'Follow light palette';
+  String get themeDarkSame => 'Seuraa vaaleaa palettia';
 
   @override
-  String get themeDarkCustom => 'Separate palette';
+  String get themeDarkCustom => 'Erillinen paletti';
 
   @override
-  String get themeDarkAccent => 'Dark accent colour';
+  String get themeDarkAccent => 'Tumma korostusväri';
 
   @override
-  String get themeColorTeal => 'Teal';
+  String get themeColorTeal => 'Sinivihreä';
 
   @override
-  String get themeColorCyan => 'Cyan';
+  String get themeColorCyan => 'Syaani';
 
   @override
   String get themeColorIndigo => 'Indigo';
 
   @override
-  String get themeColorCoral => 'Coral';
+  String get themeColorCoral => 'koralli';
 
   @override
-  String get themeColorOlive => 'Olive';
+  String get themeColorOlive => 'Oliivi';
 
   @override
-  String get themeColorSlate => 'Slate';
+  String get themeColorSlate => 'Liuskekivi';
 
   @override
-  String get drawingTitle => 'Drawing';
+  String get drawingTitle => 'Piirustus';
 
   @override
-  String get drawingPen => 'Pen';
+  String get drawingPen => 'Kynä';
 
   @override
-  String get drawingEraser => 'Eraser';
+  String get drawingEraser => 'Pyyhekumi';
 
   @override
-  String get drawingUndo => 'Undo';
+  String get drawingUndo => 'Kumoa';
 
   @override
-  String get drawingClear => 'Clear';
+  String get drawingClear => 'Selkeä';
 
   @override
-  String get drawingWidth => 'Pen width';
+  String get drawingWidth => 'Kynän leveys';
 
   @override
-  String get drawingStylusOnly => 'Stylus only';
+  String get drawingStylusOnly => 'Vain kynä';
 
   @override
-  String get drawingDiscardTitle => 'Discard drawing?';
+  String get drawingDiscardTitle => 'Hylätäänkö piirros?';
 
   @override
-  String get drawingDiscardBody => 'This drawing has not been saved.';
+  String get drawingDiscardBody => 'Tätä piirrosta ei ole tallennettu.';
 
   @override
-  String get drawingSaveError => 'Could not save the drawing.';
+  String get drawingSaveError => 'Piirustusta ei voitu tallentaa.';
 
   @override
-  String get syncNetworkTitle => 'Network diagnostics';
+  String get syncNetworkTitle => 'Verkkodiagnostiikka';
 
   @override
-  String get syncNetworkRefresh => 'Refresh';
+  String get syncNetworkRefresh => 'Päivitä';
 
   @override
-  String get syncNetworkSelectedRoute => 'Current path';
+  String get syncNetworkSelectedRoute => 'Nykyinen polku';
 
   @override
-  String get syncNetworkAvailableRoutes => 'Available paths';
+  String get syncNetworkAvailableRoutes => 'Käytettävissä olevat polut';
 
   @override
-  String get syncNetworkSignaling => 'Device directory connection';
+  String get syncNetworkSignaling => 'Laitehakemistoyhteys';
 
   @override
-  String get syncNetworkRelayRemaining => 'Remaining relay allowance';
+  String get syncNetworkRelayRemaining => 'Jäljellä oleva relekorvaus';
 
   @override
-  String get syncNetworkIcePair => 'Direct connection candidates';
+  String get syncNetworkIcePair => 'Suoran yhteyden ehdokkaat';
 
   @override
-  String get syncNetworkPeerTrusted => 'Authenticated device';
+  String get syncNetworkPeerTrusted => 'Todennettu laite';
 
   @override
-  String get syncNetworkNoRoute => 'Waiting for a connection';
+  String get syncNetworkNoRoute => 'Odotetaan yhteyttä';
 
   @override
-  String get syncNetworkUnavailable => 'Diagnostics are unavailable';
+  String get syncNetworkUnavailable => 'Diagnostiikkaa ei ole saatavilla';
 
   @override
-  String get syncMediaCopiesTitle => 'Media delivery and copies';
+  String get syncMediaCopiesTitle => 'Median toimitus ja kopiot';
 
   @override
-  String get syncMediaPendingCount => 'Waiting to transfer';
+  String get syncMediaPendingCount => 'Odotetaan siirtoa';
 
   @override
-  String get syncMediaDurableCount => 'Delivered to personal storage';
+  String get syncMediaDurableCount => 'Toimitetaan henkilökohtaiseen varastoon';
 
   @override
-  String get syncMediaTemporaryCount => 'Temporary or unconfirmed copies';
+  String get syncMediaTemporaryCount =>
+      'Väliaikaiset tai vahvistamattomat kopiot';
 
   @override
   String get syncMediaReceiptExplanation =>
-      'These counts describe completed deliveries, not a fresh audit of surviving backups.';
+      'Nämä luvut kuvaavat valmiita toimituksia, eivät elossa olevien varmuuskopioiden uutta tarkastusta.';
 
   @override
   String get syncMediaCacheExplanation =>
-      'Temporary cloud media can expire. Keep your originals or a separate backup.';
+      'Väliaikainen pilvimedia voi vanhentua. Säilytä alkuperäiset tai erillinen varmuuskopio.';
 
   @override
-  String get momentsTitle => 'Photo moments';
+  String get momentsTitle => 'Valokuvan hetkiä';
 
   @override
   String get momentsHint =>
-      'Find groups using local photo times and optional coordinates. Photos are attached only when you choose a card.';
+      'Etsi ryhmiä käyttämällä paikallisia valokuvaaikoja ja valinnaisia koordinaatteja. Valokuvat liitetään vain, kun valitset kortin.';
 
   @override
-  String get momentsScan => 'Find moments';
+  String get momentsScan => 'Etsi hetkiä';
 
   @override
-  String get momentsChooseFolder => 'Choose photo folder';
+  String get momentsChooseFolder => 'Valitse valokuvakansio';
 
   @override
-  String get momentsLocation => 'Include photo locations';
+  String get momentsLocation => 'Sisällytä valokuvan sijainnit';
 
   @override
-  String get momentsEmpty => 'No recent photo groups.';
+  String get momentsEmpty => 'Ei viimeaikaisia valokuvaryhmiä.';
 
   @override
-  String get momentsCreate => 'Write about these photos';
+  String get momentsCreate => 'Kirjoita näistä kuvista';
 
   @override
-  String get momentsDismiss => 'Dismiss';
+  String get momentsDismiss => 'Hylkää';
 
   @override
-  String get momentsError => 'Could not read local photos.';
+  String get momentsError => 'Paikallisia kuvia ei voitu lukea.';
 
   @override
-  String get momentsCreated => 'Photo entry created.';
+  String get momentsCreated => 'Kuvamerkintä luotu.';
 
   @override
   String get momentsPermission =>
-      'Allow access to photos to find local suggestions.';
+      'Salli kuvien käyttö löytääksesi paikallisia ehdotuksia.';
 
   @override
   String get momentsScope =>
-      'Recent photos only; at most 500 photos and 20 photos per card.';
+      'Vain viimeisimmät valokuvat; enintään 500 kuvaa ja enintään 20 kuvaa kortilla.';
 
   @override
   String momentsPhotoCount(int count) {
-    return '$count photos';
+    return '$count kuvia';
   }
 
   @override
-  String get nearbyTitle => 'Connect devices';
+  String get nearbyTitle => 'Yhdistä laitteet';
 
   @override
-  String get nearbySend => 'Authorize another device';
+  String get nearbySend => 'Valtuuta toinen laite';
 
   @override
-  String get nearbyReceive => 'Connect to an existing device';
+  String get nearbyReceive => 'Yhdistä olemassa olevaan laitteeseen';
 
   @override
   String get nearbyInstructions =>
-      'Connect both devices to the same Wi-Fi or to each other’s hotspot. Confirm authorization on the existing device; both devices remain usable. No internet is required.';
+      'Yhdistä molemmat laitteet samaan Wi-Fi-liittimeen tai toistensa hotspotiin. Vahvista olemassa olevan laitteen valtuutus; molemmat laitteet ovat käyttökelpoisia. Internetiä ei tarvita.';
 
   @override
   String get nearbyCompare =>
-      'Compare this code on both devices before approving.';
+      'Vertaa tätä koodia molemmissa laitteissa ennen hyväksymistä.';
 
   @override
-  String get nearbyConfirm => 'The codes match';
+  String get nearbyConfirm => 'Koodit täsmäävät';
 
   @override
-  String get nearbyScan => 'Scan the other device’s code';
+  String get nearbyScan => 'Skannaa toisen laitteen koodi';
 
   @override
-  String get nearbyPaste => 'Paste invitation';
+  String get nearbyPaste => 'Liitä kutsu';
 
   @override
-  String get nearbyWaiting => 'Waiting for approval on the other device';
+  String get nearbyWaiting => 'Odotetaan hyväksyntää toisessa laitteessa';
 
   @override
   String get nearbyWorking =>
-      'Authorizing and syncing your diary and attachments…';
+      'Valtuutetaan ja synkronoidaan päiväkirjaasi ja liitteitäsi…';
 
   @override
   String get nearbyPending =>
-      'Some attachments still need syncing. Keep the other device online and try again.';
+      'Jotkut liitteet tarvitsevat edelleen synkronointia. Pidä toinen laite online-tilassa ja yritä uudelleen.';
 
   @override
-  String get nearbyComplete => 'Device connected; diary and attachments synced';
+  String get nearbyComplete =>
+      'Laite kytketty; päiväkirja ja liitteet synkronoitu';
 
   @override
   String get nearbyFailed =>
-      'Connection did not finish. Check the local connection and try again.';
+      'Yhteys ei päättynyt. Tarkista paikallinen yhteys ja yritä uudelleen.';
 
   @override
   String get nearbyEmptyRequired =>
-      'Use a device with an empty diary that is not connected to sync yet.';
+      'Käytä laitetta, jossa on tyhjä päiväkirja ja jota ei ole vielä yhdistetty synkronointiin.';
 
   @override
-  String get nearbyRetry => 'Continue syncing';
+  String get nearbyRetry => 'Jatka synkronointia';
 
   @override
-  String get nearbyWifi => 'Wi-Fi settings';
+  String get nearbyWifi => 'Wi-Fi asetukset';
 
   @override
-  String get nearbyHotspot => 'Hotspot settings';
+  String get nearbyHotspot => 'Hotspot-asetukset';
 
   @override
   String get nearbyKeepOpen =>
-      'Keep this page open until the new device finishes. The invitation expires after two minutes.';
+      'Pidä tämä sivu auki, kunnes uusi laite on valmis. Kutsu vanhenee kahden minuutin kuluttua.';
 
   @override
-  String get syncDevicesTitle => 'Authorized devices';
+  String get syncDevicesTitle => 'Valtuutetut laitteet';
 
   @override
   String get syncDevicesDescription =>
-      'Only approved devices can access this AID account. Revoking a device blocks the server but cannot erase a master key or diary already copied to it.';
+      'Vain hyväksytyt laitteet voivat käyttää tätä AID-tiliä. Laitteen peruuttaminen estää palvelimen, mutta ei voi poistaa siihen jo kopioitua pääavainta tai päiväkirjaa.';
 
   @override
   String get syncDeviceRequest =>
-      'Show this authorization QR to an approved device';
+      'Näytä tämä valtuutuksen QR hyväksytylle laitteelle';
 
   @override
-  String get syncDeviceAuthorize => 'Authorize a device';
+  String get syncDeviceAuthorize => 'Valtuuta laite';
 
   @override
   String get syncDeviceAuthorizeDescription =>
-      'Scan or paste the new device’s authorization request.';
+      'Skannaa tai liitä uuden laitteen valtuutuspyyntö.';
 
   @override
-  String get syncDeviceRevoke => 'Revoke';
+  String get syncDeviceRevoke => 'Peruuta';
 
   @override
-  String get syncDeviceRotate => 'Rotate this device’s signing key';
+  String get syncDeviceRotate => 'Kierrä tämän laitteen allekirjoitusavainta';
 
   @override
-  String get syncDeviceCheck => 'Check authorization';
+  String get syncDeviceCheck => 'Tarkista valtuutus';
 
   @override
-  String get syncDeviceHardware => 'Hardware-backed signing key';
+  String get syncDeviceHardware => 'Laitteistotuettu allekirjoitusavain';
 
   @override
-  String get syncDeviceSoftware => 'Non-exportable software signing key';
+  String get syncDeviceSoftware => 'Ei-vietävä ohjelmiston allekirjoitusavain';
 
   @override
   String get syncDeviceUnavailable =>
-      'Device authorization is unavailable. Approve this device from another authorized device and retry.';
+      'Laitteen valtuutus ei ole käytettävissä. Hyväksy tämä laite toiselta valtuutetulta laitteelta ja yritä uudelleen.';
 
   @override
-  String get syncDeviceRevoked => 'Revoked';
+  String get syncDeviceRevoked => 'Peruutettu';
 
   @override
-  String get syncDeviceLocal => 'This device';
+  String get syncDeviceLocal => 'Tämä laite';
 
   @override
-  String get cloudTrafficTitle => 'Monthly cloud media allowance';
+  String get cloudTrafficTitle =>
+      'Kuukausittainen pilvitietojen siirtokiintiö mediatiedostoille';
 
   @override
-  String get cloudTrafficLimit => 'Monthly allowance';
+  String get cloudTrafficLimit => 'Kuukauden tiedonsiirtokiintiö';
 
   @override
-  String get cloudTrafficUsed => 'Used';
+  String get cloudTrafficUsed => 'Käytetty tiedonsiirto';
 
   @override
-  String get cloudTrafficRemaining => 'Remaining';
+  String get cloudTrafficRemaining => 'Tiedonsiirtoa jäljellä';
 
   @override
   String cloudTrafficResetsAt(String time) {
-    return 'Resets $time';
+    return 'Tiedonsiirtokiintiö nollaa $time';
   }
 
   @override
   String get cloudTrafficExhausted =>
-      'Cloud media allowance used up. Missing media will resume automatically over a direct connection or when the allowance resets.';
+      'Mediatiedostojen pilvisiirtokiintiö on käytetty loppuun. Puuttuvat mediatiedostot synkronoidaan automaattisesti, kun suora yhteys on käytettävissä tai kiintiö nollataan.';
 
   @override
   String get cloudTrafficExplanation =>
-      'Media cache and live relay share this allowance. Direct connections do not use it. Diary text and connection control have separate small daily limits.';
+      'Mediatiedostojen välimuisti ja suora välitys jakavat tämän tiedonsiirtokiintiön. Suorat yhteydet eivät kuluta sitä. Päiväkirjateksteillä ja yhteydenhallintaviesteillä on erilliset pienet päivärajat.';
 
   @override
-  String get appearanceThemeSection => 'App theme';
+  String get appearanceThemeSection => 'Sovelluksen teema';
 
   @override
-  String get appearancePaperSection => 'Diary paper';
+  String get appearancePaperSection => 'Päiväkirjapaperi';
 
   @override
-  String get appearanceTypographySection => 'Diary text';
+  String get appearanceTypographySection => 'Päiväkirjan teksti';
 
   @override
-  String get appearancePreferencesSection => 'General preferences';
+  String get appearancePreferencesSection => 'Yleiset asetukset';
 
   @override
   String get themeSystemAccentHint =>
-      'Uses the system palette instead of custom colors. Turn it off to choose your own.';
+      'Käyttää järjestelmäpalettia mukautettujen värien sijaan. Valitse omasi sammuttamalla se.';
 
   @override
   String get syncDeviceNameSaveFailed =>
-      'Could not save the device name. Please try again.';
+      'Laitteen nimeä ei voitu tallentaa. Yritä uudelleen.';
 
   @override
-  String get nearbyConnectionHelp => 'Connection help';
+  String get nearbyConnectionHelp => 'Yhteyden apua';
 
   @override
-  String get syncAllSynced => 'Everything synced';
+  String get syncAllSynced => 'Kaikki synkronoitu';
 
   @override
-  String get syncDetailsTitle => 'Sync details';
+  String get syncDetailsTitle => 'Synkronoinnin tiedot';
 
   @override
-  String get syncMore => 'More options';
+  String get syncMore => 'Lisää vaihtoehtoja';
 
   @override
-  String get syncDeviceName => 'Device name';
+  String get syncDeviceName => 'Laitteen nimi';
 
   @override
-  String get syncDeviceNameHint => 'For example: My tablet';
+  String get syncDeviceNameHint => 'Esimerkiksi: Oma tabletti';
 
   @override
-  String get syncDeviceNameInvalid => 'Use 1 to 32 characters';
+  String get syncDeviceNameInvalid => 'Käytä 1-32 merkkiä';
 
   @override
-  String get syncDeviceKeyDetails => 'Security details';
+  String get syncDeviceKeyDetails => 'Tietoturvatiedot';
 
   @override
   String get syncConnectionProblem =>
-      'Unable to sync for now. Retrying automatically.';
+      'Synkronointi ei toistaiseksi onnistu. Yritetään automaattisesti uudelleen.';
 
   @override
-  String get syncCopyComplete => 'Complete copy';
+  String get syncCopyComplete =>
+      'Täydellinen kopio päiväkirjastasi ja mediatiedostoistasi';
 
   @override
-  String get syncCopyPartial => 'Some media is still missing';
+  String get syncCopyPartial => 'Osa mediasta puuttuu edelleen';
 
   @override
-  String get syncCopyOlder => 'New changes are waiting to sync';
+  String get syncCopyOlder => 'Uudet muutokset odottavat synkronointia';
 
   @override
   String get syncCopyUnavailable =>
-      'Copy details are unavailable. Try again later.';
+      'Kopioinnin tiedot eivät ole saatavilla. Yritä myöhemmin uudelleen.';
 
   @override
   String get syncCopyLastKnown =>
-      'Other devices show their last confirmed copy. Offline devices cannot be checked now.';
+      'Muut laitteet näyttävät viimeisen vahvistetun kopionsa. Offline-laitteita ei voi tarkistaa nyt.';
 
   @override
   String get syncCopyTemporary =>
-      'Temporary cache. Keep the originals on your devices.';
+      'Väliaikainen välimuisti. Säilytä alkuperäiset laitteissasi.';
 
   @override
   String get syncCopyStorage =>
-      'Your sync storage. Completed media uploads are listed in diagnostics.';
+      'Synkronointitallennustilasi. Valmiit medialataukset luetellaan diagnostiikassa.';
 
   @override
   String syncCopyChecked(String time) {
-    return 'Last confirmed $time';
+    return 'Viimeksi vahvistettu $time';
   }
 
   @override
   String cloudTrafficSummary(String remaining, String limit) {
-    return 'Available this month: $remaining / $limit';
+    return 'Tiedonsiirto jäljellä tässä kuussa: $remaining / $limit';
   }
 
   @override
-  String get onboardNewDiary => 'Start here';
+  String get onboardNewDiary => 'Aloita tästä';
 
   @override
-  String get onboardConnect => 'Connect to an existing device';
+  String get onboardConnect => 'Yhdistä olemassa olevaan laitteeseen';
 
   @override
   String get onboardFailed =>
-      'Setup could not be completed. Your diary is safe; please try again.';
+      'Asennusta ei voitu suorittaa loppuun. Päiväkirjasi on turvassa; yritä uudelleen.';
 
   @override
-  String get tutorialTitle => 'How to use the diary';
+  String get tutorialTitle => 'Kuinka käyttää päiväkirjaa';
 
   @override
-  String get tutorialWriteTitle => 'Write your first entry';
+  String get tutorialWriteTitle => 'Kirjoita ensimmäinen päiväkirjamerkintäsi';
 
   @override
   String get tutorialWriteText =>
-      'Tap + to write. Add a title if you want, choose the diary day and tap the check mark to save. You can edit it again at any time.';
+      'Napauta + kirjoittaaksesi päiväkirjamerkinnän. Lisää valinnainen otsikko, valitse päiväkirjan päivämäärä ja tallenna napauttamalla valintamerkkiä. Voit muokata päiväkirjamerkintää uudelleen milloin tahansa.';
 
   @override
-  String get tutorialMediaTitle => 'Add photos, audio or handwriting';
+  String get tutorialMediaTitle => 'Lisää kuvia, ääntä tai käsialaa';
 
   @override
   String get tutorialMediaText =>
-      'Use + in the editor to attach photos, videos or a voice note, or open the pen canvas. These attachments stay with the entry.';
+      'Käytä + päiväkirjaeditorissa liittääksesi valokuvia, videoita tai äänitallenteita tai avataksesi käsinkirjoituspohjan. Nämä liitteet tallennetaan päiväkirjamerkinnällä.';
 
   @override
-  String get tutorialReviewTitle => 'Find a day again';
+  String get tutorialReviewTitle => 'Etsi päivä uudelleen';
 
   @override
   String get tutorialReviewText =>
-      'Browse the journal or calendar, search your writing and use tags to organize it. Media and Atlas help you look back by photo or place.';
+      'Selaa päiväkirjaasi tai kalenteriasi, hae kirjoituksiasi ja järjestä merkintöjä tunnisteilla. Media- ja Atlas-sivuilta löydät aiempia merkintöjä kuvan tai sijainnin mukaan.';
 
   @override
-  String get tutorialSyncTitle => 'Use more than one device';
+  String get tutorialSyncTitle => 'Käytä useampaa kuin yhtä laitetta';
 
   @override
   String get tutorialSyncText =>
-      'In Settings → Data & storage → Sync, connect to an existing device and confirm authorization there. Both devices can keep using the diary. Text syncs first; media follows as the connection and allowance permit.';
+      'Muodosta yhteys olemassa olevaan laitteeseen kohdassa Asetukset → Tiedot ja tallennus → Synkronoi ja vahvista kyseisen laitteen valtuutus. Molemmat laitteet voivat jatkaa päiväkirjan käyttöä. Päiväkirjan teksti synkronoidaan ensin. Mediatiedostot synkronoidaan seuraavaksi, kun verkkoyhteys ja jäljellä oleva tiedonsiirtokiintiö sallivat sen.';
 
   @override
-  String get tutorialPrivacyTitle => 'Keep your diary safe';
+  String get tutorialPrivacyTitle => 'Pidä päiväkirjasi turvassa';
 
   @override
   String get tutorialPrivacyText =>
-      'Entries stay on this device unless you enable sync or share/export them. Sync is end-to-end encrypted. Settings also offers an app passcode and backups; you can reopen this tutorial there.';
+      'Päiväkirjamerkinnät pysyvät tällä laitteella, ellet ota synkronointia käyttöön tai jaa tai vie niitä. Synkronointi on päästä päähän -salattu. Asetuksissa voit myös asettaa sovelluksen pääsykoodin, luoda varmuuskopioita ja avata tämän opetusohjelman uudelleen.';
 }

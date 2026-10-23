@@ -12,38 +12,37 @@ class AppLocalizationsKo extends AppLocalizations {
   String get appTitle => 'AID Diary';
 
   @override
-  String get themeColorTitle => 'Theme color';
+  String get themeColorTitle => '테마 색상';
 
   @override
-  String get themeColorHint => 'Choose a color for this palette.';
+  String get themeColorHint => '이 팔레트의 색상을 선택하세요.';
 
   @override
-  String get themeColorBlue => 'Sky blue';
+  String get themeColorBlue => '하늘색';
 
   @override
-  String get themeColorGreen => 'Forest green';
+  String get themeColorGreen => '포레스트 그린';
 
   @override
-  String get themeColorBrown => 'Warm coffee';
+  String get themeColorBrown => '따뜻한 커피';
 
   @override
-  String get themeColorPurple => 'Lavender';
+  String get themeColorPurple => '라벤더';
 
   @override
-  String get themeColorRose => 'Dusty rose';
+  String get themeColorRose => '더스티 로즈';
 
   @override
-  String get themeColorAmber => 'Amber';
+  String get themeColorAmber => '호박색';
 
   @override
-  String get themeColorPreview => 'A little every day';
+  String get themeColorPreview => '매일 조금씩';
 
   @override
-  String get themeTintBackgroundTitle => 'Tint backgrounds with theme color';
+  String get themeTintBackgroundTitle => '테마 색상을 사용한 색조 배경';
 
   @override
-  String get themeTintBackgroundHint =>
-      'Turn off for neutral gray backgrounds; buttons keep your chosen color.';
+  String get themeTintBackgroundHint => '중간 회색 배경의 경우 끄십시오. 버튼은 선택한 색상을 유지합니다.';
 
   @override
   String get dailyReminderTitle => '오늘을 기록하세요!';
@@ -52,7 +51,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get dailyReminderDescription => '하루를 기록해보세요…';
 
   @override
-  String get actionTakePhoto => 'Take photo';
+  String get actionTakePhoto => '사진 찍기';
 
   @override
   String get flashbacksTitle => '회상';
@@ -100,7 +99,7 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
-  String get flashbackOnThisDay => 'On This Day';
+  String get flashbackOnThisDay => '이날';
 
   @override
   String get searchLogsHint => '기록 검색…';
@@ -121,8 +120,8 @@ class AppLocalizationsKo extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count days',
-      one: '$count day',
+      other: '$count일',
+      one: '$count일',
     );
     return '$_temp0';
   }
@@ -142,7 +141,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get noLogs => '기록 없음…';
 
   @override
-  String get noResults => 'No Results…';
+  String get noResults => '결과가 없습니다…';
 
   @override
   String get sortOrderAscendingTitle => '오름차순';
@@ -180,26 +179,26 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String chartOverTimeTitle(Object tag) {
-    return '$tag Over Time';
+    return '시간이 지남에 따라 $tag';
   }
 
   @override
-  String get chartGroupingLabel => 'Group by';
+  String get chartGroupingLabel => '그룹화 기준';
 
   @override
-  String get chartGroupingDay => 'Day';
+  String get chartGroupingDay => '일';
 
   @override
-  String get chartGroupingWeek => 'Week';
+  String get chartGroupingWeek => '주';
 
   @override
-  String get chartGroupingMonth => 'Month';
+  String get chartGroupingMonth => '월';
 
   @override
-  String get chartGroupingYear => 'Year';
+  String get chartGroupingYear => '연도';
 
   @override
-  String get chartSmoothingLabel => 'Smoothing';
+  String get chartSmoothingLabel => '스무딩';
 
   @override
   String streakCurrent(num count) {
@@ -226,7 +225,7 @@ class AppLocalizationsKo extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Great Days $count',
+      other: '좋은 날들 $count',
     );
     return '$_temp0';
   }
@@ -294,13 +293,13 @@ class AppLocalizationsKo extends AppLocalizations {
   String get settingsFirstDayOfWeek => '한 주의 시작';
 
   @override
-  String get settingsCalendarSystem => 'Calendar System';
+  String get settingsCalendarSystem => '캘린더 시스템';
 
   @override
-  String get calendarSystemGregorian => 'Gregorian';
+  String get calendarSystemGregorian => '그레고리력';
 
   @override
-  String get calendarSystemJalali => 'Jalali';
+  String get calendarSystemJalali => '잘랄리';
 
   @override
   String get settingsUseSystemAccentColor => '시스템 강조 색상 사용';
@@ -318,10 +317,10 @@ class AppLocalizationsKo extends AppLocalizations {
   String get moodIconPrompt => '아이콘 입력';
 
   @override
-  String get settingsHideImages => 'Hide Images';
+  String get settingsHideImages => '이미지 숨기기';
 
   @override
-  String get pageCalendarTitle => 'Calendar';
+  String get pageCalendarTitle => '달력';
 
   @override
   String get settingsNotificationsTitle => '알림';
@@ -330,7 +329,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get settingsDailyReminderTitle => '일일 알림';
 
   @override
-  String get settingsOnThisDayDescription => 'Revisit past memories';
+  String get settingsOnThisDayDescription => '지난 추억을 다시 찾아보세요';
 
   @override
   String get settingsDailyReminderDescription => '매일의 다정한 알림';
@@ -387,102 +386,102 @@ class AppLocalizationsKo extends AppLocalizations {
       '### 오늘 어떤 것이 즐거웠나요?\n- \n\n### 어떤 것에 감사하나요?\n- \n\n### 앞으로 무엇을 기대하나요?\n- ';
 
   @override
-  String get settingsTagsTitle => 'Tags';
+  String get settingsTagsTitle => '태그';
 
   @override
-  String get manageTags => 'Manage Tags';
+  String get manageTags => '태그 관리';
 
   @override
-  String get tagTypeLabelTitle => 'Label';
+  String get tagTypeLabelTitle => '라벨';
 
   @override
-  String get tagTypeTrackerTitle => 'Tracker';
+  String get tagTypeTrackerTitle => '추적기';
 
   @override
-  String get nameHint => 'Name';
+  String get nameHint => '이름';
 
   @override
-  String get tagColorLabel => 'Color';
+  String get tagColorLabel => '색상';
 
   @override
-  String get iconPickerTitle => 'Choose Icon';
+  String get iconPickerTitle => '아이콘 선택';
 
   @override
-  String get iconPickerIconsTab => 'Icons';
+  String get iconPickerIconsTab => '아이콘';
 
   @override
-  String get iconPickerCustomTab => 'Custom';
+  String get iconPickerCustomTab => '맞춤';
 
   @override
-  String get iconPickerSearchHint => 'Search icons…';
+  String get iconPickerSearchHint => '아이콘 검색…';
 
   @override
-  String get colorPickerTitle => 'Choose Color';
+  String get colorPickerTitle => '색상 선택';
 
   @override
-  String get colorPickerPaletteTab => 'Colors';
+  String get colorPickerPaletteTab => '색상';
 
   @override
-  String get iconGroupMoodPeople => 'Mood & People';
+  String get iconGroupMoodPeople => '기분과 사람';
 
   @override
-  String get iconGroupHealth => 'Health';
+  String get iconGroupHealth => '건강';
 
   @override
-  String get iconGroupWorkFinance => 'Work & Finance';
+  String get iconGroupWorkFinance => '업무 및 금융';
 
   @override
-  String get iconGroupHabitsGoals => 'Habits & Goals';
+  String get iconGroupHabitsGoals => '습관과 목표';
 
   @override
-  String get iconGroupNature => 'Nature';
+  String get iconGroupNature => '자연';
 
   @override
-  String get iconGroupFoodDrink => 'Food & Drink';
+  String get iconGroupFoodDrink => '음식 및 음료';
 
   @override
-  String get iconGroupHome => 'Home';
+  String get iconGroupHome => '홈';
 
   @override
-  String get iconGroupTravel => 'Travel';
+  String get iconGroupTravel => '여행';
 
   @override
-  String get iconGroupSymbols => 'Symbols';
+  String get iconGroupSymbols => '기호';
 
   @override
-  String get tagCategoryLabel => 'Category';
+  String get tagCategoryLabel => '카테고리';
 
   @override
-  String get tagLabel => 'Tag';
+  String get tagLabel => '태그';
 
   @override
-  String get tagCategoryUncategorized => 'Uncategorized';
+  String get tagCategoryUncategorized => '분류되지 않음';
 
   @override
-  String get newCategoryTitle => 'New Category';
+  String get newCategoryTitle => '새 카테고리';
 
   @override
-  String get shareButtonLabel => 'Share';
+  String get shareButtonLabel => '공유';
 
   @override
-  String get importErrorDescription => 'Failed to import file!';
+  String get importErrorDescription => '파일을 가져오지 못했습니다!';
 
   @override
-  String get exportErrorDescription => 'Failed to export file!';
+  String get exportErrorDescription => '파일을 내보내지 못했습니다.';
 
   @override
-  String get deleteTitle => 'Delete';
+  String get deleteTitle => '삭제';
 
   @override
   String deleteTagMessage(num count, Object name) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: ' It is used in $count logs.',
-      one: ' It is used in 1 log.',
+      other: ' $count개의 일기 항목에 사용됩니다.',
+      one: ' 1로그에 사용됩니다.',
       zero: '',
     );
-    return 'Delete \"$name\"?$_temp0';
+    return '\'$name\'을 삭제하시겠습니까?$_temp0';
   }
 
   @override
@@ -490,83 +489,83 @@ class AppLocalizationsKo extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: ' Its $count tags will also be deleted.',
-      one: ' Its 1 tag will also be deleted.',
+      other: ' $count개의 태그도 삭제됩니다.',
+      one: ' 해당 태그 1개도 삭제됩니다.',
       zero: '',
     );
-    return 'Delete \"$name\"?$_temp0';
+    return '\'$name\'을 삭제하시겠습니까?$_temp0';
   }
 
   @override
-  String get tagNameExists => 'There is a tag with this name already';
+  String get tagNameExists => '이미 같은 이름의 태그가 있습니다.';
 
   @override
-  String get categoryNameExists => 'There is a category with this name already';
+  String get categoryNameExists => '이미 같은 이름의 카테고리가 있습니다.';
 
   @override
   String deleteTemplateMessage(Object name) {
-    return 'Delete \"$name\"?';
+    return '\'$name\'을 삭제하시겠습니까?';
   }
 
   @override
-  String get addTagsTitle => 'Add Tags';
+  String get addTagsTitle => '태그 추가';
 
   @override
-  String get addTagsSearchHint => 'Search tags…';
+  String get addTagsSearchHint => '태그 검색…';
 
   @override
-  String get tagPickerSortManualLabel => 'Manual order';
+  String get tagPickerSortManualLabel => '수동 주문';
 
   @override
-  String get tagPickerSortUsageLabel => 'Sort by usage';
+  String get tagPickerSortUsageLabel => '용도별로 정렬';
 
   @override
-  String get tagFavoriteName => 'Favorite';
+  String get tagFavoriteName => '즐겨찾기';
 
   @override
-  String get tagEnergyName => 'Energy';
+  String get tagEnergyName => '에너지';
 
   @override
-  String get tagCategoryActivitiesName => 'Activities';
+  String get tagCategoryActivitiesName => '활동';
 
   @override
-  String get tagExerciseName => 'Exercise';
+  String get tagExerciseName => '운동';
 
   @override
-  String get tagSocializingName => 'Socializing';
+  String get tagSocializingName => '사교';
 
   @override
-  String get tagHobbyName => 'Hobby';
+  String get tagHobbyName => '취미';
 
   @override
-  String get tagEntertainmentName => 'Entertainment';
+  String get tagEntertainmentName => '엔터테인먼트';
 
   @override
-  String get tagDiningName => 'Dining';
+  String get tagDiningName => '다이닝';
 
   @override
-  String get tagChoresName => 'Chores';
+  String get tagChoresName => '집안일';
 
   @override
-  String get tagCategoryEmotionsName => 'Emotions';
+  String get tagCategoryEmotionsName => '감정';
 
   @override
-  String get tagExcitedName => 'Excited';
+  String get tagExcitedName => '흥분된다';
 
   @override
-  String get tagGratefulName => 'Grateful';
+  String get tagGratefulName => '감사하다';
 
   @override
-  String get tagCalmName => 'Calm';
+  String get tagCalmName => '진정';
 
   @override
-  String get tagTiredName => 'Tired';
+  String get tagTiredName => '피곤하다';
 
   @override
-  String get tagAnxiousName => 'Anxious';
+  String get tagAnxiousName => '불안하다';
 
   @override
-  String get tagAnnoyedName => 'Annoyed';
+  String get tagAnnoyedName => '짜증나';
 
   @override
   String get settingsStorageTitle => '저장소';
@@ -628,56 +627,56 @@ class AppLocalizationsKo extends AppLocalizations {
       '백업을 복구하면 이미 존재하는 데이터를 덮어쓰게 됩니다!';
 
   @override
-  String get settingsBackupPasswordProtect => 'Password Protect Backups';
+  String get settingsBackupPasswordProtect => '비밀번호 보호 백업';
 
   @override
-  String get backupEncryptedTitle => 'Encrypted Backup';
+  String get backupEncryptedTitle => '암호화된 백업';
 
   @override
-  String get backupEncryptedContent => 'This backup is password protected.';
+  String get backupEncryptedContent => '이 백업은 비밀번호로 보호되어 있습니다.';
 
   @override
-  String get settingsAutoBackup => 'Automatic Backups';
+  String get settingsAutoBackup => '자동 백업';
 
   @override
-  String get settingsAutoBackupLocation => 'Backup Location';
+  String get settingsAutoBackupLocation => '백업 위치';
 
   @override
-  String get settingsAutoBackupInterval => 'Backup Interval';
+  String get settingsAutoBackupInterval => '백업 간격';
 
   @override
-  String get settingsAutoBackupIntervalDaily => 'Daily';
+  String get settingsAutoBackupIntervalDaily => '매일';
 
   @override
-  String get settingsAutoBackupIntervalWeekly => 'Weekly';
+  String get settingsAutoBackupIntervalWeekly => '주간';
 
   @override
-  String get settingsAutoBackupIntervalMonthly => 'Monthly';
+  String get settingsAutoBackupIntervalMonthly => '월간';
 
   @override
-  String get settingsAutoBackupMaxCount => 'Backups To Keep';
+  String get settingsAutoBackupMaxCount => '보관할 백업';
 
   @override
-  String get settingsAutoBackupRequireCharging => 'Only While Charging';
+  String get settingsAutoBackupRequireCharging => '충전하는 동안에만';
 
   @override
   String settingsBackupLast(Object time) {
-    return 'Last backup $time';
+    return '마지막 백업 $time';
   }
 
   @override
-  String get settingsBackupNever => 'Never backed up';
+  String get settingsBackupNever => '백업되지 않음';
 
   @override
   String settingsAutoBackupNext(Object time) {
-    return 'Next backup $time';
+    return '다음 백업 $time';
   }
 
   @override
-  String get settingsAutoBackupKeepAll => 'All';
+  String get settingsAutoBackupKeepAll => '모두';
 
   @override
-  String get autoBackupFailedTitle => 'Backup Failed';
+  String get autoBackupFailedTitle => '백업 실패';
 
   @override
   String tranferStatus(Object percent) {
@@ -696,12 +695,12 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String encryptingBackupStatus(Object percent) {
-    return 'Encrypting Backup… $percent%';
+    return '백업 암호화 중… $percent%';
   }
 
   @override
   String decryptingBackupStatus(Object percent) {
-    return 'Decrypting Backup… $percent%';
+    return '백업 암호 해독 중… $percent%';
   }
 
   @override
@@ -745,7 +744,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get formatMyBrain => 'My Brain';
 
   @override
-  String get formatOneShot => 'OneShot';
+  String get formatOneShot => '원샷';
 
   @override
   String get formatPixels => 'Pixels';
@@ -825,561 +824,554 @@ class AppLocalizationsKo extends AppLocalizations {
   String get licenseGPLv3 => 'GPL-3.0';
 
   @override
-  String get settingsOpenSourceLicenses => 'Open Source Licenses';
+  String get settingsOpenSourceLicenses => '오픈 소스 라이선스';
 
   @override
   String get tagMoodTitle => '기분';
 
   @override
-  String get selectTagTitle => 'Select Tag';
+  String get selectTagTitle => '태그 선택';
 
   @override
-  String get labelPresentLabel => 'Present';
+  String get labelPresentLabel => '현재';
 
   @override
-  String get labelAbsentLabel => 'Absent';
+  String get labelAbsentLabel => '결석';
 
   @override
-  String get labelCoverageLabel => 'Coverage';
+  String get labelCoverageLabel => '적용 범위';
 
   @override
   String chartDistributionTitle(Object tag) {
-    return '$tag Distribution';
+    return '$tag 배포';
   }
 
   @override
-  String get shareAddToLogPickerTitle => 'Choose a log';
+  String get shareAddToLogPickerTitle => '일기 항목을 선택하세요';
 
   @override
-  String get adaptiveEmptyDay => 'No entries for this day yet';
+  String get adaptiveEmptyDay => '오늘은 아직 항목이 없습니다.';
 
   @override
-  String get adaptiveNewEntry => 'Write an entry';
+  String get adaptiveNewEntry => '항목 작성';
 
   @override
-  String get pageJournalTitle => 'Journal';
+  String get pageJournalTitle => '저널';
 
   @override
-  String get coachPrompt1 => 'What made you smile today?';
+  String get coachPrompt1 => '오늘 당신을 웃게 만든 일은 무엇이었나요?';
 
   @override
-  String get coachPrompt2 => 'What is one thing you learned today?';
+  String get coachPrompt2 => '오늘 배운 것 중 하나는 무엇입니까?';
 
   @override
-  String get coachPrompt3 => 'Who did you talk to today, and how did it feel?';
+  String get coachPrompt3 => '오늘 누구와 이야기를 나눴고, 어떤 느낌이 들었나요?';
 
   @override
-  String get coachPrompt4 => 'What are you grateful for right now?';
+  String get coachPrompt4 => '지금 당신은 무엇에 감사하고 있나요?';
 
   @override
-  String get coachPrompt5 => 'What took most of your energy today?';
+  String get coachPrompt5 => '오늘 당신의 에너지를 가장 많이 소모한 일은 무엇입니까?';
 
   @override
-  String get coachPrompt6 => 'Describe a small moment you want to remember.';
+  String get coachPrompt6 => '기억하고 싶은 작은 순간을 묘사해보세요.';
 
   @override
-  String get coachPrompt7 => 'What would make tomorrow a good day?';
+  String get coachPrompt7 => '무엇이 내일을 좋은 날로 만들까요?';
 
   @override
-  String get coachPrompt8 => 'What has been on your mind lately?';
+  String get coachPrompt8 => '최근에 무슨 생각이 들었나요?';
 
   @override
-  String get coachPrompt9 => 'What did you do today just for yourself?';
+  String get coachPrompt9 => '오늘 당신은 당신 자신을 위해 무엇을 했나요?';
 
   @override
-  String get coachPrompt10 => 'If today had a title, what would it be?';
+  String get coachPrompt10 => '오늘의 제목이 있다면 무엇일까요?';
 
   @override
-  String get pageMediaTitle => 'Media';
+  String get pageMediaTitle => '미디어';
 
   @override
-  String get pageAtlasTitle => 'Atlas';
+  String get pageAtlasTitle => '아틀라스';
 
   @override
-  String get pageCoachTitle => 'Coach';
+  String get pageCoachTitle => '코치';
 
   @override
-  String get noEntrySelected => 'No entry selected.';
+  String get noEntrySelected => '선택한 항목이 없습니다.';
 
   @override
-  String get entryShare => 'Share';
+  String get entryShare => '공유';
 
   @override
-  String get entryFavorite => 'Star';
+  String get entryFavorite => '별';
 
   @override
-  String get entryEdit => 'Edit';
+  String get entryEdit => '편집';
 
   @override
-  String get entryPrevious => 'Previous entry';
+  String get entryPrevious => '이전 항목';
 
   @override
-  String get entryNext => 'Next entry';
+  String get entryNext => '다음 항목';
 
   @override
-  String get journalStories => 'Stories';
+  String get journalStories => '스토리';
 
   @override
-  String get journalEntries => 'Entries';
+  String get journalEntries => '항목';
 
   @override
-  String get journalEmptyHint => 'Begin your diary by adding a new entry.';
+  String get journalEmptyHint => '새 항목을 추가하여 일기를 시작하세요.';
 
   @override
-  String get storyToday => 'Today';
+  String get storyToday => '오늘';
 
   @override
-  String get storyThrowback => 'Throwback';
+  String get storyThrowback => '후퇴';
 
   @override
-  String get storyNoThrowback => 'No throwback today';
+  String get storyNoThrowback => '오늘은 후퇴가 없어';
 
   @override
-  String get mediaFiles => 'Media files';
+  String get mediaFiles => '미디어 파일';
 
   @override
-  String get mediaEmpty => 'No photos yet.';
+  String get mediaEmpty => '아직 사진이 없습니다.';
 
   @override
-  String get mediaEmptyHint => 'Photos attached to entries will be shown here.';
+  String get mediaEmptyHint => '항목에 첨부된 사진이 여기에 표시됩니다.';
 
   @override
-  String get atlasEmpty => 'No entries with a location.';
+  String get atlasEmpty => '위치가 포함된 항목이 없습니다.';
 
   @override
-  String get atlasEmptyHint => 'Entries with a location will be shown here.';
+  String get atlasEmptyHint => '위치가 포함된 항목이 여기에 표시됩니다.';
 
   @override
-  String get atlasShowAll => 'Show all entries';
+  String get atlasShowAll => '모든 항목 표시';
 
   @override
-  String get atlasMyLocation => 'My location';
+  String get atlasMyLocation => '내 위치';
 
   @override
-  String get coachAll => 'All';
+  String get coachAll => '모두';
 
   @override
-  String get coachPrograms => 'Programs';
+  String get coachPrograms => '프로그램';
 
   @override
-  String get coachTemplates => 'Templates';
+  String get coachTemplates => '템플릿';
 
   @override
-  String get coachKindProgram => 'Program';
+  String get coachKindProgram => '프로그램';
 
   @override
-  String get coachKindTemplate => 'Template';
+  String get coachKindTemplate => '템플릿';
 
   @override
-  String get coachNoTemplates => 'No programs or templates.';
+  String get coachNoTemplates => '프로그램이나 템플릿이 없습니다.';
 
   @override
-  String get coachUseTemplate => 'Write with this template';
+  String get coachUseTemplate => '이 템플릿으로 작성하세요';
 
   @override
-  String get coachProgramEverydayTitle => 'Everyday moments';
+  String get coachProgramEverydayTitle => '일상의 순간';
 
   @override
   String get coachProgramEverydayDescription =>
-      'Five short questions, one a day. Each takes a minute or two and helps you see what made the day yours. A gentle way to build the habit of writing a little every day.';
+      '하루에 하나씩 5개의 짧은 질문입니다. 각각 1~2분 정도 걸리며 무엇이 오늘의 하루를 즐겁게 만들었는지 확인하는 데 도움이 됩니다. 매일 조금씩 쓰는 습관을 들이는 부드러운 방법입니다.';
 
   @override
-  String get coachProgramReflectTitle => 'Looking inward';
+  String get coachProgramReflectTitle => '내면을 바라보며';
 
   @override
   String get coachProgramReflectDescription =>
-      'One deeper question a week, for five weeks. Take your time with each: how you have been feeling, what wears you out, what you are grateful for.';
+      '5주 동안 일주일에 한 번씩 더 깊은 질문을 합니다. 지금까지 어떤 기분이었는지, 무엇이 당신을 지치게 했는지, 무엇에 감사했는지 등 각각에 대해 시간을 가지십시오.';
 
   @override
-  String get searchFilters => 'Filters';
+  String get searchFilters => '필터';
 
   @override
-  String get searchFilterTags => 'Tags';
+  String get searchFilterTags => '태그';
 
   @override
-  String get searchFilterStarred => 'Starred';
+  String get searchFilterStarred => '별표 표시됨';
 
   @override
-  String get searchHint => 'Type to search, or pick a filter.';
+  String get searchHint => '검색하려면 입력하거나 필터를 선택하세요.';
 
   @override
-  String get locationTitle => 'Location';
+  String get locationTitle => '위치';
 
   @override
-  String get locationName => 'Place name';
+  String get locationName => '지명';
 
   @override
-  String get locationRemove => 'Remove';
+  String get locationRemove => '제거';
 
   @override
-  String get locationServiceDisabled => 'Location services are turned off.';
+  String get locationServiceDisabled => '위치 서비스가 꺼져 있습니다.';
 
   @override
-  String get locationPermissionDenied => 'Location permission was denied.';
+  String get locationPermissionDenied => '위치 권한이 거부되었습니다.';
 
   @override
-  String get locationUnavailable => 'Could not get the current location.';
+  String get locationUnavailable => '현재 위치를 가져올 수 없습니다.';
 
   @override
-  String get calendarJumpToToday => 'Jump to today';
+  String get calendarJumpToToday => '오늘로 이동';
 
   @override
-  String get editorStartWriting => 'Start writing or choose a ';
+  String get editorStartWriting => '글쓰기를 시작하거나 ';
 
   @override
-  String get editorTemplateLink => 'Template';
+  String get editorTemplateLink => '템플릿';
 
   @override
   String get editorStartWritingEnd => '.';
 
   @override
-  String get templatePickerTitle => 'Choose a template';
+  String get templatePickerTitle => '템플릿을 선택하세요';
 
   @override
-  String get templateFeatured => 'Featured templates';
+  String get templateFeatured => '추천 템플릿';
 
   @override
-  String get templateMine => 'My templates';
+  String get templateMine => '내 템플릿';
 
   @override
-  String get templateDailyName => 'Daily review';
+  String get templateDailyName => '일일 리뷰';
 
   @override
   String get templateDailyDescription =>
-      'What happened, how it felt, and what comes next.';
+      '무슨 일이 일어났고, 어떤 느낌이었는지, 그리고 앞으로 일어날 일은 무엇입니까?';
 
   @override
   String get templateDailyText =>
-      '## What happened today\n\n\n## How I felt\n\n\n## Three things I\'m grateful for\n1. \n2. \n3. \n\n## Tomorrow\n';
+      '## 오늘 무슨 일이 있었나요\n\n\n## 내가 느낀 점\n\n\n## 감사한 점 세 가지\n1. \n2. \n3. \n\n## 내일\n';
 
   @override
-  String get templateTravelName => 'Travel log';
+  String get templateTravelName => '여행 일기 입력';
 
   @override
-  String get templateTravelDescription =>
-      'Places, moments and food from the road.';
+  String get templateTravelDescription => '길에서 본 장소, 순간, 음식.';
 
   @override
   String get templateTravelText =>
-      '## Where I went\n\n\n## The moment I remember most\n\n\n## What I ate\n\n\n## Plans for tomorrow\n';
+      '##내가갔던곳\n\n\n##가장 기억에 남는 순간\n\n\n## 내가 먹은 것\n\n\n## 내일 계획\n';
 
   @override
-  String get templateReadingName => 'Reading notes';
+  String get templateReadingName => '메모 읽기';
 
   @override
-  String get templateReadingDescription =>
-      'Quotes and thoughts from what you read.';
+  String get templateReadingDescription => '당신이 읽은 내용에 대한 인용문과 생각.';
 
   @override
   String get templateReadingText =>
-      '## Book\n\n\n## Where I am\n\n\n## Quotes\n> \n\n## My thoughts\n';
+      '## 예약\n\n\n## 내가 있는 곳\n\n\n## 인용문\n> \n\n## 내 생각\n';
 
   @override
-  String get templateWeeklyName => 'Weekly review';
+  String get templateWeeklyName => '주간 검토';
 
   @override
-  String get templateWeeklyDescription =>
-      'Highlights, struggles and next week\'s focus.';
+  String get templateWeeklyDescription => '하이라이트, 어려움, 다음 주의 초점.';
 
   @override
   String get templateWeeklyText =>
-      '## Highlights\n\n\n## What was hard\n\n\n## What I learned\n\n\n## Focus for next week\n';
+      '## 하이라이트\n\n\n## 무엇이 힘들었나요\n\n\n## 배운 것\n\n\n## 다음 주에 집중하세요\n';
 
   @override
-  String get entryDuplicate => 'Duplicate';
+  String get entryDuplicate => '중복';
 
   @override
-  String get entryDuplicated => 'Entry duplicated';
+  String get entryDuplicated => '항목이 중복되었습니다.';
 
   @override
-  String get entrySaveAsTemplate => 'Save as template';
+  String get entrySaveAsTemplate => '템플릿으로 저장';
 
   @override
-  String get entrySavedAsTemplate => 'Saved as a template';
+  String get entrySavedAsTemplate => '템플릿으로 저장됨';
 
   @override
-  String get storyStatistics => 'Statistics';
+  String get storyStatistics => '통계';
 
   @override
-  String get storyMoodChart => 'Mood chart';
+  String get storyMoodChart => '기분 차트';
 
   @override
   String storyEntriesAndDays(Object days, Object entries) {
-    return '$entries entries · $days days';
+    return '$entries 항목 · $days 일';
   }
 
   @override
-  String get storyThisYear => 'This year';
+  String get storyThisYear => '올해';
 
   @override
-  String get storyLastYear => 'Last year';
+  String get storyLastYear => '작년';
 
   @override
-  String get storyTapToOpen => 'Tap a day to open it';
+  String get storyTapToOpen => '하루를 탭하여 엽니다.';
 
   @override
-  String get settingsGeneralTitle => 'General';
+  String get settingsGeneralTitle => '일반';
 
   @override
-  String get settingsDataTitle => 'Data & storage';
+  String get settingsDataTitle => '데이터 및 스토리지';
 
   @override
-  String get settingsStoriesTitle => 'Stories';
+  String get settingsStoriesTitle => '스토리';
 
   @override
-  String get settingsHelpTitle => 'Help & about';
+  String get settingsHelpTitle => '도움말 및 정보';
 
   @override
-  String get weatherTitle => 'Weather';
+  String get weatherTitle => '날씨';
 
   @override
-  String get weatherClear => 'Clear';
+  String get weatherClear => '지우기';
 
   @override
-  String get weatherPartlyCloudy => 'Partly cloudy';
+  String get weatherPartlyCloudy => '약간 흐림';
 
   @override
-  String get weatherCloudy => 'Cloudy';
+  String get weatherCloudy => '흐림';
 
   @override
-  String get weatherFog => 'Fog';
+  String get weatherFog => '안개';
 
   @override
-  String get weatherDrizzle => 'Drizzle';
+  String get weatherDrizzle => '이슬비';
 
   @override
-  String get weatherRain => 'Rain';
+  String get weatherRain => '비';
 
   @override
-  String get weatherSnow => 'Snow';
+  String get weatherSnow => '눈';
 
   @override
-  String get weatherStorm => 'Thunderstorm';
+  String get weatherStorm => '뇌우';
 
   @override
-  String get weatherFetch => 'Get weather for this entry';
+  String get weatherFetch => '이 항목의 날씨 확인';
 
   @override
-  String get weatherNeedsLocation => 'Add a location with coordinates first.';
+  String get weatherNeedsLocation => '먼저 좌표가 있는 위치를 추가하세요.';
 
   @override
-  String get weatherUnavailable =>
-      'Weather is unavailable for this place and time.';
+  String get weatherUnavailable => '이 장소와 시간에는 날씨를 알 수 없습니다.';
 
   @override
-  String get weatherRemove => 'Remove weather';
+  String get weatherRemove => '날씨 삭제';
 
   @override
-  String get activityTitle => 'Activity';
+  String get activityTitle => '활동';
 
   @override
-  String get activityStill => 'Still';
+  String get activityStill => '아직도';
 
   @override
-  String get activityWalking => 'Walking';
+  String get activityWalking => '걷기';
 
   @override
-  String get activityRunning => 'Running';
+  String get activityRunning => '달리기';
 
   @override
-  String get activityCycling => 'Cycling';
+  String get activityCycling => '사이클링';
 
   @override
-  String get activityVehicle => 'In a vehicle';
+  String get activityVehicle => '차량 내';
 
   @override
-  String get activityFlying => 'Flying';
+  String get activityFlying => '비행';
 
   @override
-  String get activityExercise => 'Exercise';
+  String get activityExercise => '운동';
 
   @override
-  String get activityDetect => 'Detect current activity';
+  String get activityDetect => '현재 활동 감지';
 
   @override
-  String get activityDetectFailed => 'Couldn\'t detect an activity.';
+  String get activityDetectFailed => '활동을 감지할 수 없습니다.';
 
   @override
-  String get activityRemove => 'Remove activity';
+  String get activityRemove => '활동 삭제';
 
   @override
-  String get settingsAutoAddTitle => 'Add automatically';
+  String get settingsAutoAddTitle => '자동으로 추가';
 
   @override
-  String get settingsAutoAddLocation => 'Location';
+  String get settingsAutoAddLocation => '위치';
 
   @override
-  String get settingsAutoAddWeather => 'Weather';
+  String get settingsAutoAddWeather => '날씨';
 
   @override
-  String get settingsAutoAddHint =>
-      'New entries get these filled in when they are created.';
+  String get settingsAutoAddHint => '새 항목은 생성될 때 채워집니다.';
 
   @override
-  String get settingsTemperatureUnit => 'Temperature unit';
+  String get settingsTemperatureUnit => '온도 단위';
 
   @override
-  String get settingsCelsius => 'Celsius (°C)';
+  String get settingsCelsius => '섭씨(°C)';
 
   @override
-  String get settingsFahrenheit => 'Fahrenheit (°F)';
+  String get settingsFahrenheit => '화씨(°F)';
 
   @override
-  String get moodGreat => 'Great';
+  String get moodGreat => '좋아요';
 
   @override
-  String get moodGood => 'Good';
+  String get moodGood => '좋음';
 
   @override
-  String get moodOkay => 'Okay';
+  String get moodOkay => '알았어';
 
   @override
-  String get moodBad => 'Bad';
+  String get moodBad => '나쁨';
 
   @override
-  String get moodAwful => 'Awful';
+  String get moodAwful => '끔찍하다';
 
   @override
-  String get locationSearchHint => 'Search for a place';
+  String get locationSearchHint => '장소 검색';
 
   @override
-  String get locationSearchEmpty => 'No places found';
+  String get locationSearchEmpty => '장소를 찾을 수 없습니다.';
 
   @override
-  String get settingsWallpaper => 'Wallpaper';
+  String get settingsWallpaper => '바탕화면';
 
   @override
-  String get wallpaperNone => 'None';
+  String get wallpaperNone => '없음';
 
   @override
-  String get wallpaperDots => 'Dots';
+  String get wallpaperDots => '도트';
 
   @override
-  String get wallpaperGrid => 'Grid';
+  String get wallpaperGrid => '그리드';
 
   @override
-  String get wallpaperLines => 'Lines';
+  String get wallpaperLines => '라인';
 
   @override
-  String get wallpaperPhoto => 'Photo…';
+  String get wallpaperPhoto => '사진…';
 
   @override
-  String get settingsFontFamily => 'Font';
+  String get settingsFontFamily => '글꼴';
 
   @override
-  String get fontSystem => 'System';
+  String get fontSystem => '시스템';
 
   @override
-  String get fontSerif => 'Serif';
+  String get fontSerif => '세리프';
 
   @override
-  String get fontMono => 'Monospace';
+  String get fontMono => '고정 폭';
 
   @override
-  String get settingsFontSize => 'Font size';
+  String get settingsFontSize => '글꼴 크기';
 
   @override
-  String get fontSizeSmall => 'Small';
+  String get fontSizeSmall => '작은';
 
   @override
-  String get fontSizeMedium => 'Medium';
+  String get fontSizeMedium => '중간';
 
   @override
-  String get fontSizeLarge => 'Large';
+  String get fontSizeLarge => '대형';
 
   @override
-  String get fontSizeExtraLarge => 'Extra large';
+  String get fontSizeExtraLarge => '특대형';
 
   @override
-  String get settingsLineSpacing => 'Line spacing';
+  String get settingsLineSpacing => '줄 간격';
 
   @override
-  String get lineSpacingCompact => 'Compact';
+  String get lineSpacingCompact => '콤팩트';
 
   @override
-  String get lineSpacingNormal => 'Normal';
+  String get lineSpacingNormal => '보통';
 
   @override
-  String get lineSpacingRelaxed => 'Relaxed';
+  String get lineSpacingRelaxed => '편안한';
 
   @override
-  String get moodAssociationsTitle => 'What makes me feel…';
+  String get moodAssociationsTitle => '무엇이 나를 느끼게 하는가…';
 
   @override
   String moodAssociationsCount(int matching, int total) {
-    return '$matching of $total entries';
+    return '$total 항목 중 $matching';
   }
 
   @override
-  String get videoRecord => 'Record a video';
+  String get videoRecord => '비디오 녹화';
 
   @override
-  String get videoChoose => 'Choose a video';
+  String get videoChoose => '동영상을 선택하세요';
 
   @override
-  String get audioRecordTitle => 'Record a voice note';
+  String get audioRecordTitle => '음성 메모 녹음';
 
   @override
-  String get audioChoose => 'Choose an audio file';
+  String get audioChoose => '오디오 파일을 선택하세요';
 
   @override
-  String get audioStart => 'Record';
+  String get audioStart => '기록';
 
   @override
-  String get audioStop => 'Stop and save';
+  String get audioStop => '중지하고 저장하세요.';
 
   @override
-  String get audioPermissionDenied =>
-      'Microphone access is off. Allow it in the system settings.';
+  String get audioPermissionDenied => '마이크 액세스가 꺼져 있습니다. 시스템 설정에서 허용하세요.';
 
   @override
-  String get mediaTooLarge => 'This video is too large to attach.';
+  String get mediaTooLarge => '동영상이 너무 커서 첨부할 수 없습니다.';
 
   @override
-  String get mediaUnavailable =>
-      'This attachment is not available on this device.';
+  String get mediaUnavailable => '이 첨부파일은 이 기기에서 사용할 수 없습니다.';
 
   @override
-  String get widgetDone => 'Today\'s entry is written';
+  String get widgetDone => '오늘의 글이 작성되었습니다';
 
   @override
-  String get widgetPending => 'How was your day?';
+  String get widgetPending => '오늘 하루는 어땠나요?';
 
   @override
-  String get widgetWrite => 'Write';
+  String get widgetWrite => '쓰기';
 
   @override
-  String get insertChecklist => 'Checklist';
+  String get insertChecklist => '체크리스트';
 
   @override
-  String get insertNumberedList => 'Numbered list';
+  String get insertNumberedList => '번호가 매겨진 목록';
 
   @override
-  String get insertTable => 'Table';
+  String get insertTable => '테이블';
 
   @override
-  String get insertDivider => 'Divider';
+  String get insertDivider => '분배기';
 
   @override
-  String get insertCodeBlock => 'Code block';
+  String get insertCodeBlock => '코드 블록';
 
   @override
-  String get journalSortTitle => 'Sort entries';
+  String get journalSortTitle => '항목 정렬';
 
   @override
-  String get journalSortUpdated => 'Last updated';
+  String get journalSortUpdated => '마지막 업데이트';
 
   @override
-  String get settingsTimeFormat => 'Time format';
+  String get settingsTimeFormat => '시간 형식';
 
   @override
-  String get settingsDayStart => 'New entries count for the day before until';
+  String get settingsDayStart => '새로운 항목은 전날부터 다음 날까지로 계산됩니다.';
 
   @override
-  String get settingsDayAskUntil => 'Then ask which day until';
+  String get settingsDayAskUntil => '그럼 언제까지인지 물어보세요';
 
   @override
-  String get settingsDayStartMidnight => 'Off';
+  String get settingsDayStartMidnight => '끄기';
 
   @override
   String settingsDayStartAt(int hour) {
@@ -1388,268 +1380,265 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get settingsDayStartHint =>
-      'Every entry keeps the day it belongs to next to the time it was written, and you can change that day in the editor at any time. These hours only pick the day for new entries, so changing them moves no existing entry.';
+      '모든 항목은 작성된 시간 옆에 해당 날짜를 유지하며 언제든지 편집기에서 해당 날짜를 변경할 수 있습니다. 이 시간은 새 항목의 날짜만 선택하므로 이를 변경하면 기존 항목이 이동되지 않습니다.';
 
   @override
-  String get lateNightBadge =>
-      'Written late at night, counted for the day before';
+  String get lateNightBadge => '밤늦게 작성하여 전날로 계산';
 
   @override
   String editorDayAsk(String time) {
-    return 'Written at $time. Which day is it for?';
+    return '$time에 작성되었습니다. 어느 날인가요?';
   }
 
   @override
   String editorDayYesterday(String date) {
-    return '$date (yesterday)';
+    return '$date (어제)';
   }
 
   @override
   String editorDayToday(String date) {
-    return '$date (today)';
+    return '$date (오늘)';
   }
 
   @override
   String editorWrittenAt(String when) {
-    return 'Written $when';
+    return '$when로 작성됨';
   }
 
   @override
-  String get timeFormat12 => '12-hour';
+  String get timeFormat12 => '12시간';
 
   @override
-  String get timeFormat24 => '24-hour';
+  String get timeFormat24 => '24시간';
 
   @override
-  String get settingsReminderDays => 'Remind me on';
+  String get settingsReminderDays => '나에게 알림';
 
   @override
-  String get locationRecent => 'Recent places';
+  String get locationRecent => '최근 장소';
 
   @override
-  String get shareImage => 'Share image';
+  String get shareImage => '이미지 공유';
 
   @override
-  String get shareSaveImage => 'Save image';
+  String get shareSaveImage => '이미지 저장';
 
   @override
-  String get shareSaved => 'Image saved';
+  String get shareSaved => '이미지가 저장되었습니다';
 
   @override
-  String get deletedTitle => 'Recently deleted';
+  String get deletedTitle => '최근 삭제됨';
 
   @override
-  String get deletedNone => 'Nothing deleted recently';
+  String get deletedNone => '최근에 삭제된 항목이 없습니다.';
 
   @override
   String deletedHint(int days) {
-    return 'Deleted entries stay here for $days days, then are erased.';
+    return '삭제된 항목은 $days일 동안 여기에 남아 있다가 지워집니다.';
   }
 
   @override
   String deletedDaysLeft(int days) {
-    return '$days days left';
+    return '$days일 남음';
   }
 
   @override
-  String get deletedRestore => 'Restore';
+  String get deletedRestore => '복원';
 
   @override
-  String get deletedDeleteForever => 'Delete forever';
+  String get deletedDeleteForever => '완전삭제';
 
   @override
   String get deletedDeleteForeverDescription =>
-      'The entry and its attachments are erased. This cannot be undone.';
+      '항목과 해당 첨부 파일이 지워집니다. 이 작업은 취소할 수 없습니다.';
 
   @override
-  String get deletedEmpty => 'Empty';
+  String get deletedEmpty => '비어 있음';
 
   @override
   String get deletedEmptyDescription =>
-      'Erase every entry in Recently deleted? This cannot be undone.';
+      '최근 삭제됨의 모든 항목을 삭제하시겠습니까? 이 작업은 취소할 수 없습니다.';
 
   @override
   String get formatJson => 'JSON';
 
   @override
-  String get randomTitle => 'Random walk';
+  String get randomTitle => '랜덤 워크';
 
   @override
-  String get randomSubtitle => 'Open a past entry';
+  String get randomSubtitle => '과거 항목 열기';
 
   @override
-  String get randomNext => 'Another';
+  String get randomNext => '또 다른';
 
   @override
-  String get randomAll => 'All';
+  String get randomAll => '모두';
 
   @override
-  String get randomWithPhotos => 'With photos';
+  String get randomWithPhotos => '사진 포함';
 
   @override
-  String get randomGoodDays => 'Good days';
+  String get randomGoodDays => '좋은 날들';
 
   @override
-  String get randomEmpty => 'No entries to pick from';
+  String get randomEmpty => '선택할 항목이 없습니다.';
 
   @override
-  String get reviewWeekTitle => 'This week';
+  String get reviewWeekTitle => '이번주';
 
   @override
-  String get reviewWeekSubtitle => 'Your week so far';
+  String get reviewWeekSubtitle => '지금까지의 한 주';
 
   @override
-  String get reviewYearTitle => 'This year';
+  String get reviewYearTitle => '올해';
 
   @override
-  String get reviewEmpty => 'Nothing written yet';
+  String get reviewEmpty => '아직 작성된 내용이 없습니다.';
 
   @override
-  String get reviewEntries => 'Entries';
+  String get reviewEntries => '항목';
 
   @override
-  String get reviewDaysWritten => 'Days written';
+  String get reviewDaysWritten => '쓴 일수';
 
   @override
-  String get reviewWords => 'Words';
+  String get reviewWords => '단어';
 
   @override
-  String get reviewPhotos => 'Photos';
+  String get reviewPhotos => '사진';
 
   @override
-  String get reviewLongestRun => 'Longest run of days';
+  String get reviewLongestRun => '가장 긴 날';
 
   @override
-  String get reviewAverageMood => 'Average mood';
+  String get reviewAverageMood => '평균 기분';
 
   @override
-  String get reviewFavorites => 'Most often';
+  String get reviewFavorites => '가장 자주';
 
   @override
-  String get reviewByMonth => 'By month';
+  String get reviewByMonth => '월별';
 
   @override
-  String get reviewHighlight => 'Highlight';
+  String get reviewHighlight => '하이라이트';
 
   @override
-  String get yearInPixels => 'Year in pixels';
+  String get yearInPixels => '연도(픽셀)';
 
   @override
-  String get capsuleSeal => 'Seal as a time capsule';
+  String get capsuleSeal => '타임캡슐로서의 봉인';
 
   @override
-  String get capsuleTitle => 'Time capsule';
+  String get capsuleTitle => '타임캡슐';
 
   @override
   String capsuleOpensOn(Object date) {
-    return 'Opens on $date';
+    return '$date에서 열립니다';
   }
 
   @override
   String capsuleWrittenOn(Object date) {
-    return 'Written on $date';
+    return '$date에 작성됨';
   }
 
   @override
-  String get capsuleOpenEarly => 'Open early';
+  String get capsuleOpenEarly => '조기 오픈';
 
   @override
-  String get capsuleOpenEarlyDescription =>
-      'The capsule opens now and stays open.';
+  String get capsuleOpenEarlyDescription => '이제 캡슐이 열리고 열려 있습니다.';
 
   @override
-  String get capsuleOpened => 'Time capsule opened';
+  String get capsuleOpened => '타임캡슐이 열렸습니다';
 
   @override
-  String get templateMorningName => 'Morning pages';
+  String get templateMorningName => '모닝 페이지';
 
   @override
-  String get templateMorningDescription => 'Set up the day in three minutes';
+  String get templateMorningDescription => '3분 안에 하루를 설정하세요';
 
   @override
   String get templateMorningText =>
-      '## Three things I want to do well today\n1. \n2. \n3. \n\n## Something I look forward to\n\n## A note to myself\n';
+      '##오늘 잘하고 싶은 세 가지\n1. \n2. \n3. \n\n## 뭔가 기대되네요\n\n## 나 자신에게 보내는 메모\n';
 
   @override
-  String get templateEveningName => 'Evening review';
+  String get templateEveningName => '저녁 리뷰';
 
   @override
-  String get templateEveningDescription => 'Close the day with what went well';
+  String get templateEveningDescription => '잘 된 일로 하루를 마무리하다';
 
   @override
   String get templateEveningText =>
-      '## Three good things today\n1. \n2. \n3. \n\n## What I learned\n\n## What could go better tomorrow\n';
+      '## 오늘 좋은 점 세 가지\n1. \n2. \n3. \n\n## 배운 것\n\n## 내일 더 좋아질 수 있는 일\n';
 
   @override
-  String get routineMorning => 'Good morning';
+  String get routineMorning => '좋은 아침';
 
   @override
-  String get routineEvening => 'Evening review';
+  String get routineEvening => '저녁 리뷰';
 
   @override
-  String get settingsRoutinePrompts => 'Morning and evening prompts';
+  String get settingsRoutinePrompts => '아침저녁 안내';
 
   @override
-  String get settingsRoutinePromptsHint =>
-      'Suggest the morning or evening template in Stories';
+  String get settingsRoutinePromptsHint => '스토리에서 아침이나 저녁 템플릿을 제안하세요.';
 
   @override
-  String get checkInTitle => 'Quick check-in';
+  String get checkInTitle => '빠른 체크인';
 
   @override
-  String get checkInSubtitle => 'Mood in two taps';
+  String get checkInSubtitle => '두 번의 탭으로 기분 전환';
 
   @override
-  String get checkInMood => 'How do you feel?';
+  String get checkInMood => '기분이 어때요?';
 
   @override
-  String get checkInActivity => 'What are you doing?';
+  String get checkInActivity => '뭐하는 거야?';
 
   @override
-  String get checkInNote => 'A line about it (optional)';
+  String get checkInNote => '그것에 관한 한 줄 (선택 사항)';
 
   @override
-  String get checkInSave => 'Save';
+  String get checkInSave => '저장';
 
   @override
   String editorWordCount(int words, int characters) {
-    return '$words words · $characters characters';
+    return '$words 단어 · $characters 문자';
   }
 
   @override
-  String get coachProgramEverydayTagline => 'Notice the small things in a day.';
+  String get coachProgramEverydayTagline => '하루의 작은 일에 주목하세요.';
 
   @override
-  String get coachProgramReflectTagline => 'Slow down and listen to yourself.';
+  String get coachProgramReflectTagline => '천천히 자신의 말을 들어보세요.';
 
   @override
-  String get coachDuration => 'Duration';
+  String get coachDuration => '기간';
 
   @override
-  String get coachInterval => 'Interval';
+  String get coachInterval => '간격';
 
   @override
-  String get coachDifficulty => 'Difficulty';
+  String get coachDifficulty => '난이도';
 
   @override
-  String get coachIntervalDaily => 'Daily';
+  String get coachIntervalDaily => '매일';
 
   @override
-  String get coachIntervalWeekly => 'Weekly';
+  String get coachIntervalWeekly => '주간';
 
   @override
-  String get coachDifficultyBeginner => 'Beginner';
+  String get coachDifficultyBeginner => '초보자';
 
   @override
-  String get coachDifficultyIntermediate => 'Intermediate';
+  String get coachDifficultyIntermediate => '중급';
 
   @override
   String coachDurationDays(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count days',
-      one: '1 day',
+      other: '$count일',
+      one: '1일',
     );
     return '$_temp0';
   }
@@ -1659,1055 +1648,1026 @@ class AppLocalizationsKo extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count weeks',
-      one: '1 week',
+      other: '$count주',
+      one: '1주',
     );
     return '$_temp0';
   }
 
   @override
   String coachDayN(int n) {
-    return 'Day $n';
+    return '일 $n';
   }
 
   @override
   String coachWeekN(int n) {
-    return 'Week $n';
+    return '주 $n';
   }
 
   @override
-  String get coachEnroll => 'Enroll';
+  String get coachEnroll => '등록';
 
   @override
-  String get coachEndProgram => 'End program';
+  String get coachEndProgram => '프로그램 종료';
 
   @override
-  String get coachAuthor => 'Author';
+  String get coachAuthor => '작성자';
 
   @override
-  String get coachAuthorBio => 'Prompts written for this app.';
+  String get coachAuthorBio => '이 앱에 대해 작성된 프롬프트입니다.';
 
   @override
-  String get coachEnrolledTip =>
-      'All set! Your questions will show up in Stories.';
+  String get coachEnrolledTip => '모두 설정되었습니다! 귀하의 질문이 스토리에 표시됩니다.';
 
   @override
-  String get coachGoToStories => 'Go to Stories';
+  String get coachGoToStories => '스토리로 이동';
 
   @override
-  String get coachAnswerHint => 'Write your answer…';
+  String get coachAnswerHint => '답을 쓰세요…';
 
   @override
-  String get storyWrapUp => 'That\'s all for today.';
+  String get storyWrapUp => '오늘은 그게 다입니다.';
 
   @override
-  String get storyTapToClose => 'Tap to close';
+  String get storyTapToClose => '탭하여 닫으세요.';
 
   @override
-  String get coachAnswerDone => 'Done';
+  String get coachAnswerDone => '완료';
 
   @override
-  String get coachAnswered => 'Answered, tap to open';
+  String get coachAnswered => '답변됨. 탭하여 열 수 있음';
 
   @override
-  String get coachAnsweredEarlier => 'Answered';
+  String get coachAnsweredEarlier => '답변됨';
 
   @override
-  String get locationLocating => 'Locating…';
+  String get locationLocating => '찾는 중…';
 
   @override
-  String get locationPickPlace => 'Pick a place';
+  String get locationPickPlace => '장소를 선택하세요';
 
   @override
-  String get locationPlacesHint => 'Address or name of the place';
+  String get locationPlacesHint => '장소의 주소나 이름';
 
   @override
-  String get locationCustom => 'Custom place';
+  String get locationCustom => '맞춤 장소';
 
   @override
-  String get locationCurrent => 'Current location';
+  String get locationCurrent => '현재 위치';
 
   @override
-  String get locationSaved => 'Saved places';
+  String get locationSaved => '저장된 장소';
 
   @override
-  String get locationSearchResults => 'Search results';
+  String get locationSearchResults => '검색결과';
 
   @override
-  String get locationNearby => 'Nearby places';
+  String get locationNearby => '주변 장소';
 
   @override
-  String get locationRename => 'Rename';
+  String get locationRename => '이름 바꾸기';
 
   @override
-  String get locationSavePlace => 'Save place';
+  String get locationSavePlace => '장소 저장';
 
   @override
-  String get locationUnsavePlace => 'Remove from saved places';
+  String get locationUnsavePlace => '저장된 장소에서 삭제';
 
   @override
-  String get shareAs => 'Share as…';
+  String get shareAs => '다음 이름으로 공유…';
 
   @override
-  String get shareAsImage => 'Image';
+  String get shareAsImage => '이미지';
 
   @override
-  String get shareAsZip => 'ZIP with the original media';
+  String get shareAsZip => '원본 미디어가 포함된 ZIP';
 
   @override
-  String get shareAsPlainText => 'Plain text';
+  String get shareAsPlainText => '일반 텍스트';
 
   @override
   String get shareAsHtml => 'HTML';
 
   @override
-  String get onboardWelcomeTitle => 'Welcome to AID Diary';
+  String get onboardWelcomeTitle => 'AID Diary에 오신 것을 환영합니다';
 
   @override
-  String get onboardWelcomeText =>
-      'Start here, or connect this device to one you already use.';
+  String get onboardWelcomeText => '여기에서 시작하거나 이미 사용 중인 장치에 이 장치를 연결하세요.';
 
   @override
-  String get onboardStart => 'Start writing';
+  String get onboardStart => '글쓰기 시작';
 
   @override
-  String get helpFaq => 'Frequently asked questions';
+  String get helpFaq => '자주 묻는 질문';
 
   @override
-  String get helpFaq1Q => 'Where is my diary stored?';
+  String get helpFaq1Q => '내 일기는 어디에 저장되나요?';
 
   @override
   String get helpFaq1A =>
-      'Your diary is stored on this device. It reaches other devices or storage only when you enable sync, share or export it. Sync is end-to-end encrypted.';
+      '귀하의 일기는 이 기기에 저장됩니다. 동기화, 공유 또는 내보내기를 활성화한 경우에만 다른 장치나 저장소에 도달합니다. 동기화는 종단 간 암호화됩니다.';
 
   @override
-  String get helpFaq2Q => 'How do I keep a copy or move to a new device?';
+  String get helpFaq2Q => '사본을 보관하거나 새 장치로 이동하려면 어떻게 해야 합니까?';
 
   @override
   String get helpFaq2A =>
-      'Connect to an existing device in Settings → Data & storage → Sync and confirm authorization on the device that has your diary. Both devices remain usable. You can also create a backup and restore it on another device.';
+      '설정 → 데이터 및 저장소 → 동기화에서 기존 기기에 연결하고 일기가 있는 기기에서 인증을 확인하세요. 두 장치 모두 계속 사용할 수 있습니다. 백업을 생성하고 다른 장치에 복원할 수도 있습니다.';
 
   @override
-  String get helpFaq3Q => 'Can I bring in entries from other diary apps?';
+  String get helpFaq3Q => '다른 일기 앱에서 항목을 가져올 수 있나요?';
 
   @override
   String get helpFaq3A =>
-      'Yes: in Settings → Data & storage, import exports from Daylio, Diarium, Diaro, DayBook, My Brain, OneShot and Pixels, or a JSON export.';
+      '예: 설정 → 데이터 및 저장소에서 Daylio, Diarium, Diaro, DayBook, My Brain, OneShot 및 Pixels에서 내보내기를 가져오거나 JSON 내보내기를 가져옵니다.';
 
   @override
-  String get helpFaq4Q => 'How do coach programs work?';
+  String get helpFaq4Q => '코치 프로그램은 어떻게 진행되나요?';
 
   @override
   String get helpFaq4A =>
-      'Enroll in a program on the Coach page. Each day or week a new question waits in Stories; your answer is saved as an entry.';
+      '코치 페이지에서 프로그램에 등록하세요. 매일 또는 매주 새로운 질문이 스토리에서 기다립니다. 귀하의 답변은 항목으로 저장됩니다.';
 
   @override
-  String get helpFaq5Q => 'What if I forget my passcode?';
+  String get helpFaq5Q => '비밀번호를 잊어버리면 어떻게 되나요?';
 
   @override
-  String get helpFaq5A =>
-      'The passcode cannot be recovered, so keep a backup of your diary.';
+  String get helpFaq5A => '비밀번호는 복구가 불가능하므로 일기를 백업해두세요.';
 
   @override
-  String get helpPrivacy => 'Privacy';
+  String get helpPrivacy => '개인 정보 보호';
 
   @override
   String get helpPrivacyText =>
-      'Diary content and media stay on this device unless you enable encrypted sync or share/export them. Maps, place lookup and weather use the configured services and send the location or search query needed for that request, not diary text.';
+      '일기 콘텐츠와 미디어는 암호화된 동기화를 활성화하거나 공유/내보내지 않는 한 이 기기에 유지됩니다. 지도, 장소 조회 및 날씨는 구성된 서비스를 사용하고 일기 텍스트가 아닌 해당 요청에 필요한 위치 또는 검색어를 보냅니다.';
 
   @override
-  String get photoMetaTitle => 'Use the photo\'s details?';
+  String get photoMetaTitle => '사진의 세부정보를 사용하시겠습니까?';
 
   @override
   String photoMetaDateAndPlace(String date, String place) {
-    return 'Count this entry for $date and set its place to $place, as recorded in the photo?';
+    return '사진에 기록된 대로 이 항목을 $date로 계산하고 해당 위치를 $place로 설정하시겠습니까?';
   }
 
   @override
   String photoMetaDate(String date) {
-    return 'Count this entry for $date, when the photo was taken?';
+    return '사진이 촬영되었을 때 $date에 대한 이 항목을 계산하시겠습니까?';
   }
 
   @override
   String photoMetaPlace(String place) {
-    return 'Set this entry\'s place to $place, where the photo was taken?';
+    return '이 항목의 위치를 사진을 찍은 $place로 설정하시겠습니까?';
   }
 
   @override
-  String get photoMetaApply => 'Use them';
+  String get photoMetaApply => '사용하세요';
 
   @override
-  String get quickWriteTitle => 'Quick write';
+  String get quickWriteTitle => '빠른 쓰기';
 
   @override
-  String get quickWriteText => 'Tap to start a new entry.';
+  String get quickWriteText => '새 항목을 시작하려면 탭하세요.';
 
   @override
-  String get settingsQuickWriteTitle => 'Quick write in notifications';
+  String get settingsQuickWriteTitle => '알림에 빠르게 쓰기';
 
   @override
-  String get settingsQuickWriteDescription =>
-      'Keep a notification that opens a new entry.';
+  String get settingsQuickWriteDescription => '새 항목을 여는 알림을 유지합니다.';
 
   @override
-  String get settingsNudgesTitle => 'Nudge me after a quiet stretch';
+  String get settingsNudgesTitle => '조용히 스트레칭을 한 후 날 살짝 밀어주세요';
 
   @override
   String settingsNudgesDescription(int days) {
-    return 'A gentle reminder when you haven\'t written for $days days.';
+    return '$days일 동안 글을 쓰지 않았을 때 알려주는 부드러운 알림입니다.';
   }
 
   @override
-  String get nudgeTitle => 'It\'s been a while';
+  String get nudgeTitle => '오랜만이야';
 
   @override
-  String get nudgeMonday => 'A new week: what are you looking forward to?';
+  String get nudgeMonday => '새로운 한 주: 무엇을 기대하시나요?';
 
   @override
-  String get nudgeTuesday => 'Two lines are enough. How are you today?';
+  String get nudgeTuesday => '두 줄이면 충분합니다. 오늘 기분이 어떠세요?';
 
   @override
-  String get nudgeWednesday =>
-      'Halfway through the week. What stood out so far?';
+  String get nudgeWednesday => '일주일의 절반. 지금까지 눈에 띄는 것은 무엇입니까?';
 
   @override
-  String get nudgeThursday => 'Anything small worth keeping from today?';
+  String get nudgeThursday => '오늘부터 간직할 가치가 있는 작은 일이 있나요?';
 
   @override
-  String get nudgeFriday => 'The week is wrapping up. Note one good moment.';
+  String get nudgeFriday => '한 주가 마무리되고 있습니다. 좋은 순간을 기록해 보세요.';
 
   @override
-  String get nudgeSaturday => 'A slow Saturday is a good day to write.';
+  String get nudgeSaturday => '느린 토요일은 글을 쓰기 좋은 날이다.';
 
   @override
-  String get nudgeSunday => 'Look back on the week before it ends.';
+  String get nudgeSunday => '끝나기 전 일주일을 되돌아보세요.';
 
   @override
-  String get photoWidgetEmpty => 'Photos you add to entries show up here.';
+  String get photoWidgetEmpty => '항목에 추가한 사진이 여기에 표시됩니다.';
 
   @override
-  String get channelReminders => 'Reminders';
+  String get channelReminders => '알림';
 
   @override
-  String get channelOnThisDay => 'On this day';
+  String get channelOnThisDay => '이날';
 
   @override
-  String get channelCoach => 'Coach prompts';
+  String get channelCoach => '코치 프롬프트';
 
   @override
-  String get channelNudges => 'Nudges after quiet days';
+  String get channelNudges => '조용한 날 이후에 넛지';
 
   @override
-  String get channelQuickWrite => 'Quick write';
+  String get channelQuickWrite => '빠른 쓰기';
 
   @override
-  String get channelBackup => 'Backups';
+  String get channelBackup => '백업';
 
   @override
-  String get formatJsonExport => 'JSON (AID Diary export)';
+  String get formatJsonExport => 'JSON (AID Diary 내보내기)';
 
   @override
   String get aboutModifiedNotice =>
-      'A modified version of Daily You by Demizo and contributors. It is not the official Daily You app.';
+      'Demizo와 기여자들이 만든 Daily You의 수정 버전입니다. 공식 Daily You 앱이 아닙니다.';
 
   @override
-  String get toolbarPhotos => 'Add photos';
+  String get toolbarPhotos => '사진 추가';
 
   @override
-  String get toolbarMedia => 'Photos and videos';
+  String get toolbarMedia => '사진 및 비디오';
 
   @override
-  String get mediaFromGallery => 'Choose from gallery';
+  String get mediaFromGallery => '갤러리에서 선택';
 
   @override
-  String get mediaFromFiles => 'Choose from files';
+  String get mediaFromFiles => '파일에서 선택';
 
   @override
-  String get editorLeaveTitle => 'Save this entry?';
+  String get editorLeaveTitle => '이 항목을 저장하시겠습니까?';
 
   @override
-  String get editorLeaveDiscard => 'Don\'t save';
+  String get editorLeaveDiscard => '저장하지 않음';
 
   @override
-  String get editorTitleHint => 'Title';
+  String get editorTitleHint => '제목';
 
   @override
-  String get editorLocating => 'Locating…';
+  String get editorLocating => '찾는 중…';
 
   @override
-  String get toolbarVideo => 'Video';
+  String get toolbarVideo => '비디오';
 
   @override
-  String get toolbarAudio => 'Voice note';
+  String get toolbarAudio => '음성 메모';
 
   @override
-  String get toolbarTags => 'Tags';
+  String get toolbarTags => '태그';
 
   @override
-  String get toolbarBulletList => 'Bulleted list';
+  String get toolbarBulletList => '글머리 기호 목록';
 
   @override
-  String get toolbarHeading => 'Heading';
+  String get toolbarHeading => '제목';
 
   @override
-  String get toolbarBold => 'Bold';
+  String get toolbarBold => '굵게';
 
   @override
-  String get toolbarItalic => 'Italic';
+  String get toolbarItalic => '이탤릭체';
 
   @override
-  String get toolbarHighlight => 'Highlight';
+  String get toolbarHighlight => '하이라이트';
 
   @override
-  String get toolbarStrikethrough => 'Strikethrough';
+  String get toolbarStrikethrough => '취소선';
 
   @override
-  String get toolbarQuote => 'Quote';
+  String get toolbarQuote => '견적';
 
   @override
-  String get toolbarLink => 'Link';
+  String get toolbarLink => '링크';
 
   @override
-  String get toolbarInsert => 'Insert';
+  String get toolbarInsert => '삽입';
 
   @override
-  String get toolbarUndo => 'Undo';
+  String get toolbarUndo => '실행 취소';
 
   @override
-  String get toolbarRedo => 'Redo';
+  String get toolbarRedo => '다시 실행';
 
   @override
-  String get toolbarInsertDate => 'Insert the date';
+  String get toolbarInsertDate => '날짜를 삽입하세요';
 
   @override
-  String get toolbarInsertTime => 'Insert the time';
+  String get toolbarInsertTime => '시간을 삽입하세요';
 
   @override
-  String get settingsSyncTitle => 'Cloud Sync';
+  String get settingsSyncTitle => '클라우드 동기화';
 
   @override
   String get syncOffDescription =>
-      'Keep this diary the same on all your devices through Google Drive or a WebDAV server, such as Nextcloud, Synology or Jianguoyun.';
+      'Google Drive 또는 Nextcloud, Synology 또는 Jianguoyun과 같은 WebDAV 서버를 통해 모든 장치에서 이 일기장을 동일하게 유지하세요.';
 
   @override
-  String get syncUseGoogleDrive => 'Sync with Google Drive';
+  String get syncUseGoogleDrive => 'Google Drive와 동기화';
 
   @override
-  String get syncOrWebDav => 'Or a WebDAV server';
+  String get syncOrWebDav => '또는 WebDAV 서버';
 
   @override
   String get syncGoogleDrive => 'Google Drive';
 
   @override
-  String get syncGoogleSignedIn => 'Signed in. You can go back to AID Diary.';
+  String get syncGoogleSignedIn => '로그인되었습니다. AID Diary로 돌아갈 수 있습니다.';
 
   @override
-  String get syncGoogleSignInAgain => 'Google needs you to sign in again.';
+  String get syncGoogleSignInAgain => 'Google에 다시 로그인해야 합니다.';
 
   @override
-  String get syncSignInAgain => 'Sign in again';
+  String get syncSignInAgain => '다시 로그인';
 
   @override
-  String get settingsCommandLineTitle => 'Command line';
+  String get settingsCommandLineTitle => '명령줄';
 
   @override
-  String get commandLineToggle => 'Command line interface';
+  String get commandLineToggle => '명령줄 인터페이스';
 
   @override
   String get commandLineToggleHint =>
-      'Lets the aid command and other programs on this device use the app\'s commands.';
+      '이 장치의 지원 명령 및 기타 프로그램이 앱 명령을 사용할 수 있도록 합니다.';
 
   @override
-  String get commandLineAlwaysOn => 'Always on in development builds.';
+  String get commandLineAlwaysOn => '개발 빌드에서는 항상 켜져 있습니다.';
 
   @override
   String commandLineListening(int port) {
-    return 'Listening on port $port';
+    return '포트 $port에서 수신 중';
   }
 
   @override
-  String get commandPaletteTitle => 'All commands';
+  String get commandPaletteTitle => '모든 명령';
 
   @override
-  String get commandPaletteSearch => 'Search commands';
+  String get commandPaletteSearch => '검색 명령';
 
   @override
-  String get commandPaletteRun => 'Run';
+  String get commandPaletteRun => '실행';
 
   @override
-  String get commandPaletteConfirm => 'This cannot simply be undone. Run it?';
+  String get commandPaletteConfirm => '이 작업은 간단히 취소할 수 없습니다. 실행하시겠습니까?';
 
   @override
   String syncReceiving(int done, int total) {
-    return 'Receiving $done of $total…';
+    return '$total의 $done를 수신 중…';
   }
 
   @override
   String syncSending(int done, int total) {
-    return 'Sending $done of $total…';
+    return '$total 중 $done를 보내는 중…';
   }
 
   @override
   String get syncGoogleDriveNotAllowed =>
-      'Access to Google Drive was not allowed. Connect again and tick Google Drive on Google\'s page.';
+      'Google Drive에 대한 액세스가 허용되지 않았습니다. 다시 연결하고 Google 페이지에서 Google Drive를 선택하세요.';
 
   @override
-  String get syncEntryUnsynced =>
-      'Not synced: the last sync did not go through';
+  String get syncEntryUnsynced => '동기화되지 않음: 마지막 동기화가 진행되지 않았습니다.';
 
   @override
-  String get syncUseOfficial => 'Use the AID sync server';
+  String get syncUseOfficial => 'AID 동기화 서버 사용';
 
   @override
-  String get syncServer => 'Server address';
+  String get syncServer => '서버 주소';
 
   @override
-  String get syncUsername => 'Username';
+  String get syncUsername => '사용자 이름';
 
   @override
-  String get syncPassword => 'Password';
+  String get syncPassword => '비밀번호';
 
   @override
-  String get syncConnect => 'Connect';
+  String get syncConnect => '연결하다';
 
   @override
-  String get syncConnecting => 'Connecting…';
+  String get syncConnecting => '연결 중…';
 
   @override
-  String get syncSignInFailed =>
-      'Could not sign in. Check the address, the username and the password.';
+  String get syncSignInFailed => '로그인할 수 없습니다. 주소, 사용자 이름, 비밀번호를 확인하세요.';
 
   @override
   String syncConnectFailed(String error) {
-    return 'Could not connect: $error';
+    return '연결할 수 없습니다: $error';
   }
 
   @override
-  String get syncNewSpaceTitle => 'Start syncing';
+  String get syncNewSpaceTitle => '동기화 시작';
 
   @override
   String get syncNewSpaceDescription =>
-      'There is no synced diary here yet. This diary will be uploaded, end-to-end encrypted with a key that stays on your devices.';
+      '여기에는 아직 동기화된 일기가 없습니다. 이 일기는 귀하의 기기에 보관된 키로 엔드투엔드 암호화되어 업로드됩니다.';
 
   @override
-  String get syncJoinTitle => 'Join the synced diary';
+  String get syncJoinTitle => '동기화된 일기에 참여하세요';
 
   @override
-  String get syncWrongKey =>
-      'This recovery code does not open the synced diary.';
+  String get syncWrongKey => '이 복구 코드는 동기화된 일기장을 열지 않습니다.';
 
   @override
   String syncLastSynced(String time) {
-    return 'Last synced $time';
+    return '마지막 동기화 $time';
   }
 
   @override
-  String get syncNever => 'Not synced yet';
+  String get syncNever => '아직 동기화되지 않음';
 
   @override
-  String get syncSyncing => 'Syncing…';
+  String get syncSyncing => '동기화 중…';
 
   @override
   String syncFailed(String error) {
-    return 'The last sync failed: $error';
+    return '마지막 동기화 실패: $error';
   }
 
   @override
   String get syncLocked =>
-      'The synced diary now belongs to other devices, or was started over. Pair with one of them or use the recovery code to keep syncing.';
+      '동기화된 일기는 이제 다른 장치에 속하거나 처음부터 다시 시작되었습니다. 그 중 하나와 페어링하거나 복구 코드를 사용하여 계속 동기화하세요.';
 
   @override
-  String get syncNow => 'Sync now';
+  String get syncNow => '지금 동기화';
 
   @override
-  String get syncUnlock => 'Unlock';
+  String get syncUnlock => '잠금 해제';
 
   @override
-  String get syncEncrypted => 'End-to-end encrypted';
+  String get syncEncrypted => '엔드 투 엔드 암호화';
 
   @override
-  String get syncDisconnect => 'Stop syncing';
+  String get syncDisconnect => '동기화 중지';
 
   @override
   String get syncDisconnectDescription =>
-      'This device stops syncing. The diary here and the synced copy stay as they are.';
+      '이 장치는 동기화를 중지합니다. 이곳의 일기장과 동기화된 사본은 그대로 유지됩니다.';
 
   @override
-  String get syncOwnRecoveryPassword => 'Use my own recovery password';
+  String get syncOwnRecoveryPassword => '내 복구 비밀번호 사용';
 
   @override
-  String get syncRecoveryPassword => 'Recovery password';
+  String get syncRecoveryPassword => '복구 비밀번호';
 
   @override
-  String get syncRecoveryPasswordRepeat => 'Repeat the recovery password';
+  String get syncRecoveryPasswordRepeat => '복구 비밀번호를 반복하세요';
 
   @override
   String syncRecoveryPasswordTooShort(int min) {
-    return 'Use at least $min characters';
+    return '최소한 $min 문자를 사용하세요';
   }
 
   @override
-  String get syncRecoveryPasswordMismatch => 'The passwords differ';
+  String get syncRecoveryPasswordMismatch => '비밀번호가 다릅니다';
 
   @override
-  String get syncRecoveryCode => 'Recovery code';
+  String get syncRecoveryCode => '복구 코드';
 
   @override
-  String get syncRecoveryCodeTitle => 'Save your recovery code';
+  String get syncRecoveryCodeTitle => '복구 코드 저장';
 
   @override
   String get syncRecoveryCodeDescription =>
-      'If every device of yours is lost, this code restores your synced diary. Keep it in a password manager or on paper. It is shown only this once.';
+      '귀하의 기기를 모두 분실한 경우 이 코드는 동기화된 일기를 복원합니다. 비밀번호 관리자나 종이에 보관하세요. 이번 한 번만 표시됩니다.';
 
   @override
-  String get syncRecoveryCodeCopied => 'Recovery code copied';
+  String get syncRecoveryCodeCopied => '복구 코드가 복사되었습니다.';
 
   @override
-  String get syncRecoveryCodeSaved => 'I have saved it';
+  String get syncRecoveryCodeSaved => '나는 그것을 저장했다';
 
   @override
   String get syncJoinNeedsKey =>
-      'This synced diary belongs to your other devices. Pair with one of them, or use the recovery code. The entries on this device will be added to it.';
+      '이 동기화된 일기는 다른 기기에 속합니다. 그 중 하나와 페어링하거나 복구 코드를 사용하세요. 이 장치의 항목이 장치에 추가됩니다.';
 
   @override
-  String get syncPairDevice => 'Pair with a device';
+  String get syncPairDevice => '장치와 페어링';
 
   @override
-  String get syncUseRecoveryCode => 'Use the recovery code';
+  String get syncUseRecoveryCode => '복구 코드 사용';
 
   @override
-  String get syncAddDevice => 'Add a device';
+  String get syncAddDevice => '장치 추가';
 
   @override
-  String get syncChangeRecoveryCode => 'Change the recovery code';
+  String get syncChangeRecoveryCode => '복구 코드 변경';
 
   @override
   String get syncChangeRecoveryDescription =>
-      'A new code replaces the current one, which stops working. Your data and other devices stay as they are.';
+      '새로운 코드가 현재 코드를 대체하며 작동이 중지됩니다. 귀하의 데이터와 기타 장치는 그대로 유지됩니다.';
 
   @override
-  String get syncNewRandomCode => 'New random code';
+  String get syncNewRandomCode => '새로운 무작위 코드';
 
   @override
-  String get syncRecoveryCodeChanged => 'Recovery code changed';
+  String get syncRecoveryCodeChanged => '복구 코드가 변경되었습니다.';
 
   @override
-  String get syncResetSpace => 'Start the synced diary over';
+  String get syncResetSpace => '동기화된 일기를 다시 시작하세요';
 
   @override
   String get syncResetSpaceDescription =>
-      'Only when no device and no recovery code opens it any more: the synced copy is replaced by the diary on this device, under this device\'s keys. Your other devices then pair again.';
+      '더 이상 장치나 복구 코드가 열리지 않는 경우에만: 동기화된 사본은 이 장치의 키 아래에 있는 이 장치의 일기로 대체됩니다. 그런 다음 다른 장치를 다시 페어링하세요.';
 
   @override
-  String get syncPairTitle => 'Pair devices';
+  String get syncPairTitle => '장치 페어링';
 
   @override
-  String get syncPairShow => 'Show a code';
+  String get syncPairShow => '코드 표시';
 
   @override
-  String get syncPairEnter => 'Enter a code';
+  String get syncPairEnter => '코드를 입력하세요';
 
   @override
   String get syncPairShowHint =>
-      'On your other device, open Pair devices, choose Enter a code, and type or scan this.';
+      '다른 장치에서 장치 페어링을 열고 코드 입력을 선택한 후 이를 입력하거나 스캔하세요.';
 
   @override
-  String get syncPairEnterHint =>
-      'Type the code your other device shows, or scan it.';
+  String get syncPairEnterHint => '다른 장치에 표시되는 코드를 입력하거나 스캔하세요.';
 
   @override
-  String get syncPairCode => 'Pairing code';
+  String get syncPairCode => '페어링 코드';
 
   @override
-  String get syncPairScan => 'Scan';
+  String get syncPairScan => '스캔';
 
   @override
-  String get syncPairStart => 'Pair';
+  String get syncPairStart => '쌍';
 
   @override
-  String get syncPairWaiting => 'Waiting for the other device…';
+  String get syncPairWaiting => '다른 기기를 기다리는 중…';
 
   @override
   String syncPairDone(String device) {
-    return 'Paired with $device';
+    return '$device와 페어링됨';
   }
 
   @override
-  String get syncPairWrongCode =>
-      'The code did not match. Show a new code and try again.';
+  String get syncPairWrongCode => '코드가 일치하지 않습니다. 새 코드를 표시하고 다시 시도하세요.';
 
   @override
-  String get syncPairNoOffer =>
-      'No device shows this code. It may have expired.';
+  String get syncPairNoOffer => '이 코드를 표시하는 기기가 없습니다. 만료되었을 수 있습니다.';
 
   @override
-  String get syncPairTimedOut => 'The other device did not answer in time.';
+  String get syncPairTimedOut => '다른 장치가 제 시간에 응답하지 않았습니다.';
 
   @override
-  String get syncPairNeither =>
-      'Neither device is set up with this synced diary yet.';
+  String get syncPairNeither => '아직 두 기기 모두 이 동기화된 일기로 설정되지 않았습니다.';
 
   @override
-  String get syncPairBoth => 'Both devices already open this synced diary.';
+  String get syncPairBoth => '두 기기 모두 이미 이 동기화된 일기를 열고 있습니다.';
 
   @override
   String syncPairFailed(String error) {
-    return 'Pairing failed: $error';
+    return '페어링 실패: $error';
   }
 
   @override
-  String get syncMediaPending =>
-      'Diary synced · some media is still transferring';
+  String get syncMediaPending => '일기가 동기화되었습니다. 일부 미디어가 아직 전송 중입니다.';
 
   @override
-  String get syncWaitingForDevices =>
-      'Diary synced · waiting for another device to transfer media';
+  String get syncWaitingForDevices => '일기가 동기화됨 · 다른 기기가 미디어를 전송하기를 기다리는 중';
 
   @override
   String get syncCacheNotice =>
-      'Cloud media is temporary. Keep the originals on your devices; syncing is not a backup.';
+      '클라우드 미디어는 일시적입니다. 원본을 장치에 보관하세요. 동기화는 백업이 아닙니다.';
 
   @override
-  String get paperTitle => 'Letter paper';
+  String get paperTitle => '편지지';
 
   @override
-  String get paperPlain => 'Plain';
+  String get paperPlain => '평야';
 
   @override
-  String get paperLined => 'Lined';
+  String get paperLined => '안감';
 
   @override
-  String get paperGrid => 'Grid';
+  String get paperGrid => '그리드';
 
   @override
-  String get paperTinted => 'Tinted';
+  String get paperTinted => '착색된';
 
   @override
-  String get paperDecorationTitle => 'Decorations';
+  String get paperDecorationTitle => '장식';
 
   @override
-  String get paperDecorationNone => 'None';
+  String get paperDecorationNone => '없음';
 
   @override
-  String get paperDecorationBotanical => 'Leaves';
+  String get paperDecorationBotanical => '나뭇잎';
 
   @override
-  String get paperDecorationStars => 'Stars';
+  String get paperDecorationStars => '별';
 
   @override
-  String get paperDecorationWashi => 'Washi tape';
+  String get paperDecorationWashi => '와시 테이프';
 
   @override
-  String get themeDarkChoice => 'Dark appearance';
+  String get themeDarkChoice => '어두운 외관';
 
   @override
-  String get themeDarkSame => 'Follow light palette';
+  String get themeDarkSame => '라이트 팔레트를 따르세요';
 
   @override
-  String get themeDarkCustom => 'Separate palette';
+  String get themeDarkCustom => '별도의 팔레트';
 
   @override
-  String get themeDarkAccent => 'Dark accent colour';
+  String get themeDarkAccent => '어두운 액센트 컬러';
 
   @override
-  String get themeColorTeal => 'Teal';
+  String get themeColorTeal => '청록색';
 
   @override
-  String get themeColorCyan => 'Cyan';
+  String get themeColorCyan => '청록색';
 
   @override
-  String get themeColorIndigo => 'Indigo';
+  String get themeColorIndigo => '인디고';
 
   @override
-  String get themeColorCoral => 'Coral';
+  String get themeColorCoral => '산호';
 
   @override
-  String get themeColorOlive => 'Olive';
+  String get themeColorOlive => '올리브';
 
   @override
-  String get themeColorSlate => 'Slate';
+  String get themeColorSlate => '슬레이트';
 
   @override
-  String get drawingTitle => 'Drawing';
+  String get drawingTitle => '그리기';
 
   @override
-  String get drawingPen => 'Pen';
+  String get drawingPen => '펜';
 
   @override
-  String get drawingEraser => 'Eraser';
+  String get drawingEraser => '지우개';
 
   @override
-  String get drawingUndo => 'Undo';
+  String get drawingUndo => '실행 취소';
 
   @override
-  String get drawingClear => 'Clear';
+  String get drawingClear => '지우기';
 
   @override
-  String get drawingWidth => 'Pen width';
+  String get drawingWidth => '펜 폭';
 
   @override
-  String get drawingStylusOnly => 'Stylus only';
+  String get drawingStylusOnly => '스타일러스만';
 
   @override
-  String get drawingDiscardTitle => 'Discard drawing?';
+  String get drawingDiscardTitle => '그림을 삭제하시겠습니까?';
 
   @override
-  String get drawingDiscardBody => 'This drawing has not been saved.';
+  String get drawingDiscardBody => '이 그림은 저장되지 않았습니다.';
 
   @override
-  String get drawingSaveError => 'Could not save the drawing.';
+  String get drawingSaveError => '그림을 저장할 수 없습니다.';
 
   @override
-  String get syncNetworkTitle => 'Network diagnostics';
+  String get syncNetworkTitle => '네트워크 진단';
 
   @override
-  String get syncNetworkRefresh => 'Refresh';
+  String get syncNetworkRefresh => '새로고침';
 
   @override
-  String get syncNetworkSelectedRoute => 'Current path';
+  String get syncNetworkSelectedRoute => '현재 경로';
 
   @override
-  String get syncNetworkAvailableRoutes => 'Available paths';
+  String get syncNetworkAvailableRoutes => '사용 가능한 경로';
 
   @override
-  String get syncNetworkSignaling => 'Device directory connection';
+  String get syncNetworkSignaling => '장치 디렉토리 연결';
 
   @override
-  String get syncNetworkRelayRemaining => 'Remaining relay allowance';
+  String get syncNetworkRelayRemaining => '남은 릴레이 수당';
 
   @override
-  String get syncNetworkIcePair => 'Direct connection candidates';
+  String get syncNetworkIcePair => '직접 연결 후보';
 
   @override
-  String get syncNetworkPeerTrusted => 'Authenticated device';
+  String get syncNetworkPeerTrusted => '인증된 기기';
 
   @override
-  String get syncNetworkNoRoute => 'Waiting for a connection';
+  String get syncNetworkNoRoute => '연결을 기다리는 중';
 
   @override
-  String get syncNetworkUnavailable => 'Diagnostics are unavailable';
+  String get syncNetworkUnavailable => '진단을 사용할 수 없습니다.';
 
   @override
-  String get syncMediaCopiesTitle => 'Media delivery and copies';
+  String get syncMediaCopiesTitle => '미디어 전달 및 사본';
 
   @override
-  String get syncMediaPendingCount => 'Waiting to transfer';
+  String get syncMediaPendingCount => '전송 대기 중';
 
   @override
-  String get syncMediaDurableCount => 'Delivered to personal storage';
+  String get syncMediaDurableCount => '개인 창고로 배송됨';
 
   @override
-  String get syncMediaTemporaryCount => 'Temporary or unconfirmed copies';
+  String get syncMediaTemporaryCount => '임시 또는 확인되지 않은 사본';
 
   @override
   String get syncMediaReceiptExplanation =>
-      'These counts describe completed deliveries, not a fresh audit of surviving backups.';
+      '이러한 수는 남아 있는 백업에 대한 새로운 감사가 아닌 완료된 전달을 나타냅니다.';
 
   @override
   String get syncMediaCacheExplanation =>
-      'Temporary cloud media can expire. Keep your originals or a separate backup.';
+      '임시 클라우드 미디어는 만료될 수 있습니다. 원본을 보관하거나 별도의 백업을 보관하세요.';
 
   @override
-  String get momentsTitle => 'Photo moments';
+  String get momentsTitle => '사진 순간';
 
   @override
   String get momentsHint =>
-      'Find groups using local photo times and optional coordinates. Photos are attached only when you choose a card.';
+      '현지 포토타임과 선택적 좌표를 사용하여 그룹을 찾아보세요. 카드를 선택하셔야만 사진이 첨부됩니다.';
 
   @override
-  String get momentsScan => 'Find moments';
+  String get momentsScan => '순간 찾기';
 
   @override
-  String get momentsChooseFolder => 'Choose photo folder';
+  String get momentsChooseFolder => '사진 폴더 선택';
 
   @override
-  String get momentsLocation => 'Include photo locations';
+  String get momentsLocation => '사진 위치 포함';
 
   @override
-  String get momentsEmpty => 'No recent photo groups.';
+  String get momentsEmpty => '최근 사진 그룹이 없습니다.';
 
   @override
-  String get momentsCreate => 'Write about these photos';
+  String get momentsCreate => '이 사진에 대해 쓰세요';
 
   @override
-  String get momentsDismiss => 'Dismiss';
+  String get momentsDismiss => '닫기';
 
   @override
-  String get momentsError => 'Could not read local photos.';
+  String get momentsError => '현지 사진을 읽을 수 없습니다.';
 
   @override
-  String get momentsCreated => 'Photo entry created.';
+  String get momentsCreated => '사진 항목이 생성되었습니다.';
 
   @override
-  String get momentsPermission =>
-      'Allow access to photos to find local suggestions.';
+  String get momentsPermission => '지역 추천을 찾으려면 사진에 대한 액세스를 허용하세요.';
 
   @override
-  String get momentsScope =>
-      'Recent photos only; at most 500 photos and 20 photos per card.';
+  String get momentsScope => '최근 사진만; 카드당 사진 최대 500장, 사진 20장.';
 
   @override
   String momentsPhotoCount(int count) {
-    return '$count photos';
+    return '$count 사진';
   }
 
   @override
-  String get nearbyTitle => 'Connect devices';
+  String get nearbyTitle => '장치 연결';
 
   @override
-  String get nearbySend => 'Authorize another device';
+  String get nearbySend => '다른 장치 승인';
 
   @override
-  String get nearbyReceive => 'Connect to an existing device';
+  String get nearbyReceive => '기존 장치에 연결';
 
   @override
   String get nearbyInstructions =>
-      'Connect both devices to the same Wi-Fi or to each other’s hotspot. Confirm authorization on the existing device; both devices remain usable. No internet is required.';
+      '두 장치를 동일한 Wi-Fi에 연결하거나 서로의 핫스팟에 연결합니다. 기존 장치에 대한 승인을 확인합니다. 두 장치 모두 계속 사용할 수 있습니다. 인터넷이 필요하지 않습니다.';
 
   @override
-  String get nearbyCompare =>
-      'Compare this code on both devices before approving.';
+  String get nearbyCompare => '승인하기 전에 두 기기에서 이 코드를 비교하세요.';
 
   @override
-  String get nearbyConfirm => 'The codes match';
+  String get nearbyConfirm => '코드가 일치합니다';
 
   @override
-  String get nearbyScan => 'Scan the other device’s code';
+  String get nearbyScan => '다른 기기의 코드를 스캔하세요';
 
   @override
-  String get nearbyPaste => 'Paste invitation';
+  String get nearbyPaste => '초대 붙여넣기';
 
   @override
-  String get nearbyWaiting => 'Waiting for approval on the other device';
+  String get nearbyWaiting => '다른 기기에서 승인을 기다리는 중';
 
   @override
-  String get nearbyWorking =>
-      'Authorizing and syncing your diary and attachments…';
+  String get nearbyWorking => '일기와 첨부 파일을 승인하고 동기화하는 중…';
 
   @override
   String get nearbyPending =>
-      'Some attachments still need syncing. Keep the other device online and try again.';
+      '일부 첨부파일은 아직 동기화가 필요합니다. 다른 장치를 온라인 상태로 유지하고 다시 시도하십시오.';
 
   @override
-  String get nearbyComplete => 'Device connected; diary and attachments synced';
+  String get nearbyComplete => '장치가 연결되었습니다. 일기와 첨부 파일이 동기화되었습니다.';
 
   @override
-  String get nearbyFailed =>
-      'Connection did not finish. Check the local connection and try again.';
+  String get nearbyFailed => '연결이 완료되지 않았습니다. 로컬 연결을 확인하고 다시 시도하세요.';
 
   @override
-  String get nearbyEmptyRequired =>
-      'Use a device with an empty diary that is not connected to sync yet.';
+  String get nearbyEmptyRequired => '아직 동기화에 연결되지 않은 빈 다이어리가 있는 기기를 사용하세요.';
 
   @override
-  String get nearbyRetry => 'Continue syncing';
+  String get nearbyRetry => '계속 동기화';
 
   @override
-  String get nearbyWifi => 'Wi-Fi settings';
+  String get nearbyWifi => 'Wi-Fi 설정';
 
   @override
-  String get nearbyHotspot => 'Hotspot settings';
+  String get nearbyHotspot => '핫스팟 설정';
 
   @override
-  String get nearbyKeepOpen =>
-      'Keep this page open until the new device finishes. The invitation expires after two minutes.';
+  String get nearbyKeepOpen => '새 장치가 완료될 때까지 이 페이지를 열어 두세요. 초대는 2분 후에 만료됩니다.';
 
   @override
-  String get syncDevicesTitle => 'Authorized devices';
+  String get syncDevicesTitle => '승인된 장치';
 
   @override
   String get syncDevicesDescription =>
-      'Only approved devices can access this AID account. Revoking a device blocks the server but cannot erase a master key or diary already copied to it.';
+      '승인된 장치만 이 AID 계정에 액세스할 수 있습니다. 장치를 취소하면 서버가 차단되지만 이미 복사된 마스터 키나 일기는 지울 수 없습니다.';
 
   @override
-  String get syncDeviceRequest =>
-      'Show this authorization QR to an approved device';
+  String get syncDeviceRequest => '승인된 장치에 이 승인 QR을 표시하세요.';
 
   @override
-  String get syncDeviceAuthorize => 'Authorize a device';
+  String get syncDeviceAuthorize => '장치 승인';
 
   @override
-  String get syncDeviceAuthorizeDescription =>
-      'Scan or paste the new device’s authorization request.';
+  String get syncDeviceAuthorizeDescription => '새 기기의 인증 요청을 스캔하거나 붙여넣으세요.';
 
   @override
-  String get syncDeviceRevoke => 'Revoke';
+  String get syncDeviceRevoke => '취소';
 
   @override
-  String get syncDeviceRotate => 'Rotate this device’s signing key';
+  String get syncDeviceRotate => '이 기기의 서명 키 순환';
 
   @override
-  String get syncDeviceCheck => 'Check authorization';
+  String get syncDeviceCheck => '승인 확인';
 
   @override
-  String get syncDeviceHardware => 'Hardware-backed signing key';
+  String get syncDeviceHardware => '하드웨어 지원 서명 키';
 
   @override
-  String get syncDeviceSoftware => 'Non-exportable software signing key';
+  String get syncDeviceSoftware => '내보낼 수 없는 소프트웨어 서명 키';
 
   @override
   String get syncDeviceUnavailable =>
-      'Device authorization is unavailable. Approve this device from another authorized device and retry.';
+      '기기 인증을 사용할 수 없습니다. 승인된 다른 장치에서 이 장치를 승인하고 다시 시도하세요.';
 
   @override
-  String get syncDeviceRevoked => 'Revoked';
+  String get syncDeviceRevoked => '취소됨';
 
   @override
-  String get syncDeviceLocal => 'This device';
+  String get syncDeviceLocal => '이 장치';
 
   @override
-  String get cloudTrafficTitle => 'Monthly cloud media allowance';
+  String get cloudTrafficTitle => '미디어 파일의 월별 클라우드 데이터 전송 할당량';
 
   @override
-  String get cloudTrafficLimit => 'Monthly allowance';
+  String get cloudTrafficLimit => '월간 데이터 전송 할당량';
 
   @override
-  String get cloudTrafficUsed => 'Used';
+  String get cloudTrafficUsed => '사용된 데이터 전송';
 
   @override
-  String get cloudTrafficRemaining => 'Remaining';
+  String get cloudTrafficRemaining => '남은 데이터 전송량';
 
   @override
   String cloudTrafficResetsAt(String time) {
-    return 'Resets $time';
+    return '데이터 전송 할당량이 $time를 재설정합니다.';
   }
 
   @override
   String get cloudTrafficExhausted =>
-      'Cloud media allowance used up. Missing media will resume automatically over a direct connection or when the allowance resets.';
+      '미디어 파일의 클라우드 데이터 전송 할당량이 모두 사용되었습니다. 누락된 미디어 파일은 직접 연결이 가능하거나 할당량이 재설정되면 자동으로 동기화됩니다.';
 
   @override
   String get cloudTrafficExplanation =>
-      'Media cache and live relay share this allowance. Direct connections do not use it. Diary text and connection control have separate small daily limits.';
+      '미디어 파일 캐싱과 라이브 릴레이는 이 데이터 전송 할당량을 공유합니다. 직접 연결에서는 이를 소비하지 않습니다. 일기 텍스트와 연결 제어 메시지에는 별도의 작은 일일 한도가 있습니다.';
 
   @override
-  String get appearanceThemeSection => 'App theme';
+  String get appearanceThemeSection => '앱 테마';
 
   @override
-  String get appearancePaperSection => 'Diary paper';
+  String get appearancePaperSection => '일기장';
 
   @override
-  String get appearanceTypographySection => 'Diary text';
+  String get appearanceTypographySection => '일기 텍스트';
 
   @override
-  String get appearancePreferencesSection => 'General preferences';
+  String get appearancePreferencesSection => '일반 환경설정';
 
   @override
   String get themeSystemAccentHint =>
-      'Uses the system palette instead of custom colors. Turn it off to choose your own.';
+      '사용자 정의 색상 대신 시스템 팔레트를 사용합니다. 직접 선택하려면 이 기능을 끄세요.';
 
   @override
-  String get syncDeviceNameSaveFailed =>
-      'Could not save the device name. Please try again.';
+  String get syncDeviceNameSaveFailed => '장치 이름을 저장할 수 없습니다. 다시 시도해 주세요.';
 
   @override
-  String get nearbyConnectionHelp => 'Connection help';
+  String get nearbyConnectionHelp => '연결 도움말';
 
   @override
-  String get syncAllSynced => 'Everything synced';
+  String get syncAllSynced => '모든 것이 동기화되었습니다.';
 
   @override
-  String get syncDetailsTitle => 'Sync details';
+  String get syncDetailsTitle => '동기화 세부정보';
 
   @override
-  String get syncMore => 'More options';
+  String get syncMore => '추가 옵션';
 
   @override
-  String get syncDeviceName => 'Device name';
+  String get syncDeviceName => '장치 이름';
 
   @override
-  String get syncDeviceNameHint => 'For example: My tablet';
+  String get syncDeviceNameHint => '예: 내 태블릿';
 
   @override
-  String get syncDeviceNameInvalid => 'Use 1 to 32 characters';
+  String get syncDeviceNameInvalid => '1~32자를 사용하세요.';
 
   @override
-  String get syncDeviceKeyDetails => 'Security details';
+  String get syncDeviceKeyDetails => '보안 세부정보';
 
   @override
-  String get syncConnectionProblem =>
-      'Unable to sync for now. Retrying automatically.';
+  String get syncConnectionProblem => '지금은 동기화할 수 없습니다. 자동으로 다시 시도하는 중입니다.';
 
   @override
-  String get syncCopyComplete => 'Complete copy';
+  String get syncCopyComplete => '일기 및 미디어 파일의 전체 사본';
 
   @override
-  String get syncCopyPartial => 'Some media is still missing';
+  String get syncCopyPartial => '일부 미디어가 아직 누락되었습니다.';
 
   @override
-  String get syncCopyOlder => 'New changes are waiting to sync';
+  String get syncCopyOlder => '새로운 변경사항이 동기화 대기 중입니다.';
 
   @override
-  String get syncCopyUnavailable =>
-      'Copy details are unavailable. Try again later.';
+  String get syncCopyUnavailable => '세부정보 복사가 불가능합니다. 나중에 다시 시도하세요.';
 
   @override
   String get syncCopyLastKnown =>
-      'Other devices show their last confirmed copy. Offline devices cannot be checked now.';
+      '다른 장치에는 마지막으로 확인된 복사본이 표시됩니다. 지금은 오프라인 장치를 확인할 수 없습니다.';
 
   @override
-  String get syncCopyTemporary =>
-      'Temporary cache. Keep the originals on your devices.';
+  String get syncCopyTemporary => '임시 캐시. 원본을 장치에 보관하세요.';
 
   @override
-  String get syncCopyStorage =>
-      'Your sync storage. Completed media uploads are listed in diagnostics.';
+  String get syncCopyStorage => '동기화 저장소. 완료된 미디어 업로드가 진단에 나열됩니다.';
 
   @override
   String syncCopyChecked(String time) {
-    return 'Last confirmed $time';
+    return '마지막으로 확인된 $time';
   }
 
   @override
   String cloudTrafficSummary(String remaining, String limit) {
-    return 'Available this month: $remaining / $limit';
+    return '이번달 남은 데이터 전송량 : $remaining / $limit';
   }
 
   @override
-  String get onboardNewDiary => 'Start here';
+  String get onboardNewDiary => '여기서 시작하세요';
 
   @override
-  String get onboardConnect => 'Connect to an existing device';
+  String get onboardConnect => '기존 장치에 연결';
 
   @override
-  String get onboardFailed =>
-      'Setup could not be completed. Your diary is safe; please try again.';
+  String get onboardFailed => '설정을 완료할 수 없습니다. 귀하의 일기장은 안전합니다. 다시 시도해 주세요.';
 
   @override
-  String get tutorialTitle => 'How to use the diary';
+  String get tutorialTitle => '다이어리 사용법';
 
   @override
-  String get tutorialWriteTitle => 'Write your first entry';
+  String get tutorialWriteTitle => '첫 일기 쓰기';
 
   @override
   String get tutorialWriteText =>
-      'Tap + to write. Add a title if you want, choose the diary day and tap the check mark to save. You can edit it again at any time.';
+      '+를 눌러 일기를 작성하세요. 선택적 제목을 추가하고 일기 날짜를 선택한 다음 확인 표시를 탭하여 저장합니다. 언제든지 일기 항목을 다시 편집할 수 있습니다.';
 
   @override
-  String get tutorialMediaTitle => 'Add photos, audio or handwriting';
+  String get tutorialMediaTitle => '사진, 오디오, 필기 추가';
 
   @override
   String get tutorialMediaText =>
-      'Use + in the editor to attach photos, videos or a voice note, or open the pen canvas. These attachments stay with the entry.';
+      '일기 편집기에서 +를 사용하여 사진, 동영상, 음성 녹음을 첨부하거나 필기 캔버스를 엽니다. 이러한 첨부 파일은 일기 항목과 함께 저장됩니다.';
 
   @override
-  String get tutorialReviewTitle => 'Find a day again';
+  String get tutorialReviewTitle => '다시 하루를 찾아';
 
   @override
   String get tutorialReviewText =>
-      'Browse the journal or calendar, search your writing and use tags to organize it. Media and Atlas help you look back by photo or place.';
+      '일기나 달력을 찾아보고, 쓴 글을 검색하고, 태그를 사용하여 항목을 정리하세요. 미디어 및 아틀라스 페이지에서는 사진이나 위치별로 과거 항목을 찾을 수 있습니다.';
 
   @override
-  String get tutorialSyncTitle => 'Use more than one device';
+  String get tutorialSyncTitle => '두 개 이상의 장치 사용';
 
   @override
   String get tutorialSyncText =>
-      'In Settings → Data & storage → Sync, connect to an existing device and confirm authorization there. Both devices can keep using the diary. Text syncs first; media follows as the connection and allowance permit.';
+      '설정 → 데이터 및 저장소 → 동기화에서 기존 기기에 연결하고 해당 기기에서 연결을 승인하세요. 두 기기 모두 계속 사용할 수 있습니다. 일기 본문이 먼저 동기화되며, 첨부 파일은 연결 상태와 남은 전송량에 따라 순차적으로 동기화됩니다.';
 
   @override
-  String get tutorialPrivacyTitle => 'Keep your diary safe';
+  String get tutorialPrivacyTitle => '일기장을 안전하게 보관하세요';
 
   @override
   String get tutorialPrivacyText =>
-      'Entries stay on this device unless you enable sync or share/export them. Sync is end-to-end encrypted. Settings also offers an app passcode and backups; you can reopen this tutorial there.';
+      '일기 항목은 동기화, 공유 또는 내보내기를 활성화하지 않는 한 이 기기에 유지됩니다. 동기화는 종단 간 암호화됩니다. 설정에서 앱 비밀번호를 설정하고, 백업을 생성하고, 이 튜토리얼을 다시 열 수도 있습니다.';
 }

@@ -12,38 +12,38 @@ class AppLocalizationsLt extends AppLocalizations {
   String get appTitle => 'AID Diary';
 
   @override
-  String get themeColorTitle => 'Theme color';
+  String get themeColorTitle => 'Temos spalva';
 
   @override
-  String get themeColorHint => 'Choose a color for this palette.';
+  String get themeColorHint => 'Pasirinkite šios paletės spalvą.';
 
   @override
-  String get themeColorBlue => 'Sky blue';
+  String get themeColorBlue => 'Dangaus mėlyna';
 
   @override
-  String get themeColorGreen => 'Forest green';
+  String get themeColorGreen => 'Miškas žalias';
 
   @override
-  String get themeColorBrown => 'Warm coffee';
+  String get themeColorBrown => 'Šilta kava';
 
   @override
-  String get themeColorPurple => 'Lavender';
+  String get themeColorPurple => 'Levandos';
 
   @override
-  String get themeColorRose => 'Dusty rose';
+  String get themeColorRose => 'Dulkėta rožė';
 
   @override
-  String get themeColorAmber => 'Amber';
+  String get themeColorAmber => 'Gintaras';
 
   @override
-  String get themeColorPreview => 'A little every day';
+  String get themeColorPreview => 'Kasdien po truputį';
 
   @override
-  String get themeTintBackgroundTitle => 'Tint backgrounds with theme color';
+  String get themeTintBackgroundTitle => 'Nuspalvinkite foną temos spalvomis';
 
   @override
   String get themeTintBackgroundHint =>
-      'Turn off for neutral gray backgrounds; buttons keep your chosen color.';
+      'Išjunkite, kad fonas būtų neutralus pilkas; mygtukai išlaiko jūsų pasirinktą spalvą.';
 
   @override
   String get dailyReminderTitle => 'Parašykite šiandien įrašą!';
@@ -154,7 +154,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get noLogs => 'Nėra žurnalo įrašų…';
 
   @override
-  String get noResults => 'No Results…';
+  String get noResults => 'Rezultatų nėra…';
 
   @override
   String get sortOrderAscendingTitle => 'Didėjančiai';
@@ -238,7 +238,10 @@ class AppLocalizationsLt extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Great Days $count',
+      other: 'Puikios dienos $count',
+      one: 'Puikios dienos $count',
+      many: 'Didžiosios dienos $count',
+      few: 'Puikios dienos $count',
     );
     return '$_temp0';
   }
@@ -407,102 +410,104 @@ class AppLocalizationsLt extends AppLocalizations {
       '### Kas jums šiandien patiko?\n- \n\n### Už ką esate dėkingi?\n- \n\n### Ko laukiate ar tikitės?\n- ';
 
   @override
-  String get settingsTagsTitle => 'Tags';
+  String get settingsTagsTitle => 'Žymos';
 
   @override
-  String get manageTags => 'Manage Tags';
+  String get manageTags => 'Tvarkyti žymas';
 
   @override
-  String get tagTypeLabelTitle => 'Label';
+  String get tagTypeLabelTitle => 'Etiketė';
 
   @override
   String get tagTypeTrackerTitle => 'Tracker';
 
   @override
-  String get nameHint => 'Name';
+  String get nameHint => 'Vardas';
 
   @override
-  String get tagColorLabel => 'Color';
+  String get tagColorLabel => 'Spalva';
 
   @override
-  String get iconPickerTitle => 'Choose Icon';
+  String get iconPickerTitle => 'Pasirinkite piktogramą';
 
   @override
-  String get iconPickerIconsTab => 'Icons';
+  String get iconPickerIconsTab => 'Piktogramos';
 
   @override
-  String get iconPickerCustomTab => 'Custom';
+  String get iconPickerCustomTab => 'Pasirinktinis';
 
   @override
-  String get iconPickerSearchHint => 'Search icons…';
+  String get iconPickerSearchHint => 'Ieškoti piktogramų…';
 
   @override
-  String get colorPickerTitle => 'Choose Color';
+  String get colorPickerTitle => 'Pasirinkite Spalva';
 
   @override
-  String get colorPickerPaletteTab => 'Colors';
+  String get colorPickerPaletteTab => 'Spalvos';
 
   @override
-  String get iconGroupMoodPeople => 'Mood & People';
+  String get iconGroupMoodPeople => 'Nuotaika ir žmonės';
 
   @override
-  String get iconGroupHealth => 'Health';
+  String get iconGroupHealth => 'Sveikata';
 
   @override
-  String get iconGroupWorkFinance => 'Work & Finance';
+  String get iconGroupWorkFinance => 'Darbas ir finansai';
 
   @override
-  String get iconGroupHabitsGoals => 'Habits & Goals';
+  String get iconGroupHabitsGoals => 'Įpročiai ir tikslai';
 
   @override
-  String get iconGroupNature => 'Nature';
+  String get iconGroupNature => 'Gamta';
 
   @override
-  String get iconGroupFoodDrink => 'Food & Drink';
+  String get iconGroupFoodDrink => 'Maistas ir gėrimai';
 
   @override
-  String get iconGroupHome => 'Home';
+  String get iconGroupHome => 'Pradžia';
 
   @override
-  String get iconGroupTravel => 'Travel';
+  String get iconGroupTravel => 'Kelionės';
 
   @override
-  String get iconGroupSymbols => 'Symbols';
+  String get iconGroupSymbols => 'Simboliai';
 
   @override
-  String get tagCategoryLabel => 'Category';
+  String get tagCategoryLabel => 'Kategorija';
 
   @override
-  String get tagLabel => 'Tag';
+  String get tagLabel => 'Žyma';
 
   @override
-  String get tagCategoryUncategorized => 'Uncategorized';
+  String get tagCategoryUncategorized => 'Neįtraukta į kategorijas';
 
   @override
-  String get newCategoryTitle => 'New Category';
+  String get newCategoryTitle => 'Nauja kategorija';
 
   @override
-  String get shareButtonLabel => 'Share';
+  String get shareButtonLabel => 'Dalintis';
 
   @override
-  String get importErrorDescription => 'Failed to import file!';
+  String get importErrorDescription => 'Nepavyko importuoti failo!';
 
   @override
-  String get exportErrorDescription => 'Failed to export file!';
+  String get exportErrorDescription => 'Nepavyko eksportuoti failo!';
 
   @override
-  String get deleteTitle => 'Delete';
+  String get deleteTitle => 'Ištrinti';
 
   @override
   String deleteTagMessage(num count, Object name) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: ' It is used in $count logs.',
-      one: ' It is used in 1 log.',
+      other: ' Jis naudojamas $count dienoraščio įrašų.',
+      one: ' Jis naudojamas $count dienoraščio įraše.',
+      many: ' Jis naudojamas $count dienoraščio įrašuose.',
+      few: ' Jis naudojamas $count dienoraščio įrašuose.',
       zero: '',
     );
-    return 'Delete \"$name\"?$_temp0';
+    return 'Ištrinti „$name“?$_temp0';
   }
 
   @override
@@ -510,83 +515,85 @@ class AppLocalizationsLt extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: ' Its $count tags will also be deleted.',
-      one: ' Its 1 tag will also be deleted.',
+      other: ' Jo $count žymos taip pat bus ištrintos.',
+      one: ' Jo $count žyma taip pat bus ištrinta.',
+      many: ' Jos $count žymos taip pat bus ištrintos.',
+      few: ' Jos $count žymos taip pat bus ištrintos.',
       zero: '',
     );
-    return 'Delete \"$name\"?$_temp0';
+    return 'Ištrinti „$name“?$_temp0';
   }
 
   @override
-  String get tagNameExists => 'There is a tag with this name already';
+  String get tagNameExists => 'Jau yra žyma tokiu pavadinimu';
 
   @override
-  String get categoryNameExists => 'There is a category with this name already';
+  String get categoryNameExists => 'Kategorija tokiu pavadinimu jau yra';
 
   @override
   String deleteTemplateMessage(Object name) {
-    return 'Delete \"$name\"?';
+    return 'Ištrinti „$name“?';
   }
 
   @override
-  String get addTagsTitle => 'Add Tags';
+  String get addTagsTitle => 'Pridėti žymas';
 
   @override
-  String get addTagsSearchHint => 'Search tags…';
+  String get addTagsSearchHint => 'Ieškoti žymų…';
 
   @override
-  String get tagPickerSortManualLabel => 'Manual order';
+  String get tagPickerSortManualLabel => 'Rankinis užsakymas';
 
   @override
-  String get tagPickerSortUsageLabel => 'Sort by usage';
+  String get tagPickerSortUsageLabel => 'Rūšiuoti pagal naudojimą';
 
   @override
-  String get tagFavoriteName => 'Favorite';
+  String get tagFavoriteName => 'Mėgstamiausias';
 
   @override
-  String get tagEnergyName => 'Energy';
+  String get tagEnergyName => 'Energija';
 
   @override
-  String get tagCategoryActivitiesName => 'Activities';
+  String get tagCategoryActivitiesName => 'Veikla';
 
   @override
-  String get tagExerciseName => 'Exercise';
+  String get tagExerciseName => 'Pratimai';
 
   @override
-  String get tagSocializingName => 'Socializing';
+  String get tagSocializingName => 'Bendravimas';
 
   @override
-  String get tagHobbyName => 'Hobby';
+  String get tagHobbyName => 'Hobis';
 
   @override
-  String get tagEntertainmentName => 'Entertainment';
+  String get tagEntertainmentName => 'Pramogos';
 
   @override
-  String get tagDiningName => 'Dining';
+  String get tagDiningName => 'Pietūs';
 
   @override
-  String get tagChoresName => 'Chores';
+  String get tagChoresName => 'Darbai';
 
   @override
-  String get tagCategoryEmotionsName => 'Emotions';
+  String get tagCategoryEmotionsName => 'Emocijos';
 
   @override
-  String get tagExcitedName => 'Excited';
+  String get tagExcitedName => 'Susijaudinęs';
 
   @override
-  String get tagGratefulName => 'Grateful';
+  String get tagGratefulName => 'dėkingas';
 
   @override
-  String get tagCalmName => 'Calm';
+  String get tagCalmName => 'Ramiai';
 
   @override
-  String get tagTiredName => 'Tired';
+  String get tagTiredName => 'Pavargęs';
 
   @override
-  String get tagAnxiousName => 'Anxious';
+  String get tagAnxiousName => 'Nerimastingas';
 
   @override
-  String get tagAnnoyedName => 'Annoyed';
+  String get tagAnnoyedName => 'Susierzinęs';
 
   @override
   String get settingsStorageTitle => 'Saugykla';
@@ -650,56 +657,59 @@ class AppLocalizationsLt extends AppLocalizations {
       'Atsarginės kopijos atkūrimas perrašys visus jūsų esamus duomenis!';
 
   @override
-  String get settingsBackupPasswordProtect => 'Password Protect Backups';
+  String get settingsBackupPasswordProtect =>
+      'Slaptažodžio apsaugos atsarginės kopijos';
 
   @override
-  String get backupEncryptedTitle => 'Encrypted Backup';
+  String get backupEncryptedTitle => 'Šifruota atsarginė kopija';
 
   @override
-  String get backupEncryptedContent => 'This backup is password protected.';
+  String get backupEncryptedContent =>
+      'Ši atsarginė kopija apsaugota slaptažodžiu.';
 
   @override
-  String get settingsAutoBackup => 'Automatic Backups';
+  String get settingsAutoBackup => 'Automatinės atsarginės kopijos';
 
   @override
-  String get settingsAutoBackupLocation => 'Backup Location';
+  String get settingsAutoBackupLocation => 'Atsarginės kopijos vieta';
 
   @override
-  String get settingsAutoBackupInterval => 'Backup Interval';
+  String get settingsAutoBackupInterval => 'Atsarginės kopijos intervalas';
 
   @override
-  String get settingsAutoBackupIntervalDaily => 'Daily';
+  String get settingsAutoBackupIntervalDaily => 'Kasdien';
 
   @override
-  String get settingsAutoBackupIntervalWeekly => 'Weekly';
+  String get settingsAutoBackupIntervalWeekly => 'Kas savaitę';
 
   @override
-  String get settingsAutoBackupIntervalMonthly => 'Monthly';
+  String get settingsAutoBackupIntervalMonthly => 'Kas mėnesį';
 
   @override
-  String get settingsAutoBackupMaxCount => 'Backups To Keep';
+  String get settingsAutoBackupMaxCount =>
+      'Atsarginės kopijos, kurias reikia saugoti';
 
   @override
-  String get settingsAutoBackupRequireCharging => 'Only While Charging';
+  String get settingsAutoBackupRequireCharging => 'Tik kraunant';
 
   @override
   String settingsBackupLast(Object time) {
-    return 'Last backup $time';
+    return 'Paskutinė atsarginė kopija $time';
   }
 
   @override
-  String get settingsBackupNever => 'Never backed up';
+  String get settingsBackupNever => 'Niekada nebuvo sukurta atsarginė kopija';
 
   @override
   String settingsAutoBackupNext(Object time) {
-    return 'Next backup $time';
+    return 'Kita atsarginė kopija $time';
   }
 
   @override
-  String get settingsAutoBackupKeepAll => 'All';
+  String get settingsAutoBackupKeepAll => 'Visi';
 
   @override
-  String get autoBackupFailedTitle => 'Backup Failed';
+  String get autoBackupFailedTitle => 'Nepavyko sukurti atsarginės kopijos';
 
   @override
   String tranferStatus(Object percent) {
@@ -718,12 +728,12 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String encryptingBackupStatus(Object percent) {
-    return 'Encrypting Backup… $percent%';
+    return 'Šifruojama atsarginė kopija… $percent%';
   }
 
   @override
   String decryptingBackupStatus(Object percent) {
-    return 'Decrypting Backup… $percent%';
+    return 'Iššifruojama atsarginė kopija… $percent%';
   }
 
   @override
@@ -849,561 +859,564 @@ class AppLocalizationsLt extends AppLocalizations {
   String get licenseGPLv3 => 'GPL-3.0';
 
   @override
-  String get settingsOpenSourceLicenses => 'Open Source Licenses';
+  String get settingsOpenSourceLicenses => 'Atvirojo kodo licencijos';
 
   @override
   String get tagMoodTitle => 'Nuotaika';
 
   @override
-  String get selectTagTitle => 'Select Tag';
+  String get selectTagTitle => 'Pasirinkite Žyma';
 
   @override
-  String get labelPresentLabel => 'Present';
+  String get labelPresentLabel => 'Pateikti';
 
   @override
-  String get labelAbsentLabel => 'Absent';
+  String get labelAbsentLabel => 'Nėra';
 
   @override
-  String get labelCoverageLabel => 'Coverage';
+  String get labelCoverageLabel => 'Aprėptis';
 
   @override
   String chartDistributionTitle(Object tag) {
-    return '$tag Distribution';
+    return '$tag paskirstymas';
   }
 
   @override
-  String get shareAddToLogPickerTitle => 'Choose a log';
+  String get shareAddToLogPickerTitle => 'Pasirinkite dienoraščio įrašą';
 
   @override
-  String get adaptiveEmptyDay => 'No entries for this day yet';
+  String get adaptiveEmptyDay => 'Šiai dienai dar nėra įrašų';
 
   @override
-  String get adaptiveNewEntry => 'Write an entry';
+  String get adaptiveNewEntry => 'Parašykite įrašą';
 
   @override
-  String get pageJournalTitle => 'Journal';
+  String get pageJournalTitle => 'Žurnalas';
 
   @override
-  String get coachPrompt1 => 'What made you smile today?';
+  String get coachPrompt1 => 'Kas šiandien privertė nusišypsoti?';
 
   @override
-  String get coachPrompt2 => 'What is one thing you learned today?';
+  String get coachPrompt2 => 'Ką šiandien išmokote?';
 
   @override
-  String get coachPrompt3 => 'Who did you talk to today, and how did it feel?';
+  String get coachPrompt3 => 'Su kuo šiandien kalbėjotės ir kaip jautėtės?';
 
   @override
-  String get coachPrompt4 => 'What are you grateful for right now?';
+  String get coachPrompt4 => 'Už ką šiuo metu esi dėkingas?';
 
   @override
-  String get coachPrompt5 => 'What took most of your energy today?';
+  String get coachPrompt5 => 'Kas šiandien atėmė daugiausiai energijos?';
 
   @override
-  String get coachPrompt6 => 'Describe a small moment you want to remember.';
+  String get coachPrompt6 =>
+      'Apibūdinkite nedidelę akimirką, kurią norite prisiminti.';
 
   @override
-  String get coachPrompt7 => 'What would make tomorrow a good day?';
+  String get coachPrompt7 => 'Kas padarytų rytoj gerą dieną?';
 
   @override
-  String get coachPrompt8 => 'What has been on your mind lately?';
+  String get coachPrompt8 => 'Kas pastaruoju metu sukosi tavo galvoje?';
 
   @override
-  String get coachPrompt9 => 'What did you do today just for yourself?';
+  String get coachPrompt9 => 'Ką šiandien nuveikei dėl savęs?';
 
   @override
-  String get coachPrompt10 => 'If today had a title, what would it be?';
+  String get coachPrompt10 => 'Jei šiandien būtų pavadinimas, koks jis būtų?';
 
   @override
-  String get pageMediaTitle => 'Media';
+  String get pageMediaTitle => 'Žiniasklaida';
 
   @override
-  String get pageAtlasTitle => 'Atlas';
+  String get pageAtlasTitle => 'Atlasas';
 
   @override
-  String get pageCoachTitle => 'Coach';
+  String get pageCoachTitle => 'Treneris';
 
   @override
-  String get noEntrySelected => 'No entry selected.';
+  String get noEntrySelected => 'Nepasirinktas joks įrašas.';
 
   @override
-  String get entryShare => 'Share';
+  String get entryShare => 'Dalintis';
 
   @override
-  String get entryFavorite => 'Star';
+  String get entryFavorite => 'Žvaigždė';
 
   @override
-  String get entryEdit => 'Edit';
+  String get entryEdit => 'Redaguoti';
 
   @override
-  String get entryPrevious => 'Previous entry';
+  String get entryPrevious => 'Ankstesnis įrašas';
 
   @override
-  String get entryNext => 'Next entry';
+  String get entryNext => 'Kitas įrašas';
 
   @override
-  String get journalStories => 'Stories';
+  String get journalStories => 'Istorijos';
 
   @override
-  String get journalEntries => 'Entries';
+  String get journalEntries => 'Įrašai';
 
   @override
-  String get journalEmptyHint => 'Begin your diary by adding a new entry.';
+  String get journalEmptyHint =>
+      'Pradėkite savo dienoraštį pridėdami naują įrašą.';
 
   @override
-  String get storyToday => 'Today';
+  String get storyToday => 'Šiandien';
 
   @override
-  String get storyThrowback => 'Throwback';
+  String get storyThrowback => 'Atmetimas';
 
   @override
-  String get storyNoThrowback => 'No throwback today';
+  String get storyNoThrowback => 'Šiandien jokio atmetimo';
 
   @override
-  String get mediaFiles => 'Media files';
+  String get mediaFiles => 'Medijos failai';
 
   @override
-  String get mediaEmpty => 'No photos yet.';
+  String get mediaEmpty => 'Dar nėra nuotraukų.';
 
   @override
-  String get mediaEmptyHint => 'Photos attached to entries will be shown here.';
+  String get mediaEmptyHint =>
+      'Čia bus rodomos prie įrašų pridėtos nuotraukos.';
 
   @override
-  String get atlasEmpty => 'No entries with a location.';
+  String get atlasEmpty => 'Nėra įrašų su vieta.';
 
   @override
-  String get atlasEmptyHint => 'Entries with a location will be shown here.';
+  String get atlasEmptyHint => 'Čia bus rodomi įrašai su vieta.';
 
   @override
-  String get atlasShowAll => 'Show all entries';
+  String get atlasShowAll => 'Rodyti visus įrašus';
 
   @override
-  String get atlasMyLocation => 'My location';
+  String get atlasMyLocation => 'Mano vieta';
 
   @override
-  String get coachAll => 'All';
+  String get coachAll => 'Visi';
 
   @override
-  String get coachPrograms => 'Programs';
+  String get coachPrograms => 'Programos';
 
   @override
-  String get coachTemplates => 'Templates';
+  String get coachTemplates => 'Šablonai';
 
   @override
-  String get coachKindProgram => 'Program';
+  String get coachKindProgram => 'Programa';
 
   @override
-  String get coachKindTemplate => 'Template';
+  String get coachKindTemplate => 'Šablonas';
 
   @override
-  String get coachNoTemplates => 'No programs or templates.';
+  String get coachNoTemplates => 'Jokių programų ar šablonų.';
 
   @override
-  String get coachUseTemplate => 'Write with this template';
+  String get coachUseTemplate => 'Rašykite naudodami šį šabloną';
 
   @override
-  String get coachProgramEverydayTitle => 'Everyday moments';
+  String get coachProgramEverydayTitle => 'Kasdienės akimirkos';
 
   @override
   String get coachProgramEverydayDescription =>
-      'Five short questions, one a day. Each takes a minute or two and helps you see what made the day yours. A gentle way to build the habit of writing a little every day.';
+      'Penki trumpi klausimai, vienas per dieną. Kiekvienas iš jų užtrunka minutę ar dvi ir padeda suprasti, kas padarė tą dieną jūsų. Švelnus būdas ugdyti įprotį kasdien po truputį rašyti.';
 
   @override
-  String get coachProgramReflectTitle => 'Looking inward';
+  String get coachProgramReflectTitle => 'Žvelgiant į vidų';
 
   @override
   String get coachProgramReflectDescription =>
-      'One deeper question a week, for five weeks. Take your time with each: how you have been feeling, what wears you out, what you are grateful for.';
+      'Vienas gilesnis klausimas per savaitę penkias savaites. Neskubėkite su kiekvienu: kaip jautėtės, kas jus vargina, už ką esate dėkingas.';
 
   @override
-  String get searchFilters => 'Filters';
+  String get searchFilters => 'Filtrai';
 
   @override
-  String get searchFilterTags => 'Tags';
+  String get searchFilterTags => 'Žymos';
 
   @override
-  String get searchFilterStarred => 'Starred';
+  String get searchFilterStarred => 'Pažymėta žvaigždute';
 
   @override
-  String get searchHint => 'Type to search, or pick a filter.';
+  String get searchHint => 'Įveskite norėdami ieškoti arba pasirinkite filtrą.';
 
   @override
-  String get locationTitle => 'Location';
+  String get locationTitle => 'Vieta';
 
   @override
-  String get locationName => 'Place name';
+  String get locationName => 'Vietos pavadinimas';
 
   @override
-  String get locationRemove => 'Remove';
+  String get locationRemove => 'Pašalinti';
 
   @override
-  String get locationServiceDisabled => 'Location services are turned off.';
+  String get locationServiceDisabled => 'Vietos nustatymo paslaugos išjungtos.';
 
   @override
-  String get locationPermissionDenied => 'Location permission was denied.';
+  String get locationPermissionDenied =>
+      'Leidimas nustatyti vietą buvo atmestas.';
 
   @override
-  String get locationUnavailable => 'Could not get the current location.';
+  String get locationUnavailable => 'Nepavyko gauti dabartinės vietos.';
 
   @override
-  String get calendarJumpToToday => 'Jump to today';
+  String get calendarJumpToToday => 'Peršokti į šiandieną';
 
   @override
-  String get editorStartWriting => 'Start writing or choose a ';
+  String get editorStartWriting => 'Pradėkite rašyti arba pasirinkite a ';
 
   @override
-  String get editorTemplateLink => 'Template';
+  String get editorTemplateLink => 'Šablonas';
 
   @override
   String get editorStartWritingEnd => '.';
 
   @override
-  String get templatePickerTitle => 'Choose a template';
+  String get templatePickerTitle => 'Pasirinkite šabloną';
 
   @override
-  String get templateFeatured => 'Featured templates';
+  String get templateFeatured => 'Teminiai šablonai';
 
   @override
-  String get templateMine => 'My templates';
+  String get templateMine => 'Mano šablonai';
 
   @override
-  String get templateDailyName => 'Daily review';
+  String get templateDailyName => 'Kasdienė apžvalga';
 
   @override
   String get templateDailyDescription =>
-      'What happened, how it felt, and what comes next.';
+      'Kas atsitiko, kaip jautėsi ir kas bus toliau.';
 
   @override
   String get templateDailyText =>
-      '## What happened today\n\n\n## How I felt\n\n\n## Three things I\'m grateful for\n1. \n2. \n3. \n\n## Tomorrow\n';
+      '## Kas atsitiko šiandien\n\n\n## Kaip aš jaučiausi\n\n\n## Trys dalykai, už kuriuos esu dėkingas\n1. \n2. \n3. \n\n## Rytoj\n';
 
   @override
-  String get templateTravelName => 'Travel log';
+  String get templateTravelName => 'Kelionės dienoraščio įrašas';
 
   @override
   String get templateTravelDescription =>
-      'Places, moments and food from the road.';
+      'Vietos, akimirkos ir maistas iš kelio.';
 
   @override
   String get templateTravelText =>
-      '## Where I went\n\n\n## The moment I remember most\n\n\n## What I ate\n\n\n## Plans for tomorrow\n';
+      '## Kur aš nuėjau\n\n\n## Akimirka, kurią labiausiai prisimenu\n\n\n## Ką aš valgiau\n\n\n## Rytojaus planai\n';
 
   @override
-  String get templateReadingName => 'Reading notes';
+  String get templateReadingName => 'Pastabų skaitymas';
 
   @override
   String get templateReadingDescription =>
-      'Quotes and thoughts from what you read.';
+      'Citatos ir mintys iš to, ką perskaitėte.';
 
   @override
   String get templateReadingText =>
-      '## Book\n\n\n## Where I am\n\n\n## Quotes\n> \n\n## My thoughts\n';
+      '## Knyga\n\n\n## Kur aš esu\n\n\n## Citatos\n> \n\n## Mano mintys\n';
 
   @override
-  String get templateWeeklyName => 'Weekly review';
+  String get templateWeeklyName => 'Savaitės apžvalga';
 
   @override
   String get templateWeeklyDescription =>
-      'Highlights, struggles and next week\'s focus.';
+      'Svarbiausi momentai, kovos ir kitos savaitės dėmesys.';
 
   @override
   String get templateWeeklyText =>
-      '## Highlights\n\n\n## What was hard\n\n\n## What I learned\n\n\n## Focus for next week\n';
+      '## Svarbiausi dalykai\n\n\n## Kas buvo sunku\n\n\n## Ką aš išmokau\n\n\n## Dėmesys kitai savaitei\n';
 
   @override
-  String get entryDuplicate => 'Duplicate';
+  String get entryDuplicate => 'Pasikartoti';
 
   @override
-  String get entryDuplicated => 'Entry duplicated';
+  String get entryDuplicated => 'Įrašas pasikartojo';
 
   @override
-  String get entrySaveAsTemplate => 'Save as template';
+  String get entrySaveAsTemplate => 'Išsaugoti kaip šabloną';
 
   @override
-  String get entrySavedAsTemplate => 'Saved as a template';
+  String get entrySavedAsTemplate => 'Išsaugotas kaip šablonas';
 
   @override
-  String get storyStatistics => 'Statistics';
+  String get storyStatistics => 'Statistika';
 
   @override
-  String get storyMoodChart => 'Mood chart';
+  String get storyMoodChart => 'Nuotaikos diagrama';
 
   @override
   String storyEntriesAndDays(Object days, Object entries) {
-    return '$entries entries · $days days';
+    return '$entries įrašai · $days dienos';
   }
 
   @override
-  String get storyThisYear => 'This year';
+  String get storyThisYear => 'Šiemet';
 
   @override
-  String get storyLastYear => 'Last year';
+  String get storyLastYear => 'Praėjusiais metais';
 
   @override
-  String get storyTapToOpen => 'Tap a day to open it';
+  String get storyTapToOpen => 'Palieskite dieną, kad ją atidarytumėte';
 
   @override
-  String get settingsGeneralTitle => 'General';
+  String get settingsGeneralTitle => 'Generolas';
 
   @override
-  String get settingsDataTitle => 'Data & storage';
+  String get settingsDataTitle => 'Duomenys ir saugykla';
 
   @override
-  String get settingsStoriesTitle => 'Stories';
+  String get settingsStoriesTitle => 'Istorijos';
 
   @override
-  String get settingsHelpTitle => 'Help & about';
+  String get settingsHelpTitle => 'Pagalba ir apie';
 
   @override
-  String get weatherTitle => 'Weather';
+  String get weatherTitle => 'Orai';
 
   @override
-  String get weatherClear => 'Clear';
+  String get weatherClear => 'Aišku';
 
   @override
-  String get weatherPartlyCloudy => 'Partly cloudy';
+  String get weatherPartlyCloudy => 'Debesuota';
 
   @override
-  String get weatherCloudy => 'Cloudy';
+  String get weatherCloudy => 'Debesuota';
 
   @override
-  String get weatherFog => 'Fog';
+  String get weatherFog => 'Rūkas';
 
   @override
-  String get weatherDrizzle => 'Drizzle';
+  String get weatherDrizzle => 'Šlapdriba';
 
   @override
-  String get weatherRain => 'Rain';
+  String get weatherRain => 'Lietus';
 
   @override
-  String get weatherSnow => 'Snow';
+  String get weatherSnow => 'Sniegas';
 
   @override
-  String get weatherStorm => 'Thunderstorm';
+  String get weatherStorm => 'Perkūnija';
 
   @override
-  String get weatherFetch => 'Get weather for this entry';
+  String get weatherFetch => 'Gaukite šio įrašo orus';
 
   @override
-  String get weatherNeedsLocation => 'Add a location with coordinates first.';
+  String get weatherNeedsLocation =>
+      'Pirmiausia pridėkite vietą su koordinatėmis.';
 
   @override
-  String get weatherUnavailable =>
-      'Weather is unavailable for this place and time.';
+  String get weatherUnavailable => 'Orai nepasiekiami šioje vietoje ir laiku.';
 
   @override
-  String get weatherRemove => 'Remove weather';
+  String get weatherRemove => 'Pašalinkite orą';
 
   @override
-  String get activityTitle => 'Activity';
+  String get activityTitle => 'Veikla';
 
   @override
-  String get activityStill => 'Still';
+  String get activityStill => 'Vis tiek';
 
   @override
-  String get activityWalking => 'Walking';
+  String get activityWalking => 'Vaikščiojimas';
 
   @override
-  String get activityRunning => 'Running';
+  String get activityRunning => 'Bėgimas';
 
   @override
-  String get activityCycling => 'Cycling';
+  String get activityCycling => 'Važiavimas dviračiu';
 
   @override
-  String get activityVehicle => 'In a vehicle';
+  String get activityVehicle => 'Transporto priemonėje';
 
   @override
-  String get activityFlying => 'Flying';
+  String get activityFlying => 'Skraidymas';
 
   @override
-  String get activityExercise => 'Exercise';
+  String get activityExercise => 'Pratimai';
 
   @override
-  String get activityDetect => 'Detect current activity';
+  String get activityDetect => 'Aptikti dabartinę veiklą';
 
   @override
-  String get activityDetectFailed => 'Couldn\'t detect an activity.';
+  String get activityDetectFailed => 'Nepavyko aptikti veiklos.';
 
   @override
-  String get activityRemove => 'Remove activity';
+  String get activityRemove => 'Pašalinti veiklą';
 
   @override
-  String get settingsAutoAddTitle => 'Add automatically';
+  String get settingsAutoAddTitle => 'Pridėti automatiškai';
 
   @override
-  String get settingsAutoAddLocation => 'Location';
+  String get settingsAutoAddLocation => 'Vieta';
 
   @override
-  String get settingsAutoAddWeather => 'Weather';
+  String get settingsAutoAddWeather => 'Orai';
 
   @override
-  String get settingsAutoAddHint =>
-      'New entries get these filled in when they are created.';
+  String get settingsAutoAddHint => 'Nauji įrašai užpildomi juos sukūrus.';
 
   @override
-  String get settingsTemperatureUnit => 'Temperature unit';
+  String get settingsTemperatureUnit => 'Temperatūros vienetas';
 
   @override
-  String get settingsCelsius => 'Celsius (°C)';
+  String get settingsCelsius => 'Celsijaus (°C)';
 
   @override
-  String get settingsFahrenheit => 'Fahrenheit (°F)';
+  String get settingsFahrenheit => 'Farenheito (°F)';
 
   @override
-  String get moodGreat => 'Great';
+  String get moodGreat => 'Puiku';
 
   @override
-  String get moodGood => 'Good';
+  String get moodGood => 'Gerai';
 
   @override
-  String get moodOkay => 'Okay';
+  String get moodOkay => 'Gerai';
 
   @override
-  String get moodBad => 'Bad';
+  String get moodBad => 'Blogai';
 
   @override
-  String get moodAwful => 'Awful';
+  String get moodAwful => 'Siaubinga';
 
   @override
-  String get locationSearchHint => 'Search for a place';
+  String get locationSearchHint => 'Ieškokite vietos';
 
   @override
-  String get locationSearchEmpty => 'No places found';
+  String get locationSearchEmpty => 'Vietų nerasta';
 
   @override
-  String get settingsWallpaper => 'Wallpaper';
+  String get settingsWallpaper => 'Tapetai';
 
   @override
-  String get wallpaperNone => 'None';
+  String get wallpaperNone => 'Nėra';
 
   @override
-  String get wallpaperDots => 'Dots';
+  String get wallpaperDots => 'Taškai';
 
   @override
-  String get wallpaperGrid => 'Grid';
+  String get wallpaperGrid => 'Tinklelis';
 
   @override
-  String get wallpaperLines => 'Lines';
+  String get wallpaperLines => 'Linijos';
 
   @override
-  String get wallpaperPhoto => 'Photo…';
+  String get wallpaperPhoto => 'Nuotrauka…';
 
   @override
-  String get settingsFontFamily => 'Font';
+  String get settingsFontFamily => 'Šriftas';
 
   @override
-  String get fontSystem => 'System';
+  String get fontSystem => 'Sistema';
 
   @override
-  String get fontSerif => 'Serif';
+  String get fontSerif => 'Serifas';
 
   @override
   String get fontMono => 'Monospace';
 
   @override
-  String get settingsFontSize => 'Font size';
+  String get settingsFontSize => 'Šrifto dydis';
 
   @override
-  String get fontSizeSmall => 'Small';
+  String get fontSizeSmall => 'Mažas';
 
   @override
-  String get fontSizeMedium => 'Medium';
+  String get fontSizeMedium => 'Vidutinis';
 
   @override
-  String get fontSizeLarge => 'Large';
+  String get fontSizeLarge => 'Didelis';
 
   @override
-  String get fontSizeExtraLarge => 'Extra large';
+  String get fontSizeExtraLarge => 'Itin didelis';
 
   @override
-  String get settingsLineSpacing => 'Line spacing';
+  String get settingsLineSpacing => 'Tarpai tarp eilučių';
 
   @override
-  String get lineSpacingCompact => 'Compact';
+  String get lineSpacingCompact => 'Kompaktiškas';
 
   @override
-  String get lineSpacingNormal => 'Normal';
+  String get lineSpacingNormal => 'Normalus';
 
   @override
-  String get lineSpacingRelaxed => 'Relaxed';
+  String get lineSpacingRelaxed => 'Atsipalaidavęs';
 
   @override
-  String get moodAssociationsTitle => 'What makes me feel…';
+  String get moodAssociationsTitle => 'Kas verčia mane jaustis…';
 
   @override
   String moodAssociationsCount(int matching, int total) {
-    return '$matching of $total entries';
+    return '$matching iš $total įrašų';
   }
 
   @override
-  String get videoRecord => 'Record a video';
+  String get videoRecord => 'Įrašykite vaizdo įrašą';
 
   @override
-  String get videoChoose => 'Choose a video';
+  String get videoChoose => 'Pasirinkite vaizdo įrašą';
 
   @override
-  String get audioRecordTitle => 'Record a voice note';
+  String get audioRecordTitle => 'Įrašykite balso pastabą';
 
   @override
-  String get audioChoose => 'Choose an audio file';
+  String get audioChoose => 'Pasirinkite garso failą';
 
   @override
-  String get audioStart => 'Record';
+  String get audioStart => 'Įrašas';
 
   @override
-  String get audioStop => 'Stop and save';
+  String get audioStop => 'Sustokite ir išsaugokite';
 
   @override
   String get audioPermissionDenied =>
-      'Microphone access is off. Allow it in the system settings.';
+      'Prieiga prie mikrofono išjungta. Leiskite tai sistemos nustatymuose.';
 
   @override
-  String get mediaTooLarge => 'This video is too large to attach.';
+  String get mediaTooLarge =>
+      'Šis vaizdo įrašas per didelis, kad jį būtų galima pridėti.';
 
   @override
-  String get mediaUnavailable =>
-      'This attachment is not available on this device.';
+  String get mediaUnavailable => 'Šis priedas nepasiekiamas šiame įrenginyje.';
 
   @override
-  String get widgetDone => 'Today\'s entry is written';
+  String get widgetDone => 'Šios dienos įrašas parašytas';
 
   @override
-  String get widgetPending => 'How was your day?';
+  String get widgetPending => 'Kaip praėjo jūsų diena?';
 
   @override
-  String get widgetWrite => 'Write';
+  String get widgetWrite => 'Rašyti';
 
   @override
-  String get insertChecklist => 'Checklist';
+  String get insertChecklist => 'Kontrolinis sąrašas';
 
   @override
-  String get insertNumberedList => 'Numbered list';
+  String get insertNumberedList => 'Sunumeruotas sąrašas';
 
   @override
-  String get insertTable => 'Table';
+  String get insertTable => 'Lentelė';
 
   @override
-  String get insertDivider => 'Divider';
+  String get insertDivider => 'Skirstytuvas';
 
   @override
-  String get insertCodeBlock => 'Code block';
+  String get insertCodeBlock => 'Kodo blokas';
 
   @override
-  String get journalSortTitle => 'Sort entries';
+  String get journalSortTitle => 'Rūšiuoti įrašus';
 
   @override
-  String get journalSortUpdated => 'Last updated';
+  String get journalSortUpdated => 'Paskutinį kartą atnaujinta';
 
   @override
-  String get settingsTimeFormat => 'Time format';
+  String get settingsTimeFormat => 'Laiko formatas';
 
   @override
-  String get settingsDayStart => 'New entries count for the day before until';
+  String get settingsDayStart => 'Nauji įrašai skaičiuojami už dieną prieš iki';
 
   @override
-  String get settingsDayAskUntil => 'Then ask which day until';
+  String get settingsDayAskUntil => 'Tada paklausk iki kurios dienos';
 
   @override
-  String get settingsDayStartMidnight => 'Off';
+  String get settingsDayStartMidnight => 'Išjungta';
 
   @override
   String settingsDayStartAt(int hour) {
@@ -1412,268 +1425,272 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String get settingsDayStartHint =>
-      'Every entry keeps the day it belongs to next to the time it was written, and you can change that day in the editor at any time. These hours only pick the day for new entries, so changing them moves no existing entry.';
+      'Kiekvienas įrašas išsaugo tą dieną, kuriai jis priklauso, šalia laiko, kada buvo parašytas, o tą dieną galite bet kada pakeisti redaktoriuje. Šios valandos parenka tik dieną naujiems įrašams, todėl jas pakeitus neperkeliamas joks esamas įrašas.';
 
   @override
   String get lateNightBadge =>
-      'Written late at night, counted for the day before';
+      'Parašyta vėlai vakare, skaičiuojama diena prieš';
 
   @override
   String editorDayAsk(String time) {
-    return 'Written at $time. Which day is it for?';
+    return 'Parašyta $time. Kuriai dienai skirta?';
   }
 
   @override
   String editorDayYesterday(String date) {
-    return '$date (yesterday)';
+    return '$date (vakar)';
   }
 
   @override
   String editorDayToday(String date) {
-    return '$date (today)';
+    return '$date (šiandien)';
   }
 
   @override
   String editorWrittenAt(String when) {
-    return 'Written $when';
+    return 'Parašyta $when';
   }
 
   @override
-  String get timeFormat12 => '12-hour';
+  String get timeFormat12 => '12 valandų';
 
   @override
-  String get timeFormat24 => '24-hour';
+  String get timeFormat24 => '24 val';
 
   @override
-  String get settingsReminderDays => 'Remind me on';
+  String get settingsReminderDays => 'Priminti man';
 
   @override
-  String get locationRecent => 'Recent places';
+  String get locationRecent => 'Naujausios vietos';
 
   @override
-  String get shareImage => 'Share image';
+  String get shareImage => 'Bendrinti vaizdą';
 
   @override
-  String get shareSaveImage => 'Save image';
+  String get shareSaveImage => 'Išsaugoti vaizdą';
 
   @override
-  String get shareSaved => 'Image saved';
+  String get shareSaved => 'Vaizdas išsaugotas';
 
   @override
-  String get deletedTitle => 'Recently deleted';
+  String get deletedTitle => 'Neseniai ištrinta';
 
   @override
-  String get deletedNone => 'Nothing deleted recently';
+  String get deletedNone => 'Pastaruoju metu nieko neištrinta';
 
   @override
   String deletedHint(int days) {
-    return 'Deleted entries stay here for $days days, then are erased.';
+    return 'Ištrinti įrašai lieka čia $days dienas, tada ištrinami.';
   }
 
   @override
   String deletedDaysLeft(int days) {
-    return '$days days left';
+    return 'Liko $days dienų';
   }
 
   @override
-  String get deletedRestore => 'Restore';
+  String get deletedRestore => 'Atkurti';
 
   @override
-  String get deletedDeleteForever => 'Delete forever';
+  String get deletedDeleteForever => 'Ištrinti visam laikui';
 
   @override
   String get deletedDeleteForeverDescription =>
-      'The entry and its attachments are erased. This cannot be undone.';
+      'Įrašas ir jo priedai ištrinami. To negalima anuliuoti.';
 
   @override
-  String get deletedEmpty => 'Empty';
+  String get deletedEmpty => 'Tuščia';
 
   @override
   String get deletedEmptyDescription =>
-      'Erase every entry in Recently deleted? This cannot be undone.';
+      'Ištrinti kiekvieną įrašą iš Neseniai ištrintas? To negalima anuliuoti.';
 
   @override
   String get formatJson => 'JSON';
 
   @override
-  String get randomTitle => 'Random walk';
+  String get randomTitle => 'Atsitiktinis pasivaikščiojimas';
 
   @override
-  String get randomSubtitle => 'Open a past entry';
+  String get randomSubtitle => 'Atidarykite ankstesnį įrašą';
 
   @override
-  String get randomNext => 'Another';
+  String get randomNext => 'Kitas';
 
   @override
-  String get randomAll => 'All';
+  String get randomAll => 'Visi';
 
   @override
-  String get randomWithPhotos => 'With photos';
+  String get randomWithPhotos => 'Su nuotraukomis';
 
   @override
-  String get randomGoodDays => 'Good days';
+  String get randomGoodDays => 'Geros dienos';
 
   @override
-  String get randomEmpty => 'No entries to pick from';
+  String get randomEmpty => 'Nėra įrašų, iš kurių būtų galima pasirinkti';
 
   @override
-  String get reviewWeekTitle => 'This week';
+  String get reviewWeekTitle => 'Šią savaitę';
 
   @override
-  String get reviewWeekSubtitle => 'Your week so far';
+  String get reviewWeekSubtitle => 'Jūsų savaitė iki šiol';
 
   @override
-  String get reviewYearTitle => 'This year';
+  String get reviewYearTitle => 'Šiemet';
 
   @override
-  String get reviewEmpty => 'Nothing written yet';
+  String get reviewEmpty => 'Dar nieko neparašyta';
 
   @override
-  String get reviewEntries => 'Entries';
+  String get reviewEntries => 'Įrašai';
 
   @override
-  String get reviewDaysWritten => 'Days written';
+  String get reviewDaysWritten => 'Rašytos dienos';
 
   @override
-  String get reviewWords => 'Words';
+  String get reviewWords => 'Žodžiai';
 
   @override
-  String get reviewPhotos => 'Photos';
+  String get reviewPhotos => 'Nuotraukos';
 
   @override
-  String get reviewLongestRun => 'Longest run of days';
+  String get reviewLongestRun => 'Ilgiausias dienų bėgimas';
 
   @override
-  String get reviewAverageMood => 'Average mood';
+  String get reviewAverageMood => 'Vidutinė nuotaika';
 
   @override
-  String get reviewFavorites => 'Most often';
+  String get reviewFavorites => 'Dažniausiai';
 
   @override
-  String get reviewByMonth => 'By month';
+  String get reviewByMonth => 'Pagal mėnesį';
 
   @override
-  String get reviewHighlight => 'Highlight';
+  String get reviewHighlight => 'Paryškinti';
 
   @override
-  String get yearInPixels => 'Year in pixels';
+  String get yearInPixels => 'Metai pikseliais';
 
   @override
-  String get capsuleSeal => 'Seal as a time capsule';
+  String get capsuleSeal => 'Sandarinimas kaip laiko kapsulė';
 
   @override
-  String get capsuleTitle => 'Time capsule';
+  String get capsuleTitle => 'Laiko kapsulė';
 
   @override
   String capsuleOpensOn(Object date) {
-    return 'Opens on $date';
+    return 'Atsidaro $date';
   }
 
   @override
   String capsuleWrittenOn(Object date) {
-    return 'Written on $date';
+    return 'Parašyta $date';
   }
 
   @override
-  String get capsuleOpenEarly => 'Open early';
+  String get capsuleOpenEarly => 'Atidarykite anksti';
 
   @override
   String get capsuleOpenEarlyDescription =>
-      'The capsule opens now and stays open.';
+      'Kapsulė atsidaro dabar ir lieka atidaryta.';
 
   @override
-  String get capsuleOpened => 'Time capsule opened';
+  String get capsuleOpened => 'Atidaryta laiko kapsulė';
 
   @override
-  String get templateMorningName => 'Morning pages';
+  String get templateMorningName => 'Ryto puslapiai';
 
   @override
-  String get templateMorningDescription => 'Set up the day in three minutes';
+  String get templateMorningDescription => 'Nustatykite dieną per tris minutes';
 
   @override
   String get templateMorningText =>
-      '## Three things I want to do well today\n1. \n2. \n3. \n\n## Something I look forward to\n\n## A note to myself\n';
+      '## Trys dalykai, kuriuos šiandien noriu padaryti gerai\n1. \n2. \n3. \n\n## Kažko laukiu\n\n## Pastaba sau\n';
 
   @override
-  String get templateEveningName => 'Evening review';
+  String get templateEveningName => 'Vakaro apžvalga';
 
   @override
-  String get templateEveningDescription => 'Close the day with what went well';
+  String get templateEveningDescription =>
+      'Užbaikite dieną tuo, kas buvo gerai';
 
   @override
   String get templateEveningText =>
-      '## Three good things today\n1. \n2. \n3. \n\n## What I learned\n\n## What could go better tomorrow\n';
+      '## Trys geri dalykai šiandien\n1. \n2. \n3. \n\n## Ką aš išmokau\n\n## Kas gali būti geriau rytoj\n';
 
   @override
-  String get routineMorning => 'Good morning';
+  String get routineMorning => 'Labas rytas';
 
   @override
-  String get routineEvening => 'Evening review';
+  String get routineEvening => 'Vakaro apžvalga';
 
   @override
-  String get settingsRoutinePrompts => 'Morning and evening prompts';
+  String get settingsRoutinePrompts => 'Ryto ir vakaro raginimai';
 
   @override
   String get settingsRoutinePromptsHint =>
-      'Suggest the morning or evening template in Stories';
+      'Pasiūlykite ryto arba vakaro šabloną Istorijose';
 
   @override
-  String get checkInTitle => 'Quick check-in';
+  String get checkInTitle => 'Greita registracija';
 
   @override
-  String get checkInSubtitle => 'Mood in two taps';
+  String get checkInSubtitle => 'Nuotaika dviem bakstelėjimais';
 
   @override
-  String get checkInMood => 'How do you feel?';
+  String get checkInMood => 'kaip tu jautiesi?';
 
   @override
-  String get checkInActivity => 'What are you doing?';
+  String get checkInActivity => 'ka tu darai?';
 
   @override
-  String get checkInNote => 'A line about it (optional)';
+  String get checkInNote => 'Eilutė apie tai (neprivaloma)';
 
   @override
-  String get checkInSave => 'Save';
+  String get checkInSave => 'Išsaugoti';
 
   @override
   String editorWordCount(int words, int characters) {
-    return '$words words · $characters characters';
+    return '$words žodžiai · $characters simboliai';
   }
 
   @override
-  String get coachProgramEverydayTagline => 'Notice the small things in a day.';
+  String get coachProgramEverydayTagline =>
+      'Pastebėkite mažus dalykus per dieną.';
 
   @override
-  String get coachProgramReflectTagline => 'Slow down and listen to yourself.';
+  String get coachProgramReflectTagline => 'Lėtinkite ir įsiklausykite į save.';
 
   @override
-  String get coachDuration => 'Duration';
+  String get coachDuration => 'Trukmė';
 
   @override
-  String get coachInterval => 'Interval';
+  String get coachInterval => 'Intervalas';
 
   @override
-  String get coachDifficulty => 'Difficulty';
+  String get coachDifficulty => 'Sunkumas';
 
   @override
-  String get coachIntervalDaily => 'Daily';
+  String get coachIntervalDaily => 'Kasdien';
 
   @override
-  String get coachIntervalWeekly => 'Weekly';
+  String get coachIntervalWeekly => 'Kas savaitę';
 
   @override
-  String get coachDifficultyBeginner => 'Beginner';
+  String get coachDifficultyBeginner => 'Pradedantysis';
 
   @override
-  String get coachDifficultyIntermediate => 'Intermediate';
+  String get coachDifficultyIntermediate => 'Vidutinis';
 
   @override
   String coachDurationDays(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count days',
-      one: '1 day',
+      other: '$count dienų',
+      one: '$count diena',
+      many: '$count dienos',
+      few: '$count dienos',
     );
     return '$_temp0';
   }
@@ -1683,1055 +1700,1067 @@ class AppLocalizationsLt extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count weeks',
-      one: '1 week',
+      other: '$count savaičių',
+      one: '$count savaitė',
+      many: '$count savaitės',
+      few: '$count savaites',
     );
     return '$_temp0';
   }
 
   @override
   String coachDayN(int n) {
-    return 'Day $n';
+    return 'Diena $n';
   }
 
   @override
   String coachWeekN(int n) {
-    return 'Week $n';
+    return 'Savaitė $n';
   }
 
   @override
-  String get coachEnroll => 'Enroll';
+  String get coachEnroll => 'Užsiregistruoti';
 
   @override
-  String get coachEndProgram => 'End program';
+  String get coachEndProgram => 'Baigti programą';
 
   @override
-  String get coachAuthor => 'Author';
+  String get coachAuthor => 'Autorius';
 
   @override
-  String get coachAuthorBio => 'Prompts written for this app.';
+  String get coachAuthorBio => 'Raginimai parašyti šiai programai.';
 
   @override
   String get coachEnrolledTip =>
-      'All set! Your questions will show up in Stories.';
+      'Viskas paruošta! Jūsų klausimai bus rodomi istorijose.';
 
   @override
-  String get coachGoToStories => 'Go to Stories';
+  String get coachGoToStories => 'Eikite į istorijas';
 
   @override
-  String get coachAnswerHint => 'Write your answer…';
+  String get coachAnswerHint => 'Parašyk savo atsakymą…';
 
   @override
-  String get storyWrapUp => 'That\'s all for today.';
+  String get storyWrapUp => 'Tai viskas šiai dienai.';
 
   @override
-  String get storyTapToClose => 'Tap to close';
+  String get storyTapToClose => 'Bakstelėkite, kad uždarytumėte';
 
   @override
-  String get coachAnswerDone => 'Done';
+  String get coachAnswerDone => 'Atlikta';
 
   @override
-  String get coachAnswered => 'Answered, tap to open';
+  String get coachAnswered => 'Atsakyta, palieskite, kad atidarytumėte';
 
   @override
-  String get coachAnsweredEarlier => 'Answered';
+  String get coachAnsweredEarlier => 'Atsakyta';
 
   @override
-  String get locationLocating => 'Locating…';
+  String get locationLocating => 'Ieškoma…';
 
   @override
-  String get locationPickPlace => 'Pick a place';
+  String get locationPickPlace => 'Pasirinkite vietą';
 
   @override
-  String get locationPlacesHint => 'Address or name of the place';
+  String get locationPlacesHint => 'Vietos adresas arba pavadinimas';
 
   @override
-  String get locationCustom => 'Custom place';
+  String get locationCustom => 'Individualizuota vieta';
 
   @override
-  String get locationCurrent => 'Current location';
+  String get locationCurrent => 'Dabartinė vieta';
 
   @override
-  String get locationSaved => 'Saved places';
+  String get locationSaved => 'Išsaugotos vietos';
 
   @override
-  String get locationSearchResults => 'Search results';
+  String get locationSearchResults => 'Paieškos rezultatai';
 
   @override
-  String get locationNearby => 'Nearby places';
+  String get locationNearby => 'Netoliese esančios vietos';
 
   @override
-  String get locationRename => 'Rename';
+  String get locationRename => 'Pervardyti';
 
   @override
-  String get locationSavePlace => 'Save place';
+  String get locationSavePlace => 'Išsaugoti vietą';
 
   @override
-  String get locationUnsavePlace => 'Remove from saved places';
+  String get locationUnsavePlace => 'Pašalinti iš išsaugotų vietų';
 
   @override
-  String get shareAs => 'Share as…';
+  String get shareAs => 'Bendrinti kaip…';
 
   @override
-  String get shareAsImage => 'Image';
+  String get shareAsImage => 'Vaizdas';
 
   @override
-  String get shareAsZip => 'ZIP with the original media';
+  String get shareAsZip => 'ZIP su originalia laikmena';
 
   @override
-  String get shareAsPlainText => 'Plain text';
+  String get shareAsPlainText => 'Paprastas tekstas';
 
   @override
   String get shareAsHtml => 'HTML';
 
   @override
-  String get onboardWelcomeTitle => 'Welcome to AID Diary';
+  String get onboardWelcomeTitle => 'Sveiki atvykę į AID Diary';
 
   @override
   String get onboardWelcomeText =>
-      'Start here, or connect this device to one you already use.';
+      'Pradėkite čia arba prijunkite šį įrenginį prie jau naudojamo įrenginio.';
 
   @override
-  String get onboardStart => 'Start writing';
+  String get onboardStart => 'Pradėkite rašyti';
 
   @override
-  String get helpFaq => 'Frequently asked questions';
+  String get helpFaq => 'Dažnai užduodami klausimai';
 
   @override
-  String get helpFaq1Q => 'Where is my diary stored?';
+  String get helpFaq1Q => 'Kur saugomas mano dienoraštis?';
 
   @override
   String get helpFaq1A =>
-      'Your diary is stored on this device. It reaches other devices or storage only when you enable sync, share or export it. Sync is end-to-end encrypted.';
+      'Jūsų dienoraštis saugomas šiame įrenginyje. Jis pasiekia kitus įrenginius arba saugyklą tik įjungus sinchronizavimą, bendrinimą arba eksportavimą. Sinchronizavimas yra visiškai užšifruotas.';
 
   @override
-  String get helpFaq2Q => 'How do I keep a copy or move to a new device?';
+  String get helpFaq2Q =>
+      'Kaip pasilikti kopiją arba perkelti į naują įrenginį?';
 
   @override
   String get helpFaq2A =>
-      'Connect to an existing device in Settings → Data & storage → Sync and confirm authorization on the device that has your diary. Both devices remain usable. You can also create a backup and restore it on another device.';
+      'Prisijunkite prie esamo įrenginio nustatymuose → Duomenys ir saugykla → Sinchronizuoti ir patvirtinkite įrenginio, kuriame yra jūsų dienoraštis, leidimą. Abu įrenginiai išlieka tinkami naudoti. Taip pat galite sukurti atsarginę kopiją ir atkurti ją kitame įrenginyje.';
 
   @override
-  String get helpFaq3Q => 'Can I bring in entries from other diary apps?';
+  String get helpFaq3Q =>
+      'Ar galiu įvesti įrašus iš kitų dienoraščio programų?';
 
   @override
   String get helpFaq3A =>
-      'Yes: in Settings → Data & storage, import exports from Daylio, Diarium, Diaro, DayBook, My Brain, OneShot and Pixels, or a JSON export.';
+      'Taip: Nustatymai → Duomenys ir saugykla importuokite eksportą iš Daylio, Diarium, Diaro, DayBook, My Brain, OneShot ir Pixels arba JSON eksporto.';
 
   @override
-  String get helpFaq4Q => 'How do coach programs work?';
+  String get helpFaq4Q => 'Kaip veikia trenerių programos?';
 
   @override
   String get helpFaq4A =>
-      'Enroll in a program on the Coach page. Each day or week a new question waits in Stories; your answer is saved as an entry.';
+      'Užsiregistruokite į programą trenerio puslapyje. Kiekvieną dieną ar savaitę Istorijose laukia naujas klausimas; jūsų atsakymas išsaugomas kaip įrašas.';
 
   @override
-  String get helpFaq5Q => 'What if I forget my passcode?';
+  String get helpFaq5Q => 'Ką daryti, jei pamiršiu slaptažodį?';
 
   @override
   String get helpFaq5A =>
-      'The passcode cannot be recovered, so keep a backup of your diary.';
+      'Slaptažodžio atkurti nepavyks, todėl pasidarykite atsarginę dienoraščio kopiją.';
 
   @override
-  String get helpPrivacy => 'Privacy';
+  String get helpPrivacy => 'Privatumas';
 
   @override
   String get helpPrivacyText =>
-      'Diary content and media stay on this device unless you enable encrypted sync or share/export them. Maps, place lookup and weather use the configured services and send the location or search query needed for that request, not diary text.';
+      'Dienoraščio turinys ir medija lieka šiame įrenginyje, nebent įgalinsite šifruotą sinchronizavimą arba bendrinsite / neeksportuosite jų. Žemėlapiai, vietos paieška ir orai naudoja sukonfigūruotas paslaugas ir siunčia tai užklausai reikalingą vietą arba paieškos užklausą, o ne dienoraščio tekstą.';
 
   @override
-  String get photoMetaTitle => 'Use the photo\'s details?';
+  String get photoMetaTitle => 'Naudoti nuotraukos duomenis?';
 
   @override
   String photoMetaDateAndPlace(String date, String place) {
-    return 'Count this entry for $date and set its place to $place, as recorded in the photo?';
+    return 'Suskaičiuoti šį įrašą $date ir nustatyti jo vietą į $place, kaip užfiksuota nuotraukoje?';
   }
 
   @override
   String photoMetaDate(String date) {
-    return 'Count this entry for $date, when the photo was taken?';
+    return 'Suskaičiuoti šį įrašą $date, kai buvo padaryta nuotrauka?';
   }
 
   @override
   String photoMetaPlace(String place) {
-    return 'Set this entry\'s place to $place, where the photo was taken?';
+    return 'Nustatyti šio įrašo vietą į $place, kur buvo padaryta nuotrauka?';
   }
 
   @override
-  String get photoMetaApply => 'Use them';
+  String get photoMetaApply => 'Naudokite juos';
 
   @override
-  String get quickWriteTitle => 'Quick write';
+  String get quickWriteTitle => 'Greitai parašyk';
 
   @override
-  String get quickWriteText => 'Tap to start a new entry.';
+  String get quickWriteText => 'Bakstelėkite, kad pradėtumėte naują įrašą.';
 
   @override
-  String get settingsQuickWriteTitle => 'Quick write in notifications';
+  String get settingsQuickWriteTitle => 'Greitai įrašykite pranešimus';
 
   @override
   String get settingsQuickWriteDescription =>
-      'Keep a notification that opens a new entry.';
+      'Išsaugokite pranešimą, kuris atidaro naują įrašą.';
 
   @override
-  String get settingsNudgesTitle => 'Nudge me after a quiet stretch';
+  String get settingsNudgesTitle => 'Pastumdykite mane po tylios atkarpos';
 
   @override
   String settingsNudgesDescription(int days) {
-    return 'A gentle reminder when you haven\'t written for $days days.';
+    return 'Švelnus priminimas, kai neparašėte $days dienas.';
   }
 
   @override
-  String get nudgeTitle => 'It\'s been a while';
+  String get nudgeTitle => 'Praėjo šiek tiek laiko';
 
   @override
-  String get nudgeMonday => 'A new week: what are you looking forward to?';
+  String get nudgeMonday => 'Nauja savaitė: ko lauki?';
 
   @override
-  String get nudgeTuesday => 'Two lines are enough. How are you today?';
+  String get nudgeTuesday => 'Pakanka dviejų eilučių. kaip tu siandien?';
 
   @override
-  String get nudgeWednesday =>
-      'Halfway through the week. What stood out so far?';
+  String get nudgeWednesday => 'Įpusėjus savaitei. Kas išsiskyrė iki šiol?';
 
   @override
-  String get nudgeThursday => 'Anything small worth keeping from today?';
+  String get nudgeThursday => 'Ar verta pasilikti ką nors mažo nuo šiandien?';
 
   @override
-  String get nudgeFriday => 'The week is wrapping up. Note one good moment.';
+  String get nudgeFriday =>
+      'Savaitė baigiasi. Atkreipkite dėmesį į vieną gerą momentą.';
 
   @override
-  String get nudgeSaturday => 'A slow Saturday is a good day to write.';
+  String get nudgeSaturday => 'Lėtas šeštadienis – gera diena rašyti.';
 
   @override
-  String get nudgeSunday => 'Look back on the week before it ends.';
+  String get nudgeSunday => 'Pažvelkite į savaitę prieš jos pabaigą.';
 
   @override
-  String get photoWidgetEmpty => 'Photos you add to entries show up here.';
+  String get photoWidgetEmpty =>
+      'Nuotraukos, kurias pridedate prie įrašų, rodomos čia.';
 
   @override
-  String get channelReminders => 'Reminders';
+  String get channelReminders => 'Priminimai';
 
   @override
-  String get channelOnThisDay => 'On this day';
+  String get channelOnThisDay => 'Šią dieną';
 
   @override
-  String get channelCoach => 'Coach prompts';
+  String get channelCoach => 'Treneris ragina';
 
   @override
-  String get channelNudges => 'Nudges after quiet days';
+  String get channelNudges => 'Nusileidžia po ramių dienų';
 
   @override
-  String get channelQuickWrite => 'Quick write';
+  String get channelQuickWrite => 'Greitai parašyk';
 
   @override
-  String get channelBackup => 'Backups';
+  String get channelBackup => 'Atsarginės kopijos';
 
   @override
-  String get formatJsonExport => 'JSON (AID Diary export)';
+  String get formatJsonExport => 'JSON (AID Diary eksportas)';
 
   @override
   String get aboutModifiedNotice =>
-      'A modified version of Daily You by Demizo and contributors. It is not the official Daily You app.';
+      '„Demizo“ ir bendradarbių modifikuota „Daily You“ versija. Tai nėra oficiali „Daily You“ programa.';
 
   @override
-  String get toolbarPhotos => 'Add photos';
+  String get toolbarPhotos => 'Pridėkite nuotraukų';
 
   @override
-  String get toolbarMedia => 'Photos and videos';
+  String get toolbarMedia => 'Nuotraukos ir vaizdo įrašai';
 
   @override
-  String get mediaFromGallery => 'Choose from gallery';
+  String get mediaFromGallery => 'Pasirinkite iš galerijos';
 
   @override
-  String get mediaFromFiles => 'Choose from files';
+  String get mediaFromFiles => 'Pasirinkite iš failų';
 
   @override
-  String get editorLeaveTitle => 'Save this entry?';
+  String get editorLeaveTitle => 'Išsaugoti šį įrašą?';
 
   @override
-  String get editorLeaveDiscard => 'Don\'t save';
+  String get editorLeaveDiscard => 'Netaupyk';
 
   @override
-  String get editorTitleHint => 'Title';
+  String get editorTitleHint => 'Pavadinimas';
 
   @override
-  String get editorLocating => 'Locating…';
+  String get editorLocating => 'Ieškoma…';
 
   @override
-  String get toolbarVideo => 'Video';
+  String get toolbarVideo => 'Vaizdo įrašas';
 
   @override
-  String get toolbarAudio => 'Voice note';
+  String get toolbarAudio => 'Balso pastaba';
 
   @override
-  String get toolbarTags => 'Tags';
+  String get toolbarTags => 'Žymos';
 
   @override
-  String get toolbarBulletList => 'Bulleted list';
+  String get toolbarBulletList => 'Sąrašas su ženkleliais';
 
   @override
-  String get toolbarHeading => 'Heading';
+  String get toolbarHeading => 'Antraštė';
 
   @override
-  String get toolbarBold => 'Bold';
+  String get toolbarBold => 'Paryškintas';
 
   @override
-  String get toolbarItalic => 'Italic';
+  String get toolbarItalic => 'Kursyvas';
 
   @override
-  String get toolbarHighlight => 'Highlight';
+  String get toolbarHighlight => 'Paryškinti';
 
   @override
-  String get toolbarStrikethrough => 'Strikethrough';
+  String get toolbarStrikethrough => 'Perbraukta';
 
   @override
-  String get toolbarQuote => 'Quote';
+  String get toolbarQuote => 'Citata';
 
   @override
-  String get toolbarLink => 'Link';
+  String get toolbarLink => 'Nuoroda';
 
   @override
-  String get toolbarInsert => 'Insert';
+  String get toolbarInsert => 'Įterpti';
 
   @override
-  String get toolbarUndo => 'Undo';
+  String get toolbarUndo => 'Anuliuoti';
 
   @override
-  String get toolbarRedo => 'Redo';
+  String get toolbarRedo => 'Perdaryti';
 
   @override
-  String get toolbarInsertDate => 'Insert the date';
+  String get toolbarInsertDate => 'Įveskite datą';
 
   @override
-  String get toolbarInsertTime => 'Insert the time';
+  String get toolbarInsertTime => 'Įveskite laiką';
 
   @override
-  String get settingsSyncTitle => 'Cloud Sync';
+  String get settingsSyncTitle => 'Debesų sinchronizavimas';
 
   @override
   String get syncOffDescription =>
-      'Keep this diary the same on all your devices through Google Drive or a WebDAV server, such as Nextcloud, Synology or Jianguoyun.';
+      'Išsaugokite šį dienoraštį visuose savo įrenginiuose naudodami Google Drive arba WebDAV serverį, pvz., Nextcloud, Synology ar Jianguoyun.';
 
   @override
-  String get syncUseGoogleDrive => 'Sync with Google Drive';
+  String get syncUseGoogleDrive => 'Sinchronizuoti su Google Drive';
 
   @override
-  String get syncOrWebDav => 'Or a WebDAV server';
+  String get syncOrWebDav => 'Arba WebDAV serveris';
 
   @override
   String get syncGoogleDrive => 'Google Drive';
 
   @override
-  String get syncGoogleSignedIn => 'Signed in. You can go back to AID Diary.';
+  String get syncGoogleSignedIn => 'Prisijungta. Galite grįžti į AID Diary.';
 
   @override
-  String get syncGoogleSignInAgain => 'Google needs you to sign in again.';
+  String get syncGoogleSignInAgain => '„Google“ reikia vėl prisijungti.';
 
   @override
-  String get syncSignInAgain => 'Sign in again';
+  String get syncSignInAgain => 'Prisijunkite dar kartą';
 
   @override
-  String get settingsCommandLineTitle => 'Command line';
+  String get settingsCommandLineTitle => 'Komandinė eilutė';
 
   @override
-  String get commandLineToggle => 'Command line interface';
+  String get commandLineToggle => 'Komandinės eilutės sąsaja';
 
   @override
   String get commandLineToggleHint =>
-      'Lets the aid command and other programs on this device use the app\'s commands.';
+      'Leidžia pagalbos komandai ir kitoms šio įrenginio programoms naudoti programos komandas.';
 
   @override
-  String get commandLineAlwaysOn => 'Always on in development builds.';
+  String get commandLineAlwaysOn => 'Visada plėtojant.';
 
   @override
   String commandLineListening(int port) {
-    return 'Listening on port $port';
+    return 'Klausymas per prievadą $port';
   }
 
   @override
-  String get commandPaletteTitle => 'All commands';
+  String get commandPaletteTitle => 'Visos komandos';
 
   @override
-  String get commandPaletteSearch => 'Search commands';
+  String get commandPaletteSearch => 'Paieškos komandos';
 
   @override
-  String get commandPaletteRun => 'Run';
+  String get commandPaletteRun => 'Bėk';
 
   @override
-  String get commandPaletteConfirm => 'This cannot simply be undone. Run it?';
+  String get commandPaletteConfirm =>
+      'To negalima paprasčiausiai atšaukti. Paleisti?';
 
   @override
   String syncReceiving(int done, int total) {
-    return 'Receiving $done of $total…';
+    return 'Priimamas $done iš $total…';
   }
 
   @override
   String syncSending(int done, int total) {
-    return 'Sending $done of $total…';
+    return 'Siunčiamas $done iš $total…';
   }
 
   @override
   String get syncGoogleDriveNotAllowed =>
-      'Access to Google Drive was not allowed. Connect again and tick Google Drive on Google\'s page.';
+      'Prieiga prie Google Drive nebuvo leista. Prisijunkite dar kartą ir „Google“ puslapyje pažymėkite Google Drive.';
 
   @override
   String get syncEntryUnsynced =>
-      'Not synced: the last sync did not go through';
+      'Nesinchronizuotas: paskutinis sinchronizavimas nebuvo atliktas';
 
   @override
-  String get syncUseOfficial => 'Use the AID sync server';
+  String get syncUseOfficial => 'Naudokite AID sinchronizavimo serverį';
 
   @override
-  String get syncServer => 'Server address';
+  String get syncServer => 'Serverio adresas';
 
   @override
-  String get syncUsername => 'Username';
+  String get syncUsername => 'Vartotojo vardas';
 
   @override
-  String get syncPassword => 'Password';
+  String get syncPassword => 'Slaptažodis';
 
   @override
-  String get syncConnect => 'Connect';
+  String get syncConnect => 'Prisijunkite';
 
   @override
-  String get syncConnecting => 'Connecting…';
+  String get syncConnecting => 'Jungiamasi…';
 
   @override
   String get syncSignInFailed =>
-      'Could not sign in. Check the address, the username and the password.';
+      'Nepavyko prisijungti. Patikrinkite adresą, vartotojo vardą ir slaptažodį.';
 
   @override
   String syncConnectFailed(String error) {
-    return 'Could not connect: $error';
+    return 'Nepavyko prisijungti: $error';
   }
 
   @override
-  String get syncNewSpaceTitle => 'Start syncing';
+  String get syncNewSpaceTitle => 'Pradėkite sinchronizuoti';
 
   @override
   String get syncNewSpaceDescription =>
-      'There is no synced diary here yet. This diary will be uploaded, end-to-end encrypted with a key that stays on your devices.';
+      'Čia dar nėra sinchronizuoto dienoraščio. Šis dienoraštis bus įkeltas, visiškai užšifruotas raktu, kuris lieka jūsų įrenginiuose.';
 
   @override
-  String get syncJoinTitle => 'Join the synced diary';
+  String get syncJoinTitle => 'Prisijunkite prie sinchronizuoto dienoraščio';
 
   @override
   String get syncWrongKey =>
-      'This recovery code does not open the synced diary.';
+      'Šis atkūrimo kodas neatidaro sinchronizuoto dienoraščio.';
 
   @override
   String syncLastSynced(String time) {
-    return 'Last synced $time';
+    return 'Paskutinį kartą sinchronizuotas $time';
   }
 
   @override
-  String get syncNever => 'Not synced yet';
+  String get syncNever => 'Dar nesinchronizuotas';
 
   @override
-  String get syncSyncing => 'Syncing…';
+  String get syncSyncing => 'Sinchronizuojama…';
 
   @override
   String syncFailed(String error) {
-    return 'The last sync failed: $error';
+    return 'Paskutinis sinchronizavimas nepavyko: $error';
   }
 
   @override
   String get syncLocked =>
-      'The synced diary now belongs to other devices, or was started over. Pair with one of them or use the recovery code to keep syncing.';
+      'Sinchronizuotas dienoraštis dabar priklauso kitiems įrenginiams arba buvo paleistas iš naujo. Susiekite su vienu iš jų arba naudokite atkūrimo kodą, kad tęstumėte sinchronizavimą.';
 
   @override
-  String get syncNow => 'Sync now';
+  String get syncNow => 'Sinchronizuoti dabar';
 
   @override
-  String get syncUnlock => 'Unlock';
+  String get syncUnlock => 'Atrakinti';
 
   @override
-  String get syncEncrypted => 'End-to-end encrypted';
+  String get syncEncrypted => 'Užšifruota nuo galo iki galo';
 
   @override
-  String get syncDisconnect => 'Stop syncing';
+  String get syncDisconnect => 'Sustabdyti sinchronizavimą';
 
   @override
   String get syncDisconnectDescription =>
-      'This device stops syncing. The diary here and the synced copy stay as they are.';
+      'Šis įrenginys nustoja sinchronizuoti. Čia esantis dienoraštis ir sinchronizuota kopija lieka tokie, kokie yra.';
 
   @override
-  String get syncOwnRecoveryPassword => 'Use my own recovery password';
+  String get syncOwnRecoveryPassword => 'Naudokite savo atkūrimo slaptažodį';
 
   @override
-  String get syncRecoveryPassword => 'Recovery password';
+  String get syncRecoveryPassword => 'Atkūrimo slaptažodis';
 
   @override
-  String get syncRecoveryPasswordRepeat => 'Repeat the recovery password';
+  String get syncRecoveryPasswordRepeat => 'Pakartokite atkūrimo slaptažodį';
 
   @override
   String syncRecoveryPasswordTooShort(int min) {
-    return 'Use at least $min characters';
+    return 'Naudokite bent $min simbolius';
   }
 
   @override
-  String get syncRecoveryPasswordMismatch => 'The passwords differ';
+  String get syncRecoveryPasswordMismatch => 'Slaptažodžiai skiriasi';
 
   @override
-  String get syncRecoveryCode => 'Recovery code';
+  String get syncRecoveryCode => 'Atkūrimo kodas';
 
   @override
-  String get syncRecoveryCodeTitle => 'Save your recovery code';
+  String get syncRecoveryCodeTitle => 'Išsaugokite atkūrimo kodą';
 
   @override
   String get syncRecoveryCodeDescription =>
-      'If every device of yours is lost, this code restores your synced diary. Keep it in a password manager or on paper. It is shown only this once.';
+      'Jei pametate visus jūsų įrenginius, šis kodas atkuria sinchronizuotą dienoraštį. Laikykite jį slaptažodžių tvarkyklėje arba popieriuje. Jis rodomas tik šį kartą.';
 
   @override
-  String get syncRecoveryCodeCopied => 'Recovery code copied';
+  String get syncRecoveryCodeCopied => 'Atkūrimo kodas nukopijuotas';
 
   @override
-  String get syncRecoveryCodeSaved => 'I have saved it';
+  String get syncRecoveryCodeSaved => 'Aš jį išsaugojau';
 
   @override
   String get syncJoinNeedsKey =>
-      'This synced diary belongs to your other devices. Pair with one of them, or use the recovery code. The entries on this device will be added to it.';
+      'Šis sinchronizuotas dienoraštis priklauso kitiems jūsų įrenginiams. Susiekite su vienu iš jų arba naudokite atkūrimo kodą. Šiame įrenginyje esantys įrašai bus pridėti prie jo.';
 
   @override
-  String get syncPairDevice => 'Pair with a device';
+  String get syncPairDevice => 'Susiekite su įrenginiu';
 
   @override
-  String get syncUseRecoveryCode => 'Use the recovery code';
+  String get syncUseRecoveryCode => 'Naudokite atkūrimo kodą';
 
   @override
-  String get syncAddDevice => 'Add a device';
+  String get syncAddDevice => 'Pridėkite įrenginį';
 
   @override
-  String get syncChangeRecoveryCode => 'Change the recovery code';
+  String get syncChangeRecoveryCode => 'Pakeiskite atkūrimo kodą';
 
   @override
   String get syncChangeRecoveryDescription =>
-      'A new code replaces the current one, which stops working. Your data and other devices stay as they are.';
+      'Naujas kodas pakeičia dabartinį, kuris nustoja veikti. Jūsų duomenys ir kiti įrenginiai lieka tokie, kokie yra.';
 
   @override
-  String get syncNewRandomCode => 'New random code';
+  String get syncNewRandomCode => 'Naujas atsitiktinis kodas';
 
   @override
-  String get syncRecoveryCodeChanged => 'Recovery code changed';
+  String get syncRecoveryCodeChanged => 'Atkūrimo kodas pakeistas';
 
   @override
-  String get syncResetSpace => 'Start the synced diary over';
+  String get syncResetSpace => 'Pradėkite sinchronizuotą dienoraštį iš naujo';
 
   @override
   String get syncResetSpaceDescription =>
-      'Only when no device and no recovery code opens it any more: the synced copy is replaced by the diary on this device, under this device\'s keys. Your other devices then pair again.';
+      'Tik tada, kai joks įrenginys ir atkūrimo kodas jo nebeatidaro: sinchronizuotą kopiją pakeičia šio įrenginio dienoraštis, po šio įrenginio klavišais. Tada vėl susiekite kitus įrenginius.';
 
   @override
-  String get syncPairTitle => 'Pair devices';
+  String get syncPairTitle => 'Suporuokite įrenginius';
 
   @override
-  String get syncPairShow => 'Show a code';
+  String get syncPairShow => 'Parodykite kodą';
 
   @override
-  String get syncPairEnter => 'Enter a code';
+  String get syncPairEnter => 'Įveskite kodą';
 
   @override
   String get syncPairShowHint =>
-      'On your other device, open Pair devices, choose Enter a code, and type or scan this.';
+      'Kitame įrenginyje atidarykite Susieti įrenginius, pasirinkite Įvesti kodą ir įveskite arba nuskaitykite jį.';
 
   @override
   String get syncPairEnterHint =>
-      'Type the code your other device shows, or scan it.';
+      'Įveskite kito įrenginio rodomą kodą arba nuskaitykite jį.';
 
   @override
-  String get syncPairCode => 'Pairing code';
+  String get syncPairCode => 'Poravimo kodas';
 
   @override
-  String get syncPairScan => 'Scan';
+  String get syncPairScan => 'Nuskaityti';
 
   @override
-  String get syncPairStart => 'Pair';
+  String get syncPairStart => 'Suporuoti';
 
   @override
-  String get syncPairWaiting => 'Waiting for the other device…';
+  String get syncPairWaiting => 'Laukiama kito įrenginio…';
 
   @override
   String syncPairDone(String device) {
-    return 'Paired with $device';
+    return 'Suporuotas su $device';
   }
 
   @override
   String get syncPairWrongCode =>
-      'The code did not match. Show a new code and try again.';
+      'Kodas nesutapo. Parodykite naują kodą ir bandykite dar kartą.';
 
   @override
   String get syncPairNoOffer =>
-      'No device shows this code. It may have expired.';
+      'Joks įrenginys nerodo šio kodo. Gali būti, kad jo galiojimo laikas baigėsi.';
 
   @override
-  String get syncPairTimedOut => 'The other device did not answer in time.';
+  String get syncPairTimedOut => 'Kitas įrenginys laiku neatsiliepė.';
 
   @override
   String get syncPairNeither =>
-      'Neither device is set up with this synced diary yet.';
+      'Nė vienas įrenginys dar nenustatytas naudojant šį sinchronizuotą dienoraštį.';
 
   @override
-  String get syncPairBoth => 'Both devices already open this synced diary.';
+  String get syncPairBoth =>
+      'Abu įrenginiai jau atidaro šį sinchronizuotą dienoraštį.';
 
   @override
   String syncPairFailed(String error) {
-    return 'Pairing failed: $error';
+    return 'Nepavyko susieti: $error';
   }
 
   @override
   String get syncMediaPending =>
-      'Diary synced · some media is still transferring';
+      'Dienoraštis sinchronizuotas · kai kurios laikmenos vis dar perkeliamos';
 
   @override
   String get syncWaitingForDevices =>
-      'Diary synced · waiting for another device to transfer media';
+      'Dienoraštis sinchronizuotas · laukiama, kol kitas įrenginys perduos mediją';
 
   @override
   String get syncCacheNotice =>
-      'Cloud media is temporary. Keep the originals on your devices; syncing is not a backup.';
+      'Debesų laikmena yra laikina. Laikykite originalus savo įrenginiuose; sinchronizavimas nėra atsarginė kopija.';
 
   @override
-  String get paperTitle => 'Letter paper';
+  String get paperTitle => 'Laiškų popierius';
 
   @override
-  String get paperPlain => 'Plain';
+  String get paperPlain => 'Paprastas';
 
   @override
-  String get paperLined => 'Lined';
+  String get paperLined => 'Pamušalu';
 
   @override
-  String get paperGrid => 'Grid';
+  String get paperGrid => 'Tinklelis';
 
   @override
-  String get paperTinted => 'Tinted';
+  String get paperTinted => 'Tamsintas';
 
   @override
-  String get paperDecorationTitle => 'Decorations';
+  String get paperDecorationTitle => 'Dekoracijos';
 
   @override
-  String get paperDecorationNone => 'None';
+  String get paperDecorationNone => 'Nėra';
 
   @override
-  String get paperDecorationBotanical => 'Leaves';
+  String get paperDecorationBotanical => 'Lapai';
 
   @override
-  String get paperDecorationStars => 'Stars';
+  String get paperDecorationStars => 'Žvaigždės';
 
   @override
-  String get paperDecorationWashi => 'Washi tape';
+  String get paperDecorationWashi => 'Washi juosta';
 
   @override
-  String get themeDarkChoice => 'Dark appearance';
+  String get themeDarkChoice => 'Tamsi išvaizda';
 
   @override
-  String get themeDarkSame => 'Follow light palette';
+  String get themeDarkSame => 'Sekite šviesią paletę';
 
   @override
-  String get themeDarkCustom => 'Separate palette';
+  String get themeDarkCustom => 'Atskira paletė';
 
   @override
-  String get themeDarkAccent => 'Dark accent colour';
+  String get themeDarkAccent => 'Tamsi akcento spalva';
 
   @override
-  String get themeColorTeal => 'Teal';
+  String get themeColorTeal => 'žalsvai mėlyna';
 
   @override
-  String get themeColorCyan => 'Cyan';
+  String get themeColorCyan => 'Žydra spalva';
 
   @override
   String get themeColorIndigo => 'Indigo';
 
   @override
-  String get themeColorCoral => 'Coral';
+  String get themeColorCoral => 'Koralas';
 
   @override
-  String get themeColorOlive => 'Olive';
+  String get themeColorOlive => 'Alyvuogių';
 
   @override
-  String get themeColorSlate => 'Slate';
+  String get themeColorSlate => 'Šiferis';
 
   @override
-  String get drawingTitle => 'Drawing';
+  String get drawingTitle => 'Piešimas';
 
   @override
-  String get drawingPen => 'Pen';
+  String get drawingPen => 'Rašiklis';
 
   @override
-  String get drawingEraser => 'Eraser';
+  String get drawingEraser => 'Trintukas';
 
   @override
-  String get drawingUndo => 'Undo';
+  String get drawingUndo => 'Anuliuoti';
 
   @override
-  String get drawingClear => 'Clear';
+  String get drawingClear => 'Aišku';
 
   @override
-  String get drawingWidth => 'Pen width';
+  String get drawingWidth => 'Rašiklio plotis';
 
   @override
-  String get drawingStylusOnly => 'Stylus only';
+  String get drawingStylusOnly => 'Tik rašiklis';
 
   @override
-  String get drawingDiscardTitle => 'Discard drawing?';
+  String get drawingDiscardTitle => 'Atmesti piešinį?';
 
   @override
-  String get drawingDiscardBody => 'This drawing has not been saved.';
+  String get drawingDiscardBody => 'Šis piešinys nebuvo išsaugotas.';
 
   @override
-  String get drawingSaveError => 'Could not save the drawing.';
+  String get drawingSaveError => 'Nepavyko išsaugoti piešinio.';
 
   @override
-  String get syncNetworkTitle => 'Network diagnostics';
+  String get syncNetworkTitle => 'Tinklo diagnostika';
 
   @override
-  String get syncNetworkRefresh => 'Refresh';
+  String get syncNetworkRefresh => 'Atnaujinti';
 
   @override
-  String get syncNetworkSelectedRoute => 'Current path';
+  String get syncNetworkSelectedRoute => 'Dabartinis kelias';
 
   @override
-  String get syncNetworkAvailableRoutes => 'Available paths';
+  String get syncNetworkAvailableRoutes => 'Galimi keliai';
 
   @override
-  String get syncNetworkSignaling => 'Device directory connection';
+  String get syncNetworkSignaling => 'Įrenginių katalogo ryšys';
 
   @override
-  String get syncNetworkRelayRemaining => 'Remaining relay allowance';
+  String get syncNetworkRelayRemaining => 'Likusi relės pašalpa';
 
   @override
-  String get syncNetworkIcePair => 'Direct connection candidates';
+  String get syncNetworkIcePair => 'Tiesioginio ryšio kandidatai';
 
   @override
-  String get syncNetworkPeerTrusted => 'Authenticated device';
+  String get syncNetworkPeerTrusted => 'Autentifikuotas įrenginys';
 
   @override
-  String get syncNetworkNoRoute => 'Waiting for a connection';
+  String get syncNetworkNoRoute => 'Laukiama ryšio';
 
   @override
-  String get syncNetworkUnavailable => 'Diagnostics are unavailable';
+  String get syncNetworkUnavailable => 'Diagnostika nepasiekiama';
 
   @override
-  String get syncMediaCopiesTitle => 'Media delivery and copies';
+  String get syncMediaCopiesTitle => 'Žiniasklaidos pristatymas ir kopijos';
 
   @override
-  String get syncMediaPendingCount => 'Waiting to transfer';
+  String get syncMediaPendingCount => 'Laukiama perdavimo';
 
   @override
-  String get syncMediaDurableCount => 'Delivered to personal storage';
+  String get syncMediaDurableCount => 'Pristatomas į asmeninę saugyklą';
 
   @override
-  String get syncMediaTemporaryCount => 'Temporary or unconfirmed copies';
+  String get syncMediaTemporaryCount => 'Laikinos arba nepatvirtintos kopijos';
 
   @override
   String get syncMediaReceiptExplanation =>
-      'These counts describe completed deliveries, not a fresh audit of surviving backups.';
+      'Šie skaičiai apibūdina užbaigtus pristatymus, o ne naują išlikusių atsarginių kopijų auditą.';
 
   @override
   String get syncMediaCacheExplanation =>
-      'Temporary cloud media can expire. Keep your originals or a separate backup.';
+      'Laikinos debesies laikmenos galiojimo laikas gali baigtis. Išsaugokite originalus arba atskirą atsarginę kopiją.';
 
   @override
-  String get momentsTitle => 'Photo moments';
+  String get momentsTitle => 'Foto akimirkos';
 
   @override
   String get momentsHint =>
-      'Find groups using local photo times and optional coordinates. Photos are attached only when you choose a card.';
+      'Raskite grupes naudodami vietos nuotraukų laiką ir pasirenkamas koordinates. Nuotraukos pridedamos tik tada, kai pasirenkate kortelę.';
 
   @override
-  String get momentsScan => 'Find moments';
+  String get momentsScan => 'Raskite akimirkų';
 
   @override
-  String get momentsChooseFolder => 'Choose photo folder';
+  String get momentsChooseFolder => 'Pasirinkite nuotraukų aplanką';
 
   @override
-  String get momentsLocation => 'Include photo locations';
+  String get momentsLocation => 'Įtraukite nuotraukų vietas';
 
   @override
-  String get momentsEmpty => 'No recent photo groups.';
+  String get momentsEmpty => 'Nėra naujausių nuotraukų grupių.';
 
   @override
-  String get momentsCreate => 'Write about these photos';
+  String get momentsCreate => 'Parašykite apie šias nuotraukas';
 
   @override
-  String get momentsDismiss => 'Dismiss';
+  String get momentsDismiss => 'Atsisakyti';
 
   @override
-  String get momentsError => 'Could not read local photos.';
+  String get momentsError => 'Nepavyko perskaityti vietinių nuotraukų.';
 
   @override
-  String get momentsCreated => 'Photo entry created.';
+  String get momentsCreated => 'Sukurtas nuotraukos įrašas.';
 
   @override
   String get momentsPermission =>
-      'Allow access to photos to find local suggestions.';
+      'Suteikite prieigą prie nuotraukų, kad rastumėte vietinių pasiūlymų.';
 
   @override
   String get momentsScope =>
-      'Recent photos only; at most 500 photos and 20 photos per card.';
+      'Tik naujausios nuotraukos; ne daugiau kaip 500 nuotraukų ir 20 nuotraukų vienoje kortelėje.';
 
   @override
   String momentsPhotoCount(int count) {
-    return '$count photos';
+    return '$count nuotraukos';
   }
 
   @override
-  String get nearbyTitle => 'Connect devices';
+  String get nearbyTitle => 'Prijunkite įrenginius';
 
   @override
-  String get nearbySend => 'Authorize another device';
+  String get nearbySend => 'Įgaliokite kitą įrenginį';
 
   @override
-  String get nearbyReceive => 'Connect to an existing device';
+  String get nearbyReceive => 'Prisijunkite prie esamo įrenginio';
 
   @override
   String get nearbyInstructions =>
-      'Connect both devices to the same Wi-Fi or to each other’s hotspot. Confirm authorization on the existing device; both devices remain usable. No internet is required.';
+      'Prijunkite abu įrenginius prie to paties Wi-Fi arba vienas kito viešosios interneto prieigos taško. Patvirtinkite esamo įrenginio autorizaciją; abu įrenginiai išlieka tinkami naudoti. Internetas nereikalingas.';
 
   @override
   String get nearbyCompare =>
-      'Compare this code on both devices before approving.';
+      'Prieš patvirtindami palyginkite šį kodą abiejuose įrenginiuose.';
 
   @override
-  String get nearbyConfirm => 'The codes match';
+  String get nearbyConfirm => 'Kodai sutampa';
 
   @override
-  String get nearbyScan => 'Scan the other device’s code';
+  String get nearbyScan => 'Nuskaitykite kito įrenginio kodą';
 
   @override
-  String get nearbyPaste => 'Paste invitation';
+  String get nearbyPaste => 'Įklijuoti kvietimą';
 
   @override
-  String get nearbyWaiting => 'Waiting for approval on the other device';
+  String get nearbyWaiting => 'Laukiama patvirtinimo kitame įrenginyje';
 
   @override
   String get nearbyWorking =>
-      'Authorizing and syncing your diary and attachments…';
+      'Įgaliojama ir sinchronizuojama jūsų dienoraštis ir priedai…';
 
   @override
   String get nearbyPending =>
-      'Some attachments still need syncing. Keep the other device online and try again.';
+      'Kai kuriuos priedus vis tiek reikia sinchronizuoti. Palaikykite kitą įrenginį prisijungę ir bandykite dar kartą.';
 
   @override
-  String get nearbyComplete => 'Device connected; diary and attachments synced';
+  String get nearbyComplete =>
+      'Prietaisas prijungtas; dienoraštis ir priedai sinchronizuoti';
 
   @override
   String get nearbyFailed =>
-      'Connection did not finish. Check the local connection and try again.';
+      'Ryšys nebaigtas. Patikrinkite vietinį ryšį ir bandykite dar kartą.';
 
   @override
   String get nearbyEmptyRequired =>
-      'Use a device with an empty diary that is not connected to sync yet.';
+      'Naudokite įrenginį su tuščiu dienoraščiu, kuris dar neprijungtas prie sinchronizavimo.';
 
   @override
-  String get nearbyRetry => 'Continue syncing';
+  String get nearbyRetry => 'Tęsti sinchronizavimą';
 
   @override
-  String get nearbyWifi => 'Wi-Fi settings';
+  String get nearbyWifi => 'Wi-Fi nustatymai';
 
   @override
-  String get nearbyHotspot => 'Hotspot settings';
+  String get nearbyHotspot => 'Viešosios interneto prieigos taško nustatymai';
 
   @override
   String get nearbyKeepOpen =>
-      'Keep this page open until the new device finishes. The invitation expires after two minutes.';
+      'Laikykite šį puslapį atidarytą, kol naujas įrenginys bus baigtas. Kvietimas nustoja galioti po dviejų minučių.';
 
   @override
-  String get syncDevicesTitle => 'Authorized devices';
+  String get syncDevicesTitle => 'Įgalioti įrenginiai';
 
   @override
   String get syncDevicesDescription =>
-      'Only approved devices can access this AID account. Revoking a device blocks the server but cannot erase a master key or diary already copied to it.';
+      'Tik patvirtinti įrenginiai gali pasiekti šią AID paskyrą. Atšaukus įrenginį blokuojamas serveris, bet negalima ištrinti pagrindinio rakto ar dienoraščio, jau nukopijuoto į jį.';
 
   @override
   String get syncDeviceRequest =>
-      'Show this authorization QR to an approved device';
+      'Parodykite šį prieigos teisės QR patvirtintą įrenginį';
 
   @override
-  String get syncDeviceAuthorize => 'Authorize a device';
+  String get syncDeviceAuthorize => 'Įgaliokite įrenginį';
 
   @override
   String get syncDeviceAuthorizeDescription =>
-      'Scan or paste the new device’s authorization request.';
+      'Nuskaitykite arba įklijuokite naujo įrenginio prieigos teisės užklausą.';
 
   @override
-  String get syncDeviceRevoke => 'Revoke';
+  String get syncDeviceRevoke => 'Atšaukti';
 
   @override
-  String get syncDeviceRotate => 'Rotate this device’s signing key';
+  String get syncDeviceRotate => 'Pasukite šio įrenginio pasirašymo raktą';
 
   @override
-  String get syncDeviceCheck => 'Check authorization';
+  String get syncDeviceCheck => 'Patikrinkite įgaliojimą';
 
   @override
-  String get syncDeviceHardware => 'Hardware-backed signing key';
+  String get syncDeviceHardware =>
+      'Aparatine įranga paremtas pasirašymo raktas';
 
   @override
-  String get syncDeviceSoftware => 'Non-exportable software signing key';
+  String get syncDeviceSoftware =>
+      'Neeksportuojamas programinės įrangos pasirašymo raktas';
 
   @override
   String get syncDeviceUnavailable =>
-      'Device authorization is unavailable. Approve this device from another authorized device and retry.';
+      'Įrenginio prieigos teisė nepasiekiama. Patvirtinkite šį įrenginį naudodami kitą įgaliotą įrenginį ir bandykite dar kartą.';
 
   @override
-  String get syncDeviceRevoked => 'Revoked';
+  String get syncDeviceRevoked => 'Atšauktas';
 
   @override
-  String get syncDeviceLocal => 'This device';
+  String get syncDeviceLocal => 'Šis prietaisas';
 
   @override
-  String get cloudTrafficTitle => 'Monthly cloud media allowance';
+  String get cloudTrafficTitle =>
+      'Mėnesio debesies duomenų perdavimo kvota medijos failams';
 
   @override
-  String get cloudTrafficLimit => 'Monthly allowance';
+  String get cloudTrafficLimit => 'Mėnesio duomenų perdavimo kvota';
 
   @override
-  String get cloudTrafficUsed => 'Used';
+  String get cloudTrafficUsed => 'Naudojamas duomenų perdavimas';
 
   @override
-  String get cloudTrafficRemaining => 'Remaining';
+  String get cloudTrafficRemaining => 'Liko duomenų perdavimo';
 
   @override
   String cloudTrafficResetsAt(String time) {
-    return 'Resets $time';
+    return 'Duomenų perdavimo kvota iš naujo nustato $time';
   }
 
   @override
   String get cloudTrafficExhausted =>
-      'Cloud media allowance used up. Missing media will resume automatically over a direct connection or when the allowance resets.';
+      'Išnaudota medijos failų duomenų perdavimo debesyje kvota. Trūkstami medijos failai bus sinchronizuojami automatiškai, kai bus pasiekiamas tiesioginis ryšys arba iš naujo nustatoma kvota.';
 
   @override
   String get cloudTrafficExplanation =>
-      'Media cache and live relay share this allowance. Direct connections do not use it. Diary text and connection control have separate small daily limits.';
+      'Medijos failų kaupimas talpykloje ir tiesioginė perdavimas dalijasi šia duomenų perdavimo kvota. Tiesioginiai ryšiai jo nesunaudoja. Dienoraščio tekstas ir ryšio valdymo pranešimai turi atskirus nedidelius dienos limitus.';
 
   @override
-  String get appearanceThemeSection => 'App theme';
+  String get appearanceThemeSection => 'Programėlės tema';
 
   @override
-  String get appearancePaperSection => 'Diary paper';
+  String get appearancePaperSection => 'Dienoraščio popierius';
 
   @override
-  String get appearanceTypographySection => 'Diary text';
+  String get appearanceTypographySection => 'Dienoraščio tekstas';
 
   @override
-  String get appearancePreferencesSection => 'General preferences';
+  String get appearancePreferencesSection => 'Bendrosios nuostatos';
 
   @override
   String get themeSystemAccentHint =>
-      'Uses the system palette instead of custom colors. Turn it off to choose your own.';
+      'Naudoja sistemos paletę, o ne pasirinktines spalvas. Išjunkite jį, kad pasirinktumėte savo.';
 
   @override
   String get syncDeviceNameSaveFailed =>
-      'Could not save the device name. Please try again.';
+      'Nepavyko išsaugoti įrenginio pavadinimo. Bandykite dar kartą.';
 
   @override
-  String get nearbyConnectionHelp => 'Connection help';
+  String get nearbyConnectionHelp => 'Prisijungimo pagalba';
 
   @override
-  String get syncAllSynced => 'Everything synced';
+  String get syncAllSynced => 'Viskas sinchronizuota';
 
   @override
-  String get syncDetailsTitle => 'Sync details';
+  String get syncDetailsTitle => 'Sinchronizavimo informacija';
 
   @override
-  String get syncMore => 'More options';
+  String get syncMore => 'Daugiau parinkčių';
 
   @override
-  String get syncDeviceName => 'Device name';
+  String get syncDeviceName => 'Įrenginio pavadinimas';
 
   @override
-  String get syncDeviceNameHint => 'For example: My tablet';
+  String get syncDeviceNameHint => 'Pavyzdžiui: Mano planšetinis kompiuteris';
 
   @override
-  String get syncDeviceNameInvalid => 'Use 1 to 32 characters';
+  String get syncDeviceNameInvalid => 'Naudokite nuo 1 iki 32 simbolių';
 
   @override
-  String get syncDeviceKeyDetails => 'Security details';
+  String get syncDeviceKeyDetails => 'Saugumo detalės';
 
   @override
   String get syncConnectionProblem =>
-      'Unable to sync for now. Retrying automatically.';
+      'Šiuo metu nepavyko sinchronizuoti. Automatiškai bandoma iš naujo.';
 
   @override
-  String get syncCopyComplete => 'Complete copy';
+  String get syncCopyComplete =>
+      'Pilna jūsų dienoraščio ir medijos failų kopija';
 
   @override
-  String get syncCopyPartial => 'Some media is still missing';
+  String get syncCopyPartial => 'Kai kurios žiniasklaidos vis dar trūksta';
 
   @override
-  String get syncCopyOlder => 'New changes are waiting to sync';
+  String get syncCopyOlder => 'Nauji pakeitimai laukia sinchronizavimo';
 
   @override
   String get syncCopyUnavailable =>
-      'Copy details are unavailable. Try again later.';
+      'Išsamios kopijos informacijos negalima. Vėliau bandykite dar kartą.';
 
   @override
   String get syncCopyLastKnown =>
-      'Other devices show their last confirmed copy. Offline devices cannot be checked now.';
+      'Kiti įrenginiai rodo paskutinę patvirtintą kopiją. Dabar negalima patikrinti neprisijungus naudojamų įrenginių.';
 
   @override
   String get syncCopyTemporary =>
-      'Temporary cache. Keep the originals on your devices.';
+      'Laikinoji talpykla. Laikykite originalus savo įrenginiuose.';
 
   @override
   String get syncCopyStorage =>
-      'Your sync storage. Completed media uploads are listed in diagnostics.';
+      'Jūsų sinchronizavimo saugykla. Užbaigti medijos įkėlimai pateikiami diagnostikoje.';
 
   @override
   String syncCopyChecked(String time) {
-    return 'Last confirmed $time';
+    return 'Paskutinį kartą patvirtintas $time';
   }
 
   @override
   String cloudTrafficSummary(String remaining, String limit) {
-    return 'Available this month: $remaining / $limit';
+    return 'Šį mėnesį likęs duomenų perdavimas: $remaining / $limit';
   }
 
   @override
-  String get onboardNewDiary => 'Start here';
+  String get onboardNewDiary => 'Pradėkite čia';
 
   @override
-  String get onboardConnect => 'Connect to an existing device';
+  String get onboardConnect => 'Prisijunkite prie esamo įrenginio';
 
   @override
   String get onboardFailed =>
-      'Setup could not be completed. Your diary is safe; please try again.';
+      'Nepavyko užbaigti sąrankos. Jūsų dienoraštis yra saugus; pabandykite dar kartą.';
 
   @override
-  String get tutorialTitle => 'How to use the diary';
+  String get tutorialTitle => 'Kaip naudotis dienoraščiu';
 
   @override
-  String get tutorialWriteTitle => 'Write your first entry';
+  String get tutorialWriteTitle => 'Parašykite savo pirmąjį įrašą dienoraštyje';
 
   @override
   String get tutorialWriteText =>
-      'Tap + to write. Add a title if you want, choose the diary day and tap the check mark to save. You can edit it again at any time.';
+      'Norėdami parašyti dienoraščio įrašą, bakstelėkite +. Pridėkite pasirenkamą pavadinimą, pasirinkite dienoraščio datą ir bakstelėkite varnelę, kad išsaugotumėte. Galite bet kada vėl redaguoti savo dienoraščio įrašą.';
 
   @override
-  String get tutorialMediaTitle => 'Add photos, audio or handwriting';
+  String get tutorialMediaTitle => 'Pridėkite nuotraukų, garso ar rašysenos';
 
   @override
   String get tutorialMediaText =>
-      'Use + in the editor to attach photos, videos or a voice note, or open the pen canvas. These attachments stay with the entry.';
+      'Naudokite + dienoraščio rengyklėje, kad pridėtumėte nuotraukų, vaizdo įrašų ar balso įrašų arba atidarytumėte rašymo ranka drobę. Šie priedai išsaugomi su dienoraščio įrašu.';
 
   @override
-  String get tutorialReviewTitle => 'Find a day again';
+  String get tutorialReviewTitle => 'Vėl rask dieną';
 
   @override
   String get tutorialReviewText =>
-      'Browse the journal or calendar, search your writing and use tags to organize it. Media and Atlas help you look back by photo or place.';
+      'Naršykite savo dienoraštį ar kalendorių, ieškokite savo raštuose ir tvarkykite įrašus su žymomis. Puslapiuose Media ir Atlas galite rasti ankstesnius įrašus pagal nuotrauką arba vietą.';
 
   @override
-  String get tutorialSyncTitle => 'Use more than one device';
+  String get tutorialSyncTitle => 'Naudokite daugiau nei vieną įrenginį';
 
   @override
   String get tutorialSyncText =>
-      'In Settings → Data & storage → Sync, connect to an existing device and confirm authorization there. Both devices can keep using the diary. Text syncs first; media follows as the connection and allowance permit.';
+      'Skiltyje Nustatymai → Duomenys ir saugykla → Sinchronizuoti prisijunkite prie esamo įrenginio ir patvirtinkite to įrenginio prieigos teisę. Abu įrenginiai gali toliau naudoti dienoraštį. Pirmiausia sinchronizuojamas dienoraščio tekstas. Medijos failai sinchronizuojami toliau, kai tai leidžia tinklo ryšys ir likusi duomenų perdavimo kvota.';
 
   @override
-  String get tutorialPrivacyTitle => 'Keep your diary safe';
+  String get tutorialPrivacyTitle => 'Saugokite savo dienoraštį';
 
   @override
   String get tutorialPrivacyText =>
-      'Entries stay on this device unless you enable sync or share/export them. Sync is end-to-end encrypted. Settings also offers an app passcode and backups; you can reopen this tutorial there.';
+      'Dienoraščio įrašai lieka šiame įrenginyje, nebent įgalinsite sinchronizavimą, bendrinsite arba eksportuosite juos. Sinchronizavimas yra visiškai užšifruotas. Nustatymuose taip pat galite nustatyti programos prieigos kodą, kurti atsargines kopijas ir iš naujo atidaryti šią mokymo programą.';
 }

@@ -12,38 +12,39 @@ class AppLocalizationsId extends AppLocalizations {
   String get appTitle => 'AID Diary';
 
   @override
-  String get themeColorTitle => 'Theme color';
+  String get themeColorTitle => 'Warna tema';
 
   @override
-  String get themeColorHint => 'Choose a color for this palette.';
+  String get themeColorHint => 'Pilih warna untuk palet ini.';
 
   @override
-  String get themeColorBlue => 'Sky blue';
+  String get themeColorBlue => 'Langit biru';
 
   @override
-  String get themeColorGreen => 'Forest green';
+  String get themeColorGreen => 'Hijau hutan';
 
   @override
-  String get themeColorBrown => 'Warm coffee';
+  String get themeColorBrown => 'Kopi hangat';
 
   @override
-  String get themeColorPurple => 'Lavender';
+  String get themeColorPurple => 'warna lembayung muda';
 
   @override
-  String get themeColorRose => 'Dusty rose';
+  String get themeColorRose => 'Mawar berdebu';
 
   @override
-  String get themeColorAmber => 'Amber';
+  String get themeColorAmber => 'kuning';
 
   @override
-  String get themeColorPreview => 'A little every day';
+  String get themeColorPreview => 'Sedikit setiap hari';
 
   @override
-  String get themeTintBackgroundTitle => 'Tint backgrounds with theme color';
+  String get themeTintBackgroundTitle =>
+      'Warnai latar belakang dengan warna tema';
 
   @override
   String get themeTintBackgroundHint =>
-      'Turn off for neutral gray backgrounds; buttons keep your chosen color.';
+      'Matikan untuk latar belakang abu-abu netral; tombol pertahankan warna pilihan Anda.';
 
   @override
   String get dailyReminderTitle => 'Log hari ini!';
@@ -71,8 +72,7 @@ class AppLocalizationsId extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count Weeks Ago',
-      one: '$count Week Ago',
+      other: '$count minggu yang lalu',
     );
     return '$_temp0';
   }
@@ -82,8 +82,7 @@ class AppLocalizationsId extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count Months Ago',
-      one: '$count Month Ago',
+      other: '$count bulan yang lalu',
     );
     return '$_temp0';
   }
@@ -93,8 +92,7 @@ class AppLocalizationsId extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count Years Ago',
-      one: '$count Year Ago',
+      other: '$count tahun yang lalu',
     );
     return '$_temp0';
   }
@@ -110,8 +108,7 @@ class AppLocalizationsId extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count logs',
-      one: '$count log',
+      other: '$count catatan',
     );
     return '$_temp0';
   }
@@ -446,7 +443,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get iconGroupFoodDrink => 'Makanan & Minuman';
 
   @override
-  String get iconGroupHome => 'Home';
+  String get iconGroupHome => 'Rumah';
 
   @override
   String get iconGroupTravel => 'Perjalanan';
@@ -458,7 +455,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get tagCategoryLabel => 'Kategori';
 
   @override
-  String get tagLabel => 'Tag';
+  String get tagLabel => 'Menandai';
 
   @override
   String get tagCategoryUncategorized => 'Tanpa Kategori';
@@ -467,13 +464,13 @@ class AppLocalizationsId extends AppLocalizations {
   String get newCategoryTitle => 'Kategori Baru';
 
   @override
-  String get shareButtonLabel => 'Share';
+  String get shareButtonLabel => 'Bagikan';
 
   @override
-  String get importErrorDescription => 'Failed to import file!';
+  String get importErrorDescription => 'Gagal mengimpor file!';
 
   @override
-  String get exportErrorDescription => 'Failed to export file!';
+  String get exportErrorDescription => 'Gagal mengekspor file!';
 
   @override
   String get deleteTitle => 'Hapus';
@@ -503,14 +500,14 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
-  String get tagNameExists => 'There is a tag with this name already';
+  String get tagNameExists => 'Sudah ada tag dengan nama ini';
 
   @override
-  String get categoryNameExists => 'There is a category with this name already';
+  String get categoryNameExists => 'Sudah ada kategori dengan nama ini';
 
   @override
   String deleteTemplateMessage(Object name) {
-    return 'Delete \"$name\"?';
+    return 'Hapus \"$name\"?';
   }
 
   @override
@@ -633,56 +630,56 @@ class AppLocalizationsId extends AppLocalizations {
       'Memulihkan cadangan akan menimpa data yang sudah ada!';
 
   @override
-  String get settingsBackupPasswordProtect => 'Password Protect Backups';
+  String get settingsBackupPasswordProtect => 'Cadangan Lindungi Kata Sandi';
 
   @override
-  String get backupEncryptedTitle => 'Encrypted Backup';
+  String get backupEncryptedTitle => 'Cadangan Terenkripsi';
 
   @override
-  String get backupEncryptedContent => 'This backup is password protected.';
+  String get backupEncryptedContent => 'Cadangan ini dilindungi kata sandi.';
 
   @override
-  String get settingsAutoBackup => 'Automatic Backups';
+  String get settingsAutoBackup => 'Pencadangan Otomatis';
 
   @override
-  String get settingsAutoBackupLocation => 'Backup Location';
+  String get settingsAutoBackupLocation => 'Lokasi Cadangan';
 
   @override
-  String get settingsAutoBackupInterval => 'Backup Interval';
+  String get settingsAutoBackupInterval => 'Interval Cadangan';
 
   @override
-  String get settingsAutoBackupIntervalDaily => 'Daily';
+  String get settingsAutoBackupIntervalDaily => 'Setiap hari';
 
   @override
-  String get settingsAutoBackupIntervalWeekly => 'Weekly';
+  String get settingsAutoBackupIntervalWeekly => 'Mingguan';
 
   @override
-  String get settingsAutoBackupIntervalMonthly => 'Monthly';
+  String get settingsAutoBackupIntervalMonthly => 'Bulanan';
 
   @override
-  String get settingsAutoBackupMaxCount => 'Backups To Keep';
+  String get settingsAutoBackupMaxCount => 'Cadangan Untuk Disimpan';
 
   @override
-  String get settingsAutoBackupRequireCharging => 'Only While Charging';
+  String get settingsAutoBackupRequireCharging => 'Hanya Saat Mengisi Daya';
 
   @override
   String settingsBackupLast(Object time) {
-    return 'Last backup $time';
+    return 'Cadangan terakhir $time';
   }
 
   @override
-  String get settingsBackupNever => 'Never backed up';
+  String get settingsBackupNever => 'Tidak pernah membuat cadangan';
 
   @override
   String settingsAutoBackupNext(Object time) {
-    return 'Next backup $time';
+    return 'Selanjutnya cadangan $time';
   }
 
   @override
-  String get settingsAutoBackupKeepAll => 'All';
+  String get settingsAutoBackupKeepAll => 'Semua';
 
   @override
-  String get autoBackupFailedTitle => 'Backup Failed';
+  String get autoBackupFailedTitle => 'Pencadangan Gagal';
 
   @override
   String tranferStatus(Object percent) {
@@ -701,12 +698,12 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String encryptingBackupStatus(Object percent) {
-    return 'Encrypting Backup… $percent%';
+    return 'Mengenkripsi Cadangan… $percent%';
   }
 
   @override
   String decryptingBackupStatus(Object percent) {
-    return 'Decrypting Backup… $percent%';
+    return 'Mendekripsi Cadangan… $percent%';
   }
 
   @override
@@ -832,7 +829,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get licenseGPLv3 => 'GPL -3.0';
 
   @override
-  String get settingsOpenSourceLicenses => 'Open Source Licenses';
+  String get settingsOpenSourceLicenses => 'Lisensi Sumber Terbuka';
 
   @override
   String get tagMoodTitle => 'Perasaan';
@@ -855,46 +852,50 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
-  String get shareAddToLogPickerTitle => 'Choose a log';
+  String get shareAddToLogPickerTitle => 'Pilih entri buku harian';
 
   @override
-  String get adaptiveEmptyDay => 'No entries for this day yet';
+  String get adaptiveEmptyDay => 'Belum ada entri untuk hari ini';
 
   @override
-  String get adaptiveNewEntry => 'Write an entry';
+  String get adaptiveNewEntry => 'Tulis entri';
 
   @override
-  String get pageJournalTitle => 'Journal';
+  String get pageJournalTitle => 'Jurnal';
 
   @override
-  String get coachPrompt1 => 'What made you smile today?';
+  String get coachPrompt1 => 'Apa yang membuatmu tersenyum hari ini?';
 
   @override
-  String get coachPrompt2 => 'What is one thing you learned today?';
+  String get coachPrompt2 => 'Apa satu hal yang kamu pelajari hari ini?';
 
   @override
-  String get coachPrompt3 => 'Who did you talk to today, and how did it feel?';
+  String get coachPrompt3 =>
+      'Dengan siapa Anda berbicara hari ini, dan bagaimana rasanya?';
 
   @override
-  String get coachPrompt4 => 'What are you grateful for right now?';
+  String get coachPrompt4 => 'Apa yang kamu syukuri saat ini?';
 
   @override
-  String get coachPrompt5 => 'What took most of your energy today?';
+  String get coachPrompt5 =>
+      'Apa yang menghabiskan sebagian besar energimu hari ini?';
 
   @override
-  String get coachPrompt6 => 'Describe a small moment you want to remember.';
+  String get coachPrompt6 => 'Jelaskan momen kecil yang ingin Anda ingat.';
 
   @override
-  String get coachPrompt7 => 'What would make tomorrow a good day?';
+  String get coachPrompt7 =>
+      'Apa yang membuat hari esok menjadi hari yang baik?';
 
   @override
-  String get coachPrompt8 => 'What has been on your mind lately?';
+  String get coachPrompt8 => 'Apa yang ada di pikiranmu akhir-akhir ini?';
 
   @override
-  String get coachPrompt9 => 'What did you do today just for yourself?';
+  String get coachPrompt9 =>
+      'Apa yang kamu lakukan hari ini hanya untuk dirimu sendiri?';
 
   @override
-  String get coachPrompt10 => 'If today had a title, what would it be?';
+  String get coachPrompt10 => 'Kalau hari ini ada judulnya, apa judulnya?';
 
   @override
   String get pageMediaTitle => 'Media';
@@ -903,490 +904,493 @@ class AppLocalizationsId extends AppLocalizations {
   String get pageAtlasTitle => 'Atlas';
 
   @override
-  String get pageCoachTitle => 'Coach';
+  String get pageCoachTitle => 'Pelatih';
 
   @override
-  String get noEntrySelected => 'No entry selected.';
+  String get noEntrySelected => 'Tidak ada entri yang dipilih.';
 
   @override
-  String get entryShare => 'Share';
+  String get entryShare => 'Bagikan';
 
   @override
-  String get entryFavorite => 'Star';
+  String get entryFavorite => 'Bintang';
 
   @override
-  String get entryEdit => 'Edit';
+  String get entryEdit => 'Sunting';
 
   @override
-  String get entryPrevious => 'Previous entry';
+  String get entryPrevious => 'Entri sebelumnya';
 
   @override
-  String get entryNext => 'Next entry';
+  String get entryNext => 'Entri selanjutnya';
 
   @override
-  String get journalStories => 'Stories';
+  String get journalStories => 'Cerita';
 
   @override
-  String get journalEntries => 'Entries';
+  String get journalEntries => 'Entri';
 
   @override
-  String get journalEmptyHint => 'Begin your diary by adding a new entry.';
+  String get journalEmptyHint =>
+      'Mulailah buku harian Anda dengan menambahkan entri baru.';
 
   @override
-  String get storyToday => 'Today';
+  String get storyToday => 'Hari ini';
 
   @override
-  String get storyThrowback => 'Throwback';
+  String get storyThrowback => 'Kemunduran';
 
   @override
-  String get storyNoThrowback => 'No throwback today';
+  String get storyNoThrowback => 'Tidak ada kemunduran hari ini';
 
   @override
-  String get mediaFiles => 'Media files';
+  String get mediaFiles => 'File media';
 
   @override
-  String get mediaEmpty => 'No photos yet.';
+  String get mediaEmpty => 'Belum ada foto.';
 
   @override
-  String get mediaEmptyHint => 'Photos attached to entries will be shown here.';
+  String get mediaEmptyHint =>
+      'Foto yang dilampirkan pada entri akan ditampilkan di sini.';
 
   @override
-  String get atlasEmpty => 'No entries with a location.';
+  String get atlasEmpty => 'Tidak ada entri dengan lokasi.';
 
   @override
-  String get atlasEmptyHint => 'Entries with a location will be shown here.';
+  String get atlasEmptyHint => 'Entri dengan lokasi akan ditampilkan di sini.';
 
   @override
-  String get atlasShowAll => 'Show all entries';
+  String get atlasShowAll => 'Tampilkan semua entri';
 
   @override
-  String get atlasMyLocation => 'My location';
+  String get atlasMyLocation => 'Lokasi saya';
 
   @override
-  String get coachAll => 'All';
+  String get coachAll => 'Semua';
 
   @override
-  String get coachPrograms => 'Programs';
+  String get coachPrograms => 'Program';
 
   @override
-  String get coachTemplates => 'Templates';
+  String get coachTemplates => 'Templat';
 
   @override
   String get coachKindProgram => 'Program';
 
   @override
-  String get coachKindTemplate => 'Template';
+  String get coachKindTemplate => 'Templat';
 
   @override
-  String get coachNoTemplates => 'No programs or templates.';
+  String get coachNoTemplates => 'Tidak ada program atau templat.';
 
   @override
-  String get coachUseTemplate => 'Write with this template';
+  String get coachUseTemplate => 'Tulis dengan templat ini';
 
   @override
-  String get coachProgramEverydayTitle => 'Everyday moments';
+  String get coachProgramEverydayTitle => 'Momen sehari-hari';
 
   @override
   String get coachProgramEverydayDescription =>
-      'Five short questions, one a day. Each takes a minute or two and helps you see what made the day yours. A gentle way to build the habit of writing a little every day.';
+      'Lima pertanyaan singkat, satu pertanyaan sehari. Masing-masing membutuhkan satu atau dua menit dan membantu Anda melihat apa yang menjadikan hari itu milik Anda. Cara lembut untuk membangun kebiasaan menulis sedikit-sedikit setiap hari.';
 
   @override
-  String get coachProgramReflectTitle => 'Looking inward';
+  String get coachProgramReflectTitle => 'Melihat ke dalam';
 
   @override
   String get coachProgramReflectDescription =>
-      'One deeper question a week, for five weeks. Take your time with each: how you have been feeling, what wears you out, what you are grateful for.';
+      'Satu pertanyaan lebih dalam setiap minggu, selama lima minggu. Luangkan waktu Anda untuk setiap hal: bagaimana perasaan Anda, apa yang membuat Anda lelah, apa yang Anda syukuri.';
 
   @override
-  String get searchFilters => 'Filters';
+  String get searchFilters => 'Filter';
 
   @override
-  String get searchFilterTags => 'Tags';
+  String get searchFilterTags => 'Tag';
 
   @override
-  String get searchFilterStarred => 'Starred';
+  String get searchFilterStarred => 'Berbintang';
 
   @override
-  String get searchHint => 'Type to search, or pick a filter.';
+  String get searchHint => 'Ketik untuk mencari, atau pilih filter.';
 
   @override
-  String get locationTitle => 'Location';
+  String get locationTitle => 'Lokasi';
 
   @override
-  String get locationName => 'Place name';
+  String get locationName => 'Nama tempat';
 
   @override
-  String get locationRemove => 'Remove';
+  String get locationRemove => 'Hapus';
 
   @override
-  String get locationServiceDisabled => 'Location services are turned off.';
+  String get locationServiceDisabled => 'Layanan lokasi dimatikan.';
 
   @override
-  String get locationPermissionDenied => 'Location permission was denied.';
+  String get locationPermissionDenied => 'Izin lokasi ditolak.';
 
   @override
-  String get locationUnavailable => 'Could not get the current location.';
+  String get locationUnavailable => 'Tidak dapat memperoleh lokasi saat ini.';
 
   @override
-  String get calendarJumpToToday => 'Jump to today';
+  String get calendarJumpToToday => 'Lompat ke hari ini';
 
   @override
-  String get editorStartWriting => 'Start writing or choose a ';
+  String get editorStartWriting => 'Mulailah menulis atau pilih a ';
 
   @override
-  String get editorTemplateLink => 'Template';
+  String get editorTemplateLink => 'Templat';
 
   @override
   String get editorStartWritingEnd => '.';
 
   @override
-  String get templatePickerTitle => 'Choose a template';
+  String get templatePickerTitle => 'Pilih templat';
 
   @override
-  String get templateFeatured => 'Featured templates';
+  String get templateFeatured => 'Templat unggulan';
 
   @override
-  String get templateMine => 'My templates';
+  String get templateMine => 'Templat saya';
 
   @override
-  String get templateDailyName => 'Daily review';
+  String get templateDailyName => 'Ulasan harian';
 
   @override
   String get templateDailyDescription =>
-      'What happened, how it felt, and what comes next.';
+      'Apa yang terjadi, bagaimana rasanya, dan apa yang terjadi selanjutnya.';
 
   @override
   String get templateDailyText =>
-      '## What happened today\n\n\n## How I felt\n\n\n## Three things I\'m grateful for\n1. \n2. \n3. \n\n## Tomorrow\n';
+      '## Apa yang terjadi hari ini\n\n\n## Bagaimana perasaanku\n\n\n## Tiga hal yang saya syukuri\n1. \n2. \n3. \n\n## Besok\n';
 
   @override
-  String get templateTravelName => 'Travel log';
+  String get templateTravelName => 'Entri buku harian perjalanan';
 
   @override
   String get templateTravelDescription =>
-      'Places, moments and food from the road.';
+      'Tempat, momen, dan makanan dari jalan.';
 
   @override
   String get templateTravelText =>
-      '## Where I went\n\n\n## The moment I remember most\n\n\n## What I ate\n\n\n## Plans for tomorrow\n';
+      '## Kemana saya pergi\n\n\n## Momen yang paling kuingat\n\n\n## Apa yang saya makan\n\n\n## Rencana untuk besok\n';
 
   @override
-  String get templateReadingName => 'Reading notes';
+  String get templateReadingName => 'Membaca catatan';
 
   @override
   String get templateReadingDescription =>
-      'Quotes and thoughts from what you read.';
+      'Kutipan dan pemikiran dari apa yang Anda baca.';
 
   @override
   String get templateReadingText =>
-      '## Book\n\n\n## Where I am\n\n\n## Quotes\n> \n\n## My thoughts\n';
+      '## Buku\n\n\n## Dimana saya berada\n\n\n## Kutipan\n> \n\n## Pikiranku\n';
 
   @override
-  String get templateWeeklyName => 'Weekly review';
+  String get templateWeeklyName => 'Ulasan mingguan';
 
   @override
   String get templateWeeklyDescription =>
-      'Highlights, struggles and next week\'s focus.';
+      'Sorotan, perjuangan, dan fokus minggu depan.';
 
   @override
   String get templateWeeklyText =>
-      '## Highlights\n\n\n## What was hard\n\n\n## What I learned\n\n\n## Focus for next week\n';
+      '## Sorotan\n\n\n## Apa yang sulit\n\n\n## Apa yang saya pelajari\n\n\n## Fokus untuk minggu depan\n';
 
   @override
-  String get entryDuplicate => 'Duplicate';
+  String get entryDuplicate => 'Duplikat';
 
   @override
-  String get entryDuplicated => 'Entry duplicated';
+  String get entryDuplicated => 'Entri diduplikasi';
 
   @override
-  String get entrySaveAsTemplate => 'Save as template';
+  String get entrySaveAsTemplate => 'Simpan sebagai templat';
 
   @override
-  String get entrySavedAsTemplate => 'Saved as a template';
+  String get entrySavedAsTemplate => 'Disimpan sebagai templat';
 
   @override
-  String get storyStatistics => 'Statistics';
+  String get storyStatistics => 'Statistik';
 
   @override
-  String get storyMoodChart => 'Mood chart';
+  String get storyMoodChart => 'Bagan suasana hati';
 
   @override
   String storyEntriesAndDays(Object days, Object entries) {
-    return '$entries entries · $days days';
+    return 'Entri $entries · $days hari';
   }
 
   @override
-  String get storyThisYear => 'This year';
+  String get storyThisYear => 'Tahun ini';
 
   @override
-  String get storyLastYear => 'Last year';
+  String get storyLastYear => 'Tahun lalu';
 
   @override
-  String get storyTapToOpen => 'Tap a day to open it';
+  String get storyTapToOpen => 'Ketuk hari untuk membukanya';
 
   @override
-  String get settingsGeneralTitle => 'General';
+  String get settingsGeneralTitle => 'Umum';
 
   @override
-  String get settingsDataTitle => 'Data & storage';
+  String get settingsDataTitle => 'Data & penyimpanan';
 
   @override
-  String get settingsStoriesTitle => 'Stories';
+  String get settingsStoriesTitle => 'Cerita';
 
   @override
-  String get settingsHelpTitle => 'Help & about';
+  String get settingsHelpTitle => 'Bantuan & tentang';
 
   @override
-  String get weatherTitle => 'Weather';
+  String get weatherTitle => 'Cuaca';
 
   @override
-  String get weatherClear => 'Clear';
+  String get weatherClear => 'Jelas';
 
   @override
-  String get weatherPartlyCloudy => 'Partly cloudy';
+  String get weatherPartlyCloudy => 'Sebagian berawan';
 
   @override
-  String get weatherCloudy => 'Cloudy';
+  String get weatherCloudy => 'Berawan';
 
   @override
-  String get weatherFog => 'Fog';
+  String get weatherFog => 'Kabut';
 
   @override
-  String get weatherDrizzle => 'Drizzle';
+  String get weatherDrizzle => 'Gerimis';
 
   @override
-  String get weatherRain => 'Rain';
+  String get weatherRain => 'Hujan';
 
   @override
-  String get weatherSnow => 'Snow';
+  String get weatherSnow => 'Salju';
 
   @override
-  String get weatherStorm => 'Thunderstorm';
+  String get weatherStorm => 'Badai petir';
 
   @override
-  String get weatherFetch => 'Get weather for this entry';
+  String get weatherFetch => 'Dapatkan cuaca untuk entri ini';
 
   @override
-  String get weatherNeedsLocation => 'Add a location with coordinates first.';
+  String get weatherNeedsLocation =>
+      'Tambahkan lokasi dengan koordinat terlebih dahulu.';
 
   @override
   String get weatherUnavailable =>
-      'Weather is unavailable for this place and time.';
+      'Cuaca tidak tersedia untuk tempat dan waktu ini.';
 
   @override
-  String get weatherRemove => 'Remove weather';
+  String get weatherRemove => 'Hapus cuaca';
 
   @override
-  String get activityTitle => 'Activity';
+  String get activityTitle => 'Aktivitas';
 
   @override
-  String get activityStill => 'Still';
+  String get activityStill => 'Tetap saja';
 
   @override
-  String get activityWalking => 'Walking';
+  String get activityWalking => 'Berjalan';
 
   @override
-  String get activityRunning => 'Running';
+  String get activityRunning => 'Berlari';
 
   @override
-  String get activityCycling => 'Cycling';
+  String get activityCycling => 'Bersepeda';
 
   @override
-  String get activityVehicle => 'In a vehicle';
+  String get activityVehicle => 'Di dalam kendaraan';
 
   @override
-  String get activityFlying => 'Flying';
+  String get activityFlying => 'Terbang';
 
   @override
-  String get activityExercise => 'Exercise';
+  String get activityExercise => 'Latihan';
 
   @override
-  String get activityDetect => 'Detect current activity';
+  String get activityDetect => 'Deteksi aktivitas saat ini';
 
   @override
-  String get activityDetectFailed => 'Couldn\'t detect an activity.';
+  String get activityDetectFailed => 'Tidak dapat mendeteksi aktivitas.';
 
   @override
-  String get activityRemove => 'Remove activity';
+  String get activityRemove => 'Hapus aktivitas';
 
   @override
-  String get settingsAutoAddTitle => 'Add automatically';
+  String get settingsAutoAddTitle => 'Tambahkan secara otomatis';
 
   @override
-  String get settingsAutoAddLocation => 'Location';
+  String get settingsAutoAddLocation => 'Lokasi';
 
   @override
-  String get settingsAutoAddWeather => 'Weather';
+  String get settingsAutoAddWeather => 'Cuaca';
 
   @override
-  String get settingsAutoAddHint =>
-      'New entries get these filled in when they are created.';
+  String get settingsAutoAddHint => 'Entri baru mengisinya saat dibuat.';
 
   @override
-  String get settingsTemperatureUnit => 'Temperature unit';
+  String get settingsTemperatureUnit => 'Satuan suhu';
 
   @override
-  String get settingsCelsius => 'Celsius (°C)';
+  String get settingsCelsius => 'Celcius (°C)';
 
   @override
   String get settingsFahrenheit => 'Fahrenheit (°F)';
 
   @override
-  String get moodGreat => 'Great';
+  String get moodGreat => 'Bagus';
 
   @override
-  String get moodGood => 'Good';
+  String get moodGood => 'Bagus';
 
   @override
-  String get moodOkay => 'Okay';
+  String get moodOkay => 'Oke';
 
   @override
-  String get moodBad => 'Bad';
+  String get moodBad => 'Buruk';
 
   @override
-  String get moodAwful => 'Awful';
+  String get moodAwful => 'Mengerikan';
 
   @override
-  String get locationSearchHint => 'Search for a place';
+  String get locationSearchHint => 'Cari tempat';
 
   @override
-  String get locationSearchEmpty => 'No places found';
+  String get locationSearchEmpty => 'Tidak ada tempat yang ditemukan';
 
   @override
-  String get settingsWallpaper => 'Wallpaper';
+  String get settingsWallpaper => 'kertas dinding';
 
   @override
-  String get wallpaperNone => 'None';
+  String get wallpaperNone => 'Tidak ada';
 
   @override
-  String get wallpaperDots => 'Dots';
+  String get wallpaperDots => 'titik';
 
   @override
-  String get wallpaperGrid => 'Grid';
+  String get wallpaperGrid => 'jaringan';
 
   @override
-  String get wallpaperLines => 'Lines';
+  String get wallpaperLines => 'Garis';
 
   @override
-  String get wallpaperPhoto => 'Photo…';
+  String get wallpaperPhoto => 'Foto…';
 
   @override
-  String get settingsFontFamily => 'Font';
+  String get settingsFontFamily => 'huruf';
 
   @override
-  String get fontSystem => 'System';
+  String get fontSystem => 'Sistem';
 
   @override
   String get fontSerif => 'Serif';
 
   @override
-  String get fontMono => 'Monospace';
+  String get fontMono => 'Ruang tunggal';
 
   @override
-  String get settingsFontSize => 'Font size';
+  String get settingsFontSize => 'Ukuran huruf';
 
   @override
-  String get fontSizeSmall => 'Small';
+  String get fontSizeSmall => 'Kecil';
 
   @override
-  String get fontSizeMedium => 'Medium';
+  String get fontSizeMedium => 'Sedang';
 
   @override
-  String get fontSizeLarge => 'Large';
+  String get fontSizeLarge => 'Besar';
 
   @override
-  String get fontSizeExtraLarge => 'Extra large';
+  String get fontSizeExtraLarge => 'Ekstra besar';
 
   @override
-  String get settingsLineSpacing => 'Line spacing';
+  String get settingsLineSpacing => 'Spasi baris';
 
   @override
-  String get lineSpacingCompact => 'Compact';
+  String get lineSpacingCompact => 'Kompak';
 
   @override
-  String get lineSpacingNormal => 'Normal';
+  String get lineSpacingNormal => 'Biasa';
 
   @override
-  String get lineSpacingRelaxed => 'Relaxed';
+  String get lineSpacingRelaxed => 'Santai';
 
   @override
-  String get moodAssociationsTitle => 'What makes me feel…';
+  String get moodAssociationsTitle => 'Apa yang membuatku merasa…';
 
   @override
   String moodAssociationsCount(int matching, int total) {
-    return '$matching of $total entries';
+    return '$matching dari entri $total';
   }
 
   @override
-  String get videoRecord => 'Record a video';
+  String get videoRecord => 'Rekam video';
 
   @override
-  String get videoChoose => 'Choose a video';
+  String get videoChoose => 'Pilih video';
 
   @override
-  String get audioRecordTitle => 'Record a voice note';
+  String get audioRecordTitle => 'Rekam catatan suara';
 
   @override
-  String get audioChoose => 'Choose an audio file';
+  String get audioChoose => 'Pilih file audio';
 
   @override
-  String get audioStart => 'Record';
+  String get audioStart => 'Rekam';
 
   @override
-  String get audioStop => 'Stop and save';
+  String get audioStop => 'Berhenti dan simpan';
 
   @override
   String get audioPermissionDenied =>
-      'Microphone access is off. Allow it in the system settings.';
+      'Akses mikrofon tidak aktif. Izinkan di pengaturan sistem.';
 
   @override
-  String get mediaTooLarge => 'This video is too large to attach.';
+  String get mediaTooLarge => 'Video ini terlalu besar untuk dilampirkan.';
 
   @override
   String get mediaUnavailable =>
-      'This attachment is not available on this device.';
+      'Lampiran ini tidak tersedia di perangkat ini.';
 
   @override
-  String get widgetDone => 'Today\'s entry is written';
+  String get widgetDone => 'Entri hari ini telah ditulis';
 
   @override
-  String get widgetPending => 'How was your day?';
+  String get widgetPending => 'Bagaimana harimu?';
 
   @override
-  String get widgetWrite => 'Write';
+  String get widgetWrite => 'Menulis';
 
   @override
-  String get insertChecklist => 'Checklist';
+  String get insertChecklist => 'Daftar periksa';
 
   @override
-  String get insertNumberedList => 'Numbered list';
+  String get insertNumberedList => 'Daftar bernomor';
 
   @override
-  String get insertTable => 'Table';
+  String get insertTable => 'Tabel';
 
   @override
-  String get insertDivider => 'Divider';
+  String get insertDivider => 'Pembagi';
 
   @override
-  String get insertCodeBlock => 'Code block';
+  String get insertCodeBlock => 'Blok kode';
 
   @override
-  String get journalSortTitle => 'Sort entries';
+  String get journalSortTitle => 'Urutkan entri';
 
   @override
-  String get journalSortUpdated => 'Last updated';
+  String get journalSortUpdated => 'Terakhir diperbarui';
 
   @override
-  String get settingsTimeFormat => 'Time format';
+  String get settingsTimeFormat => 'Format waktu';
 
   @override
-  String get settingsDayStart => 'New entries count for the day before until';
+  String get settingsDayStart =>
+      'Entri baru dihitung untuk hari sebelumnya hingga';
 
   @override
-  String get settingsDayAskUntil => 'Then ask which day until';
+  String get settingsDayAskUntil => 'Lalu tanyakan sampai hari apa';
 
   @override
-  String get settingsDayStartMidnight => 'Off';
+  String get settingsDayStartMidnight => 'Mati';
 
   @override
   String settingsDayStartAt(int hour) {
@@ -1395,268 +1399,271 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get settingsDayStartHint =>
-      'Every entry keeps the day it belongs to next to the time it was written, and you can change that day in the editor at any time. These hours only pick the day for new entries, so changing them moves no existing entry.';
+      'Setiap entri menyimpan hari di sebelah waktu penulisannya, dan Anda dapat mengubah hari itu di editor kapan saja. Jam ini hanya memilih hari untuk entri baru, jadi mengubahnya tidak akan memindahkan entri yang sudah ada.';
 
   @override
   String get lateNightBadge =>
-      'Written late at night, counted for the day before';
+      'Ditulis larut malam, dihitung sehari sebelumnya';
 
   @override
   String editorDayAsk(String time) {
-    return 'Written at $time. Which day is it for?';
+    return 'Ditulis di $time. Untuk hari apa?';
   }
 
   @override
   String editorDayYesterday(String date) {
-    return '$date (yesterday)';
+    return '$date (kemarin)';
   }
 
   @override
   String editorDayToday(String date) {
-    return '$date (today)';
+    return '$date (hari ini)';
   }
 
   @override
   String editorWrittenAt(String when) {
-    return 'Written $when';
+    return 'Ditulis $when';
   }
 
   @override
-  String get timeFormat12 => '12-hour';
+  String get timeFormat12 => '12 jam';
 
   @override
-  String get timeFormat24 => '24-hour';
+  String get timeFormat24 => '24 jam';
 
   @override
-  String get settingsReminderDays => 'Remind me on';
+  String get settingsReminderDays => 'Ingatkan saya';
 
   @override
-  String get locationRecent => 'Recent places';
+  String get locationRecent => 'Tempat terkini';
 
   @override
-  String get shareImage => 'Share image';
+  String get shareImage => 'Bagikan gambar';
 
   @override
-  String get shareSaveImage => 'Save image';
+  String get shareSaveImage => 'Simpan gambar';
 
   @override
-  String get shareSaved => 'Image saved';
+  String get shareSaved => 'Gambar disimpan';
 
   @override
-  String get deletedTitle => 'Recently deleted';
+  String get deletedTitle => 'Baru-baru ini dihapus';
 
   @override
-  String get deletedNone => 'Nothing deleted recently';
+  String get deletedNone => 'Tidak ada yang dihapus baru-baru ini';
 
   @override
   String deletedHint(int days) {
-    return 'Deleted entries stay here for $days days, then are erased.';
+    return 'Entri yang dihapus tetap di sini selama $days hari, lalu dihapus.';
   }
 
   @override
   String deletedDaysLeft(int days) {
-    return '$days days left';
+    return '$days hari tersisa';
   }
 
   @override
-  String get deletedRestore => 'Restore';
+  String get deletedRestore => 'Pulihkan';
 
   @override
-  String get deletedDeleteForever => 'Delete forever';
+  String get deletedDeleteForever => 'Hapus selamanya';
 
   @override
   String get deletedDeleteForeverDescription =>
-      'The entry and its attachments are erased. This cannot be undone.';
+      'Entri dan lampirannya dihapus. Hal ini tidak dapat dibatalkan.';
 
   @override
-  String get deletedEmpty => 'Empty';
+  String get deletedEmpty => 'Kosong';
 
   @override
   String get deletedEmptyDescription =>
-      'Erase every entry in Recently deleted? This cannot be undone.';
+      'Hapus setiap entri di Baru saja dihapus? Hal ini tidak dapat dibatalkan.';
 
   @override
   String get formatJson => 'JSON';
 
   @override
-  String get randomTitle => 'Random walk';
+  String get randomTitle => 'Jalan acak';
 
   @override
-  String get randomSubtitle => 'Open a past entry';
+  String get randomSubtitle => 'Buka entri sebelumnya';
 
   @override
-  String get randomNext => 'Another';
+  String get randomNext => 'Lainnya';
 
   @override
-  String get randomAll => 'All';
+  String get randomAll => 'Semua';
 
   @override
-  String get randomWithPhotos => 'With photos';
+  String get randomWithPhotos => 'Dengan foto';
 
   @override
-  String get randomGoodDays => 'Good days';
+  String get randomGoodDays => 'Hari baik';
 
   @override
-  String get randomEmpty => 'No entries to pick from';
+  String get randomEmpty => 'Tidak ada entri untuk dipilih';
 
   @override
-  String get reviewWeekTitle => 'This week';
+  String get reviewWeekTitle => 'Minggu ini';
 
   @override
-  String get reviewWeekSubtitle => 'Your week so far';
+  String get reviewWeekSubtitle => 'Minggu Anda sejauh ini';
 
   @override
-  String get reviewYearTitle => 'This year';
+  String get reviewYearTitle => 'Tahun ini';
 
   @override
-  String get reviewEmpty => 'Nothing written yet';
+  String get reviewEmpty => 'Belum ada yang tertulis';
 
   @override
-  String get reviewEntries => 'Entries';
+  String get reviewEntries => 'Entri';
 
   @override
-  String get reviewDaysWritten => 'Days written';
+  String get reviewDaysWritten => 'Hari-hari tertulis';
 
   @override
-  String get reviewWords => 'Words';
+  String get reviewWords => 'Kata-kata';
 
   @override
-  String get reviewPhotos => 'Photos';
+  String get reviewPhotos => 'Foto';
 
   @override
-  String get reviewLongestRun => 'Longest run of days';
+  String get reviewLongestRun => 'Hari-hari terlama';
 
   @override
-  String get reviewAverageMood => 'Average mood';
+  String get reviewAverageMood => 'Suasana hati rata-rata';
 
   @override
-  String get reviewFavorites => 'Most often';
+  String get reviewFavorites => 'Paling sering';
 
   @override
-  String get reviewByMonth => 'By month';
+  String get reviewByMonth => 'Berdasarkan bulan';
 
   @override
-  String get reviewHighlight => 'Highlight';
+  String get reviewHighlight => 'Sorot';
 
   @override
-  String get yearInPixels => 'Year in pixels';
+  String get yearInPixels => 'Tahun dalam piksel';
 
   @override
-  String get capsuleSeal => 'Seal as a time capsule';
+  String get capsuleSeal => 'Segel sebagai kapsul waktu';
 
   @override
-  String get capsuleTitle => 'Time capsule';
+  String get capsuleTitle => 'Kapsul waktu';
 
   @override
   String capsuleOpensOn(Object date) {
-    return 'Opens on $date';
+    return 'Dibuka pada $date';
   }
 
   @override
   String capsuleWrittenOn(Object date) {
-    return 'Written on $date';
+    return 'Ditulis pada $date';
   }
 
   @override
-  String get capsuleOpenEarly => 'Open early';
+  String get capsuleOpenEarly => 'Buka lebih awal';
 
   @override
   String get capsuleOpenEarlyDescription =>
-      'The capsule opens now and stays open.';
+      'Kapsulnya sekarang terbuka dan tetap terbuka.';
 
   @override
-  String get capsuleOpened => 'Time capsule opened';
+  String get capsuleOpened => 'Kapsul waktu terbuka';
 
   @override
-  String get templateMorningName => 'Morning pages';
+  String get templateMorningName => 'Halaman pagi';
 
   @override
-  String get templateMorningDescription => 'Set up the day in three minutes';
+  String get templateMorningDescription => 'Atur hari dalam tiga menit';
 
   @override
   String get templateMorningText =>
-      '## Three things I want to do well today\n1. \n2. \n3. \n\n## Something I look forward to\n\n## A note to myself\n';
+      '## Tiga hal yang ingin saya lakukan dengan baik hari ini\n1. \n2. \n3. \n\n## Sesuatu yang saya nantikan\n\n## Catatan untuk diriku sendiri\n';
 
   @override
-  String get templateEveningName => 'Evening review';
+  String get templateEveningName => 'Ulasan malam';
 
   @override
-  String get templateEveningDescription => 'Close the day with what went well';
+  String get templateEveningDescription =>
+      'Tutup hari dengan apa yang berjalan baik';
 
   @override
   String get templateEveningText =>
-      '## Three good things today\n1. \n2. \n3. \n\n## What I learned\n\n## What could go better tomorrow\n';
+      '## Tiga hal baik hari ini\n1. \n2. \n3. \n\n## Apa yang saya pelajari\n\n## Apa yang bisa lebih baik besok\n';
 
   @override
-  String get routineMorning => 'Good morning';
+  String get routineMorning => 'Selamat pagi';
 
   @override
-  String get routineEvening => 'Evening review';
+  String get routineEvening => 'Ulasan malam';
 
   @override
-  String get settingsRoutinePrompts => 'Morning and evening prompts';
+  String get settingsRoutinePrompts => 'Perintah pagi dan sore';
 
   @override
   String get settingsRoutinePromptsHint =>
-      'Suggest the morning or evening template in Stories';
+      'Sarankan templat pagi atau sore hari di Stories';
 
   @override
-  String get checkInTitle => 'Quick check-in';
+  String get checkInTitle => 'Check-in cepat';
 
   @override
-  String get checkInSubtitle => 'Mood in two taps';
+  String get checkInSubtitle => 'Suasana hati dalam dua ketukan';
 
   @override
-  String get checkInMood => 'How do you feel?';
+  String get checkInMood => 'Bagaimana perasaanmu?';
 
   @override
-  String get checkInActivity => 'What are you doing?';
+  String get checkInActivity => 'Apa yang kamu lakukan?';
 
   @override
-  String get checkInNote => 'A line about it (optional)';
+  String get checkInNote => 'Satu baris tentang hal itu (opsional)';
 
   @override
-  String get checkInSave => 'Save';
+  String get checkInSave => 'Simpan';
 
   @override
   String editorWordCount(int words, int characters) {
-    return '$words words · $characters characters';
+    return 'Kata $words · Karakter $characters';
   }
 
   @override
-  String get coachProgramEverydayTagline => 'Notice the small things in a day.';
+  String get coachProgramEverydayTagline =>
+      'Perhatikan hal-hal kecil dalam sehari.';
 
   @override
-  String get coachProgramReflectTagline => 'Slow down and listen to yourself.';
+  String get coachProgramReflectTagline =>
+      'Pelan-pelan dan dengarkan diri Anda sendiri.';
 
   @override
-  String get coachDuration => 'Duration';
+  String get coachDuration => 'Durasi';
 
   @override
-  String get coachInterval => 'Interval';
+  String get coachInterval => 'selang waktu';
 
   @override
-  String get coachDifficulty => 'Difficulty';
+  String get coachDifficulty => 'Kesulitan';
 
   @override
-  String get coachIntervalDaily => 'Daily';
+  String get coachIntervalDaily => 'Setiap hari';
 
   @override
-  String get coachIntervalWeekly => 'Weekly';
+  String get coachIntervalWeekly => 'Mingguan';
 
   @override
-  String get coachDifficultyBeginner => 'Beginner';
+  String get coachDifficultyBeginner => 'Pemula';
 
   @override
-  String get coachDifficultyIntermediate => 'Intermediate';
+  String get coachDifficultyIntermediate => 'Menengah';
 
   @override
   String coachDurationDays(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count days',
-      one: '1 day',
+      other: '$count hari',
+      one: '1 hari',
     );
     return '$_temp0';
   }
@@ -1666,1055 +1673,1072 @@ class AppLocalizationsId extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count weeks',
-      one: '1 week',
+      other: '$count minggu',
+      one: '1 minggu',
     );
     return '$_temp0';
   }
 
   @override
   String coachDayN(int n) {
-    return 'Day $n';
+    return 'Hari $n';
   }
 
   @override
   String coachWeekN(int n) {
-    return 'Week $n';
+    return 'Minggu $n';
   }
 
   @override
-  String get coachEnroll => 'Enroll';
+  String get coachEnroll => 'Daftar';
 
   @override
-  String get coachEndProgram => 'End program';
+  String get coachEndProgram => 'Akhiri program';
 
   @override
-  String get coachAuthor => 'Author';
+  String get coachAuthor => 'Penulis';
 
   @override
-  String get coachAuthorBio => 'Prompts written for this app.';
+  String get coachAuthorBio => 'Anjuran ditulis untuk aplikasi ini.';
 
   @override
   String get coachEnrolledTip =>
-      'All set! Your questions will show up in Stories.';
+      'Sudah siap! Pertanyaan Anda akan muncul di Stories.';
 
   @override
-  String get coachGoToStories => 'Go to Stories';
+  String get coachGoToStories => 'Buka Cerita';
 
   @override
-  String get coachAnswerHint => 'Write your answer…';
+  String get coachAnswerHint => 'Tulis jawaban Anda…';
 
   @override
-  String get storyWrapUp => 'That\'s all for today.';
+  String get storyWrapUp => 'Itu saja untuk hari ini.';
 
   @override
-  String get storyTapToClose => 'Tap to close';
+  String get storyTapToClose => 'Ketuk untuk menutup';
 
   @override
-  String get coachAnswerDone => 'Done';
+  String get coachAnswerDone => 'Selesai';
 
   @override
-  String get coachAnswered => 'Answered, tap to open';
+  String get coachAnswered => 'Dijawab, ketuk untuk membuka';
 
   @override
-  String get coachAnsweredEarlier => 'Answered';
+  String get coachAnsweredEarlier => 'Dijawab';
 
   @override
-  String get locationLocating => 'Locating…';
+  String get locationLocating => 'Menemukan…';
 
   @override
-  String get locationPickPlace => 'Pick a place';
+  String get locationPickPlace => 'Pilih tempat';
 
   @override
-  String get locationPlacesHint => 'Address or name of the place';
+  String get locationPlacesHint => 'Alamat atau nama tempat';
 
   @override
-  String get locationCustom => 'Custom place';
+  String get locationCustom => 'Tempat khusus';
 
   @override
-  String get locationCurrent => 'Current location';
+  String get locationCurrent => 'Lokasi saat ini';
 
   @override
-  String get locationSaved => 'Saved places';
+  String get locationSaved => 'Tempat yang disimpan';
 
   @override
-  String get locationSearchResults => 'Search results';
+  String get locationSearchResults => 'Hasil pencarian';
 
   @override
-  String get locationNearby => 'Nearby places';
+  String get locationNearby => 'Tempat-tempat terdekat';
 
   @override
-  String get locationRename => 'Rename';
+  String get locationRename => 'Ganti nama';
 
   @override
-  String get locationSavePlace => 'Save place';
+  String get locationSavePlace => 'Menghemat tempat';
 
   @override
-  String get locationUnsavePlace => 'Remove from saved places';
+  String get locationUnsavePlace => 'Hapus dari tempat yang disimpan';
 
   @override
-  String get shareAs => 'Share as…';
+  String get shareAs => 'Bagikan sebagai…';
 
   @override
-  String get shareAsImage => 'Image';
+  String get shareAsImage => 'Gambar';
 
   @override
-  String get shareAsZip => 'ZIP with the original media';
+  String get shareAsZip => 'ZIP dengan media aslinya';
 
   @override
-  String get shareAsPlainText => 'Plain text';
+  String get shareAsPlainText => 'Teks biasa';
 
   @override
   String get shareAsHtml => 'HTML';
 
   @override
-  String get onboardWelcomeTitle => 'Welcome to AID Diary';
+  String get onboardWelcomeTitle => 'Selamat datang di AID Diary';
 
   @override
   String get onboardWelcomeText =>
-      'Start here, or connect this device to one you already use.';
+      'Mulai di sini, atau sambungkan perangkat ini ke perangkat yang sudah Anda gunakan.';
 
   @override
-  String get onboardStart => 'Start writing';
+  String get onboardStart => 'Mulailah menulis';
 
   @override
-  String get helpFaq => 'Frequently asked questions';
+  String get helpFaq => 'Pertanyaan yang sering diajukan';
 
   @override
-  String get helpFaq1Q => 'Where is my diary stored?';
+  String get helpFaq1Q => 'Di mana buku harian saya disimpan?';
 
   @override
   String get helpFaq1A =>
-      'Your diary is stored on this device. It reaches other devices or storage only when you enable sync, share or export it. Sync is end-to-end encrypted.';
+      'Buku harian Anda disimpan di perangkat ini. Ini menjangkau perangkat atau penyimpanan lain hanya ketika Anda mengaktifkan sinkronisasi, berbagi, atau mengekspornya. Sinkronisasi dienkripsi ujung ke ujung.';
 
   @override
-  String get helpFaq2Q => 'How do I keep a copy or move to a new device?';
+  String get helpFaq2Q =>
+      'Bagaimana cara menyimpan salinan atau memindahkannya ke perangkat baru?';
 
   @override
   String get helpFaq2A =>
-      'Connect to an existing device in Settings → Data & storage → Sync and confirm authorization on the device that has your diary. Both devices remain usable. You can also create a backup and restore it on another device.';
+      'Hubungkan ke perangkat yang ada di Pengaturan → Data & penyimpanan → Sinkronkan dan konfirmasikan otorisasi pada perangkat yang memiliki buku harian Anda. Kedua perangkat tetap dapat digunakan. Anda juga dapat membuat cadangan dan memulihkannya di perangkat lain.';
 
   @override
-  String get helpFaq3Q => 'Can I bring in entries from other diary apps?';
+  String get helpFaq3Q =>
+      'Bisakah saya memasukkan entri dari aplikasi buku harian lain?';
 
   @override
   String get helpFaq3A =>
-      'Yes: in Settings → Data & storage, import exports from Daylio, Diarium, Diaro, DayBook, My Brain, OneShot and Pixels, or a JSON export.';
+      'Ya: di Pengaturan → Data & penyimpanan, impor ekspor dari Daylio, Diarium, Diaro, DayBook, My Brain, OneShot dan Pixels, atau ekspor JSON.';
 
   @override
-  String get helpFaq4Q => 'How do coach programs work?';
+  String get helpFaq4Q => 'Bagaimana cara kerja program pelatih?';
 
   @override
   String get helpFaq4A =>
-      'Enroll in a program on the Coach page. Each day or week a new question waits in Stories; your answer is saved as an entry.';
+      'Mendaftarlah dalam sebuah program di halaman Pelatih. Setiap hari atau minggu, pertanyaan baru menunggu di Stories; jawaban Anda disimpan sebagai entri.';
 
   @override
-  String get helpFaq5Q => 'What if I forget my passcode?';
+  String get helpFaq5Q => 'Bagaimana jika saya lupa kode sandi saya?';
 
   @override
   String get helpFaq5A =>
-      'The passcode cannot be recovered, so keep a backup of your diary.';
+      'Kode sandi tidak dapat dipulihkan, jadi simpanlah cadangan buku harian Anda.';
 
   @override
-  String get helpPrivacy => 'Privacy';
+  String get helpPrivacy => 'Privasi';
 
   @override
   String get helpPrivacyText =>
-      'Diary content and media stay on this device unless you enable encrypted sync or share/export them. Maps, place lookup and weather use the configured services and send the location or search query needed for that request, not diary text.';
+      'Konten dan media buku harian tetap ada di perangkat ini kecuali Anda mengaktifkan sinkronisasi terenkripsi atau membagikan/mengekspornya. Peta, pencarian tempat, dan cuaca menggunakan layanan yang dikonfigurasi dan mengirimkan lokasi atau permintaan pencarian yang diperlukan untuk permintaan tersebut, bukan teks buku harian.';
 
   @override
-  String get photoMetaTitle => 'Use the photo\'s details?';
+  String get photoMetaTitle => 'Gunakan detail foto?';
 
   @override
   String photoMetaDateAndPlace(String date, String place) {
-    return 'Count this entry for $date and set its place to $place, as recorded in the photo?';
+    return 'Hitung entri ini untuk $date dan atur tempatnya ke $place, seperti yang terekam di foto?';
   }
 
   @override
   String photoMetaDate(String date) {
-    return 'Count this entry for $date, when the photo was taken?';
+    return 'Hitung entri ini untuk $date, kapan foto diambil?';
   }
 
   @override
   String photoMetaPlace(String place) {
-    return 'Set this entry\'s place to $place, where the photo was taken?';
+    return 'Setel tempat entri ini ke $place, di mana foto itu diambil?';
   }
 
   @override
-  String get photoMetaApply => 'Use them';
+  String get photoMetaApply => 'Gunakan mereka';
 
   @override
-  String get quickWriteTitle => 'Quick write';
+  String get quickWriteTitle => 'Tulis cepat';
 
   @override
-  String get quickWriteText => 'Tap to start a new entry.';
+  String get quickWriteText => 'Ketuk untuk memulai entri baru.';
 
   @override
-  String get settingsQuickWriteTitle => 'Quick write in notifications';
+  String get settingsQuickWriteTitle => 'Tulis cepat di notifikasi';
 
   @override
   String get settingsQuickWriteDescription =>
-      'Keep a notification that opens a new entry.';
+      'Simpan pemberitahuan yang membuka entri baru.';
 
   @override
-  String get settingsNudgesTitle => 'Nudge me after a quiet stretch';
+  String get settingsNudgesTitle =>
+      'Sikut aku setelah melakukan peregangan yang tenang';
 
   @override
   String settingsNudgesDescription(int days) {
-    return 'A gentle reminder when you haven\'t written for $days days.';
+    return 'Pengingat lembut ketika Anda belum menulis selama $days.';
   }
 
   @override
-  String get nudgeTitle => 'It\'s been a while';
+  String get nudgeTitle => 'Sudah lama tidak bertemu';
 
   @override
-  String get nudgeMonday => 'A new week: what are you looking forward to?';
+  String get nudgeMonday => 'Minggu baru: apa yang kamu nantikan?';
 
   @override
-  String get nudgeTuesday => 'Two lines are enough. How are you today?';
+  String get nudgeTuesday => 'Dua baris sudah cukup. Apa kabarmu hari ini?';
 
   @override
-  String get nudgeWednesday =>
-      'Halfway through the week. What stood out so far?';
+  String get nudgeWednesday => 'Setengah minggu. Apa yang menonjol sejauh ini?';
 
   @override
-  String get nudgeThursday => 'Anything small worth keeping from today?';
+  String get nudgeThursday =>
+      'Adakah hal kecil yang layak disimpan mulai hari ini?';
 
   @override
-  String get nudgeFriday => 'The week is wrapping up. Note one good moment.';
+  String get nudgeFriday =>
+      'Minggu ini sudah berakhir. Catat satu momen bagus.';
 
   @override
-  String get nudgeSaturday => 'A slow Saturday is a good day to write.';
+  String get nudgeSaturday =>
+      'Sabtu yang lambat adalah hari yang baik untuk menulis.';
 
   @override
-  String get nudgeSunday => 'Look back on the week before it ends.';
+  String get nudgeSunday => 'Lihat kembali minggu sebelum itu berakhir.';
 
   @override
-  String get photoWidgetEmpty => 'Photos you add to entries show up here.';
+  String get photoWidgetEmpty =>
+      'Foto yang Anda tambahkan ke entri muncul di sini.';
 
   @override
-  String get channelReminders => 'Reminders';
+  String get channelReminders => 'Pengingat';
 
   @override
-  String get channelOnThisDay => 'On this day';
+  String get channelOnThisDay => 'Pada hari ini';
 
   @override
-  String get channelCoach => 'Coach prompts';
+  String get channelCoach => 'Pelatih meminta';
 
   @override
-  String get channelNudges => 'Nudges after quiet days';
+  String get channelNudges => 'Menyenggol setelah hari-hari tenang';
 
   @override
-  String get channelQuickWrite => 'Quick write';
+  String get channelQuickWrite => 'Tulis cepat';
 
   @override
-  String get channelBackup => 'Backups';
+  String get channelBackup => 'Cadangan';
 
   @override
-  String get formatJsonExport => 'JSON (AID Diary export)';
+  String get formatJsonExport => 'JSON (ekspor AID Diary)';
 
   @override
   String get aboutModifiedNotice =>
-      'A modified version of Daily You by Demizo and contributors. It is not the official Daily You app.';
+      'Versi modifikasi dari Daily You oleh Demizo dan kontributor. Ini bukan aplikasi resmi Daily You.';
 
   @override
-  String get toolbarPhotos => 'Add photos';
+  String get toolbarPhotos => 'Tambahkan foto';
 
   @override
-  String get toolbarMedia => 'Photos and videos';
+  String get toolbarMedia => 'Foto dan video';
 
   @override
-  String get mediaFromGallery => 'Choose from gallery';
+  String get mediaFromGallery => 'Pilih dari galeri';
 
   @override
-  String get mediaFromFiles => 'Choose from files';
+  String get mediaFromFiles => 'Pilih dari file';
 
   @override
-  String get editorLeaveTitle => 'Save this entry?';
+  String get editorLeaveTitle => 'Simpan entri ini?';
 
   @override
-  String get editorLeaveDiscard => 'Don\'t save';
+  String get editorLeaveDiscard => 'Jangan simpan';
 
   @override
-  String get editorTitleHint => 'Title';
+  String get editorTitleHint => 'Judul';
 
   @override
-  String get editorLocating => 'Locating…';
+  String get editorLocating => 'Menemukan…';
 
   @override
   String get toolbarVideo => 'Video';
 
   @override
-  String get toolbarAudio => 'Voice note';
+  String get toolbarAudio => 'Catatan suara';
 
   @override
-  String get toolbarTags => 'Tags';
+  String get toolbarTags => 'Tag';
 
   @override
-  String get toolbarBulletList => 'Bulleted list';
+  String get toolbarBulletList => 'Daftar berpoin';
 
   @override
-  String get toolbarHeading => 'Heading';
+  String get toolbarHeading => 'Menuju';
 
   @override
-  String get toolbarBold => 'Bold';
+  String get toolbarBold => 'Berani';
 
   @override
-  String get toolbarItalic => 'Italic';
+  String get toolbarItalic => 'miring';
 
   @override
-  String get toolbarHighlight => 'Highlight';
+  String get toolbarHighlight => 'Sorot';
 
   @override
-  String get toolbarStrikethrough => 'Strikethrough';
+  String get toolbarStrikethrough => 'Dicoret';
 
   @override
-  String get toolbarQuote => 'Quote';
+  String get toolbarQuote => 'Kutipan';
 
   @override
-  String get toolbarLink => 'Link';
+  String get toolbarLink => 'Tautan';
 
   @override
-  String get toolbarInsert => 'Insert';
+  String get toolbarInsert => 'Sisipkan';
 
   @override
-  String get toolbarUndo => 'Undo';
+  String get toolbarUndo => 'Membatalkan';
 
   @override
-  String get toolbarRedo => 'Redo';
+  String get toolbarRedo => 'Ulangi';
 
   @override
-  String get toolbarInsertDate => 'Insert the date';
+  String get toolbarInsertDate => 'Masukkan tanggalnya';
 
   @override
-  String get toolbarInsertTime => 'Insert the time';
+  String get toolbarInsertTime => 'Masukkan waktu';
 
   @override
-  String get settingsSyncTitle => 'Cloud Sync';
+  String get settingsSyncTitle => 'Sinkronisasi Awan';
 
   @override
   String get syncOffDescription =>
-      'Keep this diary the same on all your devices through Google Drive or a WebDAV server, such as Nextcloud, Synology or Jianguoyun.';
+      'Jaga agar buku harian ini tetap sama di semua perangkat Anda melalui Google Drive atau server WebDAV, seperti Nextcloud, Synology, atau Jianguoyun.';
 
   @override
-  String get syncUseGoogleDrive => 'Sync with Google Drive';
+  String get syncUseGoogleDrive => 'Sinkronkan dengan Google Drive';
 
   @override
-  String get syncOrWebDav => 'Or a WebDAV server';
+  String get syncOrWebDav => 'Atau server WebDAV';
 
   @override
   String get syncGoogleDrive => 'Google Drive';
 
   @override
-  String get syncGoogleSignedIn => 'Signed in. You can go back to AID Diary.';
+  String get syncGoogleSignedIn => 'Masuk. Anda dapat kembali ke AID Diary.';
 
   @override
-  String get syncGoogleSignInAgain => 'Google needs you to sign in again.';
+  String get syncGoogleSignInAgain => 'Google mengharuskan Anda masuk lagi.';
 
   @override
-  String get syncSignInAgain => 'Sign in again';
+  String get syncSignInAgain => 'Masuk lagi';
 
   @override
-  String get settingsCommandLineTitle => 'Command line';
+  String get settingsCommandLineTitle => 'Baris perintah';
 
   @override
-  String get commandLineToggle => 'Command line interface';
+  String get commandLineToggle => 'Antarmuka baris perintah';
 
   @override
   String get commandLineToggleHint =>
-      'Lets the aid command and other programs on this device use the app\'s commands.';
+      'Mengizinkan perintah bantuan dan program lain di perangkat ini menggunakan perintah aplikasi.';
 
   @override
-  String get commandLineAlwaysOn => 'Always on in development builds.';
+  String get commandLineAlwaysOn =>
+      'Selalu aktif dalam pembangunan pembangunan.';
 
   @override
   String commandLineListening(int port) {
-    return 'Listening on port $port';
+    return 'Mendengarkan di port $port';
   }
 
   @override
-  String get commandPaletteTitle => 'All commands';
+  String get commandPaletteTitle => 'Semua perintah';
 
   @override
-  String get commandPaletteSearch => 'Search commands';
+  String get commandPaletteSearch => 'Perintah pencarian';
 
   @override
-  String get commandPaletteRun => 'Run';
+  String get commandPaletteRun => 'Jalankan';
 
   @override
-  String get commandPaletteConfirm => 'This cannot simply be undone. Run it?';
+  String get commandPaletteConfirm =>
+      'Hal ini tidak dapat dibatalkan begitu saja. Jalankan?';
 
   @override
   String syncReceiving(int done, int total) {
-    return 'Receiving $done of $total…';
+    return 'Menerima $done dari $total…';
   }
 
   @override
   String syncSending(int done, int total) {
-    return 'Sending $done of $total…';
+    return 'Mengirim $done dari $total…';
   }
 
   @override
   String get syncGoogleDriveNotAllowed =>
-      'Access to Google Drive was not allowed. Connect again and tick Google Drive on Google\'s page.';
+      'Akses ke Google Drive tidak diizinkan. Hubungkan kembali dan centang Google Drive di halaman Google.';
 
   @override
   String get syncEntryUnsynced =>
-      'Not synced: the last sync did not go through';
+      'Tidak disinkronkan: sinkronisasi terakhir tidak berhasil';
 
   @override
-  String get syncUseOfficial => 'Use the AID sync server';
+  String get syncUseOfficial => 'Gunakan server sinkronisasi AID';
 
   @override
-  String get syncServer => 'Server address';
+  String get syncServer => 'Alamat server';
 
   @override
-  String get syncUsername => 'Username';
+  String get syncUsername => 'Nama pengguna';
 
   @override
-  String get syncPassword => 'Password';
+  String get syncPassword => 'Kata sandi';
 
   @override
-  String get syncConnect => 'Connect';
+  String get syncConnect => 'Hubungkan';
 
   @override
-  String get syncConnecting => 'Connecting…';
+  String get syncConnecting => 'Menghubungkan…';
 
   @override
   String get syncSignInFailed =>
-      'Could not sign in. Check the address, the username and the password.';
+      'Tidak dapat masuk. Periksa alamat, nama pengguna, dan kata sandi.';
 
   @override
   String syncConnectFailed(String error) {
-    return 'Could not connect: $error';
+    return 'Tidak dapat terhubung: $error';
   }
 
   @override
-  String get syncNewSpaceTitle => 'Start syncing';
+  String get syncNewSpaceTitle => 'Mulai sinkronisasi';
 
   @override
   String get syncNewSpaceDescription =>
-      'There is no synced diary here yet. This diary will be uploaded, end-to-end encrypted with a key that stays on your devices.';
+      'Belum ada buku harian yang disinkronkan di sini. Buku harian ini akan diunggah, dienkripsi ujung ke ujung dengan kunci yang tetap ada di perangkat Anda.';
 
   @override
-  String get syncJoinTitle => 'Join the synced diary';
+  String get syncJoinTitle =>
+      'Bergabunglah dengan buku harian yang disinkronkan';
 
   @override
   String get syncWrongKey =>
-      'This recovery code does not open the synced diary.';
+      'Kode pemulihan ini tidak membuka buku harian yang disinkronkan.';
 
   @override
   String syncLastSynced(String time) {
-    return 'Last synced $time';
+    return '$time yang terakhir disinkronkan';
   }
 
   @override
-  String get syncNever => 'Not synced yet';
+  String get syncNever => 'Belum disinkronkan';
 
   @override
-  String get syncSyncing => 'Syncing…';
+  String get syncSyncing => 'Menyinkronkan…';
 
   @override
   String syncFailed(String error) {
-    return 'The last sync failed: $error';
+    return 'Sinkronisasi terakhir gagal: $error';
   }
 
   @override
   String get syncLocked =>
-      'The synced diary now belongs to other devices, or was started over. Pair with one of them or use the recovery code to keep syncing.';
+      'Buku harian yang disinkronkan sekarang menjadi milik perangkat lain, atau telah dimulai dari awal. Pasangkan dengan salah satunya atau gunakan kode pemulihan untuk terus menyinkronkan.';
 
   @override
-  String get syncNow => 'Sync now';
+  String get syncNow => 'Sinkronkan sekarang';
 
   @override
-  String get syncUnlock => 'Unlock';
+  String get syncUnlock => 'Buka kunci';
 
   @override
-  String get syncEncrypted => 'End-to-end encrypted';
+  String get syncEncrypted => 'Dienkripsi ujung ke ujung';
 
   @override
-  String get syncDisconnect => 'Stop syncing';
+  String get syncDisconnect => 'Hentikan sinkronisasi';
 
   @override
   String get syncDisconnectDescription =>
-      'This device stops syncing. The diary here and the synced copy stay as they are.';
+      'Perangkat ini berhenti menyinkronkan. Buku harian di sini dan salinan yang disinkronkan tetap sebagaimana adanya.';
 
   @override
-  String get syncOwnRecoveryPassword => 'Use my own recovery password';
+  String get syncOwnRecoveryPassword =>
+      'Gunakan kata sandi pemulihan saya sendiri';
 
   @override
-  String get syncRecoveryPassword => 'Recovery password';
+  String get syncRecoveryPassword => 'Kata sandi pemulihan';
 
   @override
-  String get syncRecoveryPasswordRepeat => 'Repeat the recovery password';
+  String get syncRecoveryPasswordRepeat => 'Ulangi kata sandi pemulihan';
 
   @override
   String syncRecoveryPasswordTooShort(int min) {
-    return 'Use at least $min characters';
+    return 'Gunakan setidaknya karakter $min';
   }
 
   @override
-  String get syncRecoveryPasswordMismatch => 'The passwords differ';
+  String get syncRecoveryPasswordMismatch => 'Kata sandinya berbeda';
 
   @override
-  String get syncRecoveryCode => 'Recovery code';
+  String get syncRecoveryCode => 'Kode pemulihan';
 
   @override
-  String get syncRecoveryCodeTitle => 'Save your recovery code';
+  String get syncRecoveryCodeTitle => 'Simpan kode pemulihan Anda';
 
   @override
   String get syncRecoveryCodeDescription =>
-      'If every device of yours is lost, this code restores your synced diary. Keep it in a password manager or on paper. It is shown only this once.';
+      'Jika setiap perangkat Anda hilang, kode ini memulihkan buku harian Anda yang disinkronkan. Simpan di pengelola kata sandi atau di atas kertas. Itu hanya ditampilkan sekali ini saja.';
 
   @override
-  String get syncRecoveryCodeCopied => 'Recovery code copied';
+  String get syncRecoveryCodeCopied => 'Kode pemulihan disalin';
 
   @override
-  String get syncRecoveryCodeSaved => 'I have saved it';
+  String get syncRecoveryCodeSaved => 'Saya telah menyimpannya';
 
   @override
   String get syncJoinNeedsKey =>
-      'This synced diary belongs to your other devices. Pair with one of them, or use the recovery code. The entries on this device will be added to it.';
+      'Buku harian yang disinkronkan ini milik perangkat Anda yang lain. Sandingkan dengan salah satunya, atau gunakan kode pemulihan. Entri pada perangkat ini akan ditambahkan ke dalamnya.';
 
   @override
-  String get syncPairDevice => 'Pair with a device';
+  String get syncPairDevice => 'Sandingkan dengan perangkat';
 
   @override
-  String get syncUseRecoveryCode => 'Use the recovery code';
+  String get syncUseRecoveryCode => 'Gunakan kode pemulihan';
 
   @override
-  String get syncAddDevice => 'Add a device';
+  String get syncAddDevice => 'Tambahkan perangkat';
 
   @override
-  String get syncChangeRecoveryCode => 'Change the recovery code';
+  String get syncChangeRecoveryCode => 'Ubah kode pemulihan';
 
   @override
   String get syncChangeRecoveryDescription =>
-      'A new code replaces the current one, which stops working. Your data and other devices stay as they are.';
+      'Kode baru menggantikan kode saat ini, yang berhenti berfungsi. Data Anda dan perangkat lain tetap apa adanya.';
 
   @override
-  String get syncNewRandomCode => 'New random code';
+  String get syncNewRandomCode => 'Kode acak baru';
 
   @override
-  String get syncRecoveryCodeChanged => 'Recovery code changed';
+  String get syncRecoveryCodeChanged => 'Kode pemulihan diubah';
 
   @override
-  String get syncResetSpace => 'Start the synced diary over';
+  String get syncResetSpace => 'Mulai buku harian yang disinkronkan';
 
   @override
   String get syncResetSpaceDescription =>
-      'Only when no device and no recovery code opens it any more: the synced copy is replaced by the diary on this device, under this device\'s keys. Your other devices then pair again.';
+      'Hanya ketika tidak ada perangkat dan kode pemulihan yang membukanya lagi: salinan yang disinkronkan digantikan oleh buku harian di perangkat ini, di bawah kunci perangkat ini. Perangkat Anda yang lain kemudian dipasangkan lagi.';
 
   @override
-  String get syncPairTitle => 'Pair devices';
+  String get syncPairTitle => 'Pasangkan perangkat';
 
   @override
-  String get syncPairShow => 'Show a code';
+  String get syncPairShow => 'Tunjukkan kode';
 
   @override
-  String get syncPairEnter => 'Enter a code';
+  String get syncPairEnter => 'Masukkan kode';
 
   @override
   String get syncPairShowHint =>
-      'On your other device, open Pair devices, choose Enter a code, and type or scan this.';
+      'Di perangkat Anda yang lain, buka Pasangkan perangkat, pilih Masukkan kode, dan ketik atau pindai ini.';
 
   @override
   String get syncPairEnterHint =>
-      'Type the code your other device shows, or scan it.';
+      'Ketikkan kode yang ditampilkan perangkat Anda yang lain, atau pindai.';
 
   @override
-  String get syncPairCode => 'Pairing code';
+  String get syncPairCode => 'Kode berpasangan';
 
   @override
-  String get syncPairScan => 'Scan';
+  String get syncPairScan => 'Pindai';
 
   @override
-  String get syncPairStart => 'Pair';
+  String get syncPairStart => 'Pasangkan';
 
   @override
-  String get syncPairWaiting => 'Waiting for the other device…';
+  String get syncPairWaiting => 'Menunggu perangkat lain…';
 
   @override
   String syncPairDone(String device) {
-    return 'Paired with $device';
+    return 'Dipasangkan dengan $device';
   }
 
   @override
   String get syncPairWrongCode =>
-      'The code did not match. Show a new code and try again.';
+      'Kodenya tidak cocok. Tampilkan kode baru dan coba lagi.';
 
   @override
   String get syncPairNoOffer =>
-      'No device shows this code. It may have expired.';
+      'Tidak ada perangkat yang menampilkan kode ini. Mungkin sudah habis masa berlakunya.';
 
   @override
-  String get syncPairTimedOut => 'The other device did not answer in time.';
+  String get syncPairTimedOut => 'Perangkat lain tidak menjawab tepat waktu.';
 
   @override
   String get syncPairNeither =>
-      'Neither device is set up with this synced diary yet.';
+      'Belum ada perangkat yang disiapkan dengan buku harian tersinkronisasi ini.';
 
   @override
-  String get syncPairBoth => 'Both devices already open this synced diary.';
+  String get syncPairBoth =>
+      'Kedua perangkat sudah membuka buku harian yang disinkronkan ini.';
 
   @override
   String syncPairFailed(String error) {
-    return 'Pairing failed: $error';
+    return 'Gagal memasangkan: $error';
   }
 
   @override
   String get syncMediaPending =>
-      'Diary synced · some media is still transferring';
+      'Buku harian disinkronkan · beberapa media masih ditransfer';
 
   @override
   String get syncWaitingForDevices =>
-      'Diary synced · waiting for another device to transfer media';
+      'Buku harian disinkronkan · menunggu perangkat lain mentransfer media';
 
   @override
   String get syncCacheNotice =>
-      'Cloud media is temporary. Keep the originals on your devices; syncing is not a backup.';
+      'Media cloud bersifat sementara. Simpan yang asli di perangkat Anda; sinkronisasi bukan cadangan.';
 
   @override
-  String get paperTitle => 'Letter paper';
+  String get paperTitle => 'Kertas surat';
 
   @override
-  String get paperPlain => 'Plain';
+  String get paperPlain => 'Biasa';
 
   @override
-  String get paperLined => 'Lined';
+  String get paperLined => 'Berjajar';
 
   @override
-  String get paperGrid => 'Grid';
+  String get paperGrid => 'jaringan';
 
   @override
-  String get paperTinted => 'Tinted';
+  String get paperTinted => 'Berwarna';
 
   @override
-  String get paperDecorationTitle => 'Decorations';
+  String get paperDecorationTitle => 'Dekorasi';
 
   @override
-  String get paperDecorationNone => 'None';
+  String get paperDecorationNone => 'Tidak ada';
 
   @override
-  String get paperDecorationBotanical => 'Leaves';
+  String get paperDecorationBotanical => 'Daun-daun';
 
   @override
-  String get paperDecorationStars => 'Stars';
+  String get paperDecorationStars => 'Bintang';
 
   @override
-  String get paperDecorationWashi => 'Washi tape';
+  String get paperDecorationWashi => 'Pita washi';
 
   @override
-  String get themeDarkChoice => 'Dark appearance';
+  String get themeDarkChoice => 'Penampilan gelap';
 
   @override
-  String get themeDarkSame => 'Follow light palette';
+  String get themeDarkSame => 'Ikuti palet cahaya';
 
   @override
-  String get themeDarkCustom => 'Separate palette';
+  String get themeDarkCustom => 'Palet terpisah';
 
   @override
-  String get themeDarkAccent => 'Dark accent colour';
+  String get themeDarkAccent => 'Warna aksen gelap';
 
   @override
-  String get themeColorTeal => 'Teal';
+  String get themeColorTeal => 'teal';
 
   @override
-  String get themeColorCyan => 'Cyan';
+  String get themeColorCyan => 'Sian';
 
   @override
-  String get themeColorIndigo => 'Indigo';
+  String get themeColorIndigo => 'nila';
 
   @override
-  String get themeColorCoral => 'Coral';
+  String get themeColorCoral => 'Karang';
 
   @override
-  String get themeColorOlive => 'Olive';
+  String get themeColorOlive => 'Zaitun';
 
   @override
-  String get themeColorSlate => 'Slate';
+  String get themeColorSlate => 'Batu tulis';
 
   @override
-  String get drawingTitle => 'Drawing';
+  String get drawingTitle => 'Menggambar';
 
   @override
-  String get drawingPen => 'Pen';
+  String get drawingPen => 'Pena';
 
   @override
-  String get drawingEraser => 'Eraser';
+  String get drawingEraser => 'Penghapus';
 
   @override
-  String get drawingUndo => 'Undo';
+  String get drawingUndo => 'Membatalkan';
 
   @override
-  String get drawingClear => 'Clear';
+  String get drawingClear => 'Jelas';
 
   @override
-  String get drawingWidth => 'Pen width';
+  String get drawingWidth => 'Lebar pena';
 
   @override
-  String get drawingStylusOnly => 'Stylus only';
+  String get drawingStylusOnly => 'Hanya stilus';
 
   @override
-  String get drawingDiscardTitle => 'Discard drawing?';
+  String get drawingDiscardTitle => 'Buang gambar?';
 
   @override
-  String get drawingDiscardBody => 'This drawing has not been saved.';
+  String get drawingDiscardBody => 'Gambar ini belum disimpan.';
 
   @override
-  String get drawingSaveError => 'Could not save the drawing.';
+  String get drawingSaveError => 'Tidak dapat menyimpan gambar.';
 
   @override
-  String get syncNetworkTitle => 'Network diagnostics';
+  String get syncNetworkTitle => 'Diagnostik jaringan';
 
   @override
-  String get syncNetworkRefresh => 'Refresh';
+  String get syncNetworkRefresh => 'Segarkan';
 
   @override
-  String get syncNetworkSelectedRoute => 'Current path';
+  String get syncNetworkSelectedRoute => 'Jalur saat ini';
 
   @override
-  String get syncNetworkAvailableRoutes => 'Available paths';
+  String get syncNetworkAvailableRoutes => 'Jalur yang tersedia';
 
   @override
-  String get syncNetworkSignaling => 'Device directory connection';
+  String get syncNetworkSignaling => 'Koneksi direktori perangkat';
 
   @override
-  String get syncNetworkRelayRemaining => 'Remaining relay allowance';
+  String get syncNetworkRelayRemaining => 'Sisa tunjangan estafet';
 
   @override
-  String get syncNetworkIcePair => 'Direct connection candidates';
+  String get syncNetworkIcePair => 'Kandidat koneksi langsung';
 
   @override
-  String get syncNetworkPeerTrusted => 'Authenticated device';
+  String get syncNetworkPeerTrusted => 'Perangkat yang diautentikasi';
 
   @override
-  String get syncNetworkNoRoute => 'Waiting for a connection';
+  String get syncNetworkNoRoute => 'Menunggu koneksi';
 
   @override
-  String get syncNetworkUnavailable => 'Diagnostics are unavailable';
+  String get syncNetworkUnavailable => 'Diagnostik tidak tersedia';
 
   @override
-  String get syncMediaCopiesTitle => 'Media delivery and copies';
+  String get syncMediaCopiesTitle => 'Pengiriman media dan salinannya';
 
   @override
-  String get syncMediaPendingCount => 'Waiting to transfer';
+  String get syncMediaPendingCount => 'Menunggu untuk ditransfer';
 
   @override
-  String get syncMediaDurableCount => 'Delivered to personal storage';
+  String get syncMediaDurableCount => 'Dikirim ke penyimpanan pribadi';
 
   @override
-  String get syncMediaTemporaryCount => 'Temporary or unconfirmed copies';
+  String get syncMediaTemporaryCount =>
+      'Salinan sementara atau belum dikonfirmasi';
 
   @override
   String get syncMediaReceiptExplanation =>
-      'These counts describe completed deliveries, not a fresh audit of surviving backups.';
+      'Jumlah ini menggambarkan pengiriman yang telah selesai, bukan audit baru atas cadangan yang masih ada.';
 
   @override
   String get syncMediaCacheExplanation =>
-      'Temporary cloud media can expire. Keep your originals or a separate backup.';
+      'Media cloud sementara dapat kedaluwarsa. Simpan dokumen asli atau cadangan terpisah.';
 
   @override
-  String get momentsTitle => 'Photo moments';
+  String get momentsTitle => 'Momen foto';
 
   @override
   String get momentsHint =>
-      'Find groups using local photo times and optional coordinates. Photos are attached only when you choose a card.';
+      'Temukan grup menggunakan waktu foto lokal dan koordinat opsional. Foto dilampirkan hanya ketika Anda memilih kartu.';
 
   @override
-  String get momentsScan => 'Find moments';
+  String get momentsScan => 'Temukan momen';
 
   @override
-  String get momentsChooseFolder => 'Choose photo folder';
+  String get momentsChooseFolder => 'Pilih folder foto';
 
   @override
-  String get momentsLocation => 'Include photo locations';
+  String get momentsLocation => 'Sertakan lokasi foto';
 
   @override
-  String get momentsEmpty => 'No recent photo groups.';
+  String get momentsEmpty => 'Tidak ada grup foto terbaru.';
 
   @override
-  String get momentsCreate => 'Write about these photos';
+  String get momentsCreate => 'Tulis tentang foto-foto ini';
 
   @override
-  String get momentsDismiss => 'Dismiss';
+  String get momentsDismiss => 'Singkirkan';
 
   @override
-  String get momentsError => 'Could not read local photos.';
+  String get momentsError => 'Tidak dapat membaca foto lokal.';
 
   @override
-  String get momentsCreated => 'Photo entry created.';
+  String get momentsCreated => 'Entri foto dibuat.';
 
   @override
   String get momentsPermission =>
-      'Allow access to photos to find local suggestions.';
+      'Izinkan akses ke foto untuk menemukan saran lokal.';
 
   @override
   String get momentsScope =>
-      'Recent photos only; at most 500 photos and 20 photos per card.';
+      'Hanya foto terbaru; maksimal 500 foto dan 20 foto per kartu.';
 
   @override
   String momentsPhotoCount(int count) {
-    return '$count photos';
+    return 'foto $count';
   }
 
   @override
-  String get nearbyTitle => 'Connect devices';
+  String get nearbyTitle => 'Hubungkan perangkat';
 
   @override
-  String get nearbySend => 'Authorize another device';
+  String get nearbySend => 'Otorisasi perangkat lain';
 
   @override
-  String get nearbyReceive => 'Connect to an existing device';
+  String get nearbyReceive => 'Hubungkan ke perangkat yang ada';
 
   @override
   String get nearbyInstructions =>
-      'Connect both devices to the same Wi-Fi or to each other’s hotspot. Confirm authorization on the existing device; both devices remain usable. No internet is required.';
+      'Hubungkan kedua perangkat ke Wi-Fi yang sama atau ke hotspot masing-masing. Konfirmasikan otorisasi pada perangkat yang ada; kedua perangkat tetap dapat digunakan. Tidak diperlukan internet.';
 
   @override
   String get nearbyCompare =>
-      'Compare this code on both devices before approving.';
+      'Bandingkan kode ini di kedua perangkat sebelum menyetujui.';
 
   @override
-  String get nearbyConfirm => 'The codes match';
+  String get nearbyConfirm => 'Kodenya cocok';
 
   @override
-  String get nearbyScan => 'Scan the other device’s code';
+  String get nearbyScan => 'Pindai kode perangkat lain';
 
   @override
-  String get nearbyPaste => 'Paste invitation';
+  String get nearbyPaste => 'Tempel undangan';
 
   @override
-  String get nearbyWaiting => 'Waiting for approval on the other device';
+  String get nearbyWaiting => 'Menunggu persetujuan di perangkat lain';
 
   @override
   String get nearbyWorking =>
-      'Authorizing and syncing your diary and attachments…';
+      'Mengotorisasi dan menyinkronkan buku harian dan lampiran Anda…';
 
   @override
   String get nearbyPending =>
-      'Some attachments still need syncing. Keep the other device online and try again.';
+      'Beberapa lampiran masih perlu disinkronkan. Biarkan perangkat lain tetap online dan coba lagi.';
 
   @override
-  String get nearbyComplete => 'Device connected; diary and attachments synced';
+  String get nearbyComplete =>
+      'Perangkat terhubung; buku harian dan lampiran disinkronkan';
 
   @override
   String get nearbyFailed =>
-      'Connection did not finish. Check the local connection and try again.';
+      'Koneksi tidak selesai. Periksa koneksi lokal dan coba lagi.';
 
   @override
   String get nearbyEmptyRequired =>
-      'Use a device with an empty diary that is not connected to sync yet.';
+      'Gunakan perangkat dengan buku harian kosong yang belum terhubung untuk sinkronisasi.';
 
   @override
-  String get nearbyRetry => 'Continue syncing';
+  String get nearbyRetry => 'Lanjutkan sinkronisasi';
 
   @override
-  String get nearbyWifi => 'Wi-Fi settings';
+  String get nearbyWifi => 'Pengaturan Wi-Fi';
 
   @override
-  String get nearbyHotspot => 'Hotspot settings';
+  String get nearbyHotspot => 'Pengaturan hotspot';
 
   @override
   String get nearbyKeepOpen =>
-      'Keep this page open until the new device finishes. The invitation expires after two minutes.';
+      'Biarkan halaman ini terbuka hingga perangkat baru selesai dibuat. Undangan berakhir setelah dua menit.';
 
   @override
-  String get syncDevicesTitle => 'Authorized devices';
+  String get syncDevicesTitle => 'Perangkat resmi';
 
   @override
   String get syncDevicesDescription =>
-      'Only approved devices can access this AID account. Revoking a device blocks the server but cannot erase a master key or diary already copied to it.';
+      'Hanya perangkat yang disetujui yang dapat mengakses akun AID ini. Mencabut perangkat akan memblokir server tetapi tidak dapat menghapus kunci master atau buku harian yang sudah disalin ke dalamnya.';
 
   @override
   String get syncDeviceRequest =>
-      'Show this authorization QR to an approved device';
+      'Tunjukkan QR otorisasi ini ke perangkat yang disetujui';
 
   @override
-  String get syncDeviceAuthorize => 'Authorize a device';
+  String get syncDeviceAuthorize => 'Otorisasi perangkat';
 
   @override
   String get syncDeviceAuthorizeDescription =>
-      'Scan or paste the new device’s authorization request.';
+      'Pindai atau tempel permintaan otorisasi perangkat baru.';
 
   @override
-  String get syncDeviceRevoke => 'Revoke';
+  String get syncDeviceRevoke => 'Cabut';
 
   @override
-  String get syncDeviceRotate => 'Rotate this device’s signing key';
+  String get syncDeviceRotate => 'Putar kunci penandatanganan perangkat ini';
 
   @override
-  String get syncDeviceCheck => 'Check authorization';
+  String get syncDeviceCheck => 'Periksa otorisasi';
 
   @override
-  String get syncDeviceHardware => 'Hardware-backed signing key';
+  String get syncDeviceHardware =>
+      'Kunci penandatanganan yang didukung perangkat keras';
 
   @override
-  String get syncDeviceSoftware => 'Non-exportable software signing key';
+  String get syncDeviceSoftware =>
+      'Kunci penandatanganan perangkat lunak yang tidak dapat diekspor';
 
   @override
   String get syncDeviceUnavailable =>
-      'Device authorization is unavailable. Approve this device from another authorized device and retry.';
+      'Otorisasi perangkat tidak tersedia. Setujui perangkat ini dari perangkat resmi lainnya dan coba lagi.';
 
   @override
-  String get syncDeviceRevoked => 'Revoked';
+  String get syncDeviceRevoked => 'Dicabut';
 
   @override
-  String get syncDeviceLocal => 'This device';
+  String get syncDeviceLocal => 'Perangkat ini';
 
   @override
-  String get cloudTrafficTitle => 'Monthly cloud media allowance';
+  String get cloudTrafficTitle =>
+      'Kuota transfer data cloud bulanan untuk file media';
 
   @override
-  String get cloudTrafficLimit => 'Monthly allowance';
+  String get cloudTrafficLimit => 'Kuota transfer data bulanan';
 
   @override
-  String get cloudTrafficUsed => 'Used';
+  String get cloudTrafficUsed => 'Transfer data digunakan';
 
   @override
-  String get cloudTrafficRemaining => 'Remaining';
+  String get cloudTrafficRemaining => 'Sisa transfer data';
 
   @override
   String cloudTrafficResetsAt(String time) {
-    return 'Resets $time';
+    return 'Kuota transfer data direset $time';
   }
 
   @override
   String get cloudTrafficExhausted =>
-      'Cloud media allowance used up. Missing media will resume automatically over a direct connection or when the allowance resets.';
+      'Kuota transfer data cloud untuk file media telah habis. File media yang hilang akan disinkronkan secara otomatis ketika koneksi langsung tersedia atau kuota direset.';
 
   @override
   String get cloudTrafficExplanation =>
-      'Media cache and live relay share this allowance. Direct connections do not use it. Diary text and connection control have separate small daily limits.';
+      'Caching file media dan relai langsung berbagi kuota transfer data ini. Koneksi langsung tidak mengkonsumsinya. Teks buku harian dan pesan kontrol koneksi memiliki batas harian kecil yang terpisah.';
 
   @override
-  String get appearanceThemeSection => 'App theme';
+  String get appearanceThemeSection => 'Tema aplikasi';
 
   @override
-  String get appearancePaperSection => 'Diary paper';
+  String get appearancePaperSection => 'Kertas buku harian';
 
   @override
-  String get appearanceTypographySection => 'Diary text';
+  String get appearanceTypographySection => 'Teks buku harian';
 
   @override
-  String get appearancePreferencesSection => 'General preferences';
+  String get appearancePreferencesSection => 'Preferensi umum';
 
   @override
   String get themeSystemAccentHint =>
-      'Uses the system palette instead of custom colors. Turn it off to choose your own.';
+      'Menggunakan palet sistem, bukan warna khusus. Matikan untuk memilih sendiri.';
 
   @override
   String get syncDeviceNameSaveFailed =>
-      'Could not save the device name. Please try again.';
+      'Tidak dapat menyimpan nama perangkat. Silakan coba lagi.';
 
   @override
-  String get nearbyConnectionHelp => 'Connection help';
+  String get nearbyConnectionHelp => 'Bantuan koneksi';
 
   @override
-  String get syncAllSynced => 'Everything synced';
+  String get syncAllSynced => 'Semuanya disinkronkan';
 
   @override
-  String get syncDetailsTitle => 'Sync details';
+  String get syncDetailsTitle => 'Detail sinkronisasi';
 
   @override
-  String get syncMore => 'More options';
+  String get syncMore => 'Opsi lainnya';
 
   @override
-  String get syncDeviceName => 'Device name';
+  String get syncDeviceName => 'Nama perangkat';
 
   @override
-  String get syncDeviceNameHint => 'For example: My tablet';
+  String get syncDeviceNameHint => 'Misalnya: Tablet saya';
 
   @override
-  String get syncDeviceNameInvalid => 'Use 1 to 32 characters';
+  String get syncDeviceNameInvalid => 'Gunakan 1 hingga 32 karakter';
 
   @override
-  String get syncDeviceKeyDetails => 'Security details';
+  String get syncDeviceKeyDetails => 'Detail keamanan';
 
   @override
   String get syncConnectionProblem =>
-      'Unable to sync for now. Retrying automatically.';
+      'Tidak dapat menyinkronkan untuk saat ini. Mencoba lagi secara otomatis.';
 
   @override
-  String get syncCopyComplete => 'Complete copy';
+  String get syncCopyComplete =>
+      'Salinan lengkap buku harian dan file media Anda';
 
   @override
-  String get syncCopyPartial => 'Some media is still missing';
+  String get syncCopyPartial => 'Beberapa media masih hilang';
 
   @override
-  String get syncCopyOlder => 'New changes are waiting to sync';
+  String get syncCopyOlder => 'Perubahan baru menunggu untuk disinkronkan';
 
   @override
   String get syncCopyUnavailable =>
-      'Copy details are unavailable. Try again later.';
+      'Detail salinan tidak tersedia. Coba lagi nanti.';
 
   @override
   String get syncCopyLastKnown =>
-      'Other devices show their last confirmed copy. Offline devices cannot be checked now.';
+      'Perangkat lain menunjukkan salinan terakhir yang dikonfirmasi. Perangkat offline tidak dapat diperiksa sekarang.';
 
   @override
   String get syncCopyTemporary =>
-      'Temporary cache. Keep the originals on your devices.';
+      'Tembolok sementara. Simpan yang asli di perangkat Anda.';
 
   @override
   String get syncCopyStorage =>
-      'Your sync storage. Completed media uploads are listed in diagnostics.';
+      'Penyimpanan sinkronisasi Anda. Unggahan media yang telah selesai tercantum dalam diagnostik.';
 
   @override
   String syncCopyChecked(String time) {
-    return 'Last confirmed $time';
+    return 'Terakhir dikonfirmasi $time';
   }
 
   @override
   String cloudTrafficSummary(String remaining, String limit) {
-    return 'Available this month: $remaining / $limit';
+    return 'Sisa transfer data bulan ini: $remaining / $limit';
   }
 
   @override
-  String get onboardNewDiary => 'Start here';
+  String get onboardNewDiary => 'Mulai di sini';
 
   @override
-  String get onboardConnect => 'Connect to an existing device';
+  String get onboardConnect => 'Hubungkan ke perangkat yang ada';
 
   @override
   String get onboardFailed =>
-      'Setup could not be completed. Your diary is safe; please try again.';
+      'Penyiapan tidak dapat diselesaikan. Buku harian Anda aman; silakan coba lagi.';
 
   @override
-  String get tutorialTitle => 'How to use the diary';
+  String get tutorialTitle => 'Cara menggunakan buku harian';
 
   @override
-  String get tutorialWriteTitle => 'Write your first entry';
+  String get tutorialWriteTitle => 'Tulis entri buku harian pertama Anda';
 
   @override
   String get tutorialWriteText =>
-      'Tap + to write. Add a title if you want, choose the diary day and tap the check mark to save. You can edit it again at any time.';
+      'Ketuk + untuk menulis entri buku harian. Tambahkan judul opsional, pilih tanggal buku harian, dan ketuk tanda centang untuk menyimpan. Anda dapat mengedit entri buku harian Anda lagi kapan saja.';
 
   @override
-  String get tutorialMediaTitle => 'Add photos, audio or handwriting';
+  String get tutorialMediaTitle => 'Tambahkan foto, audio, atau tulisan tangan';
 
   @override
   String get tutorialMediaText =>
-      'Use + in the editor to attach photos, videos or a voice note, or open the pen canvas. These attachments stay with the entry.';
+      'Gunakan + di editor buku harian untuk melampirkan foto, video, atau rekaman suara, atau untuk membuka kanvas tulisan tangan. Lampiran ini disimpan dengan entri buku harian.';
 
   @override
-  String get tutorialReviewTitle => 'Find a day again';
+  String get tutorialReviewTitle => 'Temukan hari lagi';
 
   @override
   String get tutorialReviewText =>
-      'Browse the journal or calendar, search your writing and use tags to organize it. Media and Atlas help you look back by photo or place.';
+      'Jelajahi buku harian atau kalender Anda, cari tulisan Anda, dan atur entri dengan tag. Halaman Media dan Atlas memungkinkan Anda menemukan entri sebelumnya berdasarkan foto atau lokasi.';
 
   @override
-  String get tutorialSyncTitle => 'Use more than one device';
+  String get tutorialSyncTitle => 'Gunakan lebih dari satu perangkat';
 
   @override
   String get tutorialSyncText =>
-      'In Settings → Data & storage → Sync, connect to an existing device and confirm authorization there. Both devices can keep using the diary. Text syncs first; media follows as the connection and allowance permit.';
+      'Di Pengaturan → Data & penyimpanan → Sinkronisasi, sambungkan ke perangkat yang ada dan konfirmasikan otorisasi pada perangkat tersebut. Kedua perangkat dapat terus menggunakan buku harian tersebut. Teks buku harian disinkronkan terlebih dahulu. File media disinkronkan berikutnya ketika koneksi jaringan dan sisa kuota transfer data mengizinkannya.';
 
   @override
-  String get tutorialPrivacyTitle => 'Keep your diary safe';
+  String get tutorialPrivacyTitle => 'Jaga buku harian Anda tetap aman';
 
   @override
   String get tutorialPrivacyText =>
-      'Entries stay on this device unless you enable sync or share/export them. Sync is end-to-end encrypted. Settings also offers an app passcode and backups; you can reopen this tutorial there.';
+      'Entri buku harian tetap ada di perangkat ini kecuali Anda mengaktifkan sinkronisasi atau berbagi atau mengekspornya. Sinkronisasi dienkripsi ujung ke ujung. Di Pengaturan Anda juga dapat mengatur kode sandi aplikasi, membuat cadangan, dan membuka kembali tutorial ini.';
 }

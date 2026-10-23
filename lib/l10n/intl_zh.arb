@@ -776,42 +776,42 @@
     "appearanceTypographySection": "日记文字",
     "appearancePreferencesSection": "通用偏好",
     "themeSystemAccentHint": "使用系统配色并覆盖自定义颜色，关闭后可自行选色。",
-  "syncDeviceNameSaveFailed": "无法保存设备名称，请重试。",
-  "nearbyConnectionHelp": "连接帮助",
-  "syncAllSynced": "全部已同步",
-  "syncDetailsTitle": "同步详情",
-  "syncMore": "更多选项",
-  "syncDeviceName": "设备名称",
-  "syncDeviceNameHint": "例如：我的平板",
-  "syncDeviceNameInvalid": "请输入 1 至 32 个字符",
-  "syncDeviceKeyDetails": "安全详情",
-  "syncConnectionProblem": "暂时无法同步，会自动重试",
-  "syncCopyComplete": "完整副本",
-  "syncCopyPartial": "部分媒体待同步",
-  "syncCopyOlder": "有新内容待同步",
-  "syncCopyUnavailable": "暂时无法查看副本详情，请稍后重试",
-  "syncCopyLastKnown": "其他设备显示上次确认的副本状态，离线时无法实时核实。",
-  "syncCopyTemporary": "临时缓存会自动清理，请保留设备上的原件。",
-  "syncCopyStorage": "你的同步存储，已完成的媒体上传记录可在诊断中查看。",
-  "syncCopyChecked": "上次确认：{time}",
-  "cloudTrafficSummary": "本月剩余 {remaining} / {limit}",
-  "@syncCopyChecked": {
-    "placeholders": {
-      "time": {
-        "type": "String"
-      }
-    }
-  },
-  "@cloudTrafficSummary": {
-    "placeholders": {
-      "remaining": {
-        "type": "String"
-      },
-      "limit": {
-        "type": "String"
-      }
-    }
-  },
+    "syncDeviceNameSaveFailed": "无法保存设备名称，请重试。",
+    "nearbyConnectionHelp": "连接帮助",
+    "syncAllSynced": "全部已同步",
+    "syncDetailsTitle": "同步详情",
+    "syncMore": "更多选项",
+    "syncDeviceName": "设备名称",
+    "syncDeviceNameHint": "例如：我的平板",
+    "syncDeviceNameInvalid": "请输入 1 至 32 个字符",
+    "syncDeviceKeyDetails": "安全详情",
+    "syncConnectionProblem": "暂时无法同步，会自动重试",
+    "syncCopyComplete": "完整副本",
+    "syncCopyPartial": "部分媒体待同步",
+    "syncCopyOlder": "有新内容待同步",
+    "syncCopyUnavailable": "暂时无法查看副本详情，请稍后重试",
+    "syncCopyLastKnown": "其他设备显示上次确认的副本状态，离线时无法实时核实。",
+    "syncCopyTemporary": "临时缓存会自动清理，请保留设备上的原件。",
+    "syncCopyStorage": "你的同步存储，已完成的媒体上传记录可在诊断中查看。",
+    "syncCopyChecked": "上次确认：{time}",
+    "cloudTrafficSummary": "本月剩余 {remaining} / {limit}",
+    "@syncCopyChecked": {
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "@cloudTrafficSummary": {
+        "placeholders": {
+            "remaining": {
+                "type": "String"
+            },
+            "limit": {
+                "type": "String"
+            }
+        }
+    },
     "onboardNewDiary": "从这里开始",
     "onboardConnect": "连接已有设备",
     "onboardFailed": "暂时未能完成设置，日记内容未受影响，请重试。",
@@ -825,5 +825,13 @@
     "tutorialSyncTitle": "在多台设备上使用",
     "tutorialSyncText": "进入“设置 → 数据与存储 → 同步”，连接已有设备，并在另一台设备上确认授权。两台设备都能继续使用。文字先同步，附件会按连接情况和可用额度逐步补齐。",
     "tutorialPrivacyTitle": "保护自己的记录",
-    "tutorialPrivacyText": "除非主动开启同步或分享、导出，日记保留在本机。同步始终端到端加密。设置里还可以设置应用密码、备份，也能随时重新打开本教程。"
+    "tutorialPrivacyText": "除非主动开启同步或分享、导出，日记保留在本机。同步始终端到端加密。设置里还可以设置应用密码、备份，也能随时重新打开本教程。",
+    "formatDayOne": "Day One",
+    "formatDaybook": "Daybook",
+    "formatDaylio": "Daylio",
+    "formatDiarium": "Diarium",
+    "formatDiaro": "Diaro",
+    "formatJourney": "Journey",
+    "formatMyBrain": "My Brain",
+    "formatPixels": "Pixels"
 }

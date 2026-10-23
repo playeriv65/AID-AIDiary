@@ -12,38 +12,38 @@ class AppLocalizationsVi extends AppLocalizations {
   String get appTitle => 'AID Diary';
 
   @override
-  String get themeColorTitle => 'Theme color';
+  String get themeColorTitle => 'Màu chủ đề';
 
   @override
-  String get themeColorHint => 'Choose a color for this palette.';
+  String get themeColorHint => 'Chọn một màu cho bảng màu này.';
 
   @override
-  String get themeColorBlue => 'Sky blue';
+  String get themeColorBlue => 'Xanh da trời';
 
   @override
-  String get themeColorGreen => 'Forest green';
+  String get themeColorGreen => 'Rừng xanh';
 
   @override
-  String get themeColorBrown => 'Warm coffee';
+  String get themeColorBrown => 'Cà phê ấm';
 
   @override
-  String get themeColorPurple => 'Lavender';
+  String get themeColorPurple => 'hoa oải hương';
 
   @override
-  String get themeColorRose => 'Dusty rose';
+  String get themeColorRose => 'hoa hồng bụi';
 
   @override
-  String get themeColorAmber => 'Amber';
+  String get themeColorAmber => 'Hổ phách';
 
   @override
-  String get themeColorPreview => 'A little every day';
+  String get themeColorPreview => 'Một chút mỗi ngày';
 
   @override
-  String get themeTintBackgroundTitle => 'Tint backgrounds with theme color';
+  String get themeTintBackgroundTitle => 'Màu nền với màu chủ đề';
 
   @override
   String get themeTintBackgroundHint =>
-      'Turn off for neutral gray backgrounds; buttons keep your chosen color.';
+      'Tắt cho nền màu xám trung tính; các nút giữ màu bạn đã chọn.';
 
   @override
   String get dailyReminderTitle => 'Ghi chép hôm nay!';
@@ -72,8 +72,8 @@ class AppLocalizationsVi extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count Weeks Ago',
-      one: '$count Week Ago',
+      other: '$count tuần trước',
+      one: '$count Tuần trước',
     );
     return '$_temp0';
   }
@@ -83,8 +83,8 @@ class AppLocalizationsVi extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count Months Ago',
-      one: '$count Month Ago',
+      other: '$count tháng trước',
+      one: '$count Tháng trước',
     );
     return '$_temp0';
   }
@@ -94,14 +94,14 @@ class AppLocalizationsVi extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count Years Ago',
-      one: '$count Year Ago',
+      other: '$count năm trước',
+      one: '$count Năm trước',
     );
     return '$_temp0';
   }
 
   @override
-  String get flashbackOnThisDay => 'On This Day';
+  String get flashbackOnThisDay => 'Vào ngày này';
 
   @override
   String get searchLogsHint => 'Tìm kiếm Nhật ký…';
@@ -111,8 +111,8 @@ class AppLocalizationsVi extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count logs',
-      one: '$count log',
+      other: '$count mục nhật ký',
+      one: 'Nhật ký $count',
     );
     return '$_temp0';
   }
@@ -122,8 +122,8 @@ class AppLocalizationsVi extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count days',
-      one: '$count day',
+      other: '$count ngày',
+      one: 'ngày $count',
     );
     return '$_temp0';
   }
@@ -133,8 +133,8 @@ class AppLocalizationsVi extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count words',
-      one: '$count word',
+      other: '$count từ',
+      one: 'từ $count',
     );
     return '$_temp0';
   }
@@ -143,7 +143,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get noLogs => 'Không có nhật ký…';
 
   @override
-  String get noResults => 'No Results…';
+  String get noResults => 'Không có kết quả…';
 
   @override
   String get sortOrderAscendingTitle => 'Tăng dần';
@@ -171,43 +171,43 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String chartSummaryTitle(Object tag) {
-    return '$tag Summary';
+    return 'Tóm tắt $tag';
   }
 
   @override
   String chartByDayTitle(Object tag) {
-    return '$tag By Day';
+    return '$tag Theo ngày';
   }
 
   @override
   String chartOverTimeTitle(Object tag) {
-    return '$tag Over Time';
+    return '$tag theo thời gian';
   }
 
   @override
-  String get chartGroupingLabel => 'Group by';
+  String get chartGroupingLabel => 'Nhóm theo';
 
   @override
-  String get chartGroupingDay => 'Day';
+  String get chartGroupingDay => 'ngày';
 
   @override
-  String get chartGroupingWeek => 'Week';
+  String get chartGroupingWeek => 'Tuần';
 
   @override
-  String get chartGroupingMonth => 'Month';
+  String get chartGroupingMonth => 'Tháng';
 
   @override
-  String get chartGroupingYear => 'Year';
+  String get chartGroupingYear => 'Năm';
 
   @override
-  String get chartSmoothingLabel => 'Smoothing';
+  String get chartSmoothingLabel => 'Làm mịn';
 
   @override
   String streakCurrent(num count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Current Streak $count',
+      other: 'Chuỗi hiện tại $count',
     );
     return '$_temp0';
   }
@@ -217,7 +217,7 @@ class AppLocalizationsVi extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Longest Streak $count',
+      other: 'Chuỗi dài nhất $count',
     );
     return '$_temp0';
   }
@@ -227,7 +227,7 @@ class AppLocalizationsVi extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Great Days $count',
+      other: 'Những Ngày Tuyệt Vời $count',
     );
     return '$_temp0';
   }
@@ -237,7 +237,7 @@ class AppLocalizationsVi extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Days Since a Bad Day $count',
+      other: 'Những ngày kể từ một ngày tồi tệ $count',
     );
     return '$_temp0';
   }
@@ -248,73 +248,73 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get errorExternalStorageAccessDescription =>
-      'If you are using network storage make sure the service is online and you have network access.\n\nOtherwise, the app may have lost permissions for the external folder. Go to settings, and reselect the external folder to grant access.\n\nWarning, changes will not be synced until you restore access to the external storage location!';
+      'Nếu bạn đang sử dụng bộ nhớ mạng, hãy đảm bảo dịch vụ này trực tuyến và bạn có quyền truy cập mạng.\n\nNếu không, ứng dụng có thể đã mất quyền đối với thư mục bên ngoài. Đi tới cài đặt và chọn lại thư mục bên ngoài để cấp quyền truy cập.\n\nCảnh báo, các thay đổi sẽ không được đồng bộ hóa cho đến khi bạn khôi phục quyền truy cập vào vị trí lưu trữ bên ngoài!';
 
   @override
   String get errorExternalStorageAccessContinue =>
       'Tiếp tục với Cơ sở dữ liệu cục bộ';
 
   @override
-  String get lastModified => 'Modified';
+  String get lastModified => 'Đã sửa đổi';
 
   @override
-  String get writeSomethingHint => 'Write something…';
+  String get writeSomethingHint => 'Viết cái gì đó…';
 
   @override
-  String get titleHint => 'Title…';
+  String get titleHint => 'Tiêu đề…';
 
   @override
-  String get deleteLogTitle => 'Delete Log';
+  String get deleteLogTitle => 'Xóa mục nhật ký';
 
   @override
   String get deleteLogDescription =>
-      'The entry moves to Recently deleted, where you can restore it.';
+      'Mục nhập sẽ chuyển đến Đã xóa gần đây, nơi bạn có thể khôi phục nó.';
 
   @override
-  String get deletePhotoTitle => 'Delete attachment';
+  String get deletePhotoTitle => 'Xóa tệp đính kèm';
 
   @override
   String get deletePhotoDescription =>
-      'Are you sure you want to delete this attachment?';
+      'Bạn có chắc chắn muốn xóa tệp đính kèm này không?';
 
   @override
-  String get pageSettingsTitle => 'Settings';
+  String get pageSettingsTitle => 'Cài đặt';
 
   @override
-  String get settingsTheme => 'Theme';
+  String get settingsTheme => 'chủ đề';
 
   @override
-  String get themeSystem => 'System';
+  String get themeSystem => 'Hệ thống';
 
   @override
-  String get themeLight => 'Light';
+  String get themeLight => 'Ánh sáng';
 
   @override
-  String get themeDark => 'Dark';
+  String get themeDark => 'Tối';
 
   @override
   String get themeAmoled => 'AMOLED';
 
   @override
-  String get settingsFirstDayOfWeek => 'First Day Of Week';
+  String get settingsFirstDayOfWeek => 'Ngày Đầu Tuần';
 
   @override
-  String get settingsCalendarSystem => 'Calendar System';
+  String get settingsCalendarSystem => 'Hệ thống lịch';
 
   @override
-  String get calendarSystemGregorian => 'Gregorian';
+  String get calendarSystemGregorian => 'Lịch Gregory';
 
   @override
   String get calendarSystemJalali => 'Jalali';
 
   @override
-  String get settingsUseSystemAccentColor => 'Use System Accent Color';
+  String get settingsUseSystemAccentColor => 'Sử dụng màu nhấn hệ thống';
 
   @override
-  String get settingsCustomAccentColor => 'Custom Accent Color';
+  String get settingsCustomAccentColor => 'Màu nhấn tùy chỉnh';
 
   @override
-  String get settingsShowFlashbacks => 'Show Flashbacks';
+  String get settingsShowFlashbacks => 'Hiển thị đoạn hồi tưởng';
 
   @override
   String get settingsChangeMoodIcons => 'Thay đổi biểu tượng tâm trạng';
@@ -323,57 +323,58 @@ class AppLocalizationsVi extends AppLocalizations {
   String get moodIconPrompt => 'Nhập một biểu tượng';
 
   @override
-  String get settingsHideImages => 'Hide Images';
+  String get settingsHideImages => 'Ẩn hình ảnh';
 
   @override
-  String get pageCalendarTitle => 'Calendar';
+  String get pageCalendarTitle => 'Lịch';
 
   @override
-  String get settingsNotificationsTitle => 'Notifications';
+  String get settingsNotificationsTitle => 'Thông báo';
 
   @override
-  String get settingsDailyReminderTitle => 'Daily Reminder';
+  String get settingsDailyReminderTitle => 'Nhắc nhở hàng ngày';
 
   @override
-  String get settingsOnThisDayDescription => 'Revisit past memories';
+  String get settingsOnThisDayDescription => 'Tìm lại ký ức xưa';
 
   @override
-  String get settingsDailyReminderDescription => 'A gentle reminder each day';
+  String get settingsDailyReminderDescription =>
+      'Lời nhắc nhở nhẹ nhàng mỗi ngày';
 
   @override
-  String get settingsReminderTime => 'Reminder Time';
+  String get settingsReminderTime => 'Thời gian nhắc nhở';
 
   @override
-  String get settingsFixedReminderTimeTitle => 'Fixed Reminder Time';
+  String get settingsFixedReminderTimeTitle => 'Thời gian nhắc nhở cố định';
 
   @override
   String get settingsFixedReminderTimeDescription =>
-      'Pick a fixed time for the reminder';
+      'Chọn thời gian cố định để nhắc nhở';
 
   @override
-  String get settingsAlwaysSendReminderTitle => 'Always Send Reminder';
+  String get settingsAlwaysSendReminderTitle => 'Luôn gửi lời nhắc';
 
   @override
   String get settingsAlwaysSendReminderDescription =>
-      'Send reminder even if a log was already started';
+      'Gửi lời nhắc ngay cả khi mục nhật ký đã được bắt đầu';
 
   @override
-  String get settingsCustomizeNotificationTitle => 'Customize Notifications';
+  String get settingsCustomizeNotificationTitle => 'Tùy chỉnh thông báo';
 
   @override
-  String get settingsTemplatesTitle => 'Templates';
+  String get settingsTemplatesTitle => 'Mẫu';
 
   @override
-  String get manageTemplates => 'Manage Templates';
+  String get manageTemplates => 'Quản lý mẫu';
 
   @override
-  String get noTemplateTitle => 'None';
+  String get noTemplateTitle => 'không có';
 
   @override
-  String get noTemplatesDescription => 'No templates created yet…';
+  String get noTemplatesDescription => 'Chưa có mẫu nào được tạo…';
 
   @override
-  String get templateDefaultTimestampTitle => 'Timestamp';
+  String get templateDefaultTimestampTitle => 'Dấu thời gian';
 
   @override
   String templateDefaultTimestampBody(Object date, Object time) {
@@ -381,112 +382,113 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
-  String get templateDefaultSummaryTitle => 'Day Summary';
+  String get templateDefaultSummaryTitle => 'Tóm tắt ngày';
 
   @override
-  String get templateDefaultSummaryBody => '### Summary\n- \n\n### Quote\n> ';
+  String get templateDefaultSummaryBody =>
+      '### Tóm tắt\n- \n\n### Trích dẫn\n> ';
 
   @override
-  String get templateDefaultReflectionTitle => 'Reflection';
+  String get templateDefaultReflectionTitle => 'Sự phản ánh';
 
   @override
   String get templateDefaultReflectionBody =>
-      '### What did you enjoy about today?\n- \n\n### What are you thankful for?\n- \n\n### What are you looking forward to?\n- ';
+      '### Hôm nay bạn thích điều gì?\n- \n\n### Bạn biết ơn vì điều gì?\n- \n\n### Bạn đang mong chờ điều gì?\n- ';
 
   @override
-  String get settingsTagsTitle => 'Tags';
+  String get settingsTagsTitle => 'Thẻ';
 
   @override
-  String get manageTags => 'Manage Tags';
+  String get manageTags => 'Quản lý thẻ';
 
   @override
-  String get tagTypeLabelTitle => 'Label';
+  String get tagTypeLabelTitle => 'Nhãn';
 
   @override
-  String get tagTypeTrackerTitle => 'Tracker';
+  String get tagTypeTrackerTitle => 'Trình theo dõi';
 
   @override
-  String get nameHint => 'Name';
+  String get nameHint => 'Tên';
 
   @override
-  String get tagColorLabel => 'Color';
+  String get tagColorLabel => 'Màu sắc';
 
   @override
-  String get iconPickerTitle => 'Choose Icon';
+  String get iconPickerTitle => 'Chọn biểu tượng';
 
   @override
-  String get iconPickerIconsTab => 'Icons';
+  String get iconPickerIconsTab => 'Biểu tượng';
 
   @override
-  String get iconPickerCustomTab => 'Custom';
+  String get iconPickerCustomTab => 'tùy chỉnh';
 
   @override
-  String get iconPickerSearchHint => 'Search icons…';
+  String get iconPickerSearchHint => 'Biểu tượng tìm kiếm…';
 
   @override
-  String get colorPickerTitle => 'Choose Color';
+  String get colorPickerTitle => 'chọn màu';
 
   @override
-  String get colorPickerPaletteTab => 'Colors';
+  String get colorPickerPaletteTab => 'Màu sắc';
 
   @override
-  String get iconGroupMoodPeople => 'Mood & People';
+  String get iconGroupMoodPeople => 'Tâm trạng và con người';
 
   @override
-  String get iconGroupHealth => 'Health';
+  String get iconGroupHealth => 'sức khỏe';
 
   @override
-  String get iconGroupWorkFinance => 'Work & Finance';
+  String get iconGroupWorkFinance => 'Công việc & Tài chính';
 
   @override
-  String get iconGroupHabitsGoals => 'Habits & Goals';
+  String get iconGroupHabitsGoals => 'Thói quen và mục tiêu';
 
   @override
-  String get iconGroupNature => 'Nature';
+  String get iconGroupNature => 'thiên nhiên';
 
   @override
-  String get iconGroupFoodDrink => 'Food & Drink';
+  String get iconGroupFoodDrink => 'Đồ ăn & Đồ uống';
 
   @override
-  String get iconGroupHome => 'Home';
+  String get iconGroupHome => 'Trang chủ';
 
   @override
-  String get iconGroupTravel => 'Travel';
+  String get iconGroupTravel => 'du lịch';
 
   @override
-  String get iconGroupSymbols => 'Symbols';
+  String get iconGroupSymbols => 'Ký hiệu';
 
   @override
-  String get tagCategoryLabel => 'Category';
+  String get tagCategoryLabel => 'Danh mục';
 
   @override
-  String get tagLabel => 'Tag';
+  String get tagLabel => 'Gắn thẻ';
 
   @override
-  String get tagCategoryUncategorized => 'Uncategorized';
+  String get tagCategoryUncategorized => 'Chưa được phân loại';
 
   @override
-  String get newCategoryTitle => 'New Category';
+  String get newCategoryTitle => 'Danh mục mới';
 
   @override
-  String get shareButtonLabel => 'Share';
+  String get shareButtonLabel => 'Chia sẻ';
 
   @override
-  String get importErrorDescription => 'Failed to import file!';
+  String get importErrorDescription => 'Không thể nhập tệp!';
 
   @override
-  String get exportErrorDescription => 'Failed to export file!';
+  String get exportErrorDescription => 'Không thể xuất tệp!';
 
   @override
-  String get deleteTitle => 'Delete';
+  String get deleteTitle => 'Xóa';
 
   @override
   String deleteTagMessage(num count, Object name) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: ' It is used in $count logs.',
-      one: ' It is used in 1 log.',
+      other: ' Nó được sử dụng trong $count mục nhật ký.',
+      one: ' Nó được sử dụng trong 1 nhật ký.',
       zero: '',
     );
     return 'Delete \"$name\"?$_temp0';
@@ -497,239 +499,242 @@ class AppLocalizationsVi extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: ' Its $count tags will also be deleted.',
-      one: ' Its 1 tag will also be deleted.',
+      other: ' Thẻ $count của nó cũng sẽ bị xóa.',
+      one: ' Thẻ 1 của nó cũng sẽ bị xóa.',
       zero: '',
     );
     return 'Delete \"$name\"?$_temp0';
   }
 
   @override
-  String get tagNameExists => 'There is a tag with this name already';
+  String get tagNameExists => 'Đã có một thẻ có tên này rồi';
 
   @override
-  String get categoryNameExists => 'There is a category with this name already';
+  String get categoryNameExists => 'Đã có một danh mục có tên này rồi';
 
   @override
   String deleteTemplateMessage(Object name) {
-    return 'Delete \"$name\"?';
+    return 'Xóa \"$name\"?';
   }
 
   @override
-  String get addTagsTitle => 'Add Tags';
+  String get addTagsTitle => 'Thêm thẻ';
 
   @override
-  String get addTagsSearchHint => 'Search tags…';
+  String get addTagsSearchHint => 'Tìm kiếm thẻ…';
 
   @override
-  String get tagPickerSortManualLabel => 'Manual order';
+  String get tagPickerSortManualLabel => 'Đặt hàng thủ công';
 
   @override
-  String get tagPickerSortUsageLabel => 'Sort by usage';
+  String get tagPickerSortUsageLabel => 'Sắp xếp theo cách sử dụng';
 
   @override
-  String get tagFavoriteName => 'Favorite';
+  String get tagFavoriteName => 'yêu thích';
 
   @override
-  String get tagEnergyName => 'Energy';
+  String get tagEnergyName => 'năng lượng';
 
   @override
-  String get tagCategoryActivitiesName => 'Activities';
+  String get tagCategoryActivitiesName => 'Hoạt động';
 
   @override
-  String get tagExerciseName => 'Exercise';
+  String get tagExerciseName => 'tập thể dục';
 
   @override
-  String get tagSocializingName => 'Socializing';
+  String get tagSocializingName => 'Giao tiếp xã hội';
 
   @override
-  String get tagHobbyName => 'Hobby';
+  String get tagHobbyName => 'Sở thích';
 
   @override
-  String get tagEntertainmentName => 'Entertainment';
+  String get tagEntertainmentName => 'Giải trí';
 
   @override
-  String get tagDiningName => 'Dining';
+  String get tagDiningName => 'Ăn uống';
 
   @override
-  String get tagChoresName => 'Chores';
+  String get tagChoresName => 'Công việc nhà';
 
   @override
-  String get tagCategoryEmotionsName => 'Emotions';
+  String get tagCategoryEmotionsName => 'Cảm xúc';
 
   @override
-  String get tagExcitedName => 'Excited';
+  String get tagExcitedName => 'vui mừng';
 
   @override
-  String get tagGratefulName => 'Grateful';
+  String get tagGratefulName => 'biết ơn';
 
   @override
-  String get tagCalmName => 'Calm';
+  String get tagCalmName => 'Bình tĩnh';
 
   @override
-  String get tagTiredName => 'Tired';
+  String get tagTiredName => 'Mệt mỏi';
 
   @override
-  String get tagAnxiousName => 'Anxious';
+  String get tagAnxiousName => 'lo lắng';
 
   @override
-  String get tagAnnoyedName => 'Annoyed';
+  String get tagAnnoyedName => 'Bực mình';
 
   @override
-  String get settingsStorageTitle => 'Storage';
+  String get settingsStorageTitle => 'Lưu trữ';
 
   @override
-  String get settingsImageQuality => 'Image Quality';
+  String get settingsImageQuality => 'Chất lượng hình ảnh';
 
   @override
-  String get imageQualityHigh => 'High';
+  String get imageQualityHigh => 'Cao';
 
   @override
-  String get imageQualityMedium => 'Medium';
+  String get imageQualityMedium => 'Trung bình';
 
   @override
-  String get imageQualityLow => 'Low';
+  String get imageQualityLow => 'Thấp';
 
   @override
-  String get imageQualityNoCompression => 'No Compression';
+  String get imageQualityNoCompression => 'Không nén';
 
   @override
-  String get settingsLogFolder => 'Log Folder';
+  String get settingsLogFolder => 'thư mục nhật ký';
 
   @override
-  String get settingsImageFolder => 'Image Folder';
+  String get settingsImageFolder => 'Thư mục hình ảnh';
 
   @override
-  String get warningTitle => 'Warning';
+  String get warningTitle => 'Cảnh báo';
 
   @override
   String get logFolderWarningDescription =>
-      'If the selected folder already contains a \'aid_diary.db\' file, it will be used to overwrite your existing logs!';
+      'Nếu thư mục đã chọn đã chứa tệp \'aid_diary.db\', tệp này sẽ được sử dụng để ghi đè các mục nhật ký hiện có của bạn!';
 
   @override
-  String get errorTitle => 'Error';
+  String get errorTitle => 'Lỗi';
 
   @override
-  String get logFolderErrorDescription => 'Failed to change log folder!';
+  String get logFolderErrorDescription =>
+      'Không thể thay đổi thư mục mục nhật ký!';
 
   @override
-  String get imageFolderErrorDescription => 'Failed to change image folder!';
+  String get imageFolderErrorDescription =>
+      'Không thể thay đổi thư mục hình ảnh!';
 
   @override
-  String get backupErrorDescription => 'Failed to create backup!';
+  String get backupErrorDescription => 'Không tạo được bản sao lưu!';
 
   @override
-  String get restoreErrorDescription => 'Failed to restore backup!';
+  String get restoreErrorDescription => 'Không thể khôi phục bản sao lưu!';
 
   @override
-  String get settingsBackupRestoreTitle => 'Backup & Restore';
+  String get settingsBackupRestoreTitle => 'Sao lưu & Khôi phục';
 
   @override
-  String get settingsBackup => 'Backup';
+  String get settingsBackup => 'Sao lưu';
 
   @override
-  String get settingsRestore => 'Restore';
+  String get settingsRestore => 'Khôi phục';
 
   @override
   String get settingsRestorePromptDescription =>
-      'Restoring a backup will overwrite your existing data!';
+      'Khôi phục bản sao lưu sẽ ghi đè lên dữ liệu hiện có của bạn!';
 
   @override
-  String get settingsBackupPasswordProtect => 'Password Protect Backups';
+  String get settingsBackupPasswordProtect => 'Sao lưu bảo vệ bằng mật khẩu';
 
   @override
-  String get backupEncryptedTitle => 'Encrypted Backup';
+  String get backupEncryptedTitle => 'Sao lưu được mã hóa';
 
   @override
-  String get backupEncryptedContent => 'This backup is password protected.';
+  String get backupEncryptedContent =>
+      'Bản sao lưu này được bảo vệ bằng mật khẩu.';
 
   @override
-  String get settingsAutoBackup => 'Automatic Backups';
+  String get settingsAutoBackup => 'Sao lưu tự động';
 
   @override
-  String get settingsAutoBackupLocation => 'Backup Location';
+  String get settingsAutoBackupLocation => 'Vị trí sao lưu';
 
   @override
-  String get settingsAutoBackupInterval => 'Backup Interval';
+  String get settingsAutoBackupInterval => 'Khoảng thời gian sao lưu';
 
   @override
-  String get settingsAutoBackupIntervalDaily => 'Daily';
+  String get settingsAutoBackupIntervalDaily => 'hàng ngày';
 
   @override
-  String get settingsAutoBackupIntervalWeekly => 'Weekly';
+  String get settingsAutoBackupIntervalWeekly => 'hàng tuần';
 
   @override
-  String get settingsAutoBackupIntervalMonthly => 'Monthly';
+  String get settingsAutoBackupIntervalMonthly => 'hàng tháng';
 
   @override
-  String get settingsAutoBackupMaxCount => 'Backups To Keep';
+  String get settingsAutoBackupMaxCount => 'Sao lưu để giữ';
 
   @override
-  String get settingsAutoBackupRequireCharging => 'Only While Charging';
+  String get settingsAutoBackupRequireCharging => 'Chỉ khi đang sạc';
 
   @override
   String settingsBackupLast(Object time) {
-    return 'Last backup $time';
+    return 'Bản sao lưu cuối cùng $time';
   }
 
   @override
-  String get settingsBackupNever => 'Never backed up';
+  String get settingsBackupNever => 'Chưa bao giờ sao lưu';
 
   @override
   String settingsAutoBackupNext(Object time) {
-    return 'Next backup $time';
+    return 'Bản sao lưu tiếp theo $time';
   }
 
   @override
-  String get settingsAutoBackupKeepAll => 'All';
+  String get settingsAutoBackupKeepAll => 'Tất cả';
 
   @override
-  String get autoBackupFailedTitle => 'Backup Failed';
+  String get autoBackupFailedTitle => 'Sao lưu không thành công';
 
   @override
   String tranferStatus(Object percent) {
-    return 'Transferring… $percent%';
+    return 'Đang chuyển… $percent%';
   }
 
   @override
   String creatingBackupStatus(Object percent) {
-    return 'Creating Backup… $percent%';
+    return 'Đang tạo bản sao lưu… $percent%';
   }
 
   @override
   String restoringBackupStatus(Object percent) {
-    return 'Restoring Backup… $percent%';
+    return 'Đang khôi phục bản sao lưu… $percent%';
   }
 
   @override
   String encryptingBackupStatus(Object percent) {
-    return 'Encrypting Backup… $percent%';
+    return 'Đang mã hóa bản sao lưu… $percent%';
   }
 
   @override
   String decryptingBackupStatus(Object percent) {
-    return 'Decrypting Backup… $percent%';
+    return 'Đang giải mã bản sao lưu… $percent%';
   }
 
   @override
-  String get cleanUpStatus => 'Cleaning Up…';
+  String get cleanUpStatus => 'Dọn dẹp…';
 
   @override
-  String get settingsExportToAnotherFormat => 'Export To Another Format';
+  String get settingsExportToAnotherFormat => 'Xuất sang định dạng khác';
 
   @override
   String get settingsExportFormatDescription =>
-      'This should not be used as a backup!';
+      'Điều này không nên được sử dụng như một bản sao lưu!';
 
   @override
-  String get settingsImportFromAnotherApp => 'Import From Another App';
+  String get settingsImportFromAnotherApp => 'Nhập từ ứng dụng khác';
 
   @override
-  String get logFormatTitle => 'Choose Format';
+  String get logFormatTitle => 'Chọn định dạng';
 
   @override
   String get logFormatDescription =>
-      'Another app\'s format may not support all features. Please report any issues since third party formats may change at any time. This will not impact existing logs!';
+      'Định dạng của ứng dụng khác có thể không hỗ trợ tất cả các tính năng. Vui lòng báo cáo mọi vấn đề vì định dạng của bên thứ ba có thể thay đổi bất kỳ lúc nào. Điều này sẽ không ảnh hưởng đến các mục nhật ký hiện có!';
 
   @override
   String get formatDayOne => 'Day One';
@@ -762,633 +767,640 @@ class AppLocalizationsVi extends AppLocalizations {
   String get formatMarkdown => 'Markdown';
 
   @override
-  String get settingsDeleteAllLogsTitle => 'Delete All Logs';
+  String get settingsDeleteAllLogsTitle => 'Xóa tất cả các mục nhật ký';
 
   @override
   String get settingsDeleteAllLogsDescription =>
-      'Do you want to delete all of your logs?';
+      'Bạn có muốn xóa tất cả các mục nhật ký của bạn?';
 
   @override
   String settingsDeleteAllLogsPrompt(Object prompt) {
-    return 'Enter \'$prompt\' to confirm. This cannot be undone!';
+    return 'Nhập \'$prompt\' để xác nhận. Điều này không thể được hoàn tác!';
   }
 
   @override
-  String get settingsLanguageTitle => 'Language';
+  String get settingsLanguageTitle => 'Ngôn ngữ';
 
   @override
-  String get settingsAppLanguageTitle => 'App Language';
+  String get settingsAppLanguageTitle => 'Ngôn ngữ ứng dụng';
 
   @override
-  String get settingsOverrideAppLanguageTitle => 'Override App Language';
+  String get settingsOverrideAppLanguageTitle => 'Ghi đè ngôn ngữ ứng dụng';
 
   @override
-  String get settingsSecurityTitle => 'Security';
+  String get settingsSecurityTitle => 'Bảo mật';
 
   @override
-  String get settingsSecurityRequirePassword => 'Require Password';
+  String get settingsSecurityRequirePassword => 'Yêu cầu mật khẩu';
 
   @override
-  String get settingsSecurityEnterPassword => 'Enter Password';
+  String get settingsSecurityEnterPassword => 'Nhập mật khẩu';
 
   @override
-  String get settingsSecuritySetPassword => 'Set Password';
+  String get settingsSecuritySetPassword => 'Đặt mật khẩu';
 
   @override
-  String get settingsSecurityChangePassword => 'Change Password';
+  String get settingsSecurityChangePassword => 'Thay đổi mật khẩu';
 
   @override
-  String get settingsSecurityPassword => 'Password';
+  String get settingsSecurityPassword => 'Mật khẩu';
 
   @override
-  String get settingsSecurityConfirmPassword => 'Confirm Password';
+  String get settingsSecurityConfirmPassword => 'Xác nhận mật khẩu';
 
   @override
-  String get settingsSecurityOldPassword => 'Old Password';
+  String get settingsSecurityOldPassword => 'Mật khẩu cũ';
 
   @override
-  String get settingsSecurityIncorrectPassword => 'Incorrect Password';
+  String get settingsSecurityIncorrectPassword => 'Mật khẩu sai';
 
   @override
-  String get settingsSecurityPasswordsDoNotMatch => 'Passwords do not match';
+  String get settingsSecurityPasswordsDoNotMatch => 'Mật khẩu không khớp';
 
   @override
-  String get requiredPrompt => 'Required';
+  String get requiredPrompt => 'Bắt buộc';
 
   @override
-  String get settingsSecurityBiometricUnlock => 'Biometric Unlock';
+  String get settingsSecurityBiometricUnlock => 'Mở khóa sinh trắc học';
 
   @override
-  String get unlockAppPrompt => 'Unlock the app';
+  String get unlockAppPrompt => 'Mở khóa ứng dụng';
 
   @override
-  String get settingsAboutTitle => 'About';
+  String get settingsAboutTitle => 'Giới thiệu';
 
   @override
-  String get settingsVersion => 'Version';
+  String get settingsVersion => 'Phiên bản';
 
   @override
-  String get settingsLicense => 'License';
+  String get settingsLicense => 'Giấy phép';
 
   @override
   String get licenseGPLv3 => 'GPL-3.0';
 
   @override
-  String get settingsOpenSourceLicenses => 'Open Source Licenses';
+  String get settingsOpenSourceLicenses => 'Giấy phép nguồn mở';
 
   @override
   String get tagMoodTitle => 'Tâm trạng';
 
   @override
-  String get selectTagTitle => 'Select Tag';
+  String get selectTagTitle => 'Chọn thẻ';
 
   @override
-  String get labelPresentLabel => 'Present';
+  String get labelPresentLabel => 'hiện tại';
 
   @override
-  String get labelAbsentLabel => 'Absent';
+  String get labelAbsentLabel => 'Vắng mặt';
 
   @override
-  String get labelCoverageLabel => 'Coverage';
+  String get labelCoverageLabel => 'Bảo hiểm';
 
   @override
   String chartDistributionTitle(Object tag) {
-    return '$tag Distribution';
+    return 'Phân phối $tag';
   }
 
   @override
-  String get shareAddToLogPickerTitle => 'Choose a log';
+  String get shareAddToLogPickerTitle => 'Chọn một mục nhật ký';
 
   @override
-  String get adaptiveEmptyDay => 'No entries for this day yet';
+  String get adaptiveEmptyDay => 'Chưa có mục nào cho ngày này';
 
   @override
-  String get adaptiveNewEntry => 'Write an entry';
+  String get adaptiveNewEntry => 'Viết một mục';
 
   @override
-  String get pageJournalTitle => 'Journal';
+  String get pageJournalTitle => 'tạp chí';
 
   @override
-  String get coachPrompt1 => 'What made you smile today?';
+  String get coachPrompt1 => 'Điều gì làm bạn cười hôm nay?';
 
   @override
-  String get coachPrompt2 => 'What is one thing you learned today?';
+  String get coachPrompt2 => 'Một điều bạn học được ngày hôm nay là gì?';
 
   @override
-  String get coachPrompt3 => 'Who did you talk to today, and how did it feel?';
+  String get coachPrompt3 =>
+      'Hôm nay bạn đã nói chuyện với ai và bạn cảm thấy thế nào?';
 
   @override
-  String get coachPrompt4 => 'What are you grateful for right now?';
+  String get coachPrompt4 => 'Hiện tại bạn đang biết ơn điều gì?';
 
   @override
-  String get coachPrompt5 => 'What took most of your energy today?';
+  String get coachPrompt5 =>
+      'Điều gì đã lấy đi hầu hết năng lượng của bạn ngày hôm nay?';
 
   @override
-  String get coachPrompt6 => 'Describe a small moment you want to remember.';
+  String get coachPrompt6 =>
+      'Hãy mô tả một khoảnh khắc nhỏ mà bạn muốn ghi nhớ.';
 
   @override
-  String get coachPrompt7 => 'What would make tomorrow a good day?';
+  String get coachPrompt7 =>
+      'Điều gì sẽ làm cho ngày mai là một ngày tốt lành?';
 
   @override
-  String get coachPrompt8 => 'What has been on your mind lately?';
+  String get coachPrompt8 => 'Gần đây bạn đang nghĩ gì trong đầu?';
 
   @override
-  String get coachPrompt9 => 'What did you do today just for yourself?';
+  String get coachPrompt9 => 'Hôm nay bạn đã làm gì chỉ cho riêng mình?';
 
   @override
-  String get coachPrompt10 => 'If today had a title, what would it be?';
+  String get coachPrompt10 => 'Nếu hôm nay có tựa đề thì nó sẽ là gì?';
 
   @override
-  String get pageMediaTitle => 'Media';
+  String get pageMediaTitle => 'Phương tiện truyền thông';
 
   @override
-  String get pageAtlasTitle => 'Atlas';
+  String get pageAtlasTitle => 'tập bản đồ';
 
   @override
-  String get pageCoachTitle => 'Coach';
+  String get pageCoachTitle => 'huấn luyện viên';
 
   @override
-  String get noEntrySelected => 'No entry selected.';
+  String get noEntrySelected => 'Không có mục nào được chọn.';
 
   @override
-  String get entryShare => 'Share';
+  String get entryShare => 'Chia sẻ';
 
   @override
-  String get entryFavorite => 'Star';
+  String get entryFavorite => 'Ngôi sao';
 
   @override
-  String get entryEdit => 'Edit';
+  String get entryEdit => 'Chỉnh sửa';
 
   @override
-  String get entryPrevious => 'Previous entry';
+  String get entryPrevious => 'Mục trước';
 
   @override
-  String get entryNext => 'Next entry';
+  String get entryNext => 'Mục tiếp theo';
 
   @override
-  String get journalStories => 'Stories';
+  String get journalStories => 'Truyện';
 
   @override
-  String get journalEntries => 'Entries';
+  String get journalEntries => 'Bài dự thi';
 
   @override
-  String get journalEmptyHint => 'Begin your diary by adding a new entry.';
+  String get journalEmptyHint =>
+      'Bắt đầu nhật ký của bạn bằng cách thêm một mục mới.';
 
   @override
-  String get storyToday => 'Today';
+  String get storyToday => 'hôm nay';
 
   @override
-  String get storyThrowback => 'Throwback';
+  String get storyThrowback => 'Quay lại';
 
   @override
-  String get storyNoThrowback => 'No throwback today';
+  String get storyNoThrowback => 'Không có sự trở lại ngày hôm nay';
 
   @override
-  String get mediaFiles => 'Media files';
+  String get mediaFiles => 'Tệp phương tiện';
 
   @override
-  String get mediaEmpty => 'No photos yet.';
+  String get mediaEmpty => 'Chưa có ảnh nào.';
 
   @override
-  String get mediaEmptyHint => 'Photos attached to entries will be shown here.';
+  String get mediaEmptyHint =>
+      'Hình ảnh đính kèm với các mục sẽ được hiển thị ở đây.';
 
   @override
-  String get atlasEmpty => 'No entries with a location.';
+  String get atlasEmpty => 'Không có mục nào có vị trí.';
 
   @override
-  String get atlasEmptyHint => 'Entries with a location will be shown here.';
+  String get atlasEmptyHint => 'Các mục có vị trí sẽ được hiển thị ở đây.';
 
   @override
-  String get atlasShowAll => 'Show all entries';
+  String get atlasShowAll => 'Hiển thị tất cả các mục';
 
   @override
-  String get atlasMyLocation => 'My location';
+  String get atlasMyLocation => 'Vị trí của tôi';
 
   @override
-  String get coachAll => 'All';
+  String get coachAll => 'Tất cả';
 
   @override
-  String get coachPrograms => 'Programs';
+  String get coachPrograms => 'Chương trình';
 
   @override
-  String get coachTemplates => 'Templates';
+  String get coachTemplates => 'Mẫu';
 
   @override
-  String get coachKindProgram => 'Program';
+  String get coachKindProgram => 'chương trình';
 
   @override
-  String get coachKindTemplate => 'Template';
+  String get coachKindTemplate => 'mẫu';
 
   @override
-  String get coachNoTemplates => 'No programs or templates.';
+  String get coachNoTemplates => 'Không có chương trình hoặc mẫu.';
 
   @override
-  String get coachUseTemplate => 'Write with this template';
+  String get coachUseTemplate => 'Viết bằng mẫu này';
 
   @override
-  String get coachProgramEverydayTitle => 'Everyday moments';
+  String get coachProgramEverydayTitle => 'Khoảnh khắc đời thường';
 
   @override
   String get coachProgramEverydayDescription =>
-      'Five short questions, one a day. Each takes a minute or two and helps you see what made the day yours. A gentle way to build the habit of writing a little every day.';
+      'Năm câu hỏi ngắn, mỗi ngày một câu. Mỗi lần mất một hoặc hai phút và giúp bạn biết điều gì đã tạo nên ngày của bạn. Một cách nhẹ nhàng để xây dựng thói quen viết mỗi ngày một chút.';
 
   @override
-  String get coachProgramReflectTitle => 'Looking inward';
+  String get coachProgramReflectTitle => 'Hướng nội';
 
   @override
   String get coachProgramReflectDescription =>
-      'One deeper question a week, for five weeks. Take your time with each: how you have been feeling, what wears you out, what you are grateful for.';
+      'Một câu hỏi sâu hơn mỗi tuần, trong năm tuần. Hãy dành thời gian cho từng điều: bạn cảm thấy thế nào, điều gì làm bạn kiệt sức, điều gì bạn biết ơn.';
 
   @override
-  String get searchFilters => 'Filters';
+  String get searchFilters => 'Bộ lọc';
 
   @override
-  String get searchFilterTags => 'Tags';
+  String get searchFilterTags => 'Thẻ';
 
   @override
-  String get searchFilterStarred => 'Starred';
+  String get searchFilterStarred => 'Được gắn dấu sao';
 
   @override
-  String get searchHint => 'Type to search, or pick a filter.';
+  String get searchHint => 'Nhập để tìm kiếm hoặc chọn một bộ lọc.';
 
   @override
-  String get locationTitle => 'Location';
+  String get locationTitle => 'Vị trí';
 
   @override
-  String get locationName => 'Place name';
+  String get locationName => 'Tên địa điểm';
 
   @override
-  String get locationRemove => 'Remove';
+  String get locationRemove => 'Xóa';
 
   @override
-  String get locationServiceDisabled => 'Location services are turned off.';
+  String get locationServiceDisabled => 'Dịch vụ định vị đã bị tắt.';
 
   @override
-  String get locationPermissionDenied => 'Location permission was denied.';
+  String get locationPermissionDenied => 'Quyền truy cập vị trí đã bị từ chối.';
 
   @override
-  String get locationUnavailable => 'Could not get the current location.';
+  String get locationUnavailable => 'Không thể có được vị trí hiện tại.';
 
   @override
-  String get calendarJumpToToday => 'Jump to today';
+  String get calendarJumpToToday => 'Chuyển đến ngày hôm nay';
 
   @override
-  String get editorStartWriting => 'Start writing or choose a ';
+  String get editorStartWriting => 'Bắt đầu viết hoặc chọn một ';
 
   @override
-  String get editorTemplateLink => 'Template';
+  String get editorTemplateLink => 'mẫu';
 
   @override
   String get editorStartWritingEnd => '.';
 
   @override
-  String get templatePickerTitle => 'Choose a template';
+  String get templatePickerTitle => 'Chọn một mẫu';
 
   @override
-  String get templateFeatured => 'Featured templates';
+  String get templateFeatured => 'Mẫu nổi bật';
 
   @override
-  String get templateMine => 'My templates';
+  String get templateMine => 'Mẫu của tôi';
 
   @override
-  String get templateDailyName => 'Daily review';
+  String get templateDailyName => 'Đánh giá hàng ngày';
 
   @override
   String get templateDailyDescription =>
-      'What happened, how it felt, and what comes next.';
+      'Chuyện gì đã xảy ra, cảm giác thế nào và điều gì xảy ra tiếp theo.';
 
   @override
   String get templateDailyText =>
-      '## What happened today\n\n\n## How I felt\n\n\n## Three things I\'m grateful for\n1. \n2. \n3. \n\n## Tomorrow\n';
+      '## Chuyện gì đã xảy ra hôm nay\n\n\n## Tôi cảm thấy thế nào\n\n\n## Ba điều tôi biết ơn\n1. \n2. \n3. \n\n## Ngày mai\n';
 
   @override
-  String get templateTravelName => 'Travel log';
+  String get templateTravelName => 'Mục nhật ký du lịch';
 
   @override
   String get templateTravelDescription =>
-      'Places, moments and food from the road.';
+      'Địa điểm, khoảnh khắc và thức ăn trên đường.';
 
   @override
   String get templateTravelText =>
-      '## Where I went\n\n\n## The moment I remember most\n\n\n## What I ate\n\n\n## Plans for tomorrow\n';
+      '## Tôi đã đi đâu\n\n\n##Khoảnh khắc tôi nhớ nhất\n\n\n## Những gì tôi đã ăn\n\n\n##Kế hoạch cho ngày mai\n';
 
   @override
-  String get templateReadingName => 'Reading notes';
+  String get templateReadingName => 'Đọc ghi chú';
 
   @override
   String get templateReadingDescription =>
-      'Quotes and thoughts from what you read.';
+      'Trích dẫn và suy nghĩ từ những gì bạn đọc.';
 
   @override
   String get templateReadingText =>
-      '## Book\n\n\n## Where I am\n\n\n## Quotes\n> \n\n## My thoughts\n';
+      '## Sách\n\n\n##Tôi đang ở đâu\n\n\n## Trích dẫn\n> \n\n## Suy nghĩ của tôi\n';
 
   @override
-  String get templateWeeklyName => 'Weekly review';
+  String get templateWeeklyName => 'Đánh giá hàng tuần';
 
   @override
   String get templateWeeklyDescription =>
-      'Highlights, struggles and next week\'s focus.';
+      'Điểm nổi bật, khó khăn và trọng tâm của tuần tới.';
 
   @override
   String get templateWeeklyText =>
-      '## Highlights\n\n\n## What was hard\n\n\n## What I learned\n\n\n## Focus for next week\n';
+      '## Điểm nổi bật\n\n\n## Có gì khó\n\n\n## Những gì tôi đã học được\n\n\n## Tập trung cho tuần tới\n';
 
   @override
-  String get entryDuplicate => 'Duplicate';
+  String get entryDuplicate => 'trùng lặp';
 
   @override
-  String get entryDuplicated => 'Entry duplicated';
+  String get entryDuplicated => 'Mục nhập trùng lặp';
 
   @override
-  String get entrySaveAsTemplate => 'Save as template';
+  String get entrySaveAsTemplate => 'Lưu dưới dạng mẫu';
 
   @override
-  String get entrySavedAsTemplate => 'Saved as a template';
+  String get entrySavedAsTemplate => 'Đã lưu dưới dạng mẫu';
 
   @override
-  String get storyStatistics => 'Statistics';
+  String get storyStatistics => 'Thống kê';
 
   @override
-  String get storyMoodChart => 'Mood chart';
+  String get storyMoodChart => 'Biểu đồ tâm trạng';
 
   @override
   String storyEntriesAndDays(Object days, Object entries) {
-    return '$entries entries · $days days';
+    return 'Các mục $entries · $days ngày';
   }
 
   @override
-  String get storyThisYear => 'This year';
+  String get storyThisYear => 'Năm nay';
 
   @override
-  String get storyLastYear => 'Last year';
+  String get storyLastYear => 'Năm ngoái';
 
   @override
-  String get storyTapToOpen => 'Tap a day to open it';
+  String get storyTapToOpen => 'Nhấn vào một ngày để mở nó';
 
   @override
-  String get settingsGeneralTitle => 'General';
+  String get settingsGeneralTitle => 'chung';
 
   @override
-  String get settingsDataTitle => 'Data & storage';
+  String get settingsDataTitle => 'Dữ liệu & lưu trữ';
 
   @override
-  String get settingsStoriesTitle => 'Stories';
+  String get settingsStoriesTitle => 'Truyện';
 
   @override
-  String get settingsHelpTitle => 'Help & about';
+  String get settingsHelpTitle => 'Trợ giúp & về';
 
   @override
-  String get weatherTitle => 'Weather';
+  String get weatherTitle => 'Thời tiết';
 
   @override
-  String get weatherClear => 'Clear';
+  String get weatherClear => 'Xóa';
 
   @override
-  String get weatherPartlyCloudy => 'Partly cloudy';
+  String get weatherPartlyCloudy => 'Có mây rải rác';
 
   @override
-  String get weatherCloudy => 'Cloudy';
+  String get weatherCloudy => 'Nhiều mây';
 
   @override
-  String get weatherFog => 'Fog';
+  String get weatherFog => 'Sương mù';
 
   @override
-  String get weatherDrizzle => 'Drizzle';
+  String get weatherDrizzle => 'Mưa phùn';
 
   @override
-  String get weatherRain => 'Rain';
+  String get weatherRain => 'Mưa';
 
   @override
-  String get weatherSnow => 'Snow';
+  String get weatherSnow => 'Tuyết';
 
   @override
-  String get weatherStorm => 'Thunderstorm';
+  String get weatherStorm => 'Sấm sét';
 
   @override
-  String get weatherFetch => 'Get weather for this entry';
+  String get weatherFetch => 'Nhận thông tin thời tiết cho mục này';
 
   @override
-  String get weatherNeedsLocation => 'Add a location with coordinates first.';
+  String get weatherNeedsLocation => 'Thêm vị trí có tọa độ trước.';
 
   @override
   String get weatherUnavailable =>
-      'Weather is unavailable for this place and time.';
+      'Thời tiết không có sẵn cho địa điểm và thời gian này.';
 
   @override
-  String get weatherRemove => 'Remove weather';
+  String get weatherRemove => 'Xóa thời tiết';
 
   @override
-  String get activityTitle => 'Activity';
+  String get activityTitle => 'Hoạt động';
 
   @override
-  String get activityStill => 'Still';
+  String get activityStill => 'Vẫn';
 
   @override
-  String get activityWalking => 'Walking';
+  String get activityWalking => 'Đi bộ';
 
   @override
-  String get activityRunning => 'Running';
+  String get activityRunning => 'Đang chạy';
 
   @override
-  String get activityCycling => 'Cycling';
+  String get activityCycling => 'Đi xe đạp';
 
   @override
-  String get activityVehicle => 'In a vehicle';
+  String get activityVehicle => 'Trong một chiếc xe';
 
   @override
-  String get activityFlying => 'Flying';
+  String get activityFlying => 'Đang bay';
 
   @override
-  String get activityExercise => 'Exercise';
+  String get activityExercise => 'tập thể dục';
 
   @override
-  String get activityDetect => 'Detect current activity';
+  String get activityDetect => 'Phát hiện hoạt động hiện tại';
 
   @override
-  String get activityDetectFailed => 'Couldn\'t detect an activity.';
+  String get activityDetectFailed => 'Không thể phát hiện một hoạt động.';
 
   @override
-  String get activityRemove => 'Remove activity';
+  String get activityRemove => 'Xóa hoạt động';
 
   @override
-  String get settingsAutoAddTitle => 'Add automatically';
+  String get settingsAutoAddTitle => 'Thêm tự động';
 
   @override
-  String get settingsAutoAddLocation => 'Location';
+  String get settingsAutoAddLocation => 'Vị trí';
 
   @override
-  String get settingsAutoAddWeather => 'Weather';
+  String get settingsAutoAddWeather => 'Thời tiết';
 
   @override
   String get settingsAutoAddHint =>
-      'New entries get these filled in when they are created.';
+      'Các mục mới sẽ được điền vào khi chúng được tạo.';
 
   @override
-  String get settingsTemperatureUnit => 'Temperature unit';
+  String get settingsTemperatureUnit => 'Đơn vị nhiệt độ';
 
   @override
-  String get settingsCelsius => 'Celsius (°C)';
+  String get settingsCelsius => 'độ C (°C)';
 
   @override
-  String get settingsFahrenheit => 'Fahrenheit (°F)';
+  String get settingsFahrenheit => 'Độ F (°F)';
 
   @override
-  String get moodGreat => 'Great';
+  String get moodGreat => 'Tuyệt vời';
 
   @override
-  String get moodGood => 'Good';
+  String get moodGood => 'Tốt';
 
   @override
-  String get moodOkay => 'Okay';
+  String get moodOkay => 'được rồi';
 
   @override
-  String get moodBad => 'Bad';
+  String get moodBad => 'Xấu';
 
   @override
-  String get moodAwful => 'Awful';
+  String get moodAwful => 'khủng khiếp';
 
   @override
-  String get locationSearchHint => 'Search for a place';
+  String get locationSearchHint => 'Tìm kiếm địa điểm';
 
   @override
-  String get locationSearchEmpty => 'No places found';
+  String get locationSearchEmpty => 'Không tìm thấy địa điểm nào';
 
   @override
-  String get settingsWallpaper => 'Wallpaper';
+  String get settingsWallpaper => 'Hình nền';
 
   @override
-  String get wallpaperNone => 'None';
+  String get wallpaperNone => 'không có';
 
   @override
-  String get wallpaperDots => 'Dots';
+  String get wallpaperDots => 'Dấu chấm';
 
   @override
-  String get wallpaperGrid => 'Grid';
+  String get wallpaperGrid => 'Lưới';
 
   @override
-  String get wallpaperLines => 'Lines';
+  String get wallpaperLines => 'dòng';
 
   @override
-  String get wallpaperPhoto => 'Photo…';
+  String get wallpaperPhoto => 'Ảnh…';
 
   @override
-  String get settingsFontFamily => 'Font';
+  String get settingsFontFamily => 'Phông chữ';
 
   @override
-  String get fontSystem => 'System';
+  String get fontSystem => 'Hệ thống';
 
   @override
   String get fontSerif => 'Serif';
 
   @override
-  String get fontMono => 'Monospace';
+  String get fontMono => 'Không gian đơn';
 
   @override
-  String get settingsFontSize => 'Font size';
+  String get settingsFontSize => 'Cỡ chữ';
 
   @override
-  String get fontSizeSmall => 'Small';
+  String get fontSizeSmall => 'nhỏ';
 
   @override
-  String get fontSizeMedium => 'Medium';
+  String get fontSizeMedium => 'Trung bình';
 
   @override
-  String get fontSizeLarge => 'Large';
+  String get fontSizeLarge => 'lớn';
 
   @override
-  String get fontSizeExtraLarge => 'Extra large';
+  String get fontSizeExtraLarge => 'Cực lớn';
 
   @override
-  String get settingsLineSpacing => 'Line spacing';
+  String get settingsLineSpacing => 'Khoảng cách dòng';
 
   @override
-  String get lineSpacingCompact => 'Compact';
+  String get lineSpacingCompact => 'Nhỏ gọn';
 
   @override
-  String get lineSpacingNormal => 'Normal';
+  String get lineSpacingNormal => 'Bình thường';
 
   @override
-  String get lineSpacingRelaxed => 'Relaxed';
+  String get lineSpacingRelaxed => 'Thư giãn';
 
   @override
-  String get moodAssociationsTitle => 'What makes me feel…';
+  String get moodAssociationsTitle => 'Điều gì khiến tôi cảm thấy…';
 
   @override
   String moodAssociationsCount(int matching, int total) {
-    return '$matching of $total entries';
+    return '$matching của các mục $total';
   }
 
   @override
-  String get videoRecord => 'Record a video';
+  String get videoRecord => 'Quay video';
 
   @override
-  String get videoChoose => 'Choose a video';
+  String get videoChoose => 'Chọn một video';
 
   @override
-  String get audioRecordTitle => 'Record a voice note';
+  String get audioRecordTitle => 'Ghi lại ghi chú bằng giọng nói';
 
   @override
-  String get audioChoose => 'Choose an audio file';
+  String get audioChoose => 'Chọn một tập tin âm thanh';
 
   @override
-  String get audioStart => 'Record';
+  String get audioStart => 'Ghi lại';
 
   @override
-  String get audioStop => 'Stop and save';
+  String get audioStop => 'Dừng lại và lưu';
 
   @override
   String get audioPermissionDenied =>
-      'Microphone access is off. Allow it in the system settings.';
+      'Quyền truy cập micrô bị tắt. Cho phép nó trong cài đặt hệ thống.';
 
   @override
-  String get mediaTooLarge => 'This video is too large to attach.';
+  String get mediaTooLarge => 'Video này quá lớn để đính kèm.';
 
   @override
   String get mediaUnavailable =>
-      'This attachment is not available on this device.';
+      'Tệp đính kèm này không có sẵn trên thiết bị này.';
 
   @override
-  String get widgetDone => 'Today\'s entry is written';
+  String get widgetDone => 'Bài viết hôm nay được viết';
 
   @override
-  String get widgetPending => 'How was your day?';
+  String get widgetPending => 'Ngày của bạn thế nào?';
 
   @override
-  String get widgetWrite => 'Write';
+  String get widgetWrite => 'Viết';
 
   @override
-  String get insertChecklist => 'Checklist';
+  String get insertChecklist => 'Danh sách kiểm tra';
 
   @override
-  String get insertNumberedList => 'Numbered list';
+  String get insertNumberedList => 'Danh sách đánh số';
 
   @override
-  String get insertTable => 'Table';
+  String get insertTable => 'Bảng';
 
   @override
-  String get insertDivider => 'Divider';
+  String get insertDivider => 'Dải phân cách';
 
   @override
-  String get insertCodeBlock => 'Code block';
+  String get insertCodeBlock => 'Khối mã';
 
   @override
-  String get journalSortTitle => 'Sort entries';
+  String get journalSortTitle => 'Sắp xếp các mục';
 
   @override
-  String get journalSortUpdated => 'Last updated';
+  String get journalSortUpdated => 'Cập nhật lần cuối';
 
   @override
-  String get settingsTimeFormat => 'Time format';
+  String get settingsTimeFormat => 'Định dạng thời gian';
 
   @override
-  String get settingsDayStart => 'New entries count for the day before until';
+  String get settingsDayStart =>
+      'Các mục mới được tính cho ngày hôm trước cho đến khi';
 
   @override
-  String get settingsDayAskUntil => 'Then ask which day until';
+  String get settingsDayAskUntil => 'Sau đó hỏi ngày nào cho đến khi';
 
   @override
-  String get settingsDayStartMidnight => 'Off';
+  String get settingsDayStartMidnight => 'Tắt';
 
   @override
   String settingsDayStartAt(int hour) {
@@ -1397,268 +1409,270 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get settingsDayStartHint =>
-      'Every entry keeps the day it belongs to next to the time it was written, and you can change that day in the editor at any time. These hours only pick the day for new entries, so changing them moves no existing entry.';
+      'Mỗi mục nhập giữ ngày thuộc về ngày đó bên cạnh thời điểm nó được viết và bạn có thể thay đổi ngày đó trong trình chỉnh sửa bất kỳ lúc nào. Những giờ này chỉ chọn ngày cho các mục nhập mới, vì vậy việc thay đổi chúng sẽ không làm di chuyển mục nhập hiện có.';
 
   @override
-  String get lateNightBadge =>
-      'Written late at night, counted for the day before';
+  String get lateNightBadge => 'Viết lúc đêm khuya, tính cho ngày hôm trước';
 
   @override
   String editorDayAsk(String time) {
-    return 'Written at $time. Which day is it for?';
+    return 'Được viết tại $time. Nó dành cho ngày nào?';
   }
 
   @override
   String editorDayYesterday(String date) {
-    return '$date (yesterday)';
+    return '$date (hôm qua)';
   }
 
   @override
   String editorDayToday(String date) {
-    return '$date (today)';
+    return '$date (hôm nay)';
   }
 
   @override
   String editorWrittenAt(String when) {
-    return 'Written $when';
+    return 'Đã viết $when';
   }
 
   @override
-  String get timeFormat12 => '12-hour';
+  String get timeFormat12 => '12 giờ';
 
   @override
-  String get timeFormat24 => '24-hour';
+  String get timeFormat24 => '24 giờ';
 
   @override
-  String get settingsReminderDays => 'Remind me on';
+  String get settingsReminderDays => 'Nhắc nhở tôi';
 
   @override
-  String get locationRecent => 'Recent places';
+  String get locationRecent => 'Địa điểm gần đây';
 
   @override
-  String get shareImage => 'Share image';
+  String get shareImage => 'Chia sẻ hình ảnh';
 
   @override
-  String get shareSaveImage => 'Save image';
+  String get shareSaveImage => 'Lưu hình ảnh';
 
   @override
-  String get shareSaved => 'Image saved';
+  String get shareSaved => 'Đã lưu hình ảnh';
 
   @override
-  String get deletedTitle => 'Recently deleted';
+  String get deletedTitle => 'Đã xóa gần đây';
 
   @override
-  String get deletedNone => 'Nothing deleted recently';
+  String get deletedNone => 'Không có gì bị xóa gần đây';
 
   @override
   String deletedHint(int days) {
-    return 'Deleted entries stay here for $days days, then are erased.';
+    return 'Các mục đã xóa vẫn ở đây trong $days ngày, sau đó bị xóa.';
   }
 
   @override
   String deletedDaysLeft(int days) {
-    return '$days days left';
+    return '$days ngày còn lại';
   }
 
   @override
-  String get deletedRestore => 'Restore';
+  String get deletedRestore => 'Khôi phục';
 
   @override
-  String get deletedDeleteForever => 'Delete forever';
+  String get deletedDeleteForever => 'Xóa vĩnh viễn';
 
   @override
   String get deletedDeleteForeverDescription =>
-      'The entry and its attachments are erased. This cannot be undone.';
+      'Mục nhập và phần đính kèm của nó sẽ bị xóa. Điều này không thể hoàn tác được.';
 
   @override
-  String get deletedEmpty => 'Empty';
+  String get deletedEmpty => 'trống';
 
   @override
   String get deletedEmptyDescription =>
-      'Erase every entry in Recently deleted? This cannot be undone.';
+      'Xóa mọi mục trong Đã xóa gần đây? Điều này không thể hoàn tác được.';
 
   @override
   String get formatJson => 'JSON';
 
   @override
-  String get randomTitle => 'Random walk';
+  String get randomTitle => 'Bước đi ngẫu nhiên';
 
   @override
-  String get randomSubtitle => 'Open a past entry';
+  String get randomSubtitle => 'Mở một mục quá khứ';
 
   @override
-  String get randomNext => 'Another';
+  String get randomNext => 'Khác';
 
   @override
-  String get randomAll => 'All';
+  String get randomAll => 'Tất cả';
 
   @override
-  String get randomWithPhotos => 'With photos';
+  String get randomWithPhotos => 'Có ảnh';
 
   @override
-  String get randomGoodDays => 'Good days';
+  String get randomGoodDays => 'ngày tốt lành';
 
   @override
-  String get randomEmpty => 'No entries to pick from';
+  String get randomEmpty => 'Không có mục nào để chọn';
 
   @override
-  String get reviewWeekTitle => 'This week';
+  String get reviewWeekTitle => 'Tuần này';
 
   @override
-  String get reviewWeekSubtitle => 'Your week so far';
+  String get reviewWeekSubtitle => 'Tuần của bạn cho đến nay';
 
   @override
-  String get reviewYearTitle => 'This year';
+  String get reviewYearTitle => 'Năm nay';
 
   @override
-  String get reviewEmpty => 'Nothing written yet';
+  String get reviewEmpty => 'Chưa có gì được viết';
 
   @override
-  String get reviewEntries => 'Entries';
+  String get reviewEntries => 'Bài dự thi';
 
   @override
-  String get reviewDaysWritten => 'Days written';
+  String get reviewDaysWritten => 'Ngày viết';
 
   @override
-  String get reviewWords => 'Words';
+  String get reviewWords => 'từ';
 
   @override
-  String get reviewPhotos => 'Photos';
+  String get reviewPhotos => 'Ảnh';
 
   @override
-  String get reviewLongestRun => 'Longest run of days';
+  String get reviewLongestRun => 'Ngày hoạt động dài nhất';
 
   @override
-  String get reviewAverageMood => 'Average mood';
+  String get reviewAverageMood => 'Tâm trạng trung bình';
 
   @override
-  String get reviewFavorites => 'Most often';
+  String get reviewFavorites => 'Thường xuyên nhất';
 
   @override
-  String get reviewByMonth => 'By month';
+  String get reviewByMonth => 'Theo tháng';
 
   @override
-  String get reviewHighlight => 'Highlight';
+  String get reviewHighlight => 'Đánh dấu';
 
   @override
-  String get yearInPixels => 'Year in pixels';
+  String get yearInPixels => 'Năm tính bằng pixel';
 
   @override
-  String get capsuleSeal => 'Seal as a time capsule';
+  String get capsuleSeal => 'Niêm phong như một viên nang thời gian';
 
   @override
-  String get capsuleTitle => 'Time capsule';
+  String get capsuleTitle => 'Viên nang thời gian';
 
   @override
   String capsuleOpensOn(Object date) {
-    return 'Opens on $date';
+    return 'Mở trên $date';
   }
 
   @override
   String capsuleWrittenOn(Object date) {
-    return 'Written on $date';
+    return 'Được viết trên $date';
   }
 
   @override
-  String get capsuleOpenEarly => 'Open early';
+  String get capsuleOpenEarly => 'Mở cửa sớm';
 
   @override
   String get capsuleOpenEarlyDescription =>
-      'The capsule opens now and stays open.';
+      'Viên nang mở ra bây giờ và vẫn mở.';
 
   @override
-  String get capsuleOpened => 'Time capsule opened';
+  String get capsuleOpened => 'Viên nang thời gian đã mở';
 
   @override
-  String get templateMorningName => 'Morning pages';
+  String get templateMorningName => 'Trang buổi sáng';
 
   @override
-  String get templateMorningDescription => 'Set up the day in three minutes';
+  String get templateMorningDescription => 'Thiết lập ngày trong ba phút';
 
   @override
   String get templateMorningText =>
-      '## Three things I want to do well today\n1. \n2. \n3. \n\n## Something I look forward to\n\n## A note to myself\n';
+      '## Ba điều tôi muốn làm tốt hôm nay\n1. \n2. \n3. \n\n## Điều tôi mong đợi\n\n## Một lưu ý cho chính tôi\n';
 
   @override
-  String get templateEveningName => 'Evening review';
+  String get templateEveningName => 'Đánh giá buổi tối';
 
   @override
-  String get templateEveningDescription => 'Close the day with what went well';
+  String get templateEveningDescription =>
+      'Kết thúc một ngày với những gì đã diễn ra tốt đẹp';
 
   @override
   String get templateEveningText =>
-      '## Three good things today\n1. \n2. \n3. \n\n## What I learned\n\n## What could go better tomorrow\n';
+      '##Ba điều tốt hôm nay\n1. \n2. \n3. \n\n## Những gì tôi đã học được\n\n## Điều gì có thể tốt hơn vào ngày mai\n';
 
   @override
-  String get routineMorning => 'Good morning';
+  String get routineMorning => 'Chào buổi sáng';
 
   @override
-  String get routineEvening => 'Evening review';
+  String get routineEvening => 'Đánh giá buổi tối';
 
   @override
-  String get settingsRoutinePrompts => 'Morning and evening prompts';
+  String get settingsRoutinePrompts => 'Lời nhắc buổi sáng và buổi tối';
 
   @override
   String get settingsRoutinePromptsHint =>
-      'Suggest the morning or evening template in Stories';
+      'Đề xuất mẫu buổi sáng hoặc buổi tối trong Stories';
 
   @override
-  String get checkInTitle => 'Quick check-in';
+  String get checkInTitle => 'Nhận phòng nhanh';
 
   @override
-  String get checkInSubtitle => 'Mood in two taps';
+  String get checkInSubtitle => 'Tâm trạng trong hai lần nhấn';
 
   @override
-  String get checkInMood => 'How do you feel?';
+  String get checkInMood => 'Bạn cảm thấy thế nào?';
 
   @override
-  String get checkInActivity => 'What are you doing?';
+  String get checkInActivity => 'Bạn đang làm gì vậy?';
 
   @override
-  String get checkInNote => 'A line about it (optional)';
+  String get checkInNote => 'Một dòng về nó (tùy chọn)';
 
   @override
-  String get checkInSave => 'Save';
+  String get checkInSave => 'Lưu';
 
   @override
   String editorWordCount(int words, int characters) {
-    return '$words words · $characters characters';
+    return 'Từ $words · Ký tự $characters';
   }
 
   @override
-  String get coachProgramEverydayTagline => 'Notice the small things in a day.';
+  String get coachProgramEverydayTagline =>
+      'Hãy để ý những điều nhỏ nhặt trong một ngày.';
 
   @override
-  String get coachProgramReflectTagline => 'Slow down and listen to yourself.';
+  String get coachProgramReflectTagline =>
+      'Hãy chậm lại và lắng nghe chính mình.';
 
   @override
-  String get coachDuration => 'Duration';
+  String get coachDuration => 'Thời lượng';
 
   @override
-  String get coachInterval => 'Interval';
+  String get coachInterval => 'Khoảng thời gian';
 
   @override
-  String get coachDifficulty => 'Difficulty';
+  String get coachDifficulty => 'độ khó';
 
   @override
-  String get coachIntervalDaily => 'Daily';
+  String get coachIntervalDaily => 'hàng ngày';
 
   @override
-  String get coachIntervalWeekly => 'Weekly';
+  String get coachIntervalWeekly => 'hàng tuần';
 
   @override
-  String get coachDifficultyBeginner => 'Beginner';
+  String get coachDifficultyBeginner => 'Người mới bắt đầu';
 
   @override
-  String get coachDifficultyIntermediate => 'Intermediate';
+  String get coachDifficultyIntermediate => 'Trung cấp';
 
   @override
   String coachDurationDays(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count days',
-      one: '1 day',
+      other: '$count ngày',
+      one: '1 ngày',
     );
     return '$_temp0';
   }
@@ -1668,1055 +1682,1069 @@ class AppLocalizationsVi extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count weeks',
-      one: '1 week',
+      other: '$count tuần',
+      one: '1 tuần',
     );
     return '$_temp0';
   }
 
   @override
   String coachDayN(int n) {
-    return 'Day $n';
+    return 'Ngày $n';
   }
 
   @override
   String coachWeekN(int n) {
-    return 'Week $n';
+    return 'Tuần $n';
   }
 
   @override
-  String get coachEnroll => 'Enroll';
+  String get coachEnroll => 'Đăng ký';
 
   @override
-  String get coachEndProgram => 'End program';
+  String get coachEndProgram => 'Kết thúc chương trình';
 
   @override
-  String get coachAuthor => 'Author';
+  String get coachAuthor => 'tác giả';
 
   @override
-  String get coachAuthorBio => 'Prompts written for this app.';
+  String get coachAuthorBio => 'Lời nhắc được viết cho ứng dụng này.';
 
   @override
   String get coachEnrolledTip =>
-      'All set! Your questions will show up in Stories.';
+      'Đã hoàn tất! Câu hỏi của bạn sẽ hiển thị trong Câu chuyện.';
 
   @override
-  String get coachGoToStories => 'Go to Stories';
+  String get coachGoToStories => 'Đi đến Câu chuyện';
 
   @override
-  String get coachAnswerHint => 'Write your answer…';
+  String get coachAnswerHint => 'Viết câu trả lời của bạn…';
 
   @override
-  String get storyWrapUp => 'That\'s all for today.';
+  String get storyWrapUp => 'Đó là tất cả cho ngày hôm nay.';
 
   @override
-  String get storyTapToClose => 'Tap to close';
+  String get storyTapToClose => 'Nhấn để đóng';
 
   @override
-  String get coachAnswerDone => 'Done';
+  String get coachAnswerDone => 'Xong';
 
   @override
-  String get coachAnswered => 'Answered, tap to open';
+  String get coachAnswered => 'Đã trả lời, nhấn để mở';
 
   @override
-  String get coachAnsweredEarlier => 'Answered';
+  String get coachAnsweredEarlier => 'Đã trả lời';
 
   @override
-  String get locationLocating => 'Locating…';
+  String get locationLocating => 'Đang định vị…';
 
   @override
-  String get locationPickPlace => 'Pick a place';
+  String get locationPickPlace => 'Chọn một địa điểm';
 
   @override
-  String get locationPlacesHint => 'Address or name of the place';
+  String get locationPlacesHint => 'Địa chỉ hoặc tên của địa điểm';
 
   @override
-  String get locationCustom => 'Custom place';
+  String get locationCustom => 'Địa điểm tùy chỉnh';
 
   @override
-  String get locationCurrent => 'Current location';
+  String get locationCurrent => 'Vị trí hiện tại';
 
   @override
-  String get locationSaved => 'Saved places';
+  String get locationSaved => 'Địa điểm đã lưu';
 
   @override
-  String get locationSearchResults => 'Search results';
+  String get locationSearchResults => 'Kết quả tìm kiếm';
 
   @override
-  String get locationNearby => 'Nearby places';
+  String get locationNearby => 'Địa điểm lân cận';
 
   @override
-  String get locationRename => 'Rename';
+  String get locationRename => 'Đổi tên';
 
   @override
-  String get locationSavePlace => 'Save place';
+  String get locationSavePlace => 'Lưu địa điểm';
 
   @override
-  String get locationUnsavePlace => 'Remove from saved places';
+  String get locationUnsavePlace => 'Xóa khỏi địa điểm đã lưu';
 
   @override
-  String get shareAs => 'Share as…';
+  String get shareAs => 'Chia sẻ dưới dạng…';
 
   @override
-  String get shareAsImage => 'Image';
+  String get shareAsImage => 'Hình ảnh';
 
   @override
-  String get shareAsZip => 'ZIP with the original media';
+  String get shareAsZip => 'ZIP với phương tiện gốc';
 
   @override
-  String get shareAsPlainText => 'Plain text';
+  String get shareAsPlainText => 'Văn bản thuần túy';
 
   @override
   String get shareAsHtml => 'HTML';
 
   @override
-  String get onboardWelcomeTitle => 'Welcome to AID Diary';
+  String get onboardWelcomeTitle => 'Chào mừng đến với AID Diary';
 
   @override
   String get onboardWelcomeText =>
-      'Start here, or connect this device to one you already use.';
+      'Bắt đầu ở đây hoặc kết nối thiết bị này với thiết bị bạn đã sử dụng.';
 
   @override
-  String get onboardStart => 'Start writing';
+  String get onboardStart => 'Bắt đầu viết';
 
   @override
-  String get helpFaq => 'Frequently asked questions';
+  String get helpFaq => 'Câu hỏi thường gặp';
 
   @override
-  String get helpFaq1Q => 'Where is my diary stored?';
+  String get helpFaq1Q => 'Nhật ký của tôi được lưu trữ ở đâu?';
 
   @override
   String get helpFaq1A =>
-      'Your diary is stored on this device. It reaches other devices or storage only when you enable sync, share or export it. Sync is end-to-end encrypted.';
+      'Nhật ký của bạn được lưu trữ trên thiết bị này. Nó chỉ đến được các thiết bị hoặc bộ lưu trữ khác khi bạn bật đồng bộ hóa, chia sẻ hoặc xuất nó. Đồng bộ hóa được mã hóa hai đầu.';
 
   @override
-  String get helpFaq2Q => 'How do I keep a copy or move to a new device?';
+  String get helpFaq2Q =>
+      'Làm cách nào để giữ một bản sao hoặc chuyển sang thiết bị mới?';
 
   @override
   String get helpFaq2A =>
-      'Connect to an existing device in Settings → Data & storage → Sync and confirm authorization on the device that has your diary. Both devices remain usable. You can also create a backup and restore it on another device.';
+      'Kết nối với thiết bị hiện có trong Cài đặt → Dữ liệu & lưu trữ → Đồng bộ hóa và xác nhận ủy quyền trên thiết bị có nhật ký của bạn. Cả hai thiết bị vẫn có thể sử dụng được. Bạn cũng có thể tạo bản sao lưu và khôi phục nó trên thiết bị khác.';
 
   @override
-  String get helpFaq3Q => 'Can I bring in entries from other diary apps?';
+  String get helpFaq3Q =>
+      'Tôi có thể nhập các mục từ các ứng dụng nhật ký khác không?';
 
   @override
   String get helpFaq3A =>
-      'Yes: in Settings → Data & storage, import exports from Daylio, Diarium, Diaro, DayBook, My Brain, OneShot and Pixels, or a JSON export.';
+      'Có: trong Cài đặt → Dữ liệu & lưu trữ, nhập các bản xuất từ Daylio, Diarium, Diaro, DayBook, My Brain, OneShot và Pixels hoặc xuất JSON.';
 
   @override
-  String get helpFaq4Q => 'How do coach programs work?';
+  String get helpFaq4Q =>
+      'Các chương trình huấn luyện viên hoạt động như thế nào?';
 
   @override
   String get helpFaq4A =>
-      'Enroll in a program on the Coach page. Each day or week a new question waits in Stories; your answer is saved as an entry.';
+      'Đăng ký tham gia chương trình trên trang Coach. Mỗi ngày hoặc mỗi tuần, một câu hỏi mới sẽ chờ đợi trong Câu chuyện; câu trả lời của bạn được lưu dưới dạng mục nhập.';
 
   @override
-  String get helpFaq5Q => 'What if I forget my passcode?';
+  String get helpFaq5Q => 'Nếu tôi quên mật mã thì sao?';
 
   @override
   String get helpFaq5A =>
-      'The passcode cannot be recovered, so keep a backup of your diary.';
+      'Không thể khôi phục mật mã, vì vậy hãy sao lưu nhật ký của bạn.';
 
   @override
-  String get helpPrivacy => 'Privacy';
+  String get helpPrivacy => 'Quyền riêng tư';
 
   @override
   String get helpPrivacyText =>
-      'Diary content and media stay on this device unless you enable encrypted sync or share/export them. Maps, place lookup and weather use the configured services and send the location or search query needed for that request, not diary text.';
+      'Nội dung nhật ký và phương tiện vẫn còn trên thiết bị này trừ khi bạn bật đồng bộ hóa được mã hóa hoặc chia sẻ/xuất chúng. Bản đồ, tra cứu địa điểm và thời tiết sử dụng các dịch vụ đã định cấu hình và gửi vị trí hoặc truy vấn tìm kiếm cần thiết cho yêu cầu đó chứ không phải văn bản nhật ký.';
 
   @override
-  String get photoMetaTitle => 'Use the photo\'s details?';
+  String get photoMetaTitle => 'Sử dụng chi tiết của bức ảnh?';
 
   @override
   String photoMetaDateAndPlace(String date, String place) {
-    return 'Count this entry for $date and set its place to $place, as recorded in the photo?';
+    return 'Đếm mục này cho $date và đặt vị trí của nó thành $place, như được ghi trong ảnh?';
   }
 
   @override
   String photoMetaDate(String date) {
-    return 'Count this entry for $date, when the photo was taken?';
+    return 'Đếm mục này cho $date, thời điểm bức ảnh được chụp?';
   }
 
   @override
   String photoMetaPlace(String place) {
-    return 'Set this entry\'s place to $place, where the photo was taken?';
+    return 'Đặt vị trí của mục này thành $place, ảnh được chụp ở đâu?';
   }
 
   @override
-  String get photoMetaApply => 'Use them';
+  String get photoMetaApply => 'Sử dụng chúng';
 
   @override
-  String get quickWriteTitle => 'Quick write';
+  String get quickWriteTitle => 'Viết nhanh';
 
   @override
-  String get quickWriteText => 'Tap to start a new entry.';
+  String get quickWriteText => 'Nhấn để bắt đầu một mục mới.';
 
   @override
-  String get settingsQuickWriteTitle => 'Quick write in notifications';
+  String get settingsQuickWriteTitle => 'Viết nhanh trong thông báo';
 
   @override
   String get settingsQuickWriteDescription =>
-      'Keep a notification that opens a new entry.';
+      'Giữ một thông báo mở ra một mục mới.';
 
   @override
-  String get settingsNudgesTitle => 'Nudge me after a quiet stretch';
+  String get settingsNudgesTitle =>
+      'Thúc đẩy tôi sau một khoảng thời gian yên tĩnh';
 
   @override
   String settingsNudgesDescription(int days) {
-    return 'A gentle reminder when you haven\'t written for $days days.';
+    return 'Một lời nhắc nhở nhẹ nhàng khi bạn chưa viết $days những ngày.';
   }
 
   @override
-  String get nudgeTitle => 'It\'s been a while';
+  String get nudgeTitle => 'Đã được một thời gian rồi';
 
   @override
-  String get nudgeMonday => 'A new week: what are you looking forward to?';
+  String get nudgeMonday => 'Tuần mới: Bạn mong chờ điều gì?';
 
   @override
-  String get nudgeTuesday => 'Two lines are enough. How are you today?';
+  String get nudgeTuesday => 'Hai dòng là đủ. Bạn hôm nay thế nào?';
 
   @override
-  String get nudgeWednesday =>
-      'Halfway through the week. What stood out so far?';
+  String get nudgeWednesday => 'Nửa tuần rồi. Điều gì nổi bật cho đến nay?';
 
   @override
-  String get nudgeThursday => 'Anything small worth keeping from today?';
+  String get nudgeThursday =>
+      'Có điều gì nhỏ nhặt đáng để giữ lại từ ngày hôm nay không?';
 
   @override
-  String get nudgeFriday => 'The week is wrapping up. Note one good moment.';
+  String get nudgeFriday =>
+      'Một tuần đang kết thúc. Lưu ý một khoảnh khắc tốt.';
 
   @override
-  String get nudgeSaturday => 'A slow Saturday is a good day to write.';
+  String get nudgeSaturday =>
+      'Một ngày thứ bảy chậm rãi là một ngày tốt để viết.';
 
   @override
-  String get nudgeSunday => 'Look back on the week before it ends.';
+  String get nudgeSunday => 'Nhìn lại tuần trước khi nó kết thúc.';
 
   @override
-  String get photoWidgetEmpty => 'Photos you add to entries show up here.';
+  String get photoWidgetEmpty => 'Ảnh bạn thêm vào mục sẽ hiển thị ở đây.';
 
   @override
-  String get channelReminders => 'Reminders';
+  String get channelReminders => 'Lời nhắc';
 
   @override
-  String get channelOnThisDay => 'On this day';
+  String get channelOnThisDay => 'Vào ngày này';
 
   @override
-  String get channelCoach => 'Coach prompts';
+  String get channelCoach => 'Lời nhắc của huấn luyện viên';
 
   @override
-  String get channelNudges => 'Nudges after quiet days';
+  String get channelNudges => 'Cúi đầu sau những ngày im ắng';
 
   @override
-  String get channelQuickWrite => 'Quick write';
+  String get channelQuickWrite => 'Viết nhanh';
 
   @override
-  String get channelBackup => 'Backups';
+  String get channelBackup => 'Sao lưu';
 
   @override
-  String get formatJsonExport => 'JSON (AID Diary export)';
+  String get formatJsonExport => 'JSON (xuất AID Diary)';
 
   @override
   String get aboutModifiedNotice =>
-      'A modified version of Daily You by Demizo and contributors. It is not the official Daily You app.';
+      'Phiên bản sửa đổi của Daily You của Demizo và những người đóng góp. Nó không phải là ứng dụng Daily You chính thức.';
 
   @override
-  String get toolbarPhotos => 'Add photos';
+  String get toolbarPhotos => 'Thêm ảnh';
 
   @override
-  String get toolbarMedia => 'Photos and videos';
+  String get toolbarMedia => 'Ảnh và video';
 
   @override
-  String get mediaFromGallery => 'Choose from gallery';
+  String get mediaFromGallery => 'Chọn từ thư viện';
 
   @override
-  String get mediaFromFiles => 'Choose from files';
+  String get mediaFromFiles => 'Chọn từ các tập tin';
 
   @override
-  String get editorLeaveTitle => 'Save this entry?';
+  String get editorLeaveTitle => 'Lưu mục này?';
 
   @override
-  String get editorLeaveDiscard => 'Don\'t save';
+  String get editorLeaveDiscard => 'Đừng lưu';
 
   @override
-  String get editorTitleHint => 'Title';
+  String get editorTitleHint => 'Tiêu đề';
 
   @override
-  String get editorLocating => 'Locating…';
+  String get editorLocating => 'Đang định vị…';
 
   @override
   String get toolbarVideo => 'Video';
 
   @override
-  String get toolbarAudio => 'Voice note';
+  String get toolbarAudio => 'Ghi chú bằng giọng nói';
 
   @override
-  String get toolbarTags => 'Tags';
+  String get toolbarTags => 'Thẻ';
 
   @override
-  String get toolbarBulletList => 'Bulleted list';
+  String get toolbarBulletList => 'Danh sách có dấu đầu dòng';
 
   @override
-  String get toolbarHeading => 'Heading';
+  String get toolbarHeading => 'tiêu đề';
 
   @override
-  String get toolbarBold => 'Bold';
+  String get toolbarBold => 'Đậm';
 
   @override
-  String get toolbarItalic => 'Italic';
+  String get toolbarItalic => 'Nghiêng';
 
   @override
-  String get toolbarHighlight => 'Highlight';
+  String get toolbarHighlight => 'Đánh dấu';
 
   @override
-  String get toolbarStrikethrough => 'Strikethrough';
+  String get toolbarStrikethrough => 'Gạch ngang';
 
   @override
-  String get toolbarQuote => 'Quote';
+  String get toolbarQuote => 'Trích dẫn';
 
   @override
-  String get toolbarLink => 'Link';
+  String get toolbarLink => 'liên kết';
 
   @override
-  String get toolbarInsert => 'Insert';
+  String get toolbarInsert => 'Chèn';
 
   @override
-  String get toolbarUndo => 'Undo';
+  String get toolbarUndo => 'Hoàn tác';
 
   @override
-  String get toolbarRedo => 'Redo';
+  String get toolbarRedo => 'Làm lại';
 
   @override
-  String get toolbarInsertDate => 'Insert the date';
+  String get toolbarInsertDate => 'Chèn ngày';
 
   @override
-  String get toolbarInsertTime => 'Insert the time';
+  String get toolbarInsertTime => 'Chèn thời gian';
 
   @override
-  String get settingsSyncTitle => 'Cloud Sync';
+  String get settingsSyncTitle => 'Đồng bộ đám mây';
 
   @override
   String get syncOffDescription =>
-      'Keep this diary the same on all your devices through Google Drive or a WebDAV server, such as Nextcloud, Synology or Jianguoyun.';
+      'Giữ nhật ký này giống nhau trên tất cả các thiết bị của bạn thông qua máy chủ Google Drive hoặc WebDAV, chẳng hạn như Nextcloud, Synology hoặc Jianguoyun.';
 
   @override
-  String get syncUseGoogleDrive => 'Sync with Google Drive';
+  String get syncUseGoogleDrive => 'Đồng bộ hóa với Google Drive';
 
   @override
-  String get syncOrWebDav => 'Or a WebDAV server';
+  String get syncOrWebDav => 'Hoặc máy chủ WebDAV';
 
   @override
   String get syncGoogleDrive => 'Google Drive';
 
   @override
-  String get syncGoogleSignedIn => 'Signed in. You can go back to AID Diary.';
+  String get syncGoogleSignedIn =>
+      'Đã đăng nhập. Bạn có thể quay lại AID Diary.';
 
   @override
-  String get syncGoogleSignInAgain => 'Google needs you to sign in again.';
+  String get syncGoogleSignInAgain => 'Google cần bạn đăng nhập lại.';
 
   @override
-  String get syncSignInAgain => 'Sign in again';
+  String get syncSignInAgain => 'Đăng nhập lại';
 
   @override
-  String get settingsCommandLineTitle => 'Command line';
+  String get settingsCommandLineTitle => 'Dòng lệnh';
 
   @override
-  String get commandLineToggle => 'Command line interface';
+  String get commandLineToggle => 'Giao diện dòng lệnh';
 
   @override
   String get commandLineToggleHint =>
-      'Lets the aid command and other programs on this device use the app\'s commands.';
+      'Cho phép lệnh viện trợ và các chương trình khác trên thiết bị này sử dụng lệnh của ứng dụng.';
 
   @override
-  String get commandLineAlwaysOn => 'Always on in development builds.';
+  String get commandLineAlwaysOn =>
+      'Luôn luôn có trong các bản dựng phát triển.';
 
   @override
   String commandLineListening(int port) {
-    return 'Listening on port $port';
+    return 'Nghe trên cổng $port';
   }
 
   @override
-  String get commandPaletteTitle => 'All commands';
+  String get commandPaletteTitle => 'Tất cả các lệnh';
 
   @override
-  String get commandPaletteSearch => 'Search commands';
+  String get commandPaletteSearch => 'Lệnh tìm kiếm';
 
   @override
-  String get commandPaletteRun => 'Run';
+  String get commandPaletteRun => 'Chạy';
 
   @override
-  String get commandPaletteConfirm => 'This cannot simply be undone. Run it?';
+  String get commandPaletteConfirm =>
+      'Điều này không thể đơn giản được hoàn tác. Chạy nó?';
 
   @override
   String syncReceiving(int done, int total) {
-    return 'Receiving $done of $total…';
+    return 'Đang nhận $done của $total…';
   }
 
   @override
   String syncSending(int done, int total) {
-    return 'Sending $done of $total…';
+    return 'Đang gửi $done của $total…';
   }
 
   @override
   String get syncGoogleDriveNotAllowed =>
-      'Access to Google Drive was not allowed. Connect again and tick Google Drive on Google\'s page.';
+      'Không được phép truy cập vào Google Drive. Kết nối lại và đánh dấu Google Drive trên trang của Google.';
 
   @override
   String get syncEntryUnsynced =>
-      'Not synced: the last sync did not go through';
+      'Chưa được đồng bộ hóa: lần đồng bộ hóa cuối cùng không thành công';
 
   @override
-  String get syncUseOfficial => 'Use the AID sync server';
+  String get syncUseOfficial => 'Sử dụng máy chủ đồng bộ AID';
 
   @override
-  String get syncServer => 'Server address';
+  String get syncServer => 'Địa chỉ máy chủ';
 
   @override
-  String get syncUsername => 'Username';
+  String get syncUsername => 'Tên người dùng';
 
   @override
-  String get syncPassword => 'Password';
+  String get syncPassword => 'Mật khẩu';
 
   @override
-  String get syncConnect => 'Connect';
+  String get syncConnect => 'Kết nối';
 
   @override
-  String get syncConnecting => 'Connecting…';
+  String get syncConnecting => 'Đang kết nối…';
 
   @override
   String get syncSignInFailed =>
-      'Could not sign in. Check the address, the username and the password.';
+      'Không thể đăng nhập. Hãy kiểm tra địa chỉ, tên người dùng và mật khẩu.';
 
   @override
   String syncConnectFailed(String error) {
-    return 'Could not connect: $error';
+    return 'Không thể kết nối: $error';
   }
 
   @override
-  String get syncNewSpaceTitle => 'Start syncing';
+  String get syncNewSpaceTitle => 'Bắt đầu đồng bộ hóa';
 
   @override
   String get syncNewSpaceDescription =>
-      'There is no synced diary here yet. This diary will be uploaded, end-to-end encrypted with a key that stays on your devices.';
+      'Chưa có nhật ký nào được đồng bộ hóa ở đây. Nhật ký này sẽ được tải lên, được mã hóa hai đầu bằng một khóa lưu giữ trên thiết bị của bạn.';
 
   @override
-  String get syncJoinTitle => 'Join the synced diary';
+  String get syncJoinTitle => 'Tham gia nhật ký được đồng bộ hóa';
 
   @override
   String get syncWrongKey =>
-      'This recovery code does not open the synced diary.';
+      'Mã khôi phục này không mở nhật ký đã đồng bộ hóa.';
 
   @override
   String syncLastSynced(String time) {
-    return 'Last synced $time';
+    return 'Được đồng bộ hóa lần cuối $time';
   }
 
   @override
-  String get syncNever => 'Not synced yet';
+  String get syncNever => 'Chưa được đồng bộ hóa';
 
   @override
-  String get syncSyncing => 'Syncing…';
+  String get syncSyncing => 'Đang đồng bộ hóa…';
 
   @override
   String syncFailed(String error) {
-    return 'The last sync failed: $error';
+    return 'Lần đồng bộ hóa cuối cùng không thành công: $error';
   }
 
   @override
   String get syncLocked =>
-      'The synced diary now belongs to other devices, or was started over. Pair with one of them or use the recovery code to keep syncing.';
+      'Nhật ký đã đồng bộ hiện thuộc về các thiết bị khác hoặc đã được bắt đầu lại. Ghép nối với một trong số chúng hoặc sử dụng mã khôi phục để tiếp tục đồng bộ hóa.';
 
   @override
-  String get syncNow => 'Sync now';
+  String get syncNow => 'Đồng bộ hóa ngay bây giờ';
 
   @override
-  String get syncUnlock => 'Unlock';
+  String get syncUnlock => 'Mở khóa';
 
   @override
-  String get syncEncrypted => 'End-to-end encrypted';
+  String get syncEncrypted => 'Mã hóa đầu cuối';
 
   @override
-  String get syncDisconnect => 'Stop syncing';
+  String get syncDisconnect => 'Dừng đồng bộ hóa';
 
   @override
   String get syncDisconnectDescription =>
-      'This device stops syncing. The diary here and the synced copy stay as they are.';
+      'Thiết bị này ngừng đồng bộ hóa. Nhật ký ở đây và bản sao được đồng bộ hóa vẫn giữ nguyên như cũ.';
 
   @override
-  String get syncOwnRecoveryPassword => 'Use my own recovery password';
+  String get syncOwnRecoveryPassword =>
+      'Sử dụng mật khẩu khôi phục của riêng tôi';
 
   @override
-  String get syncRecoveryPassword => 'Recovery password';
+  String get syncRecoveryPassword => 'Khôi phục mật khẩu';
 
   @override
-  String get syncRecoveryPasswordRepeat => 'Repeat the recovery password';
+  String get syncRecoveryPasswordRepeat => 'Lặp lại mật khẩu khôi phục';
 
   @override
   String syncRecoveryPasswordTooShort(int min) {
-    return 'Use at least $min characters';
+    return 'Sử dụng ít nhất ký tự $min';
   }
 
   @override
-  String get syncRecoveryPasswordMismatch => 'The passwords differ';
+  String get syncRecoveryPasswordMismatch => 'Mật khẩu khác nhau';
 
   @override
-  String get syncRecoveryCode => 'Recovery code';
+  String get syncRecoveryCode => 'Mã khôi phục';
 
   @override
-  String get syncRecoveryCodeTitle => 'Save your recovery code';
+  String get syncRecoveryCodeTitle => 'Lưu mã khôi phục của bạn';
 
   @override
   String get syncRecoveryCodeDescription =>
-      'If every device of yours is lost, this code restores your synced diary. Keep it in a password manager or on paper. It is shown only this once.';
+      'Nếu mọi thiết bị của bạn bị mất, mã này sẽ khôi phục nhật ký đã đồng bộ hóa của bạn. Giữ nó trong trình quản lý mật khẩu hoặc trên giấy. Nó chỉ được hiển thị một lần này.';
 
   @override
-  String get syncRecoveryCodeCopied => 'Recovery code copied';
+  String get syncRecoveryCodeCopied => 'Đã sao chép mã khôi phục';
 
   @override
-  String get syncRecoveryCodeSaved => 'I have saved it';
+  String get syncRecoveryCodeSaved => 'Tôi đã lưu nó';
 
   @override
   String get syncJoinNeedsKey =>
-      'This synced diary belongs to your other devices. Pair with one of them, or use the recovery code. The entries on this device will be added to it.';
+      'Nhật ký được đồng bộ hóa này thuộc về các thiết bị khác của bạn. Ghép nối với một trong số chúng hoặc sử dụng mã khôi phục. Các mục trên thiết bị này sẽ được thêm vào nó.';
 
   @override
-  String get syncPairDevice => 'Pair with a device';
+  String get syncPairDevice => 'Ghép nối với một thiết bị';
 
   @override
-  String get syncUseRecoveryCode => 'Use the recovery code';
+  String get syncUseRecoveryCode => 'Sử dụng mã khôi phục';
 
   @override
-  String get syncAddDevice => 'Add a device';
+  String get syncAddDevice => 'Thêm thiết bị';
 
   @override
-  String get syncChangeRecoveryCode => 'Change the recovery code';
+  String get syncChangeRecoveryCode => 'Thay đổi mã khôi phục';
 
   @override
   String get syncChangeRecoveryDescription =>
-      'A new code replaces the current one, which stops working. Your data and other devices stay as they are.';
+      'Mã mới thay thế mã hiện tại và mã này sẽ ngừng hoạt động. Dữ liệu của bạn và các thiết bị khác vẫn giữ nguyên như cũ.';
 
   @override
-  String get syncNewRandomCode => 'New random code';
+  String get syncNewRandomCode => 'Mã ngẫu nhiên mới';
 
   @override
-  String get syncRecoveryCodeChanged => 'Recovery code changed';
+  String get syncRecoveryCodeChanged => 'Mã khôi phục đã thay đổi';
 
   @override
-  String get syncResetSpace => 'Start the synced diary over';
+  String get syncResetSpace => 'Bắt đầu lại nhật ký đã đồng bộ hóa';
 
   @override
   String get syncResetSpaceDescription =>
-      'Only when no device and no recovery code opens it any more: the synced copy is replaced by the diary on this device, under this device\'s keys. Your other devices then pair again.';
+      'Chỉ khi không có thiết bị và mã khôi phục nào mở nó ra nữa: bản sao đã đồng bộ hóa sẽ được thay thế bằng nhật ký trên thiết bị này, dưới các phím của thiết bị này. Sau đó, các thiết bị khác của bạn sẽ ghép nối lại.';
 
   @override
-  String get syncPairTitle => 'Pair devices';
+  String get syncPairTitle => 'Ghép nối thiết bị';
 
   @override
-  String get syncPairShow => 'Show a code';
+  String get syncPairShow => 'Hiển thị mã';
 
   @override
-  String get syncPairEnter => 'Enter a code';
+  String get syncPairEnter => 'Nhập mã';
 
   @override
   String get syncPairShowHint =>
-      'On your other device, open Pair devices, choose Enter a code, and type or scan this.';
+      'Trên thiết bị khác của bạn, hãy mở Ghép nối thiết bị, chọn Nhập mã rồi nhập hoặc quét mã này.';
 
   @override
   String get syncPairEnterHint =>
-      'Type the code your other device shows, or scan it.';
+      'Nhập mã mà thiết bị khác của bạn hiển thị hoặc quét mã đó.';
 
   @override
-  String get syncPairCode => 'Pairing code';
+  String get syncPairCode => 'Mã ghép nối';
 
   @override
-  String get syncPairScan => 'Scan';
+  String get syncPairScan => 'Quét';
 
   @override
-  String get syncPairStart => 'Pair';
+  String get syncPairStart => 'Cặp';
 
   @override
-  String get syncPairWaiting => 'Waiting for the other device…';
+  String get syncPairWaiting => 'Đang chờ thiết bị khác…';
 
   @override
   String syncPairDone(String device) {
-    return 'Paired with $device';
+    return 'Được ghép nối với $device';
   }
 
   @override
-  String get syncPairWrongCode =>
-      'The code did not match. Show a new code and try again.';
+  String get syncPairWrongCode => 'Mã không khớp. Hiển thị mã mới và thử lại.';
 
   @override
   String get syncPairNoOffer =>
-      'No device shows this code. It may have expired.';
+      'Không có thiết bị nào hiển thị mã này. Nó có thể đã hết hạn.';
 
   @override
-  String get syncPairTimedOut => 'The other device did not answer in time.';
+  String get syncPairTimedOut => 'Thiết bị kia không trả lời kịp thời.';
 
   @override
   String get syncPairNeither =>
-      'Neither device is set up with this synced diary yet.';
+      'Chưa có thiết bị nào được thiết lập nhật ký được đồng bộ hóa này.';
 
   @override
-  String get syncPairBoth => 'Both devices already open this synced diary.';
+  String get syncPairBoth =>
+      'Cả hai thiết bị đều đã mở nhật ký được đồng bộ hóa này.';
 
   @override
   String syncPairFailed(String error) {
-    return 'Pairing failed: $error';
+    return 'Ghép nối không thành công: $error';
   }
 
   @override
   String get syncMediaPending =>
-      'Diary synced · some media is still transferring';
+      'Nhật ký đã được đồng bộ hóa · một số phương tiện vẫn đang được truyền';
 
   @override
   String get syncWaitingForDevices =>
-      'Diary synced · waiting for another device to transfer media';
+      'Đã đồng bộ hóa nhật ký · đang chờ thiết bị khác truyền phương tiện';
 
   @override
   String get syncCacheNotice =>
-      'Cloud media is temporary. Keep the originals on your devices; syncing is not a backup.';
+      'Phương tiện đám mây chỉ là tạm thời. Giữ bản gốc trên thiết bị của bạn; đồng bộ hóa không phải là một bản sao lưu.';
 
   @override
-  String get paperTitle => 'Letter paper';
+  String get paperTitle => 'Giấy viết thư';
 
   @override
-  String get paperPlain => 'Plain';
+  String get paperPlain => 'đồng bằng';
 
   @override
-  String get paperLined => 'Lined';
+  String get paperLined => 'lót';
 
   @override
-  String get paperGrid => 'Grid';
+  String get paperGrid => 'Lưới';
 
   @override
-  String get paperTinted => 'Tinted';
+  String get paperTinted => 'nhuộm màu';
 
   @override
-  String get paperDecorationTitle => 'Decorations';
+  String get paperDecorationTitle => 'đồ trang trí';
 
   @override
-  String get paperDecorationNone => 'None';
+  String get paperDecorationNone => 'không có';
 
   @override
-  String get paperDecorationBotanical => 'Leaves';
+  String get paperDecorationBotanical => 'Lá';
 
   @override
-  String get paperDecorationStars => 'Stars';
+  String get paperDecorationStars => 'Ngôi sao';
 
   @override
-  String get paperDecorationWashi => 'Washi tape';
+  String get paperDecorationWashi => 'Băng Washi';
 
   @override
-  String get themeDarkChoice => 'Dark appearance';
+  String get themeDarkChoice => 'Ngoại hình tối';
 
   @override
-  String get themeDarkSame => 'Follow light palette';
+  String get themeDarkSame => 'Theo dõi bảng màu sáng';
 
   @override
-  String get themeDarkCustom => 'Separate palette';
+  String get themeDarkCustom => 'Bảng màu riêng biệt';
 
   @override
-  String get themeDarkAccent => 'Dark accent colour';
+  String get themeDarkAccent => 'Màu nhấn tối';
 
   @override
-  String get themeColorTeal => 'Teal';
+  String get themeColorTeal => 'màu xanh mòng két';
 
   @override
-  String get themeColorCyan => 'Cyan';
+  String get themeColorCyan => 'lục lam';
 
   @override
-  String get themeColorIndigo => 'Indigo';
+  String get themeColorIndigo => 'màu chàm';
 
   @override
-  String get themeColorCoral => 'Coral';
+  String get themeColorCoral => 'San hô';
 
   @override
-  String get themeColorOlive => 'Olive';
+  String get themeColorOlive => 'ô liu';
 
   @override
-  String get themeColorSlate => 'Slate';
+  String get themeColorSlate => 'Đá phiến';
 
   @override
-  String get drawingTitle => 'Drawing';
+  String get drawingTitle => 'Vẽ';
 
   @override
-  String get drawingPen => 'Pen';
+  String get drawingPen => 'bút';
 
   @override
-  String get drawingEraser => 'Eraser';
+  String get drawingEraser => 'Cục tẩy';
 
   @override
-  String get drawingUndo => 'Undo';
+  String get drawingUndo => 'Hoàn tác';
 
   @override
-  String get drawingClear => 'Clear';
+  String get drawingClear => 'Xóa';
 
   @override
-  String get drawingWidth => 'Pen width';
+  String get drawingWidth => 'Chiều rộng bút';
 
   @override
-  String get drawingStylusOnly => 'Stylus only';
+  String get drawingStylusOnly => 'Chỉ bút cảm ứng';
 
   @override
-  String get drawingDiscardTitle => 'Discard drawing?';
+  String get drawingDiscardTitle => 'Hủy bản vẽ?';
 
   @override
-  String get drawingDiscardBody => 'This drawing has not been saved.';
+  String get drawingDiscardBody => 'Bản vẽ này chưa được lưu.';
 
   @override
-  String get drawingSaveError => 'Could not save the drawing.';
+  String get drawingSaveError => 'Không thể lưu bản vẽ.';
 
   @override
-  String get syncNetworkTitle => 'Network diagnostics';
+  String get syncNetworkTitle => 'Chẩn đoán mạng';
 
   @override
-  String get syncNetworkRefresh => 'Refresh';
+  String get syncNetworkRefresh => 'Làm mới';
 
   @override
-  String get syncNetworkSelectedRoute => 'Current path';
+  String get syncNetworkSelectedRoute => 'Đường dẫn hiện tại';
 
   @override
-  String get syncNetworkAvailableRoutes => 'Available paths';
+  String get syncNetworkAvailableRoutes => 'Đường dẫn có sẵn';
 
   @override
-  String get syncNetworkSignaling => 'Device directory connection';
+  String get syncNetworkSignaling => 'Kết nối thư mục thiết bị';
 
   @override
-  String get syncNetworkRelayRemaining => 'Remaining relay allowance';
+  String get syncNetworkRelayRemaining => 'Phụ cấp rơle còn lại';
 
   @override
-  String get syncNetworkIcePair => 'Direct connection candidates';
+  String get syncNetworkIcePair => 'Ứng viên kết nối trực tiếp';
 
   @override
-  String get syncNetworkPeerTrusted => 'Authenticated device';
+  String get syncNetworkPeerTrusted => 'Thiết bị được xác thực';
 
   @override
-  String get syncNetworkNoRoute => 'Waiting for a connection';
+  String get syncNetworkNoRoute => 'Đang chờ kết nối';
 
   @override
-  String get syncNetworkUnavailable => 'Diagnostics are unavailable';
+  String get syncNetworkUnavailable => 'Chẩn đoán không có sẵn';
 
   @override
-  String get syncMediaCopiesTitle => 'Media delivery and copies';
+  String get syncMediaCopiesTitle => 'Phân phối và sao chép phương tiện';
 
   @override
-  String get syncMediaPendingCount => 'Waiting to transfer';
+  String get syncMediaPendingCount => 'Đang chờ chuyển khoản';
 
   @override
-  String get syncMediaDurableCount => 'Delivered to personal storage';
+  String get syncMediaDurableCount => 'Đã gửi tới kho lưu trữ cá nhân';
 
   @override
-  String get syncMediaTemporaryCount => 'Temporary or unconfirmed copies';
+  String get syncMediaTemporaryCount =>
+      'Bản sao tạm thời hoặc chưa được xác nhận';
 
   @override
   String get syncMediaReceiptExplanation =>
-      'These counts describe completed deliveries, not a fresh audit of surviving backups.';
+      'Số lượng này mô tả việc giao hàng đã hoàn thành, không phải là cuộc kiểm tra mới về các bản sao lưu còn sót lại.';
 
   @override
   String get syncMediaCacheExplanation =>
-      'Temporary cloud media can expire. Keep your originals or a separate backup.';
+      'Phương tiện đám mây tạm thời có thể hết hạn. Giữ bản gốc của bạn hoặc một bản sao lưu riêng.';
 
   @override
-  String get momentsTitle => 'Photo moments';
+  String get momentsTitle => 'Khoảnh khắc ảnh';
 
   @override
   String get momentsHint =>
-      'Find groups using local photo times and optional coordinates. Photos are attached only when you choose a card.';
+      'Tìm nhóm sử dụng thời gian chụp ảnh địa phương và tọa độ tùy chọn. Hình ảnh chỉ được đính kèm khi bạn chọn thẻ.';
 
   @override
-  String get momentsScan => 'Find moments';
+  String get momentsScan => 'Tìm khoảnh khắc';
 
   @override
-  String get momentsChooseFolder => 'Choose photo folder';
+  String get momentsChooseFolder => 'Chọn thư mục ảnh';
 
   @override
-  String get momentsLocation => 'Include photo locations';
+  String get momentsLocation => 'Bao gồm các vị trí chụp ảnh';
 
   @override
-  String get momentsEmpty => 'No recent photo groups.';
+  String get momentsEmpty => 'Không có nhóm ảnh gần đây.';
 
   @override
-  String get momentsCreate => 'Write about these photos';
+  String get momentsCreate => 'Viết về những bức ảnh này';
 
   @override
-  String get momentsDismiss => 'Dismiss';
+  String get momentsDismiss => 'Loại bỏ';
 
   @override
-  String get momentsError => 'Could not read local photos.';
+  String get momentsError => 'Không thể đọc ảnh địa phương.';
 
   @override
-  String get momentsCreated => 'Photo entry created.';
+  String get momentsCreated => 'Đã tạo mục nhập ảnh.';
 
   @override
   String get momentsPermission =>
-      'Allow access to photos to find local suggestions.';
+      'Cho phép truy cập vào ảnh để tìm đề xuất địa phương.';
 
   @override
   String get momentsScope =>
-      'Recent photos only; at most 500 photos and 20 photos per card.';
+      'Chỉ những bức ảnh gần đây; tối đa 500 ảnh và 20 ảnh mỗi thẻ.';
 
   @override
   String momentsPhotoCount(int count) {
-    return '$count photos';
+    return 'Ảnh $count';
   }
 
   @override
-  String get nearbyTitle => 'Connect devices';
+  String get nearbyTitle => 'Kết nối thiết bị';
 
   @override
-  String get nearbySend => 'Authorize another device';
+  String get nearbySend => 'Ủy quyền cho thiết bị khác';
 
   @override
-  String get nearbyReceive => 'Connect to an existing device';
+  String get nearbyReceive => 'Kết nối với thiết bị hiện có';
 
   @override
   String get nearbyInstructions =>
-      'Connect both devices to the same Wi-Fi or to each other’s hotspot. Confirm authorization on the existing device; both devices remain usable. No internet is required.';
+      'Kết nối cả hai thiết bị với cùng một Wi-Fi hoặc với điểm phát sóng của nhau. Xác nhận ủy quyền trên thiết bị hiện có; cả hai thiết bị vẫn có thể sử dụng được. Không cần internet.';
 
   @override
   String get nearbyCompare =>
-      'Compare this code on both devices before approving.';
+      'So sánh mã này trên cả hai thiết bị trước khi phê duyệt.';
 
   @override
-  String get nearbyConfirm => 'The codes match';
+  String get nearbyConfirm => 'Các mã trùng khớp';
 
   @override
-  String get nearbyScan => 'Scan the other device’s code';
+  String get nearbyScan => 'Quét mã của thiết bị khác';
 
   @override
-  String get nearbyPaste => 'Paste invitation';
+  String get nearbyPaste => 'Dán lời mời';
 
   @override
-  String get nearbyWaiting => 'Waiting for approval on the other device';
+  String get nearbyWaiting => 'Đang chờ phê duyệt trên thiết bị khác';
 
   @override
   String get nearbyWorking =>
-      'Authorizing and syncing your diary and attachments…';
+      'Cho phép và đồng bộ hóa nhật ký và tệp đính kèm của bạn…';
 
   @override
   String get nearbyPending =>
-      'Some attachments still need syncing. Keep the other device online and try again.';
+      'Một số tệp đính kèm vẫn cần đồng bộ hóa. Giữ thiết bị kia trực tuyến và thử lại.';
 
   @override
-  String get nearbyComplete => 'Device connected; diary and attachments synced';
+  String get nearbyComplete =>
+      'Thiết bị được kết nối; nhật ký và tệp đính kèm được đồng bộ hóa';
 
   @override
   String get nearbyFailed =>
-      'Connection did not finish. Check the local connection and try again.';
+      'Kết nối không kết thúc. Hãy kiểm tra kết nối cục bộ và thử lại.';
 
   @override
   String get nearbyEmptyRequired =>
-      'Use a device with an empty diary that is not connected to sync yet.';
+      'Sử dụng thiết bị có nhật ký trống chưa được kết nối để đồng bộ hóa.';
 
   @override
-  String get nearbyRetry => 'Continue syncing';
+  String get nearbyRetry => 'Tiếp tục đồng bộ hóa';
 
   @override
-  String get nearbyWifi => 'Wi-Fi settings';
+  String get nearbyWifi => 'Cài đặt Wi-Fi';
 
   @override
-  String get nearbyHotspot => 'Hotspot settings';
+  String get nearbyHotspot => 'Cài đặt điểm phát sóng';
 
   @override
   String get nearbyKeepOpen =>
-      'Keep this page open until the new device finishes. The invitation expires after two minutes.';
+      'Giữ trang này mở cho đến khi thiết bị mới kết thúc. Lời mời hết hạn sau hai phút.';
 
   @override
-  String get syncDevicesTitle => 'Authorized devices';
+  String get syncDevicesTitle => 'Thiết bị được ủy quyền';
 
   @override
   String get syncDevicesDescription =>
-      'Only approved devices can access this AID account. Revoking a device blocks the server but cannot erase a master key or diary already copied to it.';
+      'Chỉ những thiết bị được phê duyệt mới có thể truy cập tài khoản AID này. Việc thu hồi thiết bị sẽ chặn máy chủ nhưng không thể xóa khóa chính hoặc nhật ký đã được sao chép vào thiết bị đó.';
 
   @override
   String get syncDeviceRequest =>
-      'Show this authorization QR to an approved device';
+      'Hiển thị mã QR ủy quyền này cho thiết bị được phê duyệt';
 
   @override
-  String get syncDeviceAuthorize => 'Authorize a device';
+  String get syncDeviceAuthorize => 'Ủy quyền cho một thiết bị';
 
   @override
   String get syncDeviceAuthorizeDescription =>
-      'Scan or paste the new device’s authorization request.';
+      'Quét hoặc dán yêu cầu ủy quyền của thiết bị mới.';
 
   @override
-  String get syncDeviceRevoke => 'Revoke';
+  String get syncDeviceRevoke => 'Thu hồi';
 
   @override
-  String get syncDeviceRotate => 'Rotate this device’s signing key';
+  String get syncDeviceRotate => 'Xoay khóa ký của thiết bị này';
 
   @override
-  String get syncDeviceCheck => 'Check authorization';
+  String get syncDeviceCheck => 'Kiểm tra ủy quyền';
 
   @override
-  String get syncDeviceHardware => 'Hardware-backed signing key';
+  String get syncDeviceHardware => 'Khóa ký được hỗ trợ bằng phần cứng';
 
   @override
-  String get syncDeviceSoftware => 'Non-exportable software signing key';
+  String get syncDeviceSoftware => 'Khóa ký phần mềm không thể xuất được';
 
   @override
   String get syncDeviceUnavailable =>
-      'Device authorization is unavailable. Approve this device from another authorized device and retry.';
+      'Ủy quyền thiết bị không có sẵn. Phê duyệt thiết bị này từ một thiết bị được ủy quyền khác và thử lại.';
 
   @override
-  String get syncDeviceRevoked => 'Revoked';
+  String get syncDeviceRevoked => 'Đã thu hồi';
 
   @override
-  String get syncDeviceLocal => 'This device';
+  String get syncDeviceLocal => 'Thiết bị này';
 
   @override
-  String get cloudTrafficTitle => 'Monthly cloud media allowance';
+  String get cloudTrafficTitle =>
+      'Hạn ngạch truyền dữ liệu đám mây hàng tháng cho các tệp phương tiện';
 
   @override
-  String get cloudTrafficLimit => 'Monthly allowance';
+  String get cloudTrafficLimit => 'Hạn ngạch truyền dữ liệu hàng tháng';
 
   @override
-  String get cloudTrafficUsed => 'Used';
+  String get cloudTrafficUsed => 'Truyền dữ liệu được sử dụng';
 
   @override
-  String get cloudTrafficRemaining => 'Remaining';
+  String get cloudTrafficRemaining => 'Truyền dữ liệu còn lại';
 
   @override
   String cloudTrafficResetsAt(String time) {
-    return 'Resets $time';
+    return 'Hạn ngạch truyền dữ liệu đặt lại $time';
   }
 
   @override
   String get cloudTrafficExhausted =>
-      'Cloud media allowance used up. Missing media will resume automatically over a direct connection or when the allowance resets.';
+      'Hạn ngạch truyền dữ liệu đám mây cho các tệp phương tiện đã được sử dụng hết. Các tệp phương tiện bị thiếu sẽ tự động đồng bộ hóa khi có kết nối trực tiếp hoặc khi đặt lại hạn ngạch.';
 
   @override
   String get cloudTrafficExplanation =>
-      'Media cache and live relay share this allowance. Direct connections do not use it. Diary text and connection control have separate small daily limits.';
+      'Bộ nhớ đệm tệp phương tiện và chuyển tiếp trực tiếp chia sẻ hạn ngạch truyền dữ liệu này. Kết nối trực tiếp không tiêu thụ nó. Văn bản nhật ký và tin nhắn kiểm soát kết nối có giới hạn nhỏ hàng ngày riêng biệt.';
 
   @override
-  String get appearanceThemeSection => 'App theme';
+  String get appearanceThemeSection => 'Chủ đề ứng dụng';
 
   @override
-  String get appearancePaperSection => 'Diary paper';
+  String get appearancePaperSection => 'Giấy nhật ký';
 
   @override
-  String get appearanceTypographySection => 'Diary text';
+  String get appearanceTypographySection => 'văn bản nhật ký';
 
   @override
-  String get appearancePreferencesSection => 'General preferences';
+  String get appearancePreferencesSection => 'Tùy chọn chung';
 
   @override
   String get themeSystemAccentHint =>
-      'Uses the system palette instead of custom colors. Turn it off to choose your own.';
+      'Sử dụng bảng màu hệ thống thay vì màu tùy chỉnh. Tắt nó đi để lựa chọn của riêng bạn.';
 
   @override
   String get syncDeviceNameSaveFailed =>
-      'Could not save the device name. Please try again.';
+      'Không thể lưu tên thiết bị. Vui lòng thử lại.';
 
   @override
-  String get nearbyConnectionHelp => 'Connection help';
+  String get nearbyConnectionHelp => 'Trợ giúp kết nối';
 
   @override
-  String get syncAllSynced => 'Everything synced';
+  String get syncAllSynced => 'Mọi thứ đã được đồng bộ hóa';
 
   @override
-  String get syncDetailsTitle => 'Sync details';
+  String get syncDetailsTitle => 'Đồng bộ hóa chi tiết';
 
   @override
-  String get syncMore => 'More options';
+  String get syncMore => 'Nhiều lựa chọn hơn';
 
   @override
-  String get syncDeviceName => 'Device name';
+  String get syncDeviceName => 'Tên thiết bị';
 
   @override
-  String get syncDeviceNameHint => 'For example: My tablet';
+  String get syncDeviceNameHint => 'Ví dụ: Máy tính bảng của tôi';
 
   @override
-  String get syncDeviceNameInvalid => 'Use 1 to 32 characters';
+  String get syncDeviceNameInvalid => 'Sử dụng 1 đến 32 ký tự';
 
   @override
-  String get syncDeviceKeyDetails => 'Security details';
+  String get syncDeviceKeyDetails => 'Chi tiết bảo mật';
 
   @override
   String get syncConnectionProblem =>
-      'Unable to sync for now. Retrying automatically.';
+      'Hiện không thể đồng bộ hóa. Đang tự động thử lại.';
 
   @override
-  String get syncCopyComplete => 'Complete copy';
+  String get syncCopyComplete =>
+      'Bản sao hoàn chỉnh của nhật ký và tập tin media của bạn';
 
   @override
-  String get syncCopyPartial => 'Some media is still missing';
+  String get syncCopyPartial => 'Một số phương tiện vẫn còn thiếu';
 
   @override
-  String get syncCopyOlder => 'New changes are waiting to sync';
+  String get syncCopyOlder => 'Những thay đổi mới đang chờ đồng bộ hóa';
 
   @override
   String get syncCopyUnavailable =>
-      'Copy details are unavailable. Try again later.';
+      'Chi tiết bản sao không có sẵn. Hãy thử lại sau.';
 
   @override
   String get syncCopyLastKnown =>
-      'Other devices show their last confirmed copy. Offline devices cannot be checked now.';
+      'Các thiết bị khác hiển thị bản sao được xác nhận cuối cùng của chúng. Hiện không thể kiểm tra các thiết bị ngoại tuyến.';
 
   @override
   String get syncCopyTemporary =>
-      'Temporary cache. Keep the originals on your devices.';
+      'Bộ đệm tạm thời. Giữ bản gốc trên thiết bị của bạn.';
 
   @override
   String get syncCopyStorage =>
-      'Your sync storage. Completed media uploads are listed in diagnostics.';
+      'Bộ nhớ đồng bộ hóa của bạn. Quá trình tải lên phương tiện đã hoàn tất được liệt kê trong chẩn đoán.';
 
   @override
   String syncCopyChecked(String time) {
-    return 'Last confirmed $time';
+    return '$time được xác nhận lần cuối';
   }
 
   @override
   String cloudTrafficSummary(String remaining, String limit) {
-    return 'Available this month: $remaining / $limit';
+    return 'Truyền dữ liệu còn lại trong tháng này: $remaining / $limit';
   }
 
   @override
-  String get onboardNewDiary => 'Start here';
+  String get onboardNewDiary => 'Bắt đầu ở đây';
 
   @override
-  String get onboardConnect => 'Connect to an existing device';
+  String get onboardConnect => 'Kết nối với thiết bị hiện có';
 
   @override
   String get onboardFailed =>
-      'Setup could not be completed. Your diary is safe; please try again.';
+      'Không thể hoàn tất quá trình thiết lập. Nhật ký của bạn được an toàn; vui lòng thử lại.';
 
   @override
-  String get tutorialTitle => 'How to use the diary';
+  String get tutorialTitle => 'Cách sử dụng nhật ký';
 
   @override
-  String get tutorialWriteTitle => 'Write your first entry';
+  String get tutorialWriteTitle => 'Viết mục nhật ký đầu tiên của bạn';
 
   @override
   String get tutorialWriteText =>
-      'Tap + to write. Add a title if you want, choose the diary day and tap the check mark to save. You can edit it again at any time.';
+      'Nhấn + để viết nhật ký. Thêm tiêu đề tùy chọn, chọn ngày nhật ký và nhấn vào dấu kiểm để lưu. Bạn có thể chỉnh sửa lại mục nhật ký của mình bất cứ lúc nào.';
 
   @override
-  String get tutorialMediaTitle => 'Add photos, audio or handwriting';
+  String get tutorialMediaTitle => 'Thêm ảnh, âm thanh hoặc chữ viết tay';
 
   @override
   String get tutorialMediaText =>
-      'Use + in the editor to attach photos, videos or a voice note, or open the pen canvas. These attachments stay with the entry.';
+      'Sử dụng + trong trình chỉnh sửa nhật ký để đính kèm ảnh, video hoặc bản ghi âm giọng nói hoặc để mở khung vẽ chữ viết tay. Những phần đính kèm này được lưu cùng với mục nhật ký.';
 
   @override
-  String get tutorialReviewTitle => 'Find a day again';
+  String get tutorialReviewTitle => 'Tìm lại một ngày';
 
   @override
   String get tutorialReviewText =>
-      'Browse the journal or calendar, search your writing and use tags to organize it. Media and Atlas help you look back by photo or place.';
+      'Duyệt qua nhật ký hoặc lịch của bạn, tìm kiếm bài viết của bạn và sắp xếp các mục bằng thẻ. Các trang Media và Atlas cho phép bạn tìm các mục trước đây theo ảnh hoặc vị trí.';
 
   @override
-  String get tutorialSyncTitle => 'Use more than one device';
+  String get tutorialSyncTitle => 'Sử dụng nhiều hơn một thiết bị';
 
   @override
   String get tutorialSyncText =>
-      'In Settings → Data & storage → Sync, connect to an existing device and confirm authorization there. Both devices can keep using the diary. Text syncs first; media follows as the connection and allowance permit.';
+      'Trong Cài đặt → Dữ liệu & lưu trữ → Đồng bộ hóa, kết nối với thiết bị hiện có và xác nhận ủy quyền trên thiết bị đó. Cả hai thiết bị đều có thể tiếp tục sử dụng nhật ký. Văn bản nhật ký được đồng bộ hóa đầu tiên. Tiếp theo, các tệp phương tiện sẽ được đồng bộ hóa khi kết nối mạng và hạn mức truyền dữ liệu còn lại cho phép.';
 
   @override
-  String get tutorialPrivacyTitle => 'Keep your diary safe';
+  String get tutorialPrivacyTitle => 'Giữ nhật ký của bạn an toàn';
 
   @override
   String get tutorialPrivacyText =>
-      'Entries stay on this device unless you enable sync or share/export them. Sync is end-to-end encrypted. Settings also offers an app passcode and backups; you can reopen this tutorial there.';
+      'Các mục nhật ký vẫn còn trên thiết bị này trừ khi bạn bật đồng bộ hóa, chia sẻ hoặc xuất chúng. Đồng bộ hóa được mã hóa hai đầu. Trong Cài đặt, bạn cũng có thể đặt mật mã ứng dụng, tạo bản sao lưu và mở lại hướng dẫn này.';
 }

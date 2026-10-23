@@ -3354,10 +3354,31 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
       '其他應用程式的格式可能不支援所有功能，且第三方格式可能隨時發生變化，發現任何問題請向我們回報。這並不會影響現有日誌！';
 
   @override
+  String get formatDayOne => 'Day One';
+
+  @override
+  String get formatDaybook => 'Daybook';
+
+  @override
+  String get formatDaylio => 'Daylio';
+
+  @override
+  String get formatDiarium => 'Diarium';
+
+  @override
   String get formatDiaro => 'Diaro';
 
   @override
+  String get formatJourney => 'Journey';
+
+  @override
+  String get formatMyBrain => 'My Brain';
+
+  @override
   String get formatOneShot => 'OneShot';
+
+  @override
+  String get formatPixels => 'Pixels';
 
   @override
   String get formatMarkdown => 'Markdown';
@@ -4559,6 +4580,268 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get toolbarInsertTime => '插入時間';
+
+  @override
+  String get settingsSyncTitle => '雲端同步';
+
+  @override
+  String get syncOffDescription =>
+      '透過 Google Drive 或 WebDAV 伺服器（例如 Nextcloud、Synology 或建國雲端）在所有裝置上保持此日記相同。';
+
+  @override
+  String get syncUseGoogleDrive => '與 Google Drive 同步';
+
+  @override
+  String get syncOrWebDav => '或 WebDAV 伺服器';
+
+  @override
+  String get syncGoogleDrive => 'Google Drive';
+
+  @override
+  String get syncGoogleSignedIn => '已登入。您可以返回AID Diary。';
+
+  @override
+  String get syncGoogleSignInAgain => 'Google 需要您重新登入。';
+
+  @override
+  String get syncSignInAgain => '重新登入';
+
+  @override
+  String get settingsCommandLineTitle => '命令列';
+
+  @override
+  String get commandLineToggle => '命令列介面';
+
+  @override
+  String get commandLineToggleHint => '允許該裝置上的 help 命令和其他程式使用應用程式的命令。';
+
+  @override
+  String get commandLineAlwaysOn => '始終在開發建置中。';
+
+  @override
+  String commandLineListening(int port) {
+    return '監聽$port端口';
+  }
+
+  @override
+  String get commandPaletteTitle => '所有命令';
+
+  @override
+  String get commandPaletteSearch => '搜尋命令';
+
+  @override
+  String get commandPaletteRun => '運行';
+
+  @override
+  String get commandPaletteConfirm => '這不能簡單地撤銷。運行它嗎？';
+
+  @override
+  String syncReceiving(int done, int total) {
+    return '正在接收 $done 的 $total…';
+  }
+
+  @override
+  String syncSending(int done, int total) {
+    return '正在發送 $total 的 $done...';
+  }
+
+  @override
+  String get syncGoogleDriveNotAllowed =>
+      '不允許存取 Google Drive。再次連線並在 Google 頁面上勾選 Google Drive。';
+
+  @override
+  String get syncEntryUnsynced => '未同步：上次同步未完成';
+
+  @override
+  String get syncUseOfficial => '使用 AID 同步伺服器';
+
+  @override
+  String get syncServer => '伺服器位址';
+
+  @override
+  String get syncUsername => '使用者名稱';
+
+  @override
+  String get syncPassword => '密碼';
+
+  @override
+  String get syncConnect => '連接';
+
+  @override
+  String get syncConnecting => '正在連線…';
+
+  @override
+  String get syncSignInFailed => '無法登入。請檢查地址、使用者名稱和密碼。';
+
+  @override
+  String syncConnectFailed(String error) {
+    return '無法連接：$error';
+  }
+
+  @override
+  String get syncNewSpaceTitle => '開始同步';
+
+  @override
+  String get syncNewSpaceDescription =>
+      '這裡還沒有同步日記。該日記將被上傳，並使用您裝置上保留的金鑰進行端對端加密。';
+
+  @override
+  String get syncJoinTitle => '加入同步日記';
+
+  @override
+  String get syncWrongKey => '此恢復代碼不會開啟同步日記。';
+
+  @override
+  String syncLastSynced(String time) {
+    return '最後同步 $time';
+  }
+
+  @override
+  String get syncNever => '尚未同步';
+
+  @override
+  String get syncSyncing => '正在同步...';
+
+  @override
+  String syncFailed(String error) {
+    return '上次同步失敗：$error';
+  }
+
+  @override
+  String get syncLocked => '同步的日記現在屬於其他設備，或已重新開始。與其中之一配對或使用恢復代碼保持同步。';
+
+  @override
+  String get syncNow => '立即同步';
+
+  @override
+  String get syncUnlock => '解鎖';
+
+  @override
+  String get syncEncrypted => '端對端加密';
+
+  @override
+  String get syncDisconnect => '停止同步';
+
+  @override
+  String get syncDisconnectDescription => '本設備停止同步。這裡的日記和同步副本保持原樣。';
+
+  @override
+  String get syncOwnRecoveryPassword => '使用我自己的恢復密碼';
+
+  @override
+  String get syncRecoveryPassword => '恢復密碼';
+
+  @override
+  String get syncRecoveryPasswordRepeat => '重複恢復密碼';
+
+  @override
+  String syncRecoveryPasswordTooShort(int min) {
+    return '至少使用 $min 字符';
+  }
+
+  @override
+  String get syncRecoveryPasswordMismatch => '密碼不同';
+
+  @override
+  String get syncRecoveryCode => '恢復碼';
+
+  @override
+  String get syncRecoveryCodeTitle => '儲存您的恢復代碼';
+
+  @override
+  String get syncRecoveryCodeDescription =>
+      '如果您的每台裝置都遺失，此程式碼將恢復您的同步日記。將其保存在密碼管理器中或紙上。僅顯示一次。';
+
+  @override
+  String get syncRecoveryCodeCopied => '已複製恢復程式碼';
+
+  @override
+  String get syncRecoveryCodeSaved => '我已經保存了';
+
+  @override
+  String get syncJoinNeedsKey =>
+      '這張同步日記屬於您的其他裝置。與其中之一配對，或使用恢復代碼。該設備上的條目將會新增到其中。';
+
+  @override
+  String get syncPairDevice => '與設備配對';
+
+  @override
+  String get syncUseRecoveryCode => '使用恢復程式碼';
+
+  @override
+  String get syncAddDevice => '新增設備';
+
+  @override
+  String get syncChangeRecoveryCode => '更改恢復程式碼';
+
+  @override
+  String get syncChangeRecoveryDescription =>
+      '新代碼取代了當前代碼，該代碼停止工作。您的資料和其他設備保持原樣。';
+
+  @override
+  String get syncNewRandomCode => '新隨機碼';
+
+  @override
+  String get syncRecoveryCodeChanged => '恢復程式碼已更改';
+
+  @override
+  String get syncResetSpace => '重新開始同步日記';
+
+  @override
+  String get syncResetSpaceDescription =>
+      '僅當沒有設備且沒有恢復代碼再打開它時：同步副本將替換為該設備上的日記（在該設備的密鑰下）。然後您的其他裝置再次配對。';
+
+  @override
+  String get syncPairTitle => '配對裝置';
+
+  @override
+  String get syncPairShow => '顯示程式碼';
+
+  @override
+  String get syncPairEnter => '輸入代碼';
+
+  @override
+  String get syncPairShowHint => '在其他裝置上，開啟“配對裝置”，選擇“輸入代碼”，然後鍵入或掃描該代碼。';
+
+  @override
+  String get syncPairEnterHint => '輸入其他裝置顯示的代碼，或掃描它。';
+
+  @override
+  String get syncPairCode => '配對碼';
+
+  @override
+  String get syncPairScan => '掃描';
+
+  @override
+  String get syncPairStart => '配對';
+
+  @override
+  String get syncPairWaiting => '等待其他設備...';
+
+  @override
+  String syncPairDone(String device) {
+    return '與$device配對';
+  }
+
+  @override
+  String get syncPairWrongCode => '代碼不匹配。顯示新代碼並重試。';
+
+  @override
+  String get syncPairNoOffer => '沒有設備顯示此代碼。它可能已經過期了。';
+
+  @override
+  String get syncPairTimedOut => '對方設備沒有及時應答。';
+
+  @override
+  String get syncPairNeither => '這兩個設備都尚未設定此同步日記。';
+
+  @override
+  String get syncPairBoth => '兩台設備都已開啟此同步日記。';
+
+  @override
+  String syncPairFailed(String error) {
+    return '配對失敗：$error';
+  }
 
   @override
   String get syncMediaPending => '日記已同步，部分媒體仍在傳輸';

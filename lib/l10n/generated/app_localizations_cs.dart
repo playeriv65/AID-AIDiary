@@ -12,38 +12,38 @@ class AppLocalizationsCs extends AppLocalizations {
   String get appTitle => 'AID Diary';
 
   @override
-  String get themeColorTitle => 'Theme color';
+  String get themeColorTitle => 'Barva motivu';
 
   @override
-  String get themeColorHint => 'Choose a color for this palette.';
+  String get themeColorHint => 'Vyberte barvu pro tuto paletu.';
 
   @override
-  String get themeColorBlue => 'Sky blue';
+  String get themeColorBlue => 'Nebesky modrá';
 
   @override
-  String get themeColorGreen => 'Forest green';
+  String get themeColorGreen => 'Lesní zelená';
 
   @override
-  String get themeColorBrown => 'Warm coffee';
+  String get themeColorBrown => 'Teplá káva';
 
   @override
-  String get themeColorPurple => 'Lavender';
+  String get themeColorPurple => 'Levandule';
 
   @override
-  String get themeColorRose => 'Dusty rose';
+  String get themeColorRose => 'Zaprášená růže';
 
   @override
-  String get themeColorAmber => 'Amber';
+  String get themeColorAmber => 'Jantarová';
 
   @override
-  String get themeColorPreview => 'A little every day';
+  String get themeColorPreview => 'Každý den trochu';
 
   @override
-  String get themeTintBackgroundTitle => 'Tint backgrounds with theme color';
+  String get themeTintBackgroundTitle => 'Odstín pozadí barvou motivu';
 
   @override
   String get themeTintBackgroundHint =>
-      'Turn off for neutral gray backgrounds; buttons keep your chosen color.';
+      'Vypnout pro neutrální šedé pozadí; tlačítka udrží vámi zvolenou barvu.';
 
   @override
   String get dailyReminderTitle => 'Zapiš si dnešek!';
@@ -498,10 +498,10 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
-  String get tagNameExists => 'There is a tag with this name already';
+  String get tagNameExists => 'Značka s tímto názvem již existuje';
 
   @override
-  String get categoryNameExists => 'There is a category with this name already';
+  String get categoryNameExists => 'Kategorie s tímto názvem již existuje';
 
   @override
   String deleteTemplateMessage(Object name) {
@@ -630,56 +630,56 @@ class AppLocalizationsCs extends AppLocalizations {
       'Obnovení zálohy přepíše vaše stávající data!';
 
   @override
-  String get settingsBackupPasswordProtect => 'Password Protect Backups';
+  String get settingsBackupPasswordProtect => 'Zálohy chráněné heslem';
 
   @override
-  String get backupEncryptedTitle => 'Encrypted Backup';
+  String get backupEncryptedTitle => 'Šifrovaná záloha';
 
   @override
-  String get backupEncryptedContent => 'This backup is password protected.';
+  String get backupEncryptedContent => 'Tato záloha je chráněna heslem.';
 
   @override
-  String get settingsAutoBackup => 'Automatic Backups';
+  String get settingsAutoBackup => 'Automatické zálohování';
 
   @override
-  String get settingsAutoBackupLocation => 'Backup Location';
+  String get settingsAutoBackupLocation => 'Umístění zálohy';
 
   @override
-  String get settingsAutoBackupInterval => 'Backup Interval';
+  String get settingsAutoBackupInterval => 'Interval zálohování';
 
   @override
-  String get settingsAutoBackupIntervalDaily => 'Daily';
+  String get settingsAutoBackupIntervalDaily => 'Denně';
 
   @override
-  String get settingsAutoBackupIntervalWeekly => 'Weekly';
+  String get settingsAutoBackupIntervalWeekly => 'Týdenní';
 
   @override
-  String get settingsAutoBackupIntervalMonthly => 'Monthly';
+  String get settingsAutoBackupIntervalMonthly => 'Měsíční';
 
   @override
-  String get settingsAutoBackupMaxCount => 'Backups To Keep';
+  String get settingsAutoBackupMaxCount => 'Zálohy k uchování';
 
   @override
-  String get settingsAutoBackupRequireCharging => 'Only While Charging';
+  String get settingsAutoBackupRequireCharging => 'Pouze při nabíjení';
 
   @override
   String settingsBackupLast(Object time) {
-    return 'Last backup $time';
+    return 'Poslední záloha $time';
   }
 
   @override
-  String get settingsBackupNever => 'Never backed up';
+  String get settingsBackupNever => 'Nikdy nezálohováno';
 
   @override
   String settingsAutoBackupNext(Object time) {
-    return 'Next backup $time';
+    return 'Další záloha $time';
   }
 
   @override
-  String get settingsAutoBackupKeepAll => 'All';
+  String get settingsAutoBackupKeepAll => 'všechny';
 
   @override
-  String get autoBackupFailedTitle => 'Backup Failed';
+  String get autoBackupFailedTitle => 'Zálohování se nezdařilo';
 
   @override
   String tranferStatus(Object percent) {
@@ -698,12 +698,12 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String encryptingBackupStatus(Object percent) {
-    return 'Encrypting Backup… $percent%';
+    return 'Šifrování zálohy… $percent%';
   }
 
   @override
   String decryptingBackupStatus(Object percent) {
-    return 'Decrypting Backup… $percent%';
+    return 'Dešifrování zálohy… $percent%';
   }
 
   @override
@@ -829,7 +829,7 @@ class AppLocalizationsCs extends AppLocalizations {
   String get licenseGPLv3 => 'GPL-3.0';
 
   @override
-  String get settingsOpenSourceLicenses => 'Open Source Licenses';
+  String get settingsOpenSourceLicenses => 'Open Source licence';
 
   @override
   String get tagMoodTitle => 'Nálada';
@@ -852,538 +852,540 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
-  String get shareAddToLogPickerTitle => 'Choose a log';
+  String get shareAddToLogPickerTitle => 'Vyberte záznam v deníku';
 
   @override
-  String get adaptiveEmptyDay => 'No entries for this day yet';
+  String get adaptiveEmptyDay => 'Pro tento den zatím nejsou žádné záznamy';
 
   @override
-  String get adaptiveNewEntry => 'Write an entry';
+  String get adaptiveNewEntry => 'Napište záznam';
 
   @override
-  String get pageJournalTitle => 'Journal';
+  String get pageJournalTitle => 'Deník';
 
   @override
-  String get coachPrompt1 => 'What made you smile today?';
+  String get coachPrompt1 => 'Co tě dnes rozesmálo?';
 
   @override
-  String get coachPrompt2 => 'What is one thing you learned today?';
+  String get coachPrompt2 => 'Jakou jednu věc jste se dnes naučili?';
 
   @override
-  String get coachPrompt3 => 'Who did you talk to today, and how did it feel?';
+  String get coachPrompt3 => 'S kým jsi dnes mluvil a jaký to byl pocit?';
 
   @override
-  String get coachPrompt4 => 'What are you grateful for right now?';
+  String get coachPrompt4 => 'Za co jsi právě teď vděčný?';
 
   @override
-  String get coachPrompt5 => 'What took most of your energy today?';
+  String get coachPrompt5 => 'Co vám dnes vzalo nejvíce energie?';
 
   @override
-  String get coachPrompt6 => 'Describe a small moment you want to remember.';
+  String get coachPrompt6 =>
+      'Popište malý okamžik, který si chcete zapamatovat.';
 
   @override
-  String get coachPrompt7 => 'What would make tomorrow a good day?';
+  String get coachPrompt7 => 'Co by udělalo zítra dobrý den?';
 
   @override
-  String get coachPrompt8 => 'What has been on your mind lately?';
+  String get coachPrompt8 => 'Co se vám v poslední době honí hlavou?';
 
   @override
-  String get coachPrompt9 => 'What did you do today just for yourself?';
+  String get coachPrompt9 => 'Co jsi dnes udělal jen pro sebe?';
 
   @override
-  String get coachPrompt10 => 'If today had a title, what would it be?';
+  String get coachPrompt10 => 'Kdyby měl dnešek nějaký titul, jaký by to byl?';
 
   @override
-  String get pageMediaTitle => 'Media';
+  String get pageMediaTitle => 'Média';
 
   @override
   String get pageAtlasTitle => 'Atlas';
 
   @override
-  String get pageCoachTitle => 'Coach';
+  String get pageCoachTitle => 'Trenér';
 
   @override
-  String get noEntrySelected => 'No entry selected.';
+  String get noEntrySelected => 'Není vybrán žádný záznam.';
 
   @override
-  String get entryShare => 'Share';
+  String get entryShare => 'Sdílejte';
 
   @override
-  String get entryFavorite => 'Star';
+  String get entryFavorite => 'hvězda';
 
   @override
-  String get entryEdit => 'Edit';
+  String get entryEdit => 'Upravit';
 
   @override
-  String get entryPrevious => 'Previous entry';
+  String get entryPrevious => 'Předchozí záznam';
 
   @override
-  String get entryNext => 'Next entry';
+  String get entryNext => 'Další záznam';
 
   @override
-  String get journalStories => 'Stories';
+  String get journalStories => 'Příběhy';
 
   @override
-  String get journalEntries => 'Entries';
+  String get journalEntries => 'Příspěvky';
 
   @override
-  String get journalEmptyHint => 'Begin your diary by adding a new entry.';
+  String get journalEmptyHint => 'Začněte svůj deník přidáním nového záznamu.';
 
   @override
-  String get storyToday => 'Today';
+  String get storyToday => 'dnes';
 
   @override
-  String get storyThrowback => 'Throwback';
+  String get storyThrowback => 'Vzpomínka';
 
   @override
-  String get storyNoThrowback => 'No throwback today';
+  String get storyNoThrowback => 'Dnes žádný návrat';
 
   @override
-  String get mediaFiles => 'Media files';
+  String get mediaFiles => 'Mediální soubory';
 
   @override
-  String get mediaEmpty => 'No photos yet.';
+  String get mediaEmpty => 'Zatím žádné fotky.';
 
   @override
-  String get mediaEmptyHint => 'Photos attached to entries will be shown here.';
+  String get mediaEmptyHint =>
+      'Zde se zobrazí fotografie připojené k příspěvkům.';
 
   @override
-  String get atlasEmpty => 'No entries with a location.';
+  String get atlasEmpty => 'Žádné záznamy s umístěním.';
 
   @override
-  String get atlasEmptyHint => 'Entries with a location will be shown here.';
+  String get atlasEmptyHint => 'Zde se zobrazí záznamy s umístěním.';
 
   @override
-  String get atlasShowAll => 'Show all entries';
+  String get atlasShowAll => 'Zobrazit všechny položky';
 
   @override
-  String get atlasMyLocation => 'My location';
+  String get atlasMyLocation => 'Moje poloha';
 
   @override
-  String get coachAll => 'All';
+  String get coachAll => 'všechny';
 
   @override
-  String get coachPrograms => 'Programs';
+  String get coachPrograms => 'Programy';
 
   @override
-  String get coachTemplates => 'Templates';
+  String get coachTemplates => 'Šablony';
 
   @override
   String get coachKindProgram => 'Program';
 
   @override
-  String get coachKindTemplate => 'Template';
+  String get coachKindTemplate => 'Šablona';
 
   @override
-  String get coachNoTemplates => 'No programs or templates.';
+  String get coachNoTemplates => 'Žádné programy ani šablony.';
 
   @override
-  String get coachUseTemplate => 'Write with this template';
+  String get coachUseTemplate => 'Pište pomocí této šablony';
 
   @override
-  String get coachProgramEverydayTitle => 'Everyday moments';
+  String get coachProgramEverydayTitle => 'Každodenní okamžiky';
 
   @override
   String get coachProgramEverydayDescription =>
-      'Five short questions, one a day. Each takes a minute or two and helps you see what made the day yours. A gentle way to build the habit of writing a little every day.';
+      'Pět krátkých otázek, jedna denně. Každá zabere minutu nebo dvě a pomůže vám zjistit, díky čemu byl den váš. Jemný způsob, jak si vybudovat návyk každý den trochu psát.';
 
   @override
-  String get coachProgramReflectTitle => 'Looking inward';
+  String get coachProgramReflectTitle => 'Pohled dovnitř';
 
   @override
   String get coachProgramReflectDescription =>
-      'One deeper question a week, for five weeks. Take your time with each: how you have been feeling, what wears you out, what you are grateful for.';
+      'Jedna hlubší otázka týdně, po dobu pěti týdnů. Udělejte si čas s každým: jak jste se cítili, co vás vyčerpává, za co jste vděční.';
 
   @override
-  String get searchFilters => 'Filters';
+  String get searchFilters => 'Filtry';
 
   @override
-  String get searchFilterTags => 'Tags';
+  String get searchFilterTags => 'Tagy';
 
   @override
-  String get searchFilterStarred => 'Starred';
+  String get searchFilterStarred => 'S hvězdičkou';
 
   @override
-  String get searchHint => 'Type to search, or pick a filter.';
+  String get searchHint => 'Zadejte a vyhledejte nebo vyberte filtr.';
 
   @override
-  String get locationTitle => 'Location';
+  String get locationTitle => 'Umístění';
 
   @override
-  String get locationName => 'Place name';
+  String get locationName => 'Název místa';
 
   @override
-  String get locationRemove => 'Remove';
+  String get locationRemove => 'Odebrat';
 
   @override
-  String get locationServiceDisabled => 'Location services are turned off.';
+  String get locationServiceDisabled => 'Lokalizační služby jsou vypnuté.';
 
   @override
-  String get locationPermissionDenied => 'Location permission was denied.';
+  String get locationPermissionDenied => 'Povolení k umístění bylo odepřeno.';
 
   @override
-  String get locationUnavailable => 'Could not get the current location.';
+  String get locationUnavailable => 'Nelze získat aktuální polohu.';
 
   @override
-  String get calendarJumpToToday => 'Jump to today';
+  String get calendarJumpToToday => 'Přejít na dnešek';
 
   @override
-  String get editorStartWriting => 'Start writing or choose a ';
+  String get editorStartWriting => 'Začněte psát nebo zvolte a ';
 
   @override
-  String get editorTemplateLink => 'Template';
+  String get editorTemplateLink => 'Šablona';
 
   @override
   String get editorStartWritingEnd => '.';
 
   @override
-  String get templatePickerTitle => 'Choose a template';
+  String get templatePickerTitle => 'Vyberte šablonu';
 
   @override
-  String get templateFeatured => 'Featured templates';
+  String get templateFeatured => 'Doporučené šablony';
 
   @override
-  String get templateMine => 'My templates';
+  String get templateMine => 'Moje šablony';
 
   @override
-  String get templateDailyName => 'Daily review';
+  String get templateDailyName => 'Denní přehled';
 
   @override
   String get templateDailyDescription =>
-      'What happened, how it felt, and what comes next.';
+      'Co se stalo, jaký to byl pocit a co bude následovat.';
 
   @override
   String get templateDailyText =>
-      '## What happened today\n\n\n## How I felt\n\n\n## Three things I\'m grateful for\n1. \n2. \n3. \n\n## Tomorrow\n';
+      '## Co se dnes stalo\n\n\n## Jak jsem se cítil\n\n\n## Tři věci, za které jsem vděčný\n1. \n2. \n3. \n\n## Zítra\n';
 
   @override
-  String get templateTravelName => 'Travel log';
+  String get templateTravelName => 'Záznam cestovního deníku';
 
   @override
-  String get templateTravelDescription =>
-      'Places, moments and food from the road.';
+  String get templateTravelDescription => 'Místa, momenty a jídlo z cesty.';
 
   @override
   String get templateTravelText =>
-      '## Where I went\n\n\n## The moment I remember most\n\n\n## What I ate\n\n\n## Plans for tomorrow\n';
+      '## Kam jsem šel\n\n\n## Moment, který si nejvíc pamatuji\n\n\n## Co jsem jedl\n\n\n## Plány na zítřek\n';
 
   @override
-  String get templateReadingName => 'Reading notes';
+  String get templateReadingName => 'Čtení poznámek';
 
   @override
   String get templateReadingDescription =>
-      'Quotes and thoughts from what you read.';
+      'Citáty a myšlenky z toho, co čtete.';
 
   @override
   String get templateReadingText =>
-      '## Book\n\n\n## Where I am\n\n\n## Quotes\n> \n\n## My thoughts\n';
+      '## Kniha\n\n\n## Kde jsem\n\n\n## Citáty\n> \n\n## Moje myšlenky\n';
 
   @override
-  String get templateWeeklyName => 'Weekly review';
+  String get templateWeeklyName => 'Týdenní přehled';
 
   @override
   String get templateWeeklyDescription =>
-      'Highlights, struggles and next week\'s focus.';
+      'Nejdůležitější události, problémy a zaměření na příští týden.';
 
   @override
   String get templateWeeklyText =>
-      '## Highlights\n\n\n## What was hard\n\n\n## What I learned\n\n\n## Focus for next week\n';
+      '## Nejdůležitější\n\n\n## Co bylo těžké\n\n\n## Co jsem se naučil\n\n\n## Soustřeďte se na příští týden\n';
 
   @override
-  String get entryDuplicate => 'Duplicate';
+  String get entryDuplicate => 'Duplicitní';
 
   @override
-  String get entryDuplicated => 'Entry duplicated';
+  String get entryDuplicated => 'Záznam duplicitní';
 
   @override
-  String get entrySaveAsTemplate => 'Save as template';
+  String get entrySaveAsTemplate => 'Uložit jako šablonu';
 
   @override
-  String get entrySavedAsTemplate => 'Saved as a template';
+  String get entrySavedAsTemplate => 'Uloženo jako šablona';
 
   @override
-  String get storyStatistics => 'Statistics';
+  String get storyStatistics => 'Statistiky';
 
   @override
-  String get storyMoodChart => 'Mood chart';
+  String get storyMoodChart => 'Graf nálady';
 
   @override
   String storyEntriesAndDays(Object days, Object entries) {
-    return '$entries entries · $days days';
+    return 'Záznamy $entries · Dny $days';
   }
 
   @override
-  String get storyThisYear => 'This year';
+  String get storyThisYear => 'Tento rok';
 
   @override
-  String get storyLastYear => 'Last year';
+  String get storyLastYear => 'Minulý rok';
 
   @override
-  String get storyTapToOpen => 'Tap a day to open it';
+  String get storyTapToOpen => 'Klepnutím na den jej otevřete';
 
   @override
-  String get settingsGeneralTitle => 'General';
+  String get settingsGeneralTitle => 'Generál';
 
   @override
-  String get settingsDataTitle => 'Data & storage';
+  String get settingsDataTitle => 'Data a úložiště';
 
   @override
-  String get settingsStoriesTitle => 'Stories';
+  String get settingsStoriesTitle => 'Příběhy';
 
   @override
-  String get settingsHelpTitle => 'Help & about';
+  String get settingsHelpTitle => 'Nápověda a informace';
 
   @override
-  String get weatherTitle => 'Weather';
+  String get weatherTitle => 'Počasí';
 
   @override
-  String get weatherClear => 'Clear';
+  String get weatherClear => 'Jasný';
 
   @override
-  String get weatherPartlyCloudy => 'Partly cloudy';
+  String get weatherPartlyCloudy => 'Částečně oblačno';
 
   @override
-  String get weatherCloudy => 'Cloudy';
+  String get weatherCloudy => 'Zataženo';
 
   @override
-  String get weatherFog => 'Fog';
+  String get weatherFog => 'mlha';
 
   @override
-  String get weatherDrizzle => 'Drizzle';
+  String get weatherDrizzle => 'Mrholení';
 
   @override
-  String get weatherRain => 'Rain';
+  String get weatherRain => 'déšť';
 
   @override
-  String get weatherSnow => 'Snow';
+  String get weatherSnow => 'Sníh';
 
   @override
-  String get weatherStorm => 'Thunderstorm';
+  String get weatherStorm => 'Bouřka';
 
   @override
-  String get weatherFetch => 'Get weather for this entry';
+  String get weatherFetch => 'Získejte počasí pro tento záznam';
 
   @override
-  String get weatherNeedsLocation => 'Add a location with coordinates first.';
+  String get weatherNeedsLocation => 'Nejprve přidejte místo se souřadnicemi.';
 
   @override
   String get weatherUnavailable =>
-      'Weather is unavailable for this place and time.';
+      'Počasí pro toto místo a čas není k dispozici.';
 
   @override
-  String get weatherRemove => 'Remove weather';
+  String get weatherRemove => 'Odstraňte počasí';
 
   @override
-  String get activityTitle => 'Activity';
+  String get activityTitle => 'Aktivita';
 
   @override
-  String get activityStill => 'Still';
+  String get activityStill => 'Pořád';
 
   @override
-  String get activityWalking => 'Walking';
+  String get activityWalking => 'Chůze';
 
   @override
-  String get activityRunning => 'Running';
+  String get activityRunning => 'Běh';
 
   @override
-  String get activityCycling => 'Cycling';
+  String get activityCycling => 'Cyklistika';
 
   @override
-  String get activityVehicle => 'In a vehicle';
+  String get activityVehicle => 'Ve vozidle';
 
   @override
-  String get activityFlying => 'Flying';
+  String get activityFlying => 'Létání';
 
   @override
-  String get activityExercise => 'Exercise';
+  String get activityExercise => 'Cvičení';
 
   @override
-  String get activityDetect => 'Detect current activity';
+  String get activityDetect => 'Zjistit aktuální aktivitu';
 
   @override
-  String get activityDetectFailed => 'Couldn\'t detect an activity.';
+  String get activityDetectFailed => 'Aktivitu se nepodařilo zjistit.';
 
   @override
-  String get activityRemove => 'Remove activity';
+  String get activityRemove => 'Odebrat aktivitu';
 
   @override
-  String get settingsAutoAddTitle => 'Add automatically';
+  String get settingsAutoAddTitle => 'Přidat automaticky';
 
   @override
-  String get settingsAutoAddLocation => 'Location';
+  String get settingsAutoAddLocation => 'Umístění';
 
   @override
-  String get settingsAutoAddWeather => 'Weather';
+  String get settingsAutoAddWeather => 'Počasí';
 
   @override
   String get settingsAutoAddHint =>
-      'New entries get these filled in when they are created.';
+      'Nové položky se vyplní při jejich vytvoření.';
 
   @override
-  String get settingsTemperatureUnit => 'Temperature unit';
+  String get settingsTemperatureUnit => 'Jednotka teploty';
 
   @override
-  String get settingsCelsius => 'Celsius (°C)';
+  String get settingsCelsius => 'Celsia (°C)';
 
   @override
   String get settingsFahrenheit => 'Fahrenheit (°F)';
 
   @override
-  String get moodGreat => 'Great';
+  String get moodGreat => 'Skvělé';
 
   @override
-  String get moodGood => 'Good';
+  String get moodGood => 'Dobře';
 
   @override
-  String get moodOkay => 'Okay';
+  String get moodOkay => 'Dobře';
 
   @override
-  String get moodBad => 'Bad';
+  String get moodBad => 'Špatný';
 
   @override
-  String get moodAwful => 'Awful';
+  String get moodAwful => 'Strašné';
 
   @override
-  String get locationSearchHint => 'Search for a place';
+  String get locationSearchHint => 'Vyhledejte místo';
 
   @override
-  String get locationSearchEmpty => 'No places found';
+  String get locationSearchEmpty => 'Nebyla nalezena žádná místa';
 
   @override
-  String get settingsWallpaper => 'Wallpaper';
+  String get settingsWallpaper => 'Tapeta';
 
   @override
-  String get wallpaperNone => 'None';
+  String get wallpaperNone => 'žádný';
 
   @override
-  String get wallpaperDots => 'Dots';
+  String get wallpaperDots => 'Tečky';
 
   @override
-  String get wallpaperGrid => 'Grid';
+  String get wallpaperGrid => 'Mřížka';
 
   @override
-  String get wallpaperLines => 'Lines';
+  String get wallpaperLines => 'Čáry';
 
   @override
-  String get wallpaperPhoto => 'Photo…';
+  String get wallpaperPhoto => 'Foto…';
 
   @override
-  String get settingsFontFamily => 'Font';
+  String get settingsFontFamily => 'Písmo';
 
   @override
-  String get fontSystem => 'System';
+  String get fontSystem => 'Systém';
 
   @override
   String get fontSerif => 'Serif';
 
   @override
-  String get fontMono => 'Monospace';
+  String get fontMono => 'Jednoprostorový';
 
   @override
-  String get settingsFontSize => 'Font size';
+  String get settingsFontSize => 'Velikost písma';
 
   @override
-  String get fontSizeSmall => 'Small';
+  String get fontSizeSmall => 'Malý';
 
   @override
-  String get fontSizeMedium => 'Medium';
+  String get fontSizeMedium => 'Střední';
 
   @override
-  String get fontSizeLarge => 'Large';
+  String get fontSizeLarge => 'Velký';
 
   @override
-  String get fontSizeExtraLarge => 'Extra large';
+  String get fontSizeExtraLarge => 'Extra velký';
 
   @override
-  String get settingsLineSpacing => 'Line spacing';
+  String get settingsLineSpacing => 'Řádkování';
 
   @override
-  String get lineSpacingCompact => 'Compact';
+  String get lineSpacingCompact => 'Kompaktní';
 
   @override
-  String get lineSpacingNormal => 'Normal';
+  String get lineSpacingNormal => 'Normální';
 
   @override
-  String get lineSpacingRelaxed => 'Relaxed';
+  String get lineSpacingRelaxed => 'Uvolněný';
 
   @override
-  String get moodAssociationsTitle => 'What makes me feel…';
+  String get moodAssociationsTitle => 'Co ve mně vyvolává pocit…';
 
   @override
   String moodAssociationsCount(int matching, int total) {
-    return '$matching of $total entries';
+    return '$matching ze $total záznamů';
   }
 
   @override
-  String get videoRecord => 'Record a video';
+  String get videoRecord => 'Nahrajte video';
 
   @override
-  String get videoChoose => 'Choose a video';
+  String get videoChoose => 'Vyberte video';
 
   @override
-  String get audioRecordTitle => 'Record a voice note';
+  String get audioRecordTitle => 'Nahrajte hlasovou poznámku';
 
   @override
-  String get audioChoose => 'Choose an audio file';
+  String get audioChoose => 'Vyberte zvukový soubor';
 
   @override
-  String get audioStart => 'Record';
+  String get audioStart => 'Záznam';
 
   @override
-  String get audioStop => 'Stop and save';
+  String get audioStop => 'Zastavit a uložit';
 
   @override
   String get audioPermissionDenied =>
-      'Microphone access is off. Allow it in the system settings.';
+      'Přístup k mikrofonu je vypnutý. Povolte to v nastavení systému.';
 
   @override
-  String get mediaTooLarge => 'This video is too large to attach.';
+  String get mediaTooLarge => 'Toto video je pro připojení příliš velké.';
 
   @override
   String get mediaUnavailable =>
-      'This attachment is not available on this device.';
+      'Tato příloha není na tomto zařízení dostupná.';
 
   @override
-  String get widgetDone => 'Today\'s entry is written';
+  String get widgetDone => 'Dnešní zápis je napsán';
 
   @override
-  String get widgetPending => 'How was your day?';
+  String get widgetPending => 'jaký jsi měl den?';
 
   @override
-  String get widgetWrite => 'Write';
+  String get widgetWrite => 'Napište';
 
   @override
-  String get insertChecklist => 'Checklist';
+  String get insertChecklist => 'Kontrolní seznam';
 
   @override
-  String get insertNumberedList => 'Numbered list';
+  String get insertNumberedList => 'Číslovaný seznam';
 
   @override
-  String get insertTable => 'Table';
+  String get insertTable => 'Tabulka';
 
   @override
-  String get insertDivider => 'Divider';
+  String get insertDivider => 'Dělič';
 
   @override
-  String get insertCodeBlock => 'Code block';
+  String get insertCodeBlock => 'Blok kódu';
 
   @override
-  String get journalSortTitle => 'Sort entries';
+  String get journalSortTitle => 'Seřadit záznamy';
 
   @override
-  String get journalSortUpdated => 'Last updated';
+  String get journalSortUpdated => 'Naposledy aktualizováno';
 
   @override
-  String get settingsTimeFormat => 'Time format';
+  String get settingsTimeFormat => 'Formát času';
 
   @override
-  String get settingsDayStart => 'New entries count for the day before until';
+  String get settingsDayStart =>
+      'Nové záznamy se počítají od předchozího dne do';
 
   @override
-  String get settingsDayAskUntil => 'Then ask which day until';
+  String get settingsDayAskUntil => 'Pak se zeptejte, do kterého dne';
 
   @override
-  String get settingsDayStartMidnight => 'Off';
+  String get settingsDayStartMidnight => 'Vypnuto';
 
   @override
   String settingsDayStartAt(int hour) {
@@ -1392,268 +1394,269 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String get settingsDayStartHint =>
-      'Every entry keeps the day it belongs to next to the time it was written, and you can change that day in the editor at any time. These hours only pick the day for new entries, so changing them moves no existing entry.';
+      'U každého záznamu je vedle času, kdy byl napsán, uveden den, ke kterému patří, a tento den můžete v editoru kdykoli změnit. Tyto hodiny pouze vybírají den pro nové záznamy, takže jejich změnou se nepřesune žádný existující záznam.';
 
   @override
-  String get lateNightBadge =>
-      'Written late at night, counted for the day before';
+  String get lateNightBadge => 'Psáno pozdě v noci, počítáno za předchozí den';
 
   @override
   String editorDayAsk(String time) {
-    return 'Written at $time. Which day is it for?';
+    return 'Napsáno na $time. Na který den to je?';
   }
 
   @override
   String editorDayYesterday(String date) {
-    return '$date (yesterday)';
+    return '$date (včera)';
   }
 
   @override
   String editorDayToday(String date) {
-    return '$date (today)';
+    return '$date (dnes)';
   }
 
   @override
   String editorWrittenAt(String when) {
-    return 'Written $when';
+    return 'Napsáno $when';
   }
 
   @override
-  String get timeFormat12 => '12-hour';
+  String get timeFormat12 => '12 hodin';
 
   @override
-  String get timeFormat24 => '24-hour';
+  String get timeFormat24 => '24 hodin';
 
   @override
-  String get settingsReminderDays => 'Remind me on';
+  String get settingsReminderDays => 'Připomeňte mi';
 
   @override
-  String get locationRecent => 'Recent places';
+  String get locationRecent => 'Nedávná místa';
 
   @override
-  String get shareImage => 'Share image';
+  String get shareImage => 'Sdílet obrázek';
 
   @override
-  String get shareSaveImage => 'Save image';
+  String get shareSaveImage => 'Uložit obrázek';
 
   @override
-  String get shareSaved => 'Image saved';
+  String get shareSaved => 'Obrázek uložen';
 
   @override
-  String get deletedTitle => 'Recently deleted';
+  String get deletedTitle => 'Nedávno smazáno';
 
   @override
-  String get deletedNone => 'Nothing deleted recently';
+  String get deletedNone => 'V poslední době nebylo nic smazáno';
 
   @override
   String deletedHint(int days) {
-    return 'Deleted entries stay here for $days days, then are erased.';
+    return 'Smazané záznamy zde zůstanou $days dní, poté budou vymazány.';
   }
 
   @override
   String deletedDaysLeft(int days) {
-    return '$days days left';
+    return '$days dní zbývá';
   }
 
   @override
-  String get deletedRestore => 'Restore';
+  String get deletedRestore => 'Obnovit';
 
   @override
-  String get deletedDeleteForever => 'Delete forever';
+  String get deletedDeleteForever => 'Smazat navždy';
 
   @override
   String get deletedDeleteForeverDescription =>
-      'The entry and its attachments are erased. This cannot be undone.';
+      'Záznam a jeho přílohy budou vymazány. Toto nelze vrátit zpět.';
 
   @override
-  String get deletedEmpty => 'Empty';
+  String get deletedEmpty => 'Prázdný';
 
   @override
   String get deletedEmptyDescription =>
-      'Erase every entry in Recently deleted? This cannot be undone.';
+      'Vymazat všechny položky v Nedávno smazané? Toto nelze vrátit zpět.';
 
   @override
   String get formatJson => 'JSON';
 
   @override
-  String get randomTitle => 'Random walk';
+  String get randomTitle => 'Náhodná procházka';
 
   @override
-  String get randomSubtitle => 'Open a past entry';
+  String get randomSubtitle => 'Otevřete minulý záznam';
 
   @override
-  String get randomNext => 'Another';
+  String get randomNext => 'Další';
 
   @override
-  String get randomAll => 'All';
+  String get randomAll => 'všechny';
 
   @override
-  String get randomWithPhotos => 'With photos';
+  String get randomWithPhotos => 'S fotkami';
 
   @override
-  String get randomGoodDays => 'Good days';
+  String get randomGoodDays => 'Dobré dny';
 
   @override
-  String get randomEmpty => 'No entries to pick from';
+  String get randomEmpty => 'Žádné záznamy k výběru';
 
   @override
-  String get reviewWeekTitle => 'This week';
+  String get reviewWeekTitle => 'Tento týden';
 
   @override
-  String get reviewWeekSubtitle => 'Your week so far';
+  String get reviewWeekSubtitle => 'Váš dosavadní týden';
 
   @override
-  String get reviewYearTitle => 'This year';
+  String get reviewYearTitle => 'Tento rok';
 
   @override
-  String get reviewEmpty => 'Nothing written yet';
+  String get reviewEmpty => 'Zatím nic nenapsáno';
 
   @override
-  String get reviewEntries => 'Entries';
+  String get reviewEntries => 'Příspěvky';
 
   @override
-  String get reviewDaysWritten => 'Days written';
+  String get reviewDaysWritten => 'Napsané dny';
 
   @override
-  String get reviewWords => 'Words';
+  String get reviewWords => 'Slova';
 
   @override
-  String get reviewPhotos => 'Photos';
+  String get reviewPhotos => 'Fotografie';
 
   @override
-  String get reviewLongestRun => 'Longest run of days';
+  String get reviewLongestRun => 'Nejdelší běh dní';
 
   @override
-  String get reviewAverageMood => 'Average mood';
+  String get reviewAverageMood => 'Průměrná nálada';
 
   @override
-  String get reviewFavorites => 'Most often';
+  String get reviewFavorites => 'Nejčastěji';
 
   @override
-  String get reviewByMonth => 'By month';
+  String get reviewByMonth => 'Podle měsíce';
 
   @override
-  String get reviewHighlight => 'Highlight';
+  String get reviewHighlight => 'Zvýrazněte';
 
   @override
-  String get yearInPixels => 'Year in pixels';
+  String get yearInPixels => 'Rok v pixelech';
 
   @override
-  String get capsuleSeal => 'Seal as a time capsule';
+  String get capsuleSeal => 'Utěsnění jako časová kapsle';
 
   @override
-  String get capsuleTitle => 'Time capsule';
+  String get capsuleTitle => 'Časová kapsle';
 
   @override
   String capsuleOpensOn(Object date) {
-    return 'Opens on $date';
+    return 'Otevírá se na $date';
   }
 
   @override
   String capsuleWrittenOn(Object date) {
-    return 'Written on $date';
+    return 'Napsáno na $date';
   }
 
   @override
-  String get capsuleOpenEarly => 'Open early';
+  String get capsuleOpenEarly => 'Otevřeno brzy';
 
   @override
   String get capsuleOpenEarlyDescription =>
-      'The capsule opens now and stays open.';
+      'Kapsle se nyní otevře a zůstane otevřená.';
 
   @override
-  String get capsuleOpened => 'Time capsule opened';
+  String get capsuleOpened => 'Časová kapsle otevřena';
 
   @override
-  String get templateMorningName => 'Morning pages';
+  String get templateMorningName => 'Ranní stránky';
 
   @override
-  String get templateMorningDescription => 'Set up the day in three minutes';
+  String get templateMorningDescription => 'Nastavte den za tři minuty';
 
   @override
   String get templateMorningText =>
-      '## Three things I want to do well today\n1. \n2. \n3. \n\n## Something I look forward to\n\n## A note to myself\n';
+      '## Tři věci, které chci dnes udělat dobře\n1. \n2. \n3. \n\n## Něco, na co se těším\n\n## Poznámka pro sebe\n';
 
   @override
-  String get templateEveningName => 'Evening review';
+  String get templateEveningName => 'Večerní recenze';
 
   @override
-  String get templateEveningDescription => 'Close the day with what went well';
+  String get templateEveningDescription => 'Uzavřete den tím, co se povedlo';
 
   @override
   String get templateEveningText =>
-      '## Three good things today\n1. \n2. \n3. \n\n## What I learned\n\n## What could go better tomorrow\n';
+      '## Dnes tři dobré věci\n1. \n2. \n3. \n\n## Co jsem se naučil\n\n## Co může být zítra lepší\n';
 
   @override
-  String get routineMorning => 'Good morning';
+  String get routineMorning => 'Dobré ráno';
 
   @override
-  String get routineEvening => 'Evening review';
+  String get routineEvening => 'Večerní recenze';
 
   @override
-  String get settingsRoutinePrompts => 'Morning and evening prompts';
+  String get settingsRoutinePrompts => 'Ranní a večerní výzvy';
 
   @override
   String get settingsRoutinePromptsHint =>
-      'Suggest the morning or evening template in Stories';
+      'Navrhněte ranní nebo večerní šablonu ve Stories';
 
   @override
-  String get checkInTitle => 'Quick check-in';
+  String get checkInTitle => 'Rychlé odbavení';
 
   @override
-  String get checkInSubtitle => 'Mood in two taps';
+  String get checkInSubtitle => 'Nálada ve dvou kohoutcích';
 
   @override
-  String get checkInMood => 'How do you feel?';
+  String get checkInMood => 'jak se cítíš?';
 
   @override
-  String get checkInActivity => 'What are you doing?';
+  String get checkInActivity => 'co to děláš?';
 
   @override
-  String get checkInNote => 'A line about it (optional)';
+  String get checkInNote => 'Řádek o tom (volitelné)';
 
   @override
-  String get checkInSave => 'Save';
+  String get checkInSave => 'Uložit';
 
   @override
   String editorWordCount(int words, int characters) {
-    return '$words words · $characters characters';
+    return 'Slova $words · $characters znaky';
   }
 
   @override
-  String get coachProgramEverydayTagline => 'Notice the small things in a day.';
+  String get coachProgramEverydayTagline => 'Všímejte si malých věcí za den.';
 
   @override
-  String get coachProgramReflectTagline => 'Slow down and listen to yourself.';
+  String get coachProgramReflectTagline => 'Zpomalte a poslouchejte sami sebe.';
 
   @override
-  String get coachDuration => 'Duration';
+  String get coachDuration => 'Doba trvání';
 
   @override
   String get coachInterval => 'Interval';
 
   @override
-  String get coachDifficulty => 'Difficulty';
+  String get coachDifficulty => 'Obtížnost';
 
   @override
-  String get coachIntervalDaily => 'Daily';
+  String get coachIntervalDaily => 'Denně';
 
   @override
-  String get coachIntervalWeekly => 'Weekly';
+  String get coachIntervalWeekly => 'Týdenní';
 
   @override
-  String get coachDifficultyBeginner => 'Beginner';
+  String get coachDifficultyBeginner => 'Začátečník';
 
   @override
-  String get coachDifficultyIntermediate => 'Intermediate';
+  String get coachDifficultyIntermediate => 'Střední';
 
   @override
   String coachDurationDays(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count days',
-      one: '1 day',
+      other: '$count dní',
+      one: '$count den',
+      many: '$count dne',
+      few: '$count dny',
     );
     return '$_temp0';
   }
@@ -1663,1055 +1666,1066 @@ class AppLocalizationsCs extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count weeks',
-      one: '1 week',
+      other: '$count týdnů',
+      one: '$count týden',
+      many: '$count týdne',
+      few: '$count týdny',
     );
     return '$_temp0';
   }
 
   @override
   String coachDayN(int n) {
-    return 'Day $n';
+    return 'Den $n';
   }
 
   @override
   String coachWeekN(int n) {
-    return 'Week $n';
+    return 'Týden $n';
   }
 
   @override
-  String get coachEnroll => 'Enroll';
+  String get coachEnroll => 'Zaregistrujte se';
 
   @override
-  String get coachEndProgram => 'End program';
+  String get coachEndProgram => 'Ukončení programu';
 
   @override
-  String get coachAuthor => 'Author';
+  String get coachAuthor => 'Autor';
 
   @override
-  String get coachAuthorBio => 'Prompts written for this app.';
+  String get coachAuthorBio => 'Výzvy napsané pro tuto aplikaci.';
 
   @override
   String get coachEnrolledTip =>
-      'All set! Your questions will show up in Stories.';
+      'Vše nastaveno! Vaše otázky se zobrazí ve Stories.';
 
   @override
-  String get coachGoToStories => 'Go to Stories';
+  String get coachGoToStories => 'Přejděte na Příběhy';
 
   @override
-  String get coachAnswerHint => 'Write your answer…';
+  String get coachAnswerHint => 'Napište svou odpověď…';
 
   @override
-  String get storyWrapUp => 'That\'s all for today.';
+  String get storyWrapUp => 'To je pro dnešek vše.';
 
   @override
-  String get storyTapToClose => 'Tap to close';
+  String get storyTapToClose => 'Klepnutím zavřete';
 
   @override
-  String get coachAnswerDone => 'Done';
+  String get coachAnswerDone => 'Hotovo';
 
   @override
-  String get coachAnswered => 'Answered, tap to open';
+  String get coachAnswered => 'Přijato, klepnutím otevřete';
 
   @override
-  String get coachAnsweredEarlier => 'Answered';
+  String get coachAnsweredEarlier => 'Odpovězeno';
 
   @override
-  String get locationLocating => 'Locating…';
+  String get locationLocating => 'Vyhledávání…';
 
   @override
-  String get locationPickPlace => 'Pick a place';
+  String get locationPickPlace => 'Vyberte si místo';
 
   @override
-  String get locationPlacesHint => 'Address or name of the place';
+  String get locationPlacesHint => 'Adresa nebo název místa';
 
   @override
-  String get locationCustom => 'Custom place';
+  String get locationCustom => 'Vlastní místo';
 
   @override
-  String get locationCurrent => 'Current location';
+  String get locationCurrent => 'Aktuální poloha';
 
   @override
-  String get locationSaved => 'Saved places';
+  String get locationSaved => 'Uložená místa';
 
   @override
-  String get locationSearchResults => 'Search results';
+  String get locationSearchResults => 'Výsledky vyhledávání';
 
   @override
-  String get locationNearby => 'Nearby places';
+  String get locationNearby => 'Blízká místa';
 
   @override
-  String get locationRename => 'Rename';
+  String get locationRename => 'Přejmenovat';
 
   @override
-  String get locationSavePlace => 'Save place';
+  String get locationSavePlace => 'Uložit místo';
 
   @override
-  String get locationUnsavePlace => 'Remove from saved places';
+  String get locationUnsavePlace => 'Odebrat z uložených míst';
 
   @override
-  String get shareAs => 'Share as…';
+  String get shareAs => 'Sdílet jako…';
 
   @override
-  String get shareAsImage => 'Image';
+  String get shareAsImage => 'Obrázek';
 
   @override
-  String get shareAsZip => 'ZIP with the original media';
+  String get shareAsZip => 'ZIP s originálním médiem';
 
   @override
-  String get shareAsPlainText => 'Plain text';
+  String get shareAsPlainText => 'Prostý text';
 
   @override
   String get shareAsHtml => 'HTML';
 
   @override
-  String get onboardWelcomeTitle => 'Welcome to AID Diary';
+  String get onboardWelcomeTitle => 'Vítejte v AID Diary';
 
   @override
   String get onboardWelcomeText =>
-      'Start here, or connect this device to one you already use.';
+      'Začněte zde nebo připojte toto zařízení k zařízení, které již používáte.';
 
   @override
-  String get onboardStart => 'Start writing';
+  String get onboardStart => 'Začněte psát';
 
   @override
-  String get helpFaq => 'Frequently asked questions';
+  String get helpFaq => 'Často kladené otázky';
 
   @override
-  String get helpFaq1Q => 'Where is my diary stored?';
+  String get helpFaq1Q => 'Kde je uložen můj deník?';
 
   @override
   String get helpFaq1A =>
-      'Your diary is stored on this device. It reaches other devices or storage only when you enable sync, share or export it. Sync is end-to-end encrypted.';
+      'Váš deník je uložen v tomto zařízení. Do ostatních zařízení nebo úložiště se dostane pouze tehdy, když povolíte synchronizaci, sdílení nebo export. Synchronizace je šifrována end-to-end.';
 
   @override
-  String get helpFaq2Q => 'How do I keep a copy or move to a new device?';
+  String get helpFaq2Q =>
+      'Jak si ponechám kopii nebo přesunu na nové zařízení?';
 
   @override
   String get helpFaq2A =>
-      'Connect to an existing device in Settings → Data & storage → Sync and confirm authorization on the device that has your diary. Both devices remain usable. You can also create a backup and restore it on another device.';
+      'Připojte se ke stávajícímu zařízení v Nastavení → Data a úložiště → Synchronizovat a potvrďte autorizaci na zařízení, které má váš deník. Obě zařízení zůstávají použitelná. Můžete také vytvořit zálohu a obnovit ji na jiném zařízení.';
 
   @override
-  String get helpFaq3Q => 'Can I bring in entries from other diary apps?';
+  String get helpFaq3Q => 'Mohu přidávat záznamy z jiných aplikací pro deník?';
 
   @override
   String get helpFaq3A =>
-      'Yes: in Settings → Data & storage, import exports from Daylio, Diarium, Diaro, DayBook, My Brain, OneShot and Pixels, or a JSON export.';
+      'Ano: v Nastavení → Data a úložiště importujte exporty ze Daylio, Diarium, Diaro, DayBook, My Brain, OneShot a Pixels nebo export JSON.';
 
   @override
-  String get helpFaq4Q => 'How do coach programs work?';
+  String get helpFaq4Q => 'Jak koučovací programy fungují?';
 
   @override
   String get helpFaq4A =>
-      'Enroll in a program on the Coach page. Each day or week a new question waits in Stories; your answer is saved as an entry.';
+      'Zaregistrujte se do programu na stránce Coach. Každý den nebo týden čeká ve Stories nová otázka; vaše odpověď se uloží jako záznam.';
 
   @override
-  String get helpFaq5Q => 'What if I forget my passcode?';
+  String get helpFaq5Q => 'Co když zapomenu heslo?';
 
   @override
   String get helpFaq5A =>
-      'The passcode cannot be recovered, so keep a backup of your diary.';
+      'Přístupový kód nelze obnovit, proto si uschovejte zálohu svého deníku.';
 
   @override
-  String get helpPrivacy => 'Privacy';
+  String get helpPrivacy => 'soukromí';
 
   @override
   String get helpPrivacyText =>
-      'Diary content and media stay on this device unless you enable encrypted sync or share/export them. Maps, place lookup and weather use the configured services and send the location or search query needed for that request, not diary text.';
+      'Obsah deníku a média zůstanou v tomto zařízení, pokud nepovolíte šifrovanou synchronizaci nebo je nesdílíte/exportujete. Mapy, vyhledávání míst a počasí používají nakonfigurované služby a odesílají polohu nebo vyhledávací dotaz potřebný pro tento požadavek, nikoli text z deníku.';
 
   @override
-  String get photoMetaTitle => 'Use the photo\'s details?';
+  String get photoMetaTitle => 'Použít detaily fotky?';
 
   @override
   String photoMetaDateAndPlace(String date, String place) {
-    return 'Count this entry for $date and set its place to $place, as recorded in the photo?';
+    return 'Počítat tento záznam pro $date a nastavit jeho místo na $place, jak je zaznamenáno na fotografii?';
   }
 
   @override
   String photoMetaDate(String date) {
-    return 'Count this entry for $date, when the photo was taken?';
+    return 'Počítat tento záznam pro $date, kdy byla fotografie pořízena?';
   }
 
   @override
   String photoMetaPlace(String place) {
-    return 'Set this entry\'s place to $place, where the photo was taken?';
+    return 'Nastavit místo tohoto záznamu na $place, kde byla fotografie pořízena?';
   }
 
   @override
-  String get photoMetaApply => 'Use them';
+  String get photoMetaApply => 'Použijte je';
 
   @override
-  String get quickWriteTitle => 'Quick write';
+  String get quickWriteTitle => 'Rychlé psaní';
 
   @override
-  String get quickWriteText => 'Tap to start a new entry.';
+  String get quickWriteText => 'Klepnutím zahájíte nový záznam.';
 
   @override
-  String get settingsQuickWriteTitle => 'Quick write in notifications';
+  String get settingsQuickWriteTitle => 'Rychlé zápisy do notifikací';
 
   @override
   String get settingsQuickWriteDescription =>
-      'Keep a notification that opens a new entry.';
+      'Ponechte si upozornění, které otevře nový záznam.';
 
   @override
-  String get settingsNudgesTitle => 'Nudge me after a quiet stretch';
+  String get settingsNudgesTitle => 'Po tichém protažení mě šťouchni';
 
   @override
   String settingsNudgesDescription(int days) {
-    return 'A gentle reminder when you haven\'t written for $days days.';
+    return 'Jemné připomenutí, když jste $days dní nepsali.';
   }
 
   @override
-  String get nudgeTitle => 'It\'s been a while';
+  String get nudgeTitle => 'Už je to nějaký čas';
 
   @override
-  String get nudgeMonday => 'A new week: what are you looking forward to?';
+  String get nudgeMonday => 'Nový týden: na co se těšíte?';
 
   @override
-  String get nudgeTuesday => 'Two lines are enough. How are you today?';
+  String get nudgeTuesday => 'Dva řádky stačí. jak se dnes máš?';
 
   @override
-  String get nudgeWednesday =>
-      'Halfway through the week. What stood out so far?';
+  String get nudgeWednesday => 'V polovině týdne. Co dosud vyniklo?';
 
   @override
-  String get nudgeThursday => 'Anything small worth keeping from today?';
+  String get nudgeThursday =>
+      'Něco malého, co stojí za to si z dneška ponechat?';
 
   @override
-  String get nudgeFriday => 'The week is wrapping up. Note one good moment.';
+  String get nudgeFriday => 'Týden končí. Všimněte si jednoho dobrého momentu.';
 
   @override
-  String get nudgeSaturday => 'A slow Saturday is a good day to write.';
+  String get nudgeSaturday => 'Pomalá sobota je dobrý den na psaní.';
 
   @override
-  String get nudgeSunday => 'Look back on the week before it ends.';
+  String get nudgeSunday => 'Podívejte se zpět na týden před koncem.';
 
   @override
-  String get photoWidgetEmpty => 'Photos you add to entries show up here.';
+  String get photoWidgetEmpty =>
+      'Zde se zobrazí fotografie, které přidáte k záznamům.';
 
   @override
-  String get channelReminders => 'Reminders';
+  String get channelReminders => 'Připomenutí';
 
   @override
-  String get channelOnThisDay => 'On this day';
+  String get channelOnThisDay => 'V tento den';
 
   @override
-  String get channelCoach => 'Coach prompts';
+  String get channelCoach => 'Trenér nabádá';
 
   @override
-  String get channelNudges => 'Nudges after quiet days';
+  String get channelNudges => 'Pošťuchování po klidných dnech';
 
   @override
-  String get channelQuickWrite => 'Quick write';
+  String get channelQuickWrite => 'Rychlé psaní';
 
   @override
-  String get channelBackup => 'Backups';
+  String get channelBackup => 'Zálohy';
 
   @override
-  String get formatJsonExport => 'JSON (AID Diary export)';
+  String get formatJsonExport => 'JSON (export AID Diary)';
 
   @override
   String get aboutModifiedNotice =>
-      'A modified version of Daily You by Demizo and contributors. It is not the official Daily You app.';
+      'Upravená verze Daily You od Demiza a přispěvatelů. Není to oficiální aplikace Daily You.';
 
   @override
-  String get toolbarPhotos => 'Add photos';
+  String get toolbarPhotos => 'Přidejte fotky';
 
   @override
-  String get toolbarMedia => 'Photos and videos';
+  String get toolbarMedia => 'Fotografie a videa';
 
   @override
-  String get mediaFromGallery => 'Choose from gallery';
+  String get mediaFromGallery => 'Vyberte si z galerie';
 
   @override
-  String get mediaFromFiles => 'Choose from files';
+  String get mediaFromFiles => 'Vyberte ze souborů';
 
   @override
-  String get editorLeaveTitle => 'Save this entry?';
+  String get editorLeaveTitle => 'Uložit tento záznam?';
 
   @override
-  String get editorLeaveDiscard => 'Don\'t save';
+  String get editorLeaveDiscard => 'Neukládat';
 
   @override
-  String get editorTitleHint => 'Title';
+  String get editorTitleHint => 'Název';
 
   @override
-  String get editorLocating => 'Locating…';
+  String get editorLocating => 'Vyhledávání…';
 
   @override
   String get toolbarVideo => 'Video';
 
   @override
-  String get toolbarAudio => 'Voice note';
+  String get toolbarAudio => 'Hlasová poznámka';
 
   @override
-  String get toolbarTags => 'Tags';
+  String get toolbarTags => 'Tagy';
 
   @override
-  String get toolbarBulletList => 'Bulleted list';
+  String get toolbarBulletList => 'Seznam s odrážkami';
 
   @override
-  String get toolbarHeading => 'Heading';
+  String get toolbarHeading => 'Směr';
 
   @override
-  String get toolbarBold => 'Bold';
+  String get toolbarBold => 'Tučné';
 
   @override
-  String get toolbarItalic => 'Italic';
+  String get toolbarItalic => 'kurzíva';
 
   @override
-  String get toolbarHighlight => 'Highlight';
+  String get toolbarHighlight => 'Zvýrazněte';
 
   @override
-  String get toolbarStrikethrough => 'Strikethrough';
+  String get toolbarStrikethrough => 'Přeškrtnutí';
 
   @override
-  String get toolbarQuote => 'Quote';
+  String get toolbarQuote => 'Citace';
 
   @override
-  String get toolbarLink => 'Link';
+  String get toolbarLink => 'Odkaz';
 
   @override
-  String get toolbarInsert => 'Insert';
+  String get toolbarInsert => 'Vložit';
 
   @override
-  String get toolbarUndo => 'Undo';
+  String get toolbarUndo => 'Vrátit zpět';
 
   @override
-  String get toolbarRedo => 'Redo';
+  String get toolbarRedo => 'Znovu';
 
   @override
-  String get toolbarInsertDate => 'Insert the date';
+  String get toolbarInsertDate => 'Vložte datum';
 
   @override
-  String get toolbarInsertTime => 'Insert the time';
+  String get toolbarInsertTime => 'Vložte čas';
 
   @override
-  String get settingsSyncTitle => 'Cloud Sync';
+  String get settingsSyncTitle => 'Cloudová synchronizace';
 
   @override
   String get syncOffDescription =>
-      'Keep this diary the same on all your devices through Google Drive or a WebDAV server, such as Nextcloud, Synology or Jianguoyun.';
+      'Udržujte tento deník stejný na všech svých zařízeních prostřednictvím serveru Google Drive nebo WebDAV, jako je Nextcloud, Synology nebo Jianguoyun.';
 
   @override
-  String get syncUseGoogleDrive => 'Sync with Google Drive';
+  String get syncUseGoogleDrive => 'Synchronizujte se Google Drive';
 
   @override
-  String get syncOrWebDav => 'Or a WebDAV server';
+  String get syncOrWebDav => 'Nebo server WebDAV';
 
   @override
   String get syncGoogleDrive => 'Google Drive';
 
   @override
-  String get syncGoogleSignedIn => 'Signed in. You can go back to AID Diary.';
+  String get syncGoogleSignedIn =>
+      'Jste přihlášeni. Můžete se vrátit na AID Diary.';
 
   @override
-  String get syncGoogleSignInAgain => 'Google needs you to sign in again.';
+  String get syncGoogleSignInAgain =>
+      'Google potřebuje, abyste se znovu přihlásili.';
 
   @override
-  String get syncSignInAgain => 'Sign in again';
+  String get syncSignInAgain => 'Znovu se přihlaste';
 
   @override
-  String get settingsCommandLineTitle => 'Command line';
+  String get settingsCommandLineTitle => 'Příkazový řádek';
 
   @override
-  String get commandLineToggle => 'Command line interface';
+  String get commandLineToggle => 'Rozhraní příkazového řádku';
 
   @override
   String get commandLineToggleHint =>
-      'Lets the aid command and other programs on this device use the app\'s commands.';
+      'Umožňuje příkazu aid a dalším programům na tomto zařízení používat příkazy aplikace.';
 
   @override
-  String get commandLineAlwaysOn => 'Always on in development builds.';
+  String get commandLineAlwaysOn => 'Ve vývoji se neustále pracuje.';
 
   @override
   String commandLineListening(int port) {
-    return 'Listening on port $port';
+    return 'Poslech na portu $port';
   }
 
   @override
-  String get commandPaletteTitle => 'All commands';
+  String get commandPaletteTitle => 'Všechny příkazy';
 
   @override
-  String get commandPaletteSearch => 'Search commands';
+  String get commandPaletteSearch => 'Hledat příkazy';
 
   @override
-  String get commandPaletteRun => 'Run';
+  String get commandPaletteRun => 'Spustit';
 
   @override
-  String get commandPaletteConfirm => 'This cannot simply be undone. Run it?';
+  String get commandPaletteConfirm =>
+      'To nelze jednoduše vrátit zpět. spustit to?';
 
   @override
   String syncReceiving(int done, int total) {
-    return 'Receiving $done of $total…';
+    return 'Příjem $done z $total…';
   }
 
   @override
   String syncSending(int done, int total) {
-    return 'Sending $done of $total…';
+    return 'Odesílání $done z $total…';
   }
 
   @override
   String get syncGoogleDriveNotAllowed =>
-      'Access to Google Drive was not allowed. Connect again and tick Google Drive on Google\'s page.';
+      'Přístup k Google Drive nebyl povolen. Připojte se znovu a zaškrtněte Google Drive na stránce Google.';
 
   @override
   String get syncEntryUnsynced =>
-      'Not synced: the last sync did not go through';
+      'Nesynchronizováno: poslední synchronizace neproběhla';
 
   @override
-  String get syncUseOfficial => 'Use the AID sync server';
+  String get syncUseOfficial => 'Použijte synchronizační server AID';
 
   @override
-  String get syncServer => 'Server address';
+  String get syncServer => 'Adresa serveru';
 
   @override
-  String get syncUsername => 'Username';
+  String get syncUsername => 'Uživatelské jméno';
 
   @override
-  String get syncPassword => 'Password';
+  String get syncPassword => 'Heslo';
 
   @override
-  String get syncConnect => 'Connect';
+  String get syncConnect => 'Připojte se';
 
   @override
-  String get syncConnecting => 'Connecting…';
+  String get syncConnecting => 'Připojování…';
 
   @override
   String get syncSignInFailed =>
-      'Could not sign in. Check the address, the username and the password.';
+      'Nelze se přihlásit. Zkontrolujte adresu, uživatelské jméno a heslo.';
 
   @override
   String syncConnectFailed(String error) {
-    return 'Could not connect: $error';
+    return 'Nelze se připojit: $error';
   }
 
   @override
-  String get syncNewSpaceTitle => 'Start syncing';
+  String get syncNewSpaceTitle => 'Spusťte synchronizaci';
 
   @override
   String get syncNewSpaceDescription =>
-      'There is no synced diary here yet. This diary will be uploaded, end-to-end encrypted with a key that stays on your devices.';
+      'Synchronizovaný deník zde zatím není. Tento deník bude nahrán, end-to-end zašifrován pomocí klíče, který zůstane na vašich zařízeních.';
 
   @override
-  String get syncJoinTitle => 'Join the synced diary';
+  String get syncJoinTitle => 'Připojte se k synchronizovanému deníku';
 
   @override
   String get syncWrongKey =>
-      'This recovery code does not open the synced diary.';
+      'Tento obnovovací kód neotevře synchronizovaný deník.';
 
   @override
   String syncLastSynced(String time) {
-    return 'Last synced $time';
+    return 'Poslední synchronizace $time';
   }
 
   @override
-  String get syncNever => 'Not synced yet';
+  String get syncNever => 'Dosud nesynchronizováno';
 
   @override
-  String get syncSyncing => 'Syncing…';
+  String get syncSyncing => 'Synchronizace…';
 
   @override
   String syncFailed(String error) {
-    return 'The last sync failed: $error';
+    return 'Poslední synchronizace se nezdařila: $error';
   }
 
   @override
   String get syncLocked =>
-      'The synced diary now belongs to other devices, or was started over. Pair with one of them or use the recovery code to keep syncing.';
+      'Synchronizovaný deník nyní patří do jiných zařízení nebo byl spuštěn znovu. Spárujte s jedním z nich nebo použijte obnovovací kód pro pokračování synchronizace.';
 
   @override
-  String get syncNow => 'Sync now';
+  String get syncNow => 'Synchronizovat nyní';
 
   @override
-  String get syncUnlock => 'Unlock';
+  String get syncUnlock => 'Odemknout';
 
   @override
-  String get syncEncrypted => 'End-to-end encrypted';
+  String get syncEncrypted => 'End-to-end šifrováno';
 
   @override
-  String get syncDisconnect => 'Stop syncing';
+  String get syncDisconnect => 'Zastavit synchronizaci';
 
   @override
   String get syncDisconnectDescription =>
-      'This device stops syncing. The diary here and the synced copy stay as they are.';
+      'Toto zařízení přestane synchronizovat. Zdejší deník a synchronizovaná kopie zůstanou tak, jak jsou.';
 
   @override
-  String get syncOwnRecoveryPassword => 'Use my own recovery password';
+  String get syncOwnRecoveryPassword => 'Použít mé vlastní heslo pro obnovení';
 
   @override
-  String get syncRecoveryPassword => 'Recovery password';
+  String get syncRecoveryPassword => 'Heslo pro obnovení';
 
   @override
-  String get syncRecoveryPasswordRepeat => 'Repeat the recovery password';
+  String get syncRecoveryPasswordRepeat => 'Opakujte heslo pro obnovení';
 
   @override
   String syncRecoveryPasswordTooShort(int min) {
-    return 'Use at least $min characters';
+    return 'Použijte alespoň $min znaků';
   }
 
   @override
-  String get syncRecoveryPasswordMismatch => 'The passwords differ';
+  String get syncRecoveryPasswordMismatch => 'Hesla se liší';
 
   @override
-  String get syncRecoveryCode => 'Recovery code';
+  String get syncRecoveryCode => 'Obnovovací kód';
 
   @override
-  String get syncRecoveryCodeTitle => 'Save your recovery code';
+  String get syncRecoveryCodeTitle => 'Uložte si kód pro obnovení';
 
   @override
   String get syncRecoveryCodeDescription =>
-      'If every device of yours is lost, this code restores your synced diary. Keep it in a password manager or on paper. It is shown only this once.';
+      'Pokud se ztratí každé vaše zařízení, tento kód obnoví váš synchronizovaný deník. Uchovávejte jej ve správci hesel nebo na papíře. Zobrazuje se pouze jednou.';
 
   @override
-  String get syncRecoveryCodeCopied => 'Recovery code copied';
+  String get syncRecoveryCodeCopied => 'Obnovovací kód byl zkopírován';
 
   @override
-  String get syncRecoveryCodeSaved => 'I have saved it';
+  String get syncRecoveryCodeSaved => 'Uložil jsem to';
 
   @override
   String get syncJoinNeedsKey =>
-      'This synced diary belongs to your other devices. Pair with one of them, or use the recovery code. The entries on this device will be added to it.';
+      'Tento synchronizovaný deník patří vašim dalším zařízením. Spárujte s jedním z nich nebo použijte obnovovací kód. Položky na tomto zařízení se do něj přidají.';
 
   @override
-  String get syncPairDevice => 'Pair with a device';
+  String get syncPairDevice => 'Spárujte se zařízením';
 
   @override
-  String get syncUseRecoveryCode => 'Use the recovery code';
+  String get syncUseRecoveryCode => 'Použijte obnovovací kód';
 
   @override
-  String get syncAddDevice => 'Add a device';
+  String get syncAddDevice => 'Přidejte zařízení';
 
   @override
-  String get syncChangeRecoveryCode => 'Change the recovery code';
+  String get syncChangeRecoveryCode => 'Změňte kód pro obnovení';
 
   @override
   String get syncChangeRecoveryDescription =>
-      'A new code replaces the current one, which stops working. Your data and other devices stay as they are.';
+      'Nový kód nahradí stávající, který přestane fungovat. Vaše data a další zařízení zůstanou tak, jak jsou.';
 
   @override
-  String get syncNewRandomCode => 'New random code';
+  String get syncNewRandomCode => 'Nový náhodný kód';
 
   @override
-  String get syncRecoveryCodeChanged => 'Recovery code changed';
+  String get syncRecoveryCodeChanged => 'Kód obnovení byl změněn';
 
   @override
-  String get syncResetSpace => 'Start the synced diary over';
+  String get syncResetSpace => 'Spusťte synchronizovaný deník znovu';
 
   @override
   String get syncResetSpaceDescription =>
-      'Only when no device and no recovery code opens it any more: the synced copy is replaced by the diary on this device, under this device\'s keys. Your other devices then pair again.';
+      'Pouze když jej již neotevře žádné zařízení a žádný kód pro obnovení: synchronizovaná kopie je nahrazena deníkem na tomto zařízení pod tlačítky tohoto zařízení. Vaše ostatní zařízení se poté znovu spárují.';
 
   @override
-  String get syncPairTitle => 'Pair devices';
+  String get syncPairTitle => 'Spárujte zařízení';
 
   @override
-  String get syncPairShow => 'Show a code';
+  String get syncPairShow => 'Ukažte kód';
 
   @override
-  String get syncPairEnter => 'Enter a code';
+  String get syncPairEnter => 'Zadejte kód';
 
   @override
   String get syncPairShowHint =>
-      'On your other device, open Pair devices, choose Enter a code, and type or scan this.';
+      'Na druhém zařízení otevřete Spárovat zařízení, zvolte Zadejte kód a zadejte nebo naskenujte tento.';
 
   @override
   String get syncPairEnterHint =>
-      'Type the code your other device shows, or scan it.';
+      'Zadejte kód zobrazený na druhém zařízení nebo jej naskenujte.';
 
   @override
-  String get syncPairCode => 'Pairing code';
+  String get syncPairCode => 'Párovací kód';
 
   @override
-  String get syncPairScan => 'Scan';
+  String get syncPairScan => 'Skenujte';
 
   @override
-  String get syncPairStart => 'Pair';
+  String get syncPairStart => 'Spárovat';
 
   @override
-  String get syncPairWaiting => 'Waiting for the other device…';
+  String get syncPairWaiting => 'Čekání na další zařízení…';
 
   @override
   String syncPairDone(String device) {
-    return 'Paired with $device';
+    return 'Spárováno s $device';
   }
 
   @override
   String get syncPairWrongCode =>
-      'The code did not match. Show a new code and try again.';
+      'Kód se neshodoval. Ukažte nový kód a zkuste to znovu.';
 
   @override
   String get syncPairNoOffer =>
-      'No device shows this code. It may have expired.';
+      'Tento kód nezobrazuje žádné zařízení. Možná vypršela platnost.';
 
   @override
-  String get syncPairTimedOut => 'The other device did not answer in time.';
+  String get syncPairTimedOut => 'Druhé zařízení neodpovědělo včas.';
 
   @override
   String get syncPairNeither =>
-      'Neither device is set up with this synced diary yet.';
+      'Žádné zařízení zatím nemá nastaven tento synchronizovaný deník.';
 
   @override
-  String get syncPairBoth => 'Both devices already open this synced diary.';
+  String get syncPairBoth =>
+      'Obě zařízení již tento synchronizovaný deník otevírají.';
 
   @override
   String syncPairFailed(String error) {
-    return 'Pairing failed: $error';
+    return 'Párování se nezdařilo: $error';
   }
 
   @override
   String get syncMediaPending =>
-      'Diary synced · some media is still transferring';
+      'Diář synchronizován · některá média se stále přenášejí';
 
   @override
   String get syncWaitingForDevices =>
-      'Diary synced · waiting for another device to transfer media';
+      'Diář synchronizován · čeká, až jiné zařízení přenese média';
 
   @override
   String get syncCacheNotice =>
-      'Cloud media is temporary. Keep the originals on your devices; syncing is not a backup.';
+      'Cloudová média jsou dočasná. Uchovávejte originály ve svých zařízeních; synchronizace není záloha.';
 
   @override
-  String get paperTitle => 'Letter paper';
+  String get paperTitle => 'Dopisní papír';
 
   @override
-  String get paperPlain => 'Plain';
+  String get paperPlain => 'Obyčejný';
 
   @override
-  String get paperLined => 'Lined';
+  String get paperLined => 'Podšité';
 
   @override
-  String get paperGrid => 'Grid';
+  String get paperGrid => 'Mřížka';
 
   @override
-  String get paperTinted => 'Tinted';
+  String get paperTinted => 'Tónovaná';
 
   @override
-  String get paperDecorationTitle => 'Decorations';
+  String get paperDecorationTitle => 'Dekorace';
 
   @override
-  String get paperDecorationNone => 'None';
+  String get paperDecorationNone => 'žádný';
 
   @override
-  String get paperDecorationBotanical => 'Leaves';
+  String get paperDecorationBotanical => 'Listy';
 
   @override
-  String get paperDecorationStars => 'Stars';
+  String get paperDecorationStars => 'hvězdy';
 
   @override
-  String get paperDecorationWashi => 'Washi tape';
+  String get paperDecorationWashi => 'Washi páska';
 
   @override
-  String get themeDarkChoice => 'Dark appearance';
+  String get themeDarkChoice => 'Tmavý vzhled';
 
   @override
-  String get themeDarkSame => 'Follow light palette';
+  String get themeDarkSame => 'Postupujte podle světelné palety';
 
   @override
-  String get themeDarkCustom => 'Separate palette';
+  String get themeDarkCustom => 'Samostatná paleta';
 
   @override
-  String get themeDarkAccent => 'Dark accent colour';
+  String get themeDarkAccent => 'Tmavá akcentní barva';
 
   @override
-  String get themeColorTeal => 'Teal';
+  String get themeColorTeal => 'Modrozelená';
 
   @override
-  String get themeColorCyan => 'Cyan';
+  String get themeColorCyan => 'azurová';
 
   @override
-  String get themeColorIndigo => 'Indigo';
+  String get themeColorIndigo => 'Indigová';
 
   @override
-  String get themeColorCoral => 'Coral';
+  String get themeColorCoral => 'Korálová';
 
   @override
-  String get themeColorOlive => 'Olive';
+  String get themeColorOlive => 'Olivový';
 
   @override
-  String get themeColorSlate => 'Slate';
+  String get themeColorSlate => 'Břidlice';
 
   @override
-  String get drawingTitle => 'Drawing';
+  String get drawingTitle => 'Kreslení';
 
   @override
-  String get drawingPen => 'Pen';
+  String get drawingPen => 'Pero';
 
   @override
-  String get drawingEraser => 'Eraser';
+  String get drawingEraser => 'Guma';
 
   @override
-  String get drawingUndo => 'Undo';
+  String get drawingUndo => 'Vrátit zpět';
 
   @override
-  String get drawingClear => 'Clear';
+  String get drawingClear => 'Jasný';
 
   @override
-  String get drawingWidth => 'Pen width';
+  String get drawingWidth => 'Šířka pera';
 
   @override
-  String get drawingStylusOnly => 'Stylus only';
+  String get drawingStylusOnly => 'Pouze stylus';
 
   @override
-  String get drawingDiscardTitle => 'Discard drawing?';
+  String get drawingDiscardTitle => 'Zahodit kresbu?';
 
   @override
-  String get drawingDiscardBody => 'This drawing has not been saved.';
+  String get drawingDiscardBody => 'Tento výkres nebyl uložen.';
 
   @override
-  String get drawingSaveError => 'Could not save the drawing.';
+  String get drawingSaveError => 'Výkres se nepodařilo uložit.';
 
   @override
-  String get syncNetworkTitle => 'Network diagnostics';
+  String get syncNetworkTitle => 'Diagnostika sítě';
 
   @override
-  String get syncNetworkRefresh => 'Refresh';
+  String get syncNetworkRefresh => 'Obnovit';
 
   @override
-  String get syncNetworkSelectedRoute => 'Current path';
+  String get syncNetworkSelectedRoute => 'Aktuální cesta';
 
   @override
-  String get syncNetworkAvailableRoutes => 'Available paths';
+  String get syncNetworkAvailableRoutes => 'Dostupné cesty';
 
   @override
-  String get syncNetworkSignaling => 'Device directory connection';
+  String get syncNetworkSignaling => 'Připojení adresáře zařízení';
 
   @override
-  String get syncNetworkRelayRemaining => 'Remaining relay allowance';
+  String get syncNetworkRelayRemaining => 'Zbývající štafeta';
 
   @override
-  String get syncNetworkIcePair => 'Direct connection candidates';
+  String get syncNetworkIcePair => 'Kandidáti na přímé připojení';
 
   @override
-  String get syncNetworkPeerTrusted => 'Authenticated device';
+  String get syncNetworkPeerTrusted => 'Ověřené zařízení';
 
   @override
-  String get syncNetworkNoRoute => 'Waiting for a connection';
+  String get syncNetworkNoRoute => 'Čekání na spojení';
 
   @override
-  String get syncNetworkUnavailable => 'Diagnostics are unavailable';
+  String get syncNetworkUnavailable => 'Diagnostika není k dispozici';
 
   @override
-  String get syncMediaCopiesTitle => 'Media delivery and copies';
+  String get syncMediaCopiesTitle => 'Doručování médií a kopií';
 
   @override
-  String get syncMediaPendingCount => 'Waiting to transfer';
+  String get syncMediaPendingCount => 'Čekání na přenos';
 
   @override
-  String get syncMediaDurableCount => 'Delivered to personal storage';
+  String get syncMediaDurableCount => 'Doručeno do osobního skladu';
 
   @override
-  String get syncMediaTemporaryCount => 'Temporary or unconfirmed copies';
+  String get syncMediaTemporaryCount => 'Dočasné nebo nepotvrzené kopie';
 
   @override
   String get syncMediaReceiptExplanation =>
-      'These counts describe completed deliveries, not a fresh audit of surviving backups.';
+      'Tyto počty popisují dokončené dodávky, nikoli nový audit přežívajících záloh.';
 
   @override
   String get syncMediaCacheExplanation =>
-      'Temporary cloud media can expire. Keep your originals or a separate backup.';
+      'Platnost dočasného cloudového média může vypršet. Uschovejte si originály nebo samostatnou zálohu.';
 
   @override
-  String get momentsTitle => 'Photo moments';
+  String get momentsTitle => 'Fotografické momentky';
 
   @override
   String get momentsHint =>
-      'Find groups using local photo times and optional coordinates. Photos are attached only when you choose a card.';
+      'Najděte skupiny pomocí místních fotografických časů a volitelných souřadnic. Fotografie jsou připojeny pouze v případě, že vyberete kartu.';
 
   @override
-  String get momentsScan => 'Find moments';
+  String get momentsScan => 'Najděte okamžiky';
 
   @override
-  String get momentsChooseFolder => 'Choose photo folder';
+  String get momentsChooseFolder => 'Vyberte složku s fotografiemi';
 
   @override
-  String get momentsLocation => 'Include photo locations';
+  String get momentsLocation => 'Zahrnout umístění fotografií';
 
   @override
-  String get momentsEmpty => 'No recent photo groups.';
+  String get momentsEmpty => 'Žádné nedávné skupiny fotografií.';
 
   @override
-  String get momentsCreate => 'Write about these photos';
+  String get momentsCreate => 'Napište o těchto fotkách';
 
   @override
-  String get momentsDismiss => 'Dismiss';
+  String get momentsDismiss => 'Odmítnout';
 
   @override
-  String get momentsError => 'Could not read local photos.';
+  String get momentsError => 'Nelze přečíst místní fotografie.';
 
   @override
-  String get momentsCreated => 'Photo entry created.';
+  String get momentsCreated => 'Fotka byla vytvořena.';
 
   @override
   String get momentsPermission =>
-      'Allow access to photos to find local suggestions.';
+      'Povolte přístup k fotkám, abyste našli místní návrhy.';
 
   @override
   String get momentsScope =>
-      'Recent photos only; at most 500 photos and 20 photos per card.';
+      'Pouze nejnovější fotografie; maximálně 500 fotografií a 20 fotografií na kartu.';
 
   @override
   String momentsPhotoCount(int count) {
-    return '$count photos';
+    return 'Fotografie $count';
   }
 
   @override
-  String get nearbyTitle => 'Connect devices';
+  String get nearbyTitle => 'Připojte zařízení';
 
   @override
-  String get nearbySend => 'Authorize another device';
+  String get nearbySend => 'Autorizujte další zařízení';
 
   @override
-  String get nearbyReceive => 'Connect to an existing device';
+  String get nearbyReceive => 'Připojte se ke stávajícímu zařízení';
 
   @override
   String get nearbyInstructions =>
-      'Connect both devices to the same Wi-Fi or to each other’s hotspot. Confirm authorization on the existing device; both devices remain usable. No internet is required.';
+      'Připojte obě zařízení ke stejnému Wi-Fi nebo ke vzájemnému hotspotu. Potvrďte autorizaci na stávajícím zařízení; obě zařízení zůstávají použitelná. Není vyžadován žádný internet.';
 
   @override
   String get nearbyCompare =>
-      'Compare this code on both devices before approving.';
+      'Před schválením tento kód porovnejte na obou zařízeních.';
 
   @override
-  String get nearbyConfirm => 'The codes match';
+  String get nearbyConfirm => 'Kódy se shodují';
 
   @override
-  String get nearbyScan => 'Scan the other device’s code';
+  String get nearbyScan => 'Naskenujte kód druhého zařízení';
 
   @override
-  String get nearbyPaste => 'Paste invitation';
+  String get nearbyPaste => 'Vložit pozvánku';
 
   @override
-  String get nearbyWaiting => 'Waiting for approval on the other device';
+  String get nearbyWaiting => 'Čekání na schválení na druhém zařízení';
 
   @override
   String get nearbyWorking =>
-      'Authorizing and syncing your diary and attachments…';
+      'Autorizace a synchronizace vašeho deníku a příloh…';
 
   @override
   String get nearbyPending =>
-      'Some attachments still need syncing. Keep the other device online and try again.';
+      'Některé přílohy stále vyžadují synchronizaci. Ponechte druhé zařízení online a zkuste to znovu.';
 
   @override
-  String get nearbyComplete => 'Device connected; diary and attachments synced';
+  String get nearbyComplete =>
+      'Zařízení připojeno; diář a přílohy synchronizovány';
 
   @override
   String get nearbyFailed =>
-      'Connection did not finish. Check the local connection and try again.';
+      'Připojení nebylo dokončeno. Zkontrolujte místní připojení a zkuste to znovu.';
 
   @override
   String get nearbyEmptyRequired =>
-      'Use a device with an empty diary that is not connected to sync yet.';
+      'Použijte zařízení s prázdným deníkem, které ještě není připojeno k synchronizaci.';
 
   @override
-  String get nearbyRetry => 'Continue syncing';
+  String get nearbyRetry => 'Pokračujte v synchronizaci';
 
   @override
-  String get nearbyWifi => 'Wi-Fi settings';
+  String get nearbyWifi => 'Nastavení Wi-Fi';
 
   @override
-  String get nearbyHotspot => 'Hotspot settings';
+  String get nearbyHotspot => 'Nastavení hotspotu';
 
   @override
   String get nearbyKeepOpen =>
-      'Keep this page open until the new device finishes. The invitation expires after two minutes.';
+      'Ponechte tuto stránku otevřenou, dokud nové zařízení nedokončí. Platnost pozvánky vyprší po dvou minutách.';
 
   @override
-  String get syncDevicesTitle => 'Authorized devices';
+  String get syncDevicesTitle => 'Autorizovaná zařízení';
 
   @override
   String get syncDevicesDescription =>
-      'Only approved devices can access this AID account. Revoking a device blocks the server but cannot erase a master key or diary already copied to it.';
+      'K tomuto účtu AID mají přístup pouze schválená zařízení. Odvolání zařízení zablokuje server, ale nemůže vymazat hlavní klíč nebo deník, které jsou na něj již zkopírovány.';
 
   @override
   String get syncDeviceRequest =>
-      'Show this authorization QR to an approved device';
+      'Ukažte tento autorizační QR na schváleném zařízení';
 
   @override
-  String get syncDeviceAuthorize => 'Authorize a device';
+  String get syncDeviceAuthorize => 'Autorizujte zařízení';
 
   @override
   String get syncDeviceAuthorizeDescription =>
-      'Scan or paste the new device’s authorization request.';
+      'Naskenujte nebo vložte žádost o autorizaci nového zařízení.';
 
   @override
-  String get syncDeviceRevoke => 'Revoke';
+  String get syncDeviceRevoke => 'Odvolat';
 
   @override
-  String get syncDeviceRotate => 'Rotate this device’s signing key';
+  String get syncDeviceRotate => 'Otočte podpisový klíč tohoto zařízení';
 
   @override
-  String get syncDeviceCheck => 'Check authorization';
+  String get syncDeviceCheck => 'Zkontrolujte autorizaci';
 
   @override
-  String get syncDeviceHardware => 'Hardware-backed signing key';
+  String get syncDeviceHardware => 'Hardwarově podporovaný podpisový klíč';
 
   @override
-  String get syncDeviceSoftware => 'Non-exportable software signing key';
+  String get syncDeviceSoftware => 'Neexportovatelný softwarový podpisový klíč';
 
   @override
   String get syncDeviceUnavailable =>
-      'Device authorization is unavailable. Approve this device from another authorized device and retry.';
+      'Autorizace zařízení není k dispozici. Schvalte toto zařízení z jiného autorizovaného zařízení a zkuste to znovu.';
 
   @override
-  String get syncDeviceRevoked => 'Revoked';
+  String get syncDeviceRevoked => 'Odvoláno';
 
   @override
-  String get syncDeviceLocal => 'This device';
+  String get syncDeviceLocal => 'Toto zařízení';
 
   @override
-  String get cloudTrafficTitle => 'Monthly cloud media allowance';
+  String get cloudTrafficTitle =>
+      'Měsíční kvóta cloudového přenosu dat pro mediální soubory';
 
   @override
-  String get cloudTrafficLimit => 'Monthly allowance';
+  String get cloudTrafficLimit => 'Měsíční kvóta přenosu dat';
 
   @override
-  String get cloudTrafficUsed => 'Used';
+  String get cloudTrafficUsed => 'Použitý přenos dat';
 
   @override
-  String get cloudTrafficRemaining => 'Remaining';
+  String get cloudTrafficRemaining => 'Zbývá datový přenos';
 
   @override
   String cloudTrafficResetsAt(String time) {
-    return 'Resets $time';
+    return 'Kvóta přenosu dat resetuje $time';
   }
 
   @override
   String get cloudTrafficExhausted =>
-      'Cloud media allowance used up. Missing media will resume automatically over a direct connection or when the allowance resets.';
+      'Kvóta cloudového přenosu dat pro mediální soubory byla vyčerpána. Chybějící mediální soubory se automaticky synchronizují, jakmile bude k dispozici přímé připojení nebo se kvóta resetuje.';
 
   @override
   String get cloudTrafficExplanation =>
-      'Media cache and live relay share this allowance. Direct connections do not use it. Diary text and connection control have separate small daily limits.';
+      'Tuto kvótu přenosu dat sdílí ukládání mediálních souborů do mezipaměti a živé přenosy. Přímá připojení jej nespotřebovávají. Text v deníku a zprávy o kontrole připojení mají samostatné malé denní limity.';
 
   @override
-  String get appearanceThemeSection => 'App theme';
+  String get appearanceThemeSection => 'Téma aplikace';
 
   @override
-  String get appearancePaperSection => 'Diary paper';
+  String get appearancePaperSection => 'Deník papír';
 
   @override
-  String get appearanceTypographySection => 'Diary text';
+  String get appearanceTypographySection => 'Text deníku';
 
   @override
-  String get appearancePreferencesSection => 'General preferences';
+  String get appearancePreferencesSection => 'Obecné preference';
 
   @override
   String get themeSystemAccentHint =>
-      'Uses the system palette instead of custom colors. Turn it off to choose your own.';
+      'Místo vlastních barev používá systémovou paletu. Vypněte jej a vyberte si vlastní.';
 
   @override
   String get syncDeviceNameSaveFailed =>
-      'Could not save the device name. Please try again.';
+      'Název zařízení nelze uložit. Zkuste to prosím znovu.';
 
   @override
-  String get nearbyConnectionHelp => 'Connection help';
+  String get nearbyConnectionHelp => 'Pomoc s připojením';
 
   @override
-  String get syncAllSynced => 'Everything synced';
+  String get syncAllSynced => 'Vše synchronizováno';
 
   @override
-  String get syncDetailsTitle => 'Sync details';
+  String get syncDetailsTitle => 'Podrobnosti synchronizace';
 
   @override
-  String get syncMore => 'More options';
+  String get syncMore => 'Více možností';
 
   @override
-  String get syncDeviceName => 'Device name';
+  String get syncDeviceName => 'Název zařízení';
 
   @override
-  String get syncDeviceNameHint => 'For example: My tablet';
+  String get syncDeviceNameHint => 'Například: Můj tablet';
 
   @override
-  String get syncDeviceNameInvalid => 'Use 1 to 32 characters';
+  String get syncDeviceNameInvalid => 'Použijte 1 až 32 znaků';
 
   @override
-  String get syncDeviceKeyDetails => 'Security details';
+  String get syncDeviceKeyDetails => 'Bezpečnostní detaily';
 
   @override
   String get syncConnectionProblem =>
-      'Unable to sync for now. Retrying automatically.';
+      'Momentálně nelze synchronizovat. Probíhá automatický pokus znovu.';
 
   @override
-  String get syncCopyComplete => 'Complete copy';
+  String get syncCopyComplete =>
+      'Kompletní kopie vašeho deníku a mediálních souborů';
 
   @override
-  String get syncCopyPartial => 'Some media is still missing';
+  String get syncCopyPartial => 'Některá média stále chybí';
 
   @override
-  String get syncCopyOlder => 'New changes are waiting to sync';
+  String get syncCopyOlder => 'Nové změny čekají na synchronizaci';
 
   @override
   String get syncCopyUnavailable =>
-      'Copy details are unavailable. Try again later.';
+      'Podrobnosti o kopii nejsou k dispozici. Zkuste to znovu později.';
 
   @override
   String get syncCopyLastKnown =>
-      'Other devices show their last confirmed copy. Offline devices cannot be checked now.';
+      'Ostatní zařízení ukazují svou poslední potvrzenou kopii. Offline zařízení nyní nelze kontrolovat.';
 
   @override
   String get syncCopyTemporary =>
-      'Temporary cache. Keep the originals on your devices.';
+      'Dočasná mezipaměť. Originály si ponechte na svých zařízeních.';
 
   @override
   String get syncCopyStorage =>
-      'Your sync storage. Completed media uploads are listed in diagnostics.';
+      'Vaše synchronizační úložiště. Dokončená nahrání médií jsou uvedena v diagnostice.';
 
   @override
   String syncCopyChecked(String time) {
-    return 'Last confirmed $time';
+    return 'Naposledy potvrzeno $time';
   }
 
   @override
   String cloudTrafficSummary(String remaining, String limit) {
-    return 'Available this month: $remaining / $limit';
+    return 'Přenos dat zbývající tento měsíc: $remaining / $limit';
   }
 
   @override
-  String get onboardNewDiary => 'Start here';
+  String get onboardNewDiary => 'Začněte zde';
 
   @override
-  String get onboardConnect => 'Connect to an existing device';
+  String get onboardConnect => 'Připojte se ke stávajícímu zařízení';
 
   @override
   String get onboardFailed =>
-      'Setup could not be completed. Your diary is safe; please try again.';
+      'Nastavení nebylo možné dokončit. Váš deník je v bezpečí; zkuste to prosím znovu.';
 
   @override
-  String get tutorialTitle => 'How to use the diary';
+  String get tutorialTitle => 'Jak používat deník';
 
   @override
-  String get tutorialWriteTitle => 'Write your first entry';
+  String get tutorialWriteTitle => 'Napište svůj první záznam do deníku';
 
   @override
   String get tutorialWriteText =>
-      'Tap + to write. Add a title if you want, choose the diary day and tap the check mark to save. You can edit it again at any time.';
+      'Klepnutím na + napište záznam do deníku. Přidejte volitelný název, vyberte datum deníku a klepnutím na zaškrtnutí uložte. Záznam v deníku můžete kdykoli znovu upravit.';
 
   @override
-  String get tutorialMediaTitle => 'Add photos, audio or handwriting';
+  String get tutorialMediaTitle => 'Přidejte fotografie, zvuk nebo rukopis';
 
   @override
   String get tutorialMediaText =>
-      'Use + in the editor to attach photos, videos or a voice note, or open the pen canvas. These attachments stay with the entry.';
+      'Pomocí + v editoru deníku můžete připojit fotografie, videa nebo hlasový záznam nebo otevřít plátno pro psaní rukou. Tyto přílohy se ukládají se záznamem v deníku.';
 
   @override
-  String get tutorialReviewTitle => 'Find a day again';
+  String get tutorialReviewTitle => 'Najděte si znovu den';
 
   @override
   String get tutorialReviewText =>
-      'Browse the journal or calendar, search your writing and use tags to organize it. Media and Atlas help you look back by photo or place.';
+      'Procházejte svůj diář nebo kalendář, prohledávejte své psaní a organizujte záznamy pomocí značek. Stránky Média a Atlas vám umožňují najít minulé záznamy podle fotografie nebo umístění.';
 
   @override
-  String get tutorialSyncTitle => 'Use more than one device';
+  String get tutorialSyncTitle => 'Používejte více než jedno zařízení';
 
   @override
   String get tutorialSyncText =>
-      'In Settings → Data & storage → Sync, connect to an existing device and confirm authorization there. Both devices can keep using the diary. Text syncs first; media follows as the connection and allowance permit.';
+      'V Nastavení → Data a úložiště → Synchronizace se připojte ke stávajícímu zařízení a potvrďte autorizaci na tomto zařízení. Obě zařízení mohou deník nadále používat. Nejprve se synchronizuje text deníku. Mediální soubory se synchronizují dále, když to síťové připojení a zbývající kvóta přenosu dat dovolí.';
 
   @override
-  String get tutorialPrivacyTitle => 'Keep your diary safe';
+  String get tutorialPrivacyTitle => 'Udržujte svůj deník v bezpečí';
 
   @override
   String get tutorialPrivacyText =>
-      'Entries stay on this device unless you enable sync or share/export them. Sync is end-to-end encrypted. Settings also offers an app passcode and backups; you can reopen this tutorial there.';
+      'Záznamy v deníku zůstanou na tomto zařízení, pokud nepovolíte synchronizaci, sdílení nebo export. Synchronizace je šifrována end-to-end. V Nastavení můžete také nastavit přístupový kód aplikace, vytvořit zálohy a znovu otevřít tento výukový program.';
 }

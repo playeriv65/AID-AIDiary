@@ -12,38 +12,38 @@ class AppLocalizationsFa extends AppLocalizations {
   String get appTitle => 'AID Diary';
 
   @override
-  String get themeColorTitle => 'Theme color';
+  String get themeColorTitle => 'رنگ تم';
 
   @override
-  String get themeColorHint => 'Choose a color for this palette.';
+  String get themeColorHint => 'رنگی را برای این پالت انتخاب کنید.';
 
   @override
-  String get themeColorBlue => 'Sky blue';
+  String get themeColorBlue => 'آبی آسمانی';
 
   @override
-  String get themeColorGreen => 'Forest green';
+  String get themeColorGreen => 'سبز جنگلی';
 
   @override
-  String get themeColorBrown => 'Warm coffee';
+  String get themeColorBrown => 'قهوه گرم';
 
   @override
-  String get themeColorPurple => 'Lavender';
+  String get themeColorPurple => 'اسطوخودوس';
 
   @override
-  String get themeColorRose => 'Dusty rose';
+  String get themeColorRose => 'گل رز غبارآلود';
 
   @override
-  String get themeColorAmber => 'Amber';
+  String get themeColorAmber => 'کهربا';
 
   @override
-  String get themeColorPreview => 'A little every day';
+  String get themeColorPreview => 'هر روز کمی';
 
   @override
-  String get themeTintBackgroundTitle => 'Tint backgrounds with theme color';
+  String get themeTintBackgroundTitle => 'پس زمینه را با رنگ تم رنگ کنید';
 
   @override
   String get themeTintBackgroundHint =>
-      'Turn off for neutral gray backgrounds; buttons keep your chosen color.';
+      'برای پس‌زمینه‌های خاکستری خنثی خاموش کنید. دکمه ها رنگ انتخابی شما را حفظ می کنند.';
 
   @override
   String get dailyReminderTitle => 'امروز را ثبت کن!';
@@ -199,7 +199,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get chartGroupingYear => 'سال';
 
   @override
-  String get chartSmoothingLabel => 'Smoothing';
+  String get chartSmoothingLabel => 'صاف کردن';
 
   @override
   String streakCurrent(num count) {
@@ -226,7 +226,8 @@ class AppLocalizationsFa extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Great Days $count',
+      other: 'روزهای عالی $count',
+      one: 'روزهای عالی $count',
     );
     return '$_temp0';
   }
@@ -396,10 +397,10 @@ class AppLocalizationsFa extends AppLocalizations {
   String get manageTags => 'مدیریت برچسب‌ها';
 
   @override
-  String get tagTypeLabelTitle => 'Label';
+  String get tagTypeLabelTitle => 'برچسب بزنید';
 
   @override
-  String get tagTypeTrackerTitle => 'Tracker';
+  String get tagTypeTrackerTitle => 'ردیاب';
 
   @override
   String get nameHint => 'نام';
@@ -426,7 +427,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get colorPickerPaletteTab => 'رنگ‌ها';
 
   @override
-  String get iconGroupMoodPeople => 'Mood & People';
+  String get iconGroupMoodPeople => 'خلق و خوی و مردم';
 
   @override
   String get iconGroupHealth => 'سلامت';
@@ -456,7 +457,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get tagCategoryLabel => 'دسته بندی';
 
   @override
-  String get tagLabel => 'Tag';
+  String get tagLabel => 'برچسب بزنید';
 
   @override
   String get tagCategoryUncategorized => 'دسته بندی نشده';
@@ -465,13 +466,13 @@ class AppLocalizationsFa extends AppLocalizations {
   String get newCategoryTitle => 'دسته بندی جدید';
 
   @override
-  String get shareButtonLabel => 'Share';
+  String get shareButtonLabel => 'به اشتراک بگذارید';
 
   @override
-  String get importErrorDescription => 'Failed to import file!';
+  String get importErrorDescription => 'وارد کردن فایل انجام نشد!';
 
   @override
-  String get exportErrorDescription => 'Failed to export file!';
+  String get exportErrorDescription => 'فایل صادر نشد!';
 
   @override
   String get deleteTitle => 'پاک کردن';
@@ -481,11 +482,11 @@ class AppLocalizationsFa extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: ' It is used in $count logs.',
-      one: ' It is used in 1 log.',
+      other: ' در $count دفترچه خاطرات استفاده می شود.',
+      one: ' در $count ثبت خاطرات استفاده می شود.',
       zero: '',
     );
-    return 'Delete \"$name\"?$_temp0';
+    return '\"$name\" حذف شود؟$_temp0';
   }
 
   @override
@@ -493,22 +494,22 @@ class AppLocalizationsFa extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: ' Its $count tags will also be deleted.',
-      one: ' Its 1 tag will also be deleted.',
+      other: ' $count تگ آن نیز حذف خواهد شد.',
+      one: ' تگ های $count آن نیز حذف خواهند شد.',
       zero: '',
     );
-    return 'Delete \"$name\"?$_temp0';
+    return '\"$name\" حذف شود؟$_temp0';
   }
 
   @override
-  String get tagNameExists => 'There is a tag with this name already';
+  String get tagNameExists => 'قبلاً یک برچسب با این نام وجود دارد';
 
   @override
-  String get categoryNameExists => 'There is a category with this name already';
+  String get categoryNameExists => 'در حال حاضر یک دسته با این نام وجود دارد';
 
   @override
   String deleteTemplateMessage(Object name) {
-    return 'Delete \"$name\"?';
+    return '\"$name\" حذف شود؟';
   }
 
   @override
@@ -539,16 +540,16 @@ class AppLocalizationsFa extends AppLocalizations {
   String get tagSocializingName => 'معاشرت';
 
   @override
-  String get tagHobbyName => '';
+  String get tagHobbyName => 'سرگرمی';
 
   @override
-  String get tagEntertainmentName => 'Entertainment';
+  String get tagEntertainmentName => 'سرگرمی';
 
   @override
-  String get tagDiningName => 'Dining';
+  String get tagDiningName => 'ناهار خوری';
 
   @override
-  String get tagChoresName => 'Chores';
+  String get tagChoresName => 'کارهای روزمره';
 
   @override
   String get tagCategoryEmotionsName => 'احساساتی';
@@ -631,56 +632,56 @@ class AppLocalizationsFa extends AppLocalizations {
       'بازیابی پشتیبان اطلاعات موجود را بازنویسی خواهد کرد!';
 
   @override
-  String get settingsBackupPasswordProtect => 'Password Protect Backups';
+  String get settingsBackupPasswordProtect => 'پشتیبان گیری محافظت از رمز عبور';
 
   @override
-  String get backupEncryptedTitle => 'Encrypted Backup';
+  String get backupEncryptedTitle => 'پشتیبان گیری رمزگذاری شده';
 
   @override
-  String get backupEncryptedContent => 'This backup is password protected.';
+  String get backupEncryptedContent => 'این پشتیبان با رمز محافظت می شود.';
 
   @override
-  String get settingsAutoBackup => 'Automatic Backups';
+  String get settingsAutoBackup => 'پشتیبان گیری خودکار';
 
   @override
-  String get settingsAutoBackupLocation => 'Backup Location';
+  String get settingsAutoBackupLocation => 'مکان پشتیبان گیری';
 
   @override
-  String get settingsAutoBackupInterval => 'Backup Interval';
+  String get settingsAutoBackupInterval => 'فاصله پشتیبان گیری';
 
   @override
-  String get settingsAutoBackupIntervalDaily => 'Daily';
+  String get settingsAutoBackupIntervalDaily => 'روزانه';
 
   @override
-  String get settingsAutoBackupIntervalWeekly => 'Weekly';
+  String get settingsAutoBackupIntervalWeekly => 'هفتگی';
 
   @override
-  String get settingsAutoBackupIntervalMonthly => 'Monthly';
+  String get settingsAutoBackupIntervalMonthly => 'ماهانه';
 
   @override
-  String get settingsAutoBackupMaxCount => 'Backups To Keep';
+  String get settingsAutoBackupMaxCount => 'پشتیبان گیری برای نگه داشتن';
 
   @override
-  String get settingsAutoBackupRequireCharging => 'Only While Charging';
+  String get settingsAutoBackupRequireCharging => 'فقط هنگام شارژ';
 
   @override
   String settingsBackupLast(Object time) {
-    return 'Last backup $time';
+    return 'آخرین نسخه پشتیبان $time';
   }
 
   @override
-  String get settingsBackupNever => 'Never backed up';
+  String get settingsBackupNever => 'هرگز پشتیبان‌گیری نشد';
 
   @override
   String settingsAutoBackupNext(Object time) {
-    return 'Next backup $time';
+    return 'پشتیبان بعدی $time';
   }
 
   @override
-  String get settingsAutoBackupKeepAll => 'All';
+  String get settingsAutoBackupKeepAll => 'همه';
 
   @override
-  String get autoBackupFailedTitle => 'Backup Failed';
+  String get autoBackupFailedTitle => 'پشتیبان گیری انجام نشد';
 
   @override
   String tranferStatus(Object percent) {
@@ -699,12 +700,12 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String encryptingBackupStatus(Object percent) {
-    return 'Encrypting Backup… $percent%';
+    return 'در حال رمزگذاری پشتیبان… $percent%';
   }
 
   @override
   String decryptingBackupStatus(Object percent) {
-    return 'Decrypting Backup… $percent%';
+    return 'در حال رمزگشایی پشتیبان… $percent%';
   }
 
   @override
@@ -830,7 +831,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get licenseGPLv3 => 'GPL-3.0';
 
   @override
-  String get settingsOpenSourceLicenses => 'Open Source Licenses';
+  String get settingsOpenSourceLicenses => 'مجوزهای منبع باز';
 
   @override
   String get tagMoodTitle => 'حس و حال';
@@ -853,538 +854,540 @@ class AppLocalizationsFa extends AppLocalizations {
   }
 
   @override
-  String get shareAddToLogPickerTitle => 'Choose a log';
+  String get shareAddToLogPickerTitle => 'یک دفترچه خاطرات را انتخاب کنید';
 
   @override
-  String get adaptiveEmptyDay => 'No entries for this day yet';
+  String get adaptiveEmptyDay => 'هنوز هیچ ورودی برای این روز وجود ندارد';
 
   @override
-  String get adaptiveNewEntry => 'Write an entry';
+  String get adaptiveNewEntry => 'یک ورودی بنویسید';
 
   @override
-  String get pageJournalTitle => 'Journal';
+  String get pageJournalTitle => 'مجله';
 
   @override
-  String get coachPrompt1 => 'What made you smile today?';
+  String get coachPrompt1 => 'چه چیزی باعث شد امروز لبخند بزنی؟';
 
   @override
-  String get coachPrompt2 => 'What is one thing you learned today?';
+  String get coachPrompt2 => 'یک چیزی که امروز یاد گرفتی چیست؟';
 
   @override
-  String get coachPrompt3 => 'Who did you talk to today, and how did it feel?';
+  String get coachPrompt3 => 'امروز با چه کسی صحبت کردید و چه حسی داشتید؟';
 
   @override
-  String get coachPrompt4 => 'What are you grateful for right now?';
+  String get coachPrompt4 => 'در حال حاضر برای چه چیزی شکرگزار هستید؟';
 
   @override
-  String get coachPrompt5 => 'What took most of your energy today?';
+  String get coachPrompt5 => 'چه چیزی بیشتر انرژی امروز شما را گرفت؟';
 
   @override
-  String get coachPrompt6 => 'Describe a small moment you want to remember.';
+  String get coachPrompt6 =>
+      'یک لحظه کوچک را که می خواهید به خاطر بسپارید توصیف کنید.';
 
   @override
-  String get coachPrompt7 => 'What would make tomorrow a good day?';
+  String get coachPrompt7 => 'چه چیزی فردا را روز خوبی می کند؟';
 
   @override
-  String get coachPrompt8 => 'What has been on your mind lately?';
+  String get coachPrompt8 => 'اخیراً چه چیزی در ذهن شما بوده است؟';
 
   @override
-  String get coachPrompt9 => 'What did you do today just for yourself?';
+  String get coachPrompt9 => 'امروز فقط برای خودت چه کردی؟';
 
   @override
-  String get coachPrompt10 => 'If today had a title, what would it be?';
+  String get coachPrompt10 => 'اگر امروز عنوانی داشت چه عنوانی داشت؟';
 
   @override
-  String get pageMediaTitle => 'Media';
+  String get pageMediaTitle => 'رسانه ها';
 
   @override
-  String get pageAtlasTitle => 'Atlas';
+  String get pageAtlasTitle => 'اطلس';
 
   @override
-  String get pageCoachTitle => 'Coach';
+  String get pageCoachTitle => 'مربی';
 
   @override
-  String get noEntrySelected => 'No entry selected.';
+  String get noEntrySelected => 'ورودی انتخاب نشده است.';
 
   @override
-  String get entryShare => 'Share';
+  String get entryShare => 'به اشتراک بگذارید';
 
   @override
-  String get entryFavorite => 'Star';
+  String get entryFavorite => 'ستاره';
 
   @override
-  String get entryEdit => 'Edit';
+  String get entryEdit => 'ویرایش کنید';
 
   @override
-  String get entryPrevious => 'Previous entry';
+  String get entryPrevious => 'ورودی قبلی';
 
   @override
-  String get entryNext => 'Next entry';
+  String get entryNext => 'ورودی بعدی';
 
   @override
-  String get journalStories => 'Stories';
+  String get journalStories => 'داستان ها';
 
   @override
-  String get journalEntries => 'Entries';
+  String get journalEntries => 'ورودی ها';
 
   @override
-  String get journalEmptyHint => 'Begin your diary by adding a new entry.';
+  String get journalEmptyHint =>
+      'دفتر خاطرات خود را با افزودن یک ورودی جدید آغاز کنید.';
 
   @override
-  String get storyToday => 'Today';
+  String get storyToday => 'امروز';
 
   @override
-  String get storyThrowback => 'Throwback';
+  String get storyThrowback => 'برگشت به عقب';
 
   @override
-  String get storyNoThrowback => 'No throwback today';
+  String get storyNoThrowback => 'امروز بدون بازگشت';
 
   @override
-  String get mediaFiles => 'Media files';
+  String get mediaFiles => 'فایل های رسانه ای';
 
   @override
-  String get mediaEmpty => 'No photos yet.';
+  String get mediaEmpty => 'هنوز عکسی وجود ندارد.';
 
   @override
-  String get mediaEmptyHint => 'Photos attached to entries will be shown here.';
+  String get mediaEmptyHint =>
+      'عکس های پیوست شده به ورودی ها در اینجا نشان داده می شود.';
 
   @override
-  String get atlasEmpty => 'No entries with a location.';
+  String get atlasEmpty => 'ورودی با مکان وجود ندارد.';
 
   @override
-  String get atlasEmptyHint => 'Entries with a location will be shown here.';
+  String get atlasEmptyHint =>
+      'ورودی‌های دارای مکان در اینجا نشان داده می‌شوند.';
 
   @override
-  String get atlasShowAll => 'Show all entries';
+  String get atlasShowAll => 'نمایش همه ورودی ها';
 
   @override
-  String get atlasMyLocation => 'My location';
+  String get atlasMyLocation => 'موقعیت مکانی من';
 
   @override
-  String get coachAll => 'All';
+  String get coachAll => 'همه';
 
   @override
-  String get coachPrograms => 'Programs';
+  String get coachPrograms => 'برنامه ها';
 
   @override
-  String get coachTemplates => 'Templates';
+  String get coachTemplates => 'قالب ها';
 
   @override
-  String get coachKindProgram => 'Program';
+  String get coachKindProgram => 'برنامه';
 
   @override
-  String get coachKindTemplate => 'Template';
+  String get coachKindTemplate => 'الگو';
 
   @override
-  String get coachNoTemplates => 'No programs or templates.';
+  String get coachNoTemplates => 'بدون برنامه یا قالب';
 
   @override
-  String get coachUseTemplate => 'Write with this template';
+  String get coachUseTemplate => 'با این قالب بنویس';
 
   @override
-  String get coachProgramEverydayTitle => 'Everyday moments';
+  String get coachProgramEverydayTitle => 'لحظه های روزمره';
 
   @override
   String get coachProgramEverydayDescription =>
-      'Five short questions, one a day. Each takes a minute or two and helps you see what made the day yours. A gentle way to build the habit of writing a little every day.';
+      'پنج سوال کوتاه، یک سوال در روز. هر کدام یک یا دو دقیقه طول می‌کشد و به شما کمک می‌کند ببینید چه چیزی آن روز را به شما تبدیل کرده است. روشی ملایم برای ایجاد عادت به نوشتن هر روز.';
 
   @override
-  String get coachProgramReflectTitle => 'Looking inward';
+  String get coachProgramReflectTitle => 'به درون نگاه می کند';
 
   @override
   String get coachProgramReflectDescription =>
-      'One deeper question a week, for five weeks. Take your time with each: how you have been feeling, what wears you out, what you are grateful for.';
+      'یک سوال عمیق تر در هفته، به مدت پنج هفته. برای هر کدام وقت بگذارید: چه احساسی داشته اید، چه چیزی شما را خسته می کند، چه چیزی برای آن سپاسگزار هستید.';
 
   @override
-  String get searchFilters => 'Filters';
+  String get searchFilters => 'فیلترها';
 
   @override
-  String get searchFilterTags => 'Tags';
+  String get searchFilterTags => 'برچسب ها';
 
   @override
-  String get searchFilterStarred => 'Starred';
+  String get searchFilterStarred => 'ستاره دار';
 
   @override
-  String get searchHint => 'Type to search, or pick a filter.';
+  String get searchHint => 'برای جستجو تایپ کنید یا فیلتری را انتخاب کنید.';
 
   @override
-  String get locationTitle => 'Location';
+  String get locationTitle => 'مکان';
 
   @override
-  String get locationName => 'Place name';
+  String get locationName => 'نام مکان';
 
   @override
-  String get locationRemove => 'Remove';
+  String get locationRemove => 'حذف کنید';
 
   @override
-  String get locationServiceDisabled => 'Location services are turned off.';
+  String get locationServiceDisabled => 'خدمات مکان خاموش است.';
 
   @override
-  String get locationPermissionDenied => 'Location permission was denied.';
+  String get locationPermissionDenied => 'مجوز مکان رد شد.';
 
   @override
-  String get locationUnavailable => 'Could not get the current location.';
+  String get locationUnavailable => 'نمی توان مکان فعلی را دریافت کرد.';
 
   @override
-  String get calendarJumpToToday => 'Jump to today';
+  String get calendarJumpToToday => 'پرش به امروز';
 
   @override
-  String get editorStartWriting => 'Start writing or choose a ';
+  String get editorStartWriting => 'شروع به نوشتن کنید یا a را انتخاب کنید ';
 
   @override
-  String get editorTemplateLink => 'Template';
+  String get editorTemplateLink => 'الگو';
 
   @override
   String get editorStartWritingEnd => '.';
 
   @override
-  String get templatePickerTitle => 'Choose a template';
+  String get templatePickerTitle => 'یک الگو را انتخاب کنید';
 
   @override
-  String get templateFeatured => 'Featured templates';
+  String get templateFeatured => 'قالب های ویژه';
 
   @override
-  String get templateMine => 'My templates';
+  String get templateMine => 'قالب های من';
 
   @override
-  String get templateDailyName => 'Daily review';
+  String get templateDailyName => 'بررسی روزانه';
 
   @override
   String get templateDailyDescription =>
-      'What happened, how it felt, and what comes next.';
+      'چه اتفاقی افتاد، چه حسی داشت، و چه چیزی بعد از آن.';
 
   @override
   String get templateDailyText =>
-      '## What happened today\n\n\n## How I felt\n\n\n## Three things I\'m grateful for\n1. \n2. \n3. \n\n## Tomorrow\n';
+      '## امروز چه اتفاقی افتاد\n\n\n## چه احساسی داشتم\n\n\n## سه چیز برای من سپاسگزارم\n1. \n2. \n3. \n\n## فردا\n';
 
   @override
-  String get templateTravelName => 'Travel log';
+  String get templateTravelName => 'دفترچه خاطرات سفر';
 
   @override
-  String get templateTravelDescription =>
-      'Places, moments and food from the road.';
+  String get templateTravelDescription => 'مکان ها، لحظات و غذا از جاده.';
 
   @override
   String get templateTravelText =>
-      '## Where I went\n\n\n## The moment I remember most\n\n\n## What I ate\n\n\n## Plans for tomorrow\n';
+      '## جایی که رفتم\n\n\n## لحظه ای که بیشتر به یاد دارم\n\n\n## چیزی که خوردم\n\n\n## برنامه برای فردا\n';
 
   @override
-  String get templateReadingName => 'Reading notes';
+  String get templateReadingName => 'خواندن یادداشت ها';
 
   @override
   String get templateReadingDescription =>
-      'Quotes and thoughts from what you read.';
+      'نقل قول ها و افکار از آنچه می خوانید.';
 
   @override
   String get templateReadingText =>
-      '## Book\n\n\n## Where I am\n\n\n## Quotes\n> \n\n## My thoughts\n';
+      '## کتاب\n\n\n## جایی که من هستم\n\n\n## نقل قول\n> \n\n## افکار من\n';
 
   @override
-  String get templateWeeklyName => 'Weekly review';
+  String get templateWeeklyName => 'بررسی هفتگی';
 
   @override
   String get templateWeeklyDescription =>
-      'Highlights, struggles and next week\'s focus.';
+      'نکات برجسته، مبارزات و تمرکز هفته آینده.';
 
   @override
   String get templateWeeklyText =>
-      '## Highlights\n\n\n## What was hard\n\n\n## What I learned\n\n\n## Focus for next week\n';
+      '## نکات برجسته\n\n\n## چه سخت بود\n\n\n## چیزی که یاد گرفتم\n\n\n## برای هفته آینده تمرکز کنید\n';
 
   @override
-  String get entryDuplicate => 'Duplicate';
+  String get entryDuplicate => 'تکراری';
 
   @override
-  String get entryDuplicated => 'Entry duplicated';
+  String get entryDuplicated => 'ورودی کپی شده';
 
   @override
-  String get entrySaveAsTemplate => 'Save as template';
+  String get entrySaveAsTemplate => 'ذخیره به عنوان الگو';
 
   @override
-  String get entrySavedAsTemplate => 'Saved as a template';
+  String get entrySavedAsTemplate => 'به عنوان یک الگو ذخیره شد';
 
   @override
-  String get storyStatistics => 'Statistics';
+  String get storyStatistics => 'آمار';
 
   @override
-  String get storyMoodChart => 'Mood chart';
+  String get storyMoodChart => 'نمودار خلقی';
 
   @override
   String storyEntriesAndDays(Object days, Object entries) {
-    return '$entries entries · $days days';
+    return 'ورودی های $entries · روز $days';
   }
 
   @override
-  String get storyThisYear => 'This year';
+  String get storyThisYear => 'امسال';
 
   @override
-  String get storyLastYear => 'Last year';
+  String get storyLastYear => 'سال گذشته';
 
   @override
-  String get storyTapToOpen => 'Tap a day to open it';
+  String get storyTapToOpen => 'یک روز ضربه بزنید تا باز شود';
 
   @override
-  String get settingsGeneralTitle => 'General';
+  String get settingsGeneralTitle => 'ژنرال';
 
   @override
-  String get settingsDataTitle => 'Data & storage';
+  String get settingsDataTitle => 'داده و ذخیره سازی';
 
   @override
-  String get settingsStoriesTitle => 'Stories';
+  String get settingsStoriesTitle => 'داستان ها';
 
   @override
-  String get settingsHelpTitle => 'Help & about';
+  String get settingsHelpTitle => 'راهنما و درباره';
 
   @override
-  String get weatherTitle => 'Weather';
+  String get weatherTitle => 'آب و هوا';
 
   @override
-  String get weatherClear => 'Clear';
+  String get weatherClear => 'پاک کردن';
 
   @override
-  String get weatherPartlyCloudy => 'Partly cloudy';
+  String get weatherPartlyCloudy => 'نیمه ابری';
 
   @override
-  String get weatherCloudy => 'Cloudy';
+  String get weatherCloudy => 'ابری';
 
   @override
-  String get weatherFog => 'Fog';
+  String get weatherFog => 'مه';
 
   @override
-  String get weatherDrizzle => 'Drizzle';
+  String get weatherDrizzle => 'نم نم باران';
 
   @override
-  String get weatherRain => 'Rain';
+  String get weatherRain => 'باران';
 
   @override
-  String get weatherSnow => 'Snow';
+  String get weatherSnow => 'برف';
 
   @override
-  String get weatherStorm => 'Thunderstorm';
+  String get weatherStorm => 'رعد و برق';
 
   @override
-  String get weatherFetch => 'Get weather for this entry';
+  String get weatherFetch => 'آب و هوا را برای این ورودی دریافت کنید';
 
   @override
-  String get weatherNeedsLocation => 'Add a location with coordinates first.';
+  String get weatherNeedsLocation => 'ابتدا یک مکان با مختصات اضافه کنید.';
 
   @override
   String get weatherUnavailable =>
-      'Weather is unavailable for this place and time.';
+      'آب و هوا برای این مکان و زمان در دسترس نیست.';
 
   @override
-  String get weatherRemove => 'Remove weather';
+  String get weatherRemove => 'آب و هوا را حذف کنید';
 
   @override
-  String get activityTitle => 'Activity';
+  String get activityTitle => 'فعالیت';
 
   @override
-  String get activityStill => 'Still';
+  String get activityStill => 'هنوز';
 
   @override
-  String get activityWalking => 'Walking';
+  String get activityWalking => 'راه رفتن';
 
   @override
-  String get activityRunning => 'Running';
+  String get activityRunning => 'در حال دویدن';
 
   @override
-  String get activityCycling => 'Cycling';
+  String get activityCycling => 'دوچرخه سواری';
 
   @override
-  String get activityVehicle => 'In a vehicle';
+  String get activityVehicle => 'در یک وسیله نقلیه';
 
   @override
-  String get activityFlying => 'Flying';
+  String get activityFlying => 'پرواز کردن';
 
   @override
-  String get activityExercise => 'Exercise';
+  String get activityExercise => 'ورزش کنید';
 
   @override
-  String get activityDetect => 'Detect current activity';
+  String get activityDetect => 'شناسایی فعالیت فعلی';
 
   @override
-  String get activityDetectFailed => 'Couldn\'t detect an activity.';
+  String get activityDetectFailed => 'فعالیتی شناسایی نشد.';
 
   @override
-  String get activityRemove => 'Remove activity';
+  String get activityRemove => 'حذف فعالیت';
 
   @override
-  String get settingsAutoAddTitle => 'Add automatically';
+  String get settingsAutoAddTitle => 'به صورت خودکار اضافه کنید';
 
   @override
-  String get settingsAutoAddLocation => 'Location';
+  String get settingsAutoAddLocation => 'مکان';
 
   @override
-  String get settingsAutoAddWeather => 'Weather';
+  String get settingsAutoAddWeather => 'آب و هوا';
 
   @override
   String get settingsAutoAddHint =>
-      'New entries get these filled in when they are created.';
+      'ورودی های جدید پس از ایجاد این موارد پر می شوند.';
 
   @override
-  String get settingsTemperatureUnit => 'Temperature unit';
+  String get settingsTemperatureUnit => 'واحد دما';
 
   @override
-  String get settingsCelsius => 'Celsius (°C)';
+  String get settingsCelsius => 'درجه سانتیگراد (درجه سانتیگراد)';
 
   @override
-  String get settingsFahrenheit => 'Fahrenheit (°F)';
+  String get settingsFahrenheit => 'فارنهایت (درجه فارنهایت)';
 
   @override
-  String get moodGreat => 'Great';
+  String get moodGreat => 'عالیه';
 
   @override
-  String get moodGood => 'Good';
+  String get moodGood => 'خوب';
 
   @override
-  String get moodOkay => 'Okay';
+  String get moodOkay => 'باشه';
 
   @override
-  String get moodBad => 'Bad';
+  String get moodBad => 'بد';
 
   @override
-  String get moodAwful => 'Awful';
+  String get moodAwful => 'افتضاح';
 
   @override
-  String get locationSearchHint => 'Search for a place';
+  String get locationSearchHint => 'جستجو برای یک مکان';
 
   @override
-  String get locationSearchEmpty => 'No places found';
+  String get locationSearchEmpty => 'هیچ مکانی یافت نشد';
 
   @override
-  String get settingsWallpaper => 'Wallpaper';
+  String get settingsWallpaper => 'کاغذ دیواری';
 
   @override
-  String get wallpaperNone => 'None';
+  String get wallpaperNone => 'هیچ کدام';
 
   @override
-  String get wallpaperDots => 'Dots';
+  String get wallpaperDots => 'نقطه ها';
 
   @override
-  String get wallpaperGrid => 'Grid';
+  String get wallpaperGrid => 'شبکه';
 
   @override
-  String get wallpaperLines => 'Lines';
+  String get wallpaperLines => 'خطوط';
 
   @override
-  String get wallpaperPhoto => 'Photo…';
+  String get wallpaperPhoto => 'عکس…';
 
   @override
-  String get settingsFontFamily => 'Font';
+  String get settingsFontFamily => 'فونت';
 
   @override
-  String get fontSystem => 'System';
+  String get fontSystem => 'سیستم';
 
   @override
-  String get fontSerif => 'Serif';
+  String get fontSerif => 'سریف';
 
   @override
-  String get fontMono => 'Monospace';
+  String get fontMono => 'تک فضا';
 
   @override
-  String get settingsFontSize => 'Font size';
+  String get settingsFontSize => 'اندازه فونت';
 
   @override
-  String get fontSizeSmall => 'Small';
+  String get fontSizeSmall => 'کوچک';
 
   @override
-  String get fontSizeMedium => 'Medium';
+  String get fontSizeMedium => 'متوسط';
 
   @override
-  String get fontSizeLarge => 'Large';
+  String get fontSizeLarge => 'بزرگ';
 
   @override
-  String get fontSizeExtraLarge => 'Extra large';
+  String get fontSizeExtraLarge => 'فوق العاده بزرگ';
 
   @override
-  String get settingsLineSpacing => 'Line spacing';
+  String get settingsLineSpacing => 'فاصله خطوط';
 
   @override
-  String get lineSpacingCompact => 'Compact';
+  String get lineSpacingCompact => 'فشرده';
 
   @override
-  String get lineSpacingNormal => 'Normal';
+  String get lineSpacingNormal => 'عادی';
 
   @override
-  String get lineSpacingRelaxed => 'Relaxed';
+  String get lineSpacingRelaxed => 'آرام';
 
   @override
-  String get moodAssociationsTitle => 'What makes me feel…';
+  String get moodAssociationsTitle => 'چه احساسی به من می دهد…';
 
   @override
   String moodAssociationsCount(int matching, int total) {
-    return '$matching of $total entries';
+    return '$matching از ورودی های $total';
   }
 
   @override
-  String get videoRecord => 'Record a video';
+  String get videoRecord => 'یک ویدیو ضبط کنید';
 
   @override
-  String get videoChoose => 'Choose a video';
+  String get videoChoose => 'یک ویدیو را انتخاب کنید';
 
   @override
-  String get audioRecordTitle => 'Record a voice note';
+  String get audioRecordTitle => 'یک یادداشت صوتی ضبط کنید';
 
   @override
-  String get audioChoose => 'Choose an audio file';
+  String get audioChoose => 'یک فایل صوتی را انتخاب کنید';
 
   @override
-  String get audioStart => 'Record';
+  String get audioStart => 'ضبط کنید';
 
   @override
-  String get audioStop => 'Stop and save';
+  String get audioStop => 'توقف کنید و ذخیره کنید';
 
   @override
   String get audioPermissionDenied =>
-      'Microphone access is off. Allow it in the system settings.';
+      'دسترسی به میکروفون خاموش است. در تنظیمات سیستم اجازه دهید.';
 
   @override
-  String get mediaTooLarge => 'This video is too large to attach.';
+  String get mediaTooLarge => 'این ویدیو برای پیوست خیلی بزرگ است.';
 
   @override
-  String get mediaUnavailable =>
-      'This attachment is not available on this device.';
+  String get mediaUnavailable => 'این پیوست در این دستگاه موجود نیست.';
 
   @override
-  String get widgetDone => 'Today\'s entry is written';
+  String get widgetDone => 'ورودی امروز نوشته شده است';
 
   @override
-  String get widgetPending => 'How was your day?';
+  String get widgetPending => 'روزت چطور بود؟';
 
   @override
-  String get widgetWrite => 'Write';
+  String get widgetWrite => 'بنویسید';
 
   @override
-  String get insertChecklist => 'Checklist';
+  String get insertChecklist => 'چک لیست';
 
   @override
-  String get insertNumberedList => 'Numbered list';
+  String get insertNumberedList => 'لیست شماره گذاری شده';
 
   @override
-  String get insertTable => 'Table';
+  String get insertTable => 'جدول';
 
   @override
-  String get insertDivider => 'Divider';
+  String get insertDivider => 'تقسیم کننده';
 
   @override
-  String get insertCodeBlock => 'Code block';
+  String get insertCodeBlock => 'بلوک کد';
 
   @override
-  String get journalSortTitle => 'Sort entries';
+  String get journalSortTitle => 'مرتب سازی ورودی ها';
 
   @override
-  String get journalSortUpdated => 'Last updated';
+  String get journalSortUpdated => 'آخرین به روز رسانی';
 
   @override
-  String get settingsTimeFormat => 'Time format';
+  String get settingsTimeFormat => 'فرمت زمان';
 
   @override
-  String get settingsDayStart => 'New entries count for the day before until';
+  String get settingsDayStart => 'ورودی های جدید برای روز قبل تا';
 
   @override
-  String get settingsDayAskUntil => 'Then ask which day until';
+  String get settingsDayAskUntil => 'سپس بپرسید تا کدام روز';
 
   @override
-  String get settingsDayStartMidnight => 'Off';
+  String get settingsDayStartMidnight => 'خاموش';
 
   @override
   String settingsDayStartAt(int hour) {
@@ -1393,268 +1396,270 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get settingsDayStartHint =>
-      'Every entry keeps the day it belongs to next to the time it was written, and you can change that day in the editor at any time. These hours only pick the day for new entries, so changing them moves no existing entry.';
+      'هر ورودی روزی را که متعلق به آن است در کنار زمانی که نوشته شده نگه می دارد و شما می توانید آن روز را در ویرایشگر هر زمان که بخواهید تغییر دهید. این ساعت‌ها فقط روز را برای ورودی‌های جدید انتخاب می‌کنند، بنابراین تغییر آنها هیچ ورودی موجود را جابه‌جا نمی‌کند.';
 
   @override
   String get lateNightBadge =>
-      'Written late at night, counted for the day before';
+      'نوشته شده در اواخر شب، برای روز قبل حساب شده است';
 
   @override
   String editorDayAsk(String time) {
-    return 'Written at $time. Which day is it for?';
+    return 'نوشته شده در $time. برای کدام روز است؟';
   }
 
   @override
   String editorDayYesterday(String date) {
-    return '$date (yesterday)';
+    return '$date (دیروز)';
   }
 
   @override
   String editorDayToday(String date) {
-    return '$date (today)';
+    return '$date (امروز)';
   }
 
   @override
   String editorWrittenAt(String when) {
-    return 'Written $when';
+    return 'نوشته $when';
   }
 
   @override
-  String get timeFormat12 => '12-hour';
+  String get timeFormat12 => '12 ساعته';
 
   @override
-  String get timeFormat24 => '24-hour';
+  String get timeFormat24 => '24 ساعته';
 
   @override
-  String get settingsReminderDays => 'Remind me on';
+  String get settingsReminderDays => 'به من یادآوری کن';
 
   @override
-  String get locationRecent => 'Recent places';
+  String get locationRecent => 'مکان های اخیر';
 
   @override
-  String get shareImage => 'Share image';
+  String get shareImage => 'تصویر را به اشتراک بگذارید';
 
   @override
-  String get shareSaveImage => 'Save image';
+  String get shareSaveImage => 'ذخیره تصویر';
 
   @override
-  String get shareSaved => 'Image saved';
+  String get shareSaved => 'تصویر ذخیره شد';
 
   @override
-  String get deletedTitle => 'Recently deleted';
+  String get deletedTitle => 'اخیراً حذف شده است';
 
   @override
-  String get deletedNone => 'Nothing deleted recently';
+  String get deletedNone => 'اخیراً چیزی حذف نشده است';
 
   @override
   String deletedHint(int days) {
-    return 'Deleted entries stay here for $days days, then are erased.';
+    return 'ورودی های حذف شده برای روز $days در اینجا می مانند، سپس پاک می شوند.';
   }
 
   @override
   String deletedDaysLeft(int days) {
-    return '$days days left';
+    return '$days روز باقی مانده است';
   }
 
   @override
-  String get deletedRestore => 'Restore';
+  String get deletedRestore => 'بازیابی کنید';
 
   @override
-  String get deletedDeleteForever => 'Delete forever';
+  String get deletedDeleteForever => 'برای همیشه حذف کنید';
 
   @override
   String get deletedDeleteForeverDescription =>
-      'The entry and its attachments are erased. This cannot be undone.';
+      'ورودی و پیوست های آن پاک می شوند. این قابل واگرد نیست.';
 
   @override
-  String get deletedEmpty => 'Empty';
+  String get deletedEmpty => 'خالی';
 
   @override
   String get deletedEmptyDescription =>
-      'Erase every entry in Recently deleted? This cannot be undone.';
+      'هر ورودی در Recently deleted پاک شود؟ این قابل واگرد نیست.';
 
   @override
   String get formatJson => 'JSON';
 
   @override
-  String get randomTitle => 'Random walk';
+  String get randomTitle => 'پیاده روی تصادفی';
 
   @override
-  String get randomSubtitle => 'Open a past entry';
+  String get randomSubtitle => 'ورودی گذشته را باز کنید';
 
   @override
-  String get randomNext => 'Another';
+  String get randomNext => 'دیگری';
 
   @override
-  String get randomAll => 'All';
+  String get randomAll => 'همه';
 
   @override
-  String get randomWithPhotos => 'With photos';
+  String get randomWithPhotos => 'با عکس';
 
   @override
-  String get randomGoodDays => 'Good days';
+  String get randomGoodDays => 'روزهای خوب';
 
   @override
-  String get randomEmpty => 'No entries to pick from';
+  String get randomEmpty => 'هیچ ورودی برای انتخاب وجود ندارد';
 
   @override
-  String get reviewWeekTitle => 'This week';
+  String get reviewWeekTitle => 'این هفته';
 
   @override
-  String get reviewWeekSubtitle => 'Your week so far';
+  String get reviewWeekSubtitle => 'هفته شما تا الان';
 
   @override
-  String get reviewYearTitle => 'This year';
+  String get reviewYearTitle => 'امسال';
 
   @override
-  String get reviewEmpty => 'Nothing written yet';
+  String get reviewEmpty => 'هنوز چیزی نوشته نشده';
 
   @override
-  String get reviewEntries => 'Entries';
+  String get reviewEntries => 'ورودی ها';
 
   @override
-  String get reviewDaysWritten => 'Days written';
+  String get reviewDaysWritten => 'روز نوشته شده است';
 
   @override
-  String get reviewWords => 'Words';
+  String get reviewWords => 'کلمات';
 
   @override
-  String get reviewPhotos => 'Photos';
+  String get reviewPhotos => 'عکس ها';
 
   @override
-  String get reviewLongestRun => 'Longest run of days';
+  String get reviewLongestRun => 'طولانی ترین اجرا روز';
 
   @override
-  String get reviewAverageMood => 'Average mood';
+  String get reviewAverageMood => 'خلق و خوی متوسط';
 
   @override
-  String get reviewFavorites => 'Most often';
+  String get reviewFavorites => 'اغلب اوقات';
 
   @override
-  String get reviewByMonth => 'By month';
+  String get reviewByMonth => 'بر اساس ماه';
 
   @override
-  String get reviewHighlight => 'Highlight';
+  String get reviewHighlight => 'برجسته کردن';
 
   @override
-  String get yearInPixels => 'Year in pixels';
+  String get yearInPixels => 'سال بر حسب پیکسل';
 
   @override
-  String get capsuleSeal => 'Seal as a time capsule';
+  String get capsuleSeal => 'به عنوان کپسول زمان مهر و موم کنید';
 
   @override
-  String get capsuleTitle => 'Time capsule';
+  String get capsuleTitle => 'کپسول زمان';
 
   @override
   String capsuleOpensOn(Object date) {
-    return 'Opens on $date';
+    return 'در $date باز می شود';
   }
 
   @override
   String capsuleWrittenOn(Object date) {
-    return 'Written on $date';
+    return 'نوشته شده در $date';
   }
 
   @override
-  String get capsuleOpenEarly => 'Open early';
+  String get capsuleOpenEarly => 'زود باز کن';
 
   @override
   String get capsuleOpenEarlyDescription =>
-      'The capsule opens now and stays open.';
+      'کپسول اکنون باز می شود و باز می ماند.';
 
   @override
-  String get capsuleOpened => 'Time capsule opened';
+  String get capsuleOpened => 'کپسول زمان باز شد';
 
   @override
-  String get templateMorningName => 'Morning pages';
+  String get templateMorningName => 'صفحات صبحگاهی';
 
   @override
-  String get templateMorningDescription => 'Set up the day in three minutes';
+  String get templateMorningDescription => 'روز را در سه دقیقه تنظیم کنید';
 
   @override
   String get templateMorningText =>
-      '## Three things I want to do well today\n1. \n2. \n3. \n\n## Something I look forward to\n\n## A note to myself\n';
+      '## سه کاری که امروز می خواهم به خوبی انجام دهم\n1. \n2. \n3. \n\n## چیزی که منتظرش هستم\n\n## یادداشتی برای خودم\n';
 
   @override
-  String get templateEveningName => 'Evening review';
+  String get templateEveningName => 'نقد شبانه';
 
   @override
-  String get templateEveningDescription => 'Close the day with what went well';
+  String get templateEveningDescription => 'روز را با آنچه خوب پیش رفت ببندید';
 
   @override
   String get templateEveningText =>
-      '## Three good things today\n1. \n2. \n3. \n\n## What I learned\n\n## What could go better tomorrow\n';
+      '## سه چیز خوب امروز\n1. \n2. \n3. \n\n## چیزی که یاد گرفتم\n\n## چه چیزی می تواند بهتر از فردا باشد\n';
 
   @override
-  String get routineMorning => 'Good morning';
+  String get routineMorning => 'صبح بخیر';
 
   @override
-  String get routineEvening => 'Evening review';
+  String get routineEvening => 'نقد شبانه';
 
   @override
-  String get settingsRoutinePrompts => 'Morning and evening prompts';
+  String get settingsRoutinePrompts => 'هشدارهای صبح و عصر';
 
   @override
   String get settingsRoutinePromptsHint =>
-      'Suggest the morning or evening template in Stories';
+      'الگوی صبح یا عصر را در Stories پیشنهاد دهید';
 
   @override
-  String get checkInTitle => 'Quick check-in';
+  String get checkInTitle => 'ورود سریع';
 
   @override
-  String get checkInSubtitle => 'Mood in two taps';
+  String get checkInSubtitle => 'حالت در دو شیر';
 
   @override
-  String get checkInMood => 'How do you feel?';
+  String get checkInMood => 'چه احساسی دارید؟';
 
   @override
-  String get checkInActivity => 'What are you doing?';
+  String get checkInActivity => 'چیکار میکنی؟';
 
   @override
-  String get checkInNote => 'A line about it (optional)';
+  String get checkInNote => 'یک خط در مورد آن (اختیاری)';
 
   @override
-  String get checkInSave => 'Save';
+  String get checkInSave => 'ذخیره کنید';
 
   @override
   String editorWordCount(int words, int characters) {
-    return '$words words · $characters characters';
+    return 'کلمات $words · کاراکترهای $characters';
   }
 
   @override
-  String get coachProgramEverydayTagline => 'Notice the small things in a day.';
+  String get coachProgramEverydayTagline =>
+      'به چیزهای کوچک در یک روز توجه کنید.';
 
   @override
-  String get coachProgramReflectTagline => 'Slow down and listen to yourself.';
+  String get coachProgramReflectTagline =>
+      'سرعت خود را کم کنید و به خودتان گوش دهید.';
 
   @override
-  String get coachDuration => 'Duration';
+  String get coachDuration => 'مدت زمان';
 
   @override
-  String get coachInterval => 'Interval';
+  String get coachInterval => 'فاصله';
 
   @override
-  String get coachDifficulty => 'Difficulty';
+  String get coachDifficulty => 'دشواری';
 
   @override
-  String get coachIntervalDaily => 'Daily';
+  String get coachIntervalDaily => 'روزانه';
 
   @override
-  String get coachIntervalWeekly => 'Weekly';
+  String get coachIntervalWeekly => 'هفتگی';
 
   @override
-  String get coachDifficultyBeginner => 'Beginner';
+  String get coachDifficultyBeginner => 'مبتدی';
 
   @override
-  String get coachDifficultyIntermediate => 'Intermediate';
+  String get coachDifficultyIntermediate => 'متوسط';
 
   @override
   String coachDurationDays(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count days',
-      one: '1 day',
+      other: '$count روز',
+      one: '$count روز',
     );
     return '$_temp0';
   }
@@ -1664,1055 +1669,1061 @@ class AppLocalizationsFa extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count weeks',
-      one: '1 week',
+      other: '$count هفته',
+      one: '$count هفته',
     );
     return '$_temp0';
   }
 
   @override
   String coachDayN(int n) {
-    return 'Day $n';
+    return 'روز $n';
   }
 
   @override
   String coachWeekN(int n) {
-    return 'Week $n';
+    return 'هفته $n';
   }
 
   @override
-  String get coachEnroll => 'Enroll';
+  String get coachEnroll => 'ثبت نام کنید';
 
   @override
-  String get coachEndProgram => 'End program';
+  String get coachEndProgram => 'پایان برنامه';
 
   @override
-  String get coachAuthor => 'Author';
+  String get coachAuthor => 'نویسنده';
 
   @override
-  String get coachAuthorBio => 'Prompts written for this app.';
+  String get coachAuthorBio => 'دستورات نوشته شده برای این برنامه';
 
   @override
   String get coachEnrolledTip =>
-      'All set! Your questions will show up in Stories.';
+      'همه چیز آماده است! سوالات شما در Stories نمایش داده می شود.';
 
   @override
-  String get coachGoToStories => 'Go to Stories';
+  String get coachGoToStories => 'به داستان بروید';
 
   @override
-  String get coachAnswerHint => 'Write your answer…';
+  String get coachAnswerHint => 'پاسخ خود را بنویسید…';
 
   @override
-  String get storyWrapUp => 'That\'s all for today.';
+  String get storyWrapUp => 'این همه برای امروز است.';
 
   @override
-  String get storyTapToClose => 'Tap to close';
+  String get storyTapToClose => 'برای بستن ضربه بزنید';
 
   @override
-  String get coachAnswerDone => 'Done';
+  String get coachAnswerDone => 'انجام شد';
 
   @override
-  String get coachAnswered => 'Answered, tap to open';
+  String get coachAnswered => 'پاسخ داده شد، برای باز کردن ضربه بزنید';
 
   @override
-  String get coachAnsweredEarlier => 'Answered';
+  String get coachAnsweredEarlier => 'پاسخ داد';
 
   @override
-  String get locationLocating => 'Locating…';
+  String get locationLocating => 'در حال مکان یابی…';
 
   @override
-  String get locationPickPlace => 'Pick a place';
+  String get locationPickPlace => 'مکانی را انتخاب کنید';
 
   @override
-  String get locationPlacesHint => 'Address or name of the place';
+  String get locationPlacesHint => 'آدرس یا نام مکان';
 
   @override
-  String get locationCustom => 'Custom place';
+  String get locationCustom => 'مکان سفارشی';
 
   @override
-  String get locationCurrent => 'Current location';
+  String get locationCurrent => 'مکان فعلی';
 
   @override
-  String get locationSaved => 'Saved places';
+  String get locationSaved => 'مکان های ذخیره شده';
 
   @override
-  String get locationSearchResults => 'Search results';
+  String get locationSearchResults => 'نتایج جستجو';
 
   @override
-  String get locationNearby => 'Nearby places';
+  String get locationNearby => 'مکان های نزدیک';
 
   @override
-  String get locationRename => 'Rename';
+  String get locationRename => 'تغییر نام دهید';
 
   @override
-  String get locationSavePlace => 'Save place';
+  String get locationSavePlace => 'ذخیره مکان';
 
   @override
-  String get locationUnsavePlace => 'Remove from saved places';
+  String get locationUnsavePlace => 'حذف از مکان های ذخیره شده';
 
   @override
-  String get shareAs => 'Share as…';
+  String get shareAs => 'اشتراک گذاری به عنوان…';
 
   @override
-  String get shareAsImage => 'Image';
+  String get shareAsImage => 'تصویر';
 
   @override
-  String get shareAsZip => 'ZIP with the original media';
+  String get shareAsZip => 'ZIP با رسانه اصلی';
 
   @override
-  String get shareAsPlainText => 'Plain text';
+  String get shareAsPlainText => 'متن ساده';
 
   @override
   String get shareAsHtml => 'HTML';
 
   @override
-  String get onboardWelcomeTitle => 'Welcome to AID Diary';
+  String get onboardWelcomeTitle => 'به AID Diary خوش آمدید';
 
   @override
   String get onboardWelcomeText =>
-      'Start here, or connect this device to one you already use.';
+      'از اینجا شروع کنید یا این دستگاه را به دستگاهی که قبلاً استفاده می‌کنید وصل کنید.';
 
   @override
-  String get onboardStart => 'Start writing';
+  String get onboardStart => 'شروع به نوشتن کنید';
 
   @override
-  String get helpFaq => 'Frequently asked questions';
+  String get helpFaq => 'سوالات متداول';
 
   @override
-  String get helpFaq1Q => 'Where is my diary stored?';
+  String get helpFaq1Q => 'دفتر خاطرات من کجا ذخیره می شود؟';
 
   @override
   String get helpFaq1A =>
-      'Your diary is stored on this device. It reaches other devices or storage only when you enable sync, share or export it. Sync is end-to-end encrypted.';
+      'دفتر خاطرات شما در این دستگاه ذخیره می شود. تنها زمانی به دستگاه‌ها یا فضای ذخیره‌سازی دیگر دسترسی پیدا می‌کند که همگام‌سازی، اشتراک‌گذاری یا صادر کردن آن را فعال کنید. همگام سازی سرتاسر رمزگذاری شده است.';
 
   @override
-  String get helpFaq2Q => 'How do I keep a copy or move to a new device?';
+  String get helpFaq2Q =>
+      'چگونه یک کپی را نگه دارم یا به یک دستگاه جدید منتقل کنم؟';
 
   @override
   String get helpFaq2A =>
-      'Connect to an existing device in Settings → Data & storage → Sync and confirm authorization on the device that has your diary. Both devices remain usable. You can also create a backup and restore it on another device.';
+      'در تنظیمات ← داده و ذخیره سازی ← همگام سازی به دستگاه موجود متصل شوید و مجوز را در دستگاهی که دفترچه خاطرات شما دارد تأیید کنید. هر دو دستگاه قابل استفاده باقی می مانند. همچنین می توانید یک نسخه پشتیبان تهیه کرده و آن را در دستگاه دیگری بازیابی کنید.';
 
   @override
-  String get helpFaq3Q => 'Can I bring in entries from other diary apps?';
+  String get helpFaq3Q =>
+      'آیا می توانم ورودی های دیگر برنامه های دفتر خاطرات را وارد کنم؟';
 
   @override
   String get helpFaq3A =>
-      'Yes: in Settings → Data & storage, import exports from Daylio, Diarium, Diaro, DayBook, My Brain, OneShot and Pixels, or a JSON export.';
+      'بله: در تنظیمات ← داده و ذخیره سازی، صادرات را از Daylio، Diarium، Diaro، DayBook، My Brain، OneShot و Pixels یا صادرات JSON وارد کنید.';
 
   @override
-  String get helpFaq4Q => 'How do coach programs work?';
+  String get helpFaq4Q => 'برنامه های کوچ چگونه کار می کنند؟';
 
   @override
   String get helpFaq4A =>
-      'Enroll in a program on the Coach page. Each day or week a new question waits in Stories; your answer is saved as an entry.';
+      'در یک برنامه در صفحه مربی ثبت نام کنید. هر روز یا هفته یک سوال جدید در Stories منتظر می ماند. پاسخ شما به عنوان یک ورودی ذخیره می شود.';
 
   @override
-  String get helpFaq5Q => 'What if I forget my passcode?';
+  String get helpFaq5Q => 'اگر رمز عبورم را فراموش کنم چه؟';
 
   @override
   String get helpFaq5A =>
-      'The passcode cannot be recovered, so keep a backup of your diary.';
+      'رمز عبور قابل بازیابی نیست، بنابراین یک نسخه پشتیبان از دفترچه خاطرات خود نگه دارید.';
 
   @override
-  String get helpPrivacy => 'Privacy';
+  String get helpPrivacy => 'حریم خصوصی';
 
   @override
   String get helpPrivacyText =>
-      'Diary content and media stay on this device unless you enable encrypted sync or share/export them. Maps, place lookup and weather use the configured services and send the location or search query needed for that request, not diary text.';
+      'محتوای خاطرات و رسانه در این دستگاه باقی می‌ماند مگر اینکه همگام‌سازی رمزگذاری شده را فعال کنید یا آنها را به اشتراک بگذارید/صادر کنید. نقشه‌ها، جستجوی مکان و آب‌وهوا از خدمات پیکربندی‌شده استفاده می‌کنند و مکان یا جستجوی مورد نیاز برای آن درخواست را ارسال می‌کنند، نه متن خاطرات.';
 
   @override
-  String get photoMetaTitle => 'Use the photo\'s details?';
+  String get photoMetaTitle => 'از جزئیات عکس استفاده کنید؟';
 
   @override
   String photoMetaDateAndPlace(String date, String place) {
-    return 'Count this entry for $date and set its place to $place, as recorded in the photo?';
+    return 'این ورودی را برای $date حساب کنید و جای آن را همانطور که در عکس ثبت شده روی $place قرار دهید؟';
   }
 
   @override
   String photoMetaDate(String date) {
-    return 'Count this entry for $date, when the photo was taken?';
+    return 'این ورودی را برای $date، زمانی که عکس گرفته شده است، بشمارید؟';
   }
 
   @override
   String photoMetaPlace(String place) {
-    return 'Set this entry\'s place to $place, where the photo was taken?';
+    return 'مکان این ورودی را روی $place، جایی که عکس گرفته شده است، تنظیم کنید؟';
   }
 
   @override
-  String get photoMetaApply => 'Use them';
+  String get photoMetaApply => 'از آنها استفاده کنید';
 
   @override
-  String get quickWriteTitle => 'Quick write';
+  String get quickWriteTitle => 'سریع بنویس';
 
   @override
-  String get quickWriteText => 'Tap to start a new entry.';
+  String get quickWriteText => 'برای شروع یک ورودی جدید ضربه بزنید.';
 
   @override
-  String get settingsQuickWriteTitle => 'Quick write in notifications';
+  String get settingsQuickWriteTitle => 'نوشتن سریع در اعلان ها';
 
   @override
   String get settingsQuickWriteDescription =>
-      'Keep a notification that opens a new entry.';
+      'یک اعلان نگه دارید که یک ورودی جدید را باز می کند.';
 
   @override
-  String get settingsNudgesTitle => 'Nudge me after a quiet stretch';
+  String get settingsNudgesTitle => 'بعد از یک کشش آرام به من تکان دهید';
 
   @override
   String settingsNudgesDescription(int days) {
-    return 'A gentle reminder when you haven\'t written for $days days.';
+    return 'یک یادآوری ملایم زمانی که روز $days ننوشته اید.';
   }
 
   @override
-  String get nudgeTitle => 'It\'s been a while';
+  String get nudgeTitle => 'مدتی گذشت';
 
   @override
-  String get nudgeMonday => 'A new week: what are you looking forward to?';
+  String get nudgeMonday => 'یک هفته جدید: منتظر چه چیزی هستید؟';
 
   @override
-  String get nudgeTuesday => 'Two lines are enough. How are you today?';
+  String get nudgeTuesday => 'دو خط کافی است. امروز چطوری؟';
 
   @override
-  String get nudgeWednesday =>
-      'Halfway through the week. What stood out so far?';
+  String get nudgeWednesday => 'در نیمه های هفته. چه چیزی تا اینجا برجسته بود؟';
 
   @override
-  String get nudgeThursday => 'Anything small worth keeping from today?';
+  String get nudgeThursday => 'چیز کوچکی ارزش نگهداری از امروز را داشته باشد؟';
 
   @override
-  String get nudgeFriday => 'The week is wrapping up. Note one good moment.';
+  String get nudgeFriday => 'هفته داره تموم میشه به یک لحظه خوب توجه کنید';
 
   @override
-  String get nudgeSaturday => 'A slow Saturday is a good day to write.';
+  String get nudgeSaturday => 'شنبه آهسته روز خوبی برای نوشتن است.';
 
   @override
-  String get nudgeSunday => 'Look back on the week before it ends.';
+  String get nudgeSunday => 'به هفته قبل از پایان آن نگاه کنید.';
 
   @override
-  String get photoWidgetEmpty => 'Photos you add to entries show up here.';
+  String get photoWidgetEmpty =>
+      'عکس‌هایی که به ورودی‌ها اضافه می‌کنید در اینجا نشان داده می‌شوند.';
 
   @override
-  String get channelReminders => 'Reminders';
+  String get channelReminders => 'یادآوری ها';
 
   @override
-  String get channelOnThisDay => 'On this day';
+  String get channelOnThisDay => 'در این روز';
 
   @override
-  String get channelCoach => 'Coach prompts';
+  String get channelCoach => 'مربی می گوید';
 
   @override
-  String get channelNudges => 'Nudges after quiet days';
+  String get channelNudges => 'تکان دادن بعد از روزهای آرام';
 
   @override
-  String get channelQuickWrite => 'Quick write';
+  String get channelQuickWrite => 'سریع بنویس';
 
   @override
-  String get channelBackup => 'Backups';
+  String get channelBackup => 'پشتیبان گیری';
 
   @override
-  String get formatJsonExport => 'JSON (AID Diary export)';
+  String get formatJsonExport => 'JSON (صادرات AID Diary)';
 
   @override
   String get aboutModifiedNotice =>
-      'A modified version of Daily You by Demizo and contributors. It is not the official Daily You app.';
+      'نسخه اصلاح شده Daily You توسط Demizo و همکاران. این برنامه رسمی روزانه شما نیست.';
 
   @override
-  String get toolbarPhotos => 'Add photos';
+  String get toolbarPhotos => 'عکس اضافه کنید';
 
   @override
-  String get toolbarMedia => 'Photos and videos';
+  String get toolbarMedia => 'عکس و فیلم';
 
   @override
-  String get mediaFromGallery => 'Choose from gallery';
+  String get mediaFromGallery => 'از گالری انتخاب کنید';
 
   @override
-  String get mediaFromFiles => 'Choose from files';
+  String get mediaFromFiles => 'از بین فایل ها انتخاب کنید';
 
   @override
-  String get editorLeaveTitle => 'Save this entry?';
+  String get editorLeaveTitle => 'این ورودی ذخیره شود؟';
 
   @override
-  String get editorLeaveDiscard => 'Don\'t save';
+  String get editorLeaveDiscard => 'پس انداز نکن';
 
   @override
-  String get editorTitleHint => 'Title';
+  String get editorTitleHint => 'عنوان';
 
   @override
-  String get editorLocating => 'Locating…';
+  String get editorLocating => 'در حال مکان یابی…';
 
   @override
-  String get toolbarVideo => 'Video';
+  String get toolbarVideo => 'ویدئو';
 
   @override
-  String get toolbarAudio => 'Voice note';
+  String get toolbarAudio => 'یادداشت صوتی';
 
   @override
-  String get toolbarTags => 'Tags';
+  String get toolbarTags => 'برچسب ها';
 
   @override
-  String get toolbarBulletList => 'Bulleted list';
+  String get toolbarBulletList => 'لیست گلوله شده';
 
   @override
-  String get toolbarHeading => 'Heading';
+  String get toolbarHeading => 'سرفصل';
 
   @override
-  String get toolbarBold => 'Bold';
+  String get toolbarBold => 'پررنگ';
 
   @override
-  String get toolbarItalic => 'Italic';
+  String get toolbarItalic => 'کج';
 
   @override
-  String get toolbarHighlight => 'Highlight';
+  String get toolbarHighlight => 'برجسته کردن';
 
   @override
-  String get toolbarStrikethrough => 'Strikethrough';
+  String get toolbarStrikethrough => 'ضربه زدن';
 
   @override
-  String get toolbarQuote => 'Quote';
+  String get toolbarQuote => 'نقل قول';
 
   @override
-  String get toolbarLink => 'Link';
+  String get toolbarLink => 'پیوند';
 
   @override
-  String get toolbarInsert => 'Insert';
+  String get toolbarInsert => 'درج کنید';
 
   @override
-  String get toolbarUndo => 'Undo';
+  String get toolbarUndo => 'واگرد';
 
   @override
-  String get toolbarRedo => 'Redo';
+  String get toolbarRedo => 'دوباره انجام دهید';
 
   @override
-  String get toolbarInsertDate => 'Insert the date';
+  String get toolbarInsertDate => 'تاریخ را درج کنید';
 
   @override
-  String get toolbarInsertTime => 'Insert the time';
+  String get toolbarInsertTime => 'زمان را درج کنید';
 
   @override
-  String get settingsSyncTitle => 'Cloud Sync';
+  String get settingsSyncTitle => 'همگام سازی ابری';
 
   @override
   String get syncOffDescription =>
-      'Keep this diary the same on all your devices through Google Drive or a WebDAV server, such as Nextcloud, Synology or Jianguoyun.';
+      'این دفترچه خاطرات را در همه دستگاه های خود از طریق Google Drive یا سرور WebDAV مانند Nextcloud، Synology یا Jianguoyun یکسان نگه دارید.';
 
   @override
-  String get syncUseGoogleDrive => 'Sync with Google Drive';
+  String get syncUseGoogleDrive => 'همگام سازی با Google Drive';
 
   @override
-  String get syncOrWebDav => 'Or a WebDAV server';
+  String get syncOrWebDav => 'یا سرور WebDAV';
 
   @override
   String get syncGoogleDrive => 'Google Drive';
 
   @override
-  String get syncGoogleSignedIn => 'Signed in. You can go back to AID Diary.';
+  String get syncGoogleSignedIn =>
+      'وارد شده‌اید. می‌توانید به AID Diary برگردید.';
 
   @override
-  String get syncGoogleSignInAgain => 'Google needs you to sign in again.';
+  String get syncGoogleSignInAgain =>
+      'Google به شما نیاز دارد که دوباره وارد سیستم شوید.';
 
   @override
-  String get syncSignInAgain => 'Sign in again';
+  String get syncSignInAgain => 'دوباره وارد شوید';
 
   @override
-  String get settingsCommandLineTitle => 'Command line';
+  String get settingsCommandLineTitle => 'خط فرمان';
 
   @override
-  String get commandLineToggle => 'Command line interface';
+  String get commandLineToggle => 'رابط خط فرمان';
 
   @override
   String get commandLineToggleHint =>
-      'Lets the aid command and other programs on this device use the app\'s commands.';
+      'به دستور کمک و سایر برنامه‌های موجود در این دستگاه اجازه می‌دهد از دستورات برنامه استفاده کنند.';
 
   @override
-  String get commandLineAlwaysOn => 'Always on in development builds.';
+  String get commandLineAlwaysOn => 'همیشه در توسعه می سازد.';
 
   @override
   String commandLineListening(int port) {
-    return 'Listening on port $port';
+    return 'گوش دادن در پورت $port';
   }
 
   @override
-  String get commandPaletteTitle => 'All commands';
+  String get commandPaletteTitle => 'همه دستورات';
 
   @override
-  String get commandPaletteSearch => 'Search commands';
+  String get commandPaletteSearch => 'دستورات جستجو';
 
   @override
-  String get commandPaletteRun => 'Run';
+  String get commandPaletteRun => 'اجرا کنید';
 
   @override
-  String get commandPaletteConfirm => 'This cannot simply be undone. Run it?';
+  String get commandPaletteConfirm =>
+      'این را نمی توان به سادگی واگرد کرد. اجراش کنم؟';
 
   @override
   String syncReceiving(int done, int total) {
-    return 'Receiving $done of $total…';
+    return 'در حال دریافت $done از $total…';
   }
 
   @override
   String syncSending(int done, int total) {
-    return 'Sending $done of $total…';
+    return 'ارسال $done از $total…';
   }
 
   @override
   String get syncGoogleDriveNotAllowed =>
-      'Access to Google Drive was not allowed. Connect again and tick Google Drive on Google\'s page.';
+      'دسترسی به Google Drive مجاز نبود. دوباره وصل شوید و Google Drive را در صفحه گوگل علامت بزنید.';
 
   @override
-  String get syncEntryUnsynced =>
-      'Not synced: the last sync did not go through';
+  String get syncEntryUnsynced => 'همگام‌سازی نشد: آخرین همگام‌سازی انجام نشد';
 
   @override
-  String get syncUseOfficial => 'Use the AID sync server';
+  String get syncUseOfficial => 'از سرور همگام سازی AID استفاده کنید';
 
   @override
-  String get syncServer => 'Server address';
+  String get syncServer => 'آدرس سرور';
 
   @override
-  String get syncUsername => 'Username';
+  String get syncUsername => 'نام کاربری';
 
   @override
-  String get syncPassword => 'Password';
+  String get syncPassword => 'رمز عبور';
 
   @override
-  String get syncConnect => 'Connect';
+  String get syncConnect => 'اتصال';
 
   @override
-  String get syncConnecting => 'Connecting…';
+  String get syncConnecting => 'در حال اتصال…';
 
   @override
   String get syncSignInFailed =>
-      'Could not sign in. Check the address, the username and the password.';
+      'نمی توان وارد سیستم شد. آدرس، نام کاربری و رمز عبور را بررسی کنید.';
 
   @override
   String syncConnectFailed(String error) {
-    return 'Could not connect: $error';
+    return 'اتصال برقرار نشد: $error';
   }
 
   @override
-  String get syncNewSpaceTitle => 'Start syncing';
+  String get syncNewSpaceTitle => 'شروع به همگام سازی کنید';
 
   @override
   String get syncNewSpaceDescription =>
-      'There is no synced diary here yet. This diary will be uploaded, end-to-end encrypted with a key that stays on your devices.';
+      'هنوز هیچ دفتر خاطرات همگام‌سازی شده‌ای در اینجا وجود ندارد. این دفترچه خاطرات بارگذاری می‌شود، رمزگذاری سرتاسر با کلیدی که در دستگاه‌های شما باقی می‌ماند.';
 
   @override
-  String get syncJoinTitle => 'Join the synced diary';
+  String get syncJoinTitle => 'به دفتر خاطرات همگام سازی شده بپیوندید';
 
   @override
   String get syncWrongKey =>
-      'This recovery code does not open the synced diary.';
+      'این کد بازیابی دفترچه خاطرات همگام سازی شده را باز نمی کند.';
 
   @override
   String syncLastSynced(String time) {
-    return 'Last synced $time';
+    return 'آخرین همگام سازی $time';
   }
 
   @override
-  String get syncNever => 'Not synced yet';
+  String get syncNever => 'هنوز همگام سازی نشده است';
 
   @override
-  String get syncSyncing => 'Syncing…';
+  String get syncSyncing => 'در حال همگام سازی…';
 
   @override
   String syncFailed(String error) {
-    return 'The last sync failed: $error';
+    return 'آخرین همگام سازی ناموفق بود: $error';
   }
 
   @override
   String get syncLocked =>
-      'The synced diary now belongs to other devices, or was started over. Pair with one of them or use the recovery code to keep syncing.';
+      'دفتر خاطرات همگام‌سازی‌شده اکنون به دستگاه‌های دیگر تعلق دارد یا دوباره راه‌اندازی شده است. با یکی از آنها جفت کنید یا از کد بازیابی برای ادامه همگام سازی استفاده کنید.';
 
   @override
-  String get syncNow => 'Sync now';
+  String get syncNow => 'اکنون همگام سازی کنید';
 
   @override
-  String get syncUnlock => 'Unlock';
+  String get syncUnlock => 'باز کردن قفل';
 
   @override
-  String get syncEncrypted => 'End-to-end encrypted';
+  String get syncEncrypted => 'رمزگذاری سرتاسر';
 
   @override
-  String get syncDisconnect => 'Stop syncing';
+  String get syncDisconnect => 'همگام سازی را متوقف کنید';
 
   @override
   String get syncDisconnectDescription =>
-      'This device stops syncing. The diary here and the synced copy stay as they are.';
+      'این دستگاه همگام سازی را متوقف می کند. دفترچه خاطرات در اینجا و نسخه همگام‌سازی شده همان‌طور که هستند باقی می‌مانند.';
 
   @override
-  String get syncOwnRecoveryPassword => 'Use my own recovery password';
+  String get syncOwnRecoveryPassword => 'از رمز عبور بازیابی خودم استفاده کنم';
 
   @override
-  String get syncRecoveryPassword => 'Recovery password';
+  String get syncRecoveryPassword => 'رمز بازیابی';
 
   @override
-  String get syncRecoveryPasswordRepeat => 'Repeat the recovery password';
+  String get syncRecoveryPasswordRepeat => 'رمز بازیابی را تکرار کنید';
 
   @override
   String syncRecoveryPasswordTooShort(int min) {
-    return 'Use at least $min characters';
+    return 'حداقل از کاراکترهای $min استفاده کنید';
   }
 
   @override
-  String get syncRecoveryPasswordMismatch => 'The passwords differ';
+  String get syncRecoveryPasswordMismatch => 'رمزهای عبور متفاوت است';
 
   @override
-  String get syncRecoveryCode => 'Recovery code';
+  String get syncRecoveryCode => 'کد بازیابی';
 
   @override
-  String get syncRecoveryCodeTitle => 'Save your recovery code';
+  String get syncRecoveryCodeTitle => 'کد بازیابی خود را ذخیره کنید';
 
   @override
   String get syncRecoveryCodeDescription =>
-      'If every device of yours is lost, this code restores your synced diary. Keep it in a password manager or on paper. It is shown only this once.';
+      'اگر همه دستگاه های شما گم شود، این کد دفتر خاطرات همگام سازی شده شما را بازیابی می کند. آن را در یک مدیریت رمز عبور یا روی کاغذ نگه دارید. فقط این یک بار نشان داده می شود.';
 
   @override
-  String get syncRecoveryCodeCopied => 'Recovery code copied';
+  String get syncRecoveryCodeCopied => 'کد بازیابی کپی شد';
 
   @override
-  String get syncRecoveryCodeSaved => 'I have saved it';
+  String get syncRecoveryCodeSaved => 'من آن را ذخیره کرده ام';
 
   @override
   String get syncJoinNeedsKey =>
-      'This synced diary belongs to your other devices. Pair with one of them, or use the recovery code. The entries on this device will be added to it.';
+      'این دفتر خاطرات همگام‌سازی شده متعلق به دستگاه‌های دیگر شماست. با یکی از آنها جفت کنید یا از کد بازیابی استفاده کنید. ورودی های این دستگاه به آن اضافه می شود.';
 
   @override
-  String get syncPairDevice => 'Pair with a device';
+  String get syncPairDevice => 'جفت شدن با دستگاه';
 
   @override
-  String get syncUseRecoveryCode => 'Use the recovery code';
+  String get syncUseRecoveryCode => 'از کد بازیابی استفاده کنید';
 
   @override
-  String get syncAddDevice => 'Add a device';
+  String get syncAddDevice => 'یک دستگاه اضافه کنید';
 
   @override
-  String get syncChangeRecoveryCode => 'Change the recovery code';
+  String get syncChangeRecoveryCode => 'کد بازیابی را تغییر دهید';
 
   @override
   String get syncChangeRecoveryDescription =>
-      'A new code replaces the current one, which stops working. Your data and other devices stay as they are.';
+      'یک کد جدید جایگزین کد فعلی می شود که کار نمی کند. داده های شما و سایر دستگاه ها به همان شکلی که هستند باقی می مانند.';
 
   @override
-  String get syncNewRandomCode => 'New random code';
+  String get syncNewRandomCode => 'کد تصادفی جدید';
 
   @override
-  String get syncRecoveryCodeChanged => 'Recovery code changed';
+  String get syncRecoveryCodeChanged => 'کد بازیابی تغییر کرد';
 
   @override
-  String get syncResetSpace => 'Start the synced diary over';
+  String get syncResetSpace => 'دفتر خاطرات همگام سازی شده را دوباره شروع کنید';
 
   @override
   String get syncResetSpaceDescription =>
-      'Only when no device and no recovery code opens it any more: the synced copy is replaced by the diary on this device, under this device\'s keys. Your other devices then pair again.';
+      'فقط زمانی که هیچ دستگاهی و هیچ کد بازیابی دیگر آن را باز نمی‌کند: نسخه همگام‌سازی شده با دفترچه خاطرات این دستگاه، زیر کلیدهای این دستگاه جایگزین می‌شود. سپس دستگاه های دیگر شما دوباره جفت می شوند.';
 
   @override
-  String get syncPairTitle => 'Pair devices';
+  String get syncPairTitle => 'دستگاه ها را جفت کنید';
 
   @override
-  String get syncPairShow => 'Show a code';
+  String get syncPairShow => 'نمایش یک کد';
 
   @override
-  String get syncPairEnter => 'Enter a code';
+  String get syncPairEnter => 'یک کد وارد کنید';
 
   @override
   String get syncPairShowHint =>
-      'On your other device, open Pair devices, choose Enter a code, and type or scan this.';
+      'در دستگاه دیگر خود، Pair devices را باز کنید، رمز را وارد کنید و آن را تایپ یا اسکن کنید.';
 
   @override
   String get syncPairEnterHint =>
-      'Type the code your other device shows, or scan it.';
+      'کدی را که دستگاه دیگرتان نشان می دهد تایپ کنید یا آن را اسکن کنید.';
 
   @override
-  String get syncPairCode => 'Pairing code';
+  String get syncPairCode => 'کد جفت شدن';
 
   @override
-  String get syncPairScan => 'Scan';
+  String get syncPairScan => 'اسکن کنید';
 
   @override
-  String get syncPairStart => 'Pair';
+  String get syncPairStart => 'جفت کردن';
 
   @override
-  String get syncPairWaiting => 'Waiting for the other device…';
+  String get syncPairWaiting => 'در انتظار دستگاه دیگر…';
 
   @override
   String syncPairDone(String device) {
-    return 'Paired with $device';
+    return 'با $device جفت شده است';
   }
 
   @override
   String get syncPairWrongCode =>
-      'The code did not match. Show a new code and try again.';
+      'کد مطابقت نداشت. یک کد جدید نشان دهید و دوباره امتحان کنید.';
 
   @override
   String get syncPairNoOffer =>
-      'No device shows this code. It may have expired.';
+      'هیچ دستگاهی این کد را نشان نمی دهد. ممکن است منقضی شده باشد.';
 
   @override
-  String get syncPairTimedOut => 'The other device did not answer in time.';
+  String get syncPairTimedOut => 'دستگاه دیگر به موقع جواب نداد.';
 
   @override
   String get syncPairNeither =>
-      'Neither device is set up with this synced diary yet.';
+      'هیچ‌یک از دستگاه‌ها هنوز با این دفترچه خاطرات همگام‌سازی شده راه‌اندازی نشده‌اند.';
 
   @override
-  String get syncPairBoth => 'Both devices already open this synced diary.';
+  String get syncPairBoth =>
+      'هر دو دستگاه قبلاً این دفترچه خاطرات همگام‌سازی شده را باز کرده‌اند.';
 
   @override
   String syncPairFailed(String error) {
-    return 'Pairing failed: $error';
+    return 'جفت شدن ناموفق بود: $error';
   }
 
   @override
   String get syncMediaPending =>
-      'Diary synced · some media is still transferring';
+      'دفتر خاطرات همگام سازی شد · برخی رسانه ها هنوز در حال انتقال هستند';
 
   @override
   String get syncWaitingForDevices =>
-      'Diary synced · waiting for another device to transfer media';
+      'دفتر خاطرات همگام سازی شد · منتظر دستگاه دیگری برای انتقال رسانه';
 
   @override
   String get syncCacheNotice =>
-      'Cloud media is temporary. Keep the originals on your devices; syncing is not a backup.';
+      'رسانه ابری موقتی است. نسخه اصلی را در دستگاه های خود نگه دارید. همگام سازی یک نسخه پشتیبان نیست.';
 
   @override
-  String get paperTitle => 'Letter paper';
+  String get paperTitle => 'کاغذ نامه';
 
   @override
-  String get paperPlain => 'Plain';
+  String get paperPlain => 'دشت';
 
   @override
-  String get paperLined => 'Lined';
+  String get paperLined => 'خط کشی شده';
 
   @override
-  String get paperGrid => 'Grid';
+  String get paperGrid => 'شبکه';
 
   @override
-  String get paperTinted => 'Tinted';
+  String get paperTinted => 'رنگی';
 
   @override
-  String get paperDecorationTitle => 'Decorations';
+  String get paperDecorationTitle => 'تزئینات';
 
   @override
-  String get paperDecorationNone => 'None';
+  String get paperDecorationNone => 'هیچ کدام';
 
   @override
-  String get paperDecorationBotanical => 'Leaves';
+  String get paperDecorationBotanical => 'برگ';
 
   @override
-  String get paperDecorationStars => 'Stars';
+  String get paperDecorationStars => 'ستاره ها';
 
   @override
-  String get paperDecorationWashi => 'Washi tape';
+  String get paperDecorationWashi => 'نوار واشی';
 
   @override
-  String get themeDarkChoice => 'Dark appearance';
+  String get themeDarkChoice => 'ظاهر تاریک';
 
   @override
-  String get themeDarkSame => 'Follow light palette';
+  String get themeDarkSame => 'از پالت نور پیروی کنید';
 
   @override
-  String get themeDarkCustom => 'Separate palette';
+  String get themeDarkCustom => 'پالت مجزا';
 
   @override
-  String get themeDarkAccent => 'Dark accent colour';
+  String get themeDarkAccent => 'رنگ تاکیدی تیره';
 
   @override
-  String get themeColorTeal => 'Teal';
+  String get themeColorTeal => 'آبی رنگ';
 
   @override
-  String get themeColorCyan => 'Cyan';
+  String get themeColorCyan => 'فیروزه ای';
 
   @override
-  String get themeColorIndigo => 'Indigo';
+  String get themeColorIndigo => 'نیل';
 
   @override
-  String get themeColorCoral => 'Coral';
+  String get themeColorCoral => 'مرجان';
 
   @override
-  String get themeColorOlive => 'Olive';
+  String get themeColorOlive => 'زیتون';
 
   @override
-  String get themeColorSlate => 'Slate';
+  String get themeColorSlate => 'تخته سنگ';
 
   @override
-  String get drawingTitle => 'Drawing';
+  String get drawingTitle => 'طراحی';
 
   @override
-  String get drawingPen => 'Pen';
+  String get drawingPen => 'قلم';
 
   @override
-  String get drawingEraser => 'Eraser';
+  String get drawingEraser => 'پاک کن';
 
   @override
-  String get drawingUndo => 'Undo';
+  String get drawingUndo => 'واگرد';
 
   @override
-  String get drawingClear => 'Clear';
+  String get drawingClear => 'پاک کردن';
 
   @override
-  String get drawingWidth => 'Pen width';
+  String get drawingWidth => 'عرض قلم';
 
   @override
-  String get drawingStylusOnly => 'Stylus only';
+  String get drawingStylusOnly => 'فقط قلم';
 
   @override
-  String get drawingDiscardTitle => 'Discard drawing?';
+  String get drawingDiscardTitle => 'از طراحی صرفنظر شود؟';
 
   @override
-  String get drawingDiscardBody => 'This drawing has not been saved.';
+  String get drawingDiscardBody => 'این طراحی ذخیره نشده است.';
 
   @override
-  String get drawingSaveError => 'Could not save the drawing.';
+  String get drawingSaveError => 'طراحی ذخیره نشد.';
 
   @override
-  String get syncNetworkTitle => 'Network diagnostics';
+  String get syncNetworkTitle => 'عیب یابی شبکه';
 
   @override
-  String get syncNetworkRefresh => 'Refresh';
+  String get syncNetworkRefresh => 'تازه کردن';
 
   @override
-  String get syncNetworkSelectedRoute => 'Current path';
+  String get syncNetworkSelectedRoute => 'مسیر فعلی';
 
   @override
-  String get syncNetworkAvailableRoutes => 'Available paths';
+  String get syncNetworkAvailableRoutes => 'مسیرهای موجود';
 
   @override
-  String get syncNetworkSignaling => 'Device directory connection';
+  String get syncNetworkSignaling => 'اتصال دایرکتوری دستگاه';
 
   @override
-  String get syncNetworkRelayRemaining => 'Remaining relay allowance';
+  String get syncNetworkRelayRemaining => 'کمک هزینه رله باقی مانده';
 
   @override
-  String get syncNetworkIcePair => 'Direct connection candidates';
+  String get syncNetworkIcePair => 'نامزدهای ارتباط مستقیم';
 
   @override
-  String get syncNetworkPeerTrusted => 'Authenticated device';
+  String get syncNetworkPeerTrusted => 'دستگاه تایید شده';
 
   @override
-  String get syncNetworkNoRoute => 'Waiting for a connection';
+  String get syncNetworkNoRoute => 'در انتظار اتصال';
 
   @override
-  String get syncNetworkUnavailable => 'Diagnostics are unavailable';
+  String get syncNetworkUnavailable => 'تشخیص در دسترس نیست';
 
   @override
-  String get syncMediaCopiesTitle => 'Media delivery and copies';
+  String get syncMediaCopiesTitle => 'تحویل رسانه و کپی';
 
   @override
-  String get syncMediaPendingCount => 'Waiting to transfer';
+  String get syncMediaPendingCount => 'در انتظار انتقال';
 
   @override
-  String get syncMediaDurableCount => 'Delivered to personal storage';
+  String get syncMediaDurableCount => 'تحویل به انبار شخصی';
 
   @override
-  String get syncMediaTemporaryCount => 'Temporary or unconfirmed copies';
+  String get syncMediaTemporaryCount => 'کپی های موقت یا تایید نشده';
 
   @override
   String get syncMediaReceiptExplanation =>
-      'These counts describe completed deliveries, not a fresh audit of surviving backups.';
+      'این شمارش ها تحویل کامل شده را توصیف می کنند، نه یک ممیزی جدید از نسخه های پشتیبان باقی مانده.';
 
   @override
   String get syncMediaCacheExplanation =>
-      'Temporary cloud media can expire. Keep your originals or a separate backup.';
+      'رسانه ابری موقت ممکن است منقضی شود. نسخه اصلی یا یک نسخه پشتیبان جداگانه را نگه دارید.';
 
   @override
-  String get momentsTitle => 'Photo moments';
+  String get momentsTitle => 'عکس لحظه ها';
 
   @override
   String get momentsHint =>
-      'Find groups using local photo times and optional coordinates. Photos are attached only when you choose a card.';
+      'گروه‌ها را با استفاده از زمان‌های عکس محلی و مختصات اختیاری پیدا کنید. عکس ها فقط زمانی پیوست می شوند که کارتی را انتخاب می کنید.';
 
   @override
-  String get momentsScan => 'Find moments';
+  String get momentsScan => 'لحظه ها را پیدا کنید';
 
   @override
-  String get momentsChooseFolder => 'Choose photo folder';
+  String get momentsChooseFolder => 'پوشه عکس را انتخاب کنید';
 
   @override
-  String get momentsLocation => 'Include photo locations';
+  String get momentsLocation => 'شامل مکان های عکس';
 
   @override
-  String get momentsEmpty => 'No recent photo groups.';
+  String get momentsEmpty => 'هیچ گروه عکس اخیری وجود ندارد.';
 
   @override
-  String get momentsCreate => 'Write about these photos';
+  String get momentsCreate => 'در مورد این عکس ها بنویس';
 
   @override
-  String get momentsDismiss => 'Dismiss';
+  String get momentsDismiss => 'رد کردن';
 
   @override
-  String get momentsError => 'Could not read local photos.';
+  String get momentsError => 'نمی توان عکس های محلی را خواند.';
 
   @override
-  String get momentsCreated => 'Photo entry created.';
+  String get momentsCreated => 'ورودی عکس ایجاد شد.';
 
   @override
   String get momentsPermission =>
-      'Allow access to photos to find local suggestions.';
+      'برای یافتن پیشنهادهای محلی به عکس‌ها اجازه دسترسی بدهید.';
 
   @override
   String get momentsScope =>
-      'Recent photos only; at most 500 photos and 20 photos per card.';
+      'فقط عکس های اخیر؛ حداکثر 500 عکس و 20 عکس در هر کارت.';
 
   @override
   String momentsPhotoCount(int count) {
-    return '$count photos';
+    return 'عکس های $count';
   }
 
   @override
-  String get nearbyTitle => 'Connect devices';
+  String get nearbyTitle => 'دستگاه ها را وصل کنید';
 
   @override
-  String get nearbySend => 'Authorize another device';
+  String get nearbySend => 'مجوز دستگاه دیگری را صادر کنید';
 
   @override
-  String get nearbyReceive => 'Connect to an existing device';
+  String get nearbyReceive => 'به یک دستگاه موجود متصل شوید';
 
   @override
   String get nearbyInstructions =>
-      'Connect both devices to the same Wi-Fi or to each other’s hotspot. Confirm authorization on the existing device; both devices remain usable. No internet is required.';
+      'هر دو دستگاه را به یک Wi-Fi یا به هات اسپات یکدیگر متصل کنید. تأیید مجوز در دستگاه موجود؛ هر دو دستگاه قابل استفاده باقی می مانند. نیازی به اینترنت نیست';
 
   @override
   String get nearbyCompare =>
-      'Compare this code on both devices before approving.';
+      'قبل از تایید این کد را در هر دو دستگاه مقایسه کنید.';
 
   @override
-  String get nearbyConfirm => 'The codes match';
+  String get nearbyConfirm => 'کدها مطابقت دارند';
 
   @override
-  String get nearbyScan => 'Scan the other device’s code';
+  String get nearbyScan => 'کد دستگاه دیگر را اسکن کنید';
 
   @override
-  String get nearbyPaste => 'Paste invitation';
+  String get nearbyPaste => 'چسباندن دعوت نامه';
 
   @override
-  String get nearbyWaiting => 'Waiting for approval on the other device';
+  String get nearbyWaiting => 'در انتظار تایید در دستگاه دیگر';
 
   @override
-  String get nearbyWorking =>
-      'Authorizing and syncing your diary and attachments…';
+  String get nearbyWorking => 'مجوز و همگام سازی خاطرات و پیوست های شما…';
 
   @override
   String get nearbyPending =>
-      'Some attachments still need syncing. Keep the other device online and try again.';
+      'برخی از پیوست‌ها همچنان نیاز به همگام‌سازی دارند. دستگاه دیگر را آنلاین نگه دارید و دوباره امتحان کنید.';
 
   @override
-  String get nearbyComplete => 'Device connected; diary and attachments synced';
+  String get nearbyComplete => 'دستگاه متصل؛ خاطرات و پیوست ها همگام سازی شدند';
 
   @override
   String get nearbyFailed =>
-      'Connection did not finish. Check the local connection and try again.';
+      'اتصال تمام نشد. اتصال محلی را بررسی کنید و دوباره امتحان کنید.';
 
   @override
   String get nearbyEmptyRequired =>
-      'Use a device with an empty diary that is not connected to sync yet.';
+      'از دستگاهی با دفترچه خاطرات خالی استفاده کنید که هنوز به همگام سازی متصل نشده است.';
 
   @override
-  String get nearbyRetry => 'Continue syncing';
+  String get nearbyRetry => 'به همگام سازی ادامه دهید';
 
   @override
-  String get nearbyWifi => 'Wi-Fi settings';
+  String get nearbyWifi => 'تنظیمات Wi-Fi';
 
   @override
-  String get nearbyHotspot => 'Hotspot settings';
+  String get nearbyHotspot => 'تنظیمات هات اسپات';
 
   @override
   String get nearbyKeepOpen =>
-      'Keep this page open until the new device finishes. The invitation expires after two minutes.';
+      'این صفحه را تا پایان کار دستگاه جدید باز نگه دارید. دعوتنامه پس از دو دقیقه منقضی می شود.';
 
   @override
-  String get syncDevicesTitle => 'Authorized devices';
+  String get syncDevicesTitle => 'دستگاه های مجاز';
 
   @override
   String get syncDevicesDescription =>
-      'Only approved devices can access this AID account. Revoking a device blocks the server but cannot erase a master key or diary already copied to it.';
+      'فقط دستگاه های تایید شده می توانند به این حساب AID دسترسی داشته باشند. باطل کردن یک دستگاه سرور را مسدود می کند اما نمی تواند کلید اصلی یا دفترچه خاطراتی را که قبلاً در آن کپی شده است پاک کند.';
 
   @override
   String get syncDeviceRequest =>
-      'Show this authorization QR to an approved device';
+      'این QR مجوز را به یک دستگاه تأیید شده نشان دهید';
 
   @override
-  String get syncDeviceAuthorize => 'Authorize a device';
+  String get syncDeviceAuthorize => 'مجوز یک دستگاه';
 
   @override
   String get syncDeviceAuthorizeDescription =>
-      'Scan or paste the new device’s authorization request.';
+      'درخواست مجوز دستگاه جدید را اسکن یا جایگذاری کنید.';
 
   @override
-  String get syncDeviceRevoke => 'Revoke';
+  String get syncDeviceRevoke => 'لغو';
 
   @override
-  String get syncDeviceRotate => 'Rotate this device’s signing key';
+  String get syncDeviceRotate => 'کلید امضای این دستگاه را بچرخانید';
 
   @override
-  String get syncDeviceCheck => 'Check authorization';
+  String get syncDeviceCheck => 'مجوز را بررسی کنید';
 
   @override
-  String get syncDeviceHardware => 'Hardware-backed signing key';
+  String get syncDeviceHardware => 'کلید امضای سخت افزاری';
 
   @override
-  String get syncDeviceSoftware => 'Non-exportable software signing key';
+  String get syncDeviceSoftware => 'کلید امضای نرم افزار غیر قابل صادرات';
 
   @override
   String get syncDeviceUnavailable =>
-      'Device authorization is unavailable. Approve this device from another authorized device and retry.';
+      'مجوز دستگاه در دسترس نیست. این دستگاه را از دستگاه مجاز دیگری تأیید کنید و دوباره امتحان کنید.';
 
   @override
-  String get syncDeviceRevoked => 'Revoked';
+  String get syncDeviceRevoked => 'لغو شد';
 
   @override
-  String get syncDeviceLocal => 'This device';
+  String get syncDeviceLocal => 'این دستگاه';
 
   @override
-  String get cloudTrafficTitle => 'Monthly cloud media allowance';
+  String get cloudTrafficTitle =>
+      'سهمیه ماهانه انتقال داده ابری برای فایل های رسانه ای';
 
   @override
-  String get cloudTrafficLimit => 'Monthly allowance';
+  String get cloudTrafficLimit => 'سهمیه انتقال داده ماهانه';
 
   @override
-  String get cloudTrafficUsed => 'Used';
+  String get cloudTrafficUsed => 'انتقال داده استفاده شده است';
 
   @override
-  String get cloudTrafficRemaining => 'Remaining';
+  String get cloudTrafficRemaining => 'انتقال داده باقی مانده است';
 
   @override
   String cloudTrafficResetsAt(String time) {
-    return 'Resets $time';
+    return 'سهمیه انتقال داده $time را بازنشانی می کند';
   }
 
   @override
   String get cloudTrafficExhausted =>
-      'Cloud media allowance used up. Missing media will resume automatically over a direct connection or when the allowance resets.';
+      'سهمیه انتقال داده های ابری برای فایل های رسانه ای تمام شده است. هنگامی که اتصال مستقیم در دسترس باشد یا سهمیه بازنشانی شود، فایل‌های رسانه از دست رفته به‌طور خودکار همگام‌سازی می‌شوند.';
 
   @override
   String get cloudTrafficExplanation =>
-      'Media cache and live relay share this allowance. Direct connections do not use it. Diary text and connection control have separate small daily limits.';
+      'ذخیره فایل رسانه ای و رله زنده این سهمیه انتقال داده را به اشتراک می گذارند. اتصالات مستقیم آن را مصرف نمی کنند. متن خاطرات و پیام های کنترل اتصال محدودیت های روزانه کوچک جداگانه ای دارند.';
 
   @override
-  String get appearanceThemeSection => 'App theme';
+  String get appearanceThemeSection => 'تم برنامه';
 
   @override
-  String get appearancePaperSection => 'Diary paper';
+  String get appearancePaperSection => 'کاغذ خاطرات';
 
   @override
-  String get appearanceTypographySection => 'Diary text';
+  String get appearanceTypographySection => 'متن خاطرات';
 
   @override
-  String get appearancePreferencesSection => 'General preferences';
+  String get appearancePreferencesSection => 'ترجیحات عمومی';
 
   @override
   String get themeSystemAccentHint =>
-      'Uses the system palette instead of custom colors. Turn it off to choose your own.';
+      'از پالت سیستم به جای رنگ های سفارشی استفاده می کند. آن را خاموش کنید تا خودتان انتخاب کنید.';
 
   @override
   String get syncDeviceNameSaveFailed =>
-      'Could not save the device name. Please try again.';
+      'نام دستگاه ذخیره نشد. لطفا دوباره امتحان کنید.';
 
   @override
-  String get nearbyConnectionHelp => 'Connection help';
+  String get nearbyConnectionHelp => 'کمک اتصال';
 
   @override
-  String get syncAllSynced => 'Everything synced';
+  String get syncAllSynced => 'همه چیز همگام شد';
 
   @override
-  String get syncDetailsTitle => 'Sync details';
+  String get syncDetailsTitle => 'همگام سازی جزئیات';
 
   @override
-  String get syncMore => 'More options';
+  String get syncMore => 'گزینه های بیشتر';
 
   @override
-  String get syncDeviceName => 'Device name';
+  String get syncDeviceName => 'نام دستگاه';
 
   @override
-  String get syncDeviceNameHint => 'For example: My tablet';
+  String get syncDeviceNameHint => 'به عنوان مثال: تبلت من';
 
   @override
-  String get syncDeviceNameInvalid => 'Use 1 to 32 characters';
+  String get syncDeviceNameInvalid => 'از 1 تا 32 کاراکتر استفاده کنید';
 
   @override
-  String get syncDeviceKeyDetails => 'Security details';
+  String get syncDeviceKeyDetails => 'جزئیات امنیتی';
 
   @override
   String get syncConnectionProblem =>
-      'Unable to sync for now. Retrying automatically.';
+      'در حال حاضر همگام سازی امکان پذیر نیست. در حال تلاش مجدد به صورت خودکار.';
 
   @override
-  String get syncCopyComplete => 'Complete copy';
+  String get syncCopyComplete =>
+      'کپی کامل از دفترچه خاطرات و فایل های رسانه ای';
 
   @override
-  String get syncCopyPartial => 'Some media is still missing';
+  String get syncCopyPartial => 'برخی رسانه ها هنوز مفقود هستند';
 
   @override
-  String get syncCopyOlder => 'New changes are waiting to sync';
+  String get syncCopyOlder => 'تغییرات جدید در انتظار همگام سازی هستند';
 
   @override
   String get syncCopyUnavailable =>
-      'Copy details are unavailable. Try again later.';
+      'جزئیات کپی در دسترس نیست. بعداً دوباره امتحان کنید.';
 
   @override
   String get syncCopyLastKnown =>
-      'Other devices show their last confirmed copy. Offline devices cannot be checked now.';
+      'دستگاه های دیگر آخرین نسخه تایید شده خود را نشان می دهند. دستگاه های آفلاین اکنون قابل بررسی نیستند.';
 
   @override
   String get syncCopyTemporary =>
-      'Temporary cache. Keep the originals on your devices.';
+      'کش موقت نسخه اصلی را در دستگاه خود نگه دارید.';
 
   @override
   String get syncCopyStorage =>
-      'Your sync storage. Completed media uploads are listed in diagnostics.';
+      'فضای ذخیره سازی همگام سازی شما بارگذاری‌های رسانه‌ای تکمیل‌شده در عیب‌یابی فهرست شده‌اند.';
 
   @override
   String syncCopyChecked(String time) {
-    return 'Last confirmed $time';
+    return 'آخرین تایید $time';
   }
 
   @override
   String cloudTrafficSummary(String remaining, String limit) {
-    return 'Available this month: $remaining / $limit';
+    return 'انتقال داده های باقی مانده در این ماه: $remaining / $limit';
   }
 
   @override
-  String get onboardNewDiary => 'Start here';
+  String get onboardNewDiary => 'از اینجا شروع کنید';
 
   @override
-  String get onboardConnect => 'Connect to an existing device';
+  String get onboardConnect => 'به یک دستگاه موجود متصل شوید';
 
   @override
   String get onboardFailed =>
-      'Setup could not be completed. Your diary is safe; please try again.';
+      'راه اندازی کامل نشد. دفتر خاطرات شما امن است. لطفا دوباره امتحان کنید';
 
   @override
-  String get tutorialTitle => 'How to use the diary';
+  String get tutorialTitle => 'نحوه استفاده از دفترچه خاطرات';
 
   @override
-  String get tutorialWriteTitle => 'Write your first entry';
+  String get tutorialWriteTitle => 'اولین مدخل خاطرات خود را بنویسید';
 
   @override
   String get tutorialWriteText =>
-      'Tap + to write. Add a title if you want, choose the diary day and tap the check mark to save. You can edit it again at any time.';
+      'برای نوشتن یک دفترچه خاطرات روی + ضربه بزنید. یک عنوان اختیاری اضافه کنید، تاریخ خاطرات را انتخاب کنید و برای ذخیره روی علامت تیک بزنید. می‌توانید در هر زمانی که بخواهید دوباره یادداشت روزانه خود را ویرایش کنید.';
 
   @override
-  String get tutorialMediaTitle => 'Add photos, audio or handwriting';
+  String get tutorialMediaTitle => 'عکس، صدا یا دست خط اضافه کنید';
 
   @override
   String get tutorialMediaText =>
-      'Use + in the editor to attach photos, videos or a voice note, or open the pen canvas. These attachments stay with the entry.';
+      'از + در ویرایشگر خاطرات برای پیوست کردن عکس‌ها، فیلم‌ها، یا ضبط صدا یا باز کردن بوم دست‌نویس استفاده کنید. این پیوست‌ها با ورودی خاطرات ذخیره می‌شوند.';
 
   @override
-  String get tutorialReviewTitle => 'Find a day again';
+  String get tutorialReviewTitle => 'دوباره یک روز پیدا کن';
 
   @override
   String get tutorialReviewText =>
-      'Browse the journal or calendar, search your writing and use tags to organize it. Media and Atlas help you look back by photo or place.';
+      'دفتر خاطرات یا تقویم خود را مرور کنید، نوشته های خود را جستجو کنید، و مدخل ها را با برچسب ها سازماندهی کنید. صفحات رسانه و اطلس به شما امکان می دهد ورودی های گذشته را بر اساس عکس یا مکان پیدا کنید.';
 
   @override
-  String get tutorialSyncTitle => 'Use more than one device';
+  String get tutorialSyncTitle => 'از بیش از یک دستگاه استفاده کنید';
 
   @override
   String get tutorialSyncText =>
-      'In Settings → Data & storage → Sync, connect to an existing device and confirm authorization there. Both devices can keep using the diary. Text syncs first; media follows as the connection and allowance permit.';
+      'در تنظیمات ← داده و ذخیره سازی ← همگام سازی، به دستگاه موجود متصل شوید و مجوز آن دستگاه را تأیید کنید. هر دو دستگاه می توانند به استفاده از دفترچه خاطرات ادامه دهند. متن خاطرات ابتدا همگام سازی می شود. زمانی که اتصال شبکه و سهمیه انتقال داده باقیمانده به آن اجازه می‌دهد، فایل‌های رسانه همگام‌سازی می‌شوند.';
 
   @override
-  String get tutorialPrivacyTitle => 'Keep your diary safe';
+  String get tutorialPrivacyTitle => 'دفتر خاطرات خود را ایمن نگه دارید';
 
   @override
   String get tutorialPrivacyText =>
-      'Entries stay on this device unless you enable sync or share/export them. Sync is end-to-end encrypted. Settings also offers an app passcode and backups; you can reopen this tutorial there.';
+      'نوشته های خاطرات در این دستگاه باقی می مانند مگر اینکه همگام سازی یا اشتراک گذاری یا صادر کردن آنها را فعال کنید. همگام سازی سرتاسر رمزگذاری شده است. در تنظیمات همچنین می‌توانید یک رمز عبور برنامه تنظیم کنید، پشتیبان‌گیری ایجاد کنید و این آموزش را دوباره باز کنید.';
 }

@@ -189,7 +189,11 @@ tests or builds. This wraps Flutter's [official localization generator](https://
 under the same workspace lock. Commit the relevant generated Dart changes;
 do not hand-edit them or assume dependency resolution/test execution refreshed
 an existing generated file. `intl_en.arb` is the template; Chinese variants
-have their own translations and other locales use the configured fallback.
+have their own translations. Every offered locale must cover the English
+template; keep product/import-format names unchanged, preserve placeholders
+and check locale-specific plural forms. Run
+`./scripts/dev.ps1 test -TestFiles test/l10n/` after regeneration. The catalog
+checks reject missing or empty translations and lost dynamic arguments.
 
 Use `aid guide` and shared app actions before manual taps when checking behavior.
 Build the CLI with `./scripts/dev.ps1 cli`; `build/cli/aid.exe` can reach the

@@ -64,8 +64,9 @@ Android permissions beyond storage and notifications: location (place, asked for
 
 The interface follows system language preferences by default; Settings can
 override them. Flutter's official localization pipeline bundles translations
-for offline use. The 35 locale variants have uneven translation coverage;
-missing app text falls back to English. See [internationalization](docs/ARCHITECTURE.md#internationalization)
+for offline use. All 35 locale variants cover the English message template;
+catalog tests check missing/empty messages and dynamic arguments. Translation
+coverage does not imply native-speaker review. See [internationalization](docs/ARCHITECTURE.md#internationalization)
 for matching rules, translation maintenance and validation.
 
 ## Development

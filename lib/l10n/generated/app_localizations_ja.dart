@@ -12,38 +12,38 @@ class AppLocalizationsJa extends AppLocalizations {
   String get appTitle => 'AID Diary';
 
   @override
-  String get themeColorTitle => 'Theme color';
+  String get themeColorTitle => 'テーマカラー';
 
   @override
-  String get themeColorHint => 'Choose a color for this palette.';
+  String get themeColorHint => 'このパレットの色を選択します。';
 
   @override
-  String get themeColorBlue => 'Sky blue';
+  String get themeColorBlue => 'スカイブルー';
 
   @override
-  String get themeColorGreen => 'Forest green';
+  String get themeColorGreen => 'フォレストグリーン';
 
   @override
-  String get themeColorBrown => 'Warm coffee';
+  String get themeColorBrown => '温かいコーヒー';
 
   @override
-  String get themeColorPurple => 'Lavender';
+  String get themeColorPurple => 'ラベンダー';
 
   @override
-  String get themeColorRose => 'Dusty rose';
+  String get themeColorRose => 'ダスティローズ';
 
   @override
-  String get themeColorAmber => 'Amber';
+  String get themeColorAmber => 'アンバー';
 
   @override
-  String get themeColorPreview => 'A little every day';
+  String get themeColorPreview => '毎日少しずつ';
 
   @override
-  String get themeTintBackgroundTitle => 'Tint backgrounds with theme color';
+  String get themeTintBackgroundTitle => 'テーマカラーで背景を着色する';
 
   @override
   String get themeTintBackgroundHint =>
-      'Turn off for neutral gray backgrounds; buttons keep your chosen color.';
+      'ニュートラルグレーの背景の場合はオフにします。ボタンは選択した色を保持します。';
 
   @override
   String get dailyReminderTitle => '今日の日記を書きましょう！';
@@ -100,7 +100,7 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
-  String get flashbackOnThisDay => 'On This Day';
+  String get flashbackOnThisDay => 'この日には';
 
   @override
   String get searchLogsHint => '記録を検索…';
@@ -121,8 +121,8 @@ class AppLocalizationsJa extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count days',
-      one: '$count day',
+      other: '$count日',
+      one: '$count 日',
     );
     return '$_temp0';
   }
@@ -180,11 +180,11 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String chartOverTimeTitle(Object tag) {
-    return '$tag Over Time';
+    return '$tag 時間の経過とともに';
   }
 
   @override
-  String get chartGroupingLabel => 'Group by';
+  String get chartGroupingLabel => 'グループ化';
 
   @override
   String get chartGroupingDay => '日';
@@ -193,20 +193,20 @@ class AppLocalizationsJa extends AppLocalizations {
   String get chartGroupingWeek => '週';
 
   @override
-  String get chartGroupingMonth => 'Month';
+  String get chartGroupingMonth => '月';
 
   @override
-  String get chartGroupingYear => 'Year';
+  String get chartGroupingYear => '年';
 
   @override
-  String get chartSmoothingLabel => 'Smoothing';
+  String get chartSmoothingLabel => 'スムージング';
 
   @override
   String streakCurrent(num count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Current Streak $count',
+      other: '現在の連続記録：$count',
     );
     return '$_temp0';
   }
@@ -216,7 +216,7 @@ class AppLocalizationsJa extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Longest Streak $count',
+      other: '最長の連続記録：$count',
     );
     return '$_temp0';
   }
@@ -226,7 +226,7 @@ class AppLocalizationsJa extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Great Days $count',
+      other: '素晴らしい日々 $count',
     );
     return '$_temp0';
   }
@@ -236,7 +236,7 @@ class AppLocalizationsJa extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Days Since a Bad Day $count',
+      other: '悪い日からの日数 $count',
     );
     return '$_temp0';
   }
@@ -294,13 +294,13 @@ class AppLocalizationsJa extends AppLocalizations {
   String get settingsFirstDayOfWeek => '週の始まり';
 
   @override
-  String get settingsCalendarSystem => 'Calendar System';
+  String get settingsCalendarSystem => 'カレンダーシステム';
 
   @override
-  String get calendarSystemGregorian => 'Gregorian';
+  String get calendarSystemGregorian => 'グレゴリオ暦';
 
   @override
-  String get calendarSystemJalali => 'Jalali';
+  String get calendarSystemJalali => 'ジャラリ';
 
   @override
   String get settingsUseSystemAccentColor => 'システムのユーザーの色を利用';
@@ -318,10 +318,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get moodIconPrompt => 'アイコンを入力してください';
 
   @override
-  String get settingsHideImages => 'Hide Images';
+  String get settingsHideImages => '画像を非表示にする';
 
   @override
-  String get pageCalendarTitle => 'Calendar';
+  String get pageCalendarTitle => 'カレンダー';
 
   @override
   String get settingsNotificationsTitle => '通知';
@@ -330,7 +330,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get settingsDailyReminderTitle => 'リマインダー';
 
   @override
-  String get settingsOnThisDayDescription => 'Revisit past memories';
+  String get settingsOnThisDayDescription => '過去の思い出を振り返る';
 
   @override
   String get settingsDailyReminderDescription => '毎日、便利なリマインダーを送信';
@@ -367,7 +367,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get noTemplatesDescription => 'テンプレートはまだ作成されていません…';
 
   @override
-  String get templateDefaultTimestampTitle => 'Timestamp';
+  String get templateDefaultTimestampTitle => 'タイムスタンプ';
 
   @override
   String templateDefaultTimestampBody(Object date, Object time) {
@@ -375,115 +375,115 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
-  String get templateDefaultSummaryTitle => 'Day Summary';
+  String get templateDefaultSummaryTitle => '一日の概要';
 
   @override
-  String get templateDefaultSummaryBody => '### Summary\n- \n\n### Quote\n> ';
+  String get templateDefaultSummaryBody => '### 概要\n- \n\n### 引用\n> ';
 
   @override
-  String get templateDefaultReflectionTitle => 'Reflection';
+  String get templateDefaultReflectionTitle => '反射';
 
   @override
   String get templateDefaultReflectionBody =>
-      '### What did you enjoy about today?\n- \n\n### What are you thankful for?\n- \n\n### What are you looking forward to?\n- ';
+      '### 今日は何が楽しかったですか?\n- \n\n### 何に感謝していますか?\n- \n\n### 何を楽しみにしていますか?\n- ';
 
   @override
-  String get settingsTagsTitle => 'Tags';
+  String get settingsTagsTitle => 'タグ';
 
   @override
-  String get manageTags => 'Manage Tags';
+  String get manageTags => 'タグの管理';
 
   @override
-  String get tagTypeLabelTitle => 'Label';
+  String get tagTypeLabelTitle => 'ラベル';
 
   @override
-  String get tagTypeTrackerTitle => 'Tracker';
+  String get tagTypeTrackerTitle => 'トラッカー';
 
   @override
-  String get nameHint => 'Name';
+  String get nameHint => '名前';
 
   @override
-  String get tagColorLabel => 'Color';
+  String get tagColorLabel => '色';
 
   @override
-  String get iconPickerTitle => 'Choose Icon';
+  String get iconPickerTitle => 'アイコンを選択';
 
   @override
-  String get iconPickerIconsTab => 'Icons';
+  String get iconPickerIconsTab => 'アイコン';
 
   @override
-  String get iconPickerCustomTab => 'Custom';
+  String get iconPickerCustomTab => 'カスタム';
 
   @override
-  String get iconPickerSearchHint => 'Search icons…';
+  String get iconPickerSearchHint => '検索アイコン…';
 
   @override
-  String get colorPickerTitle => 'Choose Color';
+  String get colorPickerTitle => '色の選択';
 
   @override
-  String get colorPickerPaletteTab => 'Colors';
+  String get colorPickerPaletteTab => '色';
 
   @override
-  String get iconGroupMoodPeople => 'Mood & People';
+  String get iconGroupMoodPeople => '気分と人々';
 
   @override
-  String get iconGroupHealth => 'Health';
+  String get iconGroupHealth => '健康';
 
   @override
-  String get iconGroupWorkFinance => 'Work & Finance';
+  String get iconGroupWorkFinance => '仕事と財務';
 
   @override
-  String get iconGroupHabitsGoals => 'Habits & Goals';
+  String get iconGroupHabitsGoals => '習慣と目標';
 
   @override
-  String get iconGroupNature => 'Nature';
+  String get iconGroupNature => '自然';
 
   @override
-  String get iconGroupFoodDrink => 'Food & Drink';
+  String get iconGroupFoodDrink => '食べ物と飲み物';
 
   @override
-  String get iconGroupHome => 'Home';
+  String get iconGroupHome => 'ホーム';
 
   @override
-  String get iconGroupTravel => 'Travel';
+  String get iconGroupTravel => '旅行';
 
   @override
-  String get iconGroupSymbols => 'Symbols';
+  String get iconGroupSymbols => '記号';
 
   @override
-  String get tagCategoryLabel => 'Category';
+  String get tagCategoryLabel => 'カテゴリ';
 
   @override
-  String get tagLabel => 'Tag';
+  String get tagLabel => 'タグ';
 
   @override
-  String get tagCategoryUncategorized => 'Uncategorized';
+  String get tagCategoryUncategorized => '未分類';
 
   @override
-  String get newCategoryTitle => 'New Category';
+  String get newCategoryTitle => '新しいカテゴリー';
 
   @override
-  String get shareButtonLabel => 'Share';
+  String get shareButtonLabel => 'シェアする';
 
   @override
-  String get importErrorDescription => 'Failed to import file!';
+  String get importErrorDescription => 'ファイルのインポートに失敗しました!';
 
   @override
-  String get exportErrorDescription => 'Failed to export file!';
+  String get exportErrorDescription => 'ファイルのエクスポートに失敗しました!';
 
   @override
-  String get deleteTitle => 'Delete';
+  String get deleteTitle => '削除';
 
   @override
   String deleteTagMessage(num count, Object name) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: ' It is used in $count logs.',
-      one: ' It is used in 1 log.',
+      other: ' $count件の日記で使用されています。',
+      one: ' 1ログで使用されます。',
       zero: '',
     );
-    return 'Delete \"$name\"?$_temp0';
+    return '「$name」を削除しますか?$_temp0';
   }
 
   @override
@@ -491,83 +491,83 @@ class AppLocalizationsJa extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: ' Its $count tags will also be deleted.',
-      one: ' Its 1 tag will also be deleted.',
+      other: ' $count 個のタグも削除されます。',
+      one: ' その 1 つのタグも削除されます。',
       zero: '',
     );
-    return 'Delete \"$name\"?$_temp0';
+    return '「$name」を削除しますか?$_temp0';
   }
 
   @override
-  String get tagNameExists => 'There is a tag with this name already';
+  String get tagNameExists => 'この名前のタグはすでに存在します';
 
   @override
-  String get categoryNameExists => 'There is a category with this name already';
+  String get categoryNameExists => 'この名前のカテゴリがすでに存在します';
 
   @override
   String deleteTemplateMessage(Object name) {
-    return 'Delete \"$name\"?';
+    return '「$name」を削除しますか?';
   }
 
   @override
-  String get addTagsTitle => 'Add Tags';
+  String get addTagsTitle => 'タグを追加する';
 
   @override
-  String get addTagsSearchHint => 'Search tags…';
+  String get addTagsSearchHint => 'タグを検索…';
 
   @override
-  String get tagPickerSortManualLabel => 'Manual order';
+  String get tagPickerSortManualLabel => '手動注文';
 
   @override
-  String get tagPickerSortUsageLabel => 'Sort by usage';
+  String get tagPickerSortUsageLabel => '用途別に並べ替える';
 
   @override
-  String get tagFavoriteName => 'Favorite';
+  String get tagFavoriteName => 'お気に入り';
 
   @override
-  String get tagEnergyName => 'Energy';
+  String get tagEnergyName => 'エネルギー';
 
   @override
-  String get tagCategoryActivitiesName => 'Activities';
+  String get tagCategoryActivitiesName => '活動内容';
 
   @override
-  String get tagExerciseName => 'Exercise';
+  String get tagExerciseName => '運動';
 
   @override
-  String get tagSocializingName => 'Socializing';
+  String get tagSocializingName => '社交';
 
   @override
-  String get tagHobbyName => 'Hobby';
+  String get tagHobbyName => '趣味';
 
   @override
-  String get tagEntertainmentName => 'Entertainment';
+  String get tagEntertainmentName => 'エンターテイメント';
 
   @override
-  String get tagDiningName => 'Dining';
+  String get tagDiningName => 'ダイニング';
 
   @override
-  String get tagChoresName => 'Chores';
+  String get tagChoresName => '雑用';
 
   @override
-  String get tagCategoryEmotionsName => 'Emotions';
+  String get tagCategoryEmotionsName => '感情';
 
   @override
-  String get tagExcitedName => 'Excited';
+  String get tagExcitedName => '興奮した';
 
   @override
-  String get tagGratefulName => 'Grateful';
+  String get tagGratefulName => '感謝します';
 
   @override
-  String get tagCalmName => 'Calm';
+  String get tagCalmName => '穏やかな';
 
   @override
-  String get tagTiredName => 'Tired';
+  String get tagTiredName => '疲れた';
 
   @override
-  String get tagAnxiousName => 'Anxious';
+  String get tagAnxiousName => '不安';
 
   @override
-  String get tagAnnoyedName => 'Annoyed';
+  String get tagAnnoyedName => 'イライラする';
 
   @override
   String get settingsStorageTitle => 'ストレージ';
@@ -628,56 +628,56 @@ class AppLocalizationsJa extends AppLocalizations {
   String get settingsRestorePromptDescription => 'これにより現在の設定が上書きされます！';
 
   @override
-  String get settingsBackupPasswordProtect => 'Password Protect Backups';
+  String get settingsBackupPasswordProtect => 'パスワード保護されたバックアップ';
 
   @override
-  String get backupEncryptedTitle => 'Encrypted Backup';
+  String get backupEncryptedTitle => '暗号化されたバックアップ';
 
   @override
-  String get backupEncryptedContent => 'This backup is password protected.';
+  String get backupEncryptedContent => 'このバックアップはパスワードで保護されています。';
 
   @override
-  String get settingsAutoBackup => 'Automatic Backups';
+  String get settingsAutoBackup => '自動バックアップ';
 
   @override
-  String get settingsAutoBackupLocation => 'Backup Location';
+  String get settingsAutoBackupLocation => 'バックアップの場所';
 
   @override
-  String get settingsAutoBackupInterval => 'Backup Interval';
+  String get settingsAutoBackupInterval => 'バックアップ間隔';
 
   @override
-  String get settingsAutoBackupIntervalDaily => 'Daily';
+  String get settingsAutoBackupIntervalDaily => '毎日';
 
   @override
-  String get settingsAutoBackupIntervalWeekly => 'Weekly';
+  String get settingsAutoBackupIntervalWeekly => '毎週';
 
   @override
-  String get settingsAutoBackupIntervalMonthly => 'Monthly';
+  String get settingsAutoBackupIntervalMonthly => '毎月';
 
   @override
-  String get settingsAutoBackupMaxCount => 'Backups To Keep';
+  String get settingsAutoBackupMaxCount => '保存すべきバックアップ';
 
   @override
-  String get settingsAutoBackupRequireCharging => 'Only While Charging';
+  String get settingsAutoBackupRequireCharging => '充電中のみ';
 
   @override
   String settingsBackupLast(Object time) {
-    return 'Last backup $time';
+    return '最終バックアップ $time';
   }
 
   @override
-  String get settingsBackupNever => 'Never backed up';
+  String get settingsBackupNever => 'バックアップしたことがない';
 
   @override
   String settingsAutoBackupNext(Object time) {
-    return 'Next backup $time';
+    return '次のバックアップ $time';
   }
 
   @override
-  String get settingsAutoBackupKeepAll => 'All';
+  String get settingsAutoBackupKeepAll => 'すべて';
 
   @override
-  String get autoBackupFailedTitle => 'Backup Failed';
+  String get autoBackupFailedTitle => 'バックアップに失敗しました';
 
   @override
   String tranferStatus(Object percent) {
@@ -696,12 +696,12 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String encryptingBackupStatus(Object percent) {
-    return 'Encrypting Backup… $percent%';
+    return 'バックアップを暗号化しています… $percent%';
   }
 
   @override
   String decryptingBackupStatus(Object percent) {
-    return 'Decrypting Backup… $percent%';
+    return 'バックアップを復号中… $percent%';
   }
 
   @override
@@ -745,7 +745,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get formatMyBrain => 'My Brain';
 
   @override
-  String get formatOneShot => 'OneShot';
+  String get formatOneShot => 'ワンショット';
 
   @override
   String get formatPixels => 'Pixels';
@@ -825,561 +825,553 @@ class AppLocalizationsJa extends AppLocalizations {
   String get licenseGPLv3 => 'GPL-3.0';
 
   @override
-  String get settingsOpenSourceLicenses => 'Open Source Licenses';
+  String get settingsOpenSourceLicenses => 'オープンソースライセンス';
 
   @override
   String get tagMoodTitle => '気分';
 
   @override
-  String get selectTagTitle => 'Select Tag';
+  String get selectTagTitle => 'タグの選択';
 
   @override
-  String get labelPresentLabel => 'Present';
+  String get labelPresentLabel => 'プレゼント';
 
   @override
-  String get labelAbsentLabel => 'Absent';
+  String get labelAbsentLabel => '欠席';
 
   @override
-  String get labelCoverageLabel => 'Coverage';
+  String get labelCoverageLabel => '適用範囲';
 
   @override
   String chartDistributionTitle(Object tag) {
-    return '$tag Distribution';
+    return '$tag分布';
   }
 
   @override
-  String get shareAddToLogPickerTitle => 'Choose a log';
+  String get shareAddToLogPickerTitle => '日記エントリを選択してください';
 
   @override
-  String get adaptiveEmptyDay => 'No entries for this day yet';
+  String get adaptiveEmptyDay => 'この日のエントリーはまだありません';
 
   @override
-  String get adaptiveNewEntry => 'Write an entry';
+  String get adaptiveNewEntry => 'エントリーを書く';
 
   @override
-  String get pageJournalTitle => 'Journal';
+  String get pageJournalTitle => '日記';
 
   @override
-  String get coachPrompt1 => 'What made you smile today?';
+  String get coachPrompt1 => '今日は何があなたを笑顔にさせましたか？';
 
   @override
-  String get coachPrompt2 => 'What is one thing you learned today?';
+  String get coachPrompt2 => '今日学んだことは何ですか?';
 
   @override
-  String get coachPrompt3 => 'Who did you talk to today, and how did it feel?';
+  String get coachPrompt3 => '今日は誰と話しましたか?そしてそれはどう感じましたか?';
 
   @override
-  String get coachPrompt4 => 'What are you grateful for right now?';
+  String get coachPrompt4 => '今、感謝していることは何ですか？';
 
   @override
-  String get coachPrompt5 => 'What took most of your energy today?';
+  String get coachPrompt5 => '今日あなたのエネルギーを最も費やしたものは何ですか?';
 
   @override
-  String get coachPrompt6 => 'Describe a small moment you want to remember.';
+  String get coachPrompt6 => '覚えておきたい小さな瞬間を説明してください。';
 
   @override
-  String get coachPrompt7 => 'What would make tomorrow a good day?';
+  String get coachPrompt7 => '明日を良い日にしてくれるものは何でしょうか？';
 
   @override
-  String get coachPrompt8 => 'What has been on your mind lately?';
+  String get coachPrompt8 => '最近気になっていることは何ですか?';
 
   @override
-  String get coachPrompt9 => 'What did you do today just for yourself?';
+  String get coachPrompt9 => '今日は自分のためだけに何をしましたか？';
 
   @override
-  String get coachPrompt10 => 'If today had a title, what would it be?';
+  String get coachPrompt10 => '今日にタイトルがあるとしたら何になりますか?';
 
   @override
-  String get pageMediaTitle => 'Media';
+  String get pageMediaTitle => 'メディア';
 
   @override
-  String get pageAtlasTitle => 'Atlas';
+  String get pageAtlasTitle => 'アトラス';
 
   @override
-  String get pageCoachTitle => 'Coach';
+  String get pageCoachTitle => 'コーチ';
 
   @override
-  String get noEntrySelected => 'No entry selected.';
+  String get noEntrySelected => 'エントリが選択されていません。';
 
   @override
-  String get entryShare => 'Share';
+  String get entryShare => 'シェアする';
 
   @override
-  String get entryFavorite => 'Star';
+  String get entryFavorite => 'スター';
 
   @override
-  String get entryEdit => 'Edit';
+  String get entryEdit => '編集';
 
   @override
-  String get entryPrevious => 'Previous entry';
+  String get entryPrevious => '前のエントリ';
 
   @override
-  String get entryNext => 'Next entry';
+  String get entryNext => '次のエントリ';
 
   @override
-  String get journalStories => 'Stories';
+  String get journalStories => 'ストーリー';
 
   @override
-  String get journalEntries => 'Entries';
+  String get journalEntries => 'エントリー';
 
   @override
-  String get journalEmptyHint => 'Begin your diary by adding a new entry.';
+  String get journalEmptyHint => '新しいエントリを追加して日記を始めます。';
 
   @override
-  String get storyToday => 'Today';
+  String get storyToday => '今日';
 
   @override
-  String get storyThrowback => 'Throwback';
+  String get storyThrowback => '振り返り';
 
   @override
-  String get storyNoThrowback => 'No throwback today';
+  String get storyNoThrowback => '今日は振り返りはありません';
 
   @override
-  String get mediaFiles => 'Media files';
+  String get mediaFiles => 'メディアファイル';
 
   @override
-  String get mediaEmpty => 'No photos yet.';
+  String get mediaEmpty => '写真はまだありません。';
 
   @override
-  String get mediaEmptyHint => 'Photos attached to entries will be shown here.';
+  String get mediaEmptyHint => 'エントリーに添付された写真がここに表示されます。';
 
   @override
-  String get atlasEmpty => 'No entries with a location.';
+  String get atlasEmpty => '場所を含むエントリはありません。';
 
   @override
-  String get atlasEmptyHint => 'Entries with a location will be shown here.';
+  String get atlasEmptyHint => '場所を含むエントリがここに表示されます。';
 
   @override
-  String get atlasShowAll => 'Show all entries';
+  String get atlasShowAll => 'すべてのエントリを表示';
 
   @override
-  String get atlasMyLocation => 'My location';
+  String get atlasMyLocation => '私の場所';
 
   @override
-  String get coachAll => 'All';
+  String get coachAll => 'すべて';
 
   @override
-  String get coachPrograms => 'Programs';
+  String get coachPrograms => 'プログラム';
 
   @override
-  String get coachTemplates => 'Templates';
+  String get coachTemplates => 'テンプレート';
 
   @override
-  String get coachKindProgram => 'Program';
+  String get coachKindProgram => 'プログラム';
 
   @override
-  String get coachKindTemplate => 'Template';
+  String get coachKindTemplate => 'テンプレート';
 
   @override
-  String get coachNoTemplates => 'No programs or templates.';
+  String get coachNoTemplates => 'プログラムやテンプレートはありません。';
 
   @override
-  String get coachUseTemplate => 'Write with this template';
+  String get coachUseTemplate => 'このテンプレートを使って書く';
 
   @override
-  String get coachProgramEverydayTitle => 'Everyday moments';
+  String get coachProgramEverydayTitle => '日常の瞬間';
 
   @override
   String get coachProgramEverydayDescription =>
-      'Five short questions, one a day. Each takes a minute or two and helps you see what made the day yours. A gentle way to build the habit of writing a little every day.';
+      '5 つの短い質問を 1 日 1 つずつ。それぞれ 1 ～ 2 分で、その日が自分のものになったことがわかります。毎日少しずつ書く習慣を身につける優しい方法。';
 
   @override
-  String get coachProgramReflectTitle => 'Looking inward';
+  String get coachProgramReflectTitle => '内側に目を向ける';
 
   @override
   String get coachProgramReflectDescription =>
-      'One deeper question a week, for five weeks. Take your time with each: how you have been feeling, what wears you out, what you are grateful for.';
+      '週に 1 つ、より深い質問を 5 週間続けます。どのように感じているか、何に疲れているか、何に感謝しているか、それぞれに時間をかけて考えてみましょう。';
 
   @override
-  String get searchFilters => 'Filters';
+  String get searchFilters => 'フィルター';
 
   @override
-  String get searchFilterTags => 'Tags';
+  String get searchFilterTags => 'タグ';
 
   @override
-  String get searchFilterStarred => 'Starred';
+  String get searchFilterStarred => 'スター付き';
 
   @override
-  String get searchHint => 'Type to search, or pick a filter.';
+  String get searchHint => '入力して検索するか、フィルターを選択します。';
 
   @override
-  String get locationTitle => 'Location';
+  String get locationTitle => '場所';
 
   @override
-  String get locationName => 'Place name';
+  String get locationName => '地名';
 
   @override
-  String get locationRemove => 'Remove';
+  String get locationRemove => '削除';
 
   @override
-  String get locationServiceDisabled => 'Location services are turned off.';
+  String get locationServiceDisabled => '位置情報サービスはオフになっています。';
 
   @override
-  String get locationPermissionDenied => 'Location permission was denied.';
+  String get locationPermissionDenied => '位置情報の許可が拒否されました。';
 
   @override
-  String get locationUnavailable => 'Could not get the current location.';
+  String get locationUnavailable => '現在位置を取得できませんでした。';
 
   @override
-  String get calendarJumpToToday => 'Jump to today';
+  String get calendarJumpToToday => '今日にジャンプ';
 
   @override
-  String get editorStartWriting => 'Start writing or choose a ';
+  String get editorStartWriting => '書き始めるか、選択してください ';
 
   @override
-  String get editorTemplateLink => 'Template';
+  String get editorTemplateLink => 'テンプレート';
 
   @override
   String get editorStartWritingEnd => '.';
 
   @override
-  String get templatePickerTitle => 'Choose a template';
+  String get templatePickerTitle => 'テンプレートを選択してください';
 
   @override
-  String get templateFeatured => 'Featured templates';
+  String get templateFeatured => '注目のテンプレート';
 
   @override
-  String get templateMine => 'My templates';
+  String get templateMine => '私のテンプレート';
 
   @override
-  String get templateDailyName => 'Daily review';
+  String get templateDailyName => '日々の振り返り';
 
   @override
-  String get templateDailyDescription =>
-      'What happened, how it felt, and what comes next.';
+  String get templateDailyDescription => '何が起こったのか、どう感じたのか、そして次に何が起こるのか。';
 
   @override
   String get templateDailyText =>
-      '## What happened today\n\n\n## How I felt\n\n\n## Three things I\'m grateful for\n1. \n2. \n3. \n\n## Tomorrow\n';
+      '## 今日の出来事\n\n\n## 私がどう感じたか\n\n\n## 私が感謝している 3 つのこと\n1. \n2. \n3. \n\n## 明日\n';
 
   @override
-  String get templateTravelName => 'Travel log';
+  String get templateTravelName => '旅行日記のエントリー';
 
   @override
-  String get templateTravelDescription =>
-      'Places, moments and food from the road.';
+  String get templateTravelDescription => '旅先で得た場所、瞬間、食べ物。';
 
   @override
   String get templateTravelText =>
-      '## Where I went\n\n\n## The moment I remember most\n\n\n## What I ate\n\n\n## Plans for tomorrow\n';
+      '## 私が行った場所\n\n\n## 一番覚えている瞬間\n\n\n## 私が食べたもの\n\n\n## 明日の予定\n';
 
   @override
-  String get templateReadingName => 'Reading notes';
+  String get templateReadingName => '読書メモ';
 
   @override
-  String get templateReadingDescription =>
-      'Quotes and thoughts from what you read.';
+  String get templateReadingDescription => '読んだものからの引用と感想。';
 
   @override
   String get templateReadingText =>
-      '## Book\n\n\n## Where I am\n\n\n## Quotes\n> \n\n## My thoughts\n';
+      '## 予約する\n\n\n## 私がいる場所\n\n\n## 引用\n> \n\n## 私の考え\n';
 
   @override
-  String get templateWeeklyName => 'Weekly review';
+  String get templateWeeklyName => '週次レビュー';
 
   @override
-  String get templateWeeklyDescription =>
-      'Highlights, struggles and next week\'s focus.';
+  String get templateWeeklyDescription => 'ハイライト、苦戦、そして来週の焦点。';
 
   @override
   String get templateWeeklyText =>
-      '## Highlights\n\n\n## What was hard\n\n\n## What I learned\n\n\n## Focus for next week\n';
+      '## ハイライト\n\n\n## 大変だったこと\n\n\n## 学んだこと\n\n\n## 来週に焦点を当てます\n';
 
   @override
-  String get entryDuplicate => 'Duplicate';
+  String get entryDuplicate => '重複';
 
   @override
-  String get entryDuplicated => 'Entry duplicated';
+  String get entryDuplicated => 'エントリが重複しました';
 
   @override
-  String get entrySaveAsTemplate => 'Save as template';
+  String get entrySaveAsTemplate => 'テンプレートとして保存';
 
   @override
-  String get entrySavedAsTemplate => 'Saved as a template';
+  String get entrySavedAsTemplate => 'テンプレートとして保存されました';
 
   @override
-  String get storyStatistics => 'Statistics';
+  String get storyStatistics => '統計';
 
   @override
-  String get storyMoodChart => 'Mood chart';
+  String get storyMoodChart => '気分チャート';
 
   @override
   String storyEntriesAndDays(Object days, Object entries) {
-    return '$entries entries · $days days';
+    return '$entries エントリ · $days 日';
   }
 
   @override
-  String get storyThisYear => 'This year';
+  String get storyThisYear => '今年は';
 
   @override
-  String get storyLastYear => 'Last year';
+  String get storyLastYear => '昨年';
 
   @override
-  String get storyTapToOpen => 'Tap a day to open it';
+  String get storyTapToOpen => '日付をタップして開きます';
 
   @override
-  String get settingsGeneralTitle => 'General';
+  String get settingsGeneralTitle => '一般';
 
   @override
-  String get settingsDataTitle => 'Data & storage';
+  String get settingsDataTitle => 'データとストレージ';
 
   @override
-  String get settingsStoriesTitle => 'Stories';
+  String get settingsStoriesTitle => 'ストーリー';
 
   @override
-  String get settingsHelpTitle => 'Help & about';
+  String get settingsHelpTitle => 'ヘルプと概要';
 
   @override
-  String get weatherTitle => 'Weather';
+  String get weatherTitle => '天気';
 
   @override
-  String get weatherClear => 'Clear';
+  String get weatherClear => 'クリア';
 
   @override
-  String get weatherPartlyCloudy => 'Partly cloudy';
+  String get weatherPartlyCloudy => '曇り';
 
   @override
-  String get weatherCloudy => 'Cloudy';
+  String get weatherCloudy => '曇り';
 
   @override
-  String get weatherFog => 'Fog';
+  String get weatherFog => '霧';
 
   @override
-  String get weatherDrizzle => 'Drizzle';
+  String get weatherDrizzle => '霧雨';
 
   @override
-  String get weatherRain => 'Rain';
+  String get weatherRain => '雨';
 
   @override
-  String get weatherSnow => 'Snow';
+  String get weatherSnow => '雪';
 
   @override
-  String get weatherStorm => 'Thunderstorm';
+  String get weatherStorm => '雷雨';
 
   @override
-  String get weatherFetch => 'Get weather for this entry';
+  String get weatherFetch => 'このエントリの天気を取得する';
 
   @override
-  String get weatherNeedsLocation => 'Add a location with coordinates first.';
+  String get weatherNeedsLocation => '最初に座標を含む場所を追加します。';
 
   @override
-  String get weatherUnavailable =>
-      'Weather is unavailable for this place and time.';
+  String get weatherUnavailable => 'この場所と時間の天気は利用できません。';
 
   @override
-  String get weatherRemove => 'Remove weather';
+  String get weatherRemove => '天気を削除する';
 
   @override
-  String get activityTitle => 'Activity';
+  String get activityTitle => 'アクティビティ';
 
   @override
-  String get activityStill => 'Still';
+  String get activityStill => 'それでも';
 
   @override
-  String get activityWalking => 'Walking';
+  String get activityWalking => 'ウォーキング';
 
   @override
-  String get activityRunning => 'Running';
+  String get activityRunning => 'ランニング';
 
   @override
-  String get activityCycling => 'Cycling';
+  String get activityCycling => 'サイクリング';
 
   @override
-  String get activityVehicle => 'In a vehicle';
+  String get activityVehicle => '車両内';
 
   @override
-  String get activityFlying => 'Flying';
+  String get activityFlying => '飛行';
 
   @override
-  String get activityExercise => 'Exercise';
+  String get activityExercise => '運動';
 
   @override
-  String get activityDetect => 'Detect current activity';
+  String get activityDetect => '現在のアクティビティを検出する';
 
   @override
-  String get activityDetectFailed => 'Couldn\'t detect an activity.';
+  String get activityDetectFailed => 'アクティビティを検出できませんでした。';
 
   @override
-  String get activityRemove => 'Remove activity';
+  String get activityRemove => 'アクティビティを削除する';
 
   @override
-  String get settingsAutoAddTitle => 'Add automatically';
+  String get settingsAutoAddTitle => '自動的に追加';
 
   @override
-  String get settingsAutoAddLocation => 'Location';
+  String get settingsAutoAddLocation => '場所';
 
   @override
-  String get settingsAutoAddWeather => 'Weather';
+  String get settingsAutoAddWeather => '天気';
 
   @override
-  String get settingsAutoAddHint =>
-      'New entries get these filled in when they are created.';
+  String get settingsAutoAddHint => '新しいエントリの作成時にこれらの値が入力されます。';
 
   @override
-  String get settingsTemperatureUnit => 'Temperature unit';
+  String get settingsTemperatureUnit => '温度単位';
 
   @override
-  String get settingsCelsius => 'Celsius (°C)';
+  String get settingsCelsius => '摂氏 (°C)';
 
   @override
-  String get settingsFahrenheit => 'Fahrenheit (°F)';
+  String get settingsFahrenheit => '華氏 (°F)';
 
   @override
-  String get moodGreat => 'Great';
+  String get moodGreat => '素晴らしい';
 
   @override
-  String get moodGood => 'Good';
+  String get moodGood => '良い';
 
   @override
-  String get moodOkay => 'Okay';
+  String get moodOkay => 'わかりました';
 
   @override
-  String get moodBad => 'Bad';
+  String get moodBad => '悪い';
 
   @override
-  String get moodAwful => 'Awful';
+  String get moodAwful => 'ひどい';
 
   @override
-  String get locationSearchHint => 'Search for a place';
+  String get locationSearchHint => '場所を探す';
 
   @override
-  String get locationSearchEmpty => 'No places found';
+  String get locationSearchEmpty => '場所が見つかりません';
 
   @override
-  String get settingsWallpaper => 'Wallpaper';
+  String get settingsWallpaper => '壁紙';
 
   @override
-  String get wallpaperNone => 'None';
+  String get wallpaperNone => 'なし';
 
   @override
-  String get wallpaperDots => 'Dots';
+  String get wallpaperDots => 'ドット';
 
   @override
-  String get wallpaperGrid => 'Grid';
+  String get wallpaperGrid => 'グリッド';
 
   @override
-  String get wallpaperLines => 'Lines';
+  String get wallpaperLines => 'ライン';
 
   @override
-  String get wallpaperPhoto => 'Photo…';
+  String get wallpaperPhoto => '写真…';
 
   @override
-  String get settingsFontFamily => 'Font';
+  String get settingsFontFamily => 'フォント';
 
   @override
-  String get fontSystem => 'System';
+  String get fontSystem => 'システム';
 
   @override
-  String get fontSerif => 'Serif';
+  String get fontSerif => 'セリフ';
 
   @override
-  String get fontMono => 'Monospace';
+  String get fontMono => '等空間';
 
   @override
-  String get settingsFontSize => 'Font size';
+  String get settingsFontSize => 'フォントサイズ';
 
   @override
-  String get fontSizeSmall => 'Small';
+  String get fontSizeSmall => '小';
 
   @override
-  String get fontSizeMedium => 'Medium';
+  String get fontSizeMedium => '中';
 
   @override
-  String get fontSizeLarge => 'Large';
+  String get fontSizeLarge => '大';
 
   @override
-  String get fontSizeExtraLarge => 'Extra large';
+  String get fontSizeExtraLarge => '特大';
 
   @override
-  String get settingsLineSpacing => 'Line spacing';
+  String get settingsLineSpacing => '行間';
 
   @override
-  String get lineSpacingCompact => 'Compact';
+  String get lineSpacingCompact => 'コンパクト';
 
   @override
-  String get lineSpacingNormal => 'Normal';
+  String get lineSpacingNormal => 'ノーマル';
 
   @override
-  String get lineSpacingRelaxed => 'Relaxed';
+  String get lineSpacingRelaxed => 'リラックスした';
 
   @override
-  String get moodAssociationsTitle => 'What makes me feel…';
+  String get moodAssociationsTitle => '何を感じますか...';
 
   @override
   String moodAssociationsCount(int matching, int total) {
-    return '$matching of $total entries';
+    return '$matching/$total エントリ';
   }
 
   @override
-  String get videoRecord => 'Record a video';
+  String get videoRecord => 'ビデオを録画する';
 
   @override
-  String get videoChoose => 'Choose a video';
+  String get videoChoose => 'ビデオを選択してください';
 
   @override
-  String get audioRecordTitle => 'Record a voice note';
+  String get audioRecordTitle => '音声メモを録音する';
 
   @override
-  String get audioChoose => 'Choose an audio file';
+  String get audioChoose => '音声ファイルを選択してください';
 
   @override
-  String get audioStart => 'Record';
+  String get audioStart => '記録';
 
   @override
-  String get audioStop => 'Stop and save';
+  String get audioStop => '停止して保存する';
 
   @override
-  String get audioPermissionDenied =>
-      'Microphone access is off. Allow it in the system settings.';
+  String get audioPermissionDenied => 'マイクアクセスがオフになっています。システム設定で許可してください。';
 
   @override
-  String get mediaTooLarge => 'This video is too large to attach.';
+  String get mediaTooLarge => 'このビデオは大きすぎて添付できません。';
 
   @override
-  String get mediaUnavailable =>
-      'This attachment is not available on this device.';
+  String get mediaUnavailable => 'この添付ファイルはこのデバイスでは使用できません。';
 
   @override
-  String get widgetDone => 'Today\'s entry is written';
+  String get widgetDone => '今日のエントリーはこう書いています';
 
   @override
-  String get widgetPending => 'How was your day?';
+  String get widgetPending => '今日はどうでしたか？';
 
   @override
-  String get widgetWrite => 'Write';
+  String get widgetWrite => '書く';
 
   @override
-  String get insertChecklist => 'Checklist';
+  String get insertChecklist => 'チェックリスト';
 
   @override
-  String get insertNumberedList => 'Numbered list';
+  String get insertNumberedList => '番号付きリスト';
 
   @override
-  String get insertTable => 'Table';
+  String get insertTable => 'テーブル';
 
   @override
-  String get insertDivider => 'Divider';
+  String get insertDivider => 'ディバイダー';
 
   @override
-  String get insertCodeBlock => 'Code block';
+  String get insertCodeBlock => 'コードブロック';
 
   @override
-  String get journalSortTitle => 'Sort entries';
+  String get journalSortTitle => 'エントリを並べ替える';
 
   @override
-  String get journalSortUpdated => 'Last updated';
+  String get journalSortUpdated => '最終更新日';
 
   @override
-  String get settingsTimeFormat => 'Time format';
+  String get settingsTimeFormat => '時刻形式';
 
   @override
-  String get settingsDayStart => 'New entries count for the day before until';
+  String get settingsDayStart => '新規エントリーは前日からカウントされるまでカウントされます';
 
   @override
-  String get settingsDayAskUntil => 'Then ask which day until';
+  String get settingsDayAskUntil => 'それから何日までに尋ねます';
 
   @override
-  String get settingsDayStartMidnight => 'Off';
+  String get settingsDayStartMidnight => 'オフ';
 
   @override
   String settingsDayStartAt(int hour) {
@@ -1388,268 +1380,264 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get settingsDayStartHint =>
-      'Every entry keeps the day it belongs to next to the time it was written, and you can change that day in the editor at any time. These hours only pick the day for new entries, so changing them moves no existing entry.';
+      'すべてのエントリには、そのエントリが書き込まれた時刻の横にそのエントリが属する日付が表示されます。その日はエディタでいつでも変更できます。これらの時間は新しいエントリの日を選択するだけなので、それらを変更しても既存のエントリは移動されません。';
 
   @override
-  String get lateNightBadge =>
-      'Written late at night, counted for the day before';
+  String get lateNightBadge => '深夜に書き、前日からカウント';
 
   @override
   String editorDayAsk(String time) {
-    return 'Written at $time. Which day is it for?';
+    return '$time で書かれています。それはどの日のことですか？';
   }
 
   @override
   String editorDayYesterday(String date) {
-    return '$date (yesterday)';
+    return '$date (昨日)';
   }
 
   @override
   String editorDayToday(String date) {
-    return '$date (today)';
+    return '$date (今日)';
   }
 
   @override
   String editorWrittenAt(String when) {
-    return 'Written $when';
+    return '$whenと書かれています';
   }
 
   @override
-  String get timeFormat12 => '12-hour';
+  String get timeFormat12 => '12時間';
 
   @override
-  String get timeFormat24 => '24-hour';
+  String get timeFormat24 => '24時間対応';
 
   @override
-  String get settingsReminderDays => 'Remind me on';
+  String get settingsReminderDays => '思い出させて';
 
   @override
-  String get locationRecent => 'Recent places';
+  String get locationRecent => '最近の場所';
 
   @override
-  String get shareImage => 'Share image';
+  String get shareImage => '画像を共有する';
 
   @override
-  String get shareSaveImage => 'Save image';
+  String get shareSaveImage => '画像の保存';
 
   @override
-  String get shareSaved => 'Image saved';
+  String get shareSaved => '画像を保存しました';
 
   @override
-  String get deletedTitle => 'Recently deleted';
+  String get deletedTitle => '最近削除されました';
 
   @override
-  String get deletedNone => 'Nothing deleted recently';
+  String get deletedNone => '最近削除されたものはありません';
 
   @override
   String deletedHint(int days) {
-    return 'Deleted entries stay here for $days days, then are erased.';
+    return '削除されたエントリは $days 日間ここに残り、その後消去されます。';
   }
 
   @override
   String deletedDaysLeft(int days) {
-    return '$days days left';
+    return '残り $days 日';
   }
 
   @override
-  String get deletedRestore => 'Restore';
+  String get deletedRestore => '復元';
 
   @override
-  String get deletedDeleteForever => 'Delete forever';
+  String get deletedDeleteForever => '永久に削除';
 
   @override
   String get deletedDeleteForeverDescription =>
-      'The entry and its attachments are erased. This cannot be undone.';
+      'エントリとその添付ファイルが消去されます。これを元に戻すことはできません。';
 
   @override
-  String get deletedEmpty => 'Empty';
+  String get deletedEmpty => '空の';
 
   @override
-  String get deletedEmptyDescription =>
-      'Erase every entry in Recently deleted? This cannot be undone.';
+  String get deletedEmptyDescription => '最近削除したエントリをすべて消去しますか?これを元に戻すことはできません。';
 
   @override
   String get formatJson => 'JSON';
 
   @override
-  String get randomTitle => 'Random walk';
+  String get randomTitle => 'ランダムウォーク';
 
   @override
-  String get randomSubtitle => 'Open a past entry';
+  String get randomSubtitle => '過去のエントリーを開く';
 
   @override
-  String get randomNext => 'Another';
+  String get randomNext => 'もう一つ';
 
   @override
-  String get randomAll => 'All';
+  String get randomAll => 'すべて';
 
   @override
-  String get randomWithPhotos => 'With photos';
+  String get randomWithPhotos => '写真付き';
 
   @override
-  String get randomGoodDays => 'Good days';
+  String get randomGoodDays => '良い日々';
 
   @override
-  String get randomEmpty => 'No entries to pick from';
+  String get randomEmpty => '選択できるエントリはありません';
 
   @override
-  String get reviewWeekTitle => 'This week';
+  String get reviewWeekTitle => '今週';
 
   @override
-  String get reviewWeekSubtitle => 'Your week so far';
+  String get reviewWeekSubtitle => 'これまでの一週間';
 
   @override
-  String get reviewYearTitle => 'This year';
+  String get reviewYearTitle => '今年は';
 
   @override
-  String get reviewEmpty => 'Nothing written yet';
+  String get reviewEmpty => 'まだ何も書かれていません';
 
   @override
-  String get reviewEntries => 'Entries';
+  String get reviewEntries => 'エントリー';
 
   @override
-  String get reviewDaysWritten => 'Days written';
+  String get reviewDaysWritten => '書かれた日数';
 
   @override
-  String get reviewWords => 'Words';
+  String get reviewWords => '言葉';
 
   @override
-  String get reviewPhotos => 'Photos';
+  String get reviewPhotos => '写真';
 
   @override
-  String get reviewLongestRun => 'Longest run of days';
+  String get reviewLongestRun => '最長の日数';
 
   @override
-  String get reviewAverageMood => 'Average mood';
+  String get reviewAverageMood => '平均的な気分';
 
   @override
-  String get reviewFavorites => 'Most often';
+  String get reviewFavorites => 'ほとんどの場合';
 
   @override
-  String get reviewByMonth => 'By month';
+  String get reviewByMonth => '月ごと';
 
   @override
-  String get reviewHighlight => 'Highlight';
+  String get reviewHighlight => 'ハイライト';
 
   @override
-  String get yearInPixels => 'Year in pixels';
+  String get yearInPixels => 'ピクセル単位の年';
 
   @override
-  String get capsuleSeal => 'Seal as a time capsule';
+  String get capsuleSeal => 'タイムカプセルとして封印する';
 
   @override
-  String get capsuleTitle => 'Time capsule';
+  String get capsuleTitle => 'タイムカプセル';
 
   @override
   String capsuleOpensOn(Object date) {
-    return 'Opens on $date';
+    return '$date で開きます';
   }
 
   @override
   String capsuleWrittenOn(Object date) {
-    return 'Written on $date';
+    return '$date に書かれています';
   }
 
   @override
-  String get capsuleOpenEarly => 'Open early';
+  String get capsuleOpenEarly => '早朝営業';
 
   @override
-  String get capsuleOpenEarlyDescription =>
-      'The capsule opens now and stays open.';
+  String get capsuleOpenEarlyDescription => 'カプセルは開き、開いたままになります。';
 
   @override
-  String get capsuleOpened => 'Time capsule opened';
+  String get capsuleOpened => 'タイムカプセルを開けた';
 
   @override
-  String get templateMorningName => 'Morning pages';
+  String get templateMorningName => 'モーニングページ';
 
   @override
-  String get templateMorningDescription => 'Set up the day in three minutes';
+  String get templateMorningDescription => '1 日を 3 分で設定する';
 
   @override
   String get templateMorningText =>
-      '## Three things I want to do well today\n1. \n2. \n3. \n\n## Something I look forward to\n\n## A note to myself\n';
+      '## 今日やっておきたい 3 つのこと\n1. \n2. \n3. \n\n## 楽しみにしていること\n\n## 自分へのメモ\n';
 
   @override
-  String get templateEveningName => 'Evening review';
+  String get templateEveningName => '夜の振り返り';
 
   @override
-  String get templateEveningDescription => 'Close the day with what went well';
+  String get templateEveningDescription => 'うまくいったことで一日を終える';
 
   @override
   String get templateEveningText =>
-      '## Three good things today\n1. \n2. \n3. \n\n## What I learned\n\n## What could go better tomorrow\n';
+      '## 今日は良いことが 3 つありました\n1. \n2. \n3. \n\n## 学んだこと\n\n## 明日は何がうまくいくでしょうか\n';
 
   @override
-  String get routineMorning => 'Good morning';
+  String get routineMorning => 'おはようございます';
 
   @override
-  String get routineEvening => 'Evening review';
+  String get routineEvening => '夜の振り返り';
 
   @override
-  String get settingsRoutinePrompts => 'Morning and evening prompts';
+  String get settingsRoutinePrompts => '朝と夕方のプロンプト';
 
   @override
-  String get settingsRoutinePromptsHint =>
-      'Suggest the morning or evening template in Stories';
+  String get settingsRoutinePromptsHint => 'ストーリーで朝または夜のテンプレートを提案する';
 
   @override
-  String get checkInTitle => 'Quick check-in';
+  String get checkInTitle => 'クイックチェックイン';
 
   @override
-  String get checkInSubtitle => 'Mood in two taps';
+  String get checkInSubtitle => '2タップで気分';
 
   @override
-  String get checkInMood => 'How do you feel?';
+  String get checkInMood => 'どう感じますか？';
 
   @override
-  String get checkInActivity => 'What are you doing?';
+  String get checkInActivity => '何をしているのですか？';
 
   @override
-  String get checkInNote => 'A line about it (optional)';
+  String get checkInNote => 'それに関する一行 (オプション)';
 
   @override
-  String get checkInSave => 'Save';
+  String get checkInSave => '保存';
 
   @override
   String editorWordCount(int words, int characters) {
-    return '$words words · $characters characters';
+    return '$words 単語 · $characters 文字';
   }
 
   @override
-  String get coachProgramEverydayTagline => 'Notice the small things in a day.';
+  String get coachProgramEverydayTagline => '一日の小さなことに気づいてください。';
 
   @override
-  String get coachProgramReflectTagline => 'Slow down and listen to yourself.';
+  String get coachProgramReflectTagline => 'ゆっくりと自分自身の声に耳を傾けてください。';
 
   @override
-  String get coachDuration => 'Duration';
+  String get coachDuration => '期間';
 
   @override
-  String get coachInterval => 'Interval';
+  String get coachInterval => '間隔';
 
   @override
-  String get coachDifficulty => 'Difficulty';
+  String get coachDifficulty => '難易度';
 
   @override
-  String get coachIntervalDaily => 'Daily';
+  String get coachIntervalDaily => '毎日';
 
   @override
-  String get coachIntervalWeekly => 'Weekly';
+  String get coachIntervalWeekly => '毎週';
 
   @override
-  String get coachDifficultyBeginner => 'Beginner';
+  String get coachDifficultyBeginner => '初心者';
 
   @override
-  String get coachDifficultyIntermediate => 'Intermediate';
+  String get coachDifficultyIntermediate => '中級者';
 
   @override
   String coachDurationDays(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count days',
-      one: '1 day',
+      other: '$count日',
+      one: '1日',
     );
     return '$_temp0';
   }
@@ -1659,1055 +1647,1027 @@ class AppLocalizationsJa extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count weeks',
-      one: '1 week',
+      other: '$count週間',
+      one: '1週間',
     );
     return '$_temp0';
   }
 
   @override
   String coachDayN(int n) {
-    return 'Day $n';
+    return '$n日';
   }
 
   @override
   String coachWeekN(int n) {
-    return 'Week $n';
+    return '週 $n';
   }
 
   @override
-  String get coachEnroll => 'Enroll';
+  String get coachEnroll => '登録する';
 
   @override
-  String get coachEndProgram => 'End program';
+  String get coachEndProgram => 'プログラムを終了する';
 
   @override
-  String get coachAuthor => 'Author';
+  String get coachAuthor => '著者';
 
   @override
-  String get coachAuthorBio => 'Prompts written for this app.';
+  String get coachAuthorBio => 'このアプリ用に書かれたプロンプト。';
 
   @override
-  String get coachEnrolledTip =>
-      'All set! Your questions will show up in Stories.';
+  String get coachEnrolledTip => '準備完了です！あなたの質問はストーリーに表示されます。';
 
   @override
-  String get coachGoToStories => 'Go to Stories';
+  String get coachGoToStories => 'ストーリーに移動';
 
   @override
-  String get coachAnswerHint => 'Write your answer…';
+  String get coachAnswerHint => '答えを書いてください…';
 
   @override
-  String get storyWrapUp => 'That\'s all for today.';
+  String get storyWrapUp => '今日はここまでです。';
 
   @override
-  String get storyTapToClose => 'Tap to close';
+  String get storyTapToClose => 'タップして閉じます';
 
   @override
-  String get coachAnswerDone => 'Done';
+  String get coachAnswerDone => '完了';
 
   @override
-  String get coachAnswered => 'Answered, tap to open';
+  String get coachAnswered => '回答済み、タップして開きます';
 
   @override
-  String get coachAnsweredEarlier => 'Answered';
+  String get coachAnsweredEarlier => '答えた';
 
   @override
-  String get locationLocating => 'Locating…';
+  String get locationLocating => '探しています…';
 
   @override
-  String get locationPickPlace => 'Pick a place';
+  String get locationPickPlace => '場所を選ぶ';
 
   @override
-  String get locationPlacesHint => 'Address or name of the place';
+  String get locationPlacesHint => '住所または場所の名前';
 
   @override
-  String get locationCustom => 'Custom place';
+  String get locationCustom => 'カスタムプレイス';
 
   @override
-  String get locationCurrent => 'Current location';
+  String get locationCurrent => '現在地';
 
   @override
-  String get locationSaved => 'Saved places';
+  String get locationSaved => '保存された場所';
 
   @override
-  String get locationSearchResults => 'Search results';
+  String get locationSearchResults => '検索結果';
 
   @override
-  String get locationNearby => 'Nearby places';
+  String get locationNearby => '近くの場所';
 
   @override
-  String get locationRename => 'Rename';
+  String get locationRename => '名前の変更';
 
   @override
-  String get locationSavePlace => 'Save place';
+  String get locationSavePlace => '場所を保存する';
 
   @override
-  String get locationUnsavePlace => 'Remove from saved places';
+  String get locationUnsavePlace => '保存した場所から削除する';
 
   @override
-  String get shareAs => 'Share as…';
+  String get shareAs => 'として共有…';
 
   @override
-  String get shareAsImage => 'Image';
+  String get shareAsImage => '画像';
 
   @override
-  String get shareAsZip => 'ZIP with the original media';
+  String get shareAsZip => 'ZIP (元のメディア付き)';
 
   @override
-  String get shareAsPlainText => 'Plain text';
+  String get shareAsPlainText => 'プレーンテキスト';
 
   @override
   String get shareAsHtml => 'HTML';
 
   @override
-  String get onboardWelcomeTitle => 'Welcome to AID Diary';
+  String get onboardWelcomeTitle => 'AID Diaryへようこそ';
 
   @override
-  String get onboardWelcomeText =>
-      'Start here, or connect this device to one you already use.';
+  String get onboardWelcomeText => 'ここから始めるか、このデバイスをすでに使用しているデバイスに接続してください。';
 
   @override
-  String get onboardStart => 'Start writing';
+  String get onboardStart => '書き始める';
 
   @override
-  String get helpFaq => 'Frequently asked questions';
+  String get helpFaq => 'よくある質問';
 
   @override
-  String get helpFaq1Q => 'Where is my diary stored?';
+  String get helpFaq1Q => '私の日記はどこに保存されていますか?';
 
   @override
   String get helpFaq1A =>
-      'Your diary is stored on this device. It reaches other devices or storage only when you enable sync, share or export it. Sync is end-to-end encrypted.';
+      'あなたの日記はこのデバイスに保存されます。同期、共有、またはエクスポートを有効にした場合にのみ、他のデバイスまたはストレージに到達します。同期はエンドツーエンドで暗号化されます。';
 
   @override
-  String get helpFaq2Q => 'How do I keep a copy or move to a new device?';
+  String get helpFaq2Q => 'コピーを保存したり、新しいデバイスに移動したりするにはどうすればよいですか?';
 
   @override
   String get helpFaq2A =>
-      'Connect to an existing device in Settings → Data & storage → Sync and confirm authorization on the device that has your diary. Both devices remain usable. You can also create a backup and restore it on another device.';
+      '「設定」→「データとストレージ」→「同期」で既存のデバイスに接続し、日記があるデバイスでの承認を確認します。どちらのデバイスも引き続き使用可能です。バックアップを作成して、別のデバイスに復元することもできます。';
 
   @override
-  String get helpFaq3Q => 'Can I bring in entries from other diary apps?';
+  String get helpFaq3Q => '他の日記アプリのエントリを取り込むことはできますか?';
 
   @override
   String get helpFaq3A =>
-      'Yes: in Settings → Data & storage, import exports from Daylio, Diarium, Diaro, DayBook, My Brain, OneShot and Pixels, or a JSON export.';
+      'はい: [設定] → [データとストレージ] で、Daylio、Diarium、Diaro、DayBook、My Brain、OneShot、Pixels からのエクスポート、または JSON エクスポートをインポートします。';
 
   @override
-  String get helpFaq4Q => 'How do coach programs work?';
+  String get helpFaq4Q => 'コーチプログラムはどのように機能しますか?';
 
   @override
   String get helpFaq4A =>
-      'Enroll in a program on the Coach page. Each day or week a new question waits in Stories; your answer is saved as an entry.';
+      'Coach ページでプログラムに登録します。毎日または毎週、ストーリーには新しい質問が追加されます。あなたの回答はエントリとして保存されます。';
 
   @override
-  String get helpFaq5Q => 'What if I forget my passcode?';
+  String get helpFaq5Q => 'パスコードを忘れた場合はどうすればよいですか?';
 
   @override
-  String get helpFaq5A =>
-      'The passcode cannot be recovered, so keep a backup of your diary.';
+  String get helpFaq5A => 'パスコードは復元できないため、日記のバックアップを保管してください。';
 
   @override
-  String get helpPrivacy => 'Privacy';
+  String get helpPrivacy => 'プライバシー';
 
   @override
   String get helpPrivacyText =>
-      'Diary content and media stay on this device unless you enable encrypted sync or share/export them. Maps, place lookup and weather use the configured services and send the location or search query needed for that request, not diary text.';
+      '日記のコンテンツとメディアは、暗号化された同期を有効にするか共有/エクスポートしない限り、このデバイスに残ります。地図、場所の検索、天気予報は、設定されたサービスを使用して、日記テキストではなく、そのリクエストに必要な場所または検索クエリを送信します。';
 
   @override
-  String get photoMetaTitle => 'Use the photo\'s details?';
+  String get photoMetaTitle => '写真の詳細を使用しますか?';
 
   @override
   String photoMetaDateAndPlace(String date, String place) {
-    return 'Count this entry for $date and set its place to $place, as recorded in the photo?';
+    return '写真に記録されているように、このエントリを $date としてカウントし、その場所を $place に設定しますか?';
   }
 
   @override
   String photoMetaDate(String date) {
-    return 'Count this entry for $date, when the photo was taken?';
+    return '写真がいつ撮影されたか、$date のこのエントリを数えますか?';
   }
 
   @override
   String photoMetaPlace(String place) {
-    return 'Set this entry\'s place to $place, where the photo was taken?';
+    return 'このエントリの場所を $place に設定します。写真はどこで撮影されましたか?';
   }
 
   @override
-  String get photoMetaApply => 'Use them';
+  String get photoMetaApply => 'それらを使用してください';
 
   @override
-  String get quickWriteTitle => 'Quick write';
+  String get quickWriteTitle => 'クイック書き込み';
 
   @override
-  String get quickWriteText => 'Tap to start a new entry.';
+  String get quickWriteText => 'タップして新しいエントリを開始します。';
 
   @override
-  String get settingsQuickWriteTitle => 'Quick write in notifications';
+  String get settingsQuickWriteTitle => 'クイック書き込み通知';
 
   @override
-  String get settingsQuickWriteDescription =>
-      'Keep a notification that opens a new entry.';
+  String get settingsQuickWriteDescription => '新しいエントリを開く通知を保持します。';
 
   @override
-  String get settingsNudgesTitle => 'Nudge me after a quiet stretch';
+  String get settingsNudgesTitle => '静かにストレッチした後、私を小突いてください';
 
   @override
   String settingsNudgesDescription(int days) {
-    return 'A gentle reminder when you haven\'t written for $days days.';
+    return '$days 日間執筆していない場合の優しいリマインダー。';
   }
 
   @override
-  String get nudgeTitle => 'It\'s been a while';
+  String get nudgeTitle => 'しばらく経ちました';
 
   @override
-  String get nudgeMonday => 'A new week: what are you looking forward to?';
+  String get nudgeMonday => '新しい週: 何を楽しみにしていますか?';
 
   @override
-  String get nudgeTuesday => 'Two lines are enough. How are you today?';
+  String get nudgeTuesday => '2行あれば十分です。今日は元気ですか？';
 
   @override
-  String get nudgeWednesday =>
-      'Halfway through the week. What stood out so far?';
+  String get nudgeWednesday => '週の半ば。これまでのところ何が目立っていましたか？';
 
   @override
-  String get nudgeThursday => 'Anything small worth keeping from today?';
+  String get nudgeThursday => '今日から覚えておく価値のある小さなことはありますか？';
 
   @override
-  String get nudgeFriday => 'The week is wrapping up. Note one good moment.';
+  String get nudgeFriday => '今週も終わりです。良い瞬間を思い出してください。';
 
   @override
-  String get nudgeSaturday => 'A slow Saturday is a good day to write.';
+  String get nudgeSaturday => 'ゆっくりとした土曜日は書くのに最適な日です。';
 
   @override
-  String get nudgeSunday => 'Look back on the week before it ends.';
+  String get nudgeSunday => '終わるまでの一週間を振り返ってみましょう。';
 
   @override
-  String get photoWidgetEmpty => 'Photos you add to entries show up here.';
+  String get photoWidgetEmpty => 'エントリに追加した写真がここに表示されます。';
 
   @override
-  String get channelReminders => 'Reminders';
+  String get channelReminders => 'リマインダー';
 
   @override
-  String get channelOnThisDay => 'On this day';
+  String get channelOnThisDay => 'この日は';
 
   @override
-  String get channelCoach => 'Coach prompts';
+  String get channelCoach => 'コーチのプロンプト';
 
   @override
-  String get channelNudges => 'Nudges after quiet days';
+  String get channelNudges => '静かな日々の後に少しずつ';
 
   @override
-  String get channelQuickWrite => 'Quick write';
+  String get channelQuickWrite => 'クイック書き込み';
 
   @override
-  String get channelBackup => 'Backups';
+  String get channelBackup => 'バックアップ';
 
   @override
-  String get formatJsonExport => 'JSON (AID Diary export)';
+  String get formatJsonExport => 'JSON (AID Diary エクスポート)';
 
   @override
   String get aboutModifiedNotice =>
-      'A modified version of Daily You by Demizo and contributors. It is not the official Daily You app.';
+      'Demizo と寄稿者による Daily You の修正版。 Daily Youの公式アプリではありません。';
 
   @override
-  String get toolbarPhotos => 'Add photos';
+  String get toolbarPhotos => '写真を追加する';
 
   @override
-  String get toolbarMedia => 'Photos and videos';
+  String get toolbarMedia => '写真とビデオ';
 
   @override
-  String get mediaFromGallery => 'Choose from gallery';
+  String get mediaFromGallery => 'ギャラリーから選ぶ';
 
   @override
-  String get mediaFromFiles => 'Choose from files';
+  String get mediaFromFiles => 'ファイルから選択';
 
   @override
-  String get editorLeaveTitle => 'Save this entry?';
+  String get editorLeaveTitle => 'このエントリを保存しますか?';
 
   @override
-  String get editorLeaveDiscard => 'Don\'t save';
+  String get editorLeaveDiscard => '保存しないでください';
 
   @override
-  String get editorTitleHint => 'Title';
+  String get editorTitleHint => 'タイトル';
 
   @override
-  String get editorLocating => 'Locating…';
+  String get editorLocating => '探しています…';
 
   @override
-  String get toolbarVideo => 'Video';
+  String get toolbarVideo => 'ビデオ';
 
   @override
-  String get toolbarAudio => 'Voice note';
+  String get toolbarAudio => 'ボイスメモ';
 
   @override
-  String get toolbarTags => 'Tags';
+  String get toolbarTags => 'タグ';
 
   @override
-  String get toolbarBulletList => 'Bulleted list';
+  String get toolbarBulletList => '箇条書きリスト';
 
   @override
-  String get toolbarHeading => 'Heading';
+  String get toolbarHeading => '見出し';
 
   @override
-  String get toolbarBold => 'Bold';
+  String get toolbarBold => '太字';
 
   @override
-  String get toolbarItalic => 'Italic';
+  String get toolbarItalic => 'イタリック体';
 
   @override
-  String get toolbarHighlight => 'Highlight';
+  String get toolbarHighlight => 'ハイライト';
 
   @override
-  String get toolbarStrikethrough => 'Strikethrough';
+  String get toolbarStrikethrough => '取り消し線';
 
   @override
-  String get toolbarQuote => 'Quote';
+  String get toolbarQuote => '引用';
 
   @override
-  String get toolbarLink => 'Link';
+  String get toolbarLink => 'リンク';
 
   @override
-  String get toolbarInsert => 'Insert';
+  String get toolbarInsert => '挿入';
 
   @override
-  String get toolbarUndo => 'Undo';
+  String get toolbarUndo => '元に戻す';
 
   @override
-  String get toolbarRedo => 'Redo';
+  String get toolbarRedo => 'やり直し';
 
   @override
-  String get toolbarInsertDate => 'Insert the date';
+  String get toolbarInsertDate => '日付を挿入する';
 
   @override
-  String get toolbarInsertTime => 'Insert the time';
+  String get toolbarInsertTime => '時間を挿入します';
 
   @override
-  String get settingsSyncTitle => 'Cloud Sync';
+  String get settingsSyncTitle => 'クラウド同期';
 
   @override
   String get syncOffDescription =>
-      'Keep this diary the same on all your devices through Google Drive or a WebDAV server, such as Nextcloud, Synology or Jianguoyun.';
+      'Nextcloud、Synology、Jianguoyun などの Google Drive または WebDAV サーバーを介して、すべてのデバイスでこの日記を同じに保ちます。';
 
   @override
-  String get syncUseGoogleDrive => 'Sync with Google Drive';
+  String get syncUseGoogleDrive => 'Google Driveと同期する';
 
   @override
-  String get syncOrWebDav => 'Or a WebDAV server';
+  String get syncOrWebDav => 'または WebDAV サーバー';
 
   @override
   String get syncGoogleDrive => 'Google Drive';
 
   @override
-  String get syncGoogleSignedIn => 'Signed in. You can go back to AID Diary.';
+  String get syncGoogleSignedIn => 'サインインしました。AID Diary に戻ることができます。';
 
   @override
-  String get syncGoogleSignInAgain => 'Google needs you to sign in again.';
+  String get syncGoogleSignInAgain => 'Google では再度ログインする必要があります。';
 
   @override
-  String get syncSignInAgain => 'Sign in again';
+  String get syncSignInAgain => '再度サインインしてください';
 
   @override
-  String get settingsCommandLineTitle => 'Command line';
+  String get settingsCommandLineTitle => 'コマンドライン';
 
   @override
-  String get commandLineToggle => 'Command line interface';
+  String get commandLineToggle => 'コマンドラインインターフェース';
 
   @override
   String get commandLineToggleHint =>
-      'Lets the aid command and other programs on this device use the app\'s commands.';
+      'このデバイス上の補助コマンドおよび他のプログラムがアプリのコマンドを使用できるようにします。';
 
   @override
-  String get commandLineAlwaysOn => 'Always on in development builds.';
+  String get commandLineAlwaysOn => '開発ビルドでは常にオンになります。';
 
   @override
   String commandLineListening(int port) {
-    return 'Listening on port $port';
+    return 'ポート $port でリッスンしています';
   }
 
   @override
-  String get commandPaletteTitle => 'All commands';
+  String get commandPaletteTitle => 'すべてのコマンド';
 
   @override
-  String get commandPaletteSearch => 'Search commands';
+  String get commandPaletteSearch => '検索コマンド';
 
   @override
-  String get commandPaletteRun => 'Run';
+  String get commandPaletteRun => '走る';
 
   @override
-  String get commandPaletteConfirm => 'This cannot simply be undone. Run it?';
+  String get commandPaletteConfirm => 'これを簡単に元に戻すことはできません。実行しますか？';
 
   @override
   String syncReceiving(int done, int total) {
-    return 'Receiving $done of $total…';
+    return '$done/$totalを受信中…';
   }
 
   @override
   String syncSending(int done, int total) {
-    return 'Sending $done of $total…';
+    return '$done/$total を送信中…';
   }
 
   @override
   String get syncGoogleDriveNotAllowed =>
-      'Access to Google Drive was not allowed. Connect again and tick Google Drive on Google\'s page.';
+      'Google Drive へのアクセスは許可されませんでした。再度接続し、Google のページで Google Drive にチェックを入れます。';
 
   @override
-  String get syncEntryUnsynced =>
-      'Not synced: the last sync did not go through';
+  String get syncEntryUnsynced => '同期されていません: 最後の同期が完了しませんでした';
 
   @override
-  String get syncUseOfficial => 'Use the AID sync server';
+  String get syncUseOfficial => 'AID同期サーバーを使用する';
 
   @override
-  String get syncServer => 'Server address';
+  String get syncServer => 'サーバーアドレス';
 
   @override
-  String get syncUsername => 'Username';
+  String get syncUsername => 'ユーザー名';
 
   @override
-  String get syncPassword => 'Password';
+  String get syncPassword => 'パスワード';
 
   @override
-  String get syncConnect => 'Connect';
+  String get syncConnect => '接続する';
 
   @override
-  String get syncConnecting => 'Connecting…';
+  String get syncConnecting => '接続中…';
 
   @override
-  String get syncSignInFailed =>
-      'Could not sign in. Check the address, the username and the password.';
+  String get syncSignInFailed => 'サインインできませんでした。アドレス、ユーザー名、パスワードを確認してください。';
 
   @override
   String syncConnectFailed(String error) {
-    return 'Could not connect: $error';
+    return '接続できませんでした: $error';
   }
 
   @override
-  String get syncNewSpaceTitle => 'Start syncing';
+  String get syncNewSpaceTitle => '同期を開始する';
 
   @override
   String get syncNewSpaceDescription =>
-      'There is no synced diary here yet. This diary will be uploaded, end-to-end encrypted with a key that stays on your devices.';
+      'ここにはまだ同期された日記がありません。この日記は、デバイス上に残るキーでエンドツーエンド暗号化されてアップロードされます。';
 
   @override
-  String get syncJoinTitle => 'Join the synced diary';
+  String get syncJoinTitle => '同期された日記に参加する';
 
   @override
-  String get syncWrongKey =>
-      'This recovery code does not open the synced diary.';
+  String get syncWrongKey => 'このリカバリ コードでは、同期された日記は開きません。';
 
   @override
   String syncLastSynced(String time) {
-    return 'Last synced $time';
+    return '最後に同期したのは $time';
   }
 
   @override
-  String get syncNever => 'Not synced yet';
+  String get syncNever => 'まだ同期されていません';
 
   @override
-  String get syncSyncing => 'Syncing…';
+  String get syncSyncing => '同期中…';
 
   @override
   String syncFailed(String error) {
-    return 'The last sync failed: $error';
+    return '最後の同期が失敗しました: $error';
   }
 
   @override
   String get syncLocked =>
-      'The synced diary now belongs to other devices, or was started over. Pair with one of them or use the recovery code to keep syncing.';
+      '同期された日記は現在他のデバイスに属しているか、最初からやり直しられています。いずれかとペアリングするか、リカバリ コードを使用して同期を続けます。';
 
   @override
-  String get syncNow => 'Sync now';
+  String get syncNow => '今すぐ同期する';
 
   @override
-  String get syncUnlock => 'Unlock';
+  String get syncUnlock => 'ロックを解除する';
 
   @override
-  String get syncEncrypted => 'End-to-end encrypted';
+  String get syncEncrypted => 'エンドツーエンド暗号化';
 
   @override
-  String get syncDisconnect => 'Stop syncing';
+  String get syncDisconnect => '同期を停止する';
 
   @override
   String get syncDisconnectDescription =>
-      'This device stops syncing. The diary here and the synced copy stay as they are.';
+      'このデバイスは同期を停止します。ここの日記と同期したコピーはそのまま残ります。';
 
   @override
-  String get syncOwnRecoveryPassword => 'Use my own recovery password';
+  String get syncOwnRecoveryPassword => '自分の回復パスワードを使用する';
 
   @override
-  String get syncRecoveryPassword => 'Recovery password';
+  String get syncRecoveryPassword => '回復パスワード';
 
   @override
-  String get syncRecoveryPasswordRepeat => 'Repeat the recovery password';
+  String get syncRecoveryPasswordRepeat => '回復パスワードを繰り返します';
 
   @override
   String syncRecoveryPasswordTooShort(int min) {
-    return 'Use at least $min characters';
+    return '少なくとも $min 文字を使用してください';
   }
 
   @override
-  String get syncRecoveryPasswordMismatch => 'The passwords differ';
+  String get syncRecoveryPasswordMismatch => 'パスワードが異なります';
 
   @override
-  String get syncRecoveryCode => 'Recovery code';
+  String get syncRecoveryCode => 'リカバリーコード';
 
   @override
-  String get syncRecoveryCodeTitle => 'Save your recovery code';
+  String get syncRecoveryCodeTitle => 'リカバリーコードを保存してください';
 
   @override
   String get syncRecoveryCodeDescription =>
-      'If every device of yours is lost, this code restores your synced diary. Keep it in a password manager or on paper. It is shown only this once.';
+      'すべてのデバイスを紛失した場合、このコードにより同期された日記が復元されます。パスワードマネージャーまたは紙に保管してください。この回のみ表示されます。';
 
   @override
-  String get syncRecoveryCodeCopied => 'Recovery code copied';
+  String get syncRecoveryCodeCopied => 'リカバリーコードがコピーされました';
 
   @override
-  String get syncRecoveryCodeSaved => 'I have saved it';
+  String get syncRecoveryCodeSaved => '保存しました';
 
   @override
   String get syncJoinNeedsKey =>
-      'This synced diary belongs to your other devices. Pair with one of them, or use the recovery code. The entries on this device will be added to it.';
+      'この同期された日記は他のデバイスに属します。これらのいずれかとペアリングするか、リカバリ コードを使用してください。このデバイス上のエントリがデバイスに追加されます。';
 
   @override
-  String get syncPairDevice => 'Pair with a device';
+  String get syncPairDevice => 'デバイスとペアリングする';
 
   @override
-  String get syncUseRecoveryCode => 'Use the recovery code';
+  String get syncUseRecoveryCode => 'リカバリーコードを使用する';
 
   @override
-  String get syncAddDevice => 'Add a device';
+  String get syncAddDevice => 'デバイスを追加する';
 
   @override
-  String get syncChangeRecoveryCode => 'Change the recovery code';
+  String get syncChangeRecoveryCode => 'リカバリーコードを変更する';
 
   @override
   String get syncChangeRecoveryDescription =>
-      'A new code replaces the current one, which stops working. Your data and other devices stay as they are.';
+      '新しいコードが現在のコードを置き換えると、動作が停止します。データやその他のデバイスはそのまま残ります。';
 
   @override
-  String get syncNewRandomCode => 'New random code';
+  String get syncNewRandomCode => '新しいランダムコード';
 
   @override
-  String get syncRecoveryCodeChanged => 'Recovery code changed';
+  String get syncRecoveryCodeChanged => 'リカバリーコードが変更されました';
 
   @override
-  String get syncResetSpace => 'Start the synced diary over';
+  String get syncResetSpace => '同期された日記を最初からやり直す';
 
   @override
   String get syncResetSpaceDescription =>
-      'Only when no device and no recovery code opens it any more: the synced copy is replaced by the diary on this device, under this device\'s keys. Your other devices then pair again.';
+      'デバイスも回復コードも開かない場合にのみ、同期されたコピーは、このデバイスのキーの下にあるこのデバイス上の日記に置き換えられます。その後、他のデバイスを再度ペアリングします。';
 
   @override
-  String get syncPairTitle => 'Pair devices';
+  String get syncPairTitle => 'デバイスをペアリングする';
 
   @override
-  String get syncPairShow => 'Show a code';
+  String get syncPairShow => 'コードを表示する';
 
   @override
-  String get syncPairEnter => 'Enter a code';
+  String get syncPairEnter => 'コードを入力してください';
 
   @override
   String get syncPairShowHint =>
-      'On your other device, open Pair devices, choose Enter a code, and type or scan this.';
+      '他のデバイスで、[デバイスのペアリング] を開き、[コードの入力] を選択して、コードを入力またはスキャンします。';
 
   @override
-  String get syncPairEnterHint =>
-      'Type the code your other device shows, or scan it.';
+  String get syncPairEnterHint => '他のデバイスに表示されるコードを入力するか、スキャンします。';
 
   @override
-  String get syncPairCode => 'Pairing code';
+  String get syncPairCode => 'ペアリングコード';
 
   @override
-  String get syncPairScan => 'Scan';
+  String get syncPairScan => 'スキャン';
 
   @override
-  String get syncPairStart => 'Pair';
+  String get syncPairStart => 'ペア';
 
   @override
-  String get syncPairWaiting => 'Waiting for the other device…';
+  String get syncPairWaiting => '他のデバイスを待っています…';
 
   @override
   String syncPairDone(String device) {
-    return 'Paired with $device';
+    return '$deviceとペアリング';
   }
 
   @override
-  String get syncPairWrongCode =>
-      'The code did not match. Show a new code and try again.';
+  String get syncPairWrongCode => 'コードが一致しませんでした。新しいコードを表示して、再試行してください。';
 
   @override
-  String get syncPairNoOffer =>
-      'No device shows this code. It may have expired.';
+  String get syncPairNoOffer => 'このコードを表示するデバイスはありません。有効期限が切れている可能性があります。';
 
   @override
-  String get syncPairTimedOut => 'The other device did not answer in time.';
+  String get syncPairTimedOut => '他のデバイスは時間内に応答しませんでした。';
 
   @override
-  String get syncPairNeither =>
-      'Neither device is set up with this synced diary yet.';
+  String get syncPairNeither => 'どちらのデバイスも、この同期された日記をまだセットアップしていません。';
 
   @override
-  String get syncPairBoth => 'Both devices already open this synced diary.';
+  String get syncPairBoth => '両方のデバイスがこの同期された日記をすでに開いています。';
 
   @override
   String syncPairFailed(String error) {
-    return 'Pairing failed: $error';
+    return 'ペアリングに失敗しました: $error';
   }
 
   @override
-  String get syncMediaPending =>
-      'Diary synced · some media is still transferring';
+  String get syncMediaPending => '日記が同期されました。一部のメディアはまだ転送中です';
 
   @override
-  String get syncWaitingForDevices =>
-      'Diary synced · waiting for another device to transfer media';
+  String get syncWaitingForDevices => '日記が同期されました · 別のデバイスがメディアを転送するのを待っています';
 
   @override
   String get syncCacheNotice =>
-      'Cloud media is temporary. Keep the originals on your devices; syncing is not a backup.';
+      'クラウド メディアは一時的なものです。オリジナルをデバイスに保存してください。同期はバックアップではありません。';
 
   @override
-  String get paperTitle => 'Letter paper';
+  String get paperTitle => '便箋';
 
   @override
-  String get paperPlain => 'Plain';
+  String get paperPlain => 'プレーン';
 
   @override
-  String get paperLined => 'Lined';
+  String get paperLined => '裏地あり';
 
   @override
-  String get paperGrid => 'Grid';
+  String get paperGrid => 'グリッド';
 
   @override
-  String get paperTinted => 'Tinted';
+  String get paperTinted => '着色された';
 
   @override
-  String get paperDecorationTitle => 'Decorations';
+  String get paperDecorationTitle => '装飾品';
 
   @override
-  String get paperDecorationNone => 'None';
+  String get paperDecorationNone => 'なし';
 
   @override
-  String get paperDecorationBotanical => 'Leaves';
+  String get paperDecorationBotanical => '葉';
 
   @override
-  String get paperDecorationStars => 'Stars';
+  String get paperDecorationStars => 'スター';
 
   @override
-  String get paperDecorationWashi => 'Washi tape';
+  String get paperDecorationWashi => '和紙テープ';
 
   @override
-  String get themeDarkChoice => 'Dark appearance';
+  String get themeDarkChoice => '暗い外観';
 
   @override
-  String get themeDarkSame => 'Follow light palette';
+  String get themeDarkSame => 'ライトパレットに従ってください';
 
   @override
-  String get themeDarkCustom => 'Separate palette';
+  String get themeDarkCustom => 'セパレートパレット';
 
   @override
-  String get themeDarkAccent => 'Dark accent colour';
+  String get themeDarkAccent => 'ダークなアクセントカラー';
 
   @override
-  String get themeColorTeal => 'Teal';
+  String get themeColorTeal => 'ティール';
 
   @override
-  String get themeColorCyan => 'Cyan';
+  String get themeColorCyan => 'シアン';
 
   @override
-  String get themeColorIndigo => 'Indigo';
+  String get themeColorIndigo => 'インディゴ';
 
   @override
-  String get themeColorCoral => 'Coral';
+  String get themeColorCoral => 'サンゴ';
 
   @override
-  String get themeColorOlive => 'Olive';
+  String get themeColorOlive => 'オリーブ';
 
   @override
-  String get themeColorSlate => 'Slate';
+  String get themeColorSlate => 'スレート';
 
   @override
-  String get drawingTitle => 'Drawing';
+  String get drawingTitle => '図面';
 
   @override
-  String get drawingPen => 'Pen';
+  String get drawingPen => 'ペン';
 
   @override
-  String get drawingEraser => 'Eraser';
+  String get drawingEraser => '消しゴム';
 
   @override
-  String get drawingUndo => 'Undo';
+  String get drawingUndo => '元に戻す';
 
   @override
-  String get drawingClear => 'Clear';
+  String get drawingClear => 'クリア';
 
   @override
-  String get drawingWidth => 'Pen width';
+  String get drawingWidth => 'ペン幅';
 
   @override
-  String get drawingStylusOnly => 'Stylus only';
+  String get drawingStylusOnly => 'スタイラスのみ';
 
   @override
-  String get drawingDiscardTitle => 'Discard drawing?';
+  String get drawingDiscardTitle => '図面を破棄しますか?';
 
   @override
-  String get drawingDiscardBody => 'This drawing has not been saved.';
+  String get drawingDiscardBody => 'この図面は保存されていません。';
 
   @override
-  String get drawingSaveError => 'Could not save the drawing.';
+  String get drawingSaveError => '図面を保存できませんでした。';
 
   @override
-  String get syncNetworkTitle => 'Network diagnostics';
+  String get syncNetworkTitle => 'ネットワーク診断';
 
   @override
-  String get syncNetworkRefresh => 'Refresh';
+  String get syncNetworkRefresh => 'リフレッシュ';
 
   @override
-  String get syncNetworkSelectedRoute => 'Current path';
+  String get syncNetworkSelectedRoute => '現在のパス';
 
   @override
-  String get syncNetworkAvailableRoutes => 'Available paths';
+  String get syncNetworkAvailableRoutes => '利用可能なパス';
 
   @override
-  String get syncNetworkSignaling => 'Device directory connection';
+  String get syncNetworkSignaling => 'デバイスディレクトリ接続';
 
   @override
-  String get syncNetworkRelayRemaining => 'Remaining relay allowance';
+  String get syncNetworkRelayRemaining => 'リレー許容残量';
 
   @override
-  String get syncNetworkIcePair => 'Direct connection candidates';
+  String get syncNetworkIcePair => '直接接続候補';
 
   @override
-  String get syncNetworkPeerTrusted => 'Authenticated device';
+  String get syncNetworkPeerTrusted => '認証されたデバイス';
 
   @override
-  String get syncNetworkNoRoute => 'Waiting for a connection';
+  String get syncNetworkNoRoute => '接続を待っています';
 
   @override
-  String get syncNetworkUnavailable => 'Diagnostics are unavailable';
+  String get syncNetworkUnavailable => '診断は利用できません';
 
   @override
-  String get syncMediaCopiesTitle => 'Media delivery and copies';
+  String get syncMediaCopiesTitle => 'メディアの配信とコピー';
 
   @override
-  String get syncMediaPendingCount => 'Waiting to transfer';
+  String get syncMediaPendingCount => '転送を待っています';
 
   @override
-  String get syncMediaDurableCount => 'Delivered to personal storage';
+  String get syncMediaDurableCount => '個人保管場所に配送されます';
 
   @override
-  String get syncMediaTemporaryCount => 'Temporary or unconfirmed copies';
+  String get syncMediaTemporaryCount => '一時的なコピーまたは未確認のコピー';
 
   @override
   String get syncMediaReceiptExplanation =>
-      'These counts describe completed deliveries, not a fresh audit of surviving backups.';
+      'これらの数は、生き残ったバックアップの新たな監査ではなく、完了した配信を表します。';
 
   @override
   String get syncMediaCacheExplanation =>
-      'Temporary cloud media can expire. Keep your originals or a separate backup.';
+      '一時的なクラウド メディアは期限切れになる場合があります。オリジナルまたは別のバックアップを保管してください。';
 
   @override
-  String get momentsTitle => 'Photo moments';
+  String get momentsTitle => '写真の瞬間';
 
   @override
   String get momentsHint =>
-      'Find groups using local photo times and optional coordinates. Photos are attached only when you choose a card.';
+      '現地の写真撮影時間とオプションの座標を使用してグループを検索します。写真はカードを選択した場合のみ添付されます。';
 
   @override
-  String get momentsScan => 'Find moments';
+  String get momentsScan => '瞬間を見つける';
 
   @override
-  String get momentsChooseFolder => 'Choose photo folder';
+  String get momentsChooseFolder => '写真フォルダーを選択してください';
 
   @override
-  String get momentsLocation => 'Include photo locations';
+  String get momentsLocation => '写真の場所を含める';
 
   @override
-  String get momentsEmpty => 'No recent photo groups.';
+  String get momentsEmpty => '最近の写真グループはありません。';
 
   @override
-  String get momentsCreate => 'Write about these photos';
+  String get momentsCreate => 'これらの写真について書く';
 
   @override
-  String get momentsDismiss => 'Dismiss';
+  String get momentsDismiss => '解雇する';
 
   @override
-  String get momentsError => 'Could not read local photos.';
+  String get momentsError => 'ローカルの写真を読み取れませんでした。';
 
   @override
-  String get momentsCreated => 'Photo entry created.';
+  String get momentsCreated => '写真エントリーを作成しました。';
 
   @override
-  String get momentsPermission =>
-      'Allow access to photos to find local suggestions.';
+  String get momentsPermission => 'ローカルの提案を見つけるために写真へのアクセスを許可します。';
 
   @override
-  String get momentsScope =>
-      'Recent photos only; at most 500 photos and 20 photos per card.';
+  String get momentsScope => '最近の写真のみ。最大 500 枚の写真、カードあたり 20 枚の写真。';
 
   @override
   String momentsPhotoCount(int count) {
-    return '$count photos';
+    return '$countの写真';
   }
 
   @override
-  String get nearbyTitle => 'Connect devices';
+  String get nearbyTitle => 'デバイスを接続する';
 
   @override
-  String get nearbySend => 'Authorize another device';
+  String get nearbySend => '別のデバイスを認証する';
 
   @override
-  String get nearbyReceive => 'Connect to an existing device';
+  String get nearbyReceive => '既存のデバイスに接続する';
 
   @override
   String get nearbyInstructions =>
-      'Connect both devices to the same Wi-Fi or to each other’s hotspot. Confirm authorization on the existing device; both devices remain usable. No internet is required.';
+      '両方のデバイスを同じ Wi-Fi または互いのホットスポットに接続します。既存のデバイスでの認証を確認します。両方のデバイスは引き続き使用可能です。インターネットは必要ありません。';
 
   @override
-  String get nearbyCompare =>
-      'Compare this code on both devices before approving.';
+  String get nearbyCompare => '承認する前に、両方のデバイスでこのコードを比較してください。';
 
   @override
-  String get nearbyConfirm => 'The codes match';
+  String get nearbyConfirm => 'コードは一致します';
 
   @override
-  String get nearbyScan => 'Scan the other device’s code';
+  String get nearbyScan => '他のデバイスのコードをスキャンします';
 
   @override
-  String get nearbyPaste => 'Paste invitation';
+  String get nearbyPaste => '招待状を貼り付け';
 
   @override
-  String get nearbyWaiting => 'Waiting for approval on the other device';
+  String get nearbyWaiting => '他のデバイスで承認を待っています';
 
   @override
-  String get nearbyWorking =>
-      'Authorizing and syncing your diary and attachments…';
+  String get nearbyWorking => '日記と添付ファイルを認証して同期しています…';
 
   @override
   String get nearbyPending =>
-      'Some attachments still need syncing. Keep the other device online and try again.';
+      '一部の添付ファイルはまだ同期する必要があります。他のデバイスをオンラインのままにして、もう一度試してください。';
 
   @override
-  String get nearbyComplete => 'Device connected; diary and attachments synced';
+  String get nearbyComplete => 'デバイスが接続されています。日記と添付ファイルが同期されました';
 
   @override
-  String get nearbyFailed =>
-      'Connection did not finish. Check the local connection and try again.';
+  String get nearbyFailed => '接続が完了しませんでした。ローカル接続を確認して、再試行してください。';
 
   @override
-  String get nearbyEmptyRequired =>
-      'Use a device with an empty diary that is not connected to sync yet.';
+  String get nearbyEmptyRequired => 'まだ同期に接続されていない空の日記を持つデバイスを使用してください。';
 
   @override
-  String get nearbyRetry => 'Continue syncing';
+  String get nearbyRetry => '同期を続ける';
 
   @override
-  String get nearbyWifi => 'Wi-Fi settings';
+  String get nearbyWifi => 'Wi-Fiの設定';
 
   @override
-  String get nearbyHotspot => 'Hotspot settings';
+  String get nearbyHotspot => 'ホットスポット設定';
 
   @override
   String get nearbyKeepOpen =>
-      'Keep this page open until the new device finishes. The invitation expires after two minutes.';
+      '新しいデバイスが完了するまで、このページを開いたままにしてください。招待状は 2 分後に期限切れになります。';
 
   @override
-  String get syncDevicesTitle => 'Authorized devices';
+  String get syncDevicesTitle => '認可されたデバイス';
 
   @override
   String get syncDevicesDescription =>
-      'Only approved devices can access this AID account. Revoking a device blocks the server but cannot erase a master key or diary already copied to it.';
+      '承認されたデバイスのみがこの AID アカウントにアクセスできます。デバイスを取り消すとサーバーはブロックされますが、既にサーバーにコピーされているマスター キーや日記を消去することはできません。';
 
   @override
-  String get syncDeviceRequest =>
-      'Show this authorization QR to an approved device';
+  String get syncDeviceRequest => 'この認証 QR を承認されたデバイスに表示します';
 
   @override
-  String get syncDeviceAuthorize => 'Authorize a device';
+  String get syncDeviceAuthorize => 'デバイスを認証する';
 
   @override
-  String get syncDeviceAuthorizeDescription =>
-      'Scan or paste the new device’s authorization request.';
+  String get syncDeviceAuthorizeDescription => '新しいデバイスの認証リクエストをスキャンまたは貼り付けます。';
 
   @override
-  String get syncDeviceRevoke => 'Revoke';
+  String get syncDeviceRevoke => '取り消し';
 
   @override
-  String get syncDeviceRotate => 'Rotate this device’s signing key';
+  String get syncDeviceRotate => 'このデバイスの署名キーをローテーションします';
 
   @override
-  String get syncDeviceCheck => 'Check authorization';
+  String get syncDeviceCheck => '権限の確認';
 
   @override
-  String get syncDeviceHardware => 'Hardware-backed signing key';
+  String get syncDeviceHardware => 'ハードウェアでサポートされた署名キー';
 
   @override
-  String get syncDeviceSoftware => 'Non-exportable software signing key';
+  String get syncDeviceSoftware => 'エクスポートできないソフトウェア署名キー';
 
   @override
   String get syncDeviceUnavailable =>
-      'Device authorization is unavailable. Approve this device from another authorized device and retry.';
+      'デバイス認証は利用できません。別の承認されたデバイスからこのデバイスを承認して、再試行してください。';
 
   @override
-  String get syncDeviceRevoked => 'Revoked';
+  String get syncDeviceRevoked => '取り消されました';
 
   @override
-  String get syncDeviceLocal => 'This device';
+  String get syncDeviceLocal => 'このデバイス';
 
   @override
-  String get cloudTrafficTitle => 'Monthly cloud media allowance';
+  String get cloudTrafficTitle => 'クラウドの月間メディア転送量';
 
   @override
-  String get cloudTrafficLimit => 'Monthly allowance';
+  String get cloudTrafficLimit => '月間転送量の上限';
 
   @override
-  String get cloudTrafficUsed => 'Used';
+  String get cloudTrafficUsed => '使用済み転送量';
 
   @override
-  String get cloudTrafficRemaining => 'Remaining';
+  String get cloudTrafficRemaining => '残りの転送量';
 
   @override
   String cloudTrafficResetsAt(String time) {
-    return 'Resets $time';
+    return 'データ転送クォータが $time にリセットされる';
   }
 
   @override
   String get cloudTrafficExhausted =>
-      'Cloud media allowance used up. Missing media will resume automatically over a direct connection or when the allowance resets.';
+      'メディア ファイルのクラウド データ転送割り当てを使い果たしました。直接接続が利用可能になるか、クォータがリセットされると、不足しているメディア ファイルが自動的に同期されます。';
 
   @override
   String get cloudTrafficExplanation =>
-      'Media cache and live relay share this allowance. Direct connections do not use it. Diary text and connection control have separate small daily limits.';
+      'メディア ファイル キャッシュとライブ リレーは、このデータ転送クォータを共有します。直接接続では消費されません。日記のテキストと接続制御メッセージには、1 日あたりの小さな制限が個別にあります。';
 
   @override
-  String get appearanceThemeSection => 'App theme';
+  String get appearanceThemeSection => 'アプリのテーマ';
 
   @override
-  String get appearancePaperSection => 'Diary paper';
+  String get appearancePaperSection => '日記用紙';
 
   @override
-  String get appearanceTypographySection => 'Diary text';
+  String get appearanceTypographySection => '日記のテキスト';
 
   @override
-  String get appearancePreferencesSection => 'General preferences';
+  String get appearancePreferencesSection => '一般的な設定';
 
   @override
   String get themeSystemAccentHint =>
-      'Uses the system palette instead of custom colors. Turn it off to choose your own.';
+      'カスタムカラーの代わりにシステムパレットを使用します。独自のものを選択するにはオフにしてください。';
 
   @override
-  String get syncDeviceNameSaveFailed =>
-      'Could not save the device name. Please try again.';
+  String get syncDeviceNameSaveFailed => 'デバイス名を保存できませんでした。もう一度試してください。';
 
   @override
-  String get nearbyConnectionHelp => 'Connection help';
+  String get nearbyConnectionHelp => '接続ヘルプ';
 
   @override
-  String get syncAllSynced => 'Everything synced';
+  String get syncAllSynced => 'すべてが同期されました';
 
   @override
-  String get syncDetailsTitle => 'Sync details';
+  String get syncDetailsTitle => '同期の詳細';
 
   @override
-  String get syncMore => 'More options';
+  String get syncMore => 'その他のオプション';
 
   @override
-  String get syncDeviceName => 'Device name';
+  String get syncDeviceName => 'デバイス名';
 
   @override
-  String get syncDeviceNameHint => 'For example: My tablet';
+  String get syncDeviceNameHint => '例: 私のタブレット';
 
   @override
-  String get syncDeviceNameInvalid => 'Use 1 to 32 characters';
+  String get syncDeviceNameInvalid => '1 ～ 32 文字を使用してください';
 
   @override
-  String get syncDeviceKeyDetails => 'Security details';
+  String get syncDeviceKeyDetails => 'セキュリティの詳細';
 
   @override
-  String get syncConnectionProblem =>
-      'Unable to sync for now. Retrying automatically.';
+  String get syncConnectionProblem => '現在同期できません。自動的に再試行します。';
 
   @override
-  String get syncCopyComplete => 'Complete copy';
+  String get syncCopyComplete => '日記とメディア ファイルの完全なコピー';
 
   @override
-  String get syncCopyPartial => 'Some media is still missing';
+  String get syncCopyPartial => '一部のメディアがまだありません';
 
   @override
-  String get syncCopyOlder => 'New changes are waiting to sync';
+  String get syncCopyOlder => '新しい変更は同期を待っています';
 
   @override
-  String get syncCopyUnavailable =>
-      'Copy details are unavailable. Try again later.';
+  String get syncCopyUnavailable => 'コピーの詳細は表示されません。後でもう一度試してください。';
 
   @override
   String get syncCopyLastKnown =>
-      'Other devices show their last confirmed copy. Offline devices cannot be checked now.';
+      '他のデバイスには、最後に確認されたコピーが表示されます。現在、オフラインのデバイスを確認することはできません。';
 
   @override
-  String get syncCopyTemporary =>
-      'Temporary cache. Keep the originals on your devices.';
+  String get syncCopyTemporary => '一時キャッシュ。オリジナルをデバイスに保存してください。';
 
   @override
-  String get syncCopyStorage =>
-      'Your sync storage. Completed media uploads are listed in diagnostics.';
+  String get syncCopyStorage => '同期ストレージ。完了したメディアのアップロードは診断にリストされます。';
 
   @override
   String syncCopyChecked(String time) {
-    return 'Last confirmed $time';
+    return '最後に確認されたのは $time';
   }
 
   @override
   String cloudTrafficSummary(String remaining, String limit) {
-    return 'Available this month: $remaining / $limit';
+    return '今月の残り転送量: $remaining / $limit';
   }
 
   @override
-  String get onboardNewDiary => 'Start here';
+  String get onboardNewDiary => 'ここから始めましょう';
 
   @override
-  String get onboardConnect => 'Connect to an existing device';
+  String get onboardConnect => '既存のデバイスに接続';
 
   @override
-  String get onboardFailed =>
-      'Setup could not be completed. Your diary is safe; please try again.';
+  String get onboardFailed => 'セットアップを完了できませんでした。あなたの日記は安全です。もう一度試してください。';
 
   @override
-  String get tutorialTitle => 'How to use the diary';
+  String get tutorialTitle => '日記の使い方';
 
   @override
-  String get tutorialWriteTitle => 'Write your first entry';
+  String get tutorialWriteTitle => 'はじめての日記を書く';
 
   @override
   String get tutorialWriteText =>
-      'Tap + to write. Add a title if you want, choose the diary day and tap the check mark to save. You can edit it again at any time.';
+      '＋をタップして日記を書きます。必要に応じてタイトルを追加し、日付を選んでチェックマークをタップすると保存できます。保存後もいつでも編集できます。';
 
   @override
-  String get tutorialMediaTitle => 'Add photos, audio or handwriting';
+  String get tutorialMediaTitle => '写真、音声、手書きを追加する';
 
   @override
   String get tutorialMediaText =>
-      'Use + in the editor to attach photos, videos or a voice note, or open the pen canvas. These attachments stay with the entry.';
+      '日記エディターで + を使用して、写真、ビデオ、音声録音を添付したり、手書きキャンバスを開きます。これらの添付ファイルは日記エントリとともに保存されます。';
 
   @override
-  String get tutorialReviewTitle => 'Find a day again';
+  String get tutorialReviewTitle => 'もう一度一日を見つけてください';
 
   @override
   String get tutorialReviewText =>
-      'Browse the journal or calendar, search your writing and use tags to organize it. Media and Atlas help you look back by photo or place.';
+      '日記やカレンダーを参照し、書き込みを検索し、タグを使用してエントリを整理します。メディア ページとアトラス ページでは、写真や場所から過去のエントリを検索できます。';
 
   @override
-  String get tutorialSyncTitle => 'Use more than one device';
+  String get tutorialSyncTitle => '複数のデバイスを使用する';
 
   @override
   String get tutorialSyncText =>
-      'In Settings → Data & storage → Sync, connect to an existing device and confirm authorization there. Both devices can keep using the diary. Text syncs first; media follows as the connection and allowance permit.';
+      '「設定 → データとストレージ → 同期」で既存のデバイスに接続し、そのデバイスで承認してください。どちらのデバイスも引き続き使えます。日記の本文を先に同期し、添付ファイルは接続状況と残りの転送量に応じて順次同期します。';
 
   @override
-  String get tutorialPrivacyTitle => 'Keep your diary safe';
+  String get tutorialPrivacyTitle => '日記を安全に保管してください';
 
   @override
   String get tutorialPrivacyText =>
-      'Entries stay on this device unless you enable sync or share/export them. Sync is end-to-end encrypted. Settings also offers an app passcode and backups; you can reopen this tutorial there.';
+      '日記エントリは、同期、共有、またはエクスポートを有効にしない限り、このデバイスに残ります。同期はエンドツーエンドで暗号化されます。 [設定] では、アプリのパスコードを設定したり、バックアップを作成したり、このチュートリアルを再度開いたりすることもできます。';
 }

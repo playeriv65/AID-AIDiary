@@ -326,11 +326,29 @@ An app language selected in Settings overrides system preferences until the
 user selects System again. Test locale matching and runtime language changes
 with `test/l10n/` and persisted overrides with the settings action tests.
 
-As of 2026-10-22, the 35 locale variants include incomplete translations. Do not
-describe that resource count as 35 fully translated languages. New user-facing
-copy belongs in ARB; translated placeholders/plurals and RTL/long-text layouts
-need validation before claiming a language is ready. No localization-library
-migration or runtime translation service is needed for system-language support.
+All 35 offered locale variants now cover the English message template, including
+formerly empty catalogs. `test/l10n/catalog_test.dart` requires every template
+message to be present, nonempty and to preserve dynamic arguments. Product and
+import-format names retain their original spelling. Run `scripts/dev.ps1 l10n`
+and `scripts/dev.ps1 test -TestFiles test/l10n/` after changing app copy; update
+each offered locale in the same change. Counts and allowances are exercised
+through generated delegates, including Arabic duals and Russian singulars at 21.
+
+The 2026-10-22 completion used batch translation, contextual correction and
+sampled review. Complete key coverage is not native-speaker certification of
+every sentence. Small-screen enlarged-text navigation tests cover every offered
+locale and RTL direction. Representative rendered views check actual fonts;
+native device installation and full native-language review remain separate.
+No runtime translation service or new localization library is used by the app.
+
+Validation on 2026-10-22: all catalogs contain the 804 English-template messages,
+with no missing/empty values or lost arguments. The final offline Flutter run
+passed 921 tests (79.82 seconds wall time), including 122 localization checks.
+Eight first-run/tutorial renders using actual Latin, Arabic and Tamil fonts
+were inspected at phone and desktop sizes. The generator reported no missing
+messages or ICU warnings; static analysis found no issues. These checks do not
+certify every translation with a native speaker or replace a Windows/Android
+installation check.
 
 References: [Flutter internationalization](https://docs.flutter.dev/ui/internationalization)
 and [locale resolution](https://api.flutter.dev/flutter/widgets/basicLocaleListResolution.html).
