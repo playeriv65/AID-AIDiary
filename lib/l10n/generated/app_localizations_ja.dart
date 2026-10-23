@@ -1079,12 +1079,6 @@ class AppLocalizationsJa extends AppLocalizations {
       '## ハイライト\n\n\n## 大変だったこと\n\n\n## 学んだこと\n\n\n## 来週に焦点を当てます\n';
 
   @override
-  String get entryDuplicate => '重複';
-
-  @override
-  String get entryDuplicated => 'エントリが重複しました';
-
-  @override
   String get entrySaveAsTemplate => 'テンプレートとして保存';
 
   @override
@@ -2701,4 +2695,28 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get moodClear => '気分をクリア';
+
+  @override
+  String get scrollToTop => '先頭に戻る';
+
+  @override
+  String get feedbackTitle => 'フィードバック';
+
+  @override
+  String get feedbackHint => '問題や提案を入力してください';
+
+  @override
+  String get feedbackGithub => 'GitHub で報告';
+
+  @override
+  String get feedbackEmail => 'メールで送る';
+
+  @override
+  String get feedbackCopy => '文章をコピー';
+
+  @override
+  String get feedbackLaunchFailed => 'アプリを開けません。文章をコピーして下記のメールアドレスをご利用ください。';
+
+  @override
+  String get feedbackCopied => 'コピーしました';
 }

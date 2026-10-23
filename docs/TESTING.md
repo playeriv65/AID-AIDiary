@@ -6,6 +6,15 @@ The developer making a change owns its test selection, failures and evidence.
 Use `scripts/dev.ps1` for Flutter operations so native test assets cannot race
 with another build in the same checkout.
 
+Debugging and verification must not use Computer Use (owner decision,
+2026-10-23). Use `aid` for shared actions/state, Flutter/driver tools for a live
+widget tree and app screenshots, and the headless screenshot harness for visual
+review. Flutter captures its rendered client area, not the Windows system title
+bar. Check native frame behavior through runner/platform diagnostics or explicit
+owner inspection and record any remaining gap; a Flutter image does not prove
+the native frame's appearance. Launching a preview for the owner does not lift
+this debugging rule. [Setup](SETUP.md#local-development-and-diagnostics) owns procedures.
+
 The goal is fast, trustworthy feedback about user-visible behavior and data
 safety. Choose the smallest scope and environment that can detect the relevant
 failure, then expand when the risk crosses boundaries. A small change does not

@@ -65,6 +65,27 @@ personal installation. See [refresh-rate measurements](REFRESH_RATE.md).
 
 ## Windows personal installation
 
+Windows uses the native title bar (application icon and AID Diary title).
+The Flutter theme supplies caption/background/border colors through the runner;
+exact caption colors use Windows 11 DWM attributes. Windows high-contrast mode
+keeps the system palette; older Windows versions retain system caption colors.
+Check both light/dark themes and theme switching in the actual native window:
+headless screenshots do not include the Windows frame. Native drag, resize,
+minimize/maximize/restore/close and Snap behavior remain owned by Windows.
+
+Verification (2026-10-23): the full offline Flutter suite passed 976 cases.
+After moving the back-to-top shortcut into the pinned search bar, 12 focused
+cases passed, both phone/tablet renders were reviewed again, analysis was clean
+and the final Windows profile build succeeded. The staged preview launched on
+its existing isolated store; CLI status confirmed profile/development mode and
+the journal route, with no caption-theme error reported. The final native frame
+appearance and window interactions were not inspected through Computer Use;
+owner inspection remains the visual check for that system-owned area. No
+personal installation or ordinary diary data was modified. This is host and
+Windows-build evidence, not a fresh Android-device installation or performance
+measurement.
+
+
 `./scripts/dev.ps1 windows-release-build` builds a release bundle without
 launching or installing anything. Keep the entire
 `build/windows/x64/runner/Release` directory together when installing it at
@@ -214,6 +235,16 @@ at `build/handover/app-dev-debug.apk`, SHA-256
 `8B33B6C5306AB6E456EFB836B9FBBC2F5C2F2493CDD7547285CD6940DB10A5B7`.
 
 ## Local development and diagnostics
+
+Do not use Computer Use for debugging or verification. The `aid` CLI is the
+first tool for shared operations and state; use Flutter/driver tools for live
+UI inspection and app screenshots. For reproducible visual checks, run
+`./scripts/dev.ps1 screenshots -TestFiles <affected screenshot test>` and inspect
+its artifacts. Use the procedures below to connect the available Flutter
+tooling; do not replace a missing tool with desktop clicking or screen scraping.
+Flutter screenshots exclude the native Windows caption. Use runner/platform
+diagnostics or the owner's visual inspection for that area and record any
+unverified behavior. A requested visible preview does not authorize Computer Use.
 
 After editing `lib/l10n/*.arb`, run `./scripts/dev.ps1 l10n` before analysis,
 tests or builds. This wraps Flutter's [official localization generator](https://docs.flutter.dev/ui/internationalization)

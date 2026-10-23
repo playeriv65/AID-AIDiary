@@ -1103,12 +1103,6 @@ class AppLocalizationsBg extends AppLocalizations {
       '## Акценти\n\n\n## Какво беше трудно\n\n\n## Какво научих\n\n\n## Фокус за следващата седмица\n';
 
   @override
-  String get entryDuplicate => 'Дубликат';
-
-  @override
-  String get entryDuplicated => 'Записът е дублиран';
-
-  @override
   String get entrySaveAsTemplate => 'Запазете като шаблон';
 
   @override
@@ -2783,4 +2777,29 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String get moodClear => 'Изчистване на настроението';
+
+  @override
+  String get scrollToTop => 'Най-горе';
+
+  @override
+  String get feedbackTitle => 'Обратна връзка';
+
+  @override
+  String get feedbackHint => 'Опишете проблем или предложение';
+
+  @override
+  String get feedbackGithub => 'Проблем в GitHub';
+
+  @override
+  String get feedbackEmail => 'Изпрати имейл';
+
+  @override
+  String get feedbackCopy => 'Копирай текста';
+
+  @override
+  String get feedbackLaunchFailed =>
+      'Приложението не се отвори. Копирайте текста и използвайте имейла по-долу.';
+
+  @override
+  String get feedbackCopied => 'Текстът е копиран';
 }

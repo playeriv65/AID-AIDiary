@@ -311,8 +311,6 @@
     "templateWeeklyName": "Đánh giá hàng tuần",
     "templateWeeklyDescription": "Điểm nổi bật, khó khăn và trọng tâm của tuần tới.",
     "templateWeeklyText": "## Điểm nổi bật\n\n\n## Có gì khó\n\n\n## Những gì tôi đã học được\n\n\n## Tập trung cho tuần tới\n",
-    "entryDuplicate": "trùng lặp",
-    "entryDuplicated": "Mục nhập trùng lặp",
     "entrySaveAsTemplate": "Lưu dưới dạng mẫu",
     "entrySavedAsTemplate": "Đã lưu dưới dạng mẫu",
     "storyStatistics": "Thống kê",
@@ -812,5 +810,13 @@
   "hiddenDiaryUnlock": "Mở khóa nhật ký ẩn",
   "hiddenDiaryAuthHint": "Sử dụng khóa ứng dụng hoặc khóa màn hình thiết bị.",
   "hiddenDiaryLocalOnly": "Nhật ký ẩn được giữ trên thiết bị này và quá trình đồng bộ tạm dừng. Hãy dùng bản sao lưu mã hóa. Các bản sao hiện có ở nơi khác không thay đổi.",
-  "moodClear": "Xóa tâm trạng"
+  "moodClear": "Xóa tâm trạng",
+  "scrollToTop": "Về đầu trang",
+  "feedbackTitle": "Góp ý",
+  "feedbackHint": "Mô tả vấn đề hoặc đề xuất",
+  "feedbackGithub": "Vấn đề trên GitHub",
+  "feedbackEmail": "Gửi email",
+  "feedbackCopy": "Sao chép văn bản",
+  "feedbackLaunchFailed": "Không mở được ứng dụng. Hãy sao chép văn bản và dùng email bên dưới.",
+  "feedbackCopied": "Đã sao chép góp ý"
 }

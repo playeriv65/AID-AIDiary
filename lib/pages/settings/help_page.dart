@@ -31,6 +31,13 @@ class HelpPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text(l10n.settingsHelpTitle)),
       body: ListView(padding: const EdgeInsets.only(bottom: 24), children: [
+        ListTile(
+          key: const ValueKey('help-feedback'),
+          leading: const Icon(Icons.feedback_outlined),
+          title: Text(l10n.feedbackTitle),
+          trailing: const Icon(Icons.chevron_right_rounded),
+          onTap: () => openPlace(context, 'settings/feedback'),
+        ),
         header(l10n.helpFaq),
         for (final (index, (question, answer)) in faq.indexed)
           ExpansionTile(

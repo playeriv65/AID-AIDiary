@@ -303,8 +303,6 @@
     "templateWeeklyName": "一周回顾",
     "templateWeeklyDescription": "本周亮点、困难和下周重点。",
     "templateWeeklyText": "## 本周亮点\n\n\n## 遇到的困难\n\n\n## 学到的东西\n\n\n## 下周重点\n",
-    "entryDuplicate": "复制一份",
-    "entryDuplicated": "已复制这篇日记",
     "entrySaveAsTemplate": "存为模板",
     "entrySavedAsTemplate": "已存为模板",
     "storyStatistics": "统计",
@@ -843,5 +841,13 @@
   "hiddenDiaryUnlock": "解锁隐藏日记",
   "hiddenDiaryAuthHint": "请使用应用锁或设备屏幕锁解锁。",
   "hiddenDiaryLocalOnly": "隐藏日记仅保存在本机，同步会暂停。请使用加密备份；其他设备上已有的副本不会改变。",
-  "moodClear": "清空心情"
+  "moodClear": "清空心情",
+  "scrollToTop": "回到顶部",
+  "feedbackTitle": "意见反馈",
+  "feedbackHint": "描述你遇到的问题或建议",
+  "feedbackGithub": "到 GitHub 提 issue",
+  "feedbackEmail": "邮件反馈",
+  "feedbackCopy": "复制文字",
+  "feedbackLaunchFailed": "无法打开应用。请复制反馈文字，使用下方邮箱联系。",
+  "feedbackCopied": "已复制反馈"
 }

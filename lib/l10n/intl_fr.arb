@@ -311,8 +311,6 @@
     "templateWeeklyName": "Revue hebdomadaire",
     "templateWeeklyDescription": "Faits saillants, difficultés et focus de la semaine prochaine.",
     "templateWeeklyText": "## Faits saillants\n\n\n## Qu'est-ce qui a été difficile\n\n\n## Ce que j'ai appris\n\n\n## Focus pour la semaine prochaine\n",
-    "entryDuplicate": "Dupliquer",
-    "entryDuplicated": "Entrée dupliquée",
     "entrySaveAsTemplate": "Enregistrer comme modèle",
     "entrySavedAsTemplate": "Enregistré comme modèle",
     "storyStatistics": "Statistiques",
@@ -812,5 +810,13 @@
   "hiddenDiaryUnlock": "Déverrouiller les entrées masquées",
   "hiddenDiaryAuthHint": "Utilisez le verrouillage de l’application ou de l’écran de votre appareil.",
   "hiddenDiaryLocalOnly": "Les entrées masquées restent sur cet appareil et suspendent la synchronisation. Utilisez des sauvegardes chiffrées. Les copies existantes ailleurs restent inchangées.",
-  "moodClear": "Effacer l’humeur"
+  "moodClear": "Effacer l’humeur",
+  "scrollToTop": "Retour en haut",
+  "feedbackTitle": "Commentaires",
+  "feedbackHint": "Décrivez un problème ou une suggestion",
+  "feedbackGithub": "Ticket GitHub",
+  "feedbackEmail": "Envoyer un e-mail",
+  "feedbackCopy": "Copier le texte",
+  "feedbackLaunchFailed": "Impossible d’ouvrir l’application. Copiez le texte et utilisez l’adresse ci-dessous.",
+  "feedbackCopied": "Commentaires copiés"
 }

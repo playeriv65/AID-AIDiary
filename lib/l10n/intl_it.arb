@@ -311,8 +311,6 @@
     "templateWeeklyName": "Revisione settimanale",
     "templateWeeklyDescription": "Punti salienti, difficoltà e focus della prossima settimana.",
     "templateWeeklyText": "## In evidenza\n\n\n## Ciò che è stato difficile\n\n\n## Cosa ho imparato\n\n\n## Concentrati sulla prossima settimana\n",
-    "entryDuplicate": "Duplicato",
-    "entryDuplicated": "Voce duplicata",
     "entrySaveAsTemplate": "Salva come modello",
     "entrySavedAsTemplate": "Salvato come modello",
     "storyStatistics": "Statistiche",
@@ -812,5 +810,13 @@
   "hiddenDiaryUnlock": "Sblocca le voci nascoste",
   "hiddenDiaryAuthHint": "Usa il blocco dell’app o dello schermo del dispositivo.",
   "hiddenDiaryLocalOnly": "Le voci nascoste restano su questo dispositivo e sospendono la sincronizzazione. Usa backup crittografati. Le copie esistenti altrove restano invariate.",
-  "moodClear": "Rimuovi umore"
+  "moodClear": "Rimuovi umore",
+  "scrollToTop": "Torna in alto",
+  "feedbackTitle": "Feedback",
+  "feedbackHint": "Descrivi un problema o un suggerimento",
+  "feedbackGithub": "Segnalazione GitHub",
+  "feedbackEmail": "Invia e-mail",
+  "feedbackCopy": "Copia testo",
+  "feedbackLaunchFailed": "Impossibile aprire l’app. Copia il testo e usa l’indirizzo e-mail qui sotto.",
+  "feedbackCopied": "Feedback copiato"
 }

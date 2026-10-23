@@ -89,6 +89,7 @@ Remaining work:
   product decisions.
 
 ## Decided against for now
+- Duplicate-entry action: removed at the owner's request (2026-10-23); save as template remains.
 - Automatic Wi-Fi Direct/hotspot creation: the implemented Wi-Fi/hotspot
   settings guidance is sufficient (2026-10-22). Automatically discover and
   connect trusted peers once a usable network exists.

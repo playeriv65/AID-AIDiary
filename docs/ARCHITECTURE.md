@@ -156,6 +156,29 @@ it does not restart at zero elapsed time on every notch. Decay uses elapsed
 time rather than a fixed amount per frame, and stops within the platform's
 scroll-distance tolerance.
 
+`PinnedSearchHeader` keeps the journal, media and coach list toolbar outside
+scrolled content using a pinned sliver with an opaque theme surface. Calendar
+and search routes already keep their controls outside their scrollable lists.
+
+The journal observes only its list's scroll notifications for a back-to-top
+shortcut after the configured viewport threshold; child/detail scrolling does
+not trigger it. Returning to the beginning uses a direct jump, including for
+large archives and reduced-motion users.
+
+Feedback is a routed settings page. `assets/config/app_config.json` owns its
+GitHub issue URL and contact email; only the user's entered text is prefilled.
+External-launch failure retains the draft and leaves the email/copy fallback
+available. The current repository is private, so issue creation requires access.
+There is no feedback collection endpoint or automatic message submission.
+
+Windows keeps the standard Win32 title bar, icon, title and caption buttons.
+`WindowsCaptionTheme` sends the resolved Flutter background, foreground and
+brightness over `aid/window_chrome`; the runner applies DWM caption, text and
+border colors. Theme changes update the palette without reserving Flutter
+space or replacing native window interactions. Windows high-contrast mode
+retains system caption colors. Exact caption colors require Windows 11; older
+Windows versions retain the system frame palette.
+
 New settings must be registered in `Settings.all`: startup prunes unknown keys
 and `test/config_settings_test.dart` checks the registry. Photos, videos and
 voice notes share attachment storage; `MediaKind` distinguishes their type,

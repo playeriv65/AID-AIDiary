@@ -65,10 +65,7 @@ class _MediaPageState extends State<MediaPage>
               embedded: true)
           : null,
       listBuilder: (context, split) => CustomScrollView(slivers: [
-        const SliverPadding(
-          padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
-          sliver: SliverToBoxAdapter(child: TopSearchCard()),
-        ),
+        const PinnedSearchHeader(),
         SliverPadding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           sliver: SliverToBoxAdapter(child: SectionLabel(l10n.mediaFiles)),

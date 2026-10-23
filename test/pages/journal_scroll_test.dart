@@ -12,6 +12,59 @@ import '../support/diary_app_harness.dart';
 
 void main() {
   final harness = DiaryAppHarness()..register();
+  for (final (size, platform) in [
+    (const Size(390, 844), TargetPlatform.android),
+    (const Size(1000, 800), TargetPlatform.android),
+    (const Size(1280, 800), TargetPlatform.windows),
+  ]) {
+    testWidgets(
+        'search stays visible and usable while scrolling $size $platform',
+        (tester) async {
+      final now = DateTime.now();
+      EntryStore.instance.entries = [
+        for (var i = 0; i < 60; i++)
+          Entry(
+              id: i + 1,
+              text: 'Entry $i',
+              timeCreate: now.subtract(Duration(days: i)),
+              timeModified: now),
+      ];
+      DiaryAppHarness.size(tester, size);
+      await tester.pumpWidget(harness.app(const Scaffold(body: JournalPage()),
+          themeData: ThemeData(platform: platform)));
+      await tester.pumpAndSettle();
+      final search = find.byKey(const ValueKey('journal-search'));
+      final before = tester.getRect(search);
+      await tester.drag(find.byKey(const PageStorageKey('journal-list')),
+          const Offset(0, -900));
+      await tester.pumpAndSettle();
+      expect(tester.getRect(search), before);
+      expect(search.hitTestable(), findsOneWidget);
+      final position = tester
+          .state<ScrollableState>(find
+              .descendant(
+                  of: find.byKey(const PageStorageKey('journal-list')),
+                  matching: find.byType(Scrollable))
+              .first)
+          .position;
+      position.jumpTo(2000);
+      await tester.pumpAndSettle();
+      expect(
+          tester
+              .getRect(find.byKey(const ValueKey('journal-scroll-to-top')))
+              .bottom,
+          lessThanOrEqualTo(before.bottom));
+      await tester.tap(find.byKey(const ValueKey('journal-scroll-to-top')));
+      await tester.pumpAndSettle();
+      expect(position.pixels, 0);
+      expect(find.byKey(const ValueKey('journal-scroll-to-top')), findsNothing);
+      await tester.tap(search);
+      await tester.pumpAndSettle();
+      expect(find.byKey(const ValueKey('search-field')), findsOneWidget);
+      expect(tester.takeException(), isNull);
+      await tester.pumpWidget(const SizedBox.shrink());
+    });
+  }
   for (final scale in [1.0, 2.0, 3.0]) {
     testWidgets('desktop preview slots fit text at scale $scale',
         (tester) async {

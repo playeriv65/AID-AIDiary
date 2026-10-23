@@ -1092,12 +1092,6 @@ class AppLocalizationsDa extends AppLocalizations {
       '## Højdepunkter\n\n\n## Hvad var svært\n\n\n## Hvad jeg lærte\n\n\n## Fokus for næste uge\n';
 
   @override
-  String get entryDuplicate => 'Duplikat';
-
-  @override
-  String get entryDuplicated => 'Indgang duplikeret';
-
-  @override
   String get entrySaveAsTemplate => 'Gem som skabelon';
 
   @override
@@ -2760,4 +2754,29 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String get moodClear => 'Ryd humør';
+
+  @override
+  String get scrollToTop => 'Til toppen';
+
+  @override
+  String get feedbackTitle => 'Feedback';
+
+  @override
+  String get feedbackHint => 'Beskriv et problem eller forslag';
+
+  @override
+  String get feedbackGithub => 'GitHub-issue';
+
+  @override
+  String get feedbackEmail => 'Send e-mail';
+
+  @override
+  String get feedbackCopy => 'Kopiér tekst';
+
+  @override
+  String get feedbackLaunchFailed =>
+      'Appen kunne ikke åbnes. Kopiér teksten og brug e-mailadressen nedenfor.';
+
+  @override
+  String get feedbackCopied => 'Feedback kopieret';
 }

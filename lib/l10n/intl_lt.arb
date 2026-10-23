@@ -311,8 +311,6 @@
     "templateWeeklyName": "Savaitės apžvalga",
     "templateWeeklyDescription": "Svarbiausi momentai, kovos ir kitos savaitės dėmesys.",
     "templateWeeklyText": "## Svarbiausi dalykai\n\n\n## Kas buvo sunku\n\n\n## Ką aš išmokau\n\n\n## Dėmesys kitai savaitei\n",
-    "entryDuplicate": "Pasikartoti",
-    "entryDuplicated": "Įrašas pasikartojo",
     "entrySaveAsTemplate": "Išsaugoti kaip šabloną",
     "entrySavedAsTemplate": "Išsaugotas kaip šablonas",
     "storyStatistics": "Statistika",
@@ -812,5 +810,13 @@
   "hiddenDiaryUnlock": "Atrakinti paslėptus įrašus",
   "hiddenDiaryAuthHint": "Naudokite programėlės arba įrenginio ekrano užraktą.",
   "hiddenDiaryLocalOnly": "Paslėpti įrašai lieka šiame įrenginyje, o sinchronizavimas pristabdomas. Naudokite šifruotas atsargines kopijas. Kitur esančios kopijos nesikeičia.",
-  "moodClear": "Išvalyti nuotaiką"
+  "moodClear": "Išvalyti nuotaiką",
+  "scrollToTop": "Į viršų",
+  "feedbackTitle": "Atsiliepimas",
+  "feedbackHint": "Aprašykite problemą ar pasiūlymą",
+  "feedbackGithub": "GitHub problema",
+  "feedbackEmail": "Siųsti el. laišką",
+  "feedbackCopy": "Kopijuoti tekstą",
+  "feedbackLaunchFailed": "Nepavyko atidaryti programos. Nukopijuokite tekstą ir naudokite el. paštą žemiau.",
+  "feedbackCopied": "Atsiliepimas nukopijuotas"
 }

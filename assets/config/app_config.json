@@ -27,7 +27,12 @@
     "timeoutSeconds": 10
   },
   "scrolling": {
-    "wheelDurationMs": 180
+    "wheelDurationMs": 180,
+    "backToTopScreens": 2
+  },
+  "feedback": {
+    "issuesUrl": "https://github.com/playeriv65/AID-AIDiary/issues/new",
+    "email": "li004593@umn.edu"
   },
   "diaryDay": {
     "startHourChoices": [0, 1, 2, 3, 4, 5, 6],

@@ -311,8 +311,6 @@
     "templateWeeklyName": "Revizuire săptămânală",
     "templateWeeklyDescription": "Repere, lupte și concentrarea săptămânii viitoare.",
     "templateWeeklyText": "## Repere\n\n\n## Ce a fost greu\n\n\n## Ce am învățat\n\n\n## Concentrați-vă pentru săptămâna viitoare\n",
-    "entryDuplicate": "Duplicat",
-    "entryDuplicated": "Intrare duplicat",
     "entrySaveAsTemplate": "Salvați ca șablon",
     "entrySavedAsTemplate": "Salvat ca șablon",
     "storyStatistics": "Statistici",
@@ -812,5 +810,13 @@
   "hiddenDiaryUnlock": "Deblochează însemnările ascunse",
   "hiddenDiaryAuthHint": "Folosește blocarea aplicației sau a ecranului dispozitivului.",
   "hiddenDiaryLocalOnly": "Însemnările ascunse rămân pe acest dispozitiv și suspendă sincronizarea. Folosește copii de siguranță criptate. Copiile existente în alte locuri nu se modifică.",
-  "moodClear": "Șterge dispoziția"
+  "moodClear": "Șterge dispoziția",
+  "scrollToTop": "Sus",
+  "feedbackTitle": "Feedback",
+  "feedbackHint": "Descrieți o problemă sau sugestie",
+  "feedbackGithub": "Problemă GitHub",
+  "feedbackEmail": "Trimite e-mail",
+  "feedbackCopy": "Copiază textul",
+  "feedbackLaunchFailed": "Aplicația nu s-a deschis. Copiați textul și folosiți e-mailul de mai jos.",
+  "feedbackCopied": "Feedback copiat"
 }

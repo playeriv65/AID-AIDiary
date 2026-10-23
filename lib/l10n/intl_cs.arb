@@ -311,8 +311,6 @@
     "templateWeeklyName": "Týdenní přehled",
     "templateWeeklyDescription": "Nejdůležitější události, problémy a zaměření na příští týden.",
     "templateWeeklyText": "## Nejdůležitější\n\n\n## Co bylo těžké\n\n\n## Co jsem se naučil\n\n\n## Soustřeďte se na příští týden\n",
-    "entryDuplicate": "Duplicitní",
-    "entryDuplicated": "Záznam duplicitní",
     "entrySaveAsTemplate": "Uložit jako šablonu",
     "entrySavedAsTemplate": "Uloženo jako šablona",
     "storyStatistics": "Statistiky",
@@ -812,5 +810,13 @@
   "hiddenDiaryUnlock": "Odemknout skryté zápisy",
   "hiddenDiaryAuthHint": "Použijte zámek aplikace nebo obrazovky zařízení.",
   "hiddenDiaryLocalOnly": "Skryté zápisy zůstávají na tomto zařízení a synchronizace se pozastaví. Používejte šifrované zálohy. Existující kopie jinde se nemění.",
-  "moodClear": "Vymazat náladu"
+  "moodClear": "Vymazat náladu",
+  "scrollToTop": "Zpět nahoru",
+  "feedbackTitle": "Zpětná vazba",
+  "feedbackHint": "Popište problém nebo návrh",
+  "feedbackGithub": "Problém na GitHubu",
+  "feedbackEmail": "Poslat e-mail",
+  "feedbackCopy": "Kopírovat text",
+  "feedbackLaunchFailed": "Aplikaci nelze otevřít. Zkopírujte text a použijte e-mail níže.",
+  "feedbackCopied": "Text zkopírován"
 }

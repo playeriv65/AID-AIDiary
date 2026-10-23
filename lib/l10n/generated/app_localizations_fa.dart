@@ -1092,12 +1092,6 @@ class AppLocalizationsFa extends AppLocalizations {
       '## نکات برجسته\n\n\n## چه سخت بود\n\n\n## چیزی که یاد گرفتم\n\n\n## برای هفته آینده تمرکز کنید\n';
 
   @override
-  String get entryDuplicate => 'تکراری';
-
-  @override
-  String get entryDuplicated => 'ورودی کپی شده';
-
-  @override
   String get entrySaveAsTemplate => 'ذخیره به عنوان الگو';
 
   @override
@@ -2759,4 +2753,29 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get moodClear => 'پاک کردن حال‌وهوا';
+
+  @override
+  String get scrollToTop => 'بازگشت به بالا';
+
+  @override
+  String get feedbackTitle => 'بازخورد';
+
+  @override
+  String get feedbackHint => 'مشکل یا پیشنهادی را شرح دهید';
+
+  @override
+  String get feedbackGithub => 'گزارش در GitHub';
+
+  @override
+  String get feedbackEmail => 'ارسال ایمیل';
+
+  @override
+  String get feedbackCopy => 'کپی متن';
+
+  @override
+  String get feedbackLaunchFailed =>
+      'برنامه باز نشد. متن را کپی کنید و از ایمیل زیر استفاده کنید.';
+
+  @override
+  String get feedbackCopied => 'بازخورد کپی شد';
 }

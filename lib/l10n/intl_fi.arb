@@ -311,8 +311,6 @@
     "templateWeeklyName": "Viikkokatsaus",
     "templateWeeklyDescription": "Kohokohdat, kamppailut ja ensi viikon painopiste.",
     "templateWeeklyText": "## Kohokohdat\n\n\n## Mikä oli vaikeaa\n\n\n## Mitä opin\n\n\n## Keskity ensi viikkoon\n",
-    "entryDuplicate": "Kopioi",
-    "entryDuplicated": "Merkintä kopioitu",
     "entrySaveAsTemplate": "Tallenna mallina",
     "entrySavedAsTemplate": "Tallennettu mallina",
     "storyStatistics": "Tilastot",
@@ -812,5 +810,13 @@
   "hiddenDiaryUnlock": "Avaa piilotetut merkinnät",
   "hiddenDiaryAuthHint": "Käytä sovelluksen lukitusta tai laitteen näytön lukitusta.",
   "hiddenDiaryLocalOnly": "Piilotetut merkinnät pysyvät tällä laitteella ja synkronointi keskeytyy. Käytä salattuja varmuuskopioita. Muualla olevat kopiot eivät muutu.",
-  "moodClear": "Poista mieliala"
+  "moodClear": "Poista mieliala",
+  "scrollToTop": "Takaisin alkuun",
+  "feedbackTitle": "Palaute",
+  "feedbackHint": "Kuvaile ongelma tai ehdotus",
+  "feedbackGithub": "GitHub-ongelma",
+  "feedbackEmail": "Lähetä sähköposti",
+  "feedbackCopy": "Kopioi teksti",
+  "feedbackLaunchFailed": "Sovellusta ei voitu avata. Kopioi teksti ja käytä alla olevaa sähköpostia.",
+  "feedbackCopied": "Palaute kopioitu"
 }

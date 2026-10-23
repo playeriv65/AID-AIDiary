@@ -311,8 +311,6 @@
     "templateWeeklyName": "Wekelijkse beoordeling",
     "templateWeeklyDescription": "Hoogtepunten, worstelingen en de focus van volgende week.",
     "templateWeeklyText": "## Hoogtepunten\n\n\n## Wat was moeilijk\n\n\n## Wat ik heb geleerd\n\n\n## Focus voor volgende week\n",
-    "entryDuplicate": "Duplicaat",
-    "entryDuplicated": "Invoer gedupliceerd",
     "entrySaveAsTemplate": "Opslaan als sjabloon",
     "entrySavedAsTemplate": "Opgeslagen als sjabloon",
     "storyStatistics": "Statistieken",
@@ -812,5 +810,13 @@
   "hiddenDiaryUnlock": "Verborgen berichten ontgrendelen",
   "hiddenDiaryAuthHint": "Gebruik de appvergrendeling of schermvergrendeling van je apparaat.",
   "hiddenDiaryLocalOnly": "Verborgen berichten blijven op dit apparaat en pauzeren de synchronisatie. Gebruik versleutelde back-ups. Bestaande kopieën elders blijven ongewijzigd.",
-  "moodClear": "Stemming wissen"
+  "moodClear": "Stemming wissen",
+  "scrollToTop": "Naar boven",
+  "feedbackTitle": "Feedback",
+  "feedbackHint": "Beschrijf een probleem of suggestie",
+  "feedbackGithub": "GitHub-issue",
+  "feedbackEmail": "E-mail sturen",
+  "feedbackCopy": "Tekst kopiëren",
+  "feedbackLaunchFailed": "De app kon niet worden geopend. Kopieer de tekst en gebruik het e-mailadres hieronder.",
+  "feedbackCopied": "Feedback gekopieerd"
 }

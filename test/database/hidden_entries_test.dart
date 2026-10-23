@@ -82,7 +82,7 @@ void main() {
     final listed = jsonEncode(await actions.run('entry.list', {}));
     expect(listed, contains('Public text'));
     expect(listed, isNot(contains('Private text')));
-    for (final id in ['entry.get', 'entry.update', 'entry.duplicate']) {
+    for (final id in ['entry.get', 'entry.update']) {
       await expectLater(
           actions.run(id, {'id': secret.id}),
           throwsA(isA<ActionException>()

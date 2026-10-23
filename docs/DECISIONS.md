@@ -6,6 +6,23 @@ asks again. Dates are when it was settled. Ideas not built yet are in
 
 ## What the app is
 
+- Debugging tools (2026-10-23): do not use Computer Use for debugging or
+  verification. Use the existing CLI and Flutter tools, with explicit native
+  frame verification limits. Setup and Testing own the procedures.
+
+- Windows frame (2026-10-23): retain the native title bar and window buttons,
+  showing only the application icon and AID Diary name. Match its background,
+  caption text and border to the app theme. Do not merge search or entry actions
+  into the title bar. This replaces the earlier same-day custom-caption preview.
+- Search visibility (2026-10-23): the search toolbar remains pinned while diary
+  lists scroll, on phones, tablets and desktop. Remove the duplicate-entry
+  feature and its shared action; saving an entry as a template remains.
+- Long journal browsing (2026-10-23): show a small top-center shortcut after
+  scrolling two viewports; clicking it returns directly to the beginning.
+- Feedback (2026-10-23): Settings > Help opens a text panel with prefilled GitHub
+  issue and email drafts plus text copying. The user completes submission in
+  their browser/mail app. Do not collect diary content or logs automatically.
+
 - Hidden diaries (2026-10-22): preserve the hidden designation when importing
   One Diary backups. Keep hidden entries out of everyday views, search,
   statistics, widgets, ordinary exports and CLI content. Reading or revealing

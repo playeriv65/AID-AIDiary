@@ -1100,12 +1100,6 @@ class AppLocalizationsAr extends AppLocalizations {
       '## أبرز\n\n\n##ما كان صعبا\n\n\n## ما تعلمته\n\n\n## التركيز للأسبوع المقبل\n';
 
   @override
-  String get entryDuplicate => 'مكررة';
-
-  @override
-  String get entryDuplicated => 'الإدخال مكرر';
-
-  @override
   String get entrySaveAsTemplate => 'حفظ كقالب';
 
   @override
@@ -2762,4 +2756,29 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get moodClear => 'مسح الحالة المزاجية';
+
+  @override
+  String get scrollToTop => 'العودة للأعلى';
+
+  @override
+  String get feedbackTitle => 'ملاحظات';
+
+  @override
+  String get feedbackHint => 'صف مشكلة أو اقتراحًا';
+
+  @override
+  String get feedbackGithub => 'مشكلة على GitHub';
+
+  @override
+  String get feedbackEmail => 'إرسال بريد';
+
+  @override
+  String get feedbackCopy => 'نسخ النص';
+
+  @override
+  String get feedbackLaunchFailed =>
+      'تعذر فتح التطبيق. انسخ النص واستخدم البريد أدناه.';
+
+  @override
+  String get feedbackCopied => 'تم نسخ الملاحظات';
 }

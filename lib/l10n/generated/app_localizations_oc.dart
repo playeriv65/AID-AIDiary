@@ -1107,12 +1107,6 @@ class AppLocalizationsOc extends AppLocalizations {
       '## Destacats\n\n\n## Çò qu\'èra dur\n\n\n## Çò qu\'ai aprés\n\n\n## Focus per la setmana que ven\n';
 
   @override
-  String get entryDuplicate => 'Duplicat';
-
-  @override
-  String get entryDuplicated => 'Dintrada duplicada';
-
-  @override
   String get entrySaveAsTemplate => 'Enregistrar coma modèl';
 
   @override
@@ -2792,4 +2786,29 @@ class AppLocalizationsOc extends AppLocalizations {
 
   @override
   String get moodClear => 'Escafar l’umor';
+
+  @override
+  String get scrollToTop => 'Tornar amont';
+
+  @override
+  String get feedbackTitle => 'Comentaris';
+
+  @override
+  String get feedbackHint => 'Descrivètz un problèma o una suggestion';
+
+  @override
+  String get feedbackGithub => 'Problèma GitHub';
+
+  @override
+  String get feedbackEmail => 'Mandar un corrièl';
+
+  @override
+  String get feedbackCopy => 'Copiar lo tèxte';
+
+  @override
+  String get feedbackLaunchFailed =>
+      'Impossible de dobrir l’aplicacion. Copiatz lo tèxte e utilizatz lo corrièl çai jos.';
+
+  @override
+  String get feedbackCopied => 'Comentaris copiats';
 }

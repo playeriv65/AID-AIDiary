@@ -311,8 +311,6 @@
     "templateWeeklyName": "Revision setmanièra",
     "templateWeeklyDescription": "Moments fòrts, luchas e l'enjòc de la setmana que ven.",
     "templateWeeklyText": "## Destacats\n\n\n## Çò qu'èra dur\n\n\n## Çò qu'ai aprés\n\n\n## Focus per la setmana que ven\n",
-    "entryDuplicate": "Duplicat",
-    "entryDuplicated": "Dintrada duplicada",
     "entrySaveAsTemplate": "Enregistrar coma modèl",
     "entrySavedAsTemplate": "Enregistrat coma modèl",
     "storyStatistics": "Estatisticas",
@@ -812,5 +810,13 @@
   "hiddenDiaryUnlock": "Desverrolhar las entradas amagadas",
   "hiddenDiaryAuthHint": "Utilizatz lo verrolhatge de l’aplicacion o de l’ecran de l’aparelh.",
   "hiddenDiaryLocalOnly": "Las entradas amagadas demòran sus aqueste aparelh e la sincronizacion es en pausa. Utilizatz de salvagardas chifradas. Las còpias existentas endacòm mai càmbian pas.",
-  "moodClear": "Escafar l’umor"
+  "moodClear": "Escafar l’umor",
+  "scrollToTop": "Tornar amont",
+  "feedbackTitle": "Comentaris",
+  "feedbackHint": "Descrivètz un problèma o una suggestion",
+  "feedbackGithub": "Problèma GitHub",
+  "feedbackEmail": "Mandar un corrièl",
+  "feedbackCopy": "Copiar lo tèxte",
+  "feedbackLaunchFailed": "Impossible de dobrir l’aplicacion. Copiatz lo tèxte e utilizatz lo corrièl çai jos.",
+  "feedbackCopied": "Comentaris copiats"
 }

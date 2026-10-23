@@ -1121,12 +1121,6 @@ class AppLocalizationsLt extends AppLocalizations {
       '## Svarbiausi dalykai\n\n\n## Kas buvo sunku\n\n\n## Ką aš išmokau\n\n\n## Dėmesys kitai savaitei\n';
 
   @override
-  String get entryDuplicate => 'Pasikartoti';
-
-  @override
-  String get entryDuplicated => 'Įrašas pasikartojo';
-
-  @override
   String get entrySaveAsTemplate => 'Išsaugoti kaip šabloną';
 
   @override
@@ -2797,4 +2791,29 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String get moodClear => 'Išvalyti nuotaiką';
+
+  @override
+  String get scrollToTop => 'Į viršų';
+
+  @override
+  String get feedbackTitle => 'Atsiliepimas';
+
+  @override
+  String get feedbackHint => 'Aprašykite problemą ar pasiūlymą';
+
+  @override
+  String get feedbackGithub => 'GitHub problema';
+
+  @override
+  String get feedbackEmail => 'Siųsti el. laišką';
+
+  @override
+  String get feedbackCopy => 'Kopijuoti tekstą';
+
+  @override
+  String get feedbackLaunchFailed =>
+      'Nepavyko atidaryti programos. Nukopijuokite tekstą ir naudokite el. paštą žemiau.';
+
+  @override
+  String get feedbackCopied => 'Atsiliepimas nukopijuotas';
 }

@@ -1108,12 +1108,6 @@ class AppLocalizationsDe extends AppLocalizations {
       '## Highlights\n\n\n## Was war schwer\n\n\n## Was ich gelernt habe\n\n\n## Konzentrieren Sie sich auf die nächste Woche\n';
 
   @override
-  String get entryDuplicate => 'Duplizieren';
-
-  @override
-  String get entryDuplicated => 'Eintrag dupliziert';
-
-  @override
   String get entrySaveAsTemplate => 'Als Vorlage speichern';
 
   @override
@@ -2800,4 +2794,29 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get moodClear => 'Stimmung entfernen';
+
+  @override
+  String get scrollToTop => 'Nach oben';
+
+  @override
+  String get feedbackTitle => 'Feedback';
+
+  @override
+  String get feedbackHint => 'Beschreibe ein Problem oder einen Vorschlag';
+
+  @override
+  String get feedbackGithub => 'GitHub-Issue';
+
+  @override
+  String get feedbackEmail => 'E-Mail senden';
+
+  @override
+  String get feedbackCopy => 'Text kopieren';
+
+  @override
+  String get feedbackLaunchFailed =>
+      'Die App konnte nicht geöffnet werden. Kopiere den Text und nutze die E-Mail-Adresse unten.';
+
+  @override
+  String get feedbackCopied => 'Feedback kopiert';
 }

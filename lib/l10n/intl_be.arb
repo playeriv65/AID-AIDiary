@@ -313,8 +313,6 @@
     "templateWeeklyName": "Штотыднёвы агляд",
     "templateWeeklyDescription": "Асноўныя моманты, цяжкасці і акцэнт на наступным тыдні.",
     "templateWeeklyText": "## Асноўны момант\n\n\n## Што было цяжка\n\n\n## Што я даведаўся\n\n\n## У цэнтры ўвагі на наступным тыдні\n",
-    "entryDuplicate": "Дублікат",
-    "entryDuplicated": "Запіс дубляваны",
     "entrySaveAsTemplate": "Захаваць як шаблон",
     "entrySavedAsTemplate": "Захавана як шаблон",
     "storyStatistics": "Статыстыка",
@@ -814,5 +812,13 @@
   "hiddenDiaryUnlock": "Адкрыць схаваныя запісы",
   "hiddenDiaryAuthHint": "Выкарыстайце блакіроўку праграмы або экрана прылады.",
   "hiddenDiaryLocalOnly": "Схаваныя запісы застаюцца на гэтай прыладзе; сінхранізацыя прыпыняецца. Выкарыстоўвайце зашыфраваныя рэзервовыя копіі. Іншыя наяўныя копіі не змяняюцца.",
-  "moodClear": "Ачысціць настрой"
+  "moodClear": "Ачысціць настрой",
+  "scrollToTop": "Угору",
+  "feedbackTitle": "Водгук",
+  "feedbackHint": "Апішыце праблему або прапанову",
+  "feedbackGithub": "Задача на GitHub",
+  "feedbackEmail": "Напісаць ліст",
+  "feedbackCopy": "Капіяваць тэкст",
+  "feedbackLaunchFailed": "Не ўдалося адкрыць праграму. Скапіруйце тэкст і скарыстайце пошту ніжэй.",
+  "feedbackCopied": "Водгук скапіяваны"
 }

@@ -1079,12 +1079,6 @@ class AppLocalizationsKo extends AppLocalizations {
       '## 하이라이트\n\n\n## 무엇이 힘들었나요\n\n\n## 배운 것\n\n\n## 다음 주에 집중하세요\n';
 
   @override
-  String get entryDuplicate => '중복';
-
-  @override
-  String get entryDuplicated => '항목이 중복되었습니다.';
-
-  @override
   String get entrySaveAsTemplate => '템플릿으로 저장';
 
   @override
@@ -2701,4 +2695,28 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get moodClear => '기분 지우기';
+
+  @override
+  String get scrollToTop => '맨 위로';
+
+  @override
+  String get feedbackTitle => '의견 보내기';
+
+  @override
+  String get feedbackHint => '문제나 제안을 설명해 주세요';
+
+  @override
+  String get feedbackGithub => 'GitHub 이슈';
+
+  @override
+  String get feedbackEmail => '이메일 보내기';
+
+  @override
+  String get feedbackCopy => '텍스트 복사';
+
+  @override
+  String get feedbackLaunchFailed => '앱을 열 수 없습니다. 텍스트를 복사하여 아래 이메일을 이용해 주세요.';
+
+  @override
+  String get feedbackCopied => '의견이 복사됨';
 }

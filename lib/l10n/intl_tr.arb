@@ -311,8 +311,6 @@
     "templateWeeklyName": "Haftalık inceleme",
     "templateWeeklyDescription": "Önemli noktalar, mücadeleler ve gelecek haftanın odak noktası.",
     "templateWeeklyText": "## Öne Çıkanlar\n\n\n## Ne zordu\n\n\n## Ne öğrendim\n\n\n## Gelecek haftaya odaklanın\n",
-    "entryDuplicate": "Çoğalt",
-    "entryDuplicated": "Giriş kopyalandı",
     "entrySaveAsTemplate": "Şablon olarak kaydet",
     "entrySavedAsTemplate": "Şablon olarak kaydedildi",
     "storyStatistics": "İstatistikler",
@@ -812,5 +810,13 @@
   "hiddenDiaryUnlock": "Gizli kayıtların kilidini aç",
   "hiddenDiaryAuthHint": "Uygulama kilidini veya cihazınızın ekran kilidini kullanın.",
   "hiddenDiaryLocalOnly": "Gizli kayıtlar bu cihazda kalır ve eşitleme duraklatılır. Şifreli yedekler kullanın. Başka yerlerdeki mevcut kopyalar değişmez.",
-  "moodClear": "Ruh halini temizle"
+  "moodClear": "Ruh halini temizle",
+  "scrollToTop": "Başa dön",
+  "feedbackTitle": "Geri bildirim",
+  "feedbackHint": "Sorunu veya öneriyi açıklayın",
+  "feedbackGithub": "GitHub sorunu",
+  "feedbackEmail": "E-posta gönder",
+  "feedbackCopy": "Metni kopyala",
+  "feedbackLaunchFailed": "Uygulama açılamadı. Metni kopyalayıp aşağıdaki e-postayı kullanın.",
+  "feedbackCopied": "Geri bildirim kopyalandı"
 }

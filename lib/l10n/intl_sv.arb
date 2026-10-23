@@ -311,8 +311,6 @@
     "templateWeeklyName": "Veckoöversyn",
     "templateWeeklyDescription": "Höjdpunkter, kämpar och nästa veckas fokus.",
     "templateWeeklyText": "## Höjdpunkter\n\n\n## Vad var svårt\n\n\n## Vad jag lärde mig\n\n\n## Fokus för nästa vecka\n",
-    "entryDuplicate": "Duplicera",
-    "entryDuplicated": "Posten duplicerad",
     "entrySaveAsTemplate": "Spara som mall",
     "entrySavedAsTemplate": "Sparad som mall",
     "storyStatistics": "Statistik",
@@ -812,5 +810,13 @@
   "hiddenDiaryUnlock": "Lås upp dolda inlägg",
   "hiddenDiaryAuthHint": "Använd appens lås eller enhetens skärmlås.",
   "hiddenDiaryLocalOnly": "Dolda inlägg stannar på denna enhet och synkroniseringen pausas. Använd krypterade säkerhetskopior. Befintliga kopior på andra platser ändras inte.",
-  "moodClear": "Rensa humör"
+  "moodClear": "Rensa humör",
+  "scrollToTop": "Till toppen",
+  "feedbackTitle": "Återkoppling",
+  "feedbackHint": "Beskriv ett problem eller förslag",
+  "feedbackGithub": "GitHub-ärende",
+  "feedbackEmail": "Skicka e-post",
+  "feedbackCopy": "Kopiera text",
+  "feedbackLaunchFailed": "Appen kunde inte öppnas. Kopiera texten och använd e-postadressen nedan.",
+  "feedbackCopied": "Återkopplingen kopierad"
 }

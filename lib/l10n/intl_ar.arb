@@ -311,8 +311,6 @@
     "templateWeeklyName": "مراجعة أسبوعية",
     "templateWeeklyDescription": "أبرز الأحداث والنضالات والتركيز في الأسبوع المقبل.",
     "templateWeeklyText": "## أبرز\n\n\n##ما كان صعبا\n\n\n## ما تعلمته\n\n\n## التركيز للأسبوع المقبل\n",
-    "entryDuplicate": "مكررة",
-    "entryDuplicated": "الإدخال مكرر",
     "entrySaveAsTemplate": "حفظ كقالب",
     "entrySavedAsTemplate": "تم الحفظ كقالب",
     "storyStatistics": "الإحصائيات",
@@ -812,5 +810,13 @@
   "hiddenDiaryUnlock": "فتح اليوميات المخفية",
   "hiddenDiaryAuthHint": "استخدم قفل التطبيق أو قفل شاشة جهازك للفتح.",
   "hiddenDiaryLocalOnly": "تبقى اليوميات المخفية على هذا الجهاز وتتوقف المزامنة. استخدم نسخًا احتياطية مشفرة. لا تتغير النسخ الموجودة على الأجهزة الأخرى.",
-  "moodClear": "مسح الحالة المزاجية"
+  "moodClear": "مسح الحالة المزاجية",
+  "scrollToTop": "العودة للأعلى",
+  "feedbackTitle": "ملاحظات",
+  "feedbackHint": "صف مشكلة أو اقتراحًا",
+  "feedbackGithub": "مشكلة على GitHub",
+  "feedbackEmail": "إرسال بريد",
+  "feedbackCopy": "نسخ النص",
+  "feedbackLaunchFailed": "تعذر فتح التطبيق. انسخ النص واستخدم البريد أدناه.",
+  "feedbackCopied": "تم نسخ الملاحظات"
 }

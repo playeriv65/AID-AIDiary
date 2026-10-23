@@ -311,8 +311,6 @@
     "templateWeeklyName": "週次レビュー",
     "templateWeeklyDescription": "ハイライト、苦戦、そして来週の焦点。",
     "templateWeeklyText": "## ハイライト\n\n\n## 大変だったこと\n\n\n## 学んだこと\n\n\n## 来週に焦点を当てます\n",
-    "entryDuplicate": "重複",
-    "entryDuplicated": "エントリが重複しました",
     "entrySaveAsTemplate": "テンプレートとして保存",
     "entrySavedAsTemplate": "テンプレートとして保存されました",
     "storyStatistics": "統計",
@@ -812,5 +810,13 @@
   "hiddenDiaryUnlock": "非表示の日記をロック解除",
   "hiddenDiaryAuthHint": "アプリロックまたは端末の画面ロックで解除してください。",
   "hiddenDiaryLocalOnly": "非表示の日記はこの端末に保存され、同期は一時停止します。暗号化バックアップを使用してください。他の端末にある既存のコピーは変更されません。",
-  "moodClear": "気分をクリア"
+  "moodClear": "気分をクリア",
+  "scrollToTop": "先頭に戻る",
+  "feedbackTitle": "フィードバック",
+  "feedbackHint": "問題や提案を入力してください",
+  "feedbackGithub": "GitHub で報告",
+  "feedbackEmail": "メールで送る",
+  "feedbackCopy": "文章をコピー",
+  "feedbackLaunchFailed": "アプリを開けません。文章をコピーして下記のメールアドレスをご利用ください。",
+  "feedbackCopied": "コピーしました"
 }

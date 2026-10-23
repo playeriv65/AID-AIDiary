@@ -1104,12 +1104,6 @@ class AppLocalizationsNb extends AppLocalizations {
       '## Høydepunkter\n\n\n## Hva var vanskelig\n\n\n## Det jeg lærte\n\n\n## Fokus for neste uke\n';
 
   @override
-  String get entryDuplicate => 'Duplikat';
-
-  @override
-  String get entryDuplicated => 'Oppføring duplisert';
-
-  @override
   String get entrySaveAsTemplate => 'Lagre som mal';
 
   @override
@@ -2769,4 +2763,29 @@ class AppLocalizationsNb extends AppLocalizations {
 
   @override
   String get moodClear => 'Fjern humør';
+
+  @override
+  String get scrollToTop => 'Til toppen';
+
+  @override
+  String get feedbackTitle => 'Tilbakemelding';
+
+  @override
+  String get feedbackHint => 'Beskriv et problem eller forslag';
+
+  @override
+  String get feedbackGithub => 'GitHub-sak';
+
+  @override
+  String get feedbackEmail => 'Send e-post';
+
+  @override
+  String get feedbackCopy => 'Kopier tekst';
+
+  @override
+  String get feedbackLaunchFailed =>
+      'Kunne ikke åpne appen. Kopier teksten og bruk e-postadressen nedenfor.';
+
+  @override
+  String get feedbackCopied => 'Tilbakemelding kopiert';
 }

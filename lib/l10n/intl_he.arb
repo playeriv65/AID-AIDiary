@@ -328,8 +328,6 @@
     "templateWeeklyName": "סקירה שבועית",
     "templateWeeklyDescription": "דגשים, מאבקים והתמקדות בשבוע הבא.",
     "templateWeeklyText": "## דגשים\n\n\n## מה היה קשה\n\n\n## מה שלמדתי\n\n\n## פוקוס לשבוע הבא\n",
-    "entryDuplicate": "שכפול",
-    "entryDuplicated": "הערך משוכפל",
     "entrySaveAsTemplate": "שמור כתבנית",
     "entrySavedAsTemplate": "נשמר כתבנית",
     "storyStatistics": "סטטיסטיקה",
@@ -829,5 +827,13 @@
   "hiddenDiaryUnlock": "פתיחת רשומות מוסתרות",
   "hiddenDiaryAuthHint": "יש להשתמש בנעילת היישום או בנעילת המסך של המכשיר.",
   "hiddenDiaryLocalOnly": "רשומות מוסתרות נשארות במכשיר זה והסנכרון מושהה. יש להשתמש בגיבויים מוצפנים. עותקים קיימים במכשירים אחרים אינם משתנים.",
-  "moodClear": "ניקוי מצב הרוח"
+  "moodClear": "ניקוי מצב הרוח",
+  "scrollToTop": "חזרה למעלה",
+  "feedbackTitle": "משוב",
+  "feedbackHint": "תיאור בעיה או הצעה",
+  "feedbackGithub": "דיווח ב-GitHub",
+  "feedbackEmail": "שליחת דוא״ל",
+  "feedbackCopy": "העתקת טקסט",
+  "feedbackLaunchFailed": "לא ניתן לפתוח את היישום. יש להעתיק את הטקסט ולהשתמש בדוא״ל למטה.",
+  "feedbackCopied": "המשוב הועתק"
 }

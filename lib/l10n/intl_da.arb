@@ -311,8 +311,6 @@
     "templateWeeklyName": "Ugentlig gennemgang",
     "templateWeeklyDescription": "Højdepunkter, kampe og næste uges fokus.",
     "templateWeeklyText": "## Højdepunkter\n\n\n## Hvad var svært\n\n\n## Hvad jeg lærte\n\n\n## Fokus for næste uge\n",
-    "entryDuplicate": "Duplikat",
-    "entryDuplicated": "Indgang duplikeret",
     "entrySaveAsTemplate": "Gem som skabelon",
     "entrySavedAsTemplate": "Gemt som skabelon",
     "storyStatistics": "Statistik",
@@ -812,5 +810,13 @@
   "hiddenDiaryUnlock": "Lås skjulte indlæg op",
   "hiddenDiaryAuthHint": "Brug appens lås eller enhedens skærmlås.",
   "hiddenDiaryLocalOnly": "Skjulte indlæg bliver på denne enhed, og synkronisering sættes på pause. Brug krypterede sikkerhedskopier. Eksisterende kopier andre steder ændres ikke.",
-  "moodClear": "Ryd humør"
+  "moodClear": "Ryd humør",
+  "scrollToTop": "Til toppen",
+  "feedbackTitle": "Feedback",
+  "feedbackHint": "Beskriv et problem eller forslag",
+  "feedbackGithub": "GitHub-issue",
+  "feedbackEmail": "Send e-mail",
+  "feedbackCopy": "Kopiér tekst",
+  "feedbackLaunchFailed": "Appen kunne ikke åbnes. Kopiér teksten og brug e-mailadressen nedenfor.",
+  "feedbackCopied": "Feedback kopieret"
 }

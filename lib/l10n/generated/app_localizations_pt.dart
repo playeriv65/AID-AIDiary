@@ -1106,12 +1106,6 @@ class AppLocalizationsPt extends AppLocalizations {
       '## Destaques\n\n\n## O que foi difícil\n\n\n## O que aprendi\n\n\n## Foco para a próxima semana\n';
 
   @override
-  String get entryDuplicate => 'Duplicar';
-
-  @override
-  String get entryDuplicated => 'Entrada duplicada';
-
-  @override
   String get entrySaveAsTemplate => 'Guardar como modelo';
 
   @override
@@ -2786,6 +2780,31 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get moodClear => 'Limpar humor';
+
+  @override
+  String get scrollToTop => 'Voltar ao topo';
+
+  @override
+  String get feedbackTitle => 'Comentários';
+
+  @override
+  String get feedbackHint => 'Descreva um problema ou sugestão';
+
+  @override
+  String get feedbackGithub => 'Problema no GitHub';
+
+  @override
+  String get feedbackEmail => 'Enviar e-mail';
+
+  @override
+  String get feedbackCopy => 'Copiar texto';
+
+  @override
+  String get feedbackLaunchFailed =>
+      'Não foi possível abrir a aplicação. Copie o texto e use o e-mail abaixo.';
+
+  @override
+  String get feedbackCopied => 'Comentários copiados';
 }
 
 /// The translations for Portuguese, as used in Brazil (`pt_BR`).
@@ -3886,12 +3905,6 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
   @override
   String get templateWeeklyText =>
       '## Destaques\n\n\n## O que foi difícil\n\n\n## O que aprendi\n\n\n## Foco para a próxima semana\n';
-
-  @override
-  String get entryDuplicate => 'Duplicar';
-
-  @override
-  String get entryDuplicated => 'Entrada duplicada';
 
   @override
   String get entrySaveAsTemplate => 'Salvar como modelo';
@@ -5569,4 +5582,29 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
 
   @override
   String get moodClear => 'Limpar humor';
+
+  @override
+  String get scrollToTop => 'Voltar ao topo';
+
+  @override
+  String get feedbackTitle => 'Feedback';
+
+  @override
+  String get feedbackHint => 'Descreva um problema ou sugestão';
+
+  @override
+  String get feedbackGithub => 'Issue no GitHub';
+
+  @override
+  String get feedbackEmail => 'Enviar e-mail';
+
+  @override
+  String get feedbackCopy => 'Copiar texto';
+
+  @override
+  String get feedbackLaunchFailed =>
+      'Não foi possível abrir o aplicativo. Copie o texto e use o e-mail abaixo.';
+
+  @override
+  String get feedbackCopied => 'Feedback copiado';
 }

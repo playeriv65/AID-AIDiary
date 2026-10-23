@@ -103,7 +103,6 @@ class EntryViewPage extends StatelessWidget {
           PopupMenuButton<String>(
             key: const ValueKey('entry-more'),
             onSelected: (value) => switch (value) {
-              'duplicate' => _duplicate(context, entry),
               'template' => _saveAsTemplate(context, entry),
               'capsule' => _seal(context, entry),
               'hide' => _hide(context, entry),
@@ -127,12 +126,6 @@ class EntryViewPage extends StatelessWidget {
                     child: ListTile(
                         leading: const Icon(Icons.lock_clock_outlined),
                         title: Text(l10n.capsuleSeal))),
-                PopupMenuItem(
-                    key: const ValueKey('entry-duplicate'),
-                    value: 'duplicate',
-                    child: ListTile(
-                        leading: const Icon(Icons.copy_rounded),
-                        title: Text(l10n.entryDuplicate))),
                 PopupMenuItem(
                     key: const ValueKey('entry-save-template'),
                     value: 'template',
@@ -219,13 +212,6 @@ class EntryViewPage extends StatelessWidget {
     if (context.mounted && !embedded && Navigator.of(context).canPop()) {
       Navigator.of(context).pop();
     }
-  }
-
-  Future<void> _duplicate(BuildContext context, Entry entry) async {
-    final messenger = ScaffoldMessenger.of(context);
-    final message = AppLocalizations.of(context)!.entryDuplicated;
-    await AppActions.instance.run('entry.duplicate', {'id': entry.id});
-    messenger.showSnackBar(SnackBar(content: Text(message)));
   }
 
   Future<void> _saveAsTemplate(BuildContext context, Entry entry) async {

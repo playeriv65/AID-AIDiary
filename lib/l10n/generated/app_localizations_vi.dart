@@ -1103,12 +1103,6 @@ class AppLocalizationsVi extends AppLocalizations {
       '## Điểm nổi bật\n\n\n## Có gì khó\n\n\n## Những gì tôi đã học được\n\n\n## Tập trung cho tuần tới\n';
 
   @override
-  String get entryDuplicate => 'trùng lặp';
-
-  @override
-  String get entryDuplicated => 'Mục nhập trùng lặp';
-
-  @override
   String get entrySaveAsTemplate => 'Lưu dưới dạng mẫu';
 
   @override
@@ -2780,4 +2774,29 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get moodClear => 'Xóa tâm trạng';
+
+  @override
+  String get scrollToTop => 'Về đầu trang';
+
+  @override
+  String get feedbackTitle => 'Góp ý';
+
+  @override
+  String get feedbackHint => 'Mô tả vấn đề hoặc đề xuất';
+
+  @override
+  String get feedbackGithub => 'Vấn đề trên GitHub';
+
+  @override
+  String get feedbackEmail => 'Gửi email';
+
+  @override
+  String get feedbackCopy => 'Sao chép văn bản';
+
+  @override
+  String get feedbackLaunchFailed =>
+      'Không mở được ứng dụng. Hãy sao chép văn bản và dùng email bên dưới.';
+
+  @override
+  String get feedbackCopied => 'Đã sao chép góp ý';
 }

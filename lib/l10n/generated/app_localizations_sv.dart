@@ -1103,12 +1103,6 @@ class AppLocalizationsSv extends AppLocalizations {
       '## Höjdpunkter\n\n\n## Vad var svårt\n\n\n## Vad jag lärde mig\n\n\n## Fokus för nästa vecka\n';
 
   @override
-  String get entryDuplicate => 'Duplicera';
-
-  @override
-  String get entryDuplicated => 'Posten duplicerad';
-
-  @override
   String get entrySaveAsTemplate => 'Spara som mall';
 
   @override
@@ -2771,4 +2765,29 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get moodClear => 'Rensa humör';
+
+  @override
+  String get scrollToTop => 'Till toppen';
+
+  @override
+  String get feedbackTitle => 'Återkoppling';
+
+  @override
+  String get feedbackHint => 'Beskriv ett problem eller förslag';
+
+  @override
+  String get feedbackGithub => 'GitHub-ärende';
+
+  @override
+  String get feedbackEmail => 'Skicka e-post';
+
+  @override
+  String get feedbackCopy => 'Kopiera text';
+
+  @override
+  String get feedbackLaunchFailed =>
+      'Appen kunde inte öppnas. Kopiera texten och använd e-postadressen nedan.';
+
+  @override
+  String get feedbackCopied => 'Återkopplingen kopierad';
 }

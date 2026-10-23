@@ -1093,12 +1093,6 @@ class AppLocalizationsTr extends AppLocalizations {
       '## Öne Çıkanlar\n\n\n## Ne zordu\n\n\n## Ne öğrendim\n\n\n## Gelecek haftaya odaklanın\n';
 
   @override
-  String get entryDuplicate => 'Çoğalt';
-
-  @override
-  String get entryDuplicated => 'Giriş kopyalandı';
-
-  @override
   String get entrySaveAsTemplate => 'Şablon olarak kaydet';
 
   @override
@@ -2767,4 +2761,29 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get moodClear => 'Ruh halini temizle';
+
+  @override
+  String get scrollToTop => 'Başa dön';
+
+  @override
+  String get feedbackTitle => 'Geri bildirim';
+
+  @override
+  String get feedbackHint => 'Sorunu veya öneriyi açıklayın';
+
+  @override
+  String get feedbackGithub => 'GitHub sorunu';
+
+  @override
+  String get feedbackEmail => 'E-posta gönder';
+
+  @override
+  String get feedbackCopy => 'Metni kopyala';
+
+  @override
+  String get feedbackLaunchFailed =>
+      'Uygulama açılamadı. Metni kopyalayıp aşağıdaki e-postayı kullanın.';
+
+  @override
+  String get feedbackCopied => 'Geri bildirim kopyalandı';
 }

@@ -2034,18 +2034,6 @@ abstract class AppLocalizations {
   /// **'## Highlights\n\n\n## What was hard\n\n\n## What I learned\n\n\n## Focus for next week\n'**
   String get templateWeeklyText;
 
-  /// No description provided for @entryDuplicate.
-  ///
-  /// In en, this message translates to:
-  /// **'Duplicate'**
-  String get entryDuplicate;
-
-  /// No description provided for @entryDuplicated.
-  ///
-  /// In en, this message translates to:
-  /// **'Entry duplicated'**
-  String get entryDuplicated;
-
   /// No description provided for @entrySaveAsTemplate.
   ///
   /// In en, this message translates to:
@@ -5045,6 +5033,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Clear mood'**
   String get moodClear;
+
+  /// No description provided for @scrollToTop.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to top'**
+  String get scrollToTop;
+
+  /// No description provided for @feedbackTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Feedback'**
+  String get feedbackTitle;
+
+  /// No description provided for @feedbackHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe a problem or suggestion'**
+  String get feedbackHint;
+
+  /// No description provided for @feedbackGithub.
+  ///
+  /// In en, this message translates to:
+  /// **'GitHub issue'**
+  String get feedbackGithub;
+
+  /// No description provided for @feedbackEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Email feedback'**
+  String get feedbackEmail;
+
+  /// No description provided for @feedbackCopy.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy text'**
+  String get feedbackCopy;
+
+  /// No description provided for @feedbackLaunchFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open the app. Copy your text and use the email address below.'**
+  String get feedbackLaunchFailed;
+
+  /// No description provided for @feedbackCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Feedback copied'**
+  String get feedbackCopied;
 }
 
 class _AppLocalizationsDelegate

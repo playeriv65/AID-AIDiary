@@ -1106,12 +1106,6 @@ class AppLocalizationsUk extends AppLocalizations {
       '## Основні моменти\n\n\n## Що було важко\n\n\n## Чого я навчився\n\n\n## Зосередьтеся на наступному тижні\n';
 
   @override
-  String get entryDuplicate => 'дублікат';
-
-  @override
-  String get entryDuplicated => 'Запис дублюється';
-
-  @override
   String get entrySaveAsTemplate => 'Зберегти як шаблон';
 
   @override
@@ -2780,4 +2774,29 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get moodClear => 'Очистити настрій';
+
+  @override
+  String get scrollToTop => 'Нагору';
+
+  @override
+  String get feedbackTitle => 'Зворотний зв’язок';
+
+  @override
+  String get feedbackHint => 'Опишіть проблему або пропозицію';
+
+  @override
+  String get feedbackGithub => 'Задача на GitHub';
+
+  @override
+  String get feedbackEmail => 'Написати листа';
+
+  @override
+  String get feedbackCopy => 'Копіювати текст';
+
+  @override
+  String get feedbackLaunchFailed =>
+      'Не вдалося відкрити застосунок. Скопіюйте текст і скористайтеся поштою нижче.';
+
+  @override
+  String get feedbackCopied => 'Текст скопійовано';
 }

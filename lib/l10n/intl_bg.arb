@@ -311,8 +311,6 @@
     "templateWeeklyName": "Седмичен преглед",
     "templateWeeklyDescription": "Акценти, борби и фокус следващата седмица.",
     "templateWeeklyText": "## Акценти\n\n\n## Какво беше трудно\n\n\n## Какво научих\n\n\n## Фокус за следващата седмица\n",
-    "entryDuplicate": "Дубликат",
-    "entryDuplicated": "Записът е дублиран",
     "entrySaveAsTemplate": "Запазете като шаблон",
     "entrySavedAsTemplate": "Запазено като шаблон",
     "storyStatistics": "Статистика",
@@ -812,5 +810,13 @@
   "hiddenDiaryUnlock": "Отключване на скритите записи",
   "hiddenDiaryAuthHint": "Използвайте заключването на приложението или на екрана на устройството.",
   "hiddenDiaryLocalOnly": "Скритите записи остават на това устройство и синхронизирането спира. Използвайте шифровани резервни копия. Съществуващите копия другаде не се променят.",
-  "moodClear": "Изчистване на настроението"
+  "moodClear": "Изчистване на настроението",
+  "scrollToTop": "Най-горе",
+  "feedbackTitle": "Обратна връзка",
+  "feedbackHint": "Опишете проблем или предложение",
+  "feedbackGithub": "Проблем в GitHub",
+  "feedbackEmail": "Изпрати имейл",
+  "feedbackCopy": "Копирай текста",
+  "feedbackLaunchFailed": "Приложението не се отвори. Копирайте текста и използвайте имейла по-долу.",
+  "feedbackCopied": "Текстът е копиран"
 }

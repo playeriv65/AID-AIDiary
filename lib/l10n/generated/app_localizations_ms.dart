@@ -1047,12 +1047,6 @@ class AppLocalizationsMs extends AppLocalizations {
       '## Sorotan\n\n\n## Apa yang sukar\n\n\n## Apa yang saya pelajari\n\n\n## Fokus untuk minggu hadapan\n';
 
   @override
-  String get entryDuplicate => 'Pendua';
-
-  @override
-  String get entryDuplicated => 'Penyertaan diduakan';
-
-  @override
   String get entrySaveAsTemplate => 'Simpan sebagai templat';
 
   @override
@@ -2729,4 +2723,29 @@ class AppLocalizationsMs extends AppLocalizations {
 
   @override
   String get moodClear => 'Kosongkan perasaan';
+
+  @override
+  String get scrollToTop => 'Kembali ke atas';
+
+  @override
+  String get feedbackTitle => 'Maklum balas';
+
+  @override
+  String get feedbackHint => 'Huraikan masalah atau cadangan';
+
+  @override
+  String get feedbackGithub => 'Isu GitHub';
+
+  @override
+  String get feedbackEmail => 'Hantar e-mel';
+
+  @override
+  String get feedbackCopy => 'Salin teks';
+
+  @override
+  String get feedbackLaunchFailed =>
+      'Aplikasi tidak dapat dibuka. Salin teks dan gunakan e-mel di bawah.';
+
+  @override
+  String get feedbackCopied => 'Maklum balas disalin';
 }

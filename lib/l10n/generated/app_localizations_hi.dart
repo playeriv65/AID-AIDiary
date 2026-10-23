@@ -1095,12 +1095,6 @@ class AppLocalizationsHi extends AppLocalizations {
       '## हाइलाइट्स\n\n\n## क्या कठिन था\n\n\n## मैंने क्या सीखा\n\n\n## अगले सप्ताह पर ध्यान दें\n';
 
   @override
-  String get entryDuplicate => 'डुप्लिकेट';
-
-  @override
-  String get entryDuplicated => 'प्रविष्टि दोहराई गई';
-
-  @override
   String get entrySaveAsTemplate => 'टेम्पलेट के रूप में सहेजें';
 
   @override
@@ -2766,4 +2760,29 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get moodClear => 'मनःस्थिति हटाएँ';
+
+  @override
+  String get scrollToTop => 'ऊपर जाएँ';
+
+  @override
+  String get feedbackTitle => 'प्रतिक्रिया';
+
+  @override
+  String get feedbackHint => 'समस्या या सुझाव बताएँ';
+
+  @override
+  String get feedbackGithub => 'GitHub पर मुद्दा';
+
+  @override
+  String get feedbackEmail => 'ईमेल भेजें';
+
+  @override
+  String get feedbackCopy => 'टेक्स्ट कॉपी करें';
+
+  @override
+  String get feedbackLaunchFailed =>
+      'ऐप नहीं खुल सका। टेक्स्ट कॉपी करके नीचे दिए ईमेल का उपयोग करें।';
+
+  @override
+  String get feedbackCopied => 'प्रतिक्रिया कॉपी हुई';
 }

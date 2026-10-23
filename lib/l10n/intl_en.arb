@@ -609,10 +609,6 @@
   "@templateWeeklyDescription": {},
   "templateWeeklyText": "## Highlights\n\n\n## What was hard\n\n\n## What I learned\n\n\n## Focus for next week\n",
   "@templateWeeklyText": {},
-  "entryDuplicate": "Duplicate",
-  "@entryDuplicate": {},
-  "entryDuplicated": "Entry duplicated",
-  "@entryDuplicated": {},
   "entrySaveAsTemplate": "Save as template",
   "@entrySaveAsTemplate": {},
   "entrySavedAsTemplate": "Saved as a template",
@@ -1619,5 +1615,13 @@
   "hiddenDiaryUnlock": "Unlock hidden entries",
   "hiddenDiaryAuthHint": "Use the app lock or your device's screen lock to unlock.",
   "hiddenDiaryLocalOnly": "Hidden entries stay on this device and pause sync. Use encrypted backups. Existing copies elsewhere are unchanged.",
-  "moodClear": "Clear mood"
+  "moodClear": "Clear mood",
+  "scrollToTop": "Back to top",
+  "feedbackTitle": "Feedback",
+  "feedbackHint": "Describe a problem or suggestion",
+  "feedbackGithub": "GitHub issue",
+  "feedbackEmail": "Email feedback",
+  "feedbackCopy": "Copy text",
+  "feedbackLaunchFailed": "Could not open the app. Copy your text and use the email address below.",
+  "feedbackCopied": "Feedback copied"
 }

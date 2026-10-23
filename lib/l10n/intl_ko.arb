@@ -311,8 +311,6 @@
     "templateWeeklyName": "주간 검토",
     "templateWeeklyDescription": "하이라이트, 어려움, 다음 주의 초점.",
     "templateWeeklyText": "## 하이라이트\n\n\n## 무엇이 힘들었나요\n\n\n## 배운 것\n\n\n## 다음 주에 집중하세요\n",
-    "entryDuplicate": "중복",
-    "entryDuplicated": "항목이 중복되었습니다.",
     "entrySaveAsTemplate": "템플릿으로 저장",
     "entrySavedAsTemplate": "템플릿으로 저장됨",
     "storyStatistics": "통계",
@@ -812,5 +810,13 @@
   "hiddenDiaryUnlock": "숨긴 일기 잠금 해제",
   "hiddenDiaryAuthHint": "앱 잠금 또는 기기의 화면 잠금을 사용하세요.",
   "hiddenDiaryLocalOnly": "숨긴 일기는 이 기기에 보관되며 동기화가 일시 중지됩니다. 암호화된 백업을 사용하세요. 다른 곳에 있는 기존 사본은 변경되지 않습니다.",
-  "moodClear": "기분 지우기"
+  "moodClear": "기분 지우기",
+  "scrollToTop": "맨 위로",
+  "feedbackTitle": "의견 보내기",
+  "feedbackHint": "문제나 제안을 설명해 주세요",
+  "feedbackGithub": "GitHub 이슈",
+  "feedbackEmail": "이메일 보내기",
+  "feedbackCopy": "텍스트 복사",
+  "feedbackLaunchFailed": "앱을 열 수 없습니다. 텍스트를 복사하여 아래 이메일을 이용해 주세요.",
+  "feedbackCopied": "의견이 복사됨"
 }

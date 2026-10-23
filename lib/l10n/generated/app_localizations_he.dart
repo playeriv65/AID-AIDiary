@@ -1100,12 +1100,6 @@ class AppLocalizationsHe extends AppLocalizations {
       '## דגשים\n\n\n## מה היה קשה\n\n\n## מה שלמדתי\n\n\n## פוקוס לשבוע הבא\n';
 
   @override
-  String get entryDuplicate => 'שכפול';
-
-  @override
-  String get entryDuplicated => 'הערך משוכפל';
-
-  @override
   String get entrySaveAsTemplate => 'שמור כתבנית';
 
   @override
@@ -2745,4 +2739,29 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String get moodClear => 'ניקוי מצב הרוח';
+
+  @override
+  String get scrollToTop => 'חזרה למעלה';
+
+  @override
+  String get feedbackTitle => 'משוב';
+
+  @override
+  String get feedbackHint => 'תיאור בעיה או הצעה';
+
+  @override
+  String get feedbackGithub => 'דיווח ב-GitHub';
+
+  @override
+  String get feedbackEmail => 'שליחת דוא״ל';
+
+  @override
+  String get feedbackCopy => 'העתקת טקסט';
+
+  @override
+  String get feedbackLaunchFailed =>
+      'לא ניתן לפתוח את היישום. יש להעתיק את הטקסט ולהשתמש בדוא״ל למטה.';
+
+  @override
+  String get feedbackCopied => 'המשוב הועתק';
 }

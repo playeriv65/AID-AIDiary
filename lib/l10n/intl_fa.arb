@@ -311,8 +311,6 @@
     "templateWeeklyName": "بررسی هفتگی",
     "templateWeeklyDescription": "نکات برجسته، مبارزات و تمرکز هفته آینده.",
     "templateWeeklyText": "## نکات برجسته\n\n\n## چه سخت بود\n\n\n## چیزی که یاد گرفتم\n\n\n## برای هفته آینده تمرکز کنید\n",
-    "entryDuplicate": "تکراری",
-    "entryDuplicated": "ورودی کپی شده",
     "entrySaveAsTemplate": "ذخیره به عنوان الگو",
     "entrySavedAsTemplate": "به عنوان یک الگو ذخیره شد",
     "storyStatistics": "آمار",
@@ -812,5 +810,13 @@
   "hiddenDiaryUnlock": "باز کردن یادداشت‌های پنهان",
   "hiddenDiaryAuthHint": "از قفل برنامه یا قفل صفحهٔ دستگاه استفاده کنید.",
   "hiddenDiaryLocalOnly": "یادداشت‌های پنهان در این دستگاه می‌مانند و همگام‌سازی متوقف می‌شود. از پشتیبان رمزگذاری‌شده استفاده کنید. نسخه‌های موجود در دستگاه‌های دیگر تغییر نمی‌کنند.",
-  "moodClear": "پاک کردن حال‌وهوا"
+  "moodClear": "پاک کردن حال‌وهوا",
+  "scrollToTop": "بازگشت به بالا",
+  "feedbackTitle": "بازخورد",
+  "feedbackHint": "مشکل یا پیشنهادی را شرح دهید",
+  "feedbackGithub": "گزارش در GitHub",
+  "feedbackEmail": "ارسال ایمیل",
+  "feedbackCopy": "کپی متن",
+  "feedbackLaunchFailed": "برنامه باز نشد. متن را کپی کنید و از ایمیل زیر استفاده کنید.",
+  "feedbackCopied": "بازخورد کپی شد"
 }

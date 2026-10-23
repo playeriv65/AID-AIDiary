@@ -1105,12 +1105,6 @@ class AppLocalizationsCa extends AppLocalizations {
       '## Destacats\n\n\n## Què va ser difícil\n\n\n## El que vaig aprendre\n\n\n## Focus per a la setmana vinent\n';
 
   @override
-  String get entryDuplicate => 'Duplicat';
-
-  @override
-  String get entryDuplicated => 'Entrada duplicada';
-
-  @override
   String get entrySaveAsTemplate => 'Desa com a plantilla';
 
   @override
@@ -2788,4 +2782,29 @@ class AppLocalizationsCa extends AppLocalizations {
 
   @override
   String get moodClear => 'Esborra l’estat d’ànim';
+
+  @override
+  String get scrollToTop => 'Torna a dalt';
+
+  @override
+  String get feedbackTitle => 'Comentaris';
+
+  @override
+  String get feedbackHint => 'Descriu un problema o suggeriment';
+
+  @override
+  String get feedbackGithub => 'Incidència a GitHub';
+
+  @override
+  String get feedbackEmail => 'Envia un correu';
+
+  @override
+  String get feedbackCopy => 'Copia el text';
+
+  @override
+  String get feedbackLaunchFailed =>
+      'No s’ha pogut obrir l’aplicació. Copia el text i usa el correu de sota.';
+
+  @override
+  String get feedbackCopied => 'Comentaris copiats';
 }

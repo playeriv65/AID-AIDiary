@@ -12,6 +12,7 @@ import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/database/entry_store.dart';
 import 'package:aid_diary/widgets/back_gesture_transition.dart';
 import 'package:aid_diary/widgets/windows_wheel_scroll.dart';
+import 'package:aid_diary/widgets/windows_caption_theme.dart';
 import 'package:aid_diary/custom_locale_delegates.dart';
 import 'package:aid_diary/device_info_service.dart';
 import 'package:aid_diary/flashback_manager.dart';
@@ -237,7 +238,8 @@ class _MainAppState extends State<MainApp> {
                         alwaysUse24HourFormat:
                             configProvider.chosen24HourFormat ??
                                 MediaQuery.of(context).alwaysUse24HourFormat),
-                    child: LegacyMaterialBridge(child: child!)),
+                    child: LegacyMaterialBridge(
+                        child: WindowsCaptionTheme(child: child!))),
                 navigatorObservers: [rootRoutes],
                 home: const LaunchPage(nextPage: MobileScaffold()))),
       );

@@ -1115,12 +1115,6 @@ class AppLocalizationsTa extends AppLocalizations {
       '## சிறப்பம்சங்கள்\n\n\n## என்ன கடினமாக இருந்தது\n\n\n## நான் கற்றுக்கொண்டது\n\n\n## அடுத்த வாரம் கவனம்\n';
 
   @override
-  String get entryDuplicate => 'நகல்';
-
-  @override
-  String get entryDuplicated => 'நுழைவு நகல்';
-
-  @override
   String get entrySaveAsTemplate => 'டெம்ப்ளேட்டாக சேமிக்கவும்';
 
   @override
@@ -2808,4 +2802,29 @@ class AppLocalizationsTa extends AppLocalizations {
 
   @override
   String get moodClear => 'மனநிலையை நீக்கு';
+
+  @override
+  String get scrollToTop => 'மேலே செல்க';
+
+  @override
+  String get feedbackTitle => 'கருத்து';
+
+  @override
+  String get feedbackHint => 'சிக்கல் அல்லது பரிந்துரையை விவரிக்கவும்';
+
+  @override
+  String get feedbackGithub => 'GitHub சிக்கல்';
+
+  @override
+  String get feedbackEmail => 'மின்னஞ்சல் அனுப்பு';
+
+  @override
+  String get feedbackCopy => 'உரையை நகலெடு';
+
+  @override
+  String get feedbackLaunchFailed =>
+      'செயலியைத் திறக்க முடியவில்லை. உரையை நகலெடுத்து கீழுள்ள மின்னஞ்சலைப் பயன்படுத்தவும்.';
+
+  @override
+  String get feedbackCopied => 'கருத்து நகலெடுக்கப்பட்டது';
 }

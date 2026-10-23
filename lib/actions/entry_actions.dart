@@ -21,7 +21,6 @@ import 'package:aid_diary/providers/tags_provider.dart';
 import 'package:aid_diary/providers/templates_provider.dart';
 import 'package:aid_diary/template_renderer.dart';
 import 'package:aid_diary/utils/diary_day.dart';
-import 'package:aid_diary/utils/entry_actions.dart';
 import 'package:aid_diary/utils/entry_filter.dart';
 import 'package:aid_diary/utils/entry_preview.dart';
 import 'package:aid_diary/utils/time_capsule.dart';
@@ -530,14 +529,6 @@ final List<AppAction> entryActions = [
       await tags.setFavorite(entry.id!, args['value'] as bool);
       return {'id': entry.id, 'favorite': tags.isFavorite(entry.id!)};
     },
-  ),
-  AppAction(
-    id: 'entry.duplicate',
-    describe: 'Copies an entry with its tags and attachments.',
-    risk: ActionRisk.write,
-    params: const [entryIdParam],
-    run: (context, args) async =>
-        _summary(await EntryActions.duplicate(await openEntryOf(args))),
   ),
   AppAction(
     id: 'entry.seal',

@@ -1119,12 +1119,6 @@ class AppLocalizationsRo extends AppLocalizations {
       '## Repere\n\n\n## Ce a fost greu\n\n\n## Ce am învățat\n\n\n## Concentrați-vă pentru săptămâna viitoare\n';
 
   @override
-  String get entryDuplicate => 'Duplicat';
-
-  @override
-  String get entryDuplicated => 'Intrare duplicat';
-
-  @override
   String get entrySaveAsTemplate => 'Salvați ca șablon';
 
   @override
@@ -2797,4 +2791,29 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get moodClear => 'Șterge dispoziția';
+
+  @override
+  String get scrollToTop => 'Sus';
+
+  @override
+  String get feedbackTitle => 'Feedback';
+
+  @override
+  String get feedbackHint => 'Descrieți o problemă sau sugestie';
+
+  @override
+  String get feedbackGithub => 'Problemă GitHub';
+
+  @override
+  String get feedbackEmail => 'Trimite e-mail';
+
+  @override
+  String get feedbackCopy => 'Copiază textul';
+
+  @override
+  String get feedbackLaunchFailed =>
+      'Aplicația nu s-a deschis. Copiați textul și folosiți e-mailul de mai jos.';
+
+  @override
+  String get feedbackCopied => 'Feedback copiat';
 }

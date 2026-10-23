@@ -1088,12 +1088,6 @@ class AppLocalizationsCs extends AppLocalizations {
       '## Nejdůležitější\n\n\n## Co bylo těžké\n\n\n## Co jsem se naučil\n\n\n## Soustřeďte se na příští týden\n';
 
   @override
-  String get entryDuplicate => 'Duplicitní';
-
-  @override
-  String get entryDuplicated => 'Záznam duplicitní';
-
-  @override
   String get entrySaveAsTemplate => 'Uložit jako šablonu';
 
   @override
@@ -2761,4 +2755,29 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String get moodClear => 'Vymazat náladu';
+
+  @override
+  String get scrollToTop => 'Zpět nahoru';
+
+  @override
+  String get feedbackTitle => 'Zpětná vazba';
+
+  @override
+  String get feedbackHint => 'Popište problém nebo návrh';
+
+  @override
+  String get feedbackGithub => 'Problém na GitHubu';
+
+  @override
+  String get feedbackEmail => 'Poslat e-mail';
+
+  @override
+  String get feedbackCopy => 'Kopírovat text';
+
+  @override
+  String get feedbackLaunchFailed =>
+      'Aplikaci nelze otevřít. Zkopírujte text a použijte e-mail níže.';
+
+  @override
+  String get feedbackCopied => 'Text zkopírován';
 }

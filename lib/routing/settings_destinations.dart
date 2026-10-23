@@ -15,6 +15,7 @@ import 'package:aid_diary/pages/settings/command_line_settings.dart';
 import 'package:aid_diary/pages/settings/data_settings.dart';
 import 'package:aid_diary/pages/settings/flashback_settings.dart';
 import 'package:aid_diary/pages/settings/help_page.dart';
+import 'package:aid_diary/pages/settings/feedback_page.dart';
 import 'package:aid_diary/pages/settings/notification_settings.dart';
 import 'package:aid_diary/pages/settings/security_settings.dart';
 import 'package:aid_diary/pages/settings/storage_settings.dart';
@@ -36,6 +37,8 @@ import 'package:material_ui/material_ui.dart';
 
 /// Search, statistics and every page of the settings.
 final List<Destination> settingsDestinations = [
+  pageDestination('settings/feedback',
+      'Write feedback and open GitHub or email', (_) => const FeedbackPage()),
   pageDestination('search', 'Search entries', (_) => const SearchPage()),
   pageDestination(
       'statistics',

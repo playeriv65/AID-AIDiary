@@ -1077,12 +1077,6 @@ class AppLocalizationsZh extends AppLocalizations {
       '## 本周亮点\n\n\n## 遇到的困难\n\n\n## 学到的东西\n\n\n## 下周重点\n';
 
   @override
-  String get entryDuplicate => '复制一份';
-
-  @override
-  String get entryDuplicated => '已复制这篇日记';
-
-  @override
   String get entrySaveAsTemplate => '存为模板';
 
   @override
@@ -2664,6 +2658,30 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get moodClear => '清空心情';
+
+  @override
+  String get scrollToTop => '回到顶部';
+
+  @override
+  String get feedbackTitle => '意见反馈';
+
+  @override
+  String get feedbackHint => '描述你遇到的问题或建议';
+
+  @override
+  String get feedbackGithub => '到 GitHub 提 issue';
+
+  @override
+  String get feedbackEmail => '邮件反馈';
+
+  @override
+  String get feedbackCopy => '复制文字';
+
+  @override
+  String get feedbackLaunchFailed => '无法打开应用。请复制反馈文字，使用下方邮箱联系。';
+
+  @override
+  String get feedbackCopied => '已复制反馈';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -3737,12 +3755,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   @override
   String get templateWeeklyText =>
       '## 本週亮點\n\n\n## 遇到的困難\n\n\n## 學到的東西\n\n\n## 下週重點\n';
-
-  @override
-  String get entryDuplicate => '複製一份';
-
-  @override
-  String get entryDuplicated => '已複製這篇日記';
 
   @override
   String get entrySaveAsTemplate => '存為範本';
@@ -5329,4 +5341,28 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get moodClear => '清除心情';
+
+  @override
+  String get scrollToTop => '回到頂部';
+
+  @override
+  String get feedbackTitle => '意見回饋';
+
+  @override
+  String get feedbackHint => '描述你遇到的問題或建議';
+
+  @override
+  String get feedbackGithub => '到 GitHub 提 issue';
+
+  @override
+  String get feedbackEmail => '電子郵件回饋';
+
+  @override
+  String get feedbackCopy => '複製文字';
+
+  @override
+  String get feedbackLaunchFailed => '無法開啟應用程式。請複製文字，使用下方信箱聯絡。';
+
+  @override
+  String get feedbackCopied => '已複製回饋';
 }

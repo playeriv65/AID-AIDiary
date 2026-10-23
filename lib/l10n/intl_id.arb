@@ -311,8 +311,6 @@
     "templateWeeklyName": "Ulasan mingguan",
     "templateWeeklyDescription": "Sorotan, perjuangan, dan fokus minggu depan.",
     "templateWeeklyText": "## Sorotan\n\n\n## Apa yang sulit\n\n\n## Apa yang saya pelajari\n\n\n## Fokus untuk minggu depan\n",
-    "entryDuplicate": "Duplikat",
-    "entryDuplicated": "Entri diduplikasi",
     "entrySaveAsTemplate": "Simpan sebagai templat",
     "entrySavedAsTemplate": "Disimpan sebagai templat",
     "storyStatistics": "Statistik",
@@ -812,5 +810,13 @@
   "hiddenDiaryUnlock": "Buka catatan tersembunyi",
   "hiddenDiaryAuthHint": "Gunakan kunci aplikasi atau kunci layar perangkat Anda.",
   "hiddenDiaryLocalOnly": "Catatan tersembunyi tetap di perangkat ini dan sinkronisasi dijeda. Gunakan cadangan terenkripsi. Salinan yang sudah ada di tempat lain tidak berubah.",
-  "moodClear": "Hapus suasana hati"
+  "moodClear": "Hapus suasana hati",
+  "scrollToTop": "Kembali ke atas",
+  "feedbackTitle": "Masukan",
+  "feedbackHint": "Jelaskan masalah atau saran",
+  "feedbackGithub": "Isu GitHub",
+  "feedbackEmail": "Kirim email",
+  "feedbackCopy": "Salin teks",
+  "feedbackLaunchFailed": "Aplikasi tidak dapat dibuka. Salin teks dan gunakan email di bawah.",
+  "feedbackCopied": "Masukan disalin"
 }

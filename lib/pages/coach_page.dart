@@ -138,10 +138,7 @@ class _CoachPageState extends State<CoachPage>
   Widget _catalog(BuildContext context, AppLocalizations l10n,
       List<_CoachItem> items, bool split) {
     return CustomScrollView(slivers: [
-      const SliverPadding(
-        padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
-        sliver: SliverToBoxAdapter(child: TopSearchCard(showSearch: false)),
-      ),
+      const PinnedSearchHeader(showSearch: false),
       SliverToBoxAdapter(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 8),

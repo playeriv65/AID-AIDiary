@@ -1107,12 +1107,6 @@ class AppLocalizationsNl extends AppLocalizations {
       '## Hoogtepunten\n\n\n## Wat was moeilijk\n\n\n## Wat ik heb geleerd\n\n\n## Focus voor volgende week\n';
 
   @override
-  String get entryDuplicate => 'Duplicaat';
-
-  @override
-  String get entryDuplicated => 'Invoer gedupliceerd';
-
-  @override
   String get entrySaveAsTemplate => 'Opslaan als sjabloon';
 
   @override
@@ -2783,4 +2777,29 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get moodClear => 'Stemming wissen';
+
+  @override
+  String get scrollToTop => 'Naar boven';
+
+  @override
+  String get feedbackTitle => 'Feedback';
+
+  @override
+  String get feedbackHint => 'Beschrijf een probleem of suggestie';
+
+  @override
+  String get feedbackGithub => 'GitHub-issue';
+
+  @override
+  String get feedbackEmail => 'E-mail sturen';
+
+  @override
+  String get feedbackCopy => 'Tekst kopiëren';
+
+  @override
+  String get feedbackLaunchFailed =>
+      'De app kon niet worden geopend. Kopieer de tekst en gebruik het e-mailadres hieronder.';
+
+  @override
+  String get feedbackCopied => 'Feedback gekopieerd';
 }

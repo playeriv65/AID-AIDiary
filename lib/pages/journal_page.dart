@@ -35,6 +35,7 @@ import 'package:aid_diary/widgets/journal_entry_row.dart';
 import 'package:aid_diary/widgets/known_extent_sliver.dart';
 import 'package:aid_diary/widgets/list_detail_layout.dart';
 import 'package:aid_diary/widgets/top_search_card.dart';
+import 'package:aid_diary/widgets/scroll_to_top.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 import 'package:share_receiver/share_receiver.dart';
@@ -277,17 +278,15 @@ class _JournalPageState extends State<JournalPage>
 
     return ListDetailLayout(
       detail: _detail(ordered),
-      listBuilder: (context, split) => CustomScrollView(
+      listBuilder: (context, split) => ScrollToTop(
+          child: CustomScrollView(
         key: const PageStorageKey('journal-list'),
         // Thumb jumps replace the whole viewport. Building extra offscreen
         // rows at each jump spends the frame budget on content never shown.
         scrollCacheExtent:
             metrics == null ? null : const ScrollCacheExtent.pixels(0),
         slivers: [
-          const SliverPadding(
-            padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
-            sliver: SliverToBoxAdapter(child: TopSearchCard()),
-          ),
+          const PinnedSearchHeader(),
           SliverPadding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             sliver: SliverToBoxAdapter(
@@ -358,7 +357,7 @@ class _JournalPageState extends State<JournalPage>
                     ),
             ),
         ],
-      ),
+      )),
     );
   }
 }

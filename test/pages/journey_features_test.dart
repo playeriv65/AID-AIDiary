@@ -1,7 +1,6 @@
 @Tags(['widget'])
 library;
 
-import 'package:aid_diary/database/entry_store.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/pages/edit_entry_page.dart';
 import 'package:aid_diary/pages/settings_page.dart';
@@ -34,22 +33,12 @@ void main() {
     await tester.pumpWidget(const SizedBox.shrink());
   });
 
-  testWidgets('duplicate copies text and tags; save as template names it',
-      (tester) async {
+  testWidgets('save as template preserves the title and tags', (tester) async {
     final entry = await DiaryAppHarness.addEntry(
         tester, '# 周末\n去了公园', DateTime(2026, 10, 18, 9),
         mood: 2, location: const EntryLocation(name: '公园'));
     await tester
         .runAsync(() => TagsProvider.instance.setFavorite(entry.id!, true));
-
-    final copy = (await tester.runAsync(() => EntryActions.duplicate(entry)))!;
-    expect(EntryStore.instance.entries, hasLength(2));
-    final stored =
-        EntryStore.instance.entries.firstWhere((e) => e.id == copy.id);
-    expect(stored.text, entry.text);
-    expect(stored.mood, 2);
-    expect(stored.location?.name, '公园');
-    expect(TagsProvider.instance.isFavorite(copy.id!), isTrue);
 
     final template = (await tester
         .runAsync(() => EntryActions.saveAsTemplate(entry, 'fallback')))!;

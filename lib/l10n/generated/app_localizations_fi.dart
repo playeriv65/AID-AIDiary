@@ -1100,12 +1100,6 @@ class AppLocalizationsFi extends AppLocalizations {
       '## Kohokohdat\n\n\n## Mikä oli vaikeaa\n\n\n## Mitä opin\n\n\n## Keskity ensi viikkoon\n';
 
   @override
-  String get entryDuplicate => 'Kopioi';
-
-  @override
-  String get entryDuplicated => 'Merkintä kopioitu';
-
-  @override
   String get entrySaveAsTemplate => 'Tallenna mallina';
 
   @override
@@ -2773,4 +2767,29 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get moodClear => 'Poista mieliala';
+
+  @override
+  String get scrollToTop => 'Takaisin alkuun';
+
+  @override
+  String get feedbackTitle => 'Palaute';
+
+  @override
+  String get feedbackHint => 'Kuvaile ongelma tai ehdotus';
+
+  @override
+  String get feedbackGithub => 'GitHub-ongelma';
+
+  @override
+  String get feedbackEmail => 'Lähetä sähköposti';
+
+  @override
+  String get feedbackCopy => 'Kopioi teksti';
+
+  @override
+  String get feedbackLaunchFailed =>
+      'Sovellusta ei voitu avata. Kopioi teksti ja käytä alla olevaa sähköpostia.';
+
+  @override
+  String get feedbackCopied => 'Palaute kopioitu';
 }

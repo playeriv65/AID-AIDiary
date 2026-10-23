@@ -1116,12 +1116,6 @@ class AppLocalizationsRu extends AppLocalizations {
       '## Основные моменты\n\n\n## Что было сложно\n\n\n## Что я узнал\n\n\n## Фокус на следующей неделе\n';
 
   @override
-  String get entryDuplicate => 'Дублировать';
-
-  @override
-  String get entryDuplicated => 'Запись продублирована';
-
-  @override
   String get entrySaveAsTemplate => 'Сохранить как шаблон';
 
   @override
@@ -2798,4 +2792,29 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get moodClear => 'Очистить настроение';
+
+  @override
+  String get scrollToTop => 'Наверх';
+
+  @override
+  String get feedbackTitle => 'Обратная связь';
+
+  @override
+  String get feedbackHint => 'Опишите проблему или предложение';
+
+  @override
+  String get feedbackGithub => 'Задача на GitHub';
+
+  @override
+  String get feedbackEmail => 'Написать письмо';
+
+  @override
+  String get feedbackCopy => 'Копировать текст';
+
+  @override
+  String get feedbackLaunchFailed =>
+      'Не удалось открыть приложение. Скопируйте текст и используйте почту ниже.';
+
+  @override
+  String get feedbackCopied => 'Текст скопирован';
 }

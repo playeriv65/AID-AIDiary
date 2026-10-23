@@ -8,6 +8,12 @@ AID Diary is a modified version of [Daily You](https://github.com/Demizo/Daily_Y
 
 The layout follows the Journey diary app: a bottom bar on phones, a navigation rail with list and detail panes on tablets and desktop windows. Only layout and features are borrowed; no code, assets or copy.
 
+Search stays pinned above scrolling lists on phones, tablets and Windows.
+A small back-to-top shortcut appears during long journal browsing. Feedback
+is available under Settings > Help, with GitHub, email and text-copy options.
+Windows keeps its native title bar, with the app icon and AID Diary name, and
+matches the frame colors to the app theme; see [Windows setup](docs/SETUP.md#windows-personal-installation).
+
 | Tablet / desktop | Phone |
 |---|---|
 | ![Journal](artifacts/ui-tablet-journal.png) | ![Journal](artifacts/ui-phone-journal.png) ![Entry](artifacts/ui-phone-entry.png) |
@@ -36,7 +42,7 @@ The layout follows the Journey diary app: a bottom bar on phones, a navigation r
 - **Media**: every attached photo, video and voice note.
 - **Atlas**: entries with a location on an OpenStreetMap map; nearby markers merge into numbered clusters that zoom in when tapped.
 - **Coach**: built-in prompt programs and templates, plus your own templates. A program shows its length, interval and difficulty; once enrolled, each day's or week's question appears in the stories (and as a notification on Android) and the answer is saved as an entry.
-- **Entry**: photos, videos and voice notes, date block, metadata, text; star, share as a picture, a ZIP with the original media, plain text or an HTML page, edit, duplicate, save as template, seal as time capsule, delete; previous/next.
+- **Entry**: photos, videos and voice notes, date block, metadata, text; star, share as a picture, a ZIP with the original media, plain text or an HTML page, edit, save as template, seal as time capsule, delete; previous/next.
 - **Editor**: date and time on top with the mood beside it and tags at the right; an optional title (an entry has a title only when one is written); the text; a + tile for photos and videos from the gallery or files, the camera (Android) and voice notes (offering a photo's day and place for the entry); place and weather rows, filled in on their own for a new entry. While writing, a bar above the keyboard offers templates and Markdown formatting with an insert menu (checklist, numbered list, table, divider, code block); it goes away with the keyboard. Going back over changes asks whether to save; the done button saves. Built-in templates include morning pages and an evening review.
 - **Time**: an entry keeps the time as it read where it was written, and records that place's UTC offset, so flying to another time zone moves nothing; entries from another zone show it (for example UTC+8). Journey and Day One imports and exports convert with each entry's own zone. Every entry stores both when it was written and the diary day it belongs to; everything counted by day (journal, calendar, streaks, reviews, statistics, reminders, the widget) uses the diary day, which can be changed in the editor at any time without touching the written time. A new entry written before 4:00 counts for the day before (marked with a small moon), between 4:00 and 6:00 the editor asks which day (today until answered), later it counts for that day; both hours are settings and only affect new entries. Entries written later about a past day show when they were written.
 - **Language**: follows the system by default; one App Language selector in General settings changes it directly.

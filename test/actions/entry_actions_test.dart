@@ -158,7 +158,7 @@ void main() {
         refused('not_found'));
   });
 
-  test('an entry is starred, copied and added to', () async {
+  test('an entry is starred and added to', () async {
     final id = await create({'text': 'First', 'mood': '1'});
     expect(await run('entry.favorite', {'id': '$id', 'value': 'true'}),
         {'id': id, 'favorite': true});
@@ -169,31 +169,6 @@ void main() {
 
     await run('entry.append', {'id': '$id', 'text': 'Second'});
     expect(await get(id), containsPair('text', 'First\n\nSecond'));
-
-    final copy = await run('entry.duplicate', {'id': '$id'});
-    expect(copy['id'], isNot(id));
-    expect(EntryStore.instance.entries, hasLength(2));
-    expect(
-        await get(copy['id'] as int), containsPair('text', 'First\n\nSecond'));
-  });
-
-  test('a duplicated entry retains its diary day and recorded context',
-      () async {
-    final id = await create({
-      'text': 'A walk',
-      'time': '2026-10-21T09:00:00',
-      'day': '2026-10-18',
-      'weather': '61,18',
-      'activity': 'walking',
-      'place': 'Garden'
-    });
-    final copied = await run('entry.duplicate', {'id': '$id'});
-    final copy = await get(copied['id'] as int);
-    expect(copy['day'], '2026-10-18');
-    expect(copy['weather'], {'code': 61, 'temperature': 18.0});
-    expect(copy['activity'], 'walking');
-    expect(copy['place'], 'Garden');
-    expect(copy['utcOffsetMinutes'], (await get(id))['utcOffsetMinutes']);
   });
 
   test('a time capsule stays sealed for actions until it opens', () async {
@@ -231,7 +206,6 @@ void main() {
       'entry.update': {'text': 'x'},
       'entry.append': {'text': 'x'},
       'entry.favorite': {'value': 'true'},
-      'entry.duplicate': <String, Object?>{},
       'entry.seal': {'opens': tomorrow()},
       'entry.attachments': <String, Object?>{},
       'entry.export': {'format': 'text', 'path': 'unused'},

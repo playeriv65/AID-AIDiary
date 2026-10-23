@@ -311,8 +311,6 @@
     "templateWeeklyName": "Wöchentlicher Rückblick",
     "templateWeeklyDescription": "Höhepunkte, Schwierigkeiten und der Fokus der nächsten Woche.",
     "templateWeeklyText": "## Highlights\n\n\n## Was war schwer\n\n\n## Was ich gelernt habe\n\n\n## Konzentrieren Sie sich auf die nächste Woche\n",
-    "entryDuplicate": "Duplizieren",
-    "entryDuplicated": "Eintrag dupliziert",
     "entrySaveAsTemplate": "Als Vorlage speichern",
     "entrySavedAsTemplate": "Als Vorlage gespeichert",
     "storyStatistics": "Statistiken",
@@ -812,5 +810,13 @@
   "hiddenDiaryUnlock": "Verborgene Einträge entsperren",
   "hiddenDiaryAuthHint": "Verwende die App-Sperre oder die Bildschirmsperre deines Geräts.",
   "hiddenDiaryLocalOnly": "Verborgene Einträge bleiben auf diesem Gerät und pausieren die Synchronisierung. Verwende verschlüsselte Sicherungen. Bestehende Kopien auf anderen Geräten bleiben unverändert.",
-  "moodClear": "Stimmung entfernen"
+  "moodClear": "Stimmung entfernen",
+  "scrollToTop": "Nach oben",
+  "feedbackTitle": "Feedback",
+  "feedbackHint": "Beschreibe ein Problem oder einen Vorschlag",
+  "feedbackGithub": "GitHub-Issue",
+  "feedbackEmail": "E-Mail senden",
+  "feedbackCopy": "Text kopieren",
+  "feedbackLaunchFailed": "Die App konnte nicht geöffnet werden. Kopiere den Text und nutze die E-Mail-Adresse unten.",
+  "feedbackCopied": "Feedback kopiert"
 }

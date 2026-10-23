@@ -5,6 +5,46 @@
 import 'package:aid_diary/routing/app_navigation.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:aid_diary/widgets/scroll_to_top.dart';
+
+/// The list scrolls beneath an opaque, stationary search surface.
+class PinnedSearchHeader extends StatelessWidget {
+  const PinnedSearchHeader({super.key, this.showSearch = true});
+
+  final bool showSearch;
+
+  @override
+  Widget build(BuildContext context) => SliverPersistentHeader(
+        pinned: true,
+        delegate: _SearchHeaderDelegate(showSearch),
+      );
+}
+
+class _SearchHeaderDelegate extends SliverPersistentHeaderDelegate {
+  _SearchHeaderDelegate(this.showSearch);
+
+  final bool showSearch;
+
+  @override
+  double get minExtent => 84;
+  @override
+  double get maxExtent => minExtent;
+
+  @override
+  Widget build(
+          BuildContext context, double shrinkOffset, bool overlapsContent) =>
+      ColoredBox(
+        color: Theme.of(context).scaffoldBackgroundColor,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+          child: TopSearchCard(showSearch: showSearch),
+        ),
+      );
+
+  @override
+  bool shouldRebuild(_SearchHeaderDelegate oldDelegate) =>
+      showSearch != oldDelegate.showSearch;
+}
 
 /// Floating calendar shortcut, search and menu, or back from the calendar.
 class TopSearchCard extends StatelessWidget {
@@ -44,7 +84,7 @@ class TopSearchCard extends StatelessWidget {
                 icon: const Icon(Icons.calendar_today_rounded),
                 onPressed: () => AppNavigation.calendar(Navigator.of(context)),
               ),
-              const Spacer(),
+              Expanded(child: Center(child: ScrollToTop.button(context))),
             ],
             if (showSearch) ...[
               const VerticalDivider(indent: 16, endIndent: 16),

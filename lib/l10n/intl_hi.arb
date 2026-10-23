@@ -311,8 +311,6 @@
     "templateWeeklyName": "साप्ताहिक समीक्षा",
     "templateWeeklyDescription": "हाइलाइट्स, संघर्ष और अगले सप्ताह का फोकस।",
     "templateWeeklyText": "## हाइलाइट्स\n\n\n## क्या कठिन था\n\n\n## मैंने क्या सीखा\n\n\n## अगले सप्ताह पर ध्यान दें\n",
-    "entryDuplicate": "डुप्लिकेट",
-    "entryDuplicated": "प्रविष्टि दोहराई गई",
     "entrySaveAsTemplate": "टेम्पलेट के रूप में सहेजें",
     "entrySavedAsTemplate": "टेम्पलेट के रूप में सहेजा गया",
     "storyStatistics": "सांख्यिकी",
@@ -812,5 +810,13 @@
   "hiddenDiaryUnlock": "छिपी हुई प्रविष्टियाँ अनलॉक करें",
   "hiddenDiaryAuthHint": "ऐप लॉक या अपने डिवाइस के स्क्रीन लॉक का उपयोग करें।",
   "hiddenDiaryLocalOnly": "छिपी हुई प्रविष्टियाँ इस डिवाइस पर रहती हैं और सिंक रुक जाता है। एन्क्रिप्ट किए गए बैकअप उपयोग करें। अन्य जगह मौजूद प्रतियाँ नहीं बदलतीं।",
-  "moodClear": "मनःस्थिति हटाएँ"
+  "moodClear": "मनःस्थिति हटाएँ",
+  "scrollToTop": "ऊपर जाएँ",
+  "feedbackTitle": "प्रतिक्रिया",
+  "feedbackHint": "समस्या या सुझाव बताएँ",
+  "feedbackGithub": "GitHub पर मुद्दा",
+  "feedbackEmail": "ईमेल भेजें",
+  "feedbackCopy": "टेक्स्ट कॉपी करें",
+  "feedbackLaunchFailed": "ऐप नहीं खुल सका। टेक्स्ट कॉपी करके नीचे दिए ईमेल का उपयोग करें।",
+  "feedbackCopied": "प्रतिक्रिया कॉपी हुई"
 }

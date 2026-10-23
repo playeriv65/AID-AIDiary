@@ -158,6 +158,12 @@ class AppConfig {
   Duration get wheelScrollDuration =>
       Duration(milliseconds: _section('scrolling')['wheelDurationMs'] as int);
 
+  double get backToTopScreens =>
+      (_section('scrolling')['backToTopScreens'] as num).toDouble();
+  Uri get feedbackIssuesUrl =>
+      Uri.parse(_section('feedback')['issuesUrl'] as String);
+  String get feedbackEmail => _section('feedback')['email'] as String;
+
   /// Hours before which a new entry may count for the day before; 0 never.
   List<int> get dayStartHourChoices =>
       (_section('diaryDay')['startHourChoices'] as List).cast<int>();
