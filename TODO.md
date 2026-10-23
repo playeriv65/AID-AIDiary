@@ -88,6 +88,24 @@ Remaining work:
   Recently deleted. Field merging and a hybrid logical clock remain open
   product decisions.
 
+## Android package name (owner to do)
+The Android package `dev.aid.diary` reads as the domain `aid.dev`, which
+someone else has registered and serves a site on. Nothing breaks today
+(Android does not check domains), but a store or a developer registry
+gives a package name to whoever claims it first. Move to a prefix from the
+owner's own domain, e.g. `com.playeriv65.aiddiary` and `.beta` for the dev
+flavor (2026-10-23, proposed; the owner will carry it out):
+
+- `applicationId` in `android/app/build.gradle` (the Kotlin `namespace` may
+  stay), the CLI's default package in `cli/lib/aid_cli.dart`, and the
+  package names in docs and scripts.
+- Google Cloud: Android OAuth clients for both new packages with the same
+  SHA-1 (`docs/GOOGLE_DRIVE.md`).
+- The owner's diary: install the renamed release beside the old app (a new
+  package needs the HyperOS confirmation on the device), bring the diary
+  over with "Connect to an existing device" or a full backup and restore,
+  check it, then uninstall the old app.
+
 ## Decided against for now
 - Duplicate-entry action: removed at the owner's request (2026-10-23); save as template remains.
 - Automatic Wi-Fi Direct/hotspot creation: the implemented Wi-Fi/hotspot
