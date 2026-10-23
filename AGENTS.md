@@ -7,7 +7,7 @@ Use uv for Python. Read the [documentation index](docs/INDEX.md) to find the
 primary guide rather than duplicating instructions here.
 
 - [Engineering](docs/ENGINEERING.md): principles, change/review workflow and documentation maintenance.
-- [Architecture](docs/ARCHITECTURE.md): actual layers, state owners, shared actions and explicit adaptations of Flutter guidance.
+- [Architecture](docs/ARCHITECTURE.md): actual layers, state owners, shared actions, [internationalization](docs/ARCHITECTURE.md#internationalization) and explicit adaptations of Flutter guidance.
 - [Decisions](docs/DECISIONS.md) and [TODO](TODO.md): settled product direction versus proposed/deferred work. Do not expand product scope from a reference app or an external recommendation.
 - [Setup](docs/SETUP.md): toolchain, ignored local configuration, signing, devices, debugging and external asset locations.
 - [Testing](docs/TESTING.md): change-to-test matrix, regression/release gates, fixtures and evidence. Follow it instead of interpreting "all tests passing" as every target after each edit.

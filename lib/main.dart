@@ -26,6 +26,7 @@ import 'package:aid_diary/widgets/legacy_material_bridge.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/l10n/locale_resolution.dart';
 import 'package:aid_diary/background/background_work.dart';
 import 'package:aid_diary/layouts/mobile_scaffold.dart';
 import 'package:aid_diary/routing/route_names.dart';
@@ -224,25 +225,8 @@ class _MainAppState extends State<MainApp> {
                   ...appLocalizationsDelegates,
                 ],
                 locale: configProvider.getOverrideLanguage(),
-                supportedLocales: [
-                  Locale("en"),
-                  ...AppLocalizations.supportedLocales
-                      .where((locale) => locale.languageCode != "en")
-                ],
-                localeResolutionCallback: (locale, supportedLocales) {
-                  final override = configProvider.getOverrideLanguage();
-                  if (override != null) return override;
-
-                  if (locale != null) {
-                    for (final supported in supportedLocales) {
-                      if (supported.languageCode == locale.languageCode) {
-                        return supported;
-                      }
-                    }
-                  }
-
-                  return const Locale('en');
-                },
+                supportedLocales: appSupportedLocales,
+                localeListResolutionCallback: resolveAppLocale,
                 theme: lightTheme,
                 darkTheme: darkTheme,
                 builder: (context, child) => MediaQuery(

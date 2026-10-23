@@ -308,6 +308,33 @@ retention parameters are opt-in, with no domain-based client behavior.
 Implementation and validation/deployment evidence are tracked separately in
 [SYNC_NETWORK.md](SYNC_NETWORK.md).
 
+## Internationalization
+
+Keep Flutter's `flutter_localizations`, `intl` and `gen-l10n` pipeline;
+`l10n.yaml` selects the English ARB template and generated Dart output.
+Framework control translations and app-specific ARB translations are separate:
+adding a supported locale does not translate our tutorial, settings or errors.
+Translations are bundled for offline use. Missing app messages fall back through
+the generator's locale inheritance to English; this is not full localization.
+The generator reports missing translations when run through the Setup workflow.
+
+System language is the default. `l10n/locale_resolution.dart` passes the system's
+ordered language preferences to Flutter's resolver, preserving script/region
+matches and using English if none match. Chinese region-only preferences for
+TW, HK and MO are normalized to Hant; an explicit script takes precedence.
+An app language selected in Settings overrides system preferences until the
+user selects System again. Test locale matching and runtime language changes
+with `test/l10n/` and persisted overrides with the settings action tests.
+
+As of 2026-10-22, the 35 locale variants include incomplete translations. Do not
+describe that resource count as 35 fully translated languages. New user-facing
+copy belongs in ARB; translated placeholders/plurals and RTL/long-text layouts
+need validation before claiming a language is ready. No localization-library
+migration or runtime translation service is needed for system-language support.
+
+References: [Flutter internationalization](https://docs.flutter.dev/ui/internationalization)
+and [locale resolution](https://api.flutter.dev/flutter/widgets/basicLocaleListResolution.html).
+
 ## Dependencies
 
 Stores and services are app-wide singletons (`EntryStore.instance` and so
