@@ -2812,4 +2812,7 @@ class AppLocalizationsTa extends AppLocalizations {
   @override
   String get hiddenDiaryLocalOnly =>
       'மறைக்கப்பட்ட பதிவுகள் இந்தச் சாதனத்தில் இருக்கும்; ஒத்திசைவு இடைநிறுத்தப்படும். மறையாக்கப்பட்ட காப்புப்பிரதிகளைப் பயன்படுத்தவும். மற்ற இடங்களில் உள்ள பிரதிகள் மாறாது.';
+
+  @override
+  String get moodClear => 'மனநிலையை நீக்கு';
 }

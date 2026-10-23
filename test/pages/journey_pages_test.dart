@@ -17,6 +17,7 @@ import 'package:aid_diary/providers/entry_images_provider.dart';
 import 'package:aid_diary/providers/tags_provider.dart';
 import 'package:aid_diary/widgets/entry_text_field.dart';
 import 'package:aid_diary/widgets/mood_icon.dart';
+import 'package:aid_diary/widgets/entry_mood_picker.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -280,6 +281,11 @@ void main() {
     for (final inset in [300.0, 220.0, 140.0, 60.0, 0.0]) {
       tester.view.viewInsets = FakeViewPadding(bottom: inset);
       await tester.pump(const Duration(milliseconds: 16));
+      if (inset == 0) {
+        expect(find.byKey(const ValueKey('editor-bar-hidden')), findsOneWidget);
+      } else {
+        expect(find.byKey(const ValueKey('editor-bar-hidden')), findsNothing);
+      }
     }
     debugOnRebuildDirtyWidget = null;
     expect(textRebuilds, 0);
@@ -504,7 +510,6 @@ void main() {
     await tester.tap(
         find.byWidgetPredicate((w) => w is MoodIcon && w.moodValue == 2).last);
     await tester.pumpAndSettle();
-    await tapKey(tester, 'editor-mood-ok');
     await DiaryAppHarness.runUntil(
         tester,
         () => tester
@@ -517,4 +522,50 @@ void main() {
     expect(saved.mood, 2);
     await tester.pumpWidget(const SizedBox.shrink());
   });
+
+  for (final size in [const Size(360, 800), const Size(1280, 800)]) {
+    testWidgets('mood menu picks, keeps and clears directly at $size',
+        (tester) async {
+      DiaryAppHarness.size(tester, size);
+      await tester.pumpWidget(harness.app(const MobileScaffold()));
+      await tester.pumpAndSettle();
+      await tapKey(tester, 'diary-new-entry');
+      await tester.enterText(DiaryAppHarness.entryBody, '今天的记录');
+      await tapKey(tester, 'editor-mood');
+      final anchor = tester.getRect(find.byKey(const ValueKey('editor-mood')));
+      final choices = find.byType(EntryMoodPicker);
+      expect(find.descendant(of: choices, matching: find.byType(InkWell)),
+          findsNWidgets(6));
+      final menu = tester.getRect(choices);
+      expect(menu.top, greaterThanOrEqualTo(anchor.bottom));
+      expect(menu.left, greaterThanOrEqualTo(0));
+      expect(menu.right, lessThanOrEqualTo(size.width));
+      expect(menu.left, lessThanOrEqualTo(anchor.center.dx));
+      expect(menu.right, greaterThanOrEqualTo(anchor.center.dx));
+      await tapKey(tester, 'mood-option-2');
+      Finder chosen() => find.descendant(
+          of: find.byKey(const ValueKey('editor-mood')),
+          matching:
+              find.byWidgetPredicate((w) => w is MoodIcon && w.moodValue == 2));
+      expect(chosen(), findsOneWidget);
+      await tapKey(tester, 'editor-mood');
+      await tapKey(tester, 'mood-option-2');
+      expect(chosen(), findsOneWidget);
+      await tapKey(tester, 'editor-mood');
+      await tapKey(tester, 'mood-clear');
+      expect(
+          find.descendant(
+              of: find.byKey(const ValueKey('editor-mood')),
+              matching: find.byIcon(Icons.add_reaction_outlined)),
+          findsOneWidget);
+      await DiaryAppHarness.runUntil(
+          tester,
+          () => tester
+              .widget<IconButton>(find.byKey(const ValueKey('entry-close')))
+              .onPressed!(),
+          () => EntryStore.instance.entries.isNotEmpty);
+      expect(EntryStore.instance.entries.single.mood, isNull);
+      await tester.pumpWidget(const SizedBox.shrink());
+    });
+  }
 }

@@ -101,6 +101,12 @@ without a widget, using real SQLite in the host-integration layer.
 dialogs and navigation, reports typing and choices to the view model and
 redraws when it notifies.
 
+`EditorKeyboardSession` consumes the current keyboard inset without a dismissal
+timer; writing tools disappear in the same frame the inset reaches zero. Only
+the action-bar scope observes inset changes, keeping the body text out of that
+rebuild path. The editor's `MenuAnchor` owns the local mood popup; its six
+accessible choices report directly to the view model, with no staged selection.
+
 The editor labels its date control "Diary day" and explains that choosing a
 date changes grouping rather than creation time. `TimeManager.pickDate` forwards
 the optional contextual header to both calendar implementations. The save/cancel

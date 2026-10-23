@@ -643,40 +643,29 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
           ),
         ),
       ),
-      IconButton(
-        key: const ValueKey('editor-mood'),
-        tooltip: AppLocalizations.of(context)!.tagMoodTitle,
-        onPressed: _chooseMood,
-        icon: hasMood
-            ? MoodIcon(moodValue: mood, size: 24)
-            : Icon(Icons.add_reaction_outlined, color: cs.onSurfaceVariant),
+      MenuAnchor(
+        style: const MenuStyle(alignment: AlignmentDirectional.bottomStart),
+        menuChildren: [
+          Builder(
+              builder: (menuContext) => EntryMoodPicker(
+                    moodValue: mood,
+                    onChangedMood: (value) {
+                      _model.setMood(value);
+                      MenuController.maybeOf(menuContext)?.close();
+                    },
+                  )),
+        ],
+        builder: (context, controller, _) => IconButton(
+          key: const ValueKey('editor-mood'),
+          tooltip: l10n.tagMoodTitle,
+          onPressed: () =>
+              controller.isOpen ? controller.close() : controller.open(),
+          icon: hasMood
+              ? MoodIcon(moodValue: mood, size: 24)
+              : Icon(Icons.add_reaction_outlined, color: cs.onSurfaceVariant),
+        ),
       ),
     ]);
-  }
-
-  Future<void> _chooseMood() async {
-    var picked = _model.mood;
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(AppLocalizations.of(context)!.tagMoodTitle),
-        content: SizedBox(
-          width: 320,
-          child: EntryMoodPicker(
-              moodValue: picked, onChangedMood: (value) => picked = value),
-        ),
-        actions: [
-          TextButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: Text(MaterialLocalizations.of(context).cancelButtonLabel)),
-          FilledButton(
-              key: const ValueKey('editor-mood-ok'),
-              onPressed: () => Navigator.of(context).pop(true),
-              child: Text(MaterialLocalizations.of(context).okButtonLabel)),
-        ],
-      ),
-    );
-    if (confirmed == true) _model.setMood(picked);
   }
 
   Future<void> _chooseLocation() async {

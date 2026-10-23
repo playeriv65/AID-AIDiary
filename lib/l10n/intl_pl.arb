@@ -813,5 +813,6 @@
   "hiddenDiaryEmpty": "Brak ukrytych wpisów",
   "hiddenDiaryUnlock": "Odblokuj ukryte wpisy",
   "hiddenDiaryAuthHint": "Użyj blokady aplikacji lub ekranu urządzenia.",
-  "hiddenDiaryLocalOnly": "Ukryte wpisy pozostają na tym urządzeniu i wstrzymują synchronizację. Używaj szyfrowanych kopii zapasowych. Istniejące kopie w innych miejscach pozostają bez zmian."
+  "hiddenDiaryLocalOnly": "Ukryte wpisy pozostają na tym urządzeniu i wstrzymują synchronizację. Używaj szyfrowanych kopii zapasowych. Istniejące kopie w innych miejscach pozostają bez zmian.",
+  "moodClear": "Wyczyść nastrój"
 }

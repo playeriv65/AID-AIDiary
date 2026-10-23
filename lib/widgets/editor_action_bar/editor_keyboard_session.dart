@@ -2,8 +2,6 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-import 'dart:async';
-
 import 'package:flutter/widgets.dart';
 
 enum EditorFocusState {
@@ -20,22 +18,17 @@ enum EditorFocusState {
   dismissed,
 }
 
-/// Derives [state] from [focusNode] and the debounced keyboard-inset signal
+/// Derives [state] from focus and the current keyboard inset, without a delay.
 class EditorKeyboardSession extends ChangeNotifier {
-  static const dismissDebounceDuration = Duration(milliseconds: 80);
-
   final FocusNode focusNode;
 
   bool _dismissed = false;
   bool _everShown;
-  bool _isUp;
   double _lastInset;
-  Timer? _dismissDebounce;
 
   EditorKeyboardSession({required this.focusNode, double initialInset = 0})
       : _lastInset = initialInset,
-        _everShown = initialInset > 0,
-        _isUp = initialInset > 0 {
+        _everShown = initialInset > 0 {
     focusNode.addListener(_handleFocusChanged);
   }
 
@@ -48,8 +41,7 @@ class EditorKeyboardSession extends ChangeNotifier {
   bool get isEditing =>
       state == EditorFocusState.docked || state == EditorFocusState.floating;
 
-  /// Debounced up signal
-  bool get isUp => _isUp;
+  bool get isUp => _lastInset > 0;
 
   /// React to a new inset
   void noteKeyboardInset(double inset) {
@@ -57,9 +49,6 @@ class EditorKeyboardSession extends ChangeNotifier {
     final rising = inset > _lastInset;
     _lastInset = inset;
     if (rising) {
-      _dismissDebounce?.cancel();
-      _dismissDebounce = null;
-      _isUp = true;
       // A rise clears a dismissal on its own. If the user switches keyboard it a new keyboard will appear
       final alreadyDocked = _everShown && !_dismissed;
       _everShown = true;
@@ -67,19 +56,12 @@ class EditorKeyboardSession extends ChangeNotifier {
       if (!alreadyDocked) notifyListeners();
       return;
     }
-    // The bar changes its tools only once the keyboard is down, not while
-    // it slides, where the swap looked like a stutter.
-    if (!_isUp || inset > 0) return;
-    _dismissDebounce ??= Timer(dismissDebounceDuration, () {
-      _dismissDebounce = null;
-      _isUp = false;
-      _setDismissed(true);
-    });
+    // Keep following the keyboard during its slide, then hide in the same
+    // frame it reaches zero. A timer here leaves the bar parked at the bottom.
+    if (inset == 0) _setDismissed(true);
   }
 
   void resume() {
-    _dismissDebounce?.cancel();
-    _dismissDebounce = null;
     _setDismissed(false);
   }
 
@@ -93,7 +75,6 @@ class EditorKeyboardSession extends ChangeNotifier {
 
   @override
   void dispose() {
-    _dismissDebounce?.cancel();
     focusNode.removeListener(_handleFocusChanged);
     super.dispose();
   }

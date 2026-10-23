@@ -2667,6 +2667,9 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get hiddenDiaryLocalOnly => '隐藏日记仅保存在本机，同步会暂停。请使用加密备份；其他设备上已有的副本不会改变。';
+
+  @override
+  String get moodClear => '清空心情';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -5335,4 +5338,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get hiddenDiaryLocalOnly => '隱藏日記僅儲存在本機，同步會暫停。請使用加密備份；其他裝置上已有的副本不會改變。';
+
+  @override
+  String get moodClear => '清除心情';
 }

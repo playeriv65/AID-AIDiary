@@ -2803,4 +2803,7 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get hiddenDiaryLocalOnly =>
       'Verborgene Einträge bleiben auf diesem Gerät und pausieren die Synchronisierung. Verwende verschlüsselte Sicherungen. Bestehende Kopien auf anderen Geräten bleiben unverändert.';
+
+  @override
+  String get moodClear => 'Stimmung entfernen';
 }

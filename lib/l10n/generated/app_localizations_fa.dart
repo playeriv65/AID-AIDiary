@@ -2762,4 +2762,7 @@ class AppLocalizationsFa extends AppLocalizations {
   @override
   String get hiddenDiaryLocalOnly =>
       'یادداشت‌های پنهان در این دستگاه می‌مانند و همگام‌سازی متوقف می‌شود. از پشتیبان رمزگذاری‌شده استفاده کنید. نسخه‌های موجود در دستگاه‌های دیگر تغییر نمی‌کنند.';
+
+  @override
+  String get moodClear => 'پاک کردن حال‌وهوا';
 }

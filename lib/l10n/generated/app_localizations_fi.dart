@@ -2776,4 +2776,7 @@ class AppLocalizationsFi extends AppLocalizations {
   @override
   String get hiddenDiaryLocalOnly =>
       'Piilotetut merkinnät pysyvät tällä laitteella ja synkronointi keskeytyy. Käytä salattuja varmuuskopioita. Muualla olevat kopiot eivät muutu.';
+
+  @override
+  String get moodClear => 'Poista mieliala';
 }

@@ -2763,4 +2763,7 @@ class AppLocalizationsDa extends AppLocalizations {
   @override
   String get hiddenDiaryLocalOnly =>
       'Skjulte indlæg bliver på denne enhed, og synkronisering sættes på pause. Brug krypterede sikkerhedskopier. Eksisterende kopier andre steder ændres ikke.';
+
+  @override
+  String get moodClear => 'Ryd humør';
 }

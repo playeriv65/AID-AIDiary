@@ -1622,5 +1622,6 @@
   "hiddenDiaryEmpty": "No hidden entries",
   "hiddenDiaryUnlock": "Unlock hidden entries",
   "hiddenDiaryAuthHint": "Use the app lock or your device's screen lock to unlock.",
-  "hiddenDiaryLocalOnly": "Hidden entries stay on this device and pause sync. Use encrypted backups. Existing copies elsewhere are unchanged."
+  "hiddenDiaryLocalOnly": "Hidden entries stay on this device and pause sync. Use encrypted backups. Existing copies elsewhere are unchanged.",
+  "moodClear": "Clear mood"
 }

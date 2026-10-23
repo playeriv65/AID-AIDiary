@@ -813,5 +813,6 @@
   "hiddenDiaryEmpty": "Geen verborgen berichten",
   "hiddenDiaryUnlock": "Verborgen berichten ontgrendelen",
   "hiddenDiaryAuthHint": "Gebruik de appvergrendeling of schermvergrendeling van je apparaat.",
-  "hiddenDiaryLocalOnly": "Verborgen berichten blijven op dit apparaat en pauzeren de synchronisatie. Gebruik versleutelde back-ups. Bestaande kopieën elders blijven ongewijzigd."
+  "hiddenDiaryLocalOnly": "Verborgen berichten blijven op dit apparaat en pauzeren de synchronisatie. Gebruik versleutelde back-ups. Bestaande kopieën elders blijven ongewijzigd.",
+  "moodClear": "Stemming wissen"
 }

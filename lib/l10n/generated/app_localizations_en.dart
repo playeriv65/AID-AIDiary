@@ -2754,4 +2754,7 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get hiddenDiaryLocalOnly =>
       'Hidden entries stay on this device and pause sync. Use encrypted backups. Existing copies elsewhere are unchanged.';
+
+  @override
+  String get moodClear => 'Clear mood';
 }

@@ -7,8 +7,9 @@ import 'package:aid_diary/widgets/material_shapes.dart';
 import 'package:aid_diary/widgets/punch_scale.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:aid_diary/widgets/mood_icon.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
 
-class EntryMoodPicker extends StatefulWidget {
+class EntryMoodPicker extends StatelessWidget {
   final int? moodValue;
   final ValueChanged<int?> onChangedMood;
 
@@ -16,83 +17,72 @@ class EntryMoodPicker extends StatefulWidget {
       {super.key, this.moodValue, required this.onChangedMood});
 
   @override
-  State<EntryMoodPicker> createState() => _EntryMoodPickerState();
-}
-
-class _EntryMoodPickerState extends State<EntryMoodPicker> {
-  late int? _mood = widget.moodValue;
-
-  @override
-  void didUpdateWidget(covariant EntryMoodPicker oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.moodValue != widget.moodValue) {
-      setState(() => _mood = widget.moodValue);
-    }
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return Row(mainAxisSize: MainAxisSize.min, children: [
+      _moodOption(context, -2, l10n.moodAwful),
+      _moodOption(context, -1, l10n.moodBad),
+      _moodOption(context, 0, l10n.moodOkay),
+      _moodOption(context, 1, l10n.moodGood),
+      _moodOption(context, 2, l10n.moodGreat),
+      _moodOption(context, null, l10n.moodClear),
+    ]);
   }
 
-  Widget _moodOption(int index) {
-    final isSelected = index == _mood;
+  Widget _moodOption(BuildContext context, int? index, String label) {
+    final isSelected = index == moodValue;
     final cs = Theme.of(context).colorScheme;
 
-    return GestureDetector(
-      onTap: () => _updateMood(index),
-      child: SizedBox(
-        width: 52,
-        height: 52,
-        child: TweenAnimationBuilder<double>(
-          tween: Tween(begin: 0.0, end: isSelected ? 1.0 : 0.0),
-          duration: const Duration(milliseconds: 150),
-          curve: Curves.easeInOut,
-          builder: (context, progress, child) {
-            return CustomPaint(
-              painter: MorphingBurstPainter(
-                progress: progress,
-                color: Color.lerp(
-                  cs.surfaceContainerLow,
-                  cs.surfaceContainerLowest,
-                  progress,
-                )!,
-              ),
-              child: Center(child: child),
-            );
+    return Semantics(
+      button: true,
+      selected: isSelected,
+      label: label,
+      child: Tooltip(
+        message: label,
+        child: InkWell(
+          key: ValueKey(index == null ? 'mood-clear' : 'mood-option-$index'),
+          borderRadius: BorderRadius.circular(12),
+          onTap: () {
+            Haptics.selection();
+            onChangedMood(index);
           },
-          child: PunchScale(
-            key: ValueKey(index),
-            trigger: isSelected,
-            child: Opacity(
-                opacity: isSelected ? 1.0 : 0.6,
-                child: MoodIcon(
-                  moodValue: index,
-                  size: 24,
-                  allowScaling: false,
-                )),
+          child: SizedBox(
+            width: 48,
+            height: 48,
+            child: TweenAnimationBuilder<double>(
+              tween: Tween(begin: 0.0, end: isSelected ? 1.0 : 0.0),
+              duration: const Duration(milliseconds: 150),
+              curve: Curves.easeInOut,
+              builder: (context, progress, child) {
+                return CustomPaint(
+                  painter: MorphingBurstPainter(
+                    progress: progress,
+                    color: Color.lerp(
+                      cs.surfaceContainerLow,
+                      cs.surfaceContainerLowest,
+                      progress,
+                    )!,
+                  ),
+                  child: Center(child: child),
+                );
+              },
+              child: PunchScale(
+                key: ValueKey(index),
+                trigger: isSelected,
+                child: Opacity(
+                    opacity: isSelected ? 1.0 : 0.6,
+                    child: index == null
+                        ? const Icon(Icons.clear_rounded, size: 24)
+                        : MoodIcon(
+                            moodValue: index,
+                            size: 24,
+                            allowScaling: false,
+                          )),
+              ),
+            ),
           ),
         ),
       ),
-    );
-  }
-
-  void _updateMood(int? value) {
-    if (value == _mood) {
-      value = null;
-    }
-    Haptics.selection();
-    setState((() => _mood = value));
-    widget.onChangedMood(_mood);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        _moodOption(-2),
-        _moodOption(-1),
-        _moodOption(0),
-        _moodOption(1),
-        _moodOption(2),
-      ],
     );
   }
 }

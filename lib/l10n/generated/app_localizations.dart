@@ -5051,6 +5051,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Hidden entries stay on this device and pause sync. Use encrypted backups. Existing copies elsewhere are unchanged.'**
   String get hiddenDiaryLocalOnly;
+
+  /// No description provided for @moodClear.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear mood'**
+  String get moodClear;
 }
 
 class _AppLocalizationsDelegate

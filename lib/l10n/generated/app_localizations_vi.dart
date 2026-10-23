@@ -2783,4 +2783,7 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get hiddenDiaryLocalOnly =>
       'Nhật ký ẩn được giữ trên thiết bị này và quá trình đồng bộ tạm dừng. Hãy dùng bản sao lưu mã hóa. Các bản sao hiện có ở nơi khác không thay đổi.';
+
+  @override
+  String get moodClear => 'Xóa tâm trạng';
 }

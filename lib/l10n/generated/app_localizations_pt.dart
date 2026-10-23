@@ -2789,6 +2789,9 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get hiddenDiaryLocalOnly =>
       'As entradas ocultas ficam neste dispositivo e suspendem a sincronização. Utiliza cópias de segurança encriptadas. As cópias existentes noutros locais não mudam.';
+
+  @override
+  String get moodClear => 'Limpar humor';
 }
 
 /// The translations for Portuguese, as used in Brazil (`pt_BR`).
@@ -5576,4 +5579,7 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
   @override
   String get hiddenDiaryLocalOnly =>
       'As entradas ocultas ficam neste dispositivo e pausam a sincronização. Use backups criptografados. As cópias existentes em outros locais não mudam.';
+
+  @override
+  String get moodClear => 'Limpar humor';
 }

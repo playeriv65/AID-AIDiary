@@ -2770,4 +2770,7 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get hiddenDiaryLocalOnly =>
       'Gizli kayıtlar bu cihazda kalır ve eşitleme duraklatılır. Şifreli yedekler kullanın. Başka yerlerdeki mevcut kopyalar değişmez.';
+
+  @override
+  String get moodClear => 'Ruh halini temizle';
 }

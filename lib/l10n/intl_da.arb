@@ -813,5 +813,6 @@
   "hiddenDiaryEmpty": "Ingen skjulte indlæg",
   "hiddenDiaryUnlock": "Lås skjulte indlæg op",
   "hiddenDiaryAuthHint": "Brug appens lås eller enhedens skærmlås.",
-  "hiddenDiaryLocalOnly": "Skjulte indlæg bliver på denne enhed, og synkronisering sættes på pause. Brug krypterede sikkerhedskopier. Eksisterende kopier andre steder ændres ikke."
+  "hiddenDiaryLocalOnly": "Skjulte indlæg bliver på denne enhed, og synkronisering sættes på pause. Brug krypterede sikkerhedskopier. Eksisterende kopier andre steder ændres ikke.",
+  "moodClear": "Ryd humør"
 }

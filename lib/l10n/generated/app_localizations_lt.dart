@@ -2800,4 +2800,7 @@ class AppLocalizationsLt extends AppLocalizations {
   @override
   String get hiddenDiaryLocalOnly =>
       'Paslėpti įrašai lieka šiame įrenginyje, o sinchronizavimas pristabdomas. Naudokite šifruotas atsargines kopijas. Kitur esančios kopijos nesikeičia.';
+
+  @override
+  String get moodClear => 'Išvalyti nuotaiką';
 }

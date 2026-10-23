@@ -73,6 +73,11 @@ asks again. Dates are when it was settled. Ideas not built yet are in
   written, a tile to add media, weather and place rows. Not its crowded
   keyboard toolbar. Back over unsaved changes asks to save or discard; the
   ✓ button saves without asking.
+- 2026-10-22: The editor toolbar follows the software keyboard and disappears
+  on its final inset frame, without a delayed exit. The mood control opens a
+  compact menu directly beneath its anchor: five moods and an explicit clear
+  choice. A tap applies immediately and closes the menu; selecting the current
+  mood keeps it. No confirmation dialog or second acceptance step.
 - Random walk matters to the owner, who relies on One Diary's: keep it
   good.
 - Appearance is independently configurable: light/system theme, optional

@@ -813,5 +813,6 @@
   "hiddenDiaryEmpty": "Ei piilotettuja merkintöjä",
   "hiddenDiaryUnlock": "Avaa piilotetut merkinnät",
   "hiddenDiaryAuthHint": "Käytä sovelluksen lukitusta tai laitteen näytön lukitusta.",
-  "hiddenDiaryLocalOnly": "Piilotetut merkinnät pysyvät tällä laitteella ja synkronointi keskeytyy. Käytä salattuja varmuuskopioita. Muualla olevat kopiot eivät muutu."
+  "hiddenDiaryLocalOnly": "Piilotetut merkinnät pysyvät tällä laitteella ja synkronointi keskeytyy. Käytä salattuja varmuuskopioita. Muualla olevat kopiot eivät muutu.",
+  "moodClear": "Poista mieliala"
 }

@@ -2809,4 +2809,7 @@ class AppLocalizationsBe extends AppLocalizations {
   @override
   String get hiddenDiaryLocalOnly =>
       'Схаваныя запісы застаюцца на гэтай прыладзе; сінхранізацыя прыпыняецца. Выкарыстоўвайце зашыфраваныя рэзервовыя копіі. Іншыя наяўныя копіі не змяняюцца.';
+
+  @override
+  String get moodClear => 'Ачысціць настрой';
 }

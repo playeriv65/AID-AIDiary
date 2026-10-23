@@ -813,5 +813,6 @@
   "hiddenDiaryEmpty": "Aucune entrée masquée",
   "hiddenDiaryUnlock": "Déverrouiller les entrées masquées",
   "hiddenDiaryAuthHint": "Utilisez le verrouillage de l’application ou de l’écran de votre appareil.",
-  "hiddenDiaryLocalOnly": "Les entrées masquées restent sur cet appareil et suspendent la synchronisation. Utilisez des sauvegardes chiffrées. Les copies existantes ailleurs restent inchangées."
+  "hiddenDiaryLocalOnly": "Les entrées masquées restent sur cet appareil et suspendent la synchronisation. Utilisez des sauvegardes chiffrées. Les copies existantes ailleurs restent inchangées.",
+  "moodClear": "Effacer l’humeur"
 }

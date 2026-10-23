@@ -2774,4 +2774,7 @@ class AppLocalizationsSv extends AppLocalizations {
   @override
   String get hiddenDiaryLocalOnly =>
       'Dolda inlägg stannar på denna enhet och synkroniseringen pausas. Använd krypterade säkerhetskopior. Befintliga kopior på andra platser ändras inte.';
+
+  @override
+  String get moodClear => 'Rensa humör';
 }

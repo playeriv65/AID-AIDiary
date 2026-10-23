@@ -2765,4 +2765,7 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get hiddenDiaryLocalOnly =>
       'تبقى اليوميات المخفية على هذا الجهاز وتتوقف المزامنة. استخدم نسخًا احتياطية مشفرة. لا تتغير النسخ الموجودة على الأجهزة الأخرى.';
+
+  @override
+  String get moodClear => 'مسح الحالة المزاجية';
 }

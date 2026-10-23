@@ -813,5 +813,6 @@
   "hiddenDiaryEmpty": "Gizli kayıt yok",
   "hiddenDiaryUnlock": "Gizli kayıtların kilidini aç",
   "hiddenDiaryAuthHint": "Uygulama kilidini veya cihazınızın ekran kilidini kullanın.",
-  "hiddenDiaryLocalOnly": "Gizli kayıtlar bu cihazda kalır ve eşitleme duraklatılır. Şifreli yedekler kullanın. Başka yerlerdeki mevcut kopyalar değişmez."
+  "hiddenDiaryLocalOnly": "Gizli kayıtlar bu cihazda kalır ve eşitleme duraklatılır. Şifreli yedekler kullanın. Başka yerlerdeki mevcut kopyalar değişmez.",
+  "moodClear": "Ruh halini temizle"
 }

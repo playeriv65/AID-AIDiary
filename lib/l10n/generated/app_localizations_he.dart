@@ -2748,4 +2748,7 @@ class AppLocalizationsHe extends AppLocalizations {
   @override
   String get hiddenDiaryLocalOnly =>
       'רשומות מוסתרות נשארות במכשיר זה והסנכרון מושהה. יש להשתמש בגיבויים מוצפנים. עותקים קיימים במכשירים אחרים אינם משתנים.';
+
+  @override
+  String get moodClear => 'ניקוי מצב הרוח';
 }

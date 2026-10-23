@@ -2809,4 +2809,7 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get hiddenDiaryLocalOnly =>
       'Les entrées masquées restent sur cet appareil et suspendent la synchronisation. Utilisez des sauvegardes chiffrées. Les copies existantes ailleurs restent inchangées.';
+
+  @override
+  String get moodClear => 'Effacer l’humeur';
 }
