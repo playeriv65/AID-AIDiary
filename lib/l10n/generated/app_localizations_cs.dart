@@ -772,13 +772,7 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
-  String get settingsLanguageTitle => 'Jazyk';
-
-  @override
   String get settingsAppLanguageTitle => 'Jazyk aplikace';
-
-  @override
-  String get settingsOverrideAppLanguageTitle => 'Přepsat jazyk aplikace';
 
   @override
   String get settingsSecurityTitle => 'Zabezpečení';

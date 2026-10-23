@@ -785,14 +785,7 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
-  String get settingsLanguageTitle => 'Taal';
-
-  @override
   String get settingsAppLanguageTitle => 'Taal van de app';
-
-  @override
-  String get settingsOverrideAppLanguageTitle =>
-      'Overschrijf de taal van de app';
 
   @override
   String get settingsSecurityTitle => 'Beveiliging';

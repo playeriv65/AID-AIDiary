@@ -786,14 +786,7 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String get settingsLanguageTitle => 'Langue';
-
-  @override
   String get settingsAppLanguageTitle => 'Ajouter une langue';
-
-  @override
-  String get settingsOverrideAppLanguageTitle =>
-      'Surcharger la langue de l\'application';
 
   @override
   String get settingsSecurityTitle => 'Sécurité';

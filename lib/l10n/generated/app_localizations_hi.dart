@@ -781,13 +781,7 @@ class AppLocalizationsHi extends AppLocalizations {
   }
 
   @override
-  String get settingsLanguageTitle => 'भाषा';
-
-  @override
   String get settingsAppLanguageTitle => 'ऐप की भाषा';
-
-  @override
-  String get settingsOverrideAppLanguageTitle => 'ऐप भाषा को ओवरराइड करें';
 
   @override
   String get settingsSecurityTitle => 'सिक्योरिटी';

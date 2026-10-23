@@ -788,13 +788,7 @@ class AppLocalizationsHe extends AppLocalizations {
   }
 
   @override
-  String get settingsLanguageTitle => 'שפה';
-
-  @override
   String get settingsAppLanguageTitle => 'שפת האפליקציה';
-
-  @override
-  String get settingsOverrideAppLanguageTitle => 'עוקף את שפת האפליקציה';
 
   @override
   String get settingsSecurityTitle => 'אבטחה';

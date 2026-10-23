@@ -783,13 +783,7 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
-  String get settingsLanguageTitle => 'Sprache';
-
-  @override
   String get settingsAppLanguageTitle => 'App Sprache';
-
-  @override
-  String get settingsOverrideAppLanguageTitle => 'Überschreibe App Sprache';
 
   @override
   String get settingsSecurityTitle => 'Sicherheit';

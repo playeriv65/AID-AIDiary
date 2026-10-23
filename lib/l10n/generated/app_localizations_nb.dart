@@ -787,13 +787,7 @@ class AppLocalizationsNb extends AppLocalizations {
   }
 
   @override
-  String get settingsLanguageTitle => 'Språk';
-
-  @override
   String get settingsAppLanguageTitle => 'App-språk';
-
-  @override
-  String get settingsOverrideAppLanguageTitle => 'Overstyr appspråk';
 
   @override
   String get settingsSecurityTitle => 'Sikkerhet';

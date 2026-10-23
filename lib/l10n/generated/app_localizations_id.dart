@@ -772,13 +772,7 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
-  String get settingsLanguageTitle => 'Bahasa';
-
-  @override
   String get settingsAppLanguageTitle => 'Bahasa Aplikasi';
-
-  @override
-  String get settingsOverrideAppLanguageTitle => 'Ganti Bahasa Aplikasi';
 
   @override
   String get settingsSecurityTitle => 'Keamanan';

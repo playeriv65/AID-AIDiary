@@ -785,13 +785,7 @@ class AppLocalizationsSv extends AppLocalizations {
   }
 
   @override
-  String get settingsLanguageTitle => 'Språk';
-
-  @override
   String get settingsAppLanguageTitle => 'Appens språk';
-
-  @override
-  String get settingsOverrideAppLanguageTitle => 'Åsidosätt appspråk';
 
   @override
   String get settingsSecurityTitle => 'Säkerhet';

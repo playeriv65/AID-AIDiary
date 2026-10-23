@@ -365,9 +365,12 @@ System language is the default. `l10n/locale_resolution.dart` passes the system'
 ordered language preferences to Flutter's resolver, preserving script/region
 matches and using English if none match. Chinese region-only preferences for
 TW, HK and MO are normalized to Hant; an explicit script takes precedence.
-An app language selected in Settings overrides system preferences until the
-user selects System again. Test locale matching and runtime language changes
-with `test/l10n/` and persisted overrides with the settings action tests.
+General settings exposes a single App Language dropdown directly in the page.
+An app language selected there takes precedence over system preferences until
+the user selects System again. The existing stored selection is retained; no
+separate override control or language subpage is exposed. Test locale matching
+and runtime language changes with `test/l10n/` and persisted selections with
+the settings action tests.
 
 All 35 offered locale variants now cover the English message template, including
 formerly empty catalogs. `test/l10n/catalog_test.dart` requires every template

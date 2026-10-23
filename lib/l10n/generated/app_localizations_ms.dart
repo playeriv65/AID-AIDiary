@@ -726,13 +726,7 @@ class AppLocalizationsMs extends AppLocalizations {
   }
 
   @override
-  String get settingsLanguageTitle => 'Bahasa';
-
-  @override
   String get settingsAppLanguageTitle => 'Bahasa Apl';
-
-  @override
-  String get settingsOverrideAppLanguageTitle => 'Bahasa Aplikasi Ganti';
 
   @override
   String get settingsSecurityTitle => 'Keselamatan';

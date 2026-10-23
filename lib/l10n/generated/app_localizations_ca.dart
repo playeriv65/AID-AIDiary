@@ -784,14 +784,7 @@ class AppLocalizationsCa extends AppLocalizations {
   }
 
   @override
-  String get settingsLanguageTitle => 'Llengua';
-
-  @override
   String get settingsAppLanguageTitle => 'Llengua de l\'aplicació';
-
-  @override
-  String get settingsOverrideAppLanguageTitle =>
-      'Substitueix la lengua de l\'aplicació';
 
   @override
   String get settingsSecurityTitle => 'Seguretat';

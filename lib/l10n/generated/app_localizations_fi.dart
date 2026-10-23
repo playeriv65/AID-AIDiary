@@ -781,13 +781,7 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get settingsLanguageTitle => 'Kieli';
-
-  @override
   String get settingsAppLanguageTitle => 'Sovelluksen kieli';
-
-  @override
-  String get settingsOverrideAppLanguageTitle => 'Ohita sovelluksen kieli';
 
   @override
   String get settingsSecurityTitle => 'Turvallisuus';

@@ -787,13 +787,7 @@ class AppLocalizationsUk extends AppLocalizations {
   }
 
   @override
-  String get settingsLanguageTitle => 'Мова';
-
-  @override
   String get settingsAppLanguageTitle => 'Мова програми';
-
-  @override
-  String get settingsOverrideAppLanguageTitle => 'Перевизначити мову програми';
 
   @override
   String get settingsSecurityTitle => 'Безпека';

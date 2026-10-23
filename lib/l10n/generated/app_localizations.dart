@@ -1428,23 +1428,11 @@ abstract class AppLocalizations {
   /// **'Enter \'{prompt}\' to confirm. This cannot be undone!'**
   String settingsDeleteAllLogsPrompt(Object prompt);
 
-  /// No description provided for @settingsLanguageTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Language'**
-  String get settingsLanguageTitle;
-
   /// No description provided for @settingsAppLanguageTitle.
   ///
   /// In en, this message translates to:
   /// **'App Language'**
   String get settingsAppLanguageTitle;
-
-  /// No description provided for @settingsOverrideAppLanguageTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Override App Language'**
-  String get settingsOverrideAppLanguageTitle;
 
   /// No description provided for @settingsSecurityTitle.
   ///

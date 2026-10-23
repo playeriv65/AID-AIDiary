@@ -785,14 +785,7 @@ class AppLocalizationsBg extends AppLocalizations {
   }
 
   @override
-  String get settingsLanguageTitle => 'език';
-
-  @override
   String get settingsAppLanguageTitle => 'Език на приложението';
-
-  @override
-  String get settingsOverrideAppLanguageTitle =>
-      'Замяна на езика на приложението';
 
   @override
   String get settingsSecurityTitle => 'сигурност';

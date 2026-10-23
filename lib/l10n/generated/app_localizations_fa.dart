@@ -774,13 +774,7 @@ class AppLocalizationsFa extends AppLocalizations {
   }
 
   @override
-  String get settingsLanguageTitle => 'زبان';
-
-  @override
   String get settingsAppLanguageTitle => 'زبان برنامه';
-
-  @override
-  String get settingsOverrideAppLanguageTitle => 'نادیده گرفتن زبان برنامه';
 
   @override
   String get settingsSecurityTitle => 'امنیت';

@@ -78,6 +78,10 @@ asks again. Dates are when it was settled. Ideas not built yet are in
   compact menu directly beneath its anchor: five moods and an explicit clear
   choice. A tap applies immediately and closes the menu; selecting the current
   mood keeps it. No confirmation dialog or second acceptance step.
+- 2026-10-22: Expose one App Language selector directly in General settings,
+  with System and the offered languages. Do not add a language subpage or
+  separate system-language/override controls. Existing selected languages remain
+  selected; System resumes following the platform locale.
 - Random walk matters to the owner, who relies on One Diary's: keep it
   good.
 - Appearance is independently configurable: light/system theme, optional

@@ -789,14 +789,7 @@ class AppLocalizationsTa extends AppLocalizations {
   }
 
   @override
-  String get settingsLanguageTitle => 'மொழி';
-
-  @override
   String get settingsAppLanguageTitle => 'பயன்பாட்டு மொழி';
-
-  @override
-  String get settingsOverrideAppLanguageTitle =>
-      'பயன்பாட்டு மொழியை மேலெழுதவும்';
 
   @override
   String get settingsSecurityTitle => 'பாதுகாப்பு';

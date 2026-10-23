@@ -797,13 +797,7 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get settingsLanguageTitle => 'Limba';
-
-  @override
   String get settingsAppLanguageTitle => 'Limba aplicației';
-
-  @override
-  String get settingsOverrideAppLanguageTitle => 'Ignorați limba aplicației';
 
   @override
   String get settingsSecurityTitle => 'Securitate';

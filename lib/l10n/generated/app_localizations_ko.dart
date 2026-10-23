@@ -767,13 +767,7 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
-  String get settingsLanguageTitle => '언어';
-
-  @override
   String get settingsAppLanguageTitle => '앱 언어';
-
-  @override
-  String get settingsOverrideAppLanguageTitle => '앱 언어 재정의';
 
   @override
   String get settingsSecurityTitle => '보안';

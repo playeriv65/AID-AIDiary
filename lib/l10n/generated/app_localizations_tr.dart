@@ -777,13 +777,7 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get settingsLanguageTitle => 'Dil';
-
-  @override
   String get settingsAppLanguageTitle => 'Uygulama Dili';
-
-  @override
-  String get settingsOverrideAppLanguageTitle => 'Uygulama Dilini Özelleştir';
 
   @override
   String get settingsSecurityTitle => 'Güvenlik';

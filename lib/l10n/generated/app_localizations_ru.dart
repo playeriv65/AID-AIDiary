@@ -795,13 +795,7 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
-  String get settingsLanguageTitle => 'Язык';
-
-  @override
   String get settingsAppLanguageTitle => 'Язык приложения';
-
-  @override
-  String get settingsOverrideAppLanguageTitle => 'Заменить язык приложения';
 
   @override
   String get settingsSecurityTitle => 'Безопасность';

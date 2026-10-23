@@ -776,13 +776,7 @@ class AppLocalizationsDa extends AppLocalizations {
   }
 
   @override
-  String get settingsLanguageTitle => 'Sprog';
-
-  @override
   String get settingsAppLanguageTitle => 'App sprog';
-
-  @override
-  String get settingsOverrideAppLanguageTitle => 'Tilsidesæt app-sprog';
 
   @override
   String get settingsSecurityTitle => 'Sikkerhed';

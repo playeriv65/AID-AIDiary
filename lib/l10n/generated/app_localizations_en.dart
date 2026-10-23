@@ -776,13 +776,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get settingsLanguageTitle => 'Language';
-
-  @override
   String get settingsAppLanguageTitle => 'App Language';
-
-  @override
-  String get settingsOverrideAppLanguageTitle => 'Override App Language';
 
   @override
   String get settingsSecurityTitle => 'Security';

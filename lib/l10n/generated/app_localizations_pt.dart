@@ -785,13 +785,7 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
-  String get settingsLanguageTitle => 'Idioma';
-
-  @override
   String get settingsAppLanguageTitle => 'Idioma da app';
-
-  @override
-  String get settingsOverrideAppLanguageTitle => 'Substituir língua da app';
 
   @override
   String get settingsSecurityTitle => 'Segurança';
@@ -3572,14 +3566,7 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
   }
 
   @override
-  String get settingsLanguageTitle => 'Idioma';
-
-  @override
   String get settingsAppLanguageTitle => 'Linguagem do Aplicativo';
-
-  @override
-  String get settingsOverrideAppLanguageTitle =>
-      'Substituir Linguagem do Aplicativo';
 
   @override
   String get settingsSecurityTitle => 'Segurança';

@@ -786,14 +786,7 @@ class AppLocalizationsOc extends AppLocalizations {
   }
 
   @override
-  String get settingsLanguageTitle => 'Lenga';
-
-  @override
   String get settingsAppLanguageTitle => 'Lenga de l\'aplicacion';
-
-  @override
-  String get settingsOverrideAppLanguageTitle =>
-      'Substituir lo lengatge de l\'aplicacion';
 
   @override
   String get settingsSecurityTitle => 'Seguretat';

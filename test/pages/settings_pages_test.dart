@@ -6,6 +6,7 @@
 library;
 
 import 'package:aid_diary/config_provider.dart';
+import 'package:aid_diary/language_option.dart';
 import 'package:aid_diary/pages/settings/appearance_settings.dart';
 import 'package:aid_diary/pages/settings/flashback_settings.dart';
 import 'package:easy_debounce/easy_debounce.dart';
@@ -58,4 +59,39 @@ void main() {
     expect(ConfigProvider.instance.get(Settings.happyIcon),
         Settings.happyIcon.defaultValue);
   });
+
+  for (final size in [const Size(360, 800), const Size(1280, 800)]) {
+    testWidgets(
+        'app language is selected directly and returns to system at $size',
+        (tester) async {
+      await DiaryAppHarness.setSetting(Settings.overrideLanguage,
+          const LanguageOption(languageCode: 'en').toJson());
+      DiaryAppHarness.size(tester, size);
+      await tester.pumpWidget(harness.app(const AppearanceSettings()));
+      await tester.pumpAndSettle();
+      final row = find.byKey(const ValueKey('settings-app-language'));
+      await tester.scrollUntilVisible(row, 500,
+          scrollable: find.byType(Scrollable).first);
+      await tester.pumpAndSettle();
+      final dropdown = find.descendant(
+          of: row, matching: find.byType(DropdownButton<LanguageOption?>));
+      expect(tester.widget<DropdownButton<LanguageOption?>>(dropdown).value,
+          const LanguageOption(languageCode: 'en'));
+      final systemLabel = (tester
+              .widget<DropdownButton<LanguageOption?>>(dropdown)
+              .items!
+              .first
+              .child as Text)
+          .data!;
+      await tapAndSettle(tester, dropdown);
+      await tapAndSettle(tester, find.text(systemLabel).hitTestable().last);
+      expect(ConfigProvider.instance.getOverrideLanguage(), isNull);
+      await tapAndSettle(tester, dropdown);
+      await tapAndSettle(tester, find.text('English').hitTestable().last);
+      expect(ConfigProvider.instance.getOverrideLanguage(), const Locale('en'));
+      expect(tester.widget<DropdownButton<LanguageOption?>>(dropdown).value,
+          const LanguageOption(languageCode: 'en'));
+      await tester.pumpWidget(const SizedBox.shrink());
+    });
+  }
 }

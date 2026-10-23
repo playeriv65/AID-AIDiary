@@ -782,13 +782,7 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
-  String get settingsLanguageTitle => 'Ngôn ngữ';
-
-  @override
   String get settingsAppLanguageTitle => 'Ngôn ngữ ứng dụng';
-
-  @override
-  String get settingsOverrideAppLanguageTitle => 'Ghi đè ngôn ngữ ứng dụng';
 
   @override
   String get settingsSecurityTitle => 'Bảo mật';

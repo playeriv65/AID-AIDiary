@@ -15,7 +15,6 @@ import 'package:aid_diary/pages/settings/command_line_settings.dart';
 import 'package:aid_diary/pages/settings/data_settings.dart';
 import 'package:aid_diary/pages/settings/flashback_settings.dart';
 import 'package:aid_diary/pages/settings/help_page.dart';
-import 'package:aid_diary/pages/settings/language_settings.dart';
 import 'package:aid_diary/pages/settings/notification_settings.dart';
 import 'package:aid_diary/pages/settings/security_settings.dart';
 import 'package:aid_diary/pages/settings/storage_settings.dart';
@@ -48,10 +47,8 @@ final List<Destination> settingsDestinations = [
   pageDestination('settings', 'The settings', (_) => const SettingsPage()),
   pageDestination(
       'settings/appearance',
-      'Theme, colours, fonts, calendar and more',
+      'Theme, colours, fonts, language, calendar and more',
       (_) => const AppearanceSettings()),
-  pageDestination(
-      'settings/language', 'The app language', (_) => const LanguageSettings()),
   pageDestination('settings/data', 'Sync, backup, storage, recently deleted',
       (_) => const DataSettings()),
   pageDestination('sync', 'Sync', (_) => const SyncSettings()),

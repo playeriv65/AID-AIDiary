@@ -766,13 +766,7 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get settingsLanguageTitle => '语言';
-
-  @override
   String get settingsAppLanguageTitle => '应用程序语言';
-
-  @override
-  String get settingsOverrideAppLanguageTitle => '覆盖应用程序语言';
 
   @override
   String get settingsSecurityTitle => '安全';
@@ -3434,13 +3428,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   }
 
   @override
-  String get settingsLanguageTitle => '語言';
-
-  @override
   String get settingsAppLanguageTitle => '應用程式語言';
-
-  @override
-  String get settingsOverrideAppLanguageTitle => '覆寫應用程式語言';
 
   @override
   String get settingsSecurityTitle => '安全';

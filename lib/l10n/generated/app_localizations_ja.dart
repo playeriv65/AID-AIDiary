@@ -768,13 +768,7 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
-  String get settingsLanguageTitle => '言語';
-
-  @override
   String get settingsAppLanguageTitle => 'アプリの言語';
-
-  @override
-  String get settingsOverrideAppLanguageTitle => 'アプリの言語を指定する';
 
   @override
   String get settingsSecurityTitle => 'セキュリティ';

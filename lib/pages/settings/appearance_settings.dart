@@ -5,6 +5,7 @@
 import 'package:aid_diary/actions/settings_actions.dart';
 import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/config_provider.dart';
+import 'package:aid_diary/language_option.dart';
 import 'package:aid_diary/services/wallpaper_service.dart';
 import 'package:aid_diary/time_manager.dart';
 import 'package:aid_diary/widgets/color_picker_dialog.dart';
@@ -547,11 +548,25 @@ class _AppearanceSettingsPageState extends State<AppearanceSettings> {
                       onChanged: (value) => changeSetting(setting, value),
                     ),
                   const Divider(height: 32),
-                  SettingsCategory(
-                      title:
-                          AppLocalizations.of(context)!.settingsLanguageTitle,
-                      icon: Icons.language_rounded,
-                      destination: 'settings/language'),
+                  SettingsDropdown<LanguageOption?>(
+                    key: const ValueKey('settings-app-language'),
+                    title: l10n.settingsAppLanguageTitle,
+                    leadingIcon: Icons.language_rounded,
+                    value: LanguageOption.fromJsonOrNull(
+                        configProvider.get(Settings.overrideLanguage)),
+                    options: [
+                      DropdownMenuItem(
+                          value: null, child: Text(l10n.themeSystem)),
+                      for (final locale in AppLocalizations.supportedLocales)
+                        DropdownMenuItem(
+                          value: LanguageOption.fromLocale(locale),
+                          child: Text(
+                              LanguageOption.fromLocale(locale).displayName()),
+                        ),
+                    ],
+                    onChanged: (language) => changeSetting(
+                        Settings.overrideLanguage, language?.toJson()),
+                  ),
                   SettingsCategory(
                       title: AppLocalizations.of(context)!.settingsTagsTitle,
                       icon: Icons.local_offer_rounded,

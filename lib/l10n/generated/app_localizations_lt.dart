@@ -802,13 +802,7 @@ class AppLocalizationsLt extends AppLocalizations {
   }
 
   @override
-  String get settingsLanguageTitle => 'Kalba';
-
-  @override
   String get settingsAppLanguageTitle => 'Programėlės kalba';
-
-  @override
-  String get settingsOverrideAppLanguageTitle => 'Nustelbti programėlės kalbą';
 
   @override
   String get settingsSecurityTitle => 'Saugumas';
