@@ -62,10 +62,12 @@ void main() {
     await session.tapKey(tester, 'journal-search');
     await session.capture(tester, 'phone-search');
     await back(tester);
+    await session.tapKey(tester, 'journal-calendar');
+    await session.capture(tester, 'phone-calendar');
+    await back(tester);
     for (final (index, name) in [
-      (1, 'calendar'),
-      (2, 'media'),
-      (4, 'coach'),
+      (1, 'media'),
+      (3, 'coach'),
     ]) {
       await DiaryAppHarness.goTo(tester, index);
       await session.capture(tester, 'phone-$name');

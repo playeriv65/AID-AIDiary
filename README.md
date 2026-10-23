@@ -32,7 +32,7 @@ The layout follows the Journey diary app: a bottom bar on phones, a navigation r
 - **Reviews**: the week or the year as story slides: counts, mood (a 7-day row, or the year in pixels), most frequent tags, activities and places, photos, entries per month and a highlight.
 - **Quick check-in**: a mood and a line of text, saved as an entry in two taps.
 - **Time capsules**: seal an entry until a date; until then it shows locked and stays out of search, throwbacks, random walk, media and the map. It can be opened early.
-- **Calendar**: scrolling months; wide windows list the selected day beside them.
+- **Calendar**: open it from the top calendar button; scrolling months, with the selected day beside them in wide windows. Back returns to your previous section.
 - **Media**: every attached photo, video and voice note.
 - **Atlas**: entries with a location on an OpenStreetMap map; nearby markers merge into numbered clusters that zoom in when tapped.
 - **Coach**: built-in prompt programs and templates, plus your own templates. A program shows its length, interval and difficulty; once enrolled, each day's or week's question appears in the stories (and as a notification on Android) and the answer is saved as an entry.

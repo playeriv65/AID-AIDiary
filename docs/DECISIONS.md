@@ -55,6 +55,10 @@ asks again. Dates are when it was settled. Ideas not built yet are in
 
 ## Layout and look
 
+- 2026-10-22: Replace the top app branding with a calendar shortcut. Calendar
+  opens over the current section and returns there on Back; it is no longer a
+  bottom-bar or rail destination. Keep everyday navigation to four sections.
+
 - Diary-day wording (2026-10-22): the editor's date control is labeled
   "Diary day" (Chinese: "日记日"). Its picker says that creation time stays
   unchanged, and its hint explains that this is the day the entry belongs to.

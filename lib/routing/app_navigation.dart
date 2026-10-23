@@ -11,6 +11,9 @@ import 'package:material_ui/material_ui.dart';
 /// importing pages, so components never depend on the screens using them.
 /// The places themselves are in `destinations.dart`.
 abstract final class AppNavigation {
+  static Future<void> calendar(NavigatorState navigator) =>
+      openPlace(navigator.context, 'calendar');
+
   static Future<void> search(NavigatorState navigator) =>
       openPlace(navigator.context, 'search');
 

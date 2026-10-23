@@ -3,6 +3,7 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/layouts/adaptive_diary_shell.dart';
 import 'package:aid_diary/pages/entry_view_page.dart';
 import 'package:aid_diary/providers/entries_provider.dart';
 import 'package:aid_diary/providers/entry_images_provider.dart';
@@ -23,14 +24,10 @@ class CalendarPage extends StatefulWidget {
   State<CalendarPage> createState() => _CalendarPageState();
 }
 
-class _CalendarPageState extends State<CalendarPage>
-    with AutomaticKeepAliveClientMixin {
+class _CalendarPageState extends State<CalendarPage> {
   final _calendarKey = GlobalKey();
   DateTime _selectedDate = DateTime.now();
   int? _selectedEntryId;
-
-  @override
-  bool get wantKeepAlive => true;
 
   /// Phones open the day directly: its entry, its list, or a new entry.
   void _openDay(BuildContext context, DateTime day) {
@@ -46,30 +43,43 @@ class _CalendarPageState extends State<CalendarPage>
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     context.watch<EntriesProvider>();
-    return ListDetailLayout(
-      detail: _dayPane(context),
-      listBuilder: (context, split) => Column(children: [
-        const Padding(
-          padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
-          child: TopSearchCard(),
-        ),
-        Expanded(
-          child: MonthCalendar(
-            key: _calendarKey,
-            selectedDate: split ? _selectedDate : null,
-            // Phones keep the new-entry button in the corner below.
-            todayButtonBottom: split ? 16 : 88,
-            onDayTap: split
-                ? (_, date) => setState(() {
-                      _selectedDate = date;
-                      _selectedEntryId = null;
-                    })
-                : _openDay,
+    final compact =
+        diaryLayoutFor(MediaQuery.sizeOf(context)) == DiaryLayout.compact;
+    final l10n = AppLocalizations.of(context)!;
+    return Scaffold(
+      floatingActionButton: compact
+          ? FloatingActionButton.extended(
+              key: const ValueKey('diary-new-entry'),
+              onPressed: () => EntryNavigation.edit(context, null),
+              icon: const Icon(Icons.add_rounded),
+              label: Text(l10n.adaptiveNewEntry),
+            )
+          : null,
+      body: SafeArea(
+          child: ListDetailLayout(
+        detail: _dayPane(context),
+        listBuilder: (context, split) => Column(children: [
+          const Padding(
+            padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
+            child: TopSearchCard(calendarPage: true),
           ),
-        ),
-      ]),
+          Expanded(
+            child: MonthCalendar(
+              key: _calendarKey,
+              selectedDate: split ? _selectedDate : null,
+              // Phones keep the new-entry button in the corner below.
+              todayButtonBottom: split ? 16 : 88,
+              onDayTap: split
+                  ? (_, date) => setState(() {
+                        _selectedDate = date;
+                        _selectedEntryId = null;
+                      })
+                  : _openDay,
+            ),
+          ),
+        ]),
+      )),
     );
   }
 

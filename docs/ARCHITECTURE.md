@@ -115,6 +115,12 @@ creation timestamps, UTC offsets and body text in an isolated store.
 
 ### UI work and shared state
 
+The shell retains four lazily built sections: journal, media, atlas and coach.
+The shared top card opens `calendar` as an ordinary named route, also reached
+by `ui.navigate to=calendar`. Its month/day selection survives layout changes
+while open; Back returns to the section beneath it. Calendar owns its compact
+new-entry button; wide layouts retain the shell's rail action.
+
 Pages stay alive and may rebuild on each diary change. Keep per-entry work out
 of build loops: use store indexes (`EntryStore.getEntriesForDate`,
 `EntryImagesProvider.getForEntry`, `TagsProvider.getEntryTagsForEntry`) and cache

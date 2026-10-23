@@ -77,7 +77,7 @@ void main() {
       await tester.pumpWidget(harness.app(const MobileScaffold()));
       await tester.pumpAndSettle();
       // Skip the map here: it would fetch tiles. It has its own test.
-      for (final destination in [0, 1, 2, 4]) {
+      for (final destination in [0, 1, 3]) {
         await DiaryAppHarness.goTo(tester, destination);
         expect(tester.takeException(), isNull);
       }

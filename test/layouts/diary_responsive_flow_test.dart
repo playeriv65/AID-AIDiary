@@ -2,6 +2,7 @@
 library;
 
 import 'package:aid_diary/database/entry_store.dart';
+import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/layouts/mobile_scaffold.dart';
 import 'package:aid_diary/pages/entries_list_page.dart';
 import 'package:aid_diary/providers/entries_provider.dart';
@@ -26,7 +27,8 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byKey(const ValueKey('list-detail-split')), findsOneWidget);
     expect(find.byKey(const ValueKey('detail-empty')), findsOneWidget);
-    await tapKey(tester, 'diary-destination-1');
+    await tapKey(tester, 'journal-calendar');
+    expect(AppActions.instance.screen!.current, 'calendar');
     final calendarState = tester.state(find.byType(MonthCalendar));
     for (final dimensions in [
       const Size(844, 390),
@@ -54,6 +56,8 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.byType(BackButton));
     await tester.pumpAndSettle();
+    await tester.tap(find.byType(BackButton));
+    await tester.pumpAndSettle();
     expect(
         find.byKey(const ValueKey('diary-bottom-navigation')), findsOneWidget);
     await tester.pumpWidget(const SizedBox.shrink());
@@ -64,7 +68,7 @@ void main() {
     DiaryAppHarness.size(tester, const Size(1440, 900));
     await tester.pumpWidget(harness.app(const MobileScaffold()));
     await tester.pumpAndSettle();
-    await tapKey(tester, 'diary-destination-1');
+    await tapKey(tester, 'journal-calendar');
     await tapKey(tester, 'diary-day-write');
     final editable = DiaryAppHarness.entryBody;
     await tester.enterText(editable, '横屏草稿不会丢失');
@@ -109,6 +113,33 @@ void main() {
     expect(EntryStore.instance.entries, isEmpty);
     expect(find.byKey(const ValueKey('diary-rail')), findsOneWidget);
     expect(find.byKey(const ValueKey('diary-day-pane')), findsOneWidget);
+    expect(tester.takeException(), isNull);
+    await tester.pumpWidget(const SizedBox.shrink());
+  });
+
+  testWidgets('calendar shortcut returns to media; actions open the same page',
+      (tester) async {
+    DiaryAppHarness.size(tester, const Size(390, 844));
+    await tester.pumpWidget(harness.app(const MobileScaffold()));
+    await tester.pumpAndSettle();
+    await DiaryAppHarness.goTo(tester, 1);
+    expect(AppActions.instance.screen!.current, 'media');
+    await tapKey(tester, 'journal-calendar');
+    expect(AppActions.instance.screen!.current, 'calendar');
+    expect(find.byType(MonthCalendar), findsOneWidget);
+    await tester.tap(find.byType(BackButton));
+    await tester.pumpAndSettle();
+    expect(AppActions.instance.screen!.current, 'media');
+
+    final navigation =
+        AppActions.instance.run('ui.navigate', {'to': 'calendar'});
+    await tester.pumpAndSettle();
+    await navigation;
+    expect(AppActions.instance.screen!.current, 'calendar');
+    expect(find.byType(MonthCalendar), findsOneWidget);
+    await tester.tap(find.byType(BackButton));
+    await tester.pumpAndSettle();
+    expect(AppActions.instance.screen!.current, 'media');
     expect(tester.takeException(), isNull);
     await tester.pumpWidget(const SizedBox.shrink());
   });

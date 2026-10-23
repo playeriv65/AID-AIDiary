@@ -4,15 +4,15 @@
 
 import 'package:aid_diary/routing/app_navigation.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
-import 'package:aid_diary/widgets/app_logo.dart';
 import 'package:material_ui/material_ui.dart';
 
-/// Floating card at the top of each page: app name, search and the menu
-/// sheet.
+/// Floating calendar shortcut, search and menu, or back from the calendar.
 class TopSearchCard extends StatelessWidget {
-  const TopSearchCard({super.key, this.showSearch = true});
+  const TopSearchCard(
+      {super.key, this.showSearch = true, this.calendarPage = false});
 
   final bool showSearch;
+  final bool calendarPage;
 
   @override
   Widget build(BuildContext context) {
@@ -27,19 +27,25 @@ class TopSearchCard extends StatelessWidget {
       child: SizedBox(
         height: 60,
         child: Padding(
-          padding: const EdgeInsets.only(left: 16, right: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 8),
           child: Row(children: [
-            const AppLogo(),
-            const SizedBox(width: 10),
-            Expanded(
-              child: Text(l10n.appTitle.toUpperCase(),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: theme.textTheme.titleMedium?.copyWith(
-                      color: cs.primary,
-                      letterSpacing: 2,
-                      fontWeight: FontWeight.w600)),
-            ),
+            if (calendarPage) ...[
+              const BackButton(),
+              Expanded(
+                child: Text(l10n.pageCalendarTitle,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: theme.textTheme.titleMedium),
+              ),
+            ] else ...[
+              IconButton(
+                key: const ValueKey('journal-calendar'),
+                tooltip: l10n.pageCalendarTitle,
+                icon: const Icon(Icons.calendar_today_rounded),
+                onPressed: () => AppNavigation.calendar(Navigator.of(context)),
+              ),
+              const Spacer(),
+            ],
             if (showSearch) ...[
               const VerticalDivider(indent: 16, endIndent: 16),
               IconButton(

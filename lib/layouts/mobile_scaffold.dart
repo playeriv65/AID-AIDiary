@@ -8,7 +8,6 @@ import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/layouts/adaptive_diary_shell.dart';
 import 'package:aid_diary/pages/atlas_page.dart';
-import 'package:aid_diary/pages/calendar_page.dart';
 import 'package:aid_diary/pages/coach_page.dart';
 import 'package:aid_diary/pages/journal_page.dart';
 import 'package:aid_diary/pages/media_page.dart';
@@ -26,8 +25,8 @@ class MobileScaffold extends StatefulWidget {
 
 class _MobileScaffoldState extends State<MobileScaffold>
     implements ActionScreen {
-  static const _coachIndex = 4;
-  static const _tabs = ['journal', 'calendar', 'media', 'atlas', 'coach'];
+  static const _coachIndex = 3;
+  static const _tabs = ['journal', 'media', 'atlas', 'coach'];
 
   int currentIndex = 0;
   final _navigatorKey = GlobalKey<NavigatorState>();
@@ -97,7 +96,6 @@ class _MobileScaffoldState extends State<MobileScaffold>
 
   static const _pages = [
     JournalPage(),
-    CalendarPage(),
     MediaPage(),
     AtlasPage(),
     CoachPage(),
@@ -141,8 +139,6 @@ class _MobileScaffoldState extends State<MobileScaffold>
       destinations: [
         DiaryDestination(l10n.pageJournalTitle, Icons.auto_stories_outlined,
             Icons.auto_stories_rounded),
-        DiaryDestination(l10n.pageCalendarTitle, Icons.calendar_today_outlined,
-            Icons.calendar_today_rounded),
         DiaryDestination(
             l10n.pageMediaTitle, Icons.photo_outlined, Icons.photo_rounded),
         DiaryDestination(

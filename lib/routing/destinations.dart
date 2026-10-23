@@ -3,6 +3,7 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'package:aid_diary/actions/app_action.dart';
+import 'package:aid_diary/pages/calendar_page.dart';
 import 'package:aid_diary/routing/destination.dart';
 import 'package:aid_diary/routing/drawing_navigation.dart';
 import 'package:aid_diary/routing/coach_destinations.dart';
@@ -20,6 +21,7 @@ export 'package:aid_diary/routing/destination.dart' show Destination;
 /// screens only through `lib/routing/` (test/architecture/places_test.dart),
 /// so `ui.navigate` reaches all of them.
 final List<Destination> destinations = [
+  pageDestination('calendar', 'Browse diary days', (_) => const CalendarPage()),
   ...settingsDestinations,
   ...syncScanDestinations,
   ...entryDestinations,
