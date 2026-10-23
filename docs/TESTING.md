@@ -73,7 +73,7 @@ distinguishes unit, widget and full-app integration tests. Local HTTP sockets
 or mocked WebRTC do not prove cross-NAT reachability. Native checks must record
 the actual path and data verification separately in [SYNC_NETWORK.md](SYNC_NETWORK.md).
 Cross-network validation and the broader Android performance pass remain
-deferred. The requested Windows scrollbar results belong in [REFRESH_RATE.md](REFRESH_RATE.md).
+deferred. The requested Windows scrollbar and mouse-wheel results belong in [REFRESH_RATE.md](REFRESH_RATE.md).
 
 All offline Flutter commands exclude `live`, even if the shell has service
 credentials. `test-live` is explicit opt-in; it may change remote scratch
@@ -178,6 +178,9 @@ existing profile/native measurement; screenshots and debug timing cannot prove i
 ## Test design and failure handling
 
 ### Widget fixtures
+
+Load shared asset configuration in asynchronous `setUp`, before entering a
+widget test's fake clock, as the frame-action fixture does.
 
 Use `DiaryAppHarness.setSetting` for fixture setting changes and
 `DiaryAppHarness.pumpUntil` for SQLite work started by widgets. When the tap

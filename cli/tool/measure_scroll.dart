@@ -10,7 +10,9 @@ import 'package:vm_service/vm_service.dart';
 import 'package:vm_service/vm_service_io.dart';
 
 Future<void> main(List<String> args) async {
-  if (args.length != 1 || Platform.environment['AID_API_INFO'] == null) {
+  final wheelOnly = args.length == 2 && args[1] == '--wheel';
+  if ((args.length != 1 && !wheelOnly) ||
+      Platform.environment['AID_API_INFO'] == null) {
     throw ArgumentError(
       'Set AID_API_INFO to an isolated dev app and pass a report directory.',
     );
@@ -23,7 +25,7 @@ Future<void> main(List<String> args) async {
       'AID_API_INFO must belong to the explicit AID_DATA_DIR scratch store.',
     );
   }
-  final output = Directory(args.single)..createSync(recursive: true);
+  final output = Directory(args.first)..createSync(recursive: true);
   final config =
       jsonDecode(File('../scripts/frame_rate.json').readAsStringSync()) as Map;
   final client = AidClient(launch: false);
@@ -83,7 +85,11 @@ Future<void> main(List<String> args) async {
       '${output.path}/summary.json',
     ).writeAsStringSync(const JsonEncoder.withIndent('  ').convert(results));
     writeReport();
-    Future<void> measure(String name, Map<String, Object?> gesture) async {
+    Future<void> measure(
+      String name,
+      Map<String, Object?> gesture, {
+      String action = 'ui.fling',
+    }) async {
       await client.traceStart(widgets: false);
       if (collectCpu) await cpuService!.clearCpuSamples(mainIsolate);
       final origin = collectCpu
@@ -91,7 +97,7 @@ Future<void> main(List<String> args) async {
           : 0;
       await run('perf.start');
       final timer = Stopwatch()..start();
-      final motion = await run('ui.fling', gesture);
+      final motion = await run(action, gesture);
       final report = await run('perf.stop', {'still_ms': 60000});
       report['motion'] = motion;
       report['wallMs'] = timer.elapsedMilliseconds;
@@ -150,6 +156,42 @@ Future<void> main(List<String> args) async {
       stdout.writeln('$name: ${jsonEncode(report)}');
     }
 
+    if (wheelOnly) {
+      // Warm native text/image rendering separately from the sustained case.
+      await run('ui.wheel', {'count': 1});
+      await measure('mouse_wheel', {
+        'count': 24,
+        'delta': 60,
+        'interval_ms': 60,
+        'settle_ms': 300,
+      }, action: 'ui.wheel');
+      final motion = ((results['mouse_wheel'] as Map)['motion'] as Map);
+      final offsets = (motion['frameOffsets'] as List).cast<num>();
+      final start = motion['scrollStart'] as num;
+      final end = motion['scrollEnd'] as num;
+      var stationary = 0;
+      for (var i = 1; i < offsets.length; i++) {
+        if (offsets[i] > start + 1 &&
+            offsets[i] < end - 1 &&
+            (offsets[i] - offsets[i - 1]).abs() < .001) {
+          stationary++;
+        }
+      }
+      results['stationaryMotionFrames'] = stationary;
+      if (((motion['scrollEnd'] as num) - (motion['scrollStart'] as num) - 1440)
+                  .abs() >
+              1 ||
+          offsets.toSet().length <= 24 ||
+          stationary != 0 ||
+          (motion['scrollEnd'] as num) <= (motion['scrollBeforeTail'] as num)) {
+        throw StateError(
+          'Wheel distance, intermediate frames or settling tail is missing: $motion',
+        );
+      }
+      results['complete'] = true;
+      writeReport();
+      return;
+    }
     await measure('touch_scroll', {
       'x': .25,
       'from': .8,

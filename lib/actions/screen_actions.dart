@@ -198,6 +198,100 @@ final List<AppAction> screenActions = [
     },
   ),
   AppAction(
+    id: 'ui.wheel',
+    describe: 'Sends mouse-wheel notches through the GUI pointer-signal path. '
+        'Reports actual scroll positions, including the settling tail.',
+    risk: ActionRisk.read,
+    params: const [
+      ActionParam(
+          'x', ParamType.number, 'Window fraction across; 0.25 by default',
+          required: false),
+      ActionParam('y', ParamType.number, 'Window fraction down; 0.5 by default',
+          required: false),
+      ActionParam(
+          'delta', ParamType.number, 'Logical pixels per notch; 60 by default',
+          required: false),
+      ActionParam('count', ParamType.integer,
+          'Number of notches, 1 to 100; 20 by default',
+          required: false),
+      ActionParam('interval_ms', ParamType.integer,
+          'Spacing of notches, 1 to 1000 ms; 60 by default',
+          required: false),
+      ActionParam('settle_ms', ParamType.integer,
+          'Tail observation, 0 to 2000 ms; 300 by default',
+          required: false),
+    ],
+    run: (context, args) async {
+      _screen(context);
+      final count = args['count'] as int? ?? 20;
+      final interval = args['interval_ms'] as int? ?? 60;
+      final settle = args['settle_ms'] as int? ?? 300;
+      final delta = (args['delta'] as num? ?? 60).toDouble();
+      if (count < 1 ||
+          count > 100 ||
+          interval < 1 ||
+          interval > 1000 ||
+          settle < 0 ||
+          settle > 2000 ||
+          !delta.isFinite ||
+          delta.abs() > 10000) {
+        throw const ActionException(
+            'bad_args', 'Invalid wheel count, timing or distance');
+      }
+      final binding = GestureBinding.instance;
+      final view = PlatformDispatcher.instance.implicitView!;
+      final size = view.physicalSize / view.devicePixelRatio;
+      final at = Offset(_fraction(args, 'x', .25) * size.width,
+          _fraction(args, 'y', .5) * size.height);
+      final hit = HitTestResult();
+      binding.hitTestInView(hit, at, view.viewId);
+      final viewport = hit.path
+          .map((entry) => entry.target)
+          .whereType<RenderObject>()
+          .map(_verticalViewport)
+          .whereType<RenderViewportBase>()
+          .firstOrNull;
+      if (viewport == null) {
+        throw const ActionException(
+            'no_scroll', 'No vertical list at the wheel position');
+      }
+      final start = viewport.offset.pixels;
+      final samples = <double>[];
+      var sampling = true;
+      void sample(Duration _) {
+        if (!sampling) return;
+        samples.add(viewport.offset.pixels);
+        // Observe frames that the app actually requests. A diagnostic ticker
+        // would keep producing frames after motion stops and inflate fps.
+        SchedulerBinding.instance.addPostFrameCallback(sample);
+      }
+
+      SchedulerBinding.instance.addPostFrameCallback(sample);
+      try {
+        for (var i = 0; i < count; i++) {
+          binding.handlePointerEvent(PointerScrollEvent(
+              viewId: view.viewId,
+              kind: PointerDeviceKind.mouse,
+              position: at,
+              scrollDelta: Offset(0, delta)));
+          await Future<void>.delayed(Duration(milliseconds: interval));
+        }
+        final beforeTail = viewport.offset.pixels;
+        await Future<void>.delayed(Duration(milliseconds: settle));
+        return {
+          'scrollStart': start,
+          'scrollBeforeTail': beforeTail,
+          'scrollEnd': viewport.offset.pixels,
+          'frameOffsets': samples,
+          'count': count,
+          'delta': delta
+        };
+      } finally {
+        sampling = false;
+      }
+    },
+  ),
+  AppAction(
     id: 'ui.fling',
     describe:
         'Drags a finger or mouse straight up or down the window and lifts '

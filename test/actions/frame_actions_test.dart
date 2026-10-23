@@ -10,6 +10,8 @@ library;
 
 import 'package:aid_diary/actions/app_action.dart';
 import 'package:aid_diary/actions/app_actions.dart';
+import 'package:aid_diary/config/app_config.dart';
+import 'package:aid_diary/widgets/windows_wheel_scroll.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
@@ -26,36 +28,72 @@ class _Screen implements ActionScreen {
 }
 
 void main() {
+  setUp(() async {
+    await AppConfig.load();
+  });
+
+  testWidgets('ui.wheel measures notches and their rendered settling tail',
+      (tester) async {
+    final actions = AppActions(screen: _Screen());
+    final controller = WheelScrollController();
+    addTearDown(controller.dispose);
+    await tester.pumpWidget(MaterialApp(
+        theme: ThemeData(platform: TargetPlatform.windows),
+        home: WindowsWheelScrollScope(
+            controller: controller,
+            child: ListView.builder(
+                controller: controller,
+                itemExtent: 60,
+                itemCount: 4000,
+                itemBuilder: (_, index) => Text('Row $index')))));
+    await tester.pumpAndSettle();
+    final action = actions
+        .run('ui.wheel', {'count': 2, 'interval_ms': 32, 'settle_ms': 220});
+    for (var i = 0; i < 50; i++) {
+      await tester.pump(const Duration(milliseconds: 8));
+    }
+    final result = await action as Map;
+    expect(result['scrollEnd'], closeTo(120, .01));
+    expect(result['scrollBeforeTail'], lessThan(120));
+    expect((result['frameOffsets'] as List).toSet().length, greaterThan(2));
+    await tester.pumpAndSettle();
+  });
+
   testWidgets('mouse drag moves a desktop scrollbar across a long list',
       (tester) async {
     final actions = AppActions(screen: _Screen());
-    final controller = ScrollController();
+    final controller = WheelScrollController();
     addTearDown(controller.dispose);
     await tester.pumpWidget(MaterialApp(
       theme: ThemeData(platform: TargetPlatform.windows),
       scrollBehavior:
           const MaterialScrollBehavior().copyWith(scrollbars: false),
-      home: Scrollbar(
-        controller: controller,
-        child: ListView.builder(
+      home: WindowsWheelScrollScope(
           controller: controller,
-          itemExtent: 60,
-          itemCount: 4000,
-          itemBuilder: (_, index) => Text('Row $index'),
-        ),
-      ),
+          child: Scrollbar(
+            controller: controller,
+            child: ListView.builder(
+              controller: controller,
+              itemExtent: 60,
+              itemCount: 4000,
+              itemBuilder: (_, index) => Text('Row $index'),
+            ),
+          )),
     ));
     await tester.pumpAndSettle();
+    var finished = false;
     final action = actions.run('ui.fling', {
       'mouse': true,
       'x': .995,
       'from': .02,
       'to': .8,
       'duration_ms': 96,
-    });
-    for (var step = 0; step < 20; step++) {
+    }).whenComplete(() => finished = true);
+    for (var step = 0; step < 60 && !finished; step++) {
       await tester.pump(const Duration(milliseconds: 8));
     }
+    expect(finished, isTrue,
+        reason: 'The bounded drag must complete while frames are pumped');
     final result = await action as Map;
     await tester.pumpAndSettle();
     expect(controller.offset,

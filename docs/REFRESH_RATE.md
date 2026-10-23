@@ -143,3 +143,54 @@ This addresses the pattern documented in Flutter's
 [variable-height jumpTo issue](https://github.com/flutter/flutter/issues/52207);
 use Flutter's [profile-mode procedure](https://docs.flutter.dev/cookbook/testing/integration/profiling)
 when evaluating it, rather than debug-frame timing.
+
+### Windows mouse-wheel behavior
+
+Flutter's default [`ScrollPosition.pointerScroll`](https://api.flutter.dev/flutter/widgets/ScrollPosition/pointerScroll.html)
+applies wheel deltas without animation. A high engine frame rate during a drag
+does not imply that discrete wheel notches are interpolated. Windows primary
+lists now use a short decaying tail, configured by
+`scrolling.wheelDurationMs` (180 ms). Notches arriving during a tail accumulate
+at its target; reversing starts from the visible position. Touch/trackpad
+gestures and scrollbar dragging retain their native behavior. Reduced motion
+disables the tail, and taps can interrupt it without being swallowed.
+The same ticker runs across a burst: restarting a driven animation for every
+notch introduced a stationary frame per notch despite good engine timings.
+The configured duration controls exponential decay; the tail finishes when
+the remaining distance is within the platform's scroll tolerance.
+
+Use the profile build and stable staging procedure, then
+`./scripts/windows_scroll.ps1 -Label wheel -WheelOnly`. The `ui.wheel` action
+sends real Flutter mouse-wheel signals rather than substituting a touch fling.
+The generated fixture remains isolated. After a separate warm-up notch, the
+case sends 24 notches of 60 logical pixels at 60 ms intervals and observes the
+settling tail. It requires the full 1440-pixel displacement, more distinct
+per-frame offsets than input notches, no stationary frames during active
+movement, and movement after the last notch. Sampling observes post-frame
+callbacks without requesting extra frames after motion has stopped.
+Frame timings use the existing budget limits and fail the runner on an overrun.
+These are synthetic pointer signals in a native profile app, not a physical
+mouse or OS presented-frame measurement. Do not equate this case with the
+previous fast full-history scrollbar traversal.
+
+Wheel verification on 2026-10-23 used the same 4000-entry/400-photo native
+Windows profile fixture, Skia and a 120 Hz engine display. No Flutter test or
+build ran concurrently with the final measurement. The final case recorded
+205 engine frames and 204 distinct offsets for 24 notches: 60 → 1500 logical
+pixels, with the last 12.70 pixels completed during the settling tail. There
+were zero stationary frames inside active movement and zero skipped refreshes.
+Build p99 was 1.61 ms and raster p99 1.81 ms; one 10.04 ms raster frame exceeded
+the 8.33 ms budget (0.49%), within the existing 1% limit. The engine's fps
+estimate was 129.52; it is not a physical presented-frame rate or a claim that
+the 120 Hz display presented 129 frames per second.
+
+The final full offline Flutter run passed 970 cases, including wheel bursts,
+reversal, nested-list handoff, reduced motion, route isolation/Back, touch and
+scrollbar interruption. Analysis, CLI measurement-tool analysis and the native
+profile build passed. An earlier host run was stopped at an asset-loading
+fixture inside fake time; shared config now loads in asynchronous `setUp` and
+the corrected final run passed. An earlier wheel measurement overlapped host
+tests and is not the final performance evidence. Final local reports are kept
+under ignored `build/verification/windows-wheel-20261023/`. Ordinary diary data
+and the owner's installed application were not changed. The separate extreme
+scrollbar-traversal TODO remains open.

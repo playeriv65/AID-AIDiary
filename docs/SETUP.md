@@ -55,7 +55,8 @@ each commit. Native and live checks have separate environments and claims.
 For an isolated Windows scrollbar profile run, use
 `./scripts/dev.ps1 windows-profile-build`, then
 `./scripts/dev.ps1 windows-profile-stage`, then
-`./scripts/windows_scroll.ps1 -Label current`. This reuses `DEV_WINDOWS_RUNTIME`
+`./scripts/windows_scroll.ps1 -Label current`. For the wheel-specific path use
+`./scripts/windows_scroll.ps1 -Label wheel -WheelOnly`. This reuses `DEV_WINDOWS_RUNTIME`
 instead of creating a new executable/firewall identity for each worktree.
 The runner uses generated entries in `build/windows-scroll/data`, checks the
 launched process/API identity and stops that process on exit. Reports and

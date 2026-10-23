@@ -11,6 +11,7 @@ import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/database/entry_store.dart';
 import 'package:aid_diary/widgets/back_gesture_transition.dart';
+import 'package:aid_diary/widgets/windows_wheel_scroll.dart';
 import 'package:aid_diary/custom_locale_delegates.dart';
 import 'package:aid_diary/device_info_service.dart';
 import 'package:aid_diary/flashback_manager.dart';
@@ -203,7 +204,7 @@ class _MainAppState extends State<MainApp> {
       // The back gesture follows the finger and fades out at its own pace.
       const transitions = PageTransitionsTheme(builders: {
         TargetPlatform.android: DiaryPageTransitionsBuilder(),
-        TargetPlatform.windows: ZoomPageTransitionsBuilder(),
+        TargetPlatform.windows: WindowsWheelPageTransitionsBuilder(),
       });
       lightTheme = lightTheme.copyWith(pageTransitionsTheme: transitions);
       darkTheme = darkTheme.copyWith(pageTransitionsTheme: transitions);

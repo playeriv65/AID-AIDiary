@@ -1,7 +1,7 @@
 # Windows-only profile measurements over generated data. Never attaches to the
 # owner's installation. Build/stage first with dev.ps1 windows-profile-build
 # and windows-profile-stage; run this script through the configured Dart SDK.
-param([ValidatePattern('^[a-z0-9-]+$')][string]$Label = 'current', [switch]$CpuProfile)
+param([ValidatePattern('^[a-z0-9-]+$')][string]$Label = 'current', [switch]$CpuProfile, [switch]$WheelOnly)
 $ErrorActionPreference = 'Stop'
 $repo = Split-Path $PSScriptRoot -Parent
 $localTools = @{}
@@ -46,7 +46,9 @@ try {
   if ($endpoint.pid -ne $app.Id) { throw 'The API does not belong to the launched test process.' }
   Push-Location (Join-Path $repo 'cli')
   try {
-    & (Join-Path $localTools['FLUTTER_ROOT'] 'bin\dart.bat') run tool/measure_scroll.dart $output
+    $measureArgs = @('run', 'tool/measure_scroll.dart', $output)
+    if ($WheelOnly) { $measureArgs += '--wheel' }
+    & (Join-Path $localTools['FLUTTER_ROOT'] 'bin\dart.bat') @measureArgs
     if ($LASTEXITCODE -ne 0) { throw "Measurement failed; see $output." }
     $report = Get-Content -LiteralPath (Join-Path $output 'summary.json') -Raw | ConvertFrom-Json
     $unmet = @($report.PSObject.Properties | Where-Object { $_.Value.withinLimits -eq $false } | ForEach-Object Name)

@@ -8,6 +8,7 @@ import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/providers/entries_provider.dart';
 import 'package:aid_diary/time_manager.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:aid_diary/widgets/windows_wheel_scroll.dart';
 import 'package:provider/provider.dart';
 import 'package:shamsi_date/shamsi_date.dart';
 
@@ -63,7 +64,7 @@ class MonthCalendar extends StatefulWidget {
 }
 
 class _MonthCalendarState extends State<MonthCalendar> {
-  final _controller = ScrollController();
+  final _controller = WheelScrollController();
   final _centerKey = UniqueKey();
 
   @override
@@ -111,58 +112,60 @@ class _MonthCalendarState extends State<MonthCalendar> {
           onDayTap: widget.onDayTap,
         );
 
-    return Stack(children: [
-      Column(children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: Row(children: [
-            for (final label in weekdays)
-              Expanded(
-                child: Center(
-                  child: Text(label,
-                      style: Theme.of(context)
-                          .textTheme
-                          .labelSmall
-                          ?.copyWith(color: cs.onSurfaceVariant)),
-                ),
+    return WindowsWheelScrollScope(
+        controller: _controller,
+        child: Stack(children: [
+          Column(children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: Row(children: [
+                for (final label in weekdays)
+                  Expanded(
+                    child: Center(
+                      child: Text(label,
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelSmall
+                              ?.copyWith(color: cs.onSurfaceVariant)),
+                    ),
+                  ),
+              ]),
+            ),
+            const SizedBox(height: 4),
+            Expanded(
+              child: CustomScrollView(
+                key: const ValueKey('month-calendar'),
+                controller: _controller,
+                center: _centerKey,
+                slivers: [
+                  SliverList.builder(
+                    itemCount: _monthsBack(now, jalali),
+                    itemBuilder: (context, i) => month(-(i + 1)),
+                  ),
+                  SliverList.builder(
+                    key: _centerKey,
+                    itemCount: widget.monthsAhead + 1,
+                    itemBuilder: (context, i) => month(i),
+                  ),
+                  const SliverPadding(padding: EdgeInsets.only(bottom: 96)),
+                ],
               ),
+            ),
           ]),
-        ),
-        const SizedBox(height: 4),
-        Expanded(
-          child: CustomScrollView(
-            key: const ValueKey('month-calendar'),
-            controller: _controller,
-            center: _centerKey,
-            slivers: [
-              SliverList.builder(
-                itemCount: _monthsBack(now, jalali),
-                itemBuilder: (context, i) => month(-(i + 1)),
-              ),
-              SliverList.builder(
-                key: _centerKey,
-                itemCount: widget.monthsAhead + 1,
-                itemBuilder: (context, i) => month(i),
-              ),
-              const SliverPadding(padding: EdgeInsets.only(bottom: 96)),
-            ],
+          PositionedDirectional(
+            end: 16,
+            bottom: widget.todayButtonBottom,
+            child: FloatingActionButton.small(
+              key: const ValueKey('calendar-today'),
+              heroTag: 'calendar-today',
+              tooltip: l10n.calendarJumpToToday,
+              onPressed: () => _controller.animateTo(0,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeOut),
+              child: const Icon(Icons.today_rounded),
+            ),
           ),
-        ),
-      ]),
-      PositionedDirectional(
-        end: 16,
-        bottom: widget.todayButtonBottom,
-        child: FloatingActionButton.small(
-          key: const ValueKey('calendar-today'),
-          heroTag: 'calendar-today',
-          tooltip: l10n.calendarJumpToToday,
-          onPressed: () => _controller.animateTo(0,
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeOut),
-          child: const Icon(Icons.today_rounded),
-        ),
-      ),
-    ]);
+        ]));
   }
 }
 

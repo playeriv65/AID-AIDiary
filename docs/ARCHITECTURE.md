@@ -140,6 +140,22 @@ The desktop journal does not prebuild offscreen rows at every thumb position;
 mobile keeps Flutter's normal scroll cache. This reduces paragraph layout and
 semantic-tree churn during a fast traversal without hiding visible content.
 
+Windows routes provide a `WindowsWheelScrollScope` for their primary vertical
+list. Split list/detail panes own separate scopes, and the calendar supplies
+its explicit `WheelScrollController`. Only mouse-wheel pointer signals use a
+short decaying tail; consecutive notches accumulate their full distance and a
+reversal starts from the visible position. Native pointer-signal resolution
+still chooses the nested list, axis and direction. Touch/precision-trackpad
+drags, scrollbar dragging and keyboard/programmatic moves retain Flutter's
+normal lifecycle and interrupt the tail. Rows remain tappable while settling.
+The system's reduced-motion flag disables smoothing. The duration belongs to
+`scrolling.wheelDurationMs` in the application asset configuration, rather than
+another user setting. Explicit controllers outside these scopes remain native.
+One activity keeps ticking throughout a burst and only updates its target;
+it does not restart at zero elapsed time on every notch. Decay uses elapsed
+time rather than a fixed amount per frame, and stops within the platform's
+scroll-distance tolerance.
+
 New settings must be registered in `Settings.all`: startup prunes unknown keys
 and `test/config_settings_test.dart` checks the registry. Photos, videos and
 voice notes share attachment storage; `MediaKind` distinguishes their type,
