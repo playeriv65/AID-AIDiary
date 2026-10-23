@@ -12,7 +12,6 @@ import 'package:aid_diary/models/tag.dart';
 import 'package:aid_diary/models/tag_icon_type.dart';
 import 'package:aid_diary/models/template.dart';
 import 'package:aid_diary/providers/tags_provider.dart';
-import 'package:aid_diary/sync/builtin_ids.dart';
 import 'package:aid_diary/sync/sync_schema.dart';
 import 'package:aid_diary/utils/generated/tag_icon_registry.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -169,12 +168,6 @@ void main() {
       TagFields.name: 'Mine',
       TagFields.tagType: TagType.label.toInt(),
     });
-    final welcome = await addEntry('Welcome');
-    await db.insert(imagesTable, {
-      EntryImageFields.entryId: welcome,
-      EntryImageFields.imgPath: welcomeImageName,
-      EntryImageFields.imgRank: 0,
-    });
     final written = await addEntry('my day');
 
     await AppDatabase.instance.upgradeSchema(db, 10, 11);
@@ -182,8 +175,8 @@ void main() {
     expect(
         await idOf(tagsTable, favorite), 'builtin-tag-${TagIconKey.favorite}');
     expect(await idOf(tagsTable, ownTag), matches(RegExp(r'^[0-9a-f]{32}$')));
-    expect(await idOf(entriesTable, welcome), 'builtin-entry-welcome');
-    expect(await idOf(entriesTable, written), isNot('builtin-entry-welcome'));
+    expect(
+        await idOf(entriesTable, written), matches(RegExp(r'^[0-9a-f]{32}$')));
     // Changes are recorded from here on; the upgrade itself sends nothing.
     expect(await changes(), isEmpty);
   });

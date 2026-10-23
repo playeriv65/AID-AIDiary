@@ -52,6 +52,10 @@ class SettingsPage extends StatelessWidget {
                       icon: Icons.terminal_rounded,
                       destination: 'settings/command_line'),
                   SettingsCategory(
+                      title: l10n.tutorialTitle,
+                      icon: Icons.menu_book_outlined,
+                      destination: 'settings/tutorial'),
+                  SettingsCategory(
                       title: l10n.settingsHelpTitle,
                       icon: Icons.help_outline_rounded,
                       destination: 'settings/help'),

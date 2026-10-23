@@ -6,6 +6,13 @@ asks again. Dates are when it was settled. Ideas not built yet are in
 
 ## What the app is
 
+- First launch and tutorial (2026-10-22): show two explicit choices, “Start
+  here” and “Connect to an existing device” (Chinese: “从这里开始” and
+  “连接已有设备”). The latter is authorization plus initial sync, not an
+  account, a network to join or a move that retires the source device. Both
+  devices remain usable. Explanatory content lives in a read-only tutorial
+  shared with Settings; previously saved entries remain ordinary user data,
+  including edited introductory content from older installs.
 - Progressive disclosure (2026-10-22): everyday screens show only what is
   necessary. Sync shows complete, partial media or waiting; copy locations
   and last confirmations are available on request inside sync details.

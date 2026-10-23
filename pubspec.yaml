@@ -105,7 +105,6 @@ flutter:
   generate: true
   uses-material-design: true
   assets:
-    - assets/welcome_first_steps.webp
     # Shown on the About screen's license page.
     - LICENSE.txt
     - ADDITIONAL_TERMS.md

@@ -1068,12 +1068,6 @@ abstract class AppLocalizations {
   /// **'Annoyed'**
   String get tagAnnoyedName;
 
-  /// No description provided for @welcomeLogBodyText.
-  ///
-  /// In en, this message translates to:
-  /// **'## Welcome to AID Diary\n\n> A quiet place for your days.\n\nWrite what happened, how you felt, and where you were. Your entries stay on this device.\n\n- **Journal** lists every entry by day\n- **Calendar**, **Media** and **Atlas** look back by date, photo and place\n- **Coach** offers prompts and templates when you don\'t know what to write'**
-  String get welcomeLogBodyText;
-
   /// No description provided for @settingsStorageTitle.
   ///
   /// In en, this message translates to:
@@ -3291,98 +3285,14 @@ abstract class AppLocalizations {
   /// No description provided for @onboardWelcomeText.
   ///
   /// In en, this message translates to:
-  /// **'A quiet place for your days. Tap Next to look around.'**
+  /// **'Start here, or connect this device to one you already use.'**
   String get onboardWelcomeText;
-
-  /// No description provided for @onboardIntroTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Write a little, remember a lot'**
-  String get onboardIntroTitle;
-
-  /// No description provided for @onboardIntroText.
-  ///
-  /// In en, this message translates to:
-  /// **'Photos, places, weather and moods sit beside your words. Stories bring old days back.'**
-  String get onboardIntroText;
-
-  /// No description provided for @onboardPrivateTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Safe and private'**
-  String get onboardPrivateTitle;
-
-  /// No description provided for @onboardPrivateText.
-  ///
-  /// In en, this message translates to:
-  /// **'Your diary stays on this device. Add a passcode to keep it to yourself.'**
-  String get onboardPrivateText;
-
-  /// No description provided for @onboardPrivateAction.
-  ///
-  /// In en, this message translates to:
-  /// **'Set a passcode'**
-  String get onboardPrivateAction;
-
-  /// No description provided for @onboardNotifyTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'A gentle reminder'**
-  String get onboardNotifyTitle;
-
-  /// No description provided for @onboardNotifyText.
-  ///
-  /// In en, this message translates to:
-  /// **'Turn on reminders to build the habit; coach programs tell you when a new question is ready.'**
-  String get onboardNotifyText;
-
-  /// No description provided for @onboardNotifyAction.
-  ///
-  /// In en, this message translates to:
-  /// **'Turn on reminders'**
-  String get onboardNotifyAction;
-
-  /// No description provided for @onboardNotifyOn.
-  ///
-  /// In en, this message translates to:
-  /// **'Reminders are on'**
-  String get onboardNotifyOn;
-
-  /// No description provided for @onboardDoneTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'All set'**
-  String get onboardDoneTitle;
-
-  /// No description provided for @onboardDoneText.
-  ///
-  /// In en, this message translates to:
-  /// **'Start with today: what is one thing you want to remember?'**
-  String get onboardDoneText;
-
-  /// No description provided for @onboardNext.
-  ///
-  /// In en, this message translates to:
-  /// **'Next'**
-  String get onboardNext;
-
-  /// No description provided for @onboardBack.
-  ///
-  /// In en, this message translates to:
-  /// **'Back'**
-  String get onboardBack;
 
   /// No description provided for @onboardStart.
   ///
   /// In en, this message translates to:
   /// **'Start writing'**
   String get onboardStart;
-
-  /// No description provided for @onboardSkip.
-  ///
-  /// In en, this message translates to:
-  /// **'Skip'**
-  String get onboardSkip;
 
   /// No description provided for @helpFaq.
   ///
@@ -3399,7 +3309,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpFaq1A.
   ///
   /// In en, this message translates to:
-  /// **'Only on this device, in the app\'s own folder. Nothing is uploaded; there is no account.'**
+  /// **'Your diary is stored on this device. It reaches other devices or storage only when you enable sync, share or export it. Sync is end-to-end encrypted.'**
   String get helpFaq1A;
 
   /// No description provided for @helpFaq2Q.
@@ -3411,7 +3321,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpFaq2A.
   ///
   /// In en, this message translates to:
-  /// **'Settings → Data & storage → Backup & Restore makes one file with entries, photos and settings, optionally with a password. Restore it on the new device. Backups can also run on a schedule.'**
+  /// **'Connect to an existing device in Settings → Data & storage → Sync and confirm authorization on the device that has your diary. Both devices remain usable. You can also create a backup and restore it on another device.'**
   String get helpFaq2A;
 
   /// No description provided for @helpFaq3Q.
@@ -3459,7 +3369,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpPrivacyText.
   ///
   /// In en, this message translates to:
-  /// **'Entries, photos and settings never leave this device unless you share or back them up. The app only goes online for map tiles and place names (OpenStreetMap, Nominatim, Overpass) and weather (Open-Meteo), sending coordinates or a place name, never your writing.'**
+  /// **'Diary content and media stay on this device unless you enable encrypted sync or share/export them. Maps, place lookup and weather use the configured services and send the location or search query needed for that request, not diary text.'**
   String get helpPrivacyText;
 
   /// No description provided for @photoMetaTitle.
@@ -4623,25 +4533,25 @@ abstract class AppLocalizations {
   /// No description provided for @nearbyTitle.
   ///
   /// In en, this message translates to:
-  /// **'Nearby device transfer'**
+  /// **'Connect devices'**
   String get nearbyTitle;
 
   /// No description provided for @nearbySend.
   ///
   /// In en, this message translates to:
-  /// **'This is the old device'**
+  /// **'Authorize another device'**
   String get nearbySend;
 
   /// No description provided for @nearbyReceive.
   ///
   /// In en, this message translates to:
-  /// **'This is the new device'**
+  /// **'Connect to an existing device'**
   String get nearbyReceive;
 
   /// No description provided for @nearbyInstructions.
   ///
   /// In en, this message translates to:
-  /// **'Connect both devices to the same Wi-Fi or connect one to the other’s hotspot. This transfer works without Internet.'**
+  /// **'Connect both devices to the same Wi-Fi or to each other’s hotspot. Confirm authorization on the existing device; both devices remain usable. No internet is required.'**
   String get nearbyInstructions;
 
   /// No description provided for @nearbyCompare.
@@ -4659,7 +4569,7 @@ abstract class AppLocalizations {
   /// No description provided for @nearbyScan.
   ///
   /// In en, this message translates to:
-  /// **'Scan old device QR'**
+  /// **'Scan the other device’s code'**
   String get nearbyScan;
 
   /// No description provided for @nearbyPaste.
@@ -4677,37 +4587,37 @@ abstract class AppLocalizations {
   /// No description provided for @nearbyWorking.
   ///
   /// In en, this message translates to:
-  /// **'Transferring diary and attachments…'**
+  /// **'Authorizing and syncing your diary and attachments…'**
   String get nearbyWorking;
 
   /// No description provided for @nearbyPending.
   ///
   /// In en, this message translates to:
-  /// **'Some attachments are still pending. Keep the old device open and retry.'**
+  /// **'Some attachments still need syncing. Keep the other device online and try again.'**
   String get nearbyPending;
 
   /// No description provided for @nearbyComplete.
   ///
   /// In en, this message translates to:
-  /// **'Diary and attachments transferred'**
+  /// **'Device connected; diary and attachments synced'**
   String get nearbyComplete;
 
   /// No description provided for @nearbyFailed.
   ///
   /// In en, this message translates to:
-  /// **'Could not complete the transfer. Check the local connection and retry.'**
+  /// **'Connection did not finish. Check the local connection and try again.'**
   String get nearbyFailed;
 
   /// No description provided for @nearbyEmptyRequired.
   ///
   /// In en, this message translates to:
-  /// **'Use a new device with no diary entries and no connected sync account.'**
+  /// **'Use a device with an empty diary that is not connected to sync yet.'**
   String get nearbyEmptyRequired;
 
   /// No description provided for @nearbyRetry.
   ///
   /// In en, this message translates to:
-  /// **'Continue transfer'**
+  /// **'Continue syncing'**
   String get nearbyRetry;
 
   /// No description provided for @nearbyWifi.
@@ -4991,6 +4901,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Available this month: {remaining} / {limit}'**
   String cloudTrafficSummary(String remaining, String limit);
+
+  /// No description provided for @onboardNewDiary.
+  ///
+  /// In en, this message translates to:
+  /// **'Start here'**
+  String get onboardNewDiary;
+
+  /// No description provided for @onboardConnect.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect to an existing device'**
+  String get onboardConnect;
+
+  /// No description provided for @onboardFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Setup could not be completed. Your diary is safe; please try again.'**
+  String get onboardFailed;
+
+  /// No description provided for @tutorialTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How to use the diary'**
+  String get tutorialTitle;
+
+  /// No description provided for @tutorialWriteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Write your first entry'**
+  String get tutorialWriteTitle;
+
+  /// No description provided for @tutorialWriteText.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap + to write. Add a title if you want, choose the diary day and tap the check mark to save. You can edit it again at any time.'**
+  String get tutorialWriteText;
+
+  /// No description provided for @tutorialMediaTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add photos, audio or handwriting'**
+  String get tutorialMediaTitle;
+
+  /// No description provided for @tutorialMediaText.
+  ///
+  /// In en, this message translates to:
+  /// **'Use + in the editor to attach photos, videos or a voice note, or open the pen canvas. These attachments stay with the entry.'**
+  String get tutorialMediaText;
+
+  /// No description provided for @tutorialReviewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Find a day again'**
+  String get tutorialReviewTitle;
+
+  /// No description provided for @tutorialReviewText.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse the journal or calendar, search your writing and use tags to organize it. Media and Atlas help you look back by photo or place.'**
+  String get tutorialReviewText;
+
+  /// No description provided for @tutorialSyncTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Use more than one device'**
+  String get tutorialSyncTitle;
+
+  /// No description provided for @tutorialSyncText.
+  ///
+  /// In en, this message translates to:
+  /// **'In Settings → Data & storage → Sync, connect to an existing device and confirm authorization there. Both devices can keep using the diary. Text syncs first; media follows as the connection and allowance permit.'**
+  String get tutorialSyncText;
+
+  /// No description provided for @tutorialPrivacyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep your diary safe'**
+  String get tutorialPrivacyTitle;
+
+  /// No description provided for @tutorialPrivacyText.
+  ///
+  /// In en, this message translates to:
+  /// **'Entries stay on this device unless you enable sync or share/export them. Sync is end-to-end encrypted. Settings also offers an app passcode and backups; you can reopen this tutorial there.'**
+  String get tutorialPrivacyText;
 }
 
 class _AppLocalizationsDelegate

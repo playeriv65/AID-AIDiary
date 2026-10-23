@@ -318,6 +318,13 @@ fakes without global setup.
 
 ## Adding a feature
 
+First-run setup is an example of these boundaries: `OnboardingPage` owns only
+the choice and navigation state; `TutorialPage` is reusable read-only content,
+also registered as `settings/tutorial` for GUI/CLI navigation. The existing
+`app.finish_onboarding` action persists completion, while nearby authorization
+continues through its own service/action flow. A canceled connection returns
+to the choice, and a completed one opens the received diary directly.
+
 1. Put new data in a model (`models/`, immutable, `copy`), its column in the
    schema with a migration, and its reads and writes in the owning store.
 2. Put rules in pure code (`utils/` or `stats/`) with unit tests.

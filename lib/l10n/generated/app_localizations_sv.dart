@@ -575,10 +575,6 @@ class AppLocalizationsSv extends AppLocalizations {
   String get tagAnnoyedName => 'Annoyed';
 
   @override
-  String get welcomeLogBodyText =>
-      '## Welcome to AID Diary\n\n> A quiet place for your days.\n\nWrite what happened, how you felt, and where you were. Your entries stay on this device.\n\n- **Journal** lists every entry by day\n- **Calendar**, **Media** and **Atlas** look back by date, photo and place\n- **Coach** offers prompts and templates when you don\'t know what to write';
-
-  @override
   String get settingsStorageTitle => 'Storage';
 
   @override
@@ -1777,56 +1773,10 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get onboardWelcomeText =>
-      'A quiet place for your days. Tap Next to look around.';
-
-  @override
-  String get onboardIntroTitle => 'Write a little, remember a lot';
-
-  @override
-  String get onboardIntroText =>
-      'Photos, places, weather and moods sit beside your words. Stories bring old days back.';
-
-  @override
-  String get onboardPrivateTitle => 'Safe and private';
-
-  @override
-  String get onboardPrivateText =>
-      'Your diary stays on this device. Add a passcode to keep it to yourself.';
-
-  @override
-  String get onboardPrivateAction => 'Set a passcode';
-
-  @override
-  String get onboardNotifyTitle => 'A gentle reminder';
-
-  @override
-  String get onboardNotifyText =>
-      'Turn on reminders to build the habit; coach programs tell you when a new question is ready.';
-
-  @override
-  String get onboardNotifyAction => 'Turn on reminders';
-
-  @override
-  String get onboardNotifyOn => 'Reminders are on';
-
-  @override
-  String get onboardDoneTitle => 'All set';
-
-  @override
-  String get onboardDoneText =>
-      'Start with today: what is one thing you want to remember?';
-
-  @override
-  String get onboardNext => 'Next';
-
-  @override
-  String get onboardBack => 'Back';
+      'Start here, or connect this device to one you already use.';
 
   @override
   String get onboardStart => 'Start writing';
-
-  @override
-  String get onboardSkip => 'Skip';
 
   @override
   String get helpFaq => 'Frequently asked questions';
@@ -1836,14 +1786,14 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get helpFaq1A =>
-      'Only on this device, in the app\'s own folder. Nothing is uploaded; there is no account.';
+      'Your diary is stored on this device. It reaches other devices or storage only when you enable sync, share or export it. Sync is end-to-end encrypted.';
 
   @override
   String get helpFaq2Q => 'How do I keep a copy or move to a new device?';
 
   @override
   String get helpFaq2A =>
-      'Settings → Data & storage → Backup & Restore makes one file with entries, photos and settings, optionally with a password. Restore it on the new device. Backups can also run on a schedule.';
+      'Connect to an existing device in Settings → Data & storage → Sync and confirm authorization on the device that has your diary. Both devices remain usable. You can also create a backup and restore it on another device.';
 
   @override
   String get helpFaq3Q => 'Can I bring in entries from other diary apps?';
@@ -1871,7 +1821,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get helpPrivacyText =>
-      'Entries, photos and settings never leave this device unless you share or back them up. The app only goes online for map tiles and place names (OpenStreetMap, Nominatim, Overpass) and weather (Open-Meteo), sending coordinates or a place name, never your writing.';
+      'Diary content and media stay on this device unless you enable encrypted sync or share/export them. Maps, place lookup and weather use the configured services and send the location or search query needed for that request, not diary text.';
 
   @override
   String get photoMetaTitle => 'Use the photo\'s details?';
@@ -2510,17 +2460,17 @@ class AppLocalizationsSv extends AppLocalizations {
   }
 
   @override
-  String get nearbyTitle => 'Nearby device transfer';
+  String get nearbyTitle => 'Connect devices';
 
   @override
-  String get nearbySend => 'This is the old device';
+  String get nearbySend => 'Authorize another device';
 
   @override
-  String get nearbyReceive => 'This is the new device';
+  String get nearbyReceive => 'Connect to an existing device';
 
   @override
   String get nearbyInstructions =>
-      'Connect both devices to the same Wi-Fi or connect one to the other’s hotspot. This transfer works without Internet.';
+      'Connect both devices to the same Wi-Fi or to each other’s hotspot. Confirm authorization on the existing device; both devices remain usable. No internet is required.';
 
   @override
   String get nearbyCompare =>
@@ -2530,7 +2480,7 @@ class AppLocalizationsSv extends AppLocalizations {
   String get nearbyConfirm => 'The codes match';
 
   @override
-  String get nearbyScan => 'Scan old device QR';
+  String get nearbyScan => 'Scan the other device’s code';
 
   @override
   String get nearbyPaste => 'Paste invitation';
@@ -2539,25 +2489,26 @@ class AppLocalizationsSv extends AppLocalizations {
   String get nearbyWaiting => 'Waiting for approval on the other device';
 
   @override
-  String get nearbyWorking => 'Transferring diary and attachments…';
+  String get nearbyWorking =>
+      'Authorizing and syncing your diary and attachments…';
 
   @override
   String get nearbyPending =>
-      'Some attachments are still pending. Keep the old device open and retry.';
+      'Some attachments still need syncing. Keep the other device online and try again.';
 
   @override
-  String get nearbyComplete => 'Diary and attachments transferred';
+  String get nearbyComplete => 'Device connected; diary and attachments synced';
 
   @override
   String get nearbyFailed =>
-      'Could not complete the transfer. Check the local connection and retry.';
+      'Connection did not finish. Check the local connection and try again.';
 
   @override
   String get nearbyEmptyRequired =>
-      'Use a new device with no diary entries and no connected sync account.';
+      'Use a device with an empty diary that is not connected to sync yet.';
 
   @override
-  String get nearbyRetry => 'Continue transfer';
+  String get nearbyRetry => 'Continue syncing';
 
   @override
   String get nearbyWifi => 'Wi-Fi settings';
@@ -2719,4 +2670,52 @@ class AppLocalizationsSv extends AppLocalizations {
   String cloudTrafficSummary(String remaining, String limit) {
     return 'Available this month: $remaining / $limit';
   }
+
+  @override
+  String get onboardNewDiary => 'Start here';
+
+  @override
+  String get onboardConnect => 'Connect to an existing device';
+
+  @override
+  String get onboardFailed =>
+      'Setup could not be completed. Your diary is safe; please try again.';
+
+  @override
+  String get tutorialTitle => 'How to use the diary';
+
+  @override
+  String get tutorialWriteTitle => 'Write your first entry';
+
+  @override
+  String get tutorialWriteText =>
+      'Tap + to write. Add a title if you want, choose the diary day and tap the check mark to save. You can edit it again at any time.';
+
+  @override
+  String get tutorialMediaTitle => 'Add photos, audio or handwriting';
+
+  @override
+  String get tutorialMediaText =>
+      'Use + in the editor to attach photos, videos or a voice note, or open the pen canvas. These attachments stay with the entry.';
+
+  @override
+  String get tutorialReviewTitle => 'Find a day again';
+
+  @override
+  String get tutorialReviewText =>
+      'Browse the journal or calendar, search your writing and use tags to organize it. Media and Atlas help you look back by photo or place.';
+
+  @override
+  String get tutorialSyncTitle => 'Use more than one device';
+
+  @override
+  String get tutorialSyncText =>
+      'In Settings → Data & storage → Sync, connect to an existing device and confirm authorization there. Both devices can keep using the diary. Text syncs first; media follows as the connection and allowance permit.';
+
+  @override
+  String get tutorialPrivacyTitle => 'Keep your diary safe';
+
+  @override
+  String get tutorialPrivacyText =>
+      'Entries stay on this device unless you enable sync or share/export them. Sync is end-to-end encrypted. Settings also offers an app passcode and backups; you can reopen this tutorial there.';
 }

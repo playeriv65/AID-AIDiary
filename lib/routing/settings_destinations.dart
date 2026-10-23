@@ -28,6 +28,7 @@ import 'package:aid_diary/pages/settings/tags_settings.dart';
 import 'package:aid_diary/pages/settings/templates_page.dart';
 import 'package:aid_diary/pages/settings_page.dart';
 import 'package:aid_diary/pages/statistics_page.dart';
+import 'package:aid_diary/pages/tutorial_page.dart';
 import 'package:aid_diary/routing/destination.dart';
 import 'package:aid_diary/widgets/auto_backup_settings_dialog.dart';
 import 'package:aid_diary/widgets/command_palette.dart';
@@ -109,6 +110,8 @@ final List<Destination> settingsDestinations = [
   pageDestination('tags', 'Tags and categories', (_) => const TagsSettings()),
   pageDestination('templates', 'Templates', (_) => const TemplateSettings()),
   pageDestination('settings/help', 'Help', (_) => const HelpPage()),
+  pageDestination('settings/tutorial', 'Learn to use the diary',
+      (_) => const TutorialPage()),
   pageDestination(
       'settings/about', 'Version and licenses', (_) => const AboutSettings()),
   pageDestination(

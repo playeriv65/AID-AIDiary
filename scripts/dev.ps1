@@ -1,5 +1,5 @@
 param(
-  [ValidateSet('windows','windows-build','windows-stage','windows-background','windows-driver','android','apk','profile','release','test','test-all','test-unit','test-widget','test-integration','test-live','test-server','cli','test-cli','frame-rate','analyze','pub','screenshots')][string]$Target='windows',
+  [ValidateSet('windows','windows-build','windows-stage','windows-background','windows-driver','android','apk','profile','release','test','test-all','test-unit','test-widget','test-integration','test-live','test-server','cli','test-cli','frame-rate','analyze','pub','l10n','screenshots')][string]$Target='windows',
   # Flutter device id for 'android', e.g. a wireless adb serial from `flutter devices`.
   [string]$Device='emulator-5554',
   # Files or directories; required for test, optional for layers/screenshots.
@@ -66,7 +66,7 @@ if ($Target -in 'android', 'apk', 'profile', 'release' -and
 $buildLock = $null
 if ($Target -in 'windows', 'windows-build', 'windows-stage', 'windows-background', 'windows-driver',
     'android', 'apk', 'profile', 'release', 'frame-rate', 'test', 'test-all', 'test-unit',
-    'test-widget', 'test-integration', 'test-live', 'screenshots', 'pub', 'analyze') {
+    'test-widget', 'test-integration', 'test-live', 'screenshots', 'pub', 'l10n', 'analyze') {
   $lockPath = Join-Path (Get-Location) '.dart_tool/dev-build.lock'
   New-Item -ItemType Directory -Force (Split-Path $lockPath -Parent) | Out-Null
   try {
@@ -168,6 +168,7 @@ switch ($Target) {
     # fails with INSTALL_FAILED_USER_RESTRICTED.
     if ($failed) { Write-Error "Install failed on: $($failed -join ', ')"; exit 1 }
   }
+  'l10n' { flutter gen-l10n }
   'pub' {
     flutter pub get
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }

@@ -6,7 +6,6 @@ import 'dart:io';
 
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/database/image_storage.dart';
-import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/storage/external_sync_health.dart';
 import 'package:aid_diary/storage/file_store.dart';
 import 'package:aid_diary/storage/local_file_store.dart';
@@ -14,7 +13,6 @@ import 'package:aid_diary/storage/storage_picker.dart';
 import 'package:aid_diary/utils/diary_day.dart';
 import 'package:aid_diary/utils/local_time.dart';
 import 'package:aid_diary/utils/operation_outcome.dart';
-import 'package:aid_diary/utils/generated/tag_icon_registry.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/models/image.dart';
 import 'package:aid_diary/models/tag.dart';
@@ -29,7 +27,6 @@ import 'package:flutter/widgets.dart';
 import 'package:aid_diary/sync/builtin_ids.dart';
 import 'package:aid_diary/sync/sync_schema.dart';
 import 'package:logging/logging.dart';
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
@@ -361,110 +358,6 @@ CREATE TABLE $imagesTable (
 
     await _createTagTables(db);
     await _createTemplateTagTable(db);
-  }
-
-  /// A new diary stays empty until onboarding chooses normal writing, so
-  /// receiving an old device's diary remains possible on the welcome page.
-  /// Existing writing, tombstones and any adopted or pending identity win.
-  Future<bool> createWelcomeForFirstStart() async {
-    final config = ConfigProvider.instance;
-    bool fresh() =>
-        !config.get(Settings.onboardingDone) &&
-        [
-          Settings.identity,
-          Settings.nearbyMigration,
-          Settings.syncTarget,
-          Settings.syncSecrets,
-          Settings.deviceAuthorizations,
-          Settings.pendingDeviceApprovals,
-        ].every((setting) => config.get(setting).isEmpty);
-    if (!fresh()) return false;
-    final db = _database!;
-    if ((await db.query(entriesTable, columns: ['id'], limit: 1)).isNotEmpty) {
-      return false;
-    }
-    for (final table in [syncChangesTable, syncItemsTable]) {
-      if ((await db.query(table,
-              columns: [syncIdColumn],
-              where: 'kind = ?',
-              whereArgs: [SyncKind.entry.name],
-              limit: 1))
-          .isNotEmpty) {
-        return false;
-      }
-    }
-    if (!fresh()) return false;
-    await createWelcomeEntry();
-    await EntriesProvider.instance.load();
-    await EntryImagesProvider.instance.load();
-    return true;
-  }
-
-  @visibleForTesting
-  Future<void> createWelcomeEntry() async {
-    final deviceLocale = WidgetsBinding.instance.platformDispatcher.locale;
-    Locale locale;
-    if (AppLocalizations.delegate.isSupported(deviceLocale)) {
-      locale = deviceLocale;
-    } else {
-      final langOnly = Locale(deviceLocale.languageCode);
-      locale = AppLocalizations.delegate.isSupported(langOnly)
-          ? langOnly
-          : const Locale('en');
-    }
-    final l10n = await AppLocalizations.delegate.load(locale);
-    final now = DateTime.now();
-
-    final welcomeEntry = await EntriesProvider.instance.add(
-      Entry(
-        text: l10n.welcomeLogBodyText,
-        mood: 1,
-        timeCreate: now,
-        timeModified: now,
-      ),
-      skipUpdate: true,
-    );
-
-    final imageBytes = await rootBundle.load('assets/$welcomeImageName');
-    final imageName = await ImageStorage.instance.create(
-      welcomeImageName,
-      imageBytes.buffer.asUint8List(),
-      currTime: now,
-    );
-    if (imageName != null) {
-      await EntryImagesProvider.instance.add(
-        EntryImage(
-          entryId: welcomeEntry.id,
-          imgPath: imageName,
-          imgRank: 0,
-          timeCreate: now,
-        ),
-        skipUpdate: true,
-      );
-    }
-
-    final favoriteTag = TagsProvider.instance.tags
-        .where((tag) => tag.icon == TagIconKey.favorite)
-        .firstOrNull;
-    if (favoriteTag != null) {
-      await TagsProvider.instance.addEntryTag(EntryTag(
-        entryId: welcomeEntry.id!,
-        tagId: favoriteTag.id!,
-        timeCreate: now,
-      ));
-    }
-
-    final energyTag = TagsProvider.instance.tags
-        .where((tag) => tag.icon == TagIconKey.batteryChargingFull)
-        .firstOrNull;
-    if (energyTag != null) {
-      await TagsProvider.instance.addEntryTag(EntryTag(
-        entryId: welcomeEntry.id!,
-        tagId: energyTag.id!,
-        value: '10',
-        timeCreate: now,
-      ));
-    }
   }
 
   Future<void> _createTagTables(Database db) async {

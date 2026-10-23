@@ -568,10 +568,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get tagAnnoyedName => '懊恼';
 
   @override
-  String get welcomeLogBodyText =>
-      '## 欢迎使用 AID Diary\n\n> 一个安静记录日子的地方。\n\n写下发生了什么、心情如何、在哪里。日记只保存在这台设备上。\n\n- **日记**：按天列出所有日记\n- **日历**、**媒体**、**地图**：按日期、照片和地点回顾\n- **引导**：不知道写什么时，给你问题和模板';
-
-  @override
   String get settingsStorageTitle => '存储';
 
   @override
@@ -1740,52 +1736,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get onboardWelcomeTitle => '欢迎使用 AID Diary';
 
   @override
-  String get onboardWelcomeText => '一个安静记录日子的地方。点“下一步”看看。';
-
-  @override
-  String get onboardIntroTitle => '写一点，记住很多';
-
-  @override
-  String get onboardIntroText => '照片、地点、天气和心情都和文字放在一起，“故事”会把过去的日子带回来。';
-
-  @override
-  String get onboardPrivateTitle => '安全又私密';
-
-  @override
-  String get onboardPrivateText => '日记只保存在这台设备上。加一个密码，只给自己看。';
-
-  @override
-  String get onboardPrivateAction => '设置密码';
-
-  @override
-  String get onboardNotifyTitle => '温柔的提醒';
-
-  @override
-  String get onboardNotifyText => '打开提醒，慢慢养成习惯；参加写作计划后，新问题到了也会告诉你。';
-
-  @override
-  String get onboardNotifyAction => '打开提醒';
-
-  @override
-  String get onboardNotifyOn => '提醒已打开';
-
-  @override
-  String get onboardDoneTitle => '准备好了';
-
-  @override
-  String get onboardDoneText => '从今天开始：有什么一件事想记住？';
-
-  @override
-  String get onboardNext => '下一步';
-
-  @override
-  String get onboardBack => '上一步';
+  String get onboardWelcomeText => '从这里开始记录，或连接已有设备。由另一台设备确认授权后，两台设备都能继续使用。';
 
   @override
   String get onboardStart => '开始写';
-
-  @override
-  String get onboardSkip => '跳过';
 
   @override
   String get helpFaq => '常见问题';
@@ -1794,14 +1748,15 @@ class AppLocalizationsZh extends AppLocalizations {
   String get helpFaq1Q => '日记保存在哪里？';
 
   @override
-  String get helpFaq1A => '只保存在这台设备上，在应用自己的文件夹里。不会上传，也没有账号。';
+  String get helpFaq1A =>
+      '日记默认保存在这台设备上。只有主动开启同步、分享或导出时，内容才会到其他设备或存储位置；同步始终端到端加密。';
 
   @override
   String get helpFaq2Q => '怎样备份，或者换到新设备？';
 
   @override
   String get helpFaq2A =>
-      '设置 → 数据与存储 → 备份与恢复，会把日记、照片和设置打成一个文件，可以加密码。在新设备上恢复即可。也可以定时自动备份。';
+      '在“设置 → 数据与存储 → 同步”中连接已有设备，并在保存着日记的设备上确认授权。两台设备都能继续使用。也可以创建备份，再在另一台设备上恢复。';
 
   @override
   String get helpFaq3Q => '能导入其他日记应用的内容吗？';
@@ -1827,7 +1782,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get helpPrivacyText =>
-      '日记、照片和设置不会离开这台设备，除非你自己分享或备份。应用只在显示地图和查地名（OpenStreetMap、Nominatim、Overpass）以及天气（Open-Meteo）时联网，只发送坐标或地名，从不发送你写的内容。';
+      '日记和媒体默认保留在本机，除非主动开启加密同步或分享、导出。地图、地名查询和天气使用配置的服务，只发送请求所需的位置或查询词，不发送日记正文。';
 
   @override
   String get photoMetaTitle => '使用照片里的信息？';
@@ -2442,16 +2397,17 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get nearbyTitle => '附近设备迁移';
+  String get nearbyTitle => '连接已有设备';
 
   @override
-  String get nearbySend => '这是旧设备';
+  String get nearbySend => '授权另一台设备';
 
   @override
-  String get nearbyReceive => '这是新设备';
+  String get nearbyReceive => '连接已有设备';
 
   @override
-  String get nearbyInstructions => '两台设备连接同一 Wi-Fi，或连接对方热点；无需互联网。';
+  String get nearbyInstructions =>
+      '两台设备连接同一 Wi-Fi，或连接对方热点。在已有设备上确认授权后，两台设备都能继续使用，无需互联网。';
 
   @override
   String get nearbyCompare => '核对两端显示的验证码后再确认。';
@@ -2460,7 +2416,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get nearbyConfirm => '验证码一致';
 
   @override
-  String get nearbyScan => '扫描旧设备二维码';
+  String get nearbyScan => '扫描另一台设备的二维码';
 
   @override
   String get nearbyPaste => '粘贴邀请';
@@ -2469,22 +2425,22 @@ class AppLocalizationsZh extends AppLocalizations {
   String get nearbyWaiting => '等待另一台设备确认';
 
   @override
-  String get nearbyWorking => '正在迁移日记和附件…';
+  String get nearbyWorking => '正在授权并同步日记和附件…';
 
   @override
-  String get nearbyPending => '部分附件尚待传输，请保持旧设备开启后重试。';
+  String get nearbyPending => '还有附件待同步，请保持另一台设备在线后重试。';
 
   @override
-  String get nearbyComplete => '日记和附件已迁移';
+  String get nearbyComplete => '设备已连接，日记和附件已同步';
 
   @override
-  String get nearbyFailed => '迁移未完成，请检查本地连接后重试。';
+  String get nearbyFailed => '连接尚未完成，请检查本地连接后重试。';
 
   @override
-  String get nearbyEmptyRequired => '请在没有日记且未连接同步账户的新设备上接收。';
+  String get nearbyEmptyRequired => '请在日记为空、且尚未连接同步的设备上操作。';
 
   @override
-  String get nearbyRetry => '继续迁移';
+  String get nearbyRetry => '继续同步';
 
   @override
   String get nearbyWifi => 'Wi-Fi 设置';
@@ -2634,6 +2590,50 @@ class AppLocalizationsZh extends AppLocalizations {
   String cloudTrafficSummary(String remaining, String limit) {
     return '本月剩余 $remaining / $limit';
   }
+
+  @override
+  String get onboardNewDiary => '从这里开始';
+
+  @override
+  String get onboardConnect => '连接已有设备';
+
+  @override
+  String get onboardFailed => '暂时未能完成设置，日记内容未受影响，请重试。';
+
+  @override
+  String get tutorialTitle => '使用教程';
+
+  @override
+  String get tutorialWriteTitle => '写下第一篇日记';
+
+  @override
+  String get tutorialWriteText => '点 + 开始记录。标题可以不填，选好日记日期后，点勾号保存。保存后随时可以再编辑。';
+
+  @override
+  String get tutorialMediaTitle => '添加照片、录音或手写';
+
+  @override
+  String get tutorialMediaText => '编辑时点 +，添加照片、视频、录音，或打开手写画布。这些附件会和这篇日记一起保存。';
+
+  @override
+  String get tutorialReviewTitle => '找回某一天';
+
+  @override
+  String get tutorialReviewText => '在日记或日历里回顾，用搜索查找内容，用标签整理。也可以从媒体或地图按照片、地点回看。';
+
+  @override
+  String get tutorialSyncTitle => '在多台设备上使用';
+
+  @override
+  String get tutorialSyncText =>
+      '进入“设置 → 数据与存储 → 同步”，连接已有设备，并在另一台设备上确认授权。两台设备都能继续使用。文字先同步，附件会按连接情况和可用额度逐步补齐。';
+
+  @override
+  String get tutorialPrivacyTitle => '保护自己的记录';
+
+  @override
+  String get tutorialPrivacyText =>
+      '除非主动开启同步或分享、导出，日记保留在本机。同步始终端到端加密。设置里还可以设置应用密码、备份，也能随时重新打开本教程。';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -3198,10 +3198,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get tagAnnoyedName => '懊惱';
-
-  @override
-  String get welcomeLogBodyText =>
-      '## 歡迎使用 AID Diary\n\n> 一個安靜記錄日子的地方。\n\n寫下發生了什麼、心情如何、在哪裡。日記只保存在這台裝置上。\n\n- **日記**：按天列出所有日記\n- **日曆**、**媒體**、**地圖**：按日期、照片和地點回顧\n- **引導**：不知道寫什麼時，給你問題和範本';
 
   @override
   String get settingsStorageTitle => '存儲';
@@ -4351,52 +4347,10 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get onboardWelcomeTitle => '歡迎使用 AID Diary';
 
   @override
-  String get onboardWelcomeText => '一個安靜記錄日子的地方。點「下一步」看看。';
-
-  @override
-  String get onboardIntroTitle => '寫一點，記住很多';
-
-  @override
-  String get onboardIntroText => '照片、地點、天氣和心情都和文字放在一起，「故事」會把過去的日子帶回來。';
-
-  @override
-  String get onboardPrivateTitle => '安全又私密';
-
-  @override
-  String get onboardPrivateText => '日記只保存在這台裝置上。加一個密碼，只給自己看。';
-
-  @override
-  String get onboardPrivateAction => '設定密碼';
-
-  @override
-  String get onboardNotifyTitle => '溫柔的提醒';
-
-  @override
-  String get onboardNotifyText => '打開提醒，慢慢養成習慣；參加寫作計畫後，新問題到了也會告訴你。';
-
-  @override
-  String get onboardNotifyAction => '打開提醒';
-
-  @override
-  String get onboardNotifyOn => '提醒已打開';
-
-  @override
-  String get onboardDoneTitle => '準備好了';
-
-  @override
-  String get onboardDoneText => '從今天開始：有什麼一件事想記住？';
-
-  @override
-  String get onboardNext => '下一步';
-
-  @override
-  String get onboardBack => '上一步';
+  String get onboardWelcomeText => '從這裡開始記錄，或連接現有裝置。由另一台裝置確認授權後，兩台裝置都能繼續使用。';
 
   @override
   String get onboardStart => '開始寫';
-
-  @override
-  String get onboardSkip => '跳過';
 
   @override
   String get helpFaq => '常見問題';
@@ -4405,14 +4359,15 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get helpFaq1Q => '日記保存在哪裡？';
 
   @override
-  String get helpFaq1A => '只保存在這台裝置上，在應用自己的資料夾裡。不會上傳，也沒有帳號。';
+  String get helpFaq1A =>
+      '日記預設保存在這台裝置上。只有主動開啟同步、分享或匯出時，內容才會到其他裝置或儲存位置；同步始終端對端加密。';
 
   @override
   String get helpFaq2Q => '怎樣備份，或者換到新裝置？';
 
   @override
   String get helpFaq2A =>
-      '設定 → 資料與儲存 → 備份與還原，會把日記、照片和設定打包成一個檔案，可以加密碼。在新裝置上還原即可。也可以定時自動備份。';
+      '在「設定 → 資料與儲存 → 同步」中連接現有裝置，並在儲存日記的裝置上確認授權。兩台裝置都能繼續使用。也能建立備份，再在另一台裝置上還原。';
 
   @override
   String get helpFaq3Q => '能匯入其他日記應用的內容嗎？';
@@ -4438,7 +4393,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get helpPrivacyText =>
-      '日記、照片和設定不會離開這台裝置，除非你自己分享或備份。應用只在顯示地圖和查地名（OpenStreetMap、Nominatim、Overpass）以及天氣（Open-Meteo）時連網，只傳送座標或地名，從不傳送你寫的內容。';
+      '日記與媒體預設保留在本機，除非主動開啟加密同步或分享、匯出。地圖、地名查詢與天氣使用設定的服務，只傳送請求需要的位置或查詢詞，不傳送日記內文。';
 
   @override
   String get photoMetaTitle => '使用照片裡的資訊？';
@@ -4794,16 +4749,17 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   }
 
   @override
-  String get nearbyTitle => '附近裝置遷移';
+  String get nearbyTitle => '連接現有裝置';
 
   @override
-  String get nearbySend => '這是舊裝置';
+  String get nearbySend => '授權另一台裝置';
 
   @override
-  String get nearbyReceive => '這是新裝置';
+  String get nearbyReceive => '連接現有裝置';
 
   @override
-  String get nearbyInstructions => '兩台裝置連線至同一 Wi-Fi，或連線至對方熱點；無需網際網路。';
+  String get nearbyInstructions =>
+      '兩台裝置連接相同 Wi-Fi，或連接對方熱點。在現有裝置確認授權後，兩台裝置都能繼續使用，不需要網際網路。';
 
   @override
   String get nearbyCompare => '核對兩端顯示的驗證碼後再確認。';
@@ -4812,7 +4768,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get nearbyConfirm => '驗證碼一致';
 
   @override
-  String get nearbyScan => '掃描舊裝置 QR 碼';
+  String get nearbyScan => '掃描另一台裝置的 QR 碼';
 
   @override
   String get nearbyPaste => '貼上邀請';
@@ -4821,22 +4777,22 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get nearbyWaiting => '等待另一台裝置確認';
 
   @override
-  String get nearbyWorking => '正在遷移日記和附件…';
+  String get nearbyWorking => '正在授權並同步日記與附件…';
 
   @override
-  String get nearbyPending => '部分附件尚待傳輸，請保持舊裝置開啟後重試。';
+  String get nearbyPending => '還有附件待同步，請保持另一台裝置在線後重試。';
 
   @override
-  String get nearbyComplete => '日記和附件已遷移';
+  String get nearbyComplete => '裝置已連接，日記與附件已同步';
 
   @override
-  String get nearbyFailed => '遷移未完成，請檢查本機連線後重試。';
+  String get nearbyFailed => '連線尚未完成，請檢查本機連線後重試。';
 
   @override
-  String get nearbyEmptyRequired => '請在沒有日記且未連線同步帳戶的新裝置上接收。';
+  String get nearbyEmptyRequired => '請在日記為空、且尚未連接同步的裝置上操作。';
 
   @override
-  String get nearbyRetry => '繼續遷移';
+  String get nearbyRetry => '繼續同步';
 
   @override
   String get nearbyWifi => 'Wi-Fi 設定';
@@ -4986,4 +4942,48 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String cloudTrafficSummary(String remaining, String limit) {
     return '本月剩餘 $remaining / $limit';
   }
+
+  @override
+  String get onboardNewDiary => '從這裡開始';
+
+  @override
+  String get onboardConnect => '連接現有裝置';
+
+  @override
+  String get onboardFailed => '暫時無法完成設定，日記內容未受影響，請重試。';
+
+  @override
+  String get tutorialTitle => '使用教學';
+
+  @override
+  String get tutorialWriteTitle => '寫下第一篇日記';
+
+  @override
+  String get tutorialWriteText => '點 + 開始記錄。標題可以不填，選好日記日期後，點勾號儲存。儲存後隨時可以再編輯。';
+
+  @override
+  String get tutorialMediaTitle => '加入照片、錄音或手寫';
+
+  @override
+  String get tutorialMediaText => '編輯時點 +，加入照片、影片、錄音，或開啟手寫畫布。這些附件會和這篇日記一起儲存。';
+
+  @override
+  String get tutorialReviewTitle => '找回某一天';
+
+  @override
+  String get tutorialReviewText => '在日記或日曆裡回顧，用搜尋查找內容，用標籤整理。也能從媒體或地圖按照片、地點回看。';
+
+  @override
+  String get tutorialSyncTitle => '在多台裝置上使用';
+
+  @override
+  String get tutorialSyncText =>
+      '進入「設定 → 資料與儲存 → 同步」，連接現有裝置，並在另一台裝置確認授權。兩台裝置都能繼續使用。文字先同步，附件會依連線情況與可用額度逐步補齊。';
+
+  @override
+  String get tutorialPrivacyTitle => '保護自己的記錄';
+
+  @override
+  String get tutorialPrivacyText =>
+      '除非主動開啟同步或分享、匯出，日記保留在本機。同步始終端對端加密。設定裡也能設定應用程式密碼、備份，或重新開啟本教學。';
 }

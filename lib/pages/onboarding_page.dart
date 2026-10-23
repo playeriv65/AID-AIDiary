@@ -2,20 +2,15 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-import 'dart:io';
-
-import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
-import 'package:aid_diary/actions/settings_actions.dart';
-import 'package:aid_diary/widgets/app_logo.dart';
+import 'package:aid_diary/pages/tutorial_page.dart';
 import 'package:aid_diary/routing/destinations.dart';
 import 'package:aid_diary/sync/nearby_service.dart';
+import 'package:aid_diary/widgets/app_logo.dart';
 import 'package:material_ui/material_ui.dart';
 
-/// Welcome pages on first launch, like Journey's: welcome, what the diary
-/// does, privacy with a passcode, reminders, then done. Opens [next] when
-/// finished or skipped.
+/// First launch chooses a new diary or the existing nearby migration flow.
 class OnboardingPage extends StatefulWidget {
   const OnboardingPage({super.key, required this.next});
   final Widget next;
@@ -25,21 +20,17 @@ class OnboardingPage extends StatefulWidget {
 }
 
 class _OnboardingPageState extends State<OnboardingPage> {
-  final _pages = PageController();
-  int _page = 0;
-  bool _remindersOn = false;
+  bool _tutorial = false;
   bool _finishing = false;
+  bool _receiving = false;
+  bool get _busy => _finishing || _receiving;
 
-  static const _count = 5;
-
-  @override
-  void dispose() {
-    _pages.dispose();
-    super.dispose();
+  void _failed() {
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(AppLocalizations.of(context)!.onboardFailed)),
+    );
   }
-
-  void _go(int page) => _pages.animateToPage(page,
-      duration: const Duration(milliseconds: 300), curve: Curves.easeOut);
 
   Future<void> _finish() async {
     if (_finishing) return;
@@ -49,185 +40,90 @@ class _OnboardingPageState extends State<OnboardingPage> {
       if (!mounted) return;
       await Navigator.of(context).pushReplacement(MaterialPageRoute(
           allowSnapshotting: false, builder: (_) => widget.next));
+    } catch (_) {
+      _failed();
     } finally {
       if (mounted) setState(() => _finishing = false);
     }
   }
 
-  Future<void> _turnOnReminders() async {
-    if (!await changeSetting(Settings.dailyReminders, true)) return;
-    if (mounted) setState(() => _remindersOn = true);
-  }
-
   Future<void> _receive() async {
-    await openPlace(context, 'settings/sync/nearby', {'receive': true});
-    if (mounted && NearbyService.instance.state == NearbyState.complete) {
-      await _finish();
+    if (_busy) return;
+    setState(() => _receiving = true);
+    try {
+      await openPlace(context, 'settings/sync/nearby', {'receive': true});
+      if (mounted && NearbyService.instance.state == NearbyState.complete) {
+        await _finish();
+      }
+    } catch (_) {
+      _failed();
+    } finally {
+      if (mounted) setState(() => _receiving = false);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    if (_tutorial) {
+      void back() {
+        if (!_busy) setState(() => _tutorial = false);
+      }
+
+      return PopScope(
+        canPop: false,
+        onPopInvokedWithResult: (didPop, _) {
+          if (!didPop) back();
+        },
+        child: TutorialPage(onBack: back, onComplete: _finish, busy: _busy),
+      );
+    }
     final theme = Theme.of(context);
-    final cs = theme.colorScheme;
-    final last = _page == _count - 1;
-    final pages = [
-      _OnboardStep(
-          icon: const AppLogo(size: 80),
-          title: l10n.onboardWelcomeTitle,
-          text: l10n.onboardWelcomeText,
-          action: OutlinedButton.icon(
-            key: const ValueKey('onboard-nearby-receive'),
-            onPressed: _finishing ? null : _receive,
-            icon: const Icon(Icons.move_to_inbox_outlined),
-            label: Text(l10n.nearbyReceive),
-          )),
-      _OnboardStep(
-          icon: const Icon(Icons.photo_album_outlined),
-          title: l10n.onboardIntroTitle,
-          text: l10n.onboardIntroText),
-      _OnboardStep(
-        icon: const Icon(Icons.lock_outline_rounded),
-        title: l10n.onboardPrivateTitle,
-        text: l10n.onboardPrivateText,
-        action: OutlinedButton.icon(
-          key: const ValueKey('onboard-passcode'),
-          onPressed: () => openPlace(context, 'settings/security'),
-          icon: const Icon(Icons.password_rounded),
-          label: Text(l10n.onboardPrivateAction),
-        ),
-      ),
-      _OnboardStep(
-        icon: const Icon(Icons.notifications_active_outlined),
-        title: l10n.onboardNotifyTitle,
-        text: l10n.onboardNotifyText,
-        // Notifications exist on Android only.
-        action: Platform.isAndroid
-            ? (_remindersOn
-                ? Chip(
-                    avatar: const Icon(Icons.check_rounded),
-                    label: Text(l10n.onboardNotifyOn))
-                : OutlinedButton.icon(
-                    key: const ValueKey('onboard-reminders'),
-                    onPressed: _turnOnReminders,
-                    icon: const Icon(Icons.notifications_rounded),
-                    label: Text(l10n.onboardNotifyAction),
-                  ))
-            : null,
-      ),
-      _OnboardStep(
-          icon: const Icon(Icons.celebration_rounded),
-          title: l10n.onboardDoneTitle,
-          text: l10n.onboardDoneText),
-    ];
     return Scaffold(
       body: SafeArea(
-        child: Column(children: [
-          Align(
-            alignment: AlignmentDirectional.centerEnd,
-            child: Visibility(
-              visible: !last,
-              maintainSize: true,
-              maintainAnimation: true,
-              maintainState: true,
-              child: TextButton(
-                key: const ValueKey('onboard-skip'),
-                onPressed: _finishing ? null : _finish,
-                child: Text(l10n.onboardSkip),
-              ),
-            ),
-          ),
-          Expanded(
-            child: PageView(
-              key: const ValueKey('onboard-pages'),
-              controller: _pages,
-              onPageChanged: (page) => setState(() => _page = page),
-              children: pages,
-            ),
-          ),
-          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            for (var i = 0; i < _count; i++)
-              AnimatedContainer(
-                duration: const Duration(milliseconds: 200),
-                margin: const EdgeInsets.all(4),
-                width: i == _page ? 20 : 8,
-                height: 8,
-                decoration: BoxDecoration(
-                    color: i == _page ? cs.primary : cs.outlineVariant,
-                    borderRadius: BorderRadius.circular(4)),
-              ),
-          ]),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(24, 16, 24, 24),
-            child: Row(children: [
-              if (_page > 0)
-                TextButton(
-                  key: const ValueKey('onboard-back'),
-                  onPressed: () => _go(_page - 1),
-                  child: Text(l10n.onboardBack),
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(24),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 480),
+              child: Column(mainAxisSize: MainAxisSize.min, children: [
+                const AppLogo(size: 88),
+                const SizedBox(height: 28),
+                Text(l10n.onboardWelcomeTitle,
+                    textAlign: TextAlign.center,
+                    style: theme.textTheme.headlineSmall),
+                const SizedBox(height: 12),
+                Text(l10n.onboardWelcomeText,
+                    textAlign: TextAlign.center,
+                    style: theme.textTheme.bodyLarge),
+                const SizedBox(height: 32),
+                SizedBox(
+                  width: double.infinity,
+                  child: FilledButton.icon(
+                    key: const ValueKey('onboard-new-diary'),
+                    onPressed:
+                        _busy ? null : () => setState(() => _tutorial = true),
+                    icon: const Icon(Icons.edit_note_rounded),
+                    label: Padding(
+                        padding: const EdgeInsets.all(14),
+                        child: Text(l10n.onboardNewDiary)),
+                  ),
                 ),
-              const Spacer(),
-              FilledButton(
-                key: const ValueKey('onboard-next'),
-                onPressed: _finishing
-                    ? null
-                    : last
-                        ? _finish
-                        : () => _go(_page + 1),
-                child: Text(last ? l10n.onboardStart : l10n.onboardNext),
-              ),
-            ]),
-          ),
-        ]),
-      ),
-    );
-  }
-}
-
-class _OnboardStep extends StatelessWidget {
-  const _OnboardStep(
-      {required this.icon,
-      required this.title,
-      required this.text,
-      this.action});
-  final Widget icon;
-  final String title;
-  final String text;
-  final Widget? action;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final cs = theme.colorScheme;
-    return Center(
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 32),
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 480),
-          child: Column(mainAxisSize: MainAxisSize.min, children: [
-            Container(
-              width: 160,
-              height: 160,
-              decoration: BoxDecoration(
-                  color: cs.primaryContainer, shape: BoxShape.circle),
-              alignment: Alignment.center,
-              child: IconTheme(
-                  data: IconThemeData(size: 72, color: cs.onPrimaryContainer),
-                  child: icon),
+                const SizedBox(height: 12),
+                SizedBox(
+                  width: double.infinity,
+                  child: OutlinedButton.icon(
+                    key: const ValueKey('onboard-nearby-receive'),
+                    onPressed: _busy ? null : _receive,
+                    icon: const Icon(Icons.move_to_inbox_outlined),
+                    label: Padding(
+                        padding: const EdgeInsets.all(14),
+                        child: Text(l10n.onboardConnect)),
+                  ),
+                ),
+              ]),
             ),
-            const SizedBox(height: 32),
-            Text(title,
-                textAlign: TextAlign.center,
-                style: theme.textTheme.headlineSmall
-                    ?.copyWith(fontWeight: FontWeight.w700)),
-            const SizedBox(height: 12),
-            Text(text,
-                textAlign: TextAlign.center,
-                style: theme.textTheme.bodyLarge
-                    ?.copyWith(color: cs.onSurfaceVariant)),
-            if (action != null) ...[const SizedBox(height: 24), action!],
-          ]),
+          ),
         ),
       ),
     );

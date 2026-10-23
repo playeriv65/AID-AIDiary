@@ -46,6 +46,22 @@ additional Osaka relay was needed for the production deployment.
 
 ## Verification status
 
+### First-run connection and tutorial (2026-10-22)
+
+The first screen now offers “Start here” or “Connect to an existing device”
+(“连接已有设备”), with authorization and initial sync leaving the existing
+device usable. A reusable read-only tutorial is available from first setup
+and Settings. Existing saved/edited introductory content is retained as
+ordinary diary data; this change does not reset or clean a user's space.
+
+The final offline Flutter regression passed 799 cases; external-service tests
+were excluded. The eight first-run/help widget cases include cancellation,
+completion, tutorial re-entry, existing-writing preservation and large text.
+Two phone/wide render cases produced four reviewed screenshots; static
+analysis was clean. Existing local-protocol tests also retain the source's
+diary and sync state after initial copying. No new physical-device install,
+cross-network or performance claim is made by this UI follow-up.
+
 ### Device names and progressive disclosure (2026-10-22)
 
 The everyday sync page keeps completion/pending/waiting state and necessary

@@ -97,6 +97,7 @@ void main() {
             .read(received[EntryImageFields.imgPath] as String),
         bytes);
     expect(await oldDevice.db.query(syncChangesTable), changes);
+    expect(await oldDevice.texts(), ['offline diary']);
     expect(await oldDevice.db.query('sync_media_objects'), isEmpty);
     final peer = await hosted.grant.connect(identity);
     await expectLater(

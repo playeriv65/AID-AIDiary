@@ -184,6 +184,13 @@ at `build/handover/app-dev-debug.apk`, SHA-256
 
 ## Local development and diagnostics
 
+After editing `lib/l10n/*.arb`, run `./scripts/dev.ps1 l10n` before analysis,
+tests or builds. This wraps Flutter's [official localization generator](https://docs.flutter.dev/ui/internationalization)
+under the same workspace lock. Commit the relevant generated Dart changes;
+do not hand-edit them or assume dependency resolution/test execution refreshed
+an existing generated file. `intl_en.arb` is the template; Chinese variants
+have their own translations and other locales use the configured fallback.
+
 Use `aid guide` and shared app actions before manual taps when checking behavior.
 Build the CLI with `./scripts/dev.ps1 cli`; `build/cli/aid.exe` can reach the
 development Android flavor over adb with `aid -d <serial> app.status`. It reads

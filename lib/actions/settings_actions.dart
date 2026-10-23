@@ -11,7 +11,6 @@ import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/actions/sync_actions.dart';
 import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/config_provider.dart';
-import 'package:aid_diary/database/app_database.dart';
 import 'package:aid_diary/database/entry_store.dart';
 import 'package:aid_diary/language_option.dart';
 import 'package:aid_diary/providers/entry_images_provider.dart';
@@ -249,17 +248,15 @@ Map<String, String> _texts(String values) {
 final List<AppAction> settingsActions = [
   AppAction(
     id: 'app.finish_onboarding',
-    describe:
-        'Completes first-run setup and creates an example only in a fresh, unused diary.',
+    describe: 'Completes first-run setup.',
     risk: ActionRisk.write,
     run: (context, args) async {
-      final created = await AppDatabase.instance.createWelcomeForFirstStart();
       final saved =
           await SettingsService.instance.set(Settings.onboardingDone, true);
       if (!saved) {
         throw const ActionException('failed', 'Could not finish setup.');
       }
-      return {'completed': true, 'exampleCreated': created};
+      return {'completed': true};
     },
   ),
   AppAction(

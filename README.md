@@ -19,9 +19,11 @@ The layout follows the Journey diary app: a bottom bar on phones, a navigation r
 | ![Handwriting](artifacts/ui-tablet-backlog-drawing.png) | ![Appearance](artifacts/ui-phone-backlog-appearance.png) |
 | ![Paper](artifacts/ui-tablet-backlog-lined.png) | ![Local photo suggestions](artifacts/ui-phone-backlog-moments.png) |
 | | ![Random walk](artifacts/ui-phone-random.png) ![Week review](artifacts/ui-phone-week-review.png) |
+| ![First launch](artifacts/ui-tablet-first-start.png) | ![First launch](artifacts/ui-phone-first-start.png) |
+| ![Tutorial](artifacts/ui-tablet-tutorial.png) | ![Tutorial](artifacts/ui-phone-tutorial.png) |
 
 - **Journal**: stories, then entries grouped by day with time, title, preview, mood, place, weather, activity, tags and a thumbnail; sort by entry date (either way) or by last update. Stories: Today, the coach program's day, throwback, opened time capsules, a morning or evening prompt, quick check-in, random walk, this week and this year in review. Today, the coach day and the throwback play as one chain (statistics, 30-day mood chart, the day's prompt answered in place, the throwback, a closing card), as a card over wide windows.
-- **First launch**: welcome pages (what the diary does, privacy with a passcode, reminders).
+- **First launch**: choose “Start here” or “Connect to an existing device.” A read-only tutorial introduces writing, media, finding entries, sync and privacy; reopen it from Settings. The existing device authorizes the connection and remains usable while the new device receives the diary.
 - **Nearby migration and device authorization**: scan the old device, compare a short code, then transfer the identity and verified diary/media directly. Devices generate their own non-exportable signing keys; approving a new device never copies the old signing key. Network diagnostics explain pending media and show actual official-server usage. The official media plan defaults to 1 GB/month when enabled; self-hosting defaults to no plan quotas and durable media storage, with optional administrator limits.
 - **Appearance and handwriting**: independent light/dark palettes, lined/grid/tinted writing paper and original botanical, star and washi decorations. The pen canvas uses Scribble and perfect_freehand, saves drawings as ordinary PNG attachments and supports stylus-only input.
 - **Local photo suggestions**: optional, on-device grouping by time and optionally place, with bounded scans and explicit import. Source photos are never deleted or uploaded merely to create suggestions.
@@ -64,6 +66,7 @@ Windows is the main development environment (no WSL, no SDK submodule). Start wi
 
 ```powershell
 ./scripts/dev.ps1 pub          # resolve app and CLI dependencies on a new checkout
+./scripts/dev.ps1 l10n         # regenerate localized source after ARB changes
 ./scripts/dev.ps1 test -TestFiles test/sync/local_device_test.dart # affected files/directories
 ./scripts/dev.ps1 test-all     # deliberate full offline regression
 ./scripts/dev.ps1 analyze      # static analysis
