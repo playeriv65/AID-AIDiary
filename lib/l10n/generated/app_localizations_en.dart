@@ -2718,4 +2718,14 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get tutorialPrivacyText =>
       'Entries stay on this device unless you enable sync or share/export them. Sync is end-to-end encrypted. Settings also offers an app passcode and backups; you can reopen this tutorial there.';
+
+  @override
+  String get editorDiaryDay => 'Diary day';
+
+  @override
+  String get editorDiaryDayPicker => 'Diary day · creation time stays';
+
+  @override
+  String get editorDiaryDayHint =>
+      'The day this entry belongs to. Changing it does not change its creation time.';
 }

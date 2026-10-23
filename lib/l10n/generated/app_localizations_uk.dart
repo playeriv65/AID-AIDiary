@@ -2747,4 +2747,14 @@ class AppLocalizationsUk extends AppLocalizations {
   @override
   String get tutorialPrivacyText =>
       'Записи щоденника залишаються на цьому пристрої, якщо ви не ввімкнете синхронізацію, не поділитеся ними чи не експортуєте їх. Синхронізація має наскрізне шифрування. У налаштуваннях ви також можете встановити пароль програми, створити резервні копії та повторно відкрити цей посібник.';
+
+  @override
+  String get editorDiaryDay => 'День щоденника';
+
+  @override
+  String get editorDiaryDayPicker => 'День щоденника · час створення незмінний';
+
+  @override
+  String get editorDiaryDayHint =>
+      'День, до якого належить цей запис. Його зміна не змінює час створення запису.';
 }

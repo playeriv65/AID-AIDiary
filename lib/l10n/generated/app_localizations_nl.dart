@@ -2751,4 +2751,14 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String get tutorialPrivacyText =>
       'Dagboekaantekeningen blijven op dit apparaat staan, tenzij u synchronisatie inschakelt of ze deelt of exporteert. De synchronisatie is end-to-end gecodeerd. In Instellingen kunt u ook een app-toegangscode instellen, back-ups maken en deze tutorial opnieuw openen.';
+
+  @override
+  String get editorDiaryDay => 'Dagboekdag';
+
+  @override
+  String get editorDiaryDayPicker => 'Dagboekdag · aanmaaktijd blijft';
+
+  @override
+  String get editorDiaryDayHint =>
+      'De dag waarbij deze notitie hoort. Een wijziging verandert het aanmaaktijdstip niet.';
 }

@@ -802,5 +802,8 @@
     "tutorialSyncTitle": "Brug mere end én enhed",
     "tutorialSyncText": "I Indstillinger → Data og lagring → Synkroniser skal du oprette forbindelse til en eksisterende enhed og bekræfte godkendelsen på den enhed. Begge enheder kan blive ved med at bruge dagbogen. Dagbogstekst synkroniseres først. Mediefiler synkroniseres derefter, når netværksforbindelsen og den resterende dataoverførselskvote tillader det.",
     "tutorialPrivacyTitle": "Hold din dagbog sikker",
-    "tutorialPrivacyText": "Dagbogsoptegnelser forbliver på denne enhed, medmindre du aktiverer synkronisering eller deler eller eksporterer dem. Synkronisering er ende-til-ende-krypteret. I Indstillinger kan du også indstille en app-adgangskode, oprette sikkerhedskopier og genåbne denne vejledning."
+    "tutorialPrivacyText": "Dagbogsoptegnelser forbliver på denne enhed, medmindre du aktiverer synkronisering eller deler eller eksporterer dem. Synkronisering er ende-til-ende-krypteret. I Indstillinger kan du også indstille en app-adgangskode, oprette sikkerhedskopier og genåbne denne vejledning.",
+    "editorDiaryDay": "Dagbogsdato",
+    "editorDiaryDayPicker": "Dagbogsdato · oprettelsestid bevares",
+    "editorDiaryDayHint": "Den dag, dette indlæg hører til. En ændring ændrer ikke tidspunktet, hvor indlægget blev oprettet."
 }

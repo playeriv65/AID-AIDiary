@@ -802,5 +802,8 @@
     "tutorialSyncTitle": "Utilitzeu més d'un dispositiu",
     "tutorialSyncText": "A Configuració → Dades i emmagatzematge → Sincronització, connecteu-vos a un dispositiu existent i confirmeu l'autorització en aquest dispositiu. Tots dos dispositius poden seguir utilitzant el diari. El text del diari es sincronitza primer. Els fitxers multimèdia es sincronitzen a continuació quan la connexió de xarxa i la quota de transferència de dades restants ho permetin.",
     "tutorialPrivacyTitle": "Guarda el teu diari segur",
-    "tutorialPrivacyText": "Les entrades del diari romanen en aquest dispositiu tret que les activeu la sincronització, les compartiu o les exporteu. La sincronització està xifrada d'extrem a extrem. A Configuració també podeu establir una contrasenya d'aplicació, crear còpies de seguretat i tornar a obrir aquest tutorial."
+    "tutorialPrivacyText": "Les entrades del diari romanen en aquest dispositiu tret que les activeu la sincronització, les compartiu o les exporteu. La sincronització està xifrada d'extrem a extrem. A Configuració també podeu establir una contrasenya d'aplicació, crear còpies de seguretat i tornar a obrir aquest tutorial.",
+    "editorDiaryDay": "Dia del diari",
+    "editorDiaryDayPicker": "Dia del diari · creació sense canvis",
+    "editorDiaryDayHint": "El dia al qual pertany aquesta entrada. Canviar-lo no modifica la data ni l’hora de creació."
 }

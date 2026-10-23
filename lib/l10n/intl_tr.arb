@@ -802,5 +802,8 @@
     "tutorialSyncTitle": "Birden fazla cihaz kullanma",
     "tutorialSyncText": "Ayarlar → Veri ve depolama → Senkronizasyon bölümünde mevcut bir cihaza bağlanın ve bu cihazdaki yetkilendirmeyi onaylayın. Her iki cihaz da günlüğü kullanmaya devam edebilir. Önce günlük metni senkronize edilir. Medya dosyaları, ağ bağlantısı ve kalan veri aktarım kotası izin verdiğinde bir sonraki adımda senkronize edilir.",
     "tutorialPrivacyTitle": "Günlüğünüzü güvende tutun",
-    "tutorialPrivacyText": "Senkronizasyonu etkinleştirmediğiniz, paylaşmadığınız veya dışa aktarmadığınız sürece günlük girişleri bu cihazda kalır. Senkronizasyon uçtan uca şifrelenir. Ayarlar'da ayrıca bir uygulama şifresi ayarlayabilir, yedeklemeler oluşturabilir ve bu öğreticiyi yeniden açabilirsiniz."
+    "tutorialPrivacyText": "Senkronizasyonu etkinleştirmediğiniz, paylaşmadığınız veya dışa aktarmadığınız sürece günlük girişleri bu cihazda kalır. Senkronizasyon uçtan uca şifrelenir. Ayarlar'da ayrıca bir uygulama şifresi ayarlayabilir, yedeklemeler oluşturabilir ve bu öğreticiyi yeniden açabilirsiniz.",
+    "editorDiaryDay": "Günlük günü",
+    "editorDiaryDayPicker": "Günlük günü · oluşturma zamanı değişmez",
+    "editorDiaryDayHint": "Bu kaydın ait olduğu gün. Bunu değiştirmek kaydın oluşturulma zamanını değiştirmez."
 }

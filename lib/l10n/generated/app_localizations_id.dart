@@ -2741,4 +2741,14 @@ class AppLocalizationsId extends AppLocalizations {
   @override
   String get tutorialPrivacyText =>
       'Entri buku harian tetap ada di perangkat ini kecuali Anda mengaktifkan sinkronisasi atau berbagi atau mengekspornya. Sinkronisasi dienkripsi ujung ke ujung. Di Pengaturan Anda juga dapat mengatur kode sandi aplikasi, membuat cadangan, dan membuka kembali tutorial ini.';
+
+  @override
+  String get editorDiaryDay => 'Hari catatan';
+
+  @override
+  String get editorDiaryDayPicker => 'Hari catatan · waktu dibuat tetap';
+
+  @override
+  String get editorDiaryDayHint =>
+      'Hari yang menjadi acuan entri ini. Mengubahnya tidak mengubah waktu pembuatan entri.';
 }

@@ -2760,4 +2760,14 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get tutorialPrivacyText =>
       'Le voci del diario rimangono su questo dispositivo a meno che non abiliti la sincronizzazione o le condividi o le esporti. La sincronizzazione è crittografata end-to-end. In Impostazioni puoi anche impostare un passcode per l\'app, creare backup e riaprire questo tutorial.';
+
+  @override
+  String get editorDiaryDay => 'Giorno del diario';
+
+  @override
+  String get editorDiaryDayPicker => 'Giorno del diario · creazione invariata';
+
+  @override
+  String get editorDiaryDayHint =>
+      'Il giorno a cui appartiene questa voce. Modificarlo non cambia la data o l’ora di creazione.';
 }

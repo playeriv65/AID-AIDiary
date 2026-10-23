@@ -803,5 +803,8 @@
     "tutorialSyncTitle": "Utilice más de un dispositivo",
     "tutorialSyncText": "En Configuración → Datos y almacenamiento → Sincronización, conéctese a un dispositivo existente y confirme la autorización en ese dispositivo. Ambos dispositivos pueden seguir usando el diario. El texto del diario se sincroniza primero. Los archivos multimedia se sincronizan a continuación cuando la conexión de red y la cuota de transferencia de datos restante lo permiten.",
     "tutorialPrivacyTitle": "Mantenga su diario seguro",
-    "tutorialPrivacyText": "Las entradas del diario permanecen en este dispositivo a menos que habilites la sincronización, las compartas o las exportes. La sincronización está cifrada de extremo a extremo. En Configuración también puedes establecer un código de acceso a la aplicación, crear copias de seguridad y volver a abrir este tutorial."
+    "tutorialPrivacyText": "Las entradas del diario permanecen en este dispositivo a menos que habilites la sincronización, las compartas o las exportes. La sincronización está cifrada de extremo a extremo. En Configuración también puedes establecer un código de acceso a la aplicación, crear copias de seguridad y volver a abrir este tutorial.",
+    "editorDiaryDay": "Día del diario",
+    "editorDiaryDayPicker": "Día del diario · creación sin cambios",
+    "editorDiaryDayHint": "El día al que pertenece esta entrada. Cambiarlo no modifica su fecha ni hora de creación."
 }

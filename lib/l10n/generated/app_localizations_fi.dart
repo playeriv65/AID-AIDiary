@@ -2740,4 +2740,14 @@ class AppLocalizationsFi extends AppLocalizations {
   @override
   String get tutorialPrivacyText =>
       'Päiväkirjamerkinnät pysyvät tällä laitteella, ellet ota synkronointia käyttöön tai jaa tai vie niitä. Synkronointi on päästä päähän -salattu. Asetuksissa voit myös asettaa sovelluksen pääsykoodin, luoda varmuuskopioita ja avata tämän opetusohjelman uudelleen.';
+
+  @override
+  String get editorDiaryDay => 'Päiväkirjapäivä';
+
+  @override
+  String get editorDiaryDayPicker => 'Päiväkirjapäivä · luontiaika säilyy';
+
+  @override
+  String get editorDiaryDayHint =>
+      'Päivä, johon tämä merkintä kuuluu. Sen muuttaminen ei muuta merkinnän luontiaikaa.';
 }

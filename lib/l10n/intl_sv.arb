@@ -802,5 +802,8 @@
     "tutorialSyncTitle": "Använd mer än en enhet",
     "tutorialSyncText": "I Inställningar → Data & lagring → Synkronisera, anslut till en befintlig enhet och bekräfta auktorisering på den enheten. Båda enheterna kan fortsätta använda dagboken. Dagbokstext synkroniseras först. Mediafiler synkroniseras härnäst när nätverksanslutningen och återstående dataöverföringskvot tillåter det.",
     "tutorialPrivacyTitle": "Håll din dagbok säker",
-    "tutorialPrivacyText": "Dagboksanteckningar finns kvar på den här enheten om du inte aktiverar synkronisering eller delar eller exporterar dem. Synkronisering är krypterad från ände till ände. I Inställningar kan du också ställa in ett applösenord, skapa säkerhetskopior och öppna den här handledningen igen."
+    "tutorialPrivacyText": "Dagboksanteckningar finns kvar på den här enheten om du inte aktiverar synkronisering eller delar eller exporterar dem. Synkronisering är krypterad från ände till ände. I Inställningar kan du också ställa in ett applösenord, skapa säkerhetskopior och öppna den här handledningen igen.",
+    "editorDiaryDay": "Dagboksdatum",
+    "editorDiaryDayPicker": "Dagboksdatum · skapandetiden behålls",
+    "editorDiaryDayHint": "Dagen som det här inlägget hör till. En ändring ändrar inte tidpunkten då inlägget skapades."
 }

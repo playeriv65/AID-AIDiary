@@ -2753,6 +2753,16 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get tutorialPrivacyText =>
       'As entradas do diário permanecem neste dispositivo, a menos que ative a sincronização, partilhe ou exporte-as. A sincronização é encriptada de ponta a ponta. Em Definições também pode definir uma palavra-passe de aplicação, criar cópias de segurança e reabrir este tutorial.';
+
+  @override
+  String get editorDiaryDay => 'Dia do diário';
+
+  @override
+  String get editorDiaryDayPicker => 'Dia do diário · criação inalterada';
+
+  @override
+  String get editorDiaryDayHint =>
+      'O dia a que pertence esta entrada. Alterá-lo não muda a data nem a hora de criação.';
 }
 
 /// The translations for Portuguese, as used in Brazil (`pt_BR`).
@@ -5504,4 +5514,14 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
   @override
   String get tutorialPrivacyText =>
       'As entradas do diário permanecem neste dispositivo, a menos que você ative a sincronização, compartilhe ou exporte-as. A sincronização é criptografada de ponta a ponta. Em Configurações você também pode definir uma senha de aplicativo, criar backups e reabrir este tutorial.';
+
+  @override
+  String get editorDiaryDay => 'Dia do diário';
+
+  @override
+  String get editorDiaryDayPicker => 'Dia do diário · criação inalterada';
+
+  @override
+  String get editorDiaryDayHint =>
+      'O dia ao qual esta entrada pertence. Alterá-lo não muda a data nem a hora de criação.';
 }

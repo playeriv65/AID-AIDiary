@@ -2728,4 +2728,14 @@ class AppLocalizationsCs extends AppLocalizations {
   @override
   String get tutorialPrivacyText =>
       'Záznamy v deníku zůstanou na tomto zařízení, pokud nepovolíte synchronizaci, sdílení nebo export. Synchronizace je šifrována end-to-end. V Nastavení můžete také nastavit přístupový kód aplikace, vytvořit zálohy a znovu otevřít tento výukový program.';
+
+  @override
+  String get editorDiaryDay => 'Den deníku';
+
+  @override
+  String get editorDiaryDayPicker => 'Den deníku · čas vytvoření zůstává';
+
+  @override
+  String get editorDiaryDayHint =>
+      'Den, ke kterému tento záznam patří. Jeho změna nezmění čas vytvoření záznamu.';
 }

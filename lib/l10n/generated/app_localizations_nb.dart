@@ -2737,4 +2737,14 @@ class AppLocalizationsNb extends AppLocalizations {
   @override
   String get tutorialPrivacyText =>
       'Dagbokoppføringer forblir på denne enheten med mindre du aktiverer synkronisering eller deler eller eksporterer dem. Synkronisering er ende-til-ende-kryptert. I Innstillinger kan du også angi en app-passord, lage sikkerhetskopier og åpne denne opplæringen på nytt.';
+
+  @override
+  String get editorDiaryDay => 'Dagbokdato';
+
+  @override
+  String get editorDiaryDayPicker => 'Dagbokdato · opprettelsestid beholdes';
+
+  @override
+  String get editorDiaryDayHint =>
+      'Dagen dette innlegget tilhører. En endring endrer ikke tidspunktet innlegget ble opprettet.';
 }

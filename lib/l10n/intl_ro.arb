@@ -802,5 +802,8 @@
     "tutorialSyncTitle": "Utilizați mai mult de un dispozitiv",
     "tutorialSyncText": "În Setări → Date și stocare → Sincronizare, conectați-vă la un dispozitiv existent și confirmați autorizarea pe acel dispozitiv. Ambele dispozitive pot continua să folosească jurnalul. Textul jurnalului se sincronizează mai întâi. Fișierele media se sincronizează în continuare când conexiunea la rețea și cota de transfer de date rămasă o permit.",
     "tutorialPrivacyTitle": "Păstrează-ți jurnalul în siguranță",
-    "tutorialPrivacyText": "Înregistrările din jurnal rămân pe acest dispozitiv, cu excepția cazului în care le activați sincronizarea, le distribuiți sau le exportați. Sincronizarea este criptată de la capăt la capăt. În Setări, puteți, de asemenea, să setați o parolă pentru aplicație, să creați copii de rezervă și să redeschideți acest tutorial."
+    "tutorialPrivacyText": "Înregistrările din jurnal rămân pe acest dispozitiv, cu excepția cazului în care le activați sincronizarea, le distribuiți sau le exportați. Sincronizarea este criptată de la capăt la capăt. În Setări, puteți, de asemenea, să setați o parolă pentru aplicație, să creați copii de rezervă și să redeschideți acest tutorial.",
+    "editorDiaryDay": "Ziua însemnării",
+    "editorDiaryDayPicker": "Ziua însemnării · crearea nu se modifică",
+    "editorDiaryDayHint": "Ziua căreia îi aparține această însemnare. Modificarea ei nu schimbă data sau ora creării."
 }

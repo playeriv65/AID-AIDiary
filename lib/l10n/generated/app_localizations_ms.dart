@@ -2696,4 +2696,14 @@ class AppLocalizationsMs extends AppLocalizations {
   @override
   String get tutorialPrivacyText =>
       'Entri diari kekal pada peranti ini melainkan anda mendayakan penyegerakan atau berkongsi atau mengeksportnya. Penyegerakan disulitkan dari hujung ke hujung. Dalam Tetapan anda juga boleh menetapkan kod laluan apl, membuat sandaran dan membuka semula tutorial ini.';
+
+  @override
+  String get editorDiaryDay => 'Hari diari';
+
+  @override
+  String get editorDiaryDayPicker => 'Hari diari · masa penciptaan kekal';
+
+  @override
+  String get editorDiaryDayHint =>
+      'Hari yang ditetapkan untuk catatan ini. Mengubahnya tidak mengubah masa catatan dicipta.';
 }

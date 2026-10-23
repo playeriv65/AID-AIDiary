@@ -802,5 +802,8 @@
     "tutorialSyncTitle": "Utiliser plusieurs appareils",
     "tutorialSyncText": "Dans Paramètres → Données et stockage → Synchronisation, connectez-vous à un appareil existant et confirmez l’autorisation sur cet appareil. Les deux appareils restent utilisables. Le texte du journal est synchronisé en premier ; les pièces jointes suivent selon la connexion et le quota de transfert restant.",
     "tutorialPrivacyTitle": "Gardez votre agenda en sécurité",
-    "tutorialPrivacyText": "Les entrées du journal restent sur cet appareil, sauf si vous activez la synchronisation, les partagez ou les exportez. La synchronisation est chiffrée de bout en bout. Dans Paramètres, vous pouvez également définir un mot de passe pour l'application, créer des sauvegardes et rouvrir ce didacticiel."
+    "tutorialPrivacyText": "Les entrées du journal restent sur cet appareil, sauf si vous activez la synchronisation, les partagez ou les exportez. La synchronisation est chiffrée de bout en bout. Dans Paramètres, vous pouvez également définir un mot de passe pour l'application, créer des sauvegardes et rouvrir ce didacticiel.",
+    "editorDiaryDay": "Jour du journal",
+    "editorDiaryDayPicker": "Jour du journal · création inchangée",
+    "editorDiaryDayHint": "Le jour auquel cette entrée appartient. Le modifier ne change ni sa date ni son heure de création."
 }

@@ -802,5 +802,8 @@
     "tutorialSyncTitle": "Naudokite daugiau nei vieną įrenginį",
     "tutorialSyncText": "Skiltyje Nustatymai → Duomenys ir saugykla → Sinchronizuoti prisijunkite prie esamo įrenginio ir patvirtinkite to įrenginio prieigos teisę. Abu įrenginiai gali toliau naudoti dienoraštį. Pirmiausia sinchronizuojamas dienoraščio tekstas. Medijos failai sinchronizuojami toliau, kai tai leidžia tinklo ryšys ir likusi duomenų perdavimo kvota.",
     "tutorialPrivacyTitle": "Saugokite savo dienoraštį",
-    "tutorialPrivacyText": "Dienoraščio įrašai lieka šiame įrenginyje, nebent įgalinsite sinchronizavimą, bendrinsite arba eksportuosite juos. Sinchronizavimas yra visiškai užšifruotas. Nustatymuose taip pat galite nustatyti programos prieigos kodą, kurti atsargines kopijas ir iš naujo atidaryti šią mokymo programą."
+    "tutorialPrivacyText": "Dienoraščio įrašai lieka šiame įrenginyje, nebent įgalinsite sinchronizavimą, bendrinsite arba eksportuosite juos. Sinchronizavimas yra visiškai užšifruotas. Nustatymuose taip pat galite nustatyti programos prieigos kodą, kurti atsargines kopijas ir iš naujo atidaryti šią mokymo programą.",
+    "editorDiaryDay": "Dienoraščio diena",
+    "editorDiaryDayPicker": "Dienoraščio diena · sukūrimo laikas nekinta",
+    "editorDiaryDayHint": "Diena, kuriai priklauso šis įrašas. Ją pakeitus įrašo sukūrimo laikas nesikeičia."
 }

@@ -802,5 +802,8 @@
     "tutorialSyncTitle": "Gebruik meer dan één apparaat",
     "tutorialSyncText": "Maak in Instellingen → Gegevens en opslag → Synchroniseren verbinding met een bestaand apparaat en bevestig de autorisatie op dat apparaat. Beide apparaten kunnen het dagboek blijven gebruiken. Dagboektekst wordt eerst gesynchroniseerd. Mediabestanden worden vervolgens gesynchroniseerd wanneer de netwerkverbinding en het resterende quotum voor gegevensoverdracht dit toestaan.",
     "tutorialPrivacyTitle": "Bewaar uw dagboek veilig",
-    "tutorialPrivacyText": "Dagboekaantekeningen blijven op dit apparaat staan, tenzij u synchronisatie inschakelt of ze deelt of exporteert. De synchronisatie is end-to-end gecodeerd. In Instellingen kunt u ook een app-toegangscode instellen, back-ups maken en deze tutorial opnieuw openen."
+    "tutorialPrivacyText": "Dagboekaantekeningen blijven op dit apparaat staan, tenzij u synchronisatie inschakelt of ze deelt of exporteert. De synchronisatie is end-to-end gecodeerd. In Instellingen kunt u ook een app-toegangscode instellen, back-ups maken en deze tutorial opnieuw openen.",
+    "editorDiaryDay": "Dagboekdag",
+    "editorDiaryDayPicker": "Dagboekdag · aanmaaktijd blijft",
+    "editorDiaryDayHint": "De dag waarbij deze notitie hoort. Een wijziging verandert het aanmaaktijdstip niet."
 }

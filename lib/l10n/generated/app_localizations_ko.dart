@@ -2670,4 +2670,13 @@ class AppLocalizationsKo extends AppLocalizations {
   @override
   String get tutorialPrivacyText =>
       '일기 항목은 동기화, 공유 또는 내보내기를 활성화하지 않는 한 이 기기에 유지됩니다. 동기화는 종단 간 암호화됩니다. 설정에서 앱 비밀번호를 설정하고, 백업을 생성하고, 이 튜토리얼을 다시 열 수도 있습니다.';
+
+  @override
+  String get editorDiaryDay => '일기 날짜';
+
+  @override
+  String get editorDiaryDayPicker => '일기 날짜 · 생성 시간은 유지됩니다';
+
+  @override
+  String get editorDiaryDayHint => '이 일기가 속하는 날짜입니다. 날짜를 바꿔도 생성 시간은 바뀌지 않습니다.';
 }

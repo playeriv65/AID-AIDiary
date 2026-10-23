@@ -802,5 +802,8 @@
     "tutorialSyncTitle": "Käytä useampaa kuin yhtä laitetta",
     "tutorialSyncText": "Muodosta yhteys olemassa olevaan laitteeseen kohdassa Asetukset → Tiedot ja tallennus → Synkronoi ja vahvista kyseisen laitteen valtuutus. Molemmat laitteet voivat jatkaa päiväkirjan käyttöä. Päiväkirjan teksti synkronoidaan ensin. Mediatiedostot synkronoidaan seuraavaksi, kun verkkoyhteys ja jäljellä oleva tiedonsiirtokiintiö sallivat sen.",
     "tutorialPrivacyTitle": "Pidä päiväkirjasi turvassa",
-    "tutorialPrivacyText": "Päiväkirjamerkinnät pysyvät tällä laitteella, ellet ota synkronointia käyttöön tai jaa tai vie niitä. Synkronointi on päästä päähän -salattu. Asetuksissa voit myös asettaa sovelluksen pääsykoodin, luoda varmuuskopioita ja avata tämän opetusohjelman uudelleen."
+    "tutorialPrivacyText": "Päiväkirjamerkinnät pysyvät tällä laitteella, ellet ota synkronointia käyttöön tai jaa tai vie niitä. Synkronointi on päästä päähän -salattu. Asetuksissa voit myös asettaa sovelluksen pääsykoodin, luoda varmuuskopioita ja avata tämän opetusohjelman uudelleen.",
+    "editorDiaryDay": "Päiväkirjapäivä",
+    "editorDiaryDayPicker": "Päiväkirjapäivä · luontiaika säilyy",
+    "editorDiaryDayHint": "Päivä, johon tämä merkintä kuuluu. Sen muuttaminen ei muuta merkinnän luontiaikaa."
 }

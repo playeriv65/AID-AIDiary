@@ -2759,4 +2759,15 @@ class AppLocalizationsOc extends AppLocalizations {
   @override
   String get tutorialPrivacyText =>
       'Las entradas del jornal demòran sus aqueste periferic levat se las activatz la sincronizacion o la partatge o las exportacion. La sincronizacion es chifrada de punta a punta. Dins los Paramètres podètz tanben definir un senhal d\'aplicacion, crear de còpias de seguretat e tornar dobrir aqueste tutorial.';
+
+  @override
+  String get editorDiaryDay => 'Jorn del jornal';
+
+  @override
+  String get editorDiaryDayPicker =>
+      'Jorn del jornal · creacion sens cambiament';
+
+  @override
+  String get editorDiaryDayHint =>
+      'Lo jorn al qual aparten aquesta nòta. Lo cambiar modifica pas sa data e ora de creacion.';
 }

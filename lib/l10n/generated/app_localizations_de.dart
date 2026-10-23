@@ -2767,4 +2767,14 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get tutorialPrivacyText =>
       'Tagebucheinträge bleiben auf diesem Gerät, es sei denn, Sie aktivieren die Synchronisierung oder teilen oder exportieren sie. Die Synchronisierung erfolgt Ende-zu-Ende-verschlüsselt. In den Einstellungen können Sie auch einen App-Passcode festlegen, Backups erstellen und dieses Tutorial erneut öffnen.';
+
+  @override
+  String get editorDiaryDay => 'Tagebuchtag';
+
+  @override
+  String get editorDiaryDayPicker => 'Tagebuchtag · Erstellzeit bleibt';
+
+  @override
+  String get editorDiaryDayHint =>
+      'Der Tag, zu dem dieser Eintrag gehört. Eine Änderung lässt den Erstellungszeitpunkt unverändert.';
 }

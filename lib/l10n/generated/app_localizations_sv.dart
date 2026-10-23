@@ -2738,4 +2738,14 @@ class AppLocalizationsSv extends AppLocalizations {
   @override
   String get tutorialPrivacyText =>
       'Dagboksanteckningar finns kvar på den här enheten om du inte aktiverar synkronisering eller delar eller exporterar dem. Synkronisering är krypterad från ände till ände. I Inställningar kan du också ställa in ett applösenord, skapa säkerhetskopior och öppna den här handledningen igen.';
+
+  @override
+  String get editorDiaryDay => 'Dagboksdatum';
+
+  @override
+  String get editorDiaryDayPicker => 'Dagboksdatum · skapandetiden behålls';
+
+  @override
+  String get editorDiaryDayHint =>
+      'Dagen som det här inlägget hör till. En ändring ändrar inte tidpunkten då inlägget skapades.';
 }

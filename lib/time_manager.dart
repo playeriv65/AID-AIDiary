@@ -174,6 +174,7 @@ class TimeManager {
     required DateTime initialDate,
     required DateTime firstDate,
     required DateTime lastDate,
+    String? helpText,
     bool Function(DateTime)? selectableDayPredicate,
   }) async {
     if (isJalaliCalendar(context)) {
@@ -187,6 +188,7 @@ class TimeManager {
         initialDate: Jalali.fromDateTime(initialDate),
         firstDate: Jalali.fromDateTime(firstDate),
         lastDate: Jalali.fromDateTime(lastDate),
+        helpText: helpText,
         selectableDayPredicate: jalaliPredicate,
       );
       return picked?.toDateTime();
@@ -196,6 +198,7 @@ class TimeManager {
       initialDate: initialDate,
       firstDate: firstDate,
       lastDate: lastDate,
+      helpText: helpText,
       selectableDayPredicate: selectableDayPredicate,
     );
   }

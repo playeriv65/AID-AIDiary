@@ -802,5 +802,8 @@
     "tutorialSyncTitle": "Používejte více než jedno zařízení",
     "tutorialSyncText": "V Nastavení → Data a úložiště → Synchronizace se připojte ke stávajícímu zařízení a potvrďte autorizaci na tomto zařízení. Obě zařízení mohou deník nadále používat. Nejprve se synchronizuje text deníku. Mediální soubory se synchronizují dále, když to síťové připojení a zbývající kvóta přenosu dat dovolí.",
     "tutorialPrivacyTitle": "Udržujte svůj deník v bezpečí",
-    "tutorialPrivacyText": "Záznamy v deníku zůstanou na tomto zařízení, pokud nepovolíte synchronizaci, sdílení nebo export. Synchronizace je šifrována end-to-end. V Nastavení můžete také nastavit přístupový kód aplikace, vytvořit zálohy a znovu otevřít tento výukový program."
+    "tutorialPrivacyText": "Záznamy v deníku zůstanou na tomto zařízení, pokud nepovolíte synchronizaci, sdílení nebo export. Synchronizace je šifrována end-to-end. V Nastavení můžete také nastavit přístupový kód aplikace, vytvořit zálohy a znovu otevřít tento výukový program.",
+    "editorDiaryDay": "Den deníku",
+    "editorDiaryDayPicker": "Den deníku · čas vytvoření zůstává",
+    "editorDiaryDayHint": "Den, ke kterému tento záznam patří. Jeho změna nezmění čas vytvoření záznamu."
 }

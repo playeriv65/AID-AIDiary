@@ -2759,4 +2759,15 @@ class AppLocalizationsPl extends AppLocalizations {
   @override
   String get tutorialPrivacyText =>
       'Wpisy dziennika pozostają na tym urządzeniu, chyba że włączysz synchronizację, udostępnisz je lub wyeksportujesz. Synchronizacja jest szyfrowana od początku do końca. W Ustawieniach możesz także ustawić hasło do aplikacji, utworzyć kopie zapasowe i ponownie otworzyć ten samouczek.';
+
+  @override
+  String get editorDiaryDay => 'Dzień dziennika';
+
+  @override
+  String get editorDiaryDayPicker =>
+      'Dzień dziennika · czas utworzenia bez zmian';
+
+  @override
+  String get editorDiaryDayHint =>
+      'Dzień, do którego należy ten wpis. Jego zmiana nie zmienia czasu utworzenia wpisu.';
 }

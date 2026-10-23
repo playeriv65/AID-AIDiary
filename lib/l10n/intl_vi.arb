@@ -802,5 +802,8 @@
     "tutorialSyncTitle": "Sử dụng nhiều hơn một thiết bị",
     "tutorialSyncText": "Trong Cài đặt → Dữ liệu & lưu trữ → Đồng bộ hóa, kết nối với thiết bị hiện có và xác nhận ủy quyền trên thiết bị đó. Cả hai thiết bị đều có thể tiếp tục sử dụng nhật ký. Văn bản nhật ký được đồng bộ hóa đầu tiên. Tiếp theo, các tệp phương tiện sẽ được đồng bộ hóa khi kết nối mạng và hạn mức truyền dữ liệu còn lại cho phép.",
     "tutorialPrivacyTitle": "Giữ nhật ký của bạn an toàn",
-    "tutorialPrivacyText": "Các mục nhật ký vẫn còn trên thiết bị này trừ khi bạn bật đồng bộ hóa, chia sẻ hoặc xuất chúng. Đồng bộ hóa được mã hóa hai đầu. Trong Cài đặt, bạn cũng có thể đặt mật mã ứng dụng, tạo bản sao lưu và mở lại hướng dẫn này."
+    "tutorialPrivacyText": "Các mục nhật ký vẫn còn trên thiết bị này trừ khi bạn bật đồng bộ hóa, chia sẻ hoặc xuất chúng. Đồng bộ hóa được mã hóa hai đầu. Trong Cài đặt, bạn cũng có thể đặt mật mã ứng dụng, tạo bản sao lưu và mở lại hướng dẫn này.",
+    "editorDiaryDay": "Ngày nhật ký",
+    "editorDiaryDayPicker": "Ngày nhật ký · giữ nguyên thời điểm tạo",
+    "editorDiaryDayHint": "Ngày mà mục nhật ký này thuộc về. Thay đổi ngày này không làm thay đổi thời điểm tạo mục."
 }

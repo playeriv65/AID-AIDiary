@@ -2733,4 +2733,14 @@ class AppLocalizationsHi extends AppLocalizations {
   @override
   String get tutorialPrivacyText =>
       'डायरी प्रविष्टियाँ इस डिवाइस पर तब तक रहती हैं जब तक आप सिंक सक्षम नहीं करते या उन्हें साझा या निर्यात नहीं करते। सिंक एंड-टू-एंड एन्क्रिप्टेड है. सेटिंग्स में आप एक ऐप पासकोड भी सेट कर सकते हैं, बैकअप बना सकते हैं और इस ट्यूटोरियल को फिर से खोल सकते हैं।';
+
+  @override
+  String get editorDiaryDay => 'डायरी का दिन';
+
+  @override
+  String get editorDiaryDayPicker => 'डायरी का दिन · बनाने का समय नहीं बदलता';
+
+  @override
+  String get editorDiaryDayHint =>
+      'वह दिन जिससे यह प्रविष्टि संबंधित है। इसे बदलने से प्रविष्टि बनाने का समय नहीं बदलता।';
 }

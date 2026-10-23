@@ -2756,4 +2756,14 @@ class AppLocalizationsCa extends AppLocalizations {
   @override
   String get tutorialPrivacyText =>
       'Les entrades del diari romanen en aquest dispositiu tret que les activeu la sincronització, les compartiu o les exporteu. La sincronització està xifrada d\'extrem a extrem. A Configuració també podeu establir una contrasenya d\'aplicació, crear còpies de seguretat i tornar a obrir aquest tutorial.';
+
+  @override
+  String get editorDiaryDay => 'Dia del diari';
+
+  @override
+  String get editorDiaryDayPicker => 'Dia del diari · creació sense canvis';
+
+  @override
+  String get editorDiaryDayHint =>
+      'El dia al qual pertany aquesta entrada. Canviar-lo no modifica la data ni l’hora de creació.';
 }

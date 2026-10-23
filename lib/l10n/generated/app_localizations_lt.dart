@@ -2763,4 +2763,15 @@ class AppLocalizationsLt extends AppLocalizations {
   @override
   String get tutorialPrivacyText =>
       'Dienoraščio įrašai lieka šiame įrenginyje, nebent įgalinsite sinchronizavimą, bendrinsite arba eksportuosite juos. Sinchronizavimas yra visiškai užšifruotas. Nustatymuose taip pat galite nustatyti programos prieigos kodą, kurti atsargines kopijas ir iš naujo atidaryti šią mokymo programą.';
+
+  @override
+  String get editorDiaryDay => 'Dienoraščio diena';
+
+  @override
+  String get editorDiaryDayPicker =>
+      'Dienoraščio diena · sukūrimo laikas nekinta';
+
+  @override
+  String get editorDiaryDayHint =>
+      'Diena, kuriai priklauso šis įrašas. Ją pakeitus įrašo sukūrimo laikas nesikeičia.';
 }

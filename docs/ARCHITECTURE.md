@@ -101,6 +101,12 @@ without a widget, using real SQLite in the host-integration layer.
 dialogs and navigation, reports typing and choices to the view model and
 redraws when it notifies.
 
+The editor labels its date control "Diary day" and explains that choosing a
+date changes grouping rather than creation time. `TimeManager.pickDate` forwards
+the optional contextual header to both calendar implementations. The save/cancel
+flows are covered by `test/pages/editor_diary_day_test.dart`, including retained
+creation timestamps, UTC offsets and body text in an isolated store.
+
 ### UI work and shared state
 
 Pages stay alive and may rebuild on each diary change. Keep per-entry work out
@@ -341,8 +347,9 @@ locale and RTL direction. Representative rendered views check actual fonts;
 native device installation and full native-language review remain separate.
 No runtime translation service or new localization library is used by the app.
 
-Validation on 2026-10-22: all catalogs contain the 804 English-template messages,
-with no missing/empty values or lost arguments. The final offline Flutter run
+Catalog-completion baseline (2026-10-22, `0febd38`): all catalogs covered the
+then-804 English-template messages, with no missing/empty values or lost
+arguments. That offline Flutter run
 passed 921 tests (79.82 seconds wall time), including 122 localization checks.
 Eight first-run/tutorial renders using actual Latin, Arabic and Tamil fonts
 were inspected at phone and desktop sizes. The generator reported no missing

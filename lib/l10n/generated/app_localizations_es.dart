@@ -2748,4 +2748,14 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get tutorialPrivacyText =>
       'Las entradas del diario permanecen en este dispositivo a menos que habilites la sincronización, las compartas o las exportes. La sincronización está cifrada de extremo a extremo. En Configuración también puedes establecer un código de acceso a la aplicación, crear copias de seguridad y volver a abrir este tutorial.';
+
+  @override
+  String get editorDiaryDay => 'Día del diario';
+
+  @override
+  String get editorDiaryDayPicker => 'Día del diario · creación sin cambios';
+
+  @override
+  String get editorDiaryDayHint =>
+      'El día al que pertenece esta entrada. Cambiarlo no modifica su fecha ni hora de creación.';
 }

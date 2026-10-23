@@ -2750,4 +2750,15 @@ class AppLocalizationsBg extends AppLocalizations {
   @override
   String get tutorialPrivacyText =>
       'Записите в дневника остават на това устройство, освен ако не активирате синхронизирането или ги споделите или експортирате. Синхронизирането е криптирано от край до край. В Настройки можете също да зададете парола за приложение, да създадете резервни копия и да отворите отново този урок.';
+
+  @override
+  String get editorDiaryDay => 'Ден на дневника';
+
+  @override
+  String get editorDiaryDayPicker =>
+      'Ден на записа · създаването не се променя';
+
+  @override
+  String get editorDiaryDayHint =>
+      'Денят, към който принадлежи този запис. Промяната му не променя времето на създаване.';
 }

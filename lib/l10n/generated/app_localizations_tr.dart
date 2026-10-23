@@ -2734,4 +2734,14 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get tutorialPrivacyText =>
       'Senkronizasyonu etkinleştirmediğiniz, paylaşmadığınız veya dışa aktarmadığınız sürece günlük girişleri bu cihazda kalır. Senkronizasyon uçtan uca şifrelenir. Ayarlar\'da ayrıca bir uygulama şifresi ayarlayabilir, yedeklemeler oluşturabilir ve bu öğreticiyi yeniden açabilirsiniz.';
+
+  @override
+  String get editorDiaryDay => 'Günlük günü';
+
+  @override
+  String get editorDiaryDayPicker => 'Günlük günü · oluşturma zamanı değişmez';
+
+  @override
+  String get editorDiaryDayHint =>
+      'Bu kaydın ait olduğu gün. Bunu değiştirmek kaydın oluşturulma zamanını değiştirmez.';
 }

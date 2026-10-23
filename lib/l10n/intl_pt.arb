@@ -802,5 +802,8 @@
     "tutorialSyncTitle": "Utilize mais de um dispositivo",
     "tutorialSyncText": "Em Definições → Dados e armazenamento → Sincronizar, ligue-se a um dispositivo existente e confirme a autorização nesse dispositivo. Ambos os dispositivos podem continuar a utilizar o diário. O texto do diário é sincronizado em primeiro lugar. Os ficheiros de média serão sincronizados em seguida quando a ligação de rede e a quota restante de transferência de dados o permitirem.",
     "tutorialPrivacyTitle": "Mantenha o seu diário seguro",
-    "tutorialPrivacyText": "As entradas do diário permanecem neste dispositivo, a menos que ative a sincronização, partilhe ou exporte-as. A sincronização é encriptada de ponta a ponta. Em Definições também pode definir uma palavra-passe de aplicação, criar cópias de segurança e reabrir este tutorial."
+    "tutorialPrivacyText": "As entradas do diário permanecem neste dispositivo, a menos que ative a sincronização, partilhe ou exporte-as. A sincronização é encriptada de ponta a ponta. Em Definições também pode definir uma palavra-passe de aplicação, criar cópias de segurança e reabrir este tutorial.",
+    "editorDiaryDay": "Dia do diário",
+    "editorDiaryDayPicker": "Dia do diário · criação inalterada",
+    "editorDiaryDayHint": "O dia a que pertence esta entrada. Alterá-lo não muda a data nem a hora de criação."
 }

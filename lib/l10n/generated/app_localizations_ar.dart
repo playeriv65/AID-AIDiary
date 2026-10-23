@@ -2729,4 +2729,14 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get tutorialPrivacyText =>
       'تظل إدخالات اليوميات على هذا الجهاز ما لم تقم بتمكين مزامنتها أو مشاركتها أو تصديرها. المزامنة مشفرة من طرف إلى طرف. في الإعدادات، يمكنك أيضًا تعيين رمز مرور التطبيق وإنشاء نسخ احتياطية وإعادة فتح هذا البرنامج التعليمي.';
+
+  @override
+  String get editorDiaryDay => 'يوم التدوينة';
+
+  @override
+  String get editorDiaryDayPicker => 'يوم التدوينة · وقت الإنشاء ثابت';
+
+  @override
+  String get editorDiaryDayHint =>
+      'اليوم الذي تنتمي إليه هذه التدوينة. تغييره لا يغيّر وقت إنشائها.';
 }

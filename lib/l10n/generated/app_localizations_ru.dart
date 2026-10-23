@@ -2765,4 +2765,14 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get tutorialPrivacyText =>
       'Записи дневника остаются на этом устройстве, пока вы не включите их синхронизацию, отправку или экспорт. Синхронизация имеет сквозное шифрование. В настройках вы также можете установить пароль приложения, создать резервные копии и повторно открыть это руководство.';
+
+  @override
+  String get editorDiaryDay => 'День дневника';
+
+  @override
+  String get editorDiaryDayPicker => 'День дневника · время создания прежнее';
+
+  @override
+  String get editorDiaryDayHint =>
+      'День, к которому относится эта запись. Его изменение не меняет время создания записи.';
 }

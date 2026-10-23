@@ -2773,4 +2773,14 @@ class AppLocalizationsBe extends AppLocalizations {
   @override
   String get tutorialPrivacyText =>
       'Запісы дзённіка застаюцца на гэтай прыладзе, пакуль вы не ўключыце сінхранізацыю, не абагуліце іх і не экспартуеце. Сінхранізацыя мае скразное шыфраванне. У наладах вы таксама можаце задаць пароль праграмы, стварыць рэзервовыя копіі і зноў адкрыць гэты падручнік.';
+
+  @override
+  String get editorDiaryDay => 'Дзень дзённіка';
+
+  @override
+  String get editorDiaryDayPicker => 'Дзень запісу · час стварэння нязменны';
+
+  @override
+  String get editorDiaryDayHint =>
+      'Дзень, да якога належыць гэты запіс. Яго змена не змяняе час стварэння запісу.';
 }

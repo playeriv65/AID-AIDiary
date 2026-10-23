@@ -2764,4 +2764,14 @@ class AppLocalizationsRo extends AppLocalizations {
   @override
   String get tutorialPrivacyText =>
       'Înregistrările din jurnal rămân pe acest dispozitiv, cu excepția cazului în care le activați sincronizarea, le distribuiți sau le exportați. Sincronizarea este criptată de la capăt la capăt. În Setări, puteți, de asemenea, să setați o parolă pentru aplicație, să creați copii de rezervă și să redeschideți acest tutorial.';
+
+  @override
+  String get editorDiaryDay => 'Ziua însemnării';
+
+  @override
+  String get editorDiaryDayPicker => 'Ziua însemnării · crearea nu se modifică';
+
+  @override
+  String get editorDiaryDayHint =>
+      'Ziua căreia îi aparține această însemnare. Modificarea ei nu schimbă data sau ora creării.';
 }

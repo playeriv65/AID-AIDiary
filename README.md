@@ -21,6 +21,7 @@ The layout follows the Journey diary app: a bottom bar on phones, a navigation r
 | | ![Random walk](artifacts/ui-phone-random.png) ![Week review](artifacts/ui-phone-week-review.png) |
 | ![First launch](artifacts/ui-tablet-first-start.png) | ![First launch](artifacts/ui-phone-first-start.png) |
 | ![Tutorial](artifacts/ui-tablet-tutorial.png) | ![Tutorial](artifacts/ui-phone-tutorial.png) |
+| ![Diary day](artifacts/ui-tablet-diary-day-picker.png) | ![Diary day](artifacts/ui-phone-diary-day-picker.png) |
 
 - **Journal**: stories, then entries grouped by day with time, title, preview, mood, place, weather, activity, tags and a thumbnail; sort by entry date (either way) or by last update. Stories: Today, the coach program's day, throwback, opened time capsules, a morning or evening prompt, quick check-in, random walk, this week and this year in review. Today, the coach day and the throwback play as one chain (statistics, 30-day mood chart, the day's prompt answered in place, the throwback, a closing card), as a card over wide windows.
 - **First launch**: choose “Start here” or “Connect to an existing device.” A read-only tutorial introduces writing, media, finding entries, sync and privacy; reopen it from Settings. The existing device authorizes the connection and remains usable while the new device receives the diary.

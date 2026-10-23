@@ -2670,4 +2670,13 @@ class AppLocalizationsJa extends AppLocalizations {
   @override
   String get tutorialPrivacyText =>
       '日記エントリは、同期、共有、またはエクスポートを有効にしない限り、このデバイスに残ります。同期はエンドツーエンドで暗号化されます。 [設定] では、アプリのパスコードを設定したり、バックアップを作成したり、このチュートリアルを再度開いたりすることもできます。';
+
+  @override
+  String get editorDiaryDay => '日記の日付';
+
+  @override
+  String get editorDiaryDayPicker => '日記の日付 · 作成日時は変更しません';
+
+  @override
+  String get editorDiaryDayHint => 'この日記をどの日に分類するかを指定します。変更しても作成日時は変わりません。';
 }

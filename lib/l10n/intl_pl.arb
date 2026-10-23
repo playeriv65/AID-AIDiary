@@ -802,5 +802,8 @@
     "tutorialSyncTitle": "Użyj więcej niż jednego urządzenia",
     "tutorialSyncText": "Wybierz Ustawienia → Dane i pamięć → Synchronizacja, połącz się z istniejącym urządzeniem i potwierdź autoryzację na tym urządzeniu. Obydwa urządzenia mogą nadal korzystać z dziennika. Tekst dziennika synchronizuje się jako pierwszy. Następnie pliki multimedialne zostaną zsynchronizowane, jeśli pozwoli na to połączenie sieciowe i pozostały limit transferu danych.",
     "tutorialPrivacyTitle": "Chroń swój pamiętnik",
-    "tutorialPrivacyText": "Wpisy dziennika pozostają na tym urządzeniu, chyba że włączysz synchronizację, udostępnisz je lub wyeksportujesz. Synchronizacja jest szyfrowana od początku do końca. W Ustawieniach możesz także ustawić hasło do aplikacji, utworzyć kopie zapasowe i ponownie otworzyć ten samouczek."
+    "tutorialPrivacyText": "Wpisy dziennika pozostają na tym urządzeniu, chyba że włączysz synchronizację, udostępnisz je lub wyeksportujesz. Synchronizacja jest szyfrowana od początku do końca. W Ustawieniach możesz także ustawić hasło do aplikacji, utworzyć kopie zapasowe i ponownie otworzyć ten samouczek.",
+    "editorDiaryDay": "Dzień dziennika",
+    "editorDiaryDayPicker": "Dzień dziennika · czas utworzenia bez zmian",
+    "editorDiaryDayHint": "Dzień, do którego należy ten wpis. Jego zmiana nie zmienia czasu utworzenia wpisu."
 }

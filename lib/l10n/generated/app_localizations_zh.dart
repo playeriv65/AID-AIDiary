@@ -2634,6 +2634,15 @@ class AppLocalizationsZh extends AppLocalizations {
   @override
   String get tutorialPrivacyText =>
       '除非主动开启同步或分享、导出，日记保留在本机。同步始终端到端加密。设置里还可以设置应用密码、备份，也能随时重新打开本教程。';
+
+  @override
+  String get editorDiaryDay => '日记日';
+
+  @override
+  String get editorDiaryDayPicker => '日记日·创建不变';
+
+  @override
+  String get editorDiaryDayHint => '决定这篇日记归属哪一天。修改日记日不会改变创建时间。';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -5269,4 +5278,13 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   @override
   String get tutorialPrivacyText =>
       '除非主動開啟同步或分享、匯出，日記保留在本機。同步始終端對端加密。設定裡也能設定應用程式密碼、備份，或重新開啟本教學。';
+
+  @override
+  String get editorDiaryDay => '日記日';
+
+  @override
+  String get editorDiaryDayPicker => '日記日·建立不變';
+
+  @override
+  String get editorDiaryDayHint => '決定這篇日記歸屬哪一天。修改日記日不會改變建立時間。';
 }

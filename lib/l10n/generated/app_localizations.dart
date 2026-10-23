@@ -4985,6 +4985,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Entries stay on this device unless you enable sync or share/export them. Sync is end-to-end encrypted. Settings also offers an app passcode and backups; you can reopen this tutorial there.'**
   String get tutorialPrivacyText;
+
+  /// The logical diary date, independent of the immutable entry creation timestamp.
+  ///
+  /// In en, this message translates to:
+  /// **'Diary day'**
+  String get editorDiaryDay;
+
+  /// The logical diary date, independent of the immutable entry creation timestamp.
+  ///
+  /// In en, this message translates to:
+  /// **'Diary day · creation time stays'**
+  String get editorDiaryDayPicker;
+
+  /// The logical diary date, independent of the immutable entry creation timestamp.
+  ///
+  /// In en, this message translates to:
+  /// **'The day this entry belongs to. Changing it does not change its creation time.'**
+  String get editorDiaryDayHint;
 }
 
 class _AppLocalizationsDelegate

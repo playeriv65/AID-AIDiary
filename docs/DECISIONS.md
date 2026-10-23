@@ -41,6 +41,12 @@ asks again. Dates are when it was settled. Ideas not built yet are in
 
 ## Layout and look
 
+- Diary-day wording (2026-10-22): the editor's date control is labeled
+  "Diary day" (Chinese: "日记日"). Its picker says that creation time stays
+  unchanged, and its hint explains that this is the day the entry belongs to.
+  Selecting a day changes `Entry.day`, never `timeCreate`; both Gregorian and
+  Jalali pickers keep this distinction. This is clarification of the existing
+  rule, not a migration of saved dates.
 - The layout and the set of features follow Journey's Android tablet and
   phone versions (2026-10-20): every Journey screen has its counterpart.
   Style and implementation are our own; Journey's code, assets and text are

@@ -285,6 +285,8 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
       child: EditorKeyboardInset(
         child: Scaffold(
           appBar: AppBar(
+              toolbarHeight: (MediaQuery.textScalerOf(context).scale(48) + 4)
+                  .clamp(kToolbarHeight, double.infinity),
               titleSpacing: 0,
               title: _buildDateTitle(context, theme),
               leading: _closeButton(),
@@ -557,6 +559,7 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
   /// The diary day as the page title with the time it was written, and the
   /// mood beside it; tapping the day changes the day only.
   Widget _buildDateTitle(BuildContext context, ThemeData theme) {
+    final l10n = AppLocalizations.of(context)!;
     final cs = theme.colorScheme;
     final mood = _model.mood;
     final hasMood = MoodIcon.getMoodIcon(mood).isNotEmpty;
@@ -578,41 +581,56 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
     final zone = _model.entry.otherZoneLabel;
     return Row(mainAxisSize: MainAxisSize.min, children: [
       Flexible(
-        child: InkWell(
-          key: const ValueKey('editor-date'),
-          borderRadius: BorderRadius.circular(8),
-          onTap: _chooseDiaryDay,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
-            child: Text.rich(
-              TextSpan(children: [
-                TextSpan(
-                    text: day,
-                    style: theme.textTheme.titleLarge
-                        ?.copyWith(fontWeight: FontWeight.w600)),
-                TextSpan(
-                    text: ' $weekday'
-                        '${sameNight ? '  /  $time' : ''}'
-                        '${zone == null ? '' : ' $zone'}',
-                    style: theme.textTheme.bodyMedium
-                        ?.copyWith(color: cs.onSurfaceVariant)),
-                if (lateNight)
-                  WidgetSpan(
-                    alignment: PlaceholderAlignment.middle,
-                    child: Padding(
-                      padding: const EdgeInsetsDirectional.only(start: 4),
-                      child: Tooltip(
-                        message: AppLocalizations.of(context)!.lateNightBadge,
-                        child: Icon(Icons.bedtime_outlined,
-                            key: const ValueKey('editor-late-night'),
-                            size: 16,
-                            color: cs.onSurfaceVariant),
-                      ),
-                    ),
+        child: Tooltip(
+          message: l10n.editorDiaryDayHint,
+          child: InkWell(
+            key: const ValueKey('editor-date'),
+            borderRadius: BorderRadius.circular(8),
+            onTap: _chooseDiaryDay,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(l10n.editorDiaryDay,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.labelSmall
+                          ?.copyWith(color: cs.onSurfaceVariant)),
+                  Text.rich(
+                    TextSpan(children: [
+                      TextSpan(
+                          text: day,
+                          style: theme.textTheme.titleLarge
+                              ?.copyWith(fontWeight: FontWeight.w600)),
+                      TextSpan(
+                          text: ' $weekday'
+                              '${sameNight ? '  /  $time' : ''}'
+                              '${zone == null ? '' : ' $zone'}',
+                          style: theme.textTheme.bodyMedium
+                              ?.copyWith(color: cs.onSurfaceVariant)),
+                      if (lateNight)
+                        WidgetSpan(
+                          alignment: PlaceholderAlignment.middle,
+                          child: Padding(
+                            padding: const EdgeInsetsDirectional.only(start: 4),
+                            child: Tooltip(
+                              message:
+                                  AppLocalizations.of(context)!.lateNightBadge,
+                              child: Icon(Icons.bedtime_outlined,
+                                  key: const ValueKey('editor-late-night'),
+                                  size: 16,
+                                  color: cs.onSurfaceVariant),
+                            ),
+                          ),
+                        ),
+                    ]),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
-              ]),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+                ],
+              ),
             ),
           ),
         ),
@@ -800,6 +818,7 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
       initialDate: current,
       firstDate: DateTime(2000),
       lastDate: current.isAfter(today) ? current : today,
+      helpText: AppLocalizations.of(context)!.editorDiaryDayPicker,
     );
     if (picked != null) _model.setDiaryDay(picked);
   }

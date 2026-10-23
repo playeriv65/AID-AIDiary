@@ -1602,5 +1602,17 @@
   "tutorialPrivacyTitle": "Keep your diary safe",
   "@tutorialPrivacyTitle": {},
   "tutorialPrivacyText": "Entries stay on this device unless you enable sync or share/export them. Sync is end-to-end encrypted. Settings also offers an app passcode and backups; you can reopen this tutorial there.",
-  "@tutorialPrivacyText": {}
+  "@tutorialPrivacyText": {},
+  "editorDiaryDay": "Diary day",
+  "@editorDiaryDay": {
+    "description": "The logical diary date, independent of the immutable entry creation timestamp."
+  },
+  "editorDiaryDayPicker": "Diary day · creation time stays",
+  "@editorDiaryDayPicker": {
+    "description": "The logical diary date, independent of the immutable entry creation timestamp."
+  },
+  "editorDiaryDayHint": "The day this entry belongs to. Changing it does not change its creation time.",
+  "@editorDiaryDayHint": {
+    "description": "The logical diary date, independent of the immutable entry creation timestamp."
+  }
 }

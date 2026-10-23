@@ -2712,4 +2712,14 @@ class AppLocalizationsHe extends AppLocalizations {
   @override
   String get tutorialPrivacyText =>
       'רשומות יומן נשארות במכשיר הזה אלא אם תפעיל סנכרון או שתף או ייצא אותן. הסנכרון מוצפן מקצה לקצה. בהגדרות תוכל גם להגדיר קוד גישה לאפליקציה, ליצור גיבויים ולפתוח מחדש את המדריך הזה.';
+
+  @override
+  String get editorDiaryDay => 'יום ביומן';
+
+  @override
+  String get editorDiaryDayPicker => 'יום ביומן · זמן היצירה נשמר';
+
+  @override
+  String get editorDiaryDayHint =>
+      'היום שאליו שייכת הרשומה. שינוי היום אינו משנה את זמן יצירת הרשומה.';
 }

@@ -2747,4 +2747,14 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get tutorialPrivacyText =>
       'Các mục nhật ký vẫn còn trên thiết bị này trừ khi bạn bật đồng bộ hóa, chia sẻ hoặc xuất chúng. Đồng bộ hóa được mã hóa hai đầu. Trong Cài đặt, bạn cũng có thể đặt mật mã ứng dụng, tạo bản sao lưu và mở lại hướng dẫn này.';
+
+  @override
+  String get editorDiaryDay => 'Ngày nhật ký';
+
+  @override
+  String get editorDiaryDayPicker => 'Ngày nhật ký · giữ nguyên thời điểm tạo';
+
+  @override
+  String get editorDiaryDayHint =>
+      'Ngày mà mục nhật ký này thuộc về. Thay đổi ngày này không làm thay đổi thời điểm tạo mục.';
 }

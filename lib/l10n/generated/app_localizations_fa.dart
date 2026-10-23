@@ -2726,4 +2726,14 @@ class AppLocalizationsFa extends AppLocalizations {
   @override
   String get tutorialPrivacyText =>
       'نوشته های خاطرات در این دستگاه باقی می مانند مگر اینکه همگام سازی یا اشتراک گذاری یا صادر کردن آنها را فعال کنید. همگام سازی سرتاسر رمزگذاری شده است. در تنظیمات همچنین می‌توانید یک رمز عبور برنامه تنظیم کنید، پشتیبان‌گیری ایجاد کنید و این آموزش را دوباره باز کنید.';
+
+  @override
+  String get editorDiaryDay => 'روز یادداشت';
+
+  @override
+  String get editorDiaryDayPicker => 'روز یادداشت · زمان ایجاد ثابت است';
+
+  @override
+  String get editorDiaryDayHint =>
+      'روزی که این یادداشت به آن تعلق دارد. تغییر آن، زمان ایجاد یادداشت را تغییر نمی‌دهد.';
 }

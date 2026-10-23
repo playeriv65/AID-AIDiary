@@ -802,5 +802,8 @@
     "tutorialSyncTitle": "Gunakan lebih dari satu perangkat",
     "tutorialSyncText": "Di Pengaturan → Data & penyimpanan → Sinkronisasi, sambungkan ke perangkat yang ada dan konfirmasikan otorisasi pada perangkat tersebut. Kedua perangkat dapat terus menggunakan buku harian tersebut. Teks buku harian disinkronkan terlebih dahulu. File media disinkronkan berikutnya ketika koneksi jaringan dan sisa kuota transfer data mengizinkannya.",
     "tutorialPrivacyTitle": "Jaga buku harian Anda tetap aman",
-    "tutorialPrivacyText": "Entri buku harian tetap ada di perangkat ini kecuali Anda mengaktifkan sinkronisasi atau berbagi atau mengekspornya. Sinkronisasi dienkripsi ujung ke ujung. Di Pengaturan Anda juga dapat mengatur kode sandi aplikasi, membuat cadangan, dan membuka kembali tutorial ini."
+    "tutorialPrivacyText": "Entri buku harian tetap ada di perangkat ini kecuali Anda mengaktifkan sinkronisasi atau berbagi atau mengekspornya. Sinkronisasi dienkripsi ujung ke ujung. Di Pengaturan Anda juga dapat mengatur kode sandi aplikasi, membuat cadangan, dan membuka kembali tutorial ini.",
+    "editorDiaryDay": "Hari catatan",
+    "editorDiaryDayPicker": "Hari catatan · waktu dibuat tetap",
+    "editorDiaryDayHint": "Hari yang menjadi acuan entri ini. Mengubahnya tidak mengubah waktu pembuatan entri."
 }

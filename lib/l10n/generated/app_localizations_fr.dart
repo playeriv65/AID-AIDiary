@@ -2773,4 +2773,14 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get tutorialPrivacyText =>
       'Les entrées du journal restent sur cet appareil, sauf si vous activez la synchronisation, les partagez ou les exportez. La synchronisation est chiffrée de bout en bout. Dans Paramètres, vous pouvez également définir un mot de passe pour l\'application, créer des sauvegardes et rouvrir ce didacticiel.';
+
+  @override
+  String get editorDiaryDay => 'Jour du journal';
+
+  @override
+  String get editorDiaryDayPicker => 'Jour du journal · création inchangée';
+
+  @override
+  String get editorDiaryDayHint =>
+      'Le jour auquel cette entrée appartient. Le modifier ne change ni sa date ni son heure de création.';
 }

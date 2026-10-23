@@ -802,5 +802,8 @@
     "tutorialSyncTitle": "Gunakan lebih daripada satu peranti",
     "tutorialSyncText": "Dalam Tetapan → Data & storan → Segerak, sambungkan ke peranti sedia ada dan sahkan kebenaran pada peranti itu. Kedua-dua peranti boleh terus menggunakan diari. Teks diari disegerakkan dahulu. Fail media disegerakkan seterusnya apabila sambungan rangkaian dan baki kuota pemindahan data membenarkannya.",
     "tutorialPrivacyTitle": "Simpan diari anda dengan selamat",
-    "tutorialPrivacyText": "Entri diari kekal pada peranti ini melainkan anda mendayakan penyegerakan atau berkongsi atau mengeksportnya. Penyegerakan disulitkan dari hujung ke hujung. Dalam Tetapan anda juga boleh menetapkan kod laluan apl, membuat sandaran dan membuka semula tutorial ini."
+    "tutorialPrivacyText": "Entri diari kekal pada peranti ini melainkan anda mendayakan penyegerakan atau berkongsi atau mengeksportnya. Penyegerakan disulitkan dari hujung ke hujung. Dalam Tetapan anda juga boleh menetapkan kod laluan apl, membuat sandaran dan membuka semula tutorial ini.",
+    "editorDiaryDay": "Hari diari",
+    "editorDiaryDayPicker": "Hari diari · masa penciptaan kekal",
+    "editorDiaryDayHint": "Hari yang ditetapkan untuk catatan ini. Mengubahnya tidak mengubah masa catatan dicipta."
 }

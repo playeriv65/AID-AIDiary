@@ -833,5 +833,8 @@
     "syncPairTimedOut": "對方設備沒有及時應答。",
     "syncPairNeither": "這兩個設備都尚未設定此同步日記。",
     "syncPairBoth": "兩台設備都已開啟此同步日記。",
-    "syncPairFailed": "配對失敗：{error}"
+    "syncPairFailed": "配對失敗：{error}",
+    "editorDiaryDay": "日記日",
+    "editorDiaryDayPicker": "日記日·建立不變",
+    "editorDiaryDayHint": "決定這篇日記歸屬哪一天。修改日記日不會改變建立時間。"
 }

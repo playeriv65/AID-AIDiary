@@ -833,5 +833,8 @@
     "formatDiaro": "Diaro",
     "formatJourney": "Journey",
     "formatMyBrain": "My Brain",
-    "formatPixels": "Pixels"
+    "formatPixels": "Pixels",
+    "editorDiaryDay": "日记日",
+    "editorDiaryDayPicker": "日记日·创建不变",
+    "editorDiaryDayHint": "决定这篇日记归属哪一天。修改日记日不会改变创建时间。"
 }
