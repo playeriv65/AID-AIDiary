@@ -6,6 +6,16 @@ asks again. Dates are when it was settled. Ideas not built yet are in
 
 ## What the app is
 
+- Personal-use boundary (2026-10-22): the owner is starting real use and
+  importing personal entries into the Android release app (`dev.aid.diary`,
+  displayed as AID Diary). Preserve its data, keys, preferences and live sync
+  space. Development and validation use AID Diary Dev (`dev.aid.diary.beta`)
+  with isolated scratch data and sync namespaces. Separate Android packages
+  isolate local stores; they do not isolate a shared sync space. Never attach
+  test data to the owner's live space. A release installation/update, import,
+  restore, cleanup or other write to the ordinary app requires the owner's
+  specific request; general development or server deployment authorization
+  does not authorize it. The owner performs the planned personal import.
 - First launch and tutorial (2026-10-22): show two explicit choices, “Start
   here” and “Connect to an existing device” (Chinese: “从这里开始” and
   “连接已有设备”). The latter is authorization plus initial sync, not an
