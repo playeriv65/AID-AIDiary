@@ -84,7 +84,7 @@ owner-supplied Android APK with REA/JADX, package `com.chenupt.day`, version
 The APK was not executed; its signature was not verified. No application
 code, artwork or diary content is embedded in this repository.
 
-The native reader `m3.C1500.C` / inner class `c.m2085` identifies the members
+The source-app reader `m3.C1500.C` / inner class `c.m2085` identifies the members
 and their fixed format keys. `k7.C1415.a`, `.b`, `.e` and static initializer
 establish Base64, SHA-256 of the UTF-8 format key, AES-256-CBC, a zero IV and
 PKCS#7 padding. The parameters are in
@@ -92,6 +92,72 @@ PKCS#7 padding. The parameters are in
 They are constants embedded in that format, **not user-held encryption keys**.
 CBC has no authentication tag, so a decoded backup is not authenticated data.
 The diary importer validates its version, schema and referenced attachments.
+
+### How the format was reconstructed
+
+The recorded investigation followed the backup import/export call sites in
+the decompiled APK, then traced the crypto helper they called. The reader
+established which member used which embedded string; the helper established
+the byte encoding, key derivation, block mode, IV and padding. This recovered
+the format parameters rather than guessing a password or breaking AES.
+Class/method names above are obfuscated names from this specific APK and are
+not stable identifiers for another release.
+
+The retained `base.apk` in the external reference location listed in
+[Setup](SETUP.md#outside-resources) was hashed again on 2026-10-23 and matched
+the SHA-256 above. This checks artifact identity, not its signature. The
+repository preserves the independent reader, compatibility constants and
+fictional test vectors; it does not contain the APK, decompiled source, a
+complete REA session transcript or a fixture-generation script. Another
+maintainer should not claim a fresh decompilation merely from reading this
+guide. To repeat static analysis, obtain the matching reference APK, verify
+its hash and inspect its own import/export and crypto call chain. Do not
+copy application code into this project.
+
+### Exact v3 envelope
+
+The ZIP is an archive container, not a password-protected ZIP envelope. Its
+metadata members contain separately encrypted Base64 text. Media referenced
+inside it is read as original attachment bytes.
+
+| ZIP member | Required | Decoded JSON |
+|---|---|---|
+| `version` | Yes | Number `3` |
+| `source.json` | Yes | Array of diary records |
+| `category.json` | Yes | Array mapping category UUIDs to names |
+| `tag.json` | No | Array mapping tag UUIDs to names; absent means empty |
+| `model.json` | No | Array of templates; nonempty is currently rejected |
+
+For a member named `name`, use the corresponding `payloadKeys[name]` from
+the [protocol configuration](../assets/config/one_diary_v3.json). Treat that
+string as UTF-8 input to SHA-256, not as a hexadecimal key or user password:
+
+```text
+seed = protocol.payloadKeys[name]
+key  = SHA256(UTF8(seed))             # raw 32-byte digest, not hex text
+iv   = 00 repeated 16 times
+
+write: JSON -> UTF8 -> PKCS7 -> AES-256-CBC(key, iv) -> Base64 -> ZIP member
+read:  ZIP member -> UTF8/trim -> Base64 decode -> AES-256-CBC decrypt
+       -> PKCS7 unpad -> UTF8 -> JSON parse
+```
+
+The block size is 16 bytes. The current decoder rejects empty ciphertext
+and ciphertext whose decoded length is not a multiple of 16. Any member
+decode failure reports only its member name, never ciphertext or diary text.
+The seed is fixed per member across backups, and the IV is fixed at zero;
+there is no per-backup salt, user-password KDF, MAC or authentication tag in
+this observed envelope. Successful padding/JSON parsing is not authenticity
+verification. These observations do not establish how other backup versions,
+the source app's live database or its cloud synchronization are encrypted.
+
+For a small interoperability check, decrypt `versionCiphertext` in
+the [fictional vector](../test/fixtures/one_diary/vector.json) using the
+configured `version` seed: the parsed plaintext is JSON number `3`.
+The same vector's diary payload must contain two records and first
+content `Evening notes.`. The committed test checks those expectations with
+the Dart reader; the earlier independent Python vector is historical
+cross-library evidence, not evidence of running the original APK.
 
 Export method `m3.C1500.B` formats `createTime` using the export device's
 timezone. Consequently, a PDF exported in China can show the following date
@@ -126,3 +192,23 @@ The report contains local date/time metadata and hashes, never diary bodies;
 keep it outside version control. It does not open the user's app database,
 repair a source database or authorize import/cleanup. A passing format check
 does not mean a full personal consolidation or timezone review is complete.
+
+## Maintainer map
+
+| Responsibility | Entry point |
+|---|---|
+| Fixed member keys, version and coordinate/weather compatibility data | [Protocol JSON](../assets/config/one_diary_v3.json), [loader](../lib/config/one_diary_config.dart) |
+| Base64/AES decoding and source-record conversion | [OneDiaryCodec / decodeOneDiaryArchive](../lib/utils/formats/one_diary_format.dart) |
+| GUI and `data.import format=one_diary` registration | [ImportRegistry](../lib/utils/imports/import_registry.dart), [data actions](../lib/actions/data_actions.dart) |
+| ZIP lifecycle and decode-before-write boundary | [importArchive](../lib/utils/imports/import_archive.dart) |
+| Provenance, retries and attachment rollback | [import helpers](../lib/utils/imports/import_helpers.dart), [source integration tests](../test/utils/imports/import_source_test.dart) |
+| Fictional vectors and format edge cases | [format tests](../test/utils/formats/one_diary_format_test.dart), [fixture ZIP](../test/fixtures/one_diary/v3.zip) |
+| Registry wiring | [registry tests](../test/utils/imports/import_registry_test.dart) |
+| Opt-in, decode-only personal-backup review | [verification tool](../tool/verify_one_diary_backup_test.dart) |
+
+For a new failure, first distinguish ZIP/member lookup, Base64/block decoding,
+padding/JSON/schema, timezone mapping, missing attachments and storage commit.
+Run the focused checks above against fictional data before considering an
+explicitly selected personal archive. Never make an unreadable backup look
+successful by skipping a member or record. Unknown versions require new
+format evidence, not trial decryption followed by an import.

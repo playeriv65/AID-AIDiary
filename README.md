@@ -81,7 +81,7 @@ for matching rules, translation maintenance and validation.
 
 ## Development
 
-Windows is the main development environment (no WSL, no SDK submodule). Start with the [documentation index](docs/INDEX.md): it routes setup, architecture, product decisions, testing and subsystem questions to their owning guides. [Engineering principles](docs/ENGINEERING.md) explain how we adapt Flutter/Google guidance, review changes and maintain documentation. [Setup](docs/SETUP.md) covers a new computer, local toolchain configuration, signing and test devices.
+Windows is the main development environment (no WSL, no SDK submodule). Start with the [documentation index](docs/INDEX.md) and [maintainer handoff](docs/HANDOFF.md): they route setup, architecture, product decisions, testing and subsystem questions to their owning guides and identify the latest dated checkpoint. [Engineering principles](docs/ENGINEERING.md) explain how we adapt Flutter/Google guidance, review changes and maintain documentation. [Setup](docs/SETUP.md) covers a new computer, local toolchain configuration, signing and test devices.
 
 ```powershell
 ./scripts/dev.ps1 pub          # resolve app and CLI dependencies on a new checkout
