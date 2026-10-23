@@ -4,6 +4,7 @@
 
 import 'dart:async';
 import 'dart:io';
+import 'package:flutter/rendering.dart' show ScrollCacheExtent;
 
 import 'package:aid_diary/utils/diary_day.dart';
 import 'package:aid_diary/config/app_config.dart';
@@ -31,6 +32,7 @@ import 'package:aid_diary/routing/destinations.dart';
 import 'package:aid_diary/routing/entry_navigation.dart';
 import 'package:aid_diary/widgets/coach_widgets.dart';
 import 'package:aid_diary/widgets/journal_entry_row.dart';
+import 'package:aid_diary/widgets/known_extent_sliver.dart';
 import 'package:aid_diary/widgets/list_detail_layout.dart';
 import 'package:aid_diary/widgets/top_search_card.dart';
 import 'package:material_ui/material_ui.dart';
@@ -251,11 +253,36 @@ class _JournalPageState extends State<JournalPage>
     final groups = groupEntriesByDay(ordered,
         timeOf: _sort == 'updated' ? (e) => e.timeModified : null);
     final hideImages = config.get(Settings.hideImagesInGallery);
+    final metrics = switch (Theme.of(context).platform) {
+      TargetPlatform.windows ||
+      TargetPlatform.linux ||
+      TargetPlatform.macOS =>
+        JournalListMetrics.of(context),
+      _ => null,
+    };
+
+    Widget dayGroup(BuildContext context, int index, bool split) {
+      final (day, dayEntries) = groups[index];
+      return EntryDayGroup(day: day, metrics: metrics, rows: [
+        for (final entry in dayEntries)
+          JournalEntryRow(
+            entry: entry,
+            images: images.getForEntry(entry),
+            hideImage: hideImages,
+            selected: split && entry.id == _selectedId,
+            onTap: () => _open(entry, split),
+          ),
+      ]);
+    }
 
     return ListDetailLayout(
       detail: _detail(ordered),
       listBuilder: (context, split) => CustomScrollView(
         key: const PageStorageKey('journal-list'),
+        // Thumb jumps replace the whole viewport. Building extra offscreen
+        // rows at each jump spends the frame budget on content never shown.
+        scrollCacheExtent:
+            metrics == null ? null : const ScrollCacheExtent.pixels(0),
         slivers: [
           const SliverPadding(
             padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
@@ -315,22 +342,20 @@ class _JournalPageState extends State<JournalPage>
           else
             SliverPadding(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 96),
-              sliver: SliverList.builder(
-                itemCount: groups.length,
-                itemBuilder: (context, index) {
-                  final (day, dayEntries) = groups[index];
-                  return EntryDayGroup(day: day, rows: [
-                    for (final entry in dayEntries)
-                      JournalEntryRow(
-                        entry: entry,
-                        images: images.getForEntry(entry),
-                        hideImage: hideImages,
-                        selected: split && entry.id == _selectedId,
-                        onTap: () => _open(entry, split),
-                      ),
-                  ]);
-                },
-              ),
+              sliver: metrics == null
+                  ? SliverList.builder(
+                      itemCount: groups.length,
+                      itemBuilder: (context, index) =>
+                          dayGroup(context, index, split),
+                    )
+                  : KnownExtentSliver(
+                      extents: [
+                        for (final group in groups)
+                          metrics.groupExtent(group.$2.length)
+                      ],
+                      itemBuilder: (context, index) =>
+                          dayGroup(context, index, split),
+                    ),
             ),
         ],
       ),
@@ -367,7 +392,9 @@ class _Stories extends StatelessWidget {
     final cardWidth =
         ((MediaQuery.sizeOf(context).width - 32 - 8) / 2).clamp(120.0, 200.0);
     return SizedBox(
-      height: 128,
+      height: 128 *
+          (MediaQuery.textScalerOf(context).scale(14) / 14)
+              .clamp(1, double.infinity),
       child: ListView(
           key: const ValueKey('journal-stories'),
           scrollDirection: Axis.horizontal,

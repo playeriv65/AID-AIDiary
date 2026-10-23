@@ -15,6 +15,40 @@ import 'package:aid_diary/widgets/mood_icon.dart';
 import 'package:intl/intl.dart';
 import 'package:material_ui/material_ui.dart';
 
+/// Predictable desktop preview slots let scrollbar jumps skip unseen days
+/// without shaping and laying out thousands of intervening entry widgets.
+class JournalListMetrics {
+  const JournalListMetrics(
+      {required this.rowExtent, required this.headingExtent});
+  final double rowExtent;
+  final double headingExtent;
+
+  factory JournalListMetrics.of(BuildContext context) {
+    final text = Theme.of(context).textTheme;
+    double line(TextStyle? style) {
+      final painter = TextPainter(
+          text: TextSpan(text: 'Ag国', style: style),
+          textDirection: Directionality.of(context),
+          textScaler: MediaQuery.textScalerOf(context))
+        ..layout();
+      final height = painter.height;
+      painter.dispose();
+      return height;
+    }
+
+    final time = line(text.titleSmall);
+    final title = line(text.titleMedium);
+    final snippet = line(text.bodyMedium);
+    final body = title + snippet > snippet * 2 ? title + snippet : snippet * 2;
+    final content = time + 4 + body + 6 + 18;
+    return JournalListMetrics(
+        rowExtent: 28 + (content > 84 ? content : 84),
+        headingExtent: time + 24);
+  }
+
+  double groupExtent(int rows) => headingExtent + rows * rowExtent + rows - 1;
+}
+
 /// One entry in a day group: time, title, one-line preview, metadata icons
 /// and a thumbnail.
 class JournalEntryRow extends StatelessWidget {
@@ -48,14 +82,16 @@ class JournalEntryRow extends StatelessWidget {
     final muted =
         theme.textTheme.bodyMedium?.copyWith(color: cs.onSurfaceVariant);
     final preview = entryPreview(entry.text);
+    final timeText = label ??
+        TimeManager.localizedTimeFormat(
+                context, TimeManager.currentLocale(context))
+            .format(entry.timeCreate);
     final snippetLines = preview.title == null ? 2 : 1;
     final hasMood = MoodIcon.getMoodIcon(entry.mood).isNotEmpty;
     final location = entry.location;
+    final lateNight = label == null && entry.isLateNight;
 
-    // One semantics node per row: a screen reader reads the entry as one
-    // item, and the list has a node per row to move as it scrolls rather
-    // than one per text and icon. Flutter keeps semantics up whenever any
-    // accessibility service runs, such as an auto clicker.
+    // Keep one readable semantics node per row, including its metadata.
     return MergeSemantics(
       child: ColoredBox(
         color: selected ? cs.secondaryContainer : Colors.transparent,
@@ -74,14 +110,10 @@ class JournalEntryRow extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(children: [
-                          Text(
-                              label ??
-                                  TimeManager.localizedTimeFormat(context,
-                                          TimeManager.currentLocale(context))
-                                      .format(entry.timeCreate),
+                          Text(timeText,
                               style: theme.textTheme.titleSmall
                                   ?.copyWith(fontWeight: FontWeight.w700)),
-                          if (label == null && entry.isLateNight) ...[
+                          if (lateNight) ...[
                             const SizedBox(width: 4),
                             Tooltip(
                               message: l10n.lateNightBadge,
@@ -229,10 +261,12 @@ class JournalEntryRow extends StatelessWidget {
 
 /// Entries of one day under a centred date line, in one rounded card.
 class EntryDayGroup extends StatelessWidget {
-  const EntryDayGroup({super.key, required this.day, required this.rows});
+  const EntryDayGroup(
+      {super.key, required this.day, required this.rows, this.metrics});
 
   final DateTime day;
   final List<Widget> rows;
+  final JournalListMetrics? metrics;
 
   @override
   Widget build(BuildContext context) {
@@ -241,12 +275,17 @@ class EntryDayGroup extends StatelessWidget {
     final weekday =
         DateFormat.E(TimeManager.currentLocale(context)).format(day);
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-      Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12),
-        child: Text('${TimeManager.formatDate(day, context)} · $weekday',
-            textAlign: TextAlign.center,
-            style: theme.textTheme.titleSmall
-                ?.copyWith(color: cs.onSurfaceVariant)),
+      SizedBox(
+        height: metrics?.headingExtent,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          child: Text('${TimeManager.formatDate(day, context)} · $weekday',
+              maxLines: metrics == null ? null : 1,
+              overflow: metrics == null ? null : TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
+              style: theme.textTheme.titleSmall
+                  ?.copyWith(color: cs.onSurfaceVariant)),
+        ),
       ),
       Card.filled(
         margin: EdgeInsets.zero,
@@ -261,7 +300,7 @@ class EntryDayGroup extends StatelessWidget {
                   indent: 16,
                   endIndent: 16,
                   color: cs.outlineVariant),
-            rows[i],
+            SizedBox(height: metrics?.rowExtent, child: rows[i]),
           ],
         ]),
       ),

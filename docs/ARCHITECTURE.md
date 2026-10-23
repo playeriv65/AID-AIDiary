@@ -130,6 +130,16 @@ instead of repeatedly doing local time-zone conversion while building rows.
 Check behavior against a seeded diary of several thousand entries when such
 work changes; profile measurement remains a separate requested pass.
 
+Desktop journal previews use font-scaled row slots and `KnownExtentSliver`
+with indexed day-group extents. Cached prefix sums and binary lookup avoid
+repeated linear height scans during layout. A thumb jump can skip intervening days
+without building their rows. Mobile retains content-sized previews. Selection,
+sorting and diary-day grouping share the same builder. Keep the far-jump build
+bound and enlarged-text checks in `test/pages/journal_scroll_test.dart` passing.
+The desktop journal does not prebuild offscreen rows at every thumb position;
+mobile keeps Flutter's normal scroll cache. This reduces paragraph layout and
+semantic-tree churn during a fast traversal without hiding visible content.
+
 New settings must be registered in `Settings.all`: startup prunes unknown keys
 and `test/config_settings_test.dart` checks the registry. Photos, videos and
 voice notes share attachment storage; `MediaKind` distinguishes their type,

@@ -136,6 +136,10 @@ asks again. Dates are when it was settled. Ideas not built yet are in
 
 ## Performance
 
+- 2026-10-22: Investigate Windows scrolling and scrollbar dragging against the
+  active display's refresh rate using isolated generated data. This focused
+  request does not resume cross-network validation or the broader Android pass.
+
 - Every scenario should keep the display's refresh rate; the frame-rate
   script fails above 1% skipped refreshes. On 2026-10-21 the owner accepted
   the state recorded in `TODO.md` as good enough for now ("差不多就行"):

@@ -87,6 +87,9 @@ Windows is the main development environment (no WSL, no SDK submodule). Start wi
 ./scripts/dev.ps1 windows      # run the Windows app
 ./scripts/dev.ps1 windows-build # build Windows without opening a window
 ./scripts/dev.ps1 windows-stage # stage that bundle at fixed DEV_WINDOWS_RUNTIME; does not launch
+./scripts/dev.ps1 windows-profile-build # isolated Windows performance build
+./scripts/dev.ps1 windows-profile-stage # stage the profile bundle at the same fixed path
+./scripts/windows_scroll.ps1 -Label current # verified scrollbar traversal and frame timelines
 ./scripts/dev.ps1 android      # run on the emulator
 ./scripts/dev.ps1 apk          # build the debug APK (dev flavor)
 ./scripts/dev.ps1 profile -Device <serial>     # install the dev app in profile mode

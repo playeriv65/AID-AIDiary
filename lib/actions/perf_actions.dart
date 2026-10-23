@@ -66,8 +66,10 @@ class FrameMeter {
       'skippedRefreshes': skipped,
       'skippedShare': share(skipped, shown + skipped),
       'targetHz': targetHz.round(),
-      'refreshHz':
-          PlatformDispatcher.instance.displays.first.refreshRate.round(),
+      'refreshHz': (PlatformDispatcher.instance.implicitView?.display ??
+              PlatformDispatcher.instance.displays.first)
+          .refreshRate
+          .round(),
       'budgetMs': round(budget),
       'buildP50Ms': round(percentile(build, .5)),
       'buildP90Ms': round(percentile(build, .9)),
@@ -94,7 +96,15 @@ final List<AppAction> perfActions = [
     risk: ActionRisk.read,
     run: (context, args) async {
       _meter.start();
-      return {'started': true};
+      final view = PlatformDispatcher.instance.implicitView;
+      return {
+        'started': true,
+        if (view != null) ...{
+          'viewWidth': view.physicalSize.width / view.devicePixelRatio,
+          'viewHeight': view.physicalSize.height / view.devicePixelRatio,
+          'refreshHz': view.display.refreshRate,
+        },
+      };
     },
   ),
   AppAction(
@@ -117,7 +127,9 @@ final List<AppAction> perfActions = [
     ],
     run: (context, args) => _meter.stop(
         targetHz: args['hz'] as double? ??
-            PlatformDispatcher.instance.displays.first.refreshRate,
+            (PlatformDispatcher.instance.implicitView?.display ??
+                    PlatformDispatcher.instance.displays.first)
+                .refreshRate,
         stillMs: args['still_ms'] as int? ?? 100),
   ),
 ];

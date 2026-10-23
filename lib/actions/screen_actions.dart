@@ -2,11 +2,14 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'dart:async';
 import 'dart:math';
 import 'dart:ui';
 
 import 'package:aid_diary/actions/app_action.dart';
 import 'package:flutter/gestures.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/scheduler.dart';
 
 ActionScreen _screen(ActionContext context) =>
     context.screen ??
@@ -15,10 +18,23 @@ ActionScreen _screen(ActionContext context) =>
 
 var _nextPointer = 1 << 20;
 
+RenderViewportBase? _verticalViewport(RenderObject node) {
+  if (node is RenderViewportBase &&
+      axisDirectionToAxis(node.axisDirection) == Axis.vertical) {
+    return node;
+  }
+  RenderViewportBase? found;
+  node.visitChildren((child) {
+    found ??= _verticalViewport(child);
+  });
+  return found;
+}
+
 /// A finger put down at [from], moved in a straight line to [to] over
 /// [duration] and lifted, as touch events through the gesture system: a
 /// list under it scrolls and flings on as under a real finger.
-Future<void> _swipe(Offset from, Offset to, Duration duration) async {
+Future<void> _swipe(Offset from, Offset to, Duration duration,
+    {PointerDeviceKind kind = PointerDeviceKind.touch}) async {
   final binding = GestureBinding.instance;
   final view = PlatformDispatcher.instance.implicitView!;
   final pointer = _nextPointer++;
@@ -28,34 +44,94 @@ Future<void> _swipe(Offset from, Offset to, Duration duration) async {
   var position = from;
   void send(PointerEvent Function(Duration time) event) =>
       binding.handlePointerEvent(event(time));
+  if (kind == PointerDeviceKind.mouse) {
+    send((time) => PointerAddedEvent(
+        timeStamp: time,
+        viewId: view.viewId,
+        pointer: pointer,
+        device: pointer,
+        kind: kind,
+        position: from));
+    send((time) => PointerHoverEvent(
+        timeStamp: time,
+        viewId: view.viewId,
+        pointer: pointer,
+        device: pointer,
+        kind: kind,
+        position: from));
+    // Let desktop hover reveal a scrollbar before pressing its thumb.
+    await SchedulerBinding.instance.endOfFrame;
+    await SchedulerBinding.instance.endOfFrame;
+  }
   send((time) => PointerDownEvent(
       timeStamp: time,
       viewId: view.viewId,
       pointer: pointer,
-      kind: PointerDeviceKind.touch,
+      device: pointer,
+      kind: kind,
+      buttons: kPrimaryButton,
       position: from));
-  // A move a frame at 120 Hz, as a touch screen reports them.
-  final steps = max(2, duration.inMilliseconds ~/ 8);
-  for (var step = 1; step <= steps; step++) {
-    await Future<void>.delayed(duration ~/ steps);
-    time = Duration(microseconds: duration.inMicroseconds * step ~/ steps);
-    final next = Offset.lerp(from, to, step / steps)!;
+  void move(double fraction, Duration timestamp) {
+    time = timestamp;
+    final next = Offset.lerp(from, to, fraction)!;
     final delta = next - position;
     position = next;
     send((time) => PointerMoveEvent(
         timeStamp: time,
         viewId: view.viewId,
         pointer: pointer,
-        kind: PointerDeviceKind.touch,
+        device: pointer,
+        kind: kind,
+        buttons: kPrimaryButton,
         position: position,
         delta: delta));
+  }
+
+  if (kind == PointerDeviceKind.mouse) {
+    // Mouse events coalesce at display cadence. A chain of 8 ms timers can
+    // itself limit Windows input to ~100 Hz even when rendering is fast.
+    final finished = Completer<void>();
+    late final Ticker ticker;
+    ticker = Ticker((elapsed) {
+      final fraction =
+          (elapsed.inMicroseconds / duration.inMicroseconds).clamp(0.0, 1.0);
+      move(fraction, elapsed);
+      if (fraction == 1) {
+        ticker.stop();
+        finished.complete();
+      }
+    })
+      ..start();
+    try {
+      await finished.future;
+    } finally {
+      ticker.dispose();
+    }
+  } else {
+    // Touch keeps the requested sample timestamps independent of timer jitter.
+    final steps = max(2, duration.inMilliseconds ~/ 8);
+    for (var step = 1; step <= steps; step++) {
+      await Future<void>.delayed(duration ~/ steps);
+      move(step / steps,
+          Duration(microseconds: duration.inMicroseconds * step ~/ steps));
+    }
   }
   send((time) => PointerUpEvent(
       timeStamp: time,
       viewId: view.viewId,
       pointer: pointer,
-      kind: PointerDeviceKind.touch,
+      device: pointer,
+      kind: kind,
       position: position));
+  if (kind == PointerDeviceKind.mouse) {
+    send((time) => PointerRemovedEvent(
+        timeStamp: time,
+        viewId: view.viewId,
+        pointer: pointer,
+        device: pointer,
+        kind: kind,
+        position: position));
+  }
 }
 
 double _fraction(ActionArgs args, String name, double fallback) {
@@ -123,12 +199,16 @@ final List<AppAction> screenActions = [
   ),
   AppAction(
     id: 'ui.fling',
-    describe: 'Swipes a finger straight up or down the window and lifts '
+    describe:
+        'Drags a finger or mouse straight up or down the window and lifts '
         'it, so the list under it scrolls on as after a real swipe; for '
         'driving the GUI where no touch screen is, such as a frame-rate run '
         'on a computer. Returns as the finger lifts.',
     risk: ActionRisk.read,
     params: const [
+      ActionParam('mouse', ParamType.boolean,
+          'Use a primary-button mouse drag, e.g. on a scrollbar; false by default',
+          required: false),
       ActionParam('x', ParamType.number,
           'Where across the window, from 0 (left) to 1; 0.5 by default',
           required: false),
@@ -150,11 +230,41 @@ final List<AppAction> screenActions = [
       final view = PlatformDispatcher.instance.implicitView!;
       final size = view.physicalSize / view.devicePixelRatio;
       final x = _fraction(args, 'x', .5) * size.width;
+      final hit = HitTestResult();
+      GestureBinding.instance.hitTestInView(hit,
+          Offset((x - 12).clamp(0, size.width), size.height / 2), view.viewId);
+      final viewport = hit.path
+          .map((entry) => entry.target)
+          .whereType<RenderObject>()
+          .map(_verticalViewport)
+          .whereType<RenderViewportBase>()
+          .firstOrNull;
+      final scrollStart = viewport?.offset.pixels;
+      final duration = args['duration_ms'] as int? ?? 80;
+      if (duration < 1 || duration > 60000) {
+        throw const ActionException(
+            'bad_args', 'duration_ms must be 1 to 60000');
+      }
       await _swipe(
           Offset(x, _fraction(args, 'from', .75) * size.height),
           Offset(x, _fraction(args, 'to', .25) * size.height),
-          Duration(milliseconds: args['duration_ms'] as int? ?? 80));
-      return {'current': _screen(context).current};
+          Duration(milliseconds: duration),
+          kind: args['mouse'] == true
+              ? PointerDeviceKind.mouse
+              : PointerDeviceKind.touch);
+      return {
+        'current': _screen(context).current,
+        if (viewport != null) ...{
+          'scrollStart': scrollStart,
+          'scrollEnd': viewport.offset.pixels,
+          'scrollViewport': {
+            'left': viewport.localToGlobal(Offset.zero).dx,
+            'top': viewport.localToGlobal(Offset.zero).dy,
+            'width': viewport.size.width,
+            'height': viewport.size.height,
+          },
+        },
+      };
     },
   ),
 ];

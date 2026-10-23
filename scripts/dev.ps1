@@ -1,5 +1,5 @@
 param(
-  [ValidateSet('windows','windows-build','windows-release-build','windows-stage','windows-background','windows-driver','android','apk','profile','release','test','test-all','test-unit','test-widget','test-integration','test-live','test-server','cli','test-cli','frame-rate','analyze','pub','l10n','screenshots')][string]$Target='windows',
+  [ValidateSet('windows','windows-build','windows-profile-build','windows-release-build','windows-stage','windows-profile-stage','windows-background','windows-driver','android','apk','profile','release','test','test-all','test-unit','test-widget','test-integration','test-live','test-server','cli','test-cli','frame-rate','analyze','pub','l10n','screenshots')][string]$Target='windows',
   # Flutter device id for 'android', e.g. a wireless adb serial from `flutter devices`.
   [string]$Device='emulator-5554',
   # Files or directories; required for test, optional for layers/screenshots.
@@ -64,7 +64,7 @@ if ($Target -in 'android', 'apk', 'profile', 'release' -and
 # Concurrent builds/tests can stage another platform's bundle or replace a
 # native test DLL while it is loaded. Serialize all Flutter workspace writers.
 $buildLock = $null
-if ($Target -in 'windows', 'windows-build', 'windows-release-build', 'windows-stage', 'windows-background', 'windows-driver',
+if ($Target -in 'windows', 'windows-build', 'windows-profile-build', 'windows-release-build', 'windows-stage', 'windows-profile-stage', 'windows-background', 'windows-driver',
     'android', 'apk', 'profile', 'release', 'frame-rate', 'test', 'test-all', 'test-unit',
     'test-widget', 'test-integration', 'test-live', 'screenshots', 'pub', 'l10n', 'analyze') {
   $lockPath = Join-Path (Get-Location) '.dart_tool/dev-build.lock'
@@ -81,16 +81,19 @@ try {
 switch ($Target) {
   'windows' { flutter run -d windows }
   'windows-build' { flutter build windows --debug --dart-define=AID_DEV_BUILD=true }
+  'windows-profile-build' { flutter build windows --profile --dart-define=AID_DEV_BUILD=true }
   'windows-release-build' { flutter build windows --release }
-  'windows-stage' {
+  { $_ -in 'windows-stage', 'windows-profile-stage' } {
     $runtime = $tools['DEV_WINDOWS_RUNTIME']
     if (-not $runtime -or -not [IO.Path]::IsPathFullyQualified($runtime)) {
       throw 'Set DEV_WINDOWS_RUNTIME to one permanent absolute directory in scripts/dev.env (docs/SETUP.md).'
     }
     $runtime = [IO.Path]::GetFullPath($runtime)
-    $bundle = Join-Path (Get-Location) 'build\windows\x64\runner\Debug'
-    if (-not (Test-Path (Join-Path $bundle 'data\flutter_assets\kernel_blob.bin'))) {
-      throw 'Run scripts/dev.ps1 windows-build before staging.'
+    $profile = $Target -eq 'windows-profile-stage'
+    $bundle = Join-Path (Get-Location) ('build\windows\x64\runner\' + $(if ($profile) { 'Profile' } else { 'Debug' }))
+    $entrypoint = if ($profile) { 'data\app.so' } else { 'data\flutter_assets\kernel_blob.bin' }
+    if (-not (Test-Path (Join-Path $bundle $entrypoint))) {
+      throw 'Build the matching Windows mode before staging (windows-build or windows-profile-build).'
     }
     if ($runtime.TrimEnd('\').StartsWith($bundle.TrimEnd('\'), [StringComparison]::OrdinalIgnoreCase) -or
         $bundle.TrimEnd('\').StartsWith($runtime.TrimEnd('\'), [StringComparison]::OrdinalIgnoreCase)) {
@@ -107,6 +110,9 @@ switch ($Target) {
       if ($existing -and -not (Test-Path (Join-Path $runtime '.aid-runtime'))) {
         throw 'Use an empty directory for the first staged runtime.'
       }
+      # Do not retain the other build mode's entrypoint in a reused bundle.
+      $obsolete = Join-Path $runtime $(if ($profile) { 'data\flutter_assets\kernel_blob.bin' } else { 'data\app.so' })
+      if (Test-Path -LiteralPath $obsolete) { Remove-Item -LiteralPath $obsolete }
       Get-ChildItem -LiteralPath $bundle -Force | Copy-Item -Destination $runtime -Recurse -Force -ErrorAction Stop
       Set-Content -LiteralPath (Join-Path $runtime '.aid-runtime') -Value 'AID Windows development runtime'
     } finally { $runtimeLock.Dispose() }

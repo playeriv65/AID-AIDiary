@@ -14,7 +14,13 @@ Probably skip (Journey has them, but they need cloud or AI or add little): Googl
 - Voice note transcription: needs on-device speech recognition; decide whether that fits "no AI".
 
 ## Frame rate (state of 2026-10-21)
-Deferred for a separate performance pass by the owner on 2026-10-22.
+The broader Android pass remains deferred by the owner from 2026-10-22.
+The focused Windows scrollbar investigation is recorded in
+[docs/REFRESH_RATE.md](docs/REFRESH_RATE.md). Large jumps no longer construct
+the intervening diary, but the extreme 4000-entry/5-second traversal still
+misses the 120 Hz/1% acceptance bar. Paragraph layout and transient widget
+allocation remain the measured bottleneck; do not mark Windows universally
+full-rate or treat an ordinary fling as proof about thumb dragging.
 Measured with `./scripts/dev.ps1 frame-rate` on the Xiaomi tablet (3200×2136, 120 Hz, Snapdragon 7+ Gen 3, Impeller/Vulkan), skipped refreshes on screen against the 1% bar:
 
 - Journal scroll about 1.4–1.8%, media scroll about 0.8%.

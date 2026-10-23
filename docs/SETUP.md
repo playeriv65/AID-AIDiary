@@ -50,6 +50,18 @@ each commit. Native and live checks have separate environments and claims.
    the test environment. Run `./scripts/dev.ps1 windows` when ready to open
    the app; use `test-all` if a full baseline is needed.
 
+## Windows performance profiling
+
+For an isolated Windows scrollbar profile run, use
+`./scripts/dev.ps1 windows-profile-build`, then
+`./scripts/dev.ps1 windows-profile-stage`, then
+`./scripts/windows_scroll.ps1 -Label current`. This reuses `DEV_WINDOWS_RUNTIME`
+instead of creating a new executable/firewall identity for each worktree.
+The runner uses generated entries in `build/windows-scroll/data`, checks the
+launched process/API identity and stops that process on exit. Reports and
+timelines go under `build/windows-scroll/current`; it never attaches to the
+personal installation. See [refresh-rate measurements](REFRESH_RATE.md).
+
 ## Windows personal installation
 
 `./scripts/dev.ps1 windows-release-build` builds a release bundle without

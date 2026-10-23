@@ -72,7 +72,8 @@ Flutter's [testing overview](https://docs.flutter.dev/testing/overview)
 distinguishes unit, widget and full-app integration tests. Local HTTP sockets
 or mocked WebRTC do not prove cross-NAT reachability. Native checks must record
 the actual path and data verification separately in [SYNC_NETWORK.md](SYNC_NETWORK.md).
-Cross-network validation and the next performance pass remain deferred.
+Cross-network validation and the broader Android performance pass remain
+deferred. The requested Windows scrollbar results belong in [REFRESH_RATE.md](REFRESH_RATE.md).
 
 All offline Flutter commands exclude `live`, even if the shell has service
 credentials. `test-live` is explicit opt-in; it may change remote scratch
@@ -161,7 +162,8 @@ These are acceptance obligations when affected or preparing a release, not a
 claim that every scenario is already automated. Existing tests and historical
 physical evidence are described in [SYNC_NETWORK.md](SYNC_NETWORK.md). Review
 the remaining gaps against the release scope instead of manufacturing a pass.
-The owner has deferred cross-network and performance checks: keep them marked
+The owner has deferred cross-network and broader performance checks; a focused
+Windows scrollbar pass was requested on 2026-10-22. Keep other scenarios marked
 unverified, and require a separate go/no-go decision if a release needs those
 claims. No production reset, ordinary-diary mutation or new external endpoint
 is authorized merely by this testing policy; use isolated scratch data.

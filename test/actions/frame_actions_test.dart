@@ -26,6 +26,44 @@ class _Screen implements ActionScreen {
 }
 
 void main() {
+  testWidgets('mouse drag moves a desktop scrollbar across a long list',
+      (tester) async {
+    final actions = AppActions(screen: _Screen());
+    final controller = ScrollController();
+    addTearDown(controller.dispose);
+    await tester.pumpWidget(MaterialApp(
+      theme: ThemeData(platform: TargetPlatform.windows),
+      scrollBehavior:
+          const MaterialScrollBehavior().copyWith(scrollbars: false),
+      home: Scrollbar(
+        controller: controller,
+        child: ListView.builder(
+          controller: controller,
+          itemExtent: 60,
+          itemCount: 4000,
+          itemBuilder: (_, index) => Text('Row $index'),
+        ),
+      ),
+    ));
+    await tester.pumpAndSettle();
+    final action = actions.run('ui.fling', {
+      'mouse': true,
+      'x': .995,
+      'from': .02,
+      'to': .8,
+      'duration_ms': 96,
+    });
+    for (var step = 0; step < 20; step++) {
+      await tester.pump(const Duration(milliseconds: 8));
+    }
+    final result = await action as Map;
+    await tester.pumpAndSettle();
+    expect(controller.offset,
+        greaterThan(controller.position.maxScrollExtent * .5));
+    expect(result['scrollStart'], 0);
+    expect(result['scrollEnd'], controller.offset);
+  });
+
   testWidgets('ui.fling swipes the list under it, which scrolls on',
       (tester) async {
     final actions = AppActions(screen: _Screen());
