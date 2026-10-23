@@ -136,6 +136,16 @@ asks again. Dates are when it was settled. Ideas not built yet are in
 - PDF or DOCX export and printing: JSON (and Markdown) export is enough.
 - Per-entry "synced" badges (Journey has them): synced is the normal state
   and shows nothing; only entries whose sync failed get a small mark.
+- A web version, not now (2026-10-23). A web page loads its code from the
+  server on every visit, so the server end-to-end encryption guards
+  against could serve a changed script that reads keys or entries, even
+  to one user at one time; pinning a PWA or checking published hashes
+  only narrows that. Browsers may also evict stored data, cannot reach
+  devices on the local network and lack several plugins the app uses. If
+  it comes back, it is a light sync peer: entries and indexes stored
+  locally, media fetched on demand into a bounded cache, never the only
+  copy. Mac or Linux users would be better served by native desktop
+  builds.
 
 ## Command line and agents
 
