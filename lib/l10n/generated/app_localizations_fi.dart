@@ -2691,7 +2691,13 @@ class AppLocalizationsFi extends AppLocalizations {
   String get editorDiaryDay => 'Päiväkirjapäivä';
 
   @override
-  String get editorDiaryDayPicker => 'Päiväkirjapäivä · luontiaika säilyy';
+  String get editorDiaryDayPicker =>
+      'Päiväkirjapäivä · Mihin päivään merkintä kuuluu?';
+
+  @override
+  String editorCreatedAt(String time) {
+    return 'Luotu $time';
+  }
 
   @override
   String get editorDiaryDayHint =>

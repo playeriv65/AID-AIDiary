@@ -2701,7 +2701,12 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String get editorDiaryDayPicker =>
-      'Ден на записа · създаването не се променя';
+      'Ден на дневника · За кой ден е този запис?';
+
+  @override
+  String editorCreatedAt(String time) {
+    return 'Създадено $time';
+  }
 
   @override
   String get editorDiaryDayHint =>

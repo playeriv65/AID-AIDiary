@@ -2704,7 +2704,13 @@ class AppLocalizationsPt extends AppLocalizations {
   String get editorDiaryDay => 'Dia do diário';
 
   @override
-  String get editorDiaryDayPicker => 'Dia do diário · criação inalterada';
+  String get editorDiaryDayPicker =>
+      'Dia do diário · A que dia pertence esta entrada?';
+
+  @override
+  String editorCreatedAt(String time) {
+    return 'Criada $time';
+  }
 
   @override
   String get editorDiaryDayHint =>
@@ -5457,7 +5463,13 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
   String get editorDiaryDay => 'Dia do diário';
 
   @override
-  String get editorDiaryDayPicker => 'Dia do diário · criação inalterada';
+  String get editorDiaryDayPicker =>
+      'Dia do diário · A que dia pertence esta entrada?';
+
+  @override
+  String editorCreatedAt(String time) {
+    return 'Criada $time';
+  }
 
   @override
   String get editorDiaryDayHint =>

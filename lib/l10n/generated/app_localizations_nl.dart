@@ -2701,7 +2701,13 @@ class AppLocalizationsNl extends AppLocalizations {
   String get editorDiaryDay => 'Dagboekdag';
 
   @override
-  String get editorDiaryDayPicker => 'Dagboekdag · aanmaaktijd blijft';
+  String get editorDiaryDayPicker =>
+      'Dagboekdag · Bij welke dag hoort dit bericht?';
+
+  @override
+  String editorCreatedAt(String time) {
+    return 'Gemaakt $time';
+  }
 
   @override
   String get editorDiaryDayHint =>

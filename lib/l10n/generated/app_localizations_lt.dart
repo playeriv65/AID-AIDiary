@@ -2715,7 +2715,12 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String get editorDiaryDayPicker =>
-      'Dienoraščio diena · sukūrimo laikas nekinta';
+      'Dienoraščio diena · Kuriai dienai priklauso šis įrašas?';
+
+  @override
+  String editorCreatedAt(String time) {
+    return 'Sukurta $time';
+  }
 
   @override
   String get editorDiaryDayHint =>

@@ -2710,7 +2710,13 @@ class AppLocalizationsIt extends AppLocalizations {
   String get editorDiaryDay => 'Giorno del diario';
 
   @override
-  String get editorDiaryDayPicker => 'Giorno del diario · creazione invariata';
+  String get editorDiaryDayPicker =>
+      'Giorno del diario · A quale giorno appartiene questa voce?';
+
+  @override
+  String editorCreatedAt(String time) {
+    return 'Creata $time';
+  }
 
   @override
   String get editorDiaryDayHint =>

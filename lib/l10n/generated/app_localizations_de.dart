@@ -2718,7 +2718,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get editorDiaryDay => 'Tagebuchtag';
 
   @override
-  String get editorDiaryDayPicker => 'Tagebuchtag · Erstellzeit bleibt';
+  String get editorDiaryDayPicker =>
+      'Tagebuchtag · Zu welchem Tag gehört dieser Eintrag?';
+
+  @override
+  String editorCreatedAt(String time) {
+    return 'Erstellt $time';
+  }
 
   @override
   String get editorDiaryDayHint =>

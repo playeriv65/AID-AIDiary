@@ -4887,8 +4887,14 @@ abstract class AppLocalizations {
   /// The logical diary date, independent of the immutable entry creation timestamp.
   ///
   /// In en, this message translates to:
-  /// **'Diary day · creation time stays'**
+  /// **'Diary day · Which day is this entry about?'**
   String get editorDiaryDayPicker;
+
+  /// When an entry was written, shown when that differs from its diary day.
+  ///
+  /// In en, this message translates to:
+  /// **'Created {time}'**
+  String editorCreatedAt(String time);
 
   /// The logical diary date, independent of the immutable entry creation timestamp.
   ///

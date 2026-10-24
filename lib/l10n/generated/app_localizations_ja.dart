@@ -2621,7 +2621,12 @@ class AppLocalizationsJa extends AppLocalizations {
   String get editorDiaryDay => '日記の日付';
 
   @override
-  String get editorDiaryDayPicker => '日記の日付 · 作成日時は変更しません';
+  String get editorDiaryDayPicker => '日記の日付 · この日記はどの日のもの？';
+
+  @override
+  String editorCreatedAt(String time) {
+    return '作成 $time';
+  }
 
   @override
   String get editorDiaryDayHint => 'この日記をどの日に分類するかを指定します。変更しても作成日時は変わりません。';

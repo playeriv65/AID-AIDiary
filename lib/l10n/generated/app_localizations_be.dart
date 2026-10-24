@@ -2724,7 +2724,13 @@ class AppLocalizationsBe extends AppLocalizations {
   String get editorDiaryDay => 'Дзень дзённіка';
 
   @override
-  String get editorDiaryDayPicker => 'Дзень запісу · час стварэння нязменны';
+  String get editorDiaryDayPicker =>
+      'Дзень дзённіка · Да якога дня адносіцца гэты запіс?';
+
+  @override
+  String editorCreatedAt(String time) {
+    return 'Створана $time';
+  }
 
   @override
   String get editorDiaryDayHint =>

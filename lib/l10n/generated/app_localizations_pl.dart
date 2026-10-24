@@ -2711,7 +2711,12 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get editorDiaryDayPicker =>
-      'Dzień dziennika · czas utworzenia bez zmian';
+      'Dzień dziennika · Do którego dnia należy ten wpis?';
+
+  @override
+  String editorCreatedAt(String time) {
+    return 'Utworzono $time';
+  }
 
   @override
   String get editorDiaryDayHint =>

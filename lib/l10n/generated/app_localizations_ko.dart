@@ -2621,7 +2621,12 @@ class AppLocalizationsKo extends AppLocalizations {
   String get editorDiaryDay => '일기 날짜';
 
   @override
-  String get editorDiaryDayPicker => '일기 날짜 · 생성 시간은 유지됩니다';
+  String get editorDiaryDayPicker => '일기 날짜 · 이 일기는 어느 날의 일기인가요?';
+
+  @override
+  String editorCreatedAt(String time) {
+    return '작성 $time';
+  }
 
   @override
   String get editorDiaryDayHint => '이 일기가 속하는 날짜입니다. 날짜를 바꿔도 생성 시간은 바뀌지 않습니다.';

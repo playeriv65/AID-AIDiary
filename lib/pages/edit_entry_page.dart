@@ -23,6 +23,7 @@ import 'package:aid_diary/utils/entry_context_display.dart';
 import 'package:aid_diary/utils/photo_metadata.dart';
 import 'package:aid_diary/widgets/context_dialogs.dart';
 import 'package:aid_diary/widgets/editor_action_bar.dart';
+import 'package:aid_diary/widgets/diary_day_dialog.dart';
 import 'package:aid_diary/widgets/editor_action_bar/editor_keyboard_session.dart';
 import 'package:aid_diary/widgets/entry_image_actions.dart';
 import 'package:aid_diary/widgets/entry_image_editable_list.dart';
@@ -299,6 +300,7 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
               title: _buildDateTitle(context, theme),
               leading: _closeButton(),
               actions: [
+                _moodButton(context),
                 _tagsButton(),
                 if (!_model.isNew) _deleteButton(),
               ]),
@@ -564,108 +566,107 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
         ),
       );
 
-  /// The diary day as the page title with the time it was written, and the
-  /// mood beside it; tapping the day changes the day only.
+  /// When the entry was written, as the date and time; [withYear] adds the
+  /// year even in the current one.
+  String _createdLabel(BuildContext context, {bool withYear = false}) {
+    final at = _model.writtenAt;
+    final date = !withYear && at.year == DateTime.now().year
+        ? TimeManager.formatMonthDay(at, context)
+        : TimeManager.formatDate(at, context);
+    final time =
+        TimeManager.timeOfDayString(context, TimeOfDay.fromDateTime(at));
+    final zone = _model.entry.otherZoneLabel;
+    return '$date $time${zone == null ? '' : ' $zone'}';
+  }
+
+  /// The diary day as the page title, as a date only; tapping it changes
+  /// the day only. When the entry was written on another day, that day and
+  /// time follow the small label.
   Widget _buildDateTitle(BuildContext context, ThemeData theme) {
     final l10n = AppLocalizations.of(context)!;
     final cs = theme.colorScheme;
-    final mood = _model.mood;
-    final hasMood = MoodIcon.getMoodIcon(mood).isNotEmpty;
-    final date = _model.writtenAt;
     final diaryDay = _model.diaryDay;
     final day = diaryDay.year == DateTime.now().year
         ? TimeManager.formatMonthDay(diaryDay, context)
         : TimeManager.formatDate(diaryDay, context);
-    final time =
-        TimeManager.timeOfDayString(context, TimeOfDay.fromDateTime(date));
     final weekday =
         DateFormat.E(TimeManager.currentLocale(context)).format(diaryDay);
-    final written = DiaryDay.dateOf(date);
-    final lateNight =
-        diaryDay == DateTime(written.year, written.month, written.day - 1);
-    // Written on another day than it is about: a time next to that day
-    // would read as when it happened, so none is shown.
-    final sameNight = lateNight || diaryDay == written;
-    final zone = _model.entry.otherZoneLabel;
-    return Row(mainAxisSize: MainAxisSize.min, children: [
-      Flexible(
-        child: Tooltip(
-          message: l10n.editorDiaryDayHint,
-          child: InkWell(
-            key: const ValueKey('editor-date'),
-            borderRadius: BorderRadius.circular(8),
-            onTap: _chooseDiaryDay,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(l10n.editorDiaryDay,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: theme.textTheme.labelSmall
-                          ?.copyWith(color: cs.onSurfaceVariant)),
-                  Text.rich(
-                    TextSpan(children: [
-                      TextSpan(
-                          text: day,
-                          style: theme.textTheme.titleLarge
-                              ?.copyWith(fontWeight: FontWeight.w600)),
-                      TextSpan(
-                          text: ' $weekday'
-                              '${sameNight ? '  /  $time' : ''}'
-                              '${zone == null ? '' : ' $zone'}',
-                          style: theme.textTheme.bodyMedium
-                              ?.copyWith(color: cs.onSurfaceVariant)),
-                      if (lateNight)
-                        WidgetSpan(
-                          alignment: PlaceholderAlignment.middle,
-                          child: Padding(
-                            padding: const EdgeInsetsDirectional.only(start: 4),
-                            child: Tooltip(
-                              message:
-                                  AppLocalizations.of(context)!.lateNightBadge,
-                              child: Icon(Icons.bedtime_outlined,
-                                  key: const ValueKey('editor-late-night'),
-                                  size: 16,
-                                  color: cs.onSurfaceVariant),
-                            ),
-                          ),
-                        ),
-                    ]),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+    final writtenOtherDay = DiaryDay.dateOf(_model.writtenAt) != diaryDay;
+    final small =
+        theme.textTheme.labelSmall?.copyWith(color: cs.onSurfaceVariant);
+    return Tooltip(
+      message: l10n.editorDiaryDayHint,
+      child: InkWell(
+        key: const ValueKey('editor-date'),
+        borderRadius: BorderRadius.circular(8),
+        onTap: _chooseDiaryDay,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(mainAxisSize: MainAxisSize.min, children: [
+                Text(l10n.editorDiaryDay, maxLines: 1, style: small),
+                if (writtenOtherDay)
+                  Flexible(
+                    child: Text(
+                        ' · ${l10n.editorCreatedAt(_createdLabel(context))}',
+                        key: const ValueKey('editor-created'),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: small),
                   ),
-                ],
+              ]),
+              Text.rich(
+                TextSpan(children: [
+                  TextSpan(
+                      text: day,
+                      style: theme.textTheme.titleLarge
+                          ?.copyWith(fontWeight: FontWeight.w600)),
+                  TextSpan(
+                      text: ' $weekday',
+                      style: theme.textTheme.bodyMedium
+                          ?.copyWith(color: cs.onSurfaceVariant)),
+                ]),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
-            ),
+            ],
           ),
         ),
       ),
-      MenuAnchor(
-        style: const MenuStyle(alignment: AlignmentDirectional.bottomStart),
-        menuChildren: [
-          Builder(
-              builder: (menuContext) => EntryMoodPicker(
-                    moodValue: mood,
-                    onChangedMood: (value) {
-                      _model.setMood(value);
-                      MenuController.maybeOf(menuContext)?.close();
-                    },
-                  )),
-        ],
-        builder: (context, controller, _) => IconButton(
-          key: const ValueKey('editor-mood'),
-          tooltip: l10n.tagMoodTitle,
-          onPressed: () =>
-              controller.isOpen ? controller.close() : controller.open(),
-          icon: hasMood
-              ? MoodIcon(moodValue: mood, size: 24)
-              : Icon(Icons.add_reaction_outlined, color: cs.onSurfaceVariant),
-        ),
+    );
+  }
+
+  /// Sits beside the tags, as both describe the entry.
+  Widget _moodButton(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final mood = _model.mood;
+    final hasMood = MoodIcon.getMoodIcon(mood).isNotEmpty;
+    return MenuAnchor(
+      style: const MenuStyle(alignment: AlignmentDirectional.bottomStart),
+      menuChildren: [
+        Builder(
+            builder: (menuContext) => EntryMoodPicker(
+                  moodValue: mood,
+                  onChangedMood: (value) {
+                    _model.setMood(value);
+                    MenuController.maybeOf(menuContext)?.close();
+                  },
+                )),
+      ],
+      builder: (context, controller, _) => IconButton(
+        key: const ValueKey('editor-mood'),
+        tooltip: l10n.tagMoodTitle,
+        onPressed: () =>
+            controller.isOpen ? controller.close() : controller.open(),
+        icon: hasMood
+            ? MoodIcon(moodValue: mood, size: 24)
+            : Icon(Icons.add_reaction_outlined,
+                color: Theme.of(context).colorScheme.onSurfaceVariant),
       ),
-    ]);
+    );
   }
 
   Future<void> _chooseLocation() async {
@@ -810,12 +811,12 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
   Future<void> _chooseDiaryDay() async {
     final today = DiaryDay.dateOf(DateTime.now());
     final current = _model.diaryDay;
-    final picked = await TimeManager.pickDate(
+    final picked = await showDiaryDayDialog(
       context,
-      initialDate: current,
-      firstDate: DateTime(2000),
-      lastDate: current.isAfter(today) ? current : today,
-      helpText: AppLocalizations.of(context)!.editorDiaryDayPicker,
+      initialDay: current,
+      firstDay: DateTime(2000),
+      lastDay: current.isAfter(today) ? current : today,
+      created: _createdLabel(context, withYear: true),
     );
     if (picked != null) _model.setDiaryDay(picked);
   }

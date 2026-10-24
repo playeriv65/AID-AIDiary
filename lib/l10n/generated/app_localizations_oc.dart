@@ -2710,7 +2710,12 @@ class AppLocalizationsOc extends AppLocalizations {
 
   @override
   String get editorDiaryDayPicker =>
-      'Jorn del jornal · creacion sens cambiament';
+      'Jorn del jornal · A quin jorn aparten aquesta nòta?';
+
+  @override
+  String editorCreatedAt(String time) {
+    return 'Creada $time';
+  }
 
   @override
   String get editorDiaryDayHint =>

@@ -2689,7 +2689,13 @@ class AppLocalizationsSv extends AppLocalizations {
   String get editorDiaryDay => 'Dagboksdatum';
 
   @override
-  String get editorDiaryDayPicker => 'Dagboksdatum · skapandetiden behålls';
+  String get editorDiaryDayPicker =>
+      'Dagboksdatum · Vilken dag hör inlägget till?';
+
+  @override
+  String editorCreatedAt(String time) {
+    return 'Skapat $time';
+  }
 
   @override
   String get editorDiaryDayHint =>

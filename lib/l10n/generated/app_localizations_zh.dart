@@ -2585,7 +2585,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get editorDiaryDay => '日记日';
 
   @override
-  String get editorDiaryDayPicker => '日记日·创建不变';
+  String get editorDiaryDayPicker => '日记日 · 这篇日记属于哪一天？';
+
+  @override
+  String editorCreatedAt(String time) {
+    return '创建于 $time';
+  }
 
   @override
   String get editorDiaryDayHint => '决定这篇日记归属哪一天。修改日记日不会改变创建时间。';
@@ -5220,7 +5225,12 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get editorDiaryDay => '日記日';
 
   @override
-  String get editorDiaryDayPicker => '日記日·建立不變';
+  String get editorDiaryDayPicker => '日記日 · 這篇日記屬於哪一天？';
+
+  @override
+  String editorCreatedAt(String time) {
+    return '建立於 $time';
+  }
 
   @override
   String get editorDiaryDayHint => '決定這篇日記歸屬哪一天。修改日記日不會改變建立時間。';

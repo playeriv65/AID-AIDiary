@@ -2663,7 +2663,12 @@ class AppLocalizationsHe extends AppLocalizations {
   String get editorDiaryDay => 'יום ביומן';
 
   @override
-  String get editorDiaryDayPicker => 'יום ביומן · זמן היצירה נשמר';
+  String get editorDiaryDayPicker => 'יום ביומן · לאיזה יום שייכת הרשומה?';
+
+  @override
+  String editorCreatedAt(String time) {
+    return 'נוצרה $time';
+  }
 
   @override
   String get editorDiaryDayHint =>

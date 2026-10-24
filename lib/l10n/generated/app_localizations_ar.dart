@@ -2680,7 +2680,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get editorDiaryDay => 'يوم التدوينة';
 
   @override
-  String get editorDiaryDayPicker => 'يوم التدوينة · وقت الإنشاء ثابت';
+  String get editorDiaryDayPicker =>
+      'يوم التدوينة · إلى أي يوم تنتمي هذه التدوينة؟';
+
+  @override
+  String editorCreatedAt(String time) {
+    return 'أُنشئت $time';
+  }
 
   @override
   String get editorDiaryDayHint =>

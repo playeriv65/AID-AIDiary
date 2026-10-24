@@ -1570,7 +1570,12 @@
   "@editorDiaryDay": {
     "description": "The logical diary date, independent of the immutable entry creation timestamp."
   },
-  "editorDiaryDayPicker": "Diary day · creation time stays",
+  "editorDiaryDayPicker": "Diary day · Which day is this entry about?",
+  "editorCreatedAt": "Created {time}",
+  "@editorCreatedAt": {
+    "description": "When an entry was written, shown when that differs from its diary day.",
+    "placeholders": {"time": {"type": "String"}}
+  },
   "@editorDiaryDayPicker": {
     "description": "The logical diary date, independent of the immutable entry creation timestamp."
   },

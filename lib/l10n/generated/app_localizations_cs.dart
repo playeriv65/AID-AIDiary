@@ -2679,7 +2679,13 @@ class AppLocalizationsCs extends AppLocalizations {
   String get editorDiaryDay => 'Den deníku';
 
   @override
-  String get editorDiaryDayPicker => 'Den deníku · čas vytvoření zůstává';
+  String get editorDiaryDayPicker =>
+      'Den deníku · Ke kterému dni tento záznam patří?';
+
+  @override
+  String editorCreatedAt(String time) {
+    return 'Vytvořeno $time';
+  }
 
   @override
   String get editorDiaryDayHint =>

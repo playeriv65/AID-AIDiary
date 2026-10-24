@@ -25,13 +25,13 @@ void main() {
   final selectedDay = DateTime(2026, 10, 11);
 
   Future<Entry> open(WidgetTester tester, String calendar,
-      {double textScale = 1}) async {
+      {double textScale = 1, DateTime? day}) async {
     await DiaryAppHarness.setSetting(Settings.calendarSystem, calendar);
     final entry = (await tester.runAsync(() => store.add(Entry(
           text: 'Preserved diary',
           timeCreate: created,
           timeModified: created,
-          day: originalDay,
+          day: day ?? originalDay,
           utcOffset: 330,
         ))))!;
     DiaryAppHarness.size(tester, const Size(390, 844));
@@ -81,9 +81,12 @@ void main() {
               of: dateButton, matching: find.text(l10n.editorDiaryDay)),
           findsOneWidget);
       expect(find.byTooltip(l10n.editorDiaryDayHint), findsOneWidget);
+      // Written on another day than it is about: when, in small print.
+      expect(find.byKey(const ValueKey('editor-created')), findsOneWidget);
       await tester.tap(dateButton);
       await tester.pumpAndSettle();
       expect(find.text(l10n.editorDiaryDayPicker), findsOneWidget);
+      expect(find.byKey(const ValueKey('diary-day-created')), findsOneWidget);
 
       if (calendar == 'gregorian') {
         await tester.tap(find
@@ -114,6 +117,22 @@ void main() {
       await tester.pumpWidget(const SizedBox.shrink());
     });
   }
+
+  testWidgets('an entry about the day it was written shows only that day',
+      (tester) async {
+    await open(tester, 'gregorian', day: DateTime(2026, 10, 21));
+    expect(find.byKey(const ValueKey('editor-created')), findsNothing);
+    expect(find.textContaining('23:45'), findsNothing);
+    // The picker still says when it was written.
+    await tester.tap(find.byKey(const ValueKey('editor-date')));
+    await tester.pumpAndSettle();
+    expect(
+        tester
+            .widget<Text>(find.byKey(const ValueKey('diary-day-created')))
+            .data,
+        contains('23:45'));
+    await tester.pumpWidget(const SizedBox.shrink());
+  });
 
   testWidgets('canceling the diary-day picker leaves the entry unchanged',
       (tester) async {

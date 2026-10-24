@@ -2677,7 +2677,13 @@ class AppLocalizationsFa extends AppLocalizations {
   String get editorDiaryDay => 'روز یادداشت';
 
   @override
-  String get editorDiaryDayPicker => 'روز یادداشت · زمان ایجاد ثابت است';
+  String get editorDiaryDayPicker =>
+      'روز یادداشت · این یادداشت مربوط به کدام روز است؟';
+
+  @override
+  String editorCreatedAt(String time) {
+    return 'ایجاد شده $time';
+  }
 
   @override
   String get editorDiaryDayHint =>

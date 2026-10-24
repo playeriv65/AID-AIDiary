@@ -2698,7 +2698,13 @@ class AppLocalizationsVi extends AppLocalizations {
   String get editorDiaryDay => 'Ngày nhật ký';
 
   @override
-  String get editorDiaryDayPicker => 'Ngày nhật ký · giữ nguyên thời điểm tạo';
+  String get editorDiaryDayPicker =>
+      'Ngày nhật ký · Bài này thuộc về ngày nào?';
+
+  @override
+  String editorCreatedAt(String time) {
+    return 'Tạo lúc $time';
+  }
 
   @override
   String get editorDiaryDayHint =>

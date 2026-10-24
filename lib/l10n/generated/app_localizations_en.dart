@@ -2669,7 +2669,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get editorDiaryDay => 'Diary day';
 
   @override
-  String get editorDiaryDayPicker => 'Diary day · creation time stays';
+  String get editorDiaryDayPicker =>
+      'Diary day · Which day is this entry about?';
+
+  @override
+  String editorCreatedAt(String time) {
+    return 'Created $time';
+  }
 
   @override
   String get editorDiaryDayHint =>

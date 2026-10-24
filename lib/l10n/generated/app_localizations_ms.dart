@@ -2647,7 +2647,12 @@ class AppLocalizationsMs extends AppLocalizations {
   String get editorDiaryDay => 'Hari diari';
 
   @override
-  String get editorDiaryDayPicker => 'Hari diari · masa penciptaan kekal';
+  String get editorDiaryDayPicker => 'Hari diari · Catatan ini untuk hari apa?';
+
+  @override
+  String editorCreatedAt(String time) {
+    return 'Dicipta $time';
+  }
 
   @override
   String get editorDiaryDayHint =>

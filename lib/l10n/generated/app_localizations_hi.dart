@@ -2684,7 +2684,13 @@ class AppLocalizationsHi extends AppLocalizations {
   String get editorDiaryDay => 'डायरी का दिन';
 
   @override
-  String get editorDiaryDayPicker => 'डायरी का दिन · बनाने का समय नहीं बदलता';
+  String get editorDiaryDayPicker =>
+      'डायरी का दिन · यह प्रविष्टि किस दिन की है?';
+
+  @override
+  String editorCreatedAt(String time) {
+    return 'बनाई गई $time';
+  }
 
   @override
   String get editorDiaryDayHint =>

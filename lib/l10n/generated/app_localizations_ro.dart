@@ -2715,7 +2715,13 @@ class AppLocalizationsRo extends AppLocalizations {
   String get editorDiaryDay => 'Ziua însemnării';
 
   @override
-  String get editorDiaryDayPicker => 'Ziua însemnării · crearea nu se modifică';
+  String get editorDiaryDayPicker =>
+      'Ziua însemnării · Cărei zile îi aparține această însemnare?';
+
+  @override
+  String editorCreatedAt(String time) {
+    return 'Creată $time';
+  }
 
   @override
   String get editorDiaryDayHint =>

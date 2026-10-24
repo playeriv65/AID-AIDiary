@@ -2726,7 +2726,12 @@ class AppLocalizationsTa extends AppLocalizations {
 
   @override
   String get editorDiaryDayPicker =>
-      'நாட்குறிப்பு நாள் · உருவாக்க நேரம் மாறாது';
+      'நாட்குறிப்பு நாள் · இந்தப் பதிவு எந்த நாளுக்குரியது?';
+
+  @override
+  String editorCreatedAt(String time) {
+    return 'உருவாக்கப்பட்டது $time';
+  }
 
   @override
   String get editorDiaryDayHint =>

@@ -2679,7 +2679,13 @@ class AppLocalizationsDa extends AppLocalizations {
   String get editorDiaryDay => 'Dagbogsdato';
 
   @override
-  String get editorDiaryDayPicker => 'Dagbogsdato · oprettelsestid bevares';
+  String get editorDiaryDayPicker =>
+      'Dagbogsdato · Hvilken dag handler indlægget om?';
+
+  @override
+  String editorCreatedAt(String time) {
+    return 'Oprettet $time';
+  }
 
   @override
   String get editorDiaryDayHint =>

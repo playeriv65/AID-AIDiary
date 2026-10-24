@@ -2685,7 +2685,12 @@ class AppLocalizationsTr extends AppLocalizations {
   String get editorDiaryDay => 'Günlük günü';
 
   @override
-  String get editorDiaryDayPicker => 'Günlük günü · oluşturma zamanı değişmez';
+  String get editorDiaryDayPicker => 'Günlük günü · Bu kayıt hangi güne ait?';
+
+  @override
+  String editorCreatedAt(String time) {
+    return 'Oluşturuldu $time';
+  }
 
   @override
   String get editorDiaryDayHint =>
