@@ -9,7 +9,6 @@
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/layouts/mobile_scaffold.dart';
 import 'package:aid_diary/pages/coach_page.dart';
-import 'package:aid_diary/pages/calendar_page.dart';
 import 'package:aid_diary/pages/edit_entry_page.dart';
 import 'package:aid_diary/pages/search_page.dart';
 import 'package:aid_diary/routing/destinations.dart';
@@ -52,7 +51,7 @@ void main() {
     await close(tester, find.byType(AddEditEntryPage));
     await session.tapKey(tester, 'journal-calendar');
     await session.capture(tester, 'tablet-calendar');
-    await close(tester, find.byType(CalendarPage));
+    await session.tapKey(tester, 'journal-calendar');
     await DiaryAppHarness.goTo(tester, 1);
     await session.capture(tester, 'tablet-media');
     await DiaryAppHarness.goTo(tester, 2);

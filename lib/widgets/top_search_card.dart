@@ -8,9 +8,13 @@ import 'package:material_ui/material_ui.dart';
 
 /// The list scrolls beneath an opaque, stationary search surface.
 class PinnedSearchHeader extends StatelessWidget {
-  const PinnedSearchHeader({super.key, this.showSearch = true});
+  const PinnedSearchHeader(
+      {super.key, this.showSearch = true, this.onCalendar});
 
   final bool showSearch;
+
+  /// See [TopSearchCard.onCalendar].
+  final VoidCallback? onCalendar;
 
   /// Its height, the search card and the gap around it.
   static const double extent = 84;
@@ -18,14 +22,15 @@ class PinnedSearchHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) => SliverPersistentHeader(
         pinned: true,
-        delegate: _SearchHeaderDelegate(showSearch),
+        delegate: _SearchHeaderDelegate(showSearch, onCalendar),
       );
 }
 
 class _SearchHeaderDelegate extends SliverPersistentHeaderDelegate {
-  _SearchHeaderDelegate(this.showSearch);
+  _SearchHeaderDelegate(this.showSearch, this.onCalendar);
 
   final bool showSearch;
+  final VoidCallback? onCalendar;
 
   @override
   double get minExtent => PinnedSearchHeader.extent;
@@ -39,25 +44,30 @@ class _SearchHeaderDelegate extends SliverPersistentHeaderDelegate {
         color: Theme.of(context).scaffoldBackgroundColor,
         child: Padding(
           padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-          child: TopSearchCard(showSearch: showSearch),
+          child: TopSearchCard(showSearch: showSearch, onCalendar: onCalendar),
         ),
       );
 
   @override
   bool shouldRebuild(_SearchHeaderDelegate oldDelegate) =>
-      showSearch != oldDelegate.showSearch;
+      showSearch != oldDelegate.showSearch ||
+      onCalendar != oldDelegate.onCalendar;
 }
 
 /// Floating calendar shortcut, search and menu, or back from the calendar.
 class TopSearchCard extends StatelessWidget {
   const TopSearchCard(
-      {super.key, this.showSearch = true, this.calendarPage = false});
+      {super.key,
+      this.showSearch = true,
+      this.calendarPage = false,
+      this.onCalendar});
 
   final bool showSearch;
-
-  /// Its height, the search card and the gap around it.
-  static const double extent = 84;
   final bool calendarPage;
+
+  /// What the calendar button does: the journal unfolds a calendar in place;
+  /// elsewhere it opens the calendar page.
+  final VoidCallback? onCalendar;
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +97,8 @@ class TopSearchCard extends StatelessWidget {
                 key: const ValueKey('journal-calendar'),
                 tooltip: l10n.pageCalendarTitle,
                 icon: const Icon(Icons.calendar_today_rounded),
-                onPressed: () => AppNavigation.calendar(Navigator.of(context)),
+                onPressed: onCalendar ??
+                    () => AppNavigation.calendar(Navigator.of(context)),
               ),
               const Spacer(),
             ],

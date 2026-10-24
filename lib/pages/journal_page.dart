@@ -4,7 +4,8 @@
 
 import 'dart:async';
 import 'dart:io';
-import 'package:flutter/rendering.dart' show ScrollCacheExtent;
+import 'package:flutter/rendering.dart'
+    show RenderAbstractViewport, RenderSliver, ScrollCacheExtent;
 
 import 'package:aid_diary/utils/diary_day.dart';
 import 'package:aid_diary/config/app_config.dart';
@@ -34,6 +35,7 @@ import 'package:aid_diary/widgets/coach_widgets.dart';
 import 'package:aid_diary/widgets/journal_entry_row.dart';
 import 'package:aid_diary/widgets/known_extent_sliver.dart';
 import 'package:aid_diary/widgets/list_detail_layout.dart';
+import 'package:aid_diary/widgets/month_calendar.dart';
 import 'package:aid_diary/widgets/top_search_card.dart';
 import 'package:aid_diary/widgets/scroll_to_top.dart';
 import 'package:material_ui/material_ui.dart';
@@ -52,6 +54,16 @@ class JournalPage extends StatefulWidget {
 class _JournalPageState extends State<JournalPage>
     with AutomaticKeepAliveClientMixin {
   int? _selectedId;
+
+  /// The calendar unfolded under the search card.
+  bool _calendarOpen = false;
+
+  /// The day groups as last built, and the sliver holding them.
+  List<(DateTime, List<Entry>)> _groups = const [];
+  final _entriesKey = GlobalKey();
+
+  /// The day groups built now, by index, to line the list up on a day.
+  final Map<int, BuildContext> _dayAnchors = {};
   StreamSubscription<SharePayload>? _shareSubscription;
   StreamSubscription<Uri?>? _widgetTapSubscription;
   StreamSubscription<void>? _newEntryTapSubscription;
@@ -218,6 +230,69 @@ class _JournalPageState extends State<JournalPage>
     };
   }
 
+  void _toggleCalendar() => setState(() => _calendarOpen = !_calendarOpen);
+
+  /// Folds the calendar and turns the list to [day]: that day's entries, or
+  /// the nearest earlier day that has some, else the nearest later one.
+  Future<void> _turnTo(DateTime day) async {
+    setState(() => _calendarOpen = false);
+    final groups = _groups;
+    if (groups.isEmpty) return;
+    var index = -1;
+    for (final (i, (groupDay, _)) in groups.indexed) {
+      if (groupDay.isAfter(day)) continue;
+      if (index < 0 || groupDay.isAfter(groups[index].$1)) index = i;
+    }
+    if (index < 0) {
+      for (final (i, (groupDay, _)) in groups.indexed) {
+        if (index < 0 || groupDay.isBefore(groups[index].$1)) index = i;
+      }
+    }
+    final context = _entriesKey.currentContext;
+    if (context == null) return;
+    final sliver = context.findRenderObject()! as RenderSliver;
+    final position = Scrollable.of(context).position;
+    // Rows have known heights on computers; on phones they vary, so this
+    // estimate brings the list near and built groups then line it up.
+    final metrics = JournalListMetrics.of(context);
+    double between(int from, int to) => [
+          for (final (_, entries) in groups.sublist(from, to))
+            metrics.groupExtent(entries.length)
+        ].fold(0.0, (sum, extent) => sum + extent);
+    double clamped(double value) =>
+        value.clamp(position.minScrollExtent, position.maxScrollExtent);
+    // The quick turn; the pinned search card covers the list's top.
+    await position.animateTo(
+        clamped(sliver.constraints.precedingScrollExtent +
+            between(0, index) -
+            PinnedSearchHeader.extent),
+        duration: const Duration(milliseconds: 350),
+        curve: Curves.easeInOutCubic);
+    for (var attempt = 0; attempt < 8; attempt++) {
+      await WidgetsBinding.instance.endOfFrame;
+      if (!mounted || _dayAnchors.isEmpty) return;
+      final nearest = _dayAnchors.keys
+          .reduce((a, b) => (a - index).abs() <= (b - index).abs() ? a : b);
+      final anchor = _dayAnchors[nearest]!.findRenderObject();
+      if (anchor == null || !anchor.attached) return;
+      // Clear of the pinned card already: the viewport accounts for it.
+      final shown =
+          RenderAbstractViewport.of(anchor).getOffsetToReveal(anchor, 0).offset;
+      final target = clamped(nearest <= index
+          ? shown + between(nearest, index)
+          : shown - between(index, nearest));
+      if (nearest == index) {
+        if ((target - position.pixels).abs() > 1) {
+          await position.animateTo(target,
+              duration: const Duration(milliseconds: 150),
+              curve: Curves.easeOut);
+        }
+        return;
+      }
+      position.jumpTo(target);
+    }
+  }
+
   void _open(Entry entry, bool split) {
     if (split) {
       setState(() => _selectedId = entry.id);
@@ -262,105 +337,196 @@ class _JournalPageState extends State<JournalPage>
       _ => null,
     };
 
+    _groups = groups;
+
     Widget dayGroup(BuildContext context, int index, bool split) {
       final (day, dayEntries) = groups[index];
-      return EntryDayGroup(day: day, metrics: metrics, rows: [
-        for (final entry in dayEntries)
-          JournalEntryRow(
-            entry: entry,
-            images: images.getForEntry(entry),
-            hideImage: hideImages,
-            selected: split && entry.id == _selectedId,
-            onTap: () => _open(entry, split),
-          ),
-      ]);
+      return _DayAnchor(
+        index: index,
+        anchors: _dayAnchors,
+        child: EntryDayGroup(day: day, metrics: metrics, rows: [
+          for (final entry in dayEntries)
+            JournalEntryRow(
+              entry: entry,
+              images: images.getForEntry(entry),
+              hideImage: hideImages,
+              selected: split && entry.id == _selectedId,
+              onTap: () => _open(entry, split),
+            ),
+        ]),
+      );
     }
 
     return ListDetailLayout(
       detail: _detail(ordered),
-      listBuilder: (context, split) => ScrollToTop(
-          top: PinnedSearchHeader.extent,
-          child: CustomScrollView(
-            key: const PageStorageKey('journal-list'),
-            // Thumb jumps replace the whole viewport. Building extra offscreen
-            // rows at each jump spends the frame budget on content never shown.
-            scrollCacheExtent:
-                metrics == null ? null : const ScrollCacheExtent.pixels(0),
-            slivers: [
-              const PinnedSearchHeader(),
-              SliverPadding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                sliver: SliverToBoxAdapter(
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Wrap(spacing: 8, children: [
-                          ActionChip(
-                              avatar: const Icon(Icons.photo_library_outlined),
-                              label: Text(l10n.momentsTitle),
-                              onPressed: () => openPlace(context, 'moments')),
-                        ]),
-                        SectionLabel(l10n.journalStories),
-                        _Stories(
-                            flashbacks: FlashbackManager.getFlashbacks(
-                                context, EntriesProvider.instance.entries)),
-                        const SizedBox(height: 12),
-                        SectionLabel(l10n.journalEntries,
-                            trailing: PopupMenuButton<String>(
-                              key: const ValueKey('journal-sort'),
-                              tooltip: l10n.journalSortTitle,
-                              icon: Icon(switch (_sort) {
-                                'oldest' => Icons.arrow_upward_rounded,
-                                'updated' => Icons.update_rounded,
-                                _ => Icons.arrow_downward_rounded,
-                              }),
-                              initialValue: _sort,
-                              onSelected: (value) =>
-                                  changeSetting(Settings.journalSort, value),
-                              itemBuilder: (context) => [
-                                for (final (value, label) in [
-                                  ('newest', l10n.sortOrderDescendingTitle),
-                                  ('oldest', l10n.sortOrderAscendingTitle),
-                                  ('updated', l10n.journalSortUpdated),
-                                ])
-                                  PopupMenuItem(
-                                      key: ValueKey('journal-sort-$value'),
-                                      value: value,
-                                      child: Text(label)),
-                              ],
-                            )),
-                      ]),
-                ),
-              ),
-              if (groups.isEmpty)
-                SliverToBoxAdapter(
-                  child: EmptyState(
-                      icon: Icons.bookmark_border_rounded,
-                      title: l10n.noLogs,
-                      hint: l10n.journalEmptyHint),
-                )
-              else
+      listBuilder: (context, split) => Stack(children: [
+        ScrollToTop(
+            top: PinnedSearchHeader.extent,
+            child: CustomScrollView(
+              key: const PageStorageKey('journal-list'),
+              // Thumb jumps replace the whole viewport. Building extra offscreen
+              // rows at each jump spends the frame budget on content never shown.
+              scrollCacheExtent:
+                  metrics == null ? null : const ScrollCacheExtent.pixels(0),
+              slivers: [
+                PinnedSearchHeader(onCalendar: _toggleCalendar),
                 SliverPadding(
-                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 96),
-                  sliver: metrics == null
-                      ? SliverList.builder(
-                          itemCount: groups.length,
-                          itemBuilder: (context, index) =>
-                              dayGroup(context, index, split),
-                        )
-                      : KnownExtentSliver(
-                          extents: [
-                            for (final group in groups)
-                              metrics.groupExtent(group.$2.length)
-                          ],
-                          itemBuilder: (context, index) =>
-                              dayGroup(context, index, split),
-                        ),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  sliver: SliverToBoxAdapter(
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Wrap(spacing: 8, children: [
+                            ActionChip(
+                                avatar:
+                                    const Icon(Icons.photo_library_outlined),
+                                label: Text(l10n.momentsTitle),
+                                onPressed: () => openPlace(context, 'moments')),
+                          ]),
+                          SectionLabel(l10n.journalStories),
+                          _Stories(
+                              flashbacks: FlashbackManager.getFlashbacks(
+                                  context, EntriesProvider.instance.entries)),
+                          const SizedBox(height: 12),
+                          SectionLabel(l10n.journalEntries,
+                              trailing: PopupMenuButton<String>(
+                                key: const ValueKey('journal-sort'),
+                                tooltip: l10n.journalSortTitle,
+                                icon: Icon(switch (_sort) {
+                                  'oldest' => Icons.arrow_upward_rounded,
+                                  'updated' => Icons.update_rounded,
+                                  _ => Icons.arrow_downward_rounded,
+                                }),
+                                initialValue: _sort,
+                                onSelected: (value) =>
+                                    changeSetting(Settings.journalSort, value),
+                                itemBuilder: (context) => [
+                                  for (final (value, label) in [
+                                    ('newest', l10n.sortOrderDescendingTitle),
+                                    ('oldest', l10n.sortOrderAscendingTitle),
+                                    ('updated', l10n.journalSortUpdated),
+                                  ])
+                                    PopupMenuItem(
+                                        key: ValueKey('journal-sort-$value'),
+                                        value: value,
+                                        child: Text(label)),
+                                ],
+                              )),
+                        ]),
+                  ),
                 ),
-            ],
-          )),
+                if (groups.isEmpty)
+                  SliverToBoxAdapter(
+                    child: EmptyState(
+                        icon: Icons.bookmark_border_rounded,
+                        title: l10n.noLogs,
+                        hint: l10n.journalEmptyHint),
+                  )
+                else
+                  SliverPadding(
+                    key: _entriesKey,
+                    padding: const EdgeInsets.fromLTRB(16, 0, 16, 96),
+                    sliver: metrics == null
+                        ? SliverList.builder(
+                            itemCount: groups.length,
+                            itemBuilder: (context, index) =>
+                                dayGroup(context, index, split),
+                          )
+                        : KnownExtentSliver(
+                            extents: [
+                              for (final group in groups)
+                                metrics.groupExtent(group.$2.length)
+                            ],
+                            itemBuilder: (context, index) =>
+                                dayGroup(context, index, split),
+                          ),
+                  ),
+              ],
+            )),
+        // The calendar unfolds over the list, below the search card it came
+        // from; a tap beside it folds it again.
+        if (_calendarOpen) Positioned.fill(child: _calendarPanel(context)),
+      ]),
     );
   }
+
+  Widget _calendarPanel(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    return Stack(children: [
+      Positioned.fill(
+        top: PinnedSearchHeader.extent,
+        child: GestureDetector(
+          key: const ValueKey('journal-calendar-scrim'),
+          onTap: _toggleCalendar,
+          child: ColoredBox(color: cs.scrim.withValues(alpha: .08)),
+        ),
+      ),
+      Positioned(
+        top: PinnedSearchHeader.extent,
+        left: 16,
+        right: 16,
+        child: LayoutBuilder(builder: (context, _) {
+          final height = MediaQuery.sizeOf(context).height;
+          return Material(
+            key: const ValueKey('journal-calendar-panel'),
+            color: cs.surfaceContainerLowest,
+            elevation: 3,
+            borderRadius: BorderRadius.circular(16),
+            clipBehavior: Clip.antiAlias,
+            child: SizedBox(
+              height: (height * .55).clamp(280, 440),
+              child: MonthCalendar(
+                todayButtonBottom: 12,
+                onDayTap: (_, day) => _turnTo(day),
+              ),
+            ),
+          );
+        }),
+      ),
+    ]);
+  }
+}
+
+/// Keeps [anchors] listing the built day groups by index, so a jump can
+/// measure from whichever is nearest its day.
+class _DayAnchor extends StatefulWidget {
+  const _DayAnchor(
+      {required this.index, required this.anchors, required this.child});
+
+  final int index;
+  final Map<int, BuildContext> anchors;
+  final Widget child;
+
+  @override
+  State<_DayAnchor> createState() => _DayAnchorState();
+}
+
+class _DayAnchorState extends State<_DayAnchor> {
+  @override
+  void initState() {
+    super.initState();
+    widget.anchors[widget.index] = context;
+  }
+
+  @override
+  void didUpdateWidget(_DayAnchor oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _forget(oldWidget.index);
+    widget.anchors[widget.index] = context;
+  }
+
+  @override
+  void dispose() {
+    _forget(widget.index);
+    super.dispose();
+  }
+
+  void _forget(int index) {
+    if (widget.anchors[index] == context) widget.anchors.remove(index);
+  }
+
+  @override
+  Widget build(BuildContext context) => widget.child;
 }
 
 class _Stories extends StatelessWidget {

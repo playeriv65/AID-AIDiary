@@ -20,6 +20,14 @@ void main() {
     await tester.pumpAndSettle();
   }
 
+  /// The calendar page itself; the journal's button unfolds one in place.
+  Future<void> openCalendarPage(WidgetTester tester) async {
+    final navigation =
+        AppActions.instance.run('ui.navigate', {'to': 'calendar'});
+    await tester.pumpAndSettle();
+    await navigation;
+  }
+
   testWidgets('calendar, settings and navigation survive every layout',
       (tester) async {
     DiaryAppHarness.size(tester, const Size(1440, 900));
@@ -27,7 +35,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byKey(const ValueKey('list-detail-split')), findsOneWidget);
     expect(find.byKey(const ValueKey('detail-empty')), findsOneWidget);
-    await tapKey(tester, 'journal-calendar');
+    await openCalendarPage(tester);
     expect(AppActions.instance.screen!.current, 'calendar');
     final calendarState = tester.state(find.byType(MonthCalendar));
     for (final dimensions in [
@@ -68,7 +76,7 @@ void main() {
     DiaryAppHarness.size(tester, const Size(1440, 900));
     await tester.pumpWidget(harness.app(const MobileScaffold()));
     await tester.pumpAndSettle();
-    await tapKey(tester, 'journal-calendar');
+    await openCalendarPage(tester);
     await tapKey(tester, 'diary-day-write');
     final editable = DiaryAppHarness.entryBody;
     await tester.enterText(editable, '横屏草稿不会丢失');

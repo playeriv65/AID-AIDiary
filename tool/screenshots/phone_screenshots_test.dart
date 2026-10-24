@@ -64,7 +64,7 @@ void main() {
     await back(tester);
     await session.tapKey(tester, 'journal-calendar');
     await session.capture(tester, 'phone-calendar');
-    await back(tester);
+    await session.tapKey(tester, 'journal-calendar');
     for (final (index, name) in [
       (1, 'media'),
       (3, 'coach'),

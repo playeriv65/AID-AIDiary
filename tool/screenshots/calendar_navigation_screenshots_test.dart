@@ -24,8 +24,7 @@ void main() {
       await session.capture(tester, '$name-$home');
       await session.tapKey(tester, 'journal-calendar');
       await session.capture(tester, '$name-calendar');
-      await tester.tap(find.byType(BackButton).hitTestable());
-      await tester.pumpAndSettle();
+      await session.tapKey(tester, 'journal-calendar');
       await DiaryAppHarness.goTo(tester, 1);
       await session.capture(tester, '$name-media');
     }
