@@ -17,12 +17,3 @@ Future<bool> hasHiddenEntries(DatabaseExecutor db) async {
           limit: 1))
       .isNotEmpty;
 }
-
-/// Older sync clients ignore unfamiliar fields, so cannot safely hide a row.
-Future<void> requireHiddenCompatibleSync(DatabaseExecutor db) async {
-  if (await hasHiddenEntries(db)) {
-    throw UnsupportedError('Hidden entries are local only. Sync is paused '
-        'because older devices cannot preserve their privacy. Encrypted '
-        'backups retain them; existing copies on other devices are unchanged.');
-  }
-}

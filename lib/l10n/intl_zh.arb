@@ -840,7 +840,6 @@
   "hiddenDiaryEmpty": "没有隐藏的日记",
   "hiddenDiaryUnlock": "解锁隐藏日记",
   "hiddenDiaryAuthHint": "请使用应用锁或设备屏幕锁解锁。",
-  "hiddenDiaryLocalOnly": "隐藏日记仅保存在本机，同步会暂停。请使用加密备份；其他设备上已有的副本不会改变。",
   "moodClear": "清空心情",
   "scrollToTop": "回到顶部",
   "feedbackTitle": "意见反馈",

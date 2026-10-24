@@ -2762,10 +2762,6 @@ class AppLocalizationsFi extends AppLocalizations {
       'Käytä sovelluksen lukitusta tai laitteen näytön lukitusta.';
 
   @override
-  String get hiddenDiaryLocalOnly =>
-      'Piilotetut merkinnät pysyvät tällä laitteella ja synkronointi keskeytyy. Käytä salattuja varmuuskopioita. Muualla olevat kopiot eivät muutu.';
-
-  @override
   String get moodClear => 'Poista mieliala';
 
   @override

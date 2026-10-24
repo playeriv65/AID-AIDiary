@@ -2763,10 +2763,6 @@ class AppLocalizationsId extends AppLocalizations {
       'Gunakan kunci aplikasi atau kunci layar perangkat Anda.';
 
   @override
-  String get hiddenDiaryLocalOnly =>
-      'Catatan tersembunyi tetap di perangkat ini dan sinkronisasi dijeda. Gunakan cadangan terenkripsi. Salinan yang sudah ada di tempat lain tidak berubah.';
-
-  @override
   String get moodClear => 'Hapus suasana hati';
 
   @override

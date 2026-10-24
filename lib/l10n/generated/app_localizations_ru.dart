@@ -2787,10 +2787,6 @@ class AppLocalizationsRu extends AppLocalizations {
       'Используйте блокировку приложения или экрана устройства.';
 
   @override
-  String get hiddenDiaryLocalOnly =>
-      'Скрытые записи остаются на этом устройстве; синхронизация приостанавливается. Используйте зашифрованные резервные копии. Существующие копии в других местах не меняются.';
-
-  @override
   String get moodClear => 'Очистить настроение';
 
   @override

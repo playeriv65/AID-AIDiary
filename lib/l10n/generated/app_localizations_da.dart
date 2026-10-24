@@ -2749,10 +2749,6 @@ class AppLocalizationsDa extends AppLocalizations {
   String get hiddenDiaryAuthHint => 'Brug appens lås eller enhedens skærmlås.';
 
   @override
-  String get hiddenDiaryLocalOnly =>
-      'Skjulte indlæg bliver på denne enhed, og synkronisering sættes på pause. Brug krypterede sikkerhedskopier. Eksisterende kopier andre steder ændres ikke.';
-
-  @override
   String get moodClear => 'Ryd humør';
 
   @override

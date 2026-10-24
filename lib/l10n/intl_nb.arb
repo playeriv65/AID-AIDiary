@@ -809,7 +809,6 @@
   "hiddenDiaryEmpty": "Ingen skjulte innlegg",
   "hiddenDiaryUnlock": "Lås opp skjulte innlegg",
   "hiddenDiaryAuthHint": "Bruk applåsen eller enhetens skjermlås.",
-  "hiddenDiaryLocalOnly": "Skjulte innlegg blir på denne enheten, og synkronisering settes på pause. Bruk krypterte sikkerhetskopier. Eksisterende kopier andre steder endres ikke.",
   "moodClear": "Fjern humør",
   "scrollToTop": "Til toppen",
   "feedbackTitle": "Tilbakemelding",

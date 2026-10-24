@@ -2748,10 +2748,6 @@ class AppLocalizationsFa extends AppLocalizations {
       'از قفل برنامه یا قفل صفحهٔ دستگاه استفاده کنید.';
 
   @override
-  String get hiddenDiaryLocalOnly =>
-      'یادداشت‌های پنهان در این دستگاه می‌مانند و همگام‌سازی متوقف می‌شود. از پشتیبان رمزگذاری‌شده استفاده کنید. نسخه‌های موجود در دستگاه‌های دیگر تغییر نمی‌کنند.';
-
-  @override
   String get moodClear => 'پاک کردن حال‌وهوا';
 
   @override

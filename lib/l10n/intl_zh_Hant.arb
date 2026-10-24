@@ -840,7 +840,6 @@
   "hiddenDiaryEmpty": "沒有隱藏的日記",
   "hiddenDiaryUnlock": "解鎖隱藏日記",
   "hiddenDiaryAuthHint": "請使用應用程式鎖或裝置螢幕鎖解鎖。",
-  "hiddenDiaryLocalOnly": "隱藏日記僅儲存在本機，同步會暫停。請使用加密備份；其他裝置上已有的副本不會改變。",
   "moodClear": "清除心情",
   "scrollToTop": "回到頂部",
   "feedbackTitle": "意見回饋",

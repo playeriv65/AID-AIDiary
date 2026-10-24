@@ -809,7 +809,6 @@
   "hiddenDiaryEmpty": "Žádné skryté zápisy",
   "hiddenDiaryUnlock": "Odemknout skryté zápisy",
   "hiddenDiaryAuthHint": "Použijte zámek aplikace nebo obrazovky zařízení.",
-  "hiddenDiaryLocalOnly": "Skryté zápisy zůstávají na tomto zařízení a synchronizace se pozastaví. Používejte šifrované zálohy. Existující kopie jinde se nemění.",
   "moodClear": "Vymazat náladu",
   "scrollToTop": "Zpět nahoru",
   "feedbackTitle": "Zpětná vazba",

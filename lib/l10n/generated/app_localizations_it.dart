@@ -2781,10 +2781,6 @@ class AppLocalizationsIt extends AppLocalizations {
       'Usa il blocco dell’app o dello schermo del dispositivo.';
 
   @override
-  String get hiddenDiaryLocalOnly =>
-      'Le voci nascoste restano su questo dispositivo e sospendono la sincronizzazione. Usa backup crittografati. Le copie esistenti altrove restano invariate.';
-
-  @override
   String get moodClear => 'Rimuovi umore';
 
   @override

@@ -809,7 +809,6 @@
   "hiddenDiaryEmpty": "Inga dolda inlägg",
   "hiddenDiaryUnlock": "Lås upp dolda inlägg",
   "hiddenDiaryAuthHint": "Använd appens lås eller enhetens skärmlås.",
-  "hiddenDiaryLocalOnly": "Dolda inlägg stannar på denna enhet och synkroniseringen pausas. Använd krypterade säkerhetskopior. Befintliga kopior på andra platser ändras inte.",
   "moodClear": "Rensa humör",
   "scrollToTop": "Till toppen",
   "feedbackTitle": "Återkoppling",

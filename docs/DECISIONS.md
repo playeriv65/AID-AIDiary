@@ -28,8 +28,9 @@ asks again. Dates are when it was settled. Ideas not built yet are in
   statistics, widgets, ordinary exports and CLI content. Reading or revealing
   them requires local authentication in Settings > Security; backgrounding
   removes the protected content again. Full encrypted backups preserve them.
-  Cross-device compatibility is an implementation limitation, documented in
-  [Architecture](ARCHITECTURE.md#hidden-entries), not a completed sync feature.
+  Hiding is only an interface matter: hidden entries sync like any other and
+  stay hidden on every device (2026-10-23, owner). See
+  [Architecture](ARCHITECTURE.md#hidden-entries).
 
 - Personal migration (2026-10-22): prioritize a usable local installation,
   diary text and correct diary days/timezones. Defer additional local-encryption

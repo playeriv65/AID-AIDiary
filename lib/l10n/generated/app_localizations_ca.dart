@@ -2777,10 +2777,6 @@ class AppLocalizationsCa extends AppLocalizations {
       'Utilitza el bloqueig de l’aplicació o de la pantalla del dispositiu.';
 
   @override
-  String get hiddenDiaryLocalOnly =>
-      'Les entrades ocultes es queden en aquest dispositiu i aturen la sincronització. Utilitza còpies de seguretat xifrades. Les còpies existents en altres llocs no canvien.';
-
-  @override
   String get moodClear => 'Esborra l’estat d’ànim';
 
   @override

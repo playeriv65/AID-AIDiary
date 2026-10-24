@@ -2718,10 +2718,6 @@ class AppLocalizationsMs extends AppLocalizations {
       'Gunakan kunci aplikasi atau kunci skrin peranti anda.';
 
   @override
-  String get hiddenDiaryLocalOnly =>
-      'Catatan tersembunyi kekal pada peranti ini dan penyegerakan dijeda. Gunakan sandaran disulitkan. Salinan sedia ada di tempat lain tidak berubah.';
-
-  @override
   String get moodClear => 'Kosongkan perasaan';
 
   @override

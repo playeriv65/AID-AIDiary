@@ -32,16 +32,17 @@ class AgentApiSwitch {
       AppActions.instance.devBuild ||
       ConfigProvider.instance.get(Settings.agentApi);
 
-  /// Where the CLI finds the port and token: the app's own folder on
-  /// Android, where `adb run-as` reads it, and `~/.aid` on computers, or
-  /// the scratch folder of a tool run (`AID_API_INFO` points `aid` there).
+  /// Where the CLI finds the port and token: the app's external files
+  /// folder on Android, which adb reads for release builds too and other
+  /// apps cannot (Android 11 and later), and `~/.aid` on computers, or the
+  /// scratch folder of a tool run (`AID_API_INFO` points `aid` there).
   static Future<File> infoFile() async {
     if (scratchFolder case final folder?) {
       return File(p.join(folder, _infoName));
     }
     if (Platform.isAndroid) {
       return File(
-          p.join((await getApplicationSupportDirectory()).path, _infoName));
+          p.join((await getExternalStorageDirectory())!.path, _infoName));
     }
     final home = Platform.environment['USERPROFILE'] ??
         Platform.environment['HOME'] ??
@@ -67,7 +68,7 @@ class AgentApiSwitch {
 /// The app's actions over HTTP on this device only, for the `aid` CLI and
 /// other local agents. Each start makes a new token; the port and the token
 /// go into [infoFile], which only this user (and, on Android, only this
-/// app) can read.
+/// app and adb) can read.
 ///
 ///     GET  /v1/actions   every action, with its arguments
 ///     GET  /v1/guide     how an agent uses the app, as Markdown

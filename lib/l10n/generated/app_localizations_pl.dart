@@ -2782,10 +2782,6 @@ class AppLocalizationsPl extends AppLocalizations {
       'Użyj blokady aplikacji lub ekranu urządzenia.';
 
   @override
-  String get hiddenDiaryLocalOnly =>
-      'Ukryte wpisy pozostają na tym urządzeniu i wstrzymują synchronizację. Używaj szyfrowanych kopii zapasowych. Istniejące kopie w innych miejscach pozostają bez zmian.';
-
-  @override
   String get moodClear => 'Wyczyść nastrój';
 
   @override

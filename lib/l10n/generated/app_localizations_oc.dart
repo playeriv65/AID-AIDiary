@@ -2781,10 +2781,6 @@ class AppLocalizationsOc extends AppLocalizations {
       'Utilizatz lo verrolhatge de l’aplicacion o de l’ecran de l’aparelh.';
 
   @override
-  String get hiddenDiaryLocalOnly =>
-      'Las entradas amagadas demòran sus aqueste aparelh e la sincronizacion es en pausa. Utilizatz de salvagardas chifradas. Las còpias existentas endacòm mai càmbian pas.';
-
-  @override
   String get moodClear => 'Escafar l’umor';
 
   @override

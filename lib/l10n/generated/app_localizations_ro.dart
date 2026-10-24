@@ -2786,10 +2786,6 @@ class AppLocalizationsRo extends AppLocalizations {
       'Folosește blocarea aplicației sau a ecranului dispozitivului.';
 
   @override
-  String get hiddenDiaryLocalOnly =>
-      'Însemnările ascunse rămân pe acest dispozitiv și suspendă sincronizarea. Folosește copii de siguranță criptate. Copiile existente în alte locuri nu se modifică.';
-
-  @override
   String get moodClear => 'Șterge dispoziția';
 
   @override

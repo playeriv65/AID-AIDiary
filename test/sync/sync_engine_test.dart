@@ -57,6 +57,25 @@ void main() {
     expect((await laptop.sync(cloud)).sent, 0);
   });
 
+  test('a hidden entry arrives hidden, and showing it again travels too',
+      () async {
+    await phone.write('private walk');
+    await phone.db.update(entriesTable, {EntryFields.isHidden: 1});
+    await phone.sync(cloud);
+    await laptop.sync(cloud);
+
+    Future<Object?> hidden(Device device) async =>
+        (await device.db.query(entriesTable)).single[EntryFields.isHidden];
+    expect(await laptop.texts(), ['private walk']);
+    expect(await hidden(laptop), 1);
+
+    await later();
+    await laptop.db.update(entriesTable, {EntryFields.isHidden: 0});
+    await laptop.sync(cloud);
+    await phone.sync(cloud);
+    expect(await hidden(phone), 0);
+  });
+
   test('edits and deletions travel both ways', () async {
     await phone.write('draft');
     await phone.sync(cloud);

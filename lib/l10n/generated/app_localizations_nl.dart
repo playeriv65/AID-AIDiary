@@ -2772,10 +2772,6 @@ class AppLocalizationsNl extends AppLocalizations {
       'Gebruik de appvergrendeling of schermvergrendeling van je apparaat.';
 
   @override
-  String get hiddenDiaryLocalOnly =>
-      'Verborgen berichten blijven op dit apparaat en pauzeren de synchronisatie. Gebruik versleutelde back-ups. Bestaande kopieën elders blijven ongewijzigd.';
-
-  @override
   String get moodClear => 'Stemming wissen';
 
   @override

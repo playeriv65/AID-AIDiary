@@ -809,7 +809,6 @@
   "hiddenDiaryEmpty": "Nessuna voce nascosta",
   "hiddenDiaryUnlock": "Sblocca le voci nascoste",
   "hiddenDiaryAuthHint": "Usa il blocco dell’app o dello schermo del dispositivo.",
-  "hiddenDiaryLocalOnly": "Le voci nascoste restano su questo dispositivo e sospendono la sincronizzazione. Usa backup crittografati. Le copie esistenti altrove restano invariate.",
   "moodClear": "Rimuovi umore",
   "scrollToTop": "Torna in alto",
   "feedbackTitle": "Feedback",

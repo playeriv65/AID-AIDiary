@@ -72,8 +72,8 @@ Other open work remains in [TODO](../TODO.md), with these important boundaries:
 - Extreme Windows scrollbar traversal still misses its acceptance target.
   Ordinary wheel smoothing results do not establish universal full-rate
   scrolling. See [Refresh-rate evidence](REFRESH_RATE.md).
-- Hidden entries are local-only for now; read the
-  [hidden-entry restrictions](ARCHITECTURE.md#hidden-entries) before sync work.
+- Hidden entries sync like any other and stay hidden; see
+  [hidden entries](ARCHITECTURE.md#hidden-entries).
 - One Diary versions other than v3, nonempty source templates and uncertain
   source timezones remain explicit limitations in its import guide.
 

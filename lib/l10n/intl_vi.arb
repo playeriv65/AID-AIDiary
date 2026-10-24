@@ -809,7 +809,6 @@
   "hiddenDiaryEmpty": "Không có nhật ký ẩn",
   "hiddenDiaryUnlock": "Mở khóa nhật ký ẩn",
   "hiddenDiaryAuthHint": "Sử dụng khóa ứng dụng hoặc khóa màn hình thiết bị.",
-  "hiddenDiaryLocalOnly": "Nhật ký ẩn được giữ trên thiết bị này và quá trình đồng bộ tạm dừng. Hãy dùng bản sao lưu mã hóa. Các bản sao hiện có ở nơi khác không thay đổi.",
   "moodClear": "Xóa tâm trạng",
   "scrollToTop": "Về đầu trang",
   "feedbackTitle": "Góp ý",

@@ -2789,10 +2789,6 @@ class AppLocalizationsDe extends AppLocalizations {
       'Verwende die App-Sperre oder die Bildschirmsperre deines Geräts.';
 
   @override
-  String get hiddenDiaryLocalOnly =>
-      'Verborgene Einträge bleiben auf diesem Gerät und pausieren die Synchronisierung. Verwende verschlüsselte Sicherungen. Bestehende Kopien auf anderen Geräten bleiben unverändert.';
-
-  @override
   String get moodClear => 'Stimmung entfernen';
 
   @override

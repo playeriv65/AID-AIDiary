@@ -2690,10 +2690,6 @@ class AppLocalizationsKo extends AppLocalizations {
   String get hiddenDiaryAuthHint => '앱 잠금 또는 기기의 화면 잠금을 사용하세요.';
 
   @override
-  String get hiddenDiaryLocalOnly =>
-      '숨긴 일기는 이 기기에 보관되며 동기화가 일시 중지됩니다. 암호화된 백업을 사용하세요. 다른 곳에 있는 기존 사본은 변경되지 않습니다.';
-
-  @override
   String get moodClear => '기분 지우기';
 
   @override

@@ -104,18 +104,13 @@ class AidClient {
       if (!await file.exists()) return null;
       text = await file.readAsString();
     } else {
+      // The app's external files folder: adb can read it, other apps
+      // cannot, and it works for release builds that refuse run-as.
       final result = await _run(_adb, [
-        '-s', device!, 'exec-out', 'run-as', package, 'cat', //
-        'files/$_infoName',
+        '-s', device!, 'exec-out', 'cat', //
+        '/sdcard/Android/data/$package/files/$_infoName',
       ]);
       final out = '${result.stdout}';
-      final said = '$out${result.stderr}';
-      if (said.contains('not debuggable') || said.contains('unknown package')) {
-        throw AidException(
-          'run-as $package: ${said.trim()}. Over adb aid '
-          'reaches development builds only.',
-        );
-      }
       if (result.exitCode != 0 || !out.trimLeft().startsWith('{')) {
         return null;
       }
@@ -166,7 +161,8 @@ class AidClient {
         device == null
             ? 'AID Diary is not running on this computer. Start it, then try '
                   'again.'
-            : 'AID Diary ($package) is not answering on $device.',
+            : 'AID Diary ($package) is not answering on $device. A release '
+                  'build answers once Settings > Command line is on.',
       );
     }
     return _endpoint = endpoint;

@@ -109,9 +109,6 @@ class _HiddenEntriesPageState extends State<HiddenEntriesPage> {
                 : ListView(
                     padding: const EdgeInsets.all(16),
                     children: [
-                      Text(l10n.hiddenDiaryLocalOnly,
-                          style: Theme.of(context).textTheme.bodySmall),
-                      const SizedBox(height: 16),
                       if (entries.isEmpty) Text(l10n.hiddenDiaryEmpty),
                       for (final entry in entries)
                         ListTile(

@@ -809,7 +809,6 @@
   "hiddenDiaryEmpty": "Paslėptų įrašų nėra",
   "hiddenDiaryUnlock": "Atrakinti paslėptus įrašus",
   "hiddenDiaryAuthHint": "Naudokite programėlės arba įrenginio ekrano užraktą.",
-  "hiddenDiaryLocalOnly": "Paslėpti įrašai lieka šiame įrenginyje, o sinchronizavimas pristabdomas. Naudokite šifruotas atsargines kopijas. Kitur esančios kopijos nesikeičia.",
   "moodClear": "Išvalyti nuotaiką",
   "scrollToTop": "Į viršų",
   "feedbackTitle": "Atsiliepimas",

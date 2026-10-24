@@ -2690,10 +2690,6 @@ class AppLocalizationsJa extends AppLocalizations {
   String get hiddenDiaryAuthHint => 'アプリロックまたは端末の画面ロックで解除してください。';
 
   @override
-  String get hiddenDiaryLocalOnly =>
-      '非表示の日記はこの端末に保存され、同期は一時停止します。暗号化バックアップを使用してください。他の端末にある既存のコピーは変更されません。';
-
-  @override
   String get moodClear => '気分をクリア';
 
   @override

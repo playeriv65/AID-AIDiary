@@ -2750,10 +2750,6 @@ class AppLocalizationsCs extends AppLocalizations {
       'Použijte zámek aplikace nebo obrazovky zařízení.';
 
   @override
-  String get hiddenDiaryLocalOnly =>
-      'Skryté zápisy zůstávají na tomto zařízení a synchronizace se pozastaví. Používejte šifrované zálohy. Existující kopie jinde se nemění.';
-
-  @override
   String get moodClear => 'Vymazat náladu';
 
   @override

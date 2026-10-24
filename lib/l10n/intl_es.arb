@@ -810,7 +810,6 @@
   "hiddenDiaryEmpty": "No hay entradas ocultas",
   "hiddenDiaryUnlock": "Desbloquear entradas ocultas",
   "hiddenDiaryAuthHint": "Usa el bloqueo de la aplicación o de la pantalla del dispositivo.",
-  "hiddenDiaryLocalOnly": "Las entradas ocultas permanecen en este dispositivo y pausan la sincronización. Usa copias de seguridad cifradas. Las copias existentes en otros lugares no cambian.",
   "moodClear": "Borrar estado de ánimo",
   "scrollToTop": "Volver arriba",
   "feedbackTitle": "Comentarios",

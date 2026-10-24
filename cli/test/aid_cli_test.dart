@@ -154,7 +154,7 @@ void main() {
       ) async {
         calls.add(arguments);
         final stdout = switch (arguments) {
-          [_, _, 'exec-out', 'run-as', ...] => app.info(),
+          [_, _, 'exec-out', 'cat', _] => app.info(),
           [_, _, 'forward', 'tcp:0', _] => '${app.server.port}\n',
           _ => '',
         };
@@ -169,8 +169,8 @@ void main() {
 
       expect(code, 0);
       expect(calls.first, [
-        '-s', 'phone', 'exec-out', 'run-as', AidClient.defaultPackage, //
-        'cat', 'files/agent_api.json',
+        '-s', 'phone', 'exec-out', 'cat', //
+        '/sdcard/Android/data/${AidClient.defaultPackage}/files/agent_api.json',
       ]);
       expect(
         calls,
@@ -189,7 +189,7 @@ void main() {
     },
   );
 
-  test('a release build over adb is explained, not hung on', () async {
+  test('a release build without the command line on is explained', () async {
     Future<ProcessResult> adb(
       String executable,
       List<String> arguments,
@@ -197,7 +197,8 @@ void main() {
       0,
       1,
       '',
-      'run-as: package not debuggable: dev.aid.diary',
+      'cat: /sdcard/Android/data/dev.aid.diary/files/agent_api.json: '
+          'No such file or directory',
     );
 
     final (code, out) = await aid(
@@ -211,7 +212,7 @@ void main() {
     );
 
     expect(code, 2);
-    expect(jsonDecode(out)['error']['message'], contains('development builds'));
+    expect(jsonDecode(out)['error']['message'], contains('Command line'));
   });
 
   test('a malformed argument is a usage error', () async {

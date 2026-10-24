@@ -12,16 +12,11 @@ import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/database/app_database.dart';
 import 'package:aid_diary/database/entry_dao.dart';
 import 'package:aid_diary/database/entry_store.dart';
-import 'package:aid_diary/database/hidden_entry_policy.dart';
 import 'package:aid_diary/l10n/generated/app_localizations_en.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/providers/entries_provider.dart';
 import 'package:aid_diary/services/home_widget_service.dart';
-import 'package:aid_diary/storage/in_memory_file_store.dart';
 import 'package:aid_diary/storage/storage_picker.dart';
-import 'package:aid_diary/sync/sync_backend.dart';
-import 'package:aid_diary/sync/sync_engine.dart';
-import 'package:aid_diary/sync/sync_records.dart';
 import 'package:aid_diary/sync/sync_schema.dart';
 import 'package:aid_diary/utils/backup_restore_utils.dart';
 import 'package:aid_diary/utils/diary_day.dart';
@@ -32,7 +27,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 import '../support/diary_app_harness.dart';
-import '../support/sync_device.dart' show testLimits;
 
 void main() {
   final harness = DiaryAppHarness()..register();
@@ -112,29 +106,6 @@ void main() {
         imagesOf: (_) => [], tagsOf: (_) => []);
     expect(jsonDecode(json), hasLength(1));
     expect(json, isNot(contains('Private text')));
-  });
-
-  test('sync and direct record export fail before publishing private data',
-      () async {
-    final secret = await store.add(entry('Private text', hidden: true));
-    final backend = MemorySyncBackend();
-    final engine = SyncEngine(
-        db: harness.database,
-        backend: backend,
-        photos: FileStorePhotos(InMemoryFileStore()),
-        limits: testLimits);
-    await expectLater(engine.sync(), throwsUnsupportedError);
-    expect(backend.files, isEmpty);
-    final row = (await harness.database
-            .query(entriesTable, where: 'id = ?', whereArgs: [secret.id]))
-        .single;
-    await expectLater(
-        exportRecord(
-            harness.database, SyncKind.entry, row[syncIdColumn] as String, 1),
-        throwsUnsupportedError);
-    await store.delete(secret);
-    await expectLater(engine.sync(), throwsUnsupportedError);
-    expect(await hasHiddenEntries(harness.database), isTrue);
   });
 
   test('hidden entries cannot escape through an unencrypted full backup',

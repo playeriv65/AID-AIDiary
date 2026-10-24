@@ -2772,10 +2772,6 @@ class AppLocalizationsBg extends AppLocalizations {
       'Използвайте заключването на приложението или на екрана на устройството.';
 
   @override
-  String get hiddenDiaryLocalOnly =>
-      'Скритите записи остават на това устройство и синхронизирането спира. Използвайте шифровани резервни копия. Съществуващите копия другаде не се променят.';
-
-  @override
   String get moodClear => 'Изчистване на настроението';
 
   @override

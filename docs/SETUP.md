@@ -258,11 +258,13 @@ and check locale-specific plural forms. Run
 checks reject missing or empty translations and lost dynamic arguments.
 
 Use `aid guide` and shared app actions before manual taps when checking behavior.
-Build the CLI with `./scripts/dev.ps1 cli`; `build/cli/aid.exe` can reach the
-development Android flavor over adb with `aid -d <serial> app.status`. It reads
-the token through `run-as` and starts that flavor when necessary. Release builds
-serve the API only after Settings enables it. Keep tokens and API-info files
-private.
+Build the CLI with `./scripts/dev.ps1 cli`; `build/cli/aid.exe` can reach an
+Android app over adb with `aid -d <serial> app.status` (the development flavor
+by default, `--package dev.aid.diary` for the everyday app). It reads the
+token from `/sdcard/Android/data/<package>/files/agent_api.json`, which adb
+can read for release builds too, and starts the app when necessary. Release
+builds serve the API only after Settings > Command line enables it. Keep
+tokens and API-info files private.
 
 For local multi-device sync without a phone/cloud account, start the Go service
 from `server/` (`go run ./cmd/aid-sync adduser NAME`, then `serve`) and hidden

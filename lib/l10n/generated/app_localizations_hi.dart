@@ -2755,10 +2755,6 @@ class AppLocalizationsHi extends AppLocalizations {
       'ऐप लॉक या अपने डिवाइस के स्क्रीन लॉक का उपयोग करें।';
 
   @override
-  String get hiddenDiaryLocalOnly =>
-      'छिपी हुई प्रविष्टियाँ इस डिवाइस पर रहती हैं और सिंक रुक जाता है। एन्क्रिप्ट किए गए बैकअप उपयोग करें। अन्य जगह मौजूद प्रतियाँ नहीं बदलतीं।';
-
-  @override
   String get moodClear => 'मनःस्थिति हटाएँ';
 
   @override

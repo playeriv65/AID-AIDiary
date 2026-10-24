@@ -5022,12 +5022,6 @@ abstract class AppLocalizations {
   /// **'Use the app lock or your device\'s screen lock to unlock.'**
   String get hiddenDiaryAuthHint;
 
-  /// No description provided for @hiddenDiaryLocalOnly.
-  ///
-  /// In en, this message translates to:
-  /// **'Hidden entries stay on this device and pause sync. Use encrypted backups. Existing copies elsewhere are unchanged.'**
-  String get hiddenDiaryLocalOnly;
-
   /// No description provided for @moodClear.
   ///
   /// In en, this message translates to:

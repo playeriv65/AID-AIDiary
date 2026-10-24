@@ -2794,10 +2794,6 @@ class AppLocalizationsFr extends AppLocalizations {
       'Utilisez le verrouillage de l’application ou de l’écran de votre appareil.';
 
   @override
-  String get hiddenDiaryLocalOnly =>
-      'Les entrées masquées restent sur cet appareil et suspendent la synchronisation. Utilisez des sauvegardes chiffrées. Les copies existantes ailleurs restent inchangées.';
-
-  @override
   String get moodClear => 'Effacer l’humeur';
 
   @override

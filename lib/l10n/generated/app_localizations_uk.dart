@@ -2769,10 +2769,6 @@ class AppLocalizationsUk extends AppLocalizations {
       'Скористайтеся блокуванням застосунку або екрана пристрою.';
 
   @override
-  String get hiddenDiaryLocalOnly =>
-      'Приховані записи залишаються на цьому пристрої; синхронізація призупиняється. Використовуйте зашифровані резервні копії. Наявні копії в інших місцях не змінюються.';
-
-  @override
   String get moodClear => 'Очистити настрій';
 
   @override

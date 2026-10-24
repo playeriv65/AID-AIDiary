@@ -398,13 +398,12 @@ therefore require backup-password encryption while any hidden row exists,
 including Recently deleted. Hidden is an application visibility feature, not a
 claim that a plaintext SQLite file is independently encrypted.
 
-Compatibility limitation: older sync clients ignore unfamiliar columns and
-would expose a hidden row. Until there is a negotiated compatible protocol,
-sync and nearby diary transfer fail before publishing whenever hidden rows
-exist, including Recently deleted. No space format bump, reset, remote deletion
-or automatic unhide is performed. The hidden section explains local storage,
-paused sync and encrypted backups. Hiding cannot recall earlier copies or
-history already on another device; those copies remain unchanged.
+Sync and nearby diary transfer carry hidden entries like any other: the
+`is_hidden` column travels with the row, so another device keeps the entry
+hidden, and hiding or showing it again is an ordinary edit that syncs. Every
+synced device is end-to-end encrypted and runs this version; a client from
+before the column existed would show a hidden row, so all of the owner's
+devices are updated together.
 
 ## Internationalization
 

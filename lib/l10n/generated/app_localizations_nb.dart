@@ -2758,10 +2758,6 @@ class AppLocalizationsNb extends AppLocalizations {
   String get hiddenDiaryAuthHint => 'Bruk applåsen eller enhetens skjermlås.';
 
   @override
-  String get hiddenDiaryLocalOnly =>
-      'Skjulte innlegg blir på denne enheten, og synkronisering settes på pause. Bruk krypterte sikkerhetskopier. Eksisterende kopier andre steder endres ikke.';
-
-  @override
   String get moodClear => 'Fjern humør';
 
   @override

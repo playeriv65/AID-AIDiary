@@ -2786,10 +2786,6 @@ class AppLocalizationsLt extends AppLocalizations {
       'Naudokite programėlės arba įrenginio ekrano užraktą.';
 
   @override
-  String get hiddenDiaryLocalOnly =>
-      'Paslėpti įrašai lieka šiame įrenginyje, o sinchronizavimas pristabdomas. Naudokite šifruotas atsargines kopijas. Kitur esančios kopijos nesikeičia.';
-
-  @override
   String get moodClear => 'Išvalyti nuotaiką';
 
   @override

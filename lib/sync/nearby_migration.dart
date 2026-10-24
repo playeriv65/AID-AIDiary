@@ -15,7 +15,6 @@ import 'package:aid_diary/sync/sync_crypto.dart';
 import 'package:aid_diary/sync/sync_engine.dart';
 import 'package:aid_diary/sync/sync_records.dart';
 import 'package:aid_diary/sync/sync_schema.dart';
-import 'package:aid_diary/database/hidden_entry_policy.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:uuid/uuid.dart';
 
@@ -160,7 +159,6 @@ class NearbyMigrationSource implements SyncBackend {
 
       // A read transaction fixes all rows and references at one snapshot.
       await source.transaction((txn) async {
-        await requireHiddenCompatibleSync(txn);
         final versions = <String, int>{};
         for (final table in [syncItemsTable, syncChangesTable]) {
           final column = table == syncItemsTable ? 'modified' : 'changed_at';

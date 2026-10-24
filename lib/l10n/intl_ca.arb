@@ -809,7 +809,6 @@
   "hiddenDiaryEmpty": "No hi ha entrades ocultes",
   "hiddenDiaryUnlock": "Desbloca les entrades ocultes",
   "hiddenDiaryAuthHint": "Utilitza el bloqueig de l’aplicació o de la pantalla del dispositiu.",
-  "hiddenDiaryLocalOnly": "Les entrades ocultes es queden en aquest dispositiu i aturen la sincronització. Utilitza còpies de seguretat xifrades. Les còpies existents en altres llocs no canvien.",
   "moodClear": "Esborra l’estat d’ànim",
   "scrollToTop": "Torna a dalt",
   "feedbackTitle": "Comentaris",

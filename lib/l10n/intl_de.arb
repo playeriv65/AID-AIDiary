@@ -809,7 +809,6 @@
   "hiddenDiaryEmpty": "Keine verborgenen Einträge",
   "hiddenDiaryUnlock": "Verborgene Einträge entsperren",
   "hiddenDiaryAuthHint": "Verwende die App-Sperre oder die Bildschirmsperre deines Geräts.",
-  "hiddenDiaryLocalOnly": "Verborgene Einträge bleiben auf diesem Gerät und pausieren die Synchronisierung. Verwende verschlüsselte Sicherungen. Bestehende Kopien auf anderen Geräten bleiben unverändert.",
   "moodClear": "Stimmung entfernen",
   "scrollToTop": "Nach oben",
   "feedbackTitle": "Feedback",

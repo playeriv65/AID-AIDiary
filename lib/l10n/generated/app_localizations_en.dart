@@ -2740,10 +2740,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'Use the app lock or your device\'s screen lock to unlock.';
 
   @override
-  String get hiddenDiaryLocalOnly =>
-      'Hidden entries stay on this device and pause sync. Use encrypted backups. Existing copies elsewhere are unchanged.';
-
-  @override
   String get moodClear => 'Clear mood';
 
   @override
