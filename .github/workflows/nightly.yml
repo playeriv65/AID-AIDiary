@@ -1,0 +1,138 @@
+# Daily checks and installable packages. The repository is private, so the
+# run is daily (and on demand) rather than on every push, and a day without
+# commits is skipped. See docs/TESTING.md ("Continuous integration").
+name: Nightly
+
+on:
+  schedule:
+    - cron: "0 9 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: nightly
+  cancel-in-progress: true
+
+env:
+  FLUTTER_VERSION: "3.47.7"
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      run: ${{ steps.recent.outputs.run }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: recent
+        # Scheduled runs only build what changed in the last day.
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] ||
+             [ -n "$(git log --since='25 hours ago' -1 --format=%H)" ]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          fi
+
+  windows:
+    needs: changes
+    if: needs.changes.outputs.run == 'true'
+    runs-on: windows-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+      - run: flutter pub get
+      - run: flutter analyze
+      - run: flutter test -j 4 --exclude-tags live
+      - name: Command line
+        working-directory: cli
+        run: |
+          dart pub get
+          dart analyze
+          dart test
+          New-Item -ItemType Directory -Force ..\build\cli | Out-Null
+          dart compile exe bin/aid.dart -o ..\build\cli\aid.exe
+      - run: flutter build windows --release
+      - name: Package
+        run: |
+          Compress-Archive -Path build\windows\x64\runner\Release\* -DestinationPath aid-diary-windows.zip
+          Copy-Item build\cli\aid.exe aid-windows.exe
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows
+          path: |
+            aid-diary-windows.zip
+            aid-windows.exe
+          retention-days: 7
+
+  android:
+    needs: changes
+    if: needs.changes.outputs.run == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+      - run: flutter pub get
+      # No signing key here: both are signed with the debug key, which
+      # proves they package but cannot update an installed release.
+      - run: flutter build apk --release --flavor independent --target-platform android-arm64
+      - run: flutter build apk --release --flavor dev --target-platform android-arm64
+      - name: Package
+        run: |
+          cp build/app/outputs/flutter-apk/app-independent-release.apk aid-diary.apk
+          cp build/app/outputs/flutter-apk/app-dev-release.apk aid-diary-dev.apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android
+          path: |
+            aid-diary.apk
+            aid-diary-dev.apk
+          retention-days: 7
+
+  server:
+    needs: changes
+    if: needs.changes.outputs.run == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: server/go.mod
+      - working-directory: server
+        run: |
+          go vet ./...
+          go test ./...
+
+  release:
+    needs: [windows, android, server]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          merge-multiple: true
+      # One rolling prerelease, replaced each night.
+      - env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          gh release delete nightly --yes --cleanup-tag || true
+          gh release create nightly --prerelease --target "${{ github.sha }}" \
+            --title "Nightly $(date -u +%Y-%m-%d)" \
+            --notes "Built from ${{ github.sha }}. Debug-signed: for checking packages, not for updating an installed release." \
+            aid-diary.apk aid-diary-dev.apk aid-diary-windows.zip aid-windows.exe

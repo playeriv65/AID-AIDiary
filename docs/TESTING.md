@@ -246,6 +246,26 @@ Flutter workers and the workspace lock. Do not run layers repeatedly after a
 passing full suite unless later edits affect them; do not disable dependency
 validation just to make timings look shorter.
 
+## Continuous integration
+
+`.github/workflows/nightly.yml` runs once a day (09:00 UTC) and on demand
+(Actions > Nightly > Run workflow, or `gh workflow run nightly.yml`). A
+scheduled run with no commits in the last 25 hours does nothing. It runs, on
+GitHub's runners, what the full local regression runs:
+
+- Windows: `flutter analyze`, the offline suite (`--exclude-tags live`), the
+  CLI's analysis, tests and executable, and a Windows release bundle.
+- Android: release APKs of the everyday and development flavors.
+- Server: `go vet` and `go test`.
+
+When all pass, the rolling prerelease `nightly` is replaced with the APKs,
+the Windows ZIP and `aid.exe`. CI has no signing key: its packages are
+signed with the debug key, which proves they build but cannot update an
+installed release; install those from a local `scripts/dev.ps1` build. The
+repository is private, so Actions minutes are metered; that is why the run
+is daily rather than per push. iOS is not a target (removed with the other
+platforms), so CI does not build it.
+
 ## Research behind this policy
 
 The run matrix and daily cadence above are project decisions, not universal

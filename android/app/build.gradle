@@ -103,7 +103,10 @@ android {
             signingConfig = localKey
         }
         release {
-            signingConfig = signingConfigs.release
+            // Without the key (CI) a release still builds, with the debug
+            // key, to prove it packages; it cannot update a real install.
+            // scripts/dev.ps1 refuses to build without the key.
+            signingConfig = localKey
             vcsInfo.include = false
         }
     }

@@ -27,12 +27,12 @@ For entries whose diary day is not today, reading is the main way in:
   must not tint backgrounds or surfaces.
 
 ## Build automation (owner request 2026-10-23)
-- Daily CI (tests, analysis, Android and Windows packages) and a nightly
-  build on GitHub Actions. The repository is private today, so Actions
-  minutes are metered unless it becomes public; publishing it needs a
-  history review for personal data first. A nightly installable over the
-  owner's app needs the release key as a repository secret, or a separate
-  key for the development flavour.
+- Done (2026-10-24): daily CI and a debug-signed nightly prerelease
+  (`docs/TESTING.md`, "Continuous integration"). Open: the repository is
+  private, so minutes are metered unless it becomes public (publishing needs
+  a history review for personal data first); a nightly that installs over
+  the owner's app needs the release key as a repository secret, or a
+  separate key for the development flavour.
 - iOS builds would first need the iOS target restored (removed; the
   product targets Windows and Android).
 
