@@ -225,6 +225,36 @@ class AppConfig {
   /// The loopback port of the agent API the `aid` CLI talks to.
   int get agentApiPort => _section('agentApi')['port'] as int;
 
+  /// The in-app agent's model service (OpenAI-compatible) and model, until
+  /// the user picks others.
+  String get agentBaseUrl => _section('agent')['baseUrl'] as String;
+  String get agentModel => _section('agent')['model'] as String;
+
+  /// How many model turns one request may take.
+  int get agentMaxTurns => _section('agent')['maxTurns'] as int;
+
+  /// The most characters of one command's output the model sees.
+  int get agentOutputChars => _section('agent')['outputChars'] as int;
+
+  /// The most rows one `sql` query prints.
+  int get agentSqlRows => _section('agent')['sqlRows'] as int;
+
+  /// Agents on this computer that speak ACP, by name: how to start each,
+  /// with environment variables of their own (Codex needs the network for
+  /// `aid` to reach the app).
+  Map<String, ({String command, List<String> args, Map<String, String> env})>
+      get acpAgents => {
+            for (final MapEntry(:key, :value)
+                in (_section('agent')['acpAgents'] as Map<String, dynamic>)
+                    .entries)
+              key: (
+                command: value['command'] as String,
+                args: (value['args'] as List).cast<String>(),
+                env: (value['env'] as Map<String, dynamic>? ?? const {})
+                    .cast<String, String>(),
+              ),
+          };
+
   GoogleDriveConfig get googleDrive => GoogleDriveConfig._(
       (_section('sync')['googleDrive'] as Map).cast<String, dynamic>());
 

@@ -16,6 +16,7 @@ Development happens natively on Windows (no WSL). Versions in use on
 | JDK | 23.0.1 | The only JDK needed; `android/build.gradle` sets each module's Kotlin JVM target to its Java one, since many plugins leave it unset. |
 | Android SDK | platform android-37, build-tools 36.0.0 | `compileSdk` 37; min and target SDK come from Flutter. |
 | Visual Studio Build Tools | 2022 (17.14), Windows 10 SDK 10.0.26100 | For the Windows build. |
+| Rust | stable 1.99 via rustup, with targets `aarch64-linux-android`, `armv7-linux-androideabi` and `x86_64-linux-android` (a debug APK holds all three) | The agent's shell (`rust/`, bashkit). App builds compile it through cargokit; `dev.ps1` test targets run `cargo build --release` first, since host tests load that library. `RUSTUP_HOME`/`CARGO_HOME` come from `dev.env`; bindings regenerate with `flutter_rust_bridge_codegen generate` (2.13.0, `cargo install`). |
 | Go | 1.26.0 for `server/` | `server/go.mod` selects this toolchain; the installed 1.25.6 launcher selects it automatically with `GOTOOLCHAIN=auto`. |
 | Native WebRTC plugin | `flutter_webrtc` 1.6.2+hotfix.4 | Pinned Flutter dependency for Windows/Android ICE data channels; resolved by `dev.ps1 pub`. No TURN service is configured. |
 | uv (Python) | 0.11 | Only for `tool/icon/export_icon.py`. |
@@ -41,7 +42,16 @@ each commit. Native and live checks have separate environments and claims.
    disposable task worktrees before using `windows-stage`; keep test diary
    data elsewhere.
 3. `flutter config --android-sdk <ANDROID_HOME>`, so Flutter and Gradle use
-   the same SDK.
+   the same SDK. Point the tools' own folders off a small system drive with
+   user environment variables too, not only `dev.env`: the Dart plugin, other
+   checkouts and anything run outside `dev.ps1` read only those. On the
+   development PC: `PUB_CACHE`, `GRADLE_USER_HOME`, `ANDROID_USER_HOME`,
+   `ANDROID_AVD_HOME`, `RUSTUP_HOME` and `CARGO_HOME` (the same folders as
+   `dev.env`), plus `ANALYZER_STATE_LOCATION_OVERRIDE` (the Dart analyzer's
+   cache, gigabytes), `DART_DATA_HOME` (`dart install` bundles such as the
+   Dart MCP server) and `NUGET_PACKAGES` (Windows plugin builds). adb reads
+   no variable: its keys stay in `%USERPROFILE%\.android`, and moving them
+   means authorizing every device again.
 4. The signing key, for any Android build (next section).
 5. `./scripts/dev.ps1 pub` resolves dependencies for both the Flutter app and
    the separate `cli/` Dart package. Run it in every new checkout/worktree
@@ -392,6 +402,7 @@ initialized for the same workspace. Never clear the everyday package.
 | Release keystore | `D:\software\keys` on the development PC, read through `android/key.properties` | Owner only; never in git or chat |
 | Google Cloud project `aid-diary` | Drive API and the OAuth clients (Android release, Android beta, web, Windows desktop); client IDs in `assets/config/app_config.json` | Owner's Google account (`docs/GOOGLE_DRIVE.md`) |
 | AID sync server | `https://aid.playeriv65.com/dav/`; SSH alias `netlab_main`, installation `/srv/aid-sync`, Docker behind nginx TLS; server source `887dd27` and WebSocket headers deployed 2026-10-22 | Owner's server and domain `playeriv65.com`; maintain through native SSH and `server/deploy/`; accounts use `aid-sync adduser`; deployment and backup evidence in `docs/SYNC_NETWORK.md` |
+| Model service for the in-app agent | DeepSeek (`https://api.deepseek.com`, model `deepseek-flash`) by default; the owner's development key is a text file on the PC's desktop, set into a scratch app with `aid agent.configure apiKey=...` | Owner's account; never in git, chat or logs |
 | Map, place and weather services | OpenStreetMap tiles, Nominatim, Overpass, Open-Meteo; endpoints in `assets/config/app_config.json` | Public; follow their usage policies (low request rates, a real User-Agent) |
 | Upstream | Daily You by Demizo (GPL-3.0); baseline in `SOURCE.md` | Public |
 | UI and format references | Other diary apps (Journey, 一本日记, 榴莲日记, Moo日记, Memex and open-source ones): installers, decompiled output, screenshots and notes in `D:\program\diary-references\` (index in its README) | Owner's PC, outside the repository: reference only, never copied |

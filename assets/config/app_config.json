@@ -101,6 +101,30 @@
   "agentApi": {
     "port": 47819
   },
+  "agent": {
+    "baseUrl": "https://api.deepseek.com",
+    "model": "deepseek-flash",
+    "maxTurns": 30,
+    "outputChars": 16000,
+    "sqlRows": 500,
+    "acpAgents": {
+      "claude": {
+        "command": "npx",
+        "args": ["-y", "@agentclientprotocol/claude-agent-acp"]
+      },
+      "codex": {
+        "command": "npx",
+        "args": ["-y", "@agentclientprotocol/codex-acp"],
+        "env": {
+          "CODEX_CONFIG": "{\"sandbox_workspace_write\":{\"network_access\":true}}"
+        }
+      },
+      "gemini": {
+        "command": "gemini",
+        "args": ["--experimental-acp"]
+      }
+    }
+  },
   "sync": {
     "afterChangeSeconds": 15,
     "whileOpenMinutes": 10,

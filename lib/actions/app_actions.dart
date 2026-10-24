@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'package:aid_diary/actions/agent_actions.dart';
 import 'package:aid_diary/actions/app_action.dart';
 import 'package:aid_diary/actions/coach_actions.dart';
 import 'package:aid_diary/actions/data_actions.dart';
@@ -51,6 +52,7 @@ class AppActions {
     ...deviceSyncActions,
     ...screenActions,
     ...perfActions,
+    ...agentActions,
   ];
 
   final List<AppAction> _actions;

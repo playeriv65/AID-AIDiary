@@ -1,0 +1,24 @@
+[package]
+name = "aid_shell"
+version = "0.1.0"
+edition = "2021"
+publish = false
+license = "GPL-3.0-only"
+
+[lib]
+crate-type = ["cdylib", "staticlib"]
+
+[dependencies]
+flutter_rust_bridge = "=2.13.0"
+# Bash core with jq only: no Python, Git, SQLite, network or host files.
+bashkit = { version = "=0.19.0", default-features = false, features = ["jq", "tzdata"] }
+tokio = { version = "1", features = ["sync"] }
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(frb_expand)'] }
+
+[profile.release]
+opt-level = "z"
+lto = true
+codegen-units = 1
+strip = true

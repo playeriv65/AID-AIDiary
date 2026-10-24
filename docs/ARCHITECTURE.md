@@ -52,6 +52,7 @@ every existing module has already been refactored to match them.
 | Actions | `actions/` (`AppAction`s by area, the `AppActions` registry, the agent API) | The guide's commands and use cases, named so the CLI can call them |
 | Data | `database/` (`EntryStore` and DAOs over SQLite), `providers/` (stores for attachments, tags, templates), `storage/` (files, secret store, folder picker), `services/` (network and platform: place names, weather, home widget, coach schedule), `background/` (alarms and backup work that run without the UI), `sync/` (sync engine, encryption and backends) | Repositories (`EntryStore`, `providers/`) over services (DAOs, `storage/`, `services/`) |
 | Pure | `models/`, `stats/`, most of `utils/` (dates and diary days, previews, formats, imports) | Domain models and logic |
+| Agent | `agent/` (the in-app agent, its shell and ACP links; `agent/native/` is generated from `rust/`) | Services that actions run; they reach the diary only through actions and a read-only connection |
 | App | `main.dart` (start-up only), `config/` (`app_config.json` access), `l10n/` | Composition and configuration |
 
 Some modules still sit at the top of `lib/` (`config_provider.dart`,
@@ -277,6 +278,38 @@ Rules that keep it so:
   HTTP; `test/widgets/command_palette_test.dart` checks the palette offers
   every action; `test/routing/` opens the places through `ui.navigate` in
   a running app shell; `cli/test/` covers the CLI, adb included.
+
+## In-app agent
+
+Two ways an agent works on the diary, both run as actions (`agent.*`,
+`acp.*` in `actions/agent_actions.dart`), development builds only until
+authorization is designed (TODO.md, "In-app agent"):
+
+- **In the app** (`agent.ask`): `dart_agent_core` drives a model the user
+  chose (any OpenAI-compatible service; DeepSeek by default, from the
+  `agent` section of `app_config.json`; the key is a secret-store setting).
+  Its one tool is `bash`: a bashkit interpreter in Rust (`rust/`, bridged
+  by flutter_rust_bridge into `agent/native/`, compiled by cargokit in
+  `rust_builder/`). The shell has an in-memory file system, jq and the
+  usual text tools, and no processes, host files or network. Two commands
+  leave it, answered in Dart: `aid` (`agent/aid_command.dart`), the command
+  line's grammar run on `AppActions` in the app, without the `agent` and
+  `acp` areas; and `sql` (`agent/diary_sql.dart`), queries on a read-only
+  connection of its own (`query_only`, no `ATTACH`). `agent.shell` runs the
+  same shell without a model. Conversations and their shells live in memory
+  (`agent/agent_sessions.dart`).
+- **On a computer over ACP** (`acp.ask`): `acpd` starts an agent named in
+  `app_config.json` (Claude, Codex, Gemini through their ACP adapters) in an
+  `agent/` folder of the app's data whose `AGENTS.md`/`CLAUDE.md`/`GEMINI.md`
+  (`assets/agent/workspace.md`) tell it to use the `aid` command line;
+  `AID_API_INFO` points that `aid` at this app. No MCP server is offered:
+  the agent's own shell runs `aid`. Its permission requests take the first
+  allow-once option for now.
+
+Prompts are assets (`assets/agent/`). Tests: `test/agent/` covers the `aid`
+grammar, read-only SQL, the Rust shell (loading the library
+`cargo build --release` makes in `rust/target/`), the agent loop with a
+scripted model and ACP against an in-memory agent.
 
 ## Sync and keys
 

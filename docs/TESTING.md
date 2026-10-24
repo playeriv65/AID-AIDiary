@@ -252,7 +252,8 @@ Two workflows run on GitHub's runners:
 
 - `.github/workflows/ci.yml` checks every push to `main` on Linux:
   `flutter analyze`, the offline suite, the CLI's analysis and tests, and the
-  server's. It builds nothing. Documentation-only pushes skip it, and a
+  server's. It builds no app, only the agent shell's Rust library the suite
+  loads (`cargo build --release` in `rust/`, cached). Documentation-only pushes skip it, and a
   burst of pushes runs only for the latest.
 - `.github/workflows/nightly.yml` packages once a day (09:00 UTC) and on
   demand (Actions > Nightly > Run workflow, or `gh workflow run

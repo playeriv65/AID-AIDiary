@@ -93,6 +93,12 @@ dependencies:
   shared_preferences_platform_interface: ^2.4.2
   bonsoir: 7.1.5
   flutter_webrtc: 1.6.2+hotfix.4
+  dart_agent_core: ^2.1.8
+  acpd: ^1.0.0
+  acpd_io: ^1.0.0
+  aid_shell:
+    path: rust_builder
+  flutter_rust_bridge: 2.13.0
 dev_dependencies:
   flutter_driver:
     sdk: flutter
@@ -102,6 +108,8 @@ dev_dependencies:
   mustache_template: ^2.0.5
   icons_launcher: ^3.0.0
   yaml: ^3.1.3
+  acpd_test: ^1.0.0
+  dio: ^5.11.1
 flutter:
   generate: true
   uses-material-design: true
@@ -114,6 +122,7 @@ flutter:
     - assets/weather/
     - assets/config/app_config.json
     - assets/config/one_diary_v3.json
+    - assets/agent/
 
 icons_launcher:
   image_path: "assets/logo.png"

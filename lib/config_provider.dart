@@ -237,6 +237,17 @@ class Settings {
   // anyway.
   static const agentApi = Setting<bool>("agentApi", false);
 
+  // The in-app agent's model: an OpenAI-compatible service address and model
+  // name (empty: the defaults in app_config.json), and its key.
+  static const agentBaseUrl = Setting<String>("agentBaseUrl", "");
+  static const agentModel = Setting<String>("agentModel", "");
+  static const agentApiKey =
+      Setting<String>("agentApiKey", "", secure: true, secretStore: true);
+
+  // The `aid` executable that agents started over ACP run; empty: `aid` on
+  // the PATH.
+  static const agentCliPath = Setting<String>("agentCliPath", "");
+
   static const List<Setting<Object?>> all = [
     darkTheme,
     localPhotoFolder,
@@ -336,6 +347,10 @@ class Settings {
     pendingDeviceApprovals,
     lastSync,
     agentApi,
+    agentBaseUrl,
+    agentModel,
+    agentApiKey,
+    agentCliPath,
   ];
 
   static const moodIcons = <int, Setting<String>>{

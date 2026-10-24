@@ -58,6 +58,7 @@ class AidClient {
     this.device,
     this.package = defaultPackage,
     this.launch = true,
+    this.info,
     RunProcess? run,
     http.Client? client,
     Map<String, String>? environment,
@@ -75,6 +76,10 @@ class AidClient {
 
   /// Start the app when it is not running.
   final bool launch;
+
+  /// The app's `agent_api.json`, for one with a data folder of its own:
+  /// before `AID_API_INFO` and the default under the home folder.
+  final String? info;
   final Duration waitForApp;
   final RunProcess _run;
   final http.Client _client;
@@ -97,7 +102,8 @@ class AidClient {
     final String text;
     if (device == null) {
       final file = File(
-        _environment['AID_API_INFO'] ??
+        info ??
+            _environment['AID_API_INFO'] ??
             '${_environment['USERPROFILE'] ?? _environment['HOME']}'
                 '${Platform.pathSeparator}.aid${Platform.pathSeparator}$_infoName',
       );
@@ -341,6 +347,12 @@ ArgParser buildParser() => ArgParser()
     defaultsTo: AidClient.defaultPackage,
     help: 'The Android package over adb',
   )
+  ..addOption(
+    'info',
+    help:
+        "The app's agent_api.json, for an app with its own data folder "
+        '(as AID_API_INFO)',
+  )
   ..addFlag(
     'yes',
     abbr: 'y',
@@ -381,6 +393,7 @@ Future<int> runAid(
         device: options.option('device'),
         package: options.option('package')!,
         launch: options.flag('launch'),
+        info: options.option('info'),
       );
   try {
     final command = rest.first;

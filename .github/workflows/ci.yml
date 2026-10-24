@@ -35,6 +35,11 @@ jobs:
       - working-directory: cli
         run: dart pub get
       - run: flutter analyze
+      # The agent's shell (rust/): its tests load the library cargo builds.
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: rust
+      - run: cargo build --release --manifest-path rust/Cargo.toml
       - run: flutter test -j 4 --exclude-tags live
       - name: Command line
         working-directory: cli

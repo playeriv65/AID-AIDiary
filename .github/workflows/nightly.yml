@@ -52,6 +52,8 @@ jobs:
       - working-directory: cli
         run: dart pub get
       - run: flutter analyze
+      # The agent's shell (rust/): its tests load the library cargo builds.
+      - run: cargo build --release --manifest-path rust/Cargo.toml
       - run: flutter test -j 4 --exclude-tags live
       - name: Command line
         working-directory: cli
@@ -99,6 +101,8 @@ jobs:
           channel: stable
           cache: true
       - run: flutter pub get
+      # cargokit compiles the agent's shell (rust/) for the APK's ABI.
+      - run: rustup target add aarch64-linux-android
       # No signing key here: both are signed with the debug key, which
       # proves they package but cannot update an installed release.
       - run: flutter build apk --release --flavor independent --target-platform android-arm64

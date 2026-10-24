@@ -31,6 +31,8 @@ migrate_working_dir/
 .pub-cache/
 .pub/
 /build/
+# Cargo's output for the agent's shell (rust/).
+/rust/target/
 
 # Symbolication related
 app.*.symbols
@@ -42,6 +44,8 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+# Reports from running Gradle directly.
+/android/build/
 
 # Appimage
 AppDir

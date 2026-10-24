@@ -33,7 +33,15 @@ Probably skip (Journey has them, but they need cloud or AI or add little): Googl
 - Goals and habits on top of trackers: target values, streaks, milestones (Daylio, Stoic).
 - Question grid entries, with a view of every answer to one question over time (Grid Diary / 格志).
 - Voice note transcription: on-device speech recognition, or the model the user configured for the agent.
-- In-app agent (decided 2026-10-24, docs/DECISIONS.md "What the app is"): candidate runtime `dart_agent_core` (MIT); the app's actions as its command line, read-only SQL, later a vector index (sqlite-vec, not the Elastic-licensed sqlite-vector); a foreground service for long runs on Android.
+- In-app agent (decided 2026-10-24, docs/DECISIONS.md "What the app is"). Built without a GUI, development builds only (`agent.*`, `acp.*` actions; docs/ARCHITECTURE.md "In-app agent"): `dart_agent_core` on a user-chosen OpenAI-compatible model (DeepSeek by default), working through a bashkit shell (`rust/`) whose `aid` and read-only `sql` reach the diary; agents on a computer over ACP (`acpd`). Open:
+  - Authorization, before release builds get these actions: ask the user before a destructive `aid` (today `--yes` inside the shell passes), show ACP permission requests to the user (today the first allow-once option is chosen), keep hidden diaries out of `sql` unless unlocked (today it reads every table), and decide what the model provider may receive.
+  - The chat window (one window for the in-app agent and ACP agents) and a settings page for the model and key.
+  - Android: the shell and `agent.ask` work in the dev app on the tablet (2026-10-24, debug build). Open: the release size per ABI, a foreground service for long runs, and bashkit's 1 MB output cap per command (it stops `sql` piped whole into jq; the model narrows with SQL instead).
+  - Claude over ACP needs the `claude` command line logged in on that computer (`claude` then `/login`); Codex works with its own login.
+  - cargokit's Gradle plugin is patched for AGP's `android-37.0` compile SDK (`rust_builder/cargokit/gradle/plugin.gradle`); drop the patch when cargokit fixes it upstream.
+  - Ship `aid` with the desktop app so ACP agents find it without `agent.configure cli=...`.
+  - Size: the shell library is 11.6 MB on Windows (bash core, jq, time zones, the Rust–Dart bridge); trim features if it matters.
+  - Later: a vector index (sqlite-vec, not the Elastic-licensed sqlite-vector) and a read-only `/diary` view of entries as files.
 
 ## Frame rate (state of 2026-10-21)
 The broader Android pass remains deferred by the owner from 2026-10-22.

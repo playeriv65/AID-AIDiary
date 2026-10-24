@@ -24,18 +24,27 @@ $tools = @{}
 foreach ($line in Get-Content $devEnv) {
   if ($line -match '^\s*([A-Z_]+)\s*=\s*(.*?)\s*$') { $tools[$Matches[1]] = $Matches[2] }
 }
-foreach ($required in 'FLUTTER_ROOT', 'PUB_CACHE', 'JAVA_HOME', 'ANDROID_HOME') {
+foreach ($required in 'FLUTTER_ROOT', 'PUB_CACHE', 'JAVA_HOME', 'ANDROID_HOME',
+    'RUSTUP_HOME', 'CARGO_HOME') {
   if (-not $tools[$required]) {
     Write-Error "scripts/dev.env does not set $required."
     exit 1
   }
 }
 foreach ($name in 'FLUTTER_ROOT', 'PUB_CACHE', 'JAVA_HOME', 'ANDROID_HOME',
-    'ANDROID_USER_HOME', 'ANDROID_AVD_HOME', 'GRADLE_USER_HOME') {
+    'RUSTUP_HOME', 'CARGO_HOME', 'ANDROID_USER_HOME', 'ANDROID_AVD_HOME',
+    'GRADLE_USER_HOME') {
   if ($tools[$name]) { Set-Item "env:$name" $tools[$name] }
 }
 $env:Path = (Join-Path $env:FLUTTER_ROOT 'bin') + ';' +
-  (Join-Path $env:ANDROID_HOME 'platform-tools') + ';' + $env:Path
+  (Join-Path $env:ANDROID_HOME 'platform-tools') + ';' +
+  (Join-Path $env:CARGO_HOME 'bin') + ';' + $env:Path
+# The agent's shell is Rust (rust/): app builds compile it through cargokit,
+# host tests load the library this builds.
+function Build-AgentShell {
+  cargo build --release --manifest-path rust/Cargo.toml
+  if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+}
 # Flutter leaves a temp folder per test or build run that is interrupted;
 # DEV_TEMP keeps them off a small system drive.
 if ($tools['DEV_TEMP']) {
@@ -184,12 +193,12 @@ switch ($Target) {
   }
   # Choose affected paths first, then a layer if useful (docs/TESTING.md).
   # Live services are always opt-in, even when credentials are in the shell.
-  'test' { flutter test -j 4 --exclude-tags live @TestFiles }
-  'test-all' { flutter test -j 4 --exclude-tags live }
+  'test' { Build-AgentShell; flutter test -j 4 --exclude-tags live @TestFiles }
+  'test-all' { Build-AgentShell; flutter test -j 4 --exclude-tags live }
   'test-unit' { flutter test -j 4 --exclude-tags 'widget,integration,live' @TestFiles }
   'test-widget' { flutter test -j 4 --tags widget --exclude-tags live @TestFiles }
-  'test-integration' { flutter test -j 4 --tags integration --exclude-tags live @TestFiles }
-  'test-live' { flutter test -j 4 --tags live @TestFiles }
+  'test-integration' { Build-AgentShell; flutter test -j 4 --tags integration --exclude-tags live @TestFiles }
+  'test-live' { Build-AgentShell; flutter test -j 4 --tags live @TestFiles }
   # The Go sync server under server/.
   'test-server' {
     Push-Location server

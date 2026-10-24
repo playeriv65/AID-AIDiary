@@ -125,6 +125,22 @@ void main() {
     );
   });
 
+  test('--info finds an app with its own data folder, before AID_API_INFO',
+      () async {
+    final info = File('${home.path}/scratch_api.json')
+      ..writeAsStringSync(app.info());
+    final (code, _) = await aid(
+      ['--info', info.path, 'entry.list'],
+      client: () => AidClient(
+        info: info.path,
+        environment: {'AID_API_INFO': '${home.path}/missing.json'},
+        launch: false,
+      ),
+    );
+    expect(code, 0);
+    expect(app.runs.single['action'], 'entry.list');
+  });
+
   test('says so when the app is not running', () async {
     final (code, out) = await aid([
       'app.status',
