@@ -14,6 +14,7 @@ import 'package:aid_diary/database/app_database.dart';
 import 'package:aid_diary/database/image_storage.dart';
 import 'package:aid_diary/sync/local_device.dart';
 import 'package:aid_diary/sync/copy_status.dart';
+import 'package:aid_diary/providers/links_provider.dart';
 import 'package:aid_diary/providers/entries_provider.dart';
 import 'package:aid_diary/providers/entry_images_provider.dart';
 import 'package:aid_diary/providers/tags_provider.dart';
@@ -932,6 +933,7 @@ class SyncService with ChangeNotifier {
       }
       await TagsProvider.instance.load();
       await TemplatesProvider.instance.load();
+      await LinksProvider.instance.load();
       await AppDatabase.instance.updateExternalDatabase();
     } finally {
       _reloading = false;

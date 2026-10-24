@@ -2728,6 +2728,58 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
+  String get noteKeep => 'Säilytä';
+
+  @override
+  String get noteComment => 'Kommentoi';
+
+  @override
+  String get noteCommentHint => 'Kirjoita menneelle itsellesi';
+
+  @override
+  String get noteKept => 'Katkelma säilytetty';
+
+  @override
+  String get notesPassages => 'Säilytetyt katkelmat';
+
+  @override
+  String get notesComments => 'Kommentit';
+
+  @override
+  String get noteDeleteConfirm => 'Poistetaanko tämä merkintä?';
+
+  @override
+  String get editPastTitle => 'Muokataanko mennyttä muistoa?';
+
+  @override
+  String get editPastBody =>
+      'Tämä merkintä on aiemmalta päivältä. Vastataksesi siihen valitse tekstiä ja säilytä tai kommentoi sitä.';
+
+  @override
+  String get editPastDontAsk => 'Älä kysy uudelleen';
+
+  @override
+  String get editPastEdit => 'Muokkaa silti';
+
+  @override
+  String noteOnEntry(String date) {
+    return 'Päivän $date merkinnästä';
+  }
+
+  @override
+  String get settingsConfirmEditPast =>
+      'Kysy ennen menneiden merkintöjen muokkaamista';
+
+  @override
+  String get commentExpand => 'Laajenna';
+
+  @override
+  String get refAdd => 'Lainaa merkintää';
+
+  @override
+  String get refMissing => 'Merkintää ei ole enää';
+
+  @override
   String get moodClear => 'Poista mieliala';
 
   @override

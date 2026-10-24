@@ -2715,6 +2715,57 @@ class AppLocalizationsDa extends AppLocalizations {
   }
 
   @override
+  String get noteKeep => 'Gem';
+
+  @override
+  String get noteComment => 'Kommentér';
+
+  @override
+  String get noteCommentHint => 'Skriv til dit tidligere jeg';
+
+  @override
+  String get noteKept => 'Afsnit gemt';
+
+  @override
+  String get notesPassages => 'Gemte afsnit';
+
+  @override
+  String get notesComments => 'Kommentarer';
+
+  @override
+  String get noteDeleteConfirm => 'Slet denne note?';
+
+  @override
+  String get editPastTitle => 'Redigere et tidligere minde?';
+
+  @override
+  String get editPastBody =>
+      'Dette indlæg er fra en tidligere dag. Vil du svare på det, så markér tekst for at gemme eller kommentere den.';
+
+  @override
+  String get editPastDontAsk => 'Spørg ikke igen';
+
+  @override
+  String get editPastEdit => 'Redigér alligevel';
+
+  @override
+  String noteOnEntry(String date) {
+    return 'Om indlægget fra $date';
+  }
+
+  @override
+  String get settingsConfirmEditPast => 'Spørg før tidligere indlæg redigeres';
+
+  @override
+  String get commentExpand => 'Udvid';
+
+  @override
+  String get refAdd => 'Citér et indlæg';
+
+  @override
+  String get refMissing => 'Det indlæg findes ikke længere';
+
+  @override
   String get moodClear => 'Ryd humør';
 
   @override

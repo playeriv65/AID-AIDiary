@@ -14,10 +14,12 @@ import 'package:aid_diary/utils/diary_day.dart';
 import 'package:aid_diary/utils/local_time.dart';
 import 'package:aid_diary/utils/operation_outcome.dart';
 import 'package:aid_diary/models/entry.dart';
+import 'package:aid_diary/models/entry_link.dart';
 import 'package:aid_diary/models/image.dart';
 import 'package:aid_diary/models/tag.dart';
 import 'package:aid_diary/models/tag_category.dart';
 import 'package:aid_diary/models/template.dart';
+import 'package:aid_diary/providers/links_provider.dart';
 import 'package:aid_diary/providers/entries_provider.dart';
 import 'package:aid_diary/providers/entry_images_provider.dart';
 import 'package:aid_diary/providers/tags_provider.dart';
@@ -39,7 +41,7 @@ class AppDatabase {
       executor ?? instance.database!;
 
   static const String databaseFileName = 'aid_diary.db';
-  static const int currentVersion = 15;
+  static const int currentVersion = 16;
 
   static final Logger _logger = Logger('AppDatabase');
 
@@ -96,6 +98,7 @@ class AppDatabase {
     await EntryImagesProvider.instance.load();
     await TemplatesProvider.instance.load();
     await TagsProvider.instance.load();
+    await LinksProvider.instance.load();
   }
 
   Future<void> close() async {
@@ -315,6 +318,7 @@ class AppDatabase {
     await createVersion10Schema(db);
     await addSyncSchema(db);
     await _addHiddenAndImportSchema(db);
+    await _addLinksSchema(db);
   }
 
   /// The tables as they were before sync, for upgrade tests.
@@ -558,6 +562,37 @@ DROP TABLE old_entries;
     if (oldVersion >= 11 && oldVersion < 15 && newVersion >= 15) {
       await _removeUnusedStarterTags(db);
     }
+    if (oldVersion < 16 && newVersion >= 16) {
+      await _addLinksSchema(db);
+    }
+  }
+
+  /// Citations between entries and kept passages (database version 16).
+  Future<void> _addLinksSchema(Database db) async {
+    await db.execute('''
+CREATE TABLE $entryRefsTable (
+  ${EntryRefFields.id} INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  ${EntryRefFields.entryId} INTEGER NOT NULL,
+  ${EntryRefFields.target} TEXT NOT NULL,
+  ${EntryRefFields.quote} TEXT,
+  ${EntryRefFields.quoteStart} INTEGER,
+  ${EntryRefFields.rank} INTEGER NOT NULL DEFAULT 0,
+  ${EntryRefFields.timeCreate} TEXT NOT NULL
+)''');
+    await db.execute('CREATE INDEX ${entryRefsTable}_entry '
+        'ON $entryRefsTable (${EntryRefFields.entryId})');
+    await db.execute('CREATE INDEX ${entryRefsTable}_target '
+        'ON $entryRefsTable (${EntryRefFields.target})');
+    await db.execute('''
+CREATE TABLE $passagesTable (
+  ${PassageFields.id} INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  ${PassageFields.entryId} INTEGER NOT NULL,
+  ${PassageFields.quote} TEXT NOT NULL,
+  ${PassageFields.quoteStart} INTEGER,
+  ${PassageFields.timeCreate} TEXT NOT NULL,
+  $syncIdColumn TEXT
+)''');
+    await addLinksSyncSchema(db);
   }
 
   /// Installs used to start with tags (favorite, energy, emotions and

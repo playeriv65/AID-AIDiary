@@ -2721,6 +2721,58 @@ class AppLocalizationsHi extends AppLocalizations {
   }
 
   @override
+  String get noteKeep => 'सहेजें';
+
+  @override
+  String get noteComment => 'टिप्पणी';
+
+  @override
+  String get noteCommentHint => 'अपने अतीत को लिखें';
+
+  @override
+  String get noteKept => 'अंश सहेजा गया';
+
+  @override
+  String get notesPassages => 'सहेजे गए अंश';
+
+  @override
+  String get notesComments => 'टिप्पणियाँ';
+
+  @override
+  String get noteDeleteConfirm => 'यह नोट हटाएँ?';
+
+  @override
+  String get editPastTitle => 'किसी पुरानी याद को संपादित करें?';
+
+  @override
+  String get editPastBody =>
+      'यह प्रविष्टि पहले के दिन की है। जवाब देने के लिए पाठ चुनकर सहेजें या टिप्पणी करें।';
+
+  @override
+  String get editPastDontAsk => 'फिर न पूछें';
+
+  @override
+  String get editPastEdit => 'फिर भी संपादित करें';
+
+  @override
+  String noteOnEntry(String date) {
+    return '$date की प्रविष्टि पर';
+  }
+
+  @override
+  String get settingsConfirmEditPast =>
+      'पुरानी प्रविष्टियाँ संपादित करने से पहले पूछें';
+
+  @override
+  String get commentExpand => 'विस्तार करें';
+
+  @override
+  String get refAdd => 'प्रविष्टि उद्धृत करें';
+
+  @override
+  String get refMissing => 'वह प्रविष्टि अब नहीं है';
+
+  @override
   String get moodClear => 'मनःस्थिति हटाएँ';
 
   @override

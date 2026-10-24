@@ -2746,6 +2746,58 @@ class AppLocalizationsOc extends AppLocalizations {
   }
 
   @override
+  String get noteKeep => 'Gardar';
+
+  @override
+  String get noteComment => 'Comentar';
+
+  @override
+  String get noteCommentHint => 'Escriu a ton ieu del passat';
+
+  @override
+  String get noteKept => 'Passatge gardat';
+
+  @override
+  String get notesPassages => 'Passatges gardats';
+
+  @override
+  String get notesComments => 'Comentaris';
+
+  @override
+  String get noteDeleteConfirm => 'Suprimir aquesta nòta ?';
+
+  @override
+  String get editPastTitle => 'Modificar un sovenir passat ?';
+
+  @override
+  String get editPastBody =>
+      'Aquesta nòta es d’un jorn anterior. Per i respondre, seleccionatz de tèxte per lo gardar o lo comentar.';
+
+  @override
+  String get editPastDontAsk => 'Pas mai demandar';
+
+  @override
+  String get editPastEdit => 'Modificar çaquelà';
+
+  @override
+  String noteOnEntry(String date) {
+    return 'Sus la nòta del $date';
+  }
+
+  @override
+  String get settingsConfirmEditPast =>
+      'Demandar abans de modificar las nòtas passadas';
+
+  @override
+  String get commentExpand => 'Espandir';
+
+  @override
+  String get refAdd => 'Citar una nòta';
+
+  @override
+  String get refMissing => 'Aquesta nòta i es pas mai';
+
+  @override
   String get moodClear => 'Escafar l’umor';
 
   @override

@@ -21,6 +21,7 @@ import 'package:aid_diary/device_info_service.dart';
 import 'package:aid_diary/flashback_manager.dart';
 import 'package:aid_diary/notification_manager.dart';
 import 'package:aid_diary/pages/launch_page.dart';
+import 'package:aid_diary/providers/links_provider.dart';
 import 'package:aid_diary/providers/entries_provider.dart';
 import 'package:aid_diary/providers/entry_images_provider.dart';
 import 'package:aid_diary/providers/tags_provider.dart';
@@ -101,6 +102,9 @@ void main() async {
     ),
     ChangeNotifierProvider<TagsProvider>(
       create: (_) => TagsProvider.instance,
+    ),
+    ChangeNotifierProvider<LinksProvider>(
+      create: (_) => LinksProvider.instance,
     ),
     ChangeNotifierProvider<ConfigProvider>(
       create: (_) => ConfigProvider.instance,

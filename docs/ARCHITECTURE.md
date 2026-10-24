@@ -375,6 +375,33 @@ retention parameters are opt-in, with no domain-based client behavior.
 Implementation and validation/deployment evidence are tracked separately in
 [SYNC_NETWORK.md](SYNC_NETWORK.md).
 
+## Citations, comments and kept passages
+
+A comment is an ordinary entry, written on the day it is written, that
+cites the entry (and optionally the words) it answers. Any entry can cite
+several others (`entry_refs`, database version 16): each citation names its
+target by the target's sync id, not a local row id, so citations hold
+whatever order devices receive entries in and outlive a target erased for
+good (the quote then remains, marked as gone). Citations belong to the
+citing entry: they travel inside its sync record (`refs`, like its tags and
+photos), its triggers mark that entry changed, and erasing it erases them.
+`EntryDraft.refs` is null for writes that leave citations alone (actions
+that change only text or fields), so only the editor and the citation
+actions rewrite them.
+
+A kept passage (`kept_passages`) is words saved from an entry. It is its
+own sync kind (`passage`), after entries so its entry resolves, and is not
+an entry. `LinksProvider` holds both: citations by entry, the replies to
+each entry (entries citing it) and kept passages. Hidden entries, sealed
+capsules and Recently deleted show neither replies nor passages, and the
+actions refuse to cite or keep from them.
+
+The reader offers Keep and Comment on selected text of an entry from an
+earlier day; Comment opens a short form that saves an entry of today
+citing it, or expands into the full editor with the text and citation.
+The editor cites any entry found by search. Editing an entry of an earlier
+day asks first (`Settings.confirmEditPast`, with "don't ask again").
+
 ## Hidden entries
 
 `Entry.isHidden` is an explicit column, defaulting to false for earlier diaries.

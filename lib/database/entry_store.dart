@@ -12,8 +12,10 @@ import 'package:aid_diary/database/entry_image_dao.dart';
 import 'package:aid_diary/database/entry_tag_dao.dart';
 import 'package:aid_diary/database/image_storage.dart';
 import 'package:aid_diary/models/entry.dart';
+import 'package:aid_diary/models/entry_link.dart';
 import 'package:aid_diary/models/image.dart';
 import 'package:aid_diary/models/tag.dart';
+import 'package:aid_diary/providers/links_provider.dart';
 import 'package:aid_diary/providers/entry_images_provider.dart';
 import 'package:aid_diary/providers/tags_provider.dart';
 import 'package:aid_diary/utils/diary_day.dart';
@@ -28,10 +30,14 @@ class EntryDraft {
   final List<EntryTag> tags;
   final List<EntryImage> images;
 
+  /// The entries it cites, in order; null leaves its citations as they are.
+  final List<EntryRef>? refs;
+
   const EntryDraft({
     required this.entry,
     this.tags = const [],
     this.images = const [],
+    this.refs,
   });
 }
 
@@ -160,10 +166,11 @@ class EntryStore with ChangeNotifier {
               entry: original,
               tags: TagsProvider.instance.getEntryTagsForEntry(original.id!),
               images: [
-                  for (final image
-                      in EntryImagesProvider.instance.getForEntry(original))
-                    image.copy()
-                ]));
+                for (final image
+                    in EntryImagesProvider.instance.getForEntry(original))
+                  image.copy()
+              ],
+              refs: LinksProvider.instance.refsOf(original.id!)));
 
   Future<void> _complete = Future.value();
 
@@ -280,6 +287,7 @@ class EntryStore with ChangeNotifier {
     await _eraseRows(entry);
     TagsProvider.instance.applyEntryTags(entry.id!, const []);
     EntryImagesProvider.instance.applyForEntry(entry.id!, const []);
+    LinksProvider.instance.forgetEntries({entry.id!});
     await AppDatabase.instance.updateExternalDatabase();
     notifyListeners();
   }
@@ -295,6 +303,8 @@ class EntryStore with ChangeNotifier {
     }
     await TagsProvider.instance.load();
     await EntryImagesProvider.instance.load();
+    LinksProvider.instance
+        .forgetEntries({for (final entry in entries) entry.id!});
     await AppDatabase.instance.updateExternalDatabase();
     notifyListeners();
   }
@@ -309,6 +319,7 @@ class EntryStore with ChangeNotifier {
         await EntryImageDao.remove(image, executor: transaction);
       }
       await EntryTagDao.removeAllForEntry(entry.id!, executor: transaction);
+      await LinksProvider.removeForEntry(entry.id!, executor: transaction);
       await EntryDao.remove(entry.id!, executor: transaction);
     });
 
@@ -399,6 +410,7 @@ class EntryStore with ChangeNotifier {
     late Entry saved;
     late _TagWrite tagWrite;
     late _ImageWrite imageWrite;
+    var refsChanged = false;
     final entryChanged = _entryNeedsWrite(draft.entry);
 
     await AppDatabase.instance.database!.transaction((transaction) async {
@@ -412,9 +424,19 @@ class EntryStore with ChangeNotifier {
       }
       tagWrite = await _writeEntryTags(transaction, saved.id!, draft.tags);
       imageWrite = await _writeEntryImages(transaction, saved, draft.images);
+      if (draft.refs case final refs?) {
+        refsChanged =
+            await LinksProvider.writeRefs(transaction, saved.id!, refs);
+      }
     });
+    if (refsChanged) await LinksProvider.instance.load();
 
-    if (!entryChanged && !tagWrite.changed && !imageWrite.changed) return saved;
+    if (!entryChanged &&
+        !tagWrite.changed &&
+        !imageWrite.changed &&
+        !refsChanged) {
+      return saved;
+    }
 
     removedFiles.addAll(imageWrite.removedFiles);
 

@@ -23,6 +23,9 @@ abstract final class AppNavigation {
   static Future<void> statistics(NavigatorState navigator) =>
       openPlace(navigator.context, 'statistics');
 
+  static Future<void> passages(NavigatorState navigator) =>
+      openPlace(navigator.context, 'passages');
+
   static Future<void> templates(NavigatorState navigator,
           {bool fullscreenDialog = false}) =>
       fullscreenDialog

@@ -7,8 +7,10 @@ import 'dart:async';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/database/entry_store.dart';
 import 'package:aid_diary/models/entry.dart';
+import 'package:aid_diary/models/entry_link.dart';
 import 'package:aid_diary/models/image.dart';
 import 'package:aid_diary/models/template.dart';
+import 'package:aid_diary/providers/links_provider.dart';
 import 'package:aid_diary/providers/entry_images_provider.dart';
 import 'package:aid_diary/providers/tags_provider.dart';
 import 'package:aid_diary/providers/templates_provider.dart';
@@ -38,6 +40,7 @@ class EditEntryViewModel extends ChangeNotifier {
     String? sharedText,
     int? initialMood,
     Template? template,
+    List<EntryRef>? refs,
     EntryStore? store,
     TagsProvider? tags,
     TemplatesProvider? templates,
@@ -61,8 +64,12 @@ class EditEntryViewModel extends ChangeNotifier {
       final now = _clock();
       // Asking only makes sense when no day was chosen for the entry.
       askDay = diaryDay == null && DiaryDay.asks(now);
+      // A comment carried over to the full editor keeps its own words.
       final defaultTemplate = template ??
-          (templates ?? TemplatesProvider.instance).getDefaultTemplate();
+          (refs != null
+              ? null
+              : (templates ?? TemplatesProvider.instance).getDefaultTemplate());
+      this.refs = [...?refs];
       final templateText = defaultTemplate?.text ?? '';
       // Built-in templates are not stored, so they carry no tags.
       final templateTagIds = [
@@ -85,6 +92,7 @@ class EditEntryViewModel extends ChangeNotifier {
       _id = entry.id ?? -1;
       tagSource =
           TagAttachmentSource.fromEntryTags(_tags.getEntryTagsForEntry(_id));
+      this.refs = [...LinksProvider.instance.refsOf(_id)];
       baselineText = entry.text;
       if (sharedText != null) {
         _entry = entry.copy(text: mergeSharedText(entry.text, sharedText));
@@ -171,6 +179,23 @@ class EditEntryViewModel extends ChangeNotifier {
   /// Looking up the current place for a new entry.
   bool locating = false;
   late final TagAttachmentSource tagSource;
+
+  /// The entries it cites, in order.
+  late List<EntryRef> refs;
+
+  void cite(EntryRef ref) {
+    if (refs.any(ref.sameAs)) return;
+    refs = [...refs, ref];
+    _markEdited();
+  }
+
+  void uncite(EntryRef ref) {
+    refs = [
+      for (final kept in refs)
+        if (!kept.sameAs(ref)) kept
+    ];
+    _markEdited();
+  }
 
   /// Photos, videos and voice notes, in order.
   List<EntryImage> get images => _images;
@@ -374,6 +399,7 @@ class EditEntryViewModel extends ChangeNotifier {
       entry: entry,
       tags: tagSource.toEntryTags(_id),
       images: [for (final image in _images) image.copy()],
+      refs: refs,
     );
   }
 

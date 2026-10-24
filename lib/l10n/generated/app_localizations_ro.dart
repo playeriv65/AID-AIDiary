@@ -2752,6 +2752,58 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
+  String get noteKeep => 'Păstrează';
+
+  @override
+  String get noteComment => 'Comentează';
+
+  @override
+  String get noteCommentHint => 'Scrie-i eului tău din trecut';
+
+  @override
+  String get noteKept => 'Fragment păstrat';
+
+  @override
+  String get notesPassages => 'Fragmente păstrate';
+
+  @override
+  String get notesComments => 'Comentarii';
+
+  @override
+  String get noteDeleteConfirm => 'Ștergi această notă?';
+
+  @override
+  String get editPastTitle => 'Editezi o amintire din trecut?';
+
+  @override
+  String get editPastBody =>
+      'Această însemnare este dintr-o zi anterioară. Ca să-i răspunzi, selectează text pentru a-l păstra sau comenta.';
+
+  @override
+  String get editPastDontAsk => 'Nu mai întreba';
+
+  @override
+  String get editPastEdit => 'Editează oricum';
+
+  @override
+  String noteOnEntry(String date) {
+    return 'Despre însemnarea din $date';
+  }
+
+  @override
+  String get settingsConfirmEditPast =>
+      'Întreabă înainte de a edita însemnări trecute';
+
+  @override
+  String get commentExpand => 'Extinde';
+
+  @override
+  String get refAdd => 'Citează o însemnare';
+
+  @override
+  String get refMissing => 'Însemnarea nu mai există';
+
+  @override
   String get moodClear => 'Șterge dispoziția';
 
   @override

@@ -2724,6 +2724,57 @@ class AppLocalizationsNb extends AppLocalizations {
   }
 
   @override
+  String get noteKeep => 'Lagre';
+
+  @override
+  String get noteComment => 'Kommenter';
+
+  @override
+  String get noteCommentHint => 'Skriv til ditt tidligere jeg';
+
+  @override
+  String get noteKept => 'Avsnitt lagret';
+
+  @override
+  String get notesPassages => 'Lagrede avsnitt';
+
+  @override
+  String get notesComments => 'Kommentarer';
+
+  @override
+  String get noteDeleteConfirm => 'Slette dette notatet?';
+
+  @override
+  String get editPastTitle => 'Redigere et tidligere minne?';
+
+  @override
+  String get editPastBody =>
+      'Dette innlegget er fra en tidligere dag. Vil du svare på det, marker tekst for å lagre eller kommentere den.';
+
+  @override
+  String get editPastDontAsk => 'Ikke spør igjen';
+
+  @override
+  String get editPastEdit => 'Rediger likevel';
+
+  @override
+  String noteOnEntry(String date) {
+    return 'Om innlegget fra $date';
+  }
+
+  @override
+  String get settingsConfirmEditPast => 'Spør før tidligere innlegg redigeres';
+
+  @override
+  String get commentExpand => 'Utvid';
+
+  @override
+  String get refAdd => 'Siter et innlegg';
+
+  @override
+  String get refMissing => 'Det innlegget finnes ikke lenger';
+
+  @override
   String get moodClear => 'Fjern humør';
 
   @override

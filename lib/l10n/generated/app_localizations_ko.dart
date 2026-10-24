@@ -2655,6 +2655,56 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
+  String get noteKeep => '보관';
+
+  @override
+  String get noteComment => '댓글';
+
+  @override
+  String get noteCommentHint => '과거의 나에게 쓰기';
+
+  @override
+  String get noteKept => '구절을 보관했습니다';
+
+  @override
+  String get notesPassages => '보관한 구절';
+
+  @override
+  String get notesComments => '댓글';
+
+  @override
+  String get noteDeleteConfirm => '이 메모를 삭제할까요?';
+
+  @override
+  String get editPastTitle => '지난 기억을 편집할까요?';
+
+  @override
+  String get editPastBody => '이 일기는 지난 날의 것입니다. 답하고 싶다면 글을 선택해 보관하거나 댓글을 남기세요.';
+
+  @override
+  String get editPastDontAsk => '다시 묻지 않기';
+
+  @override
+  String get editPastEdit => '그래도 편집';
+
+  @override
+  String noteOnEntry(String date) {
+    return '$date 일기에 대해';
+  }
+
+  @override
+  String get settingsConfirmEditPast => '지난 일기를 편집하기 전에 확인';
+
+  @override
+  String get commentExpand => '펼치기';
+
+  @override
+  String get refAdd => '일기 인용';
+
+  @override
+  String get refMissing => '원래 일기가 더 이상 없습니다';
+
+  @override
   String get moodClear => '기분 지우기';
 
   @override

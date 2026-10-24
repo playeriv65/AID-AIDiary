@@ -2751,6 +2751,58 @@ class AppLocalizationsLt extends AppLocalizations {
   }
 
   @override
+  String get noteKeep => 'Išsaugoti';
+
+  @override
+  String get noteComment => 'Komentuoti';
+
+  @override
+  String get noteCommentHint => 'Parašyk sau iš praeities';
+
+  @override
+  String get noteKept => 'Ištrauka išsaugota';
+
+  @override
+  String get notesPassages => 'Išsaugotos ištraukos';
+
+  @override
+  String get notesComments => 'Komentarai';
+
+  @override
+  String get noteDeleteConfirm => 'Ištrinti šią pastabą?';
+
+  @override
+  String get editPastTitle => 'Redaguoti praeities prisiminimą?';
+
+  @override
+  String get editPastBody =>
+      'Šis įrašas yra iš ankstesnės dienos. Norėdami į jį atsakyti, pažymėkite tekstą ir išsaugokite arba pakomentuokite.';
+
+  @override
+  String get editPastDontAsk => 'Daugiau neklausti';
+
+  @override
+  String get editPastEdit => 'Vis tiek redaguoti';
+
+  @override
+  String noteOnEntry(String date) {
+    return 'Apie $date įrašą';
+  }
+
+  @override
+  String get settingsConfirmEditPast =>
+      'Klausti prieš redaguojant senus įrašus';
+
+  @override
+  String get commentExpand => 'Išskleisti';
+
+  @override
+  String get refAdd => 'Cituoti įrašą';
+
+  @override
+  String get refMissing => 'Šio įrašo nebėra';
+
+  @override
   String get moodClear => 'Išvalyti nuotaiką';
 
   @override

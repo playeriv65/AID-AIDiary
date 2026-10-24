@@ -7,6 +7,7 @@ import 'package:aid_diary/utils/diary_day.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/providers/templates_provider.dart';
 import 'package:aid_diary/routing/destination.dart';
+import 'package:aid_diary/models/entry_link.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/models/flashback.dart';
 import 'package:aid_diary/models/image.dart';
@@ -32,7 +33,9 @@ class EntryNavigation {
       List<EntryImage>? images,
       DateTime? diaryDay,
       int? initialMood,
-      Template? template}) {
+      Template? template,
+      String? text,
+      List<EntryRef>? refs}) {
     // The editor covers the whole window, rail included, like Journey.
     return Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
       settings: routeFor('editor', entry?.id),
@@ -49,6 +52,8 @@ class EntryNavigation {
                 diaryDay: diaryDay,
                 initialMood: initialMood,
                 template: template,
+                sharedText: text,
+                refs: refs,
               )),
     ));
   }

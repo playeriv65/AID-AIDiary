@@ -2761,6 +2761,57 @@ class AppLocalizationsBe extends AppLocalizations {
   }
 
   @override
+  String get noteKeep => 'Захаваць';
+
+  @override
+  String get noteComment => 'Каментаваць';
+
+  @override
+  String get noteCommentHint => 'Напішыце сабе з мінулага';
+
+  @override
+  String get noteKept => 'Урывак захаваны';
+
+  @override
+  String get notesPassages => 'Захаваныя ўрыўкі';
+
+  @override
+  String get notesComments => 'Каментарыі';
+
+  @override
+  String get noteDeleteConfirm => 'Выдаліць гэтую нататку?';
+
+  @override
+  String get editPastTitle => 'Змяніць мінулы ўспамін?';
+
+  @override
+  String get editPastBody =>
+      'Гэты запіс зроблены ў мінулым. Каб адказаць на яго, вылучыце тэкст і захавайце або пракаментуйце яго.';
+
+  @override
+  String get editPastDontAsk => 'Больш не пытацца';
+
+  @override
+  String get editPastEdit => 'Усё роўна змяніць';
+
+  @override
+  String noteOnEntry(String date) {
+    return 'Пра запіс ад $date';
+  }
+
+  @override
+  String get settingsConfirmEditPast => 'Пытацца перад зменай мінулых запісаў';
+
+  @override
+  String get commentExpand => 'Разгарнуць';
+
+  @override
+  String get refAdd => 'Працытаваць запіс';
+
+  @override
+  String get refMissing => 'Гэтага запісу больш няма';
+
+  @override
   String get moodClear => 'Ачысціць настрой';
 
   @override

@@ -2716,6 +2716,57 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
+  String get noteKeep => 'Uložit';
+
+  @override
+  String get noteComment => 'Komentovat';
+
+  @override
+  String get noteCommentHint => 'Napiš svému minulému já';
+
+  @override
+  String get noteKept => 'Úryvek uložen';
+
+  @override
+  String get notesPassages => 'Uložené úryvky';
+
+  @override
+  String get notesComments => 'Komentáře';
+
+  @override
+  String get noteDeleteConfirm => 'Smazat tuto poznámku?';
+
+  @override
+  String get editPastTitle => 'Upravit minulou vzpomínku?';
+
+  @override
+  String get editPastBody =>
+      'Tento záznam je z dřívějšího dne. Chcete-li na něj odpovědět, označte text a uložte nebo okomentujte jej.';
+
+  @override
+  String get editPastDontAsk => 'Už se neptat';
+
+  @override
+  String get editPastEdit => 'Přesto upravit';
+
+  @override
+  String noteOnEntry(String date) {
+    return 'K záznamu z $date';
+  }
+
+  @override
+  String get settingsConfirmEditPast => 'Ptát se před úpravou minulých záznamů';
+
+  @override
+  String get commentExpand => 'Rozbalit';
+
+  @override
+  String get refAdd => 'Citovat záznam';
+
+  @override
+  String get refMissing => 'Tento záznam už neexistuje';
+
+  @override
   String get moodClear => 'Vymazat náladu';
 
   @override

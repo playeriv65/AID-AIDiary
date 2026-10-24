@@ -2735,6 +2735,57 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
+  String get noteKeep => 'Lưu';
+
+  @override
+  String get noteComment => 'Bình luận';
+
+  @override
+  String get noteCommentHint => 'Viết cho chính mình trong quá khứ';
+
+  @override
+  String get noteKept => 'Đã lưu đoạn này';
+
+  @override
+  String get notesPassages => 'Đoạn đã lưu';
+
+  @override
+  String get notesComments => 'Bình luận';
+
+  @override
+  String get noteDeleteConfirm => 'Xóa ghi chú này?';
+
+  @override
+  String get editPastTitle => 'Sửa một kỷ niệm cũ?';
+
+  @override
+  String get editPastBody =>
+      'Bài này viết từ ngày trước. Để phản hồi, hãy chọn chữ để lưu hoặc bình luận.';
+
+  @override
+  String get editPastDontAsk => 'Không hỏi lại';
+
+  @override
+  String get editPastEdit => 'Vẫn sửa';
+
+  @override
+  String noteOnEntry(String date) {
+    return 'Về bài ngày $date';
+  }
+
+  @override
+  String get settingsConfirmEditPast => 'Hỏi trước khi sửa bài cũ';
+
+  @override
+  String get commentExpand => 'Mở rộng';
+
+  @override
+  String get refAdd => 'Trích dẫn một bài';
+
+  @override
+  String get refMissing => 'Bài đó không còn nữa';
+
+  @override
   String get moodClear => 'Xóa tâm trạng';
 
   @override

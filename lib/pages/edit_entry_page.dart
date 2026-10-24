@@ -4,10 +4,13 @@
 
 import 'dart:io';
 
+import 'package:aid_diary/widgets/entry_links.dart';
+import 'package:aid_diary/actions/link_actions.dart';
 import 'package:aid_diary/widgets/haptics.dart';
 import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/models/entry_link.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/models/image.dart';
 import 'package:aid_diary/models/tag.dart';
@@ -63,6 +66,10 @@ class AddEditEntryPage extends StatefulWidget {
   /// Template for a new entry in place of the default one.
   final Template? template;
 
+  /// What a new entry cites from the start, such as the entry a comment
+  /// carried over to the full editor answers.
+  final List<EntryRef>? refs;
+
   const AddEditEntryPage({
     super.key,
     this.entry,
@@ -72,6 +79,7 @@ class AddEditEntryPage extends StatefulWidget {
     this.sharedText,
     this.initialMood,
     this.template,
+    this.refs,
   });
 
   @override
@@ -89,6 +97,7 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
     sharedText: widget.sharedText,
     initialMood: widget.initialMood,
     template: widget.template,
+    refs: widget.refs,
     onSavedForToday: Platform.isAndroid
         ? NotificationManager.instance.dismissReminderNotification
         : null,
@@ -505,7 +514,7 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
         );
 
     return ListenableBuilder(
-      listenable: model.tagSource,
+      listenable: Listenable.merge([model.tagSource, model]),
       builder: (context, _) {
         final attachedIds = model.tagSource.attachedTagIds.toSet();
         final tags = Provider.of<TagsProvider>(context)
@@ -541,6 +550,13 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
                     '',
                     null,
                     onClear: () => model.setActivity(null)),
+              row(const ValueKey('editor-cite'),
+                  icon(Icons.format_quote_rounded), null, l10n.refAdd, _cite),
+              if (model.refs.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 4, 8, 0),
+                  child: CitationList(refs: model.refs, onRemove: model.uncite),
+                ),
               if (tags.isNotEmpty)
                 Padding(
                   padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
@@ -674,6 +690,13 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
                 color: Theme.of(context).colorScheme.onSurfaceVariant),
       ),
     );
+  }
+
+  /// Cites another entry, found by its words.
+  Future<void> _cite() async {
+    final cited = await pickEntryToCite(context, except: _model.entry.id);
+    if (cited == null) return;
+    _model.cite(await citationOf(cited.id!, null));
   }
 
   Future<void> _chooseLocation() async {

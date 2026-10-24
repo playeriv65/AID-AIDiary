@@ -188,6 +188,9 @@ Future<void> showMenuSheet(BuildContext context) {
                         l10n.pageStatisticsTitle,
                         () => open(AppNavigation.statistics)),
                     const Divider(height: 1),
+                    row('menu-passages', Icons.format_quote_rounded,
+                        l10n.notesPassages, () => open(AppNavigation.passages)),
+                    const Divider(height: 1),
                     row(
                         'menu-templates',
                         Icons.description_outlined,

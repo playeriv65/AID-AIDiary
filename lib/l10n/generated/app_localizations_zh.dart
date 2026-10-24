@@ -2619,6 +2619,56 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
+  String get noteKeep => '收藏';
+
+  @override
+  String get noteComment => '评论';
+
+  @override
+  String get noteCommentHint => '给过去的自己写点什么';
+
+  @override
+  String get noteKept => '已收藏这段';
+
+  @override
+  String get notesPassages => '收藏的段落';
+
+  @override
+  String get notesComments => '评论';
+
+  @override
+  String get noteDeleteConfirm => '删除这条？';
+
+  @override
+  String get editPastTitle => '要编辑过去的记忆吗？';
+
+  @override
+  String get editPastBody => '这篇日记写于过去。想回应它的话，选中文字就能收藏或评论。';
+
+  @override
+  String get editPastDontAsk => '不再提示';
+
+  @override
+  String get editPastEdit => '仍要编辑';
+
+  @override
+  String noteOnEntry(String date) {
+    return '回看 $date 的日记';
+  }
+
+  @override
+  String get settingsConfirmEditPast => '编辑过去的日记前先确认';
+
+  @override
+  String get commentExpand => '展开';
+
+  @override
+  String get refAdd => '引用日记';
+
+  @override
+  String get refMissing => '原日记已不在';
+
+  @override
   String get moodClear => '清空心情';
 
   @override
@@ -5262,6 +5312,56 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String hiddenDiaryWhere(String path) {
     return '已隱藏。可在 $path 中找到並取消隱藏。';
   }
+
+  @override
+  String get noteKeep => '收藏';
+
+  @override
+  String get noteComment => '評論';
+
+  @override
+  String get noteCommentHint => '給過去的自己寫點什麼';
+
+  @override
+  String get noteKept => '已收藏這段';
+
+  @override
+  String get notesPassages => '收藏的段落';
+
+  @override
+  String get notesComments => '評論';
+
+  @override
+  String get noteDeleteConfirm => '刪除這則？';
+
+  @override
+  String get editPastTitle => '要編輯過去的記憶嗎？';
+
+  @override
+  String get editPastBody => '這篇日記寫於過去。想回應它的話，選取文字就能收藏或評論。';
+
+  @override
+  String get editPastDontAsk => '不再提示';
+
+  @override
+  String get editPastEdit => '仍要編輯';
+
+  @override
+  String noteOnEntry(String date) {
+    return '回看 $date 的日記';
+  }
+
+  @override
+  String get settingsConfirmEditPast => '編輯過去的日記前先確認';
+
+  @override
+  String get commentExpand => '展開';
+
+  @override
+  String get refAdd => '引用日記';
+
+  @override
+  String get refMissing => '原日記已不在';
 
   @override
   String get moodClear => '清除心情';

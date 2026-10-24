@@ -2683,6 +2683,57 @@ class AppLocalizationsMs extends AppLocalizations {
   }
 
   @override
+  String get noteKeep => 'Simpan';
+
+  @override
+  String get noteComment => 'Komen';
+
+  @override
+  String get noteCommentHint => 'Tulis kepada diri anda yang lalu';
+
+  @override
+  String get noteKept => 'Petikan disimpan';
+
+  @override
+  String get notesPassages => 'Petikan tersimpan';
+
+  @override
+  String get notesComments => 'Komen';
+
+  @override
+  String get noteDeleteConfirm => 'Padam nota ini?';
+
+  @override
+  String get editPastTitle => 'Sunting kenangan lalu?';
+
+  @override
+  String get editPastBody =>
+      'Catatan ini dari hari terdahulu. Untuk membalasnya, pilih teks untuk disimpan atau dikomen.';
+
+  @override
+  String get editPastDontAsk => 'Jangan tanya lagi';
+
+  @override
+  String get editPastEdit => 'Sunting juga';
+
+  @override
+  String noteOnEntry(String date) {
+    return 'Tentang catatan $date';
+  }
+
+  @override
+  String get settingsConfirmEditPast => 'Tanya sebelum menyunting catatan lama';
+
+  @override
+  String get commentExpand => 'Kembangkan';
+
+  @override
+  String get refAdd => 'Petik catatan';
+
+  @override
+  String get refMissing => 'Catatan itu sudah tiada';
+
+  @override
   String get moodClear => 'Kosongkan perasaan';
 
   @override

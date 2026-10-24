@@ -2726,6 +2726,57 @@ class AppLocalizationsSv extends AppLocalizations {
   }
 
   @override
+  String get noteKeep => 'Spara';
+
+  @override
+  String get noteComment => 'Kommentera';
+
+  @override
+  String get noteCommentHint => 'Skriv till ditt tidigare jag';
+
+  @override
+  String get noteKept => 'Stycket sparat';
+
+  @override
+  String get notesPassages => 'Sparade stycken';
+
+  @override
+  String get notesComments => 'Kommentarer';
+
+  @override
+  String get noteDeleteConfirm => 'Ta bort den här anteckningen?';
+
+  @override
+  String get editPastTitle => 'Redigera ett tidigare minne?';
+
+  @override
+  String get editPastBody =>
+      'Det här inlägget är från en tidigare dag. Markera text för att spara eller kommentera den om du vill svara.';
+
+  @override
+  String get editPastDontAsk => 'Fråga inte igen';
+
+  @override
+  String get editPastEdit => 'Redigera ändå';
+
+  @override
+  String noteOnEntry(String date) {
+    return 'Om inlägget från $date';
+  }
+
+  @override
+  String get settingsConfirmEditPast => 'Fråga innan tidigare inlägg redigeras';
+
+  @override
+  String get commentExpand => 'Expandera';
+
+  @override
+  String get refAdd => 'Citera ett inlägg';
+
+  @override
+  String get refMissing => 'Det inlägget finns inte längre';
+
+  @override
   String get moodClear => 'Rensa humör';
 
   @override

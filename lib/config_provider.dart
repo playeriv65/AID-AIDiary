@@ -153,6 +153,9 @@ class Settings {
   static const wallpaperImage = Setting<String>("wallpaperImage", "");
   // Off by default: each one asks for a permission or uses the network.
   static const autoAddLocation = Setting<bool>("autoAddLocation", true);
+
+  /// Whether editing an entry from an earlier day asks first.
+  static const confirmEditPast = Setting<bool>("confirmEditPast", true);
   static const autoAddWeather = Setting<bool>("autoAddWeather", true);
   static const dayAskUntilHour =
       Setting<int>("dayAskUntilHour", 6, range: _hours);
@@ -296,6 +299,7 @@ class Settings {
     wallpaper,
     wallpaperImage,
     autoAddLocation,
+    confirmEditPast,
     autoAddWeather,
     dayStartHour,
     dayAskUntilHour,

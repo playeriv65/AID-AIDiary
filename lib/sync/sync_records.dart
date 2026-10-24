@@ -3,6 +3,7 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'package:aid_diary/models/entry.dart';
+import 'package:aid_diary/models/entry_link.dart';
 import 'package:aid_diary/models/image.dart';
 import 'package:aid_diary/models/tag.dart';
 import 'package:aid_diary/models/tag_category.dart';
@@ -53,6 +54,8 @@ class SyncRecord {
 const String _tags = 'tags';
 const String _images = 'images';
 const String _category = 'category';
+const String _entry = 'entry';
+const String _refs = 'refs';
 
 /// Reads the item [id] of [kind] as a record stamped [modified]; a deleted
 /// record when there is no such item.
@@ -68,6 +71,10 @@ Future<SyncRecord> exportRecord(
   switch (kind) {
     case SyncKind.category:
       break;
+    case SyncKind.passage:
+      data.remove(PassageFields.entryId);
+      data[_entry] =
+          await _idOf(db, entriesTable, row[PassageFields.entryId] as int?);
     case SyncKind.tag:
       data.remove(TagFields.categoryId);
       data[_category] = await _idOf(
@@ -103,6 +110,22 @@ WHERE l.${EntryTagFields.entryId} = ? ORDER BY l.id''', [rowId]))
             'file': image[EntryImageFields.imgPath],
             'rank': image[EntryImageFields.imgRank],
             'time_create': image[EntryImageFields.timeCreate],
+          },
+      ];
+      data[_refs] = [
+        for (final ref in await db.query(entryRefsTable,
+            where: '${EntryRefFields.entryId} = ?',
+            whereArgs: [rowId],
+            orderBy: '${EntryRefFields.rank}, id'))
+          {
+            for (final field in [
+              EntryRefFields.target,
+              EntryRefFields.quote,
+              EntryRefFields.quoteStart,
+              EntryRefFields.rank,
+              EntryRefFields.timeCreate,
+            ])
+              field: ref[field],
           },
       ];
   }
@@ -142,14 +165,20 @@ class RecordWriter {
   Future<void> apply(SyncRecord record) async {
     if (record.deleted) return _delete(record.kind, record.id);
     final data = record.data!;
+    final passageEntry = record.kind == SyncKind.passage
+        ? await _rowIdOf(db, entriesTable, data[_entry] as String?)
+        : null;
+    // A passage whose entry is gone for good has nothing to belong to.
+    if (record.kind == SyncKind.passage && passageEntry == null) return;
     final rowId = await _upsert(record.kind.table, record.id, {
       ...data,
       if (record.kind == SyncKind.tag)
         TagFields.categoryId:
             await _rowIdOf(db, tagCategoriesTable, data[_category] as String?),
+      if (passageEntry != null) PassageFields.entryId: passageEntry,
     });
     switch (record.kind) {
-      case SyncKind.category || SyncKind.tag:
+      case SyncKind.category || SyncKind.tag || SyncKind.passage:
         break;
       case SyncKind.template:
         await db.delete(templateTagsTable,
@@ -165,6 +194,14 @@ class RecordWriter {
       case SyncKind.entry:
         await _writeEntryTags(rowId, data[_tags] as List? ?? const []);
         await _writeEntryImages(rowId, record.photos, data[_images] as List);
+        await db.delete(entryRefsTable,
+            where: '${EntryRefFields.entryId} = ?', whereArgs: [rowId]);
+        for (final ref in data[_refs] as List? ?? const []) {
+          await db.insert(entryRefsTable, {
+            ...(ref as Map).cast<String, Object?>(),
+            EntryRefFields.entryId: rowId,
+          });
+        }
     }
   }
 
@@ -259,9 +296,15 @@ class RecordWriter {
       case SyncKind.template:
         await db.delete(templateTagsTable,
             where: '${TemplateTagFields.templateId} = ?', whereArgs: [rowId]);
+      case SyncKind.passage:
+        break;
       case SyncKind.entry:
         await db.delete(entryTagsTable,
             where: '${EntryTagFields.entryId} = ?', whereArgs: [rowId]);
+        await db.delete(entryRefsTable,
+            where: '${EntryRefFields.entryId} = ?', whereArgs: [rowId]);
+        await db.delete(passagesTable,
+            where: '${PassageFields.entryId} = ?', whereArgs: [rowId]);
         for (final image in await db.query(imagesTable,
             where: '${EntryImageFields.entryId} = ?', whereArgs: [rowId])) {
           orphanedFiles.add(image[EntryImageFields.imgPath] as String);

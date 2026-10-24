@@ -2741,6 +2741,58 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
+  String get noteKeep => 'Guardar';
+
+  @override
+  String get noteComment => 'Comentar';
+
+  @override
+  String get noteCommentHint => 'Escreve ao teu eu do passado';
+
+  @override
+  String get noteKept => 'Excerto guardado';
+
+  @override
+  String get notesPassages => 'Excertos guardados';
+
+  @override
+  String get notesComments => 'Comentários';
+
+  @override
+  String get noteDeleteConfirm => 'Eliminar esta nota?';
+
+  @override
+  String get editPastTitle => 'Editar uma memória passada?';
+
+  @override
+  String get editPastBody =>
+      'Esta entrada é de um dia anterior. Para lhe responder, seleciona texto para o guardar ou comentar.';
+
+  @override
+  String get editPastDontAsk => 'Não perguntar outra vez';
+
+  @override
+  String get editPastEdit => 'Editar mesmo assim';
+
+  @override
+  String noteOnEntry(String date) {
+    return 'Sobre a entrada de $date';
+  }
+
+  @override
+  String get settingsConfirmEditPast =>
+      'Perguntar antes de editar entradas passadas';
+
+  @override
+  String get commentExpand => 'Expandir';
+
+  @override
+  String get refAdd => 'Citar uma entrada';
+
+  @override
+  String get refMissing => 'Essa entrada já não existe';
+
+  @override
   String get moodClear => 'Limpar humor';
 
   @override
@@ -5503,6 +5555,58 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
   String hiddenDiaryWhere(String path) {
     return 'Ocultada. Para mostrar de novo: $path';
   }
+
+  @override
+  String get noteKeep => 'Guardar';
+
+  @override
+  String get noteComment => 'Comentar';
+
+  @override
+  String get noteCommentHint => 'Escreva para o seu eu do passado';
+
+  @override
+  String get noteKept => 'Trecho guardado';
+
+  @override
+  String get notesPassages => 'Trechos guardados';
+
+  @override
+  String get notesComments => 'Comentários';
+
+  @override
+  String get noteDeleteConfirm => 'Excluir esta nota?';
+
+  @override
+  String get editPastTitle => 'Editar uma memória passada?';
+
+  @override
+  String get editPastBody =>
+      'Esta entrada é de um dia anterior. Para respondê-la, selecione o texto para guardar ou comentar.';
+
+  @override
+  String get editPastDontAsk => 'Não perguntar novamente';
+
+  @override
+  String get editPastEdit => 'Editar mesmo assim';
+
+  @override
+  String noteOnEntry(String date) {
+    return 'Sobre a entrada de $date';
+  }
+
+  @override
+  String get settingsConfirmEditPast =>
+      'Perguntar antes de editar entradas passadas';
+
+  @override
+  String get commentExpand => 'Expandir';
+
+  @override
+  String get refAdd => 'Citar uma entrada';
+
+  @override
+  String get refMissing => 'Essa entrada não existe mais';
 
   @override
   String get moodClear => 'Limpar humor';

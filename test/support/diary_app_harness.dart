@@ -6,6 +6,7 @@ import 'package:aid_diary/database/entry_store.dart';
 import 'package:aid_diary/flashback_manager.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/models/entry.dart';
+import 'package:aid_diary/providers/links_provider.dart';
 import 'package:aid_diary/providers/entries_provider.dart';
 import 'package:aid_diary/providers/entry_images_provider.dart';
 import 'package:aid_diary/providers/tags_provider.dart';
@@ -51,6 +52,7 @@ class DiaryAppHarness {
       await EntryStore.instance.load();
       await EntryImagesProvider.instance.load();
       await TagsProvider.instance.load();
+      await LinksProvider.instance.load();
       await TemplatesProvider.instance.load();
       await FlashbackManager.init();
       theme = ThemeModeProvider();
@@ -68,6 +70,7 @@ class DiaryAppHarness {
             ChangeNotifierProvider.value(value: EntriesProvider.instance),
             ChangeNotifierProvider.value(value: EntryImagesProvider.instance),
             ChangeNotifierProvider.value(value: TagsProvider.instance),
+            ChangeNotifierProvider.value(value: LinksProvider.instance),
             ChangeNotifierProvider.value(value: TemplatesProvider.instance),
             ChangeNotifierProvider.value(value: theme),
           ],

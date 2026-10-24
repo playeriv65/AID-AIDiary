@@ -8,6 +8,7 @@ import 'dart:typed_data';
 
 import 'package:aid_diary/actions/app_action.dart';
 import 'package:aid_diary/actions/entry_access.dart';
+import 'package:aid_diary/actions/link_actions.dart';
 import 'package:aid_diary/actions/place_actions.dart';
 import 'package:aid_diary/database/app_database.dart';
 import 'package:aid_diary/database/entry_store.dart';
@@ -82,6 +83,7 @@ Map<String, Object?> _details(Entry entry) {
         },
     ],
     'attachments': EntryImagesProvider.instance.getForEntry(entry).length,
+    ...citationsJson(entry.id!),
   };
 }
 
@@ -426,9 +428,19 @@ final List<AppAction> entryActions = [
       const ActionParam('template', ParamType.string,
           'A template to start from: its id, or a ready-made one such as morning; the text goes below it',
           required: false),
+      const ActionParam('cite', ParamType.integer,
+          'An entry this one answers, as a comment on it does',
+          required: false),
+      const ActionParam('quote', ParamType.string,
+          'With cite: the words of that entry it answers',
+          required: false),
     ],
     run: (context, args) async {
       final fields = _Fields(args);
+      final cited = switch (args['cite']) {
+        final int id => [await citationOf(id, args['quote'] as String?)],
+        _ => null,
+      };
       final template = switch (args['template']) {
         final String id => await _templateOf(id),
         _ => null,
@@ -444,7 +456,7 @@ final List<AppAction> entryActions = [
           day: fields.day));
       final session = _store.beginDraft();
       final saved = await session.save((saved) =>
-          EntryDraft(entry: entry.copy(id: saved?.id), tags: [
+          EntryDraft(entry: entry.copy(id: saved?.id), refs: cited, tags: [
             for (final tagId in template?.tagIds ?? const <int>[])
               EntryTag(entryId: saved?.id ?? -1, tagId: tagId, timeCreate: now),
           ]));

@@ -2762,6 +2762,57 @@ class AppLocalizationsTa extends AppLocalizations {
   }
 
   @override
+  String get noteKeep => 'சேமி';
+
+  @override
+  String get noteComment => 'கருத்து';
+
+  @override
+  String get noteCommentHint => 'கடந்தகால உனக்கு எழுது';
+
+  @override
+  String get noteKept => 'பகுதி சேமிக்கப்பட்டது';
+
+  @override
+  String get notesPassages => 'சேமித்த பகுதிகள்';
+
+  @override
+  String get notesComments => 'கருத்துகள்';
+
+  @override
+  String get noteDeleteConfirm => 'இந்தக் குறிப்பை நீக்கவா?';
+
+  @override
+  String get editPastTitle => 'கடந்த நினைவைத் திருத்தவா?';
+
+  @override
+  String get editPastBody =>
+      'இந்தப் பதிவு முந்தைய நாளுடையது. பதிலளிக்க, உரையைத் தேர்ந்தெடுத்து சேமிக்கவும் அல்லது கருத்திடவும்.';
+
+  @override
+  String get editPastDontAsk => 'மீண்டும் கேட்காதே';
+
+  @override
+  String get editPastEdit => 'இருந்தாலும் திருத்து';
+
+  @override
+  String noteOnEntry(String date) {
+    return '$date பதிவைப் பற்றி';
+  }
+
+  @override
+  String get settingsConfirmEditPast => 'பழைய பதிவுகளைத் திருத்தும் முன் கேள்';
+
+  @override
+  String get commentExpand => 'விரி';
+
+  @override
+  String get refAdd => 'பதிவை மேற்கோள் காட்டு';
+
+  @override
+  String get refMissing => 'அந்தப் பதிவு இப்போது இல்லை';
+
+  @override
   String get moodClear => 'மனநிலையை நீக்கு';
 
   @override

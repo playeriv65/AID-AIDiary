@@ -5,6 +5,7 @@
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/models/image.dart';
+import 'package:aid_diary/providers/links_provider.dart';
 import 'package:aid_diary/sync/sync_service.dart';
 import 'package:aid_diary/time_manager.dart';
 import 'package:aid_diary/utils/entry_context_display.dart';
@@ -217,6 +218,17 @@ class JournalEntryRow extends StatelessWidget {
                                 ],
                                 if (entry.weather != null) ...[
                                   WeatherIcon(entry.weather!.code, size: 14),
+                                  const SizedBox(width: 6),
+                                ],
+                                // It answers another entry: a comment.
+                                if (entry.id case final id?
+                                    when LinksProvider.instance
+                                        .refsOf(id)
+                                        .isNotEmpty) ...[
+                                  Icon(Icons.format_quote_rounded,
+                                      key: ValueKey('journal-cites-$id'),
+                                      size: 14,
+                                      color: cs.primary),
                                   const SizedBox(width: 6),
                                 ],
                                 if (entry.activity != null) ...[

@@ -11,6 +11,7 @@ import 'package:aid_diary/database/entry_store.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/models/image.dart';
+import 'package:aid_diary/providers/links_provider.dart';
 import 'package:aid_diary/providers/entries_provider.dart';
 import 'package:aid_diary/providers/entry_images_provider.dart';
 import 'package:aid_diary/providers/tags_provider.dart';
@@ -21,6 +22,7 @@ import 'package:aid_diary/utils/entry_context_display.dart';
 import 'package:aid_diary/utils/entry_share.dart';
 import 'package:aid_diary/utils/entry_typography.dart';
 import 'package:aid_diary/utils/time_capsule.dart';
+import 'package:aid_diary/widgets/entry_links.dart';
 import 'package:aid_diary/widgets/delete_confirm_dialog.dart';
 import 'package:aid_diary/widgets/hidden_diary_scope.dart';
 import 'package:aid_diary/widgets/entry_tag_chips.dart';
@@ -94,6 +96,14 @@ class EntryViewPage extends StatelessWidget {
                 onPressed: () => AppActions.instance
                     .run('entry.favorite', {'id': entryId, 'value': !favorite}),
               ),
+            // A past entry is answered rather than rewritten.
+            if (isPastEntry(entry) && !entry.isHidden)
+              IconButton(
+                key: const ValueKey('entry-comment'),
+                tooltip: l10n.noteComment,
+                icon: const Icon(Icons.add_comment_outlined),
+                onPressed: () => showCommentDialog(context, entry),
+              ),
             IconButton(
               key: const ValueKey('diary-entry-edit'),
               tooltip: l10n.entryEdit,
@@ -162,13 +172,28 @@ class EntryViewPage extends StatelessWidget {
                           EntryDateBlock(entry: entry),
                           _Metadata(entry: entry),
                           const SizedBox(height: 16),
+                          // What it answers comes before what it says.
+                          ListenableBuilder(
+                            listenable: LinksProvider.instance,
+                            builder: (context, _) {
+                              final refs =
+                                  LinksProvider.instance.refsOf(entry.id!);
+                              return refs.isEmpty
+                                  ? const SizedBox.shrink()
+                                  : Padding(
+                                      padding: const EdgeInsets.only(bottom: 8),
+                                      child: CitationList(refs: refs));
+                            },
+                          ),
                           if (entry.text.isNotEmpty)
-                            SelectionArea(
+                            NotedEntryText(
+                              entry: entry,
                               child: ScaledMarkdown(
                                   data: entry.text,
                                   selectable: false,
                                   typography: EntryTypography.of(context)),
                             ),
+                          EntryLinksSection(entry: entry),
                         ],
                       ),
                     ),
@@ -200,6 +225,7 @@ class EntryViewPage extends StatelessWidget {
   }
 
   Future<void> _edit(BuildContext context, Entry entry) async {
+    if (!await confirmEditPast(context, entry) || !context.mounted) return;
     await EntryNavigation.edit(context, entry);
     onEntryEdited?.call(entry.id!);
   }

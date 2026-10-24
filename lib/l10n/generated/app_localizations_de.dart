@@ -2755,6 +2755,58 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String get noteKeep => 'Behalten';
+
+  @override
+  String get noteComment => 'Kommentieren';
+
+  @override
+  String get noteCommentHint => 'Schreib deinem früheren Ich';
+
+  @override
+  String get noteKept => 'Abschnitt behalten';
+
+  @override
+  String get notesPassages => 'Behaltene Abschnitte';
+
+  @override
+  String get notesComments => 'Kommentare';
+
+  @override
+  String get noteDeleteConfirm => 'Diese Notiz löschen?';
+
+  @override
+  String get editPastTitle => 'Eine vergangene Erinnerung bearbeiten?';
+
+  @override
+  String get editPastBody =>
+      'Dieser Eintrag stammt von einem früheren Tag. Um darauf zu antworten, markiere Text und behalte oder kommentiere ihn.';
+
+  @override
+  String get editPastDontAsk => 'Nicht mehr fragen';
+
+  @override
+  String get editPastEdit => 'Trotzdem bearbeiten';
+
+  @override
+  String noteOnEntry(String date) {
+    return 'Zum Eintrag vom $date';
+  }
+
+  @override
+  String get settingsConfirmEditPast =>
+      'Vor dem Bearbeiten vergangener Einträge fragen';
+
+  @override
+  String get commentExpand => 'Erweitern';
+
+  @override
+  String get refAdd => 'Eintrag zitieren';
+
+  @override
+  String get refMissing => 'Dieser Eintrag ist nicht mehr da';
+
+  @override
   String get moodClear => 'Stimmung entfernen';
 
   @override

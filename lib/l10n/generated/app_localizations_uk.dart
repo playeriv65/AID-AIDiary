@@ -2735,6 +2735,57 @@ class AppLocalizationsUk extends AppLocalizations {
   }
 
   @override
+  String get noteKeep => 'Зберегти';
+
+  @override
+  String get noteComment => 'Коментувати';
+
+  @override
+  String get noteCommentHint => 'Напишіть собі з минулого';
+
+  @override
+  String get noteKept => 'Уривок збережено';
+
+  @override
+  String get notesPassages => 'Збережені уривки';
+
+  @override
+  String get notesComments => 'Коментарі';
+
+  @override
+  String get noteDeleteConfirm => 'Видалити цю нотатку?';
+
+  @override
+  String get editPastTitle => 'Змінити минулий спогад?';
+
+  @override
+  String get editPastBody =>
+      'Цей запис зроблено в минулому. Щоб відповісти на нього, виділіть текст і збережіть або прокоментуйте його.';
+
+  @override
+  String get editPastDontAsk => 'Більше не питати';
+
+  @override
+  String get editPastEdit => 'Усе одно змінити';
+
+  @override
+  String noteOnEntry(String date) {
+    return 'Про запис від $date';
+  }
+
+  @override
+  String get settingsConfirmEditPast => 'Питати перед зміною минулих записів';
+
+  @override
+  String get commentExpand => 'Розгорнути';
+
+  @override
+  String get refAdd => 'Процитувати запис';
+
+  @override
+  String get refMissing => 'Цього запису більше немає';
+
+  @override
   String get moodClear => 'Очистити настрій';
 
   @override

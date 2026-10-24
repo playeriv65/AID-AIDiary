@@ -2747,6 +2747,57 @@ class AppLocalizationsPl extends AppLocalizations {
   }
 
   @override
+  String get noteKeep => 'Zachowaj';
+
+  @override
+  String get noteComment => 'Skomentuj';
+
+  @override
+  String get noteCommentHint => 'Napisz do siebie z przeszłości';
+
+  @override
+  String get noteKept => 'Fragment zachowany';
+
+  @override
+  String get notesPassages => 'Zachowane fragmenty';
+
+  @override
+  String get notesComments => 'Komentarze';
+
+  @override
+  String get noteDeleteConfirm => 'Usunąć tę notatkę?';
+
+  @override
+  String get editPastTitle => 'Edytować dawne wspomnienie?';
+
+  @override
+  String get editPastBody =>
+      'Ten wpis pochodzi z wcześniejszego dnia. Aby na niego odpowiedzieć, zaznacz tekst i zachowaj go lub skomentuj.';
+
+  @override
+  String get editPastDontAsk => 'Nie pytaj ponownie';
+
+  @override
+  String get editPastEdit => 'Edytuj mimo to';
+
+  @override
+  String noteOnEntry(String date) {
+    return 'O wpisie z $date';
+  }
+
+  @override
+  String get settingsConfirmEditPast => 'Pytaj przed edycją dawnych wpisów';
+
+  @override
+  String get commentExpand => 'Rozwiń';
+
+  @override
+  String get refAdd => 'Zacytuj wpis';
+
+  @override
+  String get refMissing => 'Tego wpisu już nie ma';
+
+  @override
   String get moodClear => 'Wyczyść nastrój';
 
   @override

@@ -2738,6 +2738,58 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
+  String get noteKeep => 'Bewaren';
+
+  @override
+  String get noteComment => 'Reageren';
+
+  @override
+  String get noteCommentHint => 'Schrijf aan je vroegere zelf';
+
+  @override
+  String get noteKept => 'Fragment bewaard';
+
+  @override
+  String get notesPassages => 'Bewaarde fragmenten';
+
+  @override
+  String get notesComments => 'Reacties';
+
+  @override
+  String get noteDeleteConfirm => 'Deze notitie verwijderen?';
+
+  @override
+  String get editPastTitle => 'Een herinnering van vroeger bewerken?';
+
+  @override
+  String get editPastBody =>
+      'Dit bericht is van een eerdere dag. Om erop te reageren, selecteer je tekst om te bewaren of erop te reageren.';
+
+  @override
+  String get editPastDontAsk => 'Niet meer vragen';
+
+  @override
+  String get editPastEdit => 'Toch bewerken';
+
+  @override
+  String noteOnEntry(String date) {
+    return 'Bij het bericht van $date';
+  }
+
+  @override
+  String get settingsConfirmEditPast =>
+      'Vragen voor het bewerken van eerdere berichten';
+
+  @override
+  String get commentExpand => 'Uitvouwen';
+
+  @override
+  String get refAdd => 'Een bericht citeren';
+
+  @override
+  String get refMissing => 'Dat bericht is er niet meer';
+
+  @override
   String get moodClear => 'Stemming wissen';
 
   @override

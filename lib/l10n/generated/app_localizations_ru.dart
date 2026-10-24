@@ -2753,6 +2753,58 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
+  String get noteKeep => 'Сохранить';
+
+  @override
+  String get noteComment => 'Комментировать';
+
+  @override
+  String get noteCommentHint => 'Напишите себе из прошлого';
+
+  @override
+  String get noteKept => 'Отрывок сохранён';
+
+  @override
+  String get notesPassages => 'Сохранённые отрывки';
+
+  @override
+  String get notesComments => 'Комментарии';
+
+  @override
+  String get noteDeleteConfirm => 'Удалить эту заметку?';
+
+  @override
+  String get editPastTitle => 'Изменить прошлое воспоминание?';
+
+  @override
+  String get editPastBody =>
+      'Эта запись сделана в прошлом. Чтобы ответить на неё, выделите текст и сохраните или прокомментируйте его.';
+
+  @override
+  String get editPastDontAsk => 'Больше не спрашивать';
+
+  @override
+  String get editPastEdit => 'Всё равно изменить';
+
+  @override
+  String noteOnEntry(String date) {
+    return 'О записи от $date';
+  }
+
+  @override
+  String get settingsConfirmEditPast =>
+      'Спрашивать перед изменением прошлых записей';
+
+  @override
+  String get commentExpand => 'Развернуть';
+
+  @override
+  String get refAdd => 'Процитировать запись';
+
+  @override
+  String get refMissing => 'Этой записи больше нет';
+
+  @override
   String get moodClear => 'Очистить настроение';
 
   @override

@@ -106,6 +106,16 @@ asks again. Dates are when it was settled. Ideas not built yet are in
   with System and the offered languages. Do not add a language subpage or
   separate system-language/override controls. Existing selected languages remain
   selected; System resumes following the platform locale.
+- Past entries are read and answered (2026-10-24, owner): selecting text in
+  an entry from an earlier day offers keeping the passage or commenting on
+  it, beside copy and select all. A comment is an entry in its own right,
+  dated the day it is written, citing what it answers; it can have a mood,
+  photos and tags and counts like any entry. It starts as a short form of a
+  few lines and can expand into the full editor. Any entry can cite other
+  entries, found by search, and an entry shows the entries answering it.
+  Kept passages are not entries; they are listed together under Kept
+  passages. Editing an entry from an earlier day asks first, with a "don't
+  ask again" choice (re-enabled in General settings).
 - Tags (2026-10-23): a new diary starts with no tags or categories; the
   favorite tag behind the star is made the first time an entry is starred.
   Tags keep the order the user arranges: long-press a tag in the picker to

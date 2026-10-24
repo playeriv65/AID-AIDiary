@@ -548,6 +548,13 @@ class _AppearanceSettingsPageState extends State<AppearanceSettings> {
                       onChanged: (value) => changeSetting(setting, value),
                     ),
                   const Divider(height: 32),
+                  SettingsToggle(
+                    key: const ValueKey('settings-confirm-edit-past'),
+                    title: l10n.settingsConfirmEditPast,
+                    setting: Settings.confirmEditPast,
+                    onChanged: (value) =>
+                        changeSetting(Settings.confirmEditPast, value),
+                  ),
                   SettingsDropdown<LanguageOption?>(
                     key: const ValueKey('settings-app-language'),
                     title: l10n.settingsAppLanguageTitle,

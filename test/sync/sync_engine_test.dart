@@ -9,6 +9,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:aid_diary/models/entry.dart';
+import 'package:aid_diary/models/entry_link.dart';
 import 'package:aid_diary/models/image.dart';
 import 'package:aid_diary/models/tag.dart';
 import 'package:aid_diary/models/tag_category.dart';
@@ -74,6 +75,44 @@ void main() {
     await laptop.sync(cloud);
     await phone.sync(cloud);
     expect(await hidden(phone), 0);
+  });
+
+  test('citations travel with their entry; kept passages on their own',
+      () async {
+    final lake = await phone.write('lake');
+    final reply = await phone.write('reply');
+    final lakeId =
+        (await phone.db.query(entriesTable, where: 'id = ?', whereArgs: [lake]))
+            .single[syncIdColumn] as String;
+    await phone.db.insert(entryRefsTable, {
+      EntryRefFields.entryId: reply,
+      EntryRefFields.target: lakeId,
+      EntryRefFields.quote: 'lake',
+      EntryRefFields.timeCreate: '2026-10-24T08:00:00.000',
+    });
+    await phone.db.insert(passagesTable, {
+      PassageFields.entryId: lake,
+      PassageFields.quote: 'lake',
+      PassageFields.timeCreate: '2026-10-24T08:00:00.000',
+    });
+    await phone.sync(cloud);
+    await laptop.sync(cloud);
+
+    final ref = (await laptop.db.query(entryRefsTable)).single;
+    expect(ref[EntryRefFields.entryId], await laptop.rowOf('reply'));
+    expect(ref[EntryRefFields.target], lakeId);
+    expect((await laptop.db.query(passagesTable)).single[PassageFields.entryId],
+        await laptop.rowOf('lake'));
+
+    // The cited entry goes for good; the citation keeps its quote.
+    await phone.db.delete(passagesTable);
+    await phone.db.delete(entriesTable, where: 'id = ?', whereArgs: [lake]);
+    await phone.sync(cloud);
+    await laptop.sync(cloud);
+    expect(await laptop.db.query(passagesTable), isEmpty);
+    expect(await laptop.texts(), ['reply']);
+    expect((await laptop.db.query(entryRefsTable)).single[EntryRefFields.quote],
+        'lake');
   });
 
   test('edits and deletions travel both ways', () async {

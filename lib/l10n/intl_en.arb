@@ -1590,6 +1590,25 @@
   "hiddenDiaryUnlock": "Unlock hidden entries",
   "hiddenDiaryAuthHint": "Use the app lock or your device's screen lock to unlock.",
   "hiddenDiaryWhere": "Hidden. To show it again: {path}",
+  "noteKeep": "Keep",
+  "noteComment": "Comment",
+  "noteCommentHint": "Write to your past self",
+  "noteKept": "Passage kept",
+  "notesPassages": "Kept passages",
+  "notesComments": "Comments",
+  "noteDeleteConfirm": "Delete this note?",
+  "editPastTitle": "Edit a past memory?",
+  "editPastBody": "This entry is from an earlier day. To answer it, select its text to keep or comment on a passage.",
+  "editPastDontAsk": "Don't ask again",
+  "editPastEdit": "Edit anyway",
+  "noteOnEntry": "On the entry of {date}",
+  "@noteOnEntry": {
+    "placeholders": {"date": {"type": "String"}}
+  },
+  "settingsConfirmEditPast": "Ask before editing past entries",
+  "commentExpand": "Expand",
+  "refAdd": "Cite an entry",
+  "refMissing": "That entry is no longer here",
   "@hiddenDiaryWhere": {
     "description": "Shown after hiding an entry; path is Settings > Security > Hidden entries.",
     "placeholders": {"path": {"type": "String"}}

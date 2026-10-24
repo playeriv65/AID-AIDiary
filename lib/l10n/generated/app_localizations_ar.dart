@@ -2717,6 +2717,57 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
+  String get noteKeep => 'احتفظ';
+
+  @override
+  String get noteComment => 'علّق';
+
+  @override
+  String get noteCommentHint => 'اكتب لنفسك في الماضي';
+
+  @override
+  String get noteKept => 'تم الاحتفاظ بالمقطع';
+
+  @override
+  String get notesPassages => 'المقاطع المحفوظة';
+
+  @override
+  String get notesComments => 'التعليقات';
+
+  @override
+  String get noteDeleteConfirm => 'حذف هذه الملاحظة؟';
+
+  @override
+  String get editPastTitle => 'تعديل ذكرى ماضية؟';
+
+  @override
+  String get editPastBody =>
+      'هذه التدوينة من يوم سابق. للرد عليها، حدّد النص للاحتفاظ به أو التعليق عليه.';
+
+  @override
+  String get editPastDontAsk => 'لا تسأل مجددًا';
+
+  @override
+  String get editPastEdit => 'تعديل على أي حال';
+
+  @override
+  String noteOnEntry(String date) {
+    return 'حول تدوينة $date';
+  }
+
+  @override
+  String get settingsConfirmEditPast => 'السؤال قبل تعديل التدوينات السابقة';
+
+  @override
+  String get commentExpand => 'توسيع';
+
+  @override
+  String get refAdd => 'اقتباس تدوينة';
+
+  @override
+  String get refMissing => 'لم تعد تلك التدوينة موجودة';
+
+  @override
   String get moodClear => 'مسح الحالة المزاجية';
 
   @override

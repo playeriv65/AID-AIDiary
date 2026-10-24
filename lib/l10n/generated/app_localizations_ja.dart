@@ -2655,6 +2655,56 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
+  String get noteKeep => '保存';
+
+  @override
+  String get noteComment => 'コメント';
+
+  @override
+  String get noteCommentHint => '過去の自分に書く';
+
+  @override
+  String get noteKept => 'この一節を保存しました';
+
+  @override
+  String get notesPassages => '保存した一節';
+
+  @override
+  String get notesComments => 'コメント';
+
+  @override
+  String get noteDeleteConfirm => 'このメモを削除しますか？';
+
+  @override
+  String get editPastTitle => '過去の記憶を編集しますか？';
+
+  @override
+  String get editPastBody => 'この日記は以前の日のものです。応えるなら、文字を選んで保存やコメントができます。';
+
+  @override
+  String get editPastDontAsk => '今後表示しない';
+
+  @override
+  String get editPastEdit => '編集する';
+
+  @override
+  String noteOnEntry(String date) {
+    return '$date の日記について';
+  }
+
+  @override
+  String get settingsConfirmEditPast => '過去の日記を編集する前に確認';
+
+  @override
+  String get commentExpand => '広げる';
+
+  @override
+  String get refAdd => '日記を引用';
+
+  @override
+  String get refMissing => '元の日記はもうありません';
+
+  @override
   String get moodClear => '気分をクリア';
 
   @override

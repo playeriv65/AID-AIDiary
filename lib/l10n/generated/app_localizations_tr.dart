@@ -2721,6 +2721,58 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
+  String get noteKeep => 'Sakla';
+
+  @override
+  String get noteComment => 'Yorum yap';
+
+  @override
+  String get noteCommentHint => 'Geçmişteki kendine yaz';
+
+  @override
+  String get noteKept => 'Bölüm saklandı';
+
+  @override
+  String get notesPassages => 'Saklanan bölümler';
+
+  @override
+  String get notesComments => 'Yorumlar';
+
+  @override
+  String get noteDeleteConfirm => 'Bu not silinsin mi?';
+
+  @override
+  String get editPastTitle => 'Geçmiş bir anı düzenlensin mi?';
+
+  @override
+  String get editPastBody =>
+      'Bu kayıt önceki bir güne ait. Yanıt vermek için metni seçip saklayabilir ya da yorum yapabilirsin.';
+
+  @override
+  String get editPastDontAsk => 'Bir daha sorma';
+
+  @override
+  String get editPastEdit => 'Yine de düzenle';
+
+  @override
+  String noteOnEntry(String date) {
+    return '$date tarihli kayıt hakkında';
+  }
+
+  @override
+  String get settingsConfirmEditPast =>
+      'Geçmiş kayıtları düzenlemeden önce sor';
+
+  @override
+  String get commentExpand => 'Genişlet';
+
+  @override
+  String get refAdd => 'Bir kaydı alıntıla';
+
+  @override
+  String get refMissing => 'O kayıt artık yok';
+
+  @override
   String get moodClear => 'Ruh halini temizle';
 
   @override

@@ -2714,6 +2714,57 @@ class AppLocalizationsFa extends AppLocalizations {
   }
 
   @override
+  String get noteKeep => 'نگه‌داشتن';
+
+  @override
+  String get noteComment => 'نظر';
+
+  @override
+  String get noteCommentHint => 'برای خودِ گذشته‌ات بنویس';
+
+  @override
+  String get noteKept => 'بخش نگه داشته شد';
+
+  @override
+  String get notesPassages => 'بخش‌های نگه‌داشته';
+
+  @override
+  String get notesComments => 'نظرها';
+
+  @override
+  String get noteDeleteConfirm => 'این یادداشت حذف شود؟';
+
+  @override
+  String get editPastTitle => 'خاطره‌ای از گذشته ویرایش شود؟';
+
+  @override
+  String get editPastBody =>
+      'این یادداشت مربوط به روزی پیش‌تر است. برای پاسخ به آن، متن را انتخاب کنید تا نگه دارید یا نظر بدهید.';
+
+  @override
+  String get editPastDontAsk => 'دیگر نپرس';
+
+  @override
+  String get editPastEdit => 'با این حال ویرایش کن';
+
+  @override
+  String noteOnEntry(String date) {
+    return 'درباره یادداشت $date';
+  }
+
+  @override
+  String get settingsConfirmEditPast => 'پیش از ویرایش یادداشت‌های گذشته بپرس';
+
+  @override
+  String get commentExpand => 'گسترش';
+
+  @override
+  String get refAdd => 'نقل از یک یادداشت';
+
+  @override
+  String get refMissing => 'آن یادداشت دیگر وجود ندارد';
+
+  @override
   String get moodClear => 'پاک کردن حال‌وهوا';
 
   @override

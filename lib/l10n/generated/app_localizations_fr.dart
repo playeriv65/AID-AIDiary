@@ -2760,6 +2760,58 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String get noteKeep => 'Garder';
+
+  @override
+  String get noteComment => 'Commenter';
+
+  @override
+  String get noteCommentHint => 'Écrivez à votre moi passé';
+
+  @override
+  String get noteKept => 'Passage gardé';
+
+  @override
+  String get notesPassages => 'Passages gardés';
+
+  @override
+  String get notesComments => 'Commentaires';
+
+  @override
+  String get noteDeleteConfirm => 'Supprimer cette note ?';
+
+  @override
+  String get editPastTitle => 'Modifier un souvenir passé ?';
+
+  @override
+  String get editPastBody =>
+      'Cette entrée date d’un jour précédent. Pour y répondre, sélectionnez du texte pour le garder ou le commenter.';
+
+  @override
+  String get editPastDontAsk => 'Ne plus demander';
+
+  @override
+  String get editPastEdit => 'Modifier quand même';
+
+  @override
+  String noteOnEntry(String date) {
+    return 'Sur l’entrée du $date';
+  }
+
+  @override
+  String get settingsConfirmEditPast =>
+      'Demander avant de modifier une entrée passée';
+
+  @override
+  String get commentExpand => 'Développer';
+
+  @override
+  String get refAdd => 'Citer une entrée';
+
+  @override
+  String get refMissing => 'Cette entrée n’existe plus';
+
+  @override
   String get moodClear => 'Effacer l’humeur';
 
   @override

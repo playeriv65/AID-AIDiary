@@ -7,6 +7,7 @@ import 'dart:io';
 import 'package:aid_diary/actions/app_action.dart';
 import 'package:aid_diary/database/entry_store.dart';
 import 'package:aid_diary/models/entry.dart';
+import 'package:aid_diary/models/entry_link.dart';
 import 'package:aid_diary/models/image.dart';
 import 'package:aid_diary/providers/entry_images_provider.dart';
 import 'package:aid_diary/providers/tags_provider.dart';
@@ -45,12 +46,15 @@ Future<Entry> openEntryOf(ActionArgs args) async {
 }
 
 /// Writes [entry] and, when given, [images] (in the order to show, highest
-/// rank first); its tags stay. Files the images no longer name go away.
-Future<Entry> saveEntry(Entry entry, {List<EntryImage>? images}) async {
+/// rank first) and the entries it cites ([refs]); its tags stay. Files the
+/// images no longer name go away.
+Future<Entry> saveEntry(Entry entry,
+    {List<EntryImage>? images, List<EntryRef>? refs}) async {
   final session = EntryStore.instance.beginDraft(entry);
   final saved = await session.save((_) => EntryDraft(
       entry: entry,
       tags: TagsProvider.instance.getEntryTagsForEntry(entry.id!),
+      refs: refs,
       images: images ??
           [
             for (final image in EntryImagesProvider.instance.getForEntry(entry))

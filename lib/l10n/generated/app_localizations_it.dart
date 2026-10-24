@@ -2747,6 +2747,58 @@ class AppLocalizationsIt extends AppLocalizations {
   }
 
   @override
+  String get noteKeep => 'Conserva';
+
+  @override
+  String get noteComment => 'Commenta';
+
+  @override
+  String get noteCommentHint => 'Scrivi al te del passato';
+
+  @override
+  String get noteKept => 'Passo conservato';
+
+  @override
+  String get notesPassages => 'Passi conservati';
+
+  @override
+  String get notesComments => 'Commenti';
+
+  @override
+  String get noteDeleteConfirm => 'Eliminare questa nota?';
+
+  @override
+  String get editPastTitle => 'Modificare un ricordo passato?';
+
+  @override
+  String get editPastBody =>
+      'Questa voce è di un giorno precedente. Per rispondere, seleziona il testo per conservarlo o commentarlo.';
+
+  @override
+  String get editPastDontAsk => 'Non chiedere più';
+
+  @override
+  String get editPastEdit => 'Modifica comunque';
+
+  @override
+  String noteOnEntry(String date) {
+    return 'Sulla voce del $date';
+  }
+
+  @override
+  String get settingsConfirmEditPast =>
+      'Chiedi prima di modificare voci passate';
+
+  @override
+  String get commentExpand => 'Espandi';
+
+  @override
+  String get refAdd => 'Cita una voce';
+
+  @override
+  String get refMissing => 'Quella voce non c’è più';
+
+  @override
   String get moodClear => 'Rimuovi umore';
 
   @override

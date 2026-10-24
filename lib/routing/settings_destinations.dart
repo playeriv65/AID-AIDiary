@@ -5,6 +5,7 @@
 import 'package:aid_diary/device_info_service.dart';
 import 'package:aid_diary/actions/app_action.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/pages/passages_page.dart';
 import 'package:aid_diary/pages/recently_deleted_page.dart';
 import 'package:aid_diary/pages/hidden_entries_page.dart';
 import 'package:aid_diary/pages/search_page.dart';
@@ -40,6 +41,8 @@ final List<Destination> settingsDestinations = [
   pageDestination('settings/feedback',
       'Write feedback and open GitHub or email', (_) => const FeedbackPage()),
   pageDestination('search', 'Search entries', (_) => const SearchPage()),
+  pageDestination('passages', 'Every passage kept from the diary',
+      (_) => const PassagesPage()),
   pageDestination(
       'statistics',
       'Statistics: streaks, moods, tags',

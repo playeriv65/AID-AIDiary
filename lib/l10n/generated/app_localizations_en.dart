@@ -2706,6 +2706,57 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get noteKeep => 'Keep';
+
+  @override
+  String get noteComment => 'Comment';
+
+  @override
+  String get noteCommentHint => 'Write to your past self';
+
+  @override
+  String get noteKept => 'Passage kept';
+
+  @override
+  String get notesPassages => 'Kept passages';
+
+  @override
+  String get notesComments => 'Comments';
+
+  @override
+  String get noteDeleteConfirm => 'Delete this note?';
+
+  @override
+  String get editPastTitle => 'Edit a past memory?';
+
+  @override
+  String get editPastBody =>
+      'This entry is from an earlier day. To answer it, select its text to keep or comment on a passage.';
+
+  @override
+  String get editPastDontAsk => 'Don\'t ask again';
+
+  @override
+  String get editPastEdit => 'Edit anyway';
+
+  @override
+  String noteOnEntry(String date) {
+    return 'On the entry of $date';
+  }
+
+  @override
+  String get settingsConfirmEditPast => 'Ask before editing past entries';
+
+  @override
+  String get commentExpand => 'Expand';
+
+  @override
+  String get refAdd => 'Cite an entry';
+
+  @override
+  String get refMissing => 'That entry is no longer here';
+
+  @override
   String get moodClear => 'Clear mood';
 
   @override

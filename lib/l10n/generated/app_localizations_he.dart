@@ -2699,6 +2699,57 @@ class AppLocalizationsHe extends AppLocalizations {
   }
 
   @override
+  String get noteKeep => 'שמירה';
+
+  @override
+  String get noteComment => 'תגובה';
+
+  @override
+  String get noteCommentHint => 'כתבו לעצמכם מהעבר';
+
+  @override
+  String get noteKept => 'הקטע נשמר';
+
+  @override
+  String get notesPassages => 'קטעים שמורים';
+
+  @override
+  String get notesComments => 'תגובות';
+
+  @override
+  String get noteDeleteConfirm => 'למחוק את ההערה?';
+
+  @override
+  String get editPastTitle => 'לערוך זיכרון מהעבר?';
+
+  @override
+  String get editPastBody =>
+      'הרשומה הזו מיום קודם. כדי להגיב לה, בחרו טקסט לשמירה או לתגובה.';
+
+  @override
+  String get editPastDontAsk => 'אל תשאל שוב';
+
+  @override
+  String get editPastEdit => 'לערוך בכל זאת';
+
+  @override
+  String noteOnEntry(String date) {
+    return 'על הרשומה מ־$date';
+  }
+
+  @override
+  String get settingsConfirmEditPast => 'לשאול לפני עריכת רשומות קודמות';
+
+  @override
+  String get commentExpand => 'הרחבה';
+
+  @override
+  String get refAdd => 'ציטוט רשומה';
+
+  @override
+  String get refMissing => 'הרשומה הזו כבר לא כאן';
+
+  @override
   String get moodClear => 'ניקוי מצב הרוח';
 
   @override

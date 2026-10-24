@@ -2743,6 +2743,58 @@ class AppLocalizationsCa extends AppLocalizations {
   }
 
   @override
+  String get noteKeep => 'Desa';
+
+  @override
+  String get noteComment => 'Comenta';
+
+  @override
+  String get noteCommentHint => 'Escriu al teu jo del passat';
+
+  @override
+  String get noteKept => 'Fragment desat';
+
+  @override
+  String get notesPassages => 'Fragments desats';
+
+  @override
+  String get notesComments => 'Comentaris';
+
+  @override
+  String get noteDeleteConfirm => 'Vols suprimir aquesta nota?';
+
+  @override
+  String get editPastTitle => 'Vols editar un record passat?';
+
+  @override
+  String get editPastBody =>
+      'Aquesta entrada és d’un dia anterior. Per respondre-la, selecciona text per desar-lo o comentar-lo.';
+
+  @override
+  String get editPastDontAsk => 'No ho tornis a preguntar';
+
+  @override
+  String get editPastEdit => 'Edita igualment';
+
+  @override
+  String noteOnEntry(String date) {
+    return 'Sobre l’entrada del $date';
+  }
+
+  @override
+  String get settingsConfirmEditPast =>
+      'Pregunta abans d’editar entrades passades';
+
+  @override
+  String get commentExpand => 'Amplia';
+
+  @override
+  String get refAdd => 'Cita una entrada';
+
+  @override
+  String get refMissing => 'Aquesta entrada ja no hi és';
+
+  @override
   String get moodClear => 'Esborra l’estat d’ànim';
 
   @override

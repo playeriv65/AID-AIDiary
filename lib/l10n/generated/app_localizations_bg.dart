@@ -2737,6 +2737,58 @@ class AppLocalizationsBg extends AppLocalizations {
   }
 
   @override
+  String get noteKeep => 'Запази';
+
+  @override
+  String get noteComment => 'Коментирай';
+
+  @override
+  String get noteCommentHint => 'Пиши на миналото си аз';
+
+  @override
+  String get noteKept => 'Откъсът е запазен';
+
+  @override
+  String get notesPassages => 'Запазени откъси';
+
+  @override
+  String get notesComments => 'Коментари';
+
+  @override
+  String get noteDeleteConfirm => 'Да се изтрие ли тази бележка?';
+
+  @override
+  String get editPastTitle => 'Да се редактира ли минал спомен?';
+
+  @override
+  String get editPastBody =>
+      'Този запис е от по-ранен ден. За да му отговорите, маркирайте текст, за да го запазите или коментирате.';
+
+  @override
+  String get editPastDontAsk => 'Не питай отново';
+
+  @override
+  String get editPastEdit => 'Редактирай въпреки това';
+
+  @override
+  String noteOnEntry(String date) {
+    return 'За записа от $date';
+  }
+
+  @override
+  String get settingsConfirmEditPast =>
+      'Питай преди редактиране на минали записи';
+
+  @override
+  String get commentExpand => 'Разгъни';
+
+  @override
+  String get refAdd => 'Цитирай запис';
+
+  @override
+  String get refMissing => 'Този запис вече го няма';
+
+  @override
   String get moodClear => 'Изчистване на настроението';
 
   @override

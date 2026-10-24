@@ -4944,6 +4944,102 @@ abstract class AppLocalizations {
   /// **'Hidden. To show it again: {path}'**
   String hiddenDiaryWhere(String path);
 
+  /// No description provided for @noteKeep.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep'**
+  String get noteKeep;
+
+  /// No description provided for @noteComment.
+  ///
+  /// In en, this message translates to:
+  /// **'Comment'**
+  String get noteComment;
+
+  /// No description provided for @noteCommentHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Write to your past self'**
+  String get noteCommentHint;
+
+  /// No description provided for @noteKept.
+  ///
+  /// In en, this message translates to:
+  /// **'Passage kept'**
+  String get noteKept;
+
+  /// No description provided for @notesPassages.
+  ///
+  /// In en, this message translates to:
+  /// **'Kept passages'**
+  String get notesPassages;
+
+  /// No description provided for @notesComments.
+  ///
+  /// In en, this message translates to:
+  /// **'Comments'**
+  String get notesComments;
+
+  /// No description provided for @noteDeleteConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this note?'**
+  String get noteDeleteConfirm;
+
+  /// No description provided for @editPastTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit a past memory?'**
+  String get editPastTitle;
+
+  /// No description provided for @editPastBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This entry is from an earlier day. To answer it, select its text to keep or comment on a passage.'**
+  String get editPastBody;
+
+  /// No description provided for @editPastDontAsk.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t ask again'**
+  String get editPastDontAsk;
+
+  /// No description provided for @editPastEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit anyway'**
+  String get editPastEdit;
+
+  /// No description provided for @noteOnEntry.
+  ///
+  /// In en, this message translates to:
+  /// **'On the entry of {date}'**
+  String noteOnEntry(String date);
+
+  /// No description provided for @settingsConfirmEditPast.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask before editing past entries'**
+  String get settingsConfirmEditPast;
+
+  /// No description provided for @commentExpand.
+  ///
+  /// In en, this message translates to:
+  /// **'Expand'**
+  String get commentExpand;
+
+  /// No description provided for @refAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Cite an entry'**
+  String get refAdd;
+
+  /// No description provided for @refMissing.
+  ///
+  /// In en, this message translates to:
+  /// **'That entry is no longer here'**
+  String get refMissing;
+
   /// No description provided for @moodClear.
   ///
   /// In en, this message translates to:

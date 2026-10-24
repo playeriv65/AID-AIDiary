@@ -7,6 +7,7 @@ library;
 
 import 'package:aid_diary/database/app_database.dart';
 import 'package:aid_diary/models/entry.dart';
+import 'package:aid_diary/models/entry_link.dart';
 import 'package:aid_diary/models/image.dart';
 import 'package:aid_diary/models/tag.dart';
 import 'package:aid_diary/models/tag_category.dart';
@@ -207,6 +208,36 @@ void main() {
     expect(await db.query('sync_media_objects'), isEmpty);
     expect(await changes(), before);
     expect(await db.query(entriesTable), hasLength(1));
+  });
+
+  test('version 15 gains citations and kept passages, synced from the start',
+      () async {
+    await AppDatabase.instance.createSchema(db);
+    // As version 15 had it: neither table, nor their indexes and triggers.
+    await db.execute('DROP TABLE $entryRefsTable');
+    await db.execute('DROP TABLE $passagesTable');
+    final entry = await addEntry('lake');
+
+    await AppDatabase.instance.upgradeSchema(db, 15, 16);
+    await db.delete(syncChangesTable);
+    await db.insert(passagesTable, {
+      PassageFields.entryId: entry,
+      PassageFields.quote: 'lake',
+      PassageFields.timeCreate: '2026-10-24T08:00:00.000',
+    });
+    final passage = (await db.query(passagesTable)).single;
+    expect(passage[syncIdColumn], matches(RegExp(r'^[0-9a-f]{32}$')));
+    expect((await changes()).keys, ['passage:${passage[syncIdColumn]}']);
+
+    // A citation is part of its entry: that entry is what changed.
+    await db.delete(syncChangesTable);
+    await db.insert(entryRefsTable, {
+      EntryRefFields.entryId: entry,
+      EntryRefFields.target: 'elsewhere',
+      EntryRefFields.timeCreate: '2026-10-24T08:00:00.000',
+    });
+    expect(
+        (await changes()).keys, ['entry:${await idOf(entriesTable, entry)}']);
   });
 
   test('version 14 drops the starter tags and categories nobody used',
