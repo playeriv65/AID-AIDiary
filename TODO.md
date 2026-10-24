@@ -7,6 +7,35 @@ The reference is Journey 5.7.0C for Android tablets and phones; Windows uses the
 
 Probably skip (Journey has them, but they need cloud or AI or add little): Google Fit, rate dialog, live chat, external-link warning, automatic media categories (an image classifier), an in-app media picker.
 
+## Past entries: passages and comments (owner request 2026-10-23)
+For entries whose diary day is not today, reading is the main way in:
+
+- Selecting text in the reader offers copy, select all, save the passage
+  (favourite) and comment on it.
+- Editing asks first ("edit a past memory? to comment, just select text"),
+  with a "don't ask again" choice.
+- A comment records its own time and place, is searchable, and appears as
+  an item on the day it was written beside that day's entries ("I read this
+  today and wrote a little").
+- Needs a schema: passages (entry, text range/quote, created) and comments
+  (entry, optional passage, text, created, place), synced and in full
+  backups. Design before building.
+
+## Appearance (owner request 2026-10-23)
+- Fewer accent colours, including a pure black-and-white one.
+- The accent colours only key marks (logo, key icons, emphasised text); it
+  must not tint backgrounds or surfaces.
+
+## Build automation (owner request 2026-10-23)
+- Daily CI (tests, analysis, Android and Windows packages) and a nightly
+  build on GitHub Actions. The repository is private today, so Actions
+  minutes are metered unless it becomes public; publishing it needs a
+  history review for personal data first. A nightly installable over the
+  owner's app needs the release key as a repository secret, or a separate
+  key for the development flavour.
+- iOS builds would first need the iOS target restored (removed; the
+  product targets Windows and Android).
+
 ## Deferred features
 - Finer moods: emotion words plus "who with / where" context (How We Feel). This would sharpen "What makes me feel…".
 - Goals and habits on top of trackers: target values, streaks, milestones (Daylio, Stoic).

@@ -114,6 +114,22 @@ asks again. Dates are when it was settled. Ideas not built yet are in
   from another app places the tags it makes after the diary's own, most used
   first, once; sync keeps the arranged order. Picking a tag highlights it
   where it is instead of moving it to the top.
+- Journal and editor details (2026-10-23):
+  - New entries start from a round button with a quill, no text label.
+  - The journal's calendar button unfolds a calendar in place below the
+    search card; tapping a day turns the list to that day (or the nearest
+    earlier one) instead of opening entries.
+  - Journal cards name their tags; the favorite tag shows as a heart.
+  - The editor title is the diary day as a date only. The creation date and
+    time appear in small print only when they fall on another day. The
+    diary-day picker asks which day the entry is about and always shows the
+    creation time. The mood button sits beside the tags button.
+  - Hiding an entry shows a passing notice saying where to show it again.
+  - Weather uses the colour Meteocons set rather than monochrome glyphs.
+- Map (2026-10-23): every point is a counted circle, even for one entry. A
+  point with several entries opens them as a list of their own; zooming is
+  left to the fingers. A pinch does not rotate the map unless clearly
+  turned, and a map left slightly turned returns to north.
 - Random walk matters to the owner, who relies on One Diary's: keep it
   good.
 - Appearance is independently configurable: light/system theme, optional
