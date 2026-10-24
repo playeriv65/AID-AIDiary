@@ -356,3 +356,16 @@ implementation boundaries and verification results belong in
 - Whether `ui.navigate to=entry` should follow the layout as a tap does
   (detail pane on wide windows) instead of always pushing a page.
 - Whether voice-note transcription on the device fits "no AI".
+- Repository visibility (2026-10-24): it is private, so Actions minutes are
+  metered and CI runs daily. Making it public needs a history review for
+  personal data and keys first.
+- Nightly installs: CI has no signing key, so its packages cannot update
+  an installed app. Options: the release key as a repository secret, or a
+  separate key for the development flavor only.
+- iOS: the target was removed; building it in CI would first restore it.
+- "收藏" names both the star (favorite tag) and keeping a passage; one of
+  them may want another word (e.g. 摘录 for passages).
+- Compressed photos drop their metadata (date, place) after it is read on
+  attaching; whether to carry it into the WebP.
+- Commenting is offered on entries from earlier days only; whether today's
+  entries should offer it too.
