@@ -24,26 +24,39 @@ class SettingsDropdown<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Beside an icon and title, a button as wide as its widest choice (a
+    // long language name) would leave the title too little room.
     final dropdown = DropdownButton<T>(
         underline: Container(),
         elevation: 1,
         isDense: true,
-        isExpanded: false,
+        isExpanded: leadingIcon != null,
         alignment: AlignmentDirectional.centerEnd,
         borderRadius: BorderRadius.circular(20),
         value: value,
         items: options,
-        selectedItemBuilder: selectedItemBuilder,
+        selectedItemBuilder: selectedItemBuilder ??
+            (leadingIcon == null
+                ? null
+                : (_) => [
+                      for (final option in options)
+                        Align(
+                            alignment: AlignmentDirectional.centerEnd,
+                            child: option.child),
+                    ]),
         onChanged: onChanged);
 
+    // Laid out as a SettingsCategory row, so a list of both lines up.
     if (leadingIcon != null) {
       return ListTile(
-        leading: Icon(leadingIcon),
-        title: Text(
-          title,
-          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+        leading: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Icon(leadingIcon),
         ),
-        trailing: dropdown,
+        title: Text(title),
+        minVerticalPadding: 18,
+        trailing: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 140), child: dropdown),
       );
     }
 
