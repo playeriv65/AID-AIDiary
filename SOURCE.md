@@ -48,4 +48,4 @@ Entry storage (SQLite), photos, moods, tags and trackers, templates, statistics,
 
 ## Removed
 
-iOS, macOS, Linux and web targets; the upstream release scripts, Nix and AppImage packaging, store-screenshot and banner pipelines, and the Flutter SDK submodule.
+iOS, macOS and web targets (Linux was removed too and recreated from the Flutter template on 2026-10-24); the upstream release scripts, Nix and AppImage packaging, store-screenshot and banner pipelines, and the Flutter SDK submodule.

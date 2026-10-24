@@ -2,9 +2,9 @@
 
 [English](../../README.md) | [简体中文](README.zh-CN.md) | **日本語** | [한국어](README.ko.md)
 
-Flutter で作られた、Windows と Android 向けのプライベートな日記アプリです。
+Flutter で作られた、Windows、Android、Linux 向けのプライベートな日記アプリです。
 
-最新の `main` のビルドは [nightly プレリリース](https://github.com/playeriv65/AID-AIDiary/releases/tag/nightly)にあります（Android APK と Windows 用 ZIP）。デバッグ鍵で署名されているため新規インストールはできますが、リリース鍵で署名されたインストールを上書きすることはできません。
+最新の `main` のビルドは [nightly プレリリース](https://github.com/playeriv65/AID-AIDiary/releases/tag/nightly)にあります（Android APK、Windows 用 ZIP、Linux 用 tar）。デバッグ鍵で署名されているため新規インストールはできますが、リリース鍵で署名されたインストールを上書きすることはできません。
 
 ## 画面
 
@@ -121,7 +121,7 @@ Android のビルドは JDK 23 で動きます。多くのプラグインが Kot
 
 スクリーンショットは `tool/screenshots/` のウィジェットテストが実際のフォント（Flutter SDK のアイコン、Windows の Noto Sans SC と Segoe Emoji）で描画し、ウィンドウは開きません。`-TestFiles` を渡して影響するスクリーンショットのファイルだけを描画し、画像を確認してください。これらのスクリプトはゴールデン画像を自動比較しません。
 
-プラットフォーム：Windows と Android。iOS、macOS、Linux、Web は構成されていません。
+プラットフォーム：Windows、Android、Linux（nightly でパッケージを提供。Linux ではまだ動画とボイスメモを再生できず、非表示の日記にはアプリのパスワードが必要です）。iOS と macOS は今後対応予定、Web は構成されていません。
 
 ## ライセンス
 

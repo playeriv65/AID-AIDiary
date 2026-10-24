@@ -2,9 +2,9 @@
 
 [English](../../README.md) | [简体中文](README.zh-CN.md) | [日本語](README.ja.md) | **한국어**
 
-Flutter로 만든 Windows·Android용 개인 일기 앱입니다.
+Flutter로 만든 Windows·Android·Linux용 개인 일기 앱입니다.
 
-최신 `main` 빌드는 [nightly 사전 릴리스](https://github.com/playeriv65/AID-AIDiary/releases/tag/nightly)에 있습니다(Android APK와 Windows ZIP). 디버그 키로 서명되어 새로 설치할 수는 있지만, 릴리스 키로 서명된 설치본을 업데이트할 수는 없습니다.
+최신 `main` 빌드는 [nightly 사전 릴리스](https://github.com/playeriv65/AID-AIDiary/releases/tag/nightly)에 있습니다(Android APK, Windows ZIP, Linux tar). 디버그 키로 서명되어 새로 설치할 수는 있지만, 릴리스 키로 서명된 설치본을 업데이트할 수는 없습니다.
 
 ## 화면
 
@@ -121,7 +121,7 @@ Android 빌드는 JDK 23에서 실행됩니다. 많은 플러그인이 Kotlin JV
 
 스크린샷은 `tool/screenshots/`의 위젯 테스트가 실제 글꼴(Flutter SDK 아이콘, Windows의 Noto Sans SC와 Segoe Emoji)로 렌더링하며 창은 열리지 않습니다. `-TestFiles`를 넘겨 영향받는 스크린샷 파일만 렌더링하고 이미지를 확인하세요. 이 스크립트들은 골든 이미지를 자동으로 비교하지 않습니다.
 
-플랫폼: Windows와 Android. iOS, macOS, Linux, 웹은 구성되어 있지 않습니다.
+플랫폼: Windows, Android, Linux(nightly 패키지 제공. Linux에서는 아직 동영상과 음성 메모를 재생할 수 없고, 숨긴 일기에는 앱 비밀번호가 필요합니다). iOS와 macOS는 나중에 지원하며, 웹은 구성되어 있지 않습니다.
 
 ## 라이선스
 

@@ -2,9 +2,9 @@
 
 **English** | [简体中文](docs/readme/README.zh-CN.md) | [日本語](docs/readme/README.ja.md) | [한국어](docs/readme/README.ko.md)
 
-A private diary app for Windows and Android, built with Flutter.
+A private diary app for Windows, Android and Linux, built with Flutter.
 
-Builds of the latest `main` are on the [nightly prerelease](https://github.com/playeriv65/AID-AIDiary/releases/tag/nightly) (Android APKs and a Windows ZIP). They are signed with a debug key, so they install fresh but cannot update an installation signed with the release key.
+Builds of the latest `main` are on the [nightly prerelease](https://github.com/playeriv65/AID-AIDiary/releases/tag/nightly) (Android APKs, a Windows ZIP and a Linux tarball). They are signed with a debug key, so they install fresh but cannot update an installation signed with the release key.
 
 ## Screens
 
@@ -130,7 +130,7 @@ The project-wide [testing policy](docs/TESTING.md) defines the change-to-test ma
 
 Screenshots are rendered by widget tests in `tool/screenshots/` with real fonts (Flutter SDK icons, Windows Noto Sans SC and Segoe Emoji); no window opens. Pass `-TestFiles` to render only the affected screenshot file and inspect the images: these scripts do not automatically compare golden images.
 
-Platforms: Windows and Android. iOS, macOS, Linux and web are not configured.
+Platforms: Windows, Android and Linux (nightly package; on Linux, video and voice notes do not play yet and hidden diaries need an app password). iOS and macOS will follow; web is not configured.
 
 ## License
 

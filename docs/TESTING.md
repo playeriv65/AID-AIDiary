@@ -262,14 +262,15 @@ Two workflows run on GitHub's runners:
 - Windows: `flutter analyze`, the offline suite (`--exclude-tags live`), the
   CLI's analysis, tests and executable, and a Windows release bundle.
 - Android: release APKs of the everyday and development flavors.
+- Linux: a release bundle (GTK) and the `aid` executable.
 - Server: `go vet` and `go test`.
 
 When all pass, the rolling prerelease `nightly` is replaced with the APKs,
-the Windows ZIP and `aid.exe`. CI has no signing key: its packages are
+the Windows ZIP and `aid.exe`, and the Linux tarball and `aid`. CI has no signing key: its packages are
 signed with the debug key, which proves they build but cannot update an
 installed release; install those from a local `scripts/dev.ps1` build. The
-repository is public, so Actions minutes are free. iOS, macOS, Linux and web
-are not targets (removed), so CI does not package them.
+repository is public, so Actions minutes are free. iOS, macOS and web are
+not targets, so CI does not package them.
 
 ## Research behind this policy
 

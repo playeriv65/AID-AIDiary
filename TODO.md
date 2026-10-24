@@ -18,8 +18,15 @@ Probably skip (Journey has them, but they need cloud or AI or add little): Googl
   (`docs/TESTING.md`, "Continuous integration"). Open: a nightly that
   installs over the owner's app needs the release key as a repository
   secret, or a separate key for the development flavour.
-- iOS builds would first need the iOS target restored (removed; the
-  product targets Windows and Android).
+- Linux (owner request 2026-10-24): target restored and packaged nightly.
+  Open: video and voice-note playback (`video_player` has no Linux
+  implementation; the player shows "unavailable"), unlocking hidden
+  diaries without an app password (no system authentication on Linux),
+  a desktop entry and icon for the bundle, and a check on a real Linux
+  desktop.
+- iOS and macOS (owner 2026-10-24: "以后能做了再做"): restore the targets
+  and package them once there is an Apple developer account for signing;
+  CI would need a macOS runner.
 
 ## Deferred features
 - Finer moods: emotion words plus "who with / where" context (How We Feel). This would sharpen "What makes me feel…".

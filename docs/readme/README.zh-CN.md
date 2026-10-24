@@ -2,9 +2,9 @@
 
 [English](../../README.md) | **简体中文** | [日本語](README.ja.md) | [한국어](README.ko.md)
 
-一款用 Flutter 写的私人日记应用，支持 Windows 和 Android。
+一款用 Flutter 写的私人日记应用，支持 Windows、Android 和 Linux。
 
-最新 `main` 的构建在 [nightly 预发布版本](https://github.com/playeriv65/AID-AIDiary/releases/tag/nightly)里（Android APK 和 Windows 压缩包）。它们用调试密钥签名，可以全新安装，但不能覆盖用正式密钥签名的安装。
+最新 `main` 的构建在 [nightly 预发布版本](https://github.com/playeriv65/AID-AIDiary/releases/tag/nightly)里（Android APK、Windows 压缩包和 Linux tar 包）。它们用调试密钥签名，可以全新安装，但不能覆盖用正式密钥签名的安装。
 
 ## 界面
 
@@ -121,7 +121,7 @@ Android 构建使用 JDK 23：根目录的 `android/build.gradle` 让每个模�
 
 截图由 `tool/screenshots/` 里的 widget 测试用真实字体渲染（Flutter SDK 图标、Windows 的 Noto Sans SC 和 Segoe Emoji），不打开窗口。传入 `-TestFiles` 只渲染受影响的截图文件并检查图片：这些脚本不会自动比对基准图。
 
-平台：Windows 和 Android。iOS、macOS、Linux 和网页版未配置。
+平台：Windows、Android 和 Linux（nightly 提供安装包；Linux 上暂时不能播放视频和语音，隐藏日记需要设置应用密码）。iOS 和 macOS 以后会做；网页版未配置。
 
 ## 许可证
 

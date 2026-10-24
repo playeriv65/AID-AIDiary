@@ -6,6 +6,10 @@ asks again. Dates are when it was settled. Ideas not built yet are in
 
 ## What the app is
 
+- Platforms (2026-10-24): Windows and Android, plus Linux packaged nightly.
+  iOS and macOS come later, when there is an Apple account to sign with
+  (TODO "Build automation"); web stays out (below).
+
 - Debugging tools (2026-10-23): do not use Computer Use for debugging or
   verification. Use the existing CLI and Flutter tools, with explicit native
   frame verification limits. Setup and Testing own the procedures.
@@ -363,7 +367,6 @@ implementation boundaries and verification results belong in
 - Nightly installs: CI has no signing key, so its packages cannot update
   an installed app. Options: the release key as a repository secret, or a
   separate key for the development flavor only.
-- iOS: the target was removed; building it in CI would first restore it.
 - "收藏" names both the star (favorite tag) and keeping a passage; one of
   them may want another word (e.g. 摘录 for passages).
 - Compressed photos drop their metadata (date, place) after it is read on
