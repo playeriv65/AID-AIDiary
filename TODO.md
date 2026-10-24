@@ -32,7 +32,8 @@ Probably skip (Journey has them, but they need cloud or AI or add little): Googl
 - Finer moods: emotion words plus "who with / where" context (How We Feel). This would sharpen "What makes me feel…".
 - Goals and habits on top of trackers: target values, streaks, milestones (Daylio, Stoic).
 - Question grid entries, with a view of every answer to one question over time (Grid Diary / 格志).
-- Voice note transcription: needs on-device speech recognition; decide whether that fits "no AI".
+- Voice note transcription: on-device speech recognition, or the model the user configured for the agent.
+- In-app agent (decided 2026-10-24, docs/DECISIONS.md "What the app is"): candidate runtime `dart_agent_core` (MIT); the app's actions as its command line, read-only SQL, later a vector index (sqlite-vec, not the Elastic-licensed sqlite-vector); a foreground service for long runs on Android.
 
 ## Frame rate (state of 2026-10-21)
 The broader Android pass remains deferred by the owner from 2026-10-22.
@@ -134,5 +135,5 @@ flavor (2026-10-23, proposed; the owner will carry it out):
   connect trusted peers once a usable network exists.
 - App lock timeout: phones' own app-lock features cover it.
 - PDF/DOCX export and printing: JSON export (and Markdown) is enough.
-- AI assistant, membership, publishing, web links.
+- Membership, publishing, web links.
 - Journey Desktop's own layout and desktop-only extras (sidebar with tags, draggable split, settings dialog, custom title bar, calendar week strip, media strip in search, keyboard shortcuts, jump list): Windows reuses the Android tablet layout (decided 2026-10-20).

@@ -72,8 +72,16 @@ asks again. Dates are when it was settled. Ideas not built yet are in
   You that stays clearly its own app (name, IDs, the notice in About). No
   compatibility with Daily You data or with older builds of this app.
 - Data stays on the device. The network is used only for map tiles, place
-  names and search, nearby places, weather, and the sync the user chooses.
-  No AI, no accounts, no membership, no publishing.
+  names and search, nearby places, weather, the sync the user chooses and
+  the AI model the user configures. No accounts, no membership, no
+  publishing.
+- AI (2026-10-24, replaces the early-development "no AI"): an agent inside
+  the app that drives the app through the same actions as the `aid` command
+  line, queries the diary with read-only SQL and, later, a local vector
+  index, to summarize and answer questions about the diary. The user picks
+  the model: a cloud provider, or a local model they host themselves (on a
+  computer or a server, through an OpenAI-compatible endpoint). Off until
+  the user configures a model.
 - No user profile: no avatar or user name anywhere (2026-10-22). The top
   card's menu opens settings, statistics and templates.
 
@@ -363,7 +371,10 @@ implementation boundaries and verification results belong in
   proposed, not decided.
 - Whether `ui.navigate to=entry` should follow the layout as a tap does
   (detail pane on wide windows) instead of always pushing a page.
-- Whether voice-note transcription on the device fits "no AI".
+- How the in-app agent reaches the app: one generic command tool over the
+  action registry plus read-only SQL, or a virtual bash (bashkit/just-bash)
+  wrapped around the same commands. Voice-note transcription may follow
+  the same model choice.
 - Nightly installs: CI has no signing key, so its packages cannot update
   an installed app. Options: the release key as a repository secret, or a
   separate key for the development flavor only.
