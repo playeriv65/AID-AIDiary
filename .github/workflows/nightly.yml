@@ -48,6 +48,9 @@ jobs:
           channel: stable
           cache: true
       - run: flutter pub get
+      # The root analyzer also sees the CLI package, as in dev.ps1 analyze.
+      - working-directory: cli
+        run: dart pub get
       - run: flutter analyze
       - run: flutter test -j 4 --exclude-tags live
       - name: Command line
