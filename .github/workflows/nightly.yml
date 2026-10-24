@@ -80,7 +80,11 @@ jobs:
     needs: changes
     if: needs.changes.outputs.run == 'true'
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    # The agent shell's release Rust build (fat LTO) is long on 4 cores.
+    timeout-minutes: 120
+    env:
+      # Show cargo's progress, which Gradle otherwise hides.
+      CARGOKIT_VERBOSE: "1"
     steps:
       # Two release builds and their Gradle caches outgrow the runner's free
       # disk; it carries toolchains this job never uses.
