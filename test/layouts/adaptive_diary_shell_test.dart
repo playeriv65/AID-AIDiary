@@ -2,6 +2,7 @@
 library;
 
 import 'package:aid_diary/custom_locale_delegates.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/layouts/adaptive_diary_shell.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
@@ -172,7 +173,11 @@ void main() {
 Widget _app(GlobalKey<NavigatorState> nav, Widget home,
     {ValueChanged<int>? onSelect, VoidCallback? onNewEntry}) {
   return MaterialApp(
-      localizationsDelegates: appLocalizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      localizationsDelegates: [
+        AppLocalizations.delegate,
+        ...appLocalizationsDelegates,
+      ],
       home: AdaptiveDiaryShell(
           navigatorKey: nav,
           home: home,
@@ -188,6 +193,5 @@ Widget _app(GlobalKey<NavigatorState> nav, Widget home,
           ],
           selectedIndex: 0,
           onDestinationSelected: onSelect ?? (_) {},
-          newEntryLabel: '写一篇日记',
           onNewEntry: onNewEntry ?? () {}));
 }

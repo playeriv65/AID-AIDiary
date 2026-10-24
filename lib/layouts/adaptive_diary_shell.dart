@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'package:aid_diary/widgets/new_entry_button.dart';
 import 'package:material_ui/material_ui.dart';
 
 enum DiaryLayout { compact, rail }
@@ -30,7 +31,6 @@ class AdaptiveDiaryShell extends StatefulWidget {
       required this.destinations,
       required this.selectedIndex,
       required this.onDestinationSelected,
-      required this.newEntryLabel,
       required this.onNewEntry,
       this.observers = const []});
   final GlobalKey<NavigatorState> navigatorKey;
@@ -41,7 +41,6 @@ class AdaptiveDiaryShell extends StatefulWidget {
   final List<DiaryDestination> destinations;
   final int selectedIndex;
   final ValueChanged<int> onDestinationSelected;
-  final String newEntryLabel;
 
   /// Opens the editor; the rail shows it as its leading button.
   final VoidCallback onNewEntry;
@@ -160,13 +159,10 @@ class _AdaptiveDiaryShellState extends State<AdaptiveDiaryShell> {
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 4),
           child: Column(children: [
-            FloatingActionButton(
-              key: const ValueKey('diary-new-entry'),
+            NewEntryButton(
               heroTag: 'diary-rail-new-entry',
-              tooltip: widget.newEntryLabel,
               elevation: 0,
               onPressed: widget.onNewEntry,
-              child: const Icon(Icons.add_rounded),
             ),
             const SizedBox(height: 40),
             for (var i = 0; i < widget.destinations.length; i++) _railItem(i),

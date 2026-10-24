@@ -13,6 +13,7 @@ import 'package:aid_diary/widgets/journal_entry_row.dart';
 import 'package:aid_diary/widgets/list_detail_layout.dart';
 import 'package:aid_diary/widgets/top_search_card.dart';
 import 'package:aid_diary/widgets/month_calendar.dart';
+import 'package:aid_diary/widgets/new_entry_button.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
@@ -46,14 +47,11 @@ class _CalendarPageState extends State<CalendarPage> {
     context.watch<EntriesProvider>();
     final compact =
         diaryLayoutFor(MediaQuery.sizeOf(context)) == DiaryLayout.compact;
-    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       floatingActionButton: compact
-          ? FloatingActionButton.extended(
-              key: const ValueKey('diary-new-entry'),
+          ? NewEntryButton(
+              heroTag: 'calendar-new-entry',
               onPressed: () => EntryNavigation.edit(context, null),
-              icon: const Icon(Icons.add_rounded),
-              label: Text(l10n.adaptiveNewEntry),
             )
           : null,
       body: SafeArea(

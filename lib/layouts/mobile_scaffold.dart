@@ -15,6 +15,7 @@ import 'package:aid_diary/routing/destinations.dart' as places;
 import 'package:aid_diary/routing/route_names.dart';
 import 'package:flutter/services.dart';
 import 'package:aid_diary/routing/entry_navigation.dart';
+import 'package:aid_diary/widgets/new_entry_button.dart';
 import 'package:material_ui/material_ui.dart';
 
 class MobileScaffold extends StatefulWidget {
@@ -147,7 +148,6 @@ class _MobileScaffoldState extends State<MobileScaffold>
             Icons.favorite_rounded),
       ],
       onDestinationSelected: _switchPage,
-      newEntryLabel: l10n.adaptiveNewEntry,
       onNewEntry: _newEntry,
       observers: [_routes],
       home: Builder(builder: (context) {
@@ -165,12 +165,9 @@ class _MobileScaffoldState extends State<MobileScaffold>
             ),
           ),
           floatingActionButton: compact && currentIndex != _coachIndex
-              ? FloatingActionButton.extended(
-                  key: const ValueKey('diary-new-entry'),
+              ? NewEntryButton(
                   heroTag: 'diary-new-entry',
                   onPressed: () => EntryNavigation.edit(context, null),
-                  icon: const Icon(Icons.add_rounded),
-                  label: Text(l10n.adaptiveNewEntry),
                 )
               : null,
         );
