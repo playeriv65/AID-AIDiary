@@ -534,21 +534,6 @@ class AppLocalizationsFi extends AppLocalizations {
   String get settingsStorageTitle => 'Tallennustila';
 
   @override
-  String get settingsImageQuality => 'Kuvanlaatu';
-
-  @override
-  String get imageQualityHigh => 'Korkea';
-
-  @override
-  String get imageQualityMedium => 'Keskitasoinen';
-
-  @override
-  String get imageQualityLow => 'Alhainen';
-
-  @override
-  String get imageQualityNoCompression => 'Ei pakkausta';
-
-  @override
   String get settingsLogFolder => 'Lokikansio';
 
   @override
@@ -2769,6 +2754,29 @@ class AppLocalizationsFi extends AppLocalizations {
   @override
   String get settingsConfirmEditPast =>
       'Kysy ennen menneiden merkintöjen muokkaamista';
+
+  @override
+  String get settingsCompressPhotos => 'Pakkaa uudet kuvat';
+
+  @override
+  String get settingsCompressPhotosHint =>
+      'Tallenna uudet kuvat noin 1 Mt:n WebP-kuvina. Pois päältä säilyttää alkuperäiset.';
+
+  @override
+  String get compressExistingTitle => 'Pakkaa nykyiset kuvat';
+
+  @override
+  String compressExistingBody(int count, String size) {
+    return '$count kuvaa vie $size. Yli noin 1 Mt:n kuvat muuttuvat noin 1 Mt:n WebP-kuviksi. Ne korvataan, eikä sitä voi perua; säilytä alkuperäiset muualla, jos tarvitset niitä.';
+  }
+
+  @override
+  String get compressExistingAction => 'Pakkaa';
+
+  @override
+  String compressExistingDone(int count, String size) {
+    return 'Pakattiin $count kuvaa, säästettiin $size';
+  }
 
   @override
   String get commentExpand => 'Laajenna';

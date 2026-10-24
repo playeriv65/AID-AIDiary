@@ -531,21 +531,6 @@ class AppLocalizationsDa extends AppLocalizations {
   String get settingsStorageTitle => 'Lager';
 
   @override
-  String get settingsImageQuality => 'Billedkvalitet';
-
-  @override
-  String get imageQualityHigh => 'Høj';
-
-  @override
-  String get imageQualityMedium => 'Middel';
-
-  @override
-  String get imageQualityLow => 'Lav';
-
-  @override
-  String get imageQualityNoCompression => 'Ingen komprimering';
-
-  @override
   String get settingsLogFolder => 'Logmappe';
 
   @override
@@ -2755,6 +2740,29 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String get settingsConfirmEditPast => 'Spørg før tidligere indlæg redigeres';
+
+  @override
+  String get settingsCompressPhotos => 'Komprimér nye fotos';
+
+  @override
+  String get settingsCompressPhotosHint =>
+      'Gem nye fotos som WebP på cirka 1 MB. Slået fra beholdes originalerne.';
+
+  @override
+  String get compressExistingTitle => 'Komprimér eksisterende fotos';
+
+  @override
+  String compressExistingBody(int count, String size) {
+    return '$count fotos fylder $size. Dem over cirka 1 MB bliver WebP på cirka 1 MB. Det erstatter dem og kan ikke fortrydes; gem originalerne et andet sted, hvis du vil beholde dem.';
+  }
+
+  @override
+  String get compressExistingAction => 'Komprimér';
+
+  @override
+  String compressExistingDone(int count, String size) {
+    return '$count fotos komprimeret, $size sparet';
+  }
 
   @override
   String get commentExpand => 'Udvid';

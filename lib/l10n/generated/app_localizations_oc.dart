@@ -535,21 +535,6 @@ class AppLocalizationsOc extends AppLocalizations {
   String get settingsStorageTitle => 'Emmagazinatge';
 
   @override
-  String get settingsImageQuality => 'Qualitat d\'imatge';
-
-  @override
-  String get imageQualityHigh => 'Elevada';
-
-  @override
-  String get imageQualityMedium => 'Mejana';
-
-  @override
-  String get imageQualityLow => 'Febla';
-
-  @override
-  String get imageQualityNoCompression => 'Cap de compression';
-
-  @override
   String get settingsLogFolder => 'Dossièr dels jornals';
 
   @override
@@ -2787,6 +2772,29 @@ class AppLocalizationsOc extends AppLocalizations {
   @override
   String get settingsConfirmEditPast =>
       'Demandar abans de modificar las nòtas passadas';
+
+  @override
+  String get settingsCompressPhotos => 'Compressar las fòtos novèlas';
+
+  @override
+  String get settingsCompressPhotosHint =>
+      'Enregistrar las fòtos novèlas en WebP d’environ 1 Mo. Desactivat, los originals son gardats.';
+
+  @override
+  String get compressExistingTitle => 'Compressar las fòtos existentas';
+
+  @override
+  String compressExistingBody(int count, String size) {
+    return '$count fòtos ocupan $size. Las de mai d’environ 1 Mo venon de WebP d’environ 1 Mo. Aquò las remplaça e se pòt pas anullar ; gardatz los originals endacòm mai se los volètz.';
+  }
+
+  @override
+  String get compressExistingAction => 'Compressar';
+
+  @override
+  String compressExistingDone(int count, String size) {
+    return '$count fòtos compressadas, $size ganhats';
+  }
 
   @override
   String get commentExpand => 'Espandir';

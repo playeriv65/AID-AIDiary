@@ -262,16 +262,6 @@
   "@iconGroupHobbies": {},
   "settingsStorageTitle": "Storage",
   "@settingsStorageTitle": {},
-  "settingsImageQuality": "Image Quality",
-  "@settingsImageQuality": {},
-  "imageQualityHigh": "High",
-  "@imageQualityHigh": {},
-  "imageQualityMedium": "Medium",
-  "@imageQualityMedium": {},
-  "imageQualityLow": "Low",
-  "@imageQualityLow": {},
-  "imageQualityNoCompression": "No Compression",
-  "@imageQualityNoCompression": {},
   "settingsLogFolder": "Log Folder",
   "@settingsLogFolder": {},
   "settingsImageFolder": "Image Folder",
@@ -1606,6 +1596,18 @@
     "placeholders": {"date": {"type": "String"}}
   },
   "settingsConfirmEditPast": "Ask before editing past entries",
+  "settingsCompressPhotos": "Compress new photos",
+  "settingsCompressPhotosHint": "Store new photos as WebP of about 1 MB. Off keeps the originals.",
+  "compressExistingTitle": "Compress existing photos",
+  "compressExistingBody": "{count} photos take {size}. Those over about 1 MB become WebP of about 1 MB. This replaces them and cannot be undone; keep the originals elsewhere if you want them.",
+  "@compressExistingBody": {
+    "placeholders": {"count": {"type": "int"}, "size": {"type": "String"}}
+  },
+  "compressExistingAction": "Compress",
+  "compressExistingDone": "Compressed {count} photos, saving {size}",
+  "@compressExistingDone": {
+    "placeholders": {"count": {"type": "int"}, "size": {"type": "String"}}
+  },
   "commentExpand": "Expand",
   "refAdd": "Cite an entry",
   "refMissing": "That entry is no longer here",

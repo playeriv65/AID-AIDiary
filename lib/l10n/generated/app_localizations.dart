@@ -984,36 +984,6 @@ abstract class AppLocalizations {
   /// **'Storage'**
   String get settingsStorageTitle;
 
-  /// No description provided for @settingsImageQuality.
-  ///
-  /// In en, this message translates to:
-  /// **'Image Quality'**
-  String get settingsImageQuality;
-
-  /// No description provided for @imageQualityHigh.
-  ///
-  /// In en, this message translates to:
-  /// **'High'**
-  String get imageQualityHigh;
-
-  /// No description provided for @imageQualityMedium.
-  ///
-  /// In en, this message translates to:
-  /// **'Medium'**
-  String get imageQualityMedium;
-
-  /// No description provided for @imageQualityLow.
-  ///
-  /// In en, this message translates to:
-  /// **'Low'**
-  String get imageQualityLow;
-
-  /// No description provided for @imageQualityNoCompression.
-  ///
-  /// In en, this message translates to:
-  /// **'No Compression'**
-  String get imageQualityNoCompression;
-
   /// No description provided for @settingsLogFolder.
   ///
   /// In en, this message translates to:
@@ -5021,6 +4991,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Ask before editing past entries'**
   String get settingsConfirmEditPast;
+
+  /// No description provided for @settingsCompressPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'Compress new photos'**
+  String get settingsCompressPhotos;
+
+  /// No description provided for @settingsCompressPhotosHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Store new photos as WebP of about 1 MB. Off keeps the originals.'**
+  String get settingsCompressPhotosHint;
+
+  /// No description provided for @compressExistingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Compress existing photos'**
+  String get compressExistingTitle;
+
+  /// No description provided for @compressExistingBody.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} photos take {size}. Those over about 1 MB become WebP of about 1 MB. This replaces them and cannot be undone; keep the originals elsewhere if you want them.'**
+  String compressExistingBody(int count, String size);
+
+  /// No description provided for @compressExistingAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Compress'**
+  String get compressExistingAction;
+
+  /// No description provided for @compressExistingDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Compressed {count} photos, saving {size}'**
+  String compressExistingDone(int count, String size);
 
   /// No description provided for @commentExpand.
   ///

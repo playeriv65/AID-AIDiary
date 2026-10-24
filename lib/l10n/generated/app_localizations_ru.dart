@@ -548,21 +548,6 @@ class AppLocalizationsRu extends AppLocalizations {
   String get settingsStorageTitle => 'Хранилище';
 
   @override
-  String get settingsImageQuality => 'Качество изображения';
-
-  @override
-  String get imageQualityHigh => 'Высокое';
-
-  @override
-  String get imageQualityMedium => 'Среднее';
-
-  @override
-  String get imageQualityLow => 'Низкое';
-
-  @override
-  String get imageQualityNoCompression => 'Без сжатия';
-
-  @override
   String get settingsLogFolder => 'Папка для записей';
 
   @override
@@ -2794,6 +2779,29 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get settingsConfirmEditPast =>
       'Спрашивать перед изменением прошлых записей';
+
+  @override
+  String get settingsCompressPhotos => 'Сжимать новые фото';
+
+  @override
+  String get settingsCompressPhotosHint =>
+      'Сохранять новые фото как WebP около 1 МБ. Если выключено, сохраняются оригиналы.';
+
+  @override
+  String get compressExistingTitle => 'Сжать имеющиеся фото';
+
+  @override
+  String compressExistingBody(int count, String size) {
+    return '$count фото занимают $size. Фото больше примерно 1 МБ станут WebP около 1 МБ. Оригиналы будут заменены без возможности отмены; сохраните их отдельно, если они нужны.';
+  }
+
+  @override
+  String get compressExistingAction => 'Сжать';
+
+  @override
+  String compressExistingDone(int count, String size) {
+    return 'Сжато фото: $count, освобождено $size';
+  }
 
   @override
   String get commentExpand => 'Развернуть';

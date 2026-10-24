@@ -101,6 +101,16 @@ class AppConfig {
   int get maxVideoBytes =>
       (_section('media')['maxVideoMegabytes'] as int) * 1024 * 1024;
 
+  /// A compressed photo aims to be at most this many bytes, its shorter
+  /// side at most [compressedPhotoShortSide] pixels, trying each quality in
+  /// [compressedPhotoQualities] (WebP's scale) until it fits.
+  int get compressedPhotoBytes =>
+      _section('media')['compressedPhotoBytes'] as int;
+  int get compressedPhotoShortSide =>
+      _section('media')['compressedPhotoShortSide'] as int;
+  List<int> get compressedPhotoQualities =>
+      (_section('media')['compressedPhotoQualities'] as List).cast<int>();
+
   /// The morning prompt shows before this hour, the evening one from the
   /// other on.
   int get morningEndsHour => _section('routine')['morningEndsHour'] as int;

@@ -528,21 +528,6 @@ class AppLocalizationsJa extends AppLocalizations {
   String get settingsStorageTitle => 'ストレージ';
 
   @override
-  String get settingsImageQuality => '画質';
-
-  @override
-  String get imageQualityHigh => '高';
-
-  @override
-  String get imageQualityMedium => '中';
-
-  @override
-  String get imageQualityLow => '低';
-
-  @override
-  String get imageQualityNoCompression => '圧縮なし';
-
-  @override
   String get settingsLogFolder => '記録フォルダ';
 
   @override
@@ -2694,6 +2679,29 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get settingsConfirmEditPast => '過去の日記を編集する前に確認';
+
+  @override
+  String get settingsCompressPhotos => '新しい写真を圧縮';
+
+  @override
+  String get settingsCompressPhotosHint =>
+      '新しい写真を約 1 MB の WebP で保存します。オフでは元の写真を保存します。';
+
+  @override
+  String get compressExistingTitle => '既存の写真を圧縮';
+
+  @override
+  String compressExistingBody(int count, String size) {
+    return '$count 枚の写真が $size を使っています。約 1 MB を超えるものは約 1 MB の WebP になります。元の写真は置き換えられ、元に戻せません。必要なら別の場所に保存してください。';
+  }
+
+  @override
+  String get compressExistingAction => '圧縮';
+
+  @override
+  String compressExistingDone(int count, String size) {
+    return '$count 枚を圧縮し、$size 節約しました';
+  }
 
   @override
   String get commentExpand => '広げる';

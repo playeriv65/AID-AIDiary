@@ -534,21 +534,6 @@ class AppLocalizationsCa extends AppLocalizations {
   String get settingsStorageTitle => 'Emmagatzematge';
 
   @override
-  String get settingsImageQuality => 'Qualitat de la imatge';
-
-  @override
-  String get imageQualityHigh => 'Alta';
-
-  @override
-  String get imageQualityMedium => 'Mitjana';
-
-  @override
-  String get imageQualityLow => 'Baixa';
-
-  @override
-  String get imageQualityNoCompression => 'Sense compressió';
-
-  @override
   String get settingsLogFolder => 'Carpeta de registres';
 
   @override
@@ -2784,6 +2769,29 @@ class AppLocalizationsCa extends AppLocalizations {
   @override
   String get settingsConfirmEditPast =>
       'Pregunta abans d’editar entrades passades';
+
+  @override
+  String get settingsCompressPhotos => 'Comprimeix les fotos noves';
+
+  @override
+  String get settingsCompressPhotosHint =>
+      'Desa les fotos noves com a WebP d’uns 1 MB. Desactivat conserva els originals.';
+
+  @override
+  String get compressExistingTitle => 'Comprimeix les fotos existents';
+
+  @override
+  String compressExistingBody(int count, String size) {
+    return '$count fotos ocupen $size. Les de més d’uns 1 MB passen a WebP d’uns 1 MB. Això les substitueix i no es pot desfer; desa els originals en un altre lloc si els vols.';
+  }
+
+  @override
+  String get compressExistingAction => 'Comprimeix';
+
+  @override
+  String compressExistingDone(int count, String size) {
+    return '$count fotos comprimides, $size estalviats';
+  }
 
   @override
   String get commentExpand => 'Amplia';

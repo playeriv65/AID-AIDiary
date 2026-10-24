@@ -97,7 +97,7 @@ Future<Map<String, Object?>> _storageStatus() async {
         'externalAvailable': await images.hasExternalLocationPermission(),
       },
     },
-    'imageQuality': _config.get(Settings.imageQualityLevel),
+    'compressPhotos': _config.get(Settings.compressPhotos),
   };
 }
 

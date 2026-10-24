@@ -537,21 +537,6 @@ class AppLocalizationsPt extends AppLocalizations {
   String get settingsStorageTitle => 'Armazenamento';
 
   @override
-  String get settingsImageQuality => 'Qualidade da Imagem';
-
-  @override
-  String get imageQualityHigh => 'Alta';
-
-  @override
-  String get imageQualityMedium => 'Média';
-
-  @override
-  String get imageQualityLow => 'Baixa';
-
-  @override
-  String get imageQualityNoCompression => 'Sem Compressão';
-
-  @override
   String get settingsLogFolder => 'Pasta de Registos';
 
   @override
@@ -2784,6 +2769,29 @@ class AppLocalizationsPt extends AppLocalizations {
       'Perguntar antes de editar entradas passadas';
 
   @override
+  String get settingsCompressPhotos => 'Comprimir fotos novas';
+
+  @override
+  String get settingsCompressPhotosHint =>
+      'Guardar as fotos novas como WebP de cerca de 1 MB. Desligado mantém os originais.';
+
+  @override
+  String get compressExistingTitle => 'Comprimir fotos existentes';
+
+  @override
+  String compressExistingBody(int count, String size) {
+    return '$count fotos ocupam $size. As que passam de cerca de 1 MB passam a WebP de cerca de 1 MB. Isto substitui-as e não pode ser desfeito; guarda os originais noutro sítio se os quiseres.';
+  }
+
+  @override
+  String get compressExistingAction => 'Comprimir';
+
+  @override
+  String compressExistingDone(int count, String size) {
+    return '$count fotos comprimidas, $size poupados';
+  }
+
+  @override
   String get commentExpand => 'Expandir';
 
   @override
@@ -3351,21 +3359,6 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
 
   @override
   String get settingsStorageTitle => 'Armazenamento';
-
-  @override
-  String get settingsImageQuality => 'Qualidade da Imagem';
-
-  @override
-  String get imageQualityHigh => 'Alta';
-
-  @override
-  String get imageQualityMedium => 'Média';
-
-  @override
-  String get imageQualityLow => 'Baixa';
-
-  @override
-  String get imageQualityNoCompression => 'Sem Compressão';
 
   @override
   String get settingsLogFolder => 'Pasta de Registros';
@@ -5598,6 +5591,29 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
   @override
   String get settingsConfirmEditPast =>
       'Perguntar antes de editar entradas passadas';
+
+  @override
+  String get settingsCompressPhotos => 'Compactar fotos novas';
+
+  @override
+  String get settingsCompressPhotosHint =>
+      'Salvar as fotos novas como WebP de cerca de 1 MB. Desligado mantém os originais.';
+
+  @override
+  String get compressExistingTitle => 'Compactar fotos existentes';
+
+  @override
+  String compressExistingBody(int count, String size) {
+    return '$count fotos ocupam $size. As maiores que cerca de 1 MB viram WebP de cerca de 1 MB. Isso as substitui e não pode ser desfeito; guarde os originais em outro lugar se quiser.';
+  }
+
+  @override
+  String get compressExistingAction => 'Compactar';
+
+  @override
+  String compressExistingDone(int count, String size) {
+    return '$count fotos compactadas, $size economizados';
+  }
 
   @override
   String get commentExpand => 'Expandir';

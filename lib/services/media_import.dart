@@ -3,16 +3,12 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'dart:io';
-import 'dart:isolate';
 
 import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/database/image_storage.dart';
 import 'package:aid_diary/models/image.dart';
-import 'package:aid_diary/utils/exif_orientation.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
-import 'package:image/image.dart' as img;
+import 'package:aid_diary/services/photo_compression.dart';
 import 'package:path/path.dart' as p;
 
 /// A video above [AppConfig.maxVideoBytes]: attachments are held in memory
@@ -50,14 +46,24 @@ class MediaImport {
         MediaKind.audio => storeAudio(path, name: name),
       };
 
-  /// Stores a photo compressed as the image quality setting asks.
+  /// Stores a photo as it is, or compressed when the setting asks for it.
   static Future<String?> storeImage(String path,
       {String? name, bool deduplicate = true}) async {
-    final quality = ConfigProvider.instance.get(Settings.imageQualityLevel);
+    final original = await File(path).readAsBytes();
+    final compressed = ConfigProvider.instance.get(Settings.compressPhotos)
+        ? await PhotoCompression.compress(original, name: name ?? path)
+        : null;
+    final fileName = name ?? p.basename(path);
     return ImageStorage.instance.create(
-        deduplicate ? name ?? p.basename(path) : null,
-        await _compress(path, quality),
-        fileExtension: p.extension(name ?? path));
+        deduplicate
+            ? (compressed == null
+                ? fileName
+                : p.setExtension(fileName, PhotoCompression.extension))
+            : null,
+        compressed ?? original,
+        fileExtension: compressed == null
+            ? p.extension(fileName)
+            : PhotoCompression.extension);
   }
 
   /// Stores a video as it is; throws [MediaTooLargeException] when it is
@@ -75,47 +81,4 @@ class MediaImport {
   static Future<String?> storeAudio(String path, {String? name}) async =>
       ImageStorage.instance
           .create(name ?? p.basename(path), await File(path).readAsBytes());
-
-  static Future<Uint8List> _compress(String path, String imageQuality) async {
-    final width =
-        (ConfigProvider.imageQualityMaxSizeMapping[imageQuality] ?? 1600)
-            .toInt();
-    final quality =
-        ConfigProvider.imageQualityCompressionMapping[imageQuality] ?? 100;
-
-    if ((p.extension(path).toLowerCase() == ".gif") ||
-        (imageQuality == ImageQuality.noCompression)) {
-      return File(path).readAsBytes();
-    }
-    if (Platform.isAndroid) {
-      final original = await File(path).readAsBytes();
-      final orientation = ExifOrientation.read(original);
-      final mirrored = ExifOrientation.isMirrored(orientation);
-      final compressed = await FlutterImageCompress.compressWithFile(path,
-          quality: quality,
-          minWidth: width,
-          minHeight: width,
-          autoCorrectionAngle: !mirrored,
-          keepExif: true);
-      if (compressed == null) return original;
-      return mirrored
-          ? ExifOrientation.bake(compressed, orientation!, quality: quality)
-          : compressed;
-    }
-    return Isolate.run(() async {
-      final originalImage = await img.decodeImageFile(path);
-      if (originalImage == null) return File(path).readAsBytesSync();
-
-      // Compressing never enlarges a small picture.
-      final resizedImage = originalImage.width > width
-          ? img.copyResize(
-              originalImage,
-              width: width,
-              interpolation: img.Interpolation.average,
-            )
-          : originalImage;
-      resizedImage.exif = originalImage.exif;
-      return img.encodeJpg(resizedImage, quality: quality);
-    });
-  }
 }

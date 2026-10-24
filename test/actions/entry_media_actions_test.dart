@@ -62,24 +62,39 @@ void main() {
       (await run('entry.attachments', {'id': '$id'}))['attachments']
           as List<Object?>;
 
-  test('photos are attached, listed with their size, and compressed', () async {
+  /// A photo with grain, large enough as a file to be worth compressing.
+  Future<String> grainy(String name, int width, int height) async {
+    final image = img.Image(width: width, height: height);
+    var seed = 1;
+    for (final pixel in image) {
+      seed = (seed * 1103515245 + 12345) & 0x7fffffff;
+      final grain = seed % 40;
+      pixel
+        ..r = (pixel.x * 255 ~/ width + grain).clamp(0, 255)
+        ..g = (pixel.y * 255 ~/ height + grain).clamp(0, 255)
+        ..b = 120 + grain;
+    }
+    final file = File('${folder.path}/$name')
+      ..writeAsBytesSync(img.encodeJpg(image, quality: 100));
+    return file.path;
+  }
+
+  test('photos are attached as they are, listed with their size', () async {
     final id = await entry();
     expect(await attachments(id), isEmpty);
 
-    // Larger than the medium quality allows, so it is shrunk like the GUI does.
     final big = await picture('big.jpg', 2400, 1200);
     final result = await run('entry.attach', {'id': '$id', 'path': big});
     final photo = (result['attachments'] as List).single as Map;
     expect(photo, containsPair('kind', 'photo'));
     expect(photo, containsPair('index', 0));
-    final maxWidth =
-        ConfigProvider.imageQualityMaxSizeMapping[ImageQuality.medium]!;
-    expect(photo['width'], maxWidth.toInt());
-    expect(photo['height'], maxWidth.toInt() ~/ 2);
+    // The original by default: nothing is shrunk.
+    expect(photo['width'], 2400);
+    expect(photo['height'], 1200);
+    expect(await stored.read(photo['name'] as String),
+        await File(big).readAsBytes());
     expect(photo['size'],
         await stored.read(photo['name'] as String).then((b) => b!.length));
-    // The picked file is not touched.
-    expect(img.decodeJpg(await File(big).readAsBytes())!.width, 2400);
 
     await run('entry.attach',
         {'id': '$id', 'path': await picture('small.jpg', 100, 50)});
@@ -90,6 +105,46 @@ void main() {
     expect(names.first, photo['name'], reason: 'new attachments go last');
     expect(
         await run('entry.get', {'id': '$id'}), containsPair('attachments', 2));
+  });
+
+  test('with compression on, a big photo is kept as WebP of about 1 MB',
+      () async {
+    await DiaryAppHarness.setSetting(Settings.compressPhotos, true);
+    final id = await entry();
+    final big = await grainy('big.jpg', 3000, 4000);
+    final original = await File(big).length();
+    expect(original, greaterThan(1000000));
+
+    final result = await run('entry.attach', {'id': '$id', 'path': big});
+    final photo = (result['attachments'] as List).single as Map;
+    expect(photo['name'], endsWith('.webp'));
+    // The shorter side comes down to 2048; the rest follows.
+    expect(photo['width'], 2048);
+    expect(photo['height'], 2731);
+    expect(photo['size'] as int, lessThan(original));
+    expect(photo['size'] as int, lessThanOrEqualTo(1000000));
+  });
+
+  test('compressing the diary replaces big photos for good', () async {
+    final id = await entry();
+    await run('entry.attach',
+        {'id': '$id', 'path': await grainy('big.jpg', 3000, 2000)});
+    await run('entry.attach',
+        {'id': '$id', 'path': await picture('small.jpg', 100, 50)});
+    final before = [
+      for (final item in await attachments(id)) (item as Map)['name']
+    ];
+    expect((await run('media.photo_count'))['photos'], 2);
+
+    final done = await run('media.compress_all', const {}, true);
+    expect(done['compressed'], 1);
+    expect(done['savedBytes'] as int, greaterThan(0));
+    final after = [
+      for (final item in await attachments(id)) (item as Map)['name']
+    ];
+    expect(after.first, endsWith('.webp'), reason: 'in the old one\'s place');
+    expect(after.last, before.last, reason: 'small photos stay');
+    expect(await stored.read(before.first as String), isNull);
   });
 
   test('sound and video are stored as they are', () async {

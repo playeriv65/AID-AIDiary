@@ -541,21 +541,6 @@ class AppLocalizationsUk extends AppLocalizations {
   String get settingsStorageTitle => 'Сховище';
 
   @override
-  String get settingsImageQuality => 'Якість світлин';
-
-  @override
-  String get imageQualityHigh => 'Висока';
-
-  @override
-  String get imageQualityMedium => 'Середня';
-
-  @override
-  String get imageQualityLow => 'Низька';
-
-  @override
-  String get imageQualityNoCompression => 'Оригінальна';
-
-  @override
   String get settingsLogFolder => 'Тека для записів';
 
   @override
@@ -2775,6 +2760,29 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get settingsConfirmEditPast => 'Питати перед зміною минулих записів';
+
+  @override
+  String get settingsCompressPhotos => 'Стискати нові фото';
+
+  @override
+  String get settingsCompressPhotosHint =>
+      'Зберігати нові фото як WebP близько 1 МБ. Якщо вимкнено, зберігаються оригінали.';
+
+  @override
+  String get compressExistingTitle => 'Стиснути наявні фото';
+
+  @override
+  String compressExistingBody(int count, String size) {
+    return '$count фото займають $size. Фото понад близько 1 МБ стануть WebP близько 1 МБ. Оригінали буде замінено без можливості скасування; збережіть їх окремо, якщо потрібно.';
+  }
+
+  @override
+  String get compressExistingAction => 'Стиснути';
+
+  @override
+  String compressExistingDone(int count, String size) {
+    return 'Стиснуто фото: $count, звільнено $size';
+  }
 
   @override
   String get commentExpand => 'Розгорнути';

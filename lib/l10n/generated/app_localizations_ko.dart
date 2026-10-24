@@ -526,21 +526,6 @@ class AppLocalizationsKo extends AppLocalizations {
   String get settingsStorageTitle => '저장소';
 
   @override
-  String get settingsImageQuality => '이미지 품질';
-
-  @override
-  String get imageQualityHigh => '높음';
-
-  @override
-  String get imageQualityMedium => '중간';
-
-  @override
-  String get imageQualityLow => '낮음';
-
-  @override
-  String get imageQualityNoCompression => '압축 없음';
-
-  @override
   String get settingsLogFolder => '기록 폴더';
 
   @override
@@ -2694,6 +2679,29 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get settingsConfirmEditPast => '지난 일기를 편집하기 전에 확인';
+
+  @override
+  String get settingsCompressPhotos => '새 사진 압축';
+
+  @override
+  String get settingsCompressPhotosHint =>
+      '새 사진을 약 1 MB의 WebP로 저장합니다. 끄면 원본을 저장합니다.';
+
+  @override
+  String get compressExistingTitle => '기존 사진 압축';
+
+  @override
+  String compressExistingBody(int count, String size) {
+    return '사진 $count장이 $size를 차지합니다. 약 1 MB가 넘는 사진은 약 1 MB의 WebP가 됩니다. 원본이 대체되며 되돌릴 수 없으니, 원본이 필요하면 따로 보관하세요.';
+  }
+
+  @override
+  String get compressExistingAction => '압축';
+
+  @override
+  String compressExistingDone(int count, String size) {
+    return '사진 $count장을 압축해 $size를 줄였습니다';
+  }
 
   @override
   String get commentExpand => '펼치기';

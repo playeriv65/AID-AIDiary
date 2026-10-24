@@ -563,21 +563,6 @@ class AppLocalizationsBe extends AppLocalizations {
   String get settingsStorageTitle => 'Захоўванне';
 
   @override
-  String get settingsImageQuality => 'Якасць выявы';
-
-  @override
-  String get imageQualityHigh => 'Высокі';
-
-  @override
-  String get imageQualityMedium => 'Сярэдні';
-
-  @override
-  String get imageQualityLow => 'Нізкі';
-
-  @override
-  String get imageQualityNoCompression => 'Няма сціску';
-
-  @override
   String get settingsLogFolder => 'дзённікавы запіс Папка';
 
   @override
@@ -2801,6 +2786,29 @@ class AppLocalizationsBe extends AppLocalizations {
 
   @override
   String get settingsConfirmEditPast => 'Пытацца перад зменай мінулых запісаў';
+
+  @override
+  String get settingsCompressPhotos => 'Сціскаць новыя фота';
+
+  @override
+  String get settingsCompressPhotosHint =>
+      'Захоўваць новыя фота як WebP каля 1 МБ. Калі выключана, захоўваюцца арыгіналы.';
+
+  @override
+  String get compressExistingTitle => 'Сціснуць наяўныя фота';
+
+  @override
+  String compressExistingBody(int count, String size) {
+    return '$count фота займаюць $size. Фота большыя за каля 1 МБ стануць WebP каля 1 МБ. Арыгіналы будуць заменены без магчымасці адмены; захавайце іх асобна, калі патрэбна.';
+  }
+
+  @override
+  String get compressExistingAction => 'Сціснуць';
+
+  @override
+  String compressExistingDone(int count, String size) {
+    return 'Сціснута фота: $count, вызвалена $size';
+  }
 
   @override
   String get commentExpand => 'Разгарнуць';

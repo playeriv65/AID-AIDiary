@@ -11,7 +11,10 @@ import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/database/app_database.dart';
 import 'package:aid_diary/database/image_storage.dart';
 import 'package:aid_diary/storage/storage_picker.dart';
-import 'package:aid_diary/widgets/settings_dropdown.dart';
+import 'package:aid_diary/utils/operation_outcome.dart';
+import 'package:aid_diary/widgets/cloud_traffic_notice.dart'
+    show formatCloudTrafficBytes;
+import 'package:aid_diary/widgets/settings_toggle.dart';
 import 'package:aid_diary/widgets/settings_icon_action.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:material_ui/material_ui.dart';
@@ -103,6 +106,46 @@ class _StorageSettingsState extends State<StorageSettings> {
           failureDescription:
               AppLocalizations.of(context)!.logFolderErrorDescription);
     }
+  }
+
+  /// Compresses the photos already in the diary, once, after saying that
+  /// it cannot be undone.
+  Future<void> _compressExisting() async {
+    final l10n = AppLocalizations.of(context)!;
+    final locale = Localizations.localeOf(context).toString();
+    final count = (await AppActions.instance.run('media.photo_count', {}))!
+        as Map<String, Object?>;
+    if (!mounted) return;
+    final material = MaterialLocalizations.of(context);
+    final sure = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.compressExistingTitle),
+        content: Text(l10n.compressExistingBody(count['photos'] as int,
+            formatCloudTrafficBytes(count['bytes'] as int, locale))),
+        actions: [
+          TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text(material.cancelButtonLabel)),
+          TextButton(
+              key: const ValueKey('compress-existing-confirm'),
+              onPressed: () => Navigator.of(context).pop(true),
+              child: Text(l10n.compressExistingAction)),
+        ],
+      ),
+    );
+    if (sure != true || !mounted) return;
+    Map<String, Object?>? result;
+    await runOperation(context, (update) async {
+      result = (await AppActions.instance.run('media.compress_all', {},
+          confirmed: true, progress: update))! as Map<String, Object?>;
+      return const OperationOutcome.succeeded();
+    }, failureDescription: l10n.compressExistingTitle);
+    final done = result;
+    if (done == null || !mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(l10n.compressExistingDone(done['compressed'] as int,
+            formatCloudTrafficBytes(done['savedBytes'] as int, locale)))));
   }
 
   Future<void> _attemptImageFolderChange() async {
@@ -204,31 +247,19 @@ class _StorageSettingsState extends State<StorageSettings> {
       ),
       body: ListView(
         children: [
-          SettingsDropdown<String>(
-              title: AppLocalizations.of(context)!.settingsImageQuality,
-              value: configProvider.get(Settings.imageQualityLevel),
-              options: [
-                DropdownMenuItem<String>(
-                    value: ImageQuality.noCompression,
-                    child: Text(AppLocalizations.of(context)!
-                        .imageQualityNoCompression)),
-                DropdownMenuItem<String>(
-                    value: ImageQuality.high,
-                    child:
-                        Text(AppLocalizations.of(context)!.imageQualityHigh)),
-                DropdownMenuItem<String>(
-                    value: ImageQuality.medium,
-                    child:
-                        Text(AppLocalizations.of(context)!.imageQualityMedium)),
-                DropdownMenuItem<String>(
-                    value: ImageQuality.low,
-                    child: Text(AppLocalizations.of(context)!.imageQualityLow)),
-              ],
-              onChanged: (String? newValue) {
-                if (newValue != null) {
-                  changeSetting(Settings.imageQualityLevel, newValue);
-                }
-              }),
+          SettingsToggle(
+            key: const ValueKey('settings-compress-photos'),
+            title: AppLocalizations.of(context)!.settingsCompressPhotos,
+            hint: AppLocalizations.of(context)!.settingsCompressPhotosHint,
+            setting: Settings.compressPhotos,
+            onChanged: (value) => changeSetting(Settings.compressPhotos, value),
+          ),
+          ListTile(
+            key: const ValueKey('settings-compress-existing'),
+            title: Text(AppLocalizations.of(context)!.compressExistingTitle),
+            trailing: const Icon(Icons.chevron_right_rounded),
+            onTap: _compressExisting,
+          ),
           FutureBuilder(
               future: AppDatabase.instance.getInternalPath(),
               builder: (context, snapshot) {

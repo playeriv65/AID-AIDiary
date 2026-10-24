@@ -531,21 +531,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get settingsStorageTitle => 'ذخیره سازی';
 
   @override
-  String get settingsImageQuality => 'کیفیت تصویر';
-
-  @override
-  String get imageQualityHigh => 'زیاد';
-
-  @override
-  String get imageQualityMedium => 'متوسط';
-
-  @override
-  String get imageQualityLow => 'پایین';
-
-  @override
-  String get imageQualityNoCompression => 'بدون فشرده سازی';
-
-  @override
   String get settingsLogFolder => 'پوشه گزارش';
 
   @override
@@ -2754,6 +2739,29 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get settingsConfirmEditPast => 'پیش از ویرایش یادداشت‌های گذشته بپرس';
+
+  @override
+  String get settingsCompressPhotos => 'فشرده‌سازی عکس‌های جدید';
+
+  @override
+  String get settingsCompressPhotosHint =>
+      'عکس‌های جدید به صورت WebP حدود ۱ مگابایت ذخیره شوند. در حالت خاموش، اصل عکس‌ها ذخیره می‌شود.';
+
+  @override
+  String get compressExistingTitle => 'فشرده‌سازی عکس‌های موجود';
+
+  @override
+  String compressExistingBody(int count, String size) {
+    return '$count عکس $size جا گرفته‌اند. عکس‌های بیش از حدود ۱ مگابایت به WebP حدود ۱ مگابایت تبدیل می‌شوند. این کار اصل عکس‌ها را جایگزین می‌کند و برگشت‌پذیر نیست؛ اگر اصل‌ها را می‌خواهید، جای دیگری نگه دارید.';
+  }
+
+  @override
+  String get compressExistingAction => 'فشرده‌سازی';
+
+  @override
+  String compressExistingDone(int count, String size) {
+    return '$count عکس فشرده شد و $size صرفه‌جویی شد';
+  }
 
   @override
   String get commentExpand => 'گسترش';

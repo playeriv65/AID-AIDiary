@@ -7,11 +7,14 @@ import 'dart:io';
 
 import 'package:aid_diary/actions/app_action.dart';
 import 'package:aid_diary/actions/entry_access.dart';
+import 'package:aid_diary/database/entry_store.dart';
 import 'package:aid_diary/database/image_storage.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/models/image.dart';
 import 'package:aid_diary/providers/entry_images_provider.dart';
+import 'package:aid_diary/providers/tags_provider.dart';
 import 'package:aid_diary/services/media_import.dart';
+import 'package:aid_diary/services/photo_compression.dart';
 import 'package:aid_diary/utils/entry_share.dart';
 import 'package:image/image.dart' as img;
 import 'package:intl/intl.dart';
@@ -79,7 +82,93 @@ EntryImage _attachmentAt(Entry entry, ActionArgs args) {
   return attachments[index];
 }
 
+/// Photos that compressing could make smaller: every entry's (hidden ones
+/// too), not videos, voice notes or animations.
+List<(Entry, EntryImage)> _photos() => [
+      for (final entry in EntryStore.instance.allEntries)
+        for (final image in EntryImagesProvider.instance.getForEntry(entry))
+          if (image.isImage && !image.imgPath.toLowerCase().endsWith('.gif'))
+            (entry, image),
+    ];
+
 final List<AppAction> entryMediaActions = [
+  AppAction(
+    id: 'media.compress_all',
+    describe: 'Compresses every photo larger than about 1 MB to WebP, '
+        'replacing the original for good, as Settings > Data & storage does. '
+        'Videos, voice notes and animations stay as they are.',
+    risk: ActionRisk.destructive,
+    run: (context, args) async {
+      final photos = _photos();
+      final storage = ImageStorage.instance;
+      var compressed = 0;
+      var saved = 0;
+      var looked = 0;
+      final byEntry = <Entry, List<EntryImage>>{};
+      for (final (entry, _) in photos) {
+        byEntry[entry] ??=
+            EntryImagesProvider.instance.getForEntry(entry).toList();
+      }
+      for (final MapEntry(key: entry, value: images) in byEntry.entries) {
+        var changed = false;
+        final kept = <EntryImage>[];
+        for (final image in images) {
+          final bytes =
+              image.isImage ? await storage.getBytes(image.imgPath) : null;
+          final small = bytes == null
+              ? null
+              : await PhotoCompression.compress(bytes, name: image.imgPath);
+          final name = small == null
+              ? null
+              : await storage.create(null, small,
+                  currTime: image.timeCreate,
+                  fileExtension: PhotoCompression.extension);
+          if (image.isImage) {
+            context.progress('${++looked}/${photos.length}');
+          }
+          if (name == null) {
+            kept.add(image.copy());
+            continue;
+          }
+          // A new photo in the old one's place; the old file goes on commit.
+          kept.add(EntryImage(
+              entryId: entry.id,
+              imgPath: name,
+              imgRank: image.imgRank,
+              timeCreate: image.timeCreate));
+          compressed++;
+          saved += bytes!.length - small!.length;
+          changed = true;
+        }
+        if (!changed) continue;
+        final session = EntryStore.instance.beginDraft(entry);
+        await session.save((_) => EntryDraft(
+            entry: entry,
+            tags: TagsProvider.instance.getEntryTagsForEntry(entry.id!),
+            images: kept));
+        await session.commit();
+      }
+      return {
+        'photos': photos.length,
+        'compressed': compressed,
+        'savedBytes': saved,
+      };
+    },
+  ),
+  AppAction(
+    id: 'media.photo_count',
+    describe: 'Counts the photos compressing could act on, and their size.',
+    risk: ActionRisk.read,
+    run: (context, args) async {
+      final photos = _photos();
+      final sizes = await ImageStorage.instance.sizes();
+      return {
+        'photos': photos.length,
+        'bytes': photos.fold<int>(
+            0, (sum, photo) => sum + (sizes[photo.$2.imgPath] ?? 0)),
+      };
+    },
+  ),
   AppAction(
     id: 'entry.attachments',
     describe: 'Lists the photos, videos and voice notes of an entry in the '

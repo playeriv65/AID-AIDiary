@@ -536,21 +536,6 @@ class AppLocalizationsHi extends AppLocalizations {
   String get settingsStorageTitle => 'भंडारण';
 
   @override
-  String get settingsImageQuality => 'छवि गुणवत्ता';
-
-  @override
-  String get imageQualityHigh => 'ऊँचा';
-
-  @override
-  String get imageQualityMedium => 'मध्यम';
-
-  @override
-  String get imageQualityLow => 'नीचा';
-
-  @override
-  String get imageQualityNoCompression => 'कोई संपीड़न नहीं';
-
-  @override
   String get settingsLogFolder => 'डायरी प्रविष्टि फ़ोल्डर';
 
   @override
@@ -2762,6 +2747,29 @@ class AppLocalizationsHi extends AppLocalizations {
   @override
   String get settingsConfirmEditPast =>
       'पुरानी प्रविष्टियाँ संपादित करने से पहले पूछें';
+
+  @override
+  String get settingsCompressPhotos => 'नई फ़ोटो संपीड़ित करें';
+
+  @override
+  String get settingsCompressPhotosHint =>
+      'नई फ़ोटो को लगभग 1 MB के WebP के रूप में रखें। बंद होने पर मूल फ़ोटो रखी जाती हैं।';
+
+  @override
+  String get compressExistingTitle => 'मौजूदा फ़ोटो संपीड़ित करें';
+
+  @override
+  String compressExistingBody(int count, String size) {
+    return '$count फ़ोटो $size जगह लेती हैं। लगभग 1 MB से बड़ी फ़ोटो लगभग 1 MB के WebP बन जाएँगी। इससे मूल फ़ोटो बदल जाएँगी और यह वापस नहीं होगा; ज़रूरत हो तो मूल फ़ोटो कहीं और रखें।';
+  }
+
+  @override
+  String get compressExistingAction => 'संपीड़ित करें';
+
+  @override
+  String compressExistingDone(int count, String size) {
+    return '$count फ़ोटो संपीड़ित हुईं, $size बचा';
+  }
 
   @override
   String get commentExpand => 'विस्तार करें';

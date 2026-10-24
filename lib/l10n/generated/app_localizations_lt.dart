@@ -554,21 +554,6 @@ class AppLocalizationsLt extends AppLocalizations {
   String get settingsStorageTitle => 'Saugykla';
 
   @override
-  String get settingsImageQuality => 'Paveikslų kokybė';
-
-  @override
-  String get imageQualityHigh => 'Aukšta';
-
-  @override
-  String get imageQualityMedium => 'Vidutinė';
-
-  @override
-  String get imageQualityLow => 'Žema';
-
-  @override
-  String get imageQualityNoCompression => 'Be glaudinimo';
-
-  @override
   String get settingsLogFolder => 'Žurnalo įrašų aplankas';
 
   @override
@@ -2792,6 +2777,29 @@ class AppLocalizationsLt extends AppLocalizations {
   @override
   String get settingsConfirmEditPast =>
       'Klausti prieš redaguojant senus įrašus';
+
+  @override
+  String get settingsCompressPhotos => 'Glaudinti naujas nuotraukas';
+
+  @override
+  String get settingsCompressPhotosHint =>
+      'Naujas nuotraukas saugoti kaip maždaug 1 MB WebP. Išjungus saugomi originalai.';
+
+  @override
+  String get compressExistingTitle => 'Glaudinti esamas nuotraukas';
+
+  @override
+  String compressExistingBody(int count, String size) {
+    return '$count nuotraukos užima $size. Didesnės nei maždaug 1 MB taps maždaug 1 MB WebP. Tai jas pakeis ir to atšaukti negalima; jei reikia, originalus pasilikite kitur.';
+  }
+
+  @override
+  String get compressExistingAction => 'Glaudinti';
+
+  @override
+  String compressExistingDone(int count, String size) {
+    return 'Suglaudinta nuotraukų: $count, sutaupyta $size';
+  }
 
   @override
   String get commentExpand => 'Išskleisti';

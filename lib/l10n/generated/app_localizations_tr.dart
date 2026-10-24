@@ -534,21 +534,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get settingsStorageTitle => 'Depolama';
 
   @override
-  String get settingsImageQuality => 'Görüntü Kalitesi';
-
-  @override
-  String get imageQualityHigh => 'Yüksek';
-
-  @override
-  String get imageQualityMedium => 'Orta';
-
-  @override
-  String get imageQualityLow => 'Düşük';
-
-  @override
-  String get imageQualityNoCompression => 'Sıkıştırmadan';
-
-  @override
   String get settingsLogFolder => 'Kayıt Klasörü';
 
   @override
@@ -2762,6 +2747,29 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get settingsConfirmEditPast =>
       'Geçmiş kayıtları düzenlemeden önce sor';
+
+  @override
+  String get settingsCompressPhotos => 'Yeni fotoğrafları sıkıştır';
+
+  @override
+  String get settingsCompressPhotosHint =>
+      'Yeni fotoğrafları yaklaşık 1 MB WebP olarak sakla. Kapalıyken orijinaller saklanır.';
+
+  @override
+  String get compressExistingTitle => 'Mevcut fotoğrafları sıkıştır';
+
+  @override
+  String compressExistingBody(int count, String size) {
+    return '$count fotoğraf $size yer kaplıyor. Yaklaşık 1 MB\'ı geçenler yaklaşık 1 MB WebP olur. Bu, orijinallerin yerini alır ve geri alınamaz; gerekiyorsa orijinalleri başka bir yerde saklayın.';
+  }
+
+  @override
+  String get compressExistingAction => 'Sıkıştır';
+
+  @override
+  String compressExistingDone(int count, String size) {
+    return '$count fotoğraf sıkıştırıldı, $size kazanıldı';
+  }
 
   @override
   String get commentExpand => 'Genişlet';

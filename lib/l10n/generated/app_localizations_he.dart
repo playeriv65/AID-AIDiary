@@ -546,21 +546,6 @@ class AppLocalizationsHe extends AppLocalizations {
   String get settingsStorageTitle => 'אחסון';
 
   @override
-  String get settingsImageQuality => 'איכות תמונה';
-
-  @override
-  String get imageQualityHigh => 'גבוה';
-
-  @override
-  String get imageQualityMedium => 'בינוני';
-
-  @override
-  String get imageQualityLow => 'נמוך';
-
-  @override
-  String get imageQualityNoCompression => 'אין דחיסה';
-
-  @override
   String get settingsLogFolder => 'תיקיית ערך יומן';
 
   @override
@@ -2739,6 +2724,29 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String get settingsConfirmEditPast => 'לשאול לפני עריכת רשומות קודמות';
+
+  @override
+  String get settingsCompressPhotos => 'דחיסת תמונות חדשות';
+
+  @override
+  String get settingsCompressPhotosHint =>
+      'שמירת תמונות חדשות כ‑WebP בגודל כ‑1 MB. כשכבוי נשמרים המקוריים.';
+
+  @override
+  String get compressExistingTitle => 'דחיסת התמונות הקיימות';
+
+  @override
+  String compressExistingBody(int count, String size) {
+    return '$count תמונות תופסות $size. אלה שמעל כ‑1 MB יהפכו ל‑WebP בגודל כ‑1 MB. זה מחליף אותן ואי אפשר לבטל; שמרו את המקוריים במקום אחר אם תרצו בהם.';
+  }
+
+  @override
+  String get compressExistingAction => 'דחיסה';
+
+  @override
+  String compressExistingDone(int count, String size) {
+    return 'נדחסו $count תמונות, נחסכו $size';
+  }
 
   @override
   String get commentExpand => 'הרחבה';

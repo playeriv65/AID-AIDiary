@@ -542,21 +542,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get settingsStorageTitle => 'التخزين';
 
   @override
-  String get settingsImageQuality => 'جودة الصورة';
-
-  @override
-  String get imageQualityHigh => 'عالية';
-
-  @override
-  String get imageQualityMedium => 'متوسطة';
-
-  @override
-  String get imageQualityLow => 'منخفضة';
-
-  @override
-  String get imageQualityNoCompression => 'بدون ضغط';
-
-  @override
   String get settingsLogFolder => 'مجلد السجل';
 
   @override
@@ -2757,6 +2742,29 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get settingsConfirmEditPast => 'السؤال قبل تعديل التدوينات السابقة';
+
+  @override
+  String get settingsCompressPhotos => 'ضغط الصور الجديدة';
+
+  @override
+  String get settingsCompressPhotosHint =>
+      'حفظ الصور الجديدة بصيغة WebP بحجم 1 ميغابايت تقريبًا. عند الإيقاف تُحفظ الأصلية.';
+
+  @override
+  String get compressExistingTitle => 'ضغط الصور الحالية';
+
+  @override
+  String compressExistingBody(int count, String size) {
+    return 'تشغل $count صورة مساحة $size. ما يزيد عن 1 ميغابايت تقريبًا يصبح WebP بحجم 1 ميغابايت تقريبًا. سيستبدل ذلك الأصل ولا يمكن التراجع عنه؛ احتفظ بالأصول في مكان آخر إن أردتها.';
+  }
+
+  @override
+  String get compressExistingAction => 'ضغط';
+
+  @override
+  String compressExistingDone(int count, String size) {
+    return 'تم ضغط $count صورة، ووُفّر $size';
+  }
 
   @override
   String get commentExpand => 'توسيع';

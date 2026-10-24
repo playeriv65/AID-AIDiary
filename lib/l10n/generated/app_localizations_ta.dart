@@ -539,21 +539,6 @@ class AppLocalizationsTa extends AppLocalizations {
   String get settingsStorageTitle => 'சேமிப்பு';
 
   @override
-  String get settingsImageQuality => 'படத்தின் தகுதி';
-
-  @override
-  String get imageQualityHigh => 'உயர்';
-
-  @override
-  String get imageQualityMedium => 'சராசரி';
-
-  @override
-  String get imageQualityLow => 'குறைந்த';
-
-  @override
-  String get imageQualityNoCompression => 'சுருக்கம் இல்லை';
-
-  @override
   String get settingsLogFolder => 'பதிவு கோப்புறை';
 
   @override
@@ -2802,6 +2787,29 @@ class AppLocalizationsTa extends AppLocalizations {
 
   @override
   String get settingsConfirmEditPast => 'பழைய பதிவுகளைத் திருத்தும் முன் கேள்';
+
+  @override
+  String get settingsCompressPhotos => 'புதிய படங்களைச் சுருக்கு';
+
+  @override
+  String get settingsCompressPhotosHint =>
+      'புதிய படங்களை சுமார் 1 MB WebP ஆகச் சேமி. அணைத்தால் அசல் படங்கள் சேமிக்கப்படும்.';
+
+  @override
+  String get compressExistingTitle => 'இருக்கும் படங்களைச் சுருக்கு';
+
+  @override
+  String compressExistingBody(int count, String size) {
+    return '$count படங்கள் $size இடம் எடுக்கின்றன. சுமார் 1 MB-க்கு மேல் உள்ளவை சுமார் 1 MB WebP ஆகும். இது அசலை மாற்றும், திரும்பப் பெற முடியாது; தேவையெனில் அசலை வேறு இடத்தில் வைத்திருங்கள்.';
+  }
+
+  @override
+  String get compressExistingAction => 'சுருக்கு';
+
+  @override
+  String compressExistingDone(int count, String size) {
+    return '$count படங்கள் சுருக்கப்பட்டன, $size மிச்சம்';
+  }
 
   @override
   String get commentExpand => 'விரி';

@@ -538,21 +538,6 @@ class AppLocalizationsNl extends AppLocalizations {
   String get settingsStorageTitle => 'Opslag';
 
   @override
-  String get settingsImageQuality => 'Afbeeldingskwaliteit';
-
-  @override
-  String get imageQualityHigh => 'Hoog';
-
-  @override
-  String get imageQualityMedium => 'Middel';
-
-  @override
-  String get imageQualityLow => 'Laag';
-
-  @override
-  String get imageQualityNoCompression => 'Geen compressie';
-
-  @override
   String get settingsLogFolder => 'Logmap';
 
   @override
@@ -2779,6 +2764,29 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String get settingsConfirmEditPast =>
       'Vragen voor het bewerken van eerdere berichten';
+
+  @override
+  String get settingsCompressPhotos => 'Nieuwe foto\'s comprimeren';
+
+  @override
+  String get settingsCompressPhotosHint =>
+      'Nieuwe foto\'s opslaan als WebP van ongeveer 1 MB. Uit bewaart de originelen.';
+
+  @override
+  String get compressExistingTitle => 'Bestaande foto\'s comprimeren';
+
+  @override
+  String compressExistingBody(int count, String size) {
+    return '$count foto\'s nemen $size in. Foto\'s boven ongeveer 1 MB worden WebP van ongeveer 1 MB. Dit vervangt ze en kan niet ongedaan worden gemaakt; bewaar de originelen elders als je ze wilt.';
+  }
+
+  @override
+  String get compressExistingAction => 'Comprimeren';
+
+  @override
+  String compressExistingDone(int count, String size) {
+    return '$count foto\'s gecomprimeerd, $size bespaard';
+  }
 
   @override
   String get commentExpand => 'Uitvouwen';

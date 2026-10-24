@@ -526,21 +526,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settingsStorageTitle => '存储';
 
   @override
-  String get settingsImageQuality => '图像质量';
-
-  @override
-  String get imageQualityHigh => '高';
-
-  @override
-  String get imageQualityMedium => '中';
-
-  @override
-  String get imageQualityLow => '低';
-
-  @override
-  String get imageQualityNoCompression => '无损';
-
-  @override
   String get settingsLogFolder => '日记存储目录';
 
   @override
@@ -2660,6 +2645,28 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settingsConfirmEditPast => '编辑过去的日记前先确认';
 
   @override
+  String get settingsCompressPhotos => '压缩新加的照片';
+
+  @override
+  String get settingsCompressPhotosHint => '新加的照片存为约 1 MB 的 WebP。关闭时保存原图。';
+
+  @override
+  String get compressExistingTitle => '压缩已有照片';
+
+  @override
+  String compressExistingBody(int count, String size) {
+    return '$count 张照片共占 $size。超过约 1 MB 的会压成约 1 MB 的 WebP。这会替换原图，无法恢复；需要原图的话请另外保存一份。';
+  }
+
+  @override
+  String get compressExistingAction => '压缩';
+
+  @override
+  String compressExistingDone(int count, String size) {
+    return '压缩了 $count 张照片，省下 $size';
+  }
+
+  @override
   String get commentExpand => '展开';
 
   @override
@@ -3216,21 +3223,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get settingsStorageTitle => '存儲';
-
-  @override
-  String get settingsImageQuality => '影像品質';
-
-  @override
-  String get imageQualityHigh => '高';
-
-  @override
-  String get imageQualityMedium => '中';
-
-  @override
-  String get imageQualityLow => '低';
-
-  @override
-  String get imageQualityNoCompression => '不壓縮';
 
   @override
   String get settingsLogFolder => '紀錄資料夾';
@@ -5353,6 +5345,28 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get settingsConfirmEditPast => '編輯過去的日記前先確認';
+
+  @override
+  String get settingsCompressPhotos => '壓縮新加入的照片';
+
+  @override
+  String get settingsCompressPhotosHint => '新加入的照片存為約 1 MB 的 WebP。關閉時保存原圖。';
+
+  @override
+  String get compressExistingTitle => '壓縮現有照片';
+
+  @override
+  String compressExistingBody(int count, String size) {
+    return '$count 張照片共佔 $size。超過約 1 MB 的會壓成約 1 MB 的 WebP。這會取代原圖，無法復原；需要原圖的話請另外保存一份。';
+  }
+
+  @override
+  String get compressExistingAction => '壓縮';
+
+  @override
+  String compressExistingDone(int count, String size) {
+    return '壓縮了 $count 張照片，省下 $size';
+  }
 
   @override
   String get commentExpand => '展開';

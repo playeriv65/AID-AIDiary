@@ -106,6 +106,14 @@ asks again. Dates are when it was settled. Ideas not built yet are in
   with System and the offered languages. Do not add a language subpage or
   separate system-language/override controls. Existing selected languages remain
   selected; System resumes following the platform locale.
+- Photos (2026-10-24, owner): stored as they come by default. Settings >
+  Data & storage can compress new photos (lossy WebP, the shorter side at
+  most 2048 pixels, about 1 MB, orientation applied, other metadata
+  dropped) and can compress the photos already kept, once, after saying it
+  cannot be undone. The photo is usually kept elsewhere too, so the diary's
+  copy only has to look right. WebP rather than AVIF or HEIC: every
+  platform the app runs on can show and encode it. This replaced the
+  inherited four-level image quality, which compressed by default.
 - Past entries are read and answered (2026-10-24, owner): selecting text in
   an entry from an earlier day offers keeping the passage or commenting on
   it, beside copy and select all. A comment is an entry in its own right,

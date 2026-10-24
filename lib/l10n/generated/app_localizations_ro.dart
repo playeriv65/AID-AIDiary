@@ -549,21 +549,6 @@ class AppLocalizationsRo extends AppLocalizations {
   String get settingsStorageTitle => 'Depozitare';
 
   @override
-  String get settingsImageQuality => 'Calitatea imaginii';
-
-  @override
-  String get imageQualityHigh => 'Înalt';
-
-  @override
-  String get imageQualityMedium => 'Mediu';
-
-  @override
-  String get imageQualityLow => 'Scăzut';
-
-  @override
-  String get imageQualityNoCompression => 'Fără compresie';
-
-  @override
   String get settingsLogFolder => 'dosar de intrare în jurnal';
 
   @override
@@ -2793,6 +2778,29 @@ class AppLocalizationsRo extends AppLocalizations {
   @override
   String get settingsConfirmEditPast =>
       'Întreabă înainte de a edita însemnări trecute';
+
+  @override
+  String get settingsCompressPhotos => 'Comprimă fotografiile noi';
+
+  @override
+  String get settingsCompressPhotosHint =>
+      'Salvează fotografiile noi ca WebP de aproximativ 1 MB. Dezactivat păstrează originalele.';
+
+  @override
+  String get compressExistingTitle => 'Comprimă fotografiile existente';
+
+  @override
+  String compressExistingBody(int count, String size) {
+    return '$count fotografii ocupă $size. Cele de peste aproximativ 1 MB devin WebP de aproximativ 1 MB. Acest lucru le înlocuiește și nu poate fi anulat; păstrează originalele în altă parte dacă le vrei.';
+  }
+
+  @override
+  String get compressExistingAction => 'Comprimă';
+
+  @override
+  String compressExistingDone(int count, String size) {
+    return '$count fotografii comprimate, $size economisiți';
+  }
 
   @override
   String get commentExpand => 'Extinde';

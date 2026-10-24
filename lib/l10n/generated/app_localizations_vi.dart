@@ -536,21 +536,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get settingsStorageTitle => 'Lưu trữ';
 
   @override
-  String get settingsImageQuality => 'Chất lượng hình ảnh';
-
-  @override
-  String get imageQualityHigh => 'Cao';
-
-  @override
-  String get imageQualityMedium => 'Trung bình';
-
-  @override
-  String get imageQualityLow => 'Thấp';
-
-  @override
-  String get imageQualityNoCompression => 'Không nén';
-
-  @override
   String get settingsLogFolder => 'thư mục nhật ký';
 
   @override
@@ -2775,6 +2760,29 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get settingsConfirmEditPast => 'Hỏi trước khi sửa bài cũ';
+
+  @override
+  String get settingsCompressPhotos => 'Nén ảnh mới';
+
+  @override
+  String get settingsCompressPhotosHint =>
+      'Lưu ảnh mới dạng WebP khoảng 1 MB. Khi tắt sẽ giữ ảnh gốc.';
+
+  @override
+  String get compressExistingTitle => 'Nén ảnh hiện có';
+
+  @override
+  String compressExistingBody(int count, String size) {
+    return '$count ảnh chiếm $size. Ảnh lớn hơn khoảng 1 MB sẽ thành WebP khoảng 1 MB. Việc này thay thế ảnh gốc và không thể hoàn tác; hãy lưu ảnh gốc ở nơi khác nếu cần.';
+  }
+
+  @override
+  String get compressExistingAction => 'Nén';
+
+  @override
+  String compressExistingDone(int count, String size) {
+    return 'Đã nén $count ảnh, tiết kiệm $size';
+  }
 
   @override
   String get commentExpand => 'Mở rộng';

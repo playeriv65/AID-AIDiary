@@ -537,21 +537,6 @@ class AppLocalizationsIt extends AppLocalizations {
   String get settingsStorageTitle => 'Archiviazione';
 
   @override
-  String get settingsImageQuality => 'Qualità delle immagini';
-
-  @override
-  String get imageQualityHigh => 'Alta';
-
-  @override
-  String get imageQualityMedium => 'Media';
-
-  @override
-  String get imageQualityLow => 'Bassa';
-
-  @override
-  String get imageQualityNoCompression => 'Qualità originale';
-
-  @override
   String get settingsLogFolder => 'Cartella delle entrate del diario';
 
   @override
@@ -2788,6 +2773,29 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get settingsConfirmEditPast =>
       'Chiedi prima di modificare voci passate';
+
+  @override
+  String get settingsCompressPhotos => 'Comprimi le nuove foto';
+
+  @override
+  String get settingsCompressPhotosHint =>
+      'Salva le nuove foto come WebP di circa 1 MB. Disattivato conserva gli originali.';
+
+  @override
+  String get compressExistingTitle => 'Comprimi le foto esistenti';
+
+  @override
+  String compressExistingBody(int count, String size) {
+    return '$count foto occupano $size. Quelle oltre circa 1 MB diventano WebP di circa 1 MB. Vengono sostituite e non si può annullare; conserva gli originali altrove se ti servono.';
+  }
+
+  @override
+  String get compressExistingAction => 'Comprimi';
+
+  @override
+  String compressExistingDone(int count, String size) {
+    return '$count foto compresse, risparmiati $size';
+  }
 
   @override
   String get commentExpand => 'Espandi';

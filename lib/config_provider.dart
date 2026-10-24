@@ -105,13 +105,10 @@ class Settings {
   static const onThisDayNotificationMinute =
       Setting<int>("onThisDayNotificationMinute", 0, range: _minutes);
   static const defaultTemplate = Setting<int>("defaultTemplate", -1);
-  static const imageQualityLevel =
-      Setting<String>("imageQualityLevel", ImageQuality.medium, choices: [
-    ImageQuality.noCompression,
-    ImageQuality.high,
-    ImageQuality.medium,
-    ImageQuality.low
-  ]);
+
+  /// Whether new photos are stored compressed (about 1 MB of WebP) rather
+  /// than as they come.
+  static const compressPhotos = Setting<bool>("compressPhotos", false);
   static const overrideLanguage =
       Setting<Map<String, dynamic>?>("overrideLanguage", null);
   static const showFlashbacks = Setting<bool>("showFlashbacks", true);
@@ -278,7 +275,7 @@ class Settings {
     onThisDayNotificationHour,
     onThisDayNotificationMinute,
     defaultTemplate,
-    imageQualityLevel,
+    compressPhotos,
     overrideLanguage,
     showFlashbacks,
     temperatureUnit,
@@ -350,13 +347,6 @@ class Settings {
   };
 }
 
-class ImageQuality {
-  static const String noCompression = "noCompression";
-  static const String high = "high";
-  static const String medium = "medium";
-  static const String low = "low";
-}
-
 class ConfigProvider with ChangeNotifier {
   static final ConfigProvider instance = ConfigProvider._init();
 
@@ -371,20 +361,6 @@ class ConfigProvider with ChangeNotifier {
   static final Set<String> _secureKeys = {
     for (final setting in Settings.all)
       if (setting.secure) setting.key,
-  };
-
-  static final imageQualityCompressionMapping = {
-    ImageQuality.noCompression: 100,
-    ImageQuality.high: 90,
-    ImageQuality.medium: 80,
-    ImageQuality.low: 75,
-  };
-
-  static final imageQualityMaxSizeMapping = {
-    ImageQuality.noCompression: null,
-    ImageQuality.high: 2100.0,
-    ImageQuality.medium: 1600.0,
-    ImageQuality.low: 1024.0,
   };
 
   T get<T>(Setting<T> setting) {

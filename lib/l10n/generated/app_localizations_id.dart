@@ -529,21 +529,6 @@ class AppLocalizationsId extends AppLocalizations {
   String get settingsStorageTitle => 'Penyimpanan';
 
   @override
-  String get settingsImageQuality => 'Kualitas Gambar';
-
-  @override
-  String get imageQualityHigh => 'Tinggi';
-
-  @override
-  String get imageQualityMedium => 'Sedang';
-
-  @override
-  String get imageQualityLow => 'Rendah';
-
-  @override
-  String get imageQualityNoCompression => 'Tidak dikompres';
-
-  @override
   String get settingsLogFolder => 'Folder Log';
 
   @override
@@ -2769,6 +2754,29 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get settingsConfirmEditPast => 'Tanya sebelum mengedit catatan lama';
+
+  @override
+  String get settingsCompressPhotos => 'Kompres foto baru';
+
+  @override
+  String get settingsCompressPhotosHint =>
+      'Simpan foto baru sebagai WebP sekitar 1 MB. Jika mati, foto asli disimpan.';
+
+  @override
+  String get compressExistingTitle => 'Kompres foto yang ada';
+
+  @override
+  String compressExistingBody(int count, String size) {
+    return '$count foto memakai $size. Foto di atas sekitar 1 MB menjadi WebP sekitar 1 MB. Ini menggantikannya dan tidak bisa dibatalkan; simpan foto asli di tempat lain jika perlu.';
+  }
+
+  @override
+  String get compressExistingAction => 'Kompres';
+
+  @override
+  String compressExistingDone(int count, String size) {
+    return '$count foto dikompres, hemat $size';
+  }
 
   @override
   String get commentExpand => 'Perluas';

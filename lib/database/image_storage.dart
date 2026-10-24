@@ -173,6 +173,13 @@ class ImageStorage {
     return file;
   }
 
+  /// Bytes each attachment on this device takes, by name; one only in the
+  /// external folder is not listed.
+  Future<Map<String, int>> sizes() async => {
+        for (final file in await (await internalStore()).listFiles())
+          file.name: file.size,
+      };
+
   Uint8List? _nonEmpty(Uint8List? bytes) =>
       bytes == null || bytes.isEmpty ? null : bytes;
 

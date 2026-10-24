@@ -55,7 +55,10 @@
     "audioExtensions": [".m4a", ".aac", ".mp3", ".wav", ".ogg", ".opus", ".flac"],
     "recordingExtension": ".m4a",
     "maxVideoMinutes": 5,
-    "maxVideoMegabytes": 200
+    "maxVideoMegabytes": 200,
+    "compressedPhotoBytes": 1000000,
+    "compressedPhotoShortSide": 2048,
+    "compressedPhotoQualities": [82, 75, 68, 60]
   },
   "routine": {
     "morningEndsHour": 11,

@@ -538,21 +538,6 @@ class AppLocalizationsBg extends AppLocalizations {
   String get settingsStorageTitle => 'Съхранение';
 
   @override
-  String get settingsImageQuality => 'Качество на изображението';
-
-  @override
-  String get imageQualityHigh => 'високо';
-
-  @override
-  String get imageQualityMedium => 'Среден';
-
-  @override
-  String get imageQualityLow => 'ниско';
-
-  @override
-  String get imageQualityNoCompression => 'Без компресия';
-
-  @override
   String get settingsLogFolder => 'запис в дневника Папка';
 
   @override
@@ -2778,6 +2763,29 @@ class AppLocalizationsBg extends AppLocalizations {
   @override
   String get settingsConfirmEditPast =>
       'Питай преди редактиране на минали записи';
+
+  @override
+  String get settingsCompressPhotos => 'Компресиране на новите снимки';
+
+  @override
+  String get settingsCompressPhotosHint =>
+      'Новите снимки се пазят като WebP от около 1 MB. Изключено пази оригиналите.';
+
+  @override
+  String get compressExistingTitle => 'Компресиране на наличните снимки';
+
+  @override
+  String compressExistingBody(int count, String size) {
+    return '$count снимки заемат $size. Тези над около 1 MB стават WebP от около 1 MB. Това ги заменя и не може да се отмени; пазете оригиналите другаде, ако ви трябват.';
+  }
+
+  @override
+  String get compressExistingAction => 'Компресирай';
+
+  @override
+  String compressExistingDone(int count, String size) {
+    return 'Компресирани $count снимки, спестени $size';
+  }
 
   @override
   String get commentExpand => 'Разгъни';

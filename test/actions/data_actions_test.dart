@@ -322,7 +322,7 @@ void main() {
           p.join(folders().support.path, AppDatabase.databaseFileName));
       expect((status['database'] as Map)['external'], isFalse);
       expect((status['images'] as Map)['external'], isFalse);
-      expect(status['imageQuality'], 'medium');
+      expect(status['compressPhotos'], isFalse);
 
       final target = folders().folder('mine').path;
       expect(() => run('storage.set', {'target': 'images', 'path': target}),

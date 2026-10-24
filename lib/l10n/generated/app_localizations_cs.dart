@@ -527,21 +527,6 @@ class AppLocalizationsCs extends AppLocalizations {
   String get settingsStorageTitle => 'Uložiště';
 
   @override
-  String get settingsImageQuality => 'Kvalita fotografie';
-
-  @override
-  String get imageQualityHigh => 'Vysoká';
-
-  @override
-  String get imageQualityMedium => 'Střední';
-
-  @override
-  String get imageQualityLow => 'Nízká';
-
-  @override
-  String get imageQualityNoCompression => 'Bez komprese';
-
-  @override
   String get settingsLogFolder => 'Složka záznamů';
 
   @override
@@ -2756,6 +2741,29 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String get settingsConfirmEditPast => 'Ptát se před úpravou minulých záznamů';
+
+  @override
+  String get settingsCompressPhotos => 'Komprimovat nové fotky';
+
+  @override
+  String get settingsCompressPhotosHint =>
+      'Ukládat nové fotky jako WebP o velikosti asi 1 MB. Vypnuto zachová originály.';
+
+  @override
+  String get compressExistingTitle => 'Komprimovat stávající fotky';
+
+  @override
+  String compressExistingBody(int count, String size) {
+    return '$count fotek zabírá $size. Fotky nad asi 1 MB se změní na WebP o asi 1 MB. Tím se nahradí a nelze to vrátit; originály si uložte jinde, pokud je chcete.';
+  }
+
+  @override
+  String get compressExistingAction => 'Komprimovat';
+
+  @override
+  String compressExistingDone(int count, String size) {
+    return 'Zkomprimováno $count fotek, ušetřeno $size';
+  }
 
   @override
   String get commentExpand => 'Rozbalit';
