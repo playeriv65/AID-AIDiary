@@ -9,7 +9,7 @@ import 'package:aid_diary/sync/sync_service.dart';
 import 'package:aid_diary/time_manager.dart';
 import 'package:aid_diary/utils/entry_context_display.dart';
 import 'package:aid_diary/utils/entry_preview.dart';
-import 'package:aid_diary/widgets/entry_tag_icon_preview.dart';
+import 'package:aid_diary/widgets/entry_tag_names.dart';
 import 'package:aid_diary/widgets/local_image_loader.dart';
 import 'package:aid_diary/widgets/mood_icon.dart';
 import 'package:intl/intl.dart';
@@ -227,10 +227,7 @@ class JournalEntryRow extends StatelessWidget {
                                 Expanded(
                                   child: Align(
                                     alignment: AlignmentDirectional.centerStart,
-                                    child: EntryTagIconPreview(
-                                        entryId: entry.id,
-                                        iconSize: 14,
-                                        spacing: 4),
+                                    child: EntryTagNames(entryId: entry.id),
                                   ),
                                 ),
                               ]),
