@@ -49,6 +49,14 @@ class AppConfig {
   double get mapClusterRadius =>
       (_section('map')['clusterRadius'] as num).toDouble();
 
+  /// Degrees two fingers must turn before the map rotates rather than zooms.
+  double get mapRotationThreshold =>
+      (_section('map')['rotationThreshold'] as num).toDouble();
+
+  /// A map left turned less than this from north turns back to north.
+  double get mapNorthSnapDegrees =>
+      (_section('map')['northSnapDegrees'] as num).toDouble();
+
   Uri get reverseGeocodeUrl =>
       Uri.parse(_section('geocoding')['reverseUrl'] as String);
   Uri get placeSearchUrl =>

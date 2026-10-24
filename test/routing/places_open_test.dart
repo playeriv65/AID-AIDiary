@@ -14,6 +14,7 @@ import 'package:aid_diary/database/entry_store.dart';
 import 'package:aid_diary/layouts/mobile_scaffold.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/models/image.dart';
+import 'package:aid_diary/models/tag.dart';
 import 'package:aid_diary/models/tag_category.dart';
 import 'package:aid_diary/models/template.dart';
 import 'package:aid_diary/pages/edit_entry_page.dart';
@@ -206,8 +207,12 @@ void main() {
   testWidgets('templates, tags and categories open their editors',
       (tester) async {
     final template = await addTemplate(tester);
-    final tag = TagsProvider.instance.tags.first;
     final now = DateTime(2026, 10, 18);
+    final tag = (await tester.runAsync(() => TagsProvider.instance.add(Tag(
+        name: '散步',
+        tagType: TagType.label,
+        timeCreate: now,
+        timeModified: now))))!;
     final category = (await tester.runAsync(() => TagsProvider.instance
         .addCategory(
             TagCategory(name: '心情', timeCreate: now, timeModified: now))))!;

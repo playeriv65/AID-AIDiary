@@ -4,6 +4,7 @@ library;
 import 'package:aid_diary/utils/diary_day.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/database/entry_store.dart';
+import 'package:aid_diary/pages/entry_timeline_page.dart';
 import 'package:aid_diary/pages/edit_entry_page.dart';
 import 'package:aid_diary/layouts/mobile_scaffold.dart';
 import 'package:aid_diary/models/entry.dart';
@@ -397,8 +398,11 @@ void main() {
     DiaryAppHarness.size(tester, const Size(1280, 800));
     await tester.pumpWidget(harness.app(Scaffold(body: const AtlasPage())));
     await tester.pumpAndSettle();
-    expect(find.byKey(ValueKey('atlas-marker-${placed.id}')), findsOneWidget);
-    await tester.tap(find.byKey(ValueKey('atlas-marker-${placed.id}')));
+    // One entry is a point counting 1, like a cluster.
+    final point = find.byKey(ValueKey('atlas-cluster-${placed.id}'));
+    expect(
+        find.descendant(of: point, matching: find.text('1')), findsOneWidget);
+    await tester.tap(point);
     await tester.pumpAndSettle();
     expect(find.byKey(ValueKey('atlas-detail-${placed.id}')), findsOneWidget);
     expect(tester.takeException(), isNull);
@@ -434,11 +438,11 @@ void main() {
     await tester.pumpWidget(const SizedBox.shrink());
   });
 
-  testWidgets('nearby atlas markers cluster and split when tapped',
+  testWidgets('nearby atlas entries cluster and open as a list',
       (tester) async {
     final a = await DiaryAppHarness.addEntry(tester, '外滩', DateTime.now(),
         location: const EntryLocation(latitude: 31.230, longitude: 121.470));
-    final b = await DiaryAppHarness.addEntry(tester, '南京路', DateTime.now(),
+    await DiaryAppHarness.addEntry(tester, '南京路', DateTime.now(),
         location: const EntryLocation(latitude: 31.231, longitude: 121.471));
     final far = await DiaryAppHarness.addEntry(tester, '北京', DateTime.now(),
         location: const EntryLocation(latitude: 39.9, longitude: 116.4));
@@ -449,12 +453,14 @@ void main() {
     expect(cluster, findsOneWidget);
     expect(
         find.descendant(of: cluster, matching: find.text('2')), findsOneWidget);
-    expect(find.byKey(ValueKey('atlas-marker-${far.id}')), findsOneWidget);
+    expect(find.byKey(ValueKey('atlas-cluster-${far.id}')), findsOneWidget);
     await tester.tap(cluster);
     await tester.pumpAndSettle();
-    expect(cluster, findsNothing);
-    expect(find.byKey(ValueKey('atlas-marker-${a.id}')), findsOneWidget);
-    expect(find.byKey(ValueKey('atlas-marker-${b.id}')), findsOneWidget);
+    // The batch, as a list of its own: these two and not the far one.
+    expect(find.byType(EntryTimelinePage), findsOneWidget);
+    expect(find.textContaining('外滩'), findsWidgets);
+    expect(find.textContaining('南京路'), findsOneWidget);
+    expect(find.textContaining('北京'), findsNothing);
     await tester.pumpWidget(const SizedBox.shrink());
   });
 

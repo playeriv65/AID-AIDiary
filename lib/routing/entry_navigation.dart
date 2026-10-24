@@ -88,6 +88,23 @@ class EntryNavigation {
                 .format(entry.timeCreate),
           ));
 
+  /// A batch of entries picked out together, such as one point on the map,
+  /// as a list of their own under [header].
+  static Future<void> group(
+          BuildContext context, List<int> ids, String header) =>
+      pushPlace(
+          context,
+          'entries',
+          id: ids.join(','),
+          (context) => EntryTimelinePage(
+                header: header,
+                getEntries: () => EntriesProvider.instance.entries
+                    .where((entry) => ids.contains(entry.id))
+                    .toList(),
+                labelBuilder: (context, entry) =>
+                    TimeManager.formatDate(entry.day, context),
+              ));
+
   static Future<void> onThisDay(
       BuildContext context, DateTime referenceDate) async {
     final isJalali = TimeManager.isJalaliCalendar(context);
@@ -230,6 +247,18 @@ final List<Destination> entryDestinations = [
       'Every entry of one diary day',
       params: const [_dayParam],
       (context, args) => EntryNavigation.day(context, dateArg(args, 'day')!)),
+  Destination('entries',
+      'Some entries as a list of their own, as a point on the map opens them',
+      params: const [
+        ActionParam('ids', ParamType.string, 'Entry ids, comma separated'),
+      ], (context, args) {
+    final ids = [
+      for (final id in (args['ids'] as String).split(','))
+        if (int.tryParse(id.trim()) case final value?) value,
+    ];
+    return EntryNavigation.group(
+        context, ids, AppLocalizations.of(context)!.logCount(ids.length));
+  }),
   Destination(
       'on_this_day',
       'Entries from this day in earlier years',

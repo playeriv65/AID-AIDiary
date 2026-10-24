@@ -107,38 +107,37 @@ class _AtlasPageState extends State<AtlasPage>
     }
   }
 
-  /// Zooms into a cluster; one that cannot split further opens its entries.
+  /// One entry opens; several open as a list of their own, the batch this
+  /// point stands for. Zooming is left to the fingers.
   void _openCluster(BuildContext context, List<Entry> cluster,
       {required bool split}) {
-    final points = cluster.map(_point).toSet();
-    final maxZoom = AppConfig.instance.mapMaxZoom;
-    if (points.length == 1 || _controller.camera.zoom >= maxZoom) {
-      _open(context, cluster.first, split: split, entries: () => cluster);
+    if (cluster.length == 1) {
+      _open(context, cluster.single, split: split);
       return;
     }
-    _controller.fitCamera(CameraFit.coordinates(
-      coordinates: points.toList(),
-      padding: const EdgeInsets.fromLTRB(48, 120, 48, 48),
-      maxZoom: maxZoom,
-    ));
+    // The place most of them name, if any, then how many.
+    final names = <String, int>{};
+    for (final entry in cluster) {
+      if (entry.location?.name case final name? when name.isNotEmpty) {
+        names[name] = (names[name] ?? 0) + 1;
+      }
+    }
+    final count = AppLocalizations.of(context)!.logCount(cluster.length);
+    final place = names.isEmpty
+        ? null
+        : names.entries.reduce((a, b) => b.value > a.value ? b : a).key;
+    EntryNavigation.group(context, [for (final entry in cluster) entry.id!],
+        place == null ? count : '$place · $count');
   }
 
-  Marker _entryMarker(BuildContext context, Entry entry,
-      {required bool split}) {
-    final cs = Theme.of(context).colorScheme;
-    return Marker(
-      point: _point(entry),
-      width: 44,
-      height: 44,
-      alignment: Alignment.topCenter,
-      child: GestureDetector(
-        key: ValueKey('atlas-marker-${entry.id}'),
-        onTap: () => _open(context, entry, split: split),
-        child: Icon(Icons.location_on_rounded,
-            size: 44,
-            color: entry.id == _selectedId ? cs.tertiary : cs.primary),
-      ),
-    );
+  /// Keeps north up unless the map was clearly turned.
+  void _onMapEvent(MapEvent event) {
+    if (event is! MapEventRotateEnd) return;
+    final rotation = _controller.camera.rotation % 360;
+    final off = rotation > 180 ? 360 - rotation : rotation;
+    if (off > 0 && off < AppConfig.instance.mapNorthSnapDegrees) {
+      _controller.rotate(0);
+    }
   }
 
   Marker _clusterMarker(BuildContext context, List<Entry> cluster,
@@ -211,6 +210,13 @@ class _AtlasPageState extends State<AtlasPage>
               entries.isEmpty ? config.mapDefaultZoom : config.mapEntryZoom - 3,
           maxZoom: config.mapMaxZoom,
           onMapReady: () => _fitAll(entries),
+          // A pinch that drifts a little zooms and does not turn the map:
+          // the first gesture past its threshold wins.
+          interactionOptions: InteractionOptions(
+            enableMultiFingerGestureRace: true,
+            rotationThreshold: config.mapRotationThreshold,
+          ),
+          onMapEvent: _onMapEvent,
         ),
         children: [
           TileLayer(
@@ -240,11 +246,9 @@ class _AtlasPageState extends State<AtlasPage>
                     ),
                   ),
                 ),
+              // A single entry is a point counting 1, like the others.
               for (final cluster in clusters)
-                if (cluster.length == 1)
-                  _entryMarker(context, cluster.single, split: split)
-                else
-                  _clusterMarker(context, cluster, split: split),
+                _clusterMarker(context, cluster, split: split),
             ]);
           }),
           // Bottom left, clear of the fit button.
