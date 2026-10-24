@@ -388,7 +388,7 @@ initialized for the same workspace. Never clear the everyday package.
 
 | What | Where | Access |
 | --- | --- | --- |
-| Source code | GitHub `playeriv65/AID-AIDiary` (private); the old web app as tags `legacy-web`, `legacy-web-dev` | Owner |
+| Source code | GitHub `playeriv65/AID-AIDiary` (public); the old web app as tags `legacy-web`, `legacy-web-dev` | Owner |
 | Release keystore | `D:\software\keys` on the development PC, read through `android/key.properties` | Owner only; never in git or chat |
 | Google Cloud project `aid-diary` | Drive API and the OAuth clients (Android release, Android beta, web, Windows desktop); client IDs in `assets/config/app_config.json` | Owner's Google account (`docs/GOOGLE_DRIVE.md`) |
 | AID sync server | `https://aid.playeriv65.com/dav/`; SSH alias `netlab_main`, installation `/srv/aid-sync`, Docker behind nginx TLS; server source `887dd27` and WebSocket headers deployed 2026-10-22 | Owner's server and domain `playeriv65.com`; maintain through native SSH and `server/deploy/`; accounts use `aid-sync adduser`; deployment and backup evidence in `docs/SYNC_NETWORK.md` |

@@ -248,10 +248,16 @@ validation just to make timings look shorter.
 
 ## Continuous integration
 
-`.github/workflows/nightly.yml` runs once a day (09:00 UTC) and on demand
-(Actions > Nightly > Run workflow, or `gh workflow run nightly.yml`). A
-scheduled run with no commits in the last 25 hours does nothing. It runs, on
-GitHub's runners, what the full local regression runs:
+Two workflows run on GitHub's runners:
+
+- `.github/workflows/ci.yml` checks every push to `main` on Linux:
+  `flutter analyze`, the offline suite, the CLI's analysis and tests, and the
+  server's. It builds nothing. Documentation-only pushes skip it, and a
+  burst of pushes runs only for the latest.
+- `.github/workflows/nightly.yml` packages once a day (09:00 UTC) and on
+  demand (Actions > Nightly > Run workflow, or `gh workflow run
+  nightly.yml`). A scheduled run with no commits in the last 25 hours does
+  nothing. It runs what the full local regression runs:
 
 - Windows: `flutter analyze`, the offline suite (`--exclude-tags live`), the
   CLI's analysis, tests and executable, and a Windows release bundle.
@@ -262,9 +268,8 @@ When all pass, the rolling prerelease `nightly` is replaced with the APKs,
 the Windows ZIP and `aid.exe`. CI has no signing key: its packages are
 signed with the debug key, which proves they build but cannot update an
 installed release; install those from a local `scripts/dev.ps1` build. The
-repository is private, so Actions minutes are metered; that is why the run
-is daily rather than per push. iOS is not a target (removed with the other
-platforms), so CI does not build it.
+repository is public, so Actions minutes are free. iOS, macOS, Linux and web
+are not targets (removed), so CI does not package them.
 
 ## Research behind this policy
 

@@ -168,7 +168,7 @@ large archives and reduced-motion users.
 Feedback is a routed settings page. `assets/config/app_config.json` owns its
 GitHub issue URL and contact email; only the user's entered text is prefilled.
 External-launch failure retains the draft and leaves the email/copy fallback
-available. The current repository is private, so issue creation requires access.
+available. The repository is public, so anyone can open an issue.
 There is no feedback collection endpoint or automatic message submission.
 
 Windows keeps the standard Win32 title bar, icon, title and caption buttons.

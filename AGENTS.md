@@ -22,7 +22,7 @@ Do not put changing test counts, deployment revisions or recipes in this file.
 
 ## Work and delivery
 
-- Fetch first and integrate remote updates safely. Main is `main`; the remote is the private `playeriv65/AID-AIDiary` repository. Substantial tasks use `task/<name>` in a separate worktree from current main. Finish with meaningful English commits, merge back, push, verify the remote revision and remove completed task branches/worktrees. Never overwrite other work or force-push history.
+- Fetch first and integrate remote updates safely. Main is `main`; the remote is the public `playeriv65/AID-AIDiary` repository. Substantial tasks use `task/<name>` in a separate worktree from current main. Finish with meaningful English commits, merge back, push, verify the remote revision and remove completed task branches/worktrees. Never overwrite other work or force-push history.
 - Resolve clear implementation bugs directly. Ask about unresolved product direction or actions outside authorization; do not ask again for authorization already established in the session. Keep the owner informed during substantial work.
 - Consult current official docs/issues when something behaves oddly before speculative experiments. Explain how external advice applies here; do not add a framework, dependency migration or review ceremony just to match a sample project.
 - Remove confirmed unused logic and its callers. When a feature is deleted, delete its tests too; do not add absence/anti-regression guards for the removed feature. A differential check against a reference runs once: compare, fix, then remove its scratch harness/fixtures.

@@ -37,8 +37,8 @@ The behavior at `f13a146` includes:
 - Settings > Help opens feedback: editable text, prefilled GitHub issue/email
   drafts and copying. Submission remains in the user's browser/mail app; no
   diary text or logs are collected automatically. Destinations are in
-  `assets/config/app_config.json`. GitHub issues currently require access to
-  the private repository.
+  `assets/config/app_config.json`. The repository is public, so anyone can
+  open an issue.
 - All offered locales include the new interface strings.
 
 The [One Diary guide](ONE_DIARY_IMPORT.md#maintainer-map) identifies the v3

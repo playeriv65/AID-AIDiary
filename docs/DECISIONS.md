@@ -324,6 +324,10 @@ implementation boundaries and verification results belong in
 
 ## Engineering and documentation
 
+- The repository is public (2026-10-24, owner), after a review of its whole
+  history for keys and personal data; feedback mail goes to the owner's
+  Gmail. Never commit signing keys, diaries, device secrets or personal
+  import material: git history is public too.
 - 2026-10-22: Use [Engineering](ENGINEERING.md) for project principles and the
   change/review workflow, with [INDEX.md](INDEX.md) locating each subject's
   primary guide. Learn from official Flutter/Google guidance while recording
@@ -356,9 +360,6 @@ implementation boundaries and verification results belong in
 - Whether `ui.navigate to=entry` should follow the layout as a tap does
   (detail pane on wide windows) instead of always pushing a page.
 - Whether voice-note transcription on the device fits "no AI".
-- Repository visibility (2026-10-24): it is private, so Actions minutes are
-  metered and CI runs daily. Making it public needs a history review for
-  personal data and keys first.
 - Nightly installs: CI has no signing key, so its packages cannot update
   an installed app. Options: the release key as a repository secret, or a
   separate key for the development flavor only.

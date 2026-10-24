@@ -13,12 +13,11 @@ Probably skip (Journey has them, but they need cloud or AI or add little): Googl
   must not tint backgrounds or surfaces.
 
 ## Build automation (owner request 2026-10-23)
-- Done (2026-10-24): daily CI and a debug-signed nightly prerelease
-  (`docs/TESTING.md`, "Continuous integration"). Open: the repository is
-  private, so minutes are metered unless it becomes public (publishing needs
-  a history review for personal data first); a nightly that installs over
-  the owner's app needs the release key as a repository secret, or a
-  separate key for the development flavour.
+- Done (2026-10-24): CI on every push to main, a debug-signed nightly
+  prerelease, and the repository made public after a history review
+  (`docs/TESTING.md`, "Continuous integration"). Open: a nightly that
+  installs over the owner's app needs the release key as a repository
+  secret, or a separate key for the development flavour.
 - iOS builds would first need the iOS target restored (removed; the
   product targets Windows and Android).
 
