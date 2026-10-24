@@ -795,6 +795,7 @@
   "hiddenDiaryEmpty": "Nicio însemnare ascunsă",
   "hiddenDiaryUnlock": "Deblochează însemnările ascunse",
   "hiddenDiaryAuthHint": "Folosește blocarea aplicației sau a ecranului dispozitivului.",
+  "hiddenDiaryWhere": "Ascunsă. Pentru a o afișa din nou: {path}",
   "moodClear": "Șterge dispoziția",
   "scrollToTop": "Sus",
   "feedbackTitle": "Feedback",

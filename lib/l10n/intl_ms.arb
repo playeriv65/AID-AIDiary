@@ -795,6 +795,7 @@
   "hiddenDiaryEmpty": "Tiada catatan tersembunyi",
   "hiddenDiaryUnlock": "Buka kunci catatan tersembunyi",
   "hiddenDiaryAuthHint": "Gunakan kunci aplikasi atau kunci skrin peranti anda.",
+  "hiddenDiaryWhere": "Disembunyikan. Untuk memaparkannya semula: {path}",
   "moodClear": "Kosongkan perasaan",
   "scrollToTop": "Kembali ke atas",
   "feedbackTitle": "Maklum balas",

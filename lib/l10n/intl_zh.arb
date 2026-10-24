@@ -826,6 +826,7 @@
   "hiddenDiaryEmpty": "没有隐藏的日记",
   "hiddenDiaryUnlock": "解锁隐藏日记",
   "hiddenDiaryAuthHint": "请使用应用锁或设备屏幕锁解锁。",
+  "hiddenDiaryWhere": "已隐藏。可在 {path} 中找到并取消隐藏。",
   "moodClear": "清空心情",
   "scrollToTop": "回到顶部",
   "feedbackTitle": "意见反馈",

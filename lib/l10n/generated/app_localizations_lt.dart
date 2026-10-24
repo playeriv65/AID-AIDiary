@@ -2746,6 +2746,11 @@ class AppLocalizationsLt extends AppLocalizations {
       'Naudokite programėlės arba įrenginio ekrano užraktą.';
 
   @override
+  String hiddenDiaryWhere(String path) {
+    return 'Paslėpta. Vėl parodyti galima čia: $path';
+  }
+
+  @override
   String get moodClear => 'Išvalyti nuotaiką';
 
   @override

@@ -2747,6 +2747,11 @@ class AppLocalizationsRo extends AppLocalizations {
       'Folosește blocarea aplicației sau a ecranului dispozitivului.';
 
   @override
+  String hiddenDiaryWhere(String path) {
+    return 'Ascunsă. Pentru a o afișa din nou: $path';
+  }
+
+  @override
   String get moodClear => 'Șterge dispoziția';
 
   @override

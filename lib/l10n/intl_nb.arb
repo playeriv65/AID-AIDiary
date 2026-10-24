@@ -795,6 +795,7 @@
   "hiddenDiaryEmpty": "Ingen skjulte innlegg",
   "hiddenDiaryUnlock": "Lås opp skjulte innlegg",
   "hiddenDiaryAuthHint": "Bruk applåsen eller enhetens skjermlås.",
+  "hiddenDiaryWhere": "Skjult. Vis det igjen under: {path}",
   "moodClear": "Fjern humør",
   "scrollToTop": "Til toppen",
   "feedbackTitle": "Tilbakemelding",

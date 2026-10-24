@@ -2614,6 +2614,11 @@ class AppLocalizationsZh extends AppLocalizations {
   String get hiddenDiaryAuthHint => '请使用应用锁或设备屏幕锁解锁。';
 
   @override
+  String hiddenDiaryWhere(String path) {
+    return '已隐藏。可在 $path 中找到并取消隐藏。';
+  }
+
+  @override
   String get moodClear => '清空心情';
 
   @override
@@ -5252,6 +5257,11 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get hiddenDiaryAuthHint => '請使用應用程式鎖或裝置螢幕鎖解鎖。';
+
+  @override
+  String hiddenDiaryWhere(String path) {
+    return '已隱藏。可在 $path 中找到並取消隱藏。';
+  }
 
   @override
   String get moodClear => '清除心情';

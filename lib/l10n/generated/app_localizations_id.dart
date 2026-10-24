@@ -2724,6 +2724,11 @@ class AppLocalizationsId extends AppLocalizations {
       'Gunakan kunci aplikasi atau kunci layar perangkat Anda.';
 
   @override
+  String hiddenDiaryWhere(String path) {
+    return 'Disembunyikan. Untuk menampilkannya lagi: $path';
+  }
+
+  @override
   String get moodClear => 'Hapus suasana hati';
 
   @override

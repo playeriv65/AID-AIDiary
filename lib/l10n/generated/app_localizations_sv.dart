@@ -2721,6 +2721,11 @@ class AppLocalizationsSv extends AppLocalizations {
       'Använd appens lås eller enhetens skärmlås.';
 
   @override
+  String hiddenDiaryWhere(String path) {
+    return 'Dold. Visa igen under: $path';
+  }
+
+  @override
   String get moodClear => 'Rensa humör';
 
   @override

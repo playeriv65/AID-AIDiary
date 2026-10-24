@@ -795,6 +795,7 @@
   "hiddenDiaryEmpty": "Brak ukrytych wpisów",
   "hiddenDiaryUnlock": "Odblokuj ukryte wpisy",
   "hiddenDiaryAuthHint": "Użyj blokady aplikacji lub ekranu urządzenia.",
+  "hiddenDiaryWhere": "Ukryto. Aby pokazać ponownie: {path}",
   "moodClear": "Wyczyść nastrój",
   "scrollToTop": "Na górę",
   "feedbackTitle": "Opinia",

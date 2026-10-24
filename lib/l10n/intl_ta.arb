@@ -795,6 +795,7 @@
   "hiddenDiaryEmpty": "மறைக்கப்பட்ட பதிவுகள் இல்லை",
   "hiddenDiaryUnlock": "மறைக்கப்பட்ட பதிவுகளைத் திற",
   "hiddenDiaryAuthHint": "செயலிப் பூட்டு அல்லது சாதனத் திரைப் பூட்டைப் பயன்படுத்தவும்.",
+  "hiddenDiaryWhere": "மறைக்கப்பட்டது. மீண்டும் காட்ட: {path}",
   "moodClear": "மனநிலையை நீக்கு",
   "scrollToTop": "மேலே செல்க",
   "feedbackTitle": "கருத்து",

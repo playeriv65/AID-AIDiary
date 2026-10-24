@@ -2756,6 +2756,11 @@ class AppLocalizationsBe extends AppLocalizations {
       'Выкарыстайце блакіроўку праграмы або экрана прылады.';
 
   @override
+  String hiddenDiaryWhere(String path) {
+    return 'Схавана. Каб паказаць зноў: $path';
+  }
+
+  @override
   String get moodClear => 'Ачысціць настрой';
 
   @override

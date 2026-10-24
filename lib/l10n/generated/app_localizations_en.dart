@@ -2701,6 +2701,11 @@ class AppLocalizationsEn extends AppLocalizations {
       'Use the app lock or your device\'s screen lock to unlock.';
 
   @override
+  String hiddenDiaryWhere(String path) {
+    return 'Hidden. To show it again: $path';
+  }
+
+  @override
   String get moodClear => 'Clear mood';
 
   @override

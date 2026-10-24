@@ -795,6 +795,7 @@
   "hiddenDiaryEmpty": "Không có nhật ký ẩn",
   "hiddenDiaryUnlock": "Mở khóa nhật ký ẩn",
   "hiddenDiaryAuthHint": "Sử dụng khóa ứng dụng hoặc khóa màn hình thiết bị.",
+  "hiddenDiaryWhere": "Đã ẩn. Để hiện lại: {path}",
   "moodClear": "Xóa tâm trạng",
   "scrollToTop": "Về đầu trang",
   "feedbackTitle": "Góp ý",

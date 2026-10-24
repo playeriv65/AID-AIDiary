@@ -795,6 +795,7 @@
   "hiddenDiaryEmpty": "숨긴 일기가 없습니다",
   "hiddenDiaryUnlock": "숨긴 일기 잠금 해제",
   "hiddenDiaryAuthHint": "앱 잠금 또는 기기의 화면 잠금을 사용하세요.",
+  "hiddenDiaryWhere": "숨겼습니다. 다시 표시하려면: {path}",
   "moodClear": "기분 지우기",
   "scrollToTop": "맨 위로",
   "feedbackTitle": "의견 보내기",

@@ -2712,6 +2712,11 @@ class AppLocalizationsAr extends AppLocalizations {
       'استخدم قفل التطبيق أو قفل شاشة جهازك للفتح.';
 
   @override
+  String hiddenDiaryWhere(String path) {
+    return 'تم الإخفاء. لإظهارها مجددًا: $path';
+  }
+
+  @override
   String get moodClear => 'مسح الحالة المزاجية';
 
   @override

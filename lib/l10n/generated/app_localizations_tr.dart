@@ -2716,6 +2716,11 @@ class AppLocalizationsTr extends AppLocalizations {
       'Uygulama kilidini veya cihazınızın ekran kilidini kullanın.';
 
   @override
+  String hiddenDiaryWhere(String path) {
+    return 'Gizlendi. Yeniden göstermek için: $path';
+  }
+
+  @override
   String get moodClear => 'Ruh halini temizle';
 
   @override

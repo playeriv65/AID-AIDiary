@@ -2757,6 +2757,11 @@ class AppLocalizationsTa extends AppLocalizations {
       'செயலிப் பூட்டு அல்லது சாதனத் திரைப் பூட்டைப் பயன்படுத்தவும்.';
 
   @override
+  String hiddenDiaryWhere(String path) {
+    return 'மறைக்கப்பட்டது. மீண்டும் காட்ட: $path';
+  }
+
+  @override
   String get moodClear => 'மனநிலையை நீக்கு';
 
   @override

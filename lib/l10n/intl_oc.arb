@@ -795,6 +795,7 @@
   "hiddenDiaryEmpty": "Cap d’entrada amagada",
   "hiddenDiaryUnlock": "Desverrolhar las entradas amagadas",
   "hiddenDiaryAuthHint": "Utilizatz lo verrolhatge de l’aplicacion o de l’ecran de l’aparelh.",
+  "hiddenDiaryWhere": "Amagada. Per la tornar mostrar : {path}",
   "moodClear": "Escafar l’umor",
   "scrollToTop": "Tornar amont",
   "feedbackTitle": "Comentaris",

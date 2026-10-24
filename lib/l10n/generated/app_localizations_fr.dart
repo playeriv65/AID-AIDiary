@@ -2755,6 +2755,11 @@ class AppLocalizationsFr extends AppLocalizations {
       'Utilisez le verrouillage de l’application ou de l’écran de votre appareil.';
 
   @override
+  String hiddenDiaryWhere(String path) {
+    return 'Masquée. Pour l’afficher à nouveau : $path';
+  }
+
+  @override
   String get moodClear => 'Effacer l’humeur';
 
   @override

@@ -795,6 +795,7 @@
   "hiddenDiaryEmpty": "Aucune entrée masquée",
   "hiddenDiaryUnlock": "Déverrouiller les entrées masquées",
   "hiddenDiaryAuthHint": "Utilisez le verrouillage de l’application ou de l’écran de votre appareil.",
+  "hiddenDiaryWhere": "Masquée. Pour l’afficher à nouveau : {path}",
   "moodClear": "Effacer l’humeur",
   "scrollToTop": "Retour en haut",
   "feedbackTitle": "Commentaires",

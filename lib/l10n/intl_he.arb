@@ -812,6 +812,7 @@
   "hiddenDiaryEmpty": "אין רשומות מוסתרות",
   "hiddenDiaryUnlock": "פתיחת רשומות מוסתרות",
   "hiddenDiaryAuthHint": "יש להשתמש בנעילת היישום או בנעילת המסך של המכשיר.",
+  "hiddenDiaryWhere": "הוסתרה. כדי להציג שוב: {path}",
   "moodClear": "ניקוי מצב הרוח",
   "scrollToTop": "חזרה למעלה",
   "feedbackTitle": "משוב",

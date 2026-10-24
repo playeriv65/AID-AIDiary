@@ -795,6 +795,7 @@
   "hiddenDiaryEmpty": "Нет скрытых записей",
   "hiddenDiaryUnlock": "Разблокировать скрытые записи",
   "hiddenDiaryAuthHint": "Используйте блокировку приложения или экрана устройства.",
+  "hiddenDiaryWhere": "Скрыто. Чтобы показать снова: {path}",
   "moodClear": "Очистить настроение",
   "scrollToTop": "Наверх",
   "feedbackTitle": "Обратная связь",

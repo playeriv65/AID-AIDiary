@@ -2678,6 +2678,11 @@ class AppLocalizationsMs extends AppLocalizations {
       'Gunakan kunci aplikasi atau kunci skrin peranti anda.';
 
   @override
+  String hiddenDiaryWhere(String path) {
+    return 'Disembunyikan. Untuk memaparkannya semula: $path';
+  }
+
+  @override
   String get moodClear => 'Kosongkan perasaan';
 
   @override

@@ -795,6 +795,7 @@
   "hiddenDiaryEmpty": "Inga dolda inlägg",
   "hiddenDiaryUnlock": "Lås upp dolda inlägg",
   "hiddenDiaryAuthHint": "Använd appens lås eller enhetens skärmlås.",
+  "hiddenDiaryWhere": "Dold. Visa igen under: {path}",
   "moodClear": "Rensa humör",
   "scrollToTop": "Till toppen",
   "feedbackTitle": "Återkoppling",

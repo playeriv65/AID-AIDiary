@@ -2736,6 +2736,11 @@ class AppLocalizationsPt extends AppLocalizations {
       'Utiliza o bloqueio da aplicação ou do ecrã do dispositivo.';
 
   @override
+  String hiddenDiaryWhere(String path) {
+    return 'Ocultada. Para voltar a mostrar: $path';
+  }
+
+  @override
   String get moodClear => 'Limpar humor';
 
   @override
@@ -5493,6 +5498,11 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
   @override
   String get hiddenDiaryAuthHint =>
       'Use o bloqueio do aplicativo ou da tela do dispositivo.';
+
+  @override
+  String hiddenDiaryWhere(String path) {
+    return 'Ocultada. Para mostrar de novo: $path';
+  }
 
   @override
   String get moodClear => 'Limpar humor';

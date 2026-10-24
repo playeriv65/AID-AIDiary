@@ -2750,6 +2750,11 @@ class AppLocalizationsDe extends AppLocalizations {
       'Verwende die App-Sperre oder die Bildschirmsperre deines Geräts.';
 
   @override
+  String hiddenDiaryWhere(String path) {
+    return 'Ausgeblendet. Wieder anzeigen unter: $path';
+  }
+
+  @override
   String get moodClear => 'Stimmung entfernen';
 
   @override

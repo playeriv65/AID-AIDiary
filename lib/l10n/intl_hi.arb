@@ -795,6 +795,7 @@
   "hiddenDiaryEmpty": "कोई छिपी हुई प्रविष्टि नहीं",
   "hiddenDiaryUnlock": "छिपी हुई प्रविष्टियाँ अनलॉक करें",
   "hiddenDiaryAuthHint": "ऐप लॉक या अपने डिवाइस के स्क्रीन लॉक का उपयोग करें।",
+  "hiddenDiaryWhere": "छिपाई गई। फिर से दिखाने के लिए: {path}",
   "moodClear": "मनःस्थिति हटाएँ",
   "scrollToTop": "ऊपर जाएँ",
   "feedbackTitle": "प्रतिक्रिया",

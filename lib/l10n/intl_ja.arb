@@ -795,6 +795,7 @@
   "hiddenDiaryEmpty": "非表示の日記はありません",
   "hiddenDiaryUnlock": "非表示の日記をロック解除",
   "hiddenDiaryAuthHint": "アプリロックまたは端末の画面ロックで解除してください。",
+  "hiddenDiaryWhere": "非表示にしました。再表示するには：{path}",
   "moodClear": "気分をクリア",
   "scrollToTop": "先頭に戻る",
   "feedbackTitle": "フィードバック",

@@ -2709,6 +2709,11 @@ class AppLocalizationsFa extends AppLocalizations {
       'از قفل برنامه یا قفل صفحهٔ دستگاه استفاده کنید.';
 
   @override
+  String hiddenDiaryWhere(String path) {
+    return 'پنهان شد. برای نمایش دوباره: $path';
+  }
+
+  @override
   String get moodClear => 'پاک کردن حال‌وهوا';
 
   @override

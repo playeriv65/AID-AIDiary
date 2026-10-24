@@ -2723,6 +2723,11 @@ class AppLocalizationsFi extends AppLocalizations {
       'Käytä sovelluksen lukitusta tai laitteen näytön lukitusta.';
 
   @override
+  String hiddenDiaryWhere(String path) {
+    return 'Piilotettu. Näytä uudelleen kohdasta: $path';
+  }
+
+  @override
   String get moodClear => 'Poista mieliala';
 
   @override

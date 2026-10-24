@@ -2694,6 +2694,11 @@ class AppLocalizationsHe extends AppLocalizations {
       'יש להשתמש בנעילת היישום או בנעילת המסך של המכשיר.';
 
   @override
+  String hiddenDiaryWhere(String path) {
+    return 'הוסתרה. כדי להציג שוב: $path';
+  }
+
+  @override
   String get moodClear => 'ניקוי מצב הרוח';
 
   @override

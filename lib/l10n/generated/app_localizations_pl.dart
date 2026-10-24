@@ -2742,6 +2742,11 @@ class AppLocalizationsPl extends AppLocalizations {
       'Użyj blokady aplikacji lub ekranu urządzenia.';
 
   @override
+  String hiddenDiaryWhere(String path) {
+    return 'Ukryto. Aby pokazać ponownie: $path';
+  }
+
+  @override
   String get moodClear => 'Wyczyść nastrój';
 
   @override

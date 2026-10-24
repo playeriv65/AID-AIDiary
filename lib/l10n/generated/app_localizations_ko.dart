@@ -2650,6 +2650,11 @@ class AppLocalizationsKo extends AppLocalizations {
   String get hiddenDiaryAuthHint => '앱 잠금 또는 기기의 화면 잠금을 사용하세요.';
 
   @override
+  String hiddenDiaryWhere(String path) {
+    return '숨겼습니다. 다시 표시하려면: $path';
+  }
+
+  @override
   String get moodClear => '기분 지우기';
 
   @override

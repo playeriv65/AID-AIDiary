@@ -2741,6 +2741,11 @@ class AppLocalizationsOc extends AppLocalizations {
       'Utilizatz lo verrolhatge de l’aplicacion o de l’ecran de l’aparelh.';
 
   @override
+  String hiddenDiaryWhere(String path) {
+    return 'Amagada. Per la tornar mostrar : $path';
+  }
+
+  @override
   String get moodClear => 'Escafar l’umor';
 
   @override

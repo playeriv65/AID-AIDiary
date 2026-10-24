@@ -795,6 +795,7 @@
   "hiddenDiaryEmpty": "Žádné skryté zápisy",
   "hiddenDiaryUnlock": "Odemknout skryté zápisy",
   "hiddenDiaryAuthHint": "Použijte zámek aplikace nebo obrazovky zařízení.",
+  "hiddenDiaryWhere": "Skryto. Znovu zobrazit lze v: {path}",
   "moodClear": "Vymazat náladu",
   "scrollToTop": "Zpět nahoru",
   "feedbackTitle": "Zpětná vazba",

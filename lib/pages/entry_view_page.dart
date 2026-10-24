@@ -207,7 +207,16 @@ class EntryViewPage extends StatelessWidget {
     if (entry.isHidden) {
       await HiddenDiaryScope.of(context)!.unhide(entry);
     } else {
+      final messenger = ScaffoldMessenger.of(context);
+      final l10n = AppLocalizations.of(context)!;
       await AppActions.instance.run('entry.hide', {'id': entry.id});
+      // Every time: otherwise a hidden entry seems gone for good.
+      messenger.showSnackBar(SnackBar(
+          content: Text(l10n.hiddenDiaryWhere([
+        l10n.pageSettingsTitle,
+        l10n.settingsSecurityTitle,
+        l10n.hiddenDiaryTitle,
+      ].join(' › ')))));
     }
     if (context.mounted && !embedded && Navigator.of(context).canPop()) {
       Navigator.of(context).pop();

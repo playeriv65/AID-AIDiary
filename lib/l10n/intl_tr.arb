@@ -795,6 +795,7 @@
   "hiddenDiaryEmpty": "Gizli kayıt yok",
   "hiddenDiaryUnlock": "Gizli kayıtların kilidini aç",
   "hiddenDiaryAuthHint": "Uygulama kilidini veya cihazınızın ekran kilidini kullanın.",
+  "hiddenDiaryWhere": "Gizlendi. Yeniden göstermek için: {path}",
   "moodClear": "Ruh halini temizle",
   "scrollToTop": "Başa dön",
   "feedbackTitle": "Geri bildirim",

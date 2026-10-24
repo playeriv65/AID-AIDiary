@@ -795,6 +795,7 @@
   "hiddenDiaryEmpty": "Nessuna voce nascosta",
   "hiddenDiaryUnlock": "Sblocca le voci nascoste",
   "hiddenDiaryAuthHint": "Usa il blocco dell’app o dello schermo del dispositivo.",
+  "hiddenDiaryWhere": "Nascosta. Per mostrarla di nuovo: {path}",
   "moodClear": "Rimuovi umore",
   "scrollToTop": "Torna in alto",
   "feedbackTitle": "Feedback",

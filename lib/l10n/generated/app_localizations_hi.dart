@@ -2716,6 +2716,11 @@ class AppLocalizationsHi extends AppLocalizations {
       'ऐप लॉक या अपने डिवाइस के स्क्रीन लॉक का उपयोग करें।';
 
   @override
+  String hiddenDiaryWhere(String path) {
+    return 'छिपाई गई। फिर से दिखाने के लिए: $path';
+  }
+
+  @override
   String get moodClear => 'मनःस्थिति हटाएँ';
 
   @override

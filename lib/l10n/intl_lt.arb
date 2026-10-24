@@ -795,6 +795,7 @@
   "hiddenDiaryEmpty": "Paslėptų įrašų nėra",
   "hiddenDiaryUnlock": "Atrakinti paslėptus įrašus",
   "hiddenDiaryAuthHint": "Naudokite programėlės arba įrenginio ekrano užraktą.",
+  "hiddenDiaryWhere": "Paslėpta. Vėl parodyti galima čia: {path}",
   "moodClear": "Išvalyti nuotaiką",
   "scrollToTop": "Į viršų",
   "feedbackTitle": "Atsiliepimas",

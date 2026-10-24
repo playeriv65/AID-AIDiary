@@ -2730,6 +2730,11 @@ class AppLocalizationsVi extends AppLocalizations {
       'Sử dụng khóa ứng dụng hoặc khóa màn hình thiết bị.';
 
   @override
+  String hiddenDiaryWhere(String path) {
+    return 'Đã ẩn. Để hiện lại: $path';
+  }
+
+  @override
   String get moodClear => 'Xóa tâm trạng';
 
   @override

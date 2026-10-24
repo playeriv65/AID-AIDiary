@@ -2711,6 +2711,11 @@ class AppLocalizationsCs extends AppLocalizations {
       'Použijte zámek aplikace nebo obrazovky zařízení.';
 
   @override
+  String hiddenDiaryWhere(String path) {
+    return 'Skryto. Znovu zobrazit lze v: $path';
+  }
+
+  @override
   String get moodClear => 'Vymazat náladu';
 
   @override

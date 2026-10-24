@@ -826,6 +826,7 @@
   "hiddenDiaryEmpty": "沒有隱藏的日記",
   "hiddenDiaryUnlock": "解鎖隱藏日記",
   "hiddenDiaryAuthHint": "請使用應用程式鎖或裝置螢幕鎖解鎖。",
+  "hiddenDiaryWhere": "已隱藏。可在 {path} 中找到並取消隱藏。",
   "moodClear": "清除心情",
   "scrollToTop": "回到頂部",
   "feedbackTitle": "意見回饋",

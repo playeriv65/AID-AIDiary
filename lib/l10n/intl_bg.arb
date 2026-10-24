@@ -795,6 +795,7 @@
   "hiddenDiaryEmpty": "Няма скрити записи",
   "hiddenDiaryUnlock": "Отключване на скритите записи",
   "hiddenDiaryAuthHint": "Използвайте заключването на приложението или на екрана на устройството.",
+  "hiddenDiaryWhere": "Скрито. За да го покажете отново: {path}",
   "moodClear": "Изчистване на настроението",
   "scrollToTop": "Най-горе",
   "feedbackTitle": "Обратна връзка",

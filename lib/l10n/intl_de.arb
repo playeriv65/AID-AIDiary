@@ -795,6 +795,7 @@
   "hiddenDiaryEmpty": "Keine verborgenen Einträge",
   "hiddenDiaryUnlock": "Verborgene Einträge entsperren",
   "hiddenDiaryAuthHint": "Verwende die App-Sperre oder die Bildschirmsperre deines Geräts.",
+  "hiddenDiaryWhere": "Ausgeblendet. Wieder anzeigen unter: {path}",
   "moodClear": "Stimmung entfernen",
   "scrollToTop": "Nach oben",
   "feedbackTitle": "Feedback",

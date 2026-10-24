@@ -2732,6 +2732,11 @@ class AppLocalizationsBg extends AppLocalizations {
       'Използвайте заключването на приложението или на екрана на устройството.';
 
   @override
+  String hiddenDiaryWhere(String path) {
+    return 'Скрито. За да го покажете отново: $path';
+  }
+
+  @override
   String get moodClear => 'Изчистване на настроението';
 
   @override

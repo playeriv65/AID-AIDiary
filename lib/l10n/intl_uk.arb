@@ -795,6 +795,7 @@
   "hiddenDiaryEmpty": "Немає прихованих записів",
   "hiddenDiaryUnlock": "Розблокувати приховані записи",
   "hiddenDiaryAuthHint": "Скористайтеся блокуванням застосунку або екрана пристрою.",
+  "hiddenDiaryWhere": "Приховано. Щоб показати знову: {path}",
   "moodClear": "Очистити настрій",
   "scrollToTop": "Нагору",
   "feedbackTitle": "Зворотний зв’язок",

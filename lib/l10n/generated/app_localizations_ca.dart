@@ -2738,6 +2738,11 @@ class AppLocalizationsCa extends AppLocalizations {
       'Utilitza el bloqueig de l’aplicació o de la pantalla del dispositiu.';
 
   @override
+  String hiddenDiaryWhere(String path) {
+    return 'Amagada. Per tornar-la a mostrar: $path';
+  }
+
+  @override
   String get moodClear => 'Esborra l’estat d’ànim';
 
   @override

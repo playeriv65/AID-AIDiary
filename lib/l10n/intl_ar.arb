@@ -795,6 +795,7 @@
   "hiddenDiaryEmpty": "لا توجد يوميات مخفية",
   "hiddenDiaryUnlock": "فتح اليوميات المخفية",
   "hiddenDiaryAuthHint": "استخدم قفل التطبيق أو قفل شاشة جهازك للفتح.",
+  "hiddenDiaryWhere": "تم الإخفاء. لإظهارها مجددًا: {path}",
   "moodClear": "مسح الحالة المزاجية",
   "scrollToTop": "العودة للأعلى",
   "feedbackTitle": "ملاحظات",

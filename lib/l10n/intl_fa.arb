@@ -795,6 +795,7 @@
   "hiddenDiaryEmpty": "یادداشت پنهانی وجود ندارد",
   "hiddenDiaryUnlock": "باز کردن یادداشت‌های پنهان",
   "hiddenDiaryAuthHint": "از قفل برنامه یا قفل صفحهٔ دستگاه استفاده کنید.",
+  "hiddenDiaryWhere": "پنهان شد. برای نمایش دوباره: {path}",
   "moodClear": "پاک کردن حال‌وهوا",
   "scrollToTop": "بازگشت به بالا",
   "feedbackTitle": "بازخورد",

@@ -795,6 +795,7 @@
   "hiddenDiaryEmpty": "Geen verborgen berichten",
   "hiddenDiaryUnlock": "Verborgen berichten ontgrendelen",
   "hiddenDiaryAuthHint": "Gebruik de appvergrendeling of schermvergrendeling van je apparaat.",
+  "hiddenDiaryWhere": "Verborgen. Weer tonen via: {path}",
   "moodClear": "Stemming wissen",
   "scrollToTop": "Naar boven",
   "feedbackTitle": "Feedback",

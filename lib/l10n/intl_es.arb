@@ -796,6 +796,7 @@
   "hiddenDiaryEmpty": "No hay entradas ocultas",
   "hiddenDiaryUnlock": "Desbloquear entradas ocultas",
   "hiddenDiaryAuthHint": "Usa el bloqueo de la aplicación o de la pantalla del dispositivo.",
+  "hiddenDiaryWhere": "Oculta. Para volver a mostrarla: {path}",
   "moodClear": "Borrar estado de ánimo",
   "scrollToTop": "Volver arriba",
   "feedbackTitle": "Comentarios",

@@ -1589,6 +1589,11 @@
   "hiddenDiaryEmpty": "No hidden entries",
   "hiddenDiaryUnlock": "Unlock hidden entries",
   "hiddenDiaryAuthHint": "Use the app lock or your device's screen lock to unlock.",
+  "hiddenDiaryWhere": "Hidden. To show it again: {path}",
+  "@hiddenDiaryWhere": {
+    "description": "Shown after hiding an entry; path is Settings > Security > Hidden entries.",
+    "placeholders": {"path": {"type": "String"}}
+  },
   "moodClear": "Clear mood",
   "scrollToTop": "Back to top",
   "feedbackTitle": "Feedback",

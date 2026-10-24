@@ -2710,6 +2710,11 @@ class AppLocalizationsDa extends AppLocalizations {
   String get hiddenDiaryAuthHint => 'Brug appens lås eller enhedens skærmlås.';
 
   @override
+  String hiddenDiaryWhere(String path) {
+    return 'Skjult. Vis det igen under: $path';
+  }
+
+  @override
   String get moodClear => 'Ryd humør';
 
   @override

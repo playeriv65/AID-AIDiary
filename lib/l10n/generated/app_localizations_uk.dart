@@ -2730,6 +2730,11 @@ class AppLocalizationsUk extends AppLocalizations {
       'Скористайтеся блокуванням застосунку або екрана пристрою.';
 
   @override
+  String hiddenDiaryWhere(String path) {
+    return 'Приховано. Щоб показати знову: $path';
+  }
+
+  @override
   String get moodClear => 'Очистити настрій';
 
   @override

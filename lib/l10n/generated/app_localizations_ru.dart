@@ -2748,6 +2748,11 @@ class AppLocalizationsRu extends AppLocalizations {
       'Используйте блокировку приложения или экрана устройства.';
 
   @override
+  String hiddenDiaryWhere(String path) {
+    return 'Скрыто. Чтобы показать снова: $path';
+  }
+
+  @override
   String get moodClear => 'Очистить настроение';
 
   @override

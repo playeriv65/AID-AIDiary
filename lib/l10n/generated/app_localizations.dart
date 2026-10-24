@@ -4938,6 +4938,12 @@ abstract class AppLocalizations {
   /// **'Use the app lock or your device\'s screen lock to unlock.'**
   String get hiddenDiaryAuthHint;
 
+  /// Shown after hiding an entry; path is Settings > Security > Hidden entries.
+  ///
+  /// In en, this message translates to:
+  /// **'Hidden. To show it again: {path}'**
+  String hiddenDiaryWhere(String path);
+
   /// No description provided for @moodClear.
   ///
   /// In en, this message translates to:

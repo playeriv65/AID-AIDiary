@@ -2733,6 +2733,11 @@ class AppLocalizationsNl extends AppLocalizations {
       'Gebruik de appvergrendeling of schermvergrendeling van je apparaat.';
 
   @override
+  String hiddenDiaryWhere(String path) {
+    return 'Verborgen. Weer tonen via: $path';
+  }
+
+  @override
   String get moodClear => 'Stemming wissen';
 
   @override

@@ -2650,6 +2650,11 @@ class AppLocalizationsJa extends AppLocalizations {
   String get hiddenDiaryAuthHint => 'アプリロックまたは端末の画面ロックで解除してください。';
 
   @override
+  String hiddenDiaryWhere(String path) {
+    return '非表示にしました。再表示するには：$path';
+  }
+
+  @override
   String get moodClear => '気分をクリア';
 
   @override

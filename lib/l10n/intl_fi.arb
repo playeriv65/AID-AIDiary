@@ -795,6 +795,7 @@
   "hiddenDiaryEmpty": "Ei piilotettuja merkintöjä",
   "hiddenDiaryUnlock": "Avaa piilotetut merkinnät",
   "hiddenDiaryAuthHint": "Käytä sovelluksen lukitusta tai laitteen näytön lukitusta.",
+  "hiddenDiaryWhere": "Piilotettu. Näytä uudelleen kohdasta: {path}",
   "moodClear": "Poista mieliala",
   "scrollToTop": "Takaisin alkuun",
   "feedbackTitle": "Palaute",
