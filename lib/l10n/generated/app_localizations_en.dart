@@ -521,58 +521,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get addTagsSearchHint => 'Search tags…';
 
   @override
-  String get tagPickerSortManualLabel => 'Manual order';
-
-  @override
-  String get tagPickerSortUsageLabel => 'Sort by usage';
-
-  @override
   String get tagFavoriteName => 'Favorite';
 
   @override
-  String get tagEnergyName => 'Energy';
+  String get iconGroupActivities => 'Activities';
 
   @override
-  String get tagCategoryActivitiesName => 'Activities';
-
-  @override
-  String get tagExerciseName => 'Exercise';
-
-  @override
-  String get tagSocializingName => 'Socializing';
-
-  @override
-  String get tagHobbyName => 'Hobby';
-
-  @override
-  String get tagEntertainmentName => 'Entertainment';
-
-  @override
-  String get tagDiningName => 'Dining';
-
-  @override
-  String get tagChoresName => 'Chores';
-
-  @override
-  String get tagCategoryEmotionsName => 'Emotions';
-
-  @override
-  String get tagExcitedName => 'Excited';
-
-  @override
-  String get tagGratefulName => 'Grateful';
-
-  @override
-  String get tagCalmName => 'Calm';
-
-  @override
-  String get tagTiredName => 'Tired';
-
-  @override
-  String get tagAnxiousName => 'Anxious';
-
-  @override
-  String get tagAnnoyedName => 'Annoyed';
+  String get iconGroupHobbies => 'Entertainment';
 
   @override
   String get settingsStorageTitle => 'Storage';

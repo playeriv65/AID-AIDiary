@@ -46,7 +46,7 @@ groups:
         icon: handshake_rounded
 
   - id: activities
-    l10nKey: tagCategoryActivitiesName
+    l10nKey: iconGroupActivities
     icons:
       - key: directions_run
         icon: directions_run_rounded
@@ -324,7 +324,7 @@ groups:
         icon: outdoor_grill_rounded
 
   - id: home
-    l10nKey: pageHomeTitle
+    l10nKey: iconGroupHome
     icons:
       - key: home
         icon: home_rounded
@@ -362,7 +362,7 @@ groups:
         icon: deck_rounded
 
   - id: hobbies
-    l10nKey: tagEntertainmentName
+    l10nKey: iconGroupHobbies
     icons:
       - key: palette
         icon: palette_rounded

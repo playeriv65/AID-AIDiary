@@ -83,7 +83,7 @@ class EntryViewPage extends StatelessWidget {
                 icon: const Icon(Icons.share_rounded),
                 onPressed: () => _share(context, entry, images),
               ),
-            if (!entry.isHidden && tags.favoriteTag != null)
+            if (!entry.isHidden)
               IconButton(
                 key: const ValueKey('entry-favorite'),
                 tooltip: l10n.entryFavorite,

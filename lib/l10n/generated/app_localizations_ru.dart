@@ -536,58 +536,13 @@ class AppLocalizationsRu extends AppLocalizations {
   String get addTagsSearchHint => 'Поиск по тегам…';
 
   @override
-  String get tagPickerSortManualLabel => 'Ручной заказ';
-
-  @override
-  String get tagPickerSortUsageLabel => 'Сортировать по использованию';
-
-  @override
   String get tagFavoriteName => 'Любимый';
 
   @override
-  String get tagEnergyName => 'Энергия';
+  String get iconGroupActivities => 'Мероприятия';
 
   @override
-  String get tagCategoryActivitiesName => 'Мероприятия';
-
-  @override
-  String get tagExerciseName => 'Упражнение';
-
-  @override
-  String get tagSocializingName => 'общение';
-
-  @override
-  String get tagHobbyName => 'Хобби';
-
-  @override
-  String get tagEntertainmentName => 'Развлечения';
-
-  @override
-  String get tagDiningName => 'Столовая';
-
-  @override
-  String get tagChoresName => 'Домашние дела';
-
-  @override
-  String get tagCategoryEmotionsName => 'Эмоции';
-
-  @override
-  String get tagExcitedName => 'взволнованный';
-
-  @override
-  String get tagGratefulName => 'Благодарный';
-
-  @override
-  String get tagCalmName => 'Спокойствие';
-
-  @override
-  String get tagTiredName => 'Усталый';
-
-  @override
-  String get tagAnxiousName => 'тревожный';
-
-  @override
-  String get tagAnnoyedName => 'Раздраженный';
+  String get iconGroupHobbies => 'Развлечения';
 
   @override
   String get settingsStorageTitle => 'Хранилище';

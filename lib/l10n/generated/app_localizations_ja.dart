@@ -516,58 +516,13 @@ class AppLocalizationsJa extends AppLocalizations {
   String get addTagsSearchHint => 'タグを検索…';
 
   @override
-  String get tagPickerSortManualLabel => '手動注文';
-
-  @override
-  String get tagPickerSortUsageLabel => '用途別に並べ替える';
-
-  @override
   String get tagFavoriteName => 'お気に入り';
 
   @override
-  String get tagEnergyName => 'エネルギー';
+  String get iconGroupActivities => '活動内容';
 
   @override
-  String get tagCategoryActivitiesName => '活動内容';
-
-  @override
-  String get tagExerciseName => '運動';
-
-  @override
-  String get tagSocializingName => '社交';
-
-  @override
-  String get tagHobbyName => '趣味';
-
-  @override
-  String get tagEntertainmentName => 'エンターテイメント';
-
-  @override
-  String get tagDiningName => 'ダイニング';
-
-  @override
-  String get tagChoresName => '雑用';
-
-  @override
-  String get tagCategoryEmotionsName => '感情';
-
-  @override
-  String get tagExcitedName => '興奮した';
-
-  @override
-  String get tagGratefulName => '感謝します';
-
-  @override
-  String get tagCalmName => '穏やかな';
-
-  @override
-  String get tagTiredName => '疲れた';
-
-  @override
-  String get tagAnxiousName => '不安';
-
-  @override
-  String get tagAnnoyedName => 'イライラする';
+  String get iconGroupHobbies => 'エンターテイメント';
 
   @override
   String get settingsStorageTitle => 'ストレージ';

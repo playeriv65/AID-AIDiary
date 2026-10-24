@@ -5,7 +5,7 @@
 // the yaml source.
 
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
-import 'package:material_ui/material_ui.dart';
+import 'package:flutter/material.dart';
 
 /// Identifies a curated icon group
 enum TagIconGroupId {
@@ -34,14 +34,14 @@ class TagIconGroup {
 String tagIconGroupLabel(AppLocalizations l10n, TagIconGroupId id) =>
     switch (id) {
       TagIconGroupId.moodPeople => l10n.iconGroupMoodPeople,
-      TagIconGroupId.activities => l10n.tagCategoryActivitiesName,
+      TagIconGroupId.activities => l10n.iconGroupActivities,
       TagIconGroupId.health => l10n.iconGroupHealth,
       TagIconGroupId.workFinance => l10n.iconGroupWorkFinance,
       TagIconGroupId.habitsGoals => l10n.iconGroupHabitsGoals,
       TagIconGroupId.nature => l10n.iconGroupNature,
       TagIconGroupId.foodDrink => l10n.iconGroupFoodDrink,
       TagIconGroupId.home => l10n.iconGroupHome,
-      TagIconGroupId.hobbies => l10n.tagEntertainmentName,
+      TagIconGroupId.hobbies => l10n.iconGroupHobbies,
       TagIconGroupId.travel => l10n.iconGroupTravel,
       TagIconGroupId.symbols => l10n.iconGroupSymbols,
     };

@@ -551,58 +551,13 @@ class AppLocalizationsBe extends AppLocalizations {
   String get addTagsSearchHint => 'Пошук тэгаў…';
 
   @override
-  String get tagPickerSortManualLabel => 'Ручны парадак';
-
-  @override
-  String get tagPickerSortUsageLabel => 'Сартаваць па выкарыстанні';
-
-  @override
   String get tagFavoriteName => 'Любімая';
 
   @override
-  String get tagEnergyName => 'Энергія';
+  String get iconGroupActivities => 'Мерапрыемствы';
 
   @override
-  String get tagCategoryActivitiesName => 'Мерапрыемствы';
-
-  @override
-  String get tagExerciseName => 'Практыкаванне';
-
-  @override
-  String get tagSocializingName => 'Сацыялізацыя';
-
-  @override
-  String get tagHobbyName => 'хобі';
-
-  @override
-  String get tagEntertainmentName => 'забавы';
-
-  @override
-  String get tagDiningName => 'Сталовая';
-
-  @override
-  String get tagChoresName => 'Хатнія справы';
-
-  @override
-  String get tagCategoryEmotionsName => 'Эмоцыі';
-
-  @override
-  String get tagExcitedName => 'Усхваляваны';
-
-  @override
-  String get tagGratefulName => 'Удзячны';
-
-  @override
-  String get tagCalmName => 'Спакойны';
-
-  @override
-  String get tagTiredName => 'Стаміўся';
-
-  @override
-  String get tagAnxiousName => 'Трывожны';
-
-  @override
-  String get tagAnnoyedName => 'Раздражнёны';
+  String get iconGroupHobbies => 'забавы';
 
   @override
   String get settingsStorageTitle => 'Захоўванне';

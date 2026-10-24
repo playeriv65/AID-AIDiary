@@ -9,9 +9,9 @@ import 'package:aid_diary/database/app_database.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/models/image.dart';
 import 'package:aid_diary/models/tag.dart';
+import 'package:aid_diary/models/tag_category.dart';
 import 'package:aid_diary/models/tag_icon_type.dart';
 import 'package:aid_diary/models/template.dart';
-import 'package:aid_diary/providers/tags_provider.dart';
 import 'package:aid_diary/sync/sync_schema.dart';
 import 'package:aid_diary/utils/generated/tag_icon_registry.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -209,19 +209,47 @@ void main() {
     expect(await db.query(entriesTable), hasLength(1));
   });
 
-  test('the built-in icons are the ones the defaults use', () async {
+  test('version 14 drops the starter tags and categories nobody used',
+      () async {
     await AppDatabase.instance.createSchema(db);
-    await TagsProvider.instance.createDefaultTags();
+    Future<int> row(
+        String table, String syncId, Map<String, Object?> values) async {
+      final id = await db.insert(table, values);
+      await db.update(table, {syncIdColumn: syncId},
+          where: 'id = ?', whereArgs: [id]);
+      return id;
+    }
 
-    final icons = [
-      for (final row in await db.query(tagsTable, columns: [TagFields.icon]))
-        row[TagFields.icon],
+    Future<int> category(String syncId) =>
+        row(tagCategoriesTable, syncId, {'name': syncId});
+    Future<int> tag(String syncId, {int? category}) => row(tagsTable, syncId, {
+          TagFields.name: syncId,
+          TagFields.tagType: TagType.label.toInt(),
+          TagFields.categoryId: category,
+        });
+
+    final emotions = await category('builtin-category-a');
+    final activities = await category('builtin-category-b');
+    await tag('builtin-tag-calm', category: emotions);
+    final exercise = await tag('builtin-tag-run', category: activities);
+    await tag('builtin-tag-favorite');
+    final mine = await tag('mine');
+    final entry = await addEntry('ran today');
+    await db.insert(entryTagsTable, {
+      EntryTagFields.entryId: entry,
+      EntryTagFields.tagId: exercise,
+      EntryTagFields.timeCreate: '2026-10-23T09:00:00.000',
+    });
+
+    await AppDatabase.instance.upgradeSchema(db, 14, 15);
+
+    final tags = [
+      for (final row in await db.query(tagsTable)) row[TagFields.id],
     ];
-    expect(icons, unorderedEquals(TagsProvider.defaultTagIcons));
-    final categoryIcons = [
-      for (final row in await db.query('tag_categories', columns: ['icon']))
-        row['icon'],
+    expect(tags, unorderedEquals([exercise, mine]));
+    final categories = [
+      for (final row in await db.query(tagCategoriesTable)) row['id'],
     ];
-    expect(categoryIcons, unorderedEquals(TagsProvider.defaultCategoryIcons));
+    expect(categories, [activities]);
   });
 }

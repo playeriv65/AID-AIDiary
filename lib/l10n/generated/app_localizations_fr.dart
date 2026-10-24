@@ -525,58 +525,13 @@ class AppLocalizationsFr extends AppLocalizations {
   String get addTagsSearchHint => 'Chercher des étiquettes…';
 
   @override
-  String get tagPickerSortManualLabel => 'Ordre manuel';
-
-  @override
-  String get tagPickerSortUsageLabel => 'Trier par utilisation';
-
-  @override
   String get tagFavoriteName => 'Favoris';
 
   @override
-  String get tagEnergyName => 'Énergie';
+  String get iconGroupActivities => 'Activités';
 
   @override
-  String get tagCategoryActivitiesName => 'Activités';
-
-  @override
-  String get tagExerciseName => 'Exercice';
-
-  @override
-  String get tagSocializingName => 'Vie sociale';
-
-  @override
-  String get tagHobbyName => 'Loisir';
-
-  @override
-  String get tagEntertainmentName => 'Divertissement';
-
-  @override
-  String get tagDiningName => 'Dîner';
-
-  @override
-  String get tagChoresName => 'Tâches ménagères';
-
-  @override
-  String get tagCategoryEmotionsName => 'Émotions';
-
-  @override
-  String get tagExcitedName => 'Impatience';
-
-  @override
-  String get tagGratefulName => 'Reconnaissance';
-
-  @override
-  String get tagCalmName => 'Calme';
-
-  @override
-  String get tagTiredName => 'Fatigue';
-
-  @override
-  String get tagAnxiousName => 'Anxiété';
-
-  @override
-  String get tagAnnoyedName => 'Ennui';
+  String get iconGroupHobbies => 'Divertissement';
 
   @override
   String get settingsStorageTitle => 'Stockage';

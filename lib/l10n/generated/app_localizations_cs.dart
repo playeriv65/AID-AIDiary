@@ -515,58 +515,13 @@ class AppLocalizationsCs extends AppLocalizations {
   String get addTagsSearchHint => 'Hledat štítky…';
 
   @override
-  String get tagPickerSortManualLabel => 'Manuální řazení';
-
-  @override
-  String get tagPickerSortUsageLabel => 'Řadit podle využití';
-
-  @override
   String get tagFavoriteName => 'Oblíbené';
 
   @override
-  String get tagEnergyName => 'Energie';
+  String get iconGroupActivities => 'Aktivity';
 
   @override
-  String get tagCategoryActivitiesName => 'Aktivity';
-
-  @override
-  String get tagExerciseName => 'Pohyb';
-
-  @override
-  String get tagSocializingName => 'Socializace';
-
-  @override
-  String get tagHobbyName => 'Koníček';
-
-  @override
-  String get tagEntertainmentName => 'Zábava';
-
-  @override
-  String get tagDiningName => 'Jezení';
-
-  @override
-  String get tagChoresName => 'Povinnosti';
-
-  @override
-  String get tagCategoryEmotionsName => 'Emoce';
-
-  @override
-  String get tagExcitedName => 'Nadšený';
-
-  @override
-  String get tagGratefulName => 'Vděčný';
-
-  @override
-  String get tagCalmName => 'Klidný';
-
-  @override
-  String get tagTiredName => 'Unavený';
-
-  @override
-  String get tagAnxiousName => 'Úzkostlivý';
-
-  @override
-  String get tagAnnoyedName => 'Naštvaný';
+  String get iconGroupHobbies => 'Zábava';
 
   @override
   String get settingsStorageTitle => 'Uložiště';

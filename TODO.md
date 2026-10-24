@@ -71,6 +71,11 @@ account was removed and the existing account retained (`docs/SYNC_NETWORK.md`).
 
 Remaining work:
 
+- Carry settings and small preferences when adding a device and in full
+  backups (owner decision 2026-10-23, `docs/DECISIONS.md`). Today sync and
+  backups carry diary data (entries, media, tags with their order,
+  templates) but no settings; decide which settings are device-specific.
+
 - Extend the same-Wi-Fi Windows/Pad validation to another network. LAN,
   global-IPv6 direct, UDP
   ICE media, small live-relay media, quota refusal and automatic LAN upgrade

@@ -529,58 +529,13 @@ class AppLocalizationsUk extends AppLocalizations {
   String get addTagsSearchHint => 'Шукати теги…';
 
   @override
-  String get tagPickerSortManualLabel => 'Ручне замовлення';
-
-  @override
-  String get tagPickerSortUsageLabel => 'Сортувати за використанням';
-
-  @override
   String get tagFavoriteName => 'улюблений';
 
   @override
-  String get tagEnergyName => 'Енергія';
+  String get iconGroupActivities => 'Діяльність';
 
   @override
-  String get tagCategoryActivitiesName => 'Діяльність';
-
-  @override
-  String get tagExerciseName => 'вправи';
-
-  @override
-  String get tagSocializingName => 'Спілкування';
-
-  @override
-  String get tagHobbyName => 'хобі';
-
-  @override
-  String get tagEntertainmentName => 'Розваги';
-
-  @override
-  String get tagDiningName => 'Харчування';
-
-  @override
-  String get tagChoresName => 'Домашні справи';
-
-  @override
-  String get tagCategoryEmotionsName => 'емоції';
-
-  @override
-  String get tagExcitedName => 'схвильований';
-
-  @override
-  String get tagGratefulName => 'Вдячний';
-
-  @override
-  String get tagCalmName => 'Спокійно';
-
-  @override
-  String get tagTiredName => 'Втомилася';
-
-  @override
-  String get tagAnxiousName => 'тривожний';
-
-  @override
-  String get tagAnnoyedName => 'роздратований';
+  String get iconGroupHobbies => 'Розваги';
 
   @override
   String get settingsStorageTitle => 'Сховище';

@@ -3,8 +3,7 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'package:aid_diary/routing/app_navigation.dart';
-import 'package:aid_diary/actions/settings_actions.dart';
-import 'package:aid_diary/config_provider.dart';
+import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/models/tag.dart';
 import 'package:aid_diary/providers/tags_provider.dart';
 import 'package:aid_diary/routing/organize_destinations.dart';
@@ -40,12 +39,10 @@ class TagPickerDialog extends StatefulWidget {
 class _TagPickerDialogState extends State<TagPickerDialog> {
   final TagNameEditingController _searchController = TagNameEditingController();
   String _searchText = '';
-  late String _sortMode;
 
   @override
   void initState() {
     super.initState();
-    _sortMode = ConfigProvider.instance.get(Settings.tagPickerSortMode);
     _searchController.addListener(() {
       setState(() => _searchText = _searchController.text.toLowerCase());
     });
@@ -55,12 +52,6 @@ class _TagPickerDialogState extends State<TagPickerDialog> {
   void dispose() {
     _searchController.dispose();
     super.dispose();
-  }
-
-  void _toggleSortMode() {
-    final newMode = _sortMode == 'manual' ? 'usage' : 'manual';
-    setState(() => _sortMode = newMode);
-    changeSetting(Settings.tagPickerSortMode, newMode);
   }
 
   // attach mode helpers
@@ -85,30 +76,6 @@ class _TagPickerDialogState extends State<TagPickerDialog> {
   }
 
   // builders
-
-  Widget _buildAttachedChips(TagsProvider provider) {
-    final source = widget.source!;
-    final attachedIds = source.attachedTagIds;
-    if (attachedIds.isEmpty) return const SizedBox.shrink();
-    final attachedSet = attachedIds.toSet();
-    final tagPool =
-        provider.tags.where((tag) => attachedSet.contains(tag.id)).toList();
-    final sections = provider.buildSections('', tagPool: tagPool);
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: TagGroupedChipList(
-        sections: sections,
-        chipBuilder: (tag) => TagChip(
-          tag: tag,
-          value: source.valueFor(tag.id!),
-          onTap: (source.supportsValues && tag.tagType == TagType.tracker)
-              ? () => source.editValue(context, tag)
-              : null,
-          onRemove: () => source.detach(tag.id!),
-        ),
-      ),
-    );
-  }
 
   Widget _buildSearchField(AppLocalizations l10n, TagsProvider provider) {
     final showAdd = _searchText.isNotEmpty &&
@@ -162,42 +129,6 @@ class _TagPickerDialogState extends State<TagPickerDialog> {
                   )
                 : const SizedBox.shrink(key: ValueKey('empty')),
           ),
-          PopupMenuButton<String>(
-            icon: const Icon(Icons.sort_rounded),
-            padding: EdgeInsets.zero,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-            onSelected: (value) {
-              if (value != _sortMode) _toggleSortMode();
-            },
-            itemBuilder: (context) => [
-              PopupMenuItem<String>(
-                value: 'manual',
-                child: Row(children: [
-                  Icon(Icons.check_rounded,
-                      size: 18,
-                      color: _sortMode == 'manual'
-                          ? Theme.of(context).colorScheme.primary
-                          : Colors.transparent),
-                  const SizedBox(width: 8),
-                  Text(l10n.tagPickerSortManualLabel),
-                ]),
-              ),
-              PopupMenuItem<String>(
-                value: 'usage',
-                child: Row(children: [
-                  Icon(Icons.check_rounded,
-                      size: 18,
-                      color: _sortMode == 'usage'
-                          ? Theme.of(context).colorScheme.primary
-                          : Colors.transparent),
-                  const SizedBox(width: 8),
-                  Text(l10n.tagPickerSortUsageLabel),
-                ]),
-              ),
-            ],
-          ),
         ],
       ),
     );
@@ -220,34 +151,13 @@ class _TagPickerDialogState extends State<TagPickerDialog> {
     final l10n = AppLocalizations.of(context)!;
     return Consumer<TagsProvider>(
       builder: (context, provider, _) {
-        // Available pool excludes tags already selected/attached
-        final List<int> excludedIds = widget.mode == TagPickerMode.attach
-            ? widget.source!.attachedTagIds
-            : const [];
-
-        List<Tag> pool;
-        bool typeMatch(Tag tag) =>
-            widget.tagTypeFilter == null || tag.tagType == widget.tagTypeFilter;
-
-        if (_sortMode == 'usage') {
-          pool = provider.tags
-              .where((tag) => !excludedIds.contains(tag.id) && typeMatch(tag))
-              .toList()
-            ..sort((a, b) {
-              final countA = provider.entryTags
-                  .where((entryTag) => entryTag.tagId == a.id)
-                  .length;
-              final countB = provider.entryTags
-                  .where((entryTag) => entryTag.tagId == b.id)
-                  .length;
-              return countB.compareTo(countA);
-            });
-        } else {
-          pool = provider.tags
-              .where((tag) => !excludedIds.contains(tag.id) && typeMatch(tag))
-              .toList();
-        }
-
+        // Picked tags stay where they are, highlighted.
+        final pool = [
+          for (final tag in provider.tags)
+            if (widget.tagTypeFilter == null ||
+                tag.tagType == widget.tagTypeFilter)
+              tag,
+        ];
         final sections = provider.buildSections(_searchText, tagPool: pool);
 
         final title = switch (widget.mode) {
@@ -293,6 +203,7 @@ class _TagPickerDialogState extends State<TagPickerDialog> {
               child: SingleChildScrollView(
                 child: TagGroupedChipList(
                   sections: sections,
+                  onMove: _move,
                   chipBuilder: (tag) => TagChip(
                     tag: tag,
                     onTap: () => Navigator.of(context).pop(tag),
@@ -304,24 +215,55 @@ class _TagPickerDialogState extends State<TagPickerDialog> {
       );
     }
 
+    final source = widget.source!;
     return SingleChildScrollView(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          _buildAttachedChips(provider),
           _buildSearchField(l10n, provider),
           const SizedBox(height: 8),
           TagGroupedChipList(
             sections: sections,
-            chipBuilder: (tag) => TagChip(
-              tag: tag,
-              onTap: () => widget.source!.attach(context, tag),
-            ),
+            onMove: _move,
+            chipBuilder: (tag) {
+              if (!source.contains(tag.id!)) {
+                return TagChip(
+                    tag: tag, onTap: () => source.attach(context, tag));
+              }
+              final tracker = tag.tagType == TagType.tracker;
+              return TagChip(
+                tag: tag,
+                selected: true,
+                value: source.valueFor(tag.id!),
+                // A tracker's value is edited by tapping; its cross removes it.
+                onTap: tracker && source.supportsValues
+                    ? () => source.editValue(context, tag)
+                    : () => source.detach(tag.id!),
+                onRemove: tracker ? () => source.detach(tag.id!) : null,
+              );
+            },
           ),
         ],
       ),
     );
+  }
+
+  /// Puts [moved] where [target] is, in [target]'s category.
+  Future<void> _move(Tag moved, Tag target) async {
+    final section = [
+      for (final tag in TagsProvider.instance.tags)
+        if (tag.categoryId == target.categoryId && tag.id != moved.id) tag,
+    ];
+    final at = section.indexWhere((tag) => tag.id == target.id);
+    final forward = moved.categoryId == target.categoryId &&
+        TagsProvider.instance.tags.indexOf(moved) <
+            TagsProvider.instance.tags.indexOf(target);
+    await AppActions.instance.run('tag.move', {
+      'id': moved.id,
+      'category': target.categoryId == null ? 'none' : '#${target.categoryId}',
+      'position': forward ? at + 1 : at,
+    });
   }
 
   List<Widget> _buildActions(

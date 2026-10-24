@@ -14,6 +14,7 @@ import 'package:aid_diary/actions/entry_actions.dart';
 import 'package:aid_diary/database/entry_store.dart';
 import 'package:aid_diary/database/image_storage.dart';
 import 'package:aid_diary/models/tag.dart';
+import 'package:aid_diary/utils/generated/tag_icon_registry.dart';
 import 'package:aid_diary/models/template.dart';
 import 'package:aid_diary/providers/tags_provider.dart';
 import 'package:aid_diary/providers/templates_provider.dart';
@@ -138,7 +139,11 @@ void main() {
   });
 
   test('a template starts an entry with its text and tags', () async {
-    final tag = TagsProvider.instance.tags.first;
+    final tag = await TagsProvider.instance.add(Tag(
+        name: 'Year',
+        tagType: TagType.label,
+        timeCreate: DateTime.now(),
+        timeModified: DateTime.now()));
     final template = await TemplatesProvider.instance.add(Template(
         name: 'Year',
         text: 'Year {{date:yyyy}}:',
@@ -160,8 +165,11 @@ void main() {
 
   test('an entry is starred and added to', () async {
     final id = await create({'text': 'First', 'mood': '1'});
+    // A diary starts without tags; the first star makes the favorite tag.
+    expect(TagsProvider.instance.tags, isEmpty);
     expect(await run('entry.favorite', {'id': '$id', 'value': 'true'}),
         {'id': id, 'favorite': true});
+    expect(TagsProvider.instance.tags.single.icon, TagIconKey.favorite);
     expect(await get(id), containsPair('favorite', true));
     expect(await listed({'starred': 'true'}), hasLength(1));
     await run('entry.favorite', {'id': '$id', 'value': 'false'});
@@ -237,7 +245,11 @@ void main() {
     });
     final read = await create({'text': 'Read at home', 'mood': '0'});
     final named = await create({'text': 'Dinner', 'place': 'Riverside Cafe'});
-    final tag = TagsProvider.instance.tags.last;
+    final tag = await TagsProvider.instance.add(Tag(
+        name: 'Home',
+        tagType: TagType.label,
+        timeCreate: DateTime.now(),
+        timeModified: DateTime.now()));
     await TagsProvider.instance.addEntryTag(
         EntryTag(entryId: read, tagId: tag.id!, timeCreate: DateTime.now()));
     await run('entry.favorite', {'id': '$walk', 'value': 'true'});

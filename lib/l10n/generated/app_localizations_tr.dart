@@ -522,58 +522,13 @@ class AppLocalizationsTr extends AppLocalizations {
   String get addTagsSearchHint => 'Etiketleri ara…';
 
   @override
-  String get tagPickerSortManualLabel => 'Manuel sıralama';
-
-  @override
-  String get tagPickerSortUsageLabel => 'Kullanıma göre sırala';
-
-  @override
   String get tagFavoriteName => 'Favori';
 
   @override
-  String get tagEnergyName => 'Enerji';
+  String get iconGroupActivities => 'Aktiviteler';
 
   @override
-  String get tagCategoryActivitiesName => 'Aktiviteler';
-
-  @override
-  String get tagExerciseName => 'Egzersiz';
-
-  @override
-  String get tagSocializingName => 'Sosyalleşme';
-
-  @override
-  String get tagHobbyName => 'Hobi';
-
-  @override
-  String get tagEntertainmentName => 'Eğlence';
-
-  @override
-  String get tagDiningName => 'Yemek';
-
-  @override
-  String get tagChoresName => 'Ev işleri';
-
-  @override
-  String get tagCategoryEmotionsName => 'Duygular';
-
-  @override
-  String get tagExcitedName => 'Heyecanlı';
-
-  @override
-  String get tagGratefulName => 'Minnettar';
-
-  @override
-  String get tagCalmName => 'Sakin';
-
-  @override
-  String get tagTiredName => 'Yorgun';
-
-  @override
-  String get tagAnxiousName => 'Kaygılı';
-
-  @override
-  String get tagAnnoyedName => 'Sinirli';
+  String get iconGroupHobbies => 'Eğlence';
 
   @override
   String get settingsStorageTitle => 'Depolama';

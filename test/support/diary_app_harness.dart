@@ -51,8 +51,6 @@ class DiaryAppHarness {
       await EntryStore.instance.load();
       await EntryImagesProvider.instance.load();
       await TagsProvider.instance.load();
-      // Includes the favorite tag that backs the star.
-      await TagsProvider.instance.createDefaultTags();
       await TemplatesProvider.instance.load();
       await FlashbackManager.init();
       theme = ThemeModeProvider();

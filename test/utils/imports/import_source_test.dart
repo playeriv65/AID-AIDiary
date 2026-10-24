@@ -14,6 +14,8 @@ import 'package:aid_diary/database/entry_store.dart';
 import 'package:aid_diary/database/entry_image_dao.dart';
 import 'package:aid_diary/database/image_storage.dart';
 import 'package:aid_diary/models/entry.dart';
+import 'package:aid_diary/models/tag.dart';
+import 'package:aid_diary/providers/tags_provider.dart';
 import 'package:aid_diary/utils/imports/import_helpers.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -143,5 +145,37 @@ void main() {
     ]));
     await expectLater(actions.run('data.import', args), throwsA(anything));
     expect(await db.query('entries'), hasLength(2));
+  });
+
+  test('tags an import makes come after the diary\'s own, most used first',
+      () async {
+    final now = DateTime.now();
+    await TagsProvider.instance.add(Tag(
+        name: 'Mine',
+        tagType: TagType.label,
+        timeCreate: now,
+        timeModified: now));
+    final folder = await Directory.systemTemp.createTemp('diary-tag-order-');
+    final file = File('${folder.path}/tags.json');
+    addTearDown(() => folder.delete(recursive: true));
+    await file.writeAsString(jsonEncode([
+      for (final (day, tags) in [
+        (1, ['Rare', 'Often']),
+        (2, ['Often', 'Mine']),
+        (3, ['Often']),
+      ])
+        {
+          'text': 'Day $day',
+          'timeCreated': '2026-01-0${day}T12:00:00',
+          'timeModified': '2026-01-0${day}T12:00:00',
+          'tags': [
+            for (final name in tags) {'name': name},
+          ],
+        },
+    ]));
+    await AppActions(devBuild: true)
+        .run('data.import', {'format': 'json', 'path': file.path});
+    expect(TagsProvider.instance.tags.map((tag) => tag.name),
+        ['Mine', 'Often', 'Rare']);
   });
 }

@@ -542,58 +542,13 @@ class AppLocalizationsLt extends AppLocalizations {
   String get addTagsSearchHint => 'Ieškoti žymų…';
 
   @override
-  String get tagPickerSortManualLabel => 'Rankinis užsakymas';
-
-  @override
-  String get tagPickerSortUsageLabel => 'Rūšiuoti pagal naudojimą';
-
-  @override
   String get tagFavoriteName => 'Mėgstamiausias';
 
   @override
-  String get tagEnergyName => 'Energija';
+  String get iconGroupActivities => 'Veikla';
 
   @override
-  String get tagCategoryActivitiesName => 'Veikla';
-
-  @override
-  String get tagExerciseName => 'Pratimai';
-
-  @override
-  String get tagSocializingName => 'Bendravimas';
-
-  @override
-  String get tagHobbyName => 'Hobis';
-
-  @override
-  String get tagEntertainmentName => 'Pramogos';
-
-  @override
-  String get tagDiningName => 'Pietūs';
-
-  @override
-  String get tagChoresName => 'Darbai';
-
-  @override
-  String get tagCategoryEmotionsName => 'Emocijos';
-
-  @override
-  String get tagExcitedName => 'Susijaudinęs';
-
-  @override
-  String get tagGratefulName => 'dėkingas';
-
-  @override
-  String get tagCalmName => 'Ramiai';
-
-  @override
-  String get tagTiredName => 'Pavargęs';
-
-  @override
-  String get tagAnxiousName => 'Nerimastingas';
-
-  @override
-  String get tagAnnoyedName => 'Susierzinęs';
+  String get iconGroupHobbies => 'Pramogos';
 
   @override
   String get settingsStorageTitle => 'Saugykla';

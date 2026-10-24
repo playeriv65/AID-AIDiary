@@ -525,58 +525,13 @@ class AppLocalizationsPt extends AppLocalizations {
   String get addTagsSearchHint => 'Pesquisar tags…';
 
   @override
-  String get tagPickerSortManualLabel => 'Pedido manual';
-
-  @override
-  String get tagPickerSortUsageLabel => 'Classificar por utilização';
-
-  @override
   String get tagFavoriteName => 'Favorito';
 
   @override
-  String get tagEnergyName => 'Energia';
+  String get iconGroupActivities => 'Atividades';
 
   @override
-  String get tagCategoryActivitiesName => 'Atividades';
-
-  @override
-  String get tagExerciseName => 'Exercício';
-
-  @override
-  String get tagSocializingName => 'Socializar';
-
-  @override
-  String get tagHobbyName => 'Passatempo';
-
-  @override
-  String get tagEntertainmentName => 'Entretenimento';
-
-  @override
-  String get tagDiningName => 'Jantar';
-
-  @override
-  String get tagChoresName => 'Tarefas';
-
-  @override
-  String get tagCategoryEmotionsName => 'Emoções';
-
-  @override
-  String get tagExcitedName => 'Animado';
-
-  @override
-  String get tagGratefulName => 'Grato';
-
-  @override
-  String get tagCalmName => 'Calma';
-
-  @override
-  String get tagTiredName => 'Cansado';
-
-  @override
-  String get tagAnxiousName => 'Ansioso';
-
-  @override
-  String get tagAnnoyedName => 'Irritado';
+  String get iconGroupHobbies => 'Entretenimento';
 
   @override
   String get settingsStorageTitle => 'Armazenamento';
@@ -3323,58 +3278,13 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
   String get addTagsSearchHint => 'Pesquisar tags…';
 
   @override
-  String get tagPickerSortManualLabel => 'Pedido manual';
-
-  @override
-  String get tagPickerSortUsageLabel => 'Classificar por uso';
-
-  @override
   String get tagFavoriteName => 'Favorito';
 
   @override
-  String get tagEnergyName => 'Energia';
+  String get iconGroupActivities => 'Atividades';
 
   @override
-  String get tagCategoryActivitiesName => 'Atividades';
-
-  @override
-  String get tagExerciseName => 'Exercício';
-
-  @override
-  String get tagSocializingName => 'Socializar';
-
-  @override
-  String get tagHobbyName => 'Passatempo';
-
-  @override
-  String get tagEntertainmentName => 'Entretenimento';
-
-  @override
-  String get tagDiningName => 'Jantar';
-
-  @override
-  String get tagChoresName => 'Tarefas';
-
-  @override
-  String get tagCategoryEmotionsName => 'Emoções';
-
-  @override
-  String get tagExcitedName => 'Animado';
-
-  @override
-  String get tagGratefulName => 'Grato';
-
-  @override
-  String get tagCalmName => 'Calma';
-
-  @override
-  String get tagTiredName => 'Cansado';
-
-  @override
-  String get tagAnxiousName => 'Ansioso';
-
-  @override
-  String get tagAnnoyedName => 'Irritado';
+  String get iconGroupHobbies => 'Entretenimento';
 
   @override
   String get settingsStorageTitle => 'Armazenamento';

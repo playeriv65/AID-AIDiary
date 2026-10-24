@@ -534,58 +534,13 @@ class AppLocalizationsHe extends AppLocalizations {
   String get addTagsSearchHint => 'חפש תגיות...';
 
   @override
-  String get tagPickerSortManualLabel => 'הזמנה ידנית';
-
-  @override
-  String get tagPickerSortUsageLabel => 'מיין לפי שימוש';
-
-  @override
   String get tagFavoriteName => 'מועדף';
 
   @override
-  String get tagEnergyName => 'אנרגיה';
+  String get iconGroupActivities => 'פעילויות';
 
   @override
-  String get tagCategoryActivitiesName => 'פעילויות';
-
-  @override
-  String get tagExerciseName => 'פעילות גופנית';
-
-  @override
-  String get tagSocializingName => 'התרועעות חברתית';
-
-  @override
-  String get tagHobbyName => 'תחביב';
-
-  @override
-  String get tagEntertainmentName => 'בידור';
-
-  @override
-  String get tagDiningName => 'אוכל';
-
-  @override
-  String get tagChoresName => 'מטלות';
-
-  @override
-  String get tagCategoryEmotionsName => 'רגשות';
-
-  @override
-  String get tagExcitedName => 'מתרגש';
-
-  @override
-  String get tagGratefulName => 'אסיר תודה';
-
-  @override
-  String get tagCalmName => 'רגוע';
-
-  @override
-  String get tagTiredName => 'עייף';
-
-  @override
-  String get tagAnxiousName => 'חרד';
-
-  @override
-  String get tagAnnoyedName => 'עצבני';
+  String get iconGroupHobbies => 'בידור';
 
   @override
   String get settingsStorageTitle => 'אחסון';

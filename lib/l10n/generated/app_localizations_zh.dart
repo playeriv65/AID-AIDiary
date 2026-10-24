@@ -514,58 +514,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get addTagsSearchHint => '搜索标签…';
 
   @override
-  String get tagPickerSortManualLabel => '手动排序';
-
-  @override
-  String get tagPickerSortUsageLabel => '按使用次数排序';
-
-  @override
   String get tagFavoriteName => '我的最爱';
 
   @override
-  String get tagEnergyName => '能量';
+  String get iconGroupActivities => '活动';
 
   @override
-  String get tagCategoryActivitiesName => '活动';
-
-  @override
-  String get tagExerciseName => '锻炼';
-
-  @override
-  String get tagSocializingName => '社交';
-
-  @override
-  String get tagHobbyName => '爱好';
-
-  @override
-  String get tagEntertainmentName => '娱乐';
-
-  @override
-  String get tagDiningName => '用餐';
-
-  @override
-  String get tagChoresName => '家务';
-
-  @override
-  String get tagCategoryEmotionsName => '情绪';
-
-  @override
-  String get tagExcitedName => '激动';
-
-  @override
-  String get tagGratefulName => '感激';
-
-  @override
-  String get tagCalmName => '冷静';
-
-  @override
-  String get tagTiredName => '疲倦';
-
-  @override
-  String get tagAnxiousName => '焦虑';
-
-  @override
-  String get tagAnnoyedName => '懊恼';
+  String get iconGroupHobbies => '娱乐';
 
   @override
   String get settingsStorageTitle => '存储';
@@ -3191,58 +3146,13 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get addTagsSearchHint => '搜尋標籤…';
 
   @override
-  String get tagPickerSortManualLabel => '手動排序';
-
-  @override
-  String get tagPickerSortUsageLabel => '依使用次數排序';
-
-  @override
   String get tagFavoriteName => '我的最愛';
 
   @override
-  String get tagEnergyName => '能量';
+  String get iconGroupActivities => '活動';
 
   @override
-  String get tagCategoryActivitiesName => '活動';
-
-  @override
-  String get tagExerciseName => '鍛煉';
-
-  @override
-  String get tagSocializingName => '社交';
-
-  @override
-  String get tagHobbyName => '愛好';
-
-  @override
-  String get tagEntertainmentName => '娛樂';
-
-  @override
-  String get tagDiningName => '用餐';
-
-  @override
-  String get tagChoresName => '家務';
-
-  @override
-  String get tagCategoryEmotionsName => '情緒';
-
-  @override
-  String get tagExcitedName => '激動';
-
-  @override
-  String get tagGratefulName => '感激';
-
-  @override
-  String get tagCalmName => '冷靜';
-
-  @override
-  String get tagTiredName => '疲倦';
-
-  @override
-  String get tagAnxiousName => '焦慮';
-
-  @override
-  String get tagAnnoyedName => '懊惱';
+  String get iconGroupHobbies => '娛樂';
 
   @override
   String get settingsStorageTitle => '存儲';

@@ -522,58 +522,13 @@ class AppLocalizationsFi extends AppLocalizations {
   String get addTagsSearchHint => 'Hae tunnisteita…';
 
   @override
-  String get tagPickerSortManualLabel => 'Manuaalinen tilaus';
-
-  @override
-  String get tagPickerSortUsageLabel => 'Lajittele käytön mukaan';
-
-  @override
   String get tagFavoriteName => 'Suosikki';
 
   @override
-  String get tagEnergyName => 'Energiaa';
+  String get iconGroupActivities => 'Aktiviteetit';
 
   @override
-  String get tagCategoryActivitiesName => 'Aktiviteetit';
-
-  @override
-  String get tagExerciseName => 'Harjoittele';
-
-  @override
-  String get tagSocializingName => 'Seurustelu';
-
-  @override
-  String get tagHobbyName => 'Harrastus';
-
-  @override
-  String get tagEntertainmentName => 'Viihde';
-
-  @override
-  String get tagDiningName => 'Ruokailu';
-
-  @override
-  String get tagChoresName => 'Askareita';
-
-  @override
-  String get tagCategoryEmotionsName => 'Tunteet';
-
-  @override
-  String get tagExcitedName => 'Innostunut';
-
-  @override
-  String get tagGratefulName => 'Kiitollinen';
-
-  @override
-  String get tagCalmName => 'Rauhallinen';
-
-  @override
-  String get tagTiredName => 'Väsynyt';
-
-  @override
-  String get tagAnxiousName => 'Ahdistunut';
-
-  @override
-  String get tagAnnoyedName => 'ärsyyntynyt';
+  String get iconGroupHobbies => 'Viihde';
 
   @override
   String get settingsStorageTitle => 'Tallennustila';

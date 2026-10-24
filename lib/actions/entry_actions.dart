@@ -522,10 +522,6 @@ final List<AppAction> entryActions = [
     run: (context, args) async {
       final entry = await openEntryOf(args);
       final tags = TagsProvider.instance;
-      if (tags.favoriteTag == null) {
-        throw const ActionException(
-            'not_found', 'There is no favorite tag to star entries with');
-      }
       await tags.setFavorite(entry.id!, args['value'] as bool);
       return {'id': entry.id, 'favorite': tags.isFavorite(entry.id!)};
     },

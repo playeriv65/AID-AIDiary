@@ -524,58 +524,13 @@ class AppLocalizationsHi extends AppLocalizations {
   String get addTagsSearchHint => 'टैग खोजें...';
 
   @override
-  String get tagPickerSortManualLabel => 'मैन्युअल आदेश';
-
-  @override
-  String get tagPickerSortUsageLabel => 'उपयोग के अनुसार क्रमबद्ध करें';
-
-  @override
   String get tagFavoriteName => 'पसंदीदा';
 
   @override
-  String get tagEnergyName => 'ऊर्जा';
+  String get iconGroupActivities => 'गतिविधियाँ';
 
   @override
-  String get tagCategoryActivitiesName => 'गतिविधियाँ';
-
-  @override
-  String get tagExerciseName => 'व्यायाम';
-
-  @override
-  String get tagSocializingName => 'सामाजिककरण';
-
-  @override
-  String get tagHobbyName => 'शौक';
-
-  @override
-  String get tagEntertainmentName => 'मनोरंजन';
-
-  @override
-  String get tagDiningName => 'भोजन';
-
-  @override
-  String get tagChoresName => 'काम-काज';
-
-  @override
-  String get tagCategoryEmotionsName => 'भावनाएँ';
-
-  @override
-  String get tagExcitedName => 'उत्साहित';
-
-  @override
-  String get tagGratefulName => 'आभारी';
-
-  @override
-  String get tagCalmName => 'शांत';
-
-  @override
-  String get tagTiredName => 'थका हुआ';
-
-  @override
-  String get tagAnxiousName => 'चिंतित';
-
-  @override
-  String get tagAnnoyedName => 'नाराज़';
+  String get iconGroupHobbies => 'मनोरंजन';
 
   @override
   String get settingsStorageTitle => 'भंडारण';

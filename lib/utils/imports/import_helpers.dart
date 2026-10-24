@@ -129,12 +129,11 @@ Future<void> addImportedEntries(
               timeCreate: addedEntry.timeCreate));
         }
         if (imported.favorite) {
-          if (TagsProvider.instance.favoriteTag?.id case final favoriteId?) {
-            await EntryTagDao.add(EntryTag(
-                entryId: addedEntry.id!,
-                tagId: favoriteId,
-                timeCreate: addedEntry.timeCreate));
-          }
+          final favorite = await TagsProvider.instance.ensureFavoriteTag();
+          await EntryTagDao.add(EntryTag(
+              entryId: addedEntry.id!,
+              tagId: favorite.id!,
+              timeCreate: addedEntry.timeCreate));
         }
         if (source != null) {
           await ImportSourceDao.add(
@@ -152,6 +151,7 @@ Future<void> addImportedEntries(
     processedEntries += 1;
     updateStatus("${((processedEntries / totalEntries) * 100).round()}%");
   }
+  await tags.orderMadeByUse();
 }
 
 /// Finds tags by name for an import, creating the missing ones once.
@@ -161,7 +161,34 @@ class _TagResolver {
       tag.name.trim().toLowerCase(): tag.id
   };
 
+  /// How many imported entries use each tag this import made.
+  final Map<int, int> _uses = {};
+
   Future<int?> idFor(String name) async {
+    final id = await _find(name);
+    if (id != null && _uses.containsKey(id)) _uses[id] = _uses[id]! + 1;
+    return id;
+  }
+
+  /// Places the tags this import made after those the diary had, most used
+  /// first. That starts their order; from then on the user arranges it.
+  Future<void> orderMadeByUse() async {
+    if (_uses.isEmpty) return;
+    final made = TagsProvider.instance.tags
+        .where((tag) => _uses.containsKey(tag.id))
+        .toList();
+    final first = made.map((tag) => tag.sortOrder).reduce(min);
+    final byUse = [...made]..sort((a, b) {
+        final more = _uses[b.id]!.compareTo(_uses[a.id]!);
+        return more != 0 ? more : a.sortOrder.compareTo(b.sortOrder);
+      });
+    await TagsProvider.instance.batchUpdateTags([
+      for (final (index, tag) in byUse.indexed)
+        tag.copy(sortOrder: first + index),
+    ]);
+  }
+
+  Future<int?> _find(String name) async {
     final trimmed = name.trim();
     if (trimmed.isEmpty) return null;
     final key = trimmed.toLowerCase();
@@ -175,6 +202,7 @@ class _TagResolver {
     final created = TagsProvider.instance.tags.lastWhere(
         (tag) => tag.name == trimmed,
         orElse: () => throw StateError('Tag $trimmed was not created'));
+    _uses[created.id!] = 0;
     return _ids[key] = created.id;
   }
 }

@@ -181,8 +181,6 @@ class Settings {
       Setting<bool>("moodOverTimeSmoothing", true);
   static const statsRange = Setting<String>("statsRange", "allTime");
   static const statsSubject = Setting<String>("statsSubject", "mood");
-  static const tagPickerSortMode =
-      Setting<String>("tagPickerSortMode", "manual");
   static const requirePassword =
       Setting<bool>("requirePassword", false, secure: true);
   static const biometricUnlock =
@@ -314,7 +312,6 @@ class Settings {
     moodOverTimeSmoothing,
     statsRange,
     statsSubject,
-    tagPickerSortMode,
     requirePassword,
     biometricUnlock,
     passwordHash,

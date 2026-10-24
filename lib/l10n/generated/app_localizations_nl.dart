@@ -526,58 +526,13 @@ class AppLocalizationsNl extends AppLocalizations {
   String get addTagsSearchHint => 'Tags zoeken…';
 
   @override
-  String get tagPickerSortManualLabel => 'Handmatige bestelling';
-
-  @override
-  String get tagPickerSortUsageLabel => 'Sorteer op gebruik';
-
-  @override
   String get tagFavoriteName => 'Favoriet';
 
   @override
-  String get tagEnergyName => 'Energie';
+  String get iconGroupActivities => 'Activiteiten';
 
   @override
-  String get tagCategoryActivitiesName => 'Activiteiten';
-
-  @override
-  String get tagExerciseName => 'Oefening';
-
-  @override
-  String get tagSocializingName => 'Socialiseren';
-
-  @override
-  String get tagHobbyName => 'Hobby';
-
-  @override
-  String get tagEntertainmentName => 'Amusement';
-
-  @override
-  String get tagDiningName => 'Dineren';
-
-  @override
-  String get tagChoresName => 'Klusjes';
-
-  @override
-  String get tagCategoryEmotionsName => 'Emoties';
-
-  @override
-  String get tagExcitedName => 'Opgewonden';
-
-  @override
-  String get tagGratefulName => 'Dankbaar';
-
-  @override
-  String get tagCalmName => 'Kalm';
-
-  @override
-  String get tagTiredName => 'Moe';
-
-  @override
-  String get tagAnxiousName => 'Angstig';
-
-  @override
-  String get tagAnnoyedName => 'Geërgerd';
+  String get iconGroupHobbies => 'Amusement';
 
   @override
   String get settingsStorageTitle => 'Opslag';

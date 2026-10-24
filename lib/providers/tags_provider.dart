@@ -14,6 +14,7 @@ import 'package:aid_diary/l10n/shown_language.dart';
 import 'package:aid_diary/models/tag.dart';
 import 'package:aid_diary/models/tag_category.dart';
 import 'package:aid_diary/models/tag_icon_type.dart';
+import 'package:aid_diary/sync/builtin_ids.dart';
 import 'package:aid_diary/utils/generated/tag_icon_registry.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -30,6 +31,7 @@ class TagsProvider with ChangeNotifier {
   TagsProvider._init();
 
   List<TagCategory> categories = List.empty();
+
   List<Tag> tags = List.empty();
 
   List<EntryTag> _entryTags = List.empty();
@@ -222,8 +224,10 @@ class TagsProvider with ChangeNotifier {
         getEntryTagsForEntry(entryId).any((t) => t.tagId == favoriteId);
   }
 
+  /// Starring an entry for the first time makes the favorite tag; a new
+  /// diary starts without tags.
   Future<void> setFavorite(int entryId, bool favorite) async {
-    final tag = favoriteTag;
+    final tag = favorite ? await ensureFavoriteTag() : favoriteTag;
     if (tag == null) return;
     final existing = getEntryTagsForEntry(entryId)
         .where((t) => t.tagId == tag.id)
@@ -364,112 +368,22 @@ class TagsProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  /// Icons of the categories and tags [createDefaultTags] makes. Every
-  /// install makes its own, and sync recognises them by these.
-  static const defaultCategoryIcons = [
-    TagIconKey.sentimentVerySatisfied,
-    TagIconKey.directionsRun,
-  ];
-  static const defaultTagIcons = [
-    TagIconKey.favorite,
-    TagIconKey.batteryChargingFull,
-    TagIconKey.celebration,
-    TagIconKey.volunteerActivism,
-    TagIconKey.spa,
-    TagIconKey.nightlight,
-    TagIconKey.psychology,
-    TagIconKey.thunderstorm,
-    TagIconKey.fitnessCenter,
-    TagIconKey.groups,
-    TagIconKey.palette,
-    TagIconKey.theaterComedy,
-    TagIconKey.localDining,
-    TagIconKey.cleaningServices,
-  ];
-
-  Future<void> createDefaultTags() async {
+  /// The favorite tag, made now if no entry was starred yet.
+  Future<Tag> ensureFavoriteTag() async {
+    if (favoriteTag case final existing?) return existing;
     // Names are stored, so use the language the app shows, not the device's.
     final l10n = await loadShownLocalizations();
     final now = DateTime.now();
-
-    final defaultTags = [
-      Tag(
-        name: l10n.tagFavoriteName,
-        tagType: TagType.label,
-        icon: TagIconKey.favorite,
-        iconType: TagIconType.materialIcon,
-        color: Colors.pink.shade500.toARGB32(),
-        timeCreate: now,
-        timeModified: now,
-      ),
-      Tag(
-        name: l10n.tagEnergyName,
-        tagType: TagType.tracker,
-        icon: TagIconKey.batteryChargingFull,
-        iconType: TagIconType.materialIcon,
-        color: Colors.green.shade600.toARGB32(),
-        timeCreate: now,
-        timeModified: now,
-      ),
-    ];
-    for (final tag in defaultTags) {
-      await add(tag);
-    }
-
-    final emotionsCategory = await addCategory(TagCategory(
-      name: l10n.tagCategoryEmotionsName,
-      icon: TagIconKey.sentimentVerySatisfied,
+    final tag = await add(Tag(
+      name: l10n.tagFavoriteName,
+      tagType: TagType.label,
+      icon: TagIconKey.favorite,
       iconType: TagIconType.materialIcon,
+      color: Colors.pink.shade500.toARGB32(),
       timeCreate: now,
       timeModified: now,
     ));
-
-    final defaultEmotionTags = [
-      (l10n.tagExcitedName, TagIconKey.celebration),
-      (l10n.tagGratefulName, TagIconKey.volunteerActivism),
-      (l10n.tagCalmName, TagIconKey.spa),
-      (l10n.tagTiredName, TagIconKey.nightlight),
-      (l10n.tagAnxiousName, TagIconKey.psychology),
-      (l10n.tagAnnoyedName, TagIconKey.thunderstorm),
-    ];
-    for (final (name, icon) in defaultEmotionTags) {
-      await add(Tag(
-        categoryId: emotionsCategory.id,
-        name: name,
-        tagType: TagType.label,
-        icon: icon,
-        iconType: TagIconType.materialIcon,
-        timeCreate: now,
-        timeModified: now,
-      ));
-    }
-
-    final activitiesCategory = await addCategory(TagCategory(
-      name: l10n.tagCategoryActivitiesName,
-      icon: TagIconKey.directionsRun,
-      iconType: TagIconType.materialIcon,
-      timeCreate: now,
-      timeModified: now,
-    ));
-
-    final defaultActivityTags = [
-      (l10n.tagExerciseName, TagIconKey.fitnessCenter),
-      (l10n.tagSocializingName, TagIconKey.groups),
-      (l10n.tagHobbyName, TagIconKey.palette),
-      (l10n.tagEntertainmentName, TagIconKey.theaterComedy),
-      (l10n.tagDiningName, TagIconKey.localDining),
-      (l10n.tagChoresName, TagIconKey.cleaningServices),
-    ];
-    for (final (name, icon) in defaultActivityTags) {
-      await add(Tag(
-        categoryId: activitiesCategory.id,
-        name: name,
-        tagType: TagType.label,
-        icon: icon,
-        iconType: TagIconType.materialIcon,
-        timeCreate: now,
-        timeModified: now,
-      ));
-    }
+    await claimBuiltinTag(AppDatabase.instance.database!, TagIconKey.favorite);
+    return tag;
   }
 }

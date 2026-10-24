@@ -527,58 +527,13 @@ class AppLocalizationsTa extends AppLocalizations {
   String get addTagsSearchHint => 'குறிச்சொற்களைத் தேடு…';
 
   @override
-  String get tagPickerSortManualLabel => 'கைமுறை ஆர்டர்';
-
-  @override
-  String get tagPickerSortUsageLabel => 'பயன்பாட்டின்படி வரிசைப்படுத்தவும்';
-
-  @override
   String get tagFavoriteName => 'பிடித்தது';
 
   @override
-  String get tagEnergyName => 'ஆற்றல்';
+  String get iconGroupActivities => 'செயல்பாடுகள்';
 
   @override
-  String get tagCategoryActivitiesName => 'செயல்பாடுகள்';
-
-  @override
-  String get tagExerciseName => 'உடற்பயிற்சி';
-
-  @override
-  String get tagSocializingName => 'சமூகமயமாக்கல்';
-
-  @override
-  String get tagHobbyName => 'பொழுதுபோக்கு';
-
-  @override
-  String get tagEntertainmentName => 'பொழுதுபோக்கு';
-
-  @override
-  String get tagDiningName => 'சாப்பாடு';
-
-  @override
-  String get tagChoresName => 'வேலைகள்';
-
-  @override
-  String get tagCategoryEmotionsName => 'உணர்ச்சிகள்';
-
-  @override
-  String get tagExcitedName => 'உற்சாகம்';
-
-  @override
-  String get tagGratefulName => 'நன்றியுள்ளவர்';
-
-  @override
-  String get tagCalmName => 'அமைதி';
-
-  @override
-  String get tagTiredName => 'சோர்வாக';
-
-  @override
-  String get tagAnxiousName => 'கவலை';
-
-  @override
-  String get tagAnnoyedName => 'எரிச்சலடைந்தேன்';
+  String get iconGroupHobbies => 'பொழுதுபோக்கு';
 
   @override
   String get settingsStorageTitle => 'சேமிப்பு';

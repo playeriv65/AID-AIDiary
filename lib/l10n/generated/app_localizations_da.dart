@@ -519,58 +519,13 @@ class AppLocalizationsDa extends AppLocalizations {
   String get addTagsSearchHint => 'Søg tags...';
 
   @override
-  String get tagPickerSortManualLabel => 'Manuel bestilling';
-
-  @override
-  String get tagPickerSortUsageLabel => 'Sorter efter brug';
-
-  @override
   String get tagFavoriteName => 'Favorit';
 
   @override
-  String get tagEnergyName => 'Energi';
+  String get iconGroupActivities => 'Aktiviteter';
 
   @override
-  String get tagCategoryActivitiesName => 'Aktiviteter';
-
-  @override
-  String get tagExerciseName => 'Motion';
-
-  @override
-  String get tagSocializingName => 'Socialt samvær';
-
-  @override
-  String get tagHobbyName => 'Hobby';
-
-  @override
-  String get tagEntertainmentName => 'Underholdning';
-
-  @override
-  String get tagDiningName => 'Spisning';
-
-  @override
-  String get tagChoresName => 'gøremål';
-
-  @override
-  String get tagCategoryEmotionsName => 'Følelser';
-
-  @override
-  String get tagExcitedName => 'Spændt';
-
-  @override
-  String get tagGratefulName => 'Taknemmelig';
-
-  @override
-  String get tagCalmName => 'Rolig';
-
-  @override
-  String get tagTiredName => 'Træt';
-
-  @override
-  String get tagAnxiousName => 'ængstelig';
-
-  @override
-  String get tagAnnoyedName => 'Irriteret';
+  String get iconGroupHobbies => 'Underholdning';
 
   @override
   String get settingsStorageTitle => 'Lager';

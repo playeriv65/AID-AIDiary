@@ -39,7 +39,7 @@ class AppDatabase {
       executor ?? instance.database!;
 
   static const String databaseFileName = 'aid_diary.db';
-  static const int currentVersion = 14;
+  static const int currentVersion = 15;
 
   static final Logger _logger = Logger('AppDatabase');
 
@@ -88,7 +88,9 @@ class AppDatabase {
 
   Future<void> open({int? firstScreen}) async {
     _database = await openDatabase(_internalPath!,
-        version: currentVersion, onCreate: _createDatabase, onUpgrade: _onUpgrade);
+        version: currentVersion,
+        onCreate: _createDatabase,
+        onUpgrade: _onUpgrade);
 
     await EntriesProvider.instance.load(firstScreen: firstScreen);
     await EntryImagesProvider.instance.load();
@@ -300,7 +302,6 @@ class AppDatabase {
     _database = db;
     await createSchema(db);
     await TemplatesProvider.instance.createDefaultTemplates();
-    await TagsProvider.instance.createDefaultTags();
     await _assignBuiltinIds(db);
   }
 
@@ -489,7 +490,6 @@ DROP TABLE old_entries;
     }
     if (oldVersion <= 3) {
       await _createTagTables(db);
-      await TagsProvider.instance.createDefaultTags();
     }
     if (oldVersion <= 4) {
       await _createTemplateTagTable(db);
@@ -555,6 +555,24 @@ DROP TABLE old_entries;
     if (oldVersion < 14 && newVersion >= 14) {
       await _addHiddenAndImportSchema(db);
     }
+    if (oldVersion >= 11 && oldVersion < 15 && newVersion >= 15) {
+      await _removeUnusedStarterTags(db);
+    }
+  }
+
+  /// Installs used to start with tags (favorite, energy, emotions and
+  /// activities); a new diary now starts with none. Those no entry or
+  /// template uses go, and their categories once nothing is left in them.
+  /// Deleting them syncs like any deletion.
+  Future<void> _removeUnusedStarterTags(Database db) async {
+    await db.delete(tagsTable,
+        where: "$syncIdColumn LIKE 'builtin-tag-%' "
+            'AND id NOT IN (SELECT ${EntryTagFields.tagId} FROM $entryTagsTable) '
+            'AND id NOT IN (SELECT ${TemplateTagFields.tagId} FROM $templateTagsTable)');
+    await db.delete(tagCategoriesTable,
+        where: "$syncIdColumn LIKE 'builtin-category-%' "
+            'AND id NOT IN (SELECT ${TagFields.categoryId} FROM $tagsTable '
+            'WHERE ${TagFields.categoryId} IS NOT NULL)');
   }
 
   Future<void> _addHiddenAndImportSchema(Database db) async {

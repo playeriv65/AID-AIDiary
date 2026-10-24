@@ -13,8 +13,16 @@ class TagChip extends StatelessWidget {
   final VoidCallback? onTap;
   final VoidCallback? onRemove;
 
+  /// Filled with the tag's colour, as a picked tag shows where it is.
+  final bool selected;
+
   const TagChip(
-      {super.key, required this.tag, this.value, this.onTap, this.onRemove});
+      {super.key,
+      required this.tag,
+      this.value,
+      this.onTap,
+      this.onRemove,
+      this.selected = false});
 
   Widget _buildTrackerValueBox(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
@@ -40,6 +48,10 @@ class TagChip extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = tag.resolvedColor(context,
         fallback: Theme.of(context).colorScheme.secondary);
+    final onColor =
+        ThemeData.estimateBrightnessForColor(color) == Brightness.dark
+            ? Colors.white
+            : Colors.black;
     final screenWidth = MediaQuery.sizeOf(context).width;
 
     return LayoutBuilder(
@@ -56,7 +68,7 @@ class TagChip extends StatelessWidget {
               decoration: BoxDecoration(
                 border: Border.all(color: color, width: 1.5),
                 borderRadius: BorderRadius.circular(16),
-                color: color.withValues(alpha: 0.12),
+                color: selected ? color : color.withValues(alpha: 0.12),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -65,14 +77,15 @@ class TagChip extends StatelessWidget {
                     icon: tag.icon,
                     iconType: tag.iconType,
                     fallbackIcon: tag.typeIcon,
-                    color: color,
+                    color: selected ? onColor : color,
                     size: 16,
                   ),
                   const SizedBox(width: 4),
                   Flexible(
                     child: Text(
                       tag.name,
-                      style: const TextStyle(fontSize: 13),
+                      style: TextStyle(
+                          fontSize: 13, color: selected ? onColor : null),
                       maxLines: 1,
                       softWrap: false,
                       overflow: TextOverflow.fade,
@@ -84,8 +97,10 @@ class TagChip extends StatelessWidget {
                   ] else if (value != null) ...[
                     const SizedBox(width: 4),
                     Text(value!,
-                        style: const TextStyle(
-                            fontSize: 13, fontWeight: FontWeight.w500)),
+                        style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w500,
+                            color: selected ? onColor : null)),
                   ],
                   if (onRemove != null) ...[
                     const SizedBox(width: 4),
@@ -93,7 +108,9 @@ class TagChip extends StatelessWidget {
                       onTap: onRemove,
                       child: Icon(Icons.close,
                           size: 14,
-                          color: Theme.of(context).colorScheme.onSurface),
+                          color: selected
+                              ? onColor
+                              : Theme.of(context).colorScheme.onSurface),
                     ),
                   ],
                 ],

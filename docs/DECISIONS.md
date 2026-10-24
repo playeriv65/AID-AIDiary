@@ -104,6 +104,14 @@ asks again. Dates are when it was settled. Ideas not built yet are in
   with System and the offered languages. Do not add a language subpage or
   separate system-language/override controls. Existing selected languages remain
   selected; System resumes following the platform locale.
+- Tags (2026-10-23): a new diary starts with no tags or categories; the
+  favorite tag behind the star is made the first time an entry is starred.
+  Tags keep the order the user arranges: long-press a tag in the picker to
+  lift it (with haptic feedback) and drop it on another tag's place, or drag
+  it in Tags settings. There is no automatic "sort by use" mode. An import
+  from another app places the tags it makes after the diary's own, most used
+  first, once; sync keeps the arranged order. Picking a tag highlights it
+  where it is instead of moving it to the top.
 - Random walk matters to the owner, who relies on One Diary's: keep it
   good.
 - Appearance is independently configurable: light/system theme, optional
@@ -187,6 +195,10 @@ current implementation. Decided along the way:
 
 - No sign-up, login or password for the diary itself. Devices hold the
   user id and master key; storage only ever holds ciphertext.
+- Adding one of the owner's own devices or restoring a backup brings back
+  as much as possible (2026-10-23): every feature's data, settings and small
+  preferences, not only entries. Device-specific choices (paths, platform
+  permissions) are the exception.
 - Every space is encrypted; there are no plain spaces. Spaces of earlier
   formats are not migrated: they are started again.
 - Recovery: a random recovery code by default, which the user may replace

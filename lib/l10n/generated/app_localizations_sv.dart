@@ -525,58 +525,13 @@ class AppLocalizationsSv extends AppLocalizations {
   String get addTagsSearchHint => 'Sök taggar...';
 
   @override
-  String get tagPickerSortManualLabel => 'Manuell beställning';
-
-  @override
-  String get tagPickerSortUsageLabel => 'Sortera efter användning';
-
-  @override
   String get tagFavoriteName => 'Favorit';
 
   @override
-  String get tagEnergyName => 'Energi';
+  String get iconGroupActivities => 'Aktiviteter';
 
   @override
-  String get tagCategoryActivitiesName => 'Aktiviteter';
-
-  @override
-  String get tagExerciseName => 'Träning';
-
-  @override
-  String get tagSocializingName => 'Umgås';
-
-  @override
-  String get tagHobbyName => 'Hobby';
-
-  @override
-  String get tagEntertainmentName => 'Underhållning';
-
-  @override
-  String get tagDiningName => 'Matsal';
-
-  @override
-  String get tagChoresName => 'Sysslor';
-
-  @override
-  String get tagCategoryEmotionsName => 'Känslor';
-
-  @override
-  String get tagExcitedName => 'Upphetsad';
-
-  @override
-  String get tagGratefulName => 'Tacksam';
-
-  @override
-  String get tagCalmName => 'Lugn';
-
-  @override
-  String get tagTiredName => 'Trött';
-
-  @override
-  String get tagAnxiousName => 'Orolig';
-
-  @override
-  String get tagAnnoyedName => 'Irriterad';
+  String get iconGroupHobbies => 'Underhållning';
 
   @override
   String get settingsStorageTitle => 'Förvaring';

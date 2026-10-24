@@ -514,58 +514,13 @@ class AppLocalizationsKo extends AppLocalizations {
   String get addTagsSearchHint => '태그 검색…';
 
   @override
-  String get tagPickerSortManualLabel => '수동 주문';
-
-  @override
-  String get tagPickerSortUsageLabel => '용도별로 정렬';
-
-  @override
   String get tagFavoriteName => '즐겨찾기';
 
   @override
-  String get tagEnergyName => '에너지';
+  String get iconGroupActivities => '활동';
 
   @override
-  String get tagCategoryActivitiesName => '활동';
-
-  @override
-  String get tagExerciseName => '운동';
-
-  @override
-  String get tagSocializingName => '사교';
-
-  @override
-  String get tagHobbyName => '취미';
-
-  @override
-  String get tagEntertainmentName => '엔터테인먼트';
-
-  @override
-  String get tagDiningName => '다이닝';
-
-  @override
-  String get tagChoresName => '집안일';
-
-  @override
-  String get tagCategoryEmotionsName => '감정';
-
-  @override
-  String get tagExcitedName => '흥분된다';
-
-  @override
-  String get tagGratefulName => '감사하다';
-
-  @override
-  String get tagCalmName => '진정';
-
-  @override
-  String get tagTiredName => '피곤하다';
-
-  @override
-  String get tagAnxiousName => '불안하다';
-
-  @override
-  String get tagAnnoyedName => '짜증나';
+  String get iconGroupHobbies => '엔터테인먼트';
 
   @override
   String get settingsStorageTitle => '저장소';

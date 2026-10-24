@@ -471,58 +471,13 @@ class AppLocalizationsMs extends AppLocalizations {
   String get addTagsSearchHint => 'Teg carian…';
 
   @override
-  String get tagPickerSortManualLabel => 'Pesanan manual';
-
-  @override
-  String get tagPickerSortUsageLabel => 'Isih mengikut penggunaan';
-
-  @override
   String get tagFavoriteName => 'Kegemaran';
 
   @override
-  String get tagEnergyName => 'Tenaga';
+  String get iconGroupActivities => 'Aktiviti';
 
   @override
-  String get tagCategoryActivitiesName => 'Aktiviti';
-
-  @override
-  String get tagExerciseName => 'Bersenam';
-
-  @override
-  String get tagSocializingName => 'Bersosial';
-
-  @override
-  String get tagHobbyName => 'hobi';
-
-  @override
-  String get tagEntertainmentName => 'Hiburan';
-
-  @override
-  String get tagDiningName => 'Makan';
-
-  @override
-  String get tagChoresName => 'Kerja-kerja';
-
-  @override
-  String get tagCategoryEmotionsName => 'Emosi';
-
-  @override
-  String get tagExcitedName => 'Teruja';
-
-  @override
-  String get tagGratefulName => 'Bersyukur';
-
-  @override
-  String get tagCalmName => 'Tenang';
-
-  @override
-  String get tagTiredName => 'Penat';
-
-  @override
-  String get tagAnxiousName => 'cemas';
-
-  @override
-  String get tagAnnoyedName => 'Kesal';
+  String get iconGroupHobbies => 'Hiburan';
 
   @override
   String get settingsStorageTitle => 'Storan';

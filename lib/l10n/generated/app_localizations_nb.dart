@@ -527,58 +527,13 @@ class AppLocalizationsNb extends AppLocalizations {
   String get addTagsSearchHint => 'Søk etiketter...';
 
   @override
-  String get tagPickerSortManualLabel => 'Manuell bestilling';
-
-  @override
-  String get tagPickerSortUsageLabel => 'Sorter etter bruk';
-
-  @override
   String get tagFavoriteName => 'Favoritt';
 
   @override
-  String get tagEnergyName => 'Energi';
+  String get iconGroupActivities => 'Aktiviteter';
 
   @override
-  String get tagCategoryActivitiesName => 'Aktiviteter';
-
-  @override
-  String get tagExerciseName => 'Trening';
-
-  @override
-  String get tagSocializingName => 'Sosialt samvær';
-
-  @override
-  String get tagHobbyName => 'Hobby';
-
-  @override
-  String get tagEntertainmentName => 'Underholdning';
-
-  @override
-  String get tagDiningName => 'Servering';
-
-  @override
-  String get tagChoresName => 'Arbeidsoppgaver';
-
-  @override
-  String get tagCategoryEmotionsName => 'Følelser';
-
-  @override
-  String get tagExcitedName => 'Spent';
-
-  @override
-  String get tagGratefulName => 'Takknemlig';
-
-  @override
-  String get tagCalmName => 'Rolig';
-
-  @override
-  String get tagTiredName => 'Sliten';
-
-  @override
-  String get tagAnxiousName => 'Engstelig';
-
-  @override
-  String get tagAnnoyedName => 'Irritert';
+  String get iconGroupHobbies => 'Underholdning';
 
   @override
   String get settingsStorageTitle => 'Oppbevaring';

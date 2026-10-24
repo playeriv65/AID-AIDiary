@@ -537,58 +537,13 @@ class AppLocalizationsRo extends AppLocalizations {
   String get addTagsSearchHint => 'Etichete de căutare...';
 
   @override
-  String get tagPickerSortManualLabel => 'Comanda manuala';
-
-  @override
-  String get tagPickerSortUsageLabel => 'Sortați după utilizare';
-
-  @override
   String get tagFavoriteName => 'Favorit';
 
   @override
-  String get tagEnergyName => 'Energie';
+  String get iconGroupActivities => 'Activități';
 
   @override
-  String get tagCategoryActivitiesName => 'Activități';
-
-  @override
-  String get tagExerciseName => 'Exercițiu';
-
-  @override
-  String get tagSocializingName => 'Socializarea';
-
-  @override
-  String get tagHobbyName => 'Hobby';
-
-  @override
-  String get tagEntertainmentName => 'Divertisment';
-
-  @override
-  String get tagDiningName => 'mese';
-
-  @override
-  String get tagChoresName => 'Treburi';
-
-  @override
-  String get tagCategoryEmotionsName => 'Emoții';
-
-  @override
-  String get tagExcitedName => 'Emotionat';
-
-  @override
-  String get tagGratefulName => 'recunoscător';
-
-  @override
-  String get tagCalmName => 'Calm';
-
-  @override
-  String get tagTiredName => 'obosit';
-
-  @override
-  String get tagAnxiousName => 'anxios';
-
-  @override
-  String get tagAnnoyedName => 'enervat';
+  String get iconGroupHobbies => 'Divertisment';
 
   @override
   String get settingsStorageTitle => 'Depozitare';

@@ -524,58 +524,13 @@ class AppLocalizationsVi extends AppLocalizations {
   String get addTagsSearchHint => 'Tìm kiếm thẻ…';
 
   @override
-  String get tagPickerSortManualLabel => 'Đặt hàng thủ công';
-
-  @override
-  String get tagPickerSortUsageLabel => 'Sắp xếp theo cách sử dụng';
-
-  @override
   String get tagFavoriteName => 'yêu thích';
 
   @override
-  String get tagEnergyName => 'năng lượng';
+  String get iconGroupActivities => 'Hoạt động';
 
   @override
-  String get tagCategoryActivitiesName => 'Hoạt động';
-
-  @override
-  String get tagExerciseName => 'tập thể dục';
-
-  @override
-  String get tagSocializingName => 'Giao tiếp xã hội';
-
-  @override
-  String get tagHobbyName => 'Sở thích';
-
-  @override
-  String get tagEntertainmentName => 'Giải trí';
-
-  @override
-  String get tagDiningName => 'Ăn uống';
-
-  @override
-  String get tagChoresName => 'Công việc nhà';
-
-  @override
-  String get tagCategoryEmotionsName => 'Cảm xúc';
-
-  @override
-  String get tagExcitedName => 'vui mừng';
-
-  @override
-  String get tagGratefulName => 'biết ơn';
-
-  @override
-  String get tagCalmName => 'Bình tĩnh';
-
-  @override
-  String get tagTiredName => 'Mệt mỏi';
-
-  @override
-  String get tagAnxiousName => 'lo lắng';
-
-  @override
-  String get tagAnnoyedName => 'Bực mình';
+  String get iconGroupHobbies => 'Giải trí';
 
   @override
   String get settingsStorageTitle => 'Lưu trữ';

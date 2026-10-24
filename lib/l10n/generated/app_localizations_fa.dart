@@ -519,58 +519,13 @@ class AppLocalizationsFa extends AppLocalizations {
   String get addTagsSearchHint => 'جستجوی برچسب‌ها…';
 
   @override
-  String get tagPickerSortManualLabel => 'ترتیب دستی';
-
-  @override
-  String get tagPickerSortUsageLabel => 'مرتب کردن بر اساس استفاده';
-
-  @override
   String get tagFavoriteName => 'مورد علاقه‌ها';
 
   @override
-  String get tagEnergyName => 'انرژی';
+  String get iconGroupActivities => 'فعالیت‌ها';
 
   @override
-  String get tagCategoryActivitiesName => 'فعالیت‌ها';
-
-  @override
-  String get tagExerciseName => 'ورزش';
-
-  @override
-  String get tagSocializingName => 'معاشرت';
-
-  @override
-  String get tagHobbyName => 'سرگرمی';
-
-  @override
-  String get tagEntertainmentName => 'سرگرمی';
-
-  @override
-  String get tagDiningName => 'ناهار خوری';
-
-  @override
-  String get tagChoresName => 'کارهای روزمره';
-
-  @override
-  String get tagCategoryEmotionsName => 'احساساتی';
-
-  @override
-  String get tagExcitedName => 'هیجان‌زده';
-
-  @override
-  String get tagGratefulName => 'سپاسگزار';
-
-  @override
-  String get tagCalmName => 'آرام';
-
-  @override
-  String get tagTiredName => 'خسته';
-
-  @override
-  String get tagAnxiousName => 'مضطرب';
-
-  @override
-  String get tagAnnoyedName => 'آزرده خاطر';
+  String get iconGroupHobbies => 'سرگرمی';
 
   @override
   String get settingsStorageTitle => 'ذخیره سازی';

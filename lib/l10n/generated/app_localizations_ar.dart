@@ -530,58 +530,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get addTagsSearchHint => 'البحث عن علامات…';
 
   @override
-  String get tagPickerSortManualLabel => 'ترتيب يدوي';
-
-  @override
-  String get tagPickerSortUsageLabel => 'الترتيب حسب الاستخدام';
-
-  @override
   String get tagFavoriteName => 'المفضلة';
 
   @override
-  String get tagEnergyName => 'الطاقة';
+  String get iconGroupActivities => 'الأنشطة';
 
   @override
-  String get tagCategoryActivitiesName => 'الأنشطة';
-
-  @override
-  String get tagExerciseName => 'تمارين';
-
-  @override
-  String get tagSocializingName => 'التواصل الاجتماعي';
-
-  @override
-  String get tagHobbyName => 'هواية';
-
-  @override
-  String get tagEntertainmentName => 'الترفيه';
-
-  @override
-  String get tagDiningName => 'تناول الطعام';
-
-  @override
-  String get tagChoresName => 'الأعمال اليومية';
-
-  @override
-  String get tagCategoryEmotionsName => 'العواطف';
-
-  @override
-  String get tagExcitedName => 'متحمس';
-
-  @override
-  String get tagGratefulName => 'ممتن';
-
-  @override
-  String get tagCalmName => 'الهدوء';
-
-  @override
-  String get tagTiredName => 'متعب';
-
-  @override
-  String get tagAnxiousName => 'قلق';
-
-  @override
-  String get tagAnnoyedName => 'منزعج';
+  String get iconGroupHobbies => 'الترفيه';
 
   @override
   String get settingsStorageTitle => 'التخزين';
