@@ -394,6 +394,6 @@ initialized for the same workspace. Never clear the everyday package.
 | AID sync server | `https://aid.playeriv65.com/dav/`; SSH alias `netlab_main`, installation `/srv/aid-sync`, Docker behind nginx TLS; server source `887dd27` and WebSocket headers deployed 2026-10-22 | Owner's server and domain `playeriv65.com`; maintain through native SSH and `server/deploy/`; accounts use `aid-sync adduser`; deployment and backup evidence in `docs/SYNC_NETWORK.md` |
 | Map, place and weather services | OpenStreetMap tiles, Nominatim, Overpass, Open-Meteo; endpoints in `assets/config/app_config.json` | Public; follow their usage policies (low request rates, a real User-Agent) |
 | Upstream | Daily You by Demizo (GPL-3.0); baseline in `SOURCE.md` | Public |
-| UI references | Journey and 一本日记 installers, screenshots and notes in `D:\program\diary-references\` (index in its README) | Owner's PC, outside the repository: reference only, never copied |
+| UI and format references | Other diary apps (Journey, 一本日记, 榴莲日记, Moo日记, Memex and open-source ones): installers, decompiled output, screenshots and notes in `D:\program\diary-references\` (index in its README) | Owner's PC, outside the repository: reference only, never copied |
 | Old project's files | `D:\program\AID-AIDiary-legacy` | Owner's PC; kept, not imported |
 | Flutter issues followed | Android refresh rate on HyperOS (`docs/REFRESH_RATE.md`), Windows Impeller start-up cost [#191860](https://github.com/flutter/flutter/issues/191860) (why Windows renders with Skia) | Public |
