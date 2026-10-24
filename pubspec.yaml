@@ -110,6 +110,8 @@ flutter:
     - LICENSE.txt
     - ADDITIONAL_TERMS.md
     - assets/icons/
+    # Meteocons weather icons (MIT); the license is shown with the others.
+    - assets/weather/
     - assets/config/app_config.json
     - assets/config/one_diary_v3.json
 

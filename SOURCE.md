@@ -33,6 +33,10 @@ Entry storage (SQLite), photos, moods, tags and trackers, templates, statistics,
   and [perfect_freehand 2.5.2+1](https://pub.dev/packages/perfect_freehand), both
   MIT licensed. Their license notices are bundled by Flutter. Drawing documents
   and headless PNG exports are implemented locally.
+- Weather icons are eight static "fill" SVGs from
+  [Meteocons](https://github.com/basmilius/meteocons) by Bas Milius
+  (`@meteocons/svg-static` 0.1.0, MIT), unmodified in `assets/weather/` with
+  their license, which the app lists among its licenses.
 - Local photo suggestions use bounded on-device metadata and explicitly selected
   folders; photos are imported only after choosing a suggestion.
 - Windows development script, native-asset packaging per the Flutter template, cooperative cancellation of archive compression, format detection for desktop thumbnails.

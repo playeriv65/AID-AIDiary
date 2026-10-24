@@ -5,6 +5,9 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart'
+    show LicenseEntryWithLineBreaks, LicenseRegistry;
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:aid_diary/actions/agent_api.dart';
 import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/config/app_config.dart';
@@ -47,6 +50,11 @@ void main() async {
   }
   databaseFactory = databaseFactoryFfi;
   WidgetsFlutterBinding.ensureInitialized();
+  // Copied artwork, not a package, so Flutter does not list it by itself.
+  LicenseRegistry.addLicense(() async* {
+    yield LicenseEntryWithLineBreaks(
+        ['Meteocons'], await rootBundle.loadString('assets/weather/LICENSE'));
+  });
   if (AppActions.instance.devBuild) await useScratchFolders();
 
   configureLogging();
