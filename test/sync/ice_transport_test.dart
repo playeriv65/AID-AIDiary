@@ -201,7 +201,12 @@ void main() {
     native.channel.amount = 256 * 1024;
     final pending = expectLater(link.send(Uint8List(1)), throwsStateError);
     await native.channel.queried.future;
-    await Future<void>.delayed(const Duration(milliseconds: 45));
+    // Polling again, however coarse the machine's timers are.
+    final polling = DateTime.now().add(const Duration(seconds: 2));
+    while (
+        native.channel.bufferQueries <= 1 && DateTime.now().isBefore(polling)) {
+      await Future<void>.delayed(const Duration(milliseconds: 10));
+    }
     expect(native.channel.bufferQueries, greaterThan(1));
     await link.close();
     await pending;
