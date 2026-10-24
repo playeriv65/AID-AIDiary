@@ -1,6 +1,6 @@
 # AID Diary
 
-**English** | [简体中文](README.zh-CN.md) | [日本語](README.ja.md) | [한국어](README.ko.md)
+**English** | [简体中文](docs/readme/README.zh-CN.md) | [日本語](docs/readme/README.ja.md) | [한국어](docs/readme/README.ko.md)
 
 A private diary app for Windows and Android, built with Flutter.
 

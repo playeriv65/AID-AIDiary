@@ -1,6 +1,6 @@
 # AID Diary
 
-[English](README.md) | [简体中文](README.zh-CN.md) | **日本語** | [한국어](README.ko.md)
+[English](../../README.md) | [简体中文](README.zh-CN.md) | **日本語** | [한국어](README.ko.md)
 
 Flutter で作られた、Windows と Android 向けのプライベートな日記アプリです。
 
@@ -10,22 +10,22 @@ Flutter で作られた、Windows と Android 向けのプライベートな日�
 
 レイアウトは日記アプリ Journey にならっています。スマートフォンでは下部バー、タブレットと PC のウィンドウではナビゲーションレールと一覧／詳細の 2 ペインです。借りたのはレイアウトと機能だけで、コード、素材、文章は使っていません。
 
-スマートフォン、タブレット、Windows のいずれでも、検索はスクロールする一覧の上に固定されます。日記を長く眺めていると、小さな「トップへ戻る」ボタンが現れます。フィードバックは「設定 > ヘルプ」から、GitHub、メール、テキストのコピーで送れます。Windows ではネイティブのタイトルバーを残し、アプリのアイコンと AID Diary の名前を表示し、枠の色をアプリのテーマに合わせます。[Windows のセットアップ](docs/SETUP.md#windows-personal-installation)を参照してください。
+スマートフォン、タブレット、Windows のいずれでも、検索はスクロールする一覧の上に固定されます。日記を長く眺めていると、小さな「トップへ戻る」ボタンが現れます。フィードバックは「設定 > ヘルプ」から、GitHub、メール、テキストのコピーで送れます。Windows ではネイティブのタイトルバーを残し、アプリのアイコンと AID Diary の名前を表示し、枠の色をアプリのテーマに合わせます。[Windows のセットアップ](../SETUP.md#windows-personal-installation)を参照してください。
 
 | タブレット / PC | スマートフォン |
 |---|---|
-| ![日記](artifacts/ui-tablet-journal.png) | ![日記](artifacts/ui-phone-journal.png) ![日記の表示](artifacts/ui-phone-entry.png) |
-| ![カレンダー](artifacts/ui-tablet-calendar.png) | ![カレンダー](artifacts/ui-phone-calendar.png) ![メディア](artifacts/ui-phone-media.png) |
-| ![メディア](artifacts/ui-tablet-media.png) | ![コーチ](artifacts/ui-phone-coach.png) ![検索](artifacts/ui-phone-search.png) |
-| ![コーチ](artifacts/ui-tablet-coach.png) | ![エディター](artifacts/ui-phone-editor.png) ![共有](artifacts/ui-phone-share.png) |
-| ![コーチプログラム](artifacts/ui-tablet-coach-program.png) | ![場所](artifacts/ui-phone-location-picker.png) ![共有形式](artifacts/ui-phone-share-as.png) |
-| ![コーチのストーリー](artifacts/ui-tablet-story-prompt.png) | |
-| ![手書き](artifacts/ui-tablet-backlog-drawing.png) | ![外観](artifacts/ui-phone-backlog-appearance.png) |
-| ![便箋](artifacts/ui-tablet-backlog-lined.png) | ![端末内の写真の提案](artifacts/ui-phone-backlog-moments.png) |
-| | ![ランダムウォーク](artifacts/ui-phone-random.png) ![週の振り返り](artifacts/ui-phone-week-review.png) |
-| ![初回起動](artifacts/ui-tablet-first-start.png) | ![初回起動](artifacts/ui-phone-first-start.png) |
-| ![チュートリアル](artifacts/ui-tablet-tutorial.png) | ![チュートリアル](artifacts/ui-phone-tutorial.png) |
-| ![日記の日付](artifacts/ui-tablet-diary-day-picker.png) | ![日記の日付](artifacts/ui-phone-diary-day-picker.png) |
+| ![日記](../../artifacts/ui-tablet-journal.png) | ![日記](../../artifacts/ui-phone-journal.png) ![日記の表示](../../artifacts/ui-phone-entry.png) |
+| ![カレンダー](../../artifacts/ui-tablet-calendar.png) | ![カレンダー](../../artifacts/ui-phone-calendar.png) ![メディア](../../artifacts/ui-phone-media.png) |
+| ![メディア](../../artifacts/ui-tablet-media.png) | ![コーチ](../../artifacts/ui-phone-coach.png) ![検索](../../artifacts/ui-phone-search.png) |
+| ![コーチ](../../artifacts/ui-tablet-coach.png) | ![エディター](../../artifacts/ui-phone-editor.png) ![共有](../../artifacts/ui-phone-share.png) |
+| ![コーチプログラム](../../artifacts/ui-tablet-coach-program.png) | ![場所](../../artifacts/ui-phone-location-picker.png) ![共有形式](../../artifacts/ui-phone-share-as.png) |
+| ![コーチのストーリー](../../artifacts/ui-tablet-story-prompt.png) | |
+| ![手書き](../../artifacts/ui-tablet-backlog-drawing.png) | ![外観](../../artifacts/ui-phone-backlog-appearance.png) |
+| ![便箋](../../artifacts/ui-tablet-backlog-lined.png) | ![端末内の写真の提案](../../artifacts/ui-phone-backlog-moments.png) |
+| | ![ランダムウォーク](../../artifacts/ui-phone-random.png) ![週の振り返り](../../artifacts/ui-phone-week-review.png) |
+| ![初回起動](../../artifacts/ui-tablet-first-start.png) | ![初回起動](../../artifacts/ui-phone-first-start.png) |
+| ![チュートリアル](../../artifacts/ui-tablet-tutorial.png) | ![チュートリアル](../../artifacts/ui-phone-tutorial.png) |
+| ![日記の日付](../../artifacts/ui-tablet-diary-day-picker.png) | ![日記の日付](../../artifacts/ui-phone-diary-day-picker.png) |
 
 - **日記**：ストーリーの下に、日ごとにまとめた日記（時刻、タイトル、要約、気分、場所、天気、アクティビティ、タグ、サムネイル）。日記の日付（昇順・降順）または最終更新で並べ替えられます。ストーリーは、今日、コーチプログラムのその日の内容、過去のこの日、開封されたタイムカプセル、朝または夜のお題、クイックチェックイン、ランダムウォーク、今週と今年の振り返りです。今日、コーチの日、過去のこの日は一続きで再生され（統計、30 日間の気分グラフ、その場で答えるその日のお題、過去のこの日、締めくくりのカード）、広いウィンドウではカードとして表示されます。
 - **初回起動**：「ここから始める」か「既存の端末に接続」を選びます。読むだけのチュートリアルで、書くこと、メディア、日記の探し方、同期、プライバシーを紹介し、設定からもう一度開けます。既存の端末が接続を承認し、新しい端末が日記を受け取る間も使い続けられます。
@@ -50,34 +50,34 @@ Flutter で作られた、Windows と Android 向けのプライベートな日�
 - **検索**：テキスト検索に、インラインのタグ・スター・気分のフィルター（アクティビティを持つインポートした日記ではアクティビティも）。
 - **統計**：連続日数、気分の推移、「何が私をこう感じさせるか」（ある気分とよく一緒に現れるアクティビティとタグ）、Year in Pixels。
 - **最近削除した項目**：削除した日記は 30 日（変更可）待ってから消去されます。復元することも、早めに消去することもできます。
-- **同期**（任意）：自分の Google Drive（アプリが見られるのは `AID Diary` フォルダーだけ）、好きな WebDAV サーバー（Nextcloud、Synology、坚果云など）、または `server/` の AID 同期サーバーを通じて、日記、写真、タグ、テンプレートをすべての端末でそろえます。常にエンドツーエンド暗号化で、日記用のアカウントやパスワードはありません。各端末がユーザーの鍵を持ち、新しい端末はセットアップ済みの端末とペアリングして鍵を受け取り（どちらかにコードを表示し、もう一方で入力またはスキャン）、すべての端末を失ったときは復元コード（ランダムまたは自分で決めたもの）で戻します。ストレージには暗号文しか置かれません。近くの信頼した端末同士は直接データをやり取りします。AID 互換の WebDAV アカウントと新しいネットワークサービスがあれば、端末はさらにパブリックな IPv4/IPv6 経路を見つけ、WebRTC/STUN を試し、必要なら上限付きのライブ中継を使います。Google Drive と通常の WebDAV は LAN とストレージのみです。日記の本文が先に同期され、検証済みのメディアのチャンクは許容量の範囲で経路をまたいで再開されます。状態表示は「日記は同期済み」「メディアの一部が転送中」「別の端末を待っている」を区別します。ライブ中継には両方の端末がオンラインである必要がありますが、別の一時メディアキャッシュは不要です。どちらもバックアップではありません。編集は数秒後、アプリを開いている間に同期されます。2 台が同じ日記を変更した場合は新しい方が採用され、もう一方は「最近削除した項目」に残ります。同期に失敗した日記だけに、小さな斜線入りの雲の印が付きます。ネットワーク経路と検証状況：[docs/SYNC_NETWORK.md](docs/SYNC_NETWORK.md)。
+- **同期**（任意）：自分の Google Drive（アプリが見られるのは `AID Diary` フォルダーだけ）、好きな WebDAV サーバー（Nextcloud、Synology、坚果云など）、または `server/` の AID 同期サーバーを通じて、日記、写真、タグ、テンプレートをすべての端末でそろえます。常にエンドツーエンド暗号化で、日記用のアカウントやパスワードはありません。各端末がユーザーの鍵を持ち、新しい端末はセットアップ済みの端末とペアリングして鍵を受け取り（どちらかにコードを表示し、もう一方で入力またはスキャン）、すべての端末を失ったときは復元コード（ランダムまたは自分で決めたもの）で戻します。ストレージには暗号文しか置かれません。近くの信頼した端末同士は直接データをやり取りします。AID 互換の WebDAV アカウントと新しいネットワークサービスがあれば、端末はさらにパブリックな IPv4/IPv6 経路を見つけ、WebRTC/STUN を試し、必要なら上限付きのライブ中継を使います。Google Drive と通常の WebDAV は LAN とストレージのみです。日記の本文が先に同期され、検証済みのメディアのチャンクは許容量の範囲で経路をまたいで再開されます。状態表示は「日記は同期済み」「メディアの一部が転送中」「別の端末を待っている」を区別します。ライブ中継には両方の端末がオンラインである必要がありますが、別の一時メディアキャッシュは不要です。どちらもバックアップではありません。編集は数秒後、アプリを開いている間に同期されます。2 台が同じ日記を変更した場合は新しい方が採用され、もう一方は「最近削除した項目」に残ります。同期に失敗した日記だけに、小さな斜線入りの雲の印が付きます。ネットワーク経路と検証状況：[docs/SYNC_NETWORK.md](../SYNC_NETWORK.md)。
 - **端末と同期の詳細**：各端末は最初はモデル名やコンピューター名で、名前を変えられます。ペアリングすると信頼した端末の自動検出が始まり、ふだんの状態表示はシンプルなままです。同期の詳細を開くと、名前付きの完全／部分コピーと、別の端末が最後に内容を確認した時刻が見られます。一時的なクラウドキャッシュは別に表示され、ネットワークと鍵の詳細はさらに奥のオプションにあります。
 - **エクスポート**：JSON（すべての日記と場所、天気、アクティビティ、タグ、添付ファイル名。JSON インポートで読み戻せます）、Markdown、Journey と Day One が取り込めるアーカイブ、そして完全バックアップ。
-- **インポート**：[One Diary（一本日记）v3 のバックアップ](docs/ONE_DIARY_IMPORT.md)（元の日記の日付、非表示フラグ、端末内の添付を保持）、Journey のバックアップ（両方の形式）と Day One の JSON エクスポート（写真、タグ、スター、場所、天気付き）、さらに Daybook、Daylio、Diarium、Diaro、My Brain、OneShot、Pixels。
-- **非表示の日記**：「設定 → セキュリティ」にある、端末上の認証で開く領域で、通常の一覧、検索、ウィジェット、エクスポート、CLI の内容から除外されます。非表示は画面上のことにすぎず、非表示の日記も同期され、どの端末でも非表示のままです。完全バックアップにはバックアップ用パスワードが必要です。[正確な範囲](docs/ARCHITECTURE.md#hidden-entries)を参照してください。
+- **インポート**：[One Diary（一本日记）v3 のバックアップ](../ONE_DIARY_IMPORT.md)（元の日記の日付、非表示フラグ、端末内の添付を保持）、Journey のバックアップ（両方の形式）と Day One の JSON エクスポート（写真、タグ、スター、場所、天気付き）、さらに Daybook、Daylio、Diarium、Diaro、My Brain、OneShot、Pixels。
+- **非表示の日記**：「設定 → セキュリティ」にある、端末上の認証で開く領域で、通常の一覧、検索、ウィジェット、エクスポート、CLI の内容から除外されます。非表示は画面上のことにすぎず、非表示の日記も同期され、どの端末でも非表示のままです。完全バックアップにはバックアップ用パスワードが必要です。[正確な範囲](../ARCHITECTURE.md#hidden-entries)を参照してください。
 - **タグ**：新しい日記帳にはタグがありません。タグはドラッグで並べた順（選択画面で長押し）を保ち、日記カードにはタグ名が表示され、インポートで持ち込んだタグは使用回数順に並びます。
 - **写真**：既定ではそのまま保存します。新しい写真を約 1 MB の WebP で保存することも、保存済みの写真を一度に圧縮することもできます（元に戻せません）。
 - **設定**：一般（テーマ、壁紙、本文のフォント・サイズ・行間、単位、12/24 時間表示、新しい日記の日付を決める時刻、場所と天気の自動追加）、データとストレージ（バックアップ、エクスポート、最近削除した項目）、ストーリー（朝と夜のお題、過去のこの日）、通知（Android：曜日指定のリマインダー、過去のこの日、しばらく書いていないときの声かけ、常駐のクイック記録通知）、セキュリティ、ヘルプ（よくある質問、プライバシー）、アプリについて。
 - **コマンドラインとエージェント**：すべての機能はアクションで、アプリのボタン、コマンドパレット（Windows では Ctrl+K、「設定 → コマンドライン → すべてのコマンド」）、`aid` コマンドラインがどれも同じものを実行するので、スクリプトや AI エージェントの操作はその場でアプリに表示されます。リリースビルドでは「設定 → コマンドライン」をオンにするまで無効です。API はこの端末上でのみ待ち受け、起動ごとに新しいトークンを使います。
 - **Android ホーム画面ウィジェット**：今日の状態、毎日の日記写真、連続日数、毎日のお題、クイック気分。お題や気分をタップすると、黙って日記を保存するのではなく、編集できる下書きが開きます。
 
-日記、写真、座標は同期をオンにしない限り端末に残り、オンにすると選んだストレージと信頼した端末に暗号化して届きます。通信はすべて任意で、[assets/config/app_config.json](assets/config/app_config.json) で設定します。
+日記、写真、座標は同期をオンにしない限り端末に残り、オンにすると選んだストレージと信頼した端末に暗号化して届きます。通信はすべて任意で、[assets/config/app_config.json](../../assets/config/app_config.json) で設定します。
 
 - OpenStreetMap の地図タイルと、Nominatim による地名と場所の検索。
 - 現在地の近くにある名前の付いた場所を探す Overpass（OpenStreetMap）。位置情報付きで場所の選択画面を開いたときだけ。
 - Open-Meteo の天気（最近の日は予報、古い日記はアーカイブ）。送るのは座標と日付だけです。
-- Google ログインと Drive API。Google Drive で同期するときだけ（[docs/GOOGLE_DRIVE.md](docs/GOOGLE_DRIVE.md)）。
+- Google ログインと Drive API。Google Drive で同期するときだけ（[docs/GOOGLE_DRIVE.md](../GOOGLE_DRIVE.md)）。
 - 同期を有効にしたときの信頼した端末の検出と暗号化された同期通信：LAN の DNS-SD、そして AID 互換の WebDAV ネットワークサービスでは、認証付きシグナリング、パブリックな直接接続の確認、設定した STUN、上限付きのライブ中継。アプリは TURN サービスを提供しません。
 
 ストレージと通知以外の Android の権限：位置情報（場所。新しい日記や地図を開いたときに求めます）とマイク（ボイスメモ）。どちらもその機能を使うときにだけ求めます。
 
 ## 言語
 
-画面は既定でシステムの言語設定に従い、設定で変更できます。Flutter 公式のローカライズの仕組みで翻訳を同梱し、オフラインでも使えます。35 のロケールすべてが英語のメッセージテンプレートを網羅し、カタログのテストで欠けた／空のメッセージと動的な引数を確認しています。翻訳が網羅されていても、ネイティブスピーカーの校正を受けたとは限りません。照合の規則、翻訳の保守と検証は[国際化](docs/ARCHITECTURE.md#internationalization)を参照してください。
+画面は既定でシステムの言語設定に従い、設定で変更できます。Flutter 公式のローカライズの仕組みで翻訳を同梱し、オフラインでも使えます。35 のロケールすべてが英語のメッセージテンプレートを網羅し、カタログのテストで欠けた／空のメッセージと動的な引数を確認しています。翻訳が網羅されていても、ネイティブスピーカーの校正を受けたとは限りません。照合の規則、翻訳の保守と検証は[国際化](../ARCHITECTURE.md#internationalization)を参照してください。
 
 ## 開発
 
-主な開発環境は Windows です（WSL も SDK のサブモジュールも使いません）。[ドキュメント索引](docs/INDEX.md)と[メンテナー向け引き継ぎ](docs/HANDOFF.md)から始めてください。セットアップ、アーキテクチャ、製品上の決定、テスト、各サブシステムの質問をそれぞれ担当のガイドへ案内し、最新の日付付きチェックポイントを示しています。[エンジニアリングの原則](docs/ENGINEERING.md)では、Flutter/Google のガイダンスの取り入れ方、変更のレビュー、ドキュメントの保守を説明しています。[セットアップ](docs/SETUP.md)は新しい PC、ローカルのツールチェーン設定、署名、テスト端末を扱います。
+主な開発環境は Windows です（WSL も SDK のサブモジュールも使いません）。[ドキュメント索引](../INDEX.md)と[メンテナー向け引き継ぎ](../HANDOFF.md)から始めてください。セットアップ、アーキテクチャ、製品上の決定、テスト、各サブシステムの質問をそれぞれ担当のガイドへ案内し、最新の日付付きチェックポイントを示しています。[エンジニアリングの原則](../ENGINEERING.md)では、Flutter/Google のガイダンスの取り入れ方、変更のレビュー、ドキュメントの保守を説明しています。[セットアップ](../SETUP.md)は新しい PC、ローカルのツールチェーン設定、署名、テスト端末を扱います。
 
 ```powershell
 ./scripts/dev.ps1 pub          # 新しくチェックアウトしたらアプリと CLI の依存関係を解決
@@ -117,7 +117,7 @@ aid entry.delete id=12 --yes         # 破壊的なアクションには --yes �
 
 Android のビルドは JDK 23 で動きます。多くのプラグインが Kotlin の JVM ターゲットを設定しないため、ルートの `android/build.gradle` が各モジュールの Kotlin に、その Java が使うのと同じ JVM ターゲットを与えます。Flutter の Android SDK のパスは `flutter config --android-sdk` で固定しています。
 
-プロジェクト全体の[テスト方針](docs/TESTING.md)は、変更とテストの対応表、完全回帰とリリースの関門、重要な操作の流れ、結果の報告を、Flutter、Go、CLI、ネイティブプラットフォームについて定めています。独立した純粋なロジックは絞ったユニットテストで足りますが、UI、永続化、ネイティブの動作はそれぞれ担当する層でのテストが必要です。完全回帰は広範囲・高リスクの変更、リリースの関門、そして作業日の締めくくりに 1 回の安全網として行い、テスト済みで変更のない状態には既存の結果を使い回します。層ごとのターゲット（`test-unit`、`test-widget`、`test-integration`）も `-TestFiles` を受け付け、外部サービスには明示的な `test-live` が必要です。GitHub Actions は `main` へのすべての push を検査し、nightly ビルドをパッケージします（[継続的インテグレーション](docs/TESTING.md#continuous-integration)）。
+プロジェクト全体の[テスト方針](../TESTING.md)は、変更とテストの対応表、完全回帰とリリースの関門、重要な操作の流れ、結果の報告を、Flutter、Go、CLI、ネイティブプラットフォームについて定めています。独立した純粋なロジックは絞ったユニットテストで足りますが、UI、永続化、ネイティブの動作はそれぞれ担当する層でのテストが必要です。完全回帰は広範囲・高リスクの変更、リリースの関門、そして作業日の締めくくりに 1 回の安全網として行い、テスト済みで変更のない状態には既存の結果を使い回します。層ごとのターゲット（`test-unit`、`test-widget`、`test-integration`）も `-TestFiles` を受け付け、外部サービスには明示的な `test-live` が必要です。GitHub Actions は `main` へのすべての push を検査し、nightly ビルドをパッケージします（[継続的インテグレーション](../TESTING.md#continuous-integration)）。
 
 スクリーンショットは `tool/screenshots/` のウィジェットテストが実際のフォント（Flutter SDK のアイコン、Windows の Noto Sans SC と Segoe Emoji）で描画し、ウィンドウは開きません。`-TestFiles` を渡して影響するスクリーンショットのファイルだけを描画し、画像を確認してください。これらのスクリプトはゴールデン画像を自動比較しません。
 
@@ -125,4 +125,4 @@ Android のビルドは JDK 23 で動きます。多くのプラグインが Kot
 
 ## ライセンス
 
-GPL-3.0-only（[LICENSE.txt](LICENSE.txt)）、追加条項は [ADDITIONAL_TERMS.md](ADDITIONAL_TERMS.md)。由来と帰属表示は [SOURCE.md](SOURCE.md) を参照してください。
+GPL-3.0-only（[LICENSE.txt](../../LICENSE.txt)）、追加条項は [ADDITIONAL_TERMS.md](../../ADDITIONAL_TERMS.md)。由来と帰属表示は [SOURCE.md](../../SOURCE.md) を参照してください。
