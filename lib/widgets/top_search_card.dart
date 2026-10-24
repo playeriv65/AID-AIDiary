@@ -5,13 +5,15 @@
 import 'package:aid_diary/routing/app_navigation.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:aid_diary/widgets/scroll_to_top.dart';
 
 /// The list scrolls beneath an opaque, stationary search surface.
 class PinnedSearchHeader extends StatelessWidget {
   const PinnedSearchHeader({super.key, this.showSearch = true});
 
   final bool showSearch;
+
+  /// Its height, the search card and the gap around it.
+  static const double extent = 84;
 
   @override
   Widget build(BuildContext context) => SliverPersistentHeader(
@@ -26,7 +28,7 @@ class _SearchHeaderDelegate extends SliverPersistentHeaderDelegate {
   final bool showSearch;
 
   @override
-  double get minExtent => 84;
+  double get minExtent => PinnedSearchHeader.extent;
   @override
   double get maxExtent => minExtent;
 
@@ -52,6 +54,9 @@ class TopSearchCard extends StatelessWidget {
       {super.key, this.showSearch = true, this.calendarPage = false});
 
   final bool showSearch;
+
+  /// Its height, the search card and the gap around it.
+  static const double extent = 84;
   final bool calendarPage;
 
   @override
@@ -84,7 +89,7 @@ class TopSearchCard extends StatelessWidget {
                 icon: const Icon(Icons.calendar_today_rounded),
                 onPressed: () => AppNavigation.calendar(Navigator.of(context)),
               ),
-              Expanded(child: Center(child: ScrollToTop.button(context))),
+              const Spacer(),
             ],
             if (showSearch) ...[
               const VerticalDivider(indent: 16, endIndent: 16),

@@ -41,8 +41,8 @@ class WeatherIcon extends StatelessWidget {
         child: SvgPicture.asset(asset,
             width: size,
             height: size,
-            colorFilter: const ColorFilter.mode(
-                Color(0x66455A70), BlendMode.srcIn)),
+            colorFilter:
+                const ColorFilter.mode(Color(0x66455A70), BlendMode.srcIn)),
       ),
       icon,
     ]);

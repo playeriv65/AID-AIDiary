@@ -49,11 +49,14 @@ void main() {
           .position;
       position.jumpTo(2000);
       await tester.pumpAndSettle();
-      expect(
-          tester
-              .getRect(find.byKey(const ValueKey('journal-scroll-to-top')))
-              .bottom,
-          lessThanOrEqualTo(before.bottom));
+      // Just below the search card, centred over the entries.
+      final shortcut =
+          tester.getRect(find.byKey(const ValueKey('journal-scroll-to-top')));
+      expect(shortcut.top, greaterThanOrEqualTo(before.bottom));
+      expect(shortcut.top - before.bottom, lessThan(24));
+      final list =
+          tester.getRect(find.byKey(const PageStorageKey('journal-list')));
+      expect(shortcut.center.dx, moreOrLessEquals(list.center.dx, epsilon: 1));
       await tester.tap(find.byKey(const ValueKey('journal-scroll-to-top')));
       await tester.pumpAndSettle();
       expect(position.pixels, 0);

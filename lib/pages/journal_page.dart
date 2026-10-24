@@ -279,85 +279,86 @@ class _JournalPageState extends State<JournalPage>
     return ListDetailLayout(
       detail: _detail(ordered),
       listBuilder: (context, split) => ScrollToTop(
+          top: PinnedSearchHeader.extent,
           child: CustomScrollView(
-        key: const PageStorageKey('journal-list'),
-        // Thumb jumps replace the whole viewport. Building extra offscreen
-        // rows at each jump spends the frame budget on content never shown.
-        scrollCacheExtent:
-            metrics == null ? null : const ScrollCacheExtent.pixels(0),
-        slivers: [
-          const PinnedSearchHeader(),
-          SliverPadding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            sliver: SliverToBoxAdapter(
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Wrap(spacing: 8, children: [
-                      ActionChip(
-                          avatar: const Icon(Icons.photo_library_outlined),
-                          label: Text(l10n.momentsTitle),
-                          onPressed: () => openPlace(context, 'moments')),
-                    ]),
-                    SectionLabel(l10n.journalStories),
-                    _Stories(
-                        flashbacks: FlashbackManager.getFlashbacks(
-                            context, EntriesProvider.instance.entries)),
-                    const SizedBox(height: 12),
-                    SectionLabel(l10n.journalEntries,
-                        trailing: PopupMenuButton<String>(
-                          key: const ValueKey('journal-sort'),
-                          tooltip: l10n.journalSortTitle,
-                          icon: Icon(switch (_sort) {
-                            'oldest' => Icons.arrow_upward_rounded,
-                            'updated' => Icons.update_rounded,
-                            _ => Icons.arrow_downward_rounded,
-                          }),
-                          initialValue: _sort,
-                          onSelected: (value) =>
-                              changeSetting(Settings.journalSort, value),
-                          itemBuilder: (context) => [
-                            for (final (value, label) in [
-                              ('newest', l10n.sortOrderDescendingTitle),
-                              ('oldest', l10n.sortOrderAscendingTitle),
-                              ('updated', l10n.journalSortUpdated),
-                            ])
-                              PopupMenuItem(
-                                  key: ValueKey('journal-sort-$value'),
-                                  value: value,
-                                  child: Text(label)),
+            key: const PageStorageKey('journal-list'),
+            // Thumb jumps replace the whole viewport. Building extra offscreen
+            // rows at each jump spends the frame budget on content never shown.
+            scrollCacheExtent:
+                metrics == null ? null : const ScrollCacheExtent.pixels(0),
+            slivers: [
+              const PinnedSearchHeader(),
+              SliverPadding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                sliver: SliverToBoxAdapter(
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Wrap(spacing: 8, children: [
+                          ActionChip(
+                              avatar: const Icon(Icons.photo_library_outlined),
+                              label: Text(l10n.momentsTitle),
+                              onPressed: () => openPlace(context, 'moments')),
+                        ]),
+                        SectionLabel(l10n.journalStories),
+                        _Stories(
+                            flashbacks: FlashbackManager.getFlashbacks(
+                                context, EntriesProvider.instance.entries)),
+                        const SizedBox(height: 12),
+                        SectionLabel(l10n.journalEntries,
+                            trailing: PopupMenuButton<String>(
+                              key: const ValueKey('journal-sort'),
+                              tooltip: l10n.journalSortTitle,
+                              icon: Icon(switch (_sort) {
+                                'oldest' => Icons.arrow_upward_rounded,
+                                'updated' => Icons.update_rounded,
+                                _ => Icons.arrow_downward_rounded,
+                              }),
+                              initialValue: _sort,
+                              onSelected: (value) =>
+                                  changeSetting(Settings.journalSort, value),
+                              itemBuilder: (context) => [
+                                for (final (value, label) in [
+                                  ('newest', l10n.sortOrderDescendingTitle),
+                                  ('oldest', l10n.sortOrderAscendingTitle),
+                                  ('updated', l10n.journalSortUpdated),
+                                ])
+                                  PopupMenuItem(
+                                      key: ValueKey('journal-sort-$value'),
+                                      value: value,
+                                      child: Text(label)),
+                              ],
+                            )),
+                      ]),
+                ),
+              ),
+              if (groups.isEmpty)
+                SliverToBoxAdapter(
+                  child: EmptyState(
+                      icon: Icons.bookmark_border_rounded,
+                      title: l10n.noLogs,
+                      hint: l10n.journalEmptyHint),
+                )
+              else
+                SliverPadding(
+                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 96),
+                  sliver: metrics == null
+                      ? SliverList.builder(
+                          itemCount: groups.length,
+                          itemBuilder: (context, index) =>
+                              dayGroup(context, index, split),
+                        )
+                      : KnownExtentSliver(
+                          extents: [
+                            for (final group in groups)
+                              metrics.groupExtent(group.$2.length)
                           ],
-                        )),
-                  ]),
-            ),
-          ),
-          if (groups.isEmpty)
-            SliverToBoxAdapter(
-              child: EmptyState(
-                  icon: Icons.bookmark_border_rounded,
-                  title: l10n.noLogs,
-                  hint: l10n.journalEmptyHint),
-            )
-          else
-            SliverPadding(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 96),
-              sliver: metrics == null
-                  ? SliverList.builder(
-                      itemCount: groups.length,
-                      itemBuilder: (context, index) =>
-                          dayGroup(context, index, split),
-                    )
-                  : KnownExtentSliver(
-                      extents: [
-                        for (final group in groups)
-                          metrics.groupExtent(group.$2.length)
-                      ],
-                      itemBuilder: (context, index) =>
-                          dayGroup(context, index, split),
-                    ),
-            ),
-        ],
-      )),
+                          itemBuilder: (context, index) =>
+                              dayGroup(context, index, split),
+                        ),
+                ),
+            ],
+          )),
     );
   }
 }

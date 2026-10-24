@@ -17,8 +17,10 @@ asks again. Dates are when it was settled. Ideas not built yet are in
 - Search visibility (2026-10-23): the search toolbar remains pinned while diary
   lists scroll, on phones, tablets and desktop. Remove the duplicate-entry
   feature and its shared action; saving an entry as a template remains.
-- Long journal browsing (2026-10-23): show a small top-center shortcut after
-  scrolling two viewports; clicking it returns directly to the beginning.
+- Long journal browsing (2026-10-23): show a small round shortcut after
+  scrolling two viewports; clicking it returns directly to the beginning. It
+  floats centred just below the search card, over the entries, not inside
+  the card.
 - Feedback (2026-10-23): Settings > Help opens a text panel with prefilled GitHub
   issue and email drafts plus text copying. The user completes submission in
   their browser/mail app. Do not collect diary content or logs automatically.
