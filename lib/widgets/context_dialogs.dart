@@ -7,6 +7,7 @@ import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/services/weather_service.dart';
 import 'package:aid_diary/utils/entry_context_display.dart';
+import 'package:aid_diary/widgets/weather_icon.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -79,7 +80,7 @@ class _WeatherDialogState extends State<_WeatherDialog> {
         if (_weather != null)
           ListTile(
             contentPadding: EdgeInsets.zero,
-            leading: Icon(weatherIcon(_weather!.code), size: 32),
+            leading: WeatherIcon(_weather!.code, size: 32),
             title: Text(weatherLabel(_weather!.code, l10n)),
             subtitle: Text(formatTemperature(_weather!.temperature)),
           ),

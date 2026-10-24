@@ -29,6 +29,7 @@ import 'package:aid_diary/widgets/mood_icon.dart';
 import 'package:aid_diary/widgets/scaled_markdown.dart';
 import 'package:aid_diary/widgets/tag_chip.dart';
 import 'package:intl/intl.dart';
+import 'package:aid_diary/widgets/weather_icon.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
@@ -524,7 +525,7 @@ class _Metadata extends StatelessWidget {
           if (entry.weather != null)
             _IconLabel(
                 key: const ValueKey('entry-weather'),
-                icon: weatherIcon(entry.weather!.code),
+                glyph: WeatherIcon(entry.weather!.code, size: 16),
                 label: weatherSummary(
                     entry.weather!, AppLocalizations.of(context)!)),
           if (entry.activity != null)
@@ -545,8 +546,11 @@ class _Metadata extends StatelessWidget {
 }
 
 class _IconLabel extends StatelessWidget {
-  const _IconLabel({super.key, required this.icon, required this.label});
-  final IconData icon;
+  const _IconLabel({super.key, this.icon, this.glyph, required this.label});
+
+  /// A plain icon, or [glyph] when it has colours of its own.
+  final IconData? icon;
+  final Widget? glyph;
   final String label;
 
   @override
@@ -554,7 +558,7 @@ class _IconLabel extends StatelessWidget {
     final theme = Theme.of(context);
     final color = theme.colorScheme.onSurfaceVariant;
     return Row(mainAxisSize: MainAxisSize.min, children: [
-      Icon(icon, size: 16, color: color),
+      glyph ?? Icon(icon, size: 16, color: color),
       const SizedBox(width: 2),
       Text(label, style: theme.textTheme.labelMedium?.copyWith(color: color)),
     ]);

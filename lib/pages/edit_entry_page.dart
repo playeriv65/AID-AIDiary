@@ -41,6 +41,7 @@ import 'package:aid_diary/widgets/template_select_popup.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:aid_diary/widgets/weather_icon.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
@@ -478,7 +479,9 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
     final l10n = AppLocalizations.of(context)!;
     final cs = Theme.of(context).colorScheme;
     final model = _model;
-    Widget row(Key key, IconData icon, String? value, String placeholder,
+    Widget icon(IconData data) =>
+        Icon(data, size: 20, color: cs.onSurfaceVariant);
+    Widget row(Key key, Widget leading, String? value, String placeholder,
             VoidCallback? onTap,
             {VoidCallback? onClear}) =>
         ListTile(
@@ -486,7 +489,7 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
           dense: true,
           visualDensity: VisualDensity.compact,
           contentPadding: const EdgeInsets.symmetric(horizontal: 8),
-          leading: Icon(icon, size: 20, color: cs.onSurfaceVariant),
+          leading: leading,
           title: Text(value ?? placeholder,
               style:
                   value == null ? TextStyle(color: cs.onSurfaceVariant) : null),
@@ -517,22 +520,26 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
               row(
                   const ValueKey('editor-weather'),
                   weather == null
-                      ? Icons.wb_sunny_outlined
-                      : weatherIcon(weather.code),
+                      ? icon(Icons.wb_sunny_outlined)
+                      : WeatherIcon(weather.code, size: 20),
                   weather == null ? null : weatherSummary(weather, l10n),
                   l10n.weatherTitle,
                   _chooseWeather,
                   onClear: () => model.setWeather(null)),
               row(
                   const ValueKey('editor-location'),
-                  Icons.place_outlined,
+                  icon(Icons.place_outlined),
                   model.location?.label,
                   model.locating ? l10n.editorLocating : l10n.locationTitle,
                   _chooseLocation,
                   onClear: () => model.setLocation(null)),
               if (activity != null)
-                row(const ValueKey('editor-activity'), activityIcon(activity),
-                    activityLabel(activity, l10n), '', null,
+                row(
+                    const ValueKey('editor-activity'),
+                    icon(activityIcon(activity)),
+                    activityLabel(activity, l10n),
+                    '',
+                    null,
                     onClear: () => model.setActivity(null)),
               if (tags.isNotEmpty)
                 Padding(

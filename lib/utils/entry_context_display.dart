@@ -41,17 +41,6 @@ WeatherKind weatherKind(int code) => switch (code) {
       _ => WeatherKind.cloudy,
     };
 
-IconData weatherIcon(int code) => switch (weatherKind(code)) {
-      WeatherKind.clear => Icons.wb_sunny_rounded,
-      WeatherKind.partlyCloudy => Icons.wb_cloudy_outlined,
-      WeatherKind.cloudy => Icons.cloud_rounded,
-      WeatherKind.fog => Icons.foggy,
-      WeatherKind.drizzle => Icons.grain_rounded,
-      WeatherKind.rain => Icons.water_drop_rounded,
-      WeatherKind.snow => Icons.ac_unit_rounded,
-      WeatherKind.storm => Icons.thunderstorm_rounded,
-    };
-
 String weatherLabel(int code, AppLocalizations l10n) =>
     switch (weatherKind(code)) {
       WeatherKind.clear => l10n.weatherClear,

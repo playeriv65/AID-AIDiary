@@ -13,6 +13,7 @@ import 'package:aid_diary/widgets/entry_tag_names.dart';
 import 'package:aid_diary/widgets/local_image_loader.dart';
 import 'package:aid_diary/widgets/mood_icon.dart';
 import 'package:intl/intl.dart';
+import 'package:aid_diary/widgets/weather_icon.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// Predictable desktop preview slots let scrollbar jumps skip unseen days
@@ -215,8 +216,7 @@ class JournalEntryRow extends StatelessWidget {
                                   const SizedBox(width: 6),
                                 ],
                                 if (entry.weather != null) ...[
-                                  Icon(weatherIcon(entry.weather!.code),
-                                      size: 14, color: cs.onSurfaceVariant),
+                                  WeatherIcon(entry.weather!.code, size: 14),
                                   const SizedBox(width: 6),
                                 ],
                                 if (entry.activity != null) ...[

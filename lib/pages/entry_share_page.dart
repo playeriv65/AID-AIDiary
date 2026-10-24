@@ -19,6 +19,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 import 'package:aid_diary/widgets/app_logo.dart';
+import 'package:aid_diary/widgets/weather_icon.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -145,12 +146,14 @@ class EntryShareCard extends StatelessWidget {
     final config = AppConfig.instance;
     final photo = images.where((image) => image.isImage).firstOrNull;
     final muted = theme.textTheme.labelMedium?.copyWith(color: cs.outline);
+    Widget icon(IconData data) => Icon(data, size: 15, color: cs.outline);
     final details = [
-      if (entry.location?.name case final name?) (Icons.place_rounded, name),
+      if (entry.location?.name case final name?)
+        (icon(Icons.place_rounded), name),
       if (entry.weather case final weather?)
-        (weatherIcon(weather.code), weatherSummary(weather, l10n)),
+        (WeatherIcon(weather.code, size: 15), weatherSummary(weather, l10n)),
       if (entry.activity case final activity?)
-        (activityIcon(activity), activityLabel(activity, l10n)),
+        (icon(activityIcon(activity)), activityLabel(activity, l10n)),
     ];
     return Container(
       width: config.shareCardWidth,
@@ -177,9 +180,9 @@ class EntryShareCard extends StatelessWidget {
                 if (details.isNotEmpty) ...[
                   const SizedBox(height: 8),
                   Wrap(spacing: 12, runSpacing: 4, children: [
-                    for (final (icon, label) in details)
+                    for (final (glyph, label) in details)
                       Row(mainAxisSize: MainAxisSize.min, children: [
-                        Icon(icon, size: 15, color: cs.outline),
+                        glyph,
                         const SizedBox(width: 3),
                         Text(label, style: muted),
                       ]),
