@@ -11,6 +11,9 @@ Probably skip (Journey has them, but they need cloud or AI or add little): Googl
 - Fewer accent colours, including a pure black-and-white one.
 - The accent colours only key marks (logo, key icons, emphasised text); it
   must not tint backgrounds or surfaces.
+- Backgrounds: the owner wants neutral black and grey, not the current blue
+  tint; a tinted background may stay as one option for those who like it.
+  Tune it together with the owner, not alone (2026-10-25).
 - Weather icons (owner 2026-10-25: keep Meteocons for now, improve later).
   At 14-20 px the Meteocons clouds fill most of the drawing and the canvas
   has wide margins, so partly cloudy, overcast, fog and rain look alike.
