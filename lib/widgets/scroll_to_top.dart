@@ -36,25 +36,45 @@ class _ScrollToTopState extends State<ScrollToTop> {
     return false;
   }
 
+  /// Glides back to the top, quickly but visibly, rather than jumping.
+  void _toTop() => _position?.animateTo(0,
+      duration: Duration(milliseconds: AppConfig.instance.backToTopScrollMs),
+      curve: Curves.easeOutCubic);
+
   @override
-  Widget build(BuildContext context) => Stack(children: [
-        NotificationListener<ScrollNotification>(
-          onNotification: _onScroll,
-          child: widget.child,
-        ),
-        if (_visible)
-          Positioned(
-            top: widget.top,
-            left: 0,
-            right: 0,
-            child: Center(
-              child: IconButton.filledTonal(
-                key: const ValueKey('journal-scroll-to-top'),
-                tooltip: AppLocalizations.of(context)!.scrollToTop,
-                onPressed: () => _position?.jumpTo(0),
-                icon: const Icon(Icons.arrow_upward_rounded),
-              ),
+  Widget build(BuildContext context) {
+    final config = AppConfig.instance;
+    return Stack(children: [
+      NotificationListener<ScrollNotification>(
+        onNotification: _onScroll,
+        child: widget.child,
+      ),
+      Positioned(
+        top: widget.top,
+        left: 0,
+        right: 0,
+        child: Center(
+          // Drops in from above so it catches the eye, and goes back up.
+          child: AnimatedSwitcher(
+            duration: Duration(milliseconds: config.backToTopSlideMs),
+            switchInCurve: Curves.easeOutBack,
+            switchOutCurve: Curves.easeIn,
+            transitionBuilder: (child, animation) => SlideTransition(
+              position: Tween(begin: const Offset(0, -1.5), end: Offset.zero)
+                  .animate(animation),
+              child: FadeTransition(opacity: animation, child: child),
             ),
+            child: _visible
+                ? IconButton.filledTonal(
+                    key: const ValueKey('journal-scroll-to-top'),
+                    tooltip: AppLocalizations.of(context)!.scrollToTop,
+                    onPressed: _toTop,
+                    icon: const Icon(Icons.arrow_upward_rounded),
+                  )
+                : const SizedBox.shrink(),
           ),
-      ]);
+        ),
+      ),
+    ]);
+  }
 }

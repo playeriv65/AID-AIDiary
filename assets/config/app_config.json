@@ -31,7 +31,9 @@
   },
   "scrolling": {
     "wheelDurationMs": 180,
-    "backToTopScreens": 2
+    "backToTopScreens": 2,
+    "backToTopSlideMs": 240,
+    "backToTopScrollMs": 420
   },
   "feedback": {
     "issuesUrl": "https://github.com/playeriv65/AID-AIDiary/issues/new",

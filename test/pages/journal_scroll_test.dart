@@ -58,6 +58,10 @@ void main() {
           tester.getRect(find.byKey(const PageStorageKey('journal-list')));
       expect(shortcut.center.dx, moreOrLessEquals(list.center.dx, epsilon: 1));
       await tester.tap(find.byKey(const ValueKey('journal-scroll-to-top')));
+      // It glides up rather than jumping there.
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 60));
+      expect(position.pixels, inExclusiveRange(0, 2000));
       await tester.pumpAndSettle();
       expect(position.pixels, 0);
       expect(find.byKey(const ValueKey('journal-scroll-to-top')), findsNothing);

@@ -183,6 +183,12 @@ class AppConfig {
 
   double get backToTopScreens =>
       (_section('scrolling')['backToTopScreens'] as num).toDouble();
+
+  /// How long the back-to-top button takes to drop in, and the list to
+  /// glide back to the top.
+  int get backToTopSlideMs => _section('scrolling')['backToTopSlideMs'] as int;
+  int get backToTopScrollMs =>
+      _section('scrolling')['backToTopScrollMs'] as int;
   Uri get feedbackIssuesUrl =>
       Uri.parse(_section('feedback')['issuesUrl'] as String);
   String get feedbackEmail => _section('feedback')['email'] as String;
