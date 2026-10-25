@@ -87,7 +87,8 @@ void main() {
   });
 
   testWidgets('general settings offer the customize options', (tester) async {
-    DiaryAppHarness.size(tester, const Size(390, 1400));
+    // Tall enough for the whole page; the list builds only what shows.
+    DiaryAppHarness.size(tester, const Size(390, 2400));
     await tester.pumpWidget(harness.app(const AppearanceSettings()));
     await tester.pumpAndSettle();
     for (final key in [

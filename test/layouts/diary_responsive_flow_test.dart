@@ -115,7 +115,7 @@ void main() {
     await DiaryAppHarness.runUntil(
         tester,
         () => tester
-            .widget<TextButton>(find.widgetWithText(TextButton, '删除'))
+            .widget<FilledButton>(find.widgetWithText(FilledButton, '删除'))
             .onPressed!(),
         () => EntryStore.instance.entries.isEmpty);
     expect(EntryStore.instance.entries, isEmpty);
