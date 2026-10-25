@@ -1096,7 +1096,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get weatherRemove => '天気を削除する';
 
   @override
-  String get activityTitle => 'アクティビティ';
+  String get weatherTemperature => '気温';
 
   @override
   String get activityStill => 'それでも';
@@ -1118,15 +1118,6 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get activityExercise => '運動';
-
-  @override
-  String get activityDetect => '現在のアクティビティを検出する';
-
-  @override
-  String get activityDetectFailed => 'アクティビティを検出できませんでした。';
-
-  @override
-  String get activityRemove => 'アクティビティを削除する';
 
   @override
   String get settingsAutoAddTitle => '自動的に追加';

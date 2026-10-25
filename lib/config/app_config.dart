@@ -163,6 +163,9 @@ class AppConfig {
   /// Dates within this many days use the forecast endpoint; older ones the
   /// archive, which lags a few days behind.
   int get weatherRecentDays => _section('weather')['recentDays'] as int;
+
+  /// The hour whose weather stands for a day an entry was not written on.
+  int get weatherDayHour => _section('weather')['dayHour'] as int;
   Duration get weatherTimeout =>
       Duration(seconds: _section('weather')['timeoutSeconds'] as int);
   String get weatherAttribution => _section('weather')['attribution'] as String;

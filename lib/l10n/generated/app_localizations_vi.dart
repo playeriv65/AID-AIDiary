@@ -1121,7 +1121,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get weatherRemove => 'Xóa thời tiết';
 
   @override
-  String get activityTitle => 'Hoạt động';
+  String get weatherTemperature => 'Nhiệt độ';
 
   @override
   String get activityStill => 'Vẫn';
@@ -1143,15 +1143,6 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get activityExercise => 'tập thể dục';
-
-  @override
-  String get activityDetect => 'Phát hiện hoạt động hiện tại';
-
-  @override
-  String get activityDetectFailed => 'Không thể phát hiện một hoạt động.';
-
-  @override
-  String get activityRemove => 'Xóa hoạt động';
 
   @override
   String get settingsAutoAddTitle => 'Thêm tự động';

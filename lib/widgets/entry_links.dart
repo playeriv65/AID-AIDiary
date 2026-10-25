@@ -340,7 +340,7 @@ class EntryLinksSection extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(entryPreview(reply.text).snippet,
+                      Text(entrySnippet(reply.text),
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
                           style: theme.textTheme.bodyMedium),
@@ -434,7 +434,7 @@ class _EntryPickerState extends State<_EntryPicker> {
               itemCount: found.length,
               itemBuilder: (context, index) {
                 final entry = found[index];
-                final preview = entryPreview(entry.text);
+                final preview = entryPreview(entry);
                 return ListTile(
                   key: ValueKey('cite-entry-${entry.id}'),
                   title: Text(preview.title ?? preview.snippet,

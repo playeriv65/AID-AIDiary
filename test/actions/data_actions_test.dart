@@ -43,7 +43,7 @@ void main() {
   }
 
   List<String> texts() => [
-        for (final entry in EntryStore.instance.entries) entry.text,
+        for (final entry in EntryStore.instance.entries) entry.markdown,
       ]..sort();
 
   Future<void> add(String text, DateTime time) => EntryStore.instance.add(Entry(
@@ -113,7 +113,8 @@ void main() {
               }
             ])),
       });
-      expect(texts(), ['# Hello\n\nWorld', 'A good day']);
+      // The title stays apart from the text.
+      expect(texts(), ['# Hello\nWorld', 'A good day']);
       expect(
           [for (final entry in EntryStore.instance.entries) entry.mood]..sort(),
           [1, 2]);

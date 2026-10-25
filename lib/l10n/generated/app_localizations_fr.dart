@@ -1133,7 +1133,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get weatherRemove => 'Supprimer la météo';
 
   @override
-  String get activityTitle => 'Activité';
+  String get weatherTemperature => 'Température';
 
   @override
   String get activityStill => 'Encore';
@@ -1155,15 +1155,6 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get activityExercise => 'Exercice';
-
-  @override
-  String get activityDetect => 'Détecter l\'activité en cours';
-
-  @override
-  String get activityDetectFailed => 'Impossible de détecter une activité.';
-
-  @override
-  String get activityRemove => 'Supprimer l\'activité';
 
   @override
   String get settingsAutoAddTitle => 'Ajouter automatiquement';

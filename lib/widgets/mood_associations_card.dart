@@ -7,14 +7,12 @@ import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/models/tag.dart';
 import 'package:aid_diary/services/diary_statistics.dart';
 import 'package:aid_diary/stats/entry_stats.dart';
-import 'package:aid_diary/utils/entry_context_display.dart';
 import 'package:aid_diary/utils/tag_visuals.dart';
 import 'package:aid_diary/widgets/mood_icon.dart';
 import 'package:aid_diary/widgets/tag_icon_glyph.dart';
 import 'package:material_ui/material_ui.dart';
 
-/// "What makes me feel…": the activities and tags most often seen with the
-/// chosen mood.
+/// "What makes me feel…": the tags most often seen with the chosen mood.
 class MoodAssociationsCard extends StatefulWidget {
   const MoodAssociationsCard({super.key, required this.entries});
 
@@ -89,31 +87,20 @@ class _MoodAssociationsCardState extends State<MoodAssociationsCard> {
 class _FactorRow extends StatelessWidget {
   const _FactorRow({required this.association});
 
-  final MoodAssociation<Object> association;
+  final MoodAssociation<Tag> association;
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
-    final (icon, name, color) = switch (association.factor) {
-      final EntryActivity activity => (
-          Icon(activityIcon(activity),
-              size: 22, color: theme.colorScheme.primary),
-          activityLabel(activity, l10n),
-          theme.colorScheme.primary,
-        ),
-      final Tag tag => (
-          TagIconGlyph(
-              icon: tag.icon,
-              iconType: tag.iconType,
-              fallbackIcon: tag.typeIcon,
-              color: tag.resolvedColor(context),
-              size: 22),
-          tag.name,
-          tag.resolvedColor(context),
-        ),
-      _ => throw ArgumentError(association.factor),
-    };
+    final tag = association.factor;
+    final color = tag.resolvedColor(context);
+    final icon = TagIconGlyph(
+        icon: tag.icon,
+        iconType: tag.iconType,
+        fallbackIcon: tag.typeIcon,
+        color: color,
+        size: 22);
     final share = association.matching / association.total;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
@@ -126,7 +113,7 @@ class _FactorRow extends StatelessWidget {
             children: [
               Row(children: [
                 Expanded(
-                    child: Text(name,
+                    child: Text(tag.name,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: theme.textTheme.bodyMedium)),

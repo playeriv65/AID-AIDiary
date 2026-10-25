@@ -26,6 +26,7 @@ class Device {
     final db = await databaseFactoryFfi.openDatabase(inMemoryDatabasePath,
         options: OpenDatabaseOptions(singleInstance: false));
     await AppDatabase.instance.createSchema(db);
+    await AppDatabase.enforceForeignKeys(db);
     return Device._(db);
   }
 

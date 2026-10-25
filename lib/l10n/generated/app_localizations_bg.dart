@@ -1122,7 +1122,7 @@ class AppLocalizationsBg extends AppLocalizations {
   String get weatherRemove => 'Премахване на времето';
 
   @override
-  String get activityTitle => 'активност';
+  String get weatherTemperature => 'Температура';
 
   @override
   String get activityStill => 'Все още';
@@ -1144,15 +1144,6 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String get activityExercise => 'Упражнение';
-
-  @override
-  String get activityDetect => 'Откриване на текуща активност';
-
-  @override
-  String get activityDetectFailed => 'Не можа да се открие дейност.';
-
-  @override
-  String get activityRemove => 'Премахване на активност';
 
   @override
   String get settingsAutoAddTitle => 'Добавете автоматично';

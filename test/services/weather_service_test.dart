@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:aid_diary/config/app_config.dart';
-import 'package:aid_diary/models/entry.dart';
+import 'package:aid_diary/models/day_weather.dart';
 import 'package:aid_diary/services/weather_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;

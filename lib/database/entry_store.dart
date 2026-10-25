@@ -248,21 +248,6 @@ class EntryStore with ChangeNotifier {
     return updated;
   }
 
-  /// Sets the weather of an entry, or removes it with null.
-  Future<Entry> setWeather(Entry entry, EntryWeather? weather) async {
-    await _complete;
-    final updated = entry.copy(weather: weather, timeModified: DateTime.now());
-    await EntryDao.update(updated);
-    _entries = [
-      for (final existing in _entries)
-        existing.id == entry.id ? updated : existing,
-    ];
-    _indexEntriesByDay();
-    await AppDatabase.instance.updateExternalDatabase();
-    notifyListeners();
-    return updated;
-  }
-
   /// Brings an entry back from Recently deleted.
   Future<void> restore(Entry entry) async {
     await _complete;

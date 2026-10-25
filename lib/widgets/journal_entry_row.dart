@@ -2,13 +2,13 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'package:aid_diary/providers/weather_provider.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/models/image.dart';
 import 'package:aid_diary/providers/links_provider.dart';
 import 'package:aid_diary/sync/sync_service.dart';
 import 'package:aid_diary/time_manager.dart';
-import 'package:aid_diary/utils/entry_context_display.dart';
 import 'package:aid_diary/utils/entry_preview.dart';
 import 'package:aid_diary/widgets/entry_tag_names.dart';
 import 'package:aid_diary/widgets/local_image_loader.dart';
@@ -83,7 +83,7 @@ class JournalEntryRow extends StatelessWidget {
         images.isNotEmpty && !hideImage && !sealed ? images.first : null;
     final muted =
         theme.textTheme.bodyMedium?.copyWith(color: cs.onSurfaceVariant);
-    final preview = entryPreview(entry.text);
+    final preview = entryPreview(entry);
     final timeText = label ??
         TimeManager.localizedTimeFormat(
                 context, TimeManager.currentLocale(context))
@@ -216,10 +216,19 @@ class JournalEntryRow extends StatelessWidget {
                                   ),
                                   const SizedBox(width: 6),
                                 ],
-                                if (entry.weather != null) ...[
-                                  WeatherIcon(entry.weather!.code, size: 14),
-                                  const SizedBox(width: 6),
-                                ],
+                                ListenableBuilder(
+                                  listenable: WeatherProvider.instance,
+                                  builder: (context, _) => switch (
+                                      WeatherProvider.instance.ofEntry(entry)) {
+                                    final weather? => Padding(
+                                        padding:
+                                            const EdgeInsetsDirectional.only(
+                                                end: 6),
+                                        child: WeatherIcon(weather.code,
+                                            size: 14)),
+                                    null => const SizedBox.shrink(),
+                                  },
+                                ),
                                 // It answers another entry: a comment.
                                 if (entry.id case final id?
                                     when LinksProvider.instance
@@ -229,11 +238,6 @@ class JournalEntryRow extends StatelessWidget {
                                       key: ValueKey('journal-cites-$id'),
                                       size: 14,
                                       color: cs.primary),
-                                  const SizedBox(width: 6),
-                                ],
-                                if (entry.activity != null) ...[
-                                  Icon(activityIcon(entry.activity!),
-                                      size: 14, color: cs.onSurfaceVariant),
                                   const SizedBox(width: 6),
                                 ],
                                 Expanded(

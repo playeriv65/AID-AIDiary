@@ -4,12 +4,15 @@
 
 import 'dart:typed_data';
 
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/models/day_weather.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/models/image.dart';
 import 'package:aid_diary/storage/in_memory_file_store.dart';
 import 'package:aid_diary/utils/formats/archive_export.dart';
 import 'package:aid_diary/utils/formats/journey_format.dart';
 import 'package:aid_diary/utils/imports/import_helpers.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'archive_files.dart';
@@ -17,6 +20,7 @@ import 'archive_files.dart';
 const double unset = 1.7976931348623157e308;
 
 void main() {
+  final zh = lookupAppLocalizations(const Locale('zh'));
   ImportedPhoto? noPhoto(String name) => null;
 
   group('decodeJourneyEntry', () {
@@ -35,7 +39,7 @@ void main() {
         'tags': ['walk', 'city'],
         'favourite': true,
         'photos': ['1-a-0.jpg'],
-      }, (name) => ImportedPhoto(name, () async => Uint8List(1)))!;
+      }, (name) => ImportedPhoto(name, () async => Uint8List(1)), zh)!;
 
       expect(decoded.entry.text, 'Day **one**\n\nrain');
       expect(decoded.entry.timeCreate, created);
@@ -43,8 +47,7 @@ void main() {
           decoded.entry.timeModified, created.add(const Duration(minutes: 1)));
       expect(decoded.entry.location,
           const EntryLocation(latitude: 31.2, longitude: 121.5, name: 'Bund'));
-      expect(decoded.entry.weather,
-          const EntryWeather(code: 61, temperature: 14.0));
+      expect(decoded.weather, const EntryWeather(code: 61, temperature: 14.0));
       expect(decoded.tags.map((tag) => tag.name), ['walk', 'city']);
       expect(decoded.favorite, isTrue);
       expect(decoded.photos.single.name, '1-a-0.jpg');
@@ -56,7 +59,7 @@ void main() {
         'text': 'late in Shanghai',
         'date_journal': DateTime.utc(2025, 6, 7, 15, 30).millisecondsSinceEpoch,
         'timezone': 'Asia/Shanghai',
-      }, noPhoto)!;
+      }, noPhoto, zh)!;
       expect(decoded.entry.timeCreate, DateTime(2025, 6, 7, 23, 30));
       expect(decoded.entry.utcOffset, 8 * 60);
       expect(decoded.entry.createdInstant, DateTime.utc(2025, 6, 7, 15, 30));
@@ -71,11 +74,11 @@ void main() {
         'lon': unset,
         'address': '',
         'weather': {'id': -1, 'degree_c': unset},
-      }, noPhoto)!;
+      }, noPhoto, zh)!;
 
       expect(decoded.entry.text, 'plain');
       expect(decoded.entry.location, isNull);
-      expect(decoded.entry.weather, isNull);
+      expect(decoded.weather, isNull);
       expect(decoded.entry.timeModified, decoded.entry.timeCreate);
     });
 
@@ -89,20 +92,19 @@ void main() {
         'location': {'lat': 1.5, 'lng': 2.5},
         'weather': {'id': 800, 'degreeC': 25.0},
         'activity': 3,
-      }, noPhoto)!;
+      }, noPhoto, zh)!;
 
       expect(decoded.entry.text, '# Title');
       expect(
           decoded.entry.timeCreate, DateTime.utc(2025, 6, 7, 13, 9).toLocal());
       expect(decoded.entry.location,
           const EntryLocation(latitude: 1.5, longitude: 2.5));
-      expect(decoded.entry.weather,
-          const EntryWeather(code: 0, temperature: 25.0));
-      expect(decoded.entry.activity, EntryActivity.walking);
+      expect(decoded.weather, const EntryWeather(code: 0, temperature: 25.0));
+      expect(decoded.tags.single.name, '步行');
     });
 
     test('skips an entry without a date', () {
-      expect(decodeJourneyEntry({'text': 'x', 'date_journal': 0}, noPhoto),
+      expect(decodeJourneyEntry({'text': 'x', 'date_journal': 0}, noPhoto, zh),
           isNull);
     });
   });
@@ -118,7 +120,7 @@ void main() {
       'backup/notes.json': MemoryArchive.json({'text': 'no date'}),
     });
 
-    final entries = await decodeJourneyArchive(archive);
+    final entries = await decodeJourneyArchive(archive, zh);
 
     expect(entries.map((e) => e.entry.text), ['a']);
     final photo = entries.single.photos.single;
@@ -132,13 +134,15 @@ void main() {
     final created = DateTime(2026, 10, 18, 21, 30);
     final entry = Entry(
         id: 42,
-        text: '# 雨天\n\n散步 *慢慢*',
+        title: '雨天',
+        text: '散步 *慢慢*',
         timeCreate: created,
         timeModified: created.add(const Duration(hours: 1)),
         location:
-            const EntryLocation(name: '外滩', latitude: 31.2, longitude: 121.5),
-        weather: const EntryWeather(code: 61, temperature: 14.5));
+            const EntryLocation(name: '外滩', latitude: 31.2, longitude: 121.5));
+    const weather = EntryWeather(code: 61, temperature: 14.5);
     await writer.write(ExportedEntry(entry,
+        weather: weather,
         tags: [(name: 'walk', value: null)],
         favorite: true,
         images: [
@@ -151,13 +155,14 @@ void main() {
     await writer.close();
 
     final back =
-        (await decodeJourneyArchive(await MemoryArchive.of({'': store})))
+        (await decodeJourneyArchive(await MemoryArchive.of({'': store}), zh))
             .single;
-    expect(back.entry.text, entry.text);
+    // Journey keeps a title as the heading of the text.
+    expect(back.entry.text, entry.markdown);
     expect(back.entry.timeCreate, created);
     expect(back.entry.timeModified, entry.timeModified);
     expect(back.entry.location, entry.location);
-    expect(back.entry.weather, entry.weather);
+    expect(back.weather, weather);
     expect(back.tags.map((tag) => tag.name), ['walk']);
     expect(back.favorite, isTrue);
     expect(back.photos.single.name, endsWith('.png'));
@@ -179,7 +184,7 @@ void main() {
     await writer.close();
 
     final back =
-        (await decodeJourneyArchive(await MemoryArchive.of({'': store})))
+        (await decodeJourneyArchive(await MemoryArchive.of({'': store}), zh))
             .single;
     expect(back.entry.timeCreate, created);
     expect(back.entry.utcOffset, 8 * 60);

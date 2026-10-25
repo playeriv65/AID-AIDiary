@@ -2,9 +2,15 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:aid_diary/config_provider.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/models/day_weather.dart';
+import 'package:aid_diary/utils/activity_tags.dart';
+import 'package:aid_diary/utils/entry_preview.dart';
+import 'package:crypto/crypto.dart';
 import 'package:aid_diary/database/image_storage.dart';
 import 'package:aid_diary/storage/external_sync_health.dart';
 import 'package:aid_diary/storage/file_store.dart';
@@ -24,6 +30,7 @@ import 'package:aid_diary/providers/entries_provider.dart';
 import 'package:aid_diary/providers/entry_images_provider.dart';
 import 'package:aid_diary/providers/tags_provider.dart';
 import 'package:aid_diary/providers/templates_provider.dart';
+import 'package:aid_diary/providers/weather_provider.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/widgets.dart';
 import 'package:aid_diary/sync/builtin_ids.dart';
@@ -41,7 +48,13 @@ class AppDatabase {
       executor ?? instance.database!;
 
   static const String databaseFileName = 'aid_diary.db';
-  static const int currentVersion = 16;
+  static const int currentVersion = 17;
+
+  /// Makes a row that belongs to another go with it. Off while the schema is
+  /// made or upgraded, which rebuilds tables that others point to; on for
+  /// everything after.
+  static Future<void> enforceForeignKeys(Database db) =>
+      db.execute('PRAGMA foreign_keys = ON');
 
   static final Logger _logger = Logger('AppDatabase');
 
@@ -92,13 +105,15 @@ class AppDatabase {
     _database = await openDatabase(_internalPath!,
         version: currentVersion,
         onCreate: _createDatabase,
-        onUpgrade: _onUpgrade);
+        onUpgrade: _onUpgrade,
+        onOpen: enforceForeignKeys);
 
     await EntriesProvider.instance.load(firstScreen: firstScreen);
     await EntryImagesProvider.instance.load();
     await TemplatesProvider.instance.load();
     await TagsProvider.instance.load();
     await LinksProvider.instance.load();
+    await WeatherProvider.instance.load();
   }
 
   Future<void> close() async {
@@ -319,6 +334,7 @@ class AppDatabase {
     await addSyncSchema(db);
     await _addHiddenAndImportSchema(db);
     await _addLinksSchema(db);
+    await _upgradeToVersion17(db);
   }
 
   /// The tables as they were before sync, for upgrade tests.
@@ -564,6 +580,267 @@ DROP TABLE old_entries;
     }
     if (oldVersion < 16 && newVersion >= 16) {
       await _addLinksSchema(db);
+    }
+    if (oldVersion < 17 && newVersion >= 17) {
+      await _upgradeToVersion17(db);
+    }
+  }
+
+  /// Database version 17: an entry's title is a column of its own, weather
+  /// belongs to a day and a place, activities become tags, a place says how
+  /// it was set, and rows that belong to another go with it. Every device
+  /// makes the same changes to its own copy, so none are recorded for sync;
+  /// the items they make have the same ids everywhere.
+  Future<void> _upgradeToVersion17(Database db) async {
+    await db.execute('UPDATE $syncGuardTable SET active = 1');
+    await _activitiesToTags(db);
+    await db.execute('''
+CREATE TABLE $dayWeatherTable (
+  ${DayWeatherFields.id} INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  $syncIdColumn TEXT,
+  ${DayWeatherFields.day} TEXT NOT NULL,
+  ${DayWeatherFields.place} TEXT NOT NULL,
+  ${DayWeatherFields.source} TEXT NOT NULL,
+  ${DayWeatherFields.code} INTEGER NOT NULL,
+  ${DayWeatherFields.temperature} REAL NOT NULL,
+  ${DayWeatherFields.timeModified} TEXT NOT NULL,
+  UNIQUE (${DayWeatherFields.day}, ${DayWeatherFields.place}, ${DayWeatherFields.source})
+)''');
+    await addItemTableSync(db, SyncKind.weather);
+    await _weatherToDays(db);
+
+    // Old Android SQLite cannot drop columns or add foreign keys, so the
+    // tables are made anew.
+    await db.execute('PRAGMA legacy_alter_table = ON');
+    await _rebuildTable(db, entriesTable, '''
+  ${EntryFields.id} INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  $syncIdColumn TEXT,
+  ${EntryFields.title} TEXT NOT NULL DEFAULT '',
+  ${EntryFields.text} TEXT NOT NULL,
+  ${EntryFields.mood} INTEGER,
+  ${EntryFields.timeCreate} DATETIME NOT NULL DEFAULT (DATETIME('now')),
+  ${EntryFields.timeModified} DATETIME NOT NULL DEFAULT (DATETIME('now')),
+  ${EntryFields.utcOffset} INTEGER,
+  ${EntryFields.diaryDate} TEXT,
+  ${EntryFields.latitude} REAL,
+  ${EntryFields.longitude} REAL,
+  ${EntryFields.locationName} TEXT,
+  ${EntryFields.locationSource} TEXT,
+  ${EntryFields.openAt} DATETIME,
+  ${EntryFields.deletedAt} DATETIME,
+  ${EntryFields.isHidden} INTEGER NOT NULL DEFAULT 0
+    CHECK (${EntryFields.isHidden} IN (0, 1))''');
+    await _rebuildTable(db, tagsTable, '''
+  ${TagFields.id} INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  $syncIdColumn TEXT,
+  ${TagFields.categoryId} INTEGER
+    REFERENCES $tagCategoriesTable (id) ON DELETE SET NULL,
+  ${TagFields.icon} TEXT,
+  ${TagFields.iconType} INTEGER NOT NULL DEFAULT 0,
+  ${TagFields.name} TEXT NOT NULL,
+  ${TagFields.tagType} INTEGER NOT NULL,
+  ${TagFields.color} INTEGER,
+  ${TagFields.sortOrder} INTEGER NOT NULL DEFAULT 0,
+  ${TagFields.timeCreate} DATETIME NOT NULL DEFAULT (DATETIME('now')),
+  ${TagFields.timeModified} DATETIME NOT NULL DEFAULT (DATETIME('now'))''',
+        parents: {TagFields.categoryId: tagCategoriesTable});
+    await _rebuildTable(db, imagesTable, '''
+  ${EntryImageFields.id} INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  $syncIdColumn TEXT,
+  ${EntryImageFields.entryId} INTEGER NOT NULL
+    REFERENCES $entriesTable (id) ON DELETE CASCADE,
+  ${EntryImageFields.imgPath} TEXT NOT NULL,
+  ${EntryImageFields.imgRank} INTEGER NOT NULL,
+  ${EntryImageFields.timeCreate} DATETIME NOT NULL DEFAULT (DATETIME('now'))''',
+        parents: {EntryImageFields.entryId: entriesTable});
+    await _rebuildTable(db, entryTagsTable, '''
+  ${EntryTagFields.id} INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  ${EntryTagFields.entryId} INTEGER NOT NULL
+    REFERENCES $entriesTable (id) ON DELETE CASCADE,
+  ${EntryTagFields.tagId} INTEGER NOT NULL
+    REFERENCES $tagsTable (id) ON DELETE CASCADE,
+  ${EntryTagFields.value} TEXT,
+  ${EntryTagFields.timeCreate} DATETIME NOT NULL DEFAULT (DATETIME('now'))''',
+        parents: {
+          EntryTagFields.entryId: entriesTable,
+          EntryTagFields.tagId: tagsTable,
+        });
+    await _rebuildTable(db, templateTagsTable, '''
+  ${TemplateTagFields.id} INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  ${TemplateTagFields.templateId} INTEGER NOT NULL
+    REFERENCES $templatesTable (id) ON DELETE CASCADE,
+  ${TemplateTagFields.tagId} INTEGER NOT NULL
+    REFERENCES $tagsTable (id) ON DELETE CASCADE,
+  ${TemplateTagFields.timeCreate} DATETIME NOT NULL DEFAULT (DATETIME('now'))''',
+        parents: {
+          TemplateTagFields.templateId: templatesTable,
+          TemplateTagFields.tagId: tagsTable,
+        });
+    await _rebuildTable(db, entryRefsTable, '''
+  ${EntryRefFields.id} INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  ${EntryRefFields.entryId} INTEGER NOT NULL
+    REFERENCES $entriesTable (id) ON DELETE CASCADE,
+  ${EntryRefFields.target} TEXT NOT NULL,
+  ${EntryRefFields.quote} TEXT,
+  ${EntryRefFields.quoteStart} INTEGER,
+  ${EntryRefFields.rank} INTEGER NOT NULL DEFAULT 0,
+  ${EntryRefFields.timeCreate} TEXT NOT NULL''',
+        parents: {EntryRefFields.entryId: entriesTable});
+    await _rebuildTable(db, passagesTable, '''
+  ${PassageFields.id} INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  ${PassageFields.entryId} INTEGER NOT NULL
+    REFERENCES $entriesTable (id) ON DELETE CASCADE,
+  ${PassageFields.quote} TEXT NOT NULL,
+  ${PassageFields.quoteStart} INTEGER,
+  ${PassageFields.timeCreate} TEXT NOT NULL,
+  $syncIdColumn TEXT''', parents: {PassageFields.entryId: entriesTable});
+    await db.execute('PRAGMA legacy_alter_table = OFF');
+
+    await _titlesOutOfText(db);
+    await db.execute('''
+UPDATE $entriesTable SET ${EntryFields.locationSource} = '${LocationSource.imported.name}'
+WHERE (${EntryFields.latitude} IS NOT NULL OR ${EntryFields.locationName} IS NOT NULL)
+  AND id IN (SELECT entry_id FROM import_sources)''');
+    await db.execute('UPDATE $syncGuardTable SET active = 0');
+  }
+
+  /// Makes [table] anew with [columns], keeping its rows, ids, indexes and
+  /// triggers. Columns it no longer has go; new ones take their default.
+  /// Rows whose parent in [parents] (column: table) is gone go too.
+  Future<void> _rebuildTable(Database db, String table, String columns,
+      {Map<String, String> parents = const {}}) async {
+    final kept = await db.rawQuery(
+        "SELECT sql FROM sqlite_master WHERE tbl_name = ? "
+        "AND type IN ('index', 'trigger') AND sql IS NOT NULL",
+        [table]);
+    final old = {
+      for (final column in await db.rawQuery('PRAGMA table_info($table)'))
+        column['name'] as String,
+    };
+    final sequence = (await db.rawQuery(
+            'SELECT seq FROM sqlite_sequence WHERE name = ?', [table]))
+        .firstOrNull?['seq'] as int?;
+    final rebuilt = '${table}_rebuilt';
+    await db.execute('CREATE TABLE $rebuilt (\n$columns\n)');
+    final shared = [
+      for (final column in await db.rawQuery('PRAGMA table_info($rebuilt)'))
+        if (old.contains(column['name'])) column['name'] as String,
+    ].join(', ');
+    final orphans = [
+      for (final MapEntry(key: column, value: parent) in parents.entries)
+        '$column IS NULL OR $column IN (SELECT id FROM $parent)',
+    ].map((condition) => '($condition)').join(' AND ');
+    await db.execute('INSERT INTO $rebuilt ($shared) SELECT $shared FROM $table'
+        '${orphans.isEmpty ? '' : ' WHERE $orphans'}');
+    await db.execute('DROP TABLE $table');
+    await db.execute('ALTER TABLE $rebuilt RENAME TO $table');
+    if (sequence != null) {
+      await db.execute(
+          'UPDATE sqlite_sequence SET seq = MAX(seq, ?) WHERE name = ?',
+          [sequence, table]);
+    }
+    for (final row in kept) {
+      await db.execute(row['sql'] as String);
+    }
+  }
+
+  /// Activities recorded with entries before version 17 become tags of the
+  /// same name in every diary, with the same ids.
+  Future<void> _activitiesToTags(Database db) async {
+    final columns = {
+      for (final column
+          in await db.rawQuery('PRAGMA table_info($entriesTable)'))
+        column['name'] as String,
+    };
+    if (!columns.contains(EntryFields.activity)) return;
+    final rows = await db.query(entriesTable,
+        columns: [EntryFields.id, EntryFields.activity, EntryFields.timeCreate],
+        where: '${EntryFields.activity} IS NOT NULL');
+    if (rows.isEmpty) return;
+    final l10n = await TemplatesProvider.defaultsLocalizations();
+    final tagIds = <ActivityTag, int>{};
+    for (final row in rows) {
+      final activity = ActivityTag.byName(row[EntryFields.activity] as String);
+      if (activity == null) continue;
+      final tagId = tagIds[activity] ??= await _activityTag(db, activity, l10n);
+      await db.insert(entryTagsTable, {
+        EntryTagFields.entryId: row[EntryFields.id],
+        EntryTagFields.tagId: tagId,
+        EntryTagFields.timeCreate: row[EntryFields.timeCreate],
+      });
+    }
+  }
+
+  Future<int> _activityTag(
+      Database db, ActivityTag activity, AppLocalizations l10n) async {
+    final name = activity.label(l10n);
+    final same = await db.query(tagsTable,
+        columns: ['id'],
+        where: 'lower(${TagFields.name}) = ?',
+        whereArgs: [name.toLowerCase()]);
+    if (same.isNotEmpty) return same.first['id'] as int;
+    final last = (await db.rawQuery(
+            'SELECT MAX(${TagFields.sortOrder}) AS last FROM $tagsTable'))
+        .single['last'] as int?;
+    return db.insert(tagsTable, {
+      TagFields.name: name,
+      TagFields.tagType: TagType.label.toInt(),
+      TagFields.sortOrder: (last ?? -1) + 1,
+      syncIdColumn:
+          md5.convert(utf8.encode('activity|${activity.name}')).toString(),
+    });
+  }
+
+  /// Weather recorded with each entry before version 17 becomes the weather
+  /// of its day at its place, imported where the entry was.
+  Future<void> _weatherToDays(Database db) async {
+    final rows = await db.rawQuery('''
+SELECT e.*, EXISTS (SELECT 1 FROM import_sources s WHERE s.entry_id = e.id)
+  AS imported
+FROM $entriesTable e
+WHERE ${EntryFields.weatherCode} IS NOT NULL
+  AND ${EntryFields.temperature} IS NOT NULL
+ORDER BY ${EntryFields.timeCreate}''');
+    for (final row in rows) {
+      final entry = Entry.fromJson(row);
+      await WeatherProvider.write(
+          db,
+          entry.day,
+          weatherPlaceOf(entry.location),
+          EntryWeather(
+              code: row[EntryFields.weatherCode] as int,
+              temperature: (row[EntryFields.temperature] as num).toDouble()),
+          row['imported'] == 1
+              ? WeatherSource.imported
+              : WeatherSource.queried);
+    }
+  }
+
+  /// A first line written as a top-level heading becomes the entry's title.
+  /// Citations and kept passages point into the text, so they move up.
+  Future<void> _titlesOutOfText(Database db) async {
+    final rows = await db.query(entriesTable,
+        columns: [EntryFields.id, syncIdColumn, EntryFields.text],
+        where: "${EntryFields.text} LIKE '#%'");
+    for (final row in rows) {
+      final text = row[EntryFields.text] as String;
+      final (:title, :body) = splitEntryTitle(text);
+      if (title.isEmpty) continue;
+      await db.update(
+          entriesTable, {EntryFields.title: title, EntryFields.text: body},
+          where: 'id = ?', whereArgs: [row['id']]);
+      final shift = text.length - body.length;
+      const moved = 'CASE WHEN quote_start >= ? THEN quote_start - ? END';
+      await db.rawUpdate(
+          'UPDATE $passagesTable SET ${PassageFields.quoteStart} = '
+          '${moved.replaceAll('quote_start', PassageFields.quoteStart)} '
+          'WHERE ${PassageFields.entryId} = ?',
+          [shift, shift, row['id']]);
+      await db.rawUpdate(
+          'UPDATE $entryRefsTable SET ${EntryRefFields.quoteStart} = '
+          '${moved.replaceAll('quote_start', EntryRefFields.quoteStart)} '
+          'WHERE ${EntryRefFields.target} = ?',
+          [shift, shift, row[syncIdColumn]]);
     }
   }
 

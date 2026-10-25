@@ -5,6 +5,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:aid_diary/providers/weather_provider.dart';
 import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/database/image_storage.dart';
 import 'package:aid_diary/database/entry_store.dart';
@@ -172,6 +173,16 @@ class EntryViewPage extends StatelessWidget {
                           EntryDateBlock(entry: entry),
                           _Metadata(entry: entry),
                           const SizedBox(height: 16),
+                          if (entry.title.isNotEmpty)
+                            Padding(
+                              key: const ValueKey('entry-title'),
+                              padding: const EdgeInsets.only(bottom: 8),
+                              child: SelectableText(entry.title,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineSmall
+                                      ?.copyWith(fontWeight: FontWeight.bold)),
+                            ),
                           // What it answers comes before what it says.
                           ListenableBuilder(
                             listenable: LinksProvider.instance,
@@ -540,32 +551,30 @@ class _Metadata extends StatelessWidget {
     final location = entry.location;
     return Padding(
       padding: const EdgeInsets.only(top: 8),
-      child: Wrap(
-        spacing: 8,
-        runSpacing: 4,
-        crossAxisAlignment: WrapCrossAlignment.center,
-        children: [
-          if (hasMood) MoodIcon(moodValue: entry.mood, size: 20),
-          if (location != null)
-            _IconLabel(icon: Icons.place_rounded, label: location.label),
-          if (entry.weather != null)
-            _IconLabel(
-                key: const ValueKey('entry-weather'),
-                glyph: WeatherIcon(entry.weather!.code, size: 16),
-                label: weatherSummary(
-                    entry.weather!, AppLocalizations.of(context)!)),
-          if (entry.activity != null)
-            _IconLabel(
-                key: const ValueKey('entry-activity'),
-                icon: activityIcon(entry.activity!),
-                label: activityLabel(
-                    entry.activity!, AppLocalizations.of(context)!)),
-          EntryTagChips(
-            entryId: entry.id!,
-            chipBuilder: (tag, entryTag) =>
-                TagChip(tag: tag, value: entryTag.value),
-          ),
-        ],
+      // The weather is the day's at the place, so it changes on its own.
+      child: ListenableBuilder(
+        listenable: WeatherProvider.instance,
+        builder: (context, _) => Wrap(
+          spacing: 8,
+          runSpacing: 4,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: [
+            if (hasMood) MoodIcon(moodValue: entry.mood, size: 20),
+            if (location != null)
+              _IconLabel(icon: Icons.place_rounded, label: location.label),
+            if (WeatherProvider.instance.ofEntry(entry) case final weather?)
+              _IconLabel(
+                  key: const ValueKey('entry-weather'),
+                  glyph: WeatherIcon(weather.code, size: 16),
+                  label:
+                      weatherSummary(weather, AppLocalizations.of(context)!)),
+            EntryTagChips(
+              entryId: entry.id!,
+              chipBuilder: (tag, entryTag) =>
+                  TagChip(tag: tag, value: entryTag.value),
+            ),
+          ],
+        ),
       ),
     );
   }

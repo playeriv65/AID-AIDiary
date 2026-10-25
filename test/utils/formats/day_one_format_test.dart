@@ -5,16 +5,21 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/models/day_weather.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/models/image.dart';
 import 'package:aid_diary/storage/in_memory_file_store.dart';
 import 'package:aid_diary/utils/formats/archive_export.dart';
+import 'package:aid_diary/utils/entry_preview.dart';
 import 'package:aid_diary/utils/formats/day_one_format.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'archive_files.dart';
 
 void main() {
+  final zh = lookupAppLocalizations(const Locale('zh'));
   test('decodes an entry with photos, escapes and context', () async {
     final archive = MemoryArchive({
       'Journal.json': MemoryArchive.json({
@@ -57,7 +62,7 @@ void main() {
       'photos/bbb.png': Uint8List.fromList([2]),
     });
 
-    final entries = await decodeDayOneArchive(archive);
+    final entries = await decodeDayOneArchive(archive, zh);
 
     final entry = entries.single;
     expect(entry.entry.text, 'Arrived. Ate 2-3 dumplings!');
@@ -65,10 +70,10 @@ void main() {
     expect(entry.entry.timeModified, DateTime.utc(2024, 3, 4, 6).toLocal());
     expect(entry.entry.location,
         const EntryLocation(latitude: 48.85, longitude: 2.35, name: 'Paris'));
-    expect(entry.entry.weather, const EntryWeather(code: 63, temperature: 9));
-    expect(entry.entry.activity, EntryActivity.cycling);
+    expect(entry.weather, const EntryWeather(code: 63, temperature: 9));
     expect(entry.favorite, isTrue);
-    expect(entry.tags.map((tag) => tag.name), ['trip']);
+    // The activity comes in as a tag.
+    expect(entry.tags.map((tag) => tag.name), ['trip', '骑行']);
     expect(entry.photos.map((photo) => photo.name), ['aaa.jpeg', 'bbb.png']);
     expect(await entry.photos.last.read(), [2]);
   });
@@ -81,12 +86,12 @@ void main() {
     final created = DateTime(2026, 10, 18, 9, 15, 30);
     final entry = Entry(
         id: 7,
-        text: '# 周末\n\n去了公园。',
+        title: '周末',
+        text: '去了公园。',
         timeCreate: created,
         timeModified: created.add(const Duration(minutes: 5)),
-        location: const EntryLocation(latitude: 31.2, longitude: 121.5),
-        weather: const EntryWeather(code: 0, temperature: 21.0),
-        activity: EntryActivity.walking);
+        location: const EntryLocation(latitude: 31.2, longitude: 121.5));
+    const weather = EntryWeather(code: 0, temperature: 21.0);
     final image = EntryImage(
         entryId: 7,
         imgPath: 'aid_diary_x.jpg',
@@ -97,7 +102,8 @@ void main() {
         favorite: true,
         images: [
           (image, Uint8List.fromList([9, 8]))
-        ]));
+        ],
+        weather: weather));
     await writer.close();
 
     final written =
@@ -105,14 +111,17 @@ void main() {
     expect(written['entries'].single['photos'].single['type'], 'jpeg');
 
     final back = (await decodeDayOneArchive(
-            await MemoryArchive.of({'': journal, dayOnePhotoFolder: photos})))
+            await MemoryArchive.of({'': journal, dayOnePhotoFolder: photos}),
+            zh))
         .single;
-    expect(back.entry.text, entry.text);
+    // Day One keeps a title as the heading of the text.
+    expect(back.entry.text, '# 周末\n去了公园。');
+    final titled = titledByHeading(back.entry);
+    expect((titled.title, titled.text), ('周末', '去了公园。'));
     expect(back.entry.timeCreate, created);
     expect(back.entry.timeModified, entry.timeModified);
     expect(back.entry.location, entry.location);
-    expect(back.entry.weather, entry.weather);
-    expect(back.entry.activity, EntryActivity.walking);
+    expect(back.weather, weather);
     expect(back.tags.map((tag) => tag.name), ['park']);
     expect(back.favorite, isTrue);
     expect(await back.photos.single.read(), [9, 8]);

@@ -82,9 +82,6 @@ Map<String, Object?> _reviewJson(PeriodReview review, ReviewSpan span) {
     'averageMood': review.averageMood,
     'longestStreak': review.longestStreak,
     'topTags': tally(review.topTags),
-    'topActivities': {
-      for (final (:item, :count) in review.topActivities) item.name: count,
-    },
     'topPlaces': tally(review.topPlaces),
     if (span == ReviewSpan.year) 'perMonth': review.perMonth,
     'highlight': review.highlight?.id,
@@ -106,11 +103,7 @@ Map<String, Object?> _moodStats(List<Entry> entries, int mood) => {
           for (final association
               in DiaryStatistics.moodAssociationsOf(entries, mood).take(10))
             {
-              ...switch (association.factor) {
-                final Tag tag => {'tag': tag.name},
-                final EntryActivity activity => {'activity': activity.name},
-                _ => const {},
-              },
+              'tag': association.factor.name,
               'matching': association.matching,
               'total': association.total,
             },

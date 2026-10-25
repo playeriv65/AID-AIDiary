@@ -51,7 +51,7 @@ void main() {
     expect(entry.createdInstant, DateTime.utc(2025, 8, 16, 4, 55, 54, 799));
     expect(
         entry.timeModified.toUtc(), DateTime.utc(2025, 8, 16, 4, 56, 54, 799));
-    expect(entry.text, '# A day\n\nEvening notes.');
+    expect((entry.title, entry.text), ('A day', 'Evening notes.'));
     expect(rows[1].entry.day, DateTime(2025, 8, 14));
     expect(rows[1].entry.isHidden, isTrue);
   });
@@ -62,8 +62,8 @@ void main() {
     expect(row.entry.location!.latitude, closeTo(44.97177448, 0.00000001));
     expect(row.entry.location!.longitude, closeTo(-93.219249, 0.00000001));
     expect(row.tags, [(name: 'Travel', value: null)]);
-    expect(row.entry.weather!.code, 0);
-    expect(row.entry.weather!.temperature, 21);
+    expect(row.weather!.code, 0);
+    expect(row.weather!.temperature, 21);
     expect(row.photos.single.name, 'photo.jpg');
     expect(await row.photos.single.read(), archive.files['photo.jpg']);
     expect(jsonDecode(row.source!.json)['weather'], 'Clear');

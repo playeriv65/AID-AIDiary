@@ -447,7 +447,7 @@ class _Throwback extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final entry = flashback.firstEntry;
-    final preview = entryPreview(entry.text);
+    final preview = entryPreview(entry);
     return Center(
       child: Card.filled(
         child: InkWell(

@@ -5,8 +5,11 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:aid_diary/models/day_weather.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/storage/file_store.dart';
+import 'package:aid_diary/utils/activity_tags.dart';
 import 'package:aid_diary/utils/formats/archive_export.dart';
 import 'package:aid_diary/utils/formats/time_zones.dart';
 import 'package:aid_diary/utils/formats/weather_codes.dart';
@@ -25,18 +28,19 @@ import 'package:path/path.dart' as p;
 const double _unset = 1.7976931348623157e308;
 
 /// Journey's activity numbers, shared with its Day One importer.
-const Map<int, EntryActivity> _activities = {
-  1: EntryActivity.still,
-  3: EntryActivity.walking,
-  4: EntryActivity.running,
-  5: EntryActivity.cycling,
-  6: EntryActivity.vehicle,
-  7: EntryActivity.flying,
+const Map<int, ActivityTag> _activities = {
+  1: ActivityTag.still,
+  3: ActivityTag.walking,
+  4: ActivityTag.running,
+  5: ActivityTag.cycling,
+  6: ActivityTag.vehicle,
+  7: ActivityTag.flying,
 };
 
 /// Decodes a Journey backup: every JSON file is an entry, with the photos it
 /// names in the same folder.
-Future<List<ImportedEntry>> decodeJourneyArchive(ArchiveFiles files) async {
+Future<List<ImportedEntry>> decodeJourneyArchive(
+    ArchiveFiles files, AppLocalizations l10n) async {
   final available = files.paths.toSet();
   final entries = <ImportedEntry>[];
   for (final path in files.paths) {
@@ -50,7 +54,7 @@ Future<List<ImportedEntry>> decodeJourneyArchive(ArchiveFiles files) async {
         return available.contains(photoPath)
             ? ImportedPhoto(name, () => files.read(photoPath))
             : null;
-      });
+      }, l10n);
       if (entry != null) entries.add(entry);
     }
   }
@@ -59,8 +63,8 @@ Future<List<ImportedEntry>> decodeJourneyArchive(ArchiveFiles files) async {
 
 /// Decodes one entry file, or returns null when it has no date. [photo]
 /// finds a photo named in the entry inside the backup.
-ImportedEntry? decodeJourneyEntry(
-    Map<String, dynamic> json, ImportedPhoto? Function(String name) photo) {
+ImportedEntry? decodeJourneyEntry(Map<String, dynamic> json,
+    ImportedPhoto? Function(String name) photo, AppLocalizations l10n) {
   final v2 = json['schemaVersion'] == 2;
   final createdAt =
       v2 ? _isoTime(json['dateOfJournal']) : _epochTime(json['date_journal']);
@@ -105,15 +109,16 @@ ImportedEntry? decodeJourneyEntry(
       utcOffset: created.utcOffset,
       timeModified: modified,
       location: location.isEmpty ? null : location,
-      weather:
-          weatherCode == null || temperature == null || temperature.abs() > 100
-              ? null
-              : EntryWeather(code: weatherCode, temperature: temperature),
-      activity: _activities[json['activity']],
     ),
+    weather:
+        weatherCode == null || temperature == null || temperature.abs() > 100
+            ? null
+            : EntryWeather(code: weatherCode, temperature: temperature),
     tags: [
       for (final tag in json['tags'] as List? ?? const [])
         if (tag is String) (name: tag, value: null),
+      if (_activities[json['activity']] case final activity?)
+        (name: activity.label(l10n), value: null),
     ],
     favorite: json['favourite'] == true,
     photos: [
@@ -163,12 +168,13 @@ class JourneyExportWriter implements ArchiveExportWriter {
     }
 
     final location = entry.location;
-    final weather = entry.weather;
+    final weather = exported.weather;
     final json = {
       'id': id,
-      'text': entry.text,
-      'preview_text':
-          entry.text.length > 512 ? entry.text.substring(0, 512) : entry.text,
+      'text': entry.markdown,
+      'preview_text': entry.markdown.length > 512
+          ? entry.markdown.substring(0, 512)
+          : entry.markdown,
       'type': 'markdown',
       'date_journal': created,
       'date_modified': entry.timeModified.millisecondsSinceEpoch,

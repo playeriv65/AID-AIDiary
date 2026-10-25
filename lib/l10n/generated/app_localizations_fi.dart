@@ -1118,7 +1118,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get weatherRemove => 'Poista sää';
 
   @override
-  String get activityTitle => 'Toiminta';
+  String get weatherTemperature => 'Lämpötila';
 
   @override
   String get activityStill => 'Silti';
@@ -1140,15 +1140,6 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get activityExercise => 'Harjoittele';
-
-  @override
-  String get activityDetect => 'Tunnista nykyinen toiminta';
-
-  @override
-  String get activityDetectFailed => 'Toimintoa ei voitu havaita.';
-
-  @override
-  String get activityRemove => 'Poista toiminta';
 
   @override
   String get settingsAutoAddTitle => 'Lisää automaattisesti';

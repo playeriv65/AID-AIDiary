@@ -5,8 +5,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:material_ui/material_ui.dart';
 
-Entry _entry(String text, DateTime time) =>
-    Entry(text: text, timeCreate: time, timeModified: time);
+Entry _entry(String text, DateTime time, {String title = ''}) =>
+    Entry(title: title, text: text, timeCreate: time, timeModified: time);
 
 void main() {
   final l10n = lookupAppLocalizations(const Locale('zh'));
@@ -15,12 +15,18 @@ void main() {
     final now = DateTime.now();
     final snapshot = HomeWidgetSnapshot.from([
       _entry('\n## 今天去了公园\n很开心', now),
-      _entry('# 昨天\n散步', now.subtract(const Duration(days: 1))),
+      _entry('散步', now.subtract(const Duration(days: 1)), title: '昨天'),
     ], l10n);
     expect(snapshot.writtenDate, DateFormat('yyyy-MM-dd').format(now));
     expect(snapshot.snippet, '今天去了公园');
     expect(snapshot.streak, l10n.streakCurrent(2));
     expect(snapshot.toWidgetData()['widget_write'], l10n.widgetWrite);
+  });
+
+  test('a titled entry shows its title', () {
+    final snapshot = HomeWidgetSnapshot.from(
+        [_entry('散步', DateTime.now(), title: '昨天')], l10n);
+    expect(snapshot.snippet, '昨天');
   });
 
   test('an empty diary leaves the date, snippet and streak blank', () {

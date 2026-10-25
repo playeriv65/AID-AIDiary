@@ -44,12 +44,12 @@ class AgentSessions {
         value.isEmpty ? fallback : value;
     final apiKey = config.get(Settings.agentApiKey);
     if (apiKey.isEmpty) {
-      throw const ActionException('not_configured',
-          'No model key yet: agent.configure apiKey=<key>');
+      throw const ActionException(
+          'not_configured', 'No model key yet: agent.configure apiKey=<key>');
     }
     return (
-      baseUrl: or(config.get(Settings.agentBaseUrl),
-          AppConfig.instance.agentBaseUrl),
+      baseUrl: or(
+          config.get(Settings.agentBaseUrl), AppConfig.instance.agentBaseUrl),
       model: or(config.get(Settings.agentModel), AppConfig.instance.agentModel),
       apiKey: apiKey,
     );
@@ -91,7 +91,8 @@ class AgentSessions {
 
   static Future<String> _systemPrompt() async =>
       (await rootBundle.loadString('assets/agent/system_prompt.md'))
-          .replaceAll('{today}', DateFormat('yyyy-MM-dd, EEEE').format(DateTime.now()))
+          .replaceAll(
+              '{today}', DateFormat('yyyy-MM-dd, EEEE').format(DateTime.now()))
           .replaceAll('{sqlRows}', '${AppConfig.instance.agentSqlRows}');
 
   Future<void> close(String id) async {
@@ -114,8 +115,7 @@ class AgentSessions {
     if (fresh) await closeLink(name);
     final info = (await AgentApiSwitch.infoFile()).path;
     return _links[name] ??= await AcpLink.start(command,
-        workspace: await _workspace(info),
-        environment: {'AID_API_INFO': info});
+        workspace: await _workspace(info), environment: {'AID_API_INFO': info});
   }
 
   Future<void> closeLink(String name) async => _links.remove(name)?.close();

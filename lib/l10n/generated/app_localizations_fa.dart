@@ -1110,7 +1110,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get weatherRemove => 'آب و هوا را حذف کنید';
 
   @override
-  String get activityTitle => 'فعالیت';
+  String get weatherTemperature => 'دما';
 
   @override
   String get activityStill => 'هنوز';
@@ -1132,15 +1132,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get activityExercise => 'ورزش کنید';
-
-  @override
-  String get activityDetect => 'شناسایی فعالیت فعلی';
-
-  @override
-  String get activityDetectFailed => 'فعالیتی شناسایی نشد.';
-
-  @override
-  String get activityRemove => 'حذف فعالیت';
 
   @override
   String get settingsAutoAddTitle => 'به صورت خودکار اضافه کنید';

@@ -85,6 +85,14 @@ asks again. Dates are when it was settled. Ideas not built yet are in
   the user configures a model.
 - No user profile: no avatar or user name anywhere (2026-10-22). The top
   card's menu opens settings, statistics and templates.
+- Entry fields (2026-10-25, owner): the title is a field of its own, never
+  the first line of the text, so search and indexes see it apart. Weather
+  is not an entry's: it is a day's at a place, looked up, imported or set by
+  hand (by hand wins), and every entry of that day and place shows it.
+  Activities are dropped; old ones become tags. A place says how it was set.
+  An attachment kind column was considered and left out: the kind follows
+  from the file, so a column would be a second truth. See
+  [Architecture](ARCHITECTURE.md#entry-fields-day-weather-and-foreign-keys).
 
 ## Layout and look
 

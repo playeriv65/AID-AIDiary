@@ -9,6 +9,7 @@
 import 'dart:io';
 import 'dart:ui' as ui;
 
+import 'package:aid_diary/utils/entry_preview.dart';
 import 'package:aid_diary/database/image_storage.dart';
 import 'package:aid_diary/layouts/mobile_scaffold.dart';
 import 'package:aid_diary/models/entry.dart';
@@ -103,8 +104,9 @@ ScreenshotSession screenshotSession() {
       ('# 有点累\n这周事情太多，早点睡。', at(5, 23, 0), -1, null, null),
     ];
     for (final (text, time, mood, location, photo) in samples) {
-      final entry = await DiaryAppHarness.addEntry(tester, text, time,
-          mood: mood, location: location);
+      final (:title, :body) = splitEntryTitle(text);
+      final entry = await DiaryAppHarness.addEntry(tester, body, time,
+          title: title, mood: mood, location: location);
       if (photo != null) {
         await tester.runAsync(() async {
           final bytes =

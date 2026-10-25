@@ -30,7 +30,8 @@ void main() {
     await db.close();
     sql = DiarySql(
         () => databaseFactoryFfi.openDatabase(path,
-            options: OpenDatabaseOptions(readOnly: true, singleInstance: false)),
+            options:
+                OpenDatabaseOptions(readOnly: true, singleInstance: false)),
         rowLimit: 3);
   });
 
@@ -40,8 +41,8 @@ void main() {
   });
 
   test('prints rows as JSON, bytes as their size', () async {
-    final out =
-        await sql.run(['SELECT id, text, picture FROM entries WHERE id = 2'], '');
+    final out = await sql
+        .run(['SELECT id, text, picture FROM entries WHERE id = 2'], '');
     expect(out.exitCode, 0);
     expect(jsonDecode(out.stdout), [
       {'id': 2, 'text': 'day 2', 'picture': '<3 bytes>'},
@@ -82,7 +83,8 @@ void main() {
   });
 
   test('cannot attach other database files', () async {
-    final out = await sql.run(["ATTACH '${p.join(folder.path, 'x.db')}' AS x"], '');
+    final out =
+        await sql.run(["ATTACH '${p.join(folder.path, 'x.db')}' AS x"], '');
     expect(out.exitCode, 1);
     expect(out.stderr, contains('ATTACH'));
   });

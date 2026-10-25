@@ -1139,7 +1139,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get weatherRemove => 'Pašalinkite orą';
 
   @override
-  String get activityTitle => 'Veikla';
+  String get weatherTemperature => 'Temperatūra';
 
   @override
   String get activityStill => 'Vis tiek';
@@ -1161,15 +1161,6 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String get activityExercise => 'Pratimai';
-
-  @override
-  String get activityDetect => 'Aptikti dabartinę veiklą';
-
-  @override
-  String get activityDetectFailed => 'Nepavyko aptikti veiklos.';
-
-  @override
-  String get activityRemove => 'Pašalinti veiklą';
 
   @override
   String get settingsAutoAddTitle => 'Pridėti automatiškai';

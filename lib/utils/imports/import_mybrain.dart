@@ -43,10 +43,8 @@ List<ImportedEntry> decodeMyBrainEntries(Uint8List bytes) {
   return [
     for (var entry in diary)
       ImportedEntry(Entry(
-        text: [
-          if (entry['title'] != null) "# ${entry['title']}",
-          if (entry['content'] != null) entry['content'] as String,
-        ].join("\n\n"),
+        title: entry['title'] as String? ?? '',
+        text: entry['content'] as String? ?? '',
         mood: entry['mood'] != null ? moodMap[entry['mood']] : null,
         timeCreate: DateTime.fromMillisecondsSinceEpoch(entry['createdDate'],
                 isUtc: true)

@@ -5,6 +5,7 @@
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
+import 'package:aid_diary/providers/weather_provider.dart';
 import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/models/entry.dart';
@@ -150,10 +151,8 @@ class EntryShareCard extends StatelessWidget {
     final details = [
       if (entry.location?.name case final name?)
         (icon(Icons.place_rounded), name),
-      if (entry.weather case final weather?)
+      if (WeatherProvider.instance.ofEntry(entry) case final weather?)
         (WeatherIcon(weather.code, size: 15), weatherSummary(weather, l10n)),
-      if (entry.activity case final activity?)
-        (icon(activityIcon(activity)), activityLabel(activity, l10n)),
     ];
     return Container(
       width: config.shareCardWidth,
@@ -187,6 +186,12 @@ class EntryShareCard extends StatelessWidget {
                         Text(label, style: muted),
                       ]),
                   ]),
+                ],
+                if (entry.title.isNotEmpty) ...[
+                  const SizedBox(height: 14),
+                  Text(entry.title,
+                      style: theme.textTheme.titleLarge
+                          ?.copyWith(fontWeight: FontWeight.bold)),
                 ],
                 if (entry.text.trim().isNotEmpty) ...[
                   const SizedBox(height: 14),

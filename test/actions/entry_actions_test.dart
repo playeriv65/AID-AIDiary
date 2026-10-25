@@ -76,7 +76,7 @@ void main() {
       'latitude': '31.2',
       'longitude': '121.5',
       'weather': '61,12.5',
-      'activity': 'walking',
+      'title': '河边',
     });
     var entry = await get(id);
     expect(entry, containsPair('text', 'Walk by the river'));
@@ -84,8 +84,12 @@ void main() {
     expect(entry, containsPair('place', 'Riverside'));
     expect(entry, containsPair('latitude', 31.2));
     expect(entry, containsPair('longitude', 121.5));
-    expect(entry, containsPair('weather', {'code': 61, 'temperature': 12.5}));
-    expect(entry, containsPair('activity', 'walking'));
+    expect(entry, containsPair('title', '河边'));
+    // The weather is the day's at the place, set here by hand.
+    expect(
+        entry,
+        containsPair(
+            'weather', {'code': 61, 'temperature': 12.5, 'source': 'manual'}));
 
     // A new name keeps the spot; a new spot drops the old name.
     await run('entry.update', {'id': '$id', 'place': 'The river'});
@@ -100,10 +104,10 @@ void main() {
       'mood': 'none',
       'place': 'none',
       'weather': 'none',
-      'activity': '',
+      'title': '',
     });
     entry = await get(id);
-    for (final key in ['mood', 'place', 'weather', 'activity', 'latitude']) {
+    for (final key in ['mood', 'place', 'weather', 'title', 'latitude']) {
       expect(entry.containsKey(key), isFalse, reason: key);
     }
     expect(entry['text'], 'Walk by the river');
@@ -112,7 +116,6 @@ void main() {
         () => run('entry.update', {'id': '$id'}), refused('bad_args'));
     for (final wrong in [
       {'mood': '9'},
-      {'activity': 'swimming'},
       {'weather': 'sunny'},
       {'latitude': '10'},
       {'latitude': '95', 'longitude': '0'},
@@ -241,7 +244,7 @@ void main() {
       'place': 'Riverside Park',
       'latitude': '31.2',
       'longitude': '121.5',
-      'activity': 'walking',
+      'title': 'Sunday stroll',
     });
     final read = await create({'text': 'Read at home', 'mood': '0'});
     final named = await create({'text': 'Dinner', 'place': 'Riverside Cafe'});
@@ -257,14 +260,14 @@ void main() {
     Future<Set<Object?>> ids(Map<String, Object?> filter) async =>
         {for (final entry in await listed(filter)) (entry as Map)['id']};
 
-    // The place name is searched as well as the text.
+    // The title and the place name are searched as well as the text.
     expect(await ids({'search': 'riverside'}), {walk, named});
     expect(await ids({'search': 'home'}), {read});
     expect(await ids({'tags': tag.name.toUpperCase()}), {read});
     expect(await ids({'tags': '${tag.id}'}), {read});
     expect(await ids({'starred': 'true'}), {walk});
     expect(await ids({'moods': '2,0'}), {walk, read});
-    expect(await ids({'activity': 'walking,running'}), {walk});
+    expect(await ids({'search': 'stroll'}), {walk});
     expect(await ids({'has_location': 'true'}), {walk});
     expect(await ids({'has_location': 'false'}), {read, named});
     // Every filter given has to match.

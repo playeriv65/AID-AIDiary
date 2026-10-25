@@ -5,8 +5,10 @@ import 'package:aid_diary/database/app_database.dart';
 import 'package:aid_diary/database/entry_store.dart';
 import 'package:aid_diary/flashback_manager.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/models/day_weather.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/providers/links_provider.dart';
+import 'package:aid_diary/providers/weather_provider.dart';
 import 'package:aid_diary/providers/entries_provider.dart';
 import 'package:aid_diary/providers/entry_images_provider.dart';
 import 'package:aid_diary/providers/tags_provider.dart';
@@ -49,10 +51,12 @@ class DiaryAppHarness {
       database = await databaseFactory.openDatabase(inMemoryDatabasePath);
       AppDatabase.instance.database = database;
       await AppDatabase.instance.createSchema(database);
+      await AppDatabase.enforceForeignKeys(database);
       await EntryStore.instance.load();
       await EntryImagesProvider.instance.load();
       await TagsProvider.instance.load();
       await LinksProvider.instance.load();
+      await WeatherProvider.instance.load();
       await TemplatesProvider.instance.load();
       await FlashbackManager.init();
       theme = ThemeModeProvider();
@@ -123,18 +127,24 @@ class DiaryAppHarness {
 
   /// Adds an entry through the store, outside fake async time.
   static Future<Entry> addEntry(WidgetTester tester, String text, DateTime time,
-      {int? mood,
+      {String title = '',
+      int? mood,
       EntryLocation? location,
-      EntryWeather? weather,
-      EntryActivity? activity}) async {
-    return (await tester.runAsync(() => EntryStore.instance.add(Entry(
-        text: text,
-        mood: mood,
-        timeCreate: time,
-        timeModified: time,
-        location: location,
-        weather: weather,
-        activity: activity))))!;
+      EntryWeather? weather}) async {
+    return (await tester.runAsync(() async {
+      final entry = await EntryStore.instance.add(Entry(
+          title: title,
+          text: text,
+          mood: mood,
+          timeCreate: time,
+          timeModified: time,
+          location: location));
+      if (weather != null) {
+        await WeatherProvider.instance
+            .set(entry.day, location, weather, WeatherSource.queried);
+      }
+      return entry;
+    }))!;
   }
 
   /// Changes a setting in memory. The debounced file write is dropped: run

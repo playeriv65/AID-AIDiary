@@ -9,6 +9,7 @@
 library;
 
 import 'package:aid_diary/database/entry_store.dart';
+import 'package:aid_diary/models/day_weather.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/pages/edit_entry_view_model.dart';
 import 'package:aid_diary/services/location_service.dart';
@@ -69,7 +70,8 @@ void main() {
     expect(editor.edited, isTrue);
     expect(editor.canLeaveSilently, isFalse);
     await Future<void>.delayed(const Duration(milliseconds: 100));
-    expect(store.entries.single.text, '# 周末\n去了公园');
+    final saved = store.entries.single;
+    expect((saved.title, saved.text), ('周末', '去了公园'));
     await editor.leave();
     editor.dispose();
   });
@@ -119,12 +121,32 @@ void main() {
     final editor = model();
     await editor.fillCurrentContext(place: true, weather: true);
     expect(editor.location?.name, 'Bund');
-    expect(editor.weather, const EntryWeather(code: 1, temperature: 20));
+    expect(editor.location?.source, LocationSource.gps);
+    // The weather found is the day's at that place, kept at once.
+    expect(
+        editor.weather?.weather, const EntryWeather(code: 1, temperature: 20));
+    expect(editor.weather?.source, WeatherSource.queried);
     expect(editor.edited, isFalse);
     expect(editor.hasContent, isFalse);
     await editor.leave();
     expect(store.entries, isEmpty);
     editor.dispose();
+  });
+
+  test('a place found for now leaves when the entry moves to another day',
+      () async {
+    final editor = model();
+    await editor.fillCurrentContext(place: true, weather: false);
+    editor.setDiaryDay(DateTime(2026, 10, 1));
+    expect(editor.location, isNull);
+    editor.dispose();
+    final picked = model();
+    picked.setLocation(
+        const EntryLocation(name: 'Home', source: LocationSource.picked));
+    picked.setDiaryDay(DateTime(2026, 10, 1));
+    expect(picked.location?.name, 'Home');
+    await picked.discard();
+    picked.dispose();
   });
 
   test('a photo suggests its day and place, not a time', () async {

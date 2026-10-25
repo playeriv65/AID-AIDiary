@@ -1111,7 +1111,7 @@ class AppLocalizationsDa extends AppLocalizations {
   String get weatherRemove => 'Fjern vejret';
 
   @override
-  String get activityTitle => 'Aktivitet';
+  String get weatherTemperature => 'Temperatur';
 
   @override
   String get activityStill => 'Stadig';
@@ -1133,15 +1133,6 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String get activityExercise => 'Motion';
-
-  @override
-  String get activityDetect => 'Registrer aktuel aktivitet';
-
-  @override
-  String get activityDetectFailed => 'Kunne ikke registrere en aktivitet.';
-
-  @override
-  String get activityRemove => 'Fjern aktivitet';
 
   @override
   String get settingsAutoAddTitle => 'Tilføj automatisk';

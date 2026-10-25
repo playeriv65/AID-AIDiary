@@ -2064,11 +2064,11 @@ abstract class AppLocalizations {
   /// **'Remove weather'**
   String get weatherRemove;
 
-  /// No description provided for @activityTitle.
+  /// No description provided for @weatherTemperature.
   ///
   /// In en, this message translates to:
-  /// **'Activity'**
-  String get activityTitle;
+  /// **'Temperature'**
+  String get weatherTemperature;
 
   /// No description provided for @activityStill.
   ///
@@ -2111,24 +2111,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Exercise'**
   String get activityExercise;
-
-  /// No description provided for @activityDetect.
-  ///
-  /// In en, this message translates to:
-  /// **'Detect current activity'**
-  String get activityDetect;
-
-  /// No description provided for @activityDetectFailed.
-  ///
-  /// In en, this message translates to:
-  /// **'Couldn\'t detect an activity.'**
-  String get activityDetectFailed;
-
-  /// No description provided for @activityRemove.
-  ///
-  /// In en, this message translates to:
-  /// **'Remove activity'**
-  String get activityRemove;
 
   /// No description provided for @settingsAutoAddTitle.
   ///

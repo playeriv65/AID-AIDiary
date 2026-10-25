@@ -1094,7 +1094,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get weatherRemove => '移除天气';
 
   @override
-  String get activityTitle => '活动';
+  String get weatherTemperature => '气温';
 
   @override
   String get activityStill => '静止';
@@ -1116,15 +1116,6 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get activityExercise => '运动';
-
-  @override
-  String get activityDetect => '识别当前活动';
-
-  @override
-  String get activityDetectFailed => '无法识别当前活动。';
-
-  @override
-  String get activityRemove => '移除活动';
 
   @override
   String get settingsAutoAddTitle => '自动添加';
@@ -3793,7 +3784,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get weatherRemove => '移除天氣';
 
   @override
-  String get activityTitle => '活動';
+  String get weatherTemperature => '氣溫';
 
   @override
   String get activityStill => '靜止';
@@ -3815,15 +3806,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get activityExercise => '運動';
-
-  @override
-  String get activityDetect => '辨識目前活動';
-
-  @override
-  String get activityDetectFailed => '無法辨識目前活動。';
-
-  @override
-  String get activityRemove => '移除活動';
 
   @override
   String get settingsAutoAddTitle => '自動加入';

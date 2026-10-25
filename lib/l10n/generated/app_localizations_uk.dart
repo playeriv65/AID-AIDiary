@@ -1124,7 +1124,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get weatherRemove => 'Зняти погоду';
 
   @override
-  String get activityTitle => 'діяльність';
+  String get weatherTemperature => 'Температура';
 
   @override
   String get activityStill => 'досі';
@@ -1146,15 +1146,6 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get activityExercise => 'вправи';
-
-  @override
-  String get activityDetect => 'Визначити поточну активність';
-
-  @override
-  String get activityDetectFailed => 'Не вдалося виявити активність.';
-
-  @override
-  String get activityRemove => 'Видалити активність';
 
   @override
   String get settingsAutoAddTitle => 'Додати автоматично';

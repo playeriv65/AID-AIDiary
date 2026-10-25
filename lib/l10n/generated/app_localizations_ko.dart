@@ -1096,7 +1096,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get weatherRemove => '날씨 삭제';
 
   @override
-  String get activityTitle => '활동';
+  String get weatherTemperature => '기온';
 
   @override
   String get activityStill => '아직도';
@@ -1118,15 +1118,6 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get activityExercise => '운동';
-
-  @override
-  String get activityDetect => '현재 활동 감지';
-
-  @override
-  String get activityDetectFailed => '활동을 감지할 수 없습니다.';
-
-  @override
-  String get activityRemove => '활동 삭제';
 
   @override
   String get settingsAutoAddTitle => '자동으로 추가';

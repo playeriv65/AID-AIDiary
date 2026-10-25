@@ -9,7 +9,6 @@ import 'package:aid_diary/pages/entry_view_page.dart';
 import 'package:aid_diary/providers/entries_provider.dart';
 import 'package:aid_diary/providers/entry_images_provider.dart';
 import 'package:aid_diary/providers/tags_provider.dart';
-import 'package:aid_diary/utils/entry_context_display.dart';
 import 'package:aid_diary/utils/entry_filter.dart';
 import 'package:aid_diary/routing/entry_navigation.dart';
 import 'package:aid_diary/widgets/journal_entry_row.dart';
@@ -20,7 +19,7 @@ import 'package:aid_diary/utils/tag_visuals.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
-/// Text search with inline tag, starred, activity and mood filters.
+/// Text search with inline tag, starred and mood filters.
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
 
@@ -32,7 +31,6 @@ class _SearchPageState extends State<SearchPage> {
   final _controller = TextEditingController();
   final Set<int> _tagIds = {};
   bool _starred = false;
-  final Set<EntryActivity> _activities = {};
   final Set<int> _moods = {};
   int? _selectedId;
 
@@ -40,8 +38,7 @@ class _SearchPageState extends State<SearchPage> {
       query: _controller.text,
       tagIds: _tagIds,
       starred: _starred,
-      moods: _moods,
-      activities: _activities);
+      moods: _moods);
 
   bool get _active => _filter.isActive;
 
@@ -58,7 +55,6 @@ class _SearchPageState extends State<SearchPage> {
         _controller.clear();
         _tagIds.clear();
         _starred = false;
-        _activities.clear();
         _moods.clear();
       });
 
@@ -182,25 +178,6 @@ class _SearchPageState extends State<SearchPage> {
             value: _starred,
             onChanged: (value) => setState(() => _starred = value ?? false),
           ),
-          // Activities are no longer recorded; imported entries may have one.
-          if (EntriesProvider.instance.entries.any((e) => e.activity != null))
-            _FilterSection(
-              key: const ValueKey('search-filter-activity'),
-              icon: Icons.directions_walk_rounded,
-              title: l10n.activityTitle,
-              options: EntryActivity.values.length,
-              selected: _activities.length,
-              children: [
-                for (final activity in EntryActivity.values)
-                  CheckboxListTile(
-                    key: ValueKey('search-activity-${activity.name}'),
-                    secondary: Icon(activityIcon(activity)),
-                    title: Text(activityLabel(activity, l10n)),
-                    value: _activities.contains(activity),
-                    onChanged: (on) => _toggle(_activities, activity, on),
-                  ),
-              ],
-            ),
           _FilterSection(
             key: const ValueKey('search-filter-mood'),
             icon: Icons.mood_rounded,

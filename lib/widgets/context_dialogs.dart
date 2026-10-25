@@ -4,17 +4,21 @@
 
 import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/models/day_weather.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/services/weather_service.dart';
 import 'package:aid_diary/utils/entry_context_display.dart';
 import 'package:aid_diary/widgets/weather_icon.dart';
+import 'package:flutter/services.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-/// The answer of a context dialog; a null value removes it from the entry.
-typedef WeatherChoice = ({EntryWeather? weather});
+/// The answer of the weather dialog: weather looked up or set by hand, or
+/// null to remove it.
+typedef WeatherChoice = ({EntryWeather? weather, WeatherSource source});
 
-/// Shows the entry's weather and fetches it for its place and time.
+/// Shows a day's weather at a place, looks it up for [time] there, or
+/// takes it by hand.
 Future<WeatherChoice?> showWeatherDialog(BuildContext context,
     EntryWeather? current, EntryLocation? location, DateTime time,
     {WeatherService? service}) {
@@ -44,9 +48,41 @@ class _WeatherDialog extends StatefulWidget {
 }
 
 class _WeatherDialogState extends State<_WeatherDialog> {
-  late EntryWeather? _weather = widget.current;
+  late WeatherKind? _kind =
+      widget.current == null ? null : weatherKind(widget.current!.code);
+  late int? _code = widget.current?.code;
+  late final _temperature = TextEditingController(
+      text: widget.current == null
+          ? ''
+          : '${inChosenUnit(widget.current!.temperature).round()}');
+
+  /// Looked up and not changed since.
+  EntryWeather? _fetched;
+
+  /// Anything picked, typed or looked up; otherwise OK leaves the weather.
+  bool _touched = false;
   bool _loading = false;
   String? _error;
+
+  @override
+  void dispose() {
+    _temperature.dispose();
+    super.dispose();
+  }
+
+  EntryWeather? get _weather {
+    final typed = double.tryParse(_temperature.text.replaceAll(',', '.'));
+    if (_code == null || typed == null) return null;
+    return EntryWeather(
+        code: _code!, temperature: celsiusFromChosenUnit(typed));
+  }
+
+  void _pick(WeatherKind kind) => setState(() {
+        _kind = kind;
+        _code = kind.code;
+        _fetched = null;
+        _touched = true;
+      });
 
   Future<void> _fetch() async {
     final location = widget.location!;
@@ -62,9 +98,13 @@ class _WeatherDialogState extends State<_WeatherDialog> {
       _loading = false;
       if (weather == null) {
         _error = l10n.weatherUnavailable;
-      } else {
-        _weather = weather;
+        return;
       }
+      _kind = weatherKind(weather.code);
+      _code = weather.code;
+      _temperature.text = '${inChosenUnit(weather.temperature).round()}';
+      _fetched = weather;
+      _touched = true;
     });
   }
 
@@ -74,47 +114,83 @@ class _WeatherDialogState extends State<_WeatherDialog> {
     final theme = Theme.of(context);
     final canFetch = widget.location?.hasCoordinates ?? false;
     final config = AppConfig.instance;
+    final weather = _weather;
     return AlertDialog(
       title: Text(l10n.weatherTitle),
-      content: Column(mainAxisSize: MainAxisSize.min, children: [
-        if (_weather != null)
-          ListTile(
-            contentPadding: EdgeInsets.zero,
-            leading: WeatherIcon(_weather!.code, size: 32),
-            title: Text(weatherLabel(_weather!.code, l10n)),
-            subtitle: Text(formatTemperature(_weather!.temperature)),
-          ),
-        if (!canFetch)
-          Text(l10n.weatherNeedsLocation, style: theme.textTheme.bodyMedium)
-        else if (_loading)
-          const Padding(
-            padding: EdgeInsets.all(12),
-            child: CircularProgressIndicator(),
-          )
-        else
-          TextButton.icon(
-            key: const ValueKey('weather-fetch'),
-            onPressed: _fetch,
-            icon: const Icon(Icons.cloud_download_outlined),
-            label: Text(l10n.weatherFetch),
-          ),
-        if (_error != null)
-          Text(_error!,
-              style: theme.textTheme.bodySmall
-                  ?.copyWith(color: theme.colorScheme.error)),
-        const SizedBox(height: 8),
-        InkWell(
-          onTap: () => launchUrl(Uri.parse(config.weatherAttributionUrl)),
-          child: Text(config.weatherAttribution,
-              style: theme.textTheme.labelSmall
-                  ?.copyWith(color: theme.colorScheme.outline)),
-        ),
-      ]),
+      content: SingleChildScrollView(
+        child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: [
+                  for (final kind in WeatherKind.values)
+                    ChoiceChip(
+                      key: ValueKey('weather-kind-${kind.name}'),
+                      avatar: WeatherIcon(kind.code, size: 20),
+                      label: Text(weatherLabel(kind.code, l10n)),
+                      showCheckmark: false,
+                      selected: _kind == kind,
+                      onSelected: (_) => _pick(kind),
+                    ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              TextField(
+                key: const ValueKey('weather-temperature'),
+                controller: _temperature,
+                keyboardType: const TextInputType.numberWithOptions(
+                    signed: true, decimal: true),
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r'[-0-9.,]')),
+                ],
+                decoration: InputDecoration(
+                  labelText: l10n.weatherTemperature,
+                  suffixText: temperatureUnit,
+                ),
+                onChanged: (_) => setState(() {
+                  _fetched = null;
+                  _touched = true;
+                }),
+              ),
+              const SizedBox(height: 8),
+              if (!canFetch)
+                Text(l10n.weatherNeedsLocation,
+                    style: theme.textTheme.bodyMedium)
+              else if (_loading)
+                const Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(12),
+                    child: CircularProgressIndicator(),
+                  ),
+                )
+              else
+                TextButton.icon(
+                  key: const ValueKey('weather-fetch'),
+                  onPressed: _fetch,
+                  icon: const Icon(Icons.cloud_download_outlined),
+                  label: Text(l10n.weatherFetch),
+                ),
+              if (_error != null)
+                Text(_error!,
+                    style: theme.textTheme.bodySmall
+                        ?.copyWith(color: theme.colorScheme.error)),
+              const SizedBox(height: 8),
+              InkWell(
+                onTap: () => launchUrl(Uri.parse(config.weatherAttributionUrl)),
+                child: Text(config.weatherAttribution,
+                    style: theme.textTheme.labelSmall
+                        ?.copyWith(color: theme.colorScheme.outline)),
+              ),
+            ]),
+      ),
       actions: [
         if (widget.current != null)
           TextButton(
-            onPressed: () =>
-                Navigator.of(context).pop<WeatherChoice>((weather: null)),
+            onPressed: () => Navigator.of(context).pop<WeatherChoice>(
+                (weather: null, source: WeatherSource.manual)),
             child: Text(l10n.weatherRemove),
           ),
         TextButton(
@@ -123,10 +199,13 @@ class _WeatherDialogState extends State<_WeatherDialog> {
         ),
         FilledButton(
           key: const ValueKey('weather-save'),
-          onPressed: _weather == null
+          onPressed: weather == null
               ? null
-              : () =>
-                  Navigator.of(context).pop<WeatherChoice>((weather: _weather)),
+              : () => Navigator.of(context).pop<WeatherChoice>(!_touched
+                  ? null
+                  : _fetched != null
+                      ? (weather: _fetched, source: WeatherSource.queried)
+                      : (weather: weather, source: WeatherSource.manual)),
           child: Text(MaterialLocalizations.of(context).okButtonLabel),
         ),
       ],

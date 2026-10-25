@@ -91,6 +91,7 @@
     "forecastUrl": "https://api.open-meteo.com/v1/forecast",
     "archiveUrl": "https://archive-api.open-meteo.com/v1/archive",
     "recentDays": 60,
+    "dayHour": 14,
     "timeoutSeconds": 8,
     "attribution": "Weather data by Open-Meteo.com",
     "attributionUrl": "https://open-meteo.com/"

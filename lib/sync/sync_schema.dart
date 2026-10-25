@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'package:aid_diary/models/day_weather.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/models/entry_link.dart';
 import 'package:aid_diary/models/image.dart';
@@ -12,13 +13,15 @@ import 'package:sqflite/sqflite.dart';
 
 /// What syncs as one item. An entry carries its photos, tag values and
 /// citations, and a template its tags, so each item is whole on its own. A
-/// kept passage points at its entry, so it comes after entries.
+/// kept passage points at its entry, so it comes after entries. A day's
+/// weather stands alone.
 enum SyncKind {
   category(tagCategoriesTable),
   tag(tagsTable),
   template(templatesTable),
   entry(entriesTable),
-  passage(passagesTable);
+  passage(passagesTable),
+  weather(dayWeatherTable);
 
   const SyncKind(this.table);
 
@@ -67,14 +70,7 @@ Future<void> addSyncSchema(DatabaseExecutor db) async {
     await db.execute('ALTER TABLE $table ADD COLUMN $syncIdColumn TEXT');
     await db.execute(
         'UPDATE $table SET $syncIdColumn = $_newId WHERE $syncIdColumn IS NULL');
-    await db.execute('CREATE UNIQUE INDEX ${table}_$syncIdColumn '
-        'ON $table ($syncIdColumn)');
-    await db.execute('''
-CREATE TRIGGER ${table}_new_id AFTER INSERT ON $table
-WHEN NEW.$syncIdColumn IS NULL
-BEGIN
-  UPDATE $table SET $syncIdColumn = $_newId WHERE id = NEW.id;
-END''');
+    await _addIds(db, table);
   }
 
   await db.execute('''
@@ -121,19 +117,30 @@ CREATE TABLE $syncSeenTable (
 /// passage is an item of its own (its table already has the id column); a
 /// citation is part of the citing entry.
 Future<void> addLinksSyncSchema(DatabaseExecutor db) async {
-  await db.execute('CREATE UNIQUE INDEX ${passagesTable}_$syncIdColumn '
-      'ON $passagesTable ($syncIdColumn)');
-  await db.execute('''
-CREATE TRIGGER ${passagesTable}_new_id AFTER INSERT ON $passagesTable
-WHEN NEW.$syncIdColumn IS NULL
-BEGIN
-  UPDATE $passagesTable SET $syncIdColumn = $_newId WHERE id = NEW.id;
-END''');
-  await _changeTriggers(db, passagesTable, SyncKind.passage,
-      idOf: (row) => '$row.$syncIdColumn');
+  await addItemTableSync(db, SyncKind.passage);
   await _changeTriggers(db, entryRefsTable, SyncKind.entry,
       idOf: (row) => '(SELECT $syncIdColumn FROM $entriesTable '
           'WHERE id = $row.${EntryRefFields.entryId})');
+}
+
+/// Ids and change recording for the own table of [kind], made with its id
+/// column: a new kind, or a table made anew in an upgrade.
+Future<void> addItemTableSync(DatabaseExecutor db, SyncKind kind) async {
+  await _addIds(db, kind.table);
+  await _changeTriggers(db, kind.table, kind,
+      idOf: (row) => '$row.$syncIdColumn');
+}
+
+/// Makes ids unique in [table] and gives each new row one.
+Future<void> _addIds(DatabaseExecutor db, String table) async {
+  await db.execute('CREATE UNIQUE INDEX ${table}_$syncIdColumn '
+      'ON $table ($syncIdColumn)');
+  await db.execute('''
+CREATE TRIGGER ${table}_new_id AFTER INSERT ON $table
+WHEN NEW.$syncIdColumn IS NULL
+BEGIN
+  UPDATE $table SET $syncIdColumn = $_newId WHERE id = NEW.id;
+END''');
 }
 
 Future<void> addSyncItemsTable(DatabaseExecutor db) => db.execute('''

@@ -1134,7 +1134,7 @@ class AppLocalizationsTa extends AppLocalizations {
   String get weatherRemove => 'வானிலை அகற்று';
 
   @override
-  String get activityTitle => 'செயல்பாடு';
+  String get weatherTemperature => 'வெப்பநிலை';
 
   @override
   String get activityStill => 'இன்னும்';
@@ -1156,15 +1156,6 @@ class AppLocalizationsTa extends AppLocalizations {
 
   @override
   String get activityExercise => 'உடற்பயிற்சி';
-
-  @override
-  String get activityDetect => 'தற்போதைய செயல்பாட்டைக் கண்டறியவும்';
-
-  @override
-  String get activityDetectFailed => 'செயல்பாட்டைக் கண்டறிய முடியவில்லை.';
-
-  @override
-  String get activityRemove => 'செயல்பாட்டை அகற்று';
 
   @override
   String get settingsAutoAddTitle => 'தானாகச் சேர்க்கவும்';

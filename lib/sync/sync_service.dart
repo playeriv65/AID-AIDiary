@@ -19,6 +19,7 @@ import 'package:aid_diary/providers/entries_provider.dart';
 import 'package:aid_diary/providers/entry_images_provider.dart';
 import 'package:aid_diary/providers/tags_provider.dart';
 import 'package:aid_diary/providers/templates_provider.dart';
+import 'package:aid_diary/providers/weather_provider.dart';
 import 'package:aid_diary/sync/google_auth.dart';
 import 'package:aid_diary/sync/google_drive_backend.dart';
 import 'package:aid_diary/sync/identity.dart';
@@ -934,6 +935,7 @@ class SyncService with ChangeNotifier {
       await TagsProvider.instance.load();
       await TemplatesProvider.instance.load();
       await LinksProvider.instance.load();
+      await WeatherProvider.instance.load();
       await AppDatabase.instance.updateExternalDatabase();
     } finally {
       _reloading = false;

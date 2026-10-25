@@ -79,8 +79,8 @@ void main() {
       EntryStore.instance.entries = [
         Entry(
             id: 1,
-            text:
-                '# 标题 Title عنوان\n日记内容 with emoji 🙂 and multiple lines. ' * 8,
+            title: '标题 Title عنوان',
+            text: '日记内容 with emoji 🙂 and multiple lines. ' * 8,
             timeCreate: now,
             timeModified: now,
             mood: 2),

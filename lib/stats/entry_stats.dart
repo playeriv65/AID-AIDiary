@@ -28,7 +28,8 @@ final _wordCounts = Expando<int>();
 int totalWordCount(List<Entry> entries) {
   var total = 0;
   for (final entry in entries) {
-    total += _wordCounts[entry] ??= wordsCount(entry.text);
+    total +=
+        _wordCounts[entry] ??= wordsCount(entry.title) + wordsCount(entry.text);
   }
   return total;
 }

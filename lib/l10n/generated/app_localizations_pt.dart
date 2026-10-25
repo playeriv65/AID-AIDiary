@@ -1125,7 +1125,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get weatherRemove => 'Remover clima';
 
   @override
-  String get activityTitle => 'Atividade';
+  String get weatherTemperature => 'Temperatura';
 
   @override
   String get activityStill => 'Ainda assim';
@@ -1147,15 +1147,6 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get activityExercise => 'Exercício';
-
-  @override
-  String get activityDetect => 'Detetar atividade atual';
-
-  @override
-  String get activityDetectFailed => 'Não foi possível detetar uma atividade.';
-
-  @override
-  String get activityRemove => 'Remover atividade';
 
   @override
   String get settingsAutoAddTitle => 'Adicionar automaticamente';
@@ -3948,7 +3939,7 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
   String get weatherRemove => 'Remover clima';
 
   @override
-  String get activityTitle => 'Atividade';
+  String get weatherTemperature => 'Temperatura';
 
   @override
   String get activityStill => 'Ainda assim';
@@ -3970,15 +3961,6 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
 
   @override
   String get activityExercise => 'Exercício';
-
-  @override
-  String get activityDetect => 'Detectar atividade atual';
-
-  @override
-  String get activityDetectFailed => 'Não foi possível detectar uma atividade.';
-
-  @override
-  String get activityRemove => 'Remover atividade';
 
   @override
   String get settingsAutoAddTitle => 'Adicionar automaticamente';

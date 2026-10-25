@@ -27,8 +27,7 @@ final List<AppAction> agentActions = [
     params: const [
       ActionParam('baseUrl', ParamType.string, 'The service address',
           required: false),
-      ActionParam('model', ParamType.string, 'The model name',
-          required: false),
+      ActionParam('model', ParamType.string, 'The model name', required: false),
       ActionParam('apiKey', ParamType.string, 'The key, kept in the key store',
           required: false),
       ActionParam('cli', ParamType.string,

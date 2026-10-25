@@ -4,7 +4,9 @@
 
 import 'package:aid_diary/actions/app_action.dart';
 import 'package:aid_diary/database/entry_store.dart';
+import 'package:aid_diary/models/day_weather.dart';
 import 'package:aid_diary/models/entry.dart';
+import 'package:aid_diary/providers/weather_provider.dart';
 import 'package:aid_diary/services/location_service.dart';
 import 'package:aid_diary/services/saved_places.dart';
 import 'package:aid_diary/services/weather_service.dart';
@@ -149,9 +151,10 @@ List<AppAction> buildPlaceActions(
     ),
     AppAction(
       id: 'weather.fetch',
-      describe: "Looks up the weather at an entry's place and time and "
-          'stores it with the entry, replacing the one it has. The entry '
-          'needs a place with a position.',
+      describe: "Looks up the weather of an entry's diary day at its place "
+          'and keeps it as that day and place\'s weather; weather set by '
+          'hand or imported still counts first. The entry needs a place '
+          'with a position.',
       risk: ActionRisk.write,
       params: const [ActionParam('id', ParamType.integer, 'The entry id')],
       run: (context, args) async {
@@ -173,18 +176,22 @@ List<AppAction> buildPlaceActions(
               'needs_location', 'The entry has no place with a position');
         }
         final found = await weathers.at(
-            place.latitude!, place.longitude!, entry.timeCreate);
+            place.latitude!, place.longitude!, weatherTimeOf(entry));
         if (found == null) {
           throw const ActionException(
               'unavailable', 'The weather could not be looked up');
         }
-        await store.setWeather(entry, found);
+        final days = WeatherProvider.instance;
+        await days.set(entry.day, place, found, WeatherSource.queried);
+        final shown = days.of(entry.day, place)!;
         return {
           'id': id,
           'weather': {
-            'code': found.code,
-            'temperature': found.temperature,
-            'description': weatherLabel(found.code, shownLocalizations()),
+            'code': shown.weather.code,
+            'temperature': shown.weather.temperature,
+            'description':
+                weatherLabel(shown.weather.code, shownLocalizations()),
+            'source': shown.source.name,
           },
         };
       },

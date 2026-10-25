@@ -1112,7 +1112,7 @@ class AppLocalizationsHi extends AppLocalizations {
   String get weatherRemove => 'मौसम हटाओ';
 
   @override
-  String get activityTitle => 'गतिविधि';
+  String get weatherTemperature => 'तापमान';
 
   @override
   String get activityStill => 'फिर भी';
@@ -1134,15 +1134,6 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get activityExercise => 'व्यायाम';
-
-  @override
-  String get activityDetect => 'वर्तमान गतिविधि का पता लगाएं';
-
-  @override
-  String get activityDetectFailed => 'किसी गतिविधि का पता नहीं लगाया जा सका.';
-
-  @override
-  String get activityRemove => 'गतिविधि हटाएँ';
 
   @override
   String get settingsAutoAddTitle => 'स्वचालित रूप से जोड़ें';

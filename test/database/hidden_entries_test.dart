@@ -101,7 +101,7 @@ void main() {
       () async {
     final json = encodeJsonEntries(
         [entry('Public text'), entry('Private text', hidden: true)],
-        imagesOf: (_) => [], tagsOf: (_) => []);
+        imagesOf: (_) => [], tagsOf: (_) => [], weatherOf: (_) => null);
     expect(jsonDecode(json), hasLength(1));
     expect(json, isNot(contains('Private text')));
   });

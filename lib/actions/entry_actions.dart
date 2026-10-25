@@ -14,12 +14,14 @@ import 'package:aid_diary/database/app_database.dart';
 import 'package:aid_diary/database/entry_store.dart';
 import 'package:aid_diary/database/image_storage.dart';
 import 'package:aid_diary/models/builtin_templates.dart';
+import 'package:aid_diary/models/day_weather.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/models/image.dart';
 import 'package:aid_diary/models/tag.dart';
 import 'package:aid_diary/providers/entry_images_provider.dart';
 import 'package:aid_diary/providers/tags_provider.dart';
 import 'package:aid_diary/providers/templates_provider.dart';
+import 'package:aid_diary/providers/weather_provider.dart';
 import 'package:aid_diary/template_renderer.dart';
 import 'package:aid_diary/utils/diary_day.dart';
 import 'package:aid_diary/utils/entry_filter.dart';
@@ -53,6 +55,7 @@ Map<String, Object?> _summary(Entry entry) => {
         'sealed': true,
         'opensAt': entry.openAt!.toIso8601String(),
       } else ...{
+        if (entry.title.isNotEmpty) 'title': entry.title,
         'preview': entry.text.length > 80
             ? '${entry.text.substring(0, 80)}…'
             : entry.text,
@@ -69,9 +72,12 @@ Map<String, Object?> _details(Entry entry) {
     'text': entry.text,
     'modified': entry.timeModified.toIso8601String(),
     if (entry.utcOffset != null) 'utcOffsetMinutes': entry.utcOffset,
-    if (entry.weather case final weather?)
-      'weather': {'code': weather.code, 'temperature': weather.temperature},
-    if (entry.activity case final activity?) 'activity': activity.name,
+    if (WeatherProvider.instance.of(entry.day, entry.location) case final day?)
+      'weather': {
+        'code': day.weather.code,
+        'temperature': day.weather.temperature,
+        'source': day.source.name,
+      },
     if (entry.openAt case final openAt?) 'opensAt': openAt.toIso8601String(),
     'favorite': tags.isFavorite(entry.id!),
     'tags': [
@@ -169,13 +175,6 @@ int _moodOf(String text) => switch (int.tryParse(text)) {
       _ => throw _bad('A mood is a number from -2 to 2, not $text'),
     };
 
-EntryActivity _activityOf(String name) =>
-    EntryActivity.fromName(name) ??
-    (throw _bad('An activity is one of $_activityNames, not $name'));
-
-final String _activityNames =
-    EntryActivity.values.map((activity) => activity.name).join(', ');
-
 EntryWeather _weatherOf(String text) {
   final parts = text.split(',');
   final code = parts.length == 2 ? int.tryParse(parts[0].trim()) : null;
@@ -201,7 +200,12 @@ T? _pick<T>(_Change<T> change, T? current) =>
 /// share, read from their arguments.
 class _Fields {
   _Fields(ActionArgs args)
-      : text = args['text'] as String?,
+      : title = switch (args['title']) {
+          final String title =>
+            _clears(title) ? '' : title.replaceAll('\n', ' ').trim(),
+          _ => null,
+        },
+        text = args['text'] as String?,
         day = _dayOf(args['day']),
         time = switch (args['time']) {
           final String text =>
@@ -211,12 +215,6 @@ class _Fields {
         },
         mood = switch (args['mood']) {
           final String text => (value: _clears(text) ? null : _moodOf(text)),
-          _ => null,
-        },
-        activity = switch (args['activity']) {
-          final String text => (
-              value: _clears(text) ? null : _activityOf(text)
-            ),
           _ => null,
         },
         weather = switch (args['weather']) {
@@ -244,35 +242,45 @@ class _Fields {
     }
   }
 
+  /// Empty to remove the title.
+  final String? title;
   final String? text;
   final DateTime? day;
   final DateTime? time;
   final _Change<int> mood;
-  final _Change<EntryActivity> activity;
   final _Change<EntryWeather> weather;
   final bool clearPlace;
   final String? placeName;
   final double? latitude;
   final double? longitude;
 
-  /// Whether mood, place, weather or activity is set or cleared.
+  /// Whether mood, place or weather is set or cleared.
   bool get changesContext =>
       mood != null ||
-      activity != null ||
       weather != null ||
       clearPlace ||
       placeName != null ||
       latitude != null;
 
   bool get isEmpty =>
-      text == null && day == null && time == null && !changesContext;
+      title == null &&
+      text == null &&
+      day == null &&
+      time == null &&
+      !changesContext;
 
-  /// [entry] with mood, place, weather and activity as these fields say.
+  /// [entry] with mood and place as these fields say.
   Entry withContext(Entry entry) => entry.copy(
-      mood: _pick(mood, entry.mood),
-      activity: _pick(activity, entry.activity),
-      weather: _pick(weather, entry.weather),
-      location: _locationFor(entry.location));
+      mood: _pick(mood, entry.mood), location: _locationFor(entry.location));
+
+  /// Sets the weather of [saved]'s day and place when these fields say,
+  /// as the writer's own.
+  Future<void> writeWeather(Entry saved) async {
+    if (weather case final change?) {
+      await WeatherProvider.instance
+          .set(saved.day, saved.location, change.value, WeatherSource.manual);
+    }
+  }
 
   /// A new name or coordinates change the place they name; coordinates
   /// without a name drop the old name, which belonged to the old spot.
@@ -282,12 +290,16 @@ class _Fields {
     final place = EntryLocation(
         name: placeName ?? (latitude == null ? current?.name : null),
         latitude: latitude ?? current?.latitude,
-        longitude: longitude ?? current?.longitude);
+        longitude: longitude ?? current?.longitude,
+        source: LocationSource.typed);
     return place.isEmpty ? null : place;
   }
 }
 
 final List<ActionParam> _fieldParams = [
+  ActionParam('title', ParamType.string,
+      'The title, kept apart from the text; $noValue removes it',
+      required: false),
   ActionParam('mood', ParamType.string,
       'Mood from -2 (worst) to 2 (best); $noValue removes it',
       required: false),
@@ -302,9 +314,6 @@ final List<ActionParam> _fieldParams = [
       required: false),
   ActionParam('weather', ParamType.string,
       'WMO weather code and temperature in °C, such as 61,12.5; $noValue removes it',
-      required: false),
-  ActionParam('activity', ParamType.string,
-      'One of $_activityNames; $noValue removes it',
       required: false),
 ];
 
@@ -358,9 +367,6 @@ List<Entry> _matching(ActionArgs args) {
     tagIds: _tagIds(args['tags']),
     starred: args['starred'] == true,
     moods: {for (final word in _words(args['moods'])) _moodOf(word)},
-    activities: {
-      for (final word in _words(args['activity'])) _activityOf(word)
-    },
     hasLocation: args['has_location'] as bool?,
   );
   return [
@@ -395,9 +401,6 @@ final List<AppAction> entryActions = [
       const ActionParam('moods', ParamType.string,
           'Only entries with one of these moods, such as 2,1',
           required: false),
-      ActionParam('activity', ParamType.string,
-          'Only entries with one of these activities, comma-separated: $_activityNames',
-          required: false),
       const ActionParam('has_location', ParamType.boolean,
           'true: only entries with coordinates, false: only those without',
           required: false),
@@ -417,7 +420,7 @@ final List<AppAction> entryActions = [
   AppAction(
     id: 'entry.create',
     describe: 'Writes a new entry, for now or for a given day and time. '
-        'Without text, a mood, place, weather, activity or template must '
+        'Without text, a title, mood, place, weather or template must '
         'say what it is: a quick check-in is a mood alone.',
     risk: ActionRisk.write,
     params: [
@@ -448,8 +451,12 @@ final List<AppAction> entryActions = [
       final text = mergeSharedText(template?.text ?? '', fields.text);
       final now = DateTime.now();
       final written = fields.time ?? now;
+      // A template that starts with a heading names the entry, unless a
+      // title is given.
+      final seeded = splitEntryTitle(text);
       final entry = fields.withContext(Entry(
-          text: text,
+          title: fields.title ?? seeded.title,
+          text: seeded.body,
           timeCreate: written,
           timeModified: now,
           utcOffset: written.timeZoneOffset.inMinutes,
@@ -461,12 +468,13 @@ final List<AppAction> entryActions = [
               EntryTag(entryId: saved?.id ?? -1, tagId: tagId, timeCreate: now),
           ]));
       await session.commit();
+      await fields.writeWeather(saved);
       return _summary(saved);
     },
   ),
   AppAction(
     id: 'entry.update',
-    describe: 'Changes an entry: its text, mood, place, weather, activity, '
+    describe: 'Changes an entry: its title, text, mood, place, weather, '
         'diary day or written time. What is not given stays, and so do its '
         'tags and attachments.',
     risk: ActionRisk.write,
@@ -481,17 +489,19 @@ final List<AppAction> entryActions = [
       final entry = await openEntryOf(args);
       final fields = _Fields(args);
       if (fields.isEmpty) {
-        throw _bad('Nothing to change: give a text, mood, place, weather, '
-            'activity, day or time');
+        throw _bad('Nothing to change: give a title, text, mood, place, '
+            'weather, day or time');
       }
       final time = fields.time;
       final saved = await saveEntry(fields.withContext(entry.copy(
+          title: fields.title,
           text: fields.text,
           timeCreate: time,
           utcOffset:
               time == null ? entry.utcOffset : time.timeZoneOffset.inMinutes,
           day: fields.day,
           timeModified: DateTime.now())));
+      await fields.writeWeather(saved);
       return _summary(saved);
     },
   ),

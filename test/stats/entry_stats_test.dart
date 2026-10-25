@@ -137,29 +137,31 @@ void main() {
   });
 
   test('moodAssociations ranks factors by how often they had the mood', () {
-    Entry rated(int id, int? mood, EntryActivity activity) => Entry(
-        id: id,
-        text: '',
-        mood: mood,
-        activity: activity,
-        timeCreate: DateTime(2026, 10, id),
-        timeModified: DateTime(2026, 10, id));
+    final factors = <int, String>{};
+    Entry rated(int id, int? mood, String factor) {
+      factors[id] = factor;
+      return Entry(
+          id: id,
+          text: '',
+          mood: mood,
+          timeCreate: DateTime(2026, 10, id),
+          timeModified: DateTime(2026, 10, id));
+    }
+
     final entries = [
-      rated(1, 2, EntryActivity.walking),
-      rated(2, 2, EntryActivity.walking),
-      rated(3, 2, EntryActivity.vehicle),
-      rated(4, -2, EntryActivity.vehicle),
-      rated(5, -2, EntryActivity.vehicle),
-      rated(6, 2, EntryActivity.flying), // seen once: too little to say
-      rated(7, null, EntryActivity.walking), // unrated: ignored
+      rated(1, 2, 'walk'),
+      rated(2, 2, 'walk'),
+      rated(3, 2, 'car'),
+      rated(4, -2, 'car'),
+      rated(5, -2, 'car'),
+      rated(6, 2, 'plane'), // seen once: too little to say
+      rated(7, null, 'walk'), // unrated: ignored
     ];
-    Iterable<EntryActivity> activityOf(Entry e) =>
-        [if (e.activity case final a?) a];
-    expect(moodAssociations(entries, 2, activityOf), [
-      (factor: EntryActivity.walking, matching: 2, total: 2),
-      (factor: EntryActivity.vehicle, matching: 1, total: 3),
+    Iterable<String> factorOf(Entry e) => [factors[e.id]!];
+    expect(moodAssociations(entries, 2, factorOf), [
+      (factor: 'walk', matching: 2, total: 2),
+      (factor: 'car', matching: 1, total: 3),
     ]);
-    expect(moodAssociations(entries, -2, activityOf).single.factor,
-        EntryActivity.vehicle);
+    expect(moodAssociations(entries, -2, factorOf).single.factor, 'car');
   });
 }

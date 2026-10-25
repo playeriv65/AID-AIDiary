@@ -45,7 +45,8 @@ void main() {
     folder = await Directory.systemTemp.createTemp('aid_shell_test');
     final path = p.join(folder.path, 'diary.db');
     final db = await databaseFactoryFfi.openDatabase(path);
-    await db.execute('CREATE TABLE entries (id INTEGER PRIMARY KEY, text TEXT)');
+    await db
+        .execute('CREATE TABLE entries (id INTEGER PRIMARY KEY, text TEXT)');
     await db.insert('entries', {'id': 1, 'text': 'met Wang at the park'});
     await db.insert('entries', {'id': 2, 'text': 'rainy, stayed in'});
     await db.close();
@@ -80,8 +81,8 @@ void main() {
     final out = await shell.run(
         r'''printf '{"a":[1,2,3]}' | jq '.a | add'; echo "x y z" | wc -w''');
     expect(out.exitCode, 0);
-    expect(out.stdout.split('\n').take(2).map((line) => line.trim()),
-        ['6', '3']);
+    expect(
+        out.stdout.split('\n').take(2).map((line) => line.trim()), ['6', '3']);
   });
 
   test('sql answers from the diary, and pipes on', () async {
@@ -92,8 +93,8 @@ void main() {
   });
 
   test('aid runs actions in the app', () async {
-    final out = await shell.run(
-        r'''aid entry.create "text=from the shell" | jq -r .result.id''');
+    final out = await shell
+        .run(r'''aid entry.create "text=from the shell" | jq -r .result.id''');
     expect(out.exitCode, 0, reason: out.stderr);
     expect(out.stdout.trim(), '3');
     expect(created, ['from the shell']);

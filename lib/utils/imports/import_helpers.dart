@@ -5,6 +5,8 @@
 import 'dart:typed_data';
 import 'dart:math' show min;
 
+import 'package:aid_diary/models/day_weather.dart';
+import 'package:aid_diary/database/app_database.dart';
 import 'package:aid_diary/database/entry_tag_dao.dart';
 import 'package:aid_diary/database/image_storage.dart';
 import 'package:aid_diary/database/import_source_dao.dart';
@@ -15,6 +17,8 @@ import 'package:aid_diary/models/tag.dart';
 import 'package:aid_diary/providers/entries_provider.dart';
 import 'package:aid_diary/providers/entry_images_provider.dart';
 import 'package:aid_diary/providers/tags_provider.dart';
+import 'package:aid_diary/providers/weather_provider.dart';
+import 'package:aid_diary/utils/entry_preview.dart';
 import 'package:aid_diary/utils/operation_outcome.dart';
 import 'package:path/path.dart' as p;
 
@@ -49,9 +53,14 @@ class ImportedEntry {
       this.photos = const [],
       this.tags = const [],
       this.source,
-      this.favorite = false});
+      this.favorite = false,
+      this.weather});
 
   final Entry entry;
+
+  /// The weather the other journal kept with the entry; it becomes the
+  /// imported weather of its day at its place.
+  final EntryWeather? weather;
   final List<EntryImage> images;
   final List<ImportedPhoto> photos;
 
@@ -79,8 +88,11 @@ Future<void> addImportedEntries(
         : !await ImportSourceDao.contains(
             source.format, source.id, source.hash);
     if (shouldAdd) {
-      final addedEntry =
-          await EntriesProvider.instance.add(imported.entry, skipUpdate: true);
+      final entry = titledByHeading(imported.entry);
+      final addedEntry = await EntriesProvider.instance.add(
+          entry.copy(
+              location: entry.location?.withSource(LocationSource.imported)),
+          skipUpdate: true);
       try {
         for (final image in imported.images) {
           await EntryImagesProvider.instance
@@ -135,6 +147,14 @@ Future<void> addImportedEntries(
               tagId: favorite.id!,
               timeCreate: addedEntry.timeCreate));
         }
+        if (imported.weather case final weather?) {
+          await WeatherProvider.write(
+              AppDatabase.instance.database!,
+              addedEntry.day,
+              weatherPlaceOf(addedEntry.location),
+              weather,
+              WeatherSource.imported);
+        }
         if (source != null) {
           await ImportSourceDao.add(
               format: source.format,
@@ -152,6 +172,7 @@ Future<void> addImportedEntries(
     updateStatus("${((processedEntries / totalEntries) * 100).round()}%");
   }
   await tags.orderMadeByUse();
+  await WeatherProvider.instance.load();
 }
 
 /// Finds tags by name for an import, creating the missing ones once.

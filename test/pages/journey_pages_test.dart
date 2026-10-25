@@ -39,8 +39,8 @@ void main() {
   testWidgets('journal groups by day and shows the selection beside the list',
       (tester) async {
     final now = DateTime.now();
-    final today = await DiaryAppHarness.addEntry(tester, '# 早晨\n喝了咖啡', now,
-        mood: 1, location: const EntryLocation(name: '河边'));
+    final today = await DiaryAppHarness.addEntry(tester, '喝了咖啡', now,
+        title: '早晨', mood: 1, location: const EntryLocation(name: '河边'));
     await DiaryAppHarness.addEntry(
         tester, '昨天的事', now.subtract(const Duration(days: 1)));
     DiaryAppHarness.size(tester, const Size(1280, 800));
@@ -386,7 +386,8 @@ void main() {
             .widget<IconButton>(find.byKey(const ValueKey('entry-close')))
             .onPressed!(),
         () => EntryStore.instance.entries.isNotEmpty);
-    expect(EntryStore.instance.entries.single.text, '# 周末\n去了公园');
+    final saved = EntryStore.instance.entries.single;
+    expect((saved.title, saved.text), ('周末', '去了公园'));
     await tester.pumpWidget(const SizedBox.shrink());
   });
 
@@ -464,33 +465,27 @@ void main() {
     await tester.pumpWidget(const SizedBox.shrink());
   });
 
-  testWidgets('search filters expand inline and match activity and mood',
+  testWidgets('search matches titles and filters expand inline by mood',
       (tester) async {
     final walk = await DiaryAppHarness.addEntry(tester, '散步', DateTime.now(),
-        mood: 1, activity: EntryActivity.walking);
-    await DiaryAppHarness.addEntry(tester, '开车', DateTime.now(),
-        mood: 1, activity: EntryActivity.vehicle);
-    await DiaryAppHarness.addEntry(tester, '走路但难过', DateTime.now(),
-        mood: -2, activity: EntryActivity.walking);
+        title: '公园', mood: 1);
+    await DiaryAppHarness.addEntry(tester, '开车', DateTime.now(), mood: 1);
+    await DiaryAppHarness.addEntry(tester, '公园但难过', DateTime.now(), mood: -2);
     DiaryAppHarness.size(tester, const Size(390, 844));
     await tester.pumpWidget(harness.app(const SearchPage()));
     await tester.pumpAndSettle();
-    final activity = find.byKey(const ValueKey('search-filter-activity'));
-    expect(find.descendant(of: activity, matching: find.text('7')),
-        findsOneWidget);
-    await tapKey(tester, 'search-filter-activity');
-    await tapKey(tester, 'search-activity-walking');
-    expect(find.descendant(of: activity, matching: find.text('1')),
-        findsOneWidget);
+    await tester.enterText(find.byKey(const ValueKey('search-field')), '公园');
+    await tester.pumpAndSettle();
+    expect(find.byKey(ValueKey('journal-entry-${walk.id}')), findsOneWidget);
     expect(find.text('开车'), findsNothing);
-    expect(find.text('走路但难过'), findsOneWidget);
+    expect(find.text('公园但难过'), findsOneWidget);
     for (final key in ['search-filter-mood', 'search-mood-1']) {
       await tester.ensureVisible(find.byKey(ValueKey(key)));
       await tester.pumpAndSettle();
       await tapKey(tester, key);
     }
     expect(find.byKey(ValueKey('journal-entry-${walk.id}')), findsOneWidget);
-    expect(find.text('走路但难过'), findsNothing);
+    expect(find.text('公园但难过'), findsNothing);
     await tester.pumpWidget(const SizedBox.shrink());
   });
 

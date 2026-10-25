@@ -15,8 +15,8 @@ void main() {
   });
 
   final time = DateTime(2026, 10, 20, 8, 40);
-  final entry =
-      Entry(text: '# 河边散步\n空气有点冷 <b>', timeCreate: time, timeModified: time);
+  final entry = Entry(
+      title: '河边散步', text: '空气有点冷 <b>', timeCreate: time, timeModified: time);
   EntryImage media(String name) =>
       EntryImage(entryId: 1, imgPath: name, imgRank: 0, timeCreate: time);
 

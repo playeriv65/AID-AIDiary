@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'package:aid_diary/models/entry.dart';
+
 typedef EntryPreview = ({String? title, String snippet});
 
 final _heading = RegExp(r'^\s{0,3}#{1,6}\s+');
@@ -23,9 +25,11 @@ String plainMarkdownLine(String line) => line
     .trim();
 
 final _titleLine = RegExp(r'^# +(.*)$');
+final _blankLines = RegExp(r'^(?:[ \t]*\n)+');
 
-/// An entry has a title only when the user wrote one: a first line that is a
-/// top-level heading. The editor keeps it in a field of its own.
+/// The title in text from where an entry's title is its first line, when
+/// that is a top-level heading: older versions of this diary and the
+/// journals it imports from. Blank lines after it go with it.
 ({String title, String body}) splitEntryTitle(String text) {
   final end = text.indexOf('\n');
   final match =
@@ -33,14 +37,16 @@ final _titleLine = RegExp(r'^# +(.*)$');
   if (match == null) return (title: '', body: text);
   return (
     title: match[1]!.trim(),
-    body: end == -1 ? '' : text.substring(end + 1)
+    body: end == -1 ? '' : text.substring(end + 1).replaceFirst(_blankLines, '')
   );
 }
 
-/// The entry text for a [title], which may be empty, above [body].
-String joinEntryTitle(String title, String body) {
-  final line = title.replaceAll('\n', ' ').trim();
-  return line.isEmpty ? body : '# $line\n$body';
+/// [entry] without a title of its own, titled by the heading its text
+/// starts with, if any.
+Entry titledByHeading(Entry entry) {
+  if (entry.title.isNotEmpty) return entry;
+  final (:title, :body) = splitEntryTitle(entry.text);
+  return title.isEmpty ? entry : entry.copy(title: title, text: body);
 }
 
 /// Shared text goes below the entry's own, after a blank line.
@@ -53,10 +59,18 @@ String mergeSharedText(String baseText, String? sharedText) {
 /// entry is not read and laid out in full for a line or two of it.
 const snippetCharacters = 300;
 
-/// Splits entry markdown into its title, if written, and a one-line snippet
-/// of at most [snippetCharacters], ending in an ellipsis when cut.
-EntryPreview entryPreview(String text) {
-  final (:title, :body) = splitEntryTitle(text.trimLeft());
+/// An entry's title, when it has one, and [entrySnippet] of its text.
+EntryPreview entryPreview(Entry entry) {
+  final title = entry.title.trim();
+  return (
+    title: title.isEmpty ? null : title,
+    snippet: entrySnippet(entry.text),
+  );
+}
+
+/// Entry markdown as one line of plain text of at most [snippetCharacters],
+/// ending in an ellipsis when cut.
+String entrySnippet(String body) {
   final snippet = StringBuffer();
   for (var start = 0;
       start < body.length && snippet.length <= snippetCharacters;) {
@@ -70,11 +84,7 @@ EntryPreview entryPreview(String text) {
     if (snippet.isNotEmpty) snippet.write(' ');
     snippet.write(plain);
   }
-  final plainTitle = plainMarkdownLine(title);
-  return (
-    title: plainTitle.isEmpty ? null : plainTitle,
-    snippet: cutSnippet(snippet.toString(), snippetCharacters),
-  );
+  return cutSnippet(snippet.toString(), snippetCharacters);
 }
 
 /// [snippet] cut to [maxCharacters] and an ellipsis, when longer.

@@ -105,10 +105,6 @@ Future<OperationOutcome> importFromDaylio(PickedFile selectedFile,
       final title = entry['note_title'] ?? '';
       final note = entry['note'] ?? '';
 
-      final parts = <String>[];
-      if (title.isNotEmpty) parts.add("# $title");
-      if (note.isNotEmpty) parts.add(html2md.convert(note));
-
       final mood = entry['mood'];
       final mappedMood =
           mood != null ? moodValueMapping[mood.clamp(1, 5)] : null;
@@ -116,7 +112,8 @@ Future<OperationOutcome> importFromDaylio(PickedFile selectedFile,
       if (!EntriesProvider.instance.hasEntryAtTimestamp(datetime)) {
         final addedEntry = await EntriesProvider.instance.add(
             Entry(
-              text: parts.join('\n\n'),
+              title: title,
+              text: note.isEmpty ? '' : html2md.convert(note),
               mood: mappedMood,
               timeCreate: datetime,
               timeModified: datetime,

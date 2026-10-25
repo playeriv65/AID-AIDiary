@@ -44,7 +44,11 @@ class HomeWidgetSnapshot {
       writtenDate:
           latest == null ? '' : DateFormat('yyyy-MM-dd').format(latest.day),
       dayStartHour: DiaryDay.startHour,
-      snippet: latest == null ? '' : firstLine(latest.text),
+      snippet: latest == null
+          ? ''
+          : latest.title.isNotEmpty
+              ? latest.title
+              : firstLine(latest.text),
       streak: streak > 0 ? l10n.streakCurrent(streak) : '',
       done: l10n.widgetDone,
       pending: l10n.widgetPending,

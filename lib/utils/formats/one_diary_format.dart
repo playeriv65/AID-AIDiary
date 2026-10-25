@@ -5,6 +5,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:aid_diary/models/day_weather.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/utils/formats/time_zones.dart';
 import 'package:aid_diary/utils/imports/import_archive.dart';
@@ -166,20 +167,18 @@ Future<List<ImportedEntry>> decodeOneDiaryArchive(
     final sourceJson = jsonEncode(_canonical(row));
     entries.add(ImportedEntry(
       Entry(
-        text: [
-          if (title.isNotEmpty) '# $title',
-          if (markdown.isNotEmpty) markdown
-        ].join('\n\n'),
+        title: title,
+        text: markdown,
         timeCreate: created.wall,
         timeModified: _epoch(row['updateTime'] ?? row['createTime']).toLocal(),
         utcOffset: offset,
         day: day,
         location: place,
-        weather: weatherCode == null || temperature == null
-            ? null
-            : EntryWeather(code: weatherCode, temperature: temperature),
         isHidden: row['isHidden'] == true,
       ),
+      weather: weatherCode == null || temperature == null
+          ? null
+          : EntryWeather(code: weatherCode, temperature: temperature),
       tags: [for (final name in tags) (name: name, value: null)],
       photos: photos,
       source: ImportedSource(

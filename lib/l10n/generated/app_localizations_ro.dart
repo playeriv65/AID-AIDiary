@@ -1138,7 +1138,7 @@ class AppLocalizationsRo extends AppLocalizations {
   String get weatherRemove => 'Îndepărtați vremea';
 
   @override
-  String get activityTitle => 'Activitate';
+  String get weatherTemperature => 'Temperatură';
 
   @override
   String get activityStill => 'Totuşi';
@@ -1160,15 +1160,6 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get activityExercise => 'Exercițiu';
-
-  @override
-  String get activityDetect => 'Detectează activitatea curentă';
-
-  @override
-  String get activityDetectFailed => 'Nu s-a putut detecta o activitate.';
-
-  @override
-  String get activityRemove => 'Eliminați activitatea';
 
   @override
   String get settingsAutoAddTitle => 'Adăugați automat';

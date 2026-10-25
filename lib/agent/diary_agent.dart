@@ -25,8 +25,8 @@ class DiaryAgent {
     _agent = StatefulAgent(
       name: 'aid_diary',
       systemPrompts: [systemPrompt],
-      client: client ??
-          OpenAIClient(apiKey: model.apiKey, baseUrl: model.baseUrl),
+      client:
+          client ?? OpenAIClient(apiKey: model.apiKey, baseUrl: model.baseUrl),
       modelConfig: ModelConfig(model: model.model),
       state: AgentState.empty(),
       tools: [_bash],

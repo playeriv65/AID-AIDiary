@@ -6,6 +6,7 @@ import 'dart:async';
 
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/database/entry_store.dart';
+import 'package:aid_diary/models/day_weather.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/models/entry_link.dart';
 import 'package:aid_diary/models/image.dart';
@@ -14,6 +15,7 @@ import 'package:aid_diary/providers/links_provider.dart';
 import 'package:aid_diary/providers/entry_images_provider.dart';
 import 'package:aid_diary/providers/tags_provider.dart';
 import 'package:aid_diary/providers/templates_provider.dart';
+import 'package:aid_diary/providers/weather_provider.dart';
 import 'package:aid_diary/services/location_service.dart';
 import 'package:aid_diary/services/weather_service.dart';
 import 'package:aid_diary/utils/diary_day.dart';
@@ -47,6 +49,7 @@ class EditEntryViewModel extends ChangeNotifier {
     EntryImagesProvider? entryImages,
     LocationService? locationService,
     WeatherService? weatherService,
+    WeatherProvider? weathers,
     DateTime Function()? clock,
     this.saveDelay = const Duration(seconds: 5),
     this.onSavedForToday,
@@ -55,11 +58,12 @@ class EditEntryViewModel extends ChangeNotifier {
         _entryImages = entryImages ?? EntryImagesProvider.instance,
         _locationService = locationService,
         _weatherService = weatherService,
+        _weathers = weathers ?? WeatherProvider.instance,
         _clock = clock ?? DateTime.now,
         isNew = entry == null,
         _images = [for (final image in images) image.copy()] {
     _draftSession = _store.beginDraft(entry);
-    final String baselineText;
+    final ({String title, String body}) baseline;
     if (entry == null) {
       final now = _clock();
       // Asking only makes sense when no day was chosen for the entry.
@@ -77,11 +81,14 @@ class EditEntryViewModel extends ChangeNotifier {
           for (final templateTag in _tags.getTemplateTagsForTemplate(id))
             templateTag.tagId
       ];
-      baselineText = templateText;
+      // A template that starts with a heading names the entry.
+      baseline = splitEntryTitle(templateText);
+      final seeded = splitEntryTitle(mergeSharedText(templateText, sharedText));
       tagSource = TagAttachmentSource(
           supportsValues: true, initialTagIds: templateTagIds);
       _entry = Entry(
-        text: mergeSharedText(templateText, sharedText),
+        title: seeded.title,
+        text: seeded.body,
         mood: initialMood,
         timeCreate: now,
         timeModified: now,
@@ -93,34 +100,29 @@ class EditEntryViewModel extends ChangeNotifier {
       tagSource =
           TagAttachmentSource.fromEntryTags(_tags.getEntryTagsForEntry(_id));
       this.refs = [...LinksProvider.instance.refsOf(_id)];
-      baselineText = entry.text;
+      baseline = (title: entry.title, body: entry.text);
       if (sharedText != null) {
         _entry = entry.copy(text: mergeSharedText(entry.text, sharedText));
       }
     }
     _unsaved = isNew;
     _dirty = EntryDraftDirtyTracker(
-      text: baselineText,
+      title: baseline.title,
+      text: baseline.body,
       // A preselected mood is a choice the user made, so it is a change.
       mood: isNew ? null : _entry.mood,
       date: _entry.timeCreate,
       day: _entry.day,
       location: isNew ? null : _entry.location,
-      weather: isNew ? null : _entry.weather,
-      activity: isNew ? null : _entry.activity,
       seededTagIds: tagSource.attachedTagIds.toSet(),
     );
     mood = _entry.mood;
     location = _entry.location;
-    weather = _entry.weather;
-    activity = _entry.activity;
     writtenAt = _entry.timeCreate;
     // The parameter of the same name only seeds a new entry.
     this.diaryDay = _entry.day;
-    final (:title, :body) = splitEntryTitle(_entry.text);
-    initialTitle = title;
-    initialBody = body;
-    text = joinEntryTitle(title, body);
+    title = _entry.title;
+    text = _entry.text;
     tagSource.addListener(_markEdited);
   }
 
@@ -129,6 +131,7 @@ class EditEntryViewModel extends ChangeNotifier {
   final EntryImagesProvider _entryImages;
   final LocationService? _locationService;
   final WeatherService? _weatherService;
+  final WeatherProvider _weathers;
   final DateTime Function() _clock;
 
   /// How long after the last change a draft is saved.
@@ -154,18 +157,15 @@ class EditEntryViewModel extends ChangeNotifier {
   /// The entry as last saved, or as opened.
   Entry get entry => _entry;
 
-  /// The title and body the editor's fields start with.
-  late final String initialTitle;
-  late final String initialBody;
-
-  /// The whole text: the title, if any, above the body.
+  /// The title, empty when there is none, and the text below it.
+  late String title;
   late String text;
   int? mood;
   EntryLocation? location;
-  EntryWeather? weather;
 
-  /// Only imported entries still carry one.
-  EntryActivity? activity;
+  /// The weather of the diary day at the entry's place, which other entries
+  /// of that day and place share.
+  DayWeather? get weather => _weathers.of(diaryDay, location);
 
   /// When the entry was actually written.
   late DateTime writtenAt;
@@ -221,20 +221,33 @@ class EditEntryViewModel extends ChangeNotifier {
 
   /// The title and body as typed; selection moves are not edits.
   void setText(String title, String body) {
-    final joined = joinEntryTitle(title, body);
-    if (joined == text) return;
-    text = joined;
+    final line = title.replaceAll('\n', ' ').trim();
+    if (line == this.title && body == text) return;
+    this.title = line;
+    text = body;
     _markEdited();
   }
 
   void setMood(int? value) => _edit(() => mood = value);
   void setLocation(EntryLocation? value) => _edit(() => location = value);
-  void setWeather(EntryWeather? value) => _edit(() => weather = value);
-  void setActivity(EntryActivity? value) => _edit(() => activity = value);
 
+  /// Sets the weather of the diary day at the entry's place, the writer's
+  /// own unless looked up, or removes it with null; it is kept at once.
+  Future<void> setWeather(EntryWeather? value,
+      [WeatherSource source = WeatherSource.manual]) async {
+    await _weathers.set(diaryDay, location, value, source);
+    if (!_disposed) notifyListeners();
+  }
+
+  /// A place found for now does not belong to another day.
   void setDiaryDay(DateTime day) => _edit(() {
         diaryDay = DiaryDay.dateOf(day);
         askDay = false;
+        if (location != null &&
+            location == _filledLocation &&
+            diaryDay != DiaryDay.defaultFor(writtenAt)) {
+          location = null;
+        }
       });
 
   /// Takes the tags of a template inserted into the text.
@@ -274,8 +287,13 @@ class EditEntryViewModel extends ChangeNotifier {
 
   // Filled in, not edited.
 
+  /// Where the device was found to be for this entry, while it is unchanged.
+  EntryLocation? _filledLocation;
+
   /// Fills place and weather for a new entry when the settings ask for it.
-  /// Anything set meanwhile is kept, and filled values count as untouched.
+  /// Anything set meanwhile is kept, and the filled place counts as
+  /// untouched. Weather found is the day's at the entry's place, kept at
+  /// once unless the day there already has some.
   Future<void> fillCurrentContext(
       {required bool place,
       required bool weather,
@@ -292,17 +310,19 @@ class EditEntryViewModel extends ChangeNotifier {
         here = null;
       }
     }
-    EntryWeather? found;
-    if (weather && this.weather == null && (here?.hasCoordinates ?? false)) {
-      found = await (_weatherService ?? WeatherService())
-          .at(here!.latitude!, here.longitude!, writtenAt);
-    }
     locating = false;
-    if (place && location == null) location = here;
-    this.weather ??= found;
-    if (_unsaved) {
-      _dirty.adoptAutoFill(
-          location: location, weather: this.weather, activity: activity);
+    if (place && location == null && here != null) {
+      location = _filledLocation = here.withSource(LocationSource.gps);
+      if (_unsaved) _dirty.adoptAutoFill(location: location);
+    }
+    if (weather && this.weather == null && (here?.hasCoordinates ?? false)) {
+      final day = diaryDay;
+      final at = location;
+      final found = await (_weatherService ?? WeatherService())
+          .at(here!.latitude!, here.longitude!, weatherTimeFor(day, writtenAt));
+      if (found != null) {
+        await _weathers.set(day, at, found, WeatherSource.queried);
+      }
     }
     if (!_disposed) notifyListeners();
   }
@@ -323,7 +343,10 @@ class EditEntryViewModel extends ChangeNotifier {
           photo.latitude!, photo.longitude!,
           languageCode: languageCode);
       place = EntryLocation(
-          latitude: photo.latitude, longitude: photo.longitude, name: name);
+          latitude: photo.latitude,
+          longitude: photo.longitude,
+          name: name,
+          source: LocationSource.photo);
     }
     return (day: day, place: place);
   }
@@ -385,14 +408,13 @@ class EditEntryViewModel extends ChangeNotifier {
     if (saved != null) _adoptEntry(saved);
     final entry = _hasFieldChanges()
         ? _entry.copy(
+            title: title,
             text: text,
             mood: mood,
             timeCreate: writtenAt,
             day: diaryDay,
             timeModified: _clock(),
             location: location,
-            weather: weather,
-            activity: activity,
           )
         : _entry;
     return EntryDraft(
@@ -420,26 +442,25 @@ class EditEntryViewModel extends ChangeNotifier {
     _id = saved.id!;
     _unsaved = false;
     _dirty.markSaved(
+      title: saved.title,
       text: saved.text,
       mood: saved.mood,
       date: saved.timeCreate,
       day: saved.day,
       location: saved.location,
-      weather: saved.weather,
-      activity: saved.activity,
     );
   }
 
   bool _hasFieldChanges() => _dirty.hasFieldChanges(
+      title: title,
       text: text,
       mood: mood,
       date: writtenAt,
       day: diaryDay,
-      location: location,
-      weather: weather,
-      activity: activity);
+      location: location);
 
   bool _hasNewEntryChanges() => _dirty.hasUnsavedChanges(
+        title: title,
         text: text,
         mood: mood,
         date: writtenAt,
@@ -447,8 +468,6 @@ class EditEntryViewModel extends ChangeNotifier {
         tagSource: tagSource,
         hasImages: _images.isNotEmpty,
         location: location,
-        weather: weather,
-        activity: activity,
       );
 
   bool _disposed = false;

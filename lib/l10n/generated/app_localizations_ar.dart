@@ -1117,7 +1117,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get weatherRemove => 'إزالة الطقس';
 
   @override
-  String get activityTitle => 'النشاط';
+  String get weatherTemperature => 'درجة الحرارة';
 
   @override
   String get activityStill => 'لا يزال';
@@ -1139,15 +1139,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get activityExercise => 'تمرين';
-
-  @override
-  String get activityDetect => 'كشف النشاط الحالي';
-
-  @override
-  String get activityDetectFailed => 'تعذر اكتشاف النشاط.';
-
-  @override
-  String get activityRemove => 'إزالة النشاط';
 
   @override
   String get settingsAutoAddTitle => 'أضف تلقائيا';

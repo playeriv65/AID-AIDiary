@@ -48,9 +48,8 @@ class ReviewStoryPage extends StatelessWidget {
             '${DateFormat.MMMd(locale).format(review.end.subtract(const Duration(days: 1)))}'
         : '${review.start.year}';
     final highlight = review.highlight;
-    final hasFavorites = review.topTags.isNotEmpty ||
-        review.topActivities.isNotEmpty ||
-        review.topPlaces.isNotEmpty;
+    final hasFavorites =
+        review.topTags.isNotEmpty || review.topPlaces.isNotEmpty;
     return StoryGroup(
       id: 'review-${span.name}',
       subtitle: subtitle,
@@ -243,11 +242,6 @@ class _Favorites extends StatelessWidget {
               for (final t in review.topTags)
                 (Icons.local_offer_outlined, t.item, t.count)
             ]),
-          if (review.topActivities.isNotEmpty)
-            group(l10n.activityTitle, [
-              for (final a in review.topActivities)
-                (activityIcon(a.item), activityLabel(a.item, l10n), a.count)
-            ]),
           if (review.topPlaces.isNotEmpty)
             group(l10n.locationTitle, [
               for (final p in review.topPlaces)
@@ -333,7 +327,7 @@ class _Highlight extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final preview = entryPreview(entry.text);
+    final preview = entryPreview(entry);
     return Center(
       child: Card.filled(
         child: InkWell(

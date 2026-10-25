@@ -3,7 +3,8 @@ library;
 
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/database/entry_store.dart';
-import 'package:aid_diary/models/entry.dart';
+import 'package:aid_diary/models/tag.dart';
+import 'package:aid_diary/providers/tags_provider.dart';
 import 'package:aid_diary/pages/edit_entry_page.dart';
 import 'package:aid_diary/pages/journal_page.dart';
 import 'package:aid_diary/pages/settings/appearance_settings.dart';
@@ -19,14 +20,27 @@ void main() {
   final harness = DiaryAppHarness()..register();
 
   testWidgets('the mood associations card switches mood', (tester) async {
-    for (final (day, mood, activity) in [
-      (1, 2, EntryActivity.walking),
-      (2, 2, EntryActivity.walking),
-      (3, -2, EntryActivity.vehicle),
-      (4, -2, EntryActivity.vehicle),
+    final tags = await tester.runAsync(() async => {
+          for (final name in ['步行', '乘车'])
+            name: await TagsProvider.instance.add(Tag(
+                name: name,
+                tagType: TagType.label,
+                timeCreate: DateTime(2026, 10),
+                timeModified: DateTime(2026, 10))),
+        });
+    for (final (day, mood, tag) in [
+      (1, 2, '步行'),
+      (2, 2, '步行'),
+      (3, -2, '乘车'),
+      (4, -2, '乘车'),
     ]) {
-      await DiaryAppHarness.addEntry(tester, '', DateTime(2026, 10, day),
-          mood: mood, activity: activity);
+      final entry = await DiaryAppHarness.addEntry(
+          tester, '', DateTime(2026, 10, day),
+          mood: mood);
+      await tester.runAsync(() => TagsProvider.instance.addEntryTag(EntryTag(
+          entryId: entry.id!,
+          tagId: tags![tag]!.id!,
+          timeCreate: entry.timeCreate)));
     }
     DiaryAppHarness.size(tester, const Size(390, 844));
     await tester.pumpWidget(harness.app(Scaffold(

@@ -72,8 +72,8 @@ ImportedEntry _entry(
   final sorted = [...attachments]..sort((a, b) => a.$1.compareTo(b.$1));
   return ImportedEntry(
     Entry(
-      text: [if (title.isNotEmpty) '# $title', if (text.isNotEmpty) text]
-          .join('\n\n'),
+      title: title,
+      text: text,
       mood: mood == null ? null : _moods[mood.clamp(1, 5)],
       timeCreate: created,
       timeModified: created,

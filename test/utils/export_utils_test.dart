@@ -5,6 +5,8 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/models/day_weather.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/models/image.dart';
 import 'package:aid_diary/storage/in_memory_file_store.dart';
@@ -12,11 +14,14 @@ import 'package:aid_diary/utils/export_utils.dart';
 import 'package:aid_diary/utils/formats/archive_export.dart';
 import 'package:aid_diary/utils/formats/journey_format.dart';
 import 'package:aid_diary/utils/formats/day_one_format.dart';
+import 'package:aid_diary/utils/entry_preview.dart';
 import 'package:aid_diary/utils/imports/import_json.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 void main() {
+  final zh = lookupAppLocalizations(const Locale('zh'));
   late InMemoryFileStore noteStore;
   late InMemoryFileStore imageStore;
   late MarkdownExportWriter writer;
@@ -106,17 +111,17 @@ void main() {
         equals(['image_2026-03-04_0.png', 'image_2026-03-04_2_0.png']));
   });
 
-  test('the JSON export reads back with place, weather and activity', () {
+  test('the JSON export reads back with title, place and weather', () {
     final entry = Entry(
-        text: '# 雨天\n散步',
+        title: '雨天',
+        text: '散步',
         mood: 1,
         timeCreate: DateTime(2026, 10, 18, 9),
         timeModified: DateTime(2026, 10, 18, 10),
         location:
             const EntryLocation(name: '外滩', latitude: 31.2, longitude: 121.5),
-        weather: const EntryWeather(code: 61, temperature: 14.5),
-        activity: EntryActivity.walking,
         openAt: DateTime(2020, 1, 1));
+    const weather = EntryWeather(code: 61, temperature: 14.5);
     final json = encodeJsonEntries([entry],
         imagesOf: (_) => [
               EntryImage(
@@ -125,20 +130,39 @@ void main() {
                   imgRank: 0,
                   timeCreate: DateTime(2026, 10, 18))
             ],
-        tagsOf: (_) => [(name: '精力', value: '7')]);
+        tagsOf: (_) => [(name: '精力', value: '7')],
+        weatherOf: (_) => weather);
     expect((jsonDecode(json) as List).single['tags'], [
       {'name': '精力', 'value': '7'}
     ]);
-    final back = decodeJsonEntries(utf8.encode(json)).single;
+    final back = decodeJsonEntries(utf8.encode(json), zh).single;
+    expect(back.entry.title, '雨天');
     expect(back.entry.text, entry.text);
     expect(back.entry.mood, 1);
     expect(back.entry.timeModified, entry.timeModified);
     expect(back.entry.location, entry.location);
-    expect(back.entry.weather, entry.weather);
-    expect(back.entry.activity, EntryActivity.walking);
+    expect(back.weather, weather);
     expect(back.entry.openAt, DateTime(2020, 1, 1));
     expect(back.images.single.imgPath, 'a.jpg');
     expect(back.tags, [(name: '精力', value: '7')]);
+  });
+
+  test('an older JSON export brings its activity as a tag', () {
+    final back = decodeJsonEntries(
+            utf8.encode(jsonEncode([
+              {
+                'text': '# 雨天\n散步',
+                'timeCreated': '2026-10-18T09:00:00.000',
+                'timeModified': '2026-10-18T09:00:00.000',
+                'activity': 'walking',
+                'tags': [],
+              }
+            ])),
+            zh)
+        .single;
+    expect(back.tags, [(name: '步行', value: null)]);
+    // The heading is taken as the title when the entry is added.
+    expect(titledByHeading(back.entry).title, '雨天');
   });
 
   test(
@@ -152,6 +176,9 @@ void main() {
     }, tagsOf: (entry) {
       expect(entry, same(open));
       return [];
+    }, weatherOf: (entry) {
+      expect(entry, same(open));
+      return null;
     });
     expect((jsonDecode(json) as List).single['text'], 'Open');
     expect(json, isNot(contains('Private')));

@@ -61,15 +61,15 @@ class ImportRegistry {
       ImportFormat.json,
       (localizations) => localizations.formatJsonExport,
       (file, localizations, updateStatus) =>
-          json.importFromJson(file, updateStatus),
+          json.importFromJson(file, localizations, updateStatus),
       extensions: _jsonExtensions,
       mimeTypes: _jsonMimeTypes,
     ),
     ImportFormatOption(
       ImportFormat.dayOne,
       (localizations) => localizations.formatDayOne,
-      (file, localizations, updateStatus) => importArchive(
-          file, localizations, updateStatus, decodeDayOneArchive,
+      (file, localizations, updateStatus) => importArchive(file, localizations,
+          updateStatus, (files) => decodeDayOneArchive(files, localizations),
           singleFileName: 'Journal.json'),
     ),
     ImportFormatOption(
@@ -97,8 +97,8 @@ class ImportRegistry {
     ImportFormatOption(
       ImportFormat.journey,
       (localizations) => localizations.formatJourney,
-      (file, localizations, updateStatus) => importArchive(
-          file, localizations, updateStatus, decodeJourneyArchive,
+      (file, localizations, updateStatus) => importArchive(file, localizations,
+          updateStatus, (files) => decodeJourneyArchive(files, localizations),
           singleFileName: 'entry.json'),
     ),
     ImportFormatOption(

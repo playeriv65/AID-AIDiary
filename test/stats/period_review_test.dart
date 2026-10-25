@@ -5,15 +5,11 @@ import 'package:aid_diary/stats/period_review.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 Entry _entry(int id, DateTime time,
-        {int? mood,
-        String text = '',
-        EntryActivity? activity,
-        String? place}) =>
+        {int? mood, String text = '', String? place}) =>
     Entry(
         id: id,
         text: text,
         mood: mood,
-        activity: activity,
         location: place == null ? null : EntryLocation(name: place),
         timeCreate: time,
         timeModified: time);
@@ -28,8 +24,7 @@ void main() {
   test('a period review counts what happened inside it', () {
     final entries = [
       _entry(5, DateTime(2026, 10, 25), mood: -1, text: 'outside'),
-      _entry(4, DateTime(2026, 10, 21, 20),
-          mood: 2, text: 'great long day', activity: EntryActivity.cycling),
+      _entry(4, DateTime(2026, 10, 21, 20), mood: 2, text: 'great long day'),
       _entry(3, DateTime(2026, 10, 21, 8), mood: 1, place: '家'),
       _entry(2, DateTime(2026, 10, 20), mood: 1, place: '家'),
       _entry(1, DateTime(2026, 10, 18), text: 'before'),
@@ -52,7 +47,6 @@ void main() {
     expect(review.photos.single.imgPath, 'a.jpg');
     expect(review.topTags.single, (item: '工作', count: 3));
     expect(review.topPlaces.single, (item: '家', count: 2));
-    expect(review.topActivities.single.item, EntryActivity.cycling);
     expect(review.highlight!.id, 4);
     expect(review.perMonth[9], 4);
   });

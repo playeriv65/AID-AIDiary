@@ -12,6 +12,7 @@ const String deprecatedImgPath = 'img_path';
 class EntryFields {
   static const List<String> values = [
     id,
+    title,
     text,
     mood,
     timeCreate,
@@ -19,15 +20,14 @@ class EntryFields {
     latitude,
     longitude,
     locationName,
-    weatherCode,
-    temperature,
-    activity,
+    locationSource,
     openAt,
     utcOffset,
     diaryDate,
     isHidden,
   ];
   static const String id = 'id';
+  static const String title = 'title';
   static const String text = 'text';
   static const String mood = 'mood';
   static const String timeCreate = 'time_create';
@@ -35,9 +35,14 @@ class EntryFields {
   static const String latitude = 'latitude';
   static const String longitude = 'longitude';
   static const String locationName = 'location_name';
+  static const String locationSource = 'location_source';
+
+  /// Dropped in database version 17; kept for the upgrades that add and
+  /// move or remove them.
   static const String weatherCode = 'weather_code';
   static const String temperature = 'temperature';
   static const String activity = 'activity';
+
   static const String openAt = 'open_at';
   static const String utcOffset = 'utc_offset';
   static const String diaryDate = 'diary_date';
@@ -47,46 +52,34 @@ class EntryFields {
   static const String deletedAt = 'deleted_at';
 }
 
-/// Weather when the entry was written: a WMO weather code and the air
-/// temperature in degrees Celsius.
-class EntryWeather {
-  const EntryWeather({required this.code, required this.temperature});
+/// How an entry's place was set: the device's position, a place picked from
+/// a search or the places nearby, a name typed in, a photo's position, or
+/// another journal's import.
+enum LocationSource {
+  gps,
+  picked,
+  typed,
+  photo,
+  imported;
 
-  final int code;
-  final double temperature;
-
-  @override
-  bool operator ==(Object other) =>
-      other is EntryWeather &&
-      other.code == code &&
-      other.temperature == temperature;
-
-  @override
-  int get hashCode => Object.hash(code, temperature);
-}
-
-/// What the writer was doing. The first five match motion detection.
-enum EntryActivity {
-  still,
-  walking,
-  running,
-  cycling,
-  vehicle,
-  flying,
-  exercise;
-
-  static EntryActivity? fromName(String? name) =>
-      values.where((a) => a.name == name).firstOrNull;
+  static LocationSource? byName(String? name) =>
+      values.where((source) => source.name == name).firstOrNull;
 }
 
 /// Where an entry was written. Coordinates are optional so a place can be
 /// named by hand without a location fix.
 class EntryLocation {
-  const EntryLocation({this.latitude, this.longitude, this.name});
+  const EntryLocation({this.latitude, this.longitude, this.name, this.source});
 
   final double? latitude;
   final double? longitude;
   final String? name;
+
+  /// Null for places set before database version 17.
+  final LocationSource? source;
+
+  EntryLocation withSource(LocationSource source) => EntryLocation(
+      latitude: latitude, longitude: longitude, name: name, source: source);
 
   bool get hasCoordinates => latitude != null && longitude != null;
   bool get isEmpty => !hasCoordinates && (name == null || name!.isEmpty);
@@ -101,21 +94,24 @@ class EntryLocation {
       other is EntryLocation &&
       other.latitude == latitude &&
       other.longitude == longitude &&
-      other.name == name;
+      other.name == name &&
+      other.source == source;
 
   @override
-  int get hashCode => Object.hash(latitude, longitude, name);
+  int get hashCode => Object.hash(latitude, longitude, name, source);
 }
 
 class Entry {
   final int? id;
+
+  /// What the writer named the entry; empty when they did not. Kept apart
+  /// from [text] since database version 17.
+  final String title;
   final String text;
   final int? mood;
   final DateTime timeCreate;
   final DateTime timeModified;
   final EntryLocation? location;
-  final EntryWeather? weather;
-  final EntryActivity? activity;
 
   /// A time capsule stays sealed until this moment.
   final DateTime? openAt;
@@ -137,13 +133,12 @@ class Entry {
 
   Entry({
     this.id,
+    this.title = '',
     required this.text,
     this.mood,
     required this.timeCreate,
     required this.timeModified,
     this.location,
-    this.weather,
-    this.activity,
     this.openAt,
     this.isHidden = false,
     this.utcOffset,
@@ -209,6 +204,10 @@ class Entry {
           timeCreate.minute, timeCreate.second)
       : timeCreate;
 
+  /// The text with the title as a heading above it, for formats and readers
+  /// without a title of their own.
+  String get markdown => title.isEmpty ? text : '# $title\n$text';
+
   /// Whether this is a time capsule that has not opened yet.
   bool get isSealed => openAt?.isAfter(DateTime.now()) ?? false;
 
@@ -216,13 +215,12 @@ class Entry {
 
   Entry copy({
     int? id,
+    String? title,
     String? text,
     Object? mood = _unset,
     DateTime? timeCreate,
     DateTime? timeModified,
     Object? location = _unset,
-    Object? weather = _unset,
-    Object? activity = _unset,
     Object? openAt = _unset,
     bool? isHidden,
     Object? utcOffset = _unset,
@@ -230,15 +228,13 @@ class Entry {
   }) =>
       Entry(
         id: id ?? this.id,
+        title: title ?? this.title,
         text: text ?? this.text,
         mood: mood == _unset ? this.mood : mood as int?,
         timeCreate: timeCreate ?? this.timeCreate,
         timeModified: timeModified ?? this.timeModified,
         location:
             location == _unset ? this.location : location as EntryLocation?,
-        weather: weather == _unset ? this.weather : weather as EntryWeather?,
-        activity:
-            activity == _unset ? this.activity : activity as EntryActivity?,
         openAt: openAt == _unset ? this.openAt : openAt as DateTime?,
         isHidden: isHidden ?? this.isHidden,
         utcOffset: utcOffset == _unset ? this.utcOffset : utcOffset as int?,
@@ -251,21 +247,17 @@ class Entry {
       latitude: (json[EntryFields.latitude] as num?)?.toDouble(),
       longitude: (json[EntryFields.longitude] as num?)?.toDouble(),
       name: json[EntryFields.locationName] as String?,
+      source:
+          LocationSource.byName(json[EntryFields.locationSource] as String?),
     );
     return Entry(
       id: json[EntryFields.id] as int?,
+      title: json[EntryFields.title] as String? ?? '',
       text: json[EntryFields.text] as String,
       mood: json[EntryFields.mood] as int?,
       timeCreate: parseLocalTime(json[EntryFields.timeCreate] as String),
       timeModified: parseLocalTime(json[EntryFields.timeModified] as String),
       location: location.isEmpty ? null : location,
-      weather: json[EntryFields.weatherCode] == null ||
-              json[EntryFields.temperature] == null
-          ? null
-          : EntryWeather(
-              code: json[EntryFields.weatherCode] as int,
-              temperature: (json[EntryFields.temperature] as num).toDouble()),
-      activity: EntryActivity.fromName(json[EntryFields.activity] as String?),
       openAt: switch (json[EntryFields.openAt]) {
         final String at => parseLocalTime(at),
         _ => null,
@@ -279,6 +271,7 @@ class Entry {
 
   Map<String, Object?> toJson() => {
         EntryFields.id: id,
+        EntryFields.title: title,
         EntryFields.text: text,
         EntryFields.mood: mood,
         EntryFields.timeCreate: timeCreate.toIso8601String(),
@@ -286,9 +279,7 @@ class Entry {
         EntryFields.latitude: location?.latitude,
         EntryFields.longitude: location?.longitude,
         EntryFields.locationName: location?.name,
-        EntryFields.weatherCode: weather?.code,
-        EntryFields.temperature: weather?.temperature,
-        EntryFields.activity: activity?.name,
+        EntryFields.locationSource: location?.source?.name,
         EntryFields.openAt: openAt?.toIso8601String(),
         EntryFields.utcOffset: utcOffset,
         EntryFields.diaryDate: DiaryDay.format(day),

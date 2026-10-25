@@ -14,10 +14,11 @@ class EntryActions {
   static Future<Template> saveAsTemplate(
       Entry entry, String fallbackName) async {
     final now = DateTime.now();
-    final title = entryPreview(entry.text).title;
+    final title = entryPreview(entry).title;
     final template = await TemplatesProvider.instance.add(Template(
         name: title ?? fallbackName,
-        text: entry.text,
+        // The heading names entries written from the template.
+        text: entry.markdown,
         timeCreate: now,
         timeModified: now));
     final tagIds = TagsProvider.instance

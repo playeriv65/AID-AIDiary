@@ -119,8 +119,8 @@ class _HiddenEntriesPageState extends State<HiddenEntriesPage> {
                           subtitle: entry.isSealed
                               ? Text(l10n.capsuleTitle)
                               : Text(
-                                  entryPreview(entry.text).title ??
-                                      entryPreview(entry.text).snippet,
+                                  entryPreview(entry).title ??
+                                      entryPreview(entry).snippet,
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis),
                           onTap: () async {

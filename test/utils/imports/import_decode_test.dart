@@ -5,24 +5,29 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/utils/imports/import_json.dart';
 import 'package:aid_diary/utils/imports/import_mybrain.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 Uint8List jsonBytes(Object data) =>
     Uint8List.fromList(utf8.encode(json.encode(data)));
 
 void main() {
+  final en = lookupAppLocalizations(const Locale('en'));
   group('decodeJsonEntries', () {
     test('decodes text, mood and timestamps', () {
-      final decoded = decodeJsonEntries(jsonBytes([
-        {
-          'text': 'a good day',
-          'mood': 2,
-          'timeCreated': '2026-01-02T03:04:05.000',
-          'timeModified': '2026-01-03T03:04:05.000',
-        }
-      ]));
+      final decoded = decodeJsonEntries(
+          jsonBytes([
+            {
+              'text': 'a good day',
+              'mood': 2,
+              'timeCreated': '2026-01-02T03:04:05.000',
+              'timeModified': '2026-01-03T03:04:05.000',
+            }
+          ]),
+          en);
 
       expect(decoded, hasLength(1));
       expect(decoded.single.entry.text, equals('a good day'));
@@ -35,37 +40,41 @@ void main() {
     });
 
     test('decodes a missing mood as null', () {
-      final decoded = decodeJsonEntries(jsonBytes([
-        {
-          'text': '',
-          'timeCreated': '2026-01-02T00:00:00.000',
-          'timeModified': '2026-01-02T00:00:00.000',
-        }
-      ]));
+      final decoded = decodeJsonEntries(
+          jsonBytes([
+            {
+              'text': '',
+              'timeCreated': '2026-01-02T00:00:00.000',
+              'timeModified': '2026-01-02T00:00:00.000',
+            }
+          ]),
+          en);
 
       expect(decoded.single.entry.mood, isNull);
     });
 
     test('decodes the images list in file order', () {
-      final decoded = decodeJsonEntries(jsonBytes([
-        {
-          'text': '',
-          'timeCreated': '2026-01-02T00:00:00.000',
-          'timeModified': '2026-01-02T00:00:00.000',
-          'images': [
+      final decoded = decodeJsonEntries(
+          jsonBytes([
             {
-              'imgPath': 'second.jpg',
-              'imgRank': 1,
-              'timeCreated': '2026-01-02T00:00:00.000'
-            },
-            {
-              'imgPath': 'first.jpg',
-              'imgRank': 0,
-              'timeCreated': '2026-01-02T00:00:00.000'
-            },
-          ],
-        }
-      ]));
+              'text': '',
+              'timeCreated': '2026-01-02T00:00:00.000',
+              'timeModified': '2026-01-02T00:00:00.000',
+              'images': [
+                {
+                  'imgPath': 'second.jpg',
+                  'imgRank': 1,
+                  'timeCreated': '2026-01-02T00:00:00.000'
+                },
+                {
+                  'imgPath': 'first.jpg',
+                  'imgRank': 0,
+                  'timeCreated': '2026-01-02T00:00:00.000'
+                },
+              ],
+            }
+          ]),
+          en);
 
       expect(decoded.single.images.map((image) => image.imgPath),
           equals(['second.jpg', 'first.jpg']));
@@ -99,7 +108,7 @@ void main() {
           decoded.map((imported) => imported.entry.mood), equals([null, null]));
     });
 
-    test('joins the title and content into markdown', () {
+    test('keeps the title apart from the content', () {
       final decoded = decodeMyBrainEntries(diaryBytes([
         {
           'title': 'A title',
@@ -109,7 +118,8 @@ void main() {
         }
       ]));
 
-      expect(decoded.single.entry.text, equals('# A title\n\nSome body'));
+      expect(decoded.single.entry.title, 'A title');
+      expect(decoded.single.entry.text, 'Some body');
     });
 
     test('omits a missing title or content', () {
@@ -119,8 +129,10 @@ void main() {
         {'createdDate': 0, 'updatedDate': 0},
       ]));
 
-      expect(decoded.map((imported) => imported.entry.text),
-          equals(['Only body', '# Only title', '']));
+      expect(
+          decoded
+              .map((imported) => (imported.entry.title, imported.entry.text)),
+          [('', 'Only body'), ('Only title', ''), ('', '')]);
     });
 
     test('reads timestamps as local time', () {

@@ -11,7 +11,9 @@ import 'package:aid_diary/actions/app_action.dart';
 import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/actions/place_actions.dart';
 import 'package:aid_diary/database/entry_store.dart';
+import 'package:aid_diary/models/day_weather.dart';
 import 'package:aid_diary/models/entry.dart';
+import 'package:aid_diary/providers/weather_provider.dart';
 import 'package:aid_diary/services/location_service.dart';
 import 'package:aid_diary/services/weather_service.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -151,7 +153,7 @@ void main() {
     expect(() => run('place.current'), refused('location_off'));
   });
 
-  test('the weather is looked up for the entry place and time and stored',
+  test('the weather is looked up and kept for the entry day and place',
       () async {
     final entry = await write('Rain',
         place: const EntryLocation(
@@ -160,7 +162,8 @@ void main() {
     expect((fetched['weather'] as Map)['code'], 61);
     expect((fetched['weather'] as Map)['temperature'], 7.5);
     expect((fetched['weather'] as Map)['description'], isNotEmpty);
-    expect(EntryStore.instance.entries.single.weather,
+    expect((fetched['weather'] as Map)['source'], 'queried');
+    expect(WeatherProvider.instance.ofEntry(EntryStore.instance.entries.single),
         const EntryWeather(code: 61, temperature: 7.5));
     // The day of the entry went to the archive: a day in the past.
     expect(requested.single.queryParameters['start_date'], '2026-10-20');
@@ -168,7 +171,19 @@ void main() {
     online = false;
     expect(
         () => run('weather.fetch', {'id': entry.id}), refused('unavailable'));
-    expect(EntryStore.instance.entries.single.weather!.code, 61);
+    expect(
+        WeatherProvider.instance
+            .ofEntry(EntryStore.instance.entries.single)!
+            .code,
+        61);
+
+    // What the writer set stands over what was looked up.
+    await WeatherProvider.instance.set(entry.day, entry.location,
+        const EntryWeather(code: 0, temperature: 20), WeatherSource.manual);
+    online = true;
+    final kept = await run('weather.fetch', {'id': entry.id});
+    expect(kept['weather'], containsPair('source', 'manual'));
+    expect(kept['weather'], containsPair('code', 0));
   });
 
   test('weather needs an entry that is open and has a place', () async {

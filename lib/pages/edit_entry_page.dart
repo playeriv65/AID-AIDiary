@@ -20,6 +20,8 @@ import 'package:aid_diary/notification_manager.dart';
 import 'package:aid_diary/pages/edit_entry_view_model.dart';
 import 'package:aid_diary/pages/full_screen_text_editor_page.dart';
 import 'package:aid_diary/providers/tags_provider.dart';
+import 'package:aid_diary/providers/weather_provider.dart';
+import 'package:aid_diary/services/weather_service.dart';
 import 'package:aid_diary/time_manager.dart';
 import 'package:aid_diary/utils/diary_day.dart';
 import 'package:aid_diary/utils/entry_context_display.dart';
@@ -106,8 +108,7 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
   final MarkdownPreviewController _textEditingController =
       MarkdownPreviewController();
 
-  /// The optional title, kept as the text's first line; the body
-  /// controller holds the rest.
+  /// The optional title, kept apart from the text.
   final TextEditingController _titleController = TextEditingController();
   final UndoHistoryController _undoController = UndoHistoryController();
 
@@ -116,7 +117,7 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     _model.addListener(_redraw);
-    _titleController.text = _model.initialTitle;
+    _titleController.text = _model.title;
     _titleController.addListener(_reportText);
     _textEditingController.addListener(_reportText);
 
@@ -437,7 +438,7 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
           child: Align(
             alignment: Alignment.topCenter,
             child: EntryTextEditor(
-              text: _model.initialBody,
+              text: _model.text,
               expands: false,
               focusNode: _focusNode,
               textEditingController: _textEditingController,
@@ -514,15 +515,15 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
         );
 
     return ListenableBuilder(
-      listenable: Listenable.merge([model.tagSource, model]),
+      listenable:
+          Listenable.merge([model.tagSource, model, WeatherProvider.instance]),
       builder: (context, _) {
         final attachedIds = model.tagSource.attachedTagIds.toSet();
         final tags = Provider.of<TagsProvider>(context)
             .tags
             .where((t) => attachedIds.contains(t.id))
             .toList();
-        final weather = model.weather;
-        final activity = model.activity;
+        final weather = model.weather?.weather;
         return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -542,14 +543,6 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
                   model.locating ? l10n.editorLocating : l10n.locationTitle,
                   _chooseLocation,
                   onClear: () => model.setLocation(null)),
-              if (activity != null)
-                row(
-                    const ValueKey('editor-activity'),
-                    icon(activityIcon(activity)),
-                    activityLabel(activity, l10n),
-                    '',
-                    null,
-                    onClear: () => model.setActivity(null)),
               row(const ValueKey('editor-cite'),
                   icon(Icons.format_quote_rounded), null, l10n.refAdd, _cite),
               if (model.refs.isNotEmpty)
@@ -740,9 +733,9 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
   }
 
   Future<void> _chooseWeather() async {
-    final choice = await showWeatherDialog(
-        context, _model.weather, _model.location, _model.writtenAt);
-    if (choice != null) _model.setWeather(choice.weather);
+    final choice = await showWeatherDialog(context, _model.weather?.weather,
+        _model.location, weatherTimeFor(_model.diaryDay, _model.writtenAt));
+    if (choice != null) await _model.setWeather(choice.weather, choice.source);
   }
 
   /// Offers ways to add an attachment, then runs the chosen one.

@@ -44,17 +44,16 @@ abstract final class DiaryStatistics {
     );
   }
 
-  /// What most often came with [mood] in [entries]: activities
-  /// ([EntryActivity]) and tags ([Tag]), most telling first.
-  static List<MoodAssociation<Object>> moodAssociationsOf(
+  /// The tags that most often came with [mood] in [entries], most telling
+  /// first.
+  static List<MoodAssociation<Tag>> moodAssociationsOf(
       List<Entry> entries, int mood) {
     final tags = TagsProvider.instance;
     final tagById = {for (final tag in tags.tags) tag.id!: tag};
-    return moodAssociations<Object>(
+    return moodAssociations<Tag>(
       entries,
       mood,
       (entry) => [
-        if (entry.activity case final activity?) activity,
         for (final entryTag in tags.getEntryTagsForEntry(entry.id!))
           if (tagById[entryTag.tagId] case final tag?) tag,
       ],

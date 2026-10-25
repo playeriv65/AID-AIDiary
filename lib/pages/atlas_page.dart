@@ -202,75 +202,80 @@ class _AtlasPageState extends State<AtlasPage>
     final l10n = AppLocalizations.of(context)!;
     final cs = Theme.of(context).colorScheme;
     return Stack(children: [
-      LayoutBuilder(builder: (context, constraints) => FlutterMap(
-        key: const ValueKey('atlas-map'),
-        mapController: _controller,
-        options: MapOptions(
-          initialCenter:
-              entries.isEmpty ? const LatLng(20, 0) : _point(entries.first),
-          initialZoom:
-              entries.isEmpty ? config.mapDefaultZoom : config.mapEntryZoom - 3,
-          // The whole world stays at least this share of the map's width
-          // (a tile is 256 px wide at zoom 0), and no band of empty sky
-          // shows above or below it.
-          minZoom: math.max(
-              0,
-              math.log(constraints.maxWidth * config.mapMinWorldWidth / 256) /
-                  math.ln2),
-          cameraConstraint: const CameraConstraint.containLatitude(),
-          maxZoom: config.mapMaxZoom,
-          onMapReady: () => _fitAll(entries),
-          // A pinch that drifts a little zooms and does not turn the map:
-          // the first gesture past its threshold wins.
-          interactionOptions: InteractionOptions(
-            enableMultiFingerGestureRace: true,
-            rotationThreshold: config.mapRotationThreshold,
-          ),
-          onMapEvent: _onMapEvent,
-        ),
-        children: [
-          TileLayer(
-            urlTemplate: config.tileUrlTemplate,
-            userAgentPackageName: config.userAgentPackageName,
-            tileProvider: AtlasPage.tileProviderOverride,
-          ),
-          // Reads the camera, so clusters regroup as the map zooms.
-          Builder(builder: (context) {
-            final camera = MapCamera.of(context);
-            final clusters = clusterByDistance(
-                entries,
-                (entry) => camera.projectAtZoom(_point(entry)),
-                config.mapClusterRadius);
-            return MarkerLayer(markers: [
-              if (_here case final here?)
-                Marker(
-                  point: here,
-                  width: 22,
-                  height: 22,
-                  child: DecoratedBox(
-                    key: const ValueKey('atlas-here'),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: cs.secondary,
-                      border: Border.all(color: cs.surface, width: 3),
-                    ),
+      LayoutBuilder(
+          builder: (context, constraints) => FlutterMap(
+                key: const ValueKey('atlas-map'),
+                mapController: _controller,
+                options: MapOptions(
+                  initialCenter: entries.isEmpty
+                      ? const LatLng(20, 0)
+                      : _point(entries.first),
+                  initialZoom: entries.isEmpty
+                      ? config.mapDefaultZoom
+                      : config.mapEntryZoom - 3,
+                  // The whole world stays at least this share of the map's width
+                  // (a tile is 256 px wide at zoom 0), and no band of empty sky
+                  // shows above or below it.
+                  minZoom: math.max(
+                      0,
+                      math.log(constraints.maxWidth *
+                              config.mapMinWorldWidth /
+                              256) /
+                          math.ln2),
+                  cameraConstraint: const CameraConstraint.containLatitude(),
+                  maxZoom: config.mapMaxZoom,
+                  onMapReady: () => _fitAll(entries),
+                  // A pinch that drifts a little zooms and does not turn the map:
+                  // the first gesture past its threshold wins.
+                  interactionOptions: InteractionOptions(
+                    enableMultiFingerGestureRace: true,
+                    rotationThreshold: config.mapRotationThreshold,
                   ),
+                  onMapEvent: _onMapEvent,
                 ),
-              // A single entry is a point counting 1, like the others.
-              for (final cluster in clusters)
-                _clusterMarker(context, cluster, split: split),
-            ]);
-          }),
-          // Bottom left, clear of the fit button.
-          RichAttributionWidget(
-              alignment: AttributionAlignment.bottomLeft,
-              attributions: [
-                TextSourceAttribution(config.mapAttribution,
-                    onTap: () =>
-                        launchUrl(Uri.parse(config.mapAttributionUrl))),
-              ]),
-        ],
-      )),
+                children: [
+                  TileLayer(
+                    urlTemplate: config.tileUrlTemplate,
+                    userAgentPackageName: config.userAgentPackageName,
+                    tileProvider: AtlasPage.tileProviderOverride,
+                  ),
+                  // Reads the camera, so clusters regroup as the map zooms.
+                  Builder(builder: (context) {
+                    final camera = MapCamera.of(context);
+                    final clusters = clusterByDistance(
+                        entries,
+                        (entry) => camera.projectAtZoom(_point(entry)),
+                        config.mapClusterRadius);
+                    return MarkerLayer(markers: [
+                      if (_here case final here?)
+                        Marker(
+                          point: here,
+                          width: 22,
+                          height: 22,
+                          child: DecoratedBox(
+                            key: const ValueKey('atlas-here'),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: cs.secondary,
+                              border: Border.all(color: cs.surface, width: 3),
+                            ),
+                          ),
+                        ),
+                      // A single entry is a point counting 1, like the others.
+                      for (final cluster in clusters)
+                        _clusterMarker(context, cluster, split: split),
+                    ]);
+                  }),
+                  // Bottom left, clear of the fit button.
+                  RichAttributionWidget(
+                      alignment: AttributionAlignment.bottomLeft,
+                      attributions: [
+                        TextSourceAttribution(config.mapAttribution,
+                            onTap: () =>
+                                launchUrl(Uri.parse(config.mapAttributionUrl))),
+                      ]),
+                ],
+              )),
       const Positioned(top: 16, left: 16, right: 16, child: TopSearchCard()),
       if (entries.isEmpty)
         Center(

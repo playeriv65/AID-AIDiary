@@ -73,8 +73,8 @@ void main() {
       'path': File('test/fixtures/one_diary/v3.zip').absolute.path
     };
     await actions.run('data.import', args);
-    expect(EntryStore.instance.entries.map((e) => e.text),
-        ['# A day\n\nEvening notes.']);
+    expect(EntryStore.instance.entries.map((e) => (e.title, e.text)),
+        [('A day', 'Evening notes.')]);
     final db = AppDatabase.instance.database!;
     expect(await db.query('entries'), hasLength(2));
     expect(await db.query('import_sources'), hasLength(2));

@@ -98,14 +98,11 @@ Future<OperationOutcome> importFromDaybook(PickedFile selectedFile,
       final text = entry['text'] as String;
       final imageFilenames = entry['images'] as List<String>;
 
-      final parts = <String>[];
-      if (title.isNotEmpty) parts.add("# $title");
-      if (text.isNotEmpty) parts.add(text);
-
       if (!EntriesProvider.instance.hasEntryAtTimestamp(date)) {
         final addedEntry = await EntriesProvider.instance.add(
           Entry(
-            text: parts.join("\n\n"),
+            title: title,
+            text: text,
             mood: null,
             timeCreate: date,
             timeModified: date,

@@ -4,16 +4,23 @@
 
 import 'dart:typed_data';
 
+import 'package:aid_diary/models/day_weather.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/models/image.dart';
 
 /// An entry with everything an export writes: its tags by name, whether it
-/// is starred, and its images with their bytes.
+/// is starred, its images with their bytes, and its weather.
 class ExportedEntry {
   const ExportedEntry(this.entry,
-      {this.tags = const [], this.favorite = false, this.images = const []});
+      {this.tags = const [],
+      this.favorite = false,
+      this.images = const [],
+      this.weather});
 
   final Entry entry;
+
+  /// The weather of its day at its place.
+  final EntryWeather? weather;
   final List<({String name, String? value})> tags;
   final bool favorite;
   final List<(EntryImage, Uint8List)> images;

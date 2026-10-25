@@ -35,14 +35,16 @@ void main() {
 
   testWidgets('save as template preserves the title and tags', (tester) async {
     final entry = await DiaryAppHarness.addEntry(
-        tester, '# 周末\n去了公园', DateTime(2026, 10, 18, 9),
-        mood: 2, location: const EntryLocation(name: '公园'));
+        tester, '去了公园', DateTime(2026, 10, 18, 9),
+        title: '周末', mood: 2, location: const EntryLocation(name: '公园'));
     await tester
         .runAsync(() => TagsProvider.instance.setFavorite(entry.id!, true));
 
     final template = (await tester
         .runAsync(() => EntryActions.saveAsTemplate(entry, 'fallback')))!;
     expect(template.name, '周末');
+    // An entry written from it is named the same.
+    expect(template.text, '# 周末\n去了公园');
     expect(TemplatesProvider.instance.templates.map((t) => t.id),
         contains(template.id));
     expect(

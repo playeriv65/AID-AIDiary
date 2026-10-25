@@ -14,6 +14,7 @@ void main() {
 
   EntryDraftDirtyTracker tracker({Set<int> seededTagIds = const {}}) =>
       EntryDraftDirtyTracker(
+        title: '',
         text: 'draft',
         mood: null,
         date: date,
@@ -25,15 +26,20 @@ void main() {
     final draft = tracker();
 
     expect(
-        draft.hasFieldChanges(text: 'draft', mood: null, date: date, day: day),
+        draft.hasFieldChanges(
+            title: '', text: 'draft', mood: null, date: date, day: day),
         isFalse);
     expect(
-        draft.hasFieldChanges(text: 'edited', mood: null, date: date, day: day),
-        isTrue);
-    expect(draft.hasFieldChanges(text: 'draft', mood: 1, date: date, day: day),
+        draft.hasFieldChanges(
+            title: '', text: 'edited', mood: null, date: date, day: day),
         isTrue);
     expect(
         draft.hasFieldChanges(
+            title: '', text: 'draft', mood: 1, date: date, day: day),
+        isTrue);
+    expect(
+        draft.hasFieldChanges(
+            title: '',
             text: 'draft',
             mood: null,
             date: date.add(const Duration(days: 1)),
@@ -45,19 +51,26 @@ void main() {
     final draft = tracker();
     expect(
         draft.hasFieldChanges(
-            text: 'draft', mood: null, date: date, day: DateTime(2025, 6, 1)),
+            title: '',
+            text: 'draft',
+            mood: null,
+            date: date,
+            day: DateTime(2025, 6, 1)),
         isTrue);
   });
 
   test('markSaved resets the comparison point', () {
     final draft = tracker();
 
-    draft.markSaved(text: 'edited', mood: 2, date: date, day: day);
+    draft.markSaved(title: '', text: 'edited', mood: 2, date: date, day: day);
 
-    expect(draft.hasFieldChanges(text: 'edited', mood: 2, date: date, day: day),
+    expect(
+        draft.hasFieldChanges(
+            title: '', text: 'edited', mood: 2, date: date, day: day),
         isFalse);
     expect(
-        draft.hasFieldChanges(text: 'draft', mood: null, date: date, day: day),
+        draft.hasFieldChanges(
+            title: '', text: 'draft', mood: null, date: date, day: day),
         isTrue);
   });
 
@@ -68,6 +81,7 @@ void main() {
 
     expect(
         draft.hasUnsavedChanges(
+          title: '',
           text: 'draft',
           mood: null,
           date: date,
@@ -85,6 +99,7 @@ void main() {
 
     expect(
         draft.hasUnsavedChanges(
+          title: '',
           text: 'draft',
           mood: null,
           date: date,
@@ -105,6 +120,7 @@ void main() {
 
     expect(
         draft.hasUnsavedChanges(
+          title: '',
           text: 'draft',
           mood: null,
           date: date,
@@ -115,27 +131,36 @@ void main() {
         isTrue);
   });
 
-  test('auto-filled context keeps a new entry untouched', () {
+  test('an auto-filled place keeps a new entry untouched', () {
     final draft = tracker();
-    const weather = EntryWeather(code: 0, temperature: 20);
-    draft.adoptAutoFill(weather: weather, activity: EntryActivity.walking);
+    const here = EntryLocation(name: 'Home', source: LocationSource.gps);
+    draft.adoptAutoFill(location: here);
     expect(
         draft.hasFieldChanges(
+            title: '',
             text: 'draft',
             mood: null,
             date: date,
             day: day,
-            weather: weather,
-            activity: EntryActivity.walking),
+            location: here),
         isFalse);
     expect(
         draft.hasFieldChanges(
+            title: '',
             text: 'draft',
             mood: null,
             date: date,
             day: day,
-            weather: weather,
-            activity: EntryActivity.running),
+            location: here.withSource(LocationSource.picked)),
+        isTrue);
+    expect(
+        draft.hasFieldChanges(
+            title: 'Named',
+            text: 'draft',
+            mood: null,
+            date: date,
+            day: day,
+            location: here),
         isTrue);
   });
 
@@ -146,6 +171,7 @@ void main() {
 
     expect(
         draft.hasUnsavedChanges(
+          title: '',
           text: 'draft',
           mood: null,
           date: date,

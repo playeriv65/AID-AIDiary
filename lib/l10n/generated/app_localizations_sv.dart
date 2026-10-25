@@ -1122,7 +1122,7 @@ class AppLocalizationsSv extends AppLocalizations {
   String get weatherRemove => 'Ta bort väder';
 
   @override
-  String get activityTitle => 'Aktivitet';
+  String get weatherTemperature => 'Temperatur';
 
   @override
   String get activityStill => 'Ändå';
@@ -1144,15 +1144,6 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get activityExercise => 'Träning';
-
-  @override
-  String get activityDetect => 'Upptäck aktuell aktivitet';
-
-  @override
-  String get activityDetectFailed => 'Det gick inte att upptäcka en aktivitet.';
-
-  @override
-  String get activityRemove => 'Ta bort aktivitet';
 
   @override
   String get settingsAutoAddTitle => 'Lägg till automatiskt';

@@ -50,7 +50,8 @@ void main() {
     DiaryAppHarness.size(tester, const Size(390, 844));
     final time = DateTime(2026, 10, 20, 9);
     final entry = (await tester.runAsync(() => EntryStore.instance.add(Entry(
-        text: '# Private title\nPrivate body',
+        title: 'Private title',
+        text: 'Private body',
         timeCreate: time,
         timeModified: time,
         isHidden: true))))!;

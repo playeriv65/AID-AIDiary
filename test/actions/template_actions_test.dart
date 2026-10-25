@@ -110,7 +110,7 @@ void main() {
     final template =
         await run('template.create_from_entry', {'id': '${entry['id']}'});
     expect(template['name'], 'Packing list');
-    expect(template['text'], '# Packing list\n\nPassport, socks');
+    expect(template['text'], '# Packing list\nPassport, socks');
     expect(template['tags'], ['Travel']);
 
     final untitled =

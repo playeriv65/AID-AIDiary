@@ -85,14 +85,11 @@ Future<OperationOutcome> importFromDiarium(PickedFile selectedFile,
       final rating = entry['Rating'] as int?;
       final mood = rating != null ? rating.clamp(1, 5) - 3 : null;
 
-      final parts = <String>[];
-      if (heading.isNotEmpty) parts.add("# $heading");
-      if (body.isNotEmpty) parts.add(body);
-
       if (!EntriesProvider.instance.hasEntryAtTimestamp(timestamp)) {
         final addedEntry = await EntriesProvider.instance.add(
             Entry(
-              text: parts.join('\n\n'),
+              title: heading,
+              text: body,
               mood: mood,
               timeCreate: timestamp,
               timeModified: timestamp,

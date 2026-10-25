@@ -21,15 +21,15 @@ class EntryShare {
   }
 
   static String plainText(Entry entry, String heading) =>
-      '$heading\n${entry.text}';
+      '$heading\n${entry.markdown}';
 
   /// A standalone page; media is linked by [mediaFolder]/name, as laid out
   /// in [zip], or left out when [media] is empty.
   static String html(Entry entry, String heading,
       {List<EntryImage> media = const [], String mediaFolder = 'media'}) {
     const escape = HtmlEscape();
-    final body =
-        md.markdownToHtml(entry.text, extensionSet: md.ExtensionSet.gitHubWeb);
+    final body = md.markdownToHtml(entry.markdown,
+        extensionSet: md.ExtensionSet.gitHubWeb);
     final attachments = [
       for (final item in media)
         switch (item.kind) {

@@ -1149,7 +1149,7 @@ class AppLocalizationsBe extends AppLocalizations {
   String get weatherRemove => 'Зняць надвор\'е';
 
   @override
-  String get activityTitle => 'актыўнасць';
+  String get weatherTemperature => 'Тэмпература';
 
   @override
   String get activityStill => 'Тым не менш';
@@ -1171,15 +1171,6 @@ class AppLocalizationsBe extends AppLocalizations {
 
   @override
   String get activityExercise => 'Практыкаванне';
-
-  @override
-  String get activityDetect => 'Выявіць бягучую дзейнасць';
-
-  @override
-  String get activityDetectFailed => 'Не ўдалося выявіць дзейнасць.';
-
-  @override
-  String get activityRemove => 'Выдаліць дзейнасць';
 
   @override
   String get settingsAutoAddTitle => 'Дадаць аўтаматычна';

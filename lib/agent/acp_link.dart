@@ -52,8 +52,7 @@ class AcpLink {
       workingDirectory: workspace,
     ));
     try {
-      return await connect(agent.transport,
-          workspace: workspace, agent: agent);
+      return await connect(agent.transport, workspace: workspace, agent: agent);
     } catch (_) {
       await agent.close();
       rethrow;
@@ -64,37 +63,35 @@ class AcpLink {
   static Future<AcpLink> connect(Transport transport,
       {required String workspace, AcpAgent? agent}) async {
     final permissions = <AcpPermission>[];
-    final connection = ClientRole()
-        .onRequestPermission((context, request, cancellation) {
-          final option = allowing(request.options);
-          permissions.add((
-            tool: request.toolCall.title ?? request.toolCall.toolCallId,
-            option: option?.name ?? 'none',
-          ));
-          return RequestPermissionResponse(
-              outcome: option == null
-                  ? const PermissionCancelled()
-                  : PermissionSelected(optionId: option.optionId));
-        })
-        .connect(transport);
+    final connection =
+        ClientRole().onRequestPermission((context, request, cancellation) {
+      final option = allowing(request.options);
+      permissions.add((
+        tool: request.toolCall.title ?? request.toolCall.toolCallId,
+        option: option?.name ?? 'none',
+      ));
+      return RequestPermissionResponse(
+          outcome: option == null
+              ? const PermissionCancelled()
+              : PermissionSelected(optionId: option.optionId));
+    }).connect(transport);
     await connection.client.initialize(const InitializeRequest(
       protocolVersion: ProtocolVersion.v1,
       clientInfo: Implementation(name: 'aid-diary', version: '1'),
     ));
-    final session = await Session.create(
-        connection, NewSessionRequest(cwd: workspace));
+    final session =
+        await Session.create(connection, NewSessionRequest(cwd: workspace));
     return AcpLink._(agent, connection, session, permissions);
   }
 
   /// The option that lets a tool run once, else always; null when the
   /// agent offers neither. Asking the user comes with authorization
   /// (TODO.md, "In-app agent").
-  static PermissionOption? allowing(List<PermissionOption> options) =>
-      options
-          .where((option) => option.kind == PermissionOptionKind.allowOnce)
-          .followedBy(options.where(
-              (option) => option.kind == PermissionOptionKind.allowAlways))
-          .firstOrNull;
+  static PermissionOption? allowing(List<PermissionOption> options) => options
+      .where((option) => option.kind == PermissionOptionKind.allowOnce)
+      .followedBy(options
+          .where((option) => option.kind == PermissionOptionKind.allowAlways))
+      .firstOrNull;
 
   Future<AcpReply> ask(String prompt) async {
     _permissions.clear();

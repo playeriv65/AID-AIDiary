@@ -20,7 +20,6 @@ class PeriodReview {
     required this.entries,
     required this.photos,
     required this.topTags,
-    required this.topActivities,
     required this.topPlaces,
   });
 
@@ -47,7 +46,6 @@ class PeriodReview {
             if (image.isImage) image,
       ],
       topTags: _tally(entries.expand(tagsOf)),
-      topActivities: _tally(entries.map((e) => e.activity).nonNulls),
       topPlaces: _tally(
           entries.map((e) => e.location?.name).nonNulls.where((n) => n != '')),
     );
@@ -58,7 +56,6 @@ class PeriodReview {
   final List<Entry> entries;
   final List<EntryImage> photos;
   final Tally<String> topTags;
-  final Tally<EntryActivity> topActivities;
   final Tally<String> topPlaces;
 
   int get daysInPeriod => end.difference(start).inDays;

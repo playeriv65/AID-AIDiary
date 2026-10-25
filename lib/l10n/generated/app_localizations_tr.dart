@@ -1112,7 +1112,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get weatherRemove => 'Hava durumunu kaldır';
 
   @override
-  String get activityTitle => 'Etkinlik';
+  String get weatherTemperature => 'Sıcaklık';
 
   @override
   String get activityStill => 'Hala';
@@ -1134,15 +1134,6 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get activityExercise => 'Egzersiz';
-
-  @override
-  String get activityDetect => 'Mevcut aktiviteyi tespit et';
-
-  @override
-  String get activityDetectFailed => 'Bir etkinlik algılanamadı.';
-
-  @override
-  String get activityRemove => 'Etkinliği kaldır';
 
   @override
   String get settingsAutoAddTitle => 'Otomatik olarak ekle';

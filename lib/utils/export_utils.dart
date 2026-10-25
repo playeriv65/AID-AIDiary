@@ -6,6 +6,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:aid_diary/models/day_weather.dart';
+import 'package:aid_diary/providers/weather_provider.dart';
 import 'package:aid_diary/utils/diary_day.dart';
 import 'package:aid_diary/database/image_storage.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
@@ -96,16 +98,17 @@ class ExportRegistry {
 }
 
 /// Entries as the JSON array [decodeJsonEntries] reads back, plus place,
-/// weather, activity and tags. Attachments are listed by name only; the
+/// weather and tags. Attachments are listed by name only; the
 /// backup carries their files.
 String encodeJsonEntries(List<Entry> entries,
     {required List<EntryImage> Function(Entry entry) imagesOf,
-    required List<({String name, String? value})> Function(Entry entry)
-        tagsOf}) {
+    required List<({String name, String? value})> Function(Entry entry) tagsOf,
+    required EntryWeather? Function(Entry entry) weatherOf}) {
   return const JsonEncoder.withIndent('  ').convert([
     for (final entry in entries)
       if (!entry.isSealed && !entry.isHidden)
         {
+          if (entry.title.isNotEmpty) 'title': entry.title,
           'text': entry.text,
           'mood': entry.mood,
           // Wall-clock time where it was written, and that place's offset.
@@ -120,12 +123,11 @@ String encodeJsonEntries(List<Entry> entries,
               'latitude': place.latitude,
               'longitude': place.longitude,
             },
-          if (entry.weather case final weather?)
+          if (weatherOf(entry) case final weather?)
             'weather': {
               'code': weather.code,
               'temperature': weather.temperature,
             },
-          if (entry.activity case final activity?) 'activity': activity.name,
           if (entry.openAt case final openAt?)
             'openAt': openAt.toIso8601String(),
           'tags': [
@@ -168,6 +170,7 @@ class ExportUtils {
       EntriesProvider.instance.entries,
       imagesOf: EntryImagesProvider.instance.getForEntry,
       tagsOf: _tagsOf,
+      weatherOf: WeatherProvider.instance.ofEntry,
     );
     final name = "aid_diary_${_stamp()}.json";
     final file = File(join((await getTemporaryDirectory()).path, name));
@@ -224,7 +227,8 @@ class ExportUtils {
                 TagsProvider.instance
                     .getEntryTagsForEntry(entry.id!)
                     .any((tag) => tag.tagId == favoriteId),
-            images: images));
+            images: images,
+            weather: WeatherProvider.instance.ofEntry(entry)));
         updateStatus("(1/2) ${((index + 1) / entries.length * 100).round()}%");
       }
       await output.close();
@@ -282,7 +286,7 @@ class MarkdownExportWriter implements ArchiveExportWriter {
 
     final moodText = entry.mood != null ? "${moodEmoji(entry.mood)} " : "";
     noteBody.writeln(
-        "$moodText${DateFormat.yMMMEd(locale).format(entry.day)}\n${entry.text}");
+        "$moodText${DateFormat.yMMMEd(locale).format(entry.day)}\n${entry.markdown}");
 
     await noteStore.write(
         "log_$timestamp$indexSuffix.md", utf8.encode(noteBody.toString()));

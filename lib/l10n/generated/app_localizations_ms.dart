@@ -1065,7 +1065,7 @@ class AppLocalizationsMs extends AppLocalizations {
   String get weatherRemove => 'Keluarkan cuaca';
 
   @override
-  String get activityTitle => 'Aktiviti';
+  String get weatherTemperature => 'Suhu';
 
   @override
   String get activityStill => 'Masih';
@@ -1087,15 +1087,6 @@ class AppLocalizationsMs extends AppLocalizations {
 
   @override
   String get activityExercise => 'Bersenam';
-
-  @override
-  String get activityDetect => 'Kesan aktiviti semasa';
-
-  @override
-  String get activityDetectFailed => 'Tidak dapat mengesan aktiviti.';
-
-  @override
-  String get activityRemove => 'Alih keluar aktiviti';
 
   @override
   String get settingsAutoAddTitle => 'Tambah secara automatik';

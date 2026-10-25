@@ -2,12 +2,16 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'package:aid_diary/models/day_weather.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/models/entry_link.dart';
 import 'package:aid_diary/models/image.dart';
 import 'package:aid_diary/models/tag.dart';
 import 'package:aid_diary/models/tag_category.dart';
+import 'package:aid_diary/providers/weather_provider.dart';
 import 'package:aid_diary/sync/sync_schema.dart';
+import 'package:aid_diary/utils/diary_day.dart';
+import 'package:aid_diary/utils/entry_preview.dart';
 import 'package:path/path.dart' as p;
 import 'package:sqflite/sqflite.dart';
 
@@ -69,7 +73,7 @@ Future<SyncRecord> exportRecord(
   final data = _ownFields(row);
 
   switch (kind) {
-    case SyncKind.category:
+    case SyncKind.category || SyncKind.weather:
       break;
     case SyncKind.passage:
       data.remove(PassageFields.entryId);
@@ -164,7 +168,9 @@ class RecordWriter {
   /// so references find what they point to.
   Future<void> apply(SyncRecord record) async {
     if (record.deleted) return _delete(record.kind, record.id);
-    final data = record.data!;
+    final data = record.kind == SyncKind.entry
+        ? await _fromOlderVersion(record.data!)
+        : record.data!;
     final passageEntry = record.kind == SyncKind.passage
         ? await _rowIdOf(db, entriesTable, data[_entry] as String?)
         : null;
@@ -178,7 +184,10 @@ class RecordWriter {
       if (passageEntry != null) PassageFields.entryId: passageEntry,
     });
     switch (record.kind) {
-      case SyncKind.category || SyncKind.tag || SyncKind.passage:
+      case SyncKind.category ||
+            SyncKind.tag ||
+            SyncKind.passage ||
+            SyncKind.weather:
         break;
       case SyncKind.template:
         await db.delete(templateTagsTable,
@@ -203,6 +212,30 @@ class RecordWriter {
           });
         }
     }
+  }
+
+  /// An entry from a device before database version 17 has its title as the
+  /// first line of its text and its weather on it.
+  Future<Map<String, Object?>> _fromOlderVersion(
+      Map<String, Object?> data) async {
+    if (data.containsKey(EntryFields.title)) return data;
+    final (:title, :body) = splitEntryTitle(data[EntryFields.text] as String);
+    final code = data[EntryFields.weatherCode] as int?;
+    final temperature = data[EntryFields.temperature] as num?;
+    final day = DiaryDay.parse(data[EntryFields.diaryDate] as String?);
+    if (code != null && temperature != null && day != null) {
+      final location = EntryLocation(
+          latitude: (data[EntryFields.latitude] as num?)?.toDouble(),
+          longitude: (data[EntryFields.longitude] as num?)?.toDouble(),
+          name: data[EntryFields.locationName] as String?);
+      await WeatherProvider.write(
+          db,
+          day,
+          weatherPlaceOf(location.isEmpty ? null : location),
+          EntryWeather(code: code, temperature: temperature.toDouble()),
+          WeatherSource.queried);
+    }
+    return {...data, EntryFields.title: title, EntryFields.text: body};
   }
 
   /// Inserts or updates the item's row with the columns the table has.
@@ -296,7 +329,7 @@ class RecordWriter {
       case SyncKind.template:
         await db.delete(templateTagsTable,
             where: '${TemplateTagFields.templateId} = ?', whereArgs: [rowId]);
-      case SyncKind.passage:
+      case SyncKind.passage || SyncKind.weather:
         break;
       case SyncKind.entry:
         await db.delete(entryTagsTable,

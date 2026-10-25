@@ -1106,7 +1106,7 @@ class AppLocalizationsCs extends AppLocalizations {
   String get weatherRemove => 'Odstraňte počasí';
 
   @override
-  String get activityTitle => 'Aktivita';
+  String get weatherTemperature => 'Teplota';
 
   @override
   String get activityStill => 'Pořád';
@@ -1128,15 +1128,6 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String get activityExercise => 'Cvičení';
-
-  @override
-  String get activityDetect => 'Zjistit aktuální aktivitu';
-
-  @override
-  String get activityDetectFailed => 'Aktivitu se nepodařilo zjistit.';
-
-  @override
-  String get activityRemove => 'Odebrat aktivitu';
 
   @override
   String get settingsAutoAddTitle => 'Přidat automaticky';

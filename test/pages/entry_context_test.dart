@@ -3,6 +3,7 @@ library;
 
 import 'dart:convert';
 
+import 'package:aid_diary/models/day_weather.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/pages/entry_view_page.dart';
 import 'package:aid_diary/services/location_service.dart';
@@ -41,14 +42,42 @@ void main() {
             service: service)
         .then((value) => choice = value);
     await tester.pumpAndSettle();
+    final temperature = tester
+        .widget<TextField>(find.byKey(const ValueKey('weather-temperature')))
+        .controller!;
     await DiaryAppHarness.runUntil(
         tester,
         () => tester.tap(find.byKey(const ValueKey('weather-fetch'))),
-        () => find.text('雪').evaluate().isNotEmpty);
-    expect(find.text('-3°C'), findsOneWidget);
+        () => temperature.text == '-3');
+    expect(
+        tester
+            .widget<ChoiceChip>(find.byKey(const ValueKey('weather-kind-snow')))
+            .selected,
+        isTrue);
     await tester.tap(find.byKey(const ValueKey('weather-save')));
     await tester.pumpAndSettle();
     expect(choice?.weather, const EntryWeather(code: 71, temperature: -2.6));
+    expect(choice?.source, WeatherSource.queried);
+  });
+
+  testWidgets('weather can be set by hand without a place', (tester) async {
+    DiaryAppHarness.size(tester, const Size(390, 844));
+    await tester.pumpWidget(harness.app(const Scaffold(body: SizedBox())));
+    final context = tester.element(find.byType(SizedBox).first);
+    WeatherChoice? choice;
+    showWeatherDialog(context, null, null, DateTime.now())
+        .then((value) => choice = value);
+    await tester.pumpAndSettle();
+    final save = find.byKey(const ValueKey('weather-save'));
+    expect(tester.widget<FilledButton>(save).onPressed, isNull);
+    await tester.tap(find.byKey(const ValueKey('weather-kind-rain')));
+    await tester.enterText(
+        find.byKey(const ValueKey('weather-temperature')), '18');
+    await tester.pumpAndSettle();
+    await tester.tap(save);
+    await tester.pumpAndSettle();
+    expect(choice?.weather, const EntryWeather(code: 63, temperature: 18));
+    expect(choice?.source, WeatherSource.manual);
   });
 
   testWidgets('weather dialog asks for a place without coordinates',
@@ -133,23 +162,29 @@ void main() {
     expect(choice!.location, isNull);
   });
 
-  testWidgets('entry details show weather and activity', (tester) async {
+  testWidgets('entry details show the title and the day\'s weather',
+      (tester) async {
+    const place = EntryLocation(latitude: 31.23, longitude: 121.47);
     final entry = await DiaryAppHarness.addEntry(
         tester, '下雨天', DateTime(2026, 10, 18, 9),
-        weather: const EntryWeather(code: 63, temperature: 12.2),
-        activity: EntryActivity.walking);
+        title: '周六',
+        location: place,
+        weather: const EntryWeather(code: 63, temperature: 12.2));
+    // Another entry of that day nearby shares the weather.
+    final later = await DiaryAppHarness.addEntry(
+        tester, '晚上', DateTime(2026, 10, 18, 21),
+        location: const EntryLocation(latitude: 31.24, longitude: 121.48));
     DiaryAppHarness.size(tester, const Size(390, 844));
-    await tester.pumpWidget(harness.app(EntryViewPage(entryId: entry.id!)));
-    await tester.pumpAndSettle();
-    expect(
-        find.descendant(
-            of: find.byKey(const ValueKey('entry-weather')),
-            matching: find.text('雨, 12°C')),
-        findsOneWidget);
-    expect(
-        find.descendant(
-            of: find.byKey(const ValueKey('entry-activity')),
-            matching: find.text('步行')),
-        findsOneWidget);
+    for (final (id, title) in [(entry.id!, '周六'), (later.id!, null)]) {
+      await tester.pumpWidget(harness.app(EntryViewPage(entryId: id)));
+      await tester.pumpAndSettle();
+      expect(
+          find.descendant(
+              of: find.byKey(const ValueKey('entry-weather')),
+              matching: find.text('雨, 12°C')),
+          findsOneWidget);
+      expect(find.byKey(const ValueKey('entry-title')),
+          title == null ? findsNothing : findsOneWidget);
+    }
   });
 }

@@ -435,6 +435,42 @@ citing it, or expands into the full editor with the text and citation.
 The editor cites any entry found by search. Editing an entry of an earlier
 day asks first (`Settings.confirmEditPast`, with "don't ask again").
 
+## Entry fields, day weather and foreign keys
+
+Database version 17 settled what an entry holds. Its title is a column of
+its own (`Entry.title`, empty when there is none), never the first line of
+its text; `Entry.markdown` puts it back as a heading only for formats and
+readers without a title (Markdown, Day One, Journey, sharing). Text with a
+heading as its first line, from older versions, imports or devices not yet
+upgraded, is split by `splitEntryTitle`/`titledByHeading`; the upgrade
+moves citation and kept-passage offsets with it.
+
+Weather belongs to a day and a place, not to an entry (`day_weather`,
+`WeatherProvider`). A row is kept per diary day, place (coordinates to a
+tenth of a degree, a name without coordinates, empty for none) and source
+(`queried`, `imported`, `manual`); an entry shows the one of its diary day
+and place whose source counts most, so what the writer set stands over an
+import, which stands over a lookup. Its sync id is a hash of those three, so
+two devices that look up the same day share one item. A lookup asks for the
+entry's diary day: the written time when it was written that day, otherwise
+`weather.dayHour` of it. The editor writes weather at once, like
+attachments, rather than with the entry's draft.
+
+A place records how it was set (`LocationSource`: device position, picked,
+typed, photo, imported); null for places from before. A place found for now
+leaves a new entry that is moved to another day. Activities are gone: the
+upgrade and the importers turn them into tags (`ActivityTag`).
+
+Rows that belong to another go with it: attachments, tag links, citations
+and kept passages with their entry, tag links with their tag or template,
+and a deleted category leaves its tags without one. Foreign keys are on for
+every connection (`AppDatabase.enforceForeignKeys`) but off while the
+schema is made or upgraded, because the upgrade makes tables anew
+(`_rebuildTable`: old Android SQLite can neither drop columns nor add
+constraints) and dropping a parent with keys on would empty its children.
+Rows already left without a parent are dropped then. Every device makes the
+same changes to its own copy, so the upgrade records nothing for sync.
+
 ## Hidden entries
 
 `Entry.isHidden` is an explicit column, defaulting to false for earlier diaries.

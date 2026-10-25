@@ -13,8 +13,7 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   setUpAll(sqfliteFfiInit);
 
-  test('version 5 databases gain empty location, weather and activity',
-      () async {
+  test('version 5 databases gain an empty place', () async {
     final db = await databaseFactoryFfi.openDatabase(inMemoryDatabasePath);
     addTearDown(() async {
       AppDatabase.instance.database = null;
@@ -46,8 +45,7 @@ CREATE TABLE entries (
     final old = (await EntryDao.getAll()).single;
     expect(old.text, 'old entry');
     expect(old.location, isNull);
-    expect(old.weather, isNull);
-    expect(old.activity, isNull);
+    expect(old.title, isEmpty);
     // Where an old entry was written is unknown.
     expect(old.utcOffset, isNull);
     // Written at 3:04, so it belongs to the evening before.
@@ -64,16 +62,18 @@ CREATE TABLE entries (
         timeCreate: DateTime(2026, 10, 19),
         timeModified: DateTime(2026, 10, 19),
         location: const EntryLocation(
-            latitude: 31.23, longitude: 121.47, name: 'The Bund'),
-        weather: const EntryWeather(code: 61, temperature: 14.5),
-        activity: EntryActivity.walking));
+            latitude: 31.23,
+            longitude: 121.47,
+            name: 'The Bund',
+            source: LocationSource.picked)));
     final read = await EntryDao.get(placed.id!);
     expect(
         read!.location,
         const EntryLocation(
-            latitude: 31.23, longitude: 121.47, name: 'The Bund'));
-    expect(read.weather, const EntryWeather(code: 61, temperature: 14.5));
-    expect(read.activity, EntryActivity.walking);
+            latitude: 31.23,
+            longitude: 121.47,
+            name: 'The Bund',
+            source: LocationSource.picked));
     // A new entry was written here.
     expect(read.utcOffset, DateTime(2026, 10, 19).timeZoneOffset.inMinutes);
   });

@@ -82,7 +82,8 @@ void main() {
     folder = await Directory.systemTemp.createTemp('diary_agent_test');
     final path = p.join(folder.path, 'diary.db');
     final db = await databaseFactoryFfi.openDatabase(path);
-    await db.execute('CREATE TABLE entries (id INTEGER PRIMARY KEY, text TEXT)');
+    await db
+        .execute('CREATE TABLE entries (id INTEGER PRIMARY KEY, text TEXT)');
     await db.insert('entries', {'id': 1, 'text': 'a long walk by the river'});
     await db.close();
     shell = await AidShell.open(
@@ -100,8 +101,7 @@ void main() {
     await folder.delete(recursive: true);
   });
 
-  DiaryAgent agent(ScriptedModel model, {int outputChars = 1000}) =>
-      DiaryAgent(
+  DiaryAgent agent(ScriptedModel model, {int outputChars = 1000}) => DiaryAgent(
         model: (baseUrl: 'http://unused', model: 'test', apiKey: 'unused'),
         shell: shell,
         systemPrompt: 'You are a test.',

@@ -12,30 +12,34 @@ void main() {
         .onInitialize((context, request, cancellation) =>
             const InitializeResponse(protocolVersion: ProtocolVersion.v1))
         .onNewSession((context, request, cancellation) {
-          workspace = request.cwd;
-          return const NewSessionResponse(sessionId: 's1');
-        })
-        .onPrompt((context, request, cancellation) async {
-          outcome = await context.requestPermission(const RequestPermissionRequest(
-            sessionId: 's1',
-            toolCall: ToolCallUpdate(toolCallId: 't1', title: 'aid entry.list'),
-            options: [
-              PermissionOption(
-                  optionId: 'no', name: 'Reject', kind: PermissionOptionKind.rejectOnce),
-              PermissionOption(
-                  optionId: 'always', name: 'Always', kind: PermissionOptionKind.allowAlways),
-              PermissionOption(
-                  optionId: 'once', name: 'Allow', kind: PermissionOptionKind.allowOnce),
-            ],
-          ));
-          context.sessionUpdate(
-              sessionId: 's1',
-              update: AgentMessageChunk(
-                  chunk: const ContentChunk(
-                      content: TextContentBlock(text: 'Two entries.'))));
-          return const PromptResponse(stopReason: StopReason.endTurn);
-        })
-        .connect(pair.right);
+      workspace = request.cwd;
+      return const NewSessionResponse(sessionId: 's1');
+    }).onPrompt((context, request, cancellation) async {
+      outcome = await context.requestPermission(const RequestPermissionRequest(
+        sessionId: 's1',
+        toolCall: ToolCallUpdate(toolCallId: 't1', title: 'aid entry.list'),
+        options: [
+          PermissionOption(
+              optionId: 'no',
+              name: 'Reject',
+              kind: PermissionOptionKind.rejectOnce),
+          PermissionOption(
+              optionId: 'always',
+              name: 'Always',
+              kind: PermissionOptionKind.allowAlways),
+          PermissionOption(
+              optionId: 'once',
+              name: 'Allow',
+              kind: PermissionOptionKind.allowOnce),
+        ],
+      ));
+      context.sessionUpdate(
+          sessionId: 's1',
+          update: AgentMessageChunk(
+              chunk: const ContentChunk(
+                  content: TextContentBlock(text: 'Two entries.'))));
+      return const PromptResponse(stopReason: StopReason.endTurn);
+    }).connect(pair.right);
 
     final link = await AcpLink.connect(pair.left, workspace: '/work');
     final reply = await link.ask('How many entries?');
@@ -53,7 +57,9 @@ void main() {
     expect(
         AcpLink.allowing(const [
           PermissionOption(
-              optionId: 'no', name: 'Reject', kind: PermissionOptionKind.rejectOnce),
+              optionId: 'no',
+              name: 'Reject',
+              kind: PermissionOptionKind.rejectOnce),
         ]),
         isNull);
   });

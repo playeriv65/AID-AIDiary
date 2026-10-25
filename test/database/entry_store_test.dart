@@ -63,6 +63,7 @@ void main() {
     database = await databaseFactory.openDatabase(inMemoryDatabasePath);
     AppDatabase.instance.database = database;
     await AppDatabase.instance.createSchema(database);
+    await AppDatabase.enforceForeignKeys(database);
 
     imageFiles = InMemoryFileStore();
     ImageStorage.instance.overrideStores(imageFiles, InMemoryFileStore());
@@ -109,15 +110,12 @@ void main() {
     final saved = await store.add(draftEntry());
     final session = store.beginDraft(saved);
     await session.save((_) => EntryDraft(
-        entry: saved.copy(
-            location: const EntryLocation(name: 'Garden'),
-            weather: const EntryWeather(code: 61, temperature: 18))));
+        entry: saved.copy(location: const EntryLocation(name: 'Garden'))));
     await session.commit();
     final persisted = (await EntryDao.get(saved.id!))!;
     expect(persisted.text, saved.text);
     expect(persisted.timeModified, saved.timeModified);
     expect(persisted.location!.name, 'Garden');
-    expect(persisted.weather, const EntryWeather(code: 61, temperature: 18));
   });
 
   test('reconciles tags and images on a later save', () async {

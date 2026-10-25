@@ -5,10 +5,24 @@
 import 'dart:convert';
 
 import 'package:aid_diary/config/app_config.dart';
+import 'package:aid_diary/models/day_weather.dart';
 import 'package:aid_diary/models/entry.dart';
+import 'package:aid_diary/utils/diary_day.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
+
+/// The moment whose weather stands for [day]: [written] when the entry was
+/// written that day, otherwise the configured hour of it.
+DateTime weatherTimeFor(DateTime day, DateTime written) =>
+    DiaryDay.dateOf(written) == DiaryDay.dateOf(day)
+        ? written
+        : DiaryDay.dateOf(day)
+            .add(Duration(hours: AppConfig.instance.weatherDayHour));
+
+/// The moment whose weather [entry] shows.
+DateTime weatherTimeOf(Entry entry) =>
+    weatherTimeFor(entry.day, entry.timeCreate);
 
 /// Hourly weather from Open-Meteo for a place and time; past dates use the
 /// historical archive. Only coordinates and a date leave the device.

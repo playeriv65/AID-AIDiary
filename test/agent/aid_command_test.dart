@@ -63,7 +63,8 @@ void main() {
   test('destructive actions need --yes', () async {
     final refused = await aid.run(['entry.delete', 'id=3']);
     expect(refused.exitCode, 1);
-    expect((json(refused.stdout)['error'] as Map)['code'], 'needs_confirmation');
+    expect(
+        (json(refused.stdout)['error'] as Map)['code'], 'needs_confirmation');
     expect(calls, isEmpty);
 
     final done = await aid.run(['--yes', 'entry.delete', 'id=3']);

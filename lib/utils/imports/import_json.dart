@@ -5,6 +5,9 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:aid_diary/models/day_weather.dart';
+import 'package:aid_diary/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/utils/activity_tags.dart';
 import 'package:aid_diary/utils/diary_day.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/models/image.dart';
@@ -13,8 +16,8 @@ import 'package:aid_diary/utils/imports/import_helpers.dart';
 import 'package:aid_diary/utils/operation_outcome.dart';
 import 'package:aid_diary/utils/local_time.dart';
 
-Future<OperationOutcome> importFromJson(
-    PickedFile selectedFile, Function(String) updateStatus) async {
+Future<OperationOutcome> importFromJson(PickedFile selectedFile,
+    AppLocalizations l10n, Function(String) updateStatus) async {
   updateStatus("0%");
 
   var outcome = const OperationOutcome.succeeded();
@@ -23,7 +26,7 @@ Future<OperationOutcome> importFromJson(
     final bytes = await selectedFile.readBytes();
     if (bytes == null) return const OperationOutcome.failed();
 
-    await addImportedEntries(decodeJsonEntries(bytes), updateStatus);
+    await addImportedEntries(decodeJsonEntries(bytes, l10n), updateStatus);
   } catch (error) {
     outcome = OperationOutcome.failed(error);
   }
@@ -31,13 +34,16 @@ Future<OperationOutcome> importFromJson(
   return finishImport(updateStatus, outcome);
 }
 
-List<ImportedEntry> decodeJsonEntries(Uint8List bytes) {
+/// Entries from a JSON export. One from an older version may name an
+/// activity, which becomes a tag.
+List<ImportedEntry> decodeJsonEntries(Uint8List bytes, AppLocalizations l10n) {
   final jsonData = json.decode(utf8.decode(bytes.toList()));
 
   return [
     for (var entry in jsonData)
       ImportedEntry(
         Entry(
+            title: entry['title'] as String? ?? '',
             text: entry['text'],
             mood: entry['mood'] as int?,
             timeCreate: parseLocalTime(entry['timeCreated']),
@@ -52,21 +58,23 @@ List<ImportedEntry> decodeJsonEntries(Uint8List bytes) {
                   longitude: (place['longitude'] as num?)?.toDouble()),
               _ => null,
             },
-            weather: switch (entry['weather']) {
-              final Map weather => EntryWeather(
-                  code: weather['code'] as int,
-                  temperature: (weather['temperature'] as num).toDouble()),
-              _ => null,
-            },
-            activity: EntryActivity.fromName(entry['activity'] as String?),
             isHidden: entry['isHidden'] == true,
             openAt: switch (entry['openAt']) {
               final String at => parseLocalTime(at),
               _ => null,
             }),
+        weather: switch (entry['weather']) {
+          final Map weather => EntryWeather(
+              code: weather['code'] as int,
+              temperature: (weather['temperature'] as num).toDouble()),
+          _ => null,
+        },
         tags: [
           for (final tag in entry['tags'] as List? ?? const [])
             (name: tag['name'] as String, value: tag['value'] as String?),
+          if (ActivityTag.byName(entry['activity'] as String?)
+              case final activity?)
+            (name: activity.label(l10n), value: null),
         ],
         source: switch (entry['importSource']) {
           final Map source => ImportedSource(

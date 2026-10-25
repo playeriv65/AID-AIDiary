@@ -96,7 +96,9 @@ sql --limit N ...    at most N rows
         "${name == null ? '' : ' AND (name = ? OR tbl_name = ?)'} "
         "ORDER BY CASE type WHEN 'table' THEN 0 WHEN 'view' THEN 1 "
         "WHEN 'index' THEN 2 ELSE 3 END, name",
-        [if (name != null) ...[name, name]]);
+        [
+          if (name != null) ...[name, name]
+        ]);
     return ShellOutput(
         stdout: '${rows.map((row) => '${row['sql']};').join('\n')}\n',
         stderr: '',
