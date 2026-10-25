@@ -57,6 +57,11 @@ class AppConfig {
   double get mapNorthSnapDegrees =>
       (_section('map')['northSnapDegrees'] as num).toDouble();
 
+  /// The narrowest the whole world may get, as a share of the map's width:
+  /// zooming out stops there.
+  double get mapMinWorldWidth =>
+      (_section('map')['minWorldWidth'] as num).toDouble();
+
   Uri get reverseGeocodeUrl =>
       Uri.parse(_section('geocoding')['reverseUrl'] as String);
   Uri get placeSearchUrl =>

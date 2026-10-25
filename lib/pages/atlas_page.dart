@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'dart:math' as math;
+
 import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/models/entry.dart';
@@ -200,7 +202,7 @@ class _AtlasPageState extends State<AtlasPage>
     final l10n = AppLocalizations.of(context)!;
     final cs = Theme.of(context).colorScheme;
     return Stack(children: [
-      FlutterMap(
+      LayoutBuilder(builder: (context, constraints) => FlutterMap(
         key: const ValueKey('atlas-map'),
         mapController: _controller,
         options: MapOptions(
@@ -208,6 +210,14 @@ class _AtlasPageState extends State<AtlasPage>
               entries.isEmpty ? const LatLng(20, 0) : _point(entries.first),
           initialZoom:
               entries.isEmpty ? config.mapDefaultZoom : config.mapEntryZoom - 3,
+          // The whole world stays at least this share of the map's width
+          // (a tile is 256 px wide at zoom 0), and no band of empty sky
+          // shows above or below it.
+          minZoom: math.max(
+              0,
+              math.log(constraints.maxWidth * config.mapMinWorldWidth / 256) /
+                  math.ln2),
+          cameraConstraint: const CameraConstraint.containLatitude(),
           maxZoom: config.mapMaxZoom,
           onMapReady: () => _fitAll(entries),
           // A pinch that drifts a little zooms and does not turn the map:
@@ -260,7 +270,7 @@ class _AtlasPageState extends State<AtlasPage>
                         launchUrl(Uri.parse(config.mapAttributionUrl))),
               ]),
         ],
-      ),
+      )),
       const Positioned(top: 16, left: 16, right: 16, child: TopSearchCard()),
       if (entries.isEmpty)
         Center(

@@ -9,7 +9,8 @@
     "maxZoom": 18.0,
     "clusterRadius": 56,
     "rotationThreshold": 30.0,
-    "northSnapDegrees": 15.0
+    "northSnapDegrees": 15.0,
+    "minWorldWidth": 0.5
   },
   "geocoding": {
     "reverseUrl": "https://nominatim.openstreetmap.org/reverse",
