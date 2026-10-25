@@ -336,6 +336,12 @@ implementation boundaries and verification results belong in
 
 ## Engineering and documentation
 
+- Versions (2026-10-25, owner): the app is 0.x until its first real
+  release, which becomes 1.0.0; every release raises the version. It was
+  Daily You's 3.6.1 until then; the build number moved to a date
+  (`YYMMDDNN`, from 26102501) because Android only updates to a higher one.
+  AGENTS.md ("Work and delivery") holds the rule.
+
 - The repository is public (2026-10-24, owner), after a review of its whole
   history for keys and personal data; feedback mail goes to the owner's
   Gmail. Never commit signing keys, diaries, device secrets or personal

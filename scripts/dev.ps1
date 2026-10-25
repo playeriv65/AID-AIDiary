@@ -1,6 +1,7 @@
 param(
   [ValidateSet('windows','windows-build','windows-profile-build','windows-release-build','windows-stage','windows-profile-stage','windows-background','windows-driver','android','apk','profile','release','test','test-all','test-unit','test-widget','test-integration','test-live','test-server','cli','test-cli','frame-rate','analyze','pub','l10n','screenshots')][string]$Target='windows',
-  # Flutter device id for 'android', e.g. a wireless adb serial from `flutter devices`.
+  # Flutter device id for 'android', e.g. a wireless adb serial from `flutter devices`;
+  # for 'release', the one device to install on.
   [string]$Device='emulator-5554',
   # Files or directories; required for test, optional for layers/screenshots.
   [string[]]$TestFiles=@()
@@ -164,18 +165,34 @@ switch ($Target) {
     exit 0
   }
   # The everyday app: signed with android/key.properties (kept out of git)
-  # and installed over the existing one, data kept, on every connected
-  # phone or tablet.
+  # and installed over the existing one, data kept, on -Device or else on
+  # every connected phone or tablet. Each release carries a new version
+  # (AGENTS.md, "Versions"): a device already on this version code or a
+  # newer one stops the build before it starts.
   'release' {
+    $serials = if ($PSBoundParameters.ContainsKey('Device')) { @($Device) } else {
+      foreach ($line in (adb devices | Select-Object -Skip 1)) {
+        $serial, $state = $line -split '\s+'
+        if ($state -eq 'device' -and $serial -notlike 'emulator-*') { $serial }
+      }
+    }
+    $version = (Select-String -Path pubspec.yaml -Pattern '^version:\s*(\S+)\+(\d+)').Matches[0]
+    $newCode = [long]$version.Groups[2].Value
+    foreach ($serial in $serials) {
+      $installed = adb -s $serial shell dumpsys package dev.aid.diary |
+        Select-String -Pattern 'versionCode=(\d+)' | Select-Object -First 1
+      if ($installed -and [long]$installed.Matches[0].Groups[1].Value -ge $newCode) {
+        Write-Error "$serial already has version code $($installed.Matches[0].Groups[1].Value); bump the version in pubspec.yaml (now $($version.Groups[1].Value)+$newCode)."
+        exit 1
+      }
+    }
     flutter build apk --release --flavor independent --target-platform android-arm64
     $code = $LASTEXITCODE
     Stop-Gradle
     if ($code -ne 0) { exit $code }
     $apk = 'build\app\outputs\flutter-apk\app-independent-release.apk'
     $failed = @()
-    foreach ($line in (adb devices | Select-Object -Skip 1)) {
-      $serial, $state = $line -split '\s+'
-      if ($state -ne 'device' -or $serial -like 'emulator-*') { continue }
+    foreach ($serial in $serials) {
       Write-Host "Installing on $serial"
       adb -s $serial install -r $apk
       if ($LASTEXITCODE -ne 0) { $failed += $serial }

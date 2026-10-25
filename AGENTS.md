@@ -29,6 +29,7 @@ Do not put changing test counts, deployment revisions or recipes in this file.
 - Before a code commit, format changed source, run relevant analysis and required checks from Testing, inspect the diff and update relevant docs. Documentation-only changes need link/command/structure review. Preserve actual failures and validation gaps; do not retry until green or silently lower the goal.
 - Review changed files for secrets, private content and generated author/editor metadata or signatures; remove such metadata and verify the files still work. Keep local secret/config files ignored and templates safe.
 - Do not publish a store release unless asked. Existing deployment authorization does not imply permission to reset live data or rotate user-held keys.
+- Versions: `pubspec.yaml` holds `MAJOR.MINOR.PATCH+YYMMDDNN`. Before any build installed on the owner's devices or published, raise it: the name 0.x until the first real release (then 1.0.0), MINOR for features, PATCH for fixes; the build number is that day's date and a two-digit count (`26102501`). Android never accepts a lower or equal code over an installed app (uninstalling would delete the diary), so the code only grows; `dev.ps1 release` refuses a device already on it.
 
 ## Native environment and user data
 
