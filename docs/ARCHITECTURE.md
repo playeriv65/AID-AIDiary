@@ -453,10 +453,11 @@ action can conceal a visible entry, but actions cannot read or reveal it.
 Sharing, duplication and template creation require making the entry ordinary
 first; this avoids implicit copies outside the protected section.
 
-Ordinary exports omit hidden entries. Full database backups preserve them and
-therefore require backup-password encryption while any hidden row exists,
-including Recently deleted. Hidden is an application visibility feature, not a
-claim that a plaintext SQLite file is independently encrypted.
+Ordinary exports omit hidden entries. Full database backups preserve them like
+any other row, encrypted only when the user set a backup password (owner,
+2026-10-25: hiding is an interface matter, backups get no special rule).
+Hidden is an application visibility feature, not a claim that the SQLite file
+or a plain backup is encrypted.
 
 Sync and nearby diary transfer carry hidden entries like any other: the
 `is_hidden` column travels with the row, so another device keeps the entry

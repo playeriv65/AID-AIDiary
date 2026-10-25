@@ -33,7 +33,8 @@ asks again. Dates are when it was settled. Ideas not built yet are in
   One Diary backups. Keep hidden entries out of everyday views, search,
   statistics, widgets, ordinary exports and CLI content. Reading or revealing
   them requires local authentication in Settings > Security; backgrounding
-  removes the protected content again. Full encrypted backups preserve them.
+  removes the protected content again. Full backups preserve them like any
+  entry, with no backup password required (2026-10-25, owner).
   Hiding is only an interface matter: hidden entries sync like any other and
   stay hidden on every device (2026-10-23, owner). See
   [Architecture](ARCHITECTURE.md#hidden-entries).

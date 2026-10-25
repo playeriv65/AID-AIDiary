@@ -16,9 +16,7 @@ import 'package:aid_diary/l10n/generated/app_localizations_en.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/providers/entries_provider.dart';
 import 'package:aid_diary/services/home_widget_service.dart';
-import 'package:aid_diary/storage/storage_picker.dart';
 import 'package:aid_diary/sync/sync_schema.dart';
-import 'package:aid_diary/utils/backup_restore_utils.dart';
 import 'package:aid_diary/utils/diary_day.dart';
 import 'package:aid_diary/utils/entry_filter.dart';
 import 'package:aid_diary/utils/export_utils.dart';
@@ -106,14 +104,6 @@ void main() {
         imagesOf: (_) => [], tagsOf: (_) => []);
     expect(jsonDecode(json), hasLength(1));
     expect(json, isNot(contains('Private text')));
-  });
-
-  test('hidden entries cannot escape through an unencrypted full backup',
-      () async {
-    await store.add(entry('Private text', hidden: true));
-    await expectLater(
-        BackupRestoreUtils.backupTo(const PickedDirectory('unused')),
-        throwsStateError);
   });
 
   test('version 13 gains hidden defaults without rewriting diary content',
