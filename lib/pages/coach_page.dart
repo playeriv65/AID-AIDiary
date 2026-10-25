@@ -48,7 +48,7 @@ class _CoachPageState extends State<CoachPage>
   @override
   bool get wantKeepAlive => true;
 
-  // Wide windows open the page in the list pane, as Journey does, and keep
+  // Wide windows open the page in the list pane and keep
   // the detail pane empty; phones push it.
   void _open(BuildContext context, _CoachItem item, bool split) {
     if (split) {

@@ -299,7 +299,7 @@ class EntryViewPage extends StatelessWidget {
     }
   }
 
-  /// "Share as…" like Journey: the picture card, a ZIP with the original
+  /// "Share as…": the picture card, a ZIP with the original
   /// media, plain text or an HTML page.
   Future<void> _share(
       BuildContext context, Entry entry, List<EntryImage> images) async {

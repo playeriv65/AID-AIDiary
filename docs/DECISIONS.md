@@ -109,14 +109,13 @@ asks again. Dates are when it was settled. Ideas not built yet are in
   Selecting a day changes `Entry.day`, never `timeCreate`; both Gregorian and
   Jalali pickers keep this distinction. This is clarification of the existing
   rule, not a migration of saved dates.
-- The layout and the set of features follow Journey's Android tablet and
-  phone versions (2026-10-20): every Journey screen has its counterpart.
-  Style and implementation are our own; Journey's code, assets and text are
-  never copied. Gaps are judged by side-by-side screenshots and by
-  inventorying its app's resources, not by screenshots alone.
-- Windows uses the tablet layout. Journey Desktop's own layout and its
-  desktop-only extras are out of scope (2026-10-20).
-- The entry editor follows 一本日记 (One Diary): date and time on top, tags
+- Layout (2026-10-20): a bottom bar on phones; a navigation rail with
+  list and detail panes on tablets. The app is developed on its own: no
+  other app's code, assets or text are used, and docs and code do not
+  describe it by other apps (2026-10-25, owner).
+- Windows uses the tablet layout; desktop-only layouts and extras are out of
+  scope (2026-10-20).
+- The entry editor: date and time on top, tags
   top right (its "groups"), an optional centred title that exists only when
   written, a tile to add media, weather and place rows. Not its crowded
   keyboard toolbar. Back over unsaved changes asks to save or discard; the
@@ -172,13 +171,12 @@ asks again. Dates are when it was settled. Ideas not built yet are in
   point with several entries opens them as a list of their own; zooming is
   left to the fingers. A pinch does not rotate the map unless clearly
   turned, and a map left slightly turned returns to north.
-- Random walk matters to the owner, who relies on One Diary's: keep it
+- Random walk matters to the owner, who relies on it daily: keep it
   good.
 - Appearance is independently configurable: light/system theme, optional
   separate dark palette, diary paper, original vector decorations and typography
   (2026-10-22). Group settings with previews; using system colors takes precedence
-  over custom colors. The installed Durian Diary is a reference for organization,
-  without copying its assets or paid-feature behavior.
+  over custom colors.
 
 ## Current feature scope (2026-10-22)
 
@@ -203,7 +201,7 @@ asks again. Dates are when it was settled. Ideas not built yet are in
 
 - An app-lock timeout: the phones' own app lock covers it.
 - PDF or DOCX export and printing: JSON (and Markdown) export is enough.
-- Per-entry "synced" badges (Journey has them): synced is the normal state
+- Per-entry "synced" badges: synced is the normal state
   and shows nothing; only entries whose sync failed get a small mark.
 - A web version, not now (2026-10-23). A web page loads its code from the
   server on every visit, so the server end-to-end encryption guards

@@ -697,7 +697,7 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
     if (choice != null) _model.setLocation(choice.location);
   }
 
-  /// Like Journey, offers what a picked photo tells: its day and place.
+  /// Offers what a picked photo tells: its day and place.
   Future<void> _offerPhotoMetadata(PhotoMetadata photo) async {
     final l10n = AppLocalizations.of(context)!;
     final suggestion =

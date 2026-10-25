@@ -8,7 +8,7 @@ Builds of the latest `main` are on the [nightly prerelease](https://github.com/p
 
 ## Screens
 
-The layout follows the Journey diary app: a bottom bar on phones, a navigation rail with list and detail panes on tablets and desktop windows. Only layout and features are borrowed; no code, assets or copy.
+Phones get a bottom bar; tablets and desktop windows a navigation rail with list and detail panes.
 
 Search stays pinned above scrolling lists on phones, tablets and Windows.
 A small back-to-top shortcut appears during long journal browsing. Feedback

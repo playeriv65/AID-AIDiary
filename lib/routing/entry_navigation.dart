@@ -36,7 +36,7 @@ class EntryNavigation {
       Template? template,
       String? text,
       List<EntryRef>? refs}) {
-    // The editor covers the whole window, rail included, like Journey.
+    // The editor covers the whole window, rail included.
     return Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
       settings: routeFor('editor', entry?.id),
       allowSnapshotting: false,

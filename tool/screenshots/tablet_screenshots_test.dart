@@ -33,7 +33,7 @@ void main() {
   }
 
   testWidgets('tablet', (tester) async {
-    // Same size as Journey's tablet reference shots.
+    // A common Android tablet size.
     await session.start(tester, const Size(1280, 800));
     await session.capture(tester, 'tablet-home');
     await session.tapKey(

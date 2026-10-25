@@ -28,7 +28,7 @@ List<EntryLocation> recentPlaces(List<Entry> entries, int limit) {
   ].take(limit).toList();
 }
 
-/// Sets an entry's place, like Journey: a sheet that locates the device
+/// Sets an entry's place: a sheet that locates the device
 /// right away and offers the result, the entry's place to rename or
 /// remove, and "Pick a place" for searching, saved and nearby places.
 Future<LocationChoice?> showLocationDialog(

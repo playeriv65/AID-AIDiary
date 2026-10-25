@@ -24,7 +24,7 @@ class SettingsPage extends StatelessWidget {
               constraints: const BoxConstraints(maxWidth: 840),
               child: ListView(
                 children: [
-                  // Grouped like Journey: general, data, stories,
+                  // Grouped: general, data, stories,
                   // reminders, security, help.
                   SettingsCategory(
                       title: l10n.settingsGeneralTitle,

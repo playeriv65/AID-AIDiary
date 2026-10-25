@@ -23,7 +23,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
 import 'package:material_ui/material_ui.dart';
 
-/// The stories row played as one chain, like Journey: today's statistics
+/// The stories row played as one chain: today's statistics
 /// and mood chart, the coach program's prompt, the throwback, then a
 /// closing card. A row card starts the chain at its own story.
 class TodayStory {

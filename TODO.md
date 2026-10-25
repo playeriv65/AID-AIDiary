@@ -1,11 +1,11 @@
 # TODO
 
-Ideas collected from Journey and other diary apps, not built yet. Roughly in order of value.
+Ideas not built yet, roughly in order of value.
 
-## Journey parity
-The reference is Journey 5.7.0C for Android tablets and phones; Windows uses the same tablet layout. Inventoried 2026-10-20 from its resources and screens, reference only. Done: shell, journal, detail, editor, calendar, media, atlas, coach with program enrolment, search, the story chain (coach prompt, wrap-up), statistics, settings tree, onboarding, help, reminders, quick-write notification, nudges, status and photo widgets, location sheet and picker, share sheet, EXIF date and place, backup.
+## Layout and features
+Windows uses the tablet layout. Done: shell, journal, detail, editor, calendar, media, atlas, coach with program enrolment, search, the story chain (coach prompt, wrap-up), statistics, settings tree, onboarding, help, reminders, quick-write notification, nudges, status and photo widgets, location sheet and picker, share sheet, EXIF date and place, backup.
 
-Probably skip (Journey has them, but they need cloud or AI or add little): Google Fit, rate dialog, live chat, external-link warning, automatic media categories (an image classifier), an in-app media picker.
+Probably skip (they need cloud services or add little): Google Fit, rate dialog, live chat, external-link warning, automatic media categories (an image classifier), an in-app media picker.
 
 ## Appearance (owner request 2026-10-23)
 - Fewer accent colours, including a pure black-and-white one.
@@ -18,7 +18,7 @@ Probably skip (Journey has them, but they need cloud or AI or add little): Googl
   At 14-20 px the Meteocons clouds fill most of the drawing and the canvas
   has wide margins, so partly cloudy, overcast, fog and rain look alike.
   Compared: Fluent Emoji flat (MIT) and Twemoji (CC BY 4.0) read best among
-  open sets; Durian Diary's set is iconfont.cn "天气" by 堇年0923 (cid 38809,
+  open sets; the iconfont.cn set "天气" by 堇年0923 (cid 38809,
   no license: needs the author's permission). A draft of our own in
   Material Symbols shapes (Apache 2.0) with colour, a large sun in partly
   cloudy and thick rain streaks, read clearly at 14 px; its generator and
@@ -156,4 +156,4 @@ flavor (2026-10-23, proposed; the owner will carry it out):
 - App lock timeout: phones' own app-lock features cover it.
 - PDF/DOCX export and printing: JSON export (and Markdown) is enough.
 - Membership, publishing, web links.
-- Journey Desktop's own layout and desktop-only extras (sidebar with tags, draggable split, settings dialog, custom title bar, calendar week strip, media strip in search, keyboard shortcuts, jump list): Windows reuses the Android tablet layout (decided 2026-10-20).
+- Desktop-only layout and extras (sidebar with tags, draggable split, settings dialog, custom title bar, calendar week strip, media strip in search, keyboard shortcuts, jump list): Windows reuses the Android tablet layout (decided 2026-10-20).

@@ -6,7 +6,7 @@ import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/routing/destinations.dart';
 import 'package:material_ui/material_ui.dart';
 
-/// Help like Journey's: frequently asked questions, the privacy note, then
+/// Help: frequently asked questions, the privacy note, then
 /// about the app. Everything answers offline.
 class HelpPage extends StatelessWidget {
   const HelpPage({super.key});

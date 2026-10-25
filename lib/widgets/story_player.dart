@@ -35,7 +35,7 @@ class StoryGroup {
   final Widget? backdrop;
 }
 
-/// Plays story groups one after another, like Journey's stories: slides
+/// Plays story groups one after another: slides
 /// advance on their own, a tap on the left third steps back and elsewhere
 /// forward, a long press pauses. With [wrapUp] a closing card follows the
 /// last story.

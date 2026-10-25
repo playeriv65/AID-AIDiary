@@ -405,6 +405,6 @@ initialized for the same workspace. Never clear the everyday package.
 | Model service for the in-app agent | DeepSeek (`https://api.deepseek.com`, model `deepseek-flash`) by default; the owner's development key is a text file on the PC's desktop, set into a scratch app with `aid agent.configure apiKey=...` | Owner's account; never in git, chat or logs |
 | Map, place and weather services | OpenStreetMap tiles, Nominatim, Overpass, Open-Meteo; endpoints in `assets/config/app_config.json` | Public; follow their usage policies (low request rates, a real User-Agent) |
 | Upstream | Daily You by Demizo (GPL-3.0); baseline in `SOURCE.md` | Public |
-| UI and format references | Other diary apps (Journey, 一本日记, 榴莲日记, Moo日记, Memex and open-source ones): installers, decompiled output, screenshots and notes in `D:\program\diary-references\` (index in its README) | Owner's PC, outside the repository: reference only, never copied |
+| Import format references | Notes on the formats the importers read, in `D:\program\diary-references\` (index in its README) | Owner's PC, outside the repository |
 | Old project's files | `D:\program\AID-AIDiary-legacy` | Owner's PC; kept, not imported |
 | Flutter issues followed | Android refresh rate on HyperOS (`docs/REFRESH_RATE.md`), Windows Impeller start-up cost [#191860](https://github.com/flutter/flutter/issues/191860) (why Windows renders with Skia) | Public |
