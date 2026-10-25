@@ -118,6 +118,8 @@
     "deleteTemplateMessage": "Voleu suprimir «{name}»?",
     "addTagsTitle": "Afegeix etiquetes",
     "addTagsSearchHint": "Cerca etiquetes…",
+    "tagsRecent": "Usades fa poc",
+    "tagNew": "Etiqueta nova",
     "tagFavoriteName": "Preferit",
     "iconGroupActivities": "Activitats",
     "iconGroupHobbies": "Entreteniment",

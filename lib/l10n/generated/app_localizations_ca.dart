@@ -522,6 +522,12 @@ class AppLocalizationsCa extends AppLocalizations {
   String get addTagsSearchHint => 'Cerca etiquetes…';
 
   @override
+  String get tagsRecent => 'Usades fa poc';
+
+  @override
+  String get tagNew => 'Etiqueta nova';
+
+  @override
   String get tagFavoriteName => 'Preferit';
 
   @override

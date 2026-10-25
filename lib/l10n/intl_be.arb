@@ -134,6 +134,8 @@
     "deleteTemplateMessage": "Выдаліць \"{name}\"?",
     "addTagsTitle": "Дадаць тэгі",
     "addTagsSearchHint": "Пошук тэгаў…",
+    "tagsRecent": "Нядаўна ўжытыя",
+    "tagNew": "Новы тэг",
     "tagFavoriteName": "Любімая",
     "iconGroupActivities": "Мерапрыемствы",
     "iconGroupHobbies": "забавы",

@@ -177,6 +177,8 @@
     "deleteTemplateMessage": "Poistetaanko \"{name}\"?",
     "addTagsTitle": "Lisää tunnisteita",
     "addTagsSearchHint": "Hae tunnisteita…",
+    "tagsRecent": "Viime aikoina käytetyt",
+    "tagNew": "Uusi tunniste",
     "tagFavoriteName": "Suosikki",
     "iconGroupActivities": "Aktiviteetit",
     "iconGroupHobbies": "Viihde",

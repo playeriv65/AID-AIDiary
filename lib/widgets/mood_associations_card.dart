@@ -2,13 +2,13 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'package:aid_diary/widgets/mood_picker.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/models/tag.dart';
 import 'package:aid_diary/services/diary_statistics.dart';
 import 'package:aid_diary/stats/entry_stats.dart';
 import 'package:aid_diary/utils/tag_visuals.dart';
-import 'package:aid_diary/widgets/mood_icon.dart';
 import 'package:aid_diary/widgets/tag_icon_glyph.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -49,20 +49,11 @@ class _MoodAssociationsCardState extends State<MoodAssociationsCard> {
                       fontSize: 18, fontWeight: FontWeight.bold)),
             ),
             const SizedBox(height: 8),
-            Wrap(
-              alignment: WrapAlignment.center,
-              spacing: 8,
-              children: [
-                for (final mood in const [2, 1, 0, -1, -2])
-                  ChoiceChip(
-                    key: ValueKey('mood-associations-$mood'),
-                    label: MoodIcon(moodValue: mood, size: 20),
-                    showCheckmark: false,
-                    selected: _mood == mood,
-                    onSelected: (_) => setState(() => _mood = mood),
-                  ),
-              ],
-            ),
+            MoodPicker.single(
+                mood: _mood,
+                onChanged: (mood) => setState(() => _mood = mood!),
+                clearable: false,
+                spread: true),
             const SizedBox(height: 12),
             if (factors.isEmpty)
               Padding(

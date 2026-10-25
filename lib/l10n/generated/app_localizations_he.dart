@@ -534,6 +534,12 @@ class AppLocalizationsHe extends AppLocalizations {
   String get addTagsSearchHint => 'חפש תגיות...';
 
   @override
+  String get tagsRecent => 'בשימוש לאחרונה';
+
+  @override
+  String get tagNew => 'תגית חדשה';
+
+  @override
   String get tagFavoriteName => 'מועדף';
 
   @override

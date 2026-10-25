@@ -154,6 +154,8 @@
     "labelCoverageLabel": "Couverture",
     "addTagsTitle": "Ajouter des étiquettes",
     "addTagsSearchHint": "Chercher des étiquettes…",
+    "tagsRecent": "Utilisées récemment",
+    "tagNew": "Nouvelle étiquette",
     "iconGroupHabitsGoals": "Habitudes et objectifs",
     "iconGroupWorkFinance": "Travail et finance",
     "iconGroupHealth": "Santé",

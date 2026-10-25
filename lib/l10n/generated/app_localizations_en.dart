@@ -521,6 +521,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get addTagsSearchHint => 'Search tags…';
 
   @override
+  String get tagsRecent => 'Used lately';
+
+  @override
+  String get tagNew => 'New tag';
+
+  @override
   String get tagFavoriteName => 'Favorite';
 
   @override

@@ -132,6 +132,8 @@
     "deleteTemplateMessage": "Vil du slette \"{name}\"?",
     "addTagsTitle": "Legg til tagger",
     "addTagsSearchHint": "Søk etiketter...",
+    "tagsRecent": "Brukt nylig",
+    "tagNew": "Ny etikett",
     "tagFavoriteName": "Favoritt",
     "iconGroupActivities": "Aktiviteter",
     "iconGroupHobbies": "Underholdning",

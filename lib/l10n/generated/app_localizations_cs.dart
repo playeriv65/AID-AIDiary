@@ -515,6 +515,12 @@ class AppLocalizationsCs extends AppLocalizations {
   String get addTagsSearchHint => 'Hledat štítky…';
 
   @override
+  String get tagsRecent => 'Nedávno použité';
+
+  @override
+  String get tagNew => 'Nový štítek';
+
+  @override
   String get tagFavoriteName => 'Oblíbené';
 
   @override

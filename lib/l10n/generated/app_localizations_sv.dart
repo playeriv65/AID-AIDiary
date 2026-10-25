@@ -525,6 +525,12 @@ class AppLocalizationsSv extends AppLocalizations {
   String get addTagsSearchHint => 'Sök taggar...';
 
   @override
+  String get tagsRecent => 'Nyligen använda';
+
+  @override
+  String get tagNew => 'Ny tagg';
+
+  @override
   String get tagFavoriteName => 'Favorit';
 
   @override

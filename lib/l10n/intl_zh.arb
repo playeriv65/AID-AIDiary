@@ -163,6 +163,8 @@
     "deleteTitle": "删除",
     "addTagsTitle": "添加标签",
     "addTagsSearchHint": "搜索标签…",
+    "tagsRecent": "最近常用",
+    "tagNew": "新建标签",
     "iconGroupFoodDrink": "餐饮",
     "iconGroupWorkFinance": "工作与金融",
     "iconGroupHealth": "健康",

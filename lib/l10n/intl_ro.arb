@@ -132,6 +132,8 @@
     "deleteTemplateMessage": "Ștergeți „{name}”?",
     "addTagsTitle": "Adăugați etichete",
     "addTagsSearchHint": "Etichete de căutare...",
+    "tagsRecent": "Folosite recent",
+    "tagNew": "Etichetă nouă",
     "tagFavoriteName": "Favorit",
     "iconGroupActivities": "Activități",
     "iconGroupHobbies": "Divertisment",

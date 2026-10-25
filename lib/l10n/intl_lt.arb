@@ -178,6 +178,8 @@
     "deleteTemplateMessage": "Ištrinti „{name}“?",
     "addTagsTitle": "Pridėti žymas",
     "addTagsSearchHint": "Ieškoti žymų…",
+    "tagsRecent": "Neseniai naudotos",
+    "tagNew": "Nauja žymė",
     "tagFavoriteName": "Mėgstamiausias",
     "iconGroupActivities": "Veikla",
     "iconGroupHobbies": "Pramogos",

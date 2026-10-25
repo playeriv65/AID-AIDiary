@@ -523,6 +523,12 @@ class AppLocalizationsOc extends AppLocalizations {
   String get addTagsSearchHint => 'Recèrca d\'etiquetas...';
 
   @override
+  String get tagsRecent => 'Utilizadas recentament';
+
+  @override
+  String get tagNew => 'Etiqueta novèla';
+
+  @override
   String get tagFavoriteName => 'Preferit';
 
   @override

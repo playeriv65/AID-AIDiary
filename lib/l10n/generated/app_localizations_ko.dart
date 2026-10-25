@@ -514,6 +514,12 @@ class AppLocalizationsKo extends AppLocalizations {
   String get addTagsSearchHint => '태그 검색…';
 
   @override
+  String get tagsRecent => '최근 자주 쓴';
+
+  @override
+  String get tagNew => '새 태그';
+
+  @override
   String get tagFavoriteName => '즐겨찾기';
 
   @override

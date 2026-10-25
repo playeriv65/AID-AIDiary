@@ -178,6 +178,8 @@
     "deleteTemplateMessage": "\"{name}\" verwijderen?",
     "addTagsTitle": "Tags toevoegen",
     "addTagsSearchHint": "Tags zoeken…",
+    "tagsRecent": "Onlangs gebruikt",
+    "tagNew": "Nieuwe tag",
     "tagFavoriteName": "Favoriet",
     "iconGroupActivities": "Activiteiten",
     "iconGroupHobbies": "Amusement",

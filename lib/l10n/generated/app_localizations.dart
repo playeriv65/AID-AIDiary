@@ -960,6 +960,18 @@ abstract class AppLocalizations {
   /// **'Search tags…'**
   String get addTagsSearchHint;
 
+  /// No description provided for @tagsRecent.
+  ///
+  /// In en, this message translates to:
+  /// **'Used lately'**
+  String get tagsRecent;
+
+  /// No description provided for @tagNew.
+  ///
+  /// In en, this message translates to:
+  /// **'New tag'**
+  String get tagNew;
+
   /// No description provided for @tagFavoriteName.
   ///
   /// In en, this message translates to:

@@ -471,6 +471,12 @@ class AppLocalizationsMs extends AppLocalizations {
   String get addTagsSearchHint => 'Teg carian…';
 
   @override
+  String get tagsRecent => 'Digunakan baru-baru ini';
+
+  @override
+  String get tagNew => 'Tag baharu';
+
+  @override
   String get tagFavoriteName => 'Kegemaran';
 
   @override

@@ -517,6 +517,12 @@ class AppLocalizationsId extends AppLocalizations {
   String get addTagsSearchHint => 'Cari tag…';
 
   @override
+  String get tagsRecent => 'Baru-baru ini dipakai';
+
+  @override
+  String get tagNew => 'Tag baru';
+
+  @override
   String get tagFavoriteName => 'Favorit';
 
   @override

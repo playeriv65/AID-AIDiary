@@ -11,14 +11,15 @@ import 'package:flutter/services.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// Renders a list of [TagSection]s as grouped chip rows.
-class TagGroupedChipList extends StatelessWidget {
+class TagGroupedChipList extends StatefulWidget {
   final List<TagSection> sections;
 
   /// Builds the chip widget for each tag. The caller controls tap/remove behavior.
   final Widget Function(Tag) chipBuilder;
 
-  /// When given, a long press lifts a chip, and dropping it on another tag
-  /// puts it in that tag's place.
+  /// When given, a long press lifts a chip. Held over another tag it takes
+  /// that tag's place and the tags after it move along, as it will be once
+  /// dropped; dropping it there calls this with the tag whose place it took.
   final void Function(Tag moved, Tag target)? onMove;
 
   const TagGroupedChipList({
@@ -28,45 +29,82 @@ class TagGroupedChipList extends StatelessWidget {
     this.onMove,
   });
 
-  Widget _movable(BuildContext context, Tag tag) {
-    final chip = chipBuilder(tag);
-    final onMove = this.onMove;
-    if (onMove == null) return chip;
+  @override
+  State<TagGroupedChipList> createState() => _TagGroupedChipListState();
+}
+
+class _TagGroupedChipListState extends State<TagGroupedChipList> {
+  /// The lifted tag, and the tag whose place it is shown in.
+  Tag? _lifted;
+  Tag? _over;
+
+  /// The sections as they will be once [_lifted] is dropped on [_over].
+  List<TagSection> get _shown {
+    final lifted = _lifted;
+    final over = _over;
+    if (lifted == null || over == null) return widget.sections;
+    final original = [for (final section in widget.sections) ...section.tags];
+    // Moving forward it goes after the tag, so that tag takes its place.
+    final forward = lifted.categoryId == over.categoryId &&
+        original.indexWhere((tag) => tag.id == lifted.id) <
+            original.indexWhere((tag) => tag.id == over.id);
+    return [
+      for (final section in widget.sections)
+        TagSection(category: section.category, tags: [
+          for (final tag in section.tags)
+            if (tag.id == over.id) ...[
+              if (forward) tag,
+              lifted,
+              if (!forward) tag,
+            ] else if (tag.id != lifted.id)
+              tag,
+        ]),
+    ];
+  }
+
+  void _drop() {
+    final lifted = _lifted;
+    final over = _over;
+    setState(() => _lifted = _over = null);
+    if (lifted != null && over != null) widget.onMove!(lifted, over);
+  }
+
+  Widget _movable(Tag tag) {
+    final chip = widget.chipBuilder(tag);
+    if (widget.onMove == null) return chip;
+    final isLifted = tag.id == _lifted?.id;
     return DragTarget<Tag>(
       key: ValueKey('tag-move-${tag.id}'),
       onWillAcceptWithDetails: (details) {
-        if (details.data.id == tag.id) return false;
-        HapticFeedback.selectionClick();
+        if (details.data.id != tag.id && _over?.id != tag.id) {
+          HapticFeedback.selectionClick();
+          setState(() => _over = tag);
+        }
         return true;
       },
-      onAcceptWithDetails: (details) => onMove(details.data, tag),
+      onAcceptWithDetails: (_) => _drop(),
       builder: (context, candidates, _) => LongPressDraggable<Tag>(
         data: tag,
-        onDragStarted: HapticFeedback.mediumImpact,
+        onDragStarted: () {
+          HapticFeedback.mediumImpact();
+          setState(() => _lifted = tag);
+        },
+        // Let go anywhere else: everything goes back.
+        onDraggableCanceled: (_, __) => setState(() => _lifted = _over = null),
         feedback: Material(
           type: MaterialType.transparency,
           child: Transform.scale(scale: 1.1, child: chip),
         ),
         childWhenDragging: Opacity(opacity: 0.3, child: chip),
-        child: DecoratedBox(
-          // Where the lifted tag will land.
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
-            boxShadow: [
-              if (candidates.isNotEmpty)
-                BoxShadow(
-                    color: Theme.of(context).colorScheme.primary,
-                    spreadRadius: 2),
-            ],
-          ),
-          child: chip,
-        ),
+        // Where it will land shows as the faded chip.
+        child: isLifted ? Opacity(opacity: 0.3, child: chip) : chip,
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final sections = _shown;
     if (sections.isEmpty) return const SizedBox.shrink();
 
     final items = <Widget>[];
@@ -77,7 +115,7 @@ class TagGroupedChipList extends StatelessWidget {
       items.add(Wrap(
         spacing: 6,
         runSpacing: 6,
-        children: [for (final tag in section.tags) _movable(context, tag)],
+        children: [for (final tag in section.tags) _movable(tag)],
       ));
     }
 

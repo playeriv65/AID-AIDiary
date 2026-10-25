@@ -32,7 +32,7 @@ import 'package:aid_diary/widgets/diary_day_dialog.dart';
 import 'package:aid_diary/widgets/editor_action_bar/editor_keyboard_session.dart';
 import 'package:aid_diary/widgets/entry_image_actions.dart';
 import 'package:aid_diary/widgets/entry_image_editable_list.dart';
-import 'package:aid_diary/widgets/entry_mood_picker.dart';
+import 'package:aid_diary/widgets/mood_picker.dart';
 import 'package:aid_diary/widgets/entry_text_edit.dart';
 import 'package:aid_diary/widgets/location_dialog.dart';
 import 'package:aid_diary/widgets/markdown_preview_controller.dart';
@@ -664,9 +664,9 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
       style: const MenuStyle(alignment: AlignmentDirectional.bottomStart),
       menuChildren: [
         Builder(
-            builder: (menuContext) => EntryMoodPicker(
-                  moodValue: mood,
-                  onChangedMood: (value) {
+            builder: (menuContext) => MoodPicker.single(
+                  mood: mood,
+                  onChanged: (value) {
                     _model.setMood(value);
                     MenuController.maybeOf(menuContext)?.close();
                   },

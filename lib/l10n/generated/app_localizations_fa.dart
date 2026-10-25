@@ -519,6 +519,12 @@ class AppLocalizationsFa extends AppLocalizations {
   String get addTagsSearchHint => 'جستجوی برچسب‌ها…';
 
   @override
+  String get tagsRecent => 'اخیراً استفاده‌شده';
+
+  @override
+  String get tagNew => 'برچسب جدید';
+
+  @override
   String get tagFavoriteName => 'مورد علاقه‌ها';
 
   @override

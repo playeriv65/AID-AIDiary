@@ -180,6 +180,8 @@
     "deleteTemplateMessage": "Usunąć „{name}”?",
     "addTagsTitle": "Dodaj tagi",
     "addTagsSearchHint": "Wyszukaj tagi…",
+    "tagsRecent": "Ostatnio używane",
+    "tagNew": "Nowy tag",
     "tagFavoriteName": "Ulubiony",
     "iconGroupActivities": "Działania",
     "iconGroupHobbies": "Rozrywka",

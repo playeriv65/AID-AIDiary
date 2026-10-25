@@ -526,6 +526,12 @@ class AppLocalizationsNl extends AppLocalizations {
   String get addTagsSearchHint => 'Tags zoeken…';
 
   @override
+  String get tagsRecent => 'Onlangs gebruikt';
+
+  @override
+  String get tagNew => 'Nieuwe tag';
+
+  @override
   String get tagFavoriteName => 'Favoriet';
 
   @override

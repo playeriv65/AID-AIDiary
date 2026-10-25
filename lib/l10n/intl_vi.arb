@@ -133,6 +133,8 @@
     "deleteTemplateMessage": "Xóa \"{name}\"?",
     "addTagsTitle": "Thêm thẻ",
     "addTagsSearchHint": "Tìm kiếm thẻ…",
+    "tagsRecent": "Dùng gần đây",
+    "tagNew": "Thẻ mới",
     "tagFavoriteName": "yêu thích",
     "iconGroupActivities": "Hoạt động",
     "iconGroupHobbies": "Giải trí",

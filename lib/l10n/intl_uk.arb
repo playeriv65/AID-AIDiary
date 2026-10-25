@@ -180,6 +180,8 @@
     "deleteTemplateMessage": "Видалити \"{name}\"?",
     "addTagsTitle": "Додайте теги",
     "addTagsSearchHint": "Шукати теги…",
+    "tagsRecent": "Нещодавно вжиті",
+    "tagNew": "Новий тег",
     "tagFavoriteName": "улюблений",
     "iconGroupActivities": "Діяльність",
     "iconGroupHobbies": "Розваги",

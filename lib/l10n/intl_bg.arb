@@ -132,6 +132,8 @@
     "deleteTemplateMessage": "Изтриване на „{name}“?",
     "addTagsTitle": "Добавете етикети",
     "addTagsSearchHint": "Търсене на тагове...",
+    "tagsRecent": "Наскоро използвани",
+    "tagNew": "Нов етикет",
     "tagFavoriteName": "Любима",
     "iconGroupActivities": "дейности",
     "iconGroupHobbies": "Развлечение",

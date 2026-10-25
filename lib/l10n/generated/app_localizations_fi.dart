@@ -522,6 +522,12 @@ class AppLocalizationsFi extends AppLocalizations {
   String get addTagsSearchHint => 'Hae tunnisteita…';
 
   @override
+  String get tagsRecent => 'Viime aikoina käytetyt';
+
+  @override
+  String get tagNew => 'Uusi tunniste';
+
+  @override
   String get tagFavoriteName => 'Suosikki';
 
   @override

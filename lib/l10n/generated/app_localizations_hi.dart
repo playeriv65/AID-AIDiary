@@ -524,6 +524,12 @@ class AppLocalizationsHi extends AppLocalizations {
   String get addTagsSearchHint => 'टैग खोजें...';
 
   @override
+  String get tagsRecent => 'हाल में उपयोग किए गए';
+
+  @override
+  String get tagNew => 'नया टैग';
+
+  @override
   String get tagFavoriteName => 'पसंदीदा';
 
   @override

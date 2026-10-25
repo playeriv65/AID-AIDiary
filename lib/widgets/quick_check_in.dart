@@ -2,12 +2,10 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'package:aid_diary/widgets/mood_picker.dart';
 import 'package:aid_diary/actions/app_actions.dart';
-import 'package:aid_diary/widgets/haptics.dart';
 import 'package:aid_diary/database/entry_store.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
-import 'package:aid_diary/utils/entry_context_display.dart';
-import 'package:aid_diary/widgets/mood_icon.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// Records how you feel in a couple of taps: a mood, optionally what you
@@ -56,28 +54,12 @@ class _QuickCheckInState extends State<QuickCheckIn> {
           Text(l10n.checkInMood,
               textAlign: TextAlign.center, style: theme.textTheme.titleLarge),
           const SizedBox(height: 16),
-          Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-            for (final mood in const [-2, -1, 0, 1, 2])
-              InkWell(
-                key: ValueKey('check-in-mood-$mood'),
-                customBorder: const CircleBorder(),
-                onTap: () {
-                  Haptics.selection();
-                  setState(() => _mood = mood);
-                },
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 150),
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: _mood == mood
-                        ? moodColor(mood, theme.colorScheme)
-                        : Colors.transparent,
-                  ),
-                  child: MoodIcon(moodValue: mood, size: 34),
-                ),
-              ),
-          ]),
+          MoodPicker.single(
+              mood: _mood,
+              onChanged: (mood) => setState(() => _mood = mood),
+              clearable: false,
+              size: 34,
+              spread: true),
           const SizedBox(height: 20),
           TextField(
             key: const ValueKey('check-in-note'),

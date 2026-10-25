@@ -214,6 +214,34 @@ class TagsProvider with ChangeNotifier {
     return _entryTagsByEntry[entryId] ?? const [];
   }
 
+  /// The tags put on entries most in the last [days] days, most first and
+  /// then the latest; never the favorite tag, which is the star.
+  List<Tag> recentlyUsed(
+      {required int limit, required int days, DateTime? now}) {
+    final since = (now ?? DateTime.now()).subtract(Duration(days: days));
+    final favoriteId = favoriteTag?.id;
+    final uses = <int, int>{};
+    final last = <int, DateTime>{};
+    for (final link in _entryTags) {
+      if (link.tagId == favoriteId || link.timeCreate.isBefore(since)) continue;
+      uses[link.tagId] = (uses[link.tagId] ?? 0) + 1;
+      if (last[link.tagId] case final seen?
+          when !seen.isBefore(link.timeCreate)) {
+        continue;
+      }
+      last[link.tagId] = link.timeCreate;
+    }
+    final byId = {for (final tag in tags) tag.id: tag};
+    final ranked = [
+      for (final id in uses.keys)
+        if (byId[id] case final tag?) tag
+    ]..sort((a, b) {
+        final more = uses[b.id]!.compareTo(uses[a.id]!);
+        return more != 0 ? more : last[b.id]!.compareTo(last[a.id]!);
+      });
+    return ranked.take(limit).toList();
+  }
+
   /// The built-in favorite tag, which backs the star on an entry.
   Tag? get favoriteTag =>
       tags.where((tag) => tag.icon == TagIconKey.favorite).firstOrNull;

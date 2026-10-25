@@ -4,11 +4,10 @@
 
 import 'dart:io';
 
+import 'package:aid_diary/widgets/tag_picker_dialog.dart';
 import 'package:aid_diary/providers/tags_provider.dart';
 import 'package:aid_diary/widgets/progress_dialog.dart';
-import 'package:aid_diary/utils/tag_category_visuals.dart';
 import 'package:aid_diary/utils/templates_tags_transfer.dart';
-import 'package:aid_diary/widgets/tag_icon_glyph.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:provider/provider.dart';
@@ -45,31 +44,10 @@ class _ShareTagsDialogState extends State<ShareTagsDialog> {
     await TemplatesTagsTransfer.shareBytes(bytes, _fileName());
   }
 
-  bool? _sectionCheckboxValue(TagSection section) {
-    final ids = section.tags.map((tag) => tag.id).toSet();
-    final selectedCount = ids.where(_selectedTagIds.contains).length;
-    if (selectedCount == 0) return false;
-    if (selectedCount == ids.length) return true;
-    return null;
-  }
-
-  void _toggleSection(TagSection section) {
-    final ids = section.tags.map((tag) => tag.id!).toList();
-    final allSelected = ids.every(_selectedTagIds.contains);
-    setState(() {
-      if (allSelected) {
-        _selectedTagIds.removeAll(ids);
-      } else {
-        _selectedTagIds.addAll(ids);
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final provider = Provider.of<TagsProvider>(context);
-    final sections = provider.buildSections("");
     final allIds = provider.tags.map((tag) => tag.id!).toSet();
     final hasSelection = _selectedTagIds.isNotEmpty;
 
@@ -88,65 +66,17 @@ class _ShareTagsDialogState extends State<ShareTagsDialog> {
           ),
         ],
       ),
-      body: sections.isEmpty
+      body: provider.tags.isEmpty
           ? Center(child: Text(l10n.noResults))
-          : ListView.builder(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              itemCount: sections.length,
-              itemBuilder: (context, index) {
-                final section = sections[index];
-                final category = section.category;
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CheckboxListTile(
-                      contentPadding: EdgeInsets.only(left: 16, right: 8),
-                      tristate: true,
-                      tileColor:
-                          Theme.of(context).colorScheme.surfaceContainerLow,
-                      value: _sectionCheckboxValue(section),
-                      onChanged: (_) => _toggleSection(section),
-                      title: Row(
-                        children: [
-                          if (category != null) ...[
-                            TagIconGlyph(
-                              icon: category.icon,
-                              iconType: category.iconType,
-                              fallbackIcon: Icons.folder_rounded,
-                              color: category.resolvedColor(context),
-                              size: 18,
-                            ),
-                            const SizedBox(width: 8),
-                          ],
-                          Text(
-                            category?.name ?? l10n.tagCategoryUncategorized,
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium
-                                ?.copyWith(fontWeight: FontWeight.w600),
-                          ),
-                        ],
-                      ),
-                    ),
-                    for (final tag in section.tags)
-                      CheckboxListTile(
-                        contentPadding:
-                            const EdgeInsets.only(left: 32.0, right: 24.0),
-                        title: Text(tag.name, overflow: TextOverflow.ellipsis),
-                        value: _selectedTagIds.contains(tag.id),
-                        onChanged: (checked) {
-                          setState(() {
-                            if (checked ?? false) {
-                              _selectedTagIds.add(tag.id!);
-                            } else {
-                              _selectedTagIds.remove(tag.id);
-                            }
-                          });
-                        },
-                      ),
-                  ],
-                );
-              },
+          : SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
+              child: TagPicker(
+                mode: TagPickerMode.filter,
+                selected: _selectedTagIds,
+                onToggle: (tag) => setState(() =>
+                    _selectedTagIds.remove(tag.id) ||
+                    _selectedTagIds.add(tag.id!)),
+              ),
             ),
       bottomNavigationBar: Material(
         color: Theme.of(context).colorScheme.surface,

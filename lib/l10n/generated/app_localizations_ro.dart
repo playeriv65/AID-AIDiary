@@ -537,6 +537,12 @@ class AppLocalizationsRo extends AppLocalizations {
   String get addTagsSearchHint => 'Etichete de căutare...';
 
   @override
+  String get tagsRecent => 'Folosite recent';
+
+  @override
+  String get tagNew => 'Etichetă nouă';
+
+  @override
   String get tagFavoriteName => 'Favorit';
 
   @override

@@ -155,6 +155,10 @@ class AppConfig {
       Duration(seconds: _section('location')['timeoutSeconds'] as int);
   int get recentPlacesLimit => _section('location')['recentPlaces'] as int;
 
+  /// How many tags the pickers offer as used lately, and over how many days.
+  int get recentTagsLimit => _section('tags')['recentCount'] as int;
+  int get recentTagsDays => _section('tags')['recentDays'] as int;
+
   Uri get weatherForecastUrl =>
       Uri.parse(_section('weather')['forecastUrl'] as String);
   Uri get weatherArchiveUrl =>

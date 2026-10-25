@@ -536,6 +536,12 @@ class AppLocalizationsRu extends AppLocalizations {
   String get addTagsSearchHint => 'Поиск по тегам…';
 
   @override
+  String get tagsRecent => 'Недавно использованные';
+
+  @override
+  String get tagNew => 'Новый тег';
+
+  @override
   String get tagFavoriteName => 'Любимый';
 
   @override

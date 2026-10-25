@@ -520,6 +520,12 @@ class AppLocalizationsEs extends AppLocalizations {
   String get addTagsSearchHint => 'Buscar etiquetas…';
 
   @override
+  String get tagsRecent => 'Usadas recientemente';
+
+  @override
+  String get tagNew => 'Etiqueta nueva';
+
+  @override
   String get tagFavoriteName => 'Favorito';
 
   @override

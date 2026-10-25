@@ -519,6 +519,12 @@ class AppLocalizationsDa extends AppLocalizations {
   String get addTagsSearchHint => 'Søg tags...';
 
   @override
+  String get tagsRecent => 'Brugt for nylig';
+
+  @override
+  String get tagNew => 'Nyt mærke';
+
+  @override
   String get tagFavoriteName => 'Favorit';
 
   @override

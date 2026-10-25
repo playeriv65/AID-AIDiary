@@ -542,6 +542,12 @@ class AppLocalizationsLt extends AppLocalizations {
   String get addTagsSearchHint => 'Ieškoti žymų…';
 
   @override
+  String get tagsRecent => 'Neseniai naudotos';
+
+  @override
+  String get tagNew => 'Nauja žymė';
+
+  @override
   String get tagFavoriteName => 'Mėgstamiausias';
 
   @override

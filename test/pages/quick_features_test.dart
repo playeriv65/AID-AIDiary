@@ -103,7 +103,7 @@ void main() {
     await tester.pumpAndSettle();
     final save = find.byKey(const ValueKey('check-in-save'));
     expect(tester.widget<FilledButton>(save).onPressed, isNull);
-    await tester.tap(find.byKey(const ValueKey('check-in-mood-1')));
+    await tester.tap(find.byKey(const ValueKey('mood-option-1')));
     await tester.enterText(
         find.byKey(const ValueKey('check-in-note')), '跑了五公里');
     await tester.pump();

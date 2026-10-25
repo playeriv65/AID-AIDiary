@@ -159,6 +159,8 @@
     "deleteTemplateMessage": "حذف \"{name}\"؟",
     "addTagsTitle": "إضافة علامات",
     "addTagsSearchHint": "البحث عن علامات…",
+    "tagsRecent": "مستخدمة مؤخرًا",
+    "tagNew": "وسم جديد",
     "tagFavoriteName": "المفضلة",
     "iconGroupActivities": "الأنشطة",
     "iconGroupHobbies": "الترفيه",

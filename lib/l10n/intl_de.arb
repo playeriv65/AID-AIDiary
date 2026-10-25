@@ -159,6 +159,8 @@
     "deleteCategoryMessage": "„{name}“ löschen?{count, plural, =0{} =1{ Ihr 1 Schlagwort wird auch gelöscht.} other{ Ihre {count} Schlagwörter werden auch gelöscht.}}",
     "addTagsTitle": "Schlagwörter hinzufügen",
     "addTagsSearchHint": "Schlagwörter suchen…",
+    "tagsRecent": "Zuletzt verwendet",
+    "tagNew": "Neues Tag",
     "tagFavoriteName": "Favorit",
     "iconGroupActivities": "Aktivitäten",
     "iconGroupHobbies": "Unterhaltung",

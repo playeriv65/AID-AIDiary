@@ -525,6 +525,12 @@ class AppLocalizationsPt extends AppLocalizations {
   String get addTagsSearchHint => 'Pesquisar tags…';
 
   @override
+  String get tagsRecent => 'Usadas recentemente';
+
+  @override
+  String get tagNew => 'Nova etiqueta';
+
+  @override
   String get tagFavoriteName => 'Favorito';
 
   @override
@@ -3338,6 +3344,12 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
 
   @override
   String get addTagsSearchHint => 'Pesquisar tags…';
+
+  @override
+  String get tagsRecent => 'Usadas recentemente';
+
+  @override
+  String get tagNew => 'Nova tag';
 
   @override
   String get tagFavoriteName => 'Favorito';

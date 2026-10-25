@@ -516,6 +516,12 @@ class AppLocalizationsJa extends AppLocalizations {
   String get addTagsSearchHint => 'タグを検索…';
 
   @override
+  String get tagsRecent => '最近よく使う';
+
+  @override
+  String get tagNew => '新しいタグ';
+
+  @override
   String get tagFavoriteName => 'お気に入り';
 
   @override

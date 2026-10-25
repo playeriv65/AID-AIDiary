@@ -163,6 +163,8 @@
     "deleteTemplateMessage": "Eliminare \"{name}\"?",
     "addTagsTitle": "Aggiungi annotazioni",
     "addTagsSearchHint": "Cerca annotazioni…",
+    "tagsRecent": "Usati di recente",
+    "tagNew": "Nuovo tag",
     "tagFavoriteName": "Preferiti",
     "iconGroupActivities": "Attività",
     "iconGroupHobbies": "Cinema e teatro",

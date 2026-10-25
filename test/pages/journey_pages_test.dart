@@ -18,7 +18,7 @@ import 'package:aid_diary/providers/entry_images_provider.dart';
 import 'package:aid_diary/providers/tags_provider.dart';
 import 'package:aid_diary/widgets/entry_text_field.dart';
 import 'package:aid_diary/widgets/mood_icon.dart';
-import 'package:aid_diary/widgets/entry_mood_picker.dart';
+import 'package:aid_diary/widgets/mood_picker.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -475,7 +475,7 @@ void main() {
     expect(find.byKey(ValueKey('journal-entry-${walk.id}')), findsOneWidget);
     expect(find.text('开车'), findsNothing);
     expect(find.text('公园但难过'), findsOneWidget);
-    for (final key in ['search-filter-mood', 'search-mood-1']) {
+    for (final key in ['search-filter-mood', 'mood-option-1']) {
       await tester.ensureVisible(find.byKey(ValueKey(key)));
       await tester.pumpAndSettle();
       await tapKey(tester, key);
@@ -530,7 +530,7 @@ void main() {
       await tester.enterText(DiaryAppHarness.entryBody, '今天的记录');
       await tapKey(tester, 'editor-mood');
       final anchor = tester.getRect(find.byKey(const ValueKey('editor-mood')));
-      final choices = find.byType(EntryMoodPicker);
+      final choices = find.byType(MoodPicker);
       expect(find.descendant(of: choices, matching: find.byType(InkWell)),
           findsNWidgets(6));
       final menu = tester.getRect(choices);

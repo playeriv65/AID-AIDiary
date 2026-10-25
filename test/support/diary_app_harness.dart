@@ -173,18 +173,12 @@ class DiaryAppHarness {
     if (settle) await tester.pumpAndSettle();
   }
 
-  /// Runs a real async action and waits until [until] holds.
+  /// Starts a real async action and waits, drawing frames, until [until]
+  /// holds: what it waits on may be IO or the widgets that IO rebuilds.
   static Future<void> runUntil(
       WidgetTester tester, VoidCallback action, bool Function() until) async {
-    await tester.runAsync(() async {
-      action();
-      final waited = Stopwatch()..start();
-      while (!until()) {
-        _giveUpAfter(waited);
-        await Future<void>.delayed(const Duration(milliseconds: 20));
-      }
-    });
-    await tester.pumpAndSettle();
+    await tester.runAsync(() async => action());
+    await pumpUntil(tester, until);
   }
 
   /// Real work (SQLite, files) is slower while many test files run at

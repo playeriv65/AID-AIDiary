@@ -178,6 +178,8 @@
     "deleteTemplateMessage": "Padamkan \"{name}\"?",
     "addTagsTitle": "Tambah Teg",
     "addTagsSearchHint": "Teg carian…",
+    "tagsRecent": "Digunakan baru-baru ini",
+    "tagNew": "Tag baharu",
     "tagFavoriteName": "Kegemaran",
     "iconGroupActivities": "Aktiviti",
     "iconGroupHobbies": "Hiburan",

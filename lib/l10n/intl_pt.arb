@@ -178,6 +178,8 @@
     "deleteTemplateMessage": "Apagar \"{name}\"?",
     "addTagsTitle": "Adicionar tags",
     "addTagsSearchHint": "Pesquisar tags…",
+    "tagsRecent": "Usadas recentemente",
+    "tagNew": "Nova etiqueta",
     "tagFavoriteName": "Favorito",
     "iconGroupActivities": "Atividades",
     "iconGroupHobbies": "Entretenimento",

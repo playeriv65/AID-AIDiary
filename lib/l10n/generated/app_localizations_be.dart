@@ -551,6 +551,12 @@ class AppLocalizationsBe extends AppLocalizations {
   String get addTagsSearchHint => 'Пошук тэгаў…';
 
   @override
+  String get tagsRecent => 'Нядаўна ўжытыя';
+
+  @override
+  String get tagNew => 'Новы тэг';
+
+  @override
   String get tagFavoriteName => 'Любімая';
 
   @override

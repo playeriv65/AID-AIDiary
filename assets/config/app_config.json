@@ -23,6 +23,10 @@
     "timeoutSeconds": 15,
     "recentPlaces": 6
   },
+  "tags": {
+    "recentCount": 8,
+    "recentDays": 60
+  },
   "nearby": {
     "url": "https://overpass-api.de/api/interpreter",
     "radiusMeters": 300,

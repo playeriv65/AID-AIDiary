@@ -167,6 +167,8 @@
     "deleteTitle": "刪除",
     "addTagsTitle": "新增標籤",
     "addTagsSearchHint": "搜尋標籤…",
+    "tagsRecent": "最近常用",
+    "tagNew": "新增標籤",
     "iconGroupHobbies": "娛樂",
     "selectTagTitle": "選擇標籤",
     "streakGreatDays": "{count, plural, other{美好的日子 {count}}}",

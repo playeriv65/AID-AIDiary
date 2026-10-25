@@ -149,6 +149,8 @@
     "deleteTemplateMessage": "למחוק את \"{name}\"?",
     "addTagsTitle": "הוסף תגיות",
     "addTagsSearchHint": "חפש תגיות...",
+    "tagsRecent": "בשימוש לאחרונה",
+    "tagNew": "תגית חדשה",
     "tagFavoriteName": "מועדף",
     "iconGroupActivities": "פעילויות",
     "iconGroupHobbies": "בידור",

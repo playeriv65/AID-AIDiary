@@ -178,6 +178,8 @@
     "deleteTemplateMessage": "「{name}」を削除しますか?",
     "addTagsTitle": "タグを追加する",
     "addTagsSearchHint": "タグを検索…",
+    "tagsRecent": "最近よく使う",
+    "tagNew": "新しいタグ",
     "tagFavoriteName": "お気に入り",
     "iconGroupActivities": "活動内容",
     "iconGroupHobbies": "エンターテイメント",

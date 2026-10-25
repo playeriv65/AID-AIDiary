@@ -50,7 +50,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('步行'), findsOneWidget);
     expect(find.text('100%'), findsOneWidget);
-    await tester.tap(find.byKey(const ValueKey('mood-associations--2')));
+    await tester.tap(find.byKey(const ValueKey('mood-option--2')));
     await tester.pumpAndSettle();
     expect(find.text('步行'), findsNothing);
     expect(find.text('乘车'), findsOneWidget);

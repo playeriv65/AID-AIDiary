@@ -514,6 +514,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get addTagsSearchHint => '搜索标签…';
 
   @override
+  String get tagsRecent => '最近常用';
+
+  @override
+  String get tagNew => '新建标签';
+
+  @override
   String get tagFavoriteName => '我的最爱';
 
   @override
@@ -3202,6 +3208,12 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get addTagsSearchHint => '搜尋標籤…';
+
+  @override
+  String get tagsRecent => '最近常用';
+
+  @override
+  String get tagNew => '新增標籤';
 
   @override
   String get tagFavoriteName => '我的最愛';

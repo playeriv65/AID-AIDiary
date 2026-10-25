@@ -156,6 +156,8 @@
     "deleteTitle": "Sil",
     "addTagsTitle": "Etiketler Ekle",
     "addTagsSearchHint": "Etiketleri ara…",
+    "tagsRecent": "Son kullanılanlar",
+    "tagNew": "Yeni etiket",
     "tagFavoriteName": "Favori",
     "iconGroupActivities": "Aktiviteler",
     "iconGroupHobbies": "Eğlence",

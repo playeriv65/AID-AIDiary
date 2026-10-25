@@ -178,6 +178,8 @@
     "deleteTemplateMessage": "\"{name}\" ஐ நீக்கவா?",
     "addTagsTitle": "குறிச்சொற்களைச் சேர்க்கவும்",
     "addTagsSearchHint": "குறிச்சொற்களைத் தேடு…",
+    "tagsRecent": "சமீபத்தில் பயன்படுத்தியவை",
+    "tagNew": "புதிய குறிச்சொல்",
     "tagFavoriteName": "பிடித்தது",
     "iconGroupActivities": "செயல்பாடுகள்",
     "iconGroupHobbies": "பொழுதுபோக்கு",

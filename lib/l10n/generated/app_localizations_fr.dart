@@ -525,6 +525,12 @@ class AppLocalizationsFr extends AppLocalizations {
   String get addTagsSearchHint => 'Chercher des étiquettes…';
 
   @override
+  String get tagsRecent => 'Utilisées récemment';
+
+  @override
+  String get tagNew => 'Nouvelle étiquette';
+
+  @override
   String get tagFavoriteName => 'Favoris';
 
   @override

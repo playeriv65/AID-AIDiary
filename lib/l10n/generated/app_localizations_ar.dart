@@ -530,6 +530,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get addTagsSearchHint => 'البحث عن علامات…';
 
   @override
+  String get tagsRecent => 'مستخدمة مؤخرًا';
+
+  @override
+  String get tagNew => 'وسم جديد';
+
+  @override
   String get tagFavoriteName => 'المفضلة';
 
   @override

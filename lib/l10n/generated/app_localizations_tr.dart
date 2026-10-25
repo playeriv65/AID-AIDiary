@@ -522,6 +522,12 @@ class AppLocalizationsTr extends AppLocalizations {
   String get addTagsSearchHint => 'Etiketleri ara…';
 
   @override
+  String get tagsRecent => 'Son kullanılanlar';
+
+  @override
+  String get tagNew => 'Yeni etiket';
+
+  @override
   String get tagFavoriteName => 'Favori';
 
   @override

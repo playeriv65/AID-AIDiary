@@ -524,6 +524,12 @@ class AppLocalizationsVi extends AppLocalizations {
   String get addTagsSearchHint => 'Tìm kiếm thẻ…';
 
   @override
+  String get tagsRecent => 'Dùng gần đây';
+
+  @override
+  String get tagNew => 'Thẻ mới';
+
+  @override
   String get tagFavoriteName => 'yêu thích';
 
   @override

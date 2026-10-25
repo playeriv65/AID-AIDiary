@@ -132,6 +132,8 @@
     "deleteTemplateMessage": "Ta bort \"{name}\"?",
     "addTagsTitle": "Lägg till taggar",
     "addTagsSearchHint": "Sök taggar...",
+    "tagsRecent": "Nyligen använda",
+    "tagNew": "Ny tagg",
     "tagFavoriteName": "Favorit",
     "iconGroupActivities": "Aktiviteter",
     "iconGroupHobbies": "Underhållning",

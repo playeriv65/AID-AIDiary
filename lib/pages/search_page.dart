@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'package:aid_diary/widgets/tag_picker_dialog.dart';
+import 'package:aid_diary/widgets/mood_picker.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/models/tag.dart';
@@ -13,9 +15,6 @@ import 'package:aid_diary/utils/entry_filter.dart';
 import 'package:aid_diary/routing/entry_navigation.dart';
 import 'package:aid_diary/widgets/entry_card.dart';
 import 'package:aid_diary/widgets/list_detail_layout.dart';
-import 'package:aid_diary/widgets/mood_icon.dart';
-import 'package:aid_diary/widgets/tag_icon_glyph.dart';
-import 'package:aid_diary/utils/tag_visuals.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
@@ -58,8 +57,8 @@ class _SearchPageState extends State<SearchPage> {
         _moods.clear();
       });
 
-  void _toggle<T>(Set<T> set, T value, bool? on) =>
-      setState(() => on == true ? set.add(value) : set.remove(value));
+  void _flip<T>(Set<T> set, T value) =>
+      setState(() => set.remove(value) || set.add(value));
 
   void _open(Entry entry, bool split) {
     if (split) {
@@ -155,20 +154,13 @@ class _SearchPageState extends State<SearchPage> {
             options: tagOptions.length,
             selected: _tagIds.length,
             children: [
-              for (final tag in tagOptions)
-                CheckboxListTile(
-                  key: ValueKey('search-tag-${tag.id}'),
-                  secondary: TagIconGlyph(
-                      icon: tag.icon,
-                      iconType: tag.iconType,
-                      fallbackIcon: tag.typeIcon,
-                      color: tag.resolvedColor(context,
-                          fallback: theme.colorScheme.secondary),
-                      size: 20),
-                  title: Text(tag.name),
-                  value: _tagIds.contains(tag.id),
-                  onChanged: (on) => _toggle(_tagIds, tag.id!, on),
-                ),
+              TagPicker(
+                mode: TagPickerMode.filter,
+                // The star has a filter of its own.
+                hideFavorite: true,
+                selected: _tagIds,
+                onToggle: (tag) => _flip(_tagIds, tag.id!),
+              ),
             ],
           ),
           CheckboxListTile(
@@ -185,14 +177,10 @@ class _SearchPageState extends State<SearchPage> {
             options: 5,
             selected: _moods.length,
             children: [
-              for (final mood in const [2, 1, 0, -1, -2])
-                CheckboxListTile(
-                  key: ValueKey('search-mood-$mood'),
-                  secondary: MoodIcon(moodValue: mood, size: 22),
-                  title: Text(_moodName(mood, l10n)),
-                  value: _moods.contains(mood),
-                  onChanged: (on) => _toggle(_moods, mood, on),
-                ),
+              MoodPicker.multi(
+                  selected: _moods,
+                  onToggle: (mood) => _flip(_moods, mood),
+                  spread: true),
             ],
           ),
           if (_active) ...[
@@ -223,14 +211,6 @@ class _SearchPageState extends State<SearchPage> {
         ]);
   }
 }
-
-String _moodName(int mood, AppLocalizations l10n) => switch (mood) {
-      2 => l10n.moodGreat,
-      1 => l10n.moodGood,
-      0 => l10n.moodOkay,
-      -1 => l10n.moodBad,
-      _ => l10n.moodAwful,
-    };
 
 /// A filter that expands its options inline. The trailing number is how
 /// many options it has, or how many are picked once some are.

@@ -162,6 +162,8 @@
     "deleteTemplateMessage": "\"{name}\" हटाएं?",
     "addTagsTitle": "टैग जोड़ें",
     "addTagsSearchHint": "टैग खोजें...",
+    "tagsRecent": "हाल में उपयोग किए गए",
+    "tagNew": "नया टैग",
     "tagFavoriteName": "पसंदीदा",
     "iconGroupActivities": "गतिविधियाँ",
     "iconGroupHobbies": "मनोरंजन",

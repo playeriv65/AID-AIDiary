@@ -527,6 +527,12 @@ class AppLocalizationsTa extends AppLocalizations {
   String get addTagsSearchHint => 'குறிச்சொற்களைத் தேடு…';
 
   @override
+  String get tagsRecent => 'சமீபத்தில் பயன்படுத்தியவை';
+
+  @override
+  String get tagNew => 'புதிய குறிச்சொல்';
+
+  @override
   String get tagFavoriteName => 'பிடித்தது';
 
   @override

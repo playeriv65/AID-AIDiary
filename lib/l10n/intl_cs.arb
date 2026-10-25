@@ -164,6 +164,8 @@
     "deleteTemplateMessage": "Smazat „{name}“?",
     "addTagsTitle": "Přidat štítky",
     "addTagsSearchHint": "Hledat štítky…",
+    "tagsRecent": "Nedávno použité",
+    "tagNew": "Nový štítek",
     "tagFavoriteName": "Oblíbené",
     "iconGroupActivities": "Aktivity",
     "iconGroupHobbies": "Zábava",

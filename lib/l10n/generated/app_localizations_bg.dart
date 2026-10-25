@@ -526,6 +526,12 @@ class AppLocalizationsBg extends AppLocalizations {
   String get addTagsSearchHint => 'Търсене на тагове...';
 
   @override
+  String get tagsRecent => 'Наскоро използвани';
+
+  @override
+  String get tagNew => 'Нов етикет';
+
+  @override
   String get tagFavoriteName => 'Любима';
 
   @override

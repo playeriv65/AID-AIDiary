@@ -529,6 +529,12 @@ class AppLocalizationsUk extends AppLocalizations {
   String get addTagsSearchHint => 'Шукати теги…';
 
   @override
+  String get tagsRecent => 'Нещодавно вжиті';
+
+  @override
+  String get tagNew => 'Новий тег';
+
+  @override
   String get tagFavoriteName => 'улюблений';
 
   @override

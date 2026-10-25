@@ -149,6 +149,8 @@
     "deleteTemplateMessage": "Suprimir \"{name}\"?",
     "addTagsTitle": "Apondre d'etiquetas",
     "addTagsSearchHint": "Recèrca d'etiquetas...",
+    "tagsRecent": "Utilizadas recentament",
+    "tagNew": "Etiqueta novèla",
     "tagFavoriteName": "Preferit",
     "iconGroupActivities": "Activitats",
     "iconGroupHobbies": "Divertiment",

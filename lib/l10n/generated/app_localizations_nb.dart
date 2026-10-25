@@ -527,6 +527,12 @@ class AppLocalizationsNb extends AppLocalizations {
   String get addTagsSearchHint => 'Søk etiketter...';
 
   @override
+  String get tagsRecent => 'Brukt nylig';
+
+  @override
+  String get tagNew => 'Ny etikett';
+
+  @override
   String get tagFavoriteName => 'Favoritt';
 
   @override
