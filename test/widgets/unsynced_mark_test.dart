@@ -7,7 +7,7 @@ library;
 
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/sync/sync_service.dart';
-import 'package:aid_diary/widgets/journal_entry_row.dart';
+import 'package:aid_diary/widgets/entry_card.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -20,7 +20,7 @@ void main() {
   Future<void> show(WidgetTester tester, Entry entry) async {
     DiaryAppHarness.size(tester, const Size(390, 844));
     await tester.pumpWidget(harness.app(Scaffold(
-        body: JournalEntryRow(entry: entry, images: const [], onTap: () {}))));
+        body: EntryCard(entry: entry, images: const [], onTap: () {}))));
     await tester.pumpAndSettle();
   }
 

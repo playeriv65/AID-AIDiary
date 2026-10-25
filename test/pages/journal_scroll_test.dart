@@ -4,7 +4,7 @@ library;
 import 'package:aid_diary/database/entry_store.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/pages/journal_page.dart';
-import 'package:aid_diary/widgets/journal_entry_row.dart';
+import 'package:aid_diary/widgets/entry_card.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -133,7 +133,7 @@ void main() {
     final previous = debugOnRebuildDirtyWidget;
     debugOnRebuildDirtyWidget = (element, builtOnce) {
       previous?.call(element, builtOnce);
-      if (element.widget is JournalEntryRow) rows++;
+      if (element.widget is EntryCard) rows++;
     };
     addTearDown(() => debugOnRebuildDirtyWidget = previous);
     expect(position.maxScrollExtent, greaterThan(10000));

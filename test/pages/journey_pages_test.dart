@@ -155,13 +155,9 @@ void main() {
     await tester.tap(find.byKey(const ValueKey('coach-answer-done')));
     // Wait on the save without moving fake time, which would start the
     // debounced config write for real.
-    for (var i = 0;
-        i < 50 && ConfigProvider.instance.get(Settings.coachAnsweredStep) != 0;
-        i++) {
-      await tester.runAsync(
-          () => Future<void>.delayed(const Duration(milliseconds: 20)));
-      await tester.pump();
-    }
+    await DiaryAppHarness.pumpUntil(tester,
+        () => ConfigProvider.instance.get(Settings.coachAnsweredStep) == 0,
+        frame: Duration.zero, settle: false);
     EasyDebounce.cancel('save-config');
     final saved = EntryStore.instance.entries.single;
     expect(saved.text, startsWith('## '));

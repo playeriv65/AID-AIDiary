@@ -42,10 +42,23 @@ void main() {
 
   test('a long entry gives a cut snippet ending in an ellipsis', () {
     final preview = entryPreview(entry('${'很长的一天。' * 100}\n${'More. ' * 100}'));
-    expect(preview.snippet, '${('很长的一天。' * 100).substring(0, 300)}…');
+    expect(preview.snippet,
+        '${('很长的一天。' * 100).substring(0, snippetCharacters)}…');
     // An emoji is not split in half.
-    final emoji = entryPreview(entry('${'a' * 299}😀 and more'));
-    expect(emoji.snippet, '${'a' * 299}…');
+    final emoji =
+        entryPreview(entry('${'a' * (snippetCharacters - 1)}😀 and more'));
+    expect(emoji.snippet, '${'a' * (snippetCharacters - 1)}…');
+  });
+
+  test('a search snippet starts just before the first match', () {
+    final text = '${'前面的事情。' * 20}\n下午在**日常**里读书，日常很好。';
+    final preview = entryPreview(entry(text), around: '日常');
+    expect(preview.snippet, startsWith('…'));
+    expect(preview.snippet, contains('下午在日常里读书'));
+    expect(preview.snippet.indexOf('日常'), lessThan(20));
+    // Near the start, or not there at all: from the start.
+    expect(entryPreview(entry('日常的一天'), around: '日常').snippet, '日常的一天');
+    expect(entryPreview(entry('没有'), around: '日常').snippet, '没有');
   });
 
   test('shared text goes below the entry text after a blank line', () {

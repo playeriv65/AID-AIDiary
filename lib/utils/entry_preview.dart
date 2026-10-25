@@ -55,25 +55,45 @@ String mergeSharedText(String baseText, String? sharedText) {
   return baseText.isEmpty ? sharedText : '$baseText\n\n$sharedText';
 }
 
-/// Longest snippet: more than two lines hold in the widest list, so a long
-/// entry is not read and laid out in full for a line or two of it.
-const snippetCharacters = 300;
+/// Longest snippet: more than three lines hold in the widest list, so a long
+/// entry is not read and laid out in full for a few lines of it.
+const snippetCharacters = 400;
 
-/// An entry's title, when it has one, and [entrySnippet] of its text.
-EntryPreview entryPreview(Entry entry) {
+/// An entry's title, when it has one, and [entrySnippet] of its text, from
+/// just before [around] when given.
+EntryPreview entryPreview(Entry entry, {String around = ''}) {
   final title = entry.title.trim();
   return (
     title: title.isEmpty ? null : title,
-    snippet: entrySnippet(entry.text),
+    snippet: entrySnippet(entry.text, around: around),
   );
 }
 
+/// How much comes before the words a snippet is made around, so they read
+/// in context.
+const _lead = 12;
+
 /// Entry markdown as one line of plain text of at most [snippetCharacters],
-/// ending in an ellipsis when cut.
-String entrySnippet(String body) {
+/// ending in an ellipsis when cut. With [around], it starts a little before
+/// the first place those words appear (ignoring case), after an ellipsis,
+/// so they show; from the start when they do not appear.
+String entrySnippet(String body, {String around = ''}) {
+  final words = around.trim().toLowerCase();
+  final plain = _plainText(body, words.isEmpty ? snippetCharacters : null);
+  final at = words.isEmpty ? -1 : plain.toLowerCase().indexOf(words);
+  if (at <= _lead) return cutSnippet(plain, snippetCharacters);
+  var start = at - _lead;
+  // Not between the two halves of an emoji or other surrogate pair.
+  final first = plain.codeUnitAt(start);
+  if (first >= 0xDC00 && first <= 0xDFFF) start++;
+  return '…${cutSnippet(plain.substring(start), snippetCharacters)}';
+}
+
+/// [body] as one line of plain text: all of it, or once longer than [limit].
+String _plainText(String body, int? limit) {
   final snippet = StringBuffer();
   for (var start = 0;
-      start < body.length && snippet.length <= snippetCharacters;) {
+      start < body.length && (limit == null || snippet.length <= limit);) {
     final newline = body.indexOf('\n', start);
     final end = newline == -1 ? body.length : newline;
     final line = body.substring(start, end);
@@ -84,7 +104,7 @@ String entrySnippet(String body) {
     if (snippet.isNotEmpty) snippet.write(' ');
     snippet.write(plain);
   }
-  return cutSnippet(snippet.toString(), snippetCharacters);
+  return snippet.toString();
 }
 
 /// [snippet] cut to [maxCharacters] and an ellipsis, when longer.

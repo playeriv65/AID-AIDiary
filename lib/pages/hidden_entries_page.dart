@@ -9,7 +9,8 @@ import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/providers/entries_provider.dart';
 import 'package:aid_diary/routing/entry_navigation.dart';
 import 'package:aid_diary/time_manager.dart';
-import 'package:aid_diary/utils/entry_preview.dart';
+import 'package:aid_diary/providers/entry_images_provider.dart';
+import 'package:aid_diary/widgets/entry_card.dart';
 import 'package:aid_diary/widgets/auth_popup.dart';
 import 'package:aid_diary/widgets/hidden_diary_scope.dart';
 import 'package:flutter/services.dart';
@@ -111,18 +112,12 @@ class _HiddenEntriesPageState extends State<HiddenEntriesPage> {
                     children: [
                       if (entries.isEmpty) Text(l10n.hiddenDiaryEmpty),
                       for (final entry in entries)
-                        ListTile(
+                        EntryCard(
                           key: ValueKey('hidden-entry-${entry.id}'),
-                          leading: const Icon(Icons.visibility_off_outlined),
-                          title:
-                              Text(TimeManager.formatDate(entry.day, context)),
-                          subtitle: entry.isSealed
-                              ? Text(l10n.capsuleTitle)
-                              : Text(
-                                  entryPreview(entry).title ??
-                                      entryPreview(entry).snippet,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis),
+                          entry: entry,
+                          images:
+                              EntryImagesProvider.instance.getForEntry(entry),
+                          showDate: true,
                           onTap: () async {
                             await EntryNavigation.view(context, entry,
                                 entries: () =>

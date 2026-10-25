@@ -9,7 +9,7 @@ import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/database/entry_store.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/providers/entry_images_provider.dart';
-import 'package:aid_diary/widgets/journal_entry_row.dart';
+import 'package:aid_diary/widgets/entry_card.dart';
 import 'package:aid_diary/widgets/list_detail_layout.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -140,7 +140,7 @@ class _RecentlyDeletedPageState extends State<RecentlyDeletedPage> {
                   in groupEntriesByDay([for (final item in items) item.entry]))
                 EntryDayGroup(day: day, rows: [
                   for (final entry in dayEntries)
-                    JournalEntryRow(
+                    EntryCard(
                       entry: entry,
                       images: EntryImagesProvider.instance.getForEntry(entry),
                       label: l10n.deletedDaysLeft(items

@@ -36,11 +36,9 @@ void main() {
     // The player's spinner never settles and it reads real files, so let
     // real time pass between frames until it gives up.
     final unavailable = find.text('此附件在这台设备上不可用。');
-    for (var i = 0; i < 50 && unavailable.evaluate().isEmpty; i++) {
-      await tester.runAsync(
-          () => Future<void>.delayed(const Duration(milliseconds: 20)));
-      await tester.pump(const Duration(milliseconds: 100));
-    }
+    await DiaryAppHarness.pumpUntil(
+        tester, () => unavailable.evaluate().isNotEmpty,
+        frame: const Duration(milliseconds: 100), settle: false);
     // Tests have no file system plugin, so the player reports the file
     // as missing rather than crashing.
     expect(find.byType(MediaPlayerPage), findsOneWidget);

@@ -9,7 +9,7 @@ import 'package:aid_diary/providers/entries_provider.dart';
 import 'package:aid_diary/providers/entry_images_provider.dart';
 import 'package:aid_diary/time_manager.dart';
 import 'package:aid_diary/routing/entry_navigation.dart';
-import 'package:aid_diary/widgets/journal_entry_row.dart';
+import 'package:aid_diary/widgets/entry_card.dart';
 import 'package:aid_diary/widgets/list_detail_layout.dart';
 import 'package:aid_diary/widgets/top_search_card.dart';
 import 'package:aid_diary/widgets/month_calendar.dart';
@@ -132,7 +132,7 @@ class _CalendarPageState extends State<CalendarPage> {
         else
           EntryDayGroup(day: _selectedDate, rows: [
             for (final entry in entries)
-              JournalEntryRow(
+              EntryCard(
                 entry: entry,
                 images: images.getForEntry(entry),
                 onTap: () => setState(() => _selectedEntryId = entry.id),

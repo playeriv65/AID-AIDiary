@@ -32,7 +32,7 @@ import 'package:aid_diary/time_manager.dart';
 import 'package:aid_diary/routing/destinations.dart';
 import 'package:aid_diary/routing/entry_navigation.dart';
 import 'package:aid_diary/widgets/coach_widgets.dart';
-import 'package:aid_diary/widgets/journal_entry_row.dart';
+import 'package:aid_diary/widgets/entry_card.dart';
 import 'package:aid_diary/widgets/known_extent_sliver.dart';
 import 'package:aid_diary/widgets/list_detail_layout.dart';
 import 'package:aid_diary/widgets/month_calendar.dart';
@@ -346,7 +346,7 @@ class _JournalPageState extends State<JournalPage>
         anchors: _dayAnchors,
         child: EntryDayGroup(day: day, metrics: metrics, rows: [
           for (final entry in dayEntries)
-            JournalEntryRow(
+            EntryCard(
               entry: entry,
               images: images.getForEntry(entry),
               hideImage: hideImages,

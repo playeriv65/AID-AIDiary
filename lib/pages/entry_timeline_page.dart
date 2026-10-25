@@ -6,7 +6,7 @@ import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/providers/entries_provider.dart';
 import 'package:aid_diary/providers/entry_images_provider.dart';
 import 'package:aid_diary/routing/entry_navigation.dart';
-import 'package:aid_diary/widgets/journal_entry_row.dart';
+import 'package:aid_diary/widgets/entry_card.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
@@ -41,7 +41,7 @@ class EntryTimelinePage extends StatelessWidget {
           for (final (day, dayEntries) in groupEntriesByDay(entries))
             EntryDayGroup(day: day, rows: [
               for (final entry in dayEntries)
-                JournalEntryRow(
+                EntryCard(
                   entry: entry,
                   images: images.getForEntry(entry),
                   label: labelBuilder(context, entry),

@@ -11,7 +11,7 @@ import 'package:aid_diary/providers/entry_images_provider.dart';
 import 'package:aid_diary/providers/tags_provider.dart';
 import 'package:aid_diary/utils/entry_filter.dart';
 import 'package:aid_diary/routing/entry_navigation.dart';
-import 'package:aid_diary/widgets/journal_entry_row.dart';
+import 'package:aid_diary/widgets/entry_card.dart';
 import 'package:aid_diary/widgets/list_detail_layout.dart';
 import 'package:aid_diary/widgets/mood_icon.dart';
 import 'package:aid_diary/widgets/tag_icon_glyph.dart';
@@ -204,10 +204,11 @@ class _SearchPageState extends State<SearchPage> {
               for (final (day, dayEntries) in groupEntriesByDay(results))
                 EntryDayGroup(day: day, rows: [
                   for (final entry in dayEntries)
-                    JournalEntryRow(
+                    EntryCard(
                       entry: entry,
                       images: images.getForEntry(entry),
                       selected: split && entry.id == _selectedId,
+                      highlight: _controller.text,
                       onTap: () => _open(entry, split),
                     ),
                 ]),

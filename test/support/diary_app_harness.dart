@@ -156,14 +156,21 @@ class DiaryAppHarness {
 
   /// Lets real time pass between frames until [until] holds, for work that
   /// started in a widget (fake time) but waits on real IO such as SQLite.
-  static Future<void> pumpUntil(
-      WidgetTester tester, bool Function() until) async {
-    for (var i = 0; i < 50 && !until(); i++) {
+  ///
+  /// Each frame moves fake time by [frame]; without [settle] it stops as
+  /// soon as [until] holds, for screens that never settle or timers that
+  /// must not start.
+  static Future<void> pumpUntil(WidgetTester tester, bool Function() until,
+      {Duration frame = const Duration(milliseconds: 50),
+      bool settle = true}) async {
+    final waited = Stopwatch()..start();
+    while (!until()) {
+      _giveUpAfter(waited);
       await tester.runAsync(
           () => Future<void>.delayed(const Duration(milliseconds: 20)));
-      await tester.pump(const Duration(milliseconds: 50));
+      await tester.pump(frame);
     }
-    await tester.pumpAndSettle();
+    if (settle) await tester.pumpAndSettle();
   }
 
   /// Runs a real async action and waits until [until] holds.
@@ -171,10 +178,21 @@ class DiaryAppHarness {
       WidgetTester tester, VoidCallback action, bool Function() until) async {
     await tester.runAsync(() async {
       action();
-      for (var i = 0; i < 50 && !until(); i++) {
+      final waited = Stopwatch()..start();
+      while (!until()) {
+        _giveUpAfter(waited);
         await Future<void>.delayed(const Duration(milliseconds: 20));
       }
     });
     await tester.pumpAndSettle();
+  }
+
+  /// Real work (SQLite, files) is slower while many test files run at
+  /// once, so waits are long; one that never ends fails here, not later.
+  static void _giveUpAfter(Stopwatch waited) {
+    if (waited.elapsed > const Duration(seconds: 15)) {
+      throw TestFailure('Waited ${waited.elapsed} for a condition that '
+          'never held');
+    }
   }
 }

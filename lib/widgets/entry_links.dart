@@ -16,7 +16,7 @@ import 'package:aid_diary/services/location_service.dart';
 import 'package:aid_diary/time_manager.dart';
 import 'package:aid_diary/utils/diary_day.dart';
 import 'package:aid_diary/utils/entry_filter.dart';
-import 'package:aid_diary/utils/entry_preview.dart';
+import 'package:aid_diary/widgets/entry_card.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// An entry about an earlier day: read and answered rather than rewritten.
@@ -333,29 +333,10 @@ class EntryLinksSection extends StatelessWidget {
               key: ValueKey('reply-${reply.id}'),
               margin: const EdgeInsets.only(bottom: 8),
               clipBehavior: Clip.antiAlias,
-              child: InkWell(
+              child: EntryCard(
+                entry: reply,
+                showDate: true,
                 onTap: () => EntryNavigation.view(context, reply),
-                child: Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(entrySnippet(reply.text),
-                          maxLines: 3,
-                          overflow: TextOverflow.ellipsis,
-                          style: theme.textTheme.bodyMedium),
-                      const SizedBox(height: 4),
-                      Text(
-                          [
-                            '${TimeManager.formatDate(reply.day, context)} '
-                                '${TimeManager.timeOfDayString(context, TimeOfDay.fromDateTime(reply.timeCreate))}',
-                            if (reply.location?.label case final place?) place,
-                          ].join(' · '),
-                          style: theme.textTheme.labelSmall?.copyWith(
-                              color: theme.colorScheme.onSurfaceVariant)),
-                    ],
-                  ),
-                ),
               ),
             ),
         ],
@@ -408,7 +389,6 @@ class _EntryPickerState extends State<_EntryPicker> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final theme = Theme.of(context);
     final filter = EntryFilter(query: _query);
     final found = [
       for (final entry in EntryStore.instance.entries)
@@ -434,14 +414,15 @@ class _EntryPickerState extends State<_EntryPicker> {
               itemCount: found.length,
               itemBuilder: (context, index) {
                 final entry = found[index];
-                final preview = entryPreview(entry);
-                return ListTile(
+                return KeyedSubtree(
                   key: ValueKey('cite-entry-${entry.id}'),
-                  title: Text(preview.title ?? preview.snippet,
-                      maxLines: 1, overflow: TextOverflow.ellipsis),
-                  subtitle: Text(TimeManager.formatDate(entry.day, context),
-                      style: theme.textTheme.labelSmall),
-                  onTap: () => Navigator.of(context).pop(entry),
+                  child: EntryCard(
+                    entry: entry,
+                    showDate: true,
+                    showDetails: false,
+                    highlight: _query,
+                    onTap: () => Navigator.of(context).pop(entry),
+                  ),
                 );
               },
             ),
