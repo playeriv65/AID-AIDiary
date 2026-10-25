@@ -101,10 +101,31 @@ void main() {
     expect(TagsProvider.instance.tags.first.name, 'Walk');
   });
 
+  testWidgets('a short list of tags has no "used lately" copy of itself',
+      (tester) async {
+    await tester.runAsync(() async {
+      await actions.run('tag.create', {'name': 'Walk'});
+      final entry = await actions.run('entry.create', {'text': 'x'}) as Map;
+      await actions.run('entry.tag', {'id': entry['id'], 'tag': 'Walk'});
+    });
+    DiaryAppHarness.size(tester, const Size(390, 844));
+    await tester.pumpWidget(harness.app(TagPickerDialog(
+        mode: TagPickerMode.attach, source: TagAttachmentSource())));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const ValueKey('tags-recent')), findsNothing);
+    expect(find.text('Walk'), findsOneWidget);
+  });
+
   testWidgets('search and a new tag share a row, above tags used lately',
       (tester) async {
     await tester.runAsync(() async {
-      for (final name in ['Walk', 'Read', 'Cook']) {
+      // More tags than the shortcut holds, so it shows.
+      for (final name in [
+        'Walk',
+        'Read',
+        'Cook',
+        for (var i = 0; i < 8; i++) 'Extra $i'
+      ]) {
         await actions.run('tag.create', {'name': name});
       }
       // Cook twice, Read once, Walk never.

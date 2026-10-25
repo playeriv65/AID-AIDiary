@@ -162,9 +162,10 @@ class _TagPickerState extends State<TagPicker> {
     bool offered(Tag tag) =>
         tag.id != hidden &&
         (widget.tagTypeFilter == null || tag.tagType == widget.tagTypeFilter);
-    final sections = provider.buildSections(_searchText,
-        tagPool: provider.tags.where(offered).toList());
-    final recent = _searchText.isEmpty
+    final pool = provider.tags.where(offered).toList();
+    final sections = provider.buildSections(_searchText, tagPool: pool);
+    // A shortcut only where the full list is longer than it.
+    final recent = _searchText.isEmpty && pool.length > config.recentTagsLimit
         ? provider
             .recentlyUsed(
                 limit: config.recentTagsLimit, days: config.recentTagsDays)
