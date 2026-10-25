@@ -165,7 +165,7 @@ class _LineItem extends StatelessWidget {
 
     final label = Text(
       stat.label,
-      style: TextStyle(fontSize: 14, color: textColor),
+      style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: textColor),
     );
 
     return Row(

@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'package:aid_diary/widgets/settings_row.dart';
 import 'package:material_ui/material_ui.dart';
 
 class SettingsDropdown<T> extends StatelessWidget {
@@ -46,35 +47,15 @@ class SettingsDropdown<T> extends StatelessWidget {
                     ]),
         onChanged: onChanged);
 
-    // Laid out as a SettingsCategory row, so a list of both lines up.
-    if (leadingIcon != null) {
-      return ListTile(
-        leading: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: Icon(leadingIcon),
-        ),
-        title: Text(title),
-        minVerticalPadding: 18,
-        trailing: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 140), child: dropdown),
-      );
-    }
-
-    return Padding(
-      padding:
-          const EdgeInsets.only(top: 8.0, bottom: 8.0, left: 16.0, right: 16.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            child: Text(
-              title,
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-            ),
-          ),
-          dropdown,
-        ],
-      ),
+    // Beside an icon the choice gets a bounded width, as in a category row.
+    return SettingsRow(
+      title: title,
+      icon: leadingIcon,
+      trailing: leadingIcon == null
+          ? dropdown
+          : ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 140),
+              child: dropdown),
     );
   }
 }

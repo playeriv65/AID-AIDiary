@@ -239,7 +239,7 @@ class _ReminderWeekdays extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Text(AppLocalizations.of(context)!.settingsReminderDays,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+            style: Theme.of(context).textTheme.titleMedium),
         const SizedBox(height: 8),
         Wrap(spacing: 6, runSpacing: 6, children: [
           for (var weekday = 1; weekday <= 7; weekday++)

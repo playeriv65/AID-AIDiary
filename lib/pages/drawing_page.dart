@@ -3,6 +3,7 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'dart:convert';
+import 'package:aid_diary/widgets/confirm_dialog.dart';
 import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/widgets/drawing_canvas.dart';
@@ -53,22 +54,12 @@ class _DrawingPageState extends State<DrawingPage> {
       return;
     }
     final l10n = AppLocalizations.of(context)!;
-    final discard = await showDialog<bool>(
-        context: context,
-        builder: (context) => AlertDialog(
-                title: Text(l10n.drawingDiscardTitle),
-                content: Text(l10n.drawingDiscardBody),
-                actions: [
-                  TextButton(
-                      onPressed: () => Navigator.pop(context, false),
-                      child: Text(
-                          MaterialLocalizations.of(context).cancelButtonLabel)),
-                  TextButton(
-                      onPressed: () => Navigator.pop(context, true),
-                      child: Text(MaterialLocalizations.of(context)
-                          .deleteButtonTooltip)),
-                ]));
-    if (discard == true && mounted) {
+    final discard = await showConfirmDialog(context,
+        title: l10n.drawingDiscardTitle,
+        message: l10n.drawingDiscardBody,
+        confirm: MaterialLocalizations.of(context).deleteButtonTooltip,
+        destructive: true);
+    if (discard && mounted) {
       setState(() => saved = true);
       await WidgetsBinding.instance.endOfFrame;
       if (mounted) Navigator.of(context).pop();

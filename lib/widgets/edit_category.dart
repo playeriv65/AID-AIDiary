@@ -9,7 +9,7 @@ import 'package:aid_diary/models/tag_icon_type.dart';
 import 'package:aid_diary/providers/tags_provider.dart';
 import 'package:aid_diary/widgets/color_picker_dialog.dart';
 import 'package:aid_diary/widgets/color_swatch_row.dart';
-import 'package:aid_diary/widgets/delete_confirm_dialog.dart';
+import 'package:aid_diary/widgets/confirm_dialog.dart';
 import 'package:aid_diary/widgets/icon_picker_dialog.dart';
 import 'package:aid_diary/widgets/tag_icon_glyph.dart';
 import 'package:aid_diary/utils/tag_look.dart';

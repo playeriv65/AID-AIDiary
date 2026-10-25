@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'package:aid_diary/widgets/stat_card.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/widgets/material_shapes.dart';
 import 'package:aid_diary/widgets/mood_icon.dart';
@@ -40,60 +41,29 @@ class MoodSummaryChart extends StatelessWidget {
         .reduce((a, b) => a.value >= b.value ? a : b)
         .key;
 
-    return Card.filled(
-      color: Theme.of(context).colorScheme.surfaceContainerLow,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 4.0),
-            child: Center(
-              child: Text(
-                AppLocalizations.of(context)!.chartSummaryTitle(
-                    AppLocalizations.of(context)!.tagMoodTitle),
-                style:
-                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            ),
-          ),
-          Stack(
-            alignment: Alignment.center,
-            children: [
-              Opacity(
-                opacity: hasData ? 1.0 : 0.3,
-                child: Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: Column(
-                    children: _moodOrder.map((mood) {
-                      final count = displayCounts[mood] ?? 0;
-                      return _MoodBarRow(
-                        mood: mood,
-                        count: count,
-                        maxCount: maxCount,
-                        isMostCommon: mood == mostCommonMood,
-                        isRtl: isRtl,
-                        showLabel: hasData,
-                        barHeight: _barHeight,
-                        iconSize: _iconSize,
-                        countWidth: _countWidth,
-                        gap: _gap,
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ),
-              if (!hasData)
-                Text(
-                  AppLocalizations.of(context)!.statisticsNotEnoughData,
-                  style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).disabledColor),
-                ),
-            ],
-          ),
-        ],
+    return StatCard(
+      title: AppLocalizations.of(context)!
+          .chartSummaryTitle(AppLocalizations.of(context)!.tagMoodTitle),
+      hasData: hasData,
+      child: Padding(
+        padding: const EdgeInsets.all(8),
+        child: Column(
+          children: _moodOrder.map((mood) {
+            final count = displayCounts[mood] ?? 0;
+            return _MoodBarRow(
+              mood: mood,
+              count: count,
+              maxCount: maxCount,
+              isMostCommon: mood == mostCommonMood,
+              isRtl: isRtl,
+              showLabel: hasData,
+              barHeight: _barHeight,
+              iconSize: _iconSize,
+              countWidth: _countWidth,
+              gap: _gap,
+            );
+          }).toList(),
+        ),
       ),
     );
   }

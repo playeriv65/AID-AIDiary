@@ -6,7 +6,7 @@ import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/models/template.dart';
 import 'package:aid_diary/providers/tags_provider.dart';
 import 'package:aid_diary/utils/text_editing.dart';
-import 'package:aid_diary/widgets/delete_confirm_dialog.dart';
+import 'package:aid_diary/widgets/confirm_dialog.dart';
 import 'package:aid_diary/widgets/editor_action_bar.dart';
 import 'package:aid_diary/widgets/editor_action_bar/editor_keyboard_session.dart';
 import 'package:aid_diary/widgets/entry_text_edit.dart';

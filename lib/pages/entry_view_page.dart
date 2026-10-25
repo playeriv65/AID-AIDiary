@@ -24,7 +24,7 @@ import 'package:aid_diary/utils/entry_share.dart';
 import 'package:aid_diary/utils/entry_typography.dart';
 import 'package:aid_diary/utils/time_capsule.dart';
 import 'package:aid_diary/widgets/entry_links.dart';
-import 'package:aid_diary/widgets/delete_confirm_dialog.dart';
+import 'package:aid_diary/widgets/confirm_dialog.dart';
 import 'package:aid_diary/widgets/hidden_diary_scope.dart';
 import 'package:aid_diary/widgets/entry_tag_chips.dart';
 import 'package:aid_diary/widgets/local_image_loader.dart';
@@ -426,25 +426,12 @@ class _SealedCapsule extends StatelessWidget {
 
   Future<void> _openEarly(BuildContext context) async {
     final l10n = AppLocalizations.of(context)!;
-    final open = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(l10n.capsuleOpenEarly),
-        content: Text(l10n.capsuleOpenEarlyDescription),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
-          ),
-          FilledButton(
-            key: const ValueKey('capsule-open-confirm'),
-            onPressed: () => Navigator.pop(context, true),
-            child: Text(l10n.capsuleOpenEarly),
-          ),
-        ],
-      ),
-    );
-    if (open == true) {
+    final open = await showConfirmDialog(context,
+        title: l10n.capsuleOpenEarly,
+        message: l10n.capsuleOpenEarlyDescription,
+        confirm: l10n.capsuleOpenEarly,
+        confirmKey: const ValueKey('capsule-open-confirm'));
+    if (open) {
       if (entry.isHidden &&
           context.mounted &&
           HiddenDiaryScope.of(context)?.unlocked == true) {

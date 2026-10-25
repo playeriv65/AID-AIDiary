@@ -3,6 +3,7 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'package:aid_diary/routing/destinations.dart';
+import 'package:aid_diary/widgets/settings_row.dart';
 import 'package:material_ui/material_ui.dart';
 
 class SettingsCategory extends StatelessWidget {
@@ -22,20 +23,10 @@ class SettingsCategory extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(
-        title,
-      ),
-      subtitle: hint != null ? Text(hint!) : null,
-      leading: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 0),
-        child: Icon(
-          icon,
-        ),
-      ),
-      minVerticalPadding: 18,
-      onTap: () => openPlace(context, destination),
-    );
-  }
+  Widget build(BuildContext context) => SettingsRow(
+        title: title,
+        hint: hint,
+        icon: icon,
+        onTap: () => openPlace(context, destination),
+      );
 }

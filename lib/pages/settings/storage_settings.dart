@@ -3,6 +3,7 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'dart:io';
+import 'package:aid_diary/widgets/confirm_dialog.dart';
 import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/actions/entry_actions.dart' show eraseAllPhrase;
 import 'package:aid_diary/actions/settings_actions.dart';
@@ -116,25 +117,13 @@ class _StorageSettingsState extends State<StorageSettings> {
     final count = (await AppActions.instance.run('media.photo_count', {}))!
         as Map<String, Object?>;
     if (!mounted) return;
-    final material = MaterialLocalizations.of(context);
-    final sure = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(l10n.compressExistingTitle),
-        content: Text(l10n.compressExistingBody(count['photos'] as int,
-            formatCloudTrafficBytes(count['bytes'] as int, locale))),
-        actions: [
-          TextButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: Text(material.cancelButtonLabel)),
-          TextButton(
-              key: const ValueKey('compress-existing-confirm'),
-              onPressed: () => Navigator.of(context).pop(true),
-              child: Text(l10n.compressExistingAction)),
-        ],
-      ),
-    );
-    if (sure != true || !mounted) return;
+    final sure = await showConfirmDialog(context,
+        title: l10n.compressExistingTitle,
+        message: l10n.compressExistingBody(count['photos'] as int,
+            formatCloudTrafficBytes(count['bytes'] as int, locale)),
+        confirm: l10n.compressExistingAction,
+        confirmKey: const ValueKey('compress-existing-confirm'));
+    if (!sure || !mounted) return;
     Map<String, Object?>? result;
     await runOperation(context, (update) async {
       result = (await AppActions.instance.run('media.compress_all', {},

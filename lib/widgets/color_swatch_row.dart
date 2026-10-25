@@ -24,7 +24,7 @@ class ColorSwatchRow extends StatelessWidget {
         Expanded(
           child: Text(
             label,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+            style: Theme.of(context).textTheme.titleMedium,
           ),
         ),
         GestureDetector(

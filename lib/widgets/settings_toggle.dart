@@ -4,6 +4,7 @@
 
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/widgets/haptics.dart';
+import 'package:aid_diary/widgets/settings_row.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
@@ -36,41 +37,20 @@ class SettingsToggle extends StatelessWidget {
             Haptics.selection();
             change(to);
           };
-    // Tapping anywhere on the row flips the switch, as in a list tile.
-    return InkWell(
+    // Tapping anywhere on the row flips the switch.
+    return SettingsRow(
+      title: title,
+      hint: hint,
       onTap: toggle == null ? null : () => toggle(!value),
-      child: Padding(
-        padding: const EdgeInsets.only(
-            top: 8.0, bottom: 8.0, left: 16.0, right: 16.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                  ),
-                  if (hint != null)
-                    Text(
-                      hint!,
-                      style: TextStyle(fontSize: 14),
-                    ),
-                ],
-              ),
-            ),
-            if (secondaryIcon != null && onSecondaryPressed != null)
-              IconButton(onPressed: onSecondaryPressed, icon: secondaryIcon!),
-            Switch(
-              key: ValueKey('${setting.key}-switch'),
-              value: value,
-              onChanged: toggle,
-            )
-          ],
+      trailing: Row(mainAxisSize: MainAxisSize.min, children: [
+        if (secondaryIcon != null && onSecondaryPressed != null)
+          IconButton(onPressed: onSecondaryPressed, icon: secondaryIcon!),
+        Switch(
+          key: ValueKey('${setting.key}-switch'),
+          value: value,
+          onChanged: toggle,
         ),
-      ),
+      ]),
     );
   }
 }

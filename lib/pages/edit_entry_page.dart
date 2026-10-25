@@ -4,6 +4,7 @@
 
 import 'dart:io';
 
+import 'package:aid_diary/widgets/confirm_dialog.dart';
 import 'package:aid_diary/widgets/entry_links.dart';
 import 'package:aid_diary/actions/link_actions.dart';
 import 'package:aid_diary/widgets/haptics.dart';
@@ -230,54 +231,30 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
     Navigator.of(context).pop();
   }
 
-  void _showDeleteEntryPopup() {
+  Future<void> _showDeleteEntryPopup() async {
+    final navigator = Navigator.of(context);
     if (_model.isNew && !_model.hasContent) {
-      Navigator.of(context).pop();
+      navigator.pop();
       return;
     }
-    Haptics.warning();
-    showDialog(
-      context: context,
-      useRootNavigator: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(AppLocalizations.of(context)!.deleteLogTitle),
-          actions: [
-            TextButton(
-              child:
-                  Text(MaterialLocalizations.of(context).deleteButtonTooltip),
-              onPressed: () async {
-                final navigator = Navigator.of(context);
-                final hiddenSession = HiddenDiaryScope.of(context);
-                final entryToDelete = await _model.prepareDelete();
-                // Pop dialog
-                navigator.pop();
-                // Pop edit page
-                navigator.pop();
-                if (!_model.isNew && navigator.canPop()) {
-                  // Pop view page
-                  navigator.pop();
-                }
-                if (entryToDelete.isHidden) {
-                  await hiddenSession!.delete(entryToDelete);
-                } else {
-                  await AppActions.instance.run(
-                      'entry.delete', {'id': entryToDelete.id},
-                      confirmed: true);
-                }
-              },
-            ),
-            TextButton(
-              child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
-              onPressed: () async {
-                Navigator.pop(context);
-              },
-            )
-          ],
-          content: Text(AppLocalizations.of(context)!.deleteLogDescription),
-        );
-      },
-    );
+    final l10n = AppLocalizations.of(context)!;
+    final hiddenSession = HiddenDiaryScope.of(context);
+    final sure = await showConfirmDialog(context,
+        title: l10n.deleteLogTitle,
+        message: l10n.deleteLogDescription,
+        confirm: MaterialLocalizations.of(context).deleteButtonTooltip,
+        destructive: true);
+    if (!sure) return;
+    final entryToDelete = await _model.prepareDelete();
+    // The editor, then the entry it was opened from.
+    navigator.pop();
+    if (!_model.isNew && navigator.canPop()) navigator.pop();
+    if (entryToDelete.isHidden) {
+      await hiddenSession!.delete(entryToDelete);
+    } else {
+      await AppActions.instance
+          .run('entry.delete', {'id': entryToDelete.id}, confirmed: true);
+    }
   }
 
   @override
@@ -713,23 +690,12 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
       (null, final where?) => l10n.photoMetaPlace(where),
       (null, null) => '',
     };
-    final apply = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(l10n.photoMetaTitle),
-        content: Text(message),
-        actions: [
-          TextButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: Text(MaterialLocalizations.of(context).cancelButtonLabel)),
-          FilledButton(
-              key: const ValueKey('photo-meta-apply'),
-              onPressed: () => Navigator.of(context).pop(true),
-              child: Text(l10n.photoMetaApply)),
-        ],
-      ),
-    );
-    if (apply == true && mounted) _model.applyPhotoSuggestion(suggestion);
+    final apply = await showConfirmDialog(context,
+        title: l10n.photoMetaTitle,
+        message: message,
+        confirm: l10n.photoMetaApply,
+        confirmKey: const ValueKey('photo-meta-apply'));
+    if (apply && mounted) _model.applyPhotoSuggestion(suggestion);
   }
 
   Future<void> _chooseWeather() async {

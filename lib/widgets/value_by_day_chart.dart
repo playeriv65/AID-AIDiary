@@ -2,12 +2,12 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'package:aid_diary/widgets/stat_card.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/time_manager.dart';
 import 'package:aid_diary/utils/chart_y_range.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:provider/provider.dart';
 
 typedef LeftTitleBuilder = Widget Function(double value, TitleMeta meta);
@@ -50,122 +50,87 @@ class ValueByDayChart extends StatelessWidget {
         ? yRange.resolve(displayValues.values.whereType<double>())
         : yRange.previewRange;
 
-    return Card.filled(
-      color: Theme.of(context).colorScheme.surfaceContainerLow,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 4.0),
-            child: Center(
-              child: Text(
-                title,
-                style:
-                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            ),
-          ),
-          Stack(
-            alignment: Alignment.center,
-            children: [
-              Opacity(
-                opacity: hasData ? 1.0 : 0.3,
-                child: Center(
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                        left: 0, right: 42, bottom: 0, top: 8),
-                    child: AspectRatio(
-                      aspectRatio: 2,
-                      child: BarChart(
-                        BarChartData(
-                          groupsSpace: 10,
-                          alignment: BarChartAlignment.spaceAround,
-                          maxY: range.maxY,
-                          minY: range.minY,
-                          barGroups: _getBarGroups(
-                              context,
-                              color ?? Theme.of(context).colorScheme.primary,
-                              displayValues,
-                              range),
-                          titlesData: FlTitlesData(
-                            leftTitles: AxisTitles(
-                              sideTitles: SideTitles(
-                                interval: range.interval,
-                                showTitles: true,
-                                reservedSize: 42,
-                                getTitlesWidget: (value, meta) =>
-                                    buildLeftTitle != null
-                                        ? buildLeftTitle!(value, meta)
-                                        : _defaultLeftTitle(value, meta),
-                              ),
-                            ),
-                            bottomTitles: AxisTitles(
-                              sideTitles: SideTitles(
-                                showTitles: true,
-                                reservedSize: 36,
-                                getTitlesWidget: (double value, _) {
-                                  return SizedBox(
-                                    width: 36,
-                                    child: FittedBox(
-                                      fit: BoxFit.scaleDown,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(2.0),
-                                        child: Text(_getDayLabel(
-                                            context, value.toInt())),
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                            rightTitles: const AxisTitles(),
-                            topTitles: const AxisTitles(),
-                          ),
-                          borderData: FlBorderData(
-                            show: true,
-                            border: Border.symmetric(
-                              horizontal: BorderSide(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .onSurface
-                                    .withValues(alpha: 0.2),
-                                width: 1,
-                              ),
+    return StatCard(
+      title: title,
+      hasData: hasData,
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 0, right: 42, bottom: 0, top: 8),
+          child: AspectRatio(
+            aspectRatio: 2,
+            child: BarChart(
+              BarChartData(
+                groupsSpace: 10,
+                alignment: BarChartAlignment.spaceAround,
+                maxY: range.maxY,
+                minY: range.minY,
+                barGroups: _getBarGroups(
+                    context,
+                    color ?? Theme.of(context).colorScheme.primary,
+                    displayValues,
+                    range),
+                titlesData: FlTitlesData(
+                  leftTitles: AxisTitles(
+                    sideTitles: SideTitles(
+                      interval: range.interval,
+                      showTitles: true,
+                      reservedSize: 42,
+                      getTitlesWidget: (value, meta) => buildLeftTitle != null
+                          ? buildLeftTitle!(value, meta)
+                          : _defaultLeftTitle(value, meta),
+                    ),
+                  ),
+                  bottomTitles: AxisTitles(
+                    sideTitles: SideTitles(
+                      showTitles: true,
+                      reservedSize: 36,
+                      getTitlesWidget: (double value, _) {
+                        return SizedBox(
+                          width: 36,
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Padding(
+                              padding: const EdgeInsets.all(2.0),
+                              child: Text(_getDayLabel(context, value.toInt())),
                             ),
                           ),
-                          gridData: FlGridData(
-                            show: true,
-                            drawHorizontalLine: true,
-                            horizontalInterval: range.interval,
-                            drawVerticalLine: false,
-                            getDrawingHorizontalLine: (value) => FlLine(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onSurface
-                                  .withValues(alpha: 0.2),
-                              strokeWidth: 1,
-                            ),
-                          ),
-                          barTouchData: BarTouchData(enabled: false),
-                        ),
-                      ),
+                        );
+                      },
+                    ),
+                  ),
+                  rightTitles: const AxisTitles(),
+                  topTitles: const AxisTitles(),
+                ),
+                borderData: FlBorderData(
+                  show: true,
+                  border: Border.symmetric(
+                    horizontal: BorderSide(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onSurface
+                          .withValues(alpha: 0.2),
+                      width: 1,
                     ),
                   ),
                 ),
-              ),
-              if (!hasData)
-                Text(
-                  AppLocalizations.of(context)!.statisticsNotEnoughData,
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).disabledColor,
+                gridData: FlGridData(
+                  show: true,
+                  drawHorizontalLine: true,
+                  horizontalInterval: range.interval,
+                  drawVerticalLine: false,
+                  getDrawingHorizontalLine: (value) => FlLine(
+                    color: Theme.of(context)
+                        .colorScheme
+                        .onSurface
+                        .withValues(alpha: 0.2),
+                    strokeWidth: 1,
                   ),
                 ),
-            ],
+                barTouchData: BarTouchData(enabled: false),
+              ),
+            ),
           ),
-        ],
+        ),
       ),
     );
   }

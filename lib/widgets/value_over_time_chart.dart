@@ -3,6 +3,7 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'dart:math' as math;
+import 'package:aid_diary/widgets/stat_card.dart';
 import 'package:aid_diary/actions/settings_actions.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/time_manager.dart';
@@ -319,55 +320,16 @@ class _ValueOverTimeChartState extends State<ValueOverTimeChart> {
       },
     );
 
-    return Card.filled(
-      color: Theme.of(context).colorScheme.surfaceContainerLow,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 4.0, right: 4.0),
-            child: Row(
-              children: [
-                const SizedBox(width: 48),
-                Expanded(
-                  child: Center(
-                    child: Text(
-                      widget.title,
-                      style: const TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-                IconButton(
-                  visualDensity: VisualDensity.compact,
-                  icon: const Icon(Icons.tune, size: 20),
-                  tooltip: AppLocalizations.of(context)!.chartGroupingLabel,
-                  onPressed: () =>
-                      _showGroupingDialog(context, available, effective),
-                ),
-              ],
-            ),
-          ),
-          Stack(
-            alignment: Alignment.center,
-            children: [
-              Opacity(
-                opacity: widget.hasData ? 1.0 : 0.3,
-                child: Center(child: chartWidget),
-              ),
-              if (!widget.hasData)
-                Text(
-                  AppLocalizations.of(context)!.statisticsNotEnoughData,
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).disabledColor,
-                  ),
-                ),
-            ],
-          ),
-        ],
+    return StatCard(
+      title: widget.title,
+      hasData: widget.hasData,
+      action: IconButton(
+        visualDensity: VisualDensity.compact,
+        icon: const Icon(Icons.tune, size: 20),
+        tooltip: AppLocalizations.of(context)!.chartGroupingLabel,
+        onPressed: () => _showGroupingDialog(context, available, effective),
       ),
+      child: Center(child: chartWidget),
     );
   }
 

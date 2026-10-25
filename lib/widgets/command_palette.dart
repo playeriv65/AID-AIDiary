@@ -4,6 +4,7 @@
 
 import 'dart:convert';
 
+import 'package:aid_diary/widgets/confirm_dialog.dart';
 import 'package:aid_diary/actions/app_action.dart';
 import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
@@ -37,23 +38,11 @@ class _CommandPaletteState extends State<CommandPalette> {
     final l10n = AppLocalizations.of(context)!;
     if (action.risk == ActionRisk.destructive) {
       Haptics.warning();
-      final go = await showDialog<bool>(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text(action.id),
-          content: Text(l10n.commandPaletteConfirm),
-          actions: [
-            TextButton(
-                onPressed: () => Navigator.pop(context, false),
-                child:
-                    Text(MaterialLocalizations.of(context).cancelButtonLabel)),
-            FilledButton(
-                onPressed: () => Navigator.pop(context, true),
-                child: Text(l10n.commandPaletteRun)),
-          ],
-        ),
-      );
-      if (go != true || !mounted) return;
+      final go = await showConfirmDialog(context,
+          title: action.id,
+          message: l10n.commandPaletteConfirm,
+          confirm: l10n.commandPaletteRun);
+      if (!go || !mounted) return;
     }
     Object? result;
     try {

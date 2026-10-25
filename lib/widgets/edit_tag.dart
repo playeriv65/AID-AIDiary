@@ -11,7 +11,7 @@ import 'package:aid_diary/providers/tags_provider.dart';
 import 'package:aid_diary/widgets/color_picker_dialog.dart';
 import 'package:aid_diary/widgets/color_swatch_row.dart';
 import 'package:aid_diary/widgets/connected_button_group.dart';
-import 'package:aid_diary/widgets/delete_confirm_dialog.dart';
+import 'package:aid_diary/widgets/confirm_dialog.dart';
 import 'package:aid_diary/routing/organize_destinations.dart';
 import 'package:aid_diary/widgets/icon_picker_dialog.dart';
 import 'package:aid_diary/widgets/tag_icon_glyph.dart';
@@ -291,7 +291,7 @@ class _EditTagState extends State<EditTag> {
       children: [
         Text(
           l10n.tagCategoryLabel,
-          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+          style: Theme.of(context).textTheme.titleMedium,
         ),
         const SizedBox(width: 8),
         Expanded(

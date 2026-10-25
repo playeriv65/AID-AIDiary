@@ -3,9 +3,9 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'dart:math' as math;
+import 'package:aid_diary/widgets/stat_card.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:aid_diary/l10n/generated/app_localizations.dart';
 
 class _Bin {
   final double min;
@@ -174,117 +174,83 @@ class DistributionChart extends StatelessWidget {
       );
     }).toList();
 
-    return Card.filled(
-      color: Theme.of(context).colorScheme.surfaceContainerLow,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 4.0),
-            child: Center(
-              child: Text(
-                title,
-                style:
-                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+    return StatCard(
+      title: title,
+      hasData: hasData,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 8, right: 42, top: 8, bottom: 0),
+        child: AspectRatio(
+          aspectRatio: 2,
+          child: BarChart(
+            BarChartData(
+              alignment: BarChartAlignment.spaceAround,
+              maxY: maxCount.toDouble() * 1.15,
+              minY: 0,
+              barGroups: barGroups,
+              groupsSpace: 6,
+              titlesData: FlTitlesData(
+                bottomTitles: AxisTitles(
+                  sideTitles: SideTitles(
+                    showTitles: true,
+                    reservedSize: 28,
+                    getTitlesWidget: (value, _) {
+                      final i = value.toInt();
+                      if (i < 0 || i >= bins.length) {
+                        return const SizedBox.shrink();
+                      }
+                      final label = _formatBinLabel(bins[i], isInteger);
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 4),
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(
+                            label,
+                            style: const TextStyle(fontSize: 11),
+                            textScaler: TextScaler.noScaling,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                leftTitles: AxisTitles(
+                  sideTitles: SideTitles(
+                    showTitles: true,
+                    reservedSize: 36,
+                    getTitlesWidget: (value, meta) {
+                      if (value != value.truncateToDouble()) {
+                        return const SizedBox.shrink();
+                      }
+                      return SideTitleWidget(
+                        meta: meta,
+                        child: Text(
+                          value.toInt().toString(),
+                          style: const TextStyle(fontSize: 11),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                topTitles: const AxisTitles(),
+                rightTitles: const AxisTitles(),
               ),
+              gridData: FlGridData(
+                show: true,
+                drawHorizontalLine: true,
+                drawVerticalLine: false,
+                getDrawingHorizontalLine: (_) =>
+                    FlLine(color: surfaceColor, strokeWidth: 1),
+              ),
+              borderData: FlBorderData(
+                show: true,
+                border: Border.symmetric(
+                  horizontal: BorderSide(color: surfaceColor, width: 1),
+                ),
+              ),
+              barTouchData: BarTouchData(enabled: false),
             ),
           ),
-          Stack(
-            alignment: Alignment.center,
-            children: [
-              Opacity(
-                opacity: hasData ? 1.0 : 0.3,
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      left: 8, right: 42, top: 8, bottom: 0),
-                  child: AspectRatio(
-                    aspectRatio: 2,
-                    child: BarChart(
-                      BarChartData(
-                        alignment: BarChartAlignment.spaceAround,
-                        maxY: maxCount.toDouble() * 1.15,
-                        minY: 0,
-                        barGroups: barGroups,
-                        groupsSpace: 6,
-                        titlesData: FlTitlesData(
-                          bottomTitles: AxisTitles(
-                            sideTitles: SideTitles(
-                              showTitles: true,
-                              reservedSize: 28,
-                              getTitlesWidget: (value, _) {
-                                final i = value.toInt();
-                                if (i < 0 || i >= bins.length) {
-                                  return const SizedBox.shrink();
-                                }
-                                final label =
-                                    _formatBinLabel(bins[i], isInteger);
-                                return Padding(
-                                  padding: const EdgeInsets.only(top: 4),
-                                  child: FittedBox(
-                                    fit: BoxFit.scaleDown,
-                                    child: Text(
-                                      label,
-                                      style: const TextStyle(fontSize: 11),
-                                      textScaler: TextScaler.noScaling,
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                          leftTitles: AxisTitles(
-                            sideTitles: SideTitles(
-                              showTitles: true,
-                              reservedSize: 36,
-                              getTitlesWidget: (value, meta) {
-                                if (value != value.truncateToDouble()) {
-                                  return const SizedBox.shrink();
-                                }
-                                return SideTitleWidget(
-                                  meta: meta,
-                                  child: Text(
-                                    value.toInt().toString(),
-                                    style: const TextStyle(fontSize: 11),
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                          topTitles: const AxisTitles(),
-                          rightTitles: const AxisTitles(),
-                        ),
-                        gridData: FlGridData(
-                          show: true,
-                          drawHorizontalLine: true,
-                          drawVerticalLine: false,
-                          getDrawingHorizontalLine: (_) =>
-                              FlLine(color: surfaceColor, strokeWidth: 1),
-                        ),
-                        borderData: FlBorderData(
-                          show: true,
-                          border: Border.symmetric(
-                            horizontal:
-                                BorderSide(color: surfaceColor, width: 1),
-                          ),
-                        ),
-                        barTouchData: BarTouchData(enabled: false),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              if (!hasData)
-                Text(
-                  AppLocalizations.of(context)!.statisticsNotEnoughData,
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).disabledColor,
-                  ),
-                ),
-            ],
-          ),
-        ],
+        ),
       ),
     );
   }

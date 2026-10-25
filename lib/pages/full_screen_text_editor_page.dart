@@ -69,7 +69,7 @@ class _FullScreenTextEditorPageState extends State<FullScreenTextEditorPage> {
             builder: (_, __) => Text(
               AppLocalizations.of(context)!
                   .wordCount(wordsCount(_controller.text)),
-              style: const TextStyle(fontSize: 14),
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
           ),
         ),

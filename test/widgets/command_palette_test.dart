@@ -9,7 +9,7 @@ import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/database/entry_store.dart';
 import 'package:aid_diary/routing/destinations.dart';
-import 'package:aid_diary/widgets/delete_confirm_dialog.dart';
+import 'package:aid_diary/widgets/confirm_dialog.dart';
 import 'package:aid_diary/widgets/settings_toggle.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';

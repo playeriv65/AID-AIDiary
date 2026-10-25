@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'package:aid_diary/widgets/settings_row.dart';
 import 'package:material_ui/material_ui.dart';
 
 class SettingsIconAction extends StatelessWidget {
@@ -23,38 +24,16 @@ class SettingsIconAction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // The whole row is the target, as in a list tile; the icon only marks
-    // the action.
-    return InkWell(
+    // The whole row is the target; the icon only marks the action.
+    return SettingsRow(
+      title: title,
+      hint: hint,
       onTap: onPressed,
-      child: Padding(
-        padding: const EdgeInsets.only(
-            top: 8.0, bottom: 8.0, left: 16.0, right: 16.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                  ),
-                  if (hint != null)
-                    Text(
-                      hint!,
-                      style: TextStyle(fontSize: 14),
-                    ),
-                ],
-              ),
-            ),
-            IconButton(onPressed: onPressed, icon: icon),
-            if (secondaryIcon != null && onSecondaryPressed != null)
-              IconButton(onPressed: onSecondaryPressed, icon: secondaryIcon!)
-          ],
-        ),
-      ),
+      trailing: Row(mainAxisSize: MainAxisSize.min, children: [
+        IconButton(onPressed: onPressed, icon: icon),
+        if (secondaryIcon != null && onSecondaryPressed != null)
+          IconButton(onPressed: onSecondaryPressed, icon: secondaryIcon!),
+      ]),
     );
   }
 }

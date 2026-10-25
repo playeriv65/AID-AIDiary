@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'package:aid_diary/widgets/confirm_dialog.dart';
 import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/actions/link_actions.dart';
 import 'package:aid_diary/actions/settings_actions.dart';
@@ -347,23 +348,13 @@ class EntryLinksSection extends StatelessWidget {
   Future<void> _forget(BuildContext context, KeptPassage passage) async {
     final l10n = AppLocalizations.of(context)!;
     final material = MaterialLocalizations.of(context);
-    final sure = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(l10n.noteDeleteConfirm),
+    final sure = await showConfirmDialog(context,
+        title: l10n.noteDeleteConfirm,
         content: QuoteBlock(passage.quote, maxLines: 4),
-        actions: [
-          TextButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: Text(material.cancelButtonLabel)),
-          TextButton(
-              key: const ValueKey('passage-delete-confirm'),
-              onPressed: () => Navigator.of(context).pop(true),
-              child: Text(material.deleteButtonTooltip)),
-        ],
-      ),
-    );
-    if (sure != true) return;
+        confirm: material.deleteButtonTooltip,
+        destructive: true,
+        confirmKey: const ValueKey('passage-delete-confirm'));
+    if (!sure) return;
     await AppActions.instance
         .run('passage.delete', {'passage': passage.id}, confirmed: true);
   }

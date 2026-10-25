@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'package:aid_diary/widgets/stat_card.dart';
 import 'package:aid_diary/widgets/mood_picker.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/models/entry.dart';
@@ -30,25 +31,19 @@ class _MoodAssociationsCardState extends State<MoodAssociationsCard> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final theme = Theme.of(context);
     final factors = DiaryStatistics.moodAssociationsOf(widget.entries, _mood)
         .take(MoodAssociationsCard._shown)
         .toList();
 
-    return Card.filled(
+    // The mood stays pickable when it has nothing to show.
+    return StatCard(
       key: const ValueKey('mood-associations'),
-      color: theme.colorScheme.surfaceContainerLow,
+      title: l10n.moodAssociationsTitle,
       child: Padding(
         padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Center(
-              child: Text(l10n.moodAssociationsTitle,
-                  style: const TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.bold)),
-            ),
-            const SizedBox(height: 8),
             MoodPicker.single(
                 mood: _mood,
                 onChanged: (mood) => setState(() => _mood = mood!),
@@ -56,14 +51,9 @@ class _MoodAssociationsCardState extends State<MoodAssociationsCard> {
                 spread: true),
             const SizedBox(height: 12),
             if (factors.isEmpty)
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                child: Text(l10n.statisticsNotEnoughData,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: theme.disabledColor)),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 16),
+                child: StatNoData(),
               )
             else
               for (final association in factors)

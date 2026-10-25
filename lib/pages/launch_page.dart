@@ -288,13 +288,16 @@ class _LaunchPageState extends State<LaunchPage> {
             children: [
               Text(
                 title,
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: Theme.of(context)
+                    .textTheme
+                    .titleMedium
+                    ?.copyWith(fontWeight: FontWeight.bold),
               ),
               Padding(
                 padding: EdgeInsets.all(32.0),
                 child: Text(
                   description,
-                  style: TextStyle(fontSize: 16),
+                  style: Theme.of(context).textTheme.bodyLarge,
                 ),
               ),
               ...actions,

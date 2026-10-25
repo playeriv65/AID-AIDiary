@@ -456,8 +456,7 @@ class _AppearanceSettingsPageState extends State<AppearanceSettings> {
                         top: 16.0, left: 16.0, right: 16.0),
                     child: Text(
                       AppLocalizations.of(context)!.settingsChangeMoodIcons,
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                   ),
                   Padding(

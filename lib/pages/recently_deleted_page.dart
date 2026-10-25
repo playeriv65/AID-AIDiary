@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'package:aid_diary/widgets/confirm_dialog.dart';
 import 'package:aid_diary/widgets/haptics.dart';
 import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/models/entry.dart';
@@ -38,26 +39,12 @@ class _RecentlyDeletedPageState extends State<RecentlyDeletedPage> {
   Future<bool> _confirm(String title, String message) async {
     final l10n = AppLocalizations.of(context)!;
     Haptics.warning();
-    return await showDialog<bool>(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text(title),
-            content: Text(message),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context, false),
-                child:
-                    Text(MaterialLocalizations.of(context).cancelButtonLabel),
-              ),
-              FilledButton(
-                key: const ValueKey('deleted-confirm'),
-                onPressed: () => Navigator.pop(context, true),
-                child: Text(l10n.deletedDeleteForever),
-              ),
-            ],
-          ),
-        ) ??
-        false;
+    return showConfirmDialog(context,
+        title: title,
+        message: message,
+        confirm: l10n.deletedDeleteForever,
+        destructive: true,
+        confirmKey: const ValueKey('deleted-confirm'));
   }
 
   Future<void> _actions(DeletedEntry item) async {

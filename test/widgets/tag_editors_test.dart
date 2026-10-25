@@ -144,7 +144,7 @@ void main() {
     await open(tester, EditCategory(category: category));
     await tester.tap(find.byIcon(Icons.delete_rounded));
     await tester.pumpAndSettle();
-    await tester.tap(find.widgetWithText(TextButton, '删除'));
+    await tester.tap(find.widgetWithText(FilledButton, '删除'));
     await DiaryAppHarness.pumpUntil(
         tester, () => TagsProvider.instance.categories.isEmpty);
 

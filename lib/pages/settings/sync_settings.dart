@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'package:aid_diary/widgets/confirm_dialog.dart';
 import 'package:aid_diary/actions/app_action.dart';
 import 'package:aid_diary/routing/destinations.dart';
 import 'package:aid_diary/widgets/haptics.dart';
@@ -192,26 +193,11 @@ class _SyncSettingsState extends State<SyncSettings> {
   Future<bool> _confirm(String title, String description, String action,
       {bool destructive = false}) async {
     if (destructive) Haptics.warning();
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(title),
-        content: Text(description),
-        actions: [
-          TextButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: Text(MaterialLocalizations.of(context).cancelButtonLabel)),
-          FilledButton(
-              style: destructive
-                  ? FilledButton.styleFrom(
-                      backgroundColor: Theme.of(context).colorScheme.error)
-                  : null,
-              onPressed: () => Navigator.of(context).pop(true),
-              child: Text(action)),
-        ],
-      ),
-    );
-    return confirmed ?? false;
+    return showConfirmDialog(context,
+        title: title,
+        message: description,
+        confirm: action,
+        destructive: destructive);
   }
 
   Future<void> _changeRecoveryCode() async {

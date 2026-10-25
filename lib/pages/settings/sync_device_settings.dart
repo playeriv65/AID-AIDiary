@@ -4,6 +4,7 @@
 
 import 'dart:io';
 import 'dart:convert';
+import 'package:aid_diary/widgets/confirm_dialog.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/sync/device_auth.dart';
@@ -75,20 +76,10 @@ class _SyncDeviceSettingsState extends State<SyncDeviceSettings> {
   }
 
   Future<bool> _confirm(String title, String body) async =>
-      await showDialog<bool>(
-          context: context,
-          builder: (context) =>
-              AlertDialog(title: Text(title), content: Text(body), actions: [
-                TextButton(
-                    onPressed: () => Navigator.pop(context, false),
-                    child: Text(
-                        MaterialLocalizations.of(context).cancelButtonLabel)),
-                FilledButton(
-                    onPressed: () => Navigator.pop(context, true),
-                    child:
-                        Text(MaterialLocalizations.of(context).okButtonLabel)),
-              ])) ??
-      false;
+      showConfirmDialog(context,
+          title: title,
+          message: body,
+          confirm: MaterialLocalizations.of(context).okButtonLabel);
   Future<void> _run(String action,
       [Map<String, Object?> args = const {}]) async {
     setState(() => _busy = true);
