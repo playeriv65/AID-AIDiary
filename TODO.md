@@ -11,6 +11,15 @@ Probably skip (Journey has them, but they need cloud or AI or add little): Googl
 - Fewer accent colours, including a pure black-and-white one.
 - The accent colours only key marks (logo, key icons, emphasised text); it
   must not tint backgrounds or surfaces.
+- Weather icons (owner 2026-10-25: keep Meteocons for now, improve later).
+  At 14-20 px the Meteocons clouds fill most of the drawing and the canvas
+  has wide margins, so partly cloudy, overcast, fog and rain look alike.
+  Compared: Fluent Emoji flat (MIT) and Twemoji (CC BY 4.0) read best among
+  open sets; Durian Diary's set is iconfont.cn "天气" by 堇年0923 (cid 38809,
+  no license: needs the author's permission). A draft of our own in
+  Material Symbols shapes (Apache 2.0) with colour, a large sun in partly
+  cloudy and thick rain streaks, read clearly at 14 px; its generator and
+  comparison sheets were not kept in the repository.
 
 ## Build automation (owner request 2026-10-23)
 - Done (2026-10-24): CI on every push to main, a debug-signed nightly
