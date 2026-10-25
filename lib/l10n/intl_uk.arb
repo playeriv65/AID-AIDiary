@@ -816,9 +816,11 @@
   "scrollToTop": "Нагору",
   "feedbackTitle": "Зворотний зв’язок",
   "feedbackHint": "Опишіть проблему або пропозицію",
+  "feedbackSend": "Надіслати",
+  "feedbackSent": "Дякуємо, ваш відгук надіслано.",
+  "feedbackSendFailed": "Не вдалося надіслати. Перевірте з'єднання й спробуйте ще раз.",
+  "feedbackOpenFailed": "Не вдалося відкрити застосунок.",
+  "feedbackSendNote": "Надсилається на сервер AID Diary з версією та мовою застосунку, нічого з вашого щоденника.",
   "feedbackGithub": "Задача на GitHub",
-  "feedbackEmail": "Написати листа",
-  "feedbackCopy": "Копіювати текст",
-  "feedbackLaunchFailed": "Не вдалося відкрити застосунок. Скопіюйте текст і скористайтеся поштою нижче.",
-  "feedbackCopied": "Текст скопійовано"
+  "feedbackEmail": "Написати листа"
 }

@@ -816,9 +816,11 @@
   "scrollToTop": "Kembali ke atas",
   "feedbackTitle": "Masukan",
   "feedbackHint": "Jelaskan masalah atau saran",
+  "feedbackSend": "Kirim",
+  "feedbackSent": "Terima kasih, masukan Anda terkirim.",
+  "feedbackSendFailed": "Gagal mengirim. Periksa koneksi dan coba lagi.",
+  "feedbackOpenFailed": "Tidak dapat membuka aplikasi.",
+  "feedbackSendNote": "Dikirim ke server AID Diary beserta versi dan bahasa aplikasi, tanpa isi buku harian Anda.",
   "feedbackGithub": "Isu GitHub",
-  "feedbackEmail": "Kirim email",
-  "feedbackCopy": "Salin teks",
-  "feedbackLaunchFailed": "Aplikasi tidak dapat dibuka. Salin teks dan gunakan email di bawah.",
-  "feedbackCopied": "Masukan disalin"
+  "feedbackEmail": "Kirim email"
 }

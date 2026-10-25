@@ -12,7 +12,7 @@ The layout follows the Journey diary app: a bottom bar on phones, a navigation r
 
 Search stays pinned above scrolling lists on phones, tablets and Windows.
 A small back-to-top shortcut appears during long journal browsing. Feedback
-is available under Settings > Help, with GitHub, email and text-copy options.
+is sent from Settings > Help in one tap, or opens as a GitHub issue or an email.
 Windows keeps its native title bar, with the app icon and AID Diary name, and
 matches the frame colors to the app theme; see [Windows setup](docs/SETUP.md#windows-personal-installation).
 

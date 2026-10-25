@@ -833,9 +833,11 @@
   "scrollToTop": "חזרה למעלה",
   "feedbackTitle": "משוב",
   "feedbackHint": "תיאור בעיה או הצעה",
+  "feedbackSend": "שליחה",
+  "feedbackSent": "תודה, המשוב נשלח.",
+  "feedbackSendFailed": "השליחה נכשלה. בדקו את החיבור ונסו שוב.",
+  "feedbackOpenFailed": "לא ניתן לפתוח את האפליקציה.",
+  "feedbackSendNote": "נשלח לשרת של AID Diary עם גרסת האפליקציה והשפה, בלי שום דבר מהיומן שלך.",
   "feedbackGithub": "דיווח ב-GitHub",
-  "feedbackEmail": "שליחת דוא״ל",
-  "feedbackCopy": "העתקת טקסט",
-  "feedbackLaunchFailed": "לא ניתן לפתוח את היישום. יש להעתיק את הטקסט ולהשתמש בדוא״ל למטה.",
-  "feedbackCopied": "המשוב הועתק"
+  "feedbackEmail": "שליחת דוא״ל"
 }

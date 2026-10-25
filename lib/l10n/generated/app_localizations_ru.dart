@@ -2822,18 +2822,25 @@ class AppLocalizationsRu extends AppLocalizations {
   String get feedbackHint => 'Опишите проблему или предложение';
 
   @override
+  String get feedbackSend => 'Отправить';
+
+  @override
+  String get feedbackSent => 'Спасибо, ваш отзыв отправлен.';
+
+  @override
+  String get feedbackSendFailed =>
+      'Не удалось отправить. Проверьте подключение и попробуйте снова.';
+
+  @override
+  String get feedbackOpenFailed => 'Не удалось открыть приложение.';
+
+  @override
+  String get feedbackSendNote =>
+      'Отправляется на сервер AID Diary вместе с версией и языком приложения, ничего из вашего дневника.';
+
+  @override
   String get feedbackGithub => 'Задача на GitHub';
 
   @override
   String get feedbackEmail => 'Написать письмо';
-
-  @override
-  String get feedbackCopy => 'Копировать текст';
-
-  @override
-  String get feedbackLaunchFailed =>
-      'Не удалось открыть приложение. Скопируйте текст и используйте почту ниже.';
-
-  @override
-  String get feedbackCopied => 'Текст скопирован';
 }

@@ -5064,6 +5064,36 @@ abstract class AppLocalizations {
   /// **'Describe a problem or suggestion'**
   String get feedbackHint;
 
+  /// No description provided for @feedbackSend.
+  ///
+  /// In en, this message translates to:
+  /// **'Send'**
+  String get feedbackSend;
+
+  /// No description provided for @feedbackSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Thanks, your feedback was sent.'**
+  String get feedbackSent;
+
+  /// No description provided for @feedbackSendFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not send. Check the connection and try again.'**
+  String get feedbackSendFailed;
+
+  /// No description provided for @feedbackOpenFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open the app.'**
+  String get feedbackOpenFailed;
+
+  /// No description provided for @feedbackSendNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent to the AID Diary server with the app version and language, nothing from your diary.'**
+  String get feedbackSendNote;
+
   /// No description provided for @feedbackGithub.
   ///
   /// In en, this message translates to:
@@ -5075,24 +5105,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Email feedback'**
   String get feedbackEmail;
-
-  /// No description provided for @feedbackCopy.
-  ///
-  /// In en, this message translates to:
-  /// **'Copy text'**
-  String get feedbackCopy;
-
-  /// No description provided for @feedbackLaunchFailed.
-  ///
-  /// In en, this message translates to:
-  /// **'Could not open the app. Copy your text and use the email address below.'**
-  String get feedbackLaunchFailed;
-
-  /// No description provided for @feedbackCopied.
-  ///
-  /// In en, this message translates to:
-  /// **'Feedback copied'**
-  String get feedbackCopied;
 }
 
 class _AppLocalizationsDelegate

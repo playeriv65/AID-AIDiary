@@ -2783,18 +2783,25 @@ class AppLocalizationsDa extends AppLocalizations {
   String get feedbackHint => 'Beskriv et problem eller forslag';
 
   @override
+  String get feedbackSend => 'Send';
+
+  @override
+  String get feedbackSent => 'Tak, din feedback er sendt.';
+
+  @override
+  String get feedbackSendFailed =>
+      'Kunne ikke sende. Tjek forbindelsen, og prøv igen.';
+
+  @override
+  String get feedbackOpenFailed => 'Kunne ikke åbne appen.';
+
+  @override
+  String get feedbackSendNote =>
+      'Sendes til AID Diary-serveren med appens version og sprog, intet fra din dagbog.';
+
+  @override
   String get feedbackGithub => 'GitHub-issue';
 
   @override
   String get feedbackEmail => 'Send e-mail';
-
-  @override
-  String get feedbackCopy => 'Kopiér tekst';
-
-  @override
-  String get feedbackLaunchFailed =>
-      'Appen kunne ikke åbnes. Kopiér teksten og brug e-mailadressen nedenfor.';
-
-  @override
-  String get feedbackCopied => 'Feedback kopieret';
 }

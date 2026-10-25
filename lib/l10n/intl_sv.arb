@@ -816,9 +816,11 @@
   "scrollToTop": "Till toppen",
   "feedbackTitle": "Återkoppling",
   "feedbackHint": "Beskriv ett problem eller förslag",
+  "feedbackSend": "Skicka",
+  "feedbackSent": "Tack, din feedback har skickats.",
+  "feedbackSendFailed": "Det gick inte att skicka. Kontrollera anslutningen och försök igen.",
+  "feedbackOpenFailed": "Det gick inte att öppna appen.",
+  "feedbackSendNote": "Skickas till AID Diarys server med appens version och språk, inget från din dagbok.",
   "feedbackGithub": "GitHub-ärende",
-  "feedbackEmail": "Skicka e-post",
-  "feedbackCopy": "Kopiera text",
-  "feedbackLaunchFailed": "Appen kunde inte öppnas. Kopiera texten och använd e-postadressen nedan.",
-  "feedbackCopied": "Återkopplingen kopierad"
+  "feedbackEmail": "Skicka e-post"
 }

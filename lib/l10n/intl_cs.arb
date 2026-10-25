@@ -816,9 +816,11 @@
   "scrollToTop": "Zpět nahoru",
   "feedbackTitle": "Zpětná vazba",
   "feedbackHint": "Popište problém nebo návrh",
+  "feedbackSend": "Odeslat",
+  "feedbackSent": "Děkujeme, zpětná vazba byla odeslána.",
+  "feedbackSendFailed": "Odeslání se nezdařilo. Zkontrolujte připojení a zkuste to znovu.",
+  "feedbackOpenFailed": "Aplikaci se nepodařilo otevřít.",
+  "feedbackSendNote": "Odešle se na server AID Diary s verzí a jazykem aplikace, nic z vašeho deníku.",
   "feedbackGithub": "Problém na GitHubu",
-  "feedbackEmail": "Poslat e-mail",
-  "feedbackCopy": "Kopírovat text",
-  "feedbackLaunchFailed": "Aplikaci nelze otevřít. Zkopírujte text a použijte e-mail níže.",
-  "feedbackCopied": "Text zkopírován"
+  "feedbackEmail": "Poslat e-mail"
 }

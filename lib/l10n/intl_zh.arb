@@ -847,9 +847,11 @@
   "scrollToTop": "回到顶部",
   "feedbackTitle": "意见反馈",
   "feedbackHint": "描述你遇到的问题或建议",
+  "feedbackSend": "发送",
+  "feedbackSent": "谢谢，反馈已发送。",
+  "feedbackSendFailed": "发送失败，请检查网络后重试。",
+  "feedbackOpenFailed": "无法打开应用。",
+  "feedbackSendNote": "将连同应用版本和语言发送到 AID Diary 服务器，不包含日记内容。",
   "feedbackGithub": "到 GitHub 提 issue",
-  "feedbackEmail": "邮件反馈",
-  "feedbackCopy": "复制文字",
-  "feedbackLaunchFailed": "无法打开应用。请复制反馈文字，使用下方邮箱联系。",
-  "feedbackCopied": "已复制反馈"
+  "feedbackEmail": "邮件反馈"
 }

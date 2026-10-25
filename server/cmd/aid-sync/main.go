@@ -48,6 +48,7 @@ type settings struct {
 	media             server.MediaLimits
 	network           server.NetworkLimits
 	deviceAuth        server.DeviceAuthLimits
+	feedback          server.FeedbackLimits
 }
 
 func load() (settings, error) {
@@ -100,6 +101,8 @@ func load() (settings, error) {
 		{"AID_SYNC_NETWORK_CONNECTS_PER_MINUTE", &s.network.ConnectsPerMinute, 30, 600},
 		{"AID_SYNC_NETWORK_FRAMES_PER_SECOND", &s.network.FramesPerSecond, 32, 256},
 		{"AID_SYNC_DEVICE_MAX_DEVICES", &s.deviceAuth.MaxDevices, 16, 128},
+		{"AID_SYNC_FEEDBACK_MAX_BYTES", &s.feedback.MaxBytes, 8 << 10, 64 << 10},
+		{"AID_SYNC_FEEDBACK_PER_HOUR", &s.feedback.PerHour, 5, 100},
 	} {
 		*v.into, err = strconv.Atoi(env(v.name, strconv.Itoa(v.def)))
 		if err != nil || *v.into <= 0 || *v.into > v.max {
@@ -159,7 +162,7 @@ func main() {
 
 func run(args []string) error {
 	if len(args) == 0 {
-		return errors.New("usage: aid-sync serve|adduser|passwd|quota|deluser|users")
+		return errors.New("usage: aid-sync serve|adduser|passwd|quota|deluser|users|feedback")
 	}
 	s, err := load()
 	if err != nil {
@@ -235,6 +238,13 @@ func run(args []string) error {
 		for _, user := range users {
 			fmt.Printf("%s\t%d MB\t%s\n", user.Name, user.QuotaBytes>>20, user.Created.Format(time.DateOnly))
 		}
+	case "feedback":
+		all, err := server.ReadFeedback(s.dataDir)
+		for _, one := range all {
+			fmt.Printf("%s\t%s %s %s\n%s\n\n", one.Time.Format(time.RFC3339),
+				one.Version, one.Platform, one.Locale, one.Text)
+		}
+		return err
 	default:
 		return fmt.Errorf("unknown command %q", args[0])
 	}
@@ -262,6 +272,7 @@ func serve(s settings, store *accounts.Store) error {
 		Network:           s.network,
 		MonthlyMediaBytes: s.monthlyMediaBytes,
 		DeviceAuth:        s.deviceAuth,
+		Feedback:          s.feedback,
 		CredentialTTL:     s.credentialTTL,
 		FailLimit:         s.failLimit,
 		FailWindow:        s.failWindow,

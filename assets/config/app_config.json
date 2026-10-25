@@ -41,7 +41,9 @@
   },
   "feedback": {
     "issuesUrl": "https://github.com/playeriv65/AID-AIDiary/issues/new",
-    "email": "playeriv65@gmail.com"
+    "email": "playeriv65@gmail.com",
+    "submitUrl": "https://aid.playeriv65.com/api/feedback",
+    "timeoutSeconds": 15
   },
   "diaryDay": {
     "startHourChoices": [0, 1, 2, 3, 4, 5, 6],

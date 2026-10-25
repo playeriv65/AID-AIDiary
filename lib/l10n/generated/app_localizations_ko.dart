@@ -2722,17 +2722,24 @@ class AppLocalizationsKo extends AppLocalizations {
   String get feedbackHint => '문제나 제안을 설명해 주세요';
 
   @override
+  String get feedbackSend => '보내기';
+
+  @override
+  String get feedbackSent => '감사합니다. 피드백을 보냈습니다.';
+
+  @override
+  String get feedbackSendFailed => '보내지 못했습니다. 연결을 확인하고 다시 시도하세요.';
+
+  @override
+  String get feedbackOpenFailed => '앱을 열 수 없습니다.';
+
+  @override
+  String get feedbackSendNote =>
+      '앱 버전과 언어와 함께 AID Diary 서버로 보내며, 일기 내용은 보내지 않습니다.';
+
+  @override
   String get feedbackGithub => 'GitHub 이슈';
 
   @override
   String get feedbackEmail => '이메일 보내기';
-
-  @override
-  String get feedbackCopy => '텍스트 복사';
-
-  @override
-  String get feedbackLaunchFailed => '앱을 열 수 없습니다. 텍스트를 복사하여 아래 이메일을 이용해 주세요.';
-
-  @override
-  String get feedbackCopied => '의견이 복사됨';
 }

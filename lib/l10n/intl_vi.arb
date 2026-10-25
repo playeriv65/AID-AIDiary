@@ -816,9 +816,11 @@
   "scrollToTop": "Về đầu trang",
   "feedbackTitle": "Góp ý",
   "feedbackHint": "Mô tả vấn đề hoặc đề xuất",
+  "feedbackSend": "Gửi",
+  "feedbackSent": "Cảm ơn, phản hồi của bạn đã được gửi.",
+  "feedbackSendFailed": "Không gửi được. Hãy kiểm tra kết nối và thử lại.",
+  "feedbackOpenFailed": "Không mở được ứng dụng.",
+  "feedbackSendNote": "Gửi đến máy chủ AID Diary kèm phiên bản và ngôn ngữ ứng dụng, không có gì từ nhật ký của bạn.",
   "feedbackGithub": "Vấn đề trên GitHub",
-  "feedbackEmail": "Gửi email",
-  "feedbackCopy": "Sao chép văn bản",
-  "feedbackLaunchFailed": "Không mở được ứng dụng. Hãy sao chép văn bản và dùng email bên dưới.",
-  "feedbackCopied": "Đã sao chép góp ý"
+  "feedbackEmail": "Gửi email"
 }

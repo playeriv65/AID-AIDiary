@@ -200,6 +200,12 @@ class AppConfig {
       Uri.parse(_section('feedback')['issuesUrl'] as String);
   String get feedbackEmail => _section('feedback')['email'] as String;
 
+  /// Where the feedback page sends a message itself.
+  Uri get feedbackSubmitUrl =>
+      Uri.parse(_section('feedback')['submitUrl'] as String);
+  Duration get feedbackTimeout =>
+      Duration(seconds: _section('feedback')['timeoutSeconds'] as int);
+
   /// Hours before which a new entry may count for the day before; 0 never.
   List<int> get dayStartHourChoices =>
       (_section('diaryDay')['startHourChoices'] as List).cast<int>();

@@ -816,9 +816,11 @@
   "scrollToTop": "Til toppen",
   "feedbackTitle": "Tilbakemelding",
   "feedbackHint": "Beskriv et problem eller forslag",
+  "feedbackSend": "Send",
+  "feedbackSent": "Takk, tilbakemeldingen er sendt.",
+  "feedbackSendFailed": "Kunne ikke sende. Sjekk tilkoblingen og prøv igjen.",
+  "feedbackOpenFailed": "Kunne ikke åpne appen.",
+  "feedbackSendNote": "Sendes til AID Diary-serveren med appens versjon og språk, ingenting fra dagboken din.",
   "feedbackGithub": "GitHub-sak",
-  "feedbackEmail": "Send e-post",
-  "feedbackCopy": "Kopier tekst",
-  "feedbackLaunchFailed": "Kunne ikke åpne appen. Kopier teksten og bruk e-postadressen nedenfor.",
-  "feedbackCopied": "Tilbakemelding kopiert"
+  "feedbackEmail": "Send e-post"
 }

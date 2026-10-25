@@ -2792,18 +2792,25 @@ class AppLocalizationsNb extends AppLocalizations {
   String get feedbackHint => 'Beskriv et problem eller forslag';
 
   @override
+  String get feedbackSend => 'Send';
+
+  @override
+  String get feedbackSent => 'Takk, tilbakemeldingen er sendt.';
+
+  @override
+  String get feedbackSendFailed =>
+      'Kunne ikke sende. Sjekk tilkoblingen og prøv igjen.';
+
+  @override
+  String get feedbackOpenFailed => 'Kunne ikke åpne appen.';
+
+  @override
+  String get feedbackSendNote =>
+      'Sendes til AID Diary-serveren med appens versjon og språk, ingenting fra dagboken din.';
+
+  @override
   String get feedbackGithub => 'GitHub-sak';
 
   @override
   String get feedbackEmail => 'Send e-post';
-
-  @override
-  String get feedbackCopy => 'Kopier tekst';
-
-  @override
-  String get feedbackLaunchFailed =>
-      'Kunne ikke åpne appen. Kopier teksten og bruk e-postadressen nedenfor.';
-
-  @override
-  String get feedbackCopied => 'Tilbakemelding kopiert';
 }

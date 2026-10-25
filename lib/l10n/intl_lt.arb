@@ -816,9 +816,11 @@
   "scrollToTop": "Į viršų",
   "feedbackTitle": "Atsiliepimas",
   "feedbackHint": "Aprašykite problemą ar pasiūlymą",
+  "feedbackSend": "Siųsti",
+  "feedbackSent": "Ačiū, atsiliepimas išsiųstas.",
+  "feedbackSendFailed": "Nepavyko išsiųsti. Patikrinkite ryšį ir bandykite dar kartą.",
+  "feedbackOpenFailed": "Nepavyko atidaryti programos.",
+  "feedbackSendNote": "Siunčiama į AID Diary serverį su programos versija ir kalba, nieko iš jūsų dienoraščio.",
   "feedbackGithub": "GitHub problema",
-  "feedbackEmail": "Siųsti el. laišką",
-  "feedbackCopy": "Kopijuoti tekstą",
-  "feedbackLaunchFailed": "Nepavyko atidaryti programos. Nukopijuokite tekstą ir naudokite el. paštą žemiau.",
-  "feedbackCopied": "Atsiliepimas nukopijuotas"
+  "feedbackEmail": "Siųsti el. laišką"
 }

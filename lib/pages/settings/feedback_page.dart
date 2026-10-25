@@ -4,14 +4,17 @@
 
 import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
-import 'package:flutter/services.dart';
+import 'package:aid_diary/services/feedback_service.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-/// The user reviews and sends their own text in GitHub or their mail app.
+/// Feedback in one step: what is typed is sent to the AID Diary server.
+/// Those who want an answer or a public issue open their mail app or GitHub
+/// with the same text.
 class FeedbackPage extends StatefulWidget {
-  const FeedbackPage({super.key, this.launch});
+  const FeedbackPage({super.key, this.launch, this.service});
   final Future<bool> Function(Uri)? launch;
+  final FeedbackService? service;
 
   @override
   State<FeedbackPage> createState() => _FeedbackPageState();
@@ -19,12 +22,27 @@ class FeedbackPage extends StatefulWidget {
 
 class _FeedbackPageState extends State<FeedbackPage> {
   final _text = TextEditingController();
-  bool _opening = false;
+  late final _service = widget.service ?? FeedbackService();
+  bool _busy = false;
 
   @override
   void dispose() {
     _text.dispose();
     super.dispose();
+  }
+
+  void _tell(String message) => ScaffoldMessenger.of(context)
+      .showSnackBar(SnackBar(content: Text(message)));
+
+  Future<void> _send() async {
+    final l10n = AppLocalizations.of(context)!;
+    setState(() => _busy = true);
+    final sent = await _service.send(_text.text.trim(),
+        locale: Localizations.localeOf(context).toLanguageTag());
+    if (!mounted) return;
+    setState(() => _busy = false);
+    if (sent) _text.clear();
+    _tell(sent ? l10n.feedbackSent : l10n.feedbackSendFailed);
   }
 
   Future<void> _open(bool email) async {
@@ -43,7 +61,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
             'title': subject,
             'body': body,
           });
-    setState(() => _opening = true);
+    setState(() => _busy = true);
     var opened = false;
     try {
       opened = await (widget.launch?.call(uri) ??
@@ -51,24 +69,15 @@ class _FeedbackPageState extends State<FeedbackPage> {
     } on Exception {
       opened = false;
     } finally {
-      if (mounted) setState(() => _opening = false);
+      if (mounted) setState(() => _busy = false);
     }
-    if (!opened && mounted) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(l10n.feedbackLaunchFailed)));
-    }
-  }
-
-  Future<void> _copy() async {
-    await Clipboard.setData(ClipboardData(text: _text.text));
-    if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(AppLocalizations.of(context)!.feedbackCopied)));
+    if (!opened && mounted) _tell(l10n.feedbackOpenFailed);
   }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final empty = _text.text.trim().isEmpty;
     return Scaffold(
       appBar: AppBar(title: Text(l10n.feedbackTitle)),
       body: Center(
@@ -82,29 +91,34 @@ class _FeedbackPageState extends State<FeedbackPage> {
             maxLines: 12,
             decoration: InputDecoration(
                 hintText: l10n.feedbackHint,
+                helperText: l10n.feedbackSendNote,
+                helperMaxLines: 3,
                 border: const OutlineInputBorder()),
             onChanged: (_) => setState(() {}),
           ),
           const SizedBox(height: 16),
+          FilledButton.icon(
+              key: const ValueKey('feedback-send'),
+              onPressed: _busy || empty ? null : _send,
+              icon: _busy
+                  ? const SizedBox.square(
+                      dimension: 18,
+                      child: CircularProgressIndicator(strokeWidth: 2))
+                  : const Icon(Icons.send_rounded),
+              label: Text(l10n.feedbackSend)),
+          const SizedBox(height: 12),
           Wrap(spacing: 12, runSpacing: 12, children: [
-            FilledButton.icon(
+            OutlinedButton.icon(
                 key: const ValueKey('feedback-github'),
-                onPressed: _opening ? null : () => _open(false),
+                onPressed: _busy ? null : () => _open(false),
                 icon: const Icon(Icons.open_in_new_rounded),
                 label: Text(l10n.feedbackGithub)),
             OutlinedButton.icon(
                 key: const ValueKey('feedback-email'),
-                onPressed: _opening ? null : () => _open(true),
+                onPressed: _busy ? null : () => _open(true),
                 icon: const Icon(Icons.mail_outline_rounded),
                 label: Text(l10n.feedbackEmail)),
-            TextButton.icon(
-                key: const ValueKey('feedback-copy'),
-                onPressed: _text.text.trim().isEmpty ? null : _copy,
-                icon: const Icon(Icons.copy_rounded),
-                label: Text(l10n.feedbackCopy)),
           ]),
-          const SizedBox(height: 20),
-          SelectableText(AppConfig.instance.feedbackEmail),
         ]),
       )),
     );

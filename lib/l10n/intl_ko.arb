@@ -816,9 +816,11 @@
   "scrollToTop": "맨 위로",
   "feedbackTitle": "의견 보내기",
   "feedbackHint": "문제나 제안을 설명해 주세요",
+  "feedbackSend": "보내기",
+  "feedbackSent": "감사합니다. 피드백을 보냈습니다.",
+  "feedbackSendFailed": "보내지 못했습니다. 연결을 확인하고 다시 시도하세요.",
+  "feedbackOpenFailed": "앱을 열 수 없습니다.",
+  "feedbackSendNote": "앱 버전과 언어와 함께 AID Diary 서버로 보내며, 일기 내용은 보내지 않습니다.",
   "feedbackGithub": "GitHub 이슈",
-  "feedbackEmail": "이메일 보내기",
-  "feedbackCopy": "텍스트 복사",
-  "feedbackLaunchFailed": "앱을 열 수 없습니다. 텍스트를 복사하여 아래 이메일을 이용해 주세요.",
-  "feedbackCopied": "의견이 복사됨"
+  "feedbackEmail": "이메일 보내기"
 }

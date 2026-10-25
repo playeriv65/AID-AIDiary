@@ -2803,18 +2803,25 @@ class AppLocalizationsVi extends AppLocalizations {
   String get feedbackHint => 'Mô tả vấn đề hoặc đề xuất';
 
   @override
+  String get feedbackSend => 'Gửi';
+
+  @override
+  String get feedbackSent => 'Cảm ơn, phản hồi của bạn đã được gửi.';
+
+  @override
+  String get feedbackSendFailed =>
+      'Không gửi được. Hãy kiểm tra kết nối và thử lại.';
+
+  @override
+  String get feedbackOpenFailed => 'Không mở được ứng dụng.';
+
+  @override
+  String get feedbackSendNote =>
+      'Gửi đến máy chủ AID Diary kèm phiên bản và ngôn ngữ ứng dụng, không có gì từ nhật ký của bạn.';
+
+  @override
   String get feedbackGithub => 'Vấn đề trên GitHub';
 
   @override
   String get feedbackEmail => 'Gửi email';
-
-  @override
-  String get feedbackCopy => 'Sao chép văn bản';
-
-  @override
-  String get feedbackLaunchFailed =>
-      'Không mở được ứng dụng. Hãy sao chép văn bản và dùng email bên dưới.';
-
-  @override
-  String get feedbackCopied => 'Đã sao chép góp ý';
 }

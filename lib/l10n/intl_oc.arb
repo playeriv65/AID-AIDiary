@@ -816,9 +816,11 @@
   "scrollToTop": "Tornar amont",
   "feedbackTitle": "Comentaris",
   "feedbackHint": "Descrivètz un problèma o una suggestion",
+  "feedbackSend": "Mandar",
+  "feedbackSent": "Mercés, vòstre retorn es estat mandat.",
+  "feedbackSendFailed": "Mandadís impossible. Verificatz la connexion e tornatz ensajar.",
+  "feedbackOpenFailed": "Impossible de dobrir l'aplicacion.",
+  "feedbackSendNote": "Mandat al servidor d'AID Diary amb la version e la lenga de l'aplicacion, res de vòstre jornal.",
   "feedbackGithub": "Problèma GitHub",
-  "feedbackEmail": "Mandar un corrièl",
-  "feedbackCopy": "Copiar lo tèxte",
-  "feedbackLaunchFailed": "Impossible de dobrir l’aplicacion. Copiatz lo tèxte e utilizatz lo corrièl çai jos.",
-  "feedbackCopied": "Comentaris copiats"
+  "feedbackEmail": "Mandar un corrièl"
 }

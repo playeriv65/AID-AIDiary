@@ -23,6 +23,7 @@ aid-sync passwd NAME
 aid-sync quota NAME QUOTA_MB
 aid-sync deluser NAME        # also removes the user's files
 aid-sync users
+aid-sync feedback            # what people sent from the app's help page
 ```
 
 In the app, choose WebDAV and enter `https://<host>/dav/` with the user's
@@ -31,6 +32,12 @@ server's device-authentication capability and registers its own native signing
 key. Later devices are approved by an authorized device, normally through the
 same nearby QR/SAS migration channel. No password or private signing key is
 copied to the new device.
+
+The app's help page can also send a short message straight here:
+`POST /api/feedback` with a JSON object of `text` (and the app's `version`,
+`platform` and `locale`), no sign-in. It is plain text, capped in size and
+per address an hour, and appended to `feedback.jsonl` in the data folder,
+which only the operator reads.
 
 ## Settings
 
@@ -62,6 +69,8 @@ copied to the new device.
 | `AID_SYNC_DEVICE_CHALLENGE_TTL` | `2m` | One-time device challenge lifetime |
 | `AID_SYNC_DEVICE_TOKEN_TTL` | `15m` | Device bearer-token lifetime |
 | `AID_SYNC_DEVICE_MAX_DEVICES` | `16` | Maximum active device keys per account; at most 128 |
+| `AID_SYNC_FEEDBACK_MAX_BYTES` | `8192` | Longest feedback text; at most 65536 |
+| `AID_SYNC_FEEDBACK_PER_HOUR` | `5` | Feedback messages one address may send an hour; at most 100 |
 | `AID_SYNC_MIN_PASSWORD` | `12` | Shortest password `adduser` and `passwd` accept |
 | `AID_SYNC_FAIL_LIMIT` | `10` | Failed sign-ins from one address or for one name before blocking |
 | `AID_SYNC_FAIL_WINDOW` | `15m` | How long failures count and a block lasts |

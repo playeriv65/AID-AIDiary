@@ -2810,20 +2810,27 @@ class AppLocalizationsPt extends AppLocalizations {
   String get feedbackHint => 'Descreva um problema ou sugestão';
 
   @override
+  String get feedbackSend => 'Enviar';
+
+  @override
+  String get feedbackSent => 'Obrigado, o seu comentário foi enviado.';
+
+  @override
+  String get feedbackSendFailed =>
+      'Não foi possível enviar. Verifique a ligação e tente novamente.';
+
+  @override
+  String get feedbackOpenFailed => 'Não foi possível abrir a aplicação.';
+
+  @override
+  String get feedbackSendNote =>
+      'Enviado para o servidor do AID Diary com a versão e o idioma da aplicação, nada do seu diário.';
+
+  @override
   String get feedbackGithub => 'Problema no GitHub';
 
   @override
   String get feedbackEmail => 'Enviar e-mail';
-
-  @override
-  String get feedbackCopy => 'Copiar texto';
-
-  @override
-  String get feedbackLaunchFailed =>
-      'Não foi possível abrir a aplicação. Copie o texto e use o e-mail abaixo.';
-
-  @override
-  String get feedbackCopied => 'Comentários copiados';
 }
 
 /// The translations for Portuguese, as used in Brazil (`pt_BR`).
@@ -5631,18 +5638,25 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
   String get feedbackHint => 'Descreva um problema ou sugestão';
 
   @override
+  String get feedbackSend => 'Enviar';
+
+  @override
+  String get feedbackSent => 'Obrigado, seu feedback foi enviado.';
+
+  @override
+  String get feedbackSendFailed =>
+      'Não foi possível enviar. Verifique a conexão e tente novamente.';
+
+  @override
+  String get feedbackOpenFailed => 'Não foi possível abrir o app.';
+
+  @override
+  String get feedbackSendNote =>
+      'Enviado ao servidor do AID Diary com a versão e o idioma do app, nada do seu diário.';
+
+  @override
   String get feedbackGithub => 'Issue no GitHub';
 
   @override
   String get feedbackEmail => 'Enviar e-mail';
-
-  @override
-  String get feedbackCopy => 'Copiar texto';
-
-  @override
-  String get feedbackLaunchFailed =>
-      'Não foi possível abrir o aplicativo. Copie o texto e use o e-mail abaixo.';
-
-  @override
-  String get feedbackCopied => 'Feedback copiado';
 }

@@ -2790,18 +2790,25 @@ class AppLocalizationsHi extends AppLocalizations {
   String get feedbackHint => 'समस्या या सुझाव बताएँ';
 
   @override
+  String get feedbackSend => 'भेजें';
+
+  @override
+  String get feedbackSent => 'धन्यवाद, आपकी प्रतिक्रिया भेज दी गई।';
+
+  @override
+  String get feedbackSendFailed =>
+      'भेजा नहीं जा सका। कनेक्शन जाँचें और फिर कोशिश करें।';
+
+  @override
+  String get feedbackOpenFailed => 'ऐप नहीं खुल सका।';
+
+  @override
+  String get feedbackSendNote =>
+      'ऐप के संस्करण और भाषा के साथ AID Diary सर्वर को भेजा जाता है, आपकी डायरी से कुछ नहीं।';
+
+  @override
   String get feedbackGithub => 'GitHub पर मुद्दा';
 
   @override
   String get feedbackEmail => 'ईमेल भेजें';
-
-  @override
-  String get feedbackCopy => 'टेक्स्ट कॉपी करें';
-
-  @override
-  String get feedbackLaunchFailed =>
-      'ऐप नहीं खुल सका। टेक्स्ट कॉपी करके नीचे दिए ईमेल का उपयोग करें।';
-
-  @override
-  String get feedbackCopied => 'प्रतिक्रिया कॉपी हुई';
 }

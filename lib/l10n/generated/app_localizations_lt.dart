@@ -2820,18 +2820,25 @@ class AppLocalizationsLt extends AppLocalizations {
   String get feedbackHint => 'Aprašykite problemą ar pasiūlymą';
 
   @override
+  String get feedbackSend => 'Siųsti';
+
+  @override
+  String get feedbackSent => 'Ačiū, atsiliepimas išsiųstas.';
+
+  @override
+  String get feedbackSendFailed =>
+      'Nepavyko išsiųsti. Patikrinkite ryšį ir bandykite dar kartą.';
+
+  @override
+  String get feedbackOpenFailed => 'Nepavyko atidaryti programos.';
+
+  @override
+  String get feedbackSendNote =>
+      'Siunčiama į AID Diary serverį su programos versija ir kalba, nieko iš jūsų dienoraščio.';
+
+  @override
   String get feedbackGithub => 'GitHub problema';
 
   @override
   String get feedbackEmail => 'Siųsti el. laišką';
-
-  @override
-  String get feedbackCopy => 'Kopijuoti tekstą';
-
-  @override
-  String get feedbackLaunchFailed =>
-      'Nepavyko atidaryti programos. Nukopijuokite tekstą ir naudokite el. paštą žemiau.';
-
-  @override
-  String get feedbackCopied => 'Atsiliepimas nukopijuotas';
 }

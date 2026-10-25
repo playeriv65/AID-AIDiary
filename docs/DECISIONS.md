@@ -25,9 +25,12 @@ asks again. Dates are when it was settled. Ideas not built yet are in
   scrolling two viewports; clicking it returns directly to the beginning. It
   floats centred just below the search card, over the entries, not inside
   the card.
-- Feedback (2026-10-23): Settings > Help opens a text panel with prefilled GitHub
-  issue and email drafts plus text copying. The user completes submission in
-  their browser/mail app. Do not collect diary content or logs automatically.
+- Feedback (2026-10-25, owner, replaces 2026-10-23): Settings > Help has a
+  text box whose Send button posts it straight to the AID server (for those
+  who will not open anything else), plus GitHub issue and email drafts with
+  the same text. No copy button and no shown address. Only the typed text and
+  the app's version, platform and language are sent; never diary content or
+  logs.
 
 - Hidden diaries (2026-10-22): preserve the hidden designation when importing
   One Diary backups. Keep hidden entries out of everyday views, search,
@@ -73,8 +76,8 @@ asks again. Dates are when it was settled. Ideas not built yet are in
   You that stays clearly its own app (name, IDs, the notice in About). No
   compatibility with Daily You data or with older builds of this app.
 - Data stays on the device. The network is used only for map tiles, place
-  names and search, nearby places, weather, the sync the user chooses and
-  the AI model the user configures. No accounts, no membership, no
+  names and search, nearby places, weather, the sync the user chooses, the
+  AI model the user configures and feedback the user sends. No accounts, no membership, no
   publishing.
 - AI (2026-10-24, replaces the early-development "no AI"): an agent inside
   the app that drives the app through the same actions as the `aid` command

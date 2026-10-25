@@ -2785,18 +2785,25 @@ class AppLocalizationsAr extends AppLocalizations {
   String get feedbackHint => 'صف مشكلة أو اقتراحًا';
 
   @override
+  String get feedbackSend => 'إرسال';
+
+  @override
+  String get feedbackSent => 'شكرًا، تم إرسال ملاحظاتك.';
+
+  @override
+  String get feedbackSendFailed =>
+      'تعذّر الإرسال. تحقّق من الاتصال وحاول مرة أخرى.';
+
+  @override
+  String get feedbackOpenFailed => 'تعذّر فتح التطبيق.';
+
+  @override
+  String get feedbackSendNote =>
+      'تُرسل إلى خادم AID Diary مع إصدار التطبيق ولغته، دون أي شيء من يومياتك.';
+
+  @override
   String get feedbackGithub => 'مشكلة على GitHub';
 
   @override
   String get feedbackEmail => 'إرسال بريد';
-
-  @override
-  String get feedbackCopy => 'نسخ النص';
-
-  @override
-  String get feedbackLaunchFailed =>
-      'تعذر فتح التطبيق. انسخ النص واستخدم البريد أدناه.';
-
-  @override
-  String get feedbackCopied => 'تم نسخ الملاحظات';
 }

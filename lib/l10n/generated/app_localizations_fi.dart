@@ -2797,18 +2797,25 @@ class AppLocalizationsFi extends AppLocalizations {
   String get feedbackHint => 'Kuvaile ongelma tai ehdotus';
 
   @override
+  String get feedbackSend => 'Lähetä';
+
+  @override
+  String get feedbackSent => 'Kiitos, palautteesi lähetettiin.';
+
+  @override
+  String get feedbackSendFailed =>
+      'Lähetys epäonnistui. Tarkista yhteys ja yritä uudelleen.';
+
+  @override
+  String get feedbackOpenFailed => 'Sovellusta ei voitu avata.';
+
+  @override
+  String get feedbackSendNote =>
+      'Lähetetään AID Diaryn palvelimelle sovelluksen version ja kielen kanssa, ei mitään päiväkirjastasi.';
+
+  @override
   String get feedbackGithub => 'GitHub-ongelma';
 
   @override
   String get feedbackEmail => 'Lähetä sähköposti';
-
-  @override
-  String get feedbackCopy => 'Kopioi teksti';
-
-  @override
-  String get feedbackLaunchFailed =>
-      'Sovellusta ei voitu avata. Kopioi teksti ja käytä alla olevaa sähköpostia.';
-
-  @override
-  String get feedbackCopied => 'Palaute kopioitu';
 }

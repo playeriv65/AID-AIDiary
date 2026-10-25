@@ -816,9 +816,11 @@
   "scrollToTop": "ऊपर जाएँ",
   "feedbackTitle": "प्रतिक्रिया",
   "feedbackHint": "समस्या या सुझाव बताएँ",
+  "feedbackSend": "भेजें",
+  "feedbackSent": "धन्यवाद, आपकी प्रतिक्रिया भेज दी गई।",
+  "feedbackSendFailed": "भेजा नहीं जा सका। कनेक्शन जाँचें और फिर कोशिश करें।",
+  "feedbackOpenFailed": "ऐप नहीं खुल सका।",
+  "feedbackSendNote": "ऐप के संस्करण और भाषा के साथ AID Diary सर्वर को भेजा जाता है, आपकी डायरी से कुछ नहीं।",
   "feedbackGithub": "GitHub पर मुद्दा",
-  "feedbackEmail": "ईमेल भेजें",
-  "feedbackCopy": "टेक्स्ट कॉपी करें",
-  "feedbackLaunchFailed": "ऐप नहीं खुल सका। टेक्स्ट कॉपी करके नीचे दिए ईमेल का उपयोग करें।",
-  "feedbackCopied": "प्रतिक्रिया कॉपी हुई"
+  "feedbackEmail": "ईमेल भेजें"
 }

@@ -1617,9 +1617,16 @@
   "scrollToTop": "Back to top",
   "feedbackTitle": "Feedback",
   "feedbackHint": "Describe a problem or suggestion",
+  "feedbackSend": "Send",
+  "@feedbackSend": {},
+  "feedbackSent": "Thanks, your feedback was sent.",
+  "@feedbackSent": {},
+  "feedbackSendFailed": "Could not send. Check the connection and try again.",
+  "@feedbackSendFailed": {},
+  "feedbackOpenFailed": "Could not open the app.",
+  "@feedbackOpenFailed": {},
+  "feedbackSendNote": "Sent to the AID Diary server with the app version and language, nothing from your diary.",
+  "@feedbackSendNote": {},
   "feedbackGithub": "GitHub issue",
-  "feedbackEmail": "Email feedback",
-  "feedbackCopy": "Copy text",
-  "feedbackLaunchFailed": "Could not open the app. Copy your text and use the email address below.",
-  "feedbackCopied": "Feedback copied"
+  "feedbackEmail": "Email feedback"
 }

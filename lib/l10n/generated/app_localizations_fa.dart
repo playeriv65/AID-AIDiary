@@ -2782,18 +2782,25 @@ class AppLocalizationsFa extends AppLocalizations {
   String get feedbackHint => 'مشکل یا پیشنهادی را شرح دهید';
 
   @override
+  String get feedbackSend => 'ارسال';
+
+  @override
+  String get feedbackSent => 'سپاس، بازخورد شما ارسال شد.';
+
+  @override
+  String get feedbackSendFailed =>
+      'ارسال نشد. اتصال را بررسی کنید و دوباره تلاش کنید.';
+
+  @override
+  String get feedbackOpenFailed => 'برنامه باز نشد.';
+
+  @override
+  String get feedbackSendNote =>
+      'به سرور AID Diary همراه با نسخه و زبان برنامه فرستاده می‌شود، بدون هیچ چیزی از دفتر خاطرات شما.';
+
+  @override
   String get feedbackGithub => 'گزارش در GitHub';
 
   @override
   String get feedbackEmail => 'ارسال ایمیل';
-
-  @override
-  String get feedbackCopy => 'کپی متن';
-
-  @override
-  String get feedbackLaunchFailed =>
-      'برنامه باز نشد. متن را کپی کنید و از ایمیل زیر استفاده کنید.';
-
-  @override
-  String get feedbackCopied => 'بازخورد کپی شد';
 }

@@ -2790,18 +2790,25 @@ class AppLocalizationsTr extends AppLocalizations {
   String get feedbackHint => 'Sorunu veya öneriyi açıklayın';
 
   @override
+  String get feedbackSend => 'Gönder';
+
+  @override
+  String get feedbackSent => 'Teşekkürler, geri bildiriminiz gönderildi.';
+
+  @override
+  String get feedbackSendFailed =>
+      'Gönderilemedi. Bağlantıyı denetleyip yeniden deneyin.';
+
+  @override
+  String get feedbackOpenFailed => 'Uygulama açılamadı.';
+
+  @override
+  String get feedbackSendNote =>
+      'Uygulama sürümü ve diliyle AID Diary sunucusuna gönderilir; günlüğünüzden hiçbir şey gönderilmez.';
+
+  @override
   String get feedbackGithub => 'GitHub sorunu';
 
   @override
   String get feedbackEmail => 'E-posta gönder';
-
-  @override
-  String get feedbackCopy => 'Metni kopyala';
-
-  @override
-  String get feedbackLaunchFailed =>
-      'Uygulama açılamadı. Metni kopyalayıp aşağıdaki e-postayı kullanın.';
-
-  @override
-  String get feedbackCopied => 'Geri bildirim kopyalandı';
 }

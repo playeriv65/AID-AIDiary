@@ -816,9 +816,11 @@
   "scrollToTop": "Na górę",
   "feedbackTitle": "Opinia",
   "feedbackHint": "Opisz problem lub sugestię",
+  "feedbackSend": "Wyślij",
+  "feedbackSent": "Dziękujemy, opinia została wysłana.",
+  "feedbackSendFailed": "Nie udało się wysłać. Sprawdź połączenie i spróbuj ponownie.",
+  "feedbackOpenFailed": "Nie udało się otworzyć aplikacji.",
+  "feedbackSendNote": "Trafia na serwer AID Diary z wersją i językiem aplikacji, nic z Twojego dziennika.",
   "feedbackGithub": "Zgłoszenie GitHub",
-  "feedbackEmail": "Wyślij e-mail",
-  "feedbackCopy": "Kopiuj tekst",
-  "feedbackLaunchFailed": "Nie można otworzyć aplikacji. Skopiuj tekst i użyj adresu e-mail poniżej.",
-  "feedbackCopied": "Opinia skopiowana"
+  "feedbackEmail": "Wyślij e-mail"
 }

@@ -2767,18 +2767,24 @@ class AppLocalizationsHe extends AppLocalizations {
   String get feedbackHint => 'תיאור בעיה או הצעה';
 
   @override
+  String get feedbackSend => 'שליחה';
+
+  @override
+  String get feedbackSent => 'תודה, המשוב נשלח.';
+
+  @override
+  String get feedbackSendFailed => 'השליחה נכשלה. בדקו את החיבור ונסו שוב.';
+
+  @override
+  String get feedbackOpenFailed => 'לא ניתן לפתוח את האפליקציה.';
+
+  @override
+  String get feedbackSendNote =>
+      'נשלח לשרת של AID Diary עם גרסת האפליקציה והשפה, בלי שום דבר מהיומן שלך.';
+
+  @override
   String get feedbackGithub => 'דיווח ב-GitHub';
 
   @override
   String get feedbackEmail => 'שליחת דוא״ל';
-
-  @override
-  String get feedbackCopy => 'העתקת טקסט';
-
-  @override
-  String get feedbackLaunchFailed =>
-      'לא ניתן לפתוח את היישום. יש להעתיק את הטקסט ולהשתמש בדוא״ל למטה.';
-
-  @override
-  String get feedbackCopied => 'המשוב הועתק';
 }

@@ -816,9 +816,11 @@
   "scrollToTop": "Наверх",
   "feedbackTitle": "Обратная связь",
   "feedbackHint": "Опишите проблему или предложение",
+  "feedbackSend": "Отправить",
+  "feedbackSent": "Спасибо, ваш отзыв отправлен.",
+  "feedbackSendFailed": "Не удалось отправить. Проверьте подключение и попробуйте снова.",
+  "feedbackOpenFailed": "Не удалось открыть приложение.",
+  "feedbackSendNote": "Отправляется на сервер AID Diary вместе с версией и языком приложения, ничего из вашего дневника.",
   "feedbackGithub": "Задача на GitHub",
-  "feedbackEmail": "Написать письмо",
-  "feedbackCopy": "Копировать текст",
-  "feedbackLaunchFailed": "Не удалось открыть приложение. Скопируйте текст и используйте почту ниже.",
-  "feedbackCopied": "Текст скопирован"
+  "feedbackEmail": "Написать письмо"
 }

@@ -816,9 +816,11 @@
   "scrollToTop": "Torna a dalt",
   "feedbackTitle": "Comentaris",
   "feedbackHint": "Descriu un problema o suggeriment",
+  "feedbackSend": "Envia",
+  "feedbackSent": "Gràcies, s'han enviat els vostres comentaris.",
+  "feedbackSendFailed": "No s'ha pogut enviar. Comproveu la connexió i torneu-ho a provar.",
+  "feedbackOpenFailed": "No s'ha pogut obrir l'aplicació.",
+  "feedbackSendNote": "S'envia al servidor d'AID Diary amb la versió i l'idioma de l'aplicació, res del vostre diari.",
   "feedbackGithub": "Incidència a GitHub",
-  "feedbackEmail": "Envia un correu",
-  "feedbackCopy": "Copia el text",
-  "feedbackLaunchFailed": "No s’ha pogut obrir l’aplicació. Copia el text i usa el correu de sota.",
-  "feedbackCopied": "Comentaris copiats"
+  "feedbackEmail": "Envia un correu"
 }

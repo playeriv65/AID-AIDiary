@@ -847,9 +847,11 @@
   "scrollToTop": "回到頂部",
   "feedbackTitle": "意見回饋",
   "feedbackHint": "描述你遇到的問題或建議",
+  "feedbackSend": "傳送",
+  "feedbackSent": "謝謝，意見已送出。",
+  "feedbackSendFailed": "傳送失敗，請檢查網路後重試。",
+  "feedbackOpenFailed": "無法開啟應用程式。",
+  "feedbackSendNote": "將連同應用程式版本與語言傳送到 AID Diary 伺服器，不包含日記內容。",
   "feedbackGithub": "到 GitHub 提 issue",
-  "feedbackEmail": "電子郵件回饋",
-  "feedbackCopy": "複製文字",
-  "feedbackLaunchFailed": "無法開啟應用程式。請複製文字，使用下方信箱聯絡。",
-  "feedbackCopied": "已複製回饋"
+  "feedbackEmail": "電子郵件回饋"
 }

@@ -2685,19 +2685,25 @@ class AppLocalizationsZh extends AppLocalizations {
   String get feedbackHint => '描述你遇到的问题或建议';
 
   @override
+  String get feedbackSend => '发送';
+
+  @override
+  String get feedbackSent => '谢谢，反馈已发送。';
+
+  @override
+  String get feedbackSendFailed => '发送失败，请检查网络后重试。';
+
+  @override
+  String get feedbackOpenFailed => '无法打开应用。';
+
+  @override
+  String get feedbackSendNote => '将连同应用版本和语言发送到 AID Diary 服务器，不包含日记内容。';
+
+  @override
   String get feedbackGithub => '到 GitHub 提 issue';
 
   @override
   String get feedbackEmail => '邮件反馈';
-
-  @override
-  String get feedbackCopy => '复制文字';
-
-  @override
-  String get feedbackLaunchFailed => '无法打开应用。请复制反馈文字，使用下方邮箱联系。';
-
-  @override
-  String get feedbackCopied => '已复制反馈';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -5384,17 +5390,23 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get feedbackHint => '描述你遇到的問題或建議';
 
   @override
+  String get feedbackSend => '傳送';
+
+  @override
+  String get feedbackSent => '謝謝，意見已送出。';
+
+  @override
+  String get feedbackSendFailed => '傳送失敗，請檢查網路後重試。';
+
+  @override
+  String get feedbackOpenFailed => '無法開啟應用程式。';
+
+  @override
+  String get feedbackSendNote => '將連同應用程式版本與語言傳送到 AID Diary 伺服器，不包含日記內容。';
+
+  @override
   String get feedbackGithub => '到 GitHub 提 issue';
 
   @override
   String get feedbackEmail => '電子郵件回饋';
-
-  @override
-  String get feedbackCopy => '複製文字';
-
-  @override
-  String get feedbackLaunchFailed => '無法開啟應用程式。請複製文字，使用下方信箱聯絡。';
-
-  @override
-  String get feedbackCopied => '已複製回饋';
 }

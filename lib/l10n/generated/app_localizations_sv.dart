@@ -2794,18 +2794,25 @@ class AppLocalizationsSv extends AppLocalizations {
   String get feedbackHint => 'Beskriv ett problem eller förslag';
 
   @override
+  String get feedbackSend => 'Skicka';
+
+  @override
+  String get feedbackSent => 'Tack, din feedback har skickats.';
+
+  @override
+  String get feedbackSendFailed =>
+      'Det gick inte att skicka. Kontrollera anslutningen och försök igen.';
+
+  @override
+  String get feedbackOpenFailed => 'Det gick inte att öppna appen.';
+
+  @override
+  String get feedbackSendNote =>
+      'Skickas till AID Diarys server med appens version och språk, inget från din dagbok.';
+
+  @override
   String get feedbackGithub => 'GitHub-ärende';
 
   @override
   String get feedbackEmail => 'Skicka e-post';
-
-  @override
-  String get feedbackCopy => 'Kopiera text';
-
-  @override
-  String get feedbackLaunchFailed =>
-      'Appen kunde inte öppnas. Kopiera texten och använd e-postadressen nedan.';
-
-  @override
-  String get feedbackCopied => 'Återkopplingen kopierad';
 }

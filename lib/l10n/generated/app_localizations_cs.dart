@@ -2784,18 +2784,25 @@ class AppLocalizationsCs extends AppLocalizations {
   String get feedbackHint => 'Popište problém nebo návrh';
 
   @override
+  String get feedbackSend => 'Odeslat';
+
+  @override
+  String get feedbackSent => 'Děkujeme, zpětná vazba byla odeslána.';
+
+  @override
+  String get feedbackSendFailed =>
+      'Odeslání se nezdařilo. Zkontrolujte připojení a zkuste to znovu.';
+
+  @override
+  String get feedbackOpenFailed => 'Aplikaci se nepodařilo otevřít.';
+
+  @override
+  String get feedbackSendNote =>
+      'Odešle se na server AID Diary s verzí a jazykem aplikace, nic z vašeho deníku.';
+
+  @override
   String get feedbackGithub => 'Problém na GitHubu';
 
   @override
   String get feedbackEmail => 'Poslat e-mail';
-
-  @override
-  String get feedbackCopy => 'Kopírovat text';
-
-  @override
-  String get feedbackLaunchFailed =>
-      'Aplikaci nelze otevřít. Zkopírujte text a použijte e-mail níže.';
-
-  @override
-  String get feedbackCopied => 'Text zkopírován';
 }

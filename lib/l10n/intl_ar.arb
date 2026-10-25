@@ -816,9 +816,11 @@
   "scrollToTop": "العودة للأعلى",
   "feedbackTitle": "ملاحظات",
   "feedbackHint": "صف مشكلة أو اقتراحًا",
+  "feedbackSend": "إرسال",
+  "feedbackSent": "شكرًا، تم إرسال ملاحظاتك.",
+  "feedbackSendFailed": "تعذّر الإرسال. تحقّق من الاتصال وحاول مرة أخرى.",
+  "feedbackOpenFailed": "تعذّر فتح التطبيق.",
+  "feedbackSendNote": "تُرسل إلى خادم AID Diary مع إصدار التطبيق ولغته، دون أي شيء من يومياتك.",
   "feedbackGithub": "مشكلة على GitHub",
-  "feedbackEmail": "إرسال بريد",
-  "feedbackCopy": "نسخ النص",
-  "feedbackLaunchFailed": "تعذر فتح التطبيق. انسخ النص واستخدم البريد أدناه.",
-  "feedbackCopied": "تم نسخ الملاحظات"
+  "feedbackEmail": "إرسال بريد"
 }

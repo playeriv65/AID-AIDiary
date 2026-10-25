@@ -2803,18 +2803,25 @@ class AppLocalizationsUk extends AppLocalizations {
   String get feedbackHint => 'Опишіть проблему або пропозицію';
 
   @override
+  String get feedbackSend => 'Надіслати';
+
+  @override
+  String get feedbackSent => 'Дякуємо, ваш відгук надіслано.';
+
+  @override
+  String get feedbackSendFailed =>
+      'Не вдалося надіслати. Перевірте з\'єднання й спробуйте ще раз.';
+
+  @override
+  String get feedbackOpenFailed => 'Не вдалося відкрити застосунок.';
+
+  @override
+  String get feedbackSendNote =>
+      'Надсилається на сервер AID Diary з версією та мовою застосунку, нічого з вашого щоденника.';
+
+  @override
   String get feedbackGithub => 'Задача на GitHub';
 
   @override
   String get feedbackEmail => 'Написати листа';
-
-  @override
-  String get feedbackCopy => 'Копіювати текст';
-
-  @override
-  String get feedbackLaunchFailed =>
-      'Не вдалося відкрити застосунок. Скопіюйте текст і скористайтеся поштою нижче.';
-
-  @override
-  String get feedbackCopied => 'Текст скопійовано';
 }

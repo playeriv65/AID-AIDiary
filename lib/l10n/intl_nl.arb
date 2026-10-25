@@ -816,9 +816,11 @@
   "scrollToTop": "Naar boven",
   "feedbackTitle": "Feedback",
   "feedbackHint": "Beschrijf een probleem of suggestie",
+  "feedbackSend": "Versturen",
+  "feedbackSent": "Bedankt, je feedback is verstuurd.",
+  "feedbackSendFailed": "Versturen mislukt. Controleer de verbinding en probeer het opnieuw.",
+  "feedbackOpenFailed": "Kan de app niet openen.",
+  "feedbackSendNote": "Gaat naar de AID Diary-server met de versie en taal van de app, niets uit je dagboek.",
   "feedbackGithub": "GitHub-issue",
-  "feedbackEmail": "E-mail sturen",
-  "feedbackCopy": "Tekst kopiëren",
-  "feedbackLaunchFailed": "De app kon niet worden geopend. Kopieer de tekst en gebruik het e-mailadres hieronder.",
-  "feedbackCopied": "Feedback gekopieerd"
+  "feedbackEmail": "E-mail sturen"
 }

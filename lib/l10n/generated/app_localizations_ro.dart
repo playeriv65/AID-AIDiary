@@ -2821,18 +2821,25 @@ class AppLocalizationsRo extends AppLocalizations {
   String get feedbackHint => 'Descrieți o problemă sau sugestie';
 
   @override
+  String get feedbackSend => 'Trimite';
+
+  @override
+  String get feedbackSent => 'Mulțumim, feedbackul a fost trimis.';
+
+  @override
+  String get feedbackSendFailed =>
+      'Nu s-a putut trimite. Verificați conexiunea și încercați din nou.';
+
+  @override
+  String get feedbackOpenFailed => 'Aplicația nu s-a putut deschide.';
+
+  @override
+  String get feedbackSendNote =>
+      'Se trimite la serverul AID Diary cu versiunea și limba aplicației, nimic din jurnalul tău.';
+
+  @override
   String get feedbackGithub => 'Problemă GitHub';
 
   @override
   String get feedbackEmail => 'Trimite e-mail';
-
-  @override
-  String get feedbackCopy => 'Copiază textul';
-
-  @override
-  String get feedbackLaunchFailed =>
-      'Aplicația nu s-a deschis. Copiați textul și folosiți e-mailul de mai jos.';
-
-  @override
-  String get feedbackCopied => 'Feedback copiat';
 }

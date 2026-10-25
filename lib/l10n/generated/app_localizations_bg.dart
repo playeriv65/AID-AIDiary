@@ -2806,18 +2806,25 @@ class AppLocalizationsBg extends AppLocalizations {
   String get feedbackHint => 'Опишете проблем или предложение';
 
   @override
+  String get feedbackSend => 'Изпращане';
+
+  @override
+  String get feedbackSent => 'Благодарим, отзивът ви е изпратен.';
+
+  @override
+  String get feedbackSendFailed =>
+      'Изпращането не бе успешно. Проверете връзката и опитайте отново.';
+
+  @override
+  String get feedbackOpenFailed => 'Приложението не можа да се отвори.';
+
+  @override
+  String get feedbackSendNote =>
+      'Изпраща се до сървъра на AID Diary с версията и езика на приложението, без нищо от дневника ви.';
+
+  @override
   String get feedbackGithub => 'Проблем в GitHub';
 
   @override
   String get feedbackEmail => 'Изпрати имейл';
-
-  @override
-  String get feedbackCopy => 'Копирай текста';
-
-  @override
-  String get feedbackLaunchFailed =>
-      'Приложението не се отвори. Копирайте текста и използвайте имейла по-долу.';
-
-  @override
-  String get feedbackCopied => 'Текстът е копиран';
 }

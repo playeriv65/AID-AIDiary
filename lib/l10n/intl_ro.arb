@@ -816,9 +816,11 @@
   "scrollToTop": "Sus",
   "feedbackTitle": "Feedback",
   "feedbackHint": "Descrieți o problemă sau sugestie",
+  "feedbackSend": "Trimite",
+  "feedbackSent": "Mulțumim, feedbackul a fost trimis.",
+  "feedbackSendFailed": "Nu s-a putut trimite. Verificați conexiunea și încercați din nou.",
+  "feedbackOpenFailed": "Aplicația nu s-a putut deschide.",
+  "feedbackSendNote": "Se trimite la serverul AID Diary cu versiunea și limba aplicației, nimic din jurnalul tău.",
   "feedbackGithub": "Problemă GitHub",
-  "feedbackEmail": "Trimite e-mail",
-  "feedbackCopy": "Copiază textul",
-  "feedbackLaunchFailed": "Aplicația nu s-a deschis. Copiați textul și folosiți e-mailul de mai jos.",
-  "feedbackCopied": "Feedback copiat"
+  "feedbackEmail": "Trimite e-mail"
 }

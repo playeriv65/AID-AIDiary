@@ -2829,18 +2829,25 @@ class AppLocalizationsFr extends AppLocalizations {
   String get feedbackHint => 'Décrivez un problème ou une suggestion';
 
   @override
+  String get feedbackSend => 'Envoyer';
+
+  @override
+  String get feedbackSent => 'Merci, votre avis a été envoyé.';
+
+  @override
+  String get feedbackSendFailed =>
+      'Envoi impossible. Vérifiez la connexion et réessayez.';
+
+  @override
+  String get feedbackOpenFailed => 'Impossible d\'ouvrir l\'application.';
+
+  @override
+  String get feedbackSendNote =>
+      'Envoyé au serveur d\'AID Diary avec la version et la langue de l\'app, rien de votre journal.';
+
+  @override
   String get feedbackGithub => 'Ticket GitHub';
 
   @override
   String get feedbackEmail => 'Envoyer un e-mail';
-
-  @override
-  String get feedbackCopy => 'Copier le texte';
-
-  @override
-  String get feedbackLaunchFailed =>
-      'Impossible d’ouvrir l’application. Copiez le texte et utilisez l’adresse ci-dessous.';
-
-  @override
-  String get feedbackCopied => 'Commentaires copiés';
 }

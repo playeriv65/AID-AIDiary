@@ -2812,18 +2812,25 @@ class AppLocalizationsCa extends AppLocalizations {
   String get feedbackHint => 'Descriu un problema o suggeriment';
 
   @override
+  String get feedbackSend => 'Envia';
+
+  @override
+  String get feedbackSent => 'Gràcies, s\'han enviat els vostres comentaris.';
+
+  @override
+  String get feedbackSendFailed =>
+      'No s\'ha pogut enviar. Comproveu la connexió i torneu-ho a provar.';
+
+  @override
+  String get feedbackOpenFailed => 'No s\'ha pogut obrir l\'aplicació.';
+
+  @override
+  String get feedbackSendNote =>
+      'S\'envia al servidor d\'AID Diary amb la versió i l\'idioma de l\'aplicació, res del vostre diari.';
+
+  @override
   String get feedbackGithub => 'Incidència a GitHub';
 
   @override
   String get feedbackEmail => 'Envia un correu';
-
-  @override
-  String get feedbackCopy => 'Copia el text';
-
-  @override
-  String get feedbackLaunchFailed =>
-      'No s’ha pogut obrir l’aplicació. Copia el text i usa el correu de sota.';
-
-  @override
-  String get feedbackCopied => 'Comentaris copiats';
 }

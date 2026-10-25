@@ -2830,18 +2830,25 @@ class AppLocalizationsTa extends AppLocalizations {
   String get feedbackHint => 'சிக்கல் அல்லது பரிந்துரையை விவரிக்கவும்';
 
   @override
+  String get feedbackSend => 'அனுப்பு';
+
+  @override
+  String get feedbackSent => 'நன்றி, உங்கள் கருத்து அனுப்பப்பட்டது.';
+
+  @override
+  String get feedbackSendFailed =>
+      'அனுப்ப முடியவில்லை. இணைப்பைச் சரிபார்த்து மீண்டும் முயலவும்.';
+
+  @override
+  String get feedbackOpenFailed => 'செயலியைத் திறக்க முடியவில்லை.';
+
+  @override
+  String get feedbackSendNote =>
+      'செயலியின் பதிப்பு மற்றும் மொழியுடன் AID Diary சேவையகத்துக்கு அனுப்பப்படும்; உங்கள் நாட்குறிப்பிலிருந்து எதுவும் இல்லை.';
+
+  @override
   String get feedbackGithub => 'GitHub சிக்கல்';
 
   @override
   String get feedbackEmail => 'மின்னஞ்சல் அனுப்பு';
-
-  @override
-  String get feedbackCopy => 'உரையை நகலெடு';
-
-  @override
-  String get feedbackLaunchFailed =>
-      'செயலியைத் திறக்க முடியவில்லை. உரையை நகலெடுத்து கீழுள்ள மின்னஞ்சலைப் பயன்படுத்தவும்.';
-
-  @override
-  String get feedbackCopied => 'கருத்து நகலெடுக்கப்பட்டது';
 }

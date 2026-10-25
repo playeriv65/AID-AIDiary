@@ -46,6 +46,7 @@ type Config struct {
 	Media      MediaLimits
 	Network    NetworkLimits
 	DeviceAuth DeviceAuthLimits
+	Feedback   FeedbackLimits
 	// CredentialTTL is how long a checked password is trusted before it is
 	// checked again; a changed password takes effect within it.
 	CredentialTTL time.Duration
@@ -71,6 +72,9 @@ type Server struct {
 	trusted  map[[32]byte]trust
 	failures map[string][]time.Time
 	network  *networkHub
+
+	// feedbackMu keeps appended feedback lines whole.
+	feedbackMu sync.Mutex
 }
 
 type trust struct {
@@ -98,6 +102,7 @@ func New(cfg Config, store *accounts.Store, log *slog.Logger) *Server {
 	cfg.Media = cfg.Media.defaults()
 	cfg.Network = cfg.Network.defaults()
 	cfg.DeviceAuth = cfg.DeviceAuth.defaults()
+	cfg.Feedback = cfg.Feedback.defaults()
 	return &Server{
 		cfg:      cfg,
 		accounts: store,
@@ -122,6 +127,7 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("POST /api/sync/devices/rotate", s.rotateDevice)
 	mux.HandleFunc("POST /api/sync/auth/challenge", s.deviceChallenge)
 	mux.HandleFunc("POST /api/sync/auth/token", s.deviceToken)
+	mux.HandleFunc("POST /api/feedback", s.feedback)
 	mux.HandleFunc(Prefix+"/", s.dav)
 	return s.logged(mux)
 }
@@ -367,18 +373,7 @@ func (s *Server) clientAddress(r *http.Request) string {
 
 // recent drops failures older than the window; call with s.mu held.
 func (s *Server) recent(now time.Time, key string) []time.Time {
-	kept := s.failures[key][:0]
-	for _, at := range s.failures[key] {
-		if now.Sub(at) < s.cfg.FailWindow {
-			kept = append(kept, at)
-		}
-	}
-	if len(kept) == 0 {
-		delete(s.failures, key)
-		return nil
-	}
-	s.failures[key] = kept
-	return kept
+	return s.recentWithin(now, key, s.cfg.FailWindow)
 }
 
 func (s *Server) blocked(now time.Time, key string) bool {

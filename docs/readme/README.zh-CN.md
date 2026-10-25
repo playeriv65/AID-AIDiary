@@ -10,7 +10,7 @@
 
 布局参照 Journey 日记应用：手机上是底部导航栏，平板和电脑窗口上是侧边导航栏加列表/详情双栏。只借鉴了布局和功能，没有使用其代码、素材或文案。
 
-在手机、平板和 Windows 上，搜索栏都固定在滚动列表上方。长时间浏览日记时会出现一个小的回到顶部按钮。反馈入口在"设置 > 帮助"，可以去 GitHub、发邮件或复制文字。Windows 保留系统原生标题栏，显示应用图标和 AID Diary 名称，边框颜色跟随应用主题；见 [Windows 安装说明](../SETUP.md#windows-personal-installation)。
+在手机、平板和 Windows 上，搜索栏都固定在滚动列表上方。长时间浏览日记时会出现一个小的回到顶部按钮。反馈入口在"设置 > 帮助"，写完一点就能直接发送，也可以去 GitHub 提 issue 或发邮件。Windows 保留系统原生标题栏，显示应用图标和 AID Diary 名称，边框颜色跟随应用主题；见 [Windows 安装说明](../SETUP.md#windows-personal-installation)。
 
 | 平板 / 电脑 | 手机 |
 |---|---|

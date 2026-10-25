@@ -2722,17 +2722,24 @@ class AppLocalizationsJa extends AppLocalizations {
   String get feedbackHint => '問題や提案を入力してください';
 
   @override
+  String get feedbackSend => '送信';
+
+  @override
+  String get feedbackSent => 'ありがとうございます。フィードバックを送信しました。';
+
+  @override
+  String get feedbackSendFailed => '送信できませんでした。接続を確認してもう一度お試しください。';
+
+  @override
+  String get feedbackOpenFailed => 'アプリを開けませんでした。';
+
+  @override
+  String get feedbackSendNote =>
+      'アプリのバージョンと言語とともに AID Diary のサーバーへ送られます。日記の内容は送りません。';
+
+  @override
   String get feedbackGithub => 'GitHub で報告';
 
   @override
   String get feedbackEmail => 'メールで送る';
-
-  @override
-  String get feedbackCopy => '文章をコピー';
-
-  @override
-  String get feedbackLaunchFailed => 'アプリを開けません。文章をコピーして下記のメールアドレスをご利用ください。';
-
-  @override
-  String get feedbackCopied => 'コピーしました';
 }

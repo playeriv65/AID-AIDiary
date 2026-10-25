@@ -2829,18 +2829,25 @@ class AppLocalizationsBe extends AppLocalizations {
   String get feedbackHint => 'Апішыце праблему або прапанову';
 
   @override
+  String get feedbackSend => 'Адправіць';
+
+  @override
+  String get feedbackSent => 'Дзякуй, ваш водгук адпраўлены.';
+
+  @override
+  String get feedbackSendFailed =>
+      'Не ўдалося адправіць. Праверце злучэнне і паспрабуйце зноў.';
+
+  @override
+  String get feedbackOpenFailed => 'Не ўдалося адкрыць праграму.';
+
+  @override
+  String get feedbackSendNote =>
+      'Адпраўляецца на сервер AID Diary разам з версіяй і мовай праграмы, нічога з вашага дзённіка.';
+
+  @override
   String get feedbackGithub => 'Задача на GitHub';
 
   @override
   String get feedbackEmail => 'Напісаць ліст';
-
-  @override
-  String get feedbackCopy => 'Капіяваць тэкст';
-
-  @override
-  String get feedbackLaunchFailed =>
-      'Не ўдалося адкрыць праграму. Скапіруйце тэкст і скарыстайце пошту ніжэй.';
-
-  @override
-  String get feedbackCopied => 'Водгук скапіяваны';
 }

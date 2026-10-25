@@ -2815,18 +2815,25 @@ class AppLocalizationsOc extends AppLocalizations {
   String get feedbackHint => 'Descrivètz un problèma o una suggestion';
 
   @override
+  String get feedbackSend => 'Mandar';
+
+  @override
+  String get feedbackSent => 'Mercés, vòstre retorn es estat mandat.';
+
+  @override
+  String get feedbackSendFailed =>
+      'Mandadís impossible. Verificatz la connexion e tornatz ensajar.';
+
+  @override
+  String get feedbackOpenFailed => 'Impossible de dobrir l\'aplicacion.';
+
+  @override
+  String get feedbackSendNote =>
+      'Mandat al servidor d\'AID Diary amb la version e la lenga de l\'aplicacion, res de vòstre jornal.';
+
+  @override
   String get feedbackGithub => 'Problèma GitHub';
 
   @override
   String get feedbackEmail => 'Mandar un corrièl';
-
-  @override
-  String get feedbackCopy => 'Copiar lo tèxte';
-
-  @override
-  String get feedbackLaunchFailed =>
-      'Impossible de dobrir l’aplicacion. Copiatz lo tèxte e utilizatz lo corrièl çai jos.';
-
-  @override
-  String get feedbackCopied => 'Comentaris copiats';
 }

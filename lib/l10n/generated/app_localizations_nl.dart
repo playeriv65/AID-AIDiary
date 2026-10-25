@@ -2807,18 +2807,25 @@ class AppLocalizationsNl extends AppLocalizations {
   String get feedbackHint => 'Beschrijf een probleem of suggestie';
 
   @override
+  String get feedbackSend => 'Versturen';
+
+  @override
+  String get feedbackSent => 'Bedankt, je feedback is verstuurd.';
+
+  @override
+  String get feedbackSendFailed =>
+      'Versturen mislukt. Controleer de verbinding en probeer het opnieuw.';
+
+  @override
+  String get feedbackOpenFailed => 'Kan de app niet openen.';
+
+  @override
+  String get feedbackSendNote =>
+      'Gaat naar de AID Diary-server met de versie en taal van de app, niets uit je dagboek.';
+
+  @override
   String get feedbackGithub => 'GitHub-issue';
 
   @override
   String get feedbackEmail => 'E-mail sturen';
-
-  @override
-  String get feedbackCopy => 'Tekst kopiëren';
-
-  @override
-  String get feedbackLaunchFailed =>
-      'De app kon niet worden geopend. Kopieer de tekst en gebruik het e-mailadres hieronder.';
-
-  @override
-  String get feedbackCopied => 'Feedback gekopieerd';
 }

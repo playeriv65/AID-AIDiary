@@ -2751,18 +2751,25 @@ class AppLocalizationsMs extends AppLocalizations {
   String get feedbackHint => 'Huraikan masalah atau cadangan';
 
   @override
+  String get feedbackSend => 'Hantar';
+
+  @override
+  String get feedbackSent => 'Terima kasih, maklum balas anda telah dihantar.';
+
+  @override
+  String get feedbackSendFailed =>
+      'Tidak dapat menghantar. Semak sambungan dan cuba lagi.';
+
+  @override
+  String get feedbackOpenFailed => 'Tidak dapat membuka aplikasi.';
+
+  @override
+  String get feedbackSendNote =>
+      'Dihantar ke pelayan AID Diary bersama versi dan bahasa aplikasi, tiada apa-apa daripada diari anda.';
+
+  @override
   String get feedbackGithub => 'Isu GitHub';
 
   @override
   String get feedbackEmail => 'Hantar e-mel';
-
-  @override
-  String get feedbackCopy => 'Salin teks';
-
-  @override
-  String get feedbackLaunchFailed =>
-      'Aplikasi tidak dapat dibuka. Salin teks dan gunakan e-mel di bawah.';
-
-  @override
-  String get feedbackCopied => 'Maklum balas disalin';
 }

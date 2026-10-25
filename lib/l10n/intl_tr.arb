@@ -816,9 +816,11 @@
   "scrollToTop": "Başa dön",
   "feedbackTitle": "Geri bildirim",
   "feedbackHint": "Sorunu veya öneriyi açıklayın",
+  "feedbackSend": "Gönder",
+  "feedbackSent": "Teşekkürler, geri bildiriminiz gönderildi.",
+  "feedbackSendFailed": "Gönderilemedi. Bağlantıyı denetleyip yeniden deneyin.",
+  "feedbackOpenFailed": "Uygulama açılamadı.",
+  "feedbackSendNote": "Uygulama sürümü ve diliyle AID Diary sunucusuna gönderilir; günlüğünüzden hiçbir şey gönderilmez.",
   "feedbackGithub": "GitHub sorunu",
-  "feedbackEmail": "E-posta gönder",
-  "feedbackCopy": "Metni kopyala",
-  "feedbackLaunchFailed": "Uygulama açılamadı. Metni kopyalayıp aşağıdaki e-postayı kullanın.",
-  "feedbackCopied": "Geri bildirim kopyalandı"
+  "feedbackEmail": "E-posta gönder"
 }

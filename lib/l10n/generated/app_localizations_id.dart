@@ -2797,18 +2797,25 @@ class AppLocalizationsId extends AppLocalizations {
   String get feedbackHint => 'Jelaskan masalah atau saran';
 
   @override
+  String get feedbackSend => 'Kirim';
+
+  @override
+  String get feedbackSent => 'Terima kasih, masukan Anda terkirim.';
+
+  @override
+  String get feedbackSendFailed =>
+      'Gagal mengirim. Periksa koneksi dan coba lagi.';
+
+  @override
+  String get feedbackOpenFailed => 'Tidak dapat membuka aplikasi.';
+
+  @override
+  String get feedbackSendNote =>
+      'Dikirim ke server AID Diary beserta versi dan bahasa aplikasi, tanpa isi buku harian Anda.';
+
+  @override
   String get feedbackGithub => 'Isu GitHub';
 
   @override
   String get feedbackEmail => 'Kirim email';
-
-  @override
-  String get feedbackCopy => 'Salin teks';
-
-  @override
-  String get feedbackLaunchFailed =>
-      'Aplikasi tidak dapat dibuka. Salin teks dan gunakan email di bawah.';
-
-  @override
-  String get feedbackCopied => 'Masukan disalin';
 }

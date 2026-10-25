@@ -816,9 +816,11 @@
   "scrollToTop": "Най-горе",
   "feedbackTitle": "Обратна връзка",
   "feedbackHint": "Опишете проблем или предложение",
+  "feedbackSend": "Изпращане",
+  "feedbackSent": "Благодарим, отзивът ви е изпратен.",
+  "feedbackSendFailed": "Изпращането не бе успешно. Проверете връзката и опитайте отново.",
+  "feedbackOpenFailed": "Приложението не можа да се отвори.",
+  "feedbackSendNote": "Изпраща се до сървъра на AID Diary с версията и езика на приложението, без нищо от дневника ви.",
   "feedbackGithub": "Проблем в GitHub",
-  "feedbackEmail": "Изпрати имейл",
-  "feedbackCopy": "Копирай текста",
-  "feedbackLaunchFailed": "Приложението не се отвори. Копирайте текста и използвайте имейла по-долу.",
-  "feedbackCopied": "Текстът е копиран"
+  "feedbackEmail": "Изпрати имейл"
 }

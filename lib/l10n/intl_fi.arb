@@ -816,9 +816,11 @@
   "scrollToTop": "Takaisin alkuun",
   "feedbackTitle": "Palaute",
   "feedbackHint": "Kuvaile ongelma tai ehdotus",
+  "feedbackSend": "Lähetä",
+  "feedbackSent": "Kiitos, palautteesi lähetettiin.",
+  "feedbackSendFailed": "Lähetys epäonnistui. Tarkista yhteys ja yritä uudelleen.",
+  "feedbackOpenFailed": "Sovellusta ei voitu avata.",
+  "feedbackSendNote": "Lähetetään AID Diaryn palvelimelle sovelluksen version ja kielen kanssa, ei mitään päiväkirjastasi.",
   "feedbackGithub": "GitHub-ongelma",
-  "feedbackEmail": "Lähetä sähköposti",
-  "feedbackCopy": "Kopioi teksti",
-  "feedbackLaunchFailed": "Sovellusta ei voitu avata. Kopioi teksti ja käytä alla olevaa sähköpostia.",
-  "feedbackCopied": "Palaute kopioitu"
+  "feedbackEmail": "Lähetä sähköposti"
 }

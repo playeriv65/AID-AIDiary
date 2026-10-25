@@ -816,9 +816,11 @@
   "scrollToTop": "Kembali ke atas",
   "feedbackTitle": "Maklum balas",
   "feedbackHint": "Huraikan masalah atau cadangan",
+  "feedbackSend": "Hantar",
+  "feedbackSent": "Terima kasih, maklum balas anda telah dihantar.",
+  "feedbackSendFailed": "Tidak dapat menghantar. Semak sambungan dan cuba lagi.",
+  "feedbackOpenFailed": "Tidak dapat membuka aplikasi.",
+  "feedbackSendNote": "Dihantar ke pelayan AID Diary bersama versi dan bahasa aplikasi, tiada apa-apa daripada diari anda.",
   "feedbackGithub": "Isu GitHub",
-  "feedbackEmail": "Hantar e-mel",
-  "feedbackCopy": "Salin teks",
-  "feedbackLaunchFailed": "Aplikasi tidak dapat dibuka. Salin teks dan gunakan e-mel di bawah.",
-  "feedbackCopied": "Maklum balas disalin"
+  "feedbackEmail": "Hantar e-mel"
 }
