@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'package:aid_diary/utils/color_utils.dart';
 import 'package:aid_diary/models/tag.dart';
 import 'package:aid_diary/utils/tag_visuals.dart';
 import 'package:aid_diary/widgets/tag_icon_glyph.dart';
@@ -48,10 +49,7 @@ class TagChip extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = tag.resolvedColor(context,
         fallback: Theme.of(context).colorScheme.secondary);
-    final onColor =
-        ThemeData.estimateBrightnessForColor(color) == Brightness.dark
-            ? Colors.white
-            : Colors.black;
+    final onColor = contrastingTextColor(color);
     final screenWidth = MediaQuery.sizeOf(context).width;
 
     return LayoutBuilder(

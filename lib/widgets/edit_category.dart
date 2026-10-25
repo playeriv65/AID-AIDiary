@@ -10,8 +10,8 @@ import 'package:aid_diary/providers/tags_provider.dart';
 import 'package:aid_diary/widgets/color_picker_dialog.dart';
 import 'package:aid_diary/widgets/color_swatch_row.dart';
 import 'package:aid_diary/widgets/confirm_dialog.dart';
+import 'package:aid_diary/widgets/icon_name_row.dart';
 import 'package:aid_diary/widgets/icon_picker_dialog.dart';
-import 'package:aid_diary/widgets/tag_icon_glyph.dart';
 import 'package:aid_diary/utils/tag_look.dart';
 import 'package:aid_diary/utils/tag_name_sanitizer.dart';
 import 'package:material_ui/material_ui.dart';
@@ -137,7 +137,6 @@ class _EditCategoryState extends State<EditCategory> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final hasIcon = _icon != null && _icon!.isNotEmpty;
 
     return AlertDialog(
       title: Row(
@@ -161,80 +160,26 @@ class _EditCategoryState extends State<EditCategory> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            IntrinsicHeight(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  AspectRatio(
-                    aspectRatio: 1,
-                    child: Stack(
-                      fit: StackFit.expand,
-                      children: [
-                        GestureDetector(
-                          onTap: _showIconPicker,
-                          child: Card.filled(
-                            margin: EdgeInsets.zero,
-                            color: Theme.of(context)
-                                .colorScheme
-                                .surfaceContainerHighest,
-                            child: Center(
-                              child: TagIconGlyph(
-                                icon: _icon,
-                                iconType: _iconType,
-                                fallbackIcon: Icons.folder_rounded,
-                                color: _effectiveColor(context),
-                                size: 28,
-                              ),
-                            ),
-                          ),
-                        ),
-                        if (hasIcon)
-                          Positioned(
-                            top: 0,
-                            right: 0,
-                            child: GestureDetector(
-                              onTap: () => setState(() {
-                                _icon = null;
-                                _iconType = TagIconType.character;
-                              }),
-                              child: const Icon(Icons.close, size: 14),
-                            ),
-                          ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Card.filled(
-                      margin: EdgeInsets.zero,
-                      color:
-                          Theme.of(context).colorScheme.surfaceContainerHighest,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                        child: TextField(
-                          controller: _nameController,
-                          autofocus: widget.category == null,
-                          maxLines: 1,
-                          textCapitalization: TextCapitalization.words,
-                          decoration: InputDecoration(
-                            hintText: l10n.nameHint,
-                            errorText: _refusedName ==
-                                    sanitizeTagName(_nameController.text)
-                                        .toLowerCase()
-                                ? l10n.categoryNameExists
-                                : null,
-                            border: InputBorder.none,
-                          ),
-                          onSubmitted: (_) =>
-                              sanitizeTagName(_nameController.text).isEmpty
-                                  ? null
-                                  : _save(),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+            IconNameRow(
+              icon: _icon,
+              iconType: _iconType,
+              fallbackIcon: Icons.folder_rounded,
+              color: _effectiveColor(context),
+              onPickIcon: _showIconPicker,
+              onClearIcon: () => setState(() {
+                _icon = null;
+                _iconType = TagIconType.character;
+              }),
+              nameController: _nameController,
+              nameHint: l10n.nameHint,
+              nameError: _refusedName ==
+                      sanitizeTagName(_nameController.text).toLowerCase()
+                  ? l10n.categoryNameExists
+                  : null,
+              autofocus: widget.category == null,
+              onSubmitted: (_) => sanitizeTagName(_nameController.text).isEmpty
+                  ? null
+                  : _save(),
             ),
             const SizedBox(height: 12),
             Padding(

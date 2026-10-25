@@ -4,6 +4,7 @@
 
 import 'dart:math' as math;
 
+import 'package:aid_diary/widgets/ink_overlay.dart';
 import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/models/entry.dart';
@@ -156,8 +157,9 @@ class _AtlasPageState extends State<AtlasPage>
       point: center,
       width: 48,
       height: 48,
-      child: GestureDetector(
+      child: InkOverlay(
         key: ValueKey('atlas-cluster-${cluster.first.id}'),
+        shape: const CircleBorder(),
         onTap: () => _openCluster(context, cluster, split: split),
         child: DecoratedBox(
           decoration: BoxDecoration(

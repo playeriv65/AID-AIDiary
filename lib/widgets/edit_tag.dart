@@ -13,8 +13,8 @@ import 'package:aid_diary/widgets/color_swatch_row.dart';
 import 'package:aid_diary/widgets/connected_button_group.dart';
 import 'package:aid_diary/widgets/confirm_dialog.dart';
 import 'package:aid_diary/routing/organize_destinations.dart';
+import 'package:aid_diary/widgets/icon_name_row.dart';
 import 'package:aid_diary/widgets/icon_picker_dialog.dart';
-import 'package:aid_diary/widgets/tag_icon_glyph.dart';
 import 'package:aid_diary/utils/tag_look.dart';
 import 'package:aid_diary/utils/tag_name_sanitizer.dart';
 import 'package:material_ui/material_ui.dart';
@@ -190,78 +190,27 @@ class _EditTagState extends State<EditTag> {
   }
 
   Widget _buildTopRow(BuildContext context) {
-    final hasIcon = _icon != null && _icon!.isNotEmpty;
     final tagColor = _effectiveColor(context);
     final fallbackIcon = _tagType == TagType.tracker
         ? Icons.timeline_rounded
         : Icons.label_rounded;
-    return IntrinsicHeight(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          AspectRatio(
-            aspectRatio: 1,
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                GestureDetector(
-                  onTap: _showIconPicker,
-                  child: Card.filled(
-                    margin: EdgeInsets.zero,
-                    color:
-                        Theme.of(context).colorScheme.surfaceContainerHighest,
-                    child: Center(
-                      child: TagIconGlyph(
-                        icon: _icon,
-                        iconType: _iconType,
-                        fallbackIcon: fallbackIcon,
-                        color: tagColor,
-                        size: 28,
-                      ),
-                    ),
-                  ),
-                ),
-                if (hasIcon)
-                  Positioned(
-                    top: 0,
-                    right: 0,
-                    child: GestureDetector(
-                      onTap: () => setState(() {
-                        _icon = null;
-                        _iconType = TagIconType.character;
-                      }),
-                      child: const Icon(Icons.close, size: 14),
-                    ),
-                  ),
-              ],
-            ),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Card.filled(
-              margin: EdgeInsets.zero,
-              color: Theme.of(context).colorScheme.surfaceContainerHighest,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                child: TextField(
-                  autofocus: widget.tag == null,
-                  controller: _nameController,
-                  maxLines: 1,
-                  textCapitalization: TextCapitalization.words,
-                  decoration: InputDecoration(
-                    hintText: AppLocalizations.of(context)!.nameHint,
-                    errorText: _refusedName ==
-                            sanitizeTagName(_nameController.text).toLowerCase()
-                        ? AppLocalizations.of(context)!.tagNameExists
-                        : null,
-                    border: InputBorder.none,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
+    return IconNameRow(
+      icon: _icon,
+      iconType: _iconType,
+      fallbackIcon: fallbackIcon,
+      color: tagColor,
+      onPickIcon: _showIconPicker,
+      onClearIcon: () => setState(() {
+        _icon = null;
+        _iconType = TagIconType.character;
+      }),
+      nameController: _nameController,
+      nameHint: AppLocalizations.of(context)!.nameHint,
+      nameError:
+          _refusedName == sanitizeTagName(_nameController.text).toLowerCase()
+              ? AppLocalizations.of(context)!.tagNameExists
+              : null,
+      autofocus: widget.tag == null,
     );
   }
 

@@ -4,8 +4,11 @@
 
 import 'package:material_ui/material_ui.dart';
 
+/// Black or white, whichever reads on [background].
 Color contrastingTextColor(Color background) =>
-    background.computeLuminance() > 0.5 ? Colors.black : Colors.white;
+    ThemeData.estimateBrightnessForColor(background) == Brightness.dark
+        ? Colors.white
+        : Colors.black;
 
 /// A color as `#RRGGBB`, the form actions and scripts use; opacity is dropped.
 String colorToHex(int argb) =>

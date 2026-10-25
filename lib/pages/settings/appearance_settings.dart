@@ -132,17 +132,18 @@ class _AppearanceSettingsPageState extends State<AppearanceSettings> {
       });
 
   Widget moodIconButton(int? index) {
-    return GestureDetector(
-      child: Card.filled(
-          color: Theme.of(context).colorScheme.surfaceContainer,
+    return Card.filled(
+        color: Theme.of(context).colorScheme.surfaceContainer,
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          onTap: () => _showMoodEmojiPopup(index),
           child: Padding(
             padding: const EdgeInsets.all(4.0),
             child: Container(
                 constraints: const BoxConstraints(minWidth: 32),
                 child: Center(child: MoodIcon(moodValue: index, size: 24))),
-          )),
-      onTap: () => _showMoodEmojiPopup(index),
-    );
+          ),
+        ));
   }
 
   List<DropdownMenuItem<String>> _buildFirstDayOfWeekDropdownItems(

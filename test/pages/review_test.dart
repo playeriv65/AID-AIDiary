@@ -56,12 +56,10 @@ void main() {
     await tester.pumpWidget(harness.app(const Scaffold(
         body: SingleChildScrollView(child: YearInPixels(year: 2026)))));
     await tester.pumpAndSettle();
-    final written = tester.widget<Container>(find.descendant(
-        of: find.byKey(const ValueKey('pixel-3-14')),
-        matching: find.byType(Container)));
-    final empty = tester.widget<Container>(find.descendant(
-        of: find.byKey(const ValueKey('pixel-3-15')),
-        matching: find.byType(Container)));
+    Ink pixel(String key) => tester.widget<Ink>(find.ancestor(
+        of: find.byKey(ValueKey(key)), matching: find.byType(Ink)));
+    final written = pixel('pixel-3-14');
+    final empty = pixel('pixel-3-15');
     expect((written.decoration as BoxDecoration).color,
         isNot((empty.decoration as BoxDecoration).color));
     // February has no 30th.

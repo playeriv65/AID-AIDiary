@@ -5,6 +5,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:aid_diary/widgets/ink_overlay.dart';
 import 'package:aid_diary/providers/weather_provider.dart';
 import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/database/image_storage.dart';
@@ -385,12 +386,14 @@ class _PhotosState extends State<_Photos> {
         PageView.builder(
           itemCount: images.length,
           onPageChanged: (page) => setState(() => _page = page),
-          itemBuilder: (context, index) => GestureDetector(
+          itemBuilder: (context, index) => InkOverlay(
             key: ValueKey('entry-attachment-$index'),
             onTap: () =>
                 EntryNavigation.attachment(context, widget.entry, index),
-            child: LocalImageLoader(
-                imagePath: images[index].imgPath, cacheSize: 1200),
+            child: SizedBox.expand(
+              child: LocalImageLoader(
+                  imagePath: images[index].imgPath, cacheSize: 1200),
+            ),
           ),
         ),
         if (images.length > 1)

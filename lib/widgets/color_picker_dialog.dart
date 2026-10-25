@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'package:aid_diary/utils/color_utils.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
@@ -150,19 +151,20 @@ class _ColorPickerDialogState extends State<ColorPickerDialog>
                 final color = tagColorPalette[index];
                 final isSelected = _selectedColor != null &&
                     color.toARGB32() == _selectedColor!.toARGB32();
-                return GestureDetector(
-                  onTap: () => setState(() => _selectedColor = color),
-                  child: CircleAvatar(
-                    backgroundColor: color,
-                    radius: 20,
-                    child: isSelected
-                        ? Icon(
-                            Icons.check_rounded,
-                            color: color.computeLuminance() > 0.5
-                                ? Colors.black
-                                : Colors.white,
-                          )
-                        : null,
+                return Semantics(
+                  button: true,
+                  selected: isSelected,
+                  child: InkWell(
+                    customBorder: const CircleBorder(),
+                    onTap: () => setState(() => _selectedColor = color),
+                    child: CircleAvatar(
+                      backgroundColor: color,
+                      radius: 20,
+                      child: isSelected
+                          ? Icon(Icons.check_rounded,
+                              color: contrastingTextColor(color))
+                          : null,
+                    ),
                   ),
                 );
               },

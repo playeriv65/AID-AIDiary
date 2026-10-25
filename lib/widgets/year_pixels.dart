@@ -87,16 +87,17 @@ class YearInPixels extends StatelessWidget {
             : date.isAfter(today)
                 ? cs.surfaceContainer
                 : cs.surfaceContainerHighest;
-        return GestureDetector(
-          key: ValueKey('pixel-$month-$day'),
-          onTap: latest == null
-              ? null
-              : () => EntryNavigation.view(context, latest),
-          child: Container(
-            width: cell,
-            height: cell,
-            decoration: BoxDecoration(
-                color: color, borderRadius: BorderRadius.circular(cell / 5)),
+        final shape = BorderRadius.circular(cell / 5);
+        return Ink(
+          width: cell,
+          height: cell,
+          decoration: BoxDecoration(color: color, borderRadius: shape),
+          child: InkWell(
+            key: ValueKey('pixel-$month-$day'),
+            borderRadius: shape,
+            onTap: latest == null
+                ? null
+                : () => EntryNavigation.view(context, latest),
           ),
         );
       }

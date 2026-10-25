@@ -27,7 +27,7 @@ enum _CoachFilter { all, programs, templates }
 /// action.
 typedef _CoachItem = ({
   Object key,
-  Widget Function(double headerAspectRatio) card,
+  Widget Function(double headerAspectRatio, VoidCallback onTap) card,
   Widget Function(VoidCallback? onBack) detail,
   Future<void> Function(BuildContext context) open,
 });
@@ -68,9 +68,10 @@ class _CoachPageState extends State<CoachPage>
             detail: (onBack) =>
                 CoachProgramDetail(program: program, onBack: onBack),
             open: (context) => CoachNavigation.program(context, program),
-            card: (headerAspectRatio) => _CoachCard(
+            card: (headerAspectRatio, onTap) => _CoachCard(
                   key: ValueKey('coach-program-${program.id}'),
                   headerAspectRatio: headerAspectRatio,
+                  onTap: onTap,
                   icon: coachProgramIcon(program),
                   kind: l10n.coachKindProgram,
                   title: program.title,
@@ -85,9 +86,10 @@ class _CoachPageState extends State<CoachPage>
                 template: builtin.toTemplate(), onBack: onBack),
             open: (context) =>
                 CoachNavigation.builtinTemplate(context, builtin),
-            card: (headerAspectRatio) => _CoachCard(
+            card: (headerAspectRatio, onTap) => _CoachCard(
                   key: ValueKey('coach-builtin-${builtin.id}'),
                   headerAspectRatio: headerAspectRatio,
+                  onTap: onTap,
                   icon: Icons.auto_awesome_outlined,
                   kind: l10n.templateFeatured,
                   title: builtin.name,
@@ -100,9 +102,10 @@ class _CoachPageState extends State<CoachPage>
             detail: (onBack) =>
                 CoachTemplateDetail(template: template, onBack: onBack),
             open: (context) => CoachNavigation.template(context, template),
-            card: (headerAspectRatio) => _CoachCard(
+            card: (headerAspectRatio, onTap) => _CoachCard(
                   key: ValueKey('coach-template-${template.id}'),
                   headerAspectRatio: headerAspectRatio,
+                  onTap: onTap,
                   icon: Icons.description_outlined,
                   kind: l10n.coachKindTemplate,
                   title: template.name,
@@ -179,10 +182,8 @@ class _CoachPageState extends State<CoachPage>
               Widget cell(int index) {
                 if (index >= items.length) return const SizedBox.shrink();
                 final item = items[index];
-                return GestureDetector(
-                  onTap: () => _open(context, item, split),
-                  child: item.card(split ? 4 / 3 : 2),
-                );
+                return item.card(
+                    split ? 4 / 3 : 2, () => _open(context, item, split));
               }
 
               return IntrinsicHeight(
@@ -210,7 +211,10 @@ class _CoachCard extends StatelessWidget {
     required this.title,
     required this.description,
     required this.headerAspectRatio,
+    required this.onTap,
   });
+
+  final VoidCallback onTap;
 
   /// Width over height of the illustration area.
   final double headerAspectRatio;
@@ -228,36 +232,41 @@ class _CoachCard extends StatelessWidget {
       color: cs.surfaceContainer,
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-        AspectRatio(
-          aspectRatio: headerAspectRatio,
-          child: ColoredBox(
-            color: cs.primaryContainer,
-            child: Icon(icon, size: 64, color: cs.onPrimaryContainer),
+      child: InkWell(
+        onTap: onTap,
+        child:
+            Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+          AspectRatio(
+            aspectRatio: headerAspectRatio,
+            // Ink, not a box, so the ripple shows over it too.
+            child: Ink(
+              color: cs.primaryContainer,
+              child: Icon(icon, size: 64, color: cs.onPrimaryContainer),
+            ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(24, 20, 24, 24),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(kind.toUpperCase(),
-                style: theme.textTheme.labelMedium
-                    ?.copyWith(letterSpacing: 1.6, color: cs.onSurfaceVariant)),
-            const SizedBox(height: 6),
-            Text(title,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: theme.textTheme.titleLarge
-                    ?.copyWith(fontWeight: FontWeight.w700)),
-            const SizedBox(height: 6),
-            Text(description,
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
-                style: theme.textTheme.bodyLarge
-                    ?.copyWith(color: cs.onSurfaceVariant)),
-          ]),
-        ),
-      ]),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(24, 20, 24, 24),
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text(kind.toUpperCase(),
+                  style: theme.textTheme.labelMedium?.copyWith(
+                      letterSpacing: 1.6, color: cs.onSurfaceVariant)),
+              const SizedBox(height: 6),
+              Text(title,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: theme.textTheme.titleLarge
+                      ?.copyWith(fontWeight: FontWeight.w700)),
+              const SizedBox(height: 6),
+              Text(description,
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                  style: theme.textTheme.bodyLarge
+                      ?.copyWith(color: cs.onSurfaceVariant)),
+            ]),
+          ),
+        ]),
+      ),
     );
   }
 }

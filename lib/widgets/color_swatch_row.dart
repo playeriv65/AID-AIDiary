@@ -27,7 +27,8 @@ class ColorSwatchRow extends StatelessWidget {
             style: Theme.of(context).textTheme.titleMedium,
           ),
         ),
-        GestureDetector(
+        InkWell(
+          customBorder: const CircleBorder(),
           onTap: onTap,
           child: Stack(
             alignment: Alignment.center,

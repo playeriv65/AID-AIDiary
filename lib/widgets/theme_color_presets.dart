@@ -1,3 +1,4 @@
+import 'package:aid_diary/utils/color_utils.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/theme_mode_provider.dart';
@@ -77,12 +78,7 @@ class ThemeColorPresets extends StatelessWidget {
                       child: !followingSystem &&
                               config.get(setting) == color.toARGB32()
                           ? Icon(Icons.check,
-                              size: 16,
-                              color:
-                                  ThemeData.estimateBrightnessForColor(color) ==
-                                          Brightness.dark
-                                      ? Colors.white
-                                      : Colors.black)
+                              size: 16, color: contrastingTextColor(color))
                           : null,
                     ),
                     label: Text(label),

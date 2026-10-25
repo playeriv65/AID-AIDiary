@@ -82,6 +82,55 @@ When a rule gets in the way, fix the dependency (move the code to the layer
 it belongs to, or pass a callback down) rather than adding an exception;
 there is no exception list.
 
+## Shared components
+
+The owner's rule (2026-10-25): one component per concept, used everywhere,
+with switches for what a place leaves out — never a second way to draw the
+same thing. Before writing UI, look here; when a place needs something these
+cannot do, extend the shared one.
+
+| Concept | Component | Switches |
+| --- | --- | --- |
+| An entry in any list (journal, calendar, timeline, search, Recently deleted, hidden entries, replies, citation picker) | `EntryCard` (`widgets/entry_card.dart`) inside `EntryDayGroup` when grouped by day | `showDate`, `showDetails`, `highlight` (search words), `label`, `trailing`, `images`, `selected` |
+| Picking tags (editor, templates, statistics, search filter, tag export) | `TagPicker` / `TagPickerDialog` (`widgets/tag_picker_dialog.dart`), chips are `TagChip` | `mode` (attach, single, filter), `hideFavorite`, `tagTypeFilter` |
+| Picking a mood (editor, check-in, search, mood associations) | `MoodPicker.single` / `.multi` (`widgets/mood_picker.dart`); names from `moodName` | `clearable`, `size`, `spread` |
+| Asking yes or no | `showConfirmDialog` / `showDeleteConfirmDialog` (`widgets/confirm_dialog.dart`) | `destructive`, `content`, `confirmKey` |
+| A settings row | `SettingsRow` (`widgets/settings_row.dart`), under `SettingsToggle`, `SettingsDropdown`, `SettingsIconAction`, `SettingsCategory` | `icon`, `hint`, `trailing` |
+| A statistics card | `StatCard`, `StatNoData` (`widgets/stat_card.dart`) | `hasData`, `action` |
+| A section title in a list | `SectionLabel` (`widgets/list_detail_layout.dart`) | `trailing` |
+| A tap on something that paints itself (photo, map marker); a card takes an `InkWell` inside itself | `InkOverlay` (`widgets/ink_overlay.dart`) | `shape`, `label` |
+| The icon and name at the top of the tag and category editors | `IconNameRow` (`widgets/icon_name_row.dart`) | |
+| Text on a colored swatch | `contrastingTextColor` (`utils/color_utils.dart`) | |
+| Nothing to show | `EmptyState` | |
+| A day's weather | `WeatherProvider.of`/`ofEntry`, edited with `showWeatherDialog` | |
+
+## UI code rules
+
+Distilled from the official guidance kept locally in
+`D:\program\dev-guides` (Flutter's architecture guide and the Flutter team's
+own widget, design and performance rules, Effective Dart, Android's
+architecture and core app quality guidelines). The left column is the rule;
+apply it to code you touch.
+
+- Text styles come from `Theme.of(context).textTheme` roles (with
+  `copyWith` for weight or color), colors from the `ColorScheme`. Literal
+  sizes and colors are only for truly local drawing (chart axis labels,
+  photo and video overlays, color pickers).
+- Taps go through buttons, `ListTile`, or `InkWell` on a `Material`, never a
+  bare `GestureDetector`; that one is for custom gestures (drag, pinch,
+  swipe) and then needs `Semantics`. Custom tappable widgets declare
+  `Semantics(button: true, selected: ...)`.
+- A subtree with its own identity is a widget class, not a `_buildX()`
+  method; `build` has no side effects and creates no controllers or
+  futures.
+- After an `await`, check `mounted` / `context.mounted` before touching the
+  context or calling `setState`.
+- Logic that decides something lives in a view model, store or pure module,
+  so its tests need no widget tree; widgets show state and forward intent.
+- Tests wait on conditions with `DiaryAppHarness.pumpUntil`/`runUntil`,
+  which draw frames and fail loudly after 15 s; a wait that silently gives
+  up hides bugs.
+
 ## View models
 
 The guide puts each screen's logic in a view model beside its view. Most of
