@@ -5,6 +5,7 @@
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
+import 'package:aid_diary/widgets/icon_label.dart';
 import 'package:aid_diary/providers/weather_provider.dart';
 import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
@@ -146,13 +147,18 @@ class EntryShareCard extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final config = AppConfig.instance;
     final photo = images.where((image) => image.isImage).firstOrNull;
-    final muted = theme.textTheme.labelMedium?.copyWith(color: cs.outline);
-    Widget icon(IconData data) => Icon(data, size: 15, color: cs.outline);
     final details = [
       if (entry.location?.name case final name?)
-        (icon(Icons.place_rounded), name),
+        IconLabel(
+            icon: Icons.place_rounded,
+            label: name,
+            size: 15,
+            color: cs.outline),
       if (WeatherProvider.instance.ofEntry(entry) case final weather?)
-        (WeatherIcon(weather.code, size: 15), weatherSummary(weather, l10n)),
+        IconLabel(
+            glyph: WeatherIcon(weather.code, size: 15),
+            label: weatherSummary(weather, l10n),
+            color: cs.outline),
     ];
     return Container(
       width: config.shareCardWidth,
@@ -178,14 +184,7 @@ class EntryShareCard extends StatelessWidget {
                 ]),
                 if (details.isNotEmpty) ...[
                   const SizedBox(height: 8),
-                  Wrap(spacing: 12, runSpacing: 4, children: [
-                    for (final (glyph, label) in details)
-                      Row(mainAxisSize: MainAxisSize.min, children: [
-                        glyph,
-                        const SizedBox(width: 3),
-                        Text(label, style: muted),
-                      ]),
-                  ]),
+                  Wrap(spacing: 12, runSpacing: 4, children: details),
                 ],
                 if (entry.title.isNotEmpty) ...[
                   const SizedBox(height: 14),

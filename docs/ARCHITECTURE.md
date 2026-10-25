@@ -102,6 +102,7 @@ cannot do, extend the shared one.
 | The icon and name at the top of the tag and category editors | `IconNameRow` (`widgets/icon_name_row.dart`) | |
 | Text on a colored swatch | `contrastingTextColor` (`utils/color_utils.dart`) | |
 | Nothing to show | `EmptyState` | |
+| A fact with an icon (place, weather) on cards, the entry page and share pictures | `IconLabel` (`widgets/icon_label.dart`) | `icon` or `glyph`, `size`, `color` |
 | A day's weather | `WeatherProvider.of`/`ofEntry`, edited with `showWeatherDialog` | |
 
 ## UI code rules

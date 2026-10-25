@@ -4,6 +4,7 @@
 
 import 'dart:math' as math;
 
+import 'package:aid_diary/widgets/icon_label.dart';
 import 'package:aid_diary/providers/weather_provider.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/models/entry.dart';
@@ -297,22 +298,11 @@ class EntryCard extends StatelessWidget {
                                     const SizedBox(width: 6),
                                   ],
                                   if (location != null) ...[
-                                    Icon(
-                                      Icons.place_rounded,
-                                      size: 14,
-                                      color: cs.onSurfaceVariant,
-                                    ),
-                                    const SizedBox(width: 2),
                                     Flexible(
-                                      child: Text(
-                                        location.label,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: theme.textTheme.labelSmall
-                                            ?.copyWith(
-                                          color: cs.onSurfaceVariant,
-                                        ),
-                                      ),
+                                      child: IconLabel(
+                                          icon: Icons.place_rounded,
+                                          label: location.label,
+                                          size: 14),
                                     ),
                                     const SizedBox(width: 6),
                                   ],

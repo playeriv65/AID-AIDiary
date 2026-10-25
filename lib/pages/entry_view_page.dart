@@ -5,6 +5,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:aid_diary/widgets/icon_label.dart';
 import 'package:aid_diary/widgets/ink_overlay.dart';
 import 'package:aid_diary/providers/weather_provider.dart';
 import 'package:aid_diary/actions/app_actions.dart';
@@ -551,9 +552,9 @@ class _Metadata extends StatelessWidget {
           children: [
             if (hasMood) MoodIcon(moodValue: entry.mood, size: 20),
             if (location != null)
-              _IconLabel(icon: Icons.place_rounded, label: location.label),
+              IconLabel(icon: Icons.place_rounded, label: location.label),
             if (WeatherProvider.instance.ofEntry(entry) case final weather?)
-              _IconLabel(
+              IconLabel(
                   key: const ValueKey('entry-weather'),
                   glyph: WeatherIcon(weather.code, size: 16),
                   label:
@@ -567,25 +568,5 @@ class _Metadata extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-class _IconLabel extends StatelessWidget {
-  const _IconLabel({super.key, this.icon, this.glyph, required this.label});
-
-  /// A plain icon, or [glyph] when it has colours of its own.
-  final IconData? icon;
-  final Widget? glyph;
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final color = theme.colorScheme.onSurfaceVariant;
-    return Row(mainAxisSize: MainAxisSize.min, children: [
-      glyph ?? Icon(icon, size: 16, color: color),
-      const SizedBox(width: 2),
-      Text(label, style: theme.textTheme.labelMedium?.copyWith(color: color)),
-    ]);
   }
 }
