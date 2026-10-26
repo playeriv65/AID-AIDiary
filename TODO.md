@@ -67,6 +67,34 @@ Assessed 2026-10-25:
   inside the diary, also on a shared screen); whether hidden entries show
   it; videos too; `aid` actions to list a day's album photos and add one.
 
+Where added photos live (discussed 2026-10-25): the owner wants no second
+copy on a device that already has the photo, and diary photos visible in
+the system gallery.
+- Each entry photo records its content hash. On every device, an album file
+  with exactly that hash is referenced, not copied: the original on the
+  phone that took it, or a copy an album sync already put on the device.
+  Only exact hashes count; a re-encoded copy (Google Photos storage saver,
+  HEIC to JPEG, edited metadata) is a different photo, and photos are not
+  matched by time taken (bursts would match).
+- Google Photos' and Xiaomi Cloud's cloud-only photos are not files on the
+  device, so they cannot be referenced; only downloaded ones can.
+- The encrypted copy in the sync space always stays: a device may skip its
+  own copy, never the space. A reference that breaks (photo deleted,
+  edited, or replaced by a thumbnail when the gallery frees space) is
+  fetched again from the space.
+- A device that has no matching file stores the photo either in the app's
+  private storage or in an `AID Diary` album in the system gallery
+  (`Pictures/AID Diary` on Windows); the default is the owner's to decide.
+  In the gallery, photos are readable by any app with photo access and
+  uploaded by the gallery's own cloud backup unencrypted, so hidden
+  entries' photos never go there.
+- Android limits: after a reinstall the app no longer owns the files it put
+  in the gallery (changing them needs the user's confirmation each time),
+  and with Android 14's selected-photos access unselected photos cannot be
+  referenced.
+- This reworks the media layer (storage, sync, backup, deleting an entry
+  must know both places): several days, Android first.
+
 ## Deferred features
 - Finer moods: emotion words plus "who with / where" context (How We Feel). This would sharpen "What makes me feel…".
 - Goals and habits on top of trackers: target values, streaks, milestones (Daylio, Stoic).
