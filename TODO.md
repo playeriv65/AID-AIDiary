@@ -40,6 +40,33 @@ Probably skip (they need cloud services or add little): Google Fit, rate dialog,
   and package them once there is an Apple developer account for signing;
   CI would need a macOS runner.
 
+## Day photos from the album (owner request 2026-10-25)
+An entry shows, below it, a scrolling strip of the photos the device's own
+album holds from that diary day, read in place and never copied. "Add to
+entry" copies one into the entry's media, so from then on it is kept,
+synced and backed up with the diary. Nothing about the strip is stored or
+synced: each device shows its own album's photos of the day, so an album
+that syncs itself (Google Photos, OneDrive, a NAS) shows the same day on
+every device, and the diary holds only what was added.
+
+Assessed 2026-10-25:
+- Android: easy, the parts exist. `LocalPhotos.kt` (`aid.local_photos`,
+  used by Photo moments) already queries MediaStore by date and copies one
+  photo for import. Needed: a day range (start and end from `DiaryDay`), a
+  thumbnail call (`ContentResolver.loadThumbnail`), the strip in the entry
+  view, and "add" through `MediaImport.storeImage`. Same permission as Photo
+  moments (`READ_MEDIA_IMAGES`; with Android 14's selected-photos access
+  only those show).
+- Windows and Linux: more work. Today's scan reads one folder, not
+  recursively, at most 5000 files; finding a day across a whole library
+  needs an index of photo dates (path, taken, size, modified) kept up to
+  date incrementally. Reading EXIF from cloud placeholders (OneDrive files
+  on demand) would download every file, so take the date from the file name
+  or the system's property index there.
+- Open: a setting to turn it on (off by default: it shows album photos
+  inside the diary, also on a shared screen); whether hidden entries show
+  it; videos too; `aid` actions to list a day's album photos and add one.
+
 ## Deferred features
 - Finer moods: emotion words plus "who with / where" context (How We Feel). This would sharpen "What makes me feel…".
 - Goals and habits on top of trackers: target values, streaks, milestones (Daylio, Stoic).
