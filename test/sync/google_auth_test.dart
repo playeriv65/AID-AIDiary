@@ -63,12 +63,12 @@ void main() {
   setUpAll(() {
     // The browser's visit to the loopback port is a real request.
     HttpOverrides.global = null;
+    GoogleDriveConfig.desktopClientSecretForTesting = 'desktop-secret';
     AppConfig.setForTesting({
       'sync': {
         'googleDrive': {
           'webClientId': 'web-client',
           'desktopClientId': 'desktop-client',
-          'desktopClientSecret': 'desktop-secret',
           'authUrl': 'https://accounts.example/auth',
           'tokenUrl': 'https://oauth.example/token',
           'apiUrl': 'https://drive.example/drive/v3/',

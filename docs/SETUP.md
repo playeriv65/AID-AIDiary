@@ -33,14 +33,16 @@ defines the change-to-test matrix, daily/completion/release gates and reporting;
 full offline regression is the explicit `test-all` target, not the default for
 each commit. Native and live checks have separate environments and claims.
 
-1. Clone `playeriv65/AID-AIDiary` (private; access from the owner).
+1. Clone `playeriv65/AID-AIDiary` (public).
 2. Copy `scripts/dev.env.example` to `scripts/dev.env` and set this
    computer's paths. `scripts/dev.ps1` reads it for every target and stops
    when it is missing. `DEV_TEMP` keeps Flutter's temp folders off a small
    system drive (interrupted runs leave gigabytes behind). Set
    `DEV_WINDOWS_RUNTIME` to one permanent absolute runtime directory outside
    disposable task worktrees before using `windows-stage`; keep test diary
-   data elsewhere.
+   data elsewhere. `AID_GOOGLE_DESKTOP_SECRET` (from the owner, never
+   committed) lets desktop builds sign in to Google Drive
+   ([GOOGLE_DRIVE.md](GOOGLE_DRIVE.md)).
 3. `flutter config --android-sdk <ANDROID_HOME>`, so Flutter and Gradle use
    the same SDK. Point the tools' own folders off a small system drive with
    user environment variables too, not only `dev.env`: the Dart plugin, other

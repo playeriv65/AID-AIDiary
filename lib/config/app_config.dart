@@ -4,6 +4,7 @@
 
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart' show visibleForTesting;
 import 'package:flutter/services.dart';
 
 /// Network endpoints and map settings from `assets/config/app_config.json`.
@@ -324,8 +325,17 @@ class GoogleDriveConfig {
   /// The desktop client, signing in through the browser on Windows.
   String get desktopClientId => _json['desktopClientId'] as String;
 
-  /// Not a secret for an installed app, but Google asks for it.
-  String get desktopClientSecret => _json['desktopClientSecret'] as String;
+  /// Not a secret for an installed app, but Google asks for it. It stays out
+  /// of the public sources: a build gets it with
+  /// `--dart-define=AID_GOOGLE_DESKTOP_SECRET=...` (docs/GOOGLE_DRIVE.md).
+  String get desktopClientSecret =>
+      desktopClientSecretForTesting ?? _desktopClientSecret;
+
+  static const _desktopClientSecret =
+      String.fromEnvironment('AID_GOOGLE_DESKTOP_SECRET');
+
+  @visibleForTesting
+  static String? desktopClientSecretForTesting;
 
   Uri get authUrl => Uri.parse(_json['authUrl'] as String);
   Uri get tokenUrl => Uri.parse(_json['tokenUrl'] as String);

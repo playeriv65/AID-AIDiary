@@ -48,7 +48,8 @@ abstract interface class GoogleAuth {
     final config = AppConfig.instance.googleDrive;
     return Platform.isAndroid
         ? config.webClientId.isNotEmpty
-        : config.desktopClientId.isNotEmpty;
+        : config.desktopClientId.isNotEmpty &&
+            config.desktopClientSecret.isNotEmpty;
   }
 
   /// Asks the user to sign in and allow Drive; returns their address.

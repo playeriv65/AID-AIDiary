@@ -22,7 +22,9 @@ account is connected.
 - **Windows**: the browser. The app listens on a loopback port, opens
   Google's sign-in page with PKCE, and keeps the refresh token it gets in
   secure storage (`syncSecrets`). The desktop client's "secret" is not
-  secret for an installed app; Google still asks for it.
+  secret for an installed app, which carries it; Google still asks for it.
+  It stays out of the sources so scanners do not flag it and it can be
+  replaced without a commit.
 
 ## The registration (project `aid-diary`, owner playeriv65@gmail.com)
 
@@ -43,8 +45,14 @@ account is connected.
      <keyAlias>`): every local build is signed with that key. The client for
      the dev flavor's former package `dev.aid.diary.dev` is no longer used
      (`docs/REFRESH_RATE.md`).
-   - Desktop app `AID Diary Windows` → `desktopClientId` and
-     `desktopClientSecret`.
+   - Desktop app `AID Diary Windows` → `desktopClientId`. Its client
+     secret is kept out of the public repository: `AID_GOOGLE_DESKTOP_SECRET`
+     in `scripts/dev.env`, which `scripts/dev.ps1` gives to desktop builds as
+     `--dart-define`, and the repository secret of the same name for the
+     nightly builds. A desktop build without it offers no Google Drive. To
+     replace it, add a new secret to the client in the console, put it in
+     both places, and disable and delete the old one once builds with the
+     new one are installed.
 
 A new signing key or package name needs another Android client.
 

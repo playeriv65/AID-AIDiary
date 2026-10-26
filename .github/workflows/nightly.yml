@@ -63,7 +63,10 @@ jobs:
           dart test
           New-Item -ItemType Directory -Force ..\build\cli | Out-Null
           dart compile exe bin/aid.dart -o ..\build\cli\aid.exe
-      - run: flutter build windows --release
+      # Without the repository secret the build offers no Google Drive.
+      - run: flutter build windows --release --dart-define=AID_GOOGLE_DESKTOP_SECRET=$env:AID_GOOGLE_DESKTOP_SECRET
+        env:
+          AID_GOOGLE_DESKTOP_SECRET: ${{ secrets.AID_GOOGLE_DESKTOP_SECRET }}
       - name: Package
         run: |
           Compress-Archive -Path build\windows\x64\runner\Release\* -DestinationPath aid-diary-windows.zip
@@ -143,7 +146,9 @@ jobs:
           channel: stable
           cache: true
       - run: flutter pub get
-      - run: flutter build linux --release
+      - run: flutter build linux --release --dart-define=AID_GOOGLE_DESKTOP_SECRET="$AID_GOOGLE_DESKTOP_SECRET"
+        env:
+          AID_GOOGLE_DESKTOP_SECRET: ${{ secrets.AID_GOOGLE_DESKTOP_SECRET }}
       - name: Command line
         working-directory: cli
         run: |

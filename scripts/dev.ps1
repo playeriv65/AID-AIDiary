@@ -40,6 +40,12 @@ foreach ($name in 'FLUTTER_ROOT', 'PUB_CACHE', 'JAVA_HOME', 'ANDROID_HOME',
 $env:Path = (Join-Path $env:FLUTTER_ROOT 'bin') + ';' +
   (Join-Path $env:ANDROID_HOME 'platform-tools') + ';' +
   (Join-Path $env:CARGO_HOME 'bin') + ';' + $env:Path
+# The desktop Google client's secret stays out of git (docs/GOOGLE_DRIVE.md);
+# a desktop build without it offers no Google Drive.
+$desktopDefines = @()
+if ($tools['AID_GOOGLE_DESKTOP_SECRET']) {
+  $desktopDefines += "--dart-define=AID_GOOGLE_DESKTOP_SECRET=$($tools['AID_GOOGLE_DESKTOP_SECRET'])"
+}
 # The agent's shell is Rust (rust/): app builds compile it through cargokit,
 # host tests load the library this builds.
 function Build-AgentShell {
@@ -89,10 +95,10 @@ if ($Target -in 'windows', 'windows-build', 'windows-profile-build', 'windows-re
 }
 try {
 switch ($Target) {
-  'windows' { flutter run -d windows }
-  'windows-build' { flutter build windows --debug --dart-define=AID_DEV_BUILD=true }
-  'windows-profile-build' { flutter build windows --profile --dart-define=AID_DEV_BUILD=true }
-  'windows-release-build' { flutter build windows --release }
+  'windows' { flutter run -d windows @desktopDefines }
+  'windows-build' { flutter build windows --debug --dart-define=AID_DEV_BUILD=true @desktopDefines }
+  'windows-profile-build' { flutter build windows --profile --dart-define=AID_DEV_BUILD=true @desktopDefines }
+  'windows-release-build' { flutter build windows --release @desktopDefines }
   { $_ -in 'windows-stage', 'windows-profile-stage' } {
     $runtime = $tools['DEV_WINDOWS_RUNTIME']
     if (-not $runtime -or -not [IO.Path]::IsPathFullyQualified($runtime)) {
@@ -157,7 +163,7 @@ switch ($Target) {
     & $PSCommandPath cli
     if ($Device -eq 'windows') {
       # Development build: test data and AID_DATA_DIR.
-      flutter build windows --profile --dart-define=AID_DEV_BUILD=true
+      flutter build windows --profile --dart-define=AID_DEV_BUILD=true @desktopDefines
       if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
     }
     # It stops with an error when a scenario is too slow.
@@ -215,7 +221,7 @@ switch ($Target) {
   'test-unit' { flutter test -j 4 --exclude-tags 'widget,integration,live' @TestFiles }
   'test-widget' { flutter test -j 4 --tags widget --exclude-tags live @TestFiles }
   'test-integration' { Build-AgentShell; flutter test -j 4 --tags integration --exclude-tags live @TestFiles }
-  'test-live' { Build-AgentShell; flutter test -j 4 --tags live @TestFiles }
+  'test-live' { Build-AgentShell; flutter test -j 4 --tags live @desktopDefines @TestFiles }
   # The Go sync server under server/.
   'test-server' {
     Push-Location server

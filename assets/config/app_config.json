@@ -165,7 +165,6 @@
     "googleDrive": {
       "webClientId": "878450224701-e57hp1g6uspj5dj6tl1h6hhe9hs62oi1.apps.googleusercontent.com",
       "desktopClientId": "878450224701-4u26iifrceddjmq2si01lrsa54rjjl40.apps.googleusercontent.com",
-      "desktopClientSecret": "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",
       "authUrl": "https://accounts.google.com/o/oauth2/v2/auth",
       "tokenUrl": "https://oauth2.googleapis.com/token",
       "apiUrl": "https://www.googleapis.com/drive/v3/",
