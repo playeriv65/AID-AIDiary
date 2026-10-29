@@ -57,8 +57,12 @@ void main() {
     final id = await openPast(tester, '湖上结冰了');
     await writeComment(tester, '现在想起来还觉得冷');
     await tester.tap(find.byKey(const ValueKey('comment-save')));
+    // The link and the new entry land separately; wait for both.
     await DiaryAppHarness.pumpUntil(
-        tester, () => LinksProvider.instance.repliesTo(id).isNotEmpty);
+        tester,
+        () =>
+            LinksProvider.instance.repliesTo(id).isNotEmpty &&
+            store.entries.any((entry) => entry.id != id));
     await tester.pumpAndSettle();
 
     final reply = store.entries.firstWhere((entry) => entry.id != id);
