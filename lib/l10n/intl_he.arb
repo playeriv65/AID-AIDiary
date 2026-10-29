@@ -839,5 +839,20 @@
   "feedbackOpenFailed": "לא ניתן לפתוח את האפליקציה.",
   "feedbackSendNote": "נשלח לשרת של AID Diary עם גרסת האפליקציה והשפה, בלי שום דבר מהיומן שלך.",
   "feedbackGithub": "דיווח ב-GitHub",
-  "feedbackEmail": "שליחת דוא״ל"
+  "feedbackEmail": "שליחת דוא״ל",
+  "updateAvailable": "AID Diary {version} זמין",
+  "updateClosesNote": "האפליקציה נסגרת כדי להתקין את העדכון; פתחו אותה שוב לאחר מכן.",
+  "updateLater": "מאוחר יותר",
+  "updateSkip": "דילוג על גרסה זו",
+  "updateInstall": "עדכון",
+  "updateDownloading": "מוריד… {percent}%",
+  "updateAllowInstall": "אפשרו ל-AID Diary להתקין אפליקציות בהגדרות שנפתחו, ואז הקישו שוב על עדכון.",
+  "updateFailed": "לא ניתן היה להתקין את העדכון: {reason}",
+  "updatedTo": "עודכן לגרסה {version}",
+  "updateWhatsNew": "מה חדש",
+  "updateCheckNow": "בדיקת עדכונים",
+  "updateNewest": "זו הגרסה העדכנית ביותר.",
+  "updateAutoCheck": "בדיקת עדכונים אוטומטית",
+  "updateSilent": "התקנת עדכונים בלי לשאול",
+  "updateSilentHint": "מוריד ברקע ומתקין כשאתם יוצאים מהאפליקציה. אנדרואיד שואל פעם אחת, בפעם הראשונה."
 }

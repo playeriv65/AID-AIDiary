@@ -248,6 +248,16 @@ class Settings {
   // the PATH.
   static const agentCliPath = Setting<String>("agentCliPath", "");
 
+  // Updates from the release manifest (docs/UPDATES.md): whether the app
+  // checks by itself, whether it installs without asking, the build the
+  // user chose to skip, when it last checked, and what the update it
+  // installed said, to show once it runs.
+  static const updateChecks = Setting<bool>("updateChecks", true);
+  static const silentUpdates = Setting<bool>("silentUpdates", false);
+  static const skippedUpdate = Setting<int>("skippedUpdate", 0);
+  static const lastUpdateCheck = Setting<String>("lastUpdateCheck", "");
+  static const installingUpdate = Setting<String>("installingUpdate", "");
+
   static const List<Setting<Object?>> all = [
     darkTheme,
     localPhotoFolder,
@@ -351,6 +361,11 @@ class Settings {
     agentModel,
     agentApiKey,
     agentCliPath,
+    updateChecks,
+    silentUpdates,
+    skippedUpdate,
+    lastUpdateCheck,
+    installingUpdate,
   ];
 
   static const moodIcons = <int, Setting<String>>{

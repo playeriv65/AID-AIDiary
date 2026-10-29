@@ -822,5 +822,20 @@
   "feedbackOpenFailed": "Tidak dapat membuka aplikasi.",
   "feedbackSendNote": "Dihantar ke pelayan AID Diary bersama versi dan bahasa aplikasi, tiada apa-apa daripada diari anda.",
   "feedbackGithub": "Isu GitHub",
-  "feedbackEmail": "Hantar e-mel"
+  "feedbackEmail": "Hantar e-mel",
+  "updateAvailable": "AID Diary {version} tersedia",
+  "updateClosesNote": "Apl ditutup untuk memasang kemas kini; buka semula selepas itu.",
+  "updateLater": "Kemudian",
+  "updateSkip": "Langkau versi ini",
+  "updateInstall": "Kemas kini",
+  "updateDownloading": "Memuat turun… {percent}%",
+  "updateAllowInstall": "Benarkan AID Diary memasang apl dalam tetapan yang dibuka, kemudian ketik Kemas kini sekali lagi.",
+  "updateFailed": "Kemas kini tidak dapat dipasang: {reason}",
+  "updatedTo": "Dikemas kini ke {version}",
+  "updateWhatsNew": "Apa yang baharu",
+  "updateCheckNow": "Semak kemas kini",
+  "updateNewest": "Ini versi terbaharu.",
+  "updateAutoCheck": "Semak kemas kini secara automatik",
+  "updateSilent": "Pasang kemas kini tanpa bertanya",
+  "updateSilentHint": "Memuat turun di latar belakang dan memasang apabila anda meninggalkan apl. Android bertanya sekali, kali pertama."
 }

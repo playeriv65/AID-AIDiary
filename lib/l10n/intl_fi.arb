@@ -822,5 +822,20 @@
   "feedbackOpenFailed": "Sovellusta ei voitu avata.",
   "feedbackSendNote": "Lähetetään AID Diaryn palvelimelle sovelluksen version ja kielen kanssa, ei mitään päiväkirjastasi.",
   "feedbackGithub": "GitHub-ongelma",
-  "feedbackEmail": "Lähetä sähköposti"
+  "feedbackEmail": "Lähetä sähköposti",
+  "updateAvailable": "AID Diary {version} on saatavilla",
+  "updateClosesNote": "Sovellus sulkeutuu päivityksen asennuksen ajaksi; avaa se sen jälkeen uudelleen.",
+  "updateLater": "Myöhemmin",
+  "updateSkip": "Ohita tämä versio",
+  "updateInstall": "Päivitä",
+  "updateDownloading": "Ladataan… {percent} %",
+  "updateAllowInstall": "Salli avautuneissa asetuksissa AID Diaryn asentaa sovelluksia ja napauta sitten Päivitä uudelleen.",
+  "updateFailed": "Päivitystä ei voitu asentaa: {reason}",
+  "updatedTo": "Päivitetty versioon {version}",
+  "updateWhatsNew": "Uutta",
+  "updateCheckNow": "Tarkista päivitykset",
+  "updateNewest": "Tämä on uusin versio.",
+  "updateAutoCheck": "Tarkista päivitykset automaattisesti",
+  "updateSilent": "Asenna päivitykset kysymättä",
+  "updateSilentHint": "Lataa taustalla ja asentaa, kun poistut sovelluksesta. Android kysyy kerran, ensimmäisellä kerralla."
 }

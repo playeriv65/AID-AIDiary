@@ -2742,4 +2742,59 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get feedbackEmail => '이메일 보내기';
+
+  @override
+  String updateAvailable(String version) {
+    return 'AID Diary $version 업데이트가 있습니다';
+  }
+
+  @override
+  String get updateClosesNote => '업데이트를 설치하는 동안 앱이 닫힙니다. 설치 후 다시 열어 주세요.';
+
+  @override
+  String get updateLater => '나중에';
+
+  @override
+  String get updateSkip => '이 버전 건너뛰기';
+
+  @override
+  String get updateInstall => '업데이트';
+
+  @override
+  String updateDownloading(int percent) {
+    return '다운로드 중… $percent%';
+  }
+
+  @override
+  String get updateAllowInstall =>
+      '열린 설정에서 AID Diary의 앱 설치를 허용한 다음 업데이트를 다시 누르세요.';
+
+  @override
+  String updateFailed(String reason) {
+    return '업데이트를 설치하지 못했습니다: $reason';
+  }
+
+  @override
+  String updatedTo(String version) {
+    return '$version(으)로 업데이트됨';
+  }
+
+  @override
+  String get updateWhatsNew => '새로운 기능';
+
+  @override
+  String get updateCheckNow => '업데이트 확인';
+
+  @override
+  String get updateNewest => '최신 버전입니다.';
+
+  @override
+  String get updateAutoCheck => '자동으로 업데이트 확인';
+
+  @override
+  String get updateSilent => '묻지 않고 업데이트 설치';
+
+  @override
+  String get updateSilentHint =>
+      '백그라운드에서 다운로드하고 앱을 떠날 때 설치합니다. 처음 한 번은 Android가 확인을 요청합니다.';
 }

@@ -822,5 +822,20 @@
   "feedbackOpenFailed": "செயலியைத் திறக்க முடியவில்லை.",
   "feedbackSendNote": "செயலியின் பதிப்பு மற்றும் மொழியுடன் AID Diary சேவையகத்துக்கு அனுப்பப்படும்; உங்கள் நாட்குறிப்பிலிருந்து எதுவும் இல்லை.",
   "feedbackGithub": "GitHub சிக்கல்",
-  "feedbackEmail": "மின்னஞ்சல் அனுப்பு"
+  "feedbackEmail": "மின்னஞ்சல் அனுப்பு",
+  "updateAvailable": "AID Diary {version} கிடைக்கிறது",
+  "updateClosesNote": "புதுப்பிப்பை நிறுவ ஆப் மூடப்படும்; பிறகு மீண்டும் திறக்கவும்.",
+  "updateLater": "பிறகு",
+  "updateSkip": "இந்தப் பதிப்பைத் தவிர்",
+  "updateInstall": "புதுப்பி",
+  "updateDownloading": "பதிவிறக்குகிறது… {percent}%",
+  "updateAllowInstall": "திறந்த அமைப்புகளில் AID Diary ஆப்களை நிறுவ அனுமதித்து, மீண்டும் புதுப்பி என்பதைத் தட்டவும்.",
+  "updateFailed": "புதுப்பிப்பை நிறுவ முடியவில்லை: {reason}",
+  "updatedTo": "{version}க்குப் புதுப்பிக்கப்பட்டது",
+  "updateWhatsNew": "புதியவை",
+  "updateCheckNow": "புதுப்பிப்புகளைச் சரிபார்",
+  "updateNewest": "இதுவே சமீபத்திய பதிப்பு.",
+  "updateAutoCheck": "புதுப்பிப்புகளைத் தானாகச் சரிபார்",
+  "updateSilent": "கேட்காமல் புதுப்பிப்புகளை நிறுவு",
+  "updateSilentHint": "பின்னணியில் பதிவிறக்கி, ஆப்பை விட்டு வெளியேறும்போது நிறுவும். முதல் முறை Android ஒருமுறை கேட்கும்."
 }

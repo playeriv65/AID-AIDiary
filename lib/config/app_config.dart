@@ -207,6 +207,21 @@ class AppConfig {
   Duration get feedbackTimeout =>
       Duration(seconds: _section('feedback')['timeoutSeconds'] as int);
 
+  /// Where the release manifest is, tried in order: the AID server, which
+  /// mainland China reaches, then GitHub (docs/UPDATES.md).
+  List<Uri> get updateManifestUrls => [
+        for (final url in _section('updates')['manifestUrls'] as List)
+          Uri.parse(url as String)
+      ];
+
+  /// The shortest time between two checks the app makes by itself.
+  Duration get updateCheckInterval =>
+      Duration(hours: _section('updates')['checkHours'] as int);
+  Duration get updateTimeout =>
+      Duration(seconds: _section('updates')['timeoutSeconds'] as int);
+  Duration get updateDownloadTimeout =>
+      Duration(minutes: _section('updates')['downloadTimeoutMinutes'] as int);
+
   /// Hours before which a new entry may count for the day before; 0 never.
   List<int> get dayStartHourChoices =>
       (_section('diaryDay')['startHourChoices'] as List).cast<int>();

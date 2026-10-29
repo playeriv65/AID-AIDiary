@@ -822,5 +822,20 @@
   "feedbackOpenFailed": "Приложението не можа да се отвори.",
   "feedbackSendNote": "Изпраща се до сървъра на AID Diary с версията и езика на приложението, без нищо от дневника ви.",
   "feedbackGithub": "Проблем в GitHub",
-  "feedbackEmail": "Изпрати имейл"
+  "feedbackEmail": "Изпрати имейл",
+  "updateAvailable": "Налична е AID Diary {version}",
+  "updateClosesNote": "Приложението се затваря, за да инсталира актуализацията; отворете го отново след това.",
+  "updateLater": "По-късно",
+  "updateSkip": "Пропускане на тази версия",
+  "updateInstall": "Актуализиране",
+  "updateDownloading": "Изтегляне… {percent}%",
+  "updateAllowInstall": "Разрешете на AID Diary да инсталира приложения в отворените настройки и докоснете отново „Актуализиране“.",
+  "updateFailed": "Актуализацията не можа да се инсталира: {reason}",
+  "updatedTo": "Актуализирано до {version}",
+  "updateWhatsNew": "Какво ново",
+  "updateCheckNow": "Проверка за актуализации",
+  "updateNewest": "Това е най-новата версия.",
+  "updateAutoCheck": "Автоматична проверка за актуализации",
+  "updateSilent": "Инсталиране на актуализации без питане",
+  "updateSilentHint": "Изтегля във фонов режим и инсталира, когато излезете от приложението. Android пита веднъж, първия път."
 }

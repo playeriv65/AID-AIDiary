@@ -27,9 +27,11 @@ Probably skip (they need cloud services or add little): Google Fit, rate dialog,
 ## Build automation (owner request 2026-10-23)
 - Done (2026-10-24): CI on every push to main, a debug-signed nightly
   prerelease, and the repository made public after a history review
-  (`docs/TESTING.md`, "Continuous integration"). Open: a nightly that
-  installs over the owner's app needs the release key as a repository
-  secret, or a separate key for the development flavour.
+  (`docs/TESTING.md`, "Continuous integration"). Since 2026-10-29
+  the nightly is signed with the release key and Android apps update
+  themselves from it (`docs/UPDATES.md`). Open: Windows and Linux updates
+  (download the archive, swap the files after the app exits), and the AID
+  server mirroring the nightly for mainland China.
 - Linux (owner request 2026-10-24): target restored and packaged nightly.
   Open: video and voice-note playback (`video_player` has no Linux
   implementation; the player shows "unavailable"), unlocking hidden

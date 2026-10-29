@@ -822,5 +822,20 @@
   "feedbackOpenFailed": "Tidak dapat membuka aplikasi.",
   "feedbackSendNote": "Dikirim ke server AID Diary beserta versi dan bahasa aplikasi, tanpa isi buku harian Anda.",
   "feedbackGithub": "Isu GitHub",
-  "feedbackEmail": "Kirim email"
+  "feedbackEmail": "Kirim email",
+  "updateAvailable": "AID Diary {version} tersedia",
+  "updateClosesNote": "Aplikasi ditutup untuk memasang pembaruan; buka lagi setelahnya.",
+  "updateLater": "Nanti",
+  "updateSkip": "Lewati versi ini",
+  "updateInstall": "Perbarui",
+  "updateDownloading": "Mengunduh… {percent}%",
+  "updateAllowInstall": "Izinkan AID Diary memasang aplikasi di setelan yang terbuka, lalu ketuk Perbarui lagi.",
+  "updateFailed": "Pembaruan tidak dapat dipasang: {reason}",
+  "updatedTo": "Diperbarui ke {version}",
+  "updateWhatsNew": "Yang baru",
+  "updateCheckNow": "Periksa pembaruan",
+  "updateNewest": "Ini versi terbaru.",
+  "updateAutoCheck": "Periksa pembaruan otomatis",
+  "updateSilent": "Pasang pembaruan tanpa bertanya",
+  "updateSilentHint": "Mengunduh di latar belakang dan memasang saat Anda meninggalkan aplikasi. Android bertanya sekali, pertama kali."
 }

@@ -2811,4 +2811,60 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get feedbackEmail => 'E-posta gönder';
+
+  @override
+  String updateAvailable(String version) {
+    return 'AID Diary $version kullanılabilir';
+  }
+
+  @override
+  String get updateClosesNote =>
+      'Güncellemeyi yüklemek için uygulama kapanır; ardından yeniden açın.';
+
+  @override
+  String get updateLater => 'Daha sonra';
+
+  @override
+  String get updateSkip => 'Bu sürümü atla';
+
+  @override
+  String get updateInstall => 'Güncelle';
+
+  @override
+  String updateDownloading(int percent) {
+    return 'İndiriliyor… %$percent';
+  }
+
+  @override
+  String get updateAllowInstall =>
+      'Açılan ayarlarda AID Diary\'nin uygulama yüklemesine izin verin, ardından Güncelle\'ye yeniden dokunun.';
+
+  @override
+  String updateFailed(String reason) {
+    return 'Güncelleme yüklenemedi: $reason';
+  }
+
+  @override
+  String updatedTo(String version) {
+    return '$version sürümüne güncellendi';
+  }
+
+  @override
+  String get updateWhatsNew => 'Yenilikler';
+
+  @override
+  String get updateCheckNow => 'Güncellemeleri denetle';
+
+  @override
+  String get updateNewest => 'Bu en yeni sürüm.';
+
+  @override
+  String get updateAutoCheck => 'Güncellemeleri otomatik denetle';
+
+  @override
+  String get updateSilent => 'Güncellemeleri sormadan yükle';
+
+  @override
+  String get updateSilentHint =>
+      'Arka planda indirir ve uygulamadan çıktığınızda yükler. Android ilk seferde bir kez sorar.';
 }

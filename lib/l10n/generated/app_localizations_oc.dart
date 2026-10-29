@@ -2836,4 +2836,60 @@ class AppLocalizationsOc extends AppLocalizations {
 
   @override
   String get feedbackEmail => 'Mandar un corrièl';
+
+  @override
+  String updateAvailable(String version) {
+    return 'AID Diary $version es disponible';
+  }
+
+  @override
+  String get updateClosesNote =>
+      'L\'aplicacion se tampa per installar la mesa a jorn ; tornatz-la dobrir aprèp.';
+
+  @override
+  String get updateLater => 'Mai tard';
+
+  @override
+  String get updateSkip => 'Ignorar aquesta version';
+
+  @override
+  String get updateInstall => 'Metre a jorn';
+
+  @override
+  String updateDownloading(int percent) {
+    return 'Telecargament… $percent %';
+  }
+
+  @override
+  String get updateAllowInstall =>
+      'Autorizatz AID Diary a installar d\'aplicacions dins los paramètres dobèrts, puèi tocatz tornamai Metre a jorn.';
+
+  @override
+  String updateFailed(String reason) {
+    return 'La mesa a jorn a pas pogut èsser installada : $reason';
+  }
+
+  @override
+  String updatedTo(String version) {
+    return 'Mes a jorn cap a $version';
+  }
+
+  @override
+  String get updateWhatsNew => 'Novetats';
+
+  @override
+  String get updateCheckNow => 'Verificar las mesas a jorn';
+
+  @override
+  String get updateNewest => 'Aquò es la version mai recenta.';
+
+  @override
+  String get updateAutoCheck => 'Verificar automaticament las mesas a jorn';
+
+  @override
+  String get updateSilent => 'Installar las mesas a jorn sens demandar';
+
+  @override
+  String get updateSilentHint =>
+      'Telecarga en rèire-plan e installa quand quitatz l\'aplicacion. Android demanda un còp, la primièra.';
 }

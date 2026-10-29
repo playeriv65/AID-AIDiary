@@ -45,6 +45,15 @@
     "submitUrl": "https://aid.playeriv65.com/api/feedback",
     "timeoutSeconds": 15
   },
+  "updates": {
+    "manifestUrls": [
+      "https://aid.playeriv65.com/updates/latest.json",
+      "https://github.com/playeriv65/AID-AIDiary/releases/download/nightly/latest.json"
+    ],
+    "checkHours": 6,
+    "timeoutSeconds": 20,
+    "downloadTimeoutMinutes": 15
+  },
   "diaryDay": {
     "startHourChoices": [0, 1, 2, 3, 4, 5, 6],
     "askUntilHourChoices": [0, 1, 2, 3, 4, 5, 6, 7, 8]

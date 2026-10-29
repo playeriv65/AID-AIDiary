@@ -4,6 +4,7 @@
 
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
@@ -102,6 +103,7 @@ class AppDatabase {
   }
 
   Future<void> open({int? firstScreen}) async {
+    await copyBeforeUpgrade(_internalPath!);
     _database = await openDatabase(_internalPath!,
         version: currentVersion,
         onCreate: _createDatabase,
@@ -114,6 +116,51 @@ class AppDatabase {
     await TagsProvider.instance.load();
     await LinksProvider.instance.load();
     await WeatherProvider.instance.load();
+  }
+
+  /// Folder beside the diary that keeps it as it was before upgrades.
+  static const beforeUpgradeFolder = 'before-upgrade';
+
+  /// Copies the diary at [path] aside when its schema is older than
+  /// [currentVersion]: an upgrade, which a new build runs on its first
+  /// start, cannot be undone. The newest [keep] copies stay.
+  static Future<void> copyBeforeUpgrade(String path, {int keep = 2}) async {
+    final file = File(path);
+    if (!await file.exists()) return;
+    final version = await _schemaVersion(file);
+    if (version == 0 || version >= currentVersion) return;
+    final folder = Directory(join(dirname(path), beforeUpgradeFolder));
+    await folder.create(recursive: true);
+    final stamp = DateTime.now().toUtc().toIso8601String().replaceAll(':', '-');
+    final copy = join(folder.path, 'v$version-$stamp-$databaseFileName');
+    await file.copy(copy);
+    for (final side in ['-wal', '-journal']) {
+      final extra = File('$path$side');
+      if (await extra.exists()) await extra.copy('$copy$side');
+    }
+    _logger.info('Kept the diary of schema $version before the upgrade');
+    final copies = [
+      for (final entity in await folder.list().toList())
+        if (entity is File && entity.path.endsWith(databaseFileName)) entity
+    ]..sort((a, b) => b.path.compareTo(a.path));
+    for (final old in copies.skip(keep)) {
+      for (final side in ['', '-wal', '-journal']) {
+        final extra = File('${old.path}$side');
+        if (await extra.exists()) await extra.delete();
+      }
+    }
+  }
+
+  /// SQLite's user_version, which sqflite keeps the schema version in: four
+  /// big-endian bytes at offset 60 of the header. 0 for no database.
+  static Future<int> _schemaVersion(File file) async {
+    final header = await file.openRead(0, 64).expand((chunk) => chunk).toList();
+    if (header.length < 64 ||
+        String.fromCharCodes(header.sublist(0, 15)) != 'SQLite format 3') {
+      return 0;
+    }
+    return ByteData.sublistView(Uint8List.fromList(header), 60, 64)
+        .getUint32(0);
   }
 
   Future<void> close() async {

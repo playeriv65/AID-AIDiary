@@ -2811,4 +2811,60 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get feedbackEmail => 'ईमेल भेजें';
+
+  @override
+  String updateAvailable(String version) {
+    return 'AID Diary $version उपलब्ध है';
+  }
+
+  @override
+  String get updateClosesNote =>
+      'अपडेट इंस्टॉल करने के लिए ऐप बंद हो जाएगा; इसके बाद इसे फिर से खोलें।';
+
+  @override
+  String get updateLater => 'बाद में';
+
+  @override
+  String get updateSkip => 'यह वर्शन छोड़ें';
+
+  @override
+  String get updateInstall => 'अपडेट करें';
+
+  @override
+  String updateDownloading(int percent) {
+    return 'डाउनलोड हो रहा है… $percent%';
+  }
+
+  @override
+  String get updateAllowInstall =>
+      'खुली सेटिंग में AID Diary को ऐप इंस्टॉल करने की अनुमति दें, फिर दोबारा अपडेट करें पर टैप करें।';
+
+  @override
+  String updateFailed(String reason) {
+    return 'अपडेट इंस्टॉल नहीं हो सका: $reason';
+  }
+
+  @override
+  String updatedTo(String version) {
+    return '$version पर अपडेट हो गया';
+  }
+
+  @override
+  String get updateWhatsNew => 'नया क्या है';
+
+  @override
+  String get updateCheckNow => 'अपडेट जाँचें';
+
+  @override
+  String get updateNewest => 'यह सबसे नया वर्शन है।';
+
+  @override
+  String get updateAutoCheck => 'अपडेट अपने-आप जाँचें';
+
+  @override
+  String get updateSilent => 'बिना पूछे अपडेट इंस्टॉल करें';
+
+  @override
+  String get updateSilentHint =>
+      'बैकग्राउंड में डाउनलोड करता है और ऐप छोड़ने पर इंस्टॉल करता है। पहली बार Android एक बार पूछता है।';
 }

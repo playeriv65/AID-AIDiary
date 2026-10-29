@@ -267,9 +267,10 @@ Two workflows run on GitHub's runners:
 - Server: `go vet` and `go test`.
 
 When all pass, the rolling prerelease `nightly` is replaced with the APKs,
-the Windows ZIP and `aid.exe`, and the Linux tarball and `aid`. CI has no signing key: its packages are
-signed with the debug key, which proves they build but cannot update an
-installed release; install those from a local `scripts/dev.ps1` build. The
+the Windows ZIP and `aid.exe`, the Linux tarball and `aid`, and `latest.json`,
+the manifest apps update from. The APKs are signed with the release key from
+the repository secrets and stamped with a time build number, so they update
+installed apps ([UPDATES.md](UPDATES.md)). The
 repository is public, so Actions minutes are free. iOS, macOS and web are
 not targets, so CI does not package them.
 

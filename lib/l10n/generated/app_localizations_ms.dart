@@ -2772,4 +2772,60 @@ class AppLocalizationsMs extends AppLocalizations {
 
   @override
   String get feedbackEmail => 'Hantar e-mel';
+
+  @override
+  String updateAvailable(String version) {
+    return 'AID Diary $version tersedia';
+  }
+
+  @override
+  String get updateClosesNote =>
+      'Apl ditutup untuk memasang kemas kini; buka semula selepas itu.';
+
+  @override
+  String get updateLater => 'Kemudian';
+
+  @override
+  String get updateSkip => 'Langkau versi ini';
+
+  @override
+  String get updateInstall => 'Kemas kini';
+
+  @override
+  String updateDownloading(int percent) {
+    return 'Memuat turun… $percent%';
+  }
+
+  @override
+  String get updateAllowInstall =>
+      'Benarkan AID Diary memasang apl dalam tetapan yang dibuka, kemudian ketik Kemas kini sekali lagi.';
+
+  @override
+  String updateFailed(String reason) {
+    return 'Kemas kini tidak dapat dipasang: $reason';
+  }
+
+  @override
+  String updatedTo(String version) {
+    return 'Dikemas kini ke $version';
+  }
+
+  @override
+  String get updateWhatsNew => 'Apa yang baharu';
+
+  @override
+  String get updateCheckNow => 'Semak kemas kini';
+
+  @override
+  String get updateNewest => 'Ini versi terbaharu.';
+
+  @override
+  String get updateAutoCheck => 'Semak kemas kini secara automatik';
+
+  @override
+  String get updateSilent => 'Pasang kemas kini tanpa bertanya';
+
+  @override
+  String get updateSilentHint =>
+      'Memuat turun di latar belakang dan memasang apabila anda meninggalkan apl. Android bertanya sekali, kali pertama.';
 }

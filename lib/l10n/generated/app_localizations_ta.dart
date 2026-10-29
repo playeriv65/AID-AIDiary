@@ -2851,4 +2851,60 @@ class AppLocalizationsTa extends AppLocalizations {
 
   @override
   String get feedbackEmail => 'மின்னஞ்சல் அனுப்பு';
+
+  @override
+  String updateAvailable(String version) {
+    return 'AID Diary $version கிடைக்கிறது';
+  }
+
+  @override
+  String get updateClosesNote =>
+      'புதுப்பிப்பை நிறுவ ஆப் மூடப்படும்; பிறகு மீண்டும் திறக்கவும்.';
+
+  @override
+  String get updateLater => 'பிறகு';
+
+  @override
+  String get updateSkip => 'இந்தப் பதிப்பைத் தவிர்';
+
+  @override
+  String get updateInstall => 'புதுப்பி';
+
+  @override
+  String updateDownloading(int percent) {
+    return 'பதிவிறக்குகிறது… $percent%';
+  }
+
+  @override
+  String get updateAllowInstall =>
+      'திறந்த அமைப்புகளில் AID Diary ஆப்களை நிறுவ அனுமதித்து, மீண்டும் புதுப்பி என்பதைத் தட்டவும்.';
+
+  @override
+  String updateFailed(String reason) {
+    return 'புதுப்பிப்பை நிறுவ முடியவில்லை: $reason';
+  }
+
+  @override
+  String updatedTo(String version) {
+    return '$versionக்குப் புதுப்பிக்கப்பட்டது';
+  }
+
+  @override
+  String get updateWhatsNew => 'புதியவை';
+
+  @override
+  String get updateCheckNow => 'புதுப்பிப்புகளைச் சரிபார்';
+
+  @override
+  String get updateNewest => 'இதுவே சமீபத்திய பதிப்பு.';
+
+  @override
+  String get updateAutoCheck => 'புதுப்பிப்புகளைத் தானாகச் சரிபார்';
+
+  @override
+  String get updateSilent => 'கேட்காமல் புதுப்பிப்புகளை நிறுவு';
+
+  @override
+  String get updateSilentHint =>
+      'பின்னணியில் பதிவிறக்கி, ஆப்பை விட்டு வெளியேறும்போது நிறுவும். முதல் முறை Android ஒருமுறை கேட்கும்.';
 }

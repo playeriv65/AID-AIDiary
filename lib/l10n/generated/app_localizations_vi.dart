@@ -2824,4 +2824,60 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get feedbackEmail => 'Gửi email';
+
+  @override
+  String updateAvailable(String version) {
+    return 'Đã có AID Diary $version';
+  }
+
+  @override
+  String get updateClosesNote =>
+      'Ứng dụng sẽ đóng để cài bản cập nhật; hãy mở lại sau đó.';
+
+  @override
+  String get updateLater => 'Để sau';
+
+  @override
+  String get updateSkip => 'Bỏ qua phiên bản này';
+
+  @override
+  String get updateInstall => 'Cập nhật';
+
+  @override
+  String updateDownloading(int percent) {
+    return 'Đang tải xuống… $percent%';
+  }
+
+  @override
+  String get updateAllowInstall =>
+      'Hãy cho phép AID Diary cài đặt ứng dụng trong phần cài đặt vừa mở, rồi chạm Cập nhật lần nữa.';
+
+  @override
+  String updateFailed(String reason) {
+    return 'Không thể cài bản cập nhật: $reason';
+  }
+
+  @override
+  String updatedTo(String version) {
+    return 'Đã cập nhật lên $version';
+  }
+
+  @override
+  String get updateWhatsNew => 'Có gì mới';
+
+  @override
+  String get updateCheckNow => 'Kiểm tra cập nhật';
+
+  @override
+  String get updateNewest => 'Đây là phiên bản mới nhất.';
+
+  @override
+  String get updateAutoCheck => 'Tự động kiểm tra cập nhật';
+
+  @override
+  String get updateSilent => 'Cài bản cập nhật mà không hỏi';
+
+  @override
+  String get updateSilentHint =>
+      'Tải xuống ở chế độ nền và cài khi bạn rời ứng dụng. Android hỏi một lần, lần đầu tiên.';
 }

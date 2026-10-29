@@ -2831,6 +2831,62 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get feedbackEmail => 'Enviar e-mail';
+
+  @override
+  String updateAvailable(String version) {
+    return 'O AID Diary $version está disponível';
+  }
+
+  @override
+  String get updateClosesNote =>
+      'A app fecha para instalar a atualização; abra-a de novo depois.';
+
+  @override
+  String get updateLater => 'Mais tarde';
+
+  @override
+  String get updateSkip => 'Ignorar esta versão';
+
+  @override
+  String get updateInstall => 'Atualizar';
+
+  @override
+  String updateDownloading(int percent) {
+    return 'A transferir… $percent%';
+  }
+
+  @override
+  String get updateAllowInstall =>
+      'Permita que o AID Diary instale apps nas definições abertas e toque de novo em Atualizar.';
+
+  @override
+  String updateFailed(String reason) {
+    return 'Não foi possível instalar a atualização: $reason';
+  }
+
+  @override
+  String updatedTo(String version) {
+    return 'Atualizado para $version';
+  }
+
+  @override
+  String get updateWhatsNew => 'Novidades';
+
+  @override
+  String get updateCheckNow => 'Procurar atualizações';
+
+  @override
+  String get updateNewest => 'Esta é a versão mais recente.';
+
+  @override
+  String get updateAutoCheck => 'Procurar atualizações automaticamente';
+
+  @override
+  String get updateSilent => 'Instalar atualizações sem perguntar';
+
+  @override
+  String get updateSilentHint =>
+      'Transfere em segundo plano e instala quando sai da app. O Android pergunta uma vez, na primeira.';
 }
 
 /// The translations for Portuguese, as used in Brazil (`pt_BR`).
@@ -5659,4 +5715,60 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
 
   @override
   String get feedbackEmail => 'Enviar e-mail';
+
+  @override
+  String updateAvailable(String version) {
+    return 'O AID Diary $version está disponível';
+  }
+
+  @override
+  String get updateClosesNote =>
+      'O app fecha para instalar a atualização; abra de novo depois.';
+
+  @override
+  String get updateLater => 'Mais tarde';
+
+  @override
+  String get updateSkip => 'Pular esta versão';
+
+  @override
+  String get updateInstall => 'Atualizar';
+
+  @override
+  String updateDownloading(int percent) {
+    return 'Baixando… $percent%';
+  }
+
+  @override
+  String get updateAllowInstall =>
+      'Permita que o AID Diary instale apps nas configurações abertas e toque em Atualizar de novo.';
+
+  @override
+  String updateFailed(String reason) {
+    return 'Não foi possível instalar a atualização: $reason';
+  }
+
+  @override
+  String updatedTo(String version) {
+    return 'Atualizado para $version';
+  }
+
+  @override
+  String get updateWhatsNew => 'Novidades';
+
+  @override
+  String get updateCheckNow => 'Verificar atualizações';
+
+  @override
+  String get updateNewest => 'Esta é a versão mais recente.';
+
+  @override
+  String get updateAutoCheck => 'Verificar atualizações automaticamente';
+
+  @override
+  String get updateSilent => 'Instalar atualizações sem perguntar';
+
+  @override
+  String get updateSilentHint =>
+      'Baixa em segundo plano e instala quando você sai do app. O Android pergunta uma vez, na primeira.';
 }

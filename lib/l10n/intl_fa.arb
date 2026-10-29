@@ -822,5 +822,20 @@
   "feedbackOpenFailed": "برنامه باز نشد.",
   "feedbackSendNote": "به سرور AID Diary همراه با نسخه و زبان برنامه فرستاده می‌شود، بدون هیچ چیزی از دفتر خاطرات شما.",
   "feedbackGithub": "گزارش در GitHub",
-  "feedbackEmail": "ارسال ایمیل"
+  "feedbackEmail": "ارسال ایمیل",
+  "updateAvailable": "AID Diary {version} در دسترس است",
+  "updateClosesNote": "برای نصب به‌روزرسانی، برنامه بسته می‌شود؛ پس از آن دوباره بازش کنید.",
+  "updateLater": "بعداً",
+  "updateSkip": "رد کردن این نسخه",
+  "updateInstall": "به‌روزرسانی",
+  "updateDownloading": "در حال دانلود… {percent}٪",
+  "updateAllowInstall": "در تنظیماتی که باز شد به AID Diary اجازهٔ نصب برنامه بدهید، سپس دوباره روی به‌روزرسانی بزنید.",
+  "updateFailed": "به‌روزرسانی نصب نشد: {reason}",
+  "updatedTo": "به {version} به‌روزرسانی شد",
+  "updateWhatsNew": "تازه‌ها",
+  "updateCheckNow": "بررسی به‌روزرسانی",
+  "updateNewest": "این جدیدترین نسخه است.",
+  "updateAutoCheck": "بررسی خودکار به‌روزرسانی",
+  "updateSilent": "نصب به‌روزرسانی بدون پرسش",
+  "updateSilentHint": "در پس‌زمینه دانلود و هنگام خروج از برنامه نصب می‌شود. اندروید بار اول یک بار می‌پرسد."
 }

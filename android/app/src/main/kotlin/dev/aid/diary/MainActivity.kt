@@ -17,6 +17,7 @@ class MainActivity: FlutterFragmentActivity() {
     val scope = if (workspace != null && Regex("^[A-Za-z0-9_-]{1,64}$").matches(workspace)) workspace else "default"
     DeviceKeys(flutterEngine.dartExecutor.binaryMessenger, "$packageName.$scope")
     LocalPhotos(applicationContext, flutterEngine.dartExecutor.binaryMessenger)
+    AppUpdater(this, flutterEngine.dartExecutor.binaryMessenger)
     MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "aid.nearby")
       .setMethodCallHandler { call, result ->
         val action = when (call.method) {

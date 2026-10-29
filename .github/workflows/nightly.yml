@@ -23,8 +23,15 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       run: ${{ steps.recent.outputs.run }}
+      build: ${{ steps.build.outputs.build }}
     steps:
       - uses: actions/checkout@v4
+      # The build number apps compare: UTC YYMMDDHH and the ten minutes, as
+      # scripts/dev.ps1 makes it for local builds (AGENTS.md, "Versions").
+      - id: build
+        run: |
+          now=$(date -u +%y%m%d%H%M)
+          echo "build=${now:0:9}" >> "$GITHUB_OUTPUT"
       - id: recent
         # Scheduled runs only build what changed in the last day.
         run: |
@@ -110,10 +117,28 @@ jobs:
       - run: flutter pub get
       # cargokit compiles the agent's shell (rust/) for the APK's ABI.
       - run: rustup target add aarch64-linux-android
-      # No signing key here: both are signed with the debug key, which
-      # proves they package but cannot update an installed release.
-      - run: flutter build apk --release --flavor independent --target-platform android-arm64
-      - run: flutter build apk --release --flavor dev --target-platform android-arm64
+      # The release key from the repository's secrets, so the packages
+      # update installed apps (docs/UPDATES.md).
+      - name: Signing key
+        env:
+          KEYSTORE: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          STORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          if [ -z "$KEYSTORE" ]; then echo "No signing key secret" >&2; exit 1; fi
+          echo "$KEYSTORE" | base64 -d > "$RUNNER_TEMP/release.jks"
+          {
+            echo "storeFile=$RUNNER_TEMP/release.jks"
+            echo "storePassword=$STORE_PASSWORD"
+            echo "keyAlias=$KEY_ALIAS"
+            echo "keyPassword=$KEY_PASSWORD"
+          } > android/key.properties
+      - run: flutter build apk --release --flavor independent --target-platform android-arm64 --build-number ${{ needs.changes.outputs.build }}
+      - run: flutter build apk --release --flavor dev --target-platform android-arm64 --build-number ${{ needs.changes.outputs.build }}
+      - name: Remove signing key
+        if: always()
+        run: rm -f "$RUNNER_TEMP/release.jks" android/key.properties
       - name: Package
         run: |
           cp build/app/outputs/flutter-apk/app-independent-release.apk aid-diary.apk
@@ -183,20 +208,34 @@ jobs:
           go test ./...
 
   release:
-    needs: [windows, android, linux, server]
+    needs: [changes, windows, android, linux, server]
     runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
     steps:
+      # History for the notes: the commits since the last nightly.
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/download-artifact@v4
         with:
           merge-multiple: true
-      # One rolling prerelease, replaced each night.
-      - env:
-          GH_TOKEN: ${{ github.token }}
-          GH_REPO: ${{ github.repository }}
+          path: dist
+      # latest.json, which apps check for updates (docs/UPDATES.md).
+      - name: Manifest
         run: |
+          previous=$(gh release view nightly --json targetCommitish -q .targetCommitish 2>/dev/null || true)
+          python3 scripts/release_manifest.py --dist dist \
+            --build "${{ needs.changes.outputs.build }}" \
+            --commit "${{ github.sha }}" --previous "$previous" > dist/latest.json
+          cat dist/latest.json
+      # One rolling prerelease, replaced each night.
+      - run: |
+          cd dist
           gh release delete nightly --yes --cleanup-tag || true
           gh release create nightly --prerelease --target "${{ github.sha }}" \
             --title "Nightly $(date -u +%Y-%m-%d)" \
-            --notes "Built from ${{ github.sha }}. Debug-signed: for checking packages, not for updating an installed release." \
-            aid-diary.apk aid-diary-dev.apk aid-diary-windows.zip aid-windows.exe \
-            aid-diary-linux.tar.gz aid-linux
+            --notes "Built from ${{ github.sha }}, build ${{ needs.changes.outputs.build }}. Android packages are signed with the release key and update installed apps." \
+            latest.json aid-diary.apk aid-diary-dev.apk aid-diary-windows.zip \
+            aid-windows.exe aid-diary-linux.tar.gz aid-linux

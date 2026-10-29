@@ -822,5 +822,20 @@
   "feedbackOpenFailed": "앱을 열 수 없습니다.",
   "feedbackSendNote": "앱 버전과 언어와 함께 AID Diary 서버로 보내며, 일기 내용은 보내지 않습니다.",
   "feedbackGithub": "GitHub 이슈",
-  "feedbackEmail": "이메일 보내기"
+  "feedbackEmail": "이메일 보내기",
+  "updateAvailable": "AID Diary {version} 업데이트가 있습니다",
+  "updateClosesNote": "업데이트를 설치하는 동안 앱이 닫힙니다. 설치 후 다시 열어 주세요.",
+  "updateLater": "나중에",
+  "updateSkip": "이 버전 건너뛰기",
+  "updateInstall": "업데이트",
+  "updateDownloading": "다운로드 중… {percent}%",
+  "updateAllowInstall": "열린 설정에서 AID Diary의 앱 설치를 허용한 다음 업데이트를 다시 누르세요.",
+  "updateFailed": "업데이트를 설치하지 못했습니다: {reason}",
+  "updatedTo": "{version}(으)로 업데이트됨",
+  "updateWhatsNew": "새로운 기능",
+  "updateCheckNow": "업데이트 확인",
+  "updateNewest": "최신 버전입니다.",
+  "updateAutoCheck": "자동으로 업데이트 확인",
+  "updateSilent": "묻지 않고 업데이트 설치",
+  "updateSilentHint": "백그라운드에서 다운로드하고 앱을 떠날 때 설치합니다. 처음 한 번은 Android가 확인을 요청합니다."
 }

@@ -822,5 +822,20 @@
   "feedbackOpenFailed": "Không mở được ứng dụng.",
   "feedbackSendNote": "Gửi đến máy chủ AID Diary kèm phiên bản và ngôn ngữ ứng dụng, không có gì từ nhật ký của bạn.",
   "feedbackGithub": "Vấn đề trên GitHub",
-  "feedbackEmail": "Gửi email"
+  "feedbackEmail": "Gửi email",
+  "updateAvailable": "Đã có AID Diary {version}",
+  "updateClosesNote": "Ứng dụng sẽ đóng để cài bản cập nhật; hãy mở lại sau đó.",
+  "updateLater": "Để sau",
+  "updateSkip": "Bỏ qua phiên bản này",
+  "updateInstall": "Cập nhật",
+  "updateDownloading": "Đang tải xuống… {percent}%",
+  "updateAllowInstall": "Hãy cho phép AID Diary cài đặt ứng dụng trong phần cài đặt vừa mở, rồi chạm Cập nhật lần nữa.",
+  "updateFailed": "Không thể cài bản cập nhật: {reason}",
+  "updatedTo": "Đã cập nhật lên {version}",
+  "updateWhatsNew": "Có gì mới",
+  "updateCheckNow": "Kiểm tra cập nhật",
+  "updateNewest": "Đây là phiên bản mới nhất.",
+  "updateAutoCheck": "Tự động kiểm tra cập nhật",
+  "updateSilent": "Cài bản cập nhật mà không hỏi",
+  "updateSilentHint": "Tải xuống ở chế độ nền và cài khi bạn rời ứng dụng. Android hỏi một lần, lần đầu tiên."
 }

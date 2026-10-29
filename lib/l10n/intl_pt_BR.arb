@@ -822,5 +822,20 @@
   "feedbackOpenFailed": "Não foi possível abrir o app.",
   "feedbackSendNote": "Enviado ao servidor do AID Diary com a versão e o idioma do app, nada do seu diário.",
   "feedbackGithub": "Issue no GitHub",
-  "feedbackEmail": "Enviar e-mail"
+  "feedbackEmail": "Enviar e-mail",
+  "updateAvailable": "O AID Diary {version} está disponível",
+  "updateClosesNote": "O app fecha para instalar a atualização; abra de novo depois.",
+  "updateLater": "Mais tarde",
+  "updateSkip": "Pular esta versão",
+  "updateInstall": "Atualizar",
+  "updateDownloading": "Baixando… {percent}%",
+  "updateAllowInstall": "Permita que o AID Diary instale apps nas configurações abertas e toque em Atualizar de novo.",
+  "updateFailed": "Não foi possível instalar a atualização: {reason}",
+  "updatedTo": "Atualizado para {version}",
+  "updateWhatsNew": "Novidades",
+  "updateCheckNow": "Verificar atualizações",
+  "updateNewest": "Esta é a versão mais recente.",
+  "updateAutoCheck": "Verificar atualizações automaticamente",
+  "updateSilent": "Instalar atualizações sem perguntar",
+  "updateSilentHint": "Baixa em segundo plano e instala quando você sai do app. O Android pergunta uma vez, na primeira."
 }

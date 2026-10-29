@@ -2818,4 +2818,60 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get feedbackEmail => 'Lähetä sähköposti';
+
+  @override
+  String updateAvailable(String version) {
+    return 'AID Diary $version on saatavilla';
+  }
+
+  @override
+  String get updateClosesNote =>
+      'Sovellus sulkeutuu päivityksen asennuksen ajaksi; avaa se sen jälkeen uudelleen.';
+
+  @override
+  String get updateLater => 'Myöhemmin';
+
+  @override
+  String get updateSkip => 'Ohita tämä versio';
+
+  @override
+  String get updateInstall => 'Päivitä';
+
+  @override
+  String updateDownloading(int percent) {
+    return 'Ladataan… $percent %';
+  }
+
+  @override
+  String get updateAllowInstall =>
+      'Salli avautuneissa asetuksissa AID Diaryn asentaa sovelluksia ja napauta sitten Päivitä uudelleen.';
+
+  @override
+  String updateFailed(String reason) {
+    return 'Päivitystä ei voitu asentaa: $reason';
+  }
+
+  @override
+  String updatedTo(String version) {
+    return 'Päivitetty versioon $version';
+  }
+
+  @override
+  String get updateWhatsNew => 'Uutta';
+
+  @override
+  String get updateCheckNow => 'Tarkista päivitykset';
+
+  @override
+  String get updateNewest => 'Tämä on uusin versio.';
+
+  @override
+  String get updateAutoCheck => 'Tarkista päivitykset automaattisesti';
+
+  @override
+  String get updateSilent => 'Asenna päivitykset kysymättä';
+
+  @override
+  String get updateSilentHint =>
+      'Lataa taustalla ja asentaa, kun poistut sovelluksesta. Android kysyy kerran, ensimmäisellä kerralla.';
 }

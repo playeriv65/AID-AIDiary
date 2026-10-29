@@ -822,5 +822,20 @@
   "feedbackOpenFailed": "Det gick inte att öppna appen.",
   "feedbackSendNote": "Skickas till AID Diarys server med appens version och språk, inget från din dagbok.",
   "feedbackGithub": "GitHub-ärende",
-  "feedbackEmail": "Skicka e-post"
+  "feedbackEmail": "Skicka e-post",
+  "updateAvailable": "AID Diary {version} är tillgänglig",
+  "updateClosesNote": "Appen stängs för att installera uppdateringen; öppna den igen efteråt.",
+  "updateLater": "Senare",
+  "updateSkip": "Hoppa över den här versionen",
+  "updateInstall": "Uppdatera",
+  "updateDownloading": "Hämtar… {percent} %",
+  "updateAllowInstall": "Tillåt AID Diary att installera appar i inställningarna som öppnades och tryck sedan på Uppdatera igen.",
+  "updateFailed": "Uppdateringen kunde inte installeras: {reason}",
+  "updatedTo": "Uppdaterad till {version}",
+  "updateWhatsNew": "Nyheter",
+  "updateCheckNow": "Sök efter uppdateringar",
+  "updateNewest": "Det här är den senaste versionen.",
+  "updateAutoCheck": "Sök efter uppdateringar automatiskt",
+  "updateSilent": "Installera uppdateringar utan att fråga",
+  "updateSilentHint": "Hämtar i bakgrunden och installerar när du lämnar appen. Android frågar en gång, första gången."
 }

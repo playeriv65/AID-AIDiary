@@ -2828,4 +2828,60 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get feedbackEmail => 'E-mail sturen';
+
+  @override
+  String updateAvailable(String version) {
+    return 'AID Diary $version is beschikbaar';
+  }
+
+  @override
+  String get updateClosesNote =>
+      'De app sluit om de update te installeren; open hem daarna opnieuw.';
+
+  @override
+  String get updateLater => 'Later';
+
+  @override
+  String get updateSkip => 'Deze versie overslaan';
+
+  @override
+  String get updateInstall => 'Bijwerken';
+
+  @override
+  String updateDownloading(int percent) {
+    return 'Downloaden… $percent%';
+  }
+
+  @override
+  String get updateAllowInstall =>
+      'Sta AID Diary in de geopende instellingen toe apps te installeren en tik daarna opnieuw op Bijwerken.';
+
+  @override
+  String updateFailed(String reason) {
+    return 'De update kon niet worden geïnstalleerd: $reason';
+  }
+
+  @override
+  String updatedTo(String version) {
+    return 'Bijgewerkt naar $version';
+  }
+
+  @override
+  String get updateWhatsNew => 'Wat is er nieuw';
+
+  @override
+  String get updateCheckNow => 'Controleren op updates';
+
+  @override
+  String get updateNewest => 'Dit is de nieuwste versie.';
+
+  @override
+  String get updateAutoCheck => 'Automatisch controleren op updates';
+
+  @override
+  String get updateSilent => 'Updates installeren zonder te vragen';
+
+  @override
+  String get updateSilentHint =>
+      'Downloadt op de achtergrond en installeert als je de app verlaat. Android vraagt het de eerste keer één keer.';
 }

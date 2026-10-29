@@ -822,5 +822,20 @@
   "feedbackOpenFailed": "Nepavyko atidaryti programos.",
   "feedbackSendNote": "Siunčiama į AID Diary serverį su programos versija ir kalba, nieko iš jūsų dienoraščio.",
   "feedbackGithub": "GitHub problema",
-  "feedbackEmail": "Siųsti el. laišką"
+  "feedbackEmail": "Siųsti el. laišką",
+  "updateAvailable": "Galima AID Diary {version}",
+  "updateClosesNote": "Diegiant atnaujinimą programa užsidaro; po to atidarykite ją iš naujo.",
+  "updateLater": "Vėliau",
+  "updateSkip": "Praleisti šią versiją",
+  "updateInstall": "Atnaujinti",
+  "updateDownloading": "Atsisiunčiama… {percent} %",
+  "updateAllowInstall": "Atsidariusiuose nustatymuose leiskite AID Diary diegti programas, tada vėl palieskite Atnaujinti.",
+  "updateFailed": "Nepavyko įdiegti atnaujinimo: {reason}",
+  "updatedTo": "Atnaujinta į {version}",
+  "updateWhatsNew": "Kas naujo",
+  "updateCheckNow": "Tikrinti atnaujinimus",
+  "updateNewest": "Tai naujausia versija.",
+  "updateAutoCheck": "Tikrinti atnaujinimus automatiškai",
+  "updateSilent": "Diegti atnaujinimus neklausiant",
+  "updateSilentHint": "Atsisiunčia fone ir įdiegia, kai išeinate iš programos. Android paklausia vieną kartą, pirmą kartą."
 }

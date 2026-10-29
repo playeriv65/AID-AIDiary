@@ -2704,6 +2704,59 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get feedbackEmail => '邮件反馈';
+
+  @override
+  String updateAvailable(String version) {
+    return 'AID Diary $version 可以更新了';
+  }
+
+  @override
+  String get updateClosesNote => '安装更新时应用会关闭，之后重新打开即可。';
+
+  @override
+  String get updateLater => '以后再说';
+
+  @override
+  String get updateSkip => '跳过此版本';
+
+  @override
+  String get updateInstall => '更新';
+
+  @override
+  String updateDownloading(int percent) {
+    return '正在下载… $percent%';
+  }
+
+  @override
+  String get updateAllowInstall => '请在打开的设置中允许 AID Diary 安装应用，然后再点一次“更新”。';
+
+  @override
+  String updateFailed(String reason) {
+    return '更新未能安装：$reason';
+  }
+
+  @override
+  String updatedTo(String version) {
+    return '已更新到 $version';
+  }
+
+  @override
+  String get updateWhatsNew => '更新内容';
+
+  @override
+  String get updateCheckNow => '检查更新';
+
+  @override
+  String get updateNewest => '已是最新版本。';
+
+  @override
+  String get updateAutoCheck => '自动检查更新';
+
+  @override
+  String get updateSilent => '不询问直接安装更新';
+
+  @override
+  String get updateSilentHint => '在后台下载，离开应用时安装。第一次更新时安卓会询问一次。';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -5409,4 +5462,57 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get feedbackEmail => '電子郵件回饋';
+
+  @override
+  String updateAvailable(String version) {
+    return 'AID Diary $version 可以更新了';
+  }
+
+  @override
+  String get updateClosesNote => '安裝更新時應用程式會關閉，之後重新開啟即可。';
+
+  @override
+  String get updateLater => '稍後再說';
+
+  @override
+  String get updateSkip => '略過此版本';
+
+  @override
+  String get updateInstall => '更新';
+
+  @override
+  String updateDownloading(int percent) {
+    return '正在下載… $percent%';
+  }
+
+  @override
+  String get updateAllowInstall => '請在開啟的設定中允許 AID Diary 安裝應用程式，然後再點一次「更新」。';
+
+  @override
+  String updateFailed(String reason) {
+    return '更新未能安裝：$reason';
+  }
+
+  @override
+  String updatedTo(String version) {
+    return '已更新至 $version';
+  }
+
+  @override
+  String get updateWhatsNew => '更新內容';
+
+  @override
+  String get updateCheckNow => '檢查更新';
+
+  @override
+  String get updateNewest => '已是最新版本。';
+
+  @override
+  String get updateAutoCheck => '自動檢查更新';
+
+  @override
+  String get updateSilent => '不詢問直接安裝更新';
+
+  @override
+  String get updateSilentHint => '在背景下載，離開應用程式時安裝。第一次更新時 Android 會詢問一次。';
 }

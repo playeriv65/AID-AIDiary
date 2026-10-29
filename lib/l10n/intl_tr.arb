@@ -822,5 +822,20 @@
   "feedbackOpenFailed": "Uygulama açılamadı.",
   "feedbackSendNote": "Uygulama sürümü ve diliyle AID Diary sunucusuna gönderilir; günlüğünüzden hiçbir şey gönderilmez.",
   "feedbackGithub": "GitHub sorunu",
-  "feedbackEmail": "E-posta gönder"
+  "feedbackEmail": "E-posta gönder",
+  "updateAvailable": "AID Diary {version} kullanılabilir",
+  "updateClosesNote": "Güncellemeyi yüklemek için uygulama kapanır; ardından yeniden açın.",
+  "updateLater": "Daha sonra",
+  "updateSkip": "Bu sürümü atla",
+  "updateInstall": "Güncelle",
+  "updateDownloading": "İndiriliyor… %{percent}",
+  "updateAllowInstall": "Açılan ayarlarda AID Diary'nin uygulama yüklemesine izin verin, ardından Güncelle'ye yeniden dokunun.",
+  "updateFailed": "Güncelleme yüklenemedi: {reason}",
+  "updatedTo": "{version} sürümüne güncellendi",
+  "updateWhatsNew": "Yenilikler",
+  "updateCheckNow": "Güncellemeleri denetle",
+  "updateNewest": "Bu en yeni sürüm.",
+  "updateAutoCheck": "Güncellemeleri otomatik denetle",
+  "updateSilent": "Güncellemeleri sormadan yükle",
+  "updateSilentHint": "Arka planda indirir ve uygulamadan çıktığınızda yükler. Android ilk seferde bir kez sorar."
 }

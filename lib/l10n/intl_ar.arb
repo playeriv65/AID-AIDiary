@@ -822,5 +822,20 @@
   "feedbackOpenFailed": "تعذّر فتح التطبيق.",
   "feedbackSendNote": "تُرسل إلى خادم AID Diary مع إصدار التطبيق ولغته، دون أي شيء من يومياتك.",
   "feedbackGithub": "مشكلة على GitHub",
-  "feedbackEmail": "إرسال بريد"
+  "feedbackEmail": "إرسال بريد",
+  "updateAvailable": "يتوفر AID Diary {version}",
+  "updateClosesNote": "يُغلق التطبيق لتثبيت التحديث؛ افتحه مرة أخرى بعد ذلك.",
+  "updateLater": "لاحقًا",
+  "updateSkip": "تخطي هذا الإصدار",
+  "updateInstall": "تحديث",
+  "updateDownloading": "جارٍ التنزيل… {percent}%",
+  "updateAllowInstall": "اسمح لـ AID Diary بتثبيت التطبيقات في الإعدادات التي فُتحت، ثم انقر على تحديث مرة أخرى.",
+  "updateFailed": "تعذّر تثبيت التحديث: {reason}",
+  "updatedTo": "تم التحديث إلى {version}",
+  "updateWhatsNew": "ما الجديد",
+  "updateCheckNow": "التحقق من التحديثات",
+  "updateNewest": "هذا هو أحدث إصدار.",
+  "updateAutoCheck": "التحقق من التحديثات تلقائيًا",
+  "updateSilent": "تثبيت التحديثات دون سؤال",
+  "updateSilentHint": "ينزّل في الخلفية ويثبّت عند مغادرتك التطبيق. يسأل أندرويد مرة واحدة في المرة الأولى."
 }

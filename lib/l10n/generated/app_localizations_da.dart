@@ -2804,4 +2804,60 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String get feedbackEmail => 'Send e-mail';
+
+  @override
+  String updateAvailable(String version) {
+    return 'AID Diary $version er tilgængelig';
+  }
+
+  @override
+  String get updateClosesNote =>
+      'Appen lukker for at installere opdateringen; åbn den igen bagefter.';
+
+  @override
+  String get updateLater => 'Senere';
+
+  @override
+  String get updateSkip => 'Spring denne version over';
+
+  @override
+  String get updateInstall => 'Opdater';
+
+  @override
+  String updateDownloading(int percent) {
+    return 'Downloader… $percent %';
+  }
+
+  @override
+  String get updateAllowInstall =>
+      'Tillad AID Diary at installere apps i de åbnede indstillinger, og tryk så på Opdater igen.';
+
+  @override
+  String updateFailed(String reason) {
+    return 'Opdateringen kunne ikke installeres: $reason';
+  }
+
+  @override
+  String updatedTo(String version) {
+    return 'Opdateret til $version';
+  }
+
+  @override
+  String get updateWhatsNew => 'Nyheder';
+
+  @override
+  String get updateCheckNow => 'Søg efter opdateringer';
+
+  @override
+  String get updateNewest => 'Dette er den nyeste version.';
+
+  @override
+  String get updateAutoCheck => 'Søg automatisk efter opdateringer';
+
+  @override
+  String get updateSilent => 'Installer opdateringer uden at spørge';
+
+  @override
+  String get updateSilentHint =>
+      'Downloader i baggrunden og installerer, når du forlader appen. Android spørger én gang, første gang.';
 }

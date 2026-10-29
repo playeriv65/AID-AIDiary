@@ -2842,4 +2842,60 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get feedbackEmail => 'Trimite e-mail';
+
+  @override
+  String updateAvailable(String version) {
+    return 'AID Diary $version este disponibil';
+  }
+
+  @override
+  String get updateClosesNote =>
+      'Aplicația se închide pentru a instala actualizarea; deschide-o din nou după.';
+
+  @override
+  String get updateLater => 'Mai târziu';
+
+  @override
+  String get updateSkip => 'Omite această versiune';
+
+  @override
+  String get updateInstall => 'Actualizează';
+
+  @override
+  String updateDownloading(int percent) {
+    return 'Se descarcă… $percent%';
+  }
+
+  @override
+  String get updateAllowInstall =>
+      'Permite AID Diary să instaleze aplicații în setările deschise, apoi atinge din nou Actualizează.';
+
+  @override
+  String updateFailed(String reason) {
+    return 'Actualizarea nu a putut fi instalată: $reason';
+  }
+
+  @override
+  String updatedTo(String version) {
+    return 'Actualizat la $version';
+  }
+
+  @override
+  String get updateWhatsNew => 'Noutăți';
+
+  @override
+  String get updateCheckNow => 'Caută actualizări';
+
+  @override
+  String get updateNewest => 'Aceasta este cea mai nouă versiune.';
+
+  @override
+  String get updateAutoCheck => 'Caută actualizări automat';
+
+  @override
+  String get updateSilent => 'Instalează actualizările fără să întrebe';
+
+  @override
+  String get updateSilentHint =>
+      'Descarcă în fundal și instalează când părăsești aplicația. Android întreabă o dată, prima dată.';
 }

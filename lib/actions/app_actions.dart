@@ -20,6 +20,7 @@ import 'package:aid_diary/actions/settings_actions.dart';
 import 'package:aid_diary/actions/sync_actions.dart';
 import 'package:aid_diary/actions/tag_actions.dart';
 import 'package:aid_diary/actions/template_actions.dart';
+import 'package:aid_diary/actions/update_actions.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
@@ -53,6 +54,7 @@ class AppActions {
     ...screenActions,
     ...perfActions,
     ...agentActions,
+    ...updateActions,
   ];
 
   final List<AppAction> _actions;

@@ -5105,6 +5105,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Email feedback'**
   String get feedbackEmail;
+
+  /// No description provided for @updateAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'AID Diary {version} is available'**
+  String updateAvailable(String version);
+
+  /// No description provided for @updateClosesNote.
+  ///
+  /// In en, this message translates to:
+  /// **'The app closes to install the update; open it again afterwards.'**
+  String get updateClosesNote;
+
+  /// No description provided for @updateLater.
+  ///
+  /// In en, this message translates to:
+  /// **'Later'**
+  String get updateLater;
+
+  /// No description provided for @updateSkip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip this version'**
+  String get updateSkip;
+
+  /// No description provided for @updateInstall.
+  ///
+  /// In en, this message translates to:
+  /// **'Update'**
+  String get updateInstall;
+
+  /// No description provided for @updateDownloading.
+  ///
+  /// In en, this message translates to:
+  /// **'Downloading… {percent}%'**
+  String updateDownloading(int percent);
+
+  /// No description provided for @updateAllowInstall.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow AID Diary to install apps in the settings that opened, then tap Update again.'**
+  String get updateAllowInstall;
+
+  /// No description provided for @updateFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'The update could not be installed: {reason}'**
+  String updateFailed(String reason);
+
+  /// No description provided for @updatedTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Updated to {version}'**
+  String updatedTo(String version);
+
+  /// No description provided for @updateWhatsNew.
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s new'**
+  String get updateWhatsNew;
+
+  /// No description provided for @updateCheckNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Check for updates'**
+  String get updateCheckNow;
+
+  /// No description provided for @updateNewest.
+  ///
+  /// In en, this message translates to:
+  /// **'This is the newest version.'**
+  String get updateNewest;
+
+  /// No description provided for @updateAutoCheck.
+  ///
+  /// In en, this message translates to:
+  /// **'Check for updates automatically'**
+  String get updateAutoCheck;
+
+  /// No description provided for @updateSilent.
+  ///
+  /// In en, this message translates to:
+  /// **'Install updates without asking'**
+  String get updateSilent;
+
+  /// No description provided for @updateSilentHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Downloads in the background and installs when you leave the app. Android asks once, the first time.'**
+  String get updateSilentHint;
 }
 
 class _AppLocalizationsDelegate

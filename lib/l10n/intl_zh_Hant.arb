@@ -853,5 +853,20 @@
   "feedbackOpenFailed": "無法開啟應用程式。",
   "feedbackSendNote": "將連同應用程式版本與語言傳送到 AID Diary 伺服器，不包含日記內容。",
   "feedbackGithub": "到 GitHub 提 issue",
-  "feedbackEmail": "電子郵件回饋"
+  "feedbackEmail": "電子郵件回饋",
+  "updateAvailable": "AID Diary {version} 可以更新了",
+  "updateClosesNote": "安裝更新時應用程式會關閉，之後重新開啟即可。",
+  "updateLater": "稍後再說",
+  "updateSkip": "略過此版本",
+  "updateInstall": "更新",
+  "updateDownloading": "正在下載… {percent}%",
+  "updateAllowInstall": "請在開啟的設定中允許 AID Diary 安裝應用程式，然後再點一次「更新」。",
+  "updateFailed": "更新未能安裝：{reason}",
+  "updatedTo": "已更新至 {version}",
+  "updateWhatsNew": "更新內容",
+  "updateCheckNow": "檢查更新",
+  "updateNewest": "已是最新版本。",
+  "updateAutoCheck": "自動檢查更新",
+  "updateSilent": "不詢問直接安裝更新",
+  "updateSilentHint": "在背景下載，離開應用程式時安裝。第一次更新時 Android 會詢問一次。"
 }

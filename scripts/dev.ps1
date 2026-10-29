@@ -46,6 +46,11 @@ $desktopDefines = @()
 if ($tools['AID_GOOGLE_DESKTOP_SECRET']) {
   $desktopDefines += "--dart-define=AID_GOOGLE_DESKTOP_SECRET=$($tools['AID_GOOGLE_DESKTOP_SECRET'])"
 }
+# Android builds carry the time as their build number: UTC YYMMDDHH and the
+# ten minutes, as the nightly does, so a build updates any older one, local or
+# nightly (AGENTS.md, "Versions"; docs/UPDATES.md).
+$now = (Get-Date).ToUniversalTime()
+$buildNumber = $now.ToString('yyMMddHH') + [Math]::Floor($now.Minute / 10)
 # The agent's shell is Rust (rust/): app builds compile it through cargokit,
 # host tests load the library this builds.
 function Build-AgentShell {
@@ -142,13 +147,13 @@ switch ($Target) {
   }
   'windows-driver' { flutter run -d windows -t test_driver/app.dart }
   # Prints the DTD URI so the Dart MCP server can attach for hot reload.
-  'android' { flutter run -d $Device --flavor dev --print-dtd; Stop-Gradle }
-  'apk' { flutter build apk --debug --flavor dev; $code = $LASTEXITCODE; Stop-Gradle; exit $code }
+  'android' { flutter run -d $Device --flavor dev --build-number $buildNumber --print-dtd; Stop-Gradle }
+  'apk' { flutter build apk --debug --flavor dev --build-number $buildNumber; $code = $LASTEXITCODE; Stop-Gradle; exit $code }
   # The dev app in profile mode (compiled as release is, so frame rates
   # mean something), installed over the existing one with its data kept.
   # Phones and tablets here are arm64: one AOT compile instead of three.
   'profile' {
-    flutter build apk --profile --flavor dev --target-platform android-arm64
+    flutter build apk --profile --flavor dev --target-platform android-arm64 --build-number $buildNumber
     $code = $LASTEXITCODE
     Stop-Gradle
     if ($code -ne 0) { exit $code }
@@ -172,9 +177,9 @@ switch ($Target) {
   }
   # The everyday app: signed with android/key.properties (kept out of git)
   # and installed over the existing one, data kept, on -Device or else on
-  # every connected phone or tablet. Each release carries a new version
-  # (AGENTS.md, "Versions"): a device already on this version code or a
-  # newer one stops the build before it starts.
+  # every connected phone or tablet. The build number is the time
+  # (AGENTS.md, "Versions"): a device already on it or a newer one, say from
+  # a nightly built later, stops the build before it starts.
   'release' {
     $serials = if ($PSBoundParameters.ContainsKey('Device')) { @($Device) } else {
       foreach ($line in (adb devices | Select-Object -Skip 1)) {
@@ -182,17 +187,15 @@ switch ($Target) {
         if ($state -eq 'device' -and $serial -notlike 'emulator-*') { $serial }
       }
     }
-    $version = (Select-String -Path pubspec.yaml -Pattern '^version:\s*(\S+)\+(\d+)').Matches[0]
-    $newCode = [long]$version.Groups[2].Value
     foreach ($serial in $serials) {
       $installed = adb -s $serial shell dumpsys package dev.aid.diary |
         Select-String -Pattern 'versionCode=(\d+)' | Select-Object -First 1
-      if ($installed -and [long]$installed.Matches[0].Groups[1].Value -ge $newCode) {
-        Write-Error "$serial already has version code $($installed.Matches[0].Groups[1].Value); bump the version in pubspec.yaml (now $($version.Groups[1].Value)+$newCode)."
+      if ($installed -and [long]$installed.Matches[0].Groups[1].Value -ge [long]$buildNumber) {
+        Write-Error "$serial already has version code $($installed.Matches[0].Groups[1].Value), not older than this build ($buildNumber)."
         exit 1
       }
     }
-    flutter build apk --release --flavor independent --target-platform android-arm64
+    flutter build apk --release --flavor independent --target-platform android-arm64 --build-number $buildNumber
     $code = $LASTEXITCODE
     Stop-Gradle
     if ($code -ne 0) { exit $code }

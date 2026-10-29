@@ -822,5 +822,20 @@
   "feedbackOpenFailed": "アプリを開けませんでした。",
   "feedbackSendNote": "アプリのバージョンと言語とともに AID Diary のサーバーへ送られます。日記の内容は送りません。",
   "feedbackGithub": "GitHub で報告",
-  "feedbackEmail": "メールで送る"
+  "feedbackEmail": "メールで送る",
+  "updateAvailable": "AID Diary {version} にアップデートできます",
+  "updateClosesNote": "アップデートのインストール中はアプリが閉じます。その後もう一度開いてください。",
+  "updateLater": "後で",
+  "updateSkip": "このバージョンをスキップ",
+  "updateInstall": "アップデート",
+  "updateDownloading": "ダウンロード中… {percent}%",
+  "updateAllowInstall": "開いた設定で AID Diary にアプリのインストールを許可してから、もう一度「アップデート」をタップしてください。",
+  "updateFailed": "アップデートをインストールできませんでした：{reason}",
+  "updatedTo": "{version} にアップデートしました",
+  "updateWhatsNew": "新機能",
+  "updateCheckNow": "アップデートを確認",
+  "updateNewest": "最新バージョンです。",
+  "updateAutoCheck": "アップデートを自動で確認",
+  "updateSilent": "確認せずにアップデートをインストール",
+  "updateSilentHint": "バックグラウンドでダウンロードし、アプリを離れたときにインストールします。初回だけ Android が確認します。"
 }

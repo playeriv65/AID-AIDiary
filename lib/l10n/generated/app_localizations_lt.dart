@@ -2841,4 +2841,60 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String get feedbackEmail => 'Siųsti el. laišką';
+
+  @override
+  String updateAvailable(String version) {
+    return 'Galima AID Diary $version';
+  }
+
+  @override
+  String get updateClosesNote =>
+      'Diegiant atnaujinimą programa užsidaro; po to atidarykite ją iš naujo.';
+
+  @override
+  String get updateLater => 'Vėliau';
+
+  @override
+  String get updateSkip => 'Praleisti šią versiją';
+
+  @override
+  String get updateInstall => 'Atnaujinti';
+
+  @override
+  String updateDownloading(int percent) {
+    return 'Atsisiunčiama… $percent %';
+  }
+
+  @override
+  String get updateAllowInstall =>
+      'Atsidariusiuose nustatymuose leiskite AID Diary diegti programas, tada vėl palieskite Atnaujinti.';
+
+  @override
+  String updateFailed(String reason) {
+    return 'Nepavyko įdiegti atnaujinimo: $reason';
+  }
+
+  @override
+  String updatedTo(String version) {
+    return 'Atnaujinta į $version';
+  }
+
+  @override
+  String get updateWhatsNew => 'Kas naujo';
+
+  @override
+  String get updateCheckNow => 'Tikrinti atnaujinimus';
+
+  @override
+  String get updateNewest => 'Tai naujausia versija.';
+
+  @override
+  String get updateAutoCheck => 'Tikrinti atnaujinimus automatiškai';
+
+  @override
+  String get updateSilent => 'Diegti atnaujinimus neklausiant';
+
+  @override
+  String get updateSilentHint =>
+      'Atsisiunčia fone ir įdiegia, kai išeinate iš programos. Android paklausia vieną kartą, pirmą kartą.';
 }

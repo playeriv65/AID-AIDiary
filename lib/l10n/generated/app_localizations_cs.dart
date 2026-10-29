@@ -2805,4 +2805,60 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String get feedbackEmail => 'Poslat e-mail';
+
+  @override
+  String updateAvailable(String version) {
+    return 'Je k dispozici AID Diary $version';
+  }
+
+  @override
+  String get updateClosesNote =>
+      'Aplikace se kvůli instalaci zavře; potom ji znovu otevřete.';
+
+  @override
+  String get updateLater => 'Později';
+
+  @override
+  String get updateSkip => 'Přeskočit tuto verzi';
+
+  @override
+  String get updateInstall => 'Aktualizovat';
+
+  @override
+  String updateDownloading(int percent) {
+    return 'Stahování… $percent %';
+  }
+
+  @override
+  String get updateAllowInstall =>
+      'V otevřeném nastavení povolte AID Diary instalovat aplikace a znovu klepněte na Aktualizovat.';
+
+  @override
+  String updateFailed(String reason) {
+    return 'Aktualizaci se nepodařilo nainstalovat: $reason';
+  }
+
+  @override
+  String updatedTo(String version) {
+    return 'Aktualizováno na $version';
+  }
+
+  @override
+  String get updateWhatsNew => 'Co je nového';
+
+  @override
+  String get updateCheckNow => 'Zkontrolovat aktualizace';
+
+  @override
+  String get updateNewest => 'Toto je nejnovější verze.';
+
+  @override
+  String get updateAutoCheck => 'Kontrolovat aktualizace automaticky';
+
+  @override
+  String get updateSilent => 'Instalovat aktualizace bez ptaní';
+
+  @override
+  String get updateSilentHint =>
+      'Stahuje na pozadí a instaluje, když aplikaci opustíte. Android se poprvé jednou zeptá.';
 }

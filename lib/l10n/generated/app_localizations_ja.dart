@@ -2742,4 +2742,59 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get feedbackEmail => 'メールで送る';
+
+  @override
+  String updateAvailable(String version) {
+    return 'AID Diary $version にアップデートできます';
+  }
+
+  @override
+  String get updateClosesNote => 'アップデートのインストール中はアプリが閉じます。その後もう一度開いてください。';
+
+  @override
+  String get updateLater => '後で';
+
+  @override
+  String get updateSkip => 'このバージョンをスキップ';
+
+  @override
+  String get updateInstall => 'アップデート';
+
+  @override
+  String updateDownloading(int percent) {
+    return 'ダウンロード中… $percent%';
+  }
+
+  @override
+  String get updateAllowInstall =>
+      '開いた設定で AID Diary にアプリのインストールを許可してから、もう一度「アップデート」をタップしてください。';
+
+  @override
+  String updateFailed(String reason) {
+    return 'アップデートをインストールできませんでした：$reason';
+  }
+
+  @override
+  String updatedTo(String version) {
+    return '$version にアップデートしました';
+  }
+
+  @override
+  String get updateWhatsNew => '新機能';
+
+  @override
+  String get updateCheckNow => 'アップデートを確認';
+
+  @override
+  String get updateNewest => '最新バージョンです。';
+
+  @override
+  String get updateAutoCheck => 'アップデートを自動で確認';
+
+  @override
+  String get updateSilent => '確認せずにアップデートをインストール';
+
+  @override
+  String get updateSilentHint =>
+      'バックグラウンドでダウンロードし、アプリを離れたときにインストールします。初回だけ Android が確認します。';
 }
