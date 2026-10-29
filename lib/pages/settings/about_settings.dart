@@ -65,7 +65,15 @@ class _UpdateSettings extends StatefulWidget {
 }
 
 class _UpdateSettingsState extends State<_UpdateSettings> {
-  final _enabled = AppUpdates.instance.enabled();
+  /// Whether this build updates itself, and whether it can without asking.
+  final _abilities = () async {
+    final updates = AppUpdates.instance;
+    final enabled = await updates.enabled();
+    return (
+      enabled: enabled,
+      silent: enabled && await updates.silentSupported()
+    );
+  }();
   bool _checking = false;
 
   Future<void> _checkNow() async {
@@ -91,9 +99,9 @@ class _UpdateSettingsState extends State<_UpdateSettings> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    return FutureBuilder<bool>(
-      future: _enabled,
-      builder: (context, snapshot) => snapshot.data != true
+    return FutureBuilder<({bool enabled, bool silent})>(
+      future: _abilities,
+      builder: (context, snapshot) => snapshot.data?.enabled != true
           ? const SizedBox.shrink()
           : Column(children: [
               SettingsRow(
@@ -112,12 +120,14 @@ class _UpdateSettingsState extends State<_UpdateSettings> {
                   setting: Settings.updateChecks,
                   onChanged: (value) =>
                       changeSetting(Settings.updateChecks, value)),
-              SettingsToggle(
-                  title: l10n.updateSilent,
-                  hint: l10n.updateSilentHint,
-                  setting: Settings.silentUpdates,
-                  onChanged: (value) =>
-                      changeSetting(Settings.silentUpdates, value)),
+              // HyperOS and MIUI always ask before an install.
+              if (snapshot.data!.silent)
+                SettingsToggle(
+                    title: l10n.updateSilent,
+                    hint: l10n.updateSilentHint,
+                    setting: Settings.silentUpdates,
+                    onChanged: (value) =>
+                        changeSetting(Settings.silentUpdates, value)),
             ]),
     );
   }

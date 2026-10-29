@@ -31,6 +31,17 @@ server first, which mainland China reaches, then GitHub, which it often
 does not. Until the server mirrors the release, its address fails and the
 app goes on to GitHub.
 
+## Server mirror
+
+On the AID server (`netlab_main`), `aid-update-mirror.timer` runs
+`/srv/aid-updates/mirror.sh` hourly (`server/deploy/update-mirror/`): it
+fetches the nightly's `latest.json` from GitHub, and when its build is new,
+downloads every file, checks each against the manifest's SHA-256, and puts
+the manifest up last in `/srv/aid-updates/www`, which nginx serves at
+`https://aid.playeriv65.com/updates/` (`server/deploy/nginx.conf`). The
+server holds no GitHub credential. Deployed on 2026-10-29; the nginx site
+from before is in `/srv/aid-sync/backups/`.
+
 ## Build numbers
 
 Android builds carry the time as their build number, UTC `YYMMDDHH` and the
@@ -55,7 +66,12 @@ the builds.
 - **Silently** ("Install updates without asking", off by default): the app
   downloads in the background and installs when the user leaves it. Android
   12 and later allow that only once the app installed itself; until then,
-  and on older Android, the dialog asks instead.
+  and on older Android, the dialog asks instead. HyperOS and MIUI never
+  allow it: they refuse an install session that asks for no user action
+  from an app Xiaomi has not listed (`INSTALL_FAILED_ABORTED: Permission
+  denied`, from `PKMSImpl.assertCallerAndPackage`), so on Xiaomi devices
+  the session always asks, HyperOS shows its own confirmation, and the
+  switch is not offered (tested on the Xiaomi Pad 7, 2026-10-29).
 - **After an update** the app says so once, with the notes.
 
 Before it installs, the app checks the download's size and SHA-256 against

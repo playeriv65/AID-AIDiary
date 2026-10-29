@@ -40,6 +40,7 @@ class AppUpdater(private val activity: Activity, messenger: BinaryMessenger) {
           // F-Droid's client updates its builds, signed with F-Droid's key.
           "enabled" -> result.success(BuildConfig.FLAVOR != "fdroid")
           "canInstallSilently" -> result.success(canInstallSilently())
+          "silentSupported" -> result.success(Build.VERSION.SDK_INT >= 31 && !xiaomi)
           "install" -> install(File(call.argument<String>("path") ?: ""), result)
           else -> result.notImplemented()
         }
@@ -59,10 +60,16 @@ class AppUpdater(private val activity: Activity, messenger: BinaryMessenger) {
     context.packageManager.getInstallSourceInfo(packageName).installingPackageName
   } else context.packageManager.getInstallerPackageName(packageName)
 
+  /** HyperOS (and MIUI) refuse an install session that asks for no user
+   * action from any app Xiaomi has not listed, with INSTALL_FAILED_ABORTED
+   * "Permission denied" (PKMSImpl.assertCallerAndPackage); there the system
+   * always asks. */
+  private val xiaomi = Build.MANUFACTURER.equals("Xiaomi", ignoreCase = true)
+
   /** Android 12 lets an app replace itself unasked once it is the one that
    * installed itself. */
-  private fun canInstallSilently() = Build.VERSION.SDK_INT >= 31 && mayInstall() &&
-    installer() == packageName
+  private fun canInstallSilently() = Build.VERSION.SDK_INT >= 31 && !xiaomi &&
+    mayInstall() && installer() == packageName
 
   @Suppress("DEPRECATION")
   private fun signers(info: PackageInfo): Set<String> {
@@ -113,7 +120,8 @@ class AppUpdater(private val activity: Activity, messenger: BinaryMessenger) {
       setAppPackageName(packageName)
       setSize(file.length())
       if (Build.VERSION.SDK_INT >= 31) {
-        setRequireUserAction(PackageInstaller.SessionParams.USER_ACTION_NOT_REQUIRED)
+        setRequireUserAction(if (xiaomi) PackageInstaller.SessionParams.USER_ACTION_REQUIRED
+          else PackageInstaller.SessionParams.USER_ACTION_NOT_REQUIRED)
       }
     }
     val id = installer.createSession(params)

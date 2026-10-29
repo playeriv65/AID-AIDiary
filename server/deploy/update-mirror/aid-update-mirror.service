@@ -1,0 +1,9 @@
+[Unit]
+Description=Mirror the AID Diary nightly release for app updates
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=ubuntu
+ExecStart=/srv/aid-updates/mirror.sh

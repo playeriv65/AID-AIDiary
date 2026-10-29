@@ -1,0 +1,10 @@
+[Unit]
+Description=Mirror the AID Diary nightly release hourly
+
+[Timer]
+OnBootSec=5min
+OnUnitActiveSec=1h
+RandomizedDelaySec=5min
+
+[Install]
+WantedBy=timers.target

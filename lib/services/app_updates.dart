@@ -228,6 +228,11 @@ class AppUpdates {
     return file;
   }
 
+  /// Whether this device can ever install updates without asking: Android
+  /// 12 or later, and not HyperOS or MIUI, which always ask.
+  Future<bool> silentSupported() async =>
+      await channel.invokeMethod<bool>('silentSupported') ?? false;
+
   /// Whether Android lets this app replace itself without asking: it
   /// installed itself before and may install apps.
   Future<bool> canInstallSilently() async =>
