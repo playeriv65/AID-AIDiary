@@ -1,6 +1,7 @@
-# Daily installable packages for Windows, Android and Linux, plus the checks
-# on Windows; every push is checked by ci.yml. A day without commits is
-# skipped. See docs/TESTING.md ("Continuous integration").
+# Daily installable packages for Windows, Android and Linux, released only
+# when ci.yml's checks pass on the same commit (run here, on Linux, beside
+# the packaging). A day without commits is skipped. See docs/TESTING.md
+# ("Continuous integration").
 name: Nightly
 
 on:
@@ -42,11 +43,21 @@ jobs:
             echo "run=false" >> "$GITHUB_OUTPUT"
           fi
 
+  # Analysis and the offline tests, as on every push, on Linux: the same
+  # suite takes twice as long on Windows' file system.
+  checks:
+    needs: changes
+    if: needs.changes.outputs.run == 'true'
+    uses: ./.github/workflows/ci.yml
+
   windows:
     needs: changes
     if: needs.changes.outputs.run == 'true'
     runs-on: windows-latest
     timeout-minutes: 60
+    env:
+      # Show cargo's progress, which the build otherwise hides.
+      CARGOKIT_VERBOSE: "1"
     steps:
       - uses: actions/checkout@v4
         with:
@@ -61,27 +72,18 @@ jobs:
           cache: true
           pub-cache: true
       - run: flutter pub get
-      # The root analyzer also sees the CLI package, as in dev.ps1 analyze.
-      - working-directory: cli
-        run: dart pub get
-      - run: flutter analyze
-      # The agent's shell (rust/): its tests load the library cargo builds,
-      # and the Windows bundle builds it again through cargokit. Both are
-      # kept between runs; unchanged Rust is not compiled again.
+      # The Windows bundle builds the agent's shell (rust/) through cargokit;
+      # kept between runs, unchanged Rust is not compiled again.
       - uses: Swatinem/rust-cache@v2
         with:
           key: windows
           workspaces: rust
           cache-workspace-crates: true
           cache-directories: build/windows/x64/plugins/aid_shell/cargokit_build
-      - run: cargo build --release --manifest-path rust/Cargo.toml
-      - run: flutter test -j 4 --exclude-tags live
       - name: Command line
         working-directory: cli
         run: |
           dart pub get
-          dart analyze
-          dart test
           New-Item -ItemType Directory -Force ..\build\cli | Out-Null
           dart compile exe bin/aid.dart -o ..\build\cli\aid.exe
       # Without the repository secret the build offers no Google Drive.
@@ -222,23 +224,8 @@ jobs:
             aid-linux
           retention-days: 7
 
-  server:
-    needs: changes
-    if: needs.changes.outputs.run == 'true'
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
-        with:
-          go-version-file: server/go.mod
-      - working-directory: server
-        run: |
-          go vet ./...
-          go test ./...
-
   release:
-    needs: [changes, windows, android, linux, server]
+    needs: [changes, checks, windows, android, linux]
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ github.token }}

@@ -11,9 +11,13 @@ on:
       - "**.md"
       - "docs/**"
   workflow_dispatch:
+  # The nightly runs these checks before it releases.
+  workflow_call:
 
 concurrency:
-  group: ci-${{ github.ref }}
+  # Called from the nightly, github.workflow is the nightly's: its checks
+  # and a push's do not cancel each other.
+  group: ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 env:

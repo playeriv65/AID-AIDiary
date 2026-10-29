@@ -258,13 +258,22 @@ Two workflows run on GitHub's runners:
 - `.github/workflows/nightly.yml` packages once a day (09:00 UTC) and on
   demand (Actions > Nightly > Run workflow, or `gh workflow run
   nightly.yml`). A scheduled run with no commits in the last 25 hours does
-  nothing. It runs what the full local regression runs:
+  nothing. It runs, in parallel:
 
-- Windows: `flutter analyze`, the offline suite (`--exclude-tags live`), the
-  CLI's analysis, tests and executable, and a Windows release bundle.
+- Checks: `ci.yml` itself, on Linux (analysis, the offline suite, the CLI's
+  analysis and tests, the server's `go vet` and `go test`). The same suite
+  takes twice as long on Windows, where small-file work is slow.
+- Windows: the `aid.exe` executable and a Windows release bundle.
 - Android: release APKs of the everyday and development flavors.
 - Linux: a release bundle (GTK) and the `aid` executable.
-- Server: `go vet` and `go test`.
+
+Runs keep the Flutter SDK, pub packages, Gradle's caches and the Rust
+builds (the test library and cargokit's per-platform builds) in the
+Actions cache, 10 GB per repository, evicted after 7 days unused; files get
+their last commit's time after checkout so cargo finds unchanged Rust
+current. With warm caches a nightly takes about a quarter of an hour, the
+Android job being the longest: Dart's release compile and R8 run whole for
+each of the two flavours.
 
 When all pass, the rolling prerelease `nightly` is replaced with the APKs,
 the Windows ZIP and `aid.exe`, the Linux tarball and `aid`, and `latest.json`,
