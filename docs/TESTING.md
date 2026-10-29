@@ -271,7 +271,8 @@ Runs keep the Flutter SDK, pub packages, Gradle's caches and the Rust
 builds (the test library and cargokit's per-platform builds) in the
 Actions cache, 10 GB per repository, evicted after 7 days unused; files get
 their last commit's time after checkout so cargo finds unchanged Rust
-current. With warm caches a nightly takes about a quarter of an hour, the
+current. With warm caches a nightly takes about 11 minutes (23 without;
+measured 2026-10-29), the
 Android job being the longest: Dart's release compile and R8 run whole for
 each of the two flavours.
 
