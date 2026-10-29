@@ -4,6 +4,7 @@
 
 import 'dart:io';
 
+import 'package:aid_diary/actions/settings_actions.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/services/app_updates.dart';
@@ -155,8 +156,7 @@ class _UpdateDialogState extends State<_UpdateDialog> {
   }
 
   Future<void> _skip() async {
-    await ConfigProvider.instance
-        .set(Settings.skippedUpdate, widget.update.build);
+    await changeSetting(Settings.skippedUpdate, widget.update.build);
     if (mounted) Navigator.pop(context);
   }
 
