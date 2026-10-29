@@ -25,11 +25,17 @@ jobs:
     timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      # Files keep their last commit's time, so cargo finds the cached
+      # Rust builds current (a checkout stamps every file with now).
+      - uses: chetan/git-restore-mtime-action@v2
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: stable
           cache: true
+          pub-cache: true
       - run: flutter pub get
       # The root analyzer also sees the CLI package, as in dev.ps1 analyze.
       - working-directory: cli
@@ -39,6 +45,7 @@ jobs:
       - uses: Swatinem/rust-cache@v2
         with:
           workspaces: rust
+          cache-workspace-crates: true
       - run: cargo build --release --manifest-path rust/Cargo.toml
       - run: flutter test -j 4 --exclude-tags live
       - name: Command line

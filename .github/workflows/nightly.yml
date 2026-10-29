@@ -49,17 +49,31 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      # Files keep their last commit's time, so cargo finds the cached
+      # Rust builds current (a checkout stamps every file with now).
+      - uses: chetan/git-restore-mtime-action@v2
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: stable
           cache: true
+          pub-cache: true
       - run: flutter pub get
       # The root analyzer also sees the CLI package, as in dev.ps1 analyze.
       - working-directory: cli
         run: dart pub get
       - run: flutter analyze
-      # The agent's shell (rust/): its tests load the library cargo builds.
+      # The agent's shell (rust/): its tests load the library cargo builds,
+      # and the Windows bundle builds it again through cargokit. Both are
+      # kept between runs; unchanged Rust is not compiled again.
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: windows
+          workspaces: rust
+          cache-workspace-crates: true
+          cache-directories: build/windows/x64/plugins/aid_shell/cargokit_build
       - run: cargo build --release --manifest-path rust/Cargo.toml
       - run: flutter test -j 4 --exclude-tags live
       - name: Command line
@@ -105,18 +119,34 @@ jobs:
             "$AGENT_TOOLSDIRECTORY/CodeQL"
           df -h /
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      # Files keep their last commit's time, so cargo finds the cached
+      # Rust builds current (a checkout stamps every file with now).
+      - uses: chetan/git-restore-mtime-action@v2
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: "21"
+      # Gradle's dependencies and build cache, kept between runs.
+      - uses: gradle/actions/setup-gradle@v4
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: stable
           cache: true
+          pub-cache: true
       - run: flutter pub get
-      # cargokit compiles the agent's shell (rust/) for the APK's ABI.
+      # cargokit compiles the agent's shell (rust/) for the APK's ABI, into
+      # build/aid_shell/build; kept between runs, unchanged Rust is not
+      # compiled again.
       - run: rustup target add aarch64-linux-android
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: android
+          workspaces: rust
+          cache-workspace-crates: true
+          cache-directories: build/aid_shell/build
       # The release key from the repository's secrets, so the packages
       # update installed apps (docs/UPDATES.md).
       - name: Signing key
