@@ -4,6 +4,7 @@
 
 import 'dart:convert';
 import 'dart:io';
+import 'dart:ui' show Locale;
 
 import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/config_provider.dart';
@@ -29,8 +30,9 @@ class AppUpdate {
   final String version;
   final int build;
 
-  /// The commits since the build before it, one line each.
-  final List<String> notes;
+  /// What changed since the build before it, one line each, by language
+  /// (`en`, `zh`, `zh_Hant`, ...): CHANGES.json's entries.
+  final Map<String, List<String>> notes;
   final Uri url;
   final String sha256;
   final int size;
@@ -38,6 +40,34 @@ class AppUpdate {
   /// How the user sees it: every nightly shares a version name, so the
   /// build number tells them apart.
   String get label => '$version ($build)';
+
+  /// The notes in [locale]'s language: with its script or region when the
+  /// manifest has them, else the language, else English.
+  List<String> notesFor(Locale locale) {
+    final language = locale.languageCode;
+    for (final key in [
+      if (locale.scriptCode case final script?) '${language}_$script',
+      if (locale.countryCode case final country?) '${language}_$country',
+      language,
+      'en',
+    ]) {
+      if (notes[key] case final lines?) return lines;
+    }
+    return const [];
+  }
+
+  /// Notes as the manifest or settings hold them: by language, or, from a
+  /// manifest or an app before languages, one English list.
+  static Map<String, List<String>> _notes(
+          Object? byLanguage, Object? english) =>
+      byLanguage is Map
+          ? {
+              for (final MapEntry(:key, :value) in byLanguage.entries)
+                '$key': [for (final line in value as List) '$line'],
+            }
+          : {
+              'en': [for (final line in english as List? ?? []) '$line'],
+            };
 
   /// The entry for [package] in the manifest found at [source], newer than
   /// [installed]; null when it has none or none newer. Files are named
@@ -54,7 +84,7 @@ class AppUpdate {
     return AppUpdate(
       version: manifest['version'] as String,
       build: build,
-      notes: [for (final note in manifest['notes'] as List? ?? []) '$note'],
+      notes: _notes(manifest['notesByLanguage'], manifest['notes']),
       url: source.resolve(name),
       sha256: file['sha256'] as String,
       size: file['size'] as int,
@@ -73,7 +103,7 @@ class AppUpdate {
   factory AppUpdate.fromJson(Map<String, dynamic> json) => AppUpdate(
         version: json['version'] as String,
         build: json['build'] as int,
-        notes: [for (final note in json['notes'] as List) '$note'],
+        notes: _notes(json['notes'], json['notes']),
         url: Uri.parse(json['url'] as String),
         sha256: json['sha256'] as String,
         size: json['size'] as int,

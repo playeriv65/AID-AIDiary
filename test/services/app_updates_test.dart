@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:ui' show Locale;
 
 import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/config_provider.dart';
@@ -68,7 +69,8 @@ void main() {
         source: Uri.parse(_server), package: 'android', installed: 261028090)!;
     expect(update.label, '0.1.0 (261029183)');
     expect(update.url, Uri.parse('https://aid.example/updates/aid-diary.apk'));
-    expect(update.notes, hasLength(2));
+    // A manifest without languages: its lines are English.
+    expect(update.notesFor(const Locale('zh')), hasLength(2));
     expect(
         AppUpdate.from(_manifest(),
             source: Uri.parse(_server),
@@ -79,6 +81,26 @@ void main() {
         AppUpdate.from(_manifest(),
             source: Uri.parse(_server), package: 'windows', installed: 0),
         isNull);
+  });
+
+  test('notes come in the app language, else English', () {
+    final manifest = _manifest()
+      ..['notesByLanguage'] = {
+        'en': ['Updates by themselves'],
+        'zh': ['会自己更新'],
+        'zh_Hant': ['會自己更新'],
+      };
+    final update = AppUpdate.from(manifest,
+        source: Uri.parse(_server), package: 'android', installed: 0)!;
+    expect(update.notesFor(const Locale('zh')), ['会自己更新']);
+    expect(
+        update.notesFor(
+            const Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant')),
+        ['會自己更新']);
+    expect(update.notesFor(const Locale('ja')), ['Updates by themselves']);
+    // Kept through an install, as the "updated" note reads it back.
+    expect(AppUpdate.fromJson(update.toJson()).notesFor(const Locale('zh')),
+        ['会自己更新']);
   });
 
   test('a file name that leaves the manifest folder is refused', () {

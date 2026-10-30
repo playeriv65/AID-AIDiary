@@ -1,5 +1,6 @@
 """Writes latest.json, the release manifest apps check for updates
-(docs/UPDATES.md), for the packages in a folder.
+(docs/UPDATES.md), for the packages in a folder. Its notes are the
+CHANGES.json entries added since the last release, in each language.
 
     python3 scripts/release_manifest.py --dist dist --build 261029183 \
         --commit <sha> [--previous <sha of the last release>] > dist/latest.json
@@ -20,21 +21,32 @@ FILES = {
     'windows': 'aid-diary-windows.zip',
     'linux': 'aid-diary-linux.tar.gz',
 }
-MAX_NOTES = 40
+# Without a release to compare with, the newest entries of CHANGES.json.
+LATEST_CHANGES = 5
 
 
-def git(*args):
-    return subprocess.run(['git', *args], check=True, capture_output=True,
-                          text=True).stdout
+def changes_at(commit):
+    """CHANGES.json as it was at [commit]; empty when it was not there."""
+    shown = subprocess.run(['git', 'show', f'{commit}:CHANGES.json'],
+                           capture_output=True, text=True, encoding='utf-8')
+    return json.loads(shown.stdout) if shown.returncode == 0 else []
 
 
-def notes(commit, previous):
-    """Commit subjects since the last release, or the latest ones."""
-    span = [f'{previous}..{commit}'] if previous and subprocess.run(
-        ['git', 'merge-base', '--is-ancestor', previous, commit]).returncode == 0 \
-        else [commit, f'-{MAX_NOTES}']
-    return [line for line in git('log', '--no-merges', '--format=%s', *span)
-            .splitlines() if line][:MAX_NOTES]
+def changes(commit, previous):
+    """The CHANGES.json entries added since the last release."""
+    entries = changes_at(commit)
+    if not previous or subprocess.run(
+            ['git', 'merge-base', '--is-ancestor', previous, commit]).returncode:
+        return entries[-LATEST_CHANGES:]
+    released = {entry['id'] for entry in changes_at(previous)}
+    return [entry for entry in entries if entry['id'] not in released]
+
+
+def notes_by_language(entries):
+    """Each language's lines; an entry without one says it in English."""
+    languages = {key for entry in entries for key in entry if key != 'id'}
+    return {language: [entry.get(language, entry['en']) for entry in entries]
+            for language in sorted(languages)}
 
 
 def main():
@@ -53,12 +65,15 @@ def main():
         data = path.read_bytes()
         files[key] = {'name': name, 'size': len(data),
                       'sha256': hashlib.sha256(data).hexdigest()}
+    entries = changes(args.commit, args.previous)
     json.dump({
         'version': version,
         'build': args.build,
         'commit': args.commit,
         'published': datetime.now(timezone.utc).isoformat(timespec='seconds'),
-        'notes': notes(args.commit, args.previous),
+        # English lines for apps from before notesByLanguage.
+        'notes': [entry['en'] for entry in entries],
+        'notesByLanguage': notes_by_language(entries),
         'files': files,
     }, sys.stdout, ensure_ascii=False, indent=2)
     sys.stdout.write('\n')

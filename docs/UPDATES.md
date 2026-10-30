@@ -14,7 +14,8 @@ its packages, written by `scripts/release_manifest.py`:
   "build": 261029183,
   "commit": "…",
   "published": "2026-10-29T18:30:00+00:00",
-  "notes": ["commit subjects since the last nightly"],
+  "notes": ["English lines, for apps from before notesByLanguage"],
+  "notesByLanguage": {"en": ["…"], "zh": ["…"], "zh_Hant": ["…"]},
   "files": {
     "android": {"name": "aid-diary.apk", "size": 0, "sha256": "…"},
     "android-dev": {"name": "aid-diary-dev.apk", "size": 0, "sha256": "…"},
@@ -23,6 +24,13 @@ its packages, written by `scripts/release_manifest.py`:
   }
 }
 ```
+
+The notes are what users read: the entries of `CHANGES.json` added since
+the last release, each written for users (not a commit subject) in
+English, Simplified and Traditional Chinese. The app shows its language's
+lines (with the script, then the language, then English); other languages
+get English until they have their own lines. `notes` keeps the English
+list in the shape apps before 2026-10-29 read.
 
 Files are named, not linked: the app fetches them beside the manifest it
 read, so a mirror serves the same manifest unchanged. The app asks the

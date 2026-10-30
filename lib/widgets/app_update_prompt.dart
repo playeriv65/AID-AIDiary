@@ -65,7 +65,7 @@ class AppUpdatePrompt with WidgetsBindingObserver {
   }
 }
 
-/// What [update] changed, one commit a line.
+/// What [update] changed, a line each, in the app's language.
 Future<void> showUpdateNotes(BuildContext context, AppUpdate update) =>
     showDialog(
       context: context,
@@ -100,7 +100,8 @@ class _Notes extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              for (final note in update.notes)
+              for (final note
+                  in update.notesFor(Localizations.localeOf(context)))
                 Padding(
                   padding: const EdgeInsets.only(bottom: 4),
                   child: Text('• $note'),
@@ -167,36 +168,51 @@ class _UpdateDialogState extends State<_UpdateDialog> {
     final busy = _progress != null;
     return AlertDialog(
       key: const ValueKey('update-dialog'),
+      // Room for the three buttons in one row on a phone.
+      insetPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
       title: Text(l10n.updateAvailable(widget.update.label)),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Flexible(child: _Notes(widget.update)),
-          const SizedBox(height: 12),
-          if (busy) ...[
-            LinearProgressIndicator(value: _progress),
-            const SizedBox(height: 8),
-            Text(l10n.updateDownloading((_progress! * 100).round())),
-          ] else
-            Text(_message ?? l10n.updateClosesNote,
-                style: _message == null
-                    ? theme.textTheme.bodySmall
-                    : theme.textTheme.bodySmall
-                        ?.copyWith(color: theme.colorScheme.error)),
-        ],
+      content: SizedBox(
+        width: 440,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Flexible(child: _Notes(widget.update)),
+            const SizedBox(height: 12),
+            if (busy) ...[
+              LinearProgressIndicator(value: _progress),
+              const SizedBox(height: 8),
+              Text(l10n.updateDownloading((_progress! * 100).round())),
+            ] else
+              Text(_message ?? l10n.updateClosesNote,
+                  style: _message == null
+                      ? theme.textTheme.bodySmall
+                      : theme.textTheme.bodySmall
+                          ?.copyWith(color: theme.colorScheme.error)),
+            const SizedBox(height: 20),
+            // One row: skipping on its own at the start, the two answers
+            // at the end. Skipping gives way first on a narrow screen.
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              Flexible(
+                child: TextButton(
+                    onPressed: busy ? null : _skip,
+                    child: Text(l10n.updateSkip,
+                        maxLines: 1, overflow: TextOverflow.ellipsis)),
+              ),
+              Row(mainAxisSize: MainAxisSize.min, children: [
+                TextButton(
+                    onPressed: busy ? null : () => Navigator.pop(context),
+                    child: Text(l10n.updateLater)),
+                const SizedBox(width: 8),
+                FilledButton(
+                    key: const ValueKey('update-install'),
+                    onPressed: busy ? null : _install,
+                    child: Text(l10n.updateInstall)),
+              ]),
+            ]),
+          ],
+        ),
       ),
-      actions: [
-        TextButton(
-            onPressed: busy ? null : _skip, child: Text(l10n.updateSkip)),
-        TextButton(
-            onPressed: busy ? null : () => Navigator.pop(context),
-            child: Text(l10n.updateLater)),
-        FilledButton(
-            key: const ValueKey('update-install'),
-            onPressed: busy ? null : _install,
-            child: Text(l10n.updateInstall)),
-      ],
     );
   }
 }

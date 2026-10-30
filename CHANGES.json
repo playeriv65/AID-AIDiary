@@ -1,0 +1,20 @@
+[
+  {
+    "id": "2026-10-29-self-update",
+    "en": "AID Diary checks for a newer version when it opens and installs it when you agree.",
+    "zh": "打开应用时会检查新版本，经你同意后自动下载安装。",
+    "zh_Hant": "開啟應用程式時會檢查新版本，經你同意後自動下載安裝。"
+  },
+  {
+    "id": "2026-10-29-copy-before-upgrade",
+    "en": "Before a new version changes the diary's database, the old one is kept on the device.",
+    "zh": "新版本升级日记数据库之前，会先在本机保留一份旧的数据库。",
+    "zh_Hant": "新版本升級日記資料庫之前，會先在本機保留一份舊的資料庫。"
+  },
+  {
+    "id": "2026-10-29-localized-notes",
+    "en": "What's new is shown in your language, with the buttons in one row.",
+    "zh": "更新内容会用你的语言显示，按钮排成一行。",
+    "zh_Hant": "更新內容會用你的語言顯示，按鈕排成一列。"
+  }
+]

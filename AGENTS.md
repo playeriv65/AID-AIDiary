@@ -30,6 +30,7 @@ Do not put changing test counts, deployment revisions or recipes in this file.
 - Review changed files for secrets, private content and generated author/editor metadata or signatures; remove such metadata and verify the files still work. Keep local secret/config files ignored and templates safe.
 - Do not publish a store release unless asked. Existing deployment authorization does not imply permission to reset live data or rotate user-held keys.
 - Versions: `pubspec.yaml` holds `MAJOR.MINOR.PATCH`: the name 0.x until the first real release (then 1.0.0), MINOR for features, PATCH for fixes; raise it before a build goes to the owner's devices or out. Android builds take their build number from the time, UTC `YYMMDDHH` and the ten minutes (`261029183`): `dev.ps1` stamps local builds and the nightly its own, so every build updates any older one, local or nightly, and an app that updated itself from the nightly still takes the next local build. The `+YYMMDDNN` in `pubspec.yaml` only serves plain `flutter` commands. Android never accepts a lower code over an installed app (uninstalling would delete the diary); `dev.ps1 release` refuses a device already on this build or a newer one.
+- Release notes: a change users notice gets an entry in `CHANGES.json` in the same commit: a stable `id`, and what changed for the user (not the commit subject) in `en`, `zh` and `zh_Hant`. The nightly's update notes are the entries added since the last release (docs/UPDATES.md).
 
 ## Native environment and user data
 
