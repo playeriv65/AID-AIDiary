@@ -300,11 +300,17 @@ measured 2026-10-29), the
 Android job being the longest: Dart's release compile and R8 run whole for
 each of the two flavours.
 
-When all pass, the rolling prerelease `nightly` gets the APKs, the Windows
-ZIP and `aid.exe`, the Linux tarball and `aid`, and `latest.json`, the
-manifest apps update from. It is updated in place (its tag moved, its files
-replaced) rather than published anew, so a normal night sends no GitHub
-notification or email; a failed run still does. The APKs are signed with the release key from
+When all pass, the rolling prerelease `nightly` gets build-specific APKs,
+the Windows ZIP and `aid.exe`, the Linux tarball and `aid`. Nightly
+verifies the assets before it promotes `latest.json` and edits the release
+in place. The offline publication checks exercise upload failures, mirror
+verification, an older reader and rollback.
+
+```powershell
+uv run --no-project python -m unittest discover -s scripts -p test_release_publication.py
+```
+
+The APKs are signed with the release key from
 the repository secrets and stamped with a time build number, so they update
 installed apps ([UPDATES.md](UPDATES.md)). The
 repository is public, so Actions minutes are free. iOS, macOS and web are

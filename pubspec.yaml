@@ -1,7 +1,7 @@
 name: aid_diary
 description: A private diary that stays on your device.
 publish_to: 'none'
-version: 0.1.1+26102501
+version: 0.1.2+26102501
 
 environment:
   sdk: '>=3.0.0'

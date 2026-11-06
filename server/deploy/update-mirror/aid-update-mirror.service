@@ -6,4 +6,4 @@ After=network-online.target
 [Service]
 Type=oneshot
 User=ubuntu
-ExecStart=/srv/aid-updates/mirror.sh
+ExecStart=/usr/bin/python3 /srv/aid-updates/mirror.py

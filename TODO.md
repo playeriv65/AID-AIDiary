@@ -9,9 +9,12 @@ See the [technical debt inventory](docs/TECHNICAL_DEBT.md) for data recovery,
 release consistency, architecture and verification work. Each finding records
 the current evidence and what would close it.
 
-- Prioritize consistent pre-upgrade backups and tested restore procedures.
-  Make release publication consistent before extending automatic updates
-  to Windows and Linux.
+- Verify the first build-specific Nightly and roll out the updated mirror.
+  Confirm both sources serve the same manifest and packages before extending
+  automatic updates to Windows and Linux. See [Updates](docs/UPDATES.md).
+- Verify an in-place schema upgrade and background database startup on an
+  isolated Android development install. Use the restore checks in
+  [Testing](docs/TESTING.md#critical-journeys-and-release-evidence).
 - Carry portable preferences into backups and new devices next. Define the
   list first, with device paths, permissions and secrets kept device-local.
 - Settle the default storage and visibility rules before implementing album

@@ -3,7 +3,6 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/database/database_schema.dart' as schema;
@@ -119,12 +118,26 @@ class AppDatabase {
   Future<void> open({int? firstScreen}) => _open(firstScreen: firstScreen);
 
   Future<void> _open({int? firstScreen, bool purgeExpired = true}) async {
-    await copyBeforeUpgrade(_internalPath!);
-    _database = await openDatabase(_internalPath!,
+    final previous = _database;
+    try {
+      _database = await openDatabase(
+        _internalPath!,
         version: currentVersion,
+        onConfigure: copyBeforeUpgrade,
         onCreate: _createDatabase,
         onUpgrade: _onUpgrade,
-        onOpen: enforceForeignKeys);
+        onDowngrade: (_, oldVersion, supportedVersion) {
+          throw FormatException(
+              'Diary schema $oldVersion is newer than supported schema $supportedVersion');
+        },
+        onOpen: enforceForeignKeys,
+      );
+    } catch (_) {
+      // Schema callbacks expose the opening connection for template seeding.
+      // Sqflite closes it if opening fails.
+      _database = previous?.isOpen == true ? previous : null;
+      rethrow;
+    }
     await _reload(firstScreen: firstScreen, purgeExpired: purgeExpired);
   }
 
@@ -144,47 +157,54 @@ class AppDatabase {
 
   /// Folder beside the diary that keeps it as it was before upgrades.
   static const beforeUpgradeFolder = 'before-upgrade';
+  static final _backupName =
+      RegExp(r'^v\d+-(\d{4}-\d\d-\d\d)T(\d\d)-(\d\d)-(\d\d\.\d+Z)'
+          r'(?:-[A-Za-z0-9]+)?-'
+          '${RegExp.escape(databaseFileName)}\$');
 
-  /// Copies the diary at [path] aside when its schema is older than
-  /// [currentVersion]: an upgrade, which a new build runs on its first
-  /// start, cannot be undone. The newest [keep] copies stay.
-  static Future<void> copyBeforeUpgrade(String path, {int keep = 2}) async {
-    final file = File(path);
-    if (!await file.exists()) return;
-    final version = await _schemaVersion(file);
+  /// Runs before sqflite starts the upgrade transaction. SQLite reads the
+  /// committed version and contents even when they are still in the WAL.
+  @visibleForTesting
+  static Future<void> copyBeforeUpgrade(Database db) async {
+    final version = await db.getVersion();
     if (version == 0 || version >= currentVersion) return;
-    final folder = Directory(join(dirname(path), beforeUpgradeFolder));
+    final folder = Directory(join(dirname(db.path), beforeUpgradeFolder));
     await folder.create(recursive: true);
-    final stamp = DateTime.now().toUtc().toIso8601String().replaceAll(':', '-');
-    final copy = join(folder.path, 'v$version-$stamp-$databaseFileName');
-    await file.copy(copy);
-    for (final side in ['-wal', '-journal']) {
-      final extra = File('$path$side');
-      if (await extra.exists()) await extra.copy('$copy$side');
+    final work = await folder.createTemp('.aid-upgrade-');
+    try {
+      final staged = File(join(work.path, databaseFileName));
+      await _snapshot(db, staged.path, requireDiary: true);
+      final stamp =
+          DateTime.now().toUtc().toIso8601String().replaceAll(':', '-');
+      final suffix = basename(work.path).split('-').last;
+      await staged.rename(
+          join(folder.path, 'v$version-$stamp-$suffix-$databaseFileName'));
+    } finally {
+      await _removeStaging(work);
     }
     _logger.info('Kept the diary of schema $version before the upgrade');
-    final copies = [
-      for (final entity in await folder.list().toList())
-        if (entity is File && entity.path.endsWith(databaseFileName)) entity
-    ]..sort((a, b) => b.path.compareTo(a.path));
-    for (final old in copies.skip(keep)) {
-      for (final side in ['', '-wal', '-journal']) {
-        final extra = File('${old.path}$side');
-        if (await extra.exists()) await extra.delete();
-      }
-    }
-  }
 
-  /// SQLite's user_version, which sqflite keeps the schema version in: four
-  /// big-endian bytes at offset 60 of the header. 0 for no database.
-  static Future<int> _schemaVersion(File file) async {
-    final header = await file.openRead(0, 64).expand((chunk) => chunk).toList();
-    if (header.length < 64 ||
-        String.fromCharCodes(header.sublist(0, 15)) != 'SQLite format 3') {
-      return 0;
+    try {
+      final copies = <(File, DateTime)>[];
+      await for (final entity in folder.list(followLinks: false)) {
+        if (entity is! File) continue;
+        final stamp = _backupName.firstMatch(basename(entity.path));
+        if (stamp == null) continue;
+        final date = DateTime.tryParse(
+            '${stamp[1]}T${stamp[2]}:${stamp[3]}:${stamp[4]}');
+        if (date != null) copies.add((entity, date));
+      }
+      copies.sort((a, b) => b.$2.compareTo(a.$2));
+      for (final (file, _) in copies.skip(2)) {
+        for (final suffix in _sqliteSidecars) {
+          final sidecar = File('${file.path}$suffix');
+          if (await sidecar.exists()) await sidecar.delete();
+        }
+        await file.delete();
+      }
+    } on FileSystemException catch (error, stackTrace) {
+      _logger.warning('Could not prune old upgrade backups', error, stackTrace);
     }
-    return ByteData.sublistView(Uint8List.fromList(header), 60, 64)
-        .getUint32(0);
   }
 
   Future<void> close() async {
@@ -193,7 +213,7 @@ class AppDatabase {
     await db?.close();
   }
 
-  Future<void> _verifySqliteDatabase(String path,
+  static Future<void> _verifySqliteDatabase(String path,
       {bool requireDiary = false}) async {
     final db = await openReadOnlyDatabase(path, singleInstance: false);
     try {
@@ -227,13 +247,13 @@ class AppDatabase {
     }
   }
 
-  Future<void> _snapshot(Database db, String path,
+  static Future<void> _snapshot(Database db, String path,
       {bool requireDiary = false}) async {
     await db.execute('VACUUM INTO ?', [path]);
     await _verifySqliteDatabase(path, requireDiary: requireDiary);
   }
 
-  Future<void> _removeStaging(Directory work) async {
+  static Future<void> _removeStaging(Directory work) async {
     try {
       await work.delete(recursive: true);
     } on FileSystemException catch (error, stackTrace) {

@@ -40,5 +40,11 @@
     "en": "Starting sync over keeps the previous encrypted copy and prepares the new sync space separately. Update your other devices before pairing again.",
     "zh": "重新开始同步时会保留旧的加密副本，并在单独的空间建立新同步。其他设备更新应用后可以重新配对。",
     "zh_Hant": "重新開始同步時會保留舊的加密副本，並在獨立空間建立新同步。其他裝置更新應用程式後可以重新配對。"
+  },
+  {
+    "id": "2026-11-06-verified-upgrade-backup",
+    "en": "Database upgrades now wait for a verified backup. Update downloads keep using the package for the version you checked.",
+    "zh": "数据库升级前会先生成并验证备份。下载更新时会继续使用检查更新时对应的安装包。",
+    "zh_Hant": "資料庫升級前會先建立並驗證備份。下載更新時會繼續使用檢查更新時對應的安裝套件。"
   }
 ]

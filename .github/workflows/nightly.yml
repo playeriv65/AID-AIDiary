@@ -14,7 +14,7 @@ permissions:
 
 concurrency:
   group: nightly
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 env:
   FLUTTER_VERSION: "3.47.7"
@@ -226,6 +226,7 @@ jobs:
 
   release:
     needs: [changes, checks, windows, android, linux]
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -241,27 +242,9 @@ jobs:
         with:
           merge-multiple: true
           path: dist
-      # latest.json, which apps check for updates (docs/UPDATES.md).
-      - name: Manifest
+      - name: Publish verified packages and manifest
+        env:
+          BUILD: ${{ needs.changes.outputs.build }}
         run: |
-          # The commit the nightly tag points at: the last release's.
-          previous=$(gh api "repos/$GH_REPO/git/ref/tags/nightly" -q .object.sha 2>/dev/null || true)
-          python3 scripts/release_manifest.py --dist dist \
-            --build "${{ needs.changes.outputs.build }}" \
-            --commit "${{ github.sha }}" --previous "$previous" > dist/latest.json
-          cat dist/latest.json
-      # One rolling prerelease, updated in place each night: publishing a
-      # new release notifies everyone watching the repository, editing one
-      # does not. The tag moves to this commit; the files are replaced.
-      - run: |
-          cd dist
-          files="latest.json aid-diary.apk aid-diary-dev.apk aid-diary-windows.zip aid-windows.exe aid-diary-linux.tar.gz aid-linux"
-          title="Nightly $(date -u +%Y-%m-%d)"
-          notes="Built from $GITHUB_SHA, build ${{ needs.changes.outputs.build }}. Android packages are signed with the release key and update installed apps."
-          if gh release view nightly > /dev/null 2>&1; then
-            gh api -X PATCH "repos/$GH_REPO/git/refs/tags/nightly" -f sha="$GITHUB_SHA" -F force=true > /dev/null
-            gh release edit nightly --target "$GITHUB_SHA" --title "$title" --notes "$notes"
-            gh release upload nightly $files --clobber
-          else
-            gh release create nightly --prerelease --target "$GITHUB_SHA" --title "$title" --notes "$notes" $files
-          fi
+          python3 scripts/publish_nightly.py --dist dist --build "$BUILD" \
+            --commit "$GITHUB_SHA" --publication "$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"

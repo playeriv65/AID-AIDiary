@@ -106,6 +106,24 @@ void main() {
         ['会自己更新']);
   });
 
+  test('an immutable package resolves beside either manifest source', () {
+    const name = 'aid-build-123456-2-aid-diary.apk';
+    final manifest = _manifest();
+    ((manifest['files'] as Map)['android'] as Map)['name'] = name;
+    for (final source in [_server, _github]) {
+      final uri = Uri.parse(source);
+      final update = AppUpdate.from(manifest,
+          source: uri, package: 'android', installed: 0)!;
+      expect(
+          update.url,
+          uri.replace(pathSegments: [
+            ...uri.pathSegments.take(uri.pathSegments.length - 1),
+            name,
+          ]));
+      expect(update.sha256, '${sha256.convert(_apk)}');
+    }
+  });
+
   test('a file name that leaves the manifest folder is refused', () {
     final manifest = _manifest();
     ((manifest['files'] as Map)['android'] as Map)['name'] = '../evil.apk';

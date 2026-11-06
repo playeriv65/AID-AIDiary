@@ -27,6 +27,7 @@ import 'package:aid_diary/utils/logging.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:logging/logging.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:workmanager/workmanager.dart';
 
 const String _autoBackupPeriodicWorkName = 'auto_backup_periodic';
@@ -46,6 +47,8 @@ Completer<void>? _autoBackupCleanupComplete;
 /// reads settings or the diary: it starts without main().
 Future<void> _initBackground() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // Use the same bundled SQLite as the foreground database.
+  databaseFactory = databaseFactoryFfi;
   configureLogging();
   await ConfigProvider.instance.init();
   await AppConfig.load();
@@ -128,7 +131,6 @@ void onThisDayCallbackDispatcher() => _runAlarm(
     'On this day', _showOnThisDay, () => setOnThisDayAlarm(firstSet: false));
 
 Future<void> _showOnThisDay() async {
-  // Skip syncing and migration for the alarm background task
   final ready =
       await AppDatabase.instance.init(forceWithoutSync: true, background: true);
 
@@ -230,7 +232,6 @@ void nudgeCallbackDispatcher() =>
     _runAlarm('Nudge', _showNudge, () => setNudgeAlarm());
 
 Future<void> _showNudge() async {
-  // Skip syncing and migration for the alarm background task
   final ready =
       await AppDatabase.instance.init(forceWithoutSync: true, background: true);
   if (ready) {
@@ -294,7 +295,6 @@ void callbackDispatcher() =>
     _runAlarm('Reminder', _showReminder, () => setAlarm(firstSet: false));
 
 Future<void> _showReminder() async {
-  // Skip syncing and migration for the alarm background task
   final ready =
       await AppDatabase.instance.init(forceWithoutSync: true, background: true);
 
