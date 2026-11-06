@@ -246,7 +246,10 @@ switch ($Target) {
     Push-Location cli
     try {
       dart pub get
-      if ($LASTEXITCODE -eq 0) { dart analyze; dart test }
+      if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      dart analyze
+      if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      dart test
     } finally { Pop-Location }
   }
   'analyze' {

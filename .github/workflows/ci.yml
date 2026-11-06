@@ -14,6 +14,9 @@ on:
   # The nightly runs these checks before it releases.
   workflow_call:
 
+permissions:
+  contents: read
+
 concurrency:
   # Called from the nightly, github.workflow is the nightly's: its checks
   # and a push's do not cancel each other.
