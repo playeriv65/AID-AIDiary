@@ -17,6 +17,10 @@ on:
 permissions:
   contents: read
 
+defaults:
+  run:
+    shell: bash
+
 concurrency:
   # Called from the nightly, github.workflow is the nightly's: its checks
   # and a push's do not cancel each other.
@@ -30,6 +34,8 @@ jobs:
   app:
     runs-on: ubuntu-latest
     timeout-minutes: 40
+    env:
+      RUSTUP_TOOLCHAIN: "1.99.1"
     steps:
       - uses: actions/checkout@v4
         with:
@@ -47,13 +53,23 @@ jobs:
       # The root analyzer also sees the CLI package, as in dev.ps1 analyze.
       - working-directory: cli
         run: dart pub get
+      - name: Dart formatting
+        run: |
+          git ls-files -z -- '*.dart' \
+            ':(exclude)lib/l10n/generated/**' \
+            ':(exclude)lib/agent/native/**' \
+            ':(exclude)rust_builder/cargokit/**' |
+            xargs -0 -r dart format --output=none --set-exit-if-changed
       - run: flutter analyze
+      - run: rustup toolchain install "$RUSTUP_TOOLCHAIN" --profile minimal --component clippy,rustfmt --no-self-update
+      - run: cargo fmt --manifest-path rust/Cargo.toml --check
       # The agent's shell (rust/): its tests load the library cargo builds.
       - uses: Swatinem/rust-cache@v2
         with:
           workspaces: rust
           cache-workspace-crates: true
-      - run: cargo build --release --manifest-path rust/Cargo.toml
+      - run: cargo build --locked --release --manifest-path rust/Cargo.toml
+      - run: cargo clippy --locked --release --manifest-path rust/Cargo.toml -- -D warnings
       - run: flutter test -j 4 --exclude-tags live
       - name: Command line
         working-directory: cli
@@ -69,7 +85,37 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version-file: server/go.mod
+      - name: Workflow lint
+        run: go run github.com/rhysd/actionlint/cmd/actionlint@v1.7.12 -shellcheck='' -pyflakes=''
+      - name: Go formatting
+        run: |
+          unformatted=$(git ls-files -z -- 'server/*.go' | xargs -0 -r gofmt -l)
+          if [[ -n "$unformatted" ]]; then
+            printf '%s\n' "$unformatted"
+            exit 1
+          fi
       - working-directory: server
         run: |
           go vet ./...
           go test ./...
+
+  kotlin:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      KTLINT_VERSION: "1.8.0"
+      KTLINT_SHA256: a3fd620207d5c40da6ca789b95e7f823c54e854b7fade7f613e91096a3706d75
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3 # v4
+        with:
+          distribution: temurin
+          java-version: "21"
+      - name: Kotlin lint and formatting
+        run: |
+          jar="$RUNNER_TEMP/ktlint.jar"
+          curl --fail --silent --show-error --location --retry 3 \
+            "https://github.com/ktlint/ktlint/releases/download/$KTLINT_VERSION/ktlint" \
+            --output "$jar"
+          printf '%s  %s\n' "$KTLINT_SHA256" "$jar" | sha256sum --check
+          git ls-files -z -- '*.kt' | xargs -0 -r java -jar "$jar"

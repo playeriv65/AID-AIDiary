@@ -25,47 +25,46 @@ import java.util.Locale
  */
 class DiaryWidgetProvider : HomeWidgetProvider() {
   override fun onUpdate(
-      context: Context,
-      appWidgetManager: AppWidgetManager,
-      appWidgetIds: IntArray,
-      widgetData: SharedPreferences,
+    context: Context,
+    appWidgetManager: AppWidgetManager,
+    appWidgetIds: IntArray,
+    widgetData: SharedPreferences,
   ) {
     // The diary day, which the app may start a few hours after midnight.
     val dayStartHour =
-        widgetData.getString("widget_day_start_hour", null)?.toIntOrNull() ?: 0
+      widgetData.getString("widget_day_start_hour", null)?.toIntOrNull() ?: 0
     val now = Date(System.currentTimeMillis() - dayStartHour * HOUR_MILLIS)
     val today = SimpleDateFormat("yyyy-MM-dd", Locale.US).format(now)
     val written = widgetData.getString("widget_written_date", null) == today
     val status =
-        widgetData.getString(
-            if (written) "widget_done" else "widget_pending",
-            context.getString(
-                if (written) R.string.widget_done_default else R.string.widget_pending_default))
+      widgetData.getString(
+        if (written) "widget_done" else "widget_pending",
+        context.getString(if (written) R.string.widget_done_default else R.string.widget_pending_default),
+      )
     val snippet = widgetData.getString("widget_snippet", "").orEmpty()
     val streak = widgetData.getString("widget_streak", "").orEmpty()
 
     val open =
-        HomeWidgetLaunchIntent.getActivity(
-            context, MainActivity::class.java, Uri.parse("aiddiary://open"))
+      HomeWidgetLaunchIntent.getActivity(context, MainActivity::class.java, Uri.parse("aiddiary://open"))
     val write =
-        HomeWidgetLaunchIntent.getActivity(
-            context, MainActivity::class.java, Uri.parse("aiddiary://write"))
+      HomeWidgetLaunchIntent.getActivity(context, MainActivity::class.java, Uri.parse("aiddiary://write"))
 
     for (id in appWidgetIds) {
       val views =
-          RemoteViews(context.packageName, R.layout.diary_widget).apply {
-            setTextViewText(R.id.widget_date, DateFormat.getDateInstance(DateFormat.FULL).format(now))
-            setTextViewText(R.id.widget_status, status)
-            setTextViewText(R.id.widget_snippet, snippet)
-            setViewVisibility(R.id.widget_snippet, if (snippet.isEmpty()) View.GONE else View.VISIBLE)
-            setTextViewText(R.id.widget_streak, streak)
-            setViewVisibility(R.id.widget_streak, if (streak.isEmpty()) View.GONE else View.VISIBLE)
-            setTextViewText(
-                R.id.widget_write,
-                widgetData.getString("widget_write", context.getString(R.string.widget_write_default)))
-            setOnClickPendingIntent(R.id.widget_root, open)
-            setOnClickPendingIntent(R.id.widget_write, write)
-          }
+        RemoteViews(context.packageName, R.layout.diary_widget).apply {
+          setTextViewText(R.id.widget_date, DateFormat.getDateInstance(DateFormat.FULL).format(now))
+          setTextViewText(R.id.widget_status, status)
+          setTextViewText(R.id.widget_snippet, snippet)
+          setViewVisibility(R.id.widget_snippet, if (snippet.isEmpty()) View.GONE else View.VISIBLE)
+          setTextViewText(R.id.widget_streak, streak)
+          setViewVisibility(R.id.widget_streak, if (streak.isEmpty()) View.GONE else View.VISIBLE)
+          setTextViewText(
+            R.id.widget_write,
+            widgetData.getString("widget_write", context.getString(R.string.widget_write_default)),
+          )
+          setOnClickPendingIntent(R.id.widget_root, open)
+          setOnClickPendingIntent(R.id.widget_write, write)
+        }
       appWidgetManager.updateAppWidget(id, views)
     }
   }

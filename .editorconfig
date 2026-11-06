@@ -1,0 +1,16 @@
+root = true
+
+[*.kt]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+indent_style = space
+indent_size = 2
+ktlint_code_style = intellij_idea
+
+[packages/**/*.kt]
+indent_size = 4
+
+# Preserve the namespaces already registered in these plugins' pubspec files.
+[packages/**/{BackupCryptoPlugin,SafTransferPlugin,ShareReceiverPlugin}.kt]
+ktlint_standard_package-name = disabled

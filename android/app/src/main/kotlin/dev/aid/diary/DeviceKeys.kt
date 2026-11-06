@@ -29,37 +29,47 @@ class DeviceKeys(messenger: BinaryMessenger, private val namespace: String) {
           "ensure" -> {
             if (!store.containsAlias(name)) {
               KeyPairGenerator.getInstance(KeyProperties.KEY_ALGORITHM_EC, "AndroidKeyStore").apply {
-                initialize(KeyGenParameterSpec.Builder(name, KeyProperties.PURPOSE_SIGN)
+                initialize(
+                  KeyGenParameterSpec.Builder(name, KeyProperties.PURPOSE_SIGN)
                     .setAlgorithmParameterSpec(ECGenParameterSpec("secp256r1"))
-                    .setDigests(KeyProperties.DIGEST_SHA256).build())
+                    .setDigests(KeyProperties.DIGEST_SHA256).build(),
+                )
               }.generateKeyPair()
             }
             val key = store.getKey(name, null) as PrivateKey
             val info = KeyFactory.getInstance(key.algorithm, "AndroidKeyStore")
-                .getKeySpec(key, KeyInfo::class.java)
+              .getKeySpec(key, KeyInfo::class.java)
+
             @Suppress("DEPRECATION")
             val hardware = info.isInsideSecureHardware
-            result.success(mapOf(
+            result.success(
+              mapOf(
                 "publicKeySpki" to Base64.encodeToString(store.getCertificate(name).publicKey.encoded, Base64.NO_WRAP),
-                "hardwareBacked" to hardware, "provider" to "AndroidKeyStore"))
+                "hardwareBacked" to hardware,
+                "provider" to "AndroidKeyStore",
+              ),
+            )
           }
+
           "sign" -> {
             val encoded = call.argument<String>("message") ?: throw IllegalArgumentException()
             require(encoded.length <= 87384)
             val message = Base64.decode(encoded, Base64.DEFAULT)
             require(message.size <= 65536)
             val key = store.getKey(name, null) as? PrivateKey
-                ?: throw IllegalStateException("missing_key")
+              ?: throw IllegalStateException("missing_key")
             val signature = Signature.getInstance("SHA256withECDSA").apply {
               initSign(key)
               update(message)
             }.sign()
             result.success(mapOf("signature" to Base64.encodeToString(signature, Base64.NO_WRAP)))
           }
+
           "delete" -> {
             store.deleteEntry(name)
             result.success(null)
           }
+
           else -> result.notImplemented()
         }
       } catch (_: IllegalArgumentException) {

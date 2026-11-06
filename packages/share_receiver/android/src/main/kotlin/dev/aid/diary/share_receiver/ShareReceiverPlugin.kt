@@ -26,7 +26,11 @@ import kotlinx.coroutines.withContext
 import java.io.File
 import java.util.UUID
 
-class ShareReceiverPlugin : FlutterPlugin, ActivityAware, NewIntentListener, MethodCallHandler {
+class ShareReceiverPlugin :
+    FlutterPlugin,
+    ActivityAware,
+    NewIntentListener,
+    MethodCallHandler {
     private lateinit var channel: MethodChannel
     private lateinit var context: Context
     private var activityBinding: ActivityPluginBinding? = null
@@ -78,9 +82,7 @@ class ShareReceiverPlugin : FlutterPlugin, ActivityAware, NewIntentListener, Met
         }
     }
 
-    private fun isShare(intent: Intent): Boolean {
-        return intent.action == Intent.ACTION_SEND || intent.action == Intent.ACTION_SEND_MULTIPLE
-    }
+    private fun isShare(intent: Intent): Boolean = intent.action == Intent.ACTION_SEND || intent.action == Intent.ACTION_SEND_MULTIPLE
 
     private fun consumeShare(result: Result) {
         val share = pendingShare

@@ -5,6 +5,7 @@
 package dev.aid.diary.saf_transfer
 
 import android.content.Context
+import androidx.core.net.toUri
 import androidx.documentfile.provider.DocumentFile
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
@@ -19,9 +20,10 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.InputStream
 import java.io.OutputStream
-import androidx.core.net.toUri
 
-class SafTransferPlugin : FlutterPlugin, MethodCallHandler {
+class SafTransferPlugin :
+    FlutterPlugin,
+    MethodCallHandler {
     private lateinit var channel: MethodChannel
     private lateinit var context: Context
 
@@ -92,6 +94,7 @@ class SafTransferPlugin : FlutterPlugin, MethodCallHandler {
                     }
                 }
             }
+
             else -> result.notImplemented()
         }
     }
@@ -104,7 +107,7 @@ class SafTransferPlugin : FlutterPlugin, MethodCallHandler {
         input: InputStream,
         output: OutputStream,
         totalSize: Long,
-        transferId: String
+        transferId: String,
     ) {
         val buffer = ByteArray(8 * 1024)
         var bytesRead: Int
@@ -124,17 +127,20 @@ class SafTransferPlugin : FlutterPlugin, MethodCallHandler {
 
                     // Flutter MethodChannel requires UI Thread
                     withContext(Dispatchers.Main) {
-                        channel.invokeMethod("transferProgress", mapOf(
-                            "id" to transferId,
-                            "progress" to currentProgress
-                        ))
+                        channel.invokeMethod(
+                            "transferProgress",
+                            mapOf(
+                                "id" to transferId,
+                                "progress" to currentProgress,
+                            ),
+                        )
                     }
                 }
             }
         }
     }
 
-    private fun createOutStream(dir: DocumentFile, fileName: String, mime: String, overwrite: Boolean, append: Boolean) : Pair<DocumentFile, OutputStream> {
+    private fun createOutStream(dir: DocumentFile, fileName: String, mime: String, overwrite: Boolean, append: Boolean): Pair<DocumentFile, OutputStream> {
         val outStream: OutputStream
         val newFile: DocumentFile
         if (overwrite || append) {

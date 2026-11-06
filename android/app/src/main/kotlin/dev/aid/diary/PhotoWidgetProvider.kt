@@ -16,11 +16,11 @@ import android.view.View
 import android.widget.RemoteViews
 import es.antonborri.home_widget.HomeWidgetLaunchIntent
 import es.antonborri.home_widget.HomeWidgetProvider
+import org.json.JSONArray
+import org.json.JSONObject
 import java.io.File
 import java.util.Random
 import java.util.TimeZone
-import org.json.JSONArray
-import org.json.JSONObject
 
 /**
  * Home screen widget showing one photo from the diary with its entry's
@@ -30,43 +30,47 @@ import org.json.JSONObject
  */
 class PhotoWidgetProvider : HomeWidgetProvider() {
   override fun onUpdate(
-      context: Context,
-      appWidgetManager: AppWidgetManager,
-      appWidgetIds: IntArray,
-      widgetData: SharedPreferences,
+    context: Context,
+    appWidgetManager: AppWidgetManager,
+    appWidgetIds: IntArray,
+    widgetData: SharedPreferences,
   ) {
     val (choice, photo) = todaysPhoto(widgetData.getString("photo_widget_photos", null))
     val empty =
-        widgetData.getString(
-            "photo_widget_empty", context.getString(R.string.photo_widget_empty_default))
+      widgetData.getString("photo_widget_empty", context.getString(R.string.photo_widget_empty_default))
 
     val tap =
-        HomeWidgetLaunchIntent.getActivity(
-            context,
-            MainActivity::class.java,
-            Uri.parse(
-                if (choice != null) "aiddiary://entry?id=${choice.getInt("entry")}"
-                else "aiddiary://open"))
+      HomeWidgetLaunchIntent.getActivity(
+        context,
+        MainActivity::class.java,
+        Uri.parse(
+          if (choice != null) {
+            "aiddiary://entry?id=${choice.getInt("entry")}"
+          } else {
+            "aiddiary://open"
+          },
+        ),
+      )
 
     for (id in appWidgetIds) {
       val views =
-          RemoteViews(context.packageName, R.layout.photo_widget).apply {
-            if (choice != null && photo != null) {
-              setImageViewBitmap(R.id.photo_widget_image, photo)
-              setViewVisibility(R.id.photo_widget_image, View.VISIBLE)
-              setViewVisibility(R.id.photo_widget_scrim, View.VISIBLE)
-              setTextViewText(R.id.photo_widget_caption, choice.optString("caption"))
-              setViewVisibility(R.id.photo_widget_caption, View.VISIBLE)
-              setViewVisibility(R.id.photo_widget_empty, View.GONE)
-            } else {
-              setViewVisibility(R.id.photo_widget_image, View.GONE)
-              setViewVisibility(R.id.photo_widget_scrim, View.GONE)
-              setViewVisibility(R.id.photo_widget_caption, View.GONE)
-              setTextViewText(R.id.photo_widget_empty, empty)
-              setViewVisibility(R.id.photo_widget_empty, View.VISIBLE)
-            }
-            setOnClickPendingIntent(R.id.photo_widget_root, tap)
+        RemoteViews(context.packageName, R.layout.photo_widget).apply {
+          if (choice != null && photo != null) {
+            setImageViewBitmap(R.id.photo_widget_image, photo)
+            setViewVisibility(R.id.photo_widget_image, View.VISIBLE)
+            setViewVisibility(R.id.photo_widget_scrim, View.VISIBLE)
+            setTextViewText(R.id.photo_widget_caption, choice.optString("caption"))
+            setViewVisibility(R.id.photo_widget_caption, View.VISIBLE)
+            setViewVisibility(R.id.photo_widget_empty, View.GONE)
+          } else {
+            setViewVisibility(R.id.photo_widget_image, View.GONE)
+            setViewVisibility(R.id.photo_widget_scrim, View.GONE)
+            setViewVisibility(R.id.photo_widget_caption, View.GONE)
+            setTextViewText(R.id.photo_widget_empty, empty)
+            setViewVisibility(R.id.photo_widget_empty, View.VISIBLE)
           }
+          setOnClickPendingIntent(R.id.photo_widget_root, tap)
+        }
       appWidgetManager.updateAppWidget(id, views)
     }
   }
@@ -97,8 +101,8 @@ class PhotoWidgetProvider : HomeWidgetProvider() {
     var sample = 1
     while (maxOf(bounds.outWidth, bounds.outHeight) / (sample * 2) >= MAX_SIDE) sample *= 2
     val decoded =
-        BitmapFactory.decodeFile(path, BitmapFactory.Options().apply { inSampleSize = sample })
-            ?: return null
+      BitmapFactory.decodeFile(path, BitmapFactory.Options().apply { inSampleSize = sample })
+        ?: return null
     val scale = minOf(1f, MAX_SIDE.toFloat() / maxOf(decoded.width, decoded.height))
     val matrix = Matrix().apply {
       postScale(scale, scale)
@@ -107,17 +111,18 @@ class PhotoWidgetProvider : HomeWidgetProvider() {
     return Bitmap.createBitmap(decoded, 0, 0, decoded.width, decoded.height, matrix, true)
   }
 
-  private fun rotationOf(path: String): Float =
-      when (runCatching {
-            ExifInterface(path)
-                .getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
-          }
-          .getOrDefault(ExifInterface.ORIENTATION_NORMAL)) {
-        ExifInterface.ORIENTATION_ROTATE_90 -> 90f
-        ExifInterface.ORIENTATION_ROTATE_180 -> 180f
-        ExifInterface.ORIENTATION_ROTATE_270 -> 270f
-        else -> 0f
-      }
+  private fun rotationOf(path: String): Float = when (
+    runCatching {
+      ExifInterface(path)
+        .getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
+    }
+      .getOrDefault(ExifInterface.ORIENTATION_NORMAL)
+  ) {
+    ExifInterface.ORIENTATION_ROTATE_90 -> 90f
+    ExifInterface.ORIENTATION_ROTATE_180 -> 180f
+    ExifInterface.ORIENTATION_ROTATE_270 -> 270f
+    else -> 0f
+  }
 
   private companion object {
     const val MAX_SIDE = 720

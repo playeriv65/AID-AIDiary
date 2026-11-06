@@ -33,10 +33,7 @@ impl AgentShell {
     #[frb(sync)]
     pub fn new(
         commands: Vec<String>,
-        host: impl Fn(String, Vec<String>, String) -> DartFnFuture<ShellOutput>
-            + Send
-            + Sync
-            + 'static,
+        host: impl Fn(String, Vec<String>, String) -> DartFnFuture<ShellOutput> + Send + Sync + 'static,
     ) -> AgentShell {
         let host: Host = Arc::new(host);
         let mut builder = Bash::builder();

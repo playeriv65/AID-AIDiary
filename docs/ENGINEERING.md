@@ -61,10 +61,20 @@ all official recommendations. Conditional layers or package changes need a
 demonstrated benefit; do not add them merely to match a sample application.
 
 Use [Effective Dart](https://dart.dev/effective-dart) for language style,
-documentation and API design; let `dart format` and the configured Flutter
-lints settle mechanical consistency. Use `gofmt`/`go vet` for Go and uv for
-Python. Change a lint baseline intentionally instead of suppressing a new
-warning without examining its cause. This policy adds no new lint package.
+documentation and API design. Format touched code before committing. CI checks
+the following with the tool versions set in [CI](../.github/workflows/ci.yml).
+
+| Source | Format | Lint |
+|---|---|---|
+| Dart app, CLI, plugins and tools | `dart format` on touched files. Localization output, bridge bindings and vendored Cargokit are excluded. | `./scripts/dev.ps1 analyze` and `./scripts/dev.ps1 test-cli` |
+| Go sync server | `gofmt -w` on touched files | `go vet ./...` from `server/` |
+| Rust shell | `cargo fmt --manifest-path rust/Cargo.toml` | `cargo clippy --locked --release --manifest-path rust/Cargo.toml -- -D warnings` |
+| Kotlin app and plugins | `java -jar <ktlint.jar> --format <files>` | The same command without `--format`. Use the pinned upstream release asset and SHA-256 from CI. |
+| GitHub Actions | Follow the existing YAML layout. | `go run github.com/rhysd/actionlint/cmd/actionlint@v1.7.12 -shellcheck='' -pyflakes=''` in Bash |
+
+Kotlin's indentation and registered plugin namespace exceptions live in
+`.editorconfig`. Resolve lint failures at their source. Document any
+necessary exception at the narrowest applicable scope. Use uv for Python.
 
 ## A change from intent to delivery
 

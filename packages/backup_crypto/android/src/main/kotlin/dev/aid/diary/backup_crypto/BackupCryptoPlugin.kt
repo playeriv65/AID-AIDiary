@@ -26,7 +26,9 @@ private const val TAG_LENGTH_BITS = TAG_LENGTH_BYTES * 8
 private const val NONCE_LENGTH_BYTES = 12
 private const val BASE_NONCE_LENGTH_BYTES = 4
 
-class BackupCryptoPlugin : FlutterPlugin, MethodCallHandler {
+class BackupCryptoPlugin :
+    FlutterPlugin,
+    MethodCallHandler {
     private lateinit var channel: MethodChannel
     private val cancelledRequests = ConcurrentHashMap<String, AtomicBoolean>()
 
@@ -42,11 +44,14 @@ class BackupCryptoPlugin : FlutterPlugin, MethodCallHandler {
     override fun onMethodCall(call: MethodCall, result: Result) {
         when (call.method) {
             "encryptBody" -> runBody(call, result, encrypt = true)
+
             "decryptBody" -> runBody(call, result, encrypt = false)
+
             "cancel" -> {
                 cancelledRequests[call.argument<String>("requestId")!!]?.set(true)
                 result.success(null)
             }
+
             else -> result.notImplemented()
         }
     }
@@ -119,7 +124,7 @@ class BackupCryptoPlugin : FlutterPlugin, MethodCallHandler {
                                 withContext(Dispatchers.Main) {
                                     channel.invokeMethod(
                                         "progress",
-                                        mapOf("requestId" to requestId, "percent" to percent)
+                                        mapOf("requestId" to requestId, "percent" to percent),
                                     )
                                 }
                             }

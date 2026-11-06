@@ -18,7 +18,11 @@ abstract class JournalWidgetProvider(private val kind: String) : HomeWidgetProvi
     val day = Calendar.getInstance().apply {
       add(Calendar.HOUR_OF_DAY, -(data.getString("widget_day_start_hour", "0")?.toIntOrNull() ?: 0))
     }
-    val prompts = try { JSONArray(data.getString("widget_prompts", "[]")) } catch (_: Exception) { JSONArray() }
+    val prompts = try {
+      JSONArray(data.getString("widget_prompts", "[]"))
+    } catch (_: Exception) {
+      JSONArray()
+    }
     val index = if (prompts.length() > 0) (day.get(Calendar.DAY_OF_YEAR) - 1) % prompts.length() else 0
     val date = SimpleDateFormat("yyyy-MM-dd", Locale.US)
     val today = date.format(day.time)
@@ -36,8 +40,11 @@ abstract class JournalWidgetProvider(private val kind: String) : HomeWidgetProvi
       views.setTextViewText(R.id.journal_widget_title, context.getString(title))
       views.setViewVisibility(R.id.journal_widget_moods, if (kind == "mood") View.VISIBLE else View.GONE)
       views.setViewVisibility(R.id.journal_widget_text, if (kind == "mood") View.GONE else View.VISIBLE)
-      val text = if (kind == "prompt") prompts.optString(index, context.getString(R.string.widget_write_default))
-          else currentStreak?.takeIf { it.isNotEmpty() } ?: data.getString("widget_streak_zero", context.getString(R.string.widget_write_default))
+      val text = if (kind == "prompt") {
+        prompts.optString(index, context.getString(R.string.widget_write_default))
+      } else {
+        currentStreak?.takeIf { it.isNotEmpty() } ?: data.getString("widget_streak_zero", context.getString(R.string.widget_write_default))
+      }
       views.setTextViewText(R.id.journal_widget_text, text)
       val uri = if (kind == "prompt") "aiddiary://prompt?index=$index" else "aiddiary://write"
       views.setOnClickPendingIntent(R.id.journal_widget_root, HomeWidgetLaunchIntent.getActivity(context, MainActivity::class.java, Uri.parse(uri)))

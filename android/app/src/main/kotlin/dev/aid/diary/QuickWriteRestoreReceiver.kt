@@ -24,34 +24,38 @@ import es.antonborri.home_widget.HomeWidgetLaunchIntent
 class QuickWriteRestoreReceiver : BroadcastReceiver() {
   override fun onReceive(context: Context, intent: Intent) {
     if (intent.action != Intent.ACTION_BOOT_COMPLETED &&
-        intent.action != Intent.ACTION_MY_PACKAGE_REPLACED) return
+      intent.action != Intent.ACTION_MY_PACKAGE_REPLACED
+    ) {
+      return
+    }
     val prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
     val title = prefs.getString("${PREFIX}quickWriteTitle", null) ?: return
     val text = prefs.getString("${PREFIX}quickWriteText", null) ?: return
     val manager = context.getSystemService(NotificationManager::class.java)
 
     val builder =
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-          manager.createNotificationChannel(
-              NotificationChannel(
-                  CHANNEL,
-                  prefs.getString("${PREFIX}channelName.$CHANNEL", CHANNEL),
-                  NotificationManager.IMPORTANCE_LOW))
-          Notification.Builder(context, CHANNEL)
-        } else {
-          @Suppress("DEPRECATION") Notification.Builder(context)
-        }
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        manager.createNotificationChannel(
+          NotificationChannel(
+            CHANNEL,
+            prefs.getString("${PREFIX}channelName.$CHANNEL", CHANNEL),
+            NotificationManager.IMPORTANCE_LOW,
+          ),
+        )
+        Notification.Builder(context, CHANNEL)
+      } else {
+        @Suppress("DEPRECATION")
+        Notification.Builder(context)
+      }
     val notification =
-        builder
-            .setSmallIcon(R.drawable.ic_notification)
-            .setContentTitle(title)
-            .setContentText(text)
-            .setOngoing(true)
-            .setShowWhen(false)
-            .setContentIntent(
-                HomeWidgetLaunchIntent.getActivity(
-                    context, MainActivity::class.java, Uri.parse("aiddiary://new")))
-            .build()
+      builder
+        .setSmallIcon(R.drawable.ic_notification)
+        .setContentTitle(title)
+        .setContentText(text)
+        .setOngoing(true)
+        .setShowWhen(false)
+        .setContentIntent(HomeWidgetLaunchIntent.getActivity(context, MainActivity::class.java, Uri.parse("aiddiary://new")))
+        .build()
     manager.notify(NOTIFICATION_ID, notification)
   }
 
@@ -59,6 +63,7 @@ class QuickWriteRestoreReceiver : BroadcastReceiver() {
     // Where Flutter's shared_preferences keeps its values, and its key prefix.
     const val PREFS = "FlutterSharedPreferences"
     const val PREFIX = "flutter."
+
     // Must match quickWriteChannelId and quickWriteNotificationId in Dart.
     const val CHANNEL = "aid_diary_quick_write"
     const val NOTIFICATION_ID = 5

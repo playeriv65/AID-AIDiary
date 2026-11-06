@@ -39,9 +39,13 @@ class AppUpdater(private val activity: Activity, messenger: BinaryMessenger) {
         when (call.method) {
           // F-Droid's client updates its builds, signed with F-Droid's key.
           "enabled" -> result.success(BuildConfig.FLAVOR != "fdroid")
+
           "canInstallSilently" -> result.success(canInstallSilently())
+
           "silentSupported" -> result.success(Build.VERSION.SDK_INT >= 31 && !xiaomi)
+
           "install" -> install(File(call.argument<String>("path") ?: ""), result)
+
           else -> result.notImplemented()
         }
       } catch (error: Rejected) {
@@ -58,7 +62,9 @@ class AppUpdater(private val activity: Activity, messenger: BinaryMessenger) {
   @Suppress("DEPRECATION")
   private fun installer(): String? = if (Build.VERSION.SDK_INT >= 30) {
     context.packageManager.getInstallSourceInfo(packageName).installingPackageName
-  } else context.packageManager.getInstallerPackageName(packageName)
+  } else {
+    context.packageManager.getInstallerPackageName(packageName)
+  }
 
   /** HyperOS (and MIUI) refuse an install session that asks for no user
    * action from any app Xiaomi has not listed, with INSTALL_FAILED_ABORTED
@@ -75,22 +81,27 @@ class AppUpdater(private val activity: Activity, messenger: BinaryMessenger) {
   private fun signers(info: PackageInfo): Set<String> {
     val signatures = if (Build.VERSION.SDK_INT >= 28) {
       info.signingInfo?.apkContentsSigners
-    } else info.signatures
+    } else {
+      info.signatures
+    }
     val sha = MessageDigest.getInstance("SHA-256")
     return signatures.orEmpty().map { sha.digest(it.toByteArray()).joinToString("") { b -> "%02x".format(b) } }.toSet()
   }
 
   @Suppress("DEPRECATION")
-  private fun versionCode(info: PackageInfo): Long =
-    if (Build.VERSION.SDK_INT >= 28) info.longVersionCode else info.versionCode.toLong()
+  private fun versionCode(info: PackageInfo): Long = if (Build.VERSION.SDK_INT >= 28) info.longVersionCode else info.versionCode.toLong()
 
   private fun check(file: File) {
     val cache = context.cacheDir.canonicalPath + File.separator
     if (!file.canonicalPath.startsWith(cache) || !file.isFile) {
       throw Rejected("bad_args", "The package is not a downloaded update")
     }
-    val flags = if (Build.VERSION.SDK_INT >= 28) PackageManager.GET_SIGNING_CERTIFICATES
-      else @Suppress("DEPRECATION") PackageManager.GET_SIGNATURES
+    val flags = if (Build.VERSION.SDK_INT >= 28) {
+      PackageManager.GET_SIGNING_CERTIFICATES
+    } else {
+      @Suppress("DEPRECATION")
+      PackageManager.GET_SIGNATURES
+    }
     val manager = context.packageManager
     val archive = manager.getPackageArchiveInfo(file.path, flags)
       ?: throw Rejected("corrupt", "Not an Android package")
@@ -110,8 +121,12 @@ class AppUpdater(private val activity: Activity, messenger: BinaryMessenger) {
   private fun install(file: File, result: MethodChannel.Result) {
     check(file)
     if (!mayInstall()) {
-      activity.startActivity(Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,
-        Uri.parse("package:$packageName")))
+      activity.startActivity(
+        Intent(
+          Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,
+          Uri.parse("package:$packageName"),
+        ),
+      )
       result.success("needsPermission")
       return
     }
@@ -120,8 +135,13 @@ class AppUpdater(private val activity: Activity, messenger: BinaryMessenger) {
       setAppPackageName(packageName)
       setSize(file.length())
       if (Build.VERSION.SDK_INT >= 31) {
-        setRequireUserAction(if (xiaomi) PackageInstaller.SessionParams.USER_ACTION_REQUIRED
-          else PackageInstaller.SessionParams.USER_ACTION_NOT_REQUIRED)
+        setRequireUserAction(
+          if (xiaomi) {
+            PackageInstaller.SessionParams.USER_ACTION_REQUIRED
+          } else {
+            PackageInstaller.SessionParams.USER_ACTION_NOT_REQUIRED
+          },
+        )
       }
     }
     val id = installer.createSession(params)
@@ -147,9 +167,14 @@ class AppUpdater(private val activity: Activity, messenger: BinaryMessenger) {
   private fun listen() {
     if (listening) return
     listening = true
-    ContextCompat.registerReceiver(context, object : BroadcastReceiver() {
-      override fun onReceive(receiverContext: Context, intent: Intent) = status(intent)
-    }, IntentFilter(statusAction), ContextCompat.RECEIVER_NOT_EXPORTED)
+    ContextCompat.registerReceiver(
+      context,
+      object : BroadcastReceiver() {
+        override fun onReceive(receiverContext: Context, intent: Intent) = status(intent)
+      },
+      IntentFilter(statusAction),
+      ContextCompat.RECEIVER_NOT_EXPORTED,
+    )
   }
 
   @Suppress("DEPRECATION")
@@ -159,7 +184,9 @@ class AppUpdater(private val activity: Activity, messenger: BinaryMessenger) {
       PackageInstaller.STATUS_PENDING_USER_ACTION -> {
         val confirm = if (Build.VERSION.SDK_INT >= 33) {
           intent.getParcelableExtra(Intent.EXTRA_INTENT, Intent::class.java)
-        } else intent.getParcelableExtra(Intent.EXTRA_INTENT)
+        } else {
+          intent.getParcelableExtra(Intent.EXTRA_INTENT)
+        }
         if (confirm == null) {
           result.error("install_failed", "The installer asked for nothing to show", null)
         } else {
@@ -167,9 +194,14 @@ class AppUpdater(private val activity: Activity, messenger: BinaryMessenger) {
           result.success("confirming")
         }
       }
+
       PackageInstaller.STATUS_SUCCESS -> result.success("started")
-      else -> result.error("install_failed",
-        intent.getStringExtra(PackageInstaller.EXTRA_STATUS_MESSAGE) ?: "Install failed", null)
+
+      else -> result.error(
+        "install_failed",
+        intent.getStringExtra(PackageInstaller.EXTRA_STATUS_MESSAGE) ?: "Install failed",
+        null,
+      )
     }
     waiting = null
   }
