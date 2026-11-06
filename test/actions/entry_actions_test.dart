@@ -121,6 +121,8 @@ void main() {
       {'latitude': '95', 'longitude': '0'},
       {'place': 'none', 'latitude': '1', 'longitude': '2'},
       {'time': 'yesterday'},
+      // Without its offset the zone it meant is unknown.
+      {'time': '2026-10-21T08:00:00'},
     ]) {
       await expectLater(() => run('entry.update', {'id': '$id', ...wrong}),
           refused('bad_args'),
@@ -129,16 +131,34 @@ void main() {
   });
 
   test('the diary day and the written time change on their own', () async {
-    final id = await create({'text': 'Late', 'time': '2026-10-20T23:30:00'});
+    final id =
+        await create({'text': 'Late', 'time': '2026-10-20T23:30:00-05:00'});
     expect(await get(id), containsPair('day', '2026-10-20'));
     await run('entry.update', {'id': '$id', 'day': '2026-10-19'});
     var entry = await get(id);
     expect(entry['day'], '2026-10-19');
     expect(entry['time'], '2026-10-20T23:30:00.000');
-    await run('entry.update', {'id': '$id', 'time': '2026-10-21T08:00:00'});
+    await run(
+        'entry.update', {'id': '$id', 'time': '2026-10-21T08:00:00-05:00'});
     entry = await get(id);
     expect(entry['time'], '2026-10-21T08:00:00.000');
     expect(entry['day'], '2026-10-19');
+  });
+
+  test('a time with an offset keeps the clock and offset it was written in',
+      () async {
+    // Written in China, set from a device anywhere.
+    final id =
+        await create({'text': '东八区', 'time': '2019-05-13T18:26:47+08:00'});
+    var entry = await get(id);
+    expect(entry['time'], '2019-05-13T18:26:47.000');
+    expect(entry['utcOffsetMinutes'], 480);
+    expect(entry['day'], '2019-05-13');
+    await run('entry.update', {'id': '$id', 'time': '2019-05-14T07:05:00Z'});
+    entry = await get(id);
+    expect(entry['time'], '2019-05-14T07:05:00.000');
+    expect(entry['utcOffsetMinutes'], 0);
+    expect(entry['day'], '2019-05-13');
   });
 
   test('a template starts an entry with its text and tags', () async {

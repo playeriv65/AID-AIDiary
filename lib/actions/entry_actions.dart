@@ -207,12 +207,7 @@ class _Fields {
         },
         text = args['text'] as String?,
         day = _dayOf(args['day']),
-        time = switch (args['time']) {
-          final String text =>
-            (DateTime.tryParse(text) ?? (throw _bad('time must be ISO 8601')))
-                .toLocal(),
-          _ => null,
-        },
+        written = _writtenOf(args['time']),
         mood = switch (args['mood']) {
           final String text => (value: _clears(text) ? null : _moodOf(text)),
           _ => null,
@@ -246,7 +241,10 @@ class _Fields {
   final String? title;
   final String? text;
   final DateTime? day;
-  final DateTime? time;
+
+  /// When it was written: the clock where it was written and that place's
+  /// UTC offset in minutes, as entries keep them.
+  final ({DateTime clock, int offset})? written;
   final _Change<int> mood;
   final _Change<EntryWeather> weather;
   final bool clearPlace;
@@ -266,8 +264,34 @@ class _Fields {
       title == null &&
       text == null &&
       day == null &&
-      time == null &&
+      written == null &&
       !changesContext;
+
+  /// [value] as an entry keeps a written time: the clock and offset of the
+  /// place it was written in (`+08:00`, `Z`), so it keeps its hours on a
+  /// device in any zone. A time without an offset is refused, as the zone
+  /// it meant cannot be known.
+  static ({DateTime clock, int offset})? _writtenOf(Object? value) {
+    if (value is! String) return null;
+    final parsed =
+        DateTime.tryParse(value) ?? (throw _bad('time must be ISO 8601'));
+    final zone =
+        RegExp(r'(Z|([+-])(\d{2}):?(\d{2}))$').firstMatch(value.trim());
+    if (zone == null) {
+      throw _bad('time needs its UTC offset, such as '
+          '2026-10-20T23:30:00+08:00 or 2026-10-20T15:30:00Z');
+    }
+    final offset = zone[1] == 'Z'
+        ? 0
+        : (zone[2] == '-' ? -1 : 1) *
+            (int.parse(zone[3]!) * 60 + int.parse(zone[4]!));
+    final there = parsed.toUtc().add(Duration(minutes: offset));
+    return (
+      clock: DateTime(there.year, there.month, there.day, there.hour,
+          there.minute, there.second, there.millisecond),
+      offset: offset,
+    );
+  }
 
   /// [entry] with mood and place as these fields say.
   Entry withContext(Entry entry) => entry.copy(
@@ -322,7 +346,11 @@ const List<ActionParam> _whenParams = [
       'The diary day, yyyy-MM-dd; from the time by default',
       required: false),
   ActionParam(
-      'time', ParamType.string, 'When it was written, ISO 8601; now by default',
+      'time',
+      ParamType.string,
+      'When it was written, ISO 8601 with its UTC offset such as '
+          "2026-10-20T23:30:00+08:00, kept as that zone's clock; now by "
+          'default',
       required: false),
 ];
 
@@ -450,16 +478,17 @@ final List<AppAction> entryActions = [
       };
       final text = mergeSharedText(template?.text ?? '', fields.text);
       final now = DateTime.now();
-      final written = fields.time ?? now;
+      final written =
+          fields.written ?? (clock: now, offset: now.timeZoneOffset.inMinutes);
       // A template that starts with a heading names the entry, unless a
       // title is given.
       final seeded = splitEntryTitle(text);
       final entry = fields.withContext(Entry(
           title: fields.title ?? seeded.title,
           text: seeded.body,
-          timeCreate: written,
+          timeCreate: written.clock,
           timeModified: now,
-          utcOffset: written.timeZoneOffset.inMinutes,
+          utcOffset: written.offset,
           day: fields.day));
       final session = _store.beginDraft();
       final saved = await session.save((saved) =>
@@ -492,13 +521,12 @@ final List<AppAction> entryActions = [
         throw _bad('Nothing to change: give a title, text, mood, place, '
             'weather, day or time');
       }
-      final time = fields.time;
+      final written = fields.written;
       final saved = await saveEntry(fields.withContext(entry.copy(
           title: fields.title,
           text: fields.text,
-          timeCreate: time,
-          utcOffset:
-              time == null ? entry.utcOffset : time.timeZoneOffset.inMinutes,
+          timeCreate: written?.clock,
+          utcOffset: written?.offset ?? entry.utcOffset,
           day: fields.day,
           timeModified: DateTime.now())));
       await fields.writeWeather(saved);

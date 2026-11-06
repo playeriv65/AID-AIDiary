@@ -43,8 +43,8 @@ void main() {
           find.byKey(const ValueKey('journal-calendar-panel')), findsOneWidget);
       expect(find.byKey(const PageStorageKey('journal-list')), findsOneWidget);
 
-      final day = DateTime(today.year, today.month, today.day)
-          .subtract(const Duration(days: 20));
+      // Calendar arithmetic: 20 * 24 h back lands off midnight across DST.
+      final day = DateTime(today.year, today.month, today.day - 20);
       final cell = find
           .byKey(ValueKey('calendar-day-${day.year}-${day.month}-${day.day}'));
       await tester.scrollUntilVisible(cell, -100,
@@ -53,6 +53,10 @@ void main() {
                   of: find.byKey(const ValueKey('journal-calendar-panel')),
                   matching: find.byType(Scrollable))
               .first);
+      // A day in the previous month is already built in the cache extent, so
+      // scrollUntilVisible only jumps it into view; lay that out before
+      // tapping.
+      await tester.pumpAndSettle();
       await tester.tap(cell);
       await tester.pumpAndSettle();
 
