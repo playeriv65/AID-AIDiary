@@ -242,17 +242,24 @@ jobs:
       # latest.json, which apps check for updates (docs/UPDATES.md).
       - name: Manifest
         run: |
-          previous=$(gh release view nightly --json targetCommitish -q .targetCommitish 2>/dev/null || true)
+          # The commit the nightly tag points at: the last release's.
+          previous=$(gh api "repos/$GH_REPO/git/ref/tags/nightly" -q .object.sha 2>/dev/null || true)
           python3 scripts/release_manifest.py --dist dist \
             --build "${{ needs.changes.outputs.build }}" \
             --commit "${{ github.sha }}" --previous "$previous" > dist/latest.json
           cat dist/latest.json
-      # One rolling prerelease, replaced each night.
+      # One rolling prerelease, updated in place each night: publishing a
+      # new release notifies everyone watching the repository, editing one
+      # does not. The tag moves to this commit; the files are replaced.
       - run: |
           cd dist
-          gh release delete nightly --yes --cleanup-tag || true
-          gh release create nightly --prerelease --target "${{ github.sha }}" \
-            --title "Nightly $(date -u +%Y-%m-%d)" \
-            --notes "Built from ${{ github.sha }}, build ${{ needs.changes.outputs.build }}. Android packages are signed with the release key and update installed apps." \
-            latest.json aid-diary.apk aid-diary-dev.apk aid-diary-windows.zip \
-            aid-windows.exe aid-diary-linux.tar.gz aid-linux
+          files="latest.json aid-diary.apk aid-diary-dev.apk aid-diary-windows.zip aid-windows.exe aid-diary-linux.tar.gz aid-linux"
+          title="Nightly $(date -u +%Y-%m-%d)"
+          notes="Built from $GITHUB_SHA, build ${{ needs.changes.outputs.build }}. Android packages are signed with the release key and update installed apps."
+          if gh release view nightly > /dev/null 2>&1; then
+            gh api -X PATCH "repos/$GH_REPO/git/refs/tags/nightly" -f sha="$GITHUB_SHA" -F force=true > /dev/null
+            gh release edit nightly --target "$GITHUB_SHA" --title "$title" --notes "$notes"
+            gh release upload nightly $files --clobber
+          else
+            gh release create nightly --prerelease --target "$GITHUB_SHA" --title "$title" --notes "$notes" $files
+          fi
