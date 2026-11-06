@@ -51,7 +51,7 @@ server holds no GitHub credential. The mirror was deployed on 2026-10-29.
 The mirror verifies downloads before replacing files. GitHub and the
 mirror still replace package names in place, so a client that has already
 read an older manifest can receive a newer package and reject it on hash
-verification. See the [publication work](../TODO.md#maintenance-priorities).
+verification. See the [publication work](TECHNICAL_DEBT.md#release-and-operating-reliability).
 
 ## Build numbers
 

@@ -5,30 +5,9 @@ for approved behavior and [Handoff](docs/HANDOFF.md) for the latest checkpoint.
 
 ## Maintenance priorities
 
-1. **Publish a consistent update.** The rolling Nightly release and mirror
-   replace fixed-name assets independently. A reader holding an older
-   manifest can receive a newer package during publication. Use build-specific
-   package URLs and publish the current manifest only after every file is
-   ready and verified. Preserve the existing Android update path during the
-   transition. Verify interrupted publication, a client holding the previous
-   manifest, and GitHub/mirror agreement. See [Updates](docs/UPDATES.md).
-2. **Verify risky native changes at the native boundary.** Linux CI exercises
-   Dart behavior and Nightly compiles Android, Windows and Linux. For changes
-   to the installer, secure storage, Android permissions or background work,
-   verify the affected journey on a development installation with scratch
-   data. Include an existing database and a failed or cancelled operation
-   where applicable. See [Testing](docs/TESTING.md#critical-journeys-and-release-evidence).
-3. **Make build inputs easier to reproduce.** Flutter's pin is repeated in
-   both workflows, Setup records the local JDK, and Nightly uses a different
-   JDK. Consolidate the Flutter pin when changing the workflows, record the
-   intended Java baselines and pin reviewed Actions revisions. Keep the
-   versions of local SDK installs as observations in [Setup](docs/SETUP.md).
-4. **Extract responsibilities as their behavior changes.** Start with
-   `lib/sync/sync_service.dart` (orchestration and lifecycle),
-   `lib/database/app_database.dart` (schema, migration and connection
-   lifecycle), and `lib/pages/edit_entry_page.dart` (editor UI alongside
-   its existing view model). Preserve existing entry points and test
-   contracts. See [Architecture](docs/ARCHITECTURE.md).
+See the [technical debt inventory](docs/TECHNICAL_DEBT.md) for data recovery,
+release consistency, architecture and verification work. Each finding records
+the current evidence and what would close it.
 
 ## Layout and features
 Probably skip (they need cloud services or add little): Google Fit, rate dialog, live chat, external-link warning, automatic media categories (an image classifier), an in-app media picker.

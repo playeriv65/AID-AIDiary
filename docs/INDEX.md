@@ -23,6 +23,7 @@ results describe the revision and environment that were actually checked.
 | How do I import or maintain One Diary compatibility? | [One Diary import](ONE_DIARY_IMPORT.md) | Backup envelope, reverse-engineering evidence, code map, diary dates and verification |
 | Why is a Xiaomi build stuck at 60 Hz, or Windows scrolling slow? | [Refresh rate and scrolling](REFRESH_RATE.md) | OEM diagnosis, isolated profile procedures and measured Windows limits |
 | What is still proposed or deferred? | [TODO](../TODO.md) | Remaining ideas and work; not an implementation or approval claim |
+| Which engineering risks remain? | [Technical debt](TECHNICAL_DEBT.md) | Findings, consequences and the evidence needed to close them |
 | What is upstream, and which license applies? | [Source](../SOURCE.md), [license](../LICENSE.txt), [additional terms](../ADDITIONAL_TERMS.md) | Provenance and legal terms |
 | What must an assistant read and obey first? | [AGENTS.md](../AGENTS.md) | Execution entry point and essential guardrails; detailed policy lives in the documents above |
 

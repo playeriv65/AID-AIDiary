@@ -141,12 +141,10 @@ invalidate it. For later isolated source changes, keep the historical baseline
 and add focused evidence; do not claim that the old full run tested the new
 revision. For another broad change, rerun the affected full suite.
 
-The repository currently has no `.github/workflows` test automation. If CI is
-introduced, keep selected fast checks on changes and full host regression at
-the integration gate; device/live checks remain separate jobs with explicit
-environments. Do not add paid runners, production credentials or a complicated
-dependency-graph selector merely to enforce this document. At the present
-roughly minute-long Flutter full-suite duration, a batch safety net is simpler.
+Use the affected paths locally. [CI](#continuous-integration) runs the full
+offline suite on code pushes and gates Nightly. Keep device and live checks
+separate so credentials, hardware and service availability cannot affect the
+offline gate.
 
 ## Critical journeys and release evidence
 
@@ -188,6 +186,27 @@ review. Inspect the affected images for clipping, wrapping, keyboard/navigation
 state and phone/wide layout. Do not regenerate unrelated images or accept a new
 baseline automatically to hide an unintended change. Performance requires the
 existing profile/native measurement; screenshots and debug timing cannot prove it.
+
+### Repeatable Android smoke checks
+
+Use an emulator or the development app on the test tablet. Follow the
+[isolated workspace procedure](SETUP.md#isolated-physical-network-checks)
+and record the source revision, APK build number, package, Android version
+and workspace name. Seed a small scratch diary before exercising a journey
+that must preserve existing data. Start upgrade cases from a disposable
+emulator snapshot or an existing eligible development installation. Never
+downgrade an installed package to prepare the fixture.
+
+| Changed boundary | Procedure | Evidence |
+|---|---|---|
+| Update and signing | Install an older development APK, then use About to check and install a newer APK of the same package and signer. Cancel the installer once before accepting the update. On HyperOS, the operator confirms the system prompt. | The cancelled attempt leaves the build and scratch entries intact. The accepted attempt advances the build number and preserves the same entry IDs and attachment bytes. Check signer and package identity when preparing the APKs. |
+| SQLite migration | Open a scratch store using the oldest fixture affected by the change. Upgrade in place with the candidate development APK and reopen the same workspace. | Compare the affected fields and media hashes before and after. Verify the pre-upgrade snapshot exists and restores into a separate workspace. |
+| Keystore and trust | Pair two scratch devices, restart the Android app, then connect again with the existing identity. When changing revocation or rotation, test the retired identity against the scratch peer or service. | The existing key works after restart. A revoked identity is rejected, and the trusted peer still reads the same synced entry. |
+| Runtime permission or native UI | Exercise the affected action with permission denied, grant it through the system prompt, then repeat after background/resume. Rotate or resize if it affects the flow. | Denial preserves the current entry and shows a usable path forward. The granted action works and survives the affected lifecycle transition. |
+
+Use the CLI to compare the scratch data before and after each case. For
+visual results, use Flutter diagnostics or an adb screenshot. Record each
+case separately from host integration tests.
 
 ## Test design and failure handling
 
@@ -256,19 +275,18 @@ validation just to make timings look shorter.
 Two workflows run on GitHub's runners:
 
 - `.github/workflows/ci.yml` checks pushes with code or configuration
-  changes to `main` on Linux:
-  `flutter analyze`, the offline suite, the CLI's analysis and tests, and the
-  server's. It builds no app, only the agent shell's Rust library the suite
-  loads (`cargo build --release` in `rust/`, cached). Pushes limited to
+  changes to `main` on Linux. It runs Dart and Go formatting checks,
+  `flutter analyze`, CLI analysis and tests, the offline Flutter suite,
+  Go vet and tests, Rust formatting and Clippy, ktlint, and actionlint.
+  It builds the Rust library loaded by the host tests. Pushes limited to
   Markdown and `docs/` skip it. A burst of pushes runs only for the latest.
 - `.github/workflows/nightly.yml` packages once a day (09:00 UTC) and on
   demand (Actions > Nightly > Run workflow, or `gh workflow run
   nightly.yml`). A scheduled run with no commits in the last 25 hours does
   nothing. It runs, in parallel:
 
-- Checks: `ci.yml` itself, on Linux (analysis, the offline suite, the CLI's
-  analysis and tests, the server's `go vet` and `go test`). The same suite
-  takes twice as long on Windows, where small-file work is slow.
+- Checks: `ci.yml` itself, with the same format, lint and offline test gates
+  as a code push.
 - Windows: the `aid.exe` executable and a Windows release bundle.
 - Android: release APKs of the everyday and development flavors.
 - Linux: a release bundle (GTK) and the `aid` executable.
