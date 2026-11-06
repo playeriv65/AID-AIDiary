@@ -221,6 +221,12 @@ asks again. Dates are when it was settled. Ideas not built yet are in
   test data, repairs): a superset, not a mirror. Tests enforce it: the GUI
   changes data only through actions and opens places only through the
   registry `ui.navigate` uses.
+- Interfaces are shaped by what is easiest to use, and plain SQL on the
+  diary database is always there underneath them (owner, 2026-11-05):
+  `sql.query` and `sql.execute` read and change any rows, many at once in
+  one transaction. Bulk changes use SQL, not one call per row; actions are
+  for what SQL cannot do (network lookups, files, the GUI). Hidden entries
+  are hidden in the GUI only and get no rule of their own here.
 - Kept out of the CLI on purpose: setting or changing the app lock, the
   backup password and fingerprint unlock (an agent must not lock the user
   out); `security.status` only reads them. The system's own permission
