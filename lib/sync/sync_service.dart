@@ -31,6 +31,7 @@ import 'package:aid_diary/sync/sync_crypto.dart';
 import 'package:aid_diary/sync/sync_diagnostics.dart';
 import 'package:aid_diary/sync/sync_engine.dart';
 import 'package:aid_diary/sync/sync_schema.dart';
+import 'package:aid_diary/sync/sync_space_reset.dart';
 import 'package:aid_diary/sync/connection_manager.dart';
 import 'package:aid_diary/sync/media_transfer.dart';
 import 'package:aid_diary/sync/lan_transport.dart';
@@ -269,6 +270,7 @@ class SyncService with ChangeNotifier {
   Future<void>? _running;
   bool _again = false;
   bool _stopping = false;
+  bool _resetting = false;
   bool _reloading = false;
   Timer? _soon;
   Timer? _periodic;
@@ -304,7 +306,7 @@ class SyncService with ChangeNotifier {
     ),
   );
 
-  Future<CopyStatusStore?> _copyStore() async {
+  Future<({CopyStatusStore store, SpaceInfo space})?> _copyStore() async {
     final db = AppDatabase.instance.database;
     if (db == null || target == null) return null;
     final bytes = await MediaVault(db).read(SpaceLayout.info);
@@ -313,11 +315,14 @@ class SyncService with ChangeNotifier {
     if (info.id != target!.spaceId) return null;
     final key = await _dataKey(info);
     if (key == null) return null;
-    return CopyStatusStore(
-        db: db,
-        photos: const ImageStoragePhotos(),
-        cipher: ItemCipher(key),
-        spaceId: info.id);
+    return (
+      store: CopyStatusStore(
+          db: db,
+          photos: const ImageStoragePhotos(),
+          cipher: ItemCipher(key),
+          spaceId: info.id),
+      space: info,
+    );
   }
 
   Future<String> _copyDeviceId() async {
@@ -330,14 +335,14 @@ class SyncService with ChangeNotifier {
     return LocalDevice.id();
   }
 
-  Set<SyncBackend> _copySources() {
+  Set<SyncBackend> _copySources(SpaceInfo space) {
     final login = _login;
     final connections = _connections;
     return {
       if (login != null &&
           (connections == null ||
               connections.healthyRoutes.any((route) => route.id == 'storage')))
-        _storageFor(login),
+        space.storageFor(_storageFor(login)),
       for (final route in connections?.healthyRoutes ?? <SyncRouteCandidate>[])
         if (route.type != SyncRouteType.cache) route.backend,
     };
@@ -391,11 +396,14 @@ class SyncService with ChangeNotifier {
   }
 
   void _closeStorage() {
-    final backend = _storage;
-    if (backend is WebDavBackend) backend.close();
-    if (backend is GoogleDriveBackend) backend.close();
+    _closeBackend(_storage);
     _storage = null;
     _storageLogin = null;
+  }
+
+  static void _closeBackend(SyncBackend? backend) {
+    if (backend is WebDavBackend) backend.close();
+    if (backend is GoogleDriveBackend) backend.close();
   }
 
   SyncLogin? get _login {
@@ -450,7 +458,7 @@ class SyncService with ChangeNotifier {
 
   /// Syncs after [after], once, however often it is asked.
   void syncSoon({Duration after = Duration.zero}) {
-    if (target == null) return;
+    if (_resetting || target == null) return;
     final retry = _retryAt?.difference(DateTime.now());
     if (retry != null && retry > after) after = retry;
     _soon?.cancel();
@@ -459,6 +467,7 @@ class SyncService with ChangeNotifier {
 
   /// Syncs now; one more round follows when asked again meanwhile.
   Future<void> syncNow() {
+    if (_resetting) return Future.value();
     final running = _running;
     if (running != null) {
       _again = true;
@@ -490,9 +499,9 @@ class SyncService with ChangeNotifier {
       if (stored != null) {
         await _ensureConnections(SpaceInfo.fromBytes(stored), backend);
       }
-      final routed = RoutedSyncBackend(
+      RoutedSyncBackend routedThrough(SyncBackend storage) => RoutedSyncBackend(
           local: vault,
-          storage: backend,
+          storage: storage,
           timeoutFor: (backend) => (_connections?.healthyRoutes.any((route) =>
                       identical(route.backend, backend) &&
                       route.type == SyncRouteType.relay) ??
@@ -520,7 +529,7 @@ class SyncService with ChangeNotifier {
                 route.backend
             ];
           });
-      final info = await _readSpace(routed);
+      final info = await _readSpace(routedThrough(backend));
       final dataKey = info == null || info.id != target.spaceId
           ? null
           : await _dataKey(info);
@@ -534,6 +543,8 @@ class SyncService with ChangeNotifier {
         return;
       }
       await _ensureConnections(info, backend);
+      final storage = info.storageFor(backend);
+      final routed = routedThrough(storage);
       await routed.check();
       await vault.write(SpaceLayout.info, info.toBytes());
       await routed.drain();
@@ -567,7 +578,7 @@ class SyncService with ChangeNotifier {
         }
       }
       final cache = MediaAllowance(
-          backend: backend,
+          backend: storage,
           route: boundedCache ? 'cache' : 'personal',
           maxFileBytes: boundedCache ? fileLimit : 1 << 62,
           remainingBytes: !(_connections?.healthyRoutes
@@ -645,15 +656,14 @@ class SyncService with ChangeNotifier {
       if (report.changedLocally) await _reload();
       // Copy confirmations are optional metadata, never a sync acknowledgement.
       try {
-        final copies = await _copyStore();
-        if (copies != null) {
+        if (await _copyStore() case (:final store, :final space)) {
           final local =
-              await copies.local(await _copyDeviceId(), LocalDevice.name);
-          await copies.publish(vault, local);
-          await copies.publish(
+              await store.local(await _copyDeviceId(), LocalDevice.name);
+          await store.publish(vault, local);
+          await store.publish(
               RoutedSyncBackend(
                   local: vault,
-                  storage: backend,
+                  storage: space.storageFor(backend),
                   peers: routed.peers,
                   storageAvailable: routed.storageAvailable,
                   timeout:
@@ -995,13 +1005,15 @@ class SyncService with ChangeNotifier {
     final current = await currentSpace();
     if (current != null && await holdsKey(current.space)) {
       return (
-        pairing: pairing(current.backend, current.space, true),
+        pairing: pairing(
+            current.space.storageFor(current.backend), current.space, true),
         joining: null
       );
     }
     if (_pendingJoin case (:final login, :final space)) {
       return (
-        pairing: pairing(login.backend(), space, await holdsKey(space)),
+        pairing: pairing(
+            space.storageFor(login.backend()), space, await holdsKey(space)),
         joining: login
       );
     }
@@ -1111,11 +1123,7 @@ class SyncService with ChangeNotifier {
   }
 
   Future<void> _connect(SyncLogin login, SpaceInfo space) async {
-    final nearby = ConfigProvider.instance.get(Settings.nearbyMigration);
-    if (nearby.isNotEmpty &&
-        (jsonDecode(nearby) as Map)['phase'] != 'receipt') {
-      throw StateError('A nearby transfer is still in progress');
-    }
+    _requireNoNearbyTransfer();
     await _stop();
     _pendingJoin = null;
     final db = AppDatabase.instance.database!;
@@ -1133,6 +1141,14 @@ class SyncService with ChangeNotifier {
     // A first sync may take long; it goes on while the page shows how far
     // it is.
     unawaited(syncNow());
+  }
+
+  void _requireNoNearbyTransfer() {
+    final nearby = ConfigProvider.instance.get(Settings.nearbyMigration);
+    if (nearby.isNotEmpty &&
+        (jsonDecode(nearby) as Map)['phase'] != 'receipt') {
+      throw StateError('A nearby transfer is still in progress');
+    }
   }
 
   /// The SAS-approved transfer carries only the account address and sealed
@@ -1233,29 +1249,34 @@ class SyncService with ChangeNotifier {
     return recovery.code;
   }
 
-  /// Starts the space over from this device's diary, as this device's
-  /// user, when no device and no recovery code opens it any more: the old
-  /// encrypted copy is removed and other devices join again by pairing.
+  /// Starts a fresh space from this device's diary. The previous encrypted
+  /// objects stay in their own storage paths and other devices pair again.
   /// Returns the new recovery code.
   Future<String> resetSpace({String? chosen}) async {
-    final login = _login!;
-    final backend = login.backend();
-    await _stop();
-    for (final folder in [SpaceLayout.packs, SpaceLayout.blobs]) {
-      for (final path in (await backend.list(folder)).keys) {
-        await backend.delete(path);
-      }
-    }
-    await backend.delete('media');
-    await backend.delete('copies');
+    if (_resetting) throw StateError('A sync space reset is in progress');
     final recovery = _recoveryCode(chosen);
-    final info = await SpaceInfo.create(await DiaryIdentity.current(),
-        recoveryCode: recovery.code,
-        generated: recovery.generated,
-        kdf: _recoveryKdf);
-    await backend.write(SpaceLayout.info, info.toBytes());
-    await _connect(login, info);
-    return recovery.code;
+    _requireNoNearbyTransfer();
+    final login = _login!;
+    _resetting = true;
+    try {
+      final info = await SpaceInfo.create(await DiaryIdentity.current(),
+          recoveryCode: recovery.code,
+          generated: recovery.generated,
+          kdf: _recoveryKdf,
+          isolatedStorage: true);
+      await _stop();
+      final backend = login.backend();
+      try {
+        await publishSpaceReset(backend, info);
+      } finally {
+        _closeBackend(backend);
+      }
+      await _connect(login, info);
+      return recovery.code;
+    } finally {
+      _resetting = false;
+      syncSoon();
+    }
   }
 
   Future<void> _save(SyncTarget target, String credential) async {

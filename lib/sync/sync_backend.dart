@@ -50,6 +50,16 @@ abstract final class SpaceLayout {
 
   static bool isSnapshot(String path) =>
       path.split('/').last.startsWith(snapshotPrefix);
+
+  static final _uuid4 = RegExp(
+      r'^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$');
+
+  static String generation(String spaceId) {
+    if (spaceId.length != 36 || !_uuid4.hasMatch(spaceId)) {
+      throw const FormatException('Invalid isolated sync space ID');
+    }
+    return 'generations/$spaceId';
+  }
 }
 
 /// A space's description file: its format, its id and, when it is end-to-end
@@ -62,11 +72,12 @@ class SpaceInfo {
       required this.userId,
       required this.sealedDataKey,
       required this.recovery,
-      this.format = current});
+      this.format = legacy});
 
-  /// 2: packs of changes in place of one file per item. 3: always
-  /// encrypted, keys held by the user's devices rather than a passphrase.
-  static const int current = 4;
+  /// Format 4 retains the original storage paths. Format 5 binds a reset
+  /// space to new storage paths without moving or deleting the old content.
+  static const int legacy = 4;
+  static const int current = 5;
 
   final int format;
   final String id;
@@ -83,6 +94,12 @@ class SpaceInfo {
   /// The data key, or [WrongKeyException] for another user's master key.
   Future<Uint8List> dataKey(Uint8List masterKey) =>
       openDataKey(masterKey, sealedDataKey, id);
+
+  /// Physical cloud paths differ by generation. The local vault, peer
+  /// transports and encryption continue to use the logical object paths.
+  SyncBackend storageFor(SyncBackend backend) => format == current
+      ? _GenerationBackend(backend, SpaceLayout.generation(id))
+      : backend;
 
   SpaceInfo withRecovery(RecoveryLock recovery) => SpaceInfo(
       id: id,
@@ -103,13 +120,15 @@ class SpaceInfo {
   factory SpaceInfo.fromBytes(Uint8List bytes) {
     final json = jsonDecode(utf8.decode(bytes)) as Map<String, Object?>;
     final format = json['format'] as int;
-    if (format != current) {
+    if (format != legacy && format != current) {
       throw UnsupportedError(format > current
           ? 'This space was made by a newer version of the app (format $format)'
           : 'This space uses an older sync format ($format); start a new space');
     }
+    final id = json['id'] as String;
+    if (format == current) SpaceLayout.generation(id);
     return SpaceInfo(
-        id: json['id'] as String,
+        id: id,
         format: format,
         userId: json['user'] as String,
         sealedDataKey: base64.decode(json['dataKey'] as String),
@@ -122,16 +141,62 @@ class SpaceInfo {
   static Future<SpaceInfo> create(DiaryIdentity identity,
       {required String recoveryCode,
       required bool generated,
-      required KdfParams kdf}) async {
+      required KdfParams kdf,
+      bool isolatedStorage = false}) async {
     final id = const Uuid().v4();
     return SpaceInfo(
         id: id,
+        format: isolatedStorage ? current : legacy,
         userId: identity.userId,
         sealedDataKey: await sealDataKey(identity.masterKey, newDataKey(), id),
         recovery: await RecoveryLock.lock(
             identity.masterKey, identity.userId, recoveryCode, kdf,
             generated: generated));
   }
+}
+
+class _GenerationBackend implements SyncBackend {
+  const _GenerationBackend(this.backend, this.prefix);
+
+  final SyncBackend backend;
+  final String prefix;
+
+  static final _invalidSegment = RegExp(r'[^A-Za-z0-9_.-]');
+
+  String _path(String path) {
+    if (path.isEmpty) return prefix;
+    if (path.split('/').any((part) =>
+        part.isEmpty ||
+        part == '.' ||
+        part == '..' ||
+        _invalidSegment.hasMatch(part))) {
+      throw const FormatException('Invalid sync object path');
+    }
+    return '$prefix/$path';
+  }
+
+  @override
+  Future<void> check() => backend.check();
+
+  @override
+  Future<Map<String, String>> list(String folder) async {
+    final files = await backend.list(_path(folder));
+    return {
+      for (final entry in files.entries)
+        if (entry.key.startsWith('$prefix/'))
+          entry.key.substring(prefix.length + 1): entry.value,
+    };
+  }
+
+  @override
+  Future<Uint8List?> read(String path) => backend.read(_path(path));
+
+  @override
+  Future<String?> write(String path, Uint8List bytes) =>
+      backend.write(_path(path), bytes);
+
+  @override
+  Future<void> delete(String path) => backend.delete(_path(path));
 }
 
 /// A backend kept in memory, for tests.

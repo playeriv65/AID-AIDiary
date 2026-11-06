@@ -14,6 +14,7 @@ import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/database/app_database.dart';
 import 'package:aid_diary/sync/device_auth.dart';
 import 'package:aid_diary/sync/identity.dart';
+import 'package:aid_diary/sync/pairing.dart';
 import 'package:aid_diary/sync/sync_backend.dart';
 import 'package:aid_diary/sync/sync_crypto.dart';
 import 'package:aid_diary/sync/sync_service.dart';
@@ -124,6 +125,82 @@ void main() {
     expect(actions.find('sync.recovery_code').risk, ActionRisk.destructive);
     expect(actions.find('sync.reset_space').risk, ActionRisk.destructive);
     expect(() => run('sync.recovery_code'), refused('needs_confirmation'));
+  });
+
+  test('an invalid reset password leaves the active space intact', () async {
+    final storage = MemorySyncBackend();
+    final login = MemoryLogin(storage);
+    await sync.createSpace(login);
+    await run('entry.create', {'text': 'A local diary entry'});
+    await sync.syncNow();
+    final original = (await storage.read(SpaceLayout.info))!;
+    final packs = await storage.list(SpaceLayout.packs);
+    expect(packs, isNotEmpty);
+
+    await expectLater(run('sync.reset_space', {'password': 'short'}, true),
+        refused('bad_args'));
+    expect(await storage.read(SpaceLayout.info), original);
+    expect(await storage.list(SpaceLayout.packs), packs);
+    expect(storage.files.keys.where((path) => path.startsWith('generations/')),
+        isEmpty);
+  });
+
+  test('reset sync and pairing use new paths while legacy objects stay intact',
+      () async {
+    final storage = MemorySyncBackend();
+    final login = MemoryLogin(storage);
+    final owner = await DiaryIdentity.current();
+    await sync.createSpace(login);
+    await run('entry.create', {'text': 'A local diary entry'});
+    await sync.syncNow();
+    final original = (await storage.read(SpaceLayout.info))!;
+    final originalSpace = SpaceInfo.fromBytes(original);
+    expect(originalSpace.format, SpaceInfo.legacy);
+    final originalPacks = await storage.list(SpaceLayout.packs);
+    expect(originalPacks, isNotEmpty);
+
+    final result = await run('sync.reset_space', {}, true);
+    final active = SpaceInfo.fromBytes((await storage.read(SpaceLayout.info))!);
+    expect(active.format, SpaceInfo.current);
+    expect(active.id, isNot(originalSpace.id));
+    expect(sync.target?.spaceId, active.id);
+    expect(sync.error, isNull);
+    final generation = SpaceLayout.generation(active.id);
+    final scoped = active.storageFor(storage);
+    expect(await scoped.list(SpaceLayout.packs), isNotEmpty);
+    expect(await storage.list(SpaceLayout.packs), originalPacks);
+    expect(await storage.read('$generation/previous-space.json'), original);
+
+    // An already running old client writes to the legacy paths only.
+    await storage.write('packs/pack-old-client', Uint8List.fromList([0]));
+    await sync.syncNow();
+    expect(sync.error, isNull);
+    expect(await scoped.read('packs/pack-old-client'), isNull);
+
+    final offered = await sync.offerPairing();
+    expect(await storage.list('pairing'), isEmpty);
+    expect(await scoped.list('pairing'), isNotEmpty);
+    final stranger = Pairing(
+        backend: scoped,
+        space: active,
+        identity: DiaryIdentity.create(),
+        holdsKey: false,
+        deviceName: 'New device',
+        poll: const Duration(milliseconds: 5),
+        timeout: const Duration(seconds: 10));
+    final paired = await stranger.accept(offered);
+    expect(paired.received?.masterKey, owner.masterKey);
+
+    final previousCode = result['recoveryCode'] as String;
+    final changedCode = await sync.changeRecoveryCode();
+    final changed =
+        SpaceInfo.fromBytes((await storage.read(SpaceLayout.info))!);
+    expect(changed.id, active.id);
+    expect(await changed.recovery.unlock(owner.userId, changedCode),
+        owner.masterKey);
+    await expectLater(changed.recovery.unlock(owner.userId, previousCode),
+        throwsA(isA<WrongKeyException>()));
+    expect(await storage.read('$generation/previous-space.json'), original);
   });
 
   test('a space is made, its code replaced, and a new device recovers it',

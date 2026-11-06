@@ -242,6 +242,8 @@ class LanMediaHost {
     try {
       if (request.contentLength > maxBytes) throw const _LanFailure(413);
       final body = await _bounded(request, maxBytes, timeout: requestTimeout);
+      // A reset can retire the old space while its request body is arriving.
+      if (_closed) throw const _LanFailure(503);
       final time = request.headers.value('x-aid-time') ?? '';
       nonce = request.headers.value('x-aid-nonce') ?? '';
       final timestamp = int.tryParse(time);

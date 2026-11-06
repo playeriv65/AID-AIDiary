@@ -22,9 +22,10 @@ typedef SyncNetworkState = ({
 /// SyncService owns the storage and route lifetimes.
 class SyncDiagnostics {
   SyncDiagnostics({
-    required Future<CopyStatusStore?> Function() copyStore,
+    required Future<({CopyStatusStore store, SpaceInfo space})?> Function()
+        copyStore,
     required Future<String> Function() copyDeviceId,
-    required Iterable<SyncBackend> Function() copySources,
+    required Iterable<SyncBackend> Function(SpaceInfo) copySources,
     required (String? provider, String? host) Function() storageLocation,
     required SyncNetworkState Function() network,
   })  : _copyStore = copyStore,
@@ -33,9 +34,10 @@ class SyncDiagnostics {
         _storageLocation = storageLocation,
         _network = network;
 
-  final Future<CopyStatusStore?> Function() _copyStore;
+  final Future<({CopyStatusStore store, SpaceInfo space})?> Function()
+      _copyStore;
   final Future<String> Function() _copyDeviceId;
-  final Iterable<SyncBackend> Function() _copySources;
+  final Iterable<SyncBackend> Function(SpaceInfo) _copySources;
   final (String? provider, String? host) Function() _storageLocation;
   final SyncNetworkState Function() _network;
 
@@ -46,11 +48,14 @@ class SyncDiagnostics {
 
   /// User-requested copy details. Receipts name devices, never network paths.
   Future<Map<String, Object?>> copyStatus() async {
-    final store = await _copyStore();
-    if (store == null) return {'name': LocalDevice.name, 'devices': <Object>[]};
+    final status = await _copyStore();
+    if (status == null) {
+      return {'name': LocalDevice.name, 'devices': <Object>[]};
+    }
+    final (:store, :space) = status;
     final local = await store.local(await _copyDeviceId(), LocalDevice.name);
     final vault = MediaVault(store.db);
-    final copies = await store.readLatest({vault, ..._copySources()});
+    final copies = await store.readLatest({vault, ..._copySources(space)});
     for (final copy in copies) {
       await store.publish(vault, copy);
     }

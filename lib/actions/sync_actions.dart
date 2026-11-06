@@ -360,9 +360,9 @@ final List<AppAction> syncActions = [
   AppAction(
     id: 'sync.reset_space',
     describe: "When no device and no recovery code opens the space: starts "
-        "it over from this device's diary under this device's keys. The old "
-        'copy is removed and the other devices pair again. Returns the new '
-        'recovery code.',
+        "a separate space from this device's diary under this device's keys. "
+        'Previous encrypted objects stay in their storage paths. Other '
+        'devices pair again. Returns the new recovery code.',
     risk: ActionRisk.destructive,
     params: const [
       ActionParam('password', ParamType.string,

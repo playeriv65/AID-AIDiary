@@ -97,6 +97,31 @@ func TestResetGenerationUsesAccountMediaAllowance(t *testing.T) {
 	h.expect(h.do("alice", "GET", previous, ""), http.StatusTooManyRequests)
 }
 
+func TestMediaAcrossSpaceGenerationsSharesAccountLimits(t *testing.T) {
+	h := start(t)
+	h.server.cfg.Media = MediaLimits{MaxObjectBytes: 10, CacheBytes: 6, DailyTransferBytes: 100, CacheTTL: time.Hour}
+	h.add("alice", 0)
+	h.mediaFolders()
+	const generations = "/dav/space/generations"
+	const generation = generations + "/80fa28c3-1e1b-4b49-96b7-573b6dd94300"
+	for _, folder := range []string{generations, generation, generation + "/media", generation + "/media/chunks", generation + "/media/chunks/photo"} {
+		h.expect(h.do("alice", "MKCOL", folder, ""), http.StatusCreated)
+	}
+	chunk := func(body string) string {
+		return generation + strings.TrimPrefix(mediaPath(body), "/dav/space")
+	}
+	h.expect(h.do("alice", "PUT", mediaPath("old!"), "old!"), 201)
+	h.expect(h.do("alice", "PUT", chunk("new"), "new"), 507)
+	h.expect(h.do("alice", "PUT", chunk("ok"), "ok"), 201)
+	h.expect(h.do("alice", "PUT", chunk("ok"), "no"), 422)
+	if got := h.remaining(); got != 92 {
+		t.Fatalf("generation uploads should share the account allowance: %d", got)
+	}
+	h.advance(2 * time.Hour)
+	h.expect(h.do("alice", "GET", mediaPath("old!"), ""), 404)
+	h.expect(h.do("alice", "GET", chunk("ok"), ""), 404)
+}
+
 func TestMediaExpiryKeepsManifestsAndPacks(t *testing.T) {
 	h := start(t)
 	h.server.cfg.Media = MediaLimits{MaxObjectBytes: 10, CacheBytes: 100, DailyTransferBytes: 100, CacheTTL: time.Hour}
