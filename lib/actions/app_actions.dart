@@ -4,6 +4,7 @@
 
 import 'package:aid_diary/actions/agent_actions.dart';
 import 'package:aid_diary/actions/app_action.dart';
+import 'package:aid_diary/actions/batch_actions.dart';
 import 'package:aid_diary/actions/coach_actions.dart';
 import 'package:aid_diary/actions/data_actions.dart';
 import 'package:aid_diary/actions/device_sync_actions.dart';
@@ -55,6 +56,7 @@ class AppActions {
     ...perfActions,
     ...agentActions,
     ...updateActions,
+    ...batchActions,
   ];
 
   final List<AppAction> _actions;
