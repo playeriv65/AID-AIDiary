@@ -109,7 +109,12 @@ class AppDatabase {
         onCreate: _createDatabase,
         onUpgrade: _onUpgrade,
         onOpen: enforceForeignKeys);
+    await reload(firstScreen: firstScreen);
+  }
 
+  /// Reads everything the app keeps in memory from the database again, as
+  /// after a write that went around the stores (`sql.execute`).
+  Future<void> reload({int? firstScreen}) async {
     await EntriesProvider.instance.load(firstScreen: firstScreen);
     await EntryImagesProvider.instance.load();
     await TemplatesProvider.instance.load();

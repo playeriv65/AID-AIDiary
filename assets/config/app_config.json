@@ -126,6 +126,7 @@
     "maxTurns": 30,
     "outputChars": 16000,
     "sqlRows": 500,
+    "sqlSnapshots": 5,
     "acpAgents": {
       "claude": {
         "command": "npx",

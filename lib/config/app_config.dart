@@ -279,6 +279,9 @@ class AppConfig {
   /// The most rows one `sql` query prints.
   int get agentSqlRows => _section('agent')['sqlRows'] as int;
 
+  /// How many copies of the diary from before an `sql.execute` stay.
+  int get sqlSnapshots => _section('agent')['sqlSnapshots'] as int;
+
   /// Agents on this computer that speak ACP, by name: how to start each,
   /// with environment variables of their own (Codex needs the network for
   /// `aid` to reach the app).

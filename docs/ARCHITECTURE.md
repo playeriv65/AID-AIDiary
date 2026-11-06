@@ -324,6 +324,16 @@ Rules that keep it so:
 - Only `lib/routing/` pushes routes (`test/architecture/places_test.dart`
   lists the few flows that are not places, with why), and every place
   opened by name exists.
+- Bulk changes to diary data go through SQL rather than one action per row
+  (`sql_actions.dart`): `sql.query` returns rows, `sql.execute` runs one
+  statement or a JSON file of them in one transaction (destructive, so
+  `--yes`), keeps a copy of the database in `before-sql/` beside it first
+  (`agent.sqlSnapshots` copies), then reloads the stores. The sync triggers
+  record every changed row. Conventions a statement must keep: written
+  times are the local clock in `time_create` with `utc_offset` minutes;
+  weather lives per day and place in `day_weather`; attachment files are
+  not in the database. `actions.batch` runs a JSON file of actions inside
+  the app, for steps that need more than SQL (weather lookups, files).
 - Tests: `test/actions/` runs actions against real stores and the API over
   HTTP; `test/widgets/command_palette_test.dart` checks the palette offers
   every action; `test/routing/` opens the places through `ui.navigate` in
@@ -535,7 +545,9 @@ action argument or global unlocked flag. Backgrounding revokes it; guarded
 reader, editor and attachment routes remove their content. Revealing, restoring,
 opening a hidden capsule and deleting hidden entries are deliberately local
 authenticated operations, like app-lock changes. The ordinary `entry.hide`
-action can conceal a visible entry, but actions cannot read or reveal it.
+action can conceal a visible entry, but entry actions cannot read or reveal
+it. `sql.query` and `sql.execute` see and change hidden rows like any other:
+hiding is an interface matter (owner's rule).
 Sharing, duplication and template creation require making the entry ordinary
 first; this avoids implicit copies outside the protected section.
 
