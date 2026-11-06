@@ -58,16 +58,25 @@ class AppUpdate {
 
   /// Notes as the manifest or settings hold them: by language, or, from a
   /// manifest or an app before languages, one English list.
-  static Map<String, List<String>> _notes(
-          Object? byLanguage, Object? english) =>
-      byLanguage is Map
-          ? {
-              for (final MapEntry(:key, :value) in byLanguage.entries)
-                '$key': [for (final line in value as List) '$line'],
-            }
-          : {
-              'en': [for (final line in english as List? ?? []) '$line'],
-            };
+  static Map<String, List<String>> _notes(Object? byLanguage, Object? english) {
+    if (byLanguage == null) {
+      return {'en': english == null ? [] : _noteLines(english)};
+    }
+    if (byLanguage is! Map<String, dynamic>) {
+      throw const FormatException('Localized notes must be an object');
+    }
+    return {
+      for (final MapEntry(:key, :value) in byLanguage.entries)
+        key: _noteLines(value),
+    };
+  }
+
+  static List<String> _noteLines(Object? lines) {
+    if (lines is! List || lines.any((line) => line is! String)) {
+      throw const FormatException('Release notes must be a list of strings');
+    }
+    return List<String>.from(lines);
+  }
 
   /// The entry for [package] in the manifest found at [source], newer than
   /// [installed]; null when it has none or none newer. Files are named
@@ -75,19 +84,47 @@ class AppUpdate {
   static AppUpdate? from(Map<String, dynamic> manifest,
       {required Uri source, required String package, required int installed}) {
     final build = manifest['build'];
-    final file = (manifest['files'] as Map?)?[package];
-    if (build is! int || build <= installed || file is! Map) return null;
-    final name = file['name'] as String;
-    if (!RegExp(r'^[A-Za-z0-9._-]+$').hasMatch(name)) {
-      throw UpdateException('corrupt', 'Bad file name in the manifest: $name');
+    final version = manifest['version'];
+    final files = manifest['files'];
+    if (build is! int ||
+        build <= 0 ||
+        version is! String ||
+        version.trim().isEmpty ||
+        files is! Map<String, dynamic>) {
+      throw const FormatException('Invalid release manifest');
     }
+    final notes = _notes(manifest['notesByLanguage'], manifest['notes']);
+    if (!files.containsKey(package)) return null;
+    final file = files[package];
+    if (file is! Map<String, dynamic>) {
+      throw const FormatException('Invalid package entry in the manifest');
+    }
+    final name = file['name'];
+    if (name is! String ||
+        name.isEmpty ||
+        name == '.' ||
+        name == '..' ||
+        RegExp(r'[^A-Za-z0-9._-]').hasMatch(name)) {
+      throw const UpdateException('corrupt', 'Bad file name in the manifest');
+    }
+    final hash = file['sha256'];
+    final size = file['size'];
+    if (hash is! String ||
+        hash.length != 64 ||
+        RegExp(r'[^A-Fa-f0-9]').hasMatch(hash) ||
+        size is! int ||
+        size <= 0) {
+      throw const FormatException(
+          'Invalid package hash or size in the manifest');
+    }
+    if (build <= installed) return null;
     return AppUpdate(
-      version: manifest['version'] as String,
+      version: version,
       build: build,
-      notes: _notes(manifest['notesByLanguage'], manifest['notes']),
+      notes: notes,
       url: source.resolve(name),
-      sha256: file['sha256'] as String,
-      size: file['size'] as int,
+      sha256: hash.toLowerCase(),
+      size: size,
     );
   }
 
@@ -103,7 +140,8 @@ class AppUpdate {
   factory AppUpdate.fromJson(Map<String, dynamic> json) => AppUpdate(
         version: json['version'] as String,
         build: json['build'] as int,
-        notes: _notes(json['notes'], json['notes']),
+        notes:
+            _notes(json['notes'] is Map ? json['notes'] : null, json['notes']),
         url: Uri.parse(json['url'] as String),
         sha256: json['sha256'] as String,
         size: json['size'] as int,
@@ -159,14 +197,16 @@ class AppUpdates {
       packageName.endsWith('.beta') ? 'android-dev' : 'android';
 
   /// The update for this app, or null when it is the newest. Asks each
-  /// manifest address in turn until one answers.
+  /// manifest address in turn until one returns a valid manifest.
   Future<AppUpdate?> check() async {
     final config = AppConfig.instance;
     final info = DeviceInfoService().appInfo;
     if (info == null) throw StateError('App info is not loaded');
+    final package = packageKey(info.packageName);
+    final installed = int.parse(info.buildNumber);
     final failures = <String>[];
     for (final source in config.updateManifestUrls) {
-      final Map<String, dynamic> manifest;
+      final AppUpdate? update;
       try {
         final response =
             await _client.get(source).timeout(config.updateTimeout);
@@ -174,18 +214,19 @@ class AppUpdates {
           failures.add('${source.host}: HTTP ${response.statusCode}');
           continue;
         }
-        manifest =
-            jsonDecode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
+        final manifest = jsonDecode(utf8.decode(response.bodyBytes));
+        if (manifest is! Map<String, dynamic>) {
+          throw const FormatException('Update manifest must be a JSON object');
+        }
+        update = AppUpdate.from(manifest,
+            source: source, package: package, installed: installed);
       } on Exception catch (error) {
         failures.add('${source.host}: $error');
         continue;
       }
       await ConfigProvider.instance
           .set(Settings.lastUpdateCheck, DateTime.now().toIso8601String());
-      return AppUpdate.from(manifest,
-          source: source,
-          package: packageKey(info.packageName),
-          installed: int.parse(info.buildNumber));
+      return update;
     }
     throw UpdateException('unavailable', failures.join('; '));
   }

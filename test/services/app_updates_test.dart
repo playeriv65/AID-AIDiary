@@ -35,7 +35,7 @@ Map<String, Object?> _manifest({int build = 261029183}) => {
         'android-dev': {
           'name': 'aid-diary-dev.apk',
           'size': 1,
-          'sha256': '00',
+          'sha256': '${sha256.convert([0])}',
         },
       },
     };
@@ -138,6 +138,64 @@ void main() {
     final updates =
         AppUpdates(client: MockClient((_) async => http.Response('down', 503)));
     await expectLater(updates.check(), throwsA(isA<UpdateException>()));
+  });
+
+  test('malformed mirrors fall back before marking the check successful',
+      () async {
+    final config = ConfigProvider.instance;
+    final malformed = {
+      'invalid JSON': '{',
+      'non-object JSON': '[]',
+      'missing release data': '{}',
+      'invalid package': jsonEncode(_manifest()..['files'] = {'android': []}),
+      'invalid localized notes':
+          jsonEncode(_manifest()..['notesByLanguage'] = {'en': 'one line'}),
+      'invalid download metadata': jsonEncode(_manifest()
+        ..['files'] = {
+          'android': {'name': 'aid-diary.apk', 'sha256': '00', 'size': 0}
+        }),
+    };
+    for (final MapEntry(:key, :value) in malformed.entries) {
+      await config.set(Settings.lastUpdateCheck, '');
+      final asked = <String>[];
+      final updates = AppUpdates(client: MockClient((request) async {
+        asked.add('${request.url}');
+        if ('${request.url}' == _server) return http.Response(value, 200);
+        expect(config.get(Settings.lastUpdateCheck), isEmpty, reason: key);
+        return http.Response(jsonEncode(_manifest()), 200);
+      }));
+      final update = await updates.check();
+      expect(asked, [_server, _github], reason: key);
+      expect(update?.url.host, 'github.example', reason: key);
+      expect(config.get(Settings.lastUpdateCheck), isNotEmpty, reason: key);
+    }
+  });
+
+  test('a malformed check leaves the previous successful check time intact',
+      () async {
+    final config = ConfigProvider.instance;
+    const previous = '2026-10-28T09:00:00Z';
+    await config.set(Settings.lastUpdateCheck, previous);
+    final updates =
+        AppUpdates(client: MockClient((_) async => http.Response('{}', 200)));
+    await expectLater(
+        updates.check(),
+        throwsA(isA<UpdateException>()
+            .having((e) => e.code, 'code', 'unavailable')));
+    expect(config.get(Settings.lastUpdateCheck), previous);
+  });
+
+  test('a valid mirror with no newer build still completes the check',
+      () async {
+    final asked = <String>[];
+    final updates = AppUpdates(client: MockClient((request) async {
+      asked.add('${request.url}');
+      final build = '${request.url}' == _server ? 261028090 : 261029183;
+      return http.Response(jsonEncode(_manifest(build: build)), 200);
+    }));
+    expect(await updates.check(), isNull);
+    expect(asked, [_server]);
+    expect(ConfigProvider.instance.get(Settings.lastUpdateCheck), isNotEmpty);
   });
 
   test('download keeps a package that matches the manifest', () async {
