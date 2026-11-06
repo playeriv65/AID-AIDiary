@@ -11,6 +11,7 @@ import 'package:aid_diary/actions/app_action.dart';
 import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/config_provider.dart';
+import 'package:aid_diary/database/app_database.dart';
 import 'package:aid_diary/sync/device_auth.dart';
 import 'package:aid_diary/sync/identity.dart';
 import 'package:aid_diary/sync/sync_backend.dart';
@@ -57,6 +58,33 @@ void main() {
     final status = await run('sync.status');
     expect(status['unsyncedIds'], [3, 7]);
     expect(status['unsyncedEntries'], 2);
+  });
+
+  test('network diagnostics distinguish pending and confirmed remote media',
+      () async {
+    final db = AppDatabase.instance.database!;
+    for (final (id, sending, completed, durable) in [
+      ('pending-upload', 1, 0, 0),
+      ('pending-download', 0, 0, 0),
+      ('confirmed-upload', 1, 1, 1),
+      ('temporary-upload', 1, 1, 0),
+      ('finished-download', 0, 1, 1),
+    ]) {
+      await db.insert('sync_media_tasks', {
+        'id': id,
+        'name': '$id.jpg',
+        'sending': sending,
+        'completed': completed,
+        'durable': durable,
+      });
+    }
+    expect(
+        await run('sync.network'),
+        allOf(
+          containsPair('pendingMedia', 2),
+          containsPair('durableRemoteMedia', 1),
+          containsPair('temporaryOrUnconfirmedRemoteMedia', 1),
+        ));
   });
 
   test(

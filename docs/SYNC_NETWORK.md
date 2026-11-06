@@ -35,225 +35,10 @@ on Windows and Android. The connection types are implemented in source;
 their availability still depends on routing, firewall/NAT behavior, both
 devices being online and the server's deployed version.
 
-The production service at `aid.playeriv65.com` was updated on 2026-10-22
-with the owner's authorization. It runs server source `887dd27` and nginx
-WebSocket upgrade headers, with operator limits explicitly enabled and a
-1,000,000,000-byte UTC monthly media allowance per account. Self-hosting
-continues to default to limits off; both modes use the same implementation.
-Earlier isolated public tests used a temporary process, data and proxy
-prefix, all since removed. No new public port, Oracle firewall rule or
-additional Osaka relay was needed for the production deployment.
-
-## Verification status
-
-### First-run connection and tutorial (2026-10-22)
-
-The first screen now offers “Start here” or “Connect to an existing device”
-(“连接已有设备”), with authorization and initial sync leaving the existing
-device usable. A reusable read-only tutorial is available from first setup
-and Settings. Existing saved/edited introductory content is retained as
-ordinary diary data; this change does not reset or clean a user's space.
-
-The final offline Flutter regression passed 799 cases; external-service tests
-were excluded. The eight first-run/help widget cases include cancellation,
-completion, tutorial re-entry, existing-writing preservation and large text.
-Two phone/wide render cases produced four reviewed screenshots; static
-analysis was clean. Existing local-protocol tests also retain the source's
-diary and sync state after initial copying. No new physical-device install,
-cross-network or performance claim is made by this UI follow-up.
-
-### Device names and progressive disclosure (2026-10-22)
-
-The everyday sync page keeps completion/pending/waiting state and necessary
-actions. Copy locations open under sync details; route diagnostics, account
-information, signing-key details, recovery and reset require deeper options.
-The limited-server allowance starts as one line, with usage details on demand.
-Wi-Fi/hotspot help on nearby migration is collapsed until needed.
-
-Every device has a useful default model/hostname and an editable local name.
-Names are used by pairing and enrollment; public DNS-SD still advertises only
-opaque IDs and authentication tags. After pairing supplies the shared identity,
-the existing background discovery, authenticated probes and route upgrades
-start automatically. A reachable local network is still required for LAN;
-numeric storage-based pairing requires its configured shared storage, whereas
-the nearby QR flow can establish trust without the application server.
-
-Encrypted `copies/<device-id>` summaries confirm a device's dataset revision,
-original-file presence counts and last-check time. Remote copy labels require
-a matching revision; stale complete reports cannot override a newer partial
-report from another source. These are last-known observations, not an offline
-device audit or a promise of future retention. Temporary cache is displayed
-separately. Publishing a copy receipt never acknowledges an unsent diary change
-and does not alter media transfer budgets. Old peers without receipts remain
-usable; their complete-copy status is unknown.
-
-Validation: 799 Flutter tests passed, with six external-service tests skipped;
-seven CLI tests passed and static analysis was clean. All four screenshot
-cases passed, including new phone/tablet sync-summary and copy-detail views.
-Tests cover automatic authenticated LAN discovery, copy receipt transport,
-matching/partial/stale inventories, path/space authentication, newest-confirmation
-selection, editable Unicode device labels, pairing-time renames and account
-device IDs without duplicate local rows. Native test DLL conflicts are prevented
-by the shared workspace lock; focused tests use `dev.ps1 test -TestFiles ...`.
-This follow-up did not add cross-WAN or performance verification.
-
-### Production deployment (2026-10-22)
-
-The existing `aid-sync` container on `netlab_main` was recreated from server
-source `887dd27e86a0acd14fb2cfafa82a3eae07edb6bd`. Its persistent bind mount
-remains `/srv/aid-sync/data`; the existing account was retained. nginx still
-terminates TLS and forwards to `127.0.0.1:18081`, now including WebSocket
-`Upgrade` and `Connection` headers. Other sites and containers were unchanged.
-
-The Linux ARM64 binary SHA-256 is
-`ec05c2337964e736f47ae0dd85f65f98d25a2931017bca2f34297d6e3586cb47`;
-the running image ID is
-`sha256:93e52a086636b9bcd0631a9a65c23d47026d246bcdd22a2d82b6716d7b23f66c`.
-The predeployment backup is
-`/srv/aid-sync/backups/20261022T203743Z-887dd27.OvpGf0`.
-The prior image and backups remain available for rollback.
-
-The initial image could not execute a Windows-built binary copied with mode
-0644; automatic rollback restored the prior service. The Dockerfile now sets
-mode 0755 explicitly. The successful attempt ran an image preflight before
-stopping production, then passed local health and `nginx -t` checks.
-
-External checks from Windows passed public HTTPS health (200), authenticated
-policy and device capabilities, a 1024-byte WebDAV round trip, two WebSocket
-upgrades (101), and an exact 16,384-byte relay-frame round trip. The policy
-reported `operatorLimited: true` and `monthlyLimitBytes: 1000000000`; the
-account ledger recorded traffic. The temporary acceptance account and its
-data were deleted, leaving the original account count of one.
-
-These are production deployment and proxy/protocol checks, not a new native
-Windows/Pad diary transfer or proof of connectivity through different NATs.
-An additional Osaka relay was cancelled; Osaka received read-only inspection.
-The Go test suite and vet passed for this deployment. Flutter code was not
-changed; the preceding native app validation is recorded below.
-
-### Device authorization and policy follow-up (2026-10-22)
-
-The final backlog binaries passed first-run nearby migration between hidden
-Windows and the Xiaomi Pad 7. With the isolated local cloud service stopped,
-QR-bound SAS approval transferred diary metadata, a 3 MiB audio attachment and
-a rendered handwriting PNG; both attachment SHA-256 values matched, the diary
-day remained 2026-10-20, media failures were zero and the source received its
-final completion receipt. These devices were on the same Wi-Fi with Tailscale
-available; stopping the application server does not establish a no-Internet or
-cross-WAN test.
-
-Windows CNG bootstrap, explicit approval, signing-key rotation and revocation
-passed. The Pad reported a hardware-backed Android Keystore key, received
-automatic authorization through the already-approved nearby channel, rotated
-its own key and synchronized a new diary entry. Revocation then required fresh
-approval. The final first-run GUI completed directly into the journal, without
-returning through the welcome steps.
-
-One unchanged local server URL was tested with the same executable and data:
-limits off returned no quota; limits on returned the configured 8192-byte monthly
-allowance; limits off again cleared the quota and transferred a new
-17,825,836-byte WAV through storage only, with a matching SHA-256. This exceeds
-the default limited-cache original-file ceiling and demonstrates that clients
-use policy parameters rather than domain-specific behavior.
-
-The final Flutter suite passed 789 tests with six external-service tests skipped;
-analysis was clean, seven CLI tests passed, all four screenshot cases passed,
-and Go tests, vet and race checks passed. Both native builds succeeded. The
-headless Android emulator verified real mood-widget cold launch, bounded
-MediaStore scanning, explicit two-photo import and unchanged source-file hashes.
-Stylus events and handwriting rendering also have component/action tests.
-Performance measurements and another-network validation remain deferred.
-Production deployment is complete as recorded above.
-
-Test native signing keys were removed through their isolated app instances,
-the two Pad scratch workspaces and API forwards were removed, and local test
-clients/server were stopped. The everyday app package was not changed.
-
-### Earlier automatic-path validation
-
-Previously checked: two isolated hidden Windows clients discovered each
-other through native DNS-SD, selected LAN, and exchanged a 2 MiB attachment
-with a matching SHA-256 while the test cache's file allowance was only
-1 MiB. Metadata also reached the other client with that temporary cloud
-server stopped. Those results establish the earlier LAN implementation,
-not the new Internet paths.
-
-The new WebSocket service has Go protocol tests for account/room/session
-isolation, forwarding, quotas, reconnection and concurrency. On 2026-10-22,
-the Windows PC and Xiaomi Pad 7, on the **same Wi-Fi**, established trusted
-native Bonjour LAN, two verified global-IPv6 direct endpoints, ICE and
-live-relay candidates. Restricting both clients to one path produced these
-physical transfer results:
-
-| Path check | Windows-to-Pad fixture | Result |
-| --- | --- | --- |
-| `direct` only | 5 MiB + 44-byte WAV header | Received and SHA-256 matched; no cache or relay carried this fixture |
-| `ice` only, `stunOnly=true` | 3 MiB + 44-byte WAV header | Received and SHA-256 matched; nominated pair used UDP |
-| `relay` only | 32,812-byte WAV | Received and SHA-256 matched; a 3 MiB attachment waited with zero media failures |
-
-Fixture SHA-256 values, in that order:
-
-```text
-direct  2fb6db1f9644e12822f67a9b6a154b40cc765743932619f20b742c780b40414d
-ice     07ea7e8cb193d728d96784576b8007de2d1f43b77806f4ee827bb3471933aea9
-relay   1d9798e9a1c318c8e1106f3c1b19a17815e6720f62173241c2f23173d6cd8de0
-```
-
-The ICE run excluded exchanged host candidates and gathered `srflx`
-candidates. Actual selected-pair diagnostics showed Windows local `host` /
-remote `prflx` and Pad `prflx` / `prflx`, over UDP. It is evidence of this
-host/peer-reflexive connection, not a claim that the nominated pair was
-`srflx`/`srflx`. The nominated Windows pair sent about 4.4 MB in 291 frames,
-without the earlier queue/backpressure failure.
-
-For the cost boundary, the temporary server used a reduced **1 MiB daily
-relay quota**. A separate test room exhausted it after 27 relay frames:
-the server refused further budget, reported 246 bytes remaining and had
-charged 1,048,330 of 1,048,576 bytes. A new small attachment stayed pending.
-Restarting Windows restored automatic paths, upgraded to LAN and delivered
-both that small attachment and the pending 3 MiB file while the cloud relay
-allowance remained 246 bytes. No quota increase was used to finish them.
-
-The latest Windows and Pad binaries also verified that an established ICE
-link survives signaling loss. On Windows,
-`sync.network_reconnect delaySeconds=45` disconnected only its WebSocket:
-Windows reported `disconnected`, the Pad stayed `online` with `peers: []`,
-and both still selected `ice`. Diary text and a new 32 KiB attachment
-continued to sync. Stopping only the remote isolated Go test server then
-made both clients report disconnected signaling with empty peer lists;
-the existing ICE link still synchronized text and media. The production
-server was not stopped or changed.
-
-To exclude an already cached attachment, that last check generated a new
-random 32,812-byte audio file after signaling was unavailable. Sender and
-receiver each reported one completed media task and zero failures. The
-Pad's exported file and Windows source both had SHA-256
-`6f160b1aaf8a997e079ae787183a5443d9d4bc3d8f852d48335d80cc8c19aa2a`.
-The remote `leave` handling was corrected to retain already established
-direct connections. All four `internet_transport_test` cases passed;
-one is the real HMAC/TCP asymmetric-leave regression.
-
-These are same-Wi-Fi results. A global IPv6 address used locally does not
-prove cross-WAN inbound reachability, and the external OCI IPv6/TCP probe
-timed out. The owner deferred testing from another network. No cross-WAN
-success, NAT-type matrix or general carrier/firewall compatibility is
-claimed. The signaling-loss checks above used the latest binaries on both
-devices. The final full Flutter suite passed 710 tests, with six
-external-service tests skipped. Static analysis is clean, all seven CLI
-tests pass, and Go vet/tests/race checks pass. The final source and tested
-device binaries have matching behavior; the last source cleanup only
-removed an always-true type check and added braces.
-
-Cleanup was verified after the physical checks: nginx's live configuration
-SHA-256 matched its pre-test snapshot and `nginx -t` passed; production
-`/healthz` returned 200 and the removed temporary prefix's `/healthz`
-returned 404. The isolated Go executable was checked through `/proc` before
-its process was terminated, and its `/tmp` test directory was removed.
-The production `aid-sync` container remained running with health 200.
-Windows test-app/local-server processes were stopped. Only the Pad's
-`files/network-tests/internet-20261022` workspace was removed; the ordinary
-`dev.aid.diary` installation and its data were retained. Temporary adb
-forward 47829 and reverse 18082 were removed.
+Use [connection selection](#connection-selection) for routing behavior
+and [diagnostics](#diagnostics) to interpret the current client state.
+[Verification status](#verification-status) records the dated deployment
+and device checks.
 
 ## Connection selection
 
@@ -576,6 +361,11 @@ settles actual upload/download bytes so concurrent requests cannot
 overspend. A crash can conservatively charge unused reservations until the
 next UTC day. None of these retention rules promises a durable media backup.
 
+### Diagnostics
+
+`SyncDiagnostics` assembles the copy, route and cloud-usage reports;
+`SyncService` owns the active storage and connection lifetimes.
+
 The UI reports diary sync separately from media waiting: synced, some media
 still transferring, or waiting for another device. Temporary background
 failures retry without connection popups. `aid sync.status` exposes the
@@ -619,6 +409,226 @@ destructive `sync.reset_space` action after reviewing its effect on the
 remote copy and the need to pair other devices again. Changing a live remote
 space requires the owner's approval. Local database schema updates for the
 queue/vault do not convert an existing remote format.
+
+## Verification status
+
+The production service at `aid.playeriv65.com` was updated on 2026-10-22
+with the owner's authorization. It runs server source `887dd27` and nginx
+WebSocket upgrade headers, with operator limits explicitly enabled and a
+1,000,000,000-byte UTC monthly media allowance per account. Self-hosting
+continues to default to limits off; both modes use the same implementation.
+Earlier isolated public tests used a temporary process, data and proxy
+prefix, all since removed. No new public port, Oracle firewall rule or
+additional Osaka relay was needed for the production deployment.
+
+### First-run connection and tutorial (2026-10-22)
+
+The first screen now offers “Start here” or “Connect to an existing device”
+(“连接已有设备”), with authorization and initial sync leaving the existing
+device usable. A reusable read-only tutorial is available from first setup
+and Settings. Existing saved/edited introductory content is retained as
+ordinary diary data; this change does not reset or clean a user's space.
+
+The final offline Flutter regression passed 799 cases; external-service tests
+were excluded. The eight first-run/help widget cases include cancellation,
+completion, tutorial re-entry, existing-writing preservation and large text.
+Two phone/wide render cases produced four reviewed screenshots; static
+analysis was clean. Existing local-protocol tests also retain the source's
+diary and sync state after initial copying. No new physical-device install,
+cross-network or performance claim is made by this UI follow-up.
+
+### Device names and progressive disclosure (2026-10-22)
+
+The everyday sync page keeps completion/pending/waiting state and necessary
+actions. Copy locations open under sync details; route diagnostics, account
+information, signing-key details, recovery and reset require deeper options.
+The limited-server allowance starts as one line, with usage details on demand.
+Wi-Fi/hotspot help on nearby migration is collapsed until needed.
+
+Every device has a useful default model/hostname and an editable local name.
+Names are used by pairing and enrollment; public DNS-SD still advertises only
+opaque IDs and authentication tags. After pairing supplies the shared identity,
+the existing background discovery, authenticated probes and route upgrades
+start automatically. A reachable local network is still required for LAN;
+numeric storage-based pairing requires its configured shared storage, whereas
+the nearby QR flow can establish trust without the application server.
+
+Encrypted `copies/<device-id>` summaries confirm a device's dataset revision,
+original-file presence counts and last-check time. Remote copy labels require
+a matching revision; stale complete reports cannot override a newer partial
+report from another source. These are last-known observations, not an offline
+device audit or a promise of future retention. Temporary cache is displayed
+separately. Publishing a copy receipt never acknowledges an unsent diary change
+and does not alter media transfer budgets. Old peers without receipts remain
+usable; their complete-copy status is unknown.
+
+Validation: 799 Flutter tests passed, with six external-service tests skipped;
+seven CLI tests passed and static analysis was clean. All four screenshot
+cases passed, including new phone/tablet sync-summary and copy-detail views.
+Tests cover automatic authenticated LAN discovery, copy receipt transport,
+matching/partial/stale inventories, path/space authentication, newest-confirmation
+selection, editable Unicode device labels, pairing-time renames and account
+device IDs without duplicate local rows. Native test DLL conflicts are prevented
+by the shared workspace lock; focused tests use `dev.ps1 test -TestFiles ...`.
+This follow-up did not add cross-WAN or performance verification.
+
+### Production deployment (2026-10-22)
+
+The existing `aid-sync` container on `netlab_main` was recreated from server
+source `887dd27e86a0acd14fb2cfafa82a3eae07edb6bd`. Its persistent bind mount
+remains `/srv/aid-sync/data`; the existing account was retained. nginx still
+terminates TLS and forwards to `127.0.0.1:18081`, now including WebSocket
+`Upgrade` and `Connection` headers. Other sites and containers were unchanged.
+
+The Linux ARM64 binary SHA-256 is
+`ec05c2337964e736f47ae0dd85f65f98d25a2931017bca2f34297d6e3586cb47`;
+the running image ID is
+`sha256:93e52a086636b9bcd0631a9a65c23d47026d246bcdd22a2d82b6716d7b23f66c`.
+The predeployment backup is
+`/srv/aid-sync/backups/20261022T203743Z-887dd27.OvpGf0`.
+The prior image and backups remain available for rollback.
+
+The initial image could not execute a Windows-built binary copied with mode
+0644; automatic rollback restored the prior service. The Dockerfile now sets
+mode 0755 explicitly. The successful attempt ran an image preflight before
+stopping production, then passed local health and `nginx -t` checks.
+
+External checks from Windows passed public HTTPS health (200), authenticated
+policy and device capabilities, a 1024-byte WebDAV round trip, two WebSocket
+upgrades (101), and an exact 16,384-byte relay-frame round trip. The policy
+reported `operatorLimited: true` and `monthlyLimitBytes: 1000000000`; the
+account ledger recorded traffic. The temporary acceptance account and its
+data were deleted, leaving the original account count of one.
+
+These are production deployment and proxy/protocol checks, not a new native
+Windows/Pad diary transfer or proof of connectivity through different NATs.
+An additional Osaka relay was cancelled; Osaka received read-only inspection.
+The Go test suite and vet passed for this deployment. Flutter code was not
+changed; the preceding native app validation is recorded below.
+
+### Device authorization and policy follow-up (2026-10-22)
+
+The final backlog binaries passed first-run nearby migration between hidden
+Windows and the Xiaomi Pad 7. With the isolated local cloud service stopped,
+QR-bound SAS approval transferred diary metadata, a 3 MiB audio attachment and
+a rendered handwriting PNG; both attachment SHA-256 values matched, the diary
+day remained 2026-10-20, media failures were zero and the source received its
+final completion receipt. These devices were on the same Wi-Fi with Tailscale
+available; stopping the application server does not establish a no-Internet or
+cross-WAN test.
+
+Windows CNG bootstrap, explicit approval, signing-key rotation and revocation
+passed. The Pad reported a hardware-backed Android Keystore key, received
+automatic authorization through the already-approved nearby channel, rotated
+its own key and synchronized a new diary entry. Revocation then required fresh
+approval. The final first-run GUI completed directly into the journal, without
+returning through the welcome steps.
+
+One unchanged local server URL was tested with the same executable and data:
+limits off returned no quota; limits on returned the configured 8192-byte monthly
+allowance; limits off again cleared the quota and transferred a new
+17,825,836-byte WAV through storage only, with a matching SHA-256. This exceeds
+the default limited-cache original-file ceiling and demonstrates that clients
+use policy parameters rather than domain-specific behavior.
+
+The final Flutter suite passed 789 tests with six external-service tests skipped;
+analysis was clean, seven CLI tests passed, all four screenshot cases passed,
+and Go tests, vet and race checks passed. Both native builds succeeded. The
+headless Android emulator verified real mood-widget cold launch, bounded
+MediaStore scanning, explicit two-photo import and unchanged source-file hashes.
+Stylus events and handwriting rendering also have component/action tests.
+Performance measurements and another-network validation remain deferred.
+Production deployment is complete as recorded above.
+
+Test native signing keys were removed through their isolated app instances,
+the two Pad scratch workspaces and API forwards were removed, and local test
+clients/server were stopped. The everyday app package was not changed.
+
+### Earlier automatic-path validation
+
+Previously checked: two isolated hidden Windows clients discovered each
+other through native DNS-SD, selected LAN, and exchanged a 2 MiB attachment
+with a matching SHA-256 while the test cache's file allowance was only
+1 MiB. Metadata also reached the other client with that temporary cloud
+server stopped. Those results establish the earlier LAN implementation,
+not the new Internet paths.
+
+The new WebSocket service has Go protocol tests for account/room/session
+isolation, forwarding, quotas, reconnection and concurrency. On 2026-10-22,
+the Windows PC and Xiaomi Pad 7, on the **same Wi-Fi**, established trusted
+native Bonjour LAN, two verified global-IPv6 direct endpoints, ICE and
+live-relay candidates. Restricting both clients to one path produced these
+physical transfer results:
+
+| Path check | Windows-to-Pad fixture | Result |
+| --- | --- | --- |
+| `direct` only | 5 MiB + 44-byte WAV header | Received and SHA-256 matched; no cache or relay carried this fixture |
+| `ice` only, `stunOnly=true` | 3 MiB + 44-byte WAV header | Received and SHA-256 matched; nominated pair used UDP |
+| `relay` only | 32,812-byte WAV | Received and SHA-256 matched; a 3 MiB attachment waited with zero media failures |
+
+Fixture SHA-256 values, in that order:
+
+```text
+direct  2fb6db1f9644e12822f67a9b6a154b40cc765743932619f20b742c780b40414d
+ice     07ea7e8cb193d728d96784576b8007de2d1f43b77806f4ee827bb3471933aea9
+relay   1d9798e9a1c318c8e1106f3c1b19a17815e6720f62173241c2f23173d6cd8de0
+```
+
+The ICE run excluded exchanged host candidates and gathered `srflx`
+candidates. Actual selected-pair diagnostics showed Windows local `host` /
+remote `prflx` and Pad `prflx` / `prflx`, over UDP. It is evidence of this
+host/peer-reflexive connection, not a claim that the nominated pair was
+`srflx`/`srflx`. The nominated Windows pair sent about 4.4 MB in 291 frames,
+without the earlier queue/backpressure failure.
+
+For the cost boundary, the temporary server used a reduced **1 MiB daily
+relay quota**. A separate test room exhausted it after 27 relay frames:
+the server refused further budget, reported 246 bytes remaining and had
+charged 1,048,330 of 1,048,576 bytes. A new small attachment stayed pending.
+Restarting Windows restored automatic paths, upgraded to LAN and delivered
+both that small attachment and the pending 3 MiB file while the cloud relay
+allowance remained 246 bytes. No quota increase was used to finish them.
+
+The latest Windows and Pad binaries also verified that an established ICE
+link survives signaling loss. On Windows,
+`sync.network_reconnect delaySeconds=45` disconnected only its WebSocket:
+Windows reported `disconnected`, the Pad stayed `online` with `peers: []`,
+and both still selected `ice`. Diary text and a new 32 KiB attachment
+continued to sync. Stopping only the remote isolated Go test server then
+made both clients report disconnected signaling with empty peer lists;
+the existing ICE link still synchronized text and media. The production
+server was not stopped or changed.
+
+To exclude an already cached attachment, that last check generated a new
+random 32,812-byte audio file after signaling was unavailable. Sender and
+receiver each reported one completed media task and zero failures. The
+Pad's exported file and Windows source both had SHA-256
+`6f160b1aaf8a997e079ae787183a5443d9d4bc3d8f852d48335d80cc8c19aa2a`.
+The remote `leave` handling was corrected to retain already established
+direct connections. All four `internet_transport_test` cases passed;
+one is the real HMAC/TCP asymmetric-leave regression.
+
+These are same-Wi-Fi results. A global IPv6 address used locally does not
+prove cross-WAN inbound reachability, and the external OCI IPv6/TCP probe
+timed out. The owner deferred testing from another network. No cross-WAN
+success, NAT-type matrix or general carrier/firewall compatibility is
+claimed. The signaling-loss checks above used the latest binaries on both
+devices. The final full Flutter suite passed 710 tests, with six
+external-service tests skipped. Static analysis is clean, all seven CLI
+tests pass, and Go vet/tests/race checks pass. The final source and tested
+device binaries have matching behavior; the last source cleanup only
+removed an always-true type check and added braces.
+
+Cleanup was verified after the physical checks: nginx's live configuration
+SHA-256 matched its pre-test snapshot and `nginx -t` passed; production
+`/healthz` returned 200 and the removed temporary prefix's `/healthz`
+returned 404. The isolated Go executable was checked through `/proc` before
+its process was terminated, and its `/tmp` test directory was removed.
+The production `aid-sync` container remained running with health 200.
+Windows test-app/local-server processes were stopped. Only the Pad's
+`files/network-tests/internet-20261022` workspace was removed; the ordinary
+`dev.aid.diary` installation and its data were retained. Temporary adb
+forward 47829 and reverse 18082 were removed.
 
 ## References
 

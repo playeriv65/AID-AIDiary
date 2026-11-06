@@ -28,6 +28,7 @@ import 'package:aid_diary/sync/nearby_receipt.dart';
 import 'package:aid_diary/sync/pairing.dart';
 import 'package:aid_diary/sync/sync_backend.dart';
 import 'package:aid_diary/sync/sync_crypto.dart';
+import 'package:aid_diary/sync/sync_diagnostics.dart';
 import 'package:aid_diary/sync/sync_engine.dart';
 import 'package:aid_diary/sync/sync_schema.dart';
 import 'package:aid_diary/sync/connection_manager.dart';
@@ -285,8 +286,23 @@ class SyncService with ChangeNotifier {
   DateTime? _retryAt;
   String? get activeRoute => _connections?.current?.type.name;
   DateTime? get retryAt => _retryAt;
-  bool get temporaryMediaCache =>
-      _storage is WebDavBackend && (_storage as WebDavBackend).boundedMedia;
+  bool get temporaryMediaCache => _diagnostics.temporaryMediaCache;
+
+  late final _diagnostics = SyncDiagnostics(
+    copyStore: _copyStore,
+    copyDeviceId: _copyDeviceId,
+    copySources: _copySources,
+    storageLocation: () {
+      final current = target;
+      return (current?.provider.name, current?.server?.host);
+    },
+    network: () => (
+      storage: _storage,
+      connections: _connections,
+      internet: _internet,
+      retryAt: _retryAt,
+    ),
+  );
 
   Future<CopyStatusStore?> _copyStore() async {
     final db = AppDatabase.instance.database;
@@ -314,42 +330,21 @@ class SyncService with ChangeNotifier {
     return LocalDevice.id();
   }
 
-  /// User-requested copy details. Receipts name devices, never network paths.
-  Future<Map<String, Object?>> copyStatus() async {
-    final store = await _copyStore();
-    if (store == null) return {'name': LocalDevice.name, 'devices': <Object>[]};
-    final local = await store.local(await _copyDeviceId(), LocalDevice.name);
-    final vault = MediaVault(store.db);
+  Set<SyncBackend> _copySources() {
     final login = _login;
-    final copies = await store.readLatest({
-      vault,
-      if (login != null &&
-          (_connections == null ||
-              _connections!.healthyRoutes
-                  .any((route) => route.id == 'storage')))
-        _storageFor(login),
-      for (final route in _connections?.healthyRoutes ?? <SyncRouteCandidate>[])
-        if (route.type != SyncRouteType.cache) route.backend,
-    });
-    for (final copy in copies) {
-      await store.publish(vault, copy);
-    }
-    final network = await networkStatus();
+    final connections = _connections;
     return {
-      'name': LocalDevice.name,
-      'local': local.toJson(),
-      'devices': [
-        for (final copy in copies)
-          if (copy.id != local.id)
-            {...copy.toJson(), 'current': copy.revision == local.revision}
-      ],
-      'temporaryStorage': temporaryMediaCache,
-      'storage': target?.provider.name,
-      'storageHost': target?.server?.host,
-      'storedMedia': network['durableRemoteMedia'],
-      'temporaryMedia': network['temporaryOrUnconfirmedRemoteMedia'],
+      if (login != null &&
+          (connections == null ||
+              connections.healthyRoutes.any((route) => route.id == 'storage')))
+        _storageFor(login),
+      for (final route in connections?.healthyRoutes ?? <SyncRouteCandidate>[])
+        if (route.type != SyncRouteType.cache) route.backend,
     };
   }
+
+  /// User-requested copy details. Receipts name devices, never network paths.
+  Future<Map<String, Object?>> copyStatus() => _diagnostics.copyStatus();
 
   Future<void> renameDevice(String name) async {
     await LocalDevice.rename(name);
@@ -359,66 +354,11 @@ class SyncService with ChangeNotifier {
 
   final _random = Random();
 
-  /// Operational details stay out of the everyday status label. A successful
-  /// cache upload is explicitly distinct from durable remote storage.
-  Future<Map<String, Object?>> networkStatus() async {
-    final db = AppDatabase.instance.database;
-    final tasks = db == null
-        ? <Map<String, Object?>>[]
-        : await db.query('sync_media_tasks',
-            columns: ['sending', 'completed', 'durable']);
-    return {
-      if (_storage is WebDavBackend &&
-          (_storage as WebDavBackend).cachedCloudTraffic != null)
-        'cloudTraffic': (_storage as WebDavBackend).cachedCloudTraffic,
-      'route': activeRoute,
-      if (_internet != null) 'internet': _internet!.diagnostics(),
-      'availableRoutes': [
-        for (final route
-            in _connections?.healthyRoutes ?? <SyncRouteCandidate>[])
-          {
-            'type': route.type.name,
-            'stability': route.stability,
-            'throughput': route.throughput,
-            'cost': route.cost
-          }
-      ],
-      'pendingMedia': tasks.where((task) => task['completed'] == 0).length,
-      'durableRemoteMedia': tasks
-          .where((task) =>
-              task['completed'] == 1 &&
-              task['sending'] == 1 &&
-              task['durable'] == 1)
-          .length,
-      'temporaryOrUnconfirmedRemoteMedia': tasks
-          .where((task) =>
-              task['completed'] == 1 &&
-              task['sending'] == 1 &&
-              task['durable'] == 0)
-          .length,
-      if (_retryAt != null) 'retryAt': _retryAt!.toIso8601String(),
-    };
-  }
+  /// Selected routes, remote media confirmations and retry details.
+  Future<Map<String, Object?>> networkStatus() => _diagnostics.networkStatus();
 
   /// Fetches only the operator's public quota fields for the current account.
-  Future<Map<String, Object?>?> cloudTraffic() async {
-    final backend = _storage;
-    if (backend is! WebDavBackend) return null;
-    await backend.mediaPolicy();
-    final value = backend.cachedCloudTraffic;
-    if (value == null) return null;
-    return {
-      for (final key in [
-        'monthlyLimitBytes',
-        'monthlyUsedBytes',
-        'monthlyRemainingBytes'
-      ])
-        if (value[key] is int && (value[key] as int) >= 0) key: value[key],
-      if (value['resetsAt'] is String &&
-          DateTime.tryParse(value['resetsAt'] as String) != null)
-        'resetsAt': value['resetsAt'],
-    };
-  }
+  Future<Map<String, Object?>?> cloudTraffic() => _diagnostics.cloudTraffic();
 
   SyncTarget? get target =>
       switch (ConfigProvider.instance.get(Settings.syncTarget)) {
