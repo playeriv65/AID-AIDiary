@@ -4,7 +4,10 @@
 
 A private diary app for Windows, Android and Linux, built with Flutter.
 
-Builds of the latest `main` are on the [nightly prerelease](https://github.com/playeriv65/AID-AIDiary/releases/tag/nightly) (Android APKs, a Windows ZIP and a Linux tarball). They are signed with a debug key, so they install fresh but cannot update an installation signed with the release key.
+Download Android APKs and Windows and Linux packages from the
+[nightly prerelease](https://github.com/playeriv65/AID-AIDiary/releases/tag/nightly).
+Android packages use the release key and can update installations signed
+with the same key. See [Updates](docs/UPDATES.md).
 
 ## Screens
 

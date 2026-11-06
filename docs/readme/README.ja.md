@@ -4,7 +4,7 @@
 
 Flutter で作られた、Windows、Android、Linux 向けのプライベートな日記アプリです。
 
-最新の `main` のビルドは [nightly プレリリース](https://github.com/playeriv65/AID-AIDiary/releases/tag/nightly)にあります（Android APK、Windows 用 ZIP、Linux 用 tar）。デバッグ鍵で署名されているため新規インストールはできますが、リリース鍵で署名されたインストールを上書きすることはできません。
+[nightly プレリリース](https://github.com/playeriv65/AID-AIDiary/releases/tag/nightly)から Android、Windows、Linux のパッケージをダウンロードできます。Android パッケージはリリース鍵で署名されており、同じ鍵で署名されたアプリを更新できます。[更新の詳細](../UPDATES.md)を参照してください。
 
 ## 画面
 

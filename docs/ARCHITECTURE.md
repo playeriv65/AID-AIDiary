@@ -216,11 +216,12 @@ shortcut after the configured viewport threshold; child/detail scrolling does
 not trigger it. Returning to the beginning uses a direct jump, including for
 large archives and reduced-motion users.
 
-Feedback is a routed settings page. `assets/config/app_config.json` owns its
-GitHub issue URL and contact email; only the user's entered text is prefilled.
-External-launch failure retains the draft and leaves the email/copy fallback
-available. The repository is public, so anyone can open an issue.
-There is no feedback collection endpoint or automatic message submission.
+Feedback is a routed settings page. `FeedbackService` posts the typed
+message and app version, platform and language when the user taps Send.
+The [server guide](../server/README.md#running) describes the endpoint and
+its limits. `assets/config/app_config.json` supplies the endpoint, GitHub
+issue URL and email address. The external actions open drafts containing
+the typed message. Failed submissions and launches retain the draft.
 
 Windows keeps the standard Win32 title bar, icon, title and caption buttons.
 `WindowsCaptionTheme` sends the resolved Flutter background, foreground and
@@ -548,7 +549,7 @@ authenticated operations, like app-lock changes. The ordinary `entry.hide`
 action can conceal a visible entry, but entry actions cannot read or reveal
 it. `sql.query` and `sql.execute` see and change hidden rows like any other:
 hiding is an interface matter (owner's rule).
-Sharing, duplication and template creation require making the entry ordinary
+Sharing and template creation require making the entry ordinary
 first; this avoids implicit copies outside the protected section.
 
 Ordinary exports omit hidden entries. Full database backups preserve them like

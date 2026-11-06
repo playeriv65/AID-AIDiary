@@ -4,7 +4,7 @@
 
 Flutter로 만든 Windows·Android·Linux용 개인 일기 앱입니다.
 
-최신 `main` 빌드는 [nightly 사전 릴리스](https://github.com/playeriv65/AID-AIDiary/releases/tag/nightly)에 있습니다(Android APK, Windows ZIP, Linux tar). 디버그 키로 서명되어 새로 설치할 수는 있지만, 릴리스 키로 서명된 설치본을 업데이트할 수는 없습니다.
+[nightly 사전 릴리스](https://github.com/playeriv65/AID-AIDiary/releases/tag/nightly)에서 Android, Windows, Linux 패키지를 다운로드할 수 있습니다. Android 패키지는 릴리스 키로 서명되며 같은 키로 서명된 앱을 업데이트할 수 있습니다. [업데이트 안내](../UPDATES.md)를 참고하세요.
 
 ## 화면
 

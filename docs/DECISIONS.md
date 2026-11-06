@@ -34,12 +34,13 @@ asks again. Dates are when it was settled. Ideas not built yet are in
 
 - Hidden diaries (2026-10-22): preserve the hidden designation when importing
   One Diary backups. Keep hidden entries out of everyday views, search,
-  statistics, widgets, ordinary exports and CLI content. Reading or revealing
-  them requires local authentication in Settings > Security; backgrounding
-  removes the protected content again. Full backups preserve them like any
-  entry, with no backup password required (2026-10-25, owner).
-  Hiding is only an interface matter: hidden entries sync like any other and
-  stay hidden on every device (2026-10-23, owner). See
+  statistics, widgets and ordinary exports. Reading them through the
+  protected UI requires local authentication in Settings > Security.
+  Backgrounding removes the protected content again. Hidden entries sync
+  like any other and stay hidden on each device (2026-10-23, owner).
+  Full backups preserve them like any entry, with no backup password
+  required (2026-10-25, owner). SQL treats hidden rows like other rows
+  (2026-11-05, owner). See
   [Architecture](ARCHITECTURE.md#hidden-entries).
 
 - Personal migration (2026-10-22): prioritize a usable local installation,
@@ -397,9 +398,6 @@ implementation boundaries and verification results belong in
   action registry plus read-only SQL, or a virtual bash (bashkit/just-bash)
   wrapped around the same commands. Voice-note transcription may follow
   the same model choice.
-- Nightly installs: CI has no signing key, so its packages cannot update
-  an installed app. Options: the release key as a repository secret, or a
-  separate key for the development flavor only.
 - "收藏" names both the star (favorite tag) and keeping a passage; one of
   them may want another word (e.g. 摘录 for passages).
 - Compressed photos drop their metadata (date, place) after it is read on
