@@ -20,8 +20,8 @@ class EntriesProvider with ChangeNotifier {
   List<Entry> get entries => _store.entries;
 
   /// See [EntryStore.load].
-  Future<void> load({int? firstScreen}) =>
-      _store.load(firstScreen: firstScreen);
+  Future<void> load({int? firstScreen, bool purgeExpired = true}) =>
+      _store.load(firstScreen: firstScreen, purgeExpired: purgeExpired);
 
   /// Completes once [entries] holds every entry; see [EntryStore.complete].
   Future<void> get complete => _store.complete;

@@ -182,9 +182,11 @@ class EntryStore with ChangeNotifier {
   /// newest are in [entries], enough to show the journal, and reads the
   /// rest in the background; the time to show the journal then no longer
   /// grows with the diary.
-  Future<void> load({int? firstScreen}) async {
-    await _complete;
-    await _purgeExpired();
+  Future<void> load({int? firstScreen, bool purgeExpired = true}) async {
+    // A previous load may have failed on a database that has since been
+    // replaced or restored. Wait for it to finish, then read the current one.
+    await _complete.catchError((Object _, StackTrace __) {});
+    if (purgeExpired) await this.purgeExpired();
     if (firstScreen != null) {
       _setEntries(await EntryDao.getAll(limit: firstScreen));
       if (_entries.length < firstScreen) return;
@@ -260,7 +262,7 @@ class EntryStore with ChangeNotifier {
   }
 
   /// Erases entries that sat in Recently deleted past the retention period.
-  Future<void> _purgeExpired() async {
+  Future<void> purgeExpired() async {
     final cutoff = DateTime.now().subtract(AppConfig.instance.deletedRetention);
     for (final item in await EntryDao.getDeleted()) {
       if (item.deletedAt.isBefore(cutoff)) await erase(item.entry);

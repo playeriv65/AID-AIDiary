@@ -7,7 +7,9 @@ import 'dart:typed_data';
 
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/database/database_schema.dart' as schema;
+import 'package:aid_diary/database/entry_store.dart';
 import 'package:aid_diary/database/image_storage.dart';
+import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/providers/entries_provider.dart';
 import 'package:aid_diary/providers/entry_images_provider.dart';
 import 'package:aid_diary/providers/links_provider.dart';
@@ -61,47 +63,78 @@ class AppDatabase {
   FileStore? get externalStore =>
       usingExternalLocation() ? FileStore.external(getExternalPath()) : null;
 
+  Future<void> _externalOperation = Future.value();
+  bool _externalWritesPaused = false;
+  static const _externalWriteDebounce = 'update-remote-database';
+  static const _sqliteSidecars = ['-wal', '-shm', '-journal'];
+
+  Future<T> _withExternalDatabase<T>(Future<T> Function() operation) {
+    final result = _externalOperation.then((_) => operation());
+    _externalOperation = result.then<void>((_) {}, onError: (Object _) {});
+    return result;
+  }
+
   /// Opens the diary. A background task passes [background]: it must never
   /// create the database, so it gives up when there is none yet. With
   /// [firstScreen], the newest entries are read first and the rest follow in
   /// the background, see [EntryStore.load].
   Future<bool> init(
-      {bool forceWithoutSync = false,
-      bool background = false,
-      int? firstScreen}) async {
-    _internalPath = await getInternalPath();
-    bool success = true;
+          {bool forceWithoutSync = false,
+          bool background = false,
+          int? firstScreen}) =>
+      _withExternalDatabase(() async {
+        _internalPath = await getInternalPath();
+        _externalWritesPaused = forceWithoutSync;
 
-    if (background && !await File(_internalPath!).exists()) {
-      return false;
-    }
+        if (background && !await File(_internalPath!).exists()) {
+          return false;
+        }
 
-    if (usingExternalLocation() && !forceWithoutSync) {
-      if (await hasExternalLocationPermission()) {
-        await _syncWithExternalDatabase();
-      } else {
-        success = false;
-      }
-    }
+        final external = forceWithoutSync ? null : externalStore;
+        if (external != null) {
+          if (await _canUseExternalStore(external)) {
+            if (await external.exists(databaseFileName)) {
+              if (await _isExternalDatabaseNewer(external)) {
+                final outcome = await _loadExternalDatabase(external,
+                    firstScreen: firstScreen);
+                if (outcome.succeeded) return true;
+                _externalWritesPaused = true;
+              }
+            } else if (await File(_internalPath!).exists()) {
+              await open(firstScreen: firstScreen);
+              final copied =
+                  await _writeExternalSnapshot(external, create: true);
+              _externalWritesPaused = !copied;
+              return copied;
+            }
+          } else {
+            _externalWritesPaused = true;
+          }
+        }
 
-    await AppDatabase.instance.open(firstScreen: firstScreen);
-    return success;
-  }
+        await open(firstScreen: firstScreen);
+        return external == null || !_externalWritesPaused;
+      });
 
-  Future<void> open({int? firstScreen}) async {
+  Future<void> open({int? firstScreen}) => _open(firstScreen: firstScreen);
+
+  Future<void> _open({int? firstScreen, bool purgeExpired = true}) async {
     await copyBeforeUpgrade(_internalPath!);
     _database = await openDatabase(_internalPath!,
         version: currentVersion,
         onCreate: _createDatabase,
         onUpgrade: _onUpgrade,
         onOpen: enforceForeignKeys);
-    await reload(firstScreen: firstScreen);
+    await _reload(firstScreen: firstScreen, purgeExpired: purgeExpired);
   }
 
   /// Reads everything the app keeps in memory from the database again, as
   /// after a write that went around the stores (`sql.execute`).
-  Future<void> reload({int? firstScreen}) async {
-    await EntriesProvider.instance.load(firstScreen: firstScreen);
+  Future<void> reload({int? firstScreen}) => _reload(firstScreen: firstScreen);
+
+  Future<void> _reload({int? firstScreen, bool purgeExpired = true}) async {
+    await EntriesProvider.instance
+        .load(firstScreen: firstScreen, purgeExpired: purgeExpired);
     await EntryImagesProvider.instance.load();
     await TemplatesProvider.instance.load();
     await TagsProvider.instance.load();
@@ -160,17 +193,51 @@ class AppDatabase {
     await db?.close();
   }
 
-  Future<bool> _validateSqliteDatabase(String path) async {
+  Future<void> _verifySqliteDatabase(String path,
+      {bool requireDiary = false}) async {
+    final db = await openReadOnlyDatabase(path, singleInstance: false);
     try {
-      final db = await openDatabase(path, readOnly: true);
-      final result = await db.rawQuery("PRAGMA integrity_check;");
+      final result = await db.rawQuery('PRAGMA integrity_check');
+      if (result.length != 1 || result.single.values.single != 'ok') {
+        throw const FormatException('SQLite integrity check failed');
+      }
+      if (requireDiary) {
+        final version = await db.getVersion();
+        if (version < 1 || version > currentVersion) {
+          throw FormatException('Unsupported diary schema version $version');
+        }
+        final table = await db.query('sqlite_master',
+            columns: ['name'],
+            where: 'type = ? AND name = ?',
+            whereArgs: ['table', entriesTable]);
+        final columns = await db.rawQuery('PRAGMA table_info($entriesTable)');
+        final names = {for (final column in columns) column['name']};
+        if (table.isEmpty ||
+            !names.containsAll(const [
+              EntryFields.id,
+              EntryFields.text,
+              EntryFields.timeCreate,
+              EntryFields.timeModified,
+            ])) {
+          throw const FormatException('Not an AID Diary database');
+        }
+      }
+    } finally {
       await db.close();
+    }
+  }
 
-      return result.first.values.first == "ok";
-    } catch (error, stackTrace) {
-      _logger.warning(
-          'Database integrity check failed for $path', error, stackTrace);
-      return false;
+  Future<void> _snapshot(Database db, String path,
+      {bool requireDiary = false}) async {
+    await db.execute('VACUUM INTO ?', [path]);
+    await _verifySqliteDatabase(path, requireDiary: requireDiary);
+  }
+
+  Future<void> _removeStaging(Directory work) async {
+    try {
+      await work.delete(recursive: true);
+    } on FileSystemException catch (error, stackTrace) {
+      _logger.warning('Could not remove database staging', error, stackTrace);
     }
   }
 
@@ -178,15 +245,25 @@ class AppDatabase {
     final db = _database;
     if (db == null) return false;
 
+    final target = File(path).absolute;
+    Directory? work;
+    var reserved = false;
     try {
-      await db.execute("VACUUM INTO '$path'");
-      if (await _validateSqliteDatabase(path)) return true;
+      work = await target.parent.createTemp('.aid-snapshot-');
+      final staged = File(join(work.path, databaseFileName));
+      await _snapshot(db, staged.path);
+      // A rename replaces its destination. Claim an unused path first.
+      await target.create(exclusive: true);
+      reserved = true;
+      await staged.rename(target.path);
+      return true;
     } catch (error, stackTrace) {
       _logger.severe('Database snapshot to $path failed', error, stackTrace);
+      if (reserved && await target.exists()) await target.delete();
+      return false;
+    } finally {
+      if (work != null) await _removeStaging(work);
     }
-
-    if (await File(path).exists()) await File(path).delete();
-    return false;
   }
 
   bool usingExternalLocation() {
@@ -223,121 +300,214 @@ class AppDatabase {
     return useExternalLocation(selectedDirectory.uri, updateStatus);
   }
 
-  /// Keeps the diary in the folder at [uri] from now on: the folder's copy
-  /// replaces this device's, and the old setting returns when that fails.
+  /// Selects an external diary only after it has opened successfully.
   Future<OperationOutcome> useExternalLocation(
-      String uri, Function(String) updateStatus) async {
-    bool databaseUpdated = false;
-    var outcome = const OperationOutcome.succeeded();
-
-    // Save old external path
-    var oldExternalPath = getExternalPath();
-    var oldUseExternalPath = usingExternalLocation();
-    await _database!.close();
-
-    try {
-      await ConfigProvider.instance.set(Settings.externalDbUri, uri);
-      await ConfigProvider.instance.set(Settings.useExternalDb, true);
-
-      // Sync with external folder
-      databaseUpdated = await _syncWithExternalDatabase(forceOverwrite: true);
-      if (!databaseUpdated) outcome = const OperationOutcome.failed();
-    } catch (error, stackTrace) {
-      _logger.severe(
-          'Selecting an external database location failed', error, stackTrace);
-      outcome = OperationOutcome.failed(error);
-    }
-
-    // Cleanup
-    await open();
-    if (!databaseUpdated) {
-      // Restore state after failure
-      await ConfigProvider.instance
-          .set(Settings.externalDbUri, oldExternalPath);
-      await ConfigProvider.instance
-          .set(Settings.useExternalDb, oldUseExternalPath);
-    } else {
-      try {
-        if (ImageStorage.instance.usingExternalLocation() &&
-            await ImageStorage.instance.hasExternalLocationPermission()) {
-          await ImageStorage.instance
-              .syncImageFolder(true, updateStatus: updateStatus);
-        }
-      } catch (error, stackTrace) {
-        _logger.severe(
-            'Syncing images after the database location changed failed',
-            error,
-            stackTrace);
-        outcome = OperationOutcome.failed(error);
-      }
-    }
-    return outcome;
-  }
-
-  Future<void> resetExternalLocation() async {
-    await ConfigProvider.instance.set(Settings.useExternalDb, false);
-  }
-
-  /// Overwrite the external database with local changes
-  /// If an external database is not in use, no action is taken
-  Future<void> updateExternalDatabase() async {
-    if (!usingExternalLocation()) return;
-
-    EasyDebounce.debounce("update-remote-database", Duration(seconds: 1),
-        () async {
-      final externalLocation = externalStore;
-      if (externalLocation == null) return;
-
-      final exportName =
-          "$databaseFileName.export_${DateTime.now().millisecondsSinceEpoch}";
-      final exportPath = join(dirname(_internalPath!), exportName);
-
-      await externalSyncHealth.record("external database write", () async {
+          String uri, Function(String) updateStatus) =>
+      _withExternalDatabase(() async {
         try {
-          if (!await exportSnapshotTo(exportPath)) return false;
-
-          final bytes = await internalStore.read(exportName);
-          if (bytes == null) return false;
-
-          return await externalLocation.write(databaseFileName, bytes);
-        } finally {
-          await internalStore.delete(exportName);
+          final external = FileStore.external(uri);
+          if (!await _canUseExternalStore(external)) {
+            return const OperationOutcome.failed();
+          }
+          if (await external.exists(databaseFileName)) {
+            final outcome = await _loadExternalDatabase(external,
+                afterOpen: () => _commitExternalLocation(uri));
+            if (!outcome.succeeded) return outcome;
+          } else {
+            if (!await _writeExternalSnapshot(external, create: true)) {
+              return const OperationOutcome.failed();
+            }
+            await _commitExternalLocation(uri);
+          }
+          _externalWritesPaused = false;
+        } catch (error, stackTrace) {
+          _logger.severe('Selecting an external database location failed',
+              error, stackTrace);
+          return OperationOutcome.failed(error);
         }
+
+        try {
+          if (ImageStorage.instance.usingExternalLocation() &&
+              await ImageStorage.instance.hasExternalLocationPermission()) {
+            await ImageStorage.instance
+                .syncImageFolder(true, updateStatus: updateStatus);
+          }
+          return const OperationOutcome.succeeded();
+        } catch (error, stackTrace) {
+          _logger.severe(
+              'Syncing images after the database location changed failed',
+              error,
+              stackTrace);
+          return OperationOutcome.failed(error);
+        }
+      });
+
+  Future<void> _commitExternalLocation(String uri) async {
+    final config = ConfigProvider.instance;
+    final previousUri = getExternalPath();
+    final previouslyEnabled = usingExternalLocation();
+    try {
+      await config.set(Settings.externalDbUri, uri);
+      await config.set(Settings.useExternalDb, true);
+      await config.flushConfig();
+    } catch (error, stackTrace) {
+      await config.set(Settings.externalDbUri, previousUri);
+      await config.set(Settings.useExternalDb, previouslyEnabled);
+      try {
+        await config.flushConfig();
+      } catch (restoreError, restoreStack) {
+        _logger.severe('Restoring external storage configuration failed',
+            restoreError, restoreStack);
+      }
+      Error.throwWithStackTrace(error, stackTrace);
+    }
+  }
+
+  Future<void> resetExternalLocation() => _withExternalDatabase(() async {
+        EasyDebounce.cancel(_externalWriteDebounce);
+        await ConfigProvider.instance.set(Settings.useExternalDb, false);
+      });
+
+  /// Overwrites the selected external copy with a verified SQLite snapshot.
+  Future<void> updateExternalDatabase() async {
+    if (!usingExternalLocation() || _externalWritesPaused) return;
+    final location = getExternalPath();
+    EasyDebounce.debounce(_externalWriteDebounce, const Duration(seconds: 1),
+        () async {
+      await _withExternalDatabase(() async {
+        if (_externalWritesPaused || getExternalPath() != location) return;
+        final external = externalStore;
+        if (external == null) return;
+        await _writeExternalSnapshot(external);
       });
     });
   }
 
-  /// Pull in remote changes if the external database is newer or if forceOverwrite is set
-  Future<bool> _syncWithExternalDatabase({bool forceOverwrite = false}) async {
-    final externalLocation = externalStore;
-    if (externalLocation == null) return false;
+  Future<bool> _canUseExternalStore(FileStore external) async {
+    if (!await external.isAvailable()) return false;
+    // An external snapshot must never target the live database itself.
+    return external is! LocalFileStore ||
+        !await FileSystemEntity.identical(
+            dirname(_internalPath!), external.directoryPath);
+  }
 
-    if (!await externalLocation.exists(databaseFileName)) {
-      final bytes = await internalStore.read(databaseFileName);
-      if (bytes == null) return false;
+  Future<bool> _writeExternalSnapshot(FileStore external,
+          {bool create = false}) =>
+      externalSyncHealth.record('external database write', () async {
+        final db = _database;
+        if (db == null || !db.isOpen || !await _canUseExternalStore(external)) {
+          return false;
+        }
+        final work =
+            await Directory(dirname(_internalPath!)).createTemp('.aid-export-');
+        try {
+          final file = File(join(work.path, databaseFileName));
+          await _snapshot(db, file.path);
+          final bytes = await file.readAsBytes();
+          if (create) {
+            return await external.createNew(databaseFileName, bytes) ==
+                CreateResult.created;
+          }
+          return await external.write(databaseFileName, bytes);
+        } finally {
+          await _removeStaging(work);
+        }
+      });
 
-      return externalSyncHealth.record("external database write",
-          () => externalLocation.write(databaseFileName, bytes));
-    }
-
-    if (forceOverwrite || await _isExternalDatabaseNewer(externalLocation)) {
-      // Overwrite internal DB
-      final externalBytes = await externalLocation.read(databaseFileName);
-      if (externalBytes == null) return false;
-
-      final temporaryName =
-          "$databaseFileName.${DateTime.now().millisecondsSinceEpoch}.tmp";
-      await internalStore.write(temporaryName, externalBytes);
-
-      final temporaryPath = join(dirname(_internalPath!), temporaryName);
-      if (await _validateSqliteDatabase(temporaryPath)) {
-        return internalStore.rename(temporaryName, databaseFileName);
+  Future<void> _stageExternalDatabase(
+      FileStore external, File candidate) async {
+    if (external is LocalFileStore) {
+      // Let SQLite read the source, including commits still in its WAL.
+      final source = await openReadOnlyDatabase(
+          join(external.directoryPath, databaseFileName),
+          singleInstance: false);
+      try {
+        await _snapshot(source, candidate.path, requireDiary: true);
+      } finally {
+        await source.close();
       }
-
-      await internalStore.delete(temporaryName);
-      return false;
+      return;
     }
-    return true;
+
+    // SAF exposes documents as byte streams. Require a standalone snapshot.
+    for (final suffix in _sqliteSidecars) {
+      if (await external.exists('$databaseFileName$suffix')) {
+        throw const FormatException('External diary has SQLite sidecar files');
+      }
+    }
+    final bytes = await external.read(databaseFileName);
+    if (bytes == null) throw const FormatException('External diary is missing');
+    await candidate.writeAsBytes(bytes, flush: true);
+    await _verifySqliteDatabase(candidate.path, requireDiary: true);
+  }
+
+  Future<OperationOutcome> _loadExternalDatabase(FileStore external,
+      {int? firstScreen, Future<void> Function()? afterOpen}) async {
+    final local = File(_internalPath!);
+    final work = await local.parent.createTemp('.aid-import-');
+    final candidate = File(join(work.path, databaseFileName));
+    final original = File(join(work.path, 'original.db'));
+    final wasOpen = _database?.isOpen ?? false;
+    var closing = false;
+    var replacing = false;
+    var installed = false;
+    var keepRecovery = false;
+    try {
+      await _stageExternalDatabase(external, candidate);
+
+      closing = true;
+      await close();
+      for (final suffix in _sqliteSidecars) {
+        if (await File('${local.path}$suffix').exists()) {
+          throw StateError('Cannot replace a diary with SQLite sidecar files');
+        }
+      }
+      if (await local.exists()) await local.copy(original.path);
+      replacing = true;
+      await candidate.rename(local.path);
+      installed = true;
+      // Read all rows before committing the switch, including older entries.
+      // Expiry cleanup can remove attachments and must wait until commit.
+      await _open(purgeExpired: false);
+      await afterOpen?.call();
+    } catch (error, stackTrace) {
+      _logger.warning('Reading the external diary failed', error, stackTrace);
+      if (closing) {
+        try {
+          await close();
+          if (installed) {
+            // Any sidecars here were created while opening the candidate.
+            for (final suffix in _sqliteSidecars) {
+              final file = File('${local.path}$suffix');
+              if (await file.exists()) await file.delete();
+            }
+          }
+          if (replacing && await original.exists()) {
+            await original.rename(local.path);
+          } else if (installed && await local.exists()) {
+            await local.delete();
+          }
+          if (wasOpen) {
+            await _open(firstScreen: firstScreen, purgeExpired: false);
+          }
+        } catch (recoveryError, recoveryStack) {
+          keepRecovery = true;
+          _logger.severe('Recovering the local diary failed: ${work.path}',
+              recoveryError, recoveryStack);
+          rethrow;
+        }
+      }
+      return OperationOutcome.failed(error);
+    } finally {
+      if (!keepRecovery) await _removeStaging(work);
+    }
+    try {
+      await EntryStore.instance.purgeExpired();
+    } catch (error, stackTrace) {
+      _logger.warning('Expiring deleted entries failed after storage switch',
+          error, stackTrace);
+    }
+    return const OperationOutcome.succeeded();
   }
 
   /// Return whether the external database is newer
