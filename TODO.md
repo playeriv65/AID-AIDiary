@@ -9,6 +9,15 @@ See the [technical debt inventory](docs/TECHNICAL_DEBT.md) for data recovery,
 release consistency, architecture and verification work. Each finding records
 the current evidence and what would close it.
 
+- Prioritize consistent pre-upgrade backups and tested restore procedures.
+  Make release publication consistent before extending automatic updates
+  to Windows and Linux.
+- Carry portable preferences into backups and new devices next. Define the
+  list first, with device paths, permissions and secrets kept device-local.
+- Settle the default storage and visibility rules before implementing album
+  references. Keep the existing deferrals for cross-network validation,
+  the broader performance pass and the Android package rename.
+
 ## Layout and features
 Probably skip (they need cloud services or add little): Google Fit, rate dialog, live chat, external-link warning, automatic media categories (an image classifier), an in-app media picker.
 
@@ -150,8 +159,9 @@ Internet paths require an AID-compatible WebDAV networking service; Google
 Drive and ordinary WebDAV retain LAN plus storage. Fresh client nonces and
 MK confirmation protect server-session discovery from replay. Development
 path restrictions and isolated Android test workspaces are implemented.
-New remote spaces use format 4; older formats require a new space or an
-explicitly approved reset, never an automatic deletion or migration.
+Ordinary new remote spaces use format 4. An explicitly approved reset
+creates a separate format-5 space and retains the old encrypted objects.
+See the [space format](docs/SYNC_NETWORK.md#space-format-and-operational-boundaries).
 
 Device-owned P-256 keys, challenge authentication, individual authorization,
 revocation and key rotation are implemented. Nearby QR trust and offline

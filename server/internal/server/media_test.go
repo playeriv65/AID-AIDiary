@@ -77,6 +77,26 @@ func TestMediaPolicyLimitsAndHashes(t *testing.T) {
 	}
 }
 
+func TestResetGenerationUsesAccountMediaAllowance(t *testing.T) {
+	h := start(t)
+	h.server.cfg.MonthlyMediaBytes = 15
+	h.add("alice", 0)
+	h.mediaFolders()
+	previous := mediaPath("old data")
+	h.expect(h.do("alice", "PUT", previous, "old data"), http.StatusCreated)
+
+	generation := "/dav/space/generations/12345678-1234-4123-8123-123456789abc"
+	for _, dir := range []string{"/dav/space/generations", generation,
+		generation + "/media", generation + "/media/chunks",
+		generation + "/media/chunks/photo", generation + "/packs"} {
+		h.expect(h.do("alice", "MKCOL", dir, ""), http.StatusCreated)
+	}
+	next := strings.Replace(mediaPath("new data"), "/dav/space", generation, 1)
+	h.expect(h.do("alice", "PUT", next, "new data"), http.StatusTooManyRequests)
+	h.expect(h.do("alice", "PUT", generation+"/packs/pack-new", "entry"), http.StatusCreated)
+	h.expect(h.do("alice", "GET", previous, ""), http.StatusTooManyRequests)
+}
+
 func TestMediaExpiryKeepsManifestsAndPacks(t *testing.T) {
 	h := start(t)
 	h.server.cfg.Media = MediaLimits{MaxObjectBytes: 10, CacheBytes: 100, DailyTransferBytes: 100, CacheTTL: time.Hour}

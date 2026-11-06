@@ -312,10 +312,10 @@ current implementation. Decided along the way:
 - A temporary cache is not a backup. Transfer completion and the existence
   of durable copies must remain separate concepts. Do not discard the last
   intended persistent media copy merely because the cache accepted it.
-- New spaces use format 4; older sync formats are rejected. Unsupported
-  formats do not authorize deleting a diary or resetting a live remote
-  space. Start a new space or use an explicitly approved reset; there is no
-  automatic migration.
+- Ordinary new spaces use format 4. An explicitly approved reset uses a
+  separate format-5 space and retains the old encrypted objects. Unsupported
+  formats do not authorize deleting a diary or resetting a live remote space.
+  There is no automatic migration. See [space formats](SYNC_NETWORK.md#space-format-and-operational-boundaries).
 
 Implemented now: the path selector, authenticated LAN transport integrated
 with shared storage, persistent chunk tasks, operator-cache limits, and for

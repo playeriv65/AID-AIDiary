@@ -22,5 +22,23 @@
     "en": "SQL queries are read-only. Use sql.execute to change the diary database.",
     "zh": "SQL 查询只读。修改日记数据库请使用 sql.execute。",
     "zh_Hant": "SQL 查詢唯讀。修改日記資料庫請使用 sql.execute。"
+  },
+  {
+    "id": "2026-11-06-safer-diary-storage",
+    "en": "A failed database snapshot leaves existing files alone. Switching diary folders keeps the previous diary if the new one cannot open.",
+    "zh": "生成数据库副本失败时会保留已有文件。切换日记目录时，如果新数据库无法打开，会保留原日记。",
+    "zh_Hant": "產生資料庫副本失敗時會保留現有檔案。切換日記目錄時，如果新資料庫無法開啟，會保留原日記。"
+  },
+  {
+    "id": "2026-11-06-update-manifest-fallback",
+    "en": "Update checks try the next source when a server sends an invalid update manifest.",
+    "zh": "服务器返回无效的更新清单时，应用会继续尝试备用更新地址。",
+    "zh_Hant": "伺服器傳回無效的更新清單時，應用程式會繼續嘗試備用更新網址。"
+  },
+  {
+    "id": "2026-11-06-safer-sync-reset",
+    "en": "Starting sync over keeps the previous encrypted copy and prepares the new sync space separately. Update your other devices before pairing again.",
+    "zh": "重新开始同步时会保留旧的加密副本，并在单独的空间建立新同步。其他设备更新应用后可以重新配对。",
+    "zh_Hant": "重新開始同步時會保留舊的加密副本，並在獨立空間建立新同步。其他裝置更新應用程式後可以重新配對。"
   }
 ]

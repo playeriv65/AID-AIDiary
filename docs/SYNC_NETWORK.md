@@ -400,15 +400,35 @@ close an already authenticated working direct connection.
 
 ## Space format and operational boundaries
 
-New spaces use format 4. Format 3 and earlier are rejected; no compatibility
-layer or automatic migration is provided. This also applies to a stale
-space descriptor cached locally: it is not silently rewritten as format 4.
-An unsupported space must never trigger automatic remote deletion or removal
-of the user's local diary. Choose a new space, or explicitly authorize the
-destructive `sync.reset_space` action after reviewing its effect on the
-remote copy and the need to pair other devices again. Changing a live remote
-space requires the owner's approval. Local database schema updates for the
-queue/vault do not convert an existing remote format.
+Ordinary new spaces and existing format-4 spaces use the original storage
+layout. An explicitly confirmed `sync.reset_space` creates a format-5
+space, with cloud objects under `generations/<space-id>/`. The new space
+starts syncing this device's diary. Other devices need a client that reads
+format 5 and must pair again. The reset leaves old encrypted objects in
+storage. They remain subject to normal retention and account storage limits.
+
+Reset validates recovery settings before changing the root `space.json`.
+It verifies the previous descriptor at
+`generations/<space-id>/previous-space.json` and the replacement record
+at `generations/<space-id>/replacement.json`. The replacement record
+holds the descriptor hash without the recovery envelope. The root holds
+the full new descriptor. The client reads it back before adopting it.
+
+WebDAV and Google Drive do not expose one shared compare-and-swap contract
+for this operation. If the server response is lost, compare the active
+descriptor with the replacement hash and the retained previous descriptor.
+If it matches the replacement hash, reconnect to that space. If it still
+matches the previous descriptor, retry the reset. If it is damaged, pause
+writers and recover the verified previous descriptor from that attempt
+with operator approval. The replacement record cannot serve as a descriptor.
+The archived previous descriptor retains its original recovery envelope.
+Changing the active recovery code rewraps the master key. Revoking access
+from someone who already has that key requires a different operation.
+
+Formats 3 and earlier are rejected. There is no automatic migration for
+unsupported cloud spaces. Changing a live remote space requires the owner's
+approval. Local database schema updates for the queue and vault do not
+change the remote format.
 
 ## Verification status
 

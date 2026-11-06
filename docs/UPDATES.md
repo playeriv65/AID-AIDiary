@@ -35,8 +35,10 @@ list in the shape apps before 2026-10-29 read.
 Files are named, not linked: the app fetches them beside the manifest it
 read, so a mirror serves the same manifest unchanged. The app asks the
 addresses in `app_config.json` (`updates.manifestUrls`) in order. The AID
-mirror serves its last published manifest until it catches up. A successful
-response from that mirror is used even if GitHub already has a newer build.
+mirror serves its last published manifest until it catches up. A valid
+manifest from that mirror is used even if GitHub already has a newer build.
+If a response fails to download or validate, try the next address. Only an
+accepted manifest updates the last successful check time.
 
 ## Server mirror
 

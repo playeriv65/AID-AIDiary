@@ -142,11 +142,10 @@ trusted copies exchange encrypted labels. Tap the everyday sync status for
 named copy locations and last confirmations; further options hold network
 diagnostics. A temporary cloud cache is not a persistent backup.
 
-Spaces created now use format 4. Earlier remote formats are rejected without
-migration or automatic reset. Starting over on a live server is a destructive
-owner decision: use a new space or the explicitly authorized
-`sync.reset_space` action, preserve the local diary and arrange re-pairing.
-Do not turn an unsupported-format error into cleanup of the remote data.
+Ordinary spaces use format 4. Starting over on a live server requires owner
+approval. The confirmed `sync.reset_space` action publishes a separate
+format-5 space and retains old encrypted objects. Update and pair the other
+devices again. See [space formats](SYNC_NETWORK.md#space-format-and-operational-boundaries).
 
 LAN discovery uses native DNS-SD on Windows and Android for devices already
 sharing the user/space keys. Native LAN discovery, global-IPv6 direct,

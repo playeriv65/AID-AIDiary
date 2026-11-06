@@ -452,9 +452,10 @@ opaque IDs rather than user labels. The `sync.status` and `sync.network`
 actions expose route, retry and media diagnostics; the advanced diagnostics
 page renders only allowlisted operational fields and actual server allowances.
 
-Current remote spaces use format 4. Older formats fail explicitly rather
-than being migrated or reset automatically; local database schema updates
-only add queue/vault state. Public IPv4/IPv6 address exchange, WebRTC/STUN
+Remote spaces use format 4 or 5. An explicit reset uses the
+[format-5 storage layout](SYNC_NETWORK.md#space-format-and-operational-boundaries).
+Unsupported formats fail without migration or automatic reset. Local database
+schema updates only add queue and vault state. Public IPv4/IPv6 address exchange, WebRTC/STUN
 and bounded live relay are implemented. Windows/Pad same-Wi-Fi transfers,
 actual nominated UDP pair diagnostics, quota refusal and automatic LAN
 upgrade have passed; this is not cross-WAN or general NAT compatibility
@@ -505,6 +506,12 @@ day asks first (`Settings.confirmEditPast`, with "don't ask again").
 ordered upgrades. `AppDatabase` owns the connection, snapshots, external
 storage and store reloads. It sets the active connection before running the
 schema callbacks so existing default-template seeding uses that connection.
+
+Database exports create and check a consistent SQLite snapshot before
+publishing it to a new file. An existing destination is preserved.
+Import from an external diary directory checks a staged copy for a supported
+diary schema. Keep the previous database available until the staged database
+opens and the stores reload. Save the selected directory after that succeeds.
 
 Database version 17 settled what an entry holds. Its title is a column of
 its own (`Entry.title`, empty when there is none), never the first line of
