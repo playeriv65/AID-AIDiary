@@ -501,6 +501,11 @@ day asks first (`Settings.confirmEditPast`, with "don't ask again").
 
 ## Entry fields, day weather and foreign keys
 
+`database_schema.dart` owns the local schema version, table creation and
+ordered upgrades. `AppDatabase` owns the connection, snapshots, external
+storage and store reloads. It sets the active connection before running the
+schema callbacks so existing default-template seeding uses that connection.
+
 Database version 17 settled what an entry holds. Its title is a column of
 its own (`Entry.title`, empty when there is none), never the first line of
 its text; `Entry.markdown` puts it back as a heading only for formats and
