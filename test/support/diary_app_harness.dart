@@ -26,12 +26,12 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 import 'config_provider_harness.dart';
 
-/// Real providers over an in-memory SQLite database, reset per test.
+/// Real providers over a fresh SQLite database per test.
 class DiaryAppHarness {
   late Database database;
   late ThemeModeProvider theme;
 
-  void register() {
+  void register({String Function()? databasePath}) {
     TestWidgetsFlutterBinding.ensureInitialized();
     useTemporaryConfig();
     setUpAll(() async {
@@ -48,7 +48,8 @@ class DiaryAppHarness {
               (call) async =>
                   call.method == 'isLocationServiceEnabled' ? false : null);
       databaseFactory = databaseFactoryFfi;
-      database = await databaseFactory.openDatabase(inMemoryDatabasePath);
+      database = await databaseFactory
+          .openDatabase(databasePath?.call() ?? inMemoryDatabasePath);
       AppDatabase.instance.database = database;
       await AppDatabase.instance.createSchema(database);
       await AppDatabase.enforceForeignKeys(database);

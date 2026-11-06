@@ -7,6 +7,7 @@ import 'dart:io';
 import 'package:aid_diary/actions/app_action.dart';
 import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/actions/sql_actions.dart';
+import 'package:aid_diary/database/app_database.dart';
 import 'package:aid_diary/database/image_storage.dart';
 import 'package:aid_diary/storage/in_memory_file_store.dart';
 import 'package:flutter/services.dart';
@@ -16,7 +17,6 @@ import 'package:path/path.dart' as p;
 import '../support/diary_app_harness.dart';
 
 void main() {
-  DiaryAppHarness().register();
   final actions = AppActions(devBuild: true);
   late Directory folder;
 
@@ -33,6 +33,8 @@ void main() {
     ImageStorage.instance.clearStoreOverrides();
     await folder.delete(recursive: true);
   });
+  DiaryAppHarness().register(
+      databasePath: () => p.join(folder.path, AppDatabase.databaseFileName));
 
   Future<Map<String, Object?>> run(String id, Map<String, Object?> args,
           {bool confirmed = false}) async =>
@@ -46,12 +48,50 @@ void main() {
     final id = await create('藏起来的', '2019-05-13T00:00:00+08:00');
     await run('entry.hide', {'id': '$id'});
     final result = await run('sql.query', {
-      'query': 'SELECT text, is_hidden FROM entries WHERE id = ?',
+      'query': "SELECT text, is_hidden, 'ATTACH VACUUM' AS words "
+          'FROM entries WHERE id = ?',
       'args': '[$id]'
     });
     expect(result['rows'], [
-      {'text': '藏起来的', 'is_hidden': 1}
+      {'text': '藏起来的', 'is_hidden': 1, 'words': 'ATTACH VACUUM'}
     ]);
+  });
+
+  test('a query cannot change the diary with a returning clause', () async {
+    final id = await create('original', '2019-05-13T00:00:00+08:00');
+    await expectLater(
+      run('sql.query', {
+        'query': 'UPDATE entries SET text = ? WHERE id = ? RETURNING text',
+        'args': jsonEncode(['changed', id]),
+      }),
+      throwsA(
+          isA<ActionException>().having((e) => e.code, 'code', 'sql_error')),
+    );
+    final result = await run('sql.query', {
+      'query': 'SELECT text FROM entries WHERE id = ?',
+      'args': '[$id]',
+    });
+    expect(result['rows'], [
+      {'text': 'original'}
+    ]);
+  });
+
+  test('a query cannot create another database file', () async {
+    final path = p.join(folder.path, 'other.db');
+    for (final query in [
+      '/* before */ ATTACH /* here */ DATABASE ? AS other',
+      '-- before\nVACUUM /* here */ INTO ?',
+    ]) {
+      await expectLater(
+        run('sql.query', {
+          'query': query,
+          'args': jsonEncode([path])
+        }),
+        throwsA(
+            isA<ActionException>().having((e) => e.code, 'code', 'sql_error')),
+      );
+      expect(File(path).existsSync(), isFalse);
+    }
   });
 
   test('statements change many entries at once, and the app sees it', () async {

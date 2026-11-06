@@ -16,5 +16,11 @@
     "en": "What's new is shown in your language, with the buttons in one row.",
     "zh": "更新内容会用你的语言显示，按钮排成一行。",
     "zh_Hant": "更新內容會用你的語言顯示，按鈕排成一列。"
+  },
+  {
+    "id": "2026-11-06-read-only-sql-query",
+    "en": "SQL queries are read-only. Use sql.execute to change the diary database.",
+    "zh": "SQL 查询只读。修改日记数据库请使用 sql.execute。",
+    "zh_Hant": "SQL 查詢唯讀。修改日記資料庫請使用 sql.execute。"
   }
 ]

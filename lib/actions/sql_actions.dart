@@ -9,6 +9,7 @@ import 'dart:typed_data';
 import 'package:aid_diary/actions/app_action.dart';
 import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/database/app_database.dart';
+import 'package:aid_diary/database/read_only_sql.dart';
 import 'package:path/path.dart' as p;
 import 'package:sqflite/sqflite.dart';
 
@@ -20,7 +21,7 @@ const beforeSqlFolder = 'before-sql';
 final sqlActions = [
   AppAction(
     id: 'sql.query',
-    describe: 'Runs one SQL query on the diary database and returns its rows. '
+    describe: 'Runs one read-only SQL query and returns its rows. '
         'The schema is in sqlite_master.',
     risk: ActionRisk.read,
     params: const [
@@ -34,8 +35,8 @@ final sqlActions = [
     ],
     run: (_, args) async {
       final limit = args['limit'] as int? ?? AppConfig.instance.agentSqlRows;
-      final rows = await _guarded(() =>
-          _database.rawQuery(args['query'] as String, _values(args['args'])));
+      final query = args['query'] as String;
+      final rows = await _guarded(() => _read(query, _values(args['args'])));
       return {
         'total': rows.length,
         'rows': [for (final row in rows.take(limit)) _plain(row)],
@@ -84,6 +85,23 @@ final sqlActions = [
 Database get _database =>
     AppDatabase.instance.database ??
     (throw const ActionException('unavailable', 'The diary is not open'));
+
+Future<List<Map<String, Object?>>> _read(
+    String query, List<Object?> values) async {
+  final command = databaseFileCommand(query);
+  if (command != null) {
+    throw ActionException('sql_error', '$command is not allowed in sql.query');
+  }
+  // A cached connection for this path may be the app's writable handle.
+  final reader =
+      await openReadOnlyDatabase(_database.path, singleInstance: false);
+  try {
+    await reader.execute('PRAGMA query_only = ON');
+    return await reader.rawQuery(query, values);
+  } finally {
+    await reader.close();
+  }
+}
 
 /// SQLite's own complaint as the action's error.
 Future<T> _guarded<T>(Future<T> Function() run) async {

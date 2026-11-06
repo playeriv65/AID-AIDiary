@@ -41,11 +41,18 @@ void main() {
   });
 
   test('prints rows as JSON, bytes as their size', () async {
-    final out = await sql
-        .run(['SELECT id, text, picture FROM entries WHERE id = 2'], '');
+    final out = await sql.run([
+      "SELECT id, text, picture, 'ATTACH VACUUM' AS words "
+          'FROM entries WHERE id = 2'
+    ], '');
     expect(out.exitCode, 0);
     expect(jsonDecode(out.stdout), [
-      {'id': 2, 'text': 'day 2', 'picture': '<3 bytes>'},
+      {
+        'id': 2,
+        'text': 'day 2',
+        'picture': '<3 bytes>',
+        'words': 'ATTACH VACUUM'
+      },
     ]);
   });
 
@@ -87,6 +94,16 @@ void main() {
         await sql.run(["ATTACH '${p.join(folder.path, 'x.db')}' AS x"], '');
     expect(out.exitCode, 1);
     expect(out.stderr, contains('ATTACH'));
+  });
+
+  test('cannot copy the diary to another database file', () async {
+    final copy = p.join(folder.path, 'copy.db');
+    await sql.run(['PRAGMA query_only = OFF'], '');
+    final out =
+        await sql.run([], "-- comment\nVACUUM /* comment */ INTO '$copy'");
+    expect(out.exitCode, 1);
+    expect(out.stderr, contains('VACUUM'));
+    expect(File(copy).existsSync(), isFalse);
   });
 
   test('shows the schema', () async {

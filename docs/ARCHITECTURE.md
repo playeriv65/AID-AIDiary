@@ -326,7 +326,9 @@ Rules that keep it so:
   lists the few flows that are not places, with why), and every place
   opened by name exists.
 - Bulk changes to diary data go through SQL rather than one action per row
-  (`sql_actions.dart`): `sql.query` returns rows, `sql.execute` runs one
+  (`sql_actions.dart`): `sql.query` returns rows through a separate
+  read-only connection and rejects `ATTACH` and `VACUUM` to keep it within
+  the diary database. `sql.execute` runs one
   statement or a JSON file of them in one transaction (destructive, so
   `--yes`), keeps a copy of the database in `before-sql/` beside it first
   (`agent.sqlSnapshots` copies), then reloads the stores. The sync triggers
@@ -356,7 +358,8 @@ authorization is designed (TODO.md, "In-app agent"):
   leave it, answered in Dart: `aid` (`agent/aid_command.dart`), the command
   line's grammar run on `AppActions` in the app, without the `agent` and
   `acp` areas; and `sql` (`agent/diary_sql.dart`), queries on a read-only
-  connection of its own (`query_only`, no `ATTACH`). `agent.shell` runs the
+  connection of its own (`query_only`, no `ATTACH` or `VACUUM`).
+  `agent.shell` runs the
   same shell without a model. Conversations and their shells live in memory
   (`agent/agent_sessions.dart`).
 - **On a computer over ACP** (`acp.ask`): `acpd` starts an agent named in

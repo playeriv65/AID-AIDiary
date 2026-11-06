@@ -6,6 +6,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:aid_diary/agent/native/api/shell.dart';
+import 'package:aid_diary/database/read_only_sql.dart';
 import 'package:sqflite/sqflite.dart';
 
 /// `sql` inside the agent's shell: queries on the diary through a
@@ -24,9 +25,6 @@ class DiarySql {
 
   final int rowLimit;
   Database? _database;
-
-  /// Other database files are out of reach even read-only.
-  static final _attach = RegExp(r'\battach\b', caseSensitive: false);
 
   static const usage = '''
 sql "SELECT ..."     rows as a JSON array
@@ -65,8 +63,9 @@ sql --limit N ...    at most N rows
       if (schema) return await _schema(words.firstOrNull);
       final query = words.isEmpty ? stdin.trim() : words.join(' ');
       if (query.isEmpty) return _fail(usage);
-      if (_attach.hasMatch(query)) {
-        return _fail('ATTACH is not allowed: only the diary can be read');
+      final command = databaseFileCommand(query);
+      if (command != null) {
+        return _fail('$command is not allowed: only the diary can be read');
       }
       final rows = await (await _db).rawQuery(query);
       final shown = rows.take(limit).map(_plain).toList();
