@@ -18,6 +18,7 @@ results describe the revision and environment that were actually checked.
 | Which tests must I run, and what counts as a pass? | [Testing](TESTING.md) | Change matrix, regression/release gates, test fixtures and evidence rules |
 | How does sync work, and what has been verified? | [Sync networking](SYNC_NETWORK.md) | Protocol design, current capability, dated acceptance evidence and network limits |
 | How do I configure or deploy the Go service? | [Server README](../server/README.md) | Server commands, policy variables, wire/API reference and deployment procedure |
+| How are app builds published, mirrored and installed? | [Updates](UPDATES.md) | Release manifest, build numbers, signing, Android installer and database upgrades |
 | How is Google Drive configured? | [Google Drive](GOOGLE_DRIVE.md) | Provider-specific OAuth and setup |
 | How do I import or maintain One Diary compatibility? | [One Diary import](ONE_DIARY_IMPORT.md) | Backup envelope, reverse-engineering evidence, code map, diary dates and verification |
 | Why is a Xiaomi build stuck at 60 Hz, or Windows scrolling slow? | [Refresh rate and scrolling](REFRESH_RATE.md) | OEM diagnosis, isolated profile procedures and measured Windows limits |

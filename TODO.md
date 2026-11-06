@@ -1,10 +1,36 @@
 # TODO
 
-Ideas not built yet, roughly in order of value.
+Open maintenance work and product ideas. See [Decisions](docs/DECISIONS.md)
+for approved behavior and [Handoff](docs/HANDOFF.md) for the latest checkpoint.
+
+## Maintenance priorities
+
+1. **Publish a consistent update.** The rolling Nightly release and mirror
+   replace fixed-name assets independently. A reader holding an older
+   manifest can receive a newer package during publication. Use build-specific
+   package URLs and publish the current manifest only after every file is
+   ready and verified. Preserve the existing Android update path during the
+   transition. Verify interrupted publication, a client holding the previous
+   manifest, and GitHub/mirror agreement. See [Updates](docs/UPDATES.md).
+2. **Verify risky native changes at the native boundary.** Linux CI exercises
+   Dart behavior and Nightly compiles Android, Windows and Linux. For changes
+   to the installer, secure storage, Android permissions or background work,
+   verify the affected journey on a development installation with scratch
+   data. Include an existing database and a failed or cancelled operation
+   where applicable. See [Testing](docs/TESTING.md#critical-journeys-and-release-evidence).
+3. **Make build inputs easier to reproduce.** Flutter's pin is repeated in
+   both workflows, Setup records the local JDK, and Nightly uses a different
+   JDK. Consolidate the Flutter pin when changing the workflows, record the
+   intended Java baselines and pin reviewed Actions revisions. Keep the
+   versions of local SDK installs as observations in [Setup](docs/SETUP.md).
+4. **Extract responsibilities as their behavior changes.** Start with
+   `lib/sync/sync_service.dart` (orchestration and lifecycle),
+   `lib/database/app_database.dart` (schema, migration and connection
+   lifecycle), and `lib/pages/edit_entry_page.dart` (editor UI alongside
+   its existing view model). Preserve existing entry points and test
+   contracts. See [Architecture](docs/ARCHITECTURE.md).
 
 ## Layout and features
-Windows uses the tablet layout. Done: shell, journal, detail, editor, calendar, media, atlas, coach with program enrolment, search, the story chain (coach prompt, wrap-up), statistics, settings tree, onboarding, help, reminders, quick-write notification, nudges, status and photo widgets, location sheet and picker, share sheet, EXIF date and place, backup.
-
 Probably skip (they need cloud services or add little): Google Fit, rate dialog, live chat, external-link warning, automatic media categories (an image classifier), an in-app media picker.
 
 ## Appearance (owner request 2026-10-23)
@@ -25,13 +51,9 @@ Probably skip (they need cloud services or add little): Google Fit, rate dialog,
   comparison sheets were not kept in the repository.
 
 ## Build automation (owner request 2026-10-23)
-- Done (2026-10-24): CI on every push to main, a debug-signed nightly
-  prerelease, and the repository made public after a history review
-  (`docs/TESTING.md`, "Continuous integration"). Since 2026-10-29
-  the nightly is signed with the release key and Android apps update
-  themselves from it (`docs/UPDATES.md`). Open: Windows and Linux updates
-  (download the archive, swap the files after the app exits), and the AID
-  server mirroring the nightly for mainland China.
+- Windows and Linux self-updates. Today users download and replace the
+  archive manually. Android updates and the server mirror are in use.
+  See [Updates](docs/UPDATES.md) and [CI](docs/TESTING.md#continuous-integration).
 - Linux (owner request 2026-10-24): target restored and packaged nightly.
   Open: video and voice-note playback (`video_player` has no Linux
   implementation; the player shows "unavailable"), unlocking hidden

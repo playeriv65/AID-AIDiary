@@ -144,18 +144,20 @@ to reach a fixed page length or create empty categories for future documents.
 
 ## Sources and project adaptations
 
-Primary sources consulted on 2026-10-22; local choices above are not endorsed
-or required verbatim by their authors:
+Primary sources reviewed on 2026-10-22 and 2026-11-06:
 
 | Source | What it contributes here |
 |---|---|
 | [Flutter architecture guide](https://docs.flutter.dev/app-architecture/guide) and [recommendations](https://docs.flutter.dev/app-architecture/recommendations) | Responsibility boundaries, state ownership and explicit adaptation; no wholesale folder/package migration |
+| [Android architecture](https://developer.android.com/topic/architecture/recommendations) and [modularization](https://developer.android.com/topic/modularization) | Keep ownership and dependencies clear in Dart and in the native bridges. Use a package or Gradle module when an interface needs independent reuse or validation. |
+| [Android core app quality](https://developer.android.com/docs/quality-guidelines/core-app-quality), [Android testing strategies](https://developer.android.com/training/testing/fundamentals/strategies) and [Flutter testing](https://docs.flutter.dev/testing/overview) | Check the affected journey at the lowest layer that can expose its failure. Include Android lifecycle, permissions, accessibility and window changes where they affect the journey. |
 | [Effective Dart](https://dart.dev/effective-dart) | Consistent, readable language/API conventions; no hand-copied style manual |
 | [Google review standard](https://google.github.io/eng-practices/review/reviewer/standard.html), [review criteria](https://google.github.io/eng-practices/review/reviewer/looking-for.html) and [small changes](https://google.github.io/eng-practices/review/developer/small-cls.html) | Maintainability, correctness, proportional review and coherent changes; solo workflow stays simple |
 | [Google documentation practices](https://google.github.io/styleguide/docguide/best_practices.html) and [philosophy](https://google.github.io/styleguide/docguide/philosophy.html) | Small maintained docs, canonical facts, updates with code and removal of stale instructions |
 | [Software Engineering at Google: Documentation](https://abseil.io/resources/swe-book/html/ch10.html) | Reader/purpose, document ownership, source control and separation of reference, explanation, decisions and procedures |
 | [Google developer style highlights](https://developers.google.com/style/highlights) | Clear language, descriptive links, accessible presentation and explicit steps |
 | [Google SRE release engineering](https://sre.google/sre-book/release-engineering/) | Repeatable artifact/configuration handling and destination acceptance; no new release infrastructure |
+| [GitHub Actions secure use](https://docs.github.com/en/actions/reference/security/secure-use) | Grant write permissions to publishing jobs only. Review and pin action revisions when updating workflow dependencies. |
 
 The index is named `INDEX.md` inside `docs/`; package READMEs stay with the
 code they introduce, consistent with [Google's README guidance](https://google.github.io/styleguide/docguide/READMEs.html).

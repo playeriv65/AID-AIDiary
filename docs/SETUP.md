@@ -13,13 +13,13 @@ Development happens natively on Windows (no WSL). Versions in use on
 | Tool | Version | Notes |
 | --- | --- | --- |
 | Flutter | 3.47.7 stable (Dart 3.13.5) | No SDK submodule; any install works. |
-| JDK | 23.0.1 | The only JDK needed; `android/build.gradle` sets each module's Kotlin JVM target to its Java one, since many plugins leave it unset. |
+| JDK | 23.0.1 locally | Nightly Android builds use JDK 21 in the [workflow](../.github/workflows/nightly.yml). `android/build.gradle` aligns Kotlin's JVM target with Java for plugins that leave it unset. |
 | Android SDK | platform android-37, build-tools 36.0.0 | `compileSdk` 37; min and target SDK come from Flutter. |
 | Visual Studio Build Tools | 2022 (17.14), Windows 10 SDK 10.0.26100 | For the Windows build. |
 | Rust | stable 1.99 via rustup, with targets `aarch64-linux-android`, `armv7-linux-androideabi` and `x86_64-linux-android` (a debug APK holds all three) | The agent's shell (`rust/`, bashkit). App builds compile it through cargokit; `dev.ps1` test targets run `cargo build --release` first, since host tests load that library. `RUSTUP_HOME`/`CARGO_HOME` come from `dev.env`; bindings regenerate with `flutter_rust_bridge_codegen generate` (2.13.0, `cargo install`). |
 | Go | 1.26.0 for `server/` | `server/go.mod` selects this toolchain; the installed 1.25.6 launcher selects it automatically with `GOTOOLCHAIN=auto`. |
 | Native WebRTC plugin | `flutter_webrtc` 1.6.2+hotfix.4 | Pinned Flutter dependency for Windows/Android ICE data channels; resolved by `dev.ps1 pub`. No TURN service is configured. |
-| uv (Python) | 0.11 | Only for `tool/icon/export_icon.py`. |
+| uv (Python) | 0.11 | Local Python tooling, such as `tool/icon/export_icon.py`. |
 | Tailscale | any | Reaches the test devices from anywhere (below). |
 
 ## First time on a new computer

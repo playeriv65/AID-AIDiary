@@ -34,10 +34,9 @@ list in the shape apps before 2026-10-29 read.
 
 Files are named, not linked: the app fetches them beside the manifest it
 read, so a mirror serves the same manifest unchanged. The app asks the
-addresses in `app_config.json` (`updates.manifestUrls`) in order: the AID
-server first, which mainland China reaches, then GitHub, which it often
-does not. Until the server mirrors the release, its address fails and the
-app goes on to GitHub.
+addresses in `app_config.json` (`updates.manifestUrls`) in order. The AID
+mirror serves its last published manifest until it catches up. A successful
+response from that mirror is used even if GitHub already has a newer build.
 
 ## Server mirror
 
@@ -47,14 +46,20 @@ fetches the nightly's `latest.json` from GitHub, and when its build is new,
 downloads every file, checks each against the manifest's SHA-256, and puts
 the manifest up last in `/srv/aid-updates/www`, which nginx serves at
 `https://aid.playeriv65.com/updates/` (`server/deploy/nginx.conf`). The
-server holds no GitHub credential. Deployed on 2026-10-29; the nginx site
-from before is in `/srv/aid-sync/backups/`.
+server holds no GitHub credential. The mirror was deployed on 2026-10-29.
+
+The mirror verifies downloads before replacing files. GitHub and the
+mirror still replace package names in place, so a client that has already
+read an older manifest can receive a newer package and reject it on hash
+verification. See the [publication work](../TODO.md#maintenance-priorities).
 
 ## Build numbers
 
 Android builds carry the time as their build number, UTC `YYMMDDHH` and the
-ten minutes (`261029183`): the nightly and `scripts/dev.ps1` stamp it the
-same way, so any build updates any older one (AGENTS.md, "Versions").
+ten-minute digit (`261029183`). Nightly and `scripts/dev.ps1` stamp it
+the same way. Builds stamped within the same ten-minute window share a
+number. An in-app update requires a strictly newer build, and the local
+install script refuses a device with the same or a higher build number.
 
 ## Signing
 

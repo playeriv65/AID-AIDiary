@@ -124,9 +124,10 @@ aid sync.network_paths paths=ice,cache stunOnly=true  # development builds only
 aid entry.delete id=12 --yes         # destructive actions need --yes
 ```
 
-The Android build runs on JDK 23: the root `android/build.gradle` gives every module's Kotlin the JVM target its Java already uses, since many plugins leave it unset. Flutter's Android SDK path is pinned with `flutter config --android-sdk`.
-
-The project-wide [testing policy](docs/TESTING.md) defines the change-to-test matrix, full-regression/release gates, critical journeys and result reporting for Flutter, Go, CLI and native platforms. Isolated pure logic can use focused unit tests; UI, persistence and native behavior need their owning layers. Full regression runs for broad/high-risk changes, release gates and one active-day closing safety net, with existing results reused for an unchanged tested state. Layer targets (`test-unit`, `test-widget`, `test-integration`) also accept `-TestFiles`; external services require explicit `test-live`. GitHub Actions checks every push to `main` and packages a nightly build ([continuous integration](docs/TESTING.md#continuous-integration)).
+Use [Testing](docs/TESTING.md#select-checks-by-change) to choose local checks
+for the affected behavior. [Continuous integration](docs/TESTING.md#continuous-integration)
+describes the Linux checks and native packages. [Updates](docs/UPDATES.md)
+covers Android installation, signing and the release mirror.
 
 Screenshots are rendered by widget tests in `tool/screenshots/` with real fonts (Flutter SDK icons, Windows Noto Sans SC and Segoe Emoji); no window opens. Pass `-TestFiles` to render only the affected screenshot file and inspect the images: these scripts do not automatically compare golden images.
 

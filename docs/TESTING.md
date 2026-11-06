@@ -166,6 +166,11 @@ Each changed journey needs an observable result, not only "the screen opened":
 - Native integrations: permissions denied/granted, cold launch and the affected
   photo, drawing, widget or key action on the actual supported platform. Windows
   cannot establish Android Keystore/OEM behavior.
+- Android lifecycle and layout: for changes to the shell, editor or a native
+  integration, exercise the affected journey after background/resume and after
+  rotation or resizing when relevant. For changed controls, check semantics,
+  focus order and large text on the affected layouts. Use scratch data and
+  record the device, flavor and Android version for native evidence.
 
 These are acceptance obligations when affected or preparing a release, not a
 claim that every scenario is already automated. Existing tests and historical
@@ -250,11 +255,12 @@ validation just to make timings look shorter.
 
 Two workflows run on GitHub's runners:
 
-- `.github/workflows/ci.yml` checks every push to `main` on Linux:
+- `.github/workflows/ci.yml` checks pushes with code or configuration
+  changes to `main` on Linux:
   `flutter analyze`, the offline suite, the CLI's analysis and tests, and the
   server's. It builds no app, only the agent shell's Rust library the suite
-  loads (`cargo build --release` in `rust/`, cached). Documentation-only pushes skip it, and a
-  burst of pushes runs only for the latest.
+  loads (`cargo build --release` in `rust/`, cached). Pushes limited to
+  Markdown and `docs/` skip it. A burst of pushes runs only for the latest.
 - `.github/workflows/nightly.yml` packages once a day (09:00 UTC) and on
   demand (Actions > Nightly > Run workflow, or `gh workflow run
   nightly.yml`). A scheduled run with no commits in the last 25 hours does
