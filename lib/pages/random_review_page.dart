@@ -60,6 +60,22 @@ class _RandomReviewPageState extends State<RandomReviewPage> {
   void initState() {
     super.initState();
     _shuffle();
+    EntriesProvider.instance.addListener(_entriesChanged);
+  }
+
+  @override
+  void dispose() {
+    EntriesProvider.instance.removeListener(_entriesChanged);
+    super.dispose();
+  }
+
+  /// Moves on when the entry shown is gone, deleted or hidden.
+  void _entriesChanged() {
+    final id = _entryId;
+    if (id == null || EntriesProvider.instance.entries.any((e) => e.id == id)) {
+      return;
+    }
+    _shuffle();
   }
 
   bool _matches(Entry entry) =>

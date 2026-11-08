@@ -32,6 +32,7 @@ import 'package:aid_diary/widgets/entry_tag_chips.dart';
 import 'package:aid_diary/widgets/local_image_loader.dart';
 import 'package:aid_diary/widgets/mood_icon.dart';
 import 'package:aid_diary/widgets/scaled_markdown.dart';
+import 'package:aid_diary/widgets/snack_message.dart';
 import 'package:aid_diary/widgets/tag_chip.dart';
 import 'package:intl/intl.dart';
 import 'package:aid_diary/widgets/weather_icon.dart';
@@ -244,33 +245,35 @@ class EntryViewPage extends StatelessWidget {
     onEntryEdited?.call(entry.id!);
   }
 
+  /// Hides or shows the entry. The page showing it stays: a list or pager
+  /// moves on to what it still holds.
   Future<void> _hide(BuildContext context, Entry entry) async {
     if (entry.isHidden) {
       await HiddenDiaryScope.of(context)!.unhide(entry);
-    } else {
-      final messenger = ScaffoldMessenger.of(context);
-      final l10n = AppLocalizations.of(context)!;
-      await AppActions.instance.run('entry.hide', {'id': entry.id});
-      // Every time: otherwise a hidden entry seems gone for good.
-      messenger.showSnackBar(SnackBar(
-          content: Text(l10n.hiddenDiaryWhere([
-        l10n.pageSettingsTitle,
-        l10n.settingsSecurityTitle,
-        l10n.hiddenDiaryTitle,
-      ].join(' › ')))));
+      return;
     }
-    if (context.mounted && !embedded && Navigator.of(context).canPop()) {
-      Navigator.of(context).pop();
-    }
+    final l10n = AppLocalizations.of(context)!;
+    // The entry leaves the pager showing it, and this page with it: say it
+    // from the navigator, which stays.
+    final navigator = Navigator.of(context).context;
+    await AppActions.instance.run('entry.hide', {'id': entry.id});
+    // Every time: otherwise a hidden entry seems gone for good.
+    if (!navigator.mounted) return;
+    showSnackMessage(
+        navigator,
+        l10n.hiddenDiaryWhere([
+          l10n.pageSettingsTitle,
+          l10n.settingsSecurityTitle,
+          l10n.hiddenDiaryTitle,
+        ].join(' › ')));
   }
 
   Future<void> _saveAsTemplate(BuildContext context, Entry entry) async {
-    final messenger = ScaffoldMessenger.of(context);
-    final l10n = AppLocalizations.of(context)!;
     final fallback = TimeManager.formatDate(entry.day, context);
+    final saved = AppLocalizations.of(context)!.entrySavedAsTemplate;
     await AppActions.instance
         .run('template.create_from_entry', {'id': entry.id, 'name': fallback});
-    messenger.showSnackBar(SnackBar(content: Text(l10n.entrySavedAsTemplate)));
+    if (context.mounted) showSnackMessage(context, saved);
   }
 
   /// Seals the entry until a day the writer picks.
@@ -287,13 +290,10 @@ class EntryViewPage extends StatelessWidget {
         .run('entry.seal', {'id': entry.id, 'opens': DiaryDay.format(day)});
   }
 
-  Future<void> _delete(BuildContext context, Entry entry) {
-    final navigator = Navigator.of(context);
-    return deleteEntryAfterAsking(context, () {
-      if (!embedded && navigator.canPop()) navigator.pop();
-      return entry;
-    });
-  }
+  /// Moves the entry to Recently deleted. The page showing it stays, as for
+  /// [_hide].
+  Future<void> _delete(BuildContext context, Entry entry) =>
+      deleteEntryAfterAsking(context, () => entry);
 
   /// "Share as…": the picture card, a ZIP with the original
   /// media, plain text or an HTML page.
