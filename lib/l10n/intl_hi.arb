@@ -395,7 +395,7 @@
     "locationRecent": "हाल के स्थान",
     "shareImage": "छवि साझा करें",
     "shareSaveImage": "छवि सहेजें",
-    "shareSaved": "छवि सहेजी गई",
+    "fileSaved": "फ़ाइल सहेजी गई",
     "deletedTitle": "हाल ही में हटाया गया",
     "deletedNone": "हाल ही में कुछ भी नहीं हटाया गया",
     "deletedHint": "हटाई गई प्रविष्टियाँ यहाँ {days} दिनों तक रहती हैं, फिर मिटा दी जाती हैं।",

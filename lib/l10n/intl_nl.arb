@@ -395,7 +395,7 @@
     "locationRecent": "Recente plaatsen",
     "shareImage": "Deel afbeelding",
     "shareSaveImage": "Afbeelding opslaan",
-    "shareSaved": "Afbeelding opgeslagen",
+    "fileSaved": "Bestand opgeslagen",
     "deletedTitle": "Onlangs verwijderd",
     "deletedNone": "Niets recentelijk verwijderd",
     "deletedHint": "Verwijderde vermeldingen blijven hier {days} dagen staan en worden daarna gewist.",

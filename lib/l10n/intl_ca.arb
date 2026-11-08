@@ -395,7 +395,7 @@
     "locationRecent": "Llocs recents",
     "shareImage": "Comparteix la imatge",
     "shareSaveImage": "Guarda la imatge",
-    "shareSaved": "S'ha desat la imatge",
+    "fileSaved": "S'ha desat el fitxer",
     "deletedTitle": "S'ha suprimit recentment",
     "deletedNone": "No s'ha suprimit res recentment",
     "deletedHint": "Les entrades suprimides romanen aquí durant {days} dies i després s'esborren.",

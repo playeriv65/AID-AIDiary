@@ -1376,7 +1376,7 @@ class AppLocalizationsSv extends AppLocalizations {
   String get shareSaveImage => 'Spara bild';
 
   @override
-  String get shareSaved => 'Bilden sparad';
+  String get fileSaved => 'Filen sparad';
 
   @override
   String get deletedTitle => 'Nyligen raderad';

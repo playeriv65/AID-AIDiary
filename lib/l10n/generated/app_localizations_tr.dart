@@ -1365,7 +1365,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get shareSaveImage => 'Resmi kaydet';
 
   @override
-  String get shareSaved => 'Resim kaydedildi';
+  String get fileSaved => 'Dosya kaydedildi';
 
   @override
   String get deletedTitle => 'Yakın zamanda silindi';

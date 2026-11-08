@@ -395,7 +395,7 @@
     "locationRecent": "Seneste steder",
     "shareImage": "Del billede",
     "shareSaveImage": "Gem billede",
-    "shareSaved": "Billedet er gemt",
+    "fileSaved": "Filen er gemt",
     "deletedTitle": "For nylig slettet",
     "deletedNone": "Intet slettet for nylig",
     "deletedHint": "Slettede poster bliver her i {days} dage, og bliver derefter slettet.",

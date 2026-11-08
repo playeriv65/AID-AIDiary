@@ -13,13 +13,13 @@ import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/models/image.dart';
 import 'package:aid_diary/pages/entry_view_page.dart';
 import 'package:aid_diary/utils/entry_context_display.dart';
+import 'package:aid_diary/utils/entry_share.dart';
 import 'package:aid_diary/utils/entry_typography.dart';
 import 'package:aid_diary/widgets/local_image_loader.dart';
 import 'package:aid_diary/widgets/mood_icon.dart';
+import 'package:aid_diary/widgets/save_to_file.dart';
 import 'package:aid_diary/widgets/scaled_markdown.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/rendering.dart';
-import 'package:intl/intl.dart';
 import 'package:aid_diary/widgets/app_logo.dart';
 import 'package:aid_diary/widgets/weather_icon.dart';
 import 'package:material_ui/material_ui.dart';
@@ -40,8 +40,7 @@ class _EntrySharePageState extends State<EntrySharePage> {
   final _cardKey = GlobalKey();
   bool _busy = false;
 
-  String get _fileName =>
-      'aid-diary-${DateFormat('yyyy-MM-dd-HHmm').format(widget.entry.timeCreate)}.png';
+  String get _fileName => '${EntryShare.fileName(widget.entry)}.png';
 
   /// The card as PNG bytes, at the configured pixel ratio.
   Future<Uint8List?> _render() async {
@@ -69,18 +68,8 @@ class _EntrySharePageState extends State<EntrySharePage> {
           files: [XFile.fromData(png, mimeType: 'image/png')],
           fileNameOverrides: [_fileName])));
 
-  Future<void> _saveImage() => _run((png) async {
-        final messenger = ScaffoldMessenger.of(context);
-        final saved = AppLocalizations.of(context)!.shareSaved;
-        final uri = await FilePicker.saveFile(
-            fileName: _fileName,
-            bytes: png,
-            mimeType: 'image/png',
-            type: FileType.image);
-        if (uri != null) {
-          messenger.showSnackBar(SnackBar(content: Text(saved)));
-        }
-      });
+  Future<void> _saveImage() => _run((png) =>
+      saveToFile(context, png, fileName: _fileName, mimeType: 'image/png'));
 
   @override
   Widget build(BuildContext context) {

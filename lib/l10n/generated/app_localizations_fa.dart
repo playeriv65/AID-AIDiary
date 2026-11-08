@@ -1363,7 +1363,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get shareSaveImage => 'ذخیره تصویر';
 
   @override
-  String get shareSaved => 'تصویر ذخیره شد';
+  String get fileSaved => 'فایل ذخیره شد';
 
   @override
   String get deletedTitle => 'اخیراً حذف شده است';

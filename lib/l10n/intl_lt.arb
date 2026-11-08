@@ -395,7 +395,7 @@
     "locationRecent": "Naujausios vietos",
     "shareImage": "Bendrinti vaizdą",
     "shareSaveImage": "Išsaugoti vaizdą",
-    "shareSaved": "Vaizdas išsaugotas",
+    "fileSaved": "Failas išsaugotas",
     "deletedTitle": "Neseniai ištrinta",
     "deletedNone": "Pastaruoju metu nieko neištrinta",
     "deletedHint": "Ištrinti įrašai lieka čia {days} dienas, tada ištrinami.",

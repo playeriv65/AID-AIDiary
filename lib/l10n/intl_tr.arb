@@ -395,7 +395,7 @@
     "locationRecent": "Son yerler",
     "shareImage": "Resmi paylaş",
     "shareSaveImage": "Resmi kaydet",
-    "shareSaved": "Resim kaydedildi",
+    "fileSaved": "Dosya kaydedildi",
     "deletedTitle": "Yakın zamanda silindi",
     "deletedNone": "Yakın zamanda silinen hiçbir şey yok",
     "deletedHint": "Silinen girişler {days} gün boyunca burada kalır, ardından silinir.",

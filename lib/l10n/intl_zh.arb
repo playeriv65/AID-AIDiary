@@ -387,7 +387,7 @@
     "locationRecent": "最近的地点",
     "shareImage": "分享图片",
     "shareSaveImage": "保存图片",
-    "shareSaved": "图片已保存",
+    "fileSaved": "文件已保存",
     "deletedTitle": "最近删除",
     "deletedNone": "没有最近删除的日记",
     "deletedHint": "删除的日记会在这里保留 {days} 天，之后彻底清除。",

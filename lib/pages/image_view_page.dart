@@ -6,12 +6,11 @@ import 'dart:io';
 
 import 'package:aid_diary/database/image_storage.dart';
 import 'package:aid_diary/time_manager.dart';
-import 'package:aid_diary/storage/storage_picker.dart';
 import 'package:aid_diary/models/image.dart';
+import 'package:aid_diary/widgets/save_to_file.dart';
 import 'package:aid_diary/widgets/zoomable_image_page_view.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:intl/intl.dart';
-import 'package:logging/logging.dart';
 import 'package:share_plus/share_plus.dart';
 
 class ImageViewPage extends StatefulWidget {
@@ -29,8 +28,6 @@ class ImageViewPage extends StatefulWidget {
 }
 
 class _ImageViewPageState extends State<ImageViewPage> {
-  final Logger _logger = Logger('ImageViewPage');
-
   late PageController _pageController;
   late ValueNotifier<int> _currentPageNotifier;
 
@@ -169,21 +166,10 @@ class _ImageViewPageState extends State<ImageViewPage> {
                 icon: const Icon(Icons.download_rounded),
                 onPressed: () async {
                   final currentImage = widget.images[currentIndex].imgPath;
-                  var bytes =
+                  final bytes =
                       await ImageStorage.instance.getBytes(currentImage);
-                  if (bytes == null) return;
-
-                  PickedDirectory? saveDirectory;
-                  try {
-                    saveDirectory = await StoragePicker.pickDirectory();
-                  } catch (error, stackTrace) {
-                    _logger.warning(
-                        'Choosing a download folder failed', error, stackTrace);
-                    return;
-                  }
-                  if (saveDirectory == null) return;
-
-                  await saveDirectory.store.write(currentImage, bytes);
+                  if (bytes == null || !context.mounted) return;
+                  await saveToFile(context, bytes, fileName: currentImage);
                 });
           });
     }

@@ -395,7 +395,7 @@
     "locationRecent": "Địa điểm gần đây",
     "shareImage": "Chia sẻ hình ảnh",
     "shareSaveImage": "Lưu hình ảnh",
-    "shareSaved": "Đã lưu hình ảnh",
+    "fileSaved": "Đã lưu tệp",
     "deletedTitle": "Đã xóa gần đây",
     "deletedNone": "Không có gì bị xóa gần đây",
     "deletedHint": "Các mục đã xóa vẫn ở đây trong {days} ngày, sau đó bị xóa.",

@@ -1376,7 +1376,7 @@ class AppLocalizationsBg extends AppLocalizations {
   String get shareSaveImage => 'Запазване на изображението';
 
   @override
-  String get shareSaved => 'Изображението е запазено';
+  String get fileSaved => 'Файлът е запазен';
 
   @override
   String get deletedTitle => 'Наскоро изтрит';

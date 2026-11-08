@@ -1381,7 +1381,7 @@ class AppLocalizationsOc extends AppLocalizations {
   String get shareSaveImage => 'Enregistrar l\'imatge';
 
   @override
-  String get shareSaved => 'Imatge enregistrat';
+  String get fileSaved => 'Fichièr enregistrat';
 
   @override
   String get deletedTitle => 'Suprimit recentament';

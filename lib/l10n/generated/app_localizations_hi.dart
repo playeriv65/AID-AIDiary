@@ -1365,7 +1365,7 @@ class AppLocalizationsHi extends AppLocalizations {
   String get shareSaveImage => 'छवि सहेजें';
 
   @override
-  String get shareSaved => 'छवि सहेजी गई';
+  String get fileSaved => 'फ़ाइल सहेजी गई';
 
   @override
   String get deletedTitle => 'हाल ही में हटाया गया';

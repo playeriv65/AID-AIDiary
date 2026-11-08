@@ -395,7 +395,7 @@
     "locationRecent": "Senaste platserna",
     "shareImage": "Dela bild",
     "shareSaveImage": "Spara bild",
-    "shareSaved": "Bilden sparad",
+    "fileSaved": "Filen sparad",
     "deletedTitle": "Nyligen raderad",
     "deletedNone": "Inget har raderats nyligen",
     "deletedHint": "Raderade poster stannar här i {days} dagar och raderas sedan.",

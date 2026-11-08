@@ -1346,7 +1346,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get shareSaveImage => '画像の保存';
 
   @override
-  String get shareSaved => '画像を保存しました';
+  String get fileSaved => 'ファイルを保存しました';
 
   @override
   String get deletedTitle => '最近削除されました';

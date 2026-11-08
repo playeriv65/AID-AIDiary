@@ -1392,7 +1392,7 @@ class AppLocalizationsRo extends AppLocalizations {
   String get shareSaveImage => 'Salvați imaginea';
 
   @override
-  String get shareSaved => 'Imaginea salvată';
+  String get fileSaved => 'Fișier salvat';
 
   @override
   String get deletedTitle => 'Șters recent';

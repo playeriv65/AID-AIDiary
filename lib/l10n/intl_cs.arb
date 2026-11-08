@@ -395,7 +395,7 @@
     "locationRecent": "Nedávná místa",
     "shareImage": "Sdílet obrázek",
     "shareSaveImage": "Uložit obrázek",
-    "shareSaved": "Obrázek uložen",
+    "fileSaved": "Soubor uložen",
     "deletedTitle": "Nedávno smazáno",
     "deletedNone": "V poslední době nebylo nic smazáno",
     "deletedHint": "Smazané záznamy zde zůstanou {days} dní, poté budou vymazány.",

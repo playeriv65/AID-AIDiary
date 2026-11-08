@@ -1344,7 +1344,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get shareSaveImage => '保存图片';
 
   @override
-  String get shareSaved => '图片已保存';
+  String get fileSaved => '文件已保存';
 
   @override
   String get deletedTitle => '最近删除';
@@ -4118,7 +4118,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get shareSaveImage => '儲存圖片';
 
   @override
-  String get shareSaved => '圖片已儲存';
+  String get fileSaved => '檔案已儲存';
 
   @override
   String get deletedTitle => '最近刪除';

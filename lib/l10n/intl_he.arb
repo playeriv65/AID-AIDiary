@@ -412,7 +412,7 @@
     "locationRecent": "מקומות אחרונים",
     "shareImage": "שתף תמונה",
     "shareSaveImage": "שמור תמונה",
-    "shareSaved": "התמונה נשמרה",
+    "fileSaved": "הקובץ נשמר",
     "deletedTitle": "נמחק לאחרונה",
     "deletedNone": "שום דבר לא נמחק לאחרונה",
     "deletedHint": "ערכים שנמחקו נשארים כאן במשך {days} ימים, ולאחר מכן נמחקים.",

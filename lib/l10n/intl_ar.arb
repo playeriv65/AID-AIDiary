@@ -395,7 +395,7 @@
     "locationRecent": "الأماكن الأخيرة",
     "shareImage": "مشاركة الصورة",
     "shareSaveImage": "حفظ الصورة",
-    "shareSaved": "تم حفظ الصورة",
+    "fileSaved": "تم حفظ الملف",
     "deletedTitle": "تم حذفه مؤخرًا",
     "deletedNone": "لم يتم حذف أي شيء مؤخرًا",
     "deletedHint": "تبقى الإدخالات المحذوفة هنا لمدة {days}، ثم يتم مسحها.",

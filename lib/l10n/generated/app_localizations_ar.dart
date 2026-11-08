@@ -1370,7 +1370,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get shareSaveImage => 'حفظ الصورة';
 
   @override
-  String get shareSaved => 'تم حفظ الصورة';
+  String get fileSaved => 'تم حفظ الملف';
 
   @override
   String get deletedTitle => 'تم حذفه مؤخرًا';

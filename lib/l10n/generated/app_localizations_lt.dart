@@ -1392,7 +1392,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get shareSaveImage => 'Išsaugoti vaizdą';
 
   @override
-  String get shareSaved => 'Vaizdas išsaugotas';
+  String get fileSaved => 'Failas išsaugotas';
 
   @override
   String get deletedTitle => 'Neseniai ištrinta';

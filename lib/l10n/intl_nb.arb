@@ -395,7 +395,7 @@
     "locationRecent": "Nylige steder",
     "shareImage": "Del bildet",
     "shareSaveImage": "Lagre bildet",
-    "shareSaved": "Bildet er lagret",
+    "fileSaved": "Filen er lagret",
     "deletedTitle": "Nylig slettet",
     "deletedNone": "Ingenting slettet nylig",
     "deletedHint": "Slettede oppføringer blir værende her i {days} dager, og blir deretter slettet.",

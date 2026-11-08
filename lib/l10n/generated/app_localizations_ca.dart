@@ -1378,7 +1378,7 @@ class AppLocalizationsCa extends AppLocalizations {
   String get shareSaveImage => 'Guarda la imatge';
 
   @override
-  String get shareSaved => 'S\'ha desat la imatge';
+  String get fileSaved => 'S\'ha desat el fitxer';
 
   @override
   String get deletedTitle => 'S\'ha suprimit recentment';

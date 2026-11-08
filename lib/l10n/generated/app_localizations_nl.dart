@@ -1381,7 +1381,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get shareSaveImage => 'Afbeelding opslaan';
 
   @override
-  String get shareSaved => 'Afbeelding opgeslagen';
+  String get fileSaved => 'Bestand opgeslagen';
 
   @override
   String get deletedTitle => 'Onlangs verwijderd';

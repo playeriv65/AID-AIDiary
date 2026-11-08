@@ -7,7 +7,8 @@ import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/actions/settings_actions.dart';
-import 'package:aid_diary/routing/destinations.dart';
+import 'package:aid_diary/widgets/settings_category.dart';
+import 'package:aid_diary/widgets/settings_row.dart';
 import 'package:aid_diary/widgets/settings_toggle.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -41,9 +42,9 @@ class _CommandLineSettingsState extends State<CommandLineSettings> {
           constraints: const BoxConstraints(maxWidth: 840),
           child: ListView(children: [
             if (devBuild)
-              ListTile(
-                title: Text(l10n.commandLineToggle),
-                subtitle: Text(l10n.commandLineAlwaysOn),
+              SettingsRow(
+                title: l10n.commandLineToggle,
+                hint: l10n.commandLineAlwaysOn,
                 trailing: const Switch(value: true, onChanged: null),
               )
             else
@@ -54,16 +55,16 @@ class _CommandLineSettingsState extends State<CommandLineSettings> {
                 onChanged: _toggle,
               ),
             if (port != null)
-              ListTile(
-                leading: const Icon(Icons.lan_rounded),
-                title: Text(l10n.commandLineListening(port)),
-                subtitle: const Text('aid guide'),
+              SettingsRow(
+                icon: Icons.lan_rounded,
+                title: l10n.commandLineListening(port),
+                hint: 'aid guide',
               ),
-            ListTile(
+            SettingsCategory(
               key: const ValueKey('command-palette-open'),
-              leading: const Icon(Icons.terminal_rounded),
-              title: Text(l10n.commandPaletteTitle),
-              onTap: () => openPlace(context, 'commands'),
+              icon: Icons.terminal_rounded,
+              title: l10n.commandPaletteTitle,
+              destination: 'commands',
             ),
           ]),
         ),

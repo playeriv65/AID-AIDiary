@@ -7,16 +7,15 @@ import 'package:aid_diary/actions/app_action.dart';
 import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/actions/settings_actions.dart';
 import 'package:aid_diary/config_provider.dart';
-import 'package:aid_diary/device_info_service.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/providers/entries_provider.dart';
 import 'package:aid_diary/routing/entry_navigation.dart';
+import 'package:aid_diary/services/media_permissions.dart';
 import 'package:aid_diary/widgets/haptics.dart';
-import 'package:device_info_plus/device_info_plus.dart';
+import 'package:aid_diary/widgets/snack_message.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:aid_diary/widgets/list_detail_layout.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
 class LocalMomentsPage extends StatefulWidget {
@@ -29,15 +28,11 @@ class _LocalMomentsPageState extends State<LocalMomentsPage> {
   List<Map<String, dynamic>> cards = [];
   bool busy = false;
   bool scanned = false;
-  Future<int> _sdk() async =>
-      DeviceInfoService().androidSdk ??
-      (await DeviceInfoPlugin().androidInfo).version.sdkInt;
   void _error([bool permission = false]) {
     if (!mounted) return;
     final l10n = AppLocalizations.of(context)!;
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content:
-            Text(permission ? l10n.momentsPermission : l10n.momentsError)));
+    showSnackMessage(
+        context, permission ? l10n.momentsPermission : l10n.momentsError);
   }
 
   Future<void> _folder() async {
@@ -48,9 +43,7 @@ class _LocalMomentsPageState extends State<LocalMomentsPage> {
   }
 
   Future<void> _locations(bool value) async {
-    if (value && Platform.isAndroid && await _sdk() >= 29) {
-      if (!await Permission.accessMediaLocation.request().isGranted) return;
-    }
+    if (value && !await requestPhotoLocations()) return;
     await changeSetting(Settings.photoSuggestionsLocation, value);
     if (mounted) {
       setState(() {
@@ -63,10 +56,7 @@ class _LocalMomentsPageState extends State<LocalMomentsPage> {
   Future<void> _scan() async {
     if (busy) return;
     if (Platform.isAndroid) {
-      final permission =
-          await _sdk() >= 33 ? Permission.photos : Permission.storage;
-      final status = await permission.request();
-      if (!status.isGranted && !status.isLimited) {
+      if (!await requestPhotoAccess()) {
         _error(true);
         return;
       }
@@ -102,8 +92,7 @@ class _LocalMomentsPageState extends State<LocalMomentsPage> {
       if (!mounted) return;
       setState(() => cards.removeWhere((item) => item['id'] == card['id']));
       Haptics.success();
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(AppLocalizations.of(context)!.momentsCreated)));
+      showSnackMessage(context, AppLocalizations.of(context)!.momentsCreated);
       final entry = EntriesProvider.instance.entries
           .where((entry) => entry.id == result['id'])
           .firstOrNull;

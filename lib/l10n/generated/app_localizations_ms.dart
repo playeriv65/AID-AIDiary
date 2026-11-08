@@ -1320,7 +1320,7 @@ class AppLocalizationsMs extends AppLocalizations {
   String get shareSaveImage => 'Simpan imej';
 
   @override
-  String get shareSaved => 'Imej disimpan';
+  String get fileSaved => 'Fail disimpan';
 
   @override
   String get deletedTitle => 'Baru-baru ini dipadamkan';

@@ -1,9 +1,9 @@
 import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
-import 'package:aid_diary/routing/destinations.dart';
 import 'package:aid_diary/time_manager.dart';
 import 'package:aid_diary/widgets/cloud_traffic_notice.dart';
 import 'package:aid_diary/widgets/device_name_tile.dart';
+import 'package:aid_diary/widgets/settings_category.dart';
 import 'package:intl/intl.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -113,12 +113,11 @@ class _SyncCopySettingsState extends State<SyncCopySettings> {
                       title: Text(l10n.syncMore),
                       children: [
                         DeviceNameTile(onChanged: _load),
-                        ListTile(
+                        SettingsCategory(
                             key: const ValueKey('sync-network-settings'),
-                            leading: const Icon(Icons.hub_outlined),
-                            title: Text(l10n.syncNetworkTitle),
-                            onTap: () =>
-                                openPlace(context, 'settings/sync/network'))
+                            icon: Icons.hub_outlined,
+                            title: l10n.syncNetworkTitle,
+                            destination: 'settings/sync/network')
                       ]),
                 ]))));
   }

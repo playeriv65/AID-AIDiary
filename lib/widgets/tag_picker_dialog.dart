@@ -267,11 +267,10 @@ class TagPickerDialog extends StatelessWidget {
         ),
       ),
       actions: [
-        if (mode == TagPickerMode.attach)
-          TextButton(
-            onPressed: () => AppNavigation.tags(Navigator.of(context)),
-            child: Text(l10n.manageTags),
-          ),
+        TextButton(
+          onPressed: () => AppNavigation.tags(Navigator.of(context)),
+          child: Text(l10n.manageTags),
+        ),
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
           child: Text(MaterialLocalizations.of(context).closeButtonLabel),

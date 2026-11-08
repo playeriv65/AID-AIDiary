@@ -45,7 +45,8 @@ void main() {
     await tester.tapAt(const Offset(350, 820));
     await tester.pump(const Duration(milliseconds: 300));
     final today = DateTime.now();
-    expect(find.byKey(ValueKey('review-day-${today.day}')), findsOneWidget);
+    expect(find.byKey(ValueKey('story-mood-${today.month}-${today.day}')),
+        findsOneWidget);
     await tester.pumpWidget(const SizedBox.shrink());
   });
 

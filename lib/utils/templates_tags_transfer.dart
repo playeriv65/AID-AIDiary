@@ -150,27 +150,6 @@ class TemplatesTagsTransfer {
     return _encode(data);
   }
 
-  static Future<OperationOutcome> saveBytesToFile(
-      Uint8List bytes, String fileName, Function(String) updateStatus) async {
-    updateStatus("0%");
-
-    try {
-      final saveDirectory = await StoragePicker.pickDirectory();
-      if (saveDirectory == null) return const OperationOutcome.cancelled();
-
-      updateStatus("50%");
-
-      final saved = await saveDirectory.store.write(fileName, bytes);
-
-      updateStatus("100%");
-      return saved
-          ? const OperationOutcome.succeeded()
-          : const OperationOutcome.failed();
-    } catch (error) {
-      return OperationOutcome.failed(error);
-    }
-  }
-
   static Future<void> shareBytes(Uint8List bytes, String fileName) async {
     await SharePlus.instance.share(ShareParams(
       files: [XFile.fromData(bytes, mimeType: "application/json")],

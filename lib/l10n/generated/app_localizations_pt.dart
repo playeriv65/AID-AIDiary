@@ -1380,7 +1380,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get shareSaveImage => 'Guardar imagem';
 
   @override
-  String get shareSaved => 'Imagem guardada';
+  String get fileSaved => 'Ficheiro guardado';
 
   @override
   String get deletedTitle => 'Excluído recentemente';
@@ -4284,7 +4284,7 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
   String get shareSaveImage => 'Salvar imagem';
 
   @override
-  String get shareSaved => 'Imagem salva';
+  String get fileSaved => 'Arquivo salvo';
 
   @override
   String get deletedTitle => 'Excluído recentemente';

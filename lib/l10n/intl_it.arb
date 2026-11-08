@@ -395,7 +395,7 @@
     "locationRecent": "Luoghi recenti",
     "shareImage": "Condividi l'immagine",
     "shareSaveImage": "Salva immagine",
-    "shareSaved": "Immagine salvata",
+    "fileSaved": "File salvato",
     "deletedTitle": "Eliminato di recente",
     "deletedNone": "Niente è stato eliminato di recente",
     "deletedHint": "Le voci eliminate rimangono qui per {days} giorni, quindi vengono cancellate.",

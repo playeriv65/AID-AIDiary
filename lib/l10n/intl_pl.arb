@@ -395,7 +395,7 @@
     "locationRecent": "Ostatnie miejsca",
     "shareImage": "Udostępnij obraz",
     "shareSaveImage": "Zapisz obraz",
-    "shareSaved": "Obraz został zapisany",
+    "fileSaved": "Plik został zapisany",
     "deletedTitle": "Niedawno usunięte",
     "deletedNone": "Nic ostatnio nie zostało usunięte",
     "deletedHint": "Usunięte wpisy pozostają tutaj przez {days} dni, a następnie są usuwane.",

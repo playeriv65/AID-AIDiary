@@ -1381,7 +1381,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get shareSaveImage => 'Salva immagine';
 
   @override
-  String get shareSaved => 'Immagine salvata';
+  String get fileSaved => 'File salvato';
 
   @override
   String get deletedTitle => 'Eliminato di recente';

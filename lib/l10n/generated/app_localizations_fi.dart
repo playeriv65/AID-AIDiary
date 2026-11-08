@@ -1373,7 +1373,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get shareSaveImage => 'Tallenna kuva';
 
   @override
-  String get shareSaved => 'Kuva tallennettu';
+  String get fileSaved => 'Tiedosto tallennettu';
 
   @override
   String get deletedTitle => 'Äskettäin poistettu';

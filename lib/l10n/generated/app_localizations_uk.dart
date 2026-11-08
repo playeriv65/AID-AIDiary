@@ -1377,7 +1377,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get shareSaveImage => 'Зберегти зображення';
 
   @override
-  String get shareSaved => 'Зображення збережено';
+  String get fileSaved => 'Файл збережено';
 
   @override
   String get deletedTitle => 'Нещодавно видалено';

@@ -1389,7 +1389,7 @@ class AppLocalizationsTa extends AppLocalizations {
   String get shareSaveImage => 'படத்தை சேமிக்கவும்';
 
   @override
-  String get shareSaved => 'படம் சேமிக்கப்பட்டது';
+  String get fileSaved => 'கோப்பு சேமிக்கப்பட்டது';
 
   @override
   String get deletedTitle => 'சமீபத்தில் நீக்கப்பட்டது';

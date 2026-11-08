@@ -395,7 +395,7 @@
     "locationRecent": "最近の場所",
     "shareImage": "画像を共有する",
     "shareSaveImage": "画像の保存",
-    "shareSaved": "画像を保存しました",
+    "fileSaved": "ファイルを保存しました",
     "deletedTitle": "最近削除されました",
     "deletedNone": "最近削除されたものはありません",
     "deletedHint": "削除されたエントリは {days} 日間ここに残り、その後消去されます。",

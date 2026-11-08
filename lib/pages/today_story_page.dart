@@ -9,17 +9,13 @@ import 'package:aid_diary/flashback_manager.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/models/coach_program.dart';
 import 'package:aid_diary/models/entry.dart';
-import 'package:aid_diary/models/flashback.dart';
 import 'package:aid_diary/providers/entries_provider.dart';
 import 'package:aid_diary/services/coach_service.dart';
 import 'package:aid_diary/time_manager.dart';
-import 'package:aid_diary/utils/entry_context_display.dart';
 import 'package:aid_diary/routing/entry_navigation.dart';
-import 'package:aid_diary/utils/entry_preview.dart';
 import 'package:aid_diary/widgets/coach_widgets.dart';
-import 'package:aid_diary/widgets/mood_icon.dart';
+import 'package:aid_diary/widgets/story_cards.dart';
 import 'package:aid_diary/widgets/story_player.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -41,6 +37,15 @@ class TodayStory {
         FlashbackManager.getFlashbacks(context, entries, listen: listen)
             .firstOrNull;
     final enrollment = CoachService.current(l10n);
+    final now = DiaryDay.today();
+    final locale = TimeManager.currentLocale(context);
+    // The last six months, this year against last year.
+    final months = [
+      for (var i = 5; i >= 0; i--) DateTime(now.year, now.month - i),
+    ];
+    int count(DateTime month) => entries
+        .where((e) => e.day.year == month.year && e.day.month == month.month)
+        .length;
     return [
       StoryGroup(
         id: today,
@@ -49,12 +54,30 @@ class TodayStory {
           (
             icon: Icons.insights_rounded,
             title: l10n.storyStatistics,
-            body: _Statistics(entries: entries),
+            body: StoryBarChart(labels: [
+              for (final month in months) DateFormat.MMM(locale).format(month),
+            ], series: [
+              (
+                name: l10n.storyLastYear,
+                values: [
+                  for (final month in months)
+                    count(DateTime(month.year - 1, month.month)),
+                ]
+              ),
+              (
+                name: l10n.storyThisYear,
+                values: [for (final month in months) count(month)]
+              ),
+            ]),
           ),
           (
             icon: Icons.mood_rounded,
             title: l10n.storyMoodChart,
-            body: _MoodChart(entries: entries),
+            // The last 30 days.
+            body: StoryMoodDays(days: [
+              for (var i = 29; i >= 0; i--)
+                DateTime(now.year, now.month, now.day - i),
+            ]),
           ),
         ],
       ),
@@ -67,7 +90,12 @@ class TodayStory {
             (
               icon: Icons.history_rounded,
               title: l10n.storyThrowback,
-              body: _Throwback(flashback: flashback),
+              body: StoryEntryCard(
+                  key: const ValueKey('story-throwback-entry'),
+                  entry: flashback.firstEntry,
+                  heading: flashback.title,
+                  open: (context) =>
+                      EntryNavigation.flashback(context, flashback, 0)),
             ),
           ],
         ),
@@ -282,195 +310,6 @@ class _AnswerSheetState extends State<_AnswerSheet> {
                 ),
               ]),
             ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-/// Entries per month for the last six months, this year against last year.
-class _Statistics extends StatelessWidget {
-  const _Statistics({required this.entries});
-  final List<Entry> entries;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    final cs = Theme.of(context).colorScheme;
-    final locale = TimeManager.currentLocale(context);
-    final now = DiaryDay.today();
-    final months = [
-      for (var i = 5; i >= 0; i--) DateTime(now.year, now.month - i),
-    ];
-    int count(DateTime month) => entries
-        .where((e) => e.day.year == month.year && e.day.month == month.month)
-        .length;
-    final thisYear = [for (final m in months) count(m)];
-    final lastYear = [
-      for (final m in months) count(DateTime(m.year - 1, m.month)),
-    ];
-    final maxY = [...thisYear, ...lastYear, 1]
-        .reduce((a, b) => a > b ? a : b)
-        .toDouble();
-
-    return Column(children: [
-      const Spacer(),
-      SizedBox(
-        height: 280,
-        child: BarChart(BarChartData(
-          maxY: maxY * 1.2,
-          gridData: const FlGridData(show: false),
-          borderData: FlBorderData(show: false),
-          titlesData: FlTitlesData(
-            leftTitles: const AxisTitles(),
-            rightTitles: const AxisTitles(),
-            topTitles: const AxisTitles(),
-            bottomTitles: AxisTitles(
-              sideTitles: SideTitles(
-                showTitles: true,
-                getTitlesWidget: (value, meta) => SideTitleWidget(
-                  meta: meta,
-                  child: Text(
-                      DateFormat.MMM(locale).format(months[value.toInt()])),
-                ),
-              ),
-            ),
-          ),
-          barGroups: [
-            for (var i = 0; i < months.length; i++)
-              BarChartGroupData(x: i, barRods: [
-                BarChartRodData(
-                    toY: lastYear[i].toDouble(),
-                    color: cs.outlineVariant,
-                    width: 10),
-                BarChartRodData(
-                    toY: thisYear[i].toDouble(), color: cs.primary, width: 10),
-              ]),
-          ],
-        )),
-      ),
-      const SizedBox(height: 16),
-      Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-        _Legend(color: cs.outlineVariant, label: l10n.storyLastYear),
-        const SizedBox(width: 24),
-        _Legend(color: cs.primary, label: l10n.storyThisYear),
-      ]),
-      const Spacer(),
-    ]);
-  }
-}
-
-class _Legend extends StatelessWidget {
-  const _Legend({required this.color, required this.label});
-  final Color color;
-  final String label;
-
-  @override
-  Widget build(BuildContext context) => Row(children: [
-        Container(width: 12, height: 12, color: color),
-        const SizedBox(width: 6),
-        Text(label),
-      ]);
-}
-
-/// The last 30 days, each tinted by its latest mood; tap a day to open it.
-class _MoodChart extends StatelessWidget {
-  const _MoodChart({required this.entries});
-  final List<Entry> entries;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    final cs = Theme.of(context).colorScheme;
-    final today = DiaryDay.today();
-    final days = [
-      for (var i = 29; i >= 0; i--)
-        DateTime(today.year, today.month, today.day - i),
-    ];
-    final provider = EntriesProvider.instance;
-    return Column(children: [
-      const Spacer(),
-      GridView.count(
-        crossAxisCount: 5,
-        shrinkWrap: true,
-        mainAxisSpacing: 6,
-        crossAxisSpacing: 6,
-        physics: const NeverScrollableScrollPhysics(),
-        children: [
-          for (final day in days)
-            Builder(builder: (context) {
-              final dayEntries = provider.getEntriesForDate(day);
-              final latest = dayEntries.firstOrNull;
-              return Material(
-                key: ValueKey('story-mood-${day.month}-${day.day}'),
-                color: latest == null
-                    ? cs.surfaceContainerHighest
-                    : moodColor(latest.mood, cs),
-                borderRadius: BorderRadius.circular(8),
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(8),
-                  onTap: latest == null
-                      ? null
-                      : () => EntryNavigation.view(context, latest),
-                  child: Center(
-                    child: latest != null &&
-                            MoodIcon.getMoodIcon(latest.mood).isNotEmpty
-                        ? MoodIcon(moodValue: latest.mood, size: 22)
-                        : Text(
-                            day.day == 1 || day == days.first
-                                ? '${DateFormat.MMM(TimeManager.currentLocale(context)).format(day)}\n${day.day}'
-                                : '${day.day}',
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.labelLarge),
-                  ),
-                ),
-              );
-            }),
-        ],
-      ),
-      const Spacer(),
-      Text(l10n.storyTapToOpen,
-          style: Theme.of(context)
-              .textTheme
-              .labelMedium
-              ?.copyWith(color: cs.onSurfaceVariant)),
-    ]);
-  }
-}
-
-class _Throwback extends StatelessWidget {
-  const _Throwback({required this.flashback});
-  final Flashback flashback;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final entry = flashback.firstEntry;
-    final preview = entryPreview(entry);
-    return Center(
-      child: Card.filled(
-        child: InkWell(
-          key: const ValueKey('story-throwback-entry'),
-          borderRadius: BorderRadius.circular(12),
-          onTap: () => EntryNavigation.flashback(context, flashback, 0),
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(flashback.title, style: theme.textTheme.titleLarge),
-                  Text(TimeManager.formatDateWithWeekday(entry.day, context),
-                      style: theme.textTheme.labelLarge),
-                  const SizedBox(height: 12),
-                  if (preview.title != null)
-                    Text(preview.title!, style: theme.textTheme.titleMedium),
-                  Text(preview.snippet,
-                      maxLines: 6,
-                      overflow: TextOverflow.ellipsis,
-                      style: theme.textTheme.bodyMedium),
-                ]),
           ),
         ),
       ),

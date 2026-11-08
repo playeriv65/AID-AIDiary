@@ -1375,7 +1375,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get shareSaveImage => 'Lagre bildet';
 
   @override
-  String get shareSaved => 'Bildet er lagret';
+  String get fileSaved => 'Filen er lagret';
 
   @override
   String get deletedTitle => 'Nylig slettet';

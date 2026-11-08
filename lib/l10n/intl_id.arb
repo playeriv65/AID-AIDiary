@@ -395,7 +395,7 @@
     "locationRecent": "Tempat terkini",
     "shareImage": "Bagikan gambar",
     "shareSaveImage": "Simpan gambar",
-    "shareSaved": "Gambar disimpan",
+    "fileSaved": "File disimpan",
     "deletedTitle": "Baru-baru ini dihapus",
     "deletedNone": "Tidak ada yang dihapus baru-baru ini",
     "deletedHint": "Entri yang dihapus tetap di sini selama {days} hari, lalu dihapus.",

@@ -4,16 +4,13 @@
 
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
-import 'package:aid_diary/models/entry.dart';
-import 'package:aid_diary/providers/entries_provider.dart';
 import 'package:aid_diary/services/diary_statistics.dart';
 import 'package:aid_diary/stats/period_review.dart';
 import 'package:aid_diary/time_manager.dart';
-import 'package:aid_diary/utils/entry_context_display.dart';
 import 'package:aid_diary/routing/entry_navigation.dart';
-import 'package:aid_diary/utils/entry_preview.dart';
 import 'package:aid_diary/widgets/local_image_loader.dart';
 import 'package:aid_diary/widgets/mood_icon.dart';
+import 'package:aid_diary/widgets/story_cards.dart';
 import 'package:aid_diary/widgets/story_player.dart';
 import 'package:aid_diary/widgets/year_pixels.dart';
 import 'package:intl/intl.dart';
@@ -65,7 +62,11 @@ class ReviewStoryPage extends StatelessWidget {
             icon: Icons.mood_rounded,
             title: l10n.storyMoodChart,
             body: week
-                ? _WeekMoods(review: review)
+                ? StoryMoodDays(days: [
+                    for (var i = 0; i < review.daysInPeriod; i++)
+                      DateTime(review.start.year, review.start.month,
+                          review.start.day + i),
+                  ])
                 : Center(
                     child: SingleChildScrollView(
                         child: YearInPixels(year: review.start.year))),
@@ -86,13 +87,22 @@ class ReviewStoryPage extends StatelessWidget {
             (
               icon: Icons.bar_chart_rounded,
               title: l10n.reviewByMonth,
-              body: _PerMonth(review: review),
+              body: StoryBarChart(labels: [
+                for (var month = 1; month <= 12; month++)
+                  DateFormat.MMM(locale)
+                      .format(DateTime(review.start.year, month)),
+              ], series: [
+                (name: l10n.reviewEntries, values: review.perMonth),
+              ]),
             ),
           if (highlight != null)
             (
               icon: Icons.star_rounded,
               title: l10n.reviewHighlight,
-              body: _Highlight(entry: highlight),
+              body: StoryEntryCard(
+                  key: const ValueKey('review-highlight'),
+                  entry: highlight,
+                  open: (context) => EntryNavigation.view(context, highlight)),
             ),
         ],
       ],
@@ -166,51 +176,6 @@ class _Overview extends StatelessWidget {
   }
 }
 
-/// The seven days of the week, each with its mood or an empty ring.
-class _WeekMoods extends StatelessWidget {
-  const _WeekMoods({required this.review});
-  final PeriodReview review;
-
-  @override
-  Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
-    final locale = TimeManager.currentLocale(context);
-    final provider = EntriesProvider.instance;
-    return Center(
-      child: Wrap(spacing: 8, runSpacing: 12, children: [
-        for (var i = 0; i < review.daysInPeriod; i++)
-          Builder(builder: (context) {
-            final day = DateTime(
-                review.start.year, review.start.month, review.start.day + i);
-            final latest = provider.getEntriesForDate(day).firstOrNull;
-            return Column(mainAxisSize: MainAxisSize.min, children: [
-              InkWell(
-                key: ValueKey('review-day-${day.day}'),
-                customBorder: const CircleBorder(),
-                onTap: latest == null
-                    ? null
-                    : () => EntryNavigation.view(context, latest),
-                child: CircleAvatar(
-                  radius: 20,
-                  backgroundColor: latest == null
-                      ? cs.surfaceContainerHighest
-                      : moodColor(latest.mood, cs),
-                  child: latest != null &&
-                          MoodIcon.getMoodIcon(latest.mood).isNotEmpty
-                      ? MoodIcon(moodValue: latest.mood, size: 20)
-                      : null,
-                ),
-              ),
-              const SizedBox(height: 4),
-              Text(DateFormat.E(locale).format(day),
-                  style: Theme.of(context).textTheme.labelSmall),
-            ]);
-          }),
-      ]),
-    );
-  }
-}
-
 class _Favorites extends StatelessWidget {
   const _Favorites({required this.review});
   final PeriodReview review;
@@ -271,90 +236,6 @@ class _Photos extends StatelessWidget {
               child: LocalImageLoader(imagePath: photo.imgPath, cacheSize: 400),
             ),
         ],
-      ),
-    );
-  }
-}
-
-class _PerMonth extends StatelessWidget {
-  const _PerMonth({required this.review});
-  final PeriodReview review;
-
-  @override
-  Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
-    final counts = review.perMonth;
-    final most = counts.reduce((a, b) => a > b ? a : b).clamp(1, 1 << 30);
-    return Center(
-      child: SizedBox(
-        height: 260,
-        child: Row(crossAxisAlignment: CrossAxisAlignment.end, children: [
-          for (var month = 0; month < 12; month++)
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 2),
-                child:
-                    Column(mainAxisAlignment: MainAxisAlignment.end, children: [
-                  if (counts[month] > 0)
-                    Text('${counts[month]}',
-                        style: Theme.of(context).textTheme.labelSmall),
-                  Container(
-                    height: 200 * counts[month] / most,
-                    decoration: BoxDecoration(
-                        color: cs.primary,
-                        borderRadius: BorderRadius.circular(4)),
-                  ),
-                  const SizedBox(height: 4),
-                  Text('${month + 1}',
-                      style: Theme.of(context).textTheme.labelSmall),
-                ]),
-              ),
-            ),
-        ]),
-      ),
-    );
-  }
-}
-
-class _Highlight extends StatelessWidget {
-  const _Highlight({required this.entry});
-  final Entry entry;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final preview = entryPreview(entry);
-    return Center(
-      child: Card.filled(
-        child: InkWell(
-          key: const ValueKey('review-highlight'),
-          borderRadius: BorderRadius.circular(12),
-          onTap: () => EntryNavigation.view(context, entry),
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(children: [
-                    Expanded(
-                      child: Text(
-                          TimeManager.formatDateWithWeekday(entry.day, context),
-                          style: theme.textTheme.labelLarge),
-                    ),
-                    if (MoodIcon.getMoodIcon(entry.mood).isNotEmpty)
-                      MoodIcon(moodValue: entry.mood, size: 28),
-                  ]),
-                  const SizedBox(height: 12),
-                  if (preview.title != null)
-                    Text(preview.title!, style: theme.textTheme.titleMedium),
-                  Text(preview.snippet,
-                      maxLines: 8,
-                      overflow: TextOverflow.ellipsis,
-                      style: theme.textTheme.bodyMedium),
-                ]),
-          ),
-        ),
       ),
     );
   }

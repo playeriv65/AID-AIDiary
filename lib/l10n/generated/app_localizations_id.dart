@@ -1366,7 +1366,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get shareSaveImage => 'Simpan gambar';
 
   @override
-  String get shareSaved => 'Gambar disimpan';
+  String get fileSaved => 'File disimpan';
 
   @override
   String get deletedTitle => 'Baru-baru ini dihapus';

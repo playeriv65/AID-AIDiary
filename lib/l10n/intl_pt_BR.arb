@@ -395,7 +395,7 @@
     "locationRecent": "Lugares recentes",
     "shareImage": "Compartilhar imagem",
     "shareSaveImage": "Salvar imagem",
-    "shareSaved": "Imagem salva",
+    "fileSaved": "Arquivo salvo",
     "deletedTitle": "Excluído recentemente",
     "deletedNone": "Nada excluído recentemente",
     "deletedHint": "As entradas excluídas permanecem aqui por {days} dias e depois são apagadas.",

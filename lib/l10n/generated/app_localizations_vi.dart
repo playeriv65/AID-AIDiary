@@ -1375,7 +1375,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get shareSaveImage => 'Lưu hình ảnh';
 
   @override
-  String get shareSaved => 'Đã lưu hình ảnh';
+  String get fileSaved => 'Đã lưu tệp';
 
   @override
   String get deletedTitle => 'Đã xóa gần đây';

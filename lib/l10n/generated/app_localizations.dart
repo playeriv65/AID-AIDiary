@@ -2538,11 +2538,11 @@ abstract class AppLocalizations {
   /// **'Save image'**
   String get shareSaveImage;
 
-  /// No description provided for @shareSaved.
+  /// No description provided for @fileSaved.
   ///
   /// In en, this message translates to:
-  /// **'Image saved'**
-  String get shareSaved;
+  /// **'File saved'**
+  String get fileSaved;
 
   /// No description provided for @deletedTitle.
   ///

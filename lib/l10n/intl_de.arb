@@ -395,7 +395,7 @@
     "locationRecent": "Aktuelle Orte",
     "shareImage": "Bild teilen",
     "shareSaveImage": "Bild speichern",
-    "shareSaved": "Bild gespeichert",
+    "fileSaved": "Datei gespeichert",
     "deletedTitle": "Kürzlich gelöscht",
     "deletedNone": "Kürzlich wurde nichts gelöscht",
     "deletedHint": "Gelöschte Einträge bleiben {days} Tage lang hier und werden dann gelöscht.",

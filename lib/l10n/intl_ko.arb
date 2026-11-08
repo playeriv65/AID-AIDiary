@@ -395,7 +395,7 @@
     "locationRecent": "최근 장소",
     "shareImage": "이미지 공유",
     "shareSaveImage": "이미지 저장",
-    "shareSaved": "이미지가 저장되었습니다",
+    "fileSaved": "파일이 저장되었습니다",
     "deletedTitle": "최근 삭제됨",
     "deletedNone": "최근에 삭제된 항목이 없습니다.",
     "deletedHint": "삭제된 항목은 {days}일 동안 여기에 남아 있다가 지워집니다.",

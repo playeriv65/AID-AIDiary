@@ -395,7 +395,7 @@
     "locationRecent": "مکان های اخیر",
     "shareImage": "تصویر را به اشتراک بگذارید",
     "shareSaveImage": "ذخیره تصویر",
-    "shareSaved": "تصویر ذخیره شد",
+    "fileSaved": "فایل ذخیره شد",
     "deletedTitle": "اخیراً حذف شده است",
     "deletedNone": "اخیراً چیزی حذف نشده است",
     "deletedHint": "ورودی های حذف شده برای روز {days} در اینجا می مانند، سپس پاک می شوند.",

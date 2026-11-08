@@ -9,9 +9,7 @@ import 'package:material_ui/material_ui.dart';
 
 /// The list scrolls beneath an opaque, stationary search surface.
 class PinnedSearchHeader extends StatelessWidget {
-  const PinnedSearchHeader({super.key, this.showSearch = true});
-
-  final bool showSearch;
+  const PinnedSearchHeader({super.key});
 
   /// Its height, the search card and the gap around it.
   static const double extent = 84;
@@ -19,15 +17,11 @@ class PinnedSearchHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) => SliverPersistentHeader(
         pinned: true,
-        delegate: _SearchHeaderDelegate(showSearch),
+        delegate: _SearchHeaderDelegate(),
       );
 }
 
 class _SearchHeaderDelegate extends SliverPersistentHeaderDelegate {
-  _SearchHeaderDelegate(this.showSearch);
-
-  final bool showSearch;
-
   @override
   double get minExtent => PinnedSearchHeader.extent;
   @override
@@ -38,22 +32,19 @@ class _SearchHeaderDelegate extends SliverPersistentHeaderDelegate {
           BuildContext context, double shrinkOffset, bool overlapsContent) =>
       ColoredBox(
         color: Theme.of(context).scaffoldBackgroundColor,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-          child: TopSearchCard(showSearch: showSearch),
+        child: const Padding(
+          padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
+          child: TopSearchCard(),
         ),
       );
 
   @override
-  bool shouldRebuild(_SearchHeaderDelegate oldDelegate) =>
-      showSearch != oldDelegate.showSearch;
+  bool shouldRebuild(_SearchHeaderDelegate oldDelegate) => false;
 }
 
 /// Floating calendar shortcut, search and menu.
 class TopSearchCard extends StatelessWidget {
-  const TopSearchCard({super.key, this.showSearch = true});
-
-  final bool showSearch;
+  const TopSearchCard({super.key});
 
   /// Unfolds the journal's calendar, from any tab; on the journal, where it
   /// is showing, the same button folds it.
@@ -87,15 +78,13 @@ class TopSearchCard extends StatelessWidget {
               onPressed: () => _calendar(context),
             ),
             const Spacer(),
-            if (showSearch) ...[
-              const VerticalDivider(indent: 16, endIndent: 16),
-              IconButton(
-                key: const ValueKey('journal-search'),
-                tooltip: l10n.searchLogsHint,
-                icon: const Icon(Icons.search_rounded),
-                onPressed: () => AppNavigation.search(Navigator.of(context)),
-              ),
-            ],
+            const VerticalDivider(indent: 16, endIndent: 16),
+            IconButton(
+              key: const ValueKey('journal-search'),
+              tooltip: l10n.searchLogsHint,
+              icon: const Icon(Icons.search_rounded),
+              onPressed: () => AppNavigation.search(Navigator.of(context)),
+            ),
             IconButton(
               key: const ValueKey('journal-menu'),
               tooltip: l10n.pageSettingsTitle,

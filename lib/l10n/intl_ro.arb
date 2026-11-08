@@ -395,7 +395,7 @@
     "locationRecent": "Locuri recente",
     "shareImage": "Distribuiți imaginea",
     "shareSaveImage": "Salvați imaginea",
-    "shareSaved": "Imaginea salvată",
+    "fileSaved": "Fișier salvat",
     "deletedTitle": "Șters recent",
     "deletedNone": "Nimic nu a fost șters recent",
     "deletedHint": "Intrările șterse rămân aici pentru zile {days}, apoi sunt șterse.",

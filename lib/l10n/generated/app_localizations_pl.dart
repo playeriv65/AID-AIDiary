@@ -1384,7 +1384,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get shareSaveImage => 'Zapisz obraz';
 
   @override
-  String get shareSaved => 'Obraz został zapisany';
+  String get fileSaved => 'Plik został zapisany';
 
   @override
   String get deletedTitle => 'Niedawno usunięte';

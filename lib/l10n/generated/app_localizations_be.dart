@@ -1403,7 +1403,7 @@ class AppLocalizationsBe extends AppLocalizations {
   String get shareSaveImage => 'Захаваць малюнак';
 
   @override
-  String get shareSaved => 'Відарыс захаваны';
+  String get fileSaved => 'Файл захаваны';
 
   @override
   String get deletedTitle => 'Нядаўна выдалены';

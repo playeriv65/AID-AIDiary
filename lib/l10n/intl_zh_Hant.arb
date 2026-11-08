@@ -388,7 +388,7 @@
     "locationRecent": "最近的地點",
     "shareImage": "分享圖片",
     "shareSaveImage": "儲存圖片",
-    "shareSaved": "圖片已儲存",
+    "fileSaved": "檔案已儲存",
     "deletedTitle": "最近刪除",
     "deletedNone": "沒有最近刪除的日記",
     "deletedHint": "刪除的日記會在這裡保留 {days} 天，之後徹底清除。",

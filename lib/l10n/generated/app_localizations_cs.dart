@@ -1360,7 +1360,7 @@ class AppLocalizationsCs extends AppLocalizations {
   String get shareSaveImage => 'Uložit obrázek';
 
   @override
-  String get shareSaved => 'Obrázek uložen';
+  String get fileSaved => 'Soubor uložen';
 
   @override
   String get deletedTitle => 'Nedávno smazáno';

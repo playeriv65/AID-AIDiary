@@ -1389,7 +1389,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get shareSaveImage => 'Сохранить изображение';
 
   @override
-  String get shareSaved => 'Изображение сохранено.';
+  String get fileSaved => 'Файл сохранён';
 
   @override
   String get deletedTitle => 'Недавно удалено';

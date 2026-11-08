@@ -1346,7 +1346,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get shareSaveImage => '이미지 저장';
 
   @override
-  String get shareSaved => '이미지가 저장되었습니다';
+  String get fileSaved => '파일이 저장되었습니다';
 
   @override
   String get deletedTitle => '최근 삭제됨';

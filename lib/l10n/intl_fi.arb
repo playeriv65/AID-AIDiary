@@ -395,7 +395,7 @@
     "locationRecent": "Viimeaikaiset paikat",
     "shareImage": "Jaa kuva",
     "shareSaveImage": "Tallenna kuva",
-    "shareSaved": "Kuva tallennettu",
+    "fileSaved": "Tiedosto tallennettu",
     "deletedTitle": "Äskettäin poistettu",
     "deletedNone": "Mitään ei ole poistettu äskettäin",
     "deletedHint": "Poistetut merkinnät pysyvät täällä {days} päivää, minkä jälkeen ne poistetaan.",

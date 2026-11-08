@@ -1368,7 +1368,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get shareSaveImage => 'שמור תמונה';
 
   @override
-  String get shareSaved => 'התמונה נשמרה';
+  String get fileSaved => 'הקובץ נשמר';
 
   @override
   String get deletedTitle => 'נמחק לאחרונה';

@@ -3,8 +3,8 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
-import 'package:aid_diary/routing/destinations.dart';
 import 'package:aid_diary/widgets/list_detail_layout.dart';
+import 'package:aid_diary/widgets/settings_category.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// Help: frequently asked questions, the privacy note, then
@@ -29,12 +29,11 @@ class HelpPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text(l10n.settingsHelpTitle)),
       body: ListView(padding: const EdgeInsets.only(bottom: 24), children: [
-        ListTile(
+        SettingsCategory(
           key: const ValueKey('help-feedback'),
-          leading: const Icon(Icons.feedback_outlined),
-          title: Text(l10n.feedbackTitle),
-          trailing: const Icon(Icons.chevron_right_rounded),
-          onTap: () => openPlace(context, 'settings/feedback'),
+          icon: Icons.feedback_outlined,
+          title: l10n.feedbackTitle,
+          destination: 'settings/feedback',
         ),
         header(l10n.helpFaq),
         for (final (index, (question, answer)) in faq.indexed)
@@ -52,12 +51,11 @@ class HelpPage extends StatelessWidget {
           child: Text(l10n.helpPrivacyText, style: theme.textTheme.bodyMedium),
         ),
         const Divider(),
-        ListTile(
+        SettingsCategory(
           key: const ValueKey('help-about'),
-          leading: const Icon(Icons.info_outline_rounded),
-          title: Text(l10n.settingsAboutTitle),
-          trailing: const Icon(Icons.chevron_right_rounded),
-          onTap: () => openPlace(context, 'settings/about'),
+          icon: Icons.info_outline_rounded,
+          title: l10n.settingsAboutTitle,
+          destination: 'settings/about',
         ),
       ]),
     );

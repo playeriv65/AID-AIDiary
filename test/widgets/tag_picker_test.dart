@@ -160,4 +160,13 @@ void main() {
     ]);
     expect(tester.getRect(recent).top, greaterThan(search.bottom));
   });
+
+  testWidgets('picking one tag, as statistics does, can manage tags too',
+      (tester) async {
+    DiaryAppHarness.size(tester, const Size(390, 844));
+    await tester.pumpWidget(
+        harness.app(const TagPickerDialog(mode: TagPickerMode.selectSingle)));
+    await tester.pumpAndSettle();
+    expect(find.widgetWithText(TextButton, '管理标签'), findsOneWidget);
+  });
 }

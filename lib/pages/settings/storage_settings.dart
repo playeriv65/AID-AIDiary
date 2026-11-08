@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-import 'dart:io';
 import 'package:aid_diary/widgets/confirm_dialog.dart';
 import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/actions/entry_actions.dart' show eraseAllPhrase;
@@ -11,16 +10,15 @@ import 'package:aid_diary/widgets/progress_dialog.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/database/app_database.dart';
 import 'package:aid_diary/database/image_storage.dart';
+import 'package:aid_diary/services/media_permissions.dart';
 import 'package:aid_diary/storage/storage_picker.dart';
 import 'package:aid_diary/utils/operation_outcome.dart';
 import 'package:aid_diary/widgets/cloud_traffic_notice.dart'
     show formatCloudTrafficBytes;
 import 'package:aid_diary/widgets/settings_toggle.dart';
 import 'package:aid_diary/widgets/settings_icon_action.dart';
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
 class StorageSettings extends StatefulWidget {
@@ -34,15 +32,6 @@ class _StorageSettingsState extends State<StorageSettings> {
   @override
   void initState() {
     super.initState();
-  }
-
-  /// Storage access for picking a folder, which Android before 13 asks
-  /// for; newer versions grant it through the folder picker.
-  Future<bool> _requestStoragePermission() async {
-    final androidInfo = await DeviceInfoPlugin().androidInfo;
-    if (androidInfo.version.sdkInt >= 33) return true;
-    final status = await Permission.storage.status;
-    return status.isGranted || (await Permission.storage.request()).isGranted;
   }
 
   Future<void> _showChangeLogFolderWarning() async {
@@ -166,10 +155,7 @@ class _StorageSettingsState extends State<StorageSettings> {
                     icon: Icon(Icons.folder_rounded),
                     secondaryIcon: Icon(Icons.refresh_rounded),
                     onPressed: () async {
-                      if (Platform.isAndroid &&
-                          !await _requestStoragePermission()) {
-                        return;
-                      }
+                      if (!await requestFolderAccess()) return;
                       await _showChangeLogFolderWarning();
                     },
                     onSecondaryPressed: () => _resetFolder(
@@ -195,10 +181,7 @@ class _StorageSettingsState extends State<StorageSettings> {
                     icon: Icon(Icons.folder_rounded),
                     secondaryIcon: Icon(Icons.refresh_rounded),
                     onPressed: () async {
-                      if (Platform.isAndroid &&
-                          !await _requestStoragePermission()) {
-                        return;
-                      }
+                      if (!await requestFolderAccess()) return;
                       await _attemptImageFolderChange();
                     },
                     onSecondaryPressed: () => _resetFolder(

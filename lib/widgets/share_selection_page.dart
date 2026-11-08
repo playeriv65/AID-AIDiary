@@ -9,6 +9,7 @@ import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/utils/templates_tags_transfer.dart';
 import 'package:aid_diary/widgets/list_detail_layout.dart';
 import 'package:aid_diary/widgets/progress_dialog.dart';
+import 'package:aid_diary/widgets/save_to_file.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// Imports a file of tags and templates that [ShareSelectionPage] saved.
@@ -55,16 +56,8 @@ class _ShareSelectionPageState extends State<ShareSelectionPage> {
     return 'aid_diary_${widget.fileKind}_$timestamp.json';
   }
 
-  Future<void> _save() async {
-    final bytes = widget.export(_selected);
-    final fileName = _fileName();
-    await runOperation(
-        context,
-        (update) =>
-            TemplatesTagsTransfer.saveBytesToFile(bytes, fileName, update),
-        failureDescription:
-            AppLocalizations.of(context)!.exportErrorDescription);
-  }
+  Future<void> _save() => saveToFile(context, widget.export(_selected),
+      fileName: _fileName(), mimeType: 'application/json');
 
   Future<void> _share() =>
       TemplatesTagsTransfer.shareBytes(widget.export(_selected), _fileName());

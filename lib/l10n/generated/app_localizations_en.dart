@@ -1363,7 +1363,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get shareSaveImage => 'Save image';
 
   @override
-  String get shareSaved => 'Image saved';
+  String get fileSaved => 'File saved';
 
   @override
   String get deletedTitle => 'Recently deleted';

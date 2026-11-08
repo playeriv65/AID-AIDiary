@@ -1364,7 +1364,7 @@ class AppLocalizationsDa extends AppLocalizations {
   String get shareSaveImage => 'Gem billede';
 
   @override
-  String get shareSaved => 'Billedet er gemt';
+  String get fileSaved => 'Filen er gemt';
 
   @override
   String get deletedTitle => 'For nylig slettet';
