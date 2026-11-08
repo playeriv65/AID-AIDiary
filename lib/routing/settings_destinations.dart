@@ -3,7 +3,6 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'package:aid_diary/device_info_service.dart';
-import 'package:aid_diary/actions/app_action.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/pages/passages_page.dart';
 import 'package:aid_diary/pages/recently_deleted_page.dart';
@@ -64,19 +63,10 @@ final List<Destination> settingsDestinations = [
       (_) => const SyncCopySettings()),
   pageDestination('settings/sync/network', 'Network paths and media receipts',
       (_) => const SyncNetworkSettings()),
-  Destination(
+  pageDestination(
       'settings/sync/nearby',
       'Offline device pairing and diary migration',
-      (context, args) => pushPlace(
-          context,
-          'settings/sync/nearby',
-          (_) => NearbyMigrationSettings(
-              receive: args['receive'] as bool? ?? false)),
-      params: const [
-        ActionParam('receive', ParamType.boolean,
-            'Open directly as a new receiving device',
-            required: false)
-      ]),
+      (_) => const NearbyMigrationSettings()),
   pageDestination(
       'settings/sync/devices',
       'Authorize, revoke and rotate device signing keys',

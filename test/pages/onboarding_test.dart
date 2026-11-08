@@ -8,6 +8,7 @@ import 'package:aid_diary/pages/onboarding_page.dart';
 import 'package:aid_diary/pages/tutorial_page.dart';
 import 'package:aid_diary/pages/settings/nearby_migration_settings.dart';
 import 'package:aid_diary/pages/settings/help_page.dart';
+import 'package:aid_diary/pages/settings/sync_settings.dart';
 import 'package:aid_diary/pages/settings_page.dart';
 import 'package:aid_diary/sync/nearby_service.dart';
 import 'package:easy_debounce/easy_debounce.dart';
@@ -64,23 +65,45 @@ void main() {
     expect(ConfigProvider.instance.get(Settings.onboardingDone), isFalse);
   });
 
+  void expectNearbyChoices() {
+    expect(find.byType(NearbyMigrationSettings), findsOneWidget);
+    expect(find.byKey(const ValueKey('nearby-send')), findsOneWidget);
+    expect(find.byKey(const ValueKey('nearby-receive')), findsOneWidget);
+    expect(find.byKey(const ValueKey('nearby-invitation')), findsNothing);
+  }
+
   testWidgets(
-      'connection opens receiving mode and cancellation leaves setup unfinished',
-      (tester) async {
+      'connection offers both nearby choices and cancellation leaves setup '
+      'unfinished', (tester) async {
+    DiaryAppHarness.size(tester, const Size(800, 1000));
     await tester.pumpWidget(harness.app(firstRun));
     await tester.tap(find.byKey(const ValueKey('onboard-nearby-receive')));
     await tester.pumpAndSettle();
+    expectNearbyChoices();
+    await tester.tap(find.byKey(const ValueKey('nearby-receive')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const ValueKey('nearby-invitation')), findsOneWidget);
     expect(
-        tester
-            .widget<NearbyMigrationSettings>(
-                find.byType(NearbyMigrationSettings))
-            .receive,
-        isTrue);
+        find.descendant(
+            of: find.byKey(const ValueKey('nearby-accept')),
+            matching: find.text('连接')),
+        findsOneWidget);
     expect(EntryStore.instance.entries, isEmpty);
     await tester.tap(find.byType(BackButton));
     await tester.pumpAndSettle();
     expect(find.byKey(const ValueKey('onboard-new-diary')), findsOneWidget);
     expect(ConfigProvider.instance.get(Settings.onboardingDone), isFalse);
+    await NearbyService.instance.cancel();
+  });
+
+  testWidgets('sync settings opens the same nearby choices', (tester) async {
+    DiaryAppHarness.size(tester, const Size(800, 1000));
+    await tester.pumpWidget(harness.app(const SyncSettings()));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const ValueKey('nearby-migration-settings')));
+    await tester.pumpAndSettle();
+    expectNearbyChoices();
+    await tester.pumpWidget(const SizedBox.shrink());
     await NearbyService.instance.cancel();
   });
 

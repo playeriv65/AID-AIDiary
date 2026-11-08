@@ -16,8 +16,7 @@ import 'package:qr_flutter/qr_flutter.dart';
 /// User-assisted Wi-Fi/hotspot setup works across platforms without promising
 /// an unattended Wi-Fi Direct capability that the platform does not provide.
 class NearbyMigrationSettings extends StatefulWidget {
-  const NearbyMigrationSettings({super.key, this.receive = false});
-  final bool receive;
+  const NearbyMigrationSettings({super.key});
   @override
   State<NearbyMigrationSettings> createState() =>
       _NearbyMigrationSettingsState();
@@ -27,11 +26,6 @@ class _NearbyMigrationSettingsState extends State<NearbyMigrationSettings> {
   final _service = NearbyService.instance;
   final _invitation = TextEditingController();
   bool _receiving = false;
-  @override
-  void initState() {
-    super.initState();
-    _receiving = widget.receive;
-  }
 
   @override
   void dispose() {
@@ -104,10 +98,9 @@ class _NearbyMigrationSettingsState extends State<NearbyMigrationSettings> {
                                     ]),
                                   ]),
                             const SizedBox(height: 24),
-                            if (!widget.receive &&
-                                (state == NearbyState.idle ||
-                                    state == NearbyState.failed ||
-                                    state == NearbyState.complete)) ...[
+                            if (state == NearbyState.idle ||
+                                state == NearbyState.failed ||
+                                state == NearbyState.complete) ...[
                               FilledButton.icon(
                                   key: const ValueKey('nearby-send'),
                                   onPressed: busy
@@ -144,9 +137,10 @@ class _NearbyMigrationSettingsState extends State<NearbyMigrationSettings> {
                                   enableSuggestions: false),
                               const SizedBox(height: 8),
                               FilledButton(
+                                  key: const ValueKey('nearby-accept'),
                                   onPressed: () => _run('sync.nearby_accept',
                                       {'invitation': _invitation.text.trim()}),
-                                  child: Text(l10n.nearbyReceive)),
+                                  child: Text(l10n.syncConnect)),
                             ],
                             if (_service.invitation case final invitation?) ...[
                               const SizedBox(height: 24),

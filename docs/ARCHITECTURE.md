@@ -643,7 +643,9 @@ First-run setup is an example of these boundaries: `OnboardingPage` owns only
 the choice and navigation state; `TutorialPage` is reusable read-only content,
 also registered as `settings/tutorial` for GUI/CLI navigation. The existing
 `app.finish_onboarding` action persists completion, while nearby authorization
-continues through its own service/action flow. A canceled connection returns
+continues through its own service/action flow: the choice opens the same
+`settings/sync/nearby` page as Sync settings, and onboarding finishes when
+`NearbyService` reports completion. A canceled connection returns
 to the choice, and a completed one opens the received diary directly.
 
 1. Put new data in a model (`models/`, immutable, `copy`), its column in the

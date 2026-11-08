@@ -51,7 +51,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
     if (_busy) return;
     setState(() => _receiving = true);
     try {
-      await openPlace(context, 'settings/sync/nearby', {'receive': true});
+      await openPlace(context, 'settings/sync/nearby');
       if (mounted && NearbyService.instance.state == NearbyState.complete) {
         await _finish();
       }
