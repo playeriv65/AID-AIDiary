@@ -4,7 +4,7 @@
 
 一款用 Flutter 写的私人日记应用，支持 Windows、Android 和 Linux。
 
-在 [nightly 预发布版本](https://github.com/playeriv65/AID-AIDiary/releases/tag/nightly)下载 Android、Windows 和 Linux 安装包。Android 包使用正式密钥签名，可以更新由同一密钥签名的安装。见[更新说明](../UPDATES.md)。
+在 [nightly 预发布版本](https://github.com/playeriv65/AID-AIDiary/releases/tag/nightly)下载 Android、Windows 和 Linux 安装包。Android 包使用正式密钥签名，可以更新由同一密钥签名的安装。Windows 请运行 `aid-diary-windows-setup.exe`：它为当前账户安装，不需要管理员权限，会把 AID Diary 加入开始菜单和“设置 > 应用”，并原地更新应用；ZIP 是便携版，不会自动更新。见[更新说明](../UPDATES.md)。
 
 ## 界面
 

@@ -7,7 +7,11 @@ A private diary app for Windows, Android and Linux, built with Flutter.
 Download Android APKs and Windows and Linux packages from the
 [nightly prerelease](https://github.com/playeriv65/AID-AIDiary/releases/tag/nightly).
 Android packages use the release key and can update installations signed
-with the same key. See [Updates](docs/UPDATES.md).
+with the same key. On Windows, run `aid-diary-windows-setup.exe`: it
+installs for your account without an administrator prompt, adds AID Diary
+to the Start menu and Settings > Apps, and updates the app in place; the
+ZIP is a portable copy that does not update itself. See
+[Updates](docs/UPDATES.md).
 
 ## Screens
 

@@ -4,7 +4,7 @@
 
 Flutter로 만든 Windows·Android·Linux용 개인 일기 앱입니다.
 
-[nightly 사전 릴리스](https://github.com/playeriv65/AID-AIDiary/releases/tag/nightly)에서 Android, Windows, Linux 패키지를 다운로드할 수 있습니다. Android 패키지는 릴리스 키로 서명되며 같은 키로 서명된 앱을 업데이트할 수 있습니다. [업데이트 안내](../UPDATES.md)를 참고하세요.
+[nightly 사전 릴리스](https://github.com/playeriv65/AID-AIDiary/releases/tag/nightly)에서 Android, Windows, Linux 패키지를 다운로드할 수 있습니다. Android 패키지는 릴리스 키로 서명되며 같은 키로 서명된 앱을 업데이트할 수 있습니다. Windows에서는 `aid-diary-windows-setup.exe`를 실행하세요. 관리자 권한 없이 현재 계정에 설치하고, 시작 메뉴와 "설정 > 앱"에 AID Diary를 추가하며, 앱을 제자리에서 업데이트합니다. ZIP은 자동으로 업데이트되지 않는 포터블 버전입니다. [업데이트 안내](../UPDATES.md)를 참고하세요.
 
 ## 화면
 

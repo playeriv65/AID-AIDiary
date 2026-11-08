@@ -11,7 +11,7 @@ the current evidence and what would close it.
 
 - Verify the first build-specific Nightly and roll out the updated mirror.
   Confirm both sources serve the same manifest and packages before extending
-  automatic updates to Windows and Linux. See [Updates](docs/UPDATES.md).
+  automatic updates to Linux. See [Updates](docs/UPDATES.md).
 - Verify an in-place schema upgrade and background database startup on an
   isolated Android development install. Use the restore checks in
   [Testing](docs/TESTING.md#critical-journeys-and-release-evidence).
@@ -42,8 +42,9 @@ Probably skip (they need cloud services or add little): Google Fit, rate dialog,
   comparison sheets were not kept in the repository.
 
 ## Build automation (owner request 2026-10-23)
-- Windows and Linux self-updates. Today users download and replace the
-  archive manually. Android updates and the server mirror are in use.
+- Linux self-updates. Today Linux users download and replace the archive
+  manually. Android updates, Windows updates through the installer and the
+  server mirror are in use.
   See [Updates](docs/UPDATES.md) and [CI](docs/TESTING.md#continuous-integration).
 - Linux (owner request 2026-10-24): target restored and packaged nightly.
   Open: video and voice-note playback (`video_player` has no Linux

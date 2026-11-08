@@ -17,7 +17,7 @@ RETENTION_SECONDS = 7 * 24 * 60 * 60
 FILES = {
     "android": "aid-diary.apk",
     "android-dev": "aid-diary-dev.apk",
-    "windows": "aid-diary-windows.zip",
+    "windows": "aid-diary-windows-setup.exe",
     "linux": "aid-diary-linux.tar.gz",
 }
 PACKAGE = re.compile(r"aid-build-([0-9]+-[0-9]+)-([a-z.-]+)")

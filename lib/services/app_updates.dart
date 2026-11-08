@@ -2,9 +2,10 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'dart:ui' show Locale;
+import 'dart:ui' show AppExitType, Locale;
 
 import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/config_provider.dart';
@@ -173,10 +174,11 @@ class UpdateException implements Exception {
 }
 
 /// Finds, fetches and installs newer builds from the release manifest
-/// (docs/UPDATES.md). Only Android can install one today.
+/// (docs/UPDATES.md): on Android and in the installed Windows app.
 class AppUpdates {
-  AppUpdates({http.Client? client, this.channel = _channel})
-      : _client = client ?? http.Client();
+  AppUpdates({http.Client? client, this.channel = _channel, String? os})
+      : _client = client ?? http.Client(),
+        os = os ?? Platform.operatingSystem;
 
   static final instance = AppUpdates();
   static const _channel = MethodChannel('aid.updates');
@@ -185,16 +187,27 @@ class AppUpdates {
   final http.Client _client;
   final MethodChannel channel;
 
-  /// Whether this build can install an update itself: Android, but not the
-  /// F-Droid build, which F-Droid's client updates.
-  Future<bool> enabled() async =>
-      Platform.isAndroid &&
-      (await channel.invokeMethod<bool>('enabled') ?? false);
+  /// [Platform.operatingSystem], unless a test says otherwise.
+  final String os;
 
-  /// The manifest's name for this app's package: the release app or the
-  /// development one.
-  static String packageKey(String packageName) =>
-      packageName.endsWith('.beta') ? 'android-dev' : 'android';
+  /// Whether this build can install an update itself: Android, but not the
+  /// F-Droid build, which F-Droid's client updates; Windows when the
+  /// installer put the app there, not a copy from the ZIP or a build folder.
+  Future<bool> enabled() async => switch (os) {
+        'android' => await channel.invokeMethod<bool>('enabled') ?? false,
+        'windows' => File(p.join(p.dirname(Platform.resolvedExecutable),
+                AppConfig.instance.updateWindowsUninstaller))
+            .existsSync(),
+        _ => false,
+      };
+
+  /// The manifest's name for this app's package: the Windows installer, or
+  /// on Android the release app or the development one.
+  String packageKey(String packageName) => os == 'windows'
+      ? 'windows'
+      : packageName.endsWith('.beta')
+          ? 'android-dev'
+          : 'android';
 
   /// The update for this app, or null when it is the newest. Asks each
   /// manifest address in turn until one returns a valid manifest.
@@ -264,7 +277,8 @@ class AppUpdates {
         Directory(p.join((await getTemporaryDirectory()).path, 'updates'));
     if (await folder.exists()) await folder.delete(recursive: true);
     await folder.create(recursive: true);
-    final file = File(p.join(folder.path, 'update-${update.build}.apk'));
+    final file = File(p.join(folder.path,
+        'update-${update.build}${p.url.extension(update.url.path)}'));
     final response = await _client
         .send(http.Request('GET', update.url))
         .timeout(AppConfig.instance.updateTimeout);
@@ -300,18 +314,23 @@ class AppUpdates {
   }
 
   /// Whether this device can ever install updates without asking: Android
-  /// 12 or later, and not HyperOS or MIUI, which always ask.
+  /// 12 or later, and not HyperOS or MIUI, which always ask. Windows asks
+  /// each time: a desktop app is not paused when the user leaves it.
   Future<bool> silentSupported() async =>
-      await channel.invokeMethod<bool>('silentSupported') ?? false;
+      os == 'android' &&
+      (await channel.invokeMethod<bool>('silentSupported') ?? false);
 
   /// Whether Android lets this app replace itself without asking: it
   /// installed itself before and may install apps.
   Future<bool> canInstallSilently() async =>
-      await channel.invokeMethod<bool>('canInstallSilently') ?? false;
+      os == 'android' &&
+      (await channel.invokeMethod<bool>('canInstallSilently') ?? false);
 
   /// Hands [file] of [update] to the system installer, after the native side
-  /// has checked it is this app, signed with this app's key, and newer.
+  /// has checked it is this app, signed with this app's key, and newer. On
+  /// Windows, runs the installer instead.
   Future<UpdateInstall> install(AppUpdate update, File file) async {
+    if (os == 'windows') return _runSetup(update, file);
     final String? result;
     try {
       result =
@@ -325,6 +344,27 @@ class AppUpdates {
           .set(Settings.installingUpdate, jsonEncode(update.toJson()));
     }
     return outcome;
+  }
+
+  /// Starts the downloaded Windows installer silently and closes the app;
+  /// the installer replaces it in place and opens it again
+  /// (windows/installer/aid_diary.iss).
+  Future<UpdateInstall> _runSetup(AppUpdate update, File file) async {
+    final config = AppConfig.instance;
+    final settings = ConfigProvider.instance;
+    await settings.set(Settings.installingUpdate, jsonEncode(update.toJson()));
+    try {
+      await Process.start(file.path, config.updateWindowsSetupArguments,
+          mode: ProcessStartMode.detached);
+    } on ProcessException catch (error) {
+      await settings.set(Settings.installingUpdate, '');
+      throw UpdateException('install_failed', error.message);
+    }
+    // Restart Manager closes the app too if it is still open when the
+    // installer replaces its files.
+    Timer(config.updateWindowsExitDelay,
+        () => ServicesBinding.instance.exitApplication(AppExitType.required));
+    return UpdateInstall.started;
   }
 
   /// The update installed since the last run, once: what it said, for the

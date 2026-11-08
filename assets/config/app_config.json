@@ -52,7 +52,12 @@
     ],
     "checkHours": 6,
     "timeoutSeconds": 20,
-    "downloadTimeoutMinutes": 15
+    "downloadTimeoutMinutes": 15,
+    "windowsSetup": {
+      "uninstaller": "unins000.exe",
+      "arguments": ["/VERYSILENT", "/SUPPRESSMSGBOXES", "/NORESTART", "/LOG", "/RELAUNCH=1"],
+      "exitDelayMs": 1000
+    }
   },
   "diaryDay": {
     "startHourChoices": [0, 1, 2, 3, 4, 5, 6],

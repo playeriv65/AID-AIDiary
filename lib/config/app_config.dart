@@ -222,6 +222,24 @@ class AppConfig {
   Duration get updateDownloadTimeout =>
       Duration(minutes: _section('updates')['downloadTimeoutMinutes'] as int);
 
+  Map<String, dynamic> get _windowsSetup =>
+      _section('updates')['windowsSetup'] as Map<String, dynamic>;
+
+  /// The Windows installer's uninstaller, which lies beside an installed
+  /// app: a copy without it (the portable ZIP, a build folder) does not
+  /// update itself.
+  String get updateWindowsUninstaller => _windowsSetup['uninstaller'] as String;
+
+  /// How the app runs a downloaded Windows installer: silently, opening the
+  /// app again afterwards (windows/installer/aid_diary.iss).
+  List<String> get updateWindowsSetupArguments =>
+      (_windowsSetup['arguments'] as List).cast<String>();
+
+  /// How long the app stays open after starting the installer, so a command
+  /// line waiting for the result gets it.
+  Duration get updateWindowsExitDelay =>
+      Duration(milliseconds: _windowsSetup['exitDelayMs'] as int);
+
   /// Hours before which a new entry may count for the day before; 0 never.
   List<int> get dayStartHourChoices =>
       (_section('diaryDay')['startHourChoices'] as List).cast<int>();

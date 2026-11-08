@@ -58,5 +58,11 @@
     "en": "The Windows package now starts on computers without the Visual C++ runtime installed.",
     "zh": "Windows 安装包现在可以在没有安装 Visual C++ 运行库的电脑上启动。",
     "zh_Hant": "Windows 安裝套件現在可以在沒有安裝 Visual C++ 執行階段的電腦上啟動。"
+  },
+  {
+    "id": "2026-11-08-windows-installer",
+    "en": "Windows has an installer: AID Diary appears in the Start menu and Windows Search, uninstalls from Settings > Apps, and updates itself like on Android.",
+    "zh": "Windows 版现在有安装程序：AID Diary 会出现在开始菜单和 Windows 搜索中，可以在“设置 > 应用”中卸载，并像 Android 版一样自动更新。",
+    "zh_Hant": "Windows 版現在有安裝程式：AID Diary 會出現在開始功能表和 Windows 搜尋中，可以在「設定 > 應用程式」中解除安裝，並像 Android 版一樣自動更新。"
   }
 ]

@@ -287,9 +287,10 @@ Two workflows run on GitHub's runners:
 
 - Checks: `ci.yml` itself, with the same format, lint and offline test gates
   as a code push.
-- Windows: the `aid.exe` executable and a Windows release bundle. The
-  bundle carries the Visual C++ runtime DLLs it imports (app-local), so it
-  starts without the VC++ Redistributable.
+- Windows: the `aid.exe` executable, and a Windows release bundle as a
+  per-user installer and a portable ZIP ([Updates](UPDATES.md#windows-installer)).
+  The bundle carries the Visual C++ runtime DLLs it imports (app-local), so
+  it starts without the VC++ Redistributable.
 - Android: release APKs of the everyday and development flavors.
 - Linux: a release bundle (GTK) and the `aid` executable.
 
@@ -303,7 +304,7 @@ Android job being the longest: Dart's release compile and R8 run whole for
 each of the two flavours.
 
 When all pass, the rolling prerelease `nightly` gets build-specific APKs,
-the Windows ZIP and `aid.exe`, the Linux tarball and `aid`. Nightly
+the Windows installer, ZIP and `aid.exe`, the Linux tarball and `aid`. Nightly
 verifies the assets before it promotes `latest.json` and edits the release
 in place. The offline publication checks exercise upload failures, mirror
 verification, an older reader and rollback.

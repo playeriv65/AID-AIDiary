@@ -14,7 +14,7 @@ from threading import Thread
 from urllib.request import urlopen
 
 from publish_nightly import current_manifest, publish
-from release_manifest import CLI_FILES, FILES, fingerprint
+from release_manifest import DOWNLOADS, FILES, fingerprint
 
 ROOT = Path(__file__).resolve().parents[1]
 SPEC = importlib.util.spec_from_file_location(
@@ -106,7 +106,7 @@ class PublicationTest(unittest.TestCase):
         ).strip()
 
     def publish(self, build, publication):
-        for name in (*FILES.values(), *CLI_FILES):
+        for name in (*FILES.values(), *DOWNLOADS):
             (self.dist / name).write_bytes(f"{build}-{name}".encode())
         stage = self.root / publication
         stage.mkdir()

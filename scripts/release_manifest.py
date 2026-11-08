@@ -12,10 +12,12 @@ from pathlib import Path
 FILES = {
     "android": "aid-diary.apk",
     "android-dev": "aid-diary-dev.apk",
-    "windows": "aid-diary-windows.zip",
+    "windows": "aid-diary-windows-setup.exe",
     "linux": "aid-diary-linux.tar.gz",
 }
-CLI_FILES = ("aid-windows.exe", "aid-linux")
+# Published for manual download, outside the manifest: the portable Windows
+# ZIP and the command lines.
+DOWNLOADS = ("aid-diary-windows.zip", "aid-windows.exe", "aid-linux")
 # Without a release to compare with, the newest entries of CHANGES.json.
 LATEST_CHANGES = 5
 
@@ -61,7 +63,7 @@ def prepare(dist, output, build, commit, previous, publication):
     pubspec = Path("pubspec.yaml").read_text(encoding="utf-8")
     version = re.search(r"^version:\s*([^+\s]+)", pubspec, re.M).group(1)
     packages = {}
-    for name in (*FILES.values(), *CLI_FILES):
+    for name in (*FILES.values(), *DOWNLOADS):
         asset = f"aid-build-{publication}-{name}"
         path = output / asset
         shutil.copyfile(dist / name, path)

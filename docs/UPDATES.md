@@ -1,7 +1,24 @@
 # App updates
 
-Android builds outside F-Droid update themselves from the nightly release.
-Windows and Linux do not yet (see TODO.md).
+Android builds outside F-Droid and the Windows app that the installer put
+in place update themselves from the nightly release. Linux does not yet
+(see TODO.md).
+
+## Windows installer
+
+The nightly builds `aid-diary-windows-setup.exe` with Inno Setup from
+`windows/installer/aid_diary.iss`; `installer.ini` beside it holds the
+installer's AppId, which must never change. It installs for the current
+user without an administrator prompt, in
+`%LOCALAPPDATA%\Programs\AID Diary`, with the Visual C++ runtime DLLs the
+app imports and the `aid` command line. It adds "AID Diary" to the Start menu (and so to Windows
+Search), an uninstaller in Settings > Apps, and optionally a desktop
+shortcut and the install folder on the user's PATH. A newer installer
+replaces the installed app in place and keeps those choices. Uninstalling
+removes the installed files only; the diary in `%APPDATA%` stays.
+
+The ZIP stays a portable download. A copy run from it, or from a build
+folder, has no uninstaller beside it and does not update itself.
 
 ## Release manifest
 
@@ -20,7 +37,7 @@ The names contain the Actions run ID and attempt.
   "files": {
     "android": {"name": "aid-build-1234-1-aid-diary.apk", "size": 123, "sha256": "…"},
     "android-dev": {"name": "aid-build-1234-1-aid-diary-dev.apk", "size": 123, "sha256": "…"},
-    "windows": {"name": "aid-build-1234-1-aid-diary-windows.zip", "size": 123, "sha256": "…"},
+    "windows": {"name": "aid-build-1234-1-aid-diary-windows-setup.exe", "size": 123, "sha256": "…"},
     "linux": {"name": "aid-build-1234-1-aid-diary-linux.tar.gz", "size": 123, "sha256": "…"}
   }
 }
@@ -75,7 +92,10 @@ and switches `latest.json` with a single rename on the same filesystem.
 Each package remains available for seven days after the last manifest that
 referenced it is retired. nginx serves `/srv/aid-updates/www` at
 `https://aid.playeriv65.com/updates/` (`server/deploy/nginx.conf`). The
-server holds no GitHub credential.
+server holds no GitHub credential. The mirror accepts only the package
+names in its `FILES`, the same as `scripts/release_manifest.py`: deploy a
+renamed package's `mirror.py` once the first manifest with that name is
+published, as it refuses the older names.
 
 For the build-specific rollout, install `mirror.py` under `/srv/aid-updates/`
 and the updated unit from `server/deploy/update-mirror/`. The unit requires
@@ -120,7 +140,9 @@ the builds.
   from an app Xiaomi has not listed (`INSTALL_FAILED_ABORTED: Permission
   denied`, from `PKMSImpl.assertCallerAndPackage`), so on Xiaomi devices
   the session always asks, HyperOS shows its own confirmation, and the
-  switch is not offered (tested on the Xiaomi Pad 7, 2026-10-29).
+  switch is not offered (tested on the Xiaomi Pad 7, 2026-10-29). Windows
+  does not offer it either: a desktop app is not paused when the user
+  leaves it, so the dialog always asks.
 - **After an update** the app says so once, with the notes.
 
 Before it installs, the app checks the download's size and SHA-256 against
@@ -128,6 +150,17 @@ the manifest; the Android side (`AppUpdater.kt`) checks that the package is
 this app, signed with this app's key, and newer. Android's installer does
 the rest; the app closes while it installs. The first install asks the user
 to allow AID Diary to install apps.
+
+On Windows the app starts the downloaded installer with the arguments in
+`app_config.json` (`updates.windowsSetup`: `/VERYSILENT /SUPPRESSMSGBOXES
+/NORESTART /LOG /RELAUNCH=1`) and closes itself a second later, which
+leaves a command line waiting on `update.install` time to get its answer.
+The installer shows no window. If the app is still open when its files are
+replaced, Restart Manager closes it (`CloseApplications=force`). The
+installer then opens the app again (`/RELAUNCH=1`). Its log is `Setup Log
+*.txt` in `%TEMP%`. The installer is not code-signed. Its hash in the
+manifest is the only check, and a browser download of it meets SmartScreen
+until it has a reputation.
 
 The F-Droid build has no update permission and checks nothing: F-Droid's
 client updates it, signed with F-Droid's key.

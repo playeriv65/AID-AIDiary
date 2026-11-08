@@ -15,6 +15,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:path/path.dart' as p;
 
 import '../support/config_provider_harness.dart';
 
@@ -134,18 +135,44 @@ void main() {
   });
 
   test('the development app takes its own package', () {
-    expect(AppUpdates.packageKey('dev.aid.diary.beta'), 'android-dev');
-    expect(AppUpdates.packageKey('dev.aid.diary'), 'android');
+    final android = AppUpdates(os: 'android');
+    expect(android.packageKey('dev.aid.diary.beta'), 'android-dev');
+    expect(android.packageKey('dev.aid.diary'), 'android');
+    expect(AppUpdates(os: 'windows').packageKey('aid_diary'), 'windows');
+  });
+
+  test('Windows downloads its installer under the installer\'s name', () async {
+    final setup = utf8.encode('a newer installer');
+    final manifest = _manifest()
+      ..['files'] = {
+        'windows': {
+          'name': 'aid-build-1-1-aid-diary-windows-setup.exe',
+          'size': setup.length,
+          'sha256': '${sha256.convert(setup)}',
+        },
+      };
+    final updates = AppUpdates(
+        os: 'windows',
+        client: MockClient((request) async => '${request.url}' == _server
+            ? http.Response(jsonEncode(manifest), 200)
+            : http.Response.bytes(setup, 200)));
+    final update = (await updates.check())!;
+    expect(update.url.path, endsWith('aid-diary-windows-setup.exe'));
+    final file = await updates.download(update);
+    expect(p.basename(file.path), 'update-261029183.exe');
+    expect(await file.readAsBytes(), setup);
   });
 
   test('check falls back to GitHub when the server does not answer', () async {
     final asked = <String>[];
-    final updates = AppUpdates(client: MockClient((request) async {
-      asked.add('${request.url}');
-      return '${request.url}' == _server
-          ? http.Response('down', 502)
-          : http.Response(jsonEncode(_manifest()), 200);
-    }));
+    final updates = AppUpdates(
+        os: 'android',
+        client: MockClient((request) async {
+          asked.add('${request.url}');
+          return '${request.url}' == _server
+              ? http.Response('down', 502)
+              : http.Response(jsonEncode(_manifest()), 200);
+        }));
     final update = await updates.check();
     expect(asked, [_server, _github]);
     expect(update!.url.host, 'github.example');
@@ -153,8 +180,9 @@ void main() {
   });
 
   test('check fails when no manifest answers', () async {
-    final updates =
-        AppUpdates(client: MockClient((_) async => http.Response('down', 503)));
+    final updates = AppUpdates(
+        os: 'android',
+        client: MockClient((_) async => http.Response('down', 503)));
     await expectLater(updates.check(), throwsA(isA<UpdateException>()));
   });
 
@@ -176,12 +204,14 @@ void main() {
     for (final MapEntry(:key, :value) in malformed.entries) {
       await config.set(Settings.lastUpdateCheck, '');
       final asked = <String>[];
-      final updates = AppUpdates(client: MockClient((request) async {
-        asked.add('${request.url}');
-        if ('${request.url}' == _server) return http.Response(value, 200);
-        expect(config.get(Settings.lastUpdateCheck), isEmpty, reason: key);
-        return http.Response(jsonEncode(_manifest()), 200);
-      }));
+      final updates = AppUpdates(
+          os: 'android',
+          client: MockClient((request) async {
+            asked.add('${request.url}');
+            if ('${request.url}' == _server) return http.Response(value, 200);
+            expect(config.get(Settings.lastUpdateCheck), isEmpty, reason: key);
+            return http.Response(jsonEncode(_manifest()), 200);
+          }));
       final update = await updates.check();
       expect(asked, [_server, _github], reason: key);
       expect(update?.url.host, 'github.example', reason: key);
@@ -194,8 +224,9 @@ void main() {
     final config = ConfigProvider.instance;
     const previous = '2026-10-28T09:00:00Z';
     await config.set(Settings.lastUpdateCheck, previous);
-    final updates =
-        AppUpdates(client: MockClient((_) async => http.Response('{}', 200)));
+    final updates = AppUpdates(
+        os: 'android',
+        client: MockClient((_) async => http.Response('{}', 200)));
     await expectLater(
         updates.check(),
         throwsA(isA<UpdateException>()
@@ -206,11 +237,13 @@ void main() {
   test('a valid mirror with no newer build still completes the check',
       () async {
     final asked = <String>[];
-    final updates = AppUpdates(client: MockClient((request) async {
-      asked.add('${request.url}');
-      final build = '${request.url}' == _server ? 261028090 : 261029183;
-      return http.Response(jsonEncode(_manifest(build: build)), 200);
-    }));
+    final updates = AppUpdates(
+        os: 'android',
+        client: MockClient((request) async {
+          asked.add('${request.url}');
+          final build = '${request.url}' == _server ? 261028090 : 261029183;
+          return http.Response(jsonEncode(_manifest(build: build)), 200);
+        }));
     expect(await updates.check(), isNull);
     expect(asked, [_server]);
     expect(ConfigProvider.instance.get(Settings.lastUpdateCheck), isNotEmpty);

@@ -11,7 +11,8 @@ final updateActions = [
   AppAction(
       id: 'update.check',
       describe: 'Asks the release manifest for a build newer than this app; '
-          'shows nothing to the user. Android builds outside F-Droid only.',
+          'shows nothing to the user. Android builds outside F-Droid and '
+          'the installed Windows app only.',
       risk: ActionRisk.read,
       run: (_, __) async {
         final updates = AppUpdates.instance;
@@ -31,9 +32,11 @@ final updateActions = [
       }),
   AppAction(
       id: 'update.install',
-      describe: 'Downloads the newer build, checks its hash, name, signing '
-          'key and version, and hands it to Android to install. The app '
-          'closes while it installs; Android may ask on the device first.',
+      describe: 'Downloads the newer build and checks its size and hash. '
+          'Android checks its name, signing key and version and installs '
+          'it, and may ask on the device first. Windows runs the installer '
+          'silently and opens the app again. The app closes while it '
+          'installs.',
       risk: ActionRisk.write,
       run: (context, __) async {
         final updates = AppUpdates.instance;

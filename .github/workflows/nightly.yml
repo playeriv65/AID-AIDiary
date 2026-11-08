@@ -84,7 +84,9 @@ jobs:
           New-Item -ItemType Directory -Force ..\build\cli | Out-Null
           dart compile exe bin/aid.dart -o ..\build\cli\aid.exe
       # Without the repository secret the build offers no Google Drive.
-      - run: flutter build windows --release --dart-define=AID_GOOGLE_DESKTOP_SECRET=$env:AID_GOOGLE_DESKTOP_SECRET
+      # The build number lets the installed app compare itself with the
+      # manifest (docs/UPDATES.md).
+      - run: flutter build windows --release --build-number ${{ needs.changes.outputs.build }} --dart-define=AID_GOOGLE_DESKTOP_SECRET=$env:AID_GOOGLE_DESKTOP_SECRET
         env:
           AID_GOOGLE_DESKTOP_SECRET: ${{ secrets.AID_GOOGLE_DESKTOP_SECRET }}
           # Shows cargo's progress, which the build otherwise hides. Set on
@@ -92,8 +94,10 @@ jobs:
           CARGOKIT_VERBOSE: "1"
       # The app and its plugins import the Visual C++ runtime. Copying it
       # next to aid_diary.exe (app-local deployment, allowed by Microsoft)
-      # lets the ZIP start on PCs without the VC++ Redistributable. The list
+      # lets the app start on PCs without the VC++ Redistributable. The list
       # is every runtime DLL that a file in the bundle imports.
+      # The per-user installer (windows/installer/aid_diary.iss) is what the
+      # manifest offers; the ZIP stays as a portable download.
       - name: Package
         run: |
           $release = 'build\windows\x64\runner\Release'
@@ -102,10 +106,19 @@ jobs:
           }
           Compress-Archive -Path "$release\*" -DestinationPath aid-diary-windows.zip
           Copy-Item build\cli\aid.exe aid-windows.exe
+          $iscc = "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe"
+          if (-not (Test-Path $iscc)) {
+            choco install innosetup --no-progress -y
+            if ($LASTEXITCODE) { exit $LASTEXITCODE }
+          }
+          $version = (Select-String -Path pubspec.yaml -Pattern '^version:\s*([^+\s]+)').Matches[0].Groups[1].Value
+          & $iscc /Qp "/DVersion=$version" "/DBuild=${{ needs.changes.outputs.build }}" /O. windows\installer\aid_diary.iss
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
       - uses: actions/upload-artifact@v4
         with:
           name: windows
           path: |
+            aid-diary-windows-setup.exe
             aid-diary-windows.zip
             aid-windows.exe
           retention-days: 7
