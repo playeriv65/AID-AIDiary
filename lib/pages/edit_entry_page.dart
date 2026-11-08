@@ -28,7 +28,7 @@ import 'package:aid_diary/utils/entry_context_display.dart';
 import 'package:aid_diary/utils/photo_metadata.dart';
 import 'package:aid_diary/widgets/context_dialogs.dart';
 import 'package:aid_diary/widgets/editor_action_bar.dart';
-import 'package:aid_diary/widgets/diary_day_dialog.dart';
+import 'package:aid_diary/widgets/day_picker.dart';
 import 'package:aid_diary/widgets/editor_action_bar/editor_keyboard_session.dart';
 import 'package:aid_diary/widgets/entry_image_actions.dart';
 import 'package:aid_diary/widgets/entry_image_editable_list.dart';
@@ -771,12 +771,14 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
   Future<void> _chooseDiaryDay() async {
     final today = DiaryDay.dateOf(DateTime.now());
     final current = _model.diaryDay;
-    final picked = await showDiaryDayDialog(
+    final picked = await showDayPicker(
       context,
+      title: AppLocalizations.of(context)!.editorDiaryDayPicker,
       initialDay: current,
       firstDay: DateTime(2000),
       lastDay: current.isAfter(today) ? current : today,
-      created: _createdLabel(context, withYear: true),
+      note: AppLocalizations.of(context)!
+          .editorCreatedAt(_createdLabel(context, withYear: true)),
     );
     if (picked != null) _model.setDiaryDay(picked);
   }

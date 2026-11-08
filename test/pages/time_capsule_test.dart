@@ -5,6 +5,7 @@ import 'package:aid_diary/database/entry_store.dart';
 import 'package:aid_diary/pages/entry_view_page.dart';
 import 'package:aid_diary/pages/journal_page.dart';
 import 'package:aid_diary/pages/search_page.dart';
+import 'package:aid_diary/utils/time_capsule.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -42,6 +43,30 @@ void main() {
     await DiaryAppHarness.pumpUntil(
         tester, () => find.textContaining('给一年后的自己').evaluate().isNotEmpty);
     expect(store.entries.single.openAt, isNull);
+  });
+
+  testWidgets('sealing picks the opening day, a year ahead unless changed',
+      (tester) async {
+    final entry =
+        await DiaryAppHarness.addEntry(tester, '封存的话', DateTime(2026, 10, 1));
+    DiaryAppHarness.size(tester, const Size(390, 844));
+    await tester.pumpWidget(harness.app(EntryViewPage(entryId: entry.id!)));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const ValueKey('entry-more')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const ValueKey('entry-capsule')));
+    await tester.pumpAndSettle();
+    final opens = CapsuleWindow.suggested(DateTime.now());
+    await DiaryAppHarness.runUntil(
+        tester,
+        () => tester
+            .widget<FilledButton>(
+                find.byKey(const ValueKey('day-picker-confirm')))
+            .onPressed!(),
+        () => EntryStore.instance.entries.single.openAt != null);
+    final openAt = EntryStore.instance.entries.single.openAt!;
+    expect(DateTime(openAt.year, openAt.month, openAt.day),
+        DateTime(opens.year, opens.month, opens.day));
   });
 
   testWidgets('a capsule that just opened gets a story card', (tester) async {

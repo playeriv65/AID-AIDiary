@@ -86,7 +86,7 @@ void main() {
       await tester.tap(dateButton);
       await tester.pumpAndSettle();
       expect(find.text(l10n.editorDiaryDayPicker), findsOneWidget);
-      expect(find.byKey(const ValueKey('diary-day-created')), findsOneWidget);
+      expect(find.byKey(const ValueKey('day-picker-note')), findsOneWidget);
 
       if (calendar == 'gregorian') {
         await tester.tap(find
@@ -127,9 +127,7 @@ void main() {
     await tester.tap(find.byKey(const ValueKey('editor-date')));
     await tester.pumpAndSettle();
     expect(
-        tester
-            .widget<Text>(find.byKey(const ValueKey('diary-day-created')))
-            .data,
+        tester.widget<Text>(find.byKey(const ValueKey('day-picker-note'))).data,
         contains('23:45'));
     await tester.pumpWidget(const SizedBox.shrink());
   });

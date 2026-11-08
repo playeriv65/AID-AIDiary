@@ -169,40 +169,6 @@ class TimeManager {
     return PlatformDispatcher.instance.locale.languageCode == 'fa';
   }
 
-  static Future<DateTime?> pickDate(
-    BuildContext context, {
-    required DateTime initialDate,
-    required DateTime firstDate,
-    required DateTime lastDate,
-    String? helpText,
-    bool Function(DateTime)? selectableDayPredicate,
-  }) async {
-    if (isJalaliCalendar(context)) {
-      PersianSelectableDayPredicate? jalaliPredicate;
-      if (selectableDayPredicate != null) {
-        jalaliPredicate =
-            (Jalali day) => selectableDayPredicate(day.toDateTime());
-      }
-      final Jalali? picked = await showPersianDatePicker(
-        context: context,
-        initialDate: Jalali.fromDateTime(initialDate),
-        firstDate: Jalali.fromDateTime(firstDate),
-        lastDate: Jalali.fromDateTime(lastDate),
-        helpText: helpText,
-        selectableDayPredicate: jalaliPredicate,
-      );
-      return picked?.toDateTime();
-    }
-    return showDatePicker(
-      context: context,
-      initialDate: initialDate,
-      firstDate: firstDate,
-      lastDate: lastDate,
-      helpText: helpText,
-      selectableDayPredicate: selectableDayPredicate,
-    );
-  }
-
   // Returns true if entryDate falls on the same calendar day+month as referenceDate
   // but in a different calendar year
   static bool isOnThisDayMatch(

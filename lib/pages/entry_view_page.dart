@@ -37,6 +37,7 @@ import 'package:aid_diary/widgets/tag_chip.dart';
 import 'package:intl/intl.dart';
 import 'package:aid_diary/widgets/weather_icon.dart';
 import 'package:aid_diary/widgets/choice_sheet.dart';
+import 'package:aid_diary/widgets/day_picker.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
@@ -279,11 +280,12 @@ class EntryViewPage extends StatelessWidget {
   /// Seals the entry until a day the writer picks.
   Future<void> _seal(BuildContext context, Entry entry) async {
     final now = DateTime.now();
-    final day = await TimeManager.pickDate(
+    final day = await showDayPicker(
       context,
-      initialDate: CapsuleWindow.suggested(now),
-      firstDate: CapsuleWindow.earliest(now),
-      lastDate: CapsuleWindow.latest(now),
+      title: AppLocalizations.of(context)!.capsuleSeal,
+      initialDay: CapsuleWindow.suggested(now),
+      firstDay: CapsuleWindow.earliest(now),
+      lastDay: CapsuleWindow.latest(now),
     );
     if (day == null) return;
     await AppActions.instance

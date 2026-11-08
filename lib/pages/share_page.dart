@@ -12,11 +12,11 @@ import 'package:aid_diary/pages/edit_entry_page.dart';
 import 'package:aid_diary/providers/entries_provider.dart';
 import 'package:aid_diary/providers/entry_images_provider.dart';
 import 'package:aid_diary/time_manager.dart';
-import 'package:aid_diary/widgets/day_menu.dart';
+import 'package:aid_diary/widgets/choice_sheet.dart';
+import 'package:aid_diary/widgets/day_picker.dart';
 import 'package:aid_diary/widgets/entry_image_actions.dart';
 import 'package:aid_diary/widgets/image_grid.dart';
 import 'package:aid_diary/widgets/large_card.dart';
-import 'package:aid_diary/widgets/month_calendar.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:share_receiver/share_receiver.dart';
 
@@ -38,49 +38,39 @@ class _SharePageState extends State<SharePage> {
     super.dispose();
   }
 
-  Future<void> _selectDay(BuildContext dayContext, DateTime day) async {
+  /// Adds the shared content to [day]: to one of its entries, or to a new
+  /// one when the person picks that or the day has none.
+  Future<void> _addToDay(DateTime day) async {
     if (_opening) return;
     final entries = EntriesProvider.instance.getEntriesForDate(day);
     Entry? entry;
     if (entries.isNotEmpty) {
-      final choice = await _showDayChoiceMenu(dayContext, day, entries);
+      final l10n = AppLocalizations.of(context)!;
+      final timeFormat = TimeManager.localizedTimeFormat(
+          context, TimeManager.currentLocale(context));
+      final choice = await showChoiceSheet<({Entry? entry})>(
+          context,
+          [
+            for (final entry in entries)
+              (
+                value: (entry: entry),
+                icon: Icons.edit_note_rounded,
+                label: timeFormat.format(entry.timeCreate),
+                key: ValueKey('share-entry-${entry.id}')
+              ),
+            (
+              value: (entry: null),
+              icon: Icons.add_rounded,
+              label: l10n.adaptiveNewEntry,
+              key: const ValueKey('share-new-entry')
+            ),
+          ],
+          title: TimeManager.formatDate(day, context));
       if (choice == null) return;
       entry = choice.entry;
     }
     if (!mounted) return;
     await _openEditor(day, entry);
-  }
-
-  Future<({Entry? entry})?> _showDayChoiceMenu(
-      BuildContext dayContext, DateTime day, List<Entry> entries) {
-    final locale = TimeManager.currentLocale(dayContext);
-    final timeFormat = TimeManager.localizedTimeFormat(dayContext, locale);
-    return showDayMenu<({Entry? entry})>(
-      dayContext,
-      items: [
-        for (final entry in entries)
-          PopupMenuItem(
-            value: (entry: entry),
-            child: Row(
-              children: [
-                const Icon(Icons.edit_note_rounded),
-                const SizedBox(width: 12),
-                Text(timeFormat.format(entry.timeCreate)),
-              ],
-            ),
-          ),
-        PopupMenuItem(
-          value: (entry: null),
-          child: Row(
-            children: [
-              const Icon(Icons.add_rounded),
-              const SizedBox(width: 12),
-              Text(TimeManager.formatDate(day, dayContext)),
-            ],
-          ),
-        ),
-      ],
-    );
   }
 
   Future<void> _openEditor(DateTime day, Entry? entry) async {
@@ -136,7 +126,15 @@ class _SharePageState extends State<SharePage> {
 
   @override
   Widget build(BuildContext context) {
-    final calendar = MonthCalendar(onDayTap: _selectDay);
+    final today = DiaryDay.today();
+    final calendarToday = DiaryDay.dateOf(DateTime.now());
+    final picker = DayPicker(
+      initialDay: today,
+      firstDay: DateTime(2000),
+      lastDay: today.isAfter(calendarToday) ? today : calendarToday,
+      confirm: MaterialLocalizations.of(context).continueButtonLabel,
+      onPicked: _addToDay,
+    );
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -152,7 +150,16 @@ class _SharePageState extends State<SharePage> {
                 children: [
                   SizedBox(height: 200, child: _buildPreview()),
                   const SizedBox(height: 8),
-                  Expanded(child: calendar),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Center(
+                        child: ConstrainedBox(
+                            constraints:
+                                const BoxConstraints(maxWidth: DayPicker.width),
+                            child: picker),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
