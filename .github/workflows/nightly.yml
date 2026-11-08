@@ -90,9 +90,17 @@ jobs:
           # Shows cargo's progress, which the build otherwise hides. Set on
           # this step only: rust-cache keys on the job's CARGO* variables.
           CARGOKIT_VERBOSE: "1"
+      # The app and its plugins import the Visual C++ runtime. Copying it
+      # next to aid_diary.exe (app-local deployment, allowed by Microsoft)
+      # lets the ZIP start on PCs without the VC++ Redistributable. The list
+      # is every runtime DLL that a file in the bundle imports.
       - name: Package
         run: |
-          Compress-Archive -Path build\windows\x64\runner\Release\* -DestinationPath aid-diary-windows.zip
+          $release = 'build\windows\x64\runner\Release'
+          foreach ($dll in 'msvcp140.dll', 'vcruntime140.dll', 'vcruntime140_1.dll') {
+            Copy-Item -ErrorAction Stop "$env:SystemRoot\System32\$dll" $release
+          }
+          Compress-Archive -Path "$release\*" -DestinationPath aid-diary-windows.zip
           Copy-Item build\cli\aid.exe aid-windows.exe
       - uses: actions/upload-artifact@v4
         with:

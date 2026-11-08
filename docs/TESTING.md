@@ -287,7 +287,9 @@ Two workflows run on GitHub's runners:
 
 - Checks: `ci.yml` itself, with the same format, lint and offline test gates
   as a code push.
-- Windows: the `aid.exe` executable and a Windows release bundle.
+- Windows: the `aid.exe` executable and a Windows release bundle. The
+  bundle carries the Visual C++ runtime DLLs it imports (app-local), so it
+  starts without the VC++ Redistributable.
 - Android: release APKs of the everyday and development flavors.
 - Linux: a release bundle (GTK) and the `aid` executable.
 

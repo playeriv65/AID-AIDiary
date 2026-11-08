@@ -52,5 +52,11 @@
     "en": "A sync recovery password needs at least 8 characters instead of 12.",
     "zh": "同步恢复密码最短从 12 位改为 8 位。",
     "zh_Hant": "同步復原密碼最短從 12 位改為 8 位。"
+  },
+  {
+    "id": "2026-11-08-windows-runtime",
+    "en": "The Windows package now starts on computers without the Visual C++ runtime installed.",
+    "zh": "Windows 安装包现在可以在没有安装 Visual C++ 运行库的电脑上启动。",
+    "zh_Hant": "Windows 安裝套件現在可以在沒有安裝 Visual C++ 執行階段的電腦上啟動。"
   }
 ]
