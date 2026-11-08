@@ -7,6 +7,7 @@ import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
 
+import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/models/image.dart';
 import 'package:aid_diary/sync/media_transfer.dart';
 import 'package:aid_diary/sync/sync_backend.dart';
@@ -14,8 +15,8 @@ import 'package:aid_diary/sync/sync_crypto.dart';
 import 'package:aid_diary/sync/sync_records.dart';
 import 'package:aid_diary/sync/sync_schema.dart';
 import 'package:aid_diary/sync/sync_photos.dart';
+import 'package:aid_diary/utils/sync_ids.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:uuid/uuid.dart';
 
 export 'sync_photos.dart';
 
@@ -256,15 +257,21 @@ class SyncEngine {
     }
     for (final loser in losers) {
       await db.transaction((txn) => keepLosingEntry(
-          txn, loser, const Uuid().v4().replaceAll('-', ''), _now()));
+          txn, loser, conflictCopySyncId(loser.id, loser.modified), _now()));
     }
+    // Deletions go last, children before parents: an attachment or kept
+    // passage that moved to another item in the same batch moves first.
+    final ordered = [
+      ...ready.where((record) => !record.deleted),
+      ...ready.reversed.where((record) => record.deleted),
+    ];
     final unused = await withoutRecording(db, (txn) async {
       final writer = RecordWriter(txn, fileOf: (id) => photoFiles[id]!);
       for (final fetch in fetches) {
         await _media.queue(fetch.id, fetch.name,
             sending: false, transaction: txn);
       }
-      for (final record in ready) {
+      for (final record in ordered) {
         await writer.apply(record);
         await _know(txn, record);
         if (pending[_key(record.kind, record.id)] case final local?) {
@@ -476,12 +483,13 @@ class SyncEngine {
   }
 
   /// Whether two versions of an entry say the same; photos count by id, as
-  /// their file names differ from device to device.
+  /// their file names differ from device to device, and when each was last
+  /// saved does not count, so two imports of one file are the same entry.
   static bool _sameEntry(SyncRecord a, SyncRecord b) {
     String content(SyncRecord record) => jsonEncode(_sortedKeys({
           ...?record.data,
           'images': [for (final photo in record.photos) photo.id],
-        }));
+        }..remove(EntryFields.timeModified)));
     return content(a) == content(b);
   }
 

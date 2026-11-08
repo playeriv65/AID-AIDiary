@@ -4,6 +4,7 @@
 
 import 'package:aid_diary/database/app_database.dart';
 import 'package:aid_diary/models/entry.dart';
+import 'package:aid_diary/sync/sync_schema.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:aid_diary/utils/local_time.dart';
 
@@ -61,16 +62,34 @@ class EntryDao {
   }
 
   /// Inserts [entry]; without a known UTC offset it was written here, so
-  /// it takes this device's.
-  static Future<Entry> add(Entry entry, {DatabaseExecutor? executor}) async {
+  /// it takes this device's. [syncId] is the id every device gives it
+  /// (`utils/sync_ids.dart`); without one it gets a random id.
+  static Future<Entry> add(Entry entry,
+      {DatabaseExecutor? executor, String? syncId}) async {
     final placed = entry.utcOffset == null
         ? entry.copy(utcOffset: entry.timeCreate.timeZoneOffset.inMinutes)
         : entry;
-    final id = await AppDatabase.executorOr(executor)
-        .insert(entriesTable, placed.toJson());
+    final id = await AppDatabase.executorOr(executor).insert(entriesTable,
+        {...placed.toJson(), if (syncId != null) syncIdColumn: syncId});
 
     return placed.copy(id: id);
   }
+
+  /// Every entry's sync id by its row id.
+  static Future<Map<int, String>> syncIds() async => {
+        for (final row in await AppDatabase.instance.database!
+            .query(entriesTable, columns: [EntryFields.id, syncIdColumn]))
+          row[EntryFields.id] as int: row[syncIdColumn] as String,
+      };
+
+  /// Whether a row, in Recently deleted or hidden too, has the sync id [id].
+  static Future<bool> hasSyncId(String id) async =>
+      (await AppDatabase.instance.database!.query(entriesTable,
+              columns: [EntryFields.id],
+              where: '$syncIdColumn = ?',
+              whereArgs: [id],
+              limit: 1))
+          .isNotEmpty;
 
   static Future<void> update(Entry entry, {DatabaseExecutor? executor}) async {
     await AppDatabase.executorOr(executor).update(

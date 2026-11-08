@@ -4,6 +4,7 @@
 
 import 'dart:convert';
 
+import 'package:aid_diary/database/entry_image_dao.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/models/image.dart';
 import 'package:aid_diary/providers/entries_provider.dart';
@@ -11,6 +12,7 @@ import 'package:aid_diary/providers/entry_images_provider.dart';
 import 'package:aid_diary/storage/storage_picker.dart';
 import 'package:aid_diary/utils/imports/import_helpers.dart';
 import 'package:aid_diary/utils/operation_outcome.dart';
+import 'package:aid_diary/utils/sync_ids.dart';
 
 Future<OperationOutcome> importFromOneShot(
     PickedFile selectedFile, Function(String) updateStatus) async {
@@ -40,23 +42,26 @@ Future<OperationOutcome> importFromOneShot(
           DateTime.fromMillisecondsSinceEpoch(createdTimestamp * 1000);
       final mood = happinessMapping[entry['happiness']];
 
-      if (!EntriesProvider.instance.hasEntryAtTimestamp(createdDateTime)) {
-        var addedEntry = await EntriesProvider.instance.add(
-            Entry(
-                text: entry['textContent'],
-                mood: mood,
-                timeCreate: createdDateTime,
-                timeModified: DateTime.now()),
+      final syncId = importedTimeSyncId(createdDateTime);
+      final addedEntry =
+          EntriesProvider.instance.hasEntryAtTimestamp(createdDateTime)
+              ? null
+              : await addImportedEntry(
+                  Entry(
+                      text: entry['textContent'],
+                      mood: mood,
+                      timeCreate: createdDateTime,
+                      timeModified: DateTime.now()),
+                  syncId);
+      if (addedEntry != null && entry['relativePath'] != null) {
+        await EntryImagesProvider.instance.add(
+            EntryImage(
+                entryId: addedEntry.id,
+                imgPath: entry['relativePath'],
+                imgRank: 0,
+                timeCreate: DateTime.now()),
             skipUpdate: true);
-        if (entry['relativePath'] != null) {
-          await EntryImagesProvider.instance.add(
-              EntryImage(
-                  entryId: addedEntry.id,
-                  imgPath: entry['relativePath'],
-                  imgRank: 0,
-                  timeCreate: DateTime.now()),
-              skipUpdate: true);
-        }
+        await EntryImageDao.deriveImportedSyncIds(addedEntry.id!, syncId);
       }
       processedEntries += 1;
       updateStatus("${((processedEntries / totalEntries) * 100).round()}%");

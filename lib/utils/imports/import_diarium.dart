@@ -6,6 +6,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:aid_diary/database/app_database.dart';
+import 'package:aid_diary/database/entry_image_dao.dart';
 import 'package:aid_diary/database/entry_tag_dao.dart';
 import 'package:aid_diary/database/image_storage.dart';
 import 'package:aid_diary/database/tag_dao.dart';
@@ -18,6 +19,7 @@ import 'package:aid_diary/providers/tags_provider.dart';
 import 'package:aid_diary/storage/storage_picker.dart';
 import 'package:aid_diary/utils/imports/import_helpers.dart';
 import 'package:aid_diary/utils/operation_outcome.dart';
+import 'package:aid_diary/utils/sync_ids.dart';
 import 'package:aid_diary/utils/tag_name_sanitizer.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:html2md/html2md.dart' as html2md;
@@ -85,17 +87,19 @@ Future<OperationOutcome> importFromDiarium(PickedFile selectedFile,
       final rating = entry['Rating'] as int?;
       final mood = rating != null ? rating.clamp(1, 5) - 3 : null;
 
-      if (!EntriesProvider.instance.hasEntryAtTimestamp(timestamp)) {
-        final addedEntry = await EntriesProvider.instance.add(
-            Entry(
-              title: heading,
-              text: body,
-              mood: mood,
-              timeCreate: timestamp,
-              timeModified: timestamp,
-            ),
-            skipUpdate: true);
-
+      final syncId = importedTimeSyncId(timestamp);
+      final addedEntry = EntriesProvider.instance.hasEntryAtTimestamp(timestamp)
+          ? null
+          : await addImportedEntry(
+              Entry(
+                title: heading,
+                text: body,
+                mood: mood,
+                timeCreate: timestamp,
+                timeModified: timestamp,
+              ),
+              syncId);
+      if (addedEntry != null) {
         final entryMedia = mediaByEntryId[id] ?? [];
         for (final img in entryMedia) {
           final data = img['Data'] as Uint8List?;
@@ -123,6 +127,7 @@ Future<OperationOutcome> importFromDiarium(PickedFile selectedFile,
 
         await addDiariumEntryTags(addedEntry.id!, timestamp,
             entryTagsByEntryId[id] ?? const [], tagsByDiariumId);
+        await EntryImageDao.deriveImportedSyncIds(addedEntry.id!, syncId);
       }
 
       processedEntries++;

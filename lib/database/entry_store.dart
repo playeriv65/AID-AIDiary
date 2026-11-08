@@ -323,9 +323,11 @@ class EntryStore with ChangeNotifier {
     return items.length;
   }
 
-  Future<Entry> add(Entry entry, {bool skipUpdate = false}) async {
+  /// Adds [entry]; [syncId] as for [EntryDao.add].
+  Future<Entry> add(Entry entry,
+      {bool skipUpdate = false, String? syncId}) async {
     await _complete;
-    final entryWithId = await EntryDao.add(entry);
+    final entryWithId = await EntryDao.add(entry, syncId: syncId);
     _entries = [..._entries, entryWithId];
     await AppDatabase.instance.updateExternalDatabase();
 

@@ -158,6 +158,31 @@ void main() {
     expect(await laptop.photos.exists(file), isFalse);
   });
 
+  test('a photo moved to another entry as the first is erased keeps its file',
+      () async {
+    final first = await phone.write('first');
+    await phone.photos.write('aid_diary_1.jpg', Uint8List.fromList([1, 2, 3]));
+    await phone.db.insert(imagesTable, {
+      EntryImageFields.entryId: first,
+      EntryImageFields.imgPath: 'aid_diary_1.jpg',
+      EntryImageFields.imgRank: 0,
+    });
+    await phone.sync(cloud);
+    await laptop.sync(cloud);
+
+    final second = await phone.write('second');
+    await phone.db.update(imagesTable, {EntryImageFields.entryId: second});
+    await phone.db.delete(entriesTable, where: 'id = ?', whereArgs: [first]);
+    await phone.sync(cloud);
+    await laptop.sync(cloud);
+
+    expect(await laptop.texts(), ['second']);
+    final image = (await laptop.db.query(imagesTable)).single;
+    expect(image[EntryImageFields.entryId], await laptop.rowOf('second'));
+    expect(await laptop.photos.read(image[EntryImageFields.imgPath] as String),
+        [1, 2, 3]);
+  });
+
   test('tags keep their category and their values on entries', () async {
     final category = await phone.db
         .insert(tagCategoriesTable, {TagCategoryFields.name: 'Feelings'});

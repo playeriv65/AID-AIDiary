@@ -7,6 +7,8 @@ import 'dart:math' show min;
 
 import 'package:aid_diary/models/day_weather.dart';
 import 'package:aid_diary/database/app_database.dart';
+import 'package:aid_diary/database/entry_dao.dart';
+import 'package:aid_diary/database/entry_image_dao.dart';
 import 'package:aid_diary/database/entry_tag_dao.dart';
 import 'package:aid_diary/database/image_storage.dart';
 import 'package:aid_diary/database/import_source_dao.dart';
@@ -18,8 +20,10 @@ import 'package:aid_diary/providers/entries_provider.dart';
 import 'package:aid_diary/providers/entry_images_provider.dart';
 import 'package:aid_diary/providers/tags_provider.dart';
 import 'package:aid_diary/providers/weather_provider.dart';
+import 'package:aid_diary/sync/sync_schema.dart';
 import 'package:aid_diary/utils/entry_preview.dart';
 import 'package:aid_diary/utils/operation_outcome.dart';
+import 'package:aid_diary/utils/sync_ids.dart';
 import 'package:path/path.dart' as p;
 
 /// A photo inside an import file, read only when its entry is added.
@@ -53,10 +57,15 @@ class ImportedEntry {
       this.photos = const [],
       this.tags = const [],
       this.source,
+      this.syncId,
       this.favorite = false,
       this.weather});
 
   final Entry entry;
+
+  /// The entry's own sync id, from an export of this app; otherwise the id
+  /// comes from [source] or the written time ([importedSyncId]).
+  final String? syncId;
 
   /// The weather the other journal kept with the entry; it becomes the
   /// imported weather of its day at its place.
@@ -71,28 +80,49 @@ class ImportedEntry {
   final ImportedSource? source;
 }
 
+/// The sync id of an imported entry: the same on every device that imports
+/// the same item, so their copies are one entry once they sync.
+String importedSyncId(ImportedEntry imported) =>
+    imported.syncId ??
+    switch (imported.source) {
+      final source? =>
+        importedSourceSyncId(source.format, source.id, source.hash),
+      null => importedTimeSyncId(imported.entry.timeCreate),
+    };
+
+/// Adds an entry an import read under [syncId] ([importedSyncId]); null when
+/// the diary has it already, also hidden, in Recently deleted or received
+/// from a device that imported it first.
+Future<Entry?> addImportedEntry(Entry entry, String syncId) async {
+  if (await EntryDao.hasSyncId(syncId)) return null;
+  return EntriesProvider.instance.add(entry, skipUpdate: true, syncId: syncId);
+}
+
 Future<void> addImportedEntries(
     List<ImportedEntry> importedEntries, Function(String) updateStatus) async {
   final totalEntries = importedEntries.length;
   var processedEntries = 0;
   await EntriesProvider.instance.complete;
   final taken = {
-    for (final entry in EntriesProvider.instance.entries) entry.timeCreate
+    for (final entry in EntryStore.instance.allEntries) entry.timeCreate
   };
   final tags = _TagResolver();
 
   for (final imported in importedEntries) {
     final source = imported.source;
-    final shouldAdd = source == null
+    final syncId = importedSyncId(imported);
+    final isNew = source == null
         ? taken.add(imported.entry.timeCreate)
         : !await ImportSourceDao.contains(
             source.format, source.id, source.hash);
-    if (shouldAdd) {
-      final entry = titledByHeading(imported.entry);
-      final addedEntry = await EntriesProvider.instance.add(
-          entry.copy(
-              location: entry.location?.withSource(LocationSource.imported)),
-          skipUpdate: true);
+    final entry = titledByHeading(imported.entry);
+    final addedEntry = isNew
+        ? await addImportedEntry(
+            entry.copy(
+                location: entry.location?.withSource(LocationSource.imported)),
+            syncId)
+        : null;
+    if (addedEntry != null) {
       try {
         for (final image in imported.images) {
           await EntryImagesProvider.instance
@@ -163,8 +193,15 @@ Future<void> addImportedEntries(
               entryId: addedEntry.id!,
               json: source.json);
         }
+        await EntryImageDao.deriveImportedSyncIds(addedEntry.id!, syncId);
       } catch (_) {
-        if (source != null) await EntryStore.instance.erase(addedEntry);
+        if (source != null) {
+          await EntryStore.instance.erase(addedEntry);
+          // Another device may hold this entry: undoing it here is no
+          // deletion to send.
+          await forgetUnsentChange(
+              AppDatabase.instance.database!, SyncKind.entry, syncId);
+        }
         rethrow;
       }
     }

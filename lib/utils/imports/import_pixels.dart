@@ -9,6 +9,7 @@ import 'package:aid_diary/providers/entries_provider.dart';
 import 'package:aid_diary/storage/storage_picker.dart';
 import 'package:aid_diary/utils/imports/import_helpers.dart';
 import 'package:aid_diary/utils/operation_outcome.dart';
+import 'package:aid_diary/utils/sync_ids.dart';
 import 'package:intl/intl.dart';
 
 Future<OperationOutcome> importFromPixels(
@@ -37,13 +38,13 @@ Future<OperationOutcome> importFromPixels(
                   entry['scores'].length;
           int mappedMood = avgMood - 3;
 
-          await EntriesProvider.instance.add(
+          await addImportedEntry(
               Entry(
                   text: entry['notes'] ?? '',
                   mood: mappedMood,
                   timeCreate: timeCreated,
                   timeModified: timeModified),
-              skipUpdate: true);
+              importedTimeSyncId(timeCreated));
         }
       }
       processedEntries += 1;

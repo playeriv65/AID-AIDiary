@@ -138,7 +138,7 @@ void main() {
     expect((await diary.useExternalLocation(previous.path, (_) {})).succeeded,
         isTrue);
     final external = folders().folder('broken');
-    // It has a diary header, but the version-17 upgrade needs sync tables.
+    // It has a diary header, but the last upgrade needs tables it lacks.
     final db = await externalDiary(
         external, AppDatabase.currentVersion - 1, diary.createVersion10Schema);
     await db.close();

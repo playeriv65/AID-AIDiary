@@ -473,6 +473,49 @@ retention parameters are opt-in, with no domain-based client behavior.
 Implementation and validation/deployment evidence are tracked separately in
 [SYNC_NETWORK.md](SYNC_NETWORK.md).
 
+### Item ids and duplicates
+
+Every synced item has one sync id (the `uuid` column) on every device, and
+sync merges by it: a record whose id a device already has updates that row
+and never adds a second one. Every path that brings entries to a device goes
+through this merge: ordinary sync, joining or rejoining a space (pairing, the
+recovery code, a space started over), nearby transfer (the same engine over a
+temporary snapshot) and restoring a backup (the database file keeps its ids).
+Joining or leaving a space forgets what was synced where (`forgetSpace`) but
+keeps the changes not sent yet, so an entry erased while no space was
+connected is not brought back from it.
+
+What a person writes on one device gets a random id. What two devices can
+make on their own from the same input gets an id derived from that input
+(`utils/sync_ids.dart`), so their copies are one item when they meet:
+
+| Item | Id derived from |
+| --- | --- |
+| Imported entry | The source format, item id and revision hash when the format names its items (`import_sources`), else the written time; an entry from this app's JSON export keeps its own id |
+| Its attachments | The entry's id and their order |
+| Tag, tag category | The name, ignoring case; a second one of that name on one device gets a random id |
+| Day weather | Day, place and source |
+| Conflict copy | The entry and the local version that lost, so a retried sync keeps one copy |
+| Favorite tag, default templates | Fixed built-in ids (`sync/builtin_ids.dart`) |
+
+An import skips an entry whose id the diary already has, also hidden, in
+Recently deleted or received from a device that imported it first. A changed
+source revision is a separate entry. When two devices made the same entry,
+the usual rule settles its content: the later change wins, and a local
+version that differs and was not sent yet is kept in Recently deleted; when
+each was last saved is no difference. Within one batch of received records,
+deletions apply after the rest, so an attachment or kept passage that moved
+to another item moves before its old item goes.
+
+Database version 18 gives entries imported before it their derived ids. Unlike
+other upgrades it records the change for sync (the old id as a deletion, the
+entry and the citations and kept passages pointing at it as changes), so
+copies of one import made on several devices merge once each has upgraded
+and synced. A copy whose derived id already arrived from another device goes
+to Recently deleted. Tags of the same name made before version 18 stay
+separate. Nearby transfer still requires an empty diary on the receiving
+device.
+
 ## Citations, comments and kept passages
 
 A comment is an ordinary entry, written on the day it is written, that

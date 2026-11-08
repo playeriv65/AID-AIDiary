@@ -76,6 +76,11 @@ List<ImportedEntry> decodeJsonEntries(Uint8List bytes, AppLocalizations l10n) {
               case final activity?)
             (name: activity.label(l10n), value: null),
         ],
+        syncId: switch (entry['id']) {
+          final String id when _syncId.hasMatch(id) => id,
+          null => null,
+          _ => throw const FormatException('Invalid JSON entry id'),
+        },
         source: switch (entry['importSource']) {
           final Map source => ImportedSource(
               format: source['format'] as String,
@@ -100,6 +105,9 @@ List<ImportedEntry> decodeJsonEntries(Uint8List bytes, AppLocalizations l10n) {
       ),
   ];
 }
+
+/// What an exported entry's sync id may look like.
+final _syncId = RegExp(r'^[A-Za-z0-9-]{1,64}$');
 
 ImportedPhoto _photo(Map photo) {
   final name = photo['name'] as String;

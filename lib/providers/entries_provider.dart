@@ -26,8 +26,8 @@ class EntriesProvider with ChangeNotifier {
   /// Completes once [entries] holds every entry; see [EntryStore.complete].
   Future<void> get complete => _store.complete;
 
-  Future<Entry> add(Entry entry, {bool skipUpdate = false}) =>
-      _store.add(entry, skipUpdate: skipUpdate);
+  Future<Entry> add(Entry entry, {bool skipUpdate = false, String? syncId}) =>
+      _store.add(entry, skipUpdate: skipUpdate, syncId: syncId);
 
   Future<void> deleteAll(Function(String) updateStatus) =>
       _store.deleteAll(updateStatus);

@@ -13,6 +13,7 @@ import 'package:aid_diary/sync/identity.dart';
 import 'package:aid_diary/sync/lan_transport.dart';
 import 'package:aid_diary/sync/nearby_migration.dart';
 import 'package:aid_diary/sync/nearby_adoption.dart';
+import 'package:aid_diary/sync/sync_backend.dart';
 import 'package:aid_diary/sync/sync_engine.dart';
 import 'package:aid_diary/sync/sync_crypto.dart';
 import 'package:aid_diary/sync/sync_schema.dart';
@@ -142,6 +143,47 @@ void main() {
     expect(second.mediaCompleted, 1);
     expect(await newDevice.texts(), ['resume']);
     expect(await newDevice.photos.read('resume.wav'), bytes);
+  });
+
+  test('a repeated transfer and the shared space afterwards add no second copy',
+      () async {
+    final row = await oldDevice.write('beach');
+    await oldDevice.photos.write('beach.jpg', Uint8List.fromList([1, 2, 3]));
+    await oldDevice.db.insert(imagesTable, {
+      EntryImageFields.entryId: row,
+      EntryImageFields.imgPath: 'beach.jpg',
+      EntryImageFields.imgRank: 0
+    });
+    await oldDevice.write('harbor');
+    final cloud = MemorySyncBackend();
+    await oldDevice.sync(cloud);
+
+    for (var transfer = 0; transfer < 2; transfer++) {
+      if (transfer > 0) {
+        // Each transfer stages in a database of its own.
+        await staging.close();
+        staging = await databaseFactoryFfi.openDatabase(inMemoryDatabasePath,
+            options: OpenDatabaseOptions(singleInstance: false));
+      }
+      final hosted = await prepare();
+      await receiveNearbyMigration(
+          db: newDevice.db,
+          photos: FileStorePhotos(newDevice.photos),
+          grant: hosted.grant,
+          identity: identity);
+      // As the recipient does once content and identity have committed.
+      await clearSyncState(newDevice.db);
+      await markAllChanged(newDevice.db);
+      await hosted.close();
+    }
+    await newDevice.sync(cloud);
+    await oldDevice.sync(cloud);
+
+    for (final device in [oldDevice, newDevice]) {
+      expect(await device.texts(), ['beach', 'harbor']);
+      expect(await device.texts(deleted: true), isEmpty);
+      expect(await device.db.query(imagesTable), hasLength(1));
+    }
   });
 
   test(

@@ -19,10 +19,11 @@ import 'package:aid_diary/utils/activity_tags.dart';
 import 'package:aid_diary/utils/diary_day.dart';
 import 'package:aid_diary/utils/entry_preview.dart';
 import 'package:aid_diary/utils/local_time.dart';
+import 'package:aid_diary/utils/sync_ids.dart';
 import 'package:crypto/crypto.dart';
 import 'package:sqflite/sqflite.dart';
 
-const int currentVersion = 17;
+const int currentVersion = 18;
 
 /// Creates the current schema without adding starter data.
 Future<void> createSchema(Database db) async {
@@ -278,6 +279,57 @@ DROP TABLE old_entries;
   }
   if (oldVersion < 17 && newVersion >= 17) {
     await _upgradeToVersion17(db);
+  }
+  if (oldVersion < 18 && newVersion >= 18) {
+    await _importedEntrySyncIds(db);
+  }
+}
+
+/// Database version 18: an entry imported before gives up its random sync
+/// id for the one every device derives from its source revision
+/// ([importedSourceSyncId]), as new imports have it. Copies of one import
+/// made on several devices then become one entry once each device has
+/// upgraded and synced. Unlike other upgrades this one is recorded for
+/// sync: the old id goes out as a deletion, the entry under its new id, and
+/// the citations and kept passages that point at it with it.
+Future<void> _importedEntrySyncIds(Database db) async {
+  final rows = await db.rawQuery('''
+SELECT s.source_format, s.source_id, s.source_hash,
+       e.id, e.$syncIdColumn AS old
+FROM import_sources s JOIN $entriesTable e ON e.id = s.entry_id''');
+  for (final row in rows) {
+    final old = row['old'] as String;
+    final id = importedSourceSyncId(row['source_format'] as String,
+        row['source_id'] as String, row['source_hash'] as String);
+    if (old == id) continue;
+    final entry = row['id'] as int;
+    final holder = (await db.query(entriesTable,
+            columns: ['id'], where: '$syncIdColumn = ?', whereArgs: [id]))
+        .firstOrNull?['id'] as int?;
+    if (holder != null) {
+      // Another device's copy came first under the shared id. This copy
+      // goes to Recently deleted, as a sync conflict's loser would, and the
+      // source now points at the shared one.
+      await db.update(entriesTable,
+          {EntryFields.deletedAt: DateTime.now().toIso8601String()},
+          where: 'id = ? AND ${EntryFields.deletedAt} IS NULL',
+          whereArgs: [entry]);
+      await db.update('import_sources', {'entry_id': holder},
+          where: 'entry_id = ?', whereArgs: [entry]);
+    } else {
+      await db.update(entriesTable, {syncIdColumn: id},
+          where: 'id = ?', whereArgs: [entry]);
+      await recordChange(db, SyncKind.entry, old);
+      for (final passage in await db.query(passagesTable,
+          columns: [syncIdColumn],
+          where: '${PassageFields.entryId} = ?',
+          whereArgs: [entry])) {
+        await recordChange(
+            db, SyncKind.passage, passage[syncIdColumn] as String);
+      }
+    }
+    await db.update(entryRefsTable, {EntryRefFields.target: id},
+        where: '${EntryRefFields.target} = ?', whereArgs: [old]);
   }
 }
 

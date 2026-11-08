@@ -4,6 +4,8 @@
 
 import 'package:aid_diary/database/app_database.dart';
 import 'package:aid_diary/models/tag_category.dart';
+import 'package:aid_diary/sync/sync_schema.dart';
+import 'package:aid_diary/utils/sync_ids.dart';
 
 class TagCategoryDao {
   static Future<List<TagCategory>> getAll() async {
@@ -14,9 +16,14 @@ class TagCategoryDao {
     return rows.map((json) => TagCategory.fromJson(json)).toList();
   }
 
+  /// Adds [category] with the sync id of its name, as `TagDao.add` does.
   static Future<TagCategory> add(TagCategory category) async {
     final db = AppDatabase.instance.database!;
-    final id = await db.insert(tagCategoriesTable, category.toJson());
+    final id = await db.insert(tagCategoriesTable, {
+      ...category.toJson(),
+      syncIdColumn: await freeSyncId(
+          db, tagCategoriesTable, categorySyncId(category.name)),
+    });
     return category.copy(id: id);
   }
 

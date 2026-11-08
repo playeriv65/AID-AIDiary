@@ -39,6 +39,10 @@ backup format.
   record JSON and the new local entry ID. Unmapped metadata such as source
   weather/device/color remains in that provenance instead of being discarded
   or inserted as visible prose. This is local provenance, not a sync protocol.
+  The entry's sync id is derived from the format, external ID and revision
+  hash, so the same revision imported on another device, or again after the
+  entry arrived there by sync, is the same entry
+  ([item ids](ARCHITECTURE.md#item-ids-and-duplicates)).
 - Reimporting the same revision leaves user edits and Recently deleted
   entries alone. Different IDs sharing a timestamp are separate entries.
   Changed source revisions are retained separately rather than overwriting
@@ -62,7 +66,8 @@ The JSON importer also accepts optional `isHidden`, `importSource` and
 source identity and permits a retry without overwriting edits or merging
 different entries that share a midnight timestamp. A `photos` item contains
 `name` and Base64 `base64` bytes, validated before any entries are written.
-Attachments retain their original order. Ordinary JSON exports still exclude
+Attachments retain their original order. An `id`, which this app's JSON
+export writes, keeps the entry's sync id. Ordinary JSON exports still exclude
 hidden entries and list attachment names; a full backup is a separate operation.
 
 Keep personal conversion plans, text, source metadata and output files outside

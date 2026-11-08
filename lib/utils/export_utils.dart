@@ -9,6 +9,7 @@ import 'dart:typed_data';
 import 'package:aid_diary/models/day_weather.dart';
 import 'package:aid_diary/providers/weather_provider.dart';
 import 'package:aid_diary/utils/diary_day.dart';
+import 'package:aid_diary/database/entry_dao.dart';
 import 'package:aid_diary/database/image_storage.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/models/entry.dart';
@@ -99,15 +100,18 @@ class ExportRegistry {
 
 /// Entries as the JSON array [decodeJsonEntries] reads back, plus place,
 /// weather and tags. Attachments are listed by name only; the
-/// backup carries their files.
+/// backup carries their files. [syncIdOf] gives each entry's sync id, which
+/// an import keeps, so the entry and its import on another device are one.
 String encodeJsonEntries(List<Entry> entries,
     {required List<EntryImage> Function(Entry entry) imagesOf,
     required List<({String name, String? value})> Function(Entry entry) tagsOf,
-    required EntryWeather? Function(Entry entry) weatherOf}) {
+    required EntryWeather? Function(Entry entry) weatherOf,
+    String? Function(Entry entry)? syncIdOf}) {
   return const JsonEncoder.withIndent('  ').convert([
     for (final entry in entries)
       if (!entry.isSealed && !entry.isHidden)
         {
+          if (syncIdOf?.call(entry) case final id?) 'id': id,
           if (entry.title.isNotEmpty) 'title': entry.title,
           'text': entry.text,
           'mood': entry.mood,
@@ -166,11 +170,13 @@ class ExportUtils {
       PickedDirectory exportFolder, Function(String) updateStatus) async {
     updateStatus("0%");
     await EntriesProvider.instance.complete;
+    final syncIds = await EntryDao.syncIds();
     final json = encodeJsonEntries(
       EntriesProvider.instance.entries,
       imagesOf: EntryImagesProvider.instance.getForEntry,
       tagsOf: _tagsOf,
       weatherOf: WeatherProvider.instance.ofEntry,
+      syncIdOf: (entry) => syncIds[entry.id],
     );
     final name = "aid_diary_${_stamp()}.json";
     final file = File(join((await getTemporaryDirectory()).path, name));

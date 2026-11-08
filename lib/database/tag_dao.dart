@@ -4,6 +4,8 @@
 
 import 'package:aid_diary/database/app_database.dart';
 import 'package:aid_diary/models/tag.dart';
+import 'package:aid_diary/sync/sync_schema.dart';
+import 'package:aid_diary/utils/sync_ids.dart';
 
 class TagDao {
   static Future<List<Tag>> getAll() async {
@@ -25,9 +27,15 @@ class TagDao {
     return Tag.fromJson(maps.first);
   }
 
+  /// Adds [tag] with the sync id of its name ([tagSyncId]), so a tag of that
+  /// name made on another device is the same tag; a second tag of the same
+  /// name here gets a random one.
   static Future<Tag> add(Tag tag) async {
     final db = AppDatabase.instance.database!;
-    final id = await db.insert(tagsTable, tag.toJson());
+    final id = await db.insert(tagsTable, {
+      ...tag.toJson(),
+      syncIdColumn: await freeSyncId(db, tagsTable, tagSyncId(tag.name)),
+    });
     return tag.copy(id: id);
   }
 

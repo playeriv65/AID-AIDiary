@@ -70,5 +70,11 @@
     "en": "Connect devices looks the same from first launch and from Sync settings: authorize another device or connect to an existing one.",
     "zh": "首次启动和同步设置里打开的“连接已有设备”页面现在完全一样：可以授权另一台设备，也可以连接已有设备。",
     "zh_Hant": "首次啟動和同步設定裡開啟的「連接現有裝置」頁面現在完全一樣：可以授權另一台裝置，也可以連接現有裝置。"
+  },
+  {
+    "id": "2026-11-08-no-duplicate-entries",
+    "en": "Entries no longer appear twice when a device reconnects to sync or when the same file is imported on two devices. Copies of earlier imports merge after every device updates.",
+    "zh": "设备重新连接同步，或在两台设备上导入同一个文件时，日记不会再出现重复。之前重复导入的日记会在所有设备更新后合并。",
+    "zh_Hant": "裝置重新連線同步，或在兩台裝置上匯入同一個檔案時，日記不會再出現重複。之前重複匯入的日記會在所有裝置更新後合併。"
   }
 ]

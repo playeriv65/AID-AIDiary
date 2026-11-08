@@ -7,6 +7,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:aid_diary/database/app_database.dart';
+import 'package:aid_diary/database/entry_image_dao.dart';
 import 'package:aid_diary/database/entry_tag_dao.dart';
 import 'package:aid_diary/database/image_storage.dart';
 import 'package:aid_diary/database/tag_category_dao.dart';
@@ -21,6 +22,7 @@ import 'package:aid_diary/providers/tags_provider.dart';
 import 'package:aid_diary/storage/storage_picker.dart';
 import 'package:aid_diary/utils/imports/import_helpers.dart';
 import 'package:aid_diary/utils/operation_outcome.dart';
+import 'package:aid_diary/utils/sync_ids.dart';
 import 'package:aid_diary/utils/tag_name_sanitizer.dart';
 import 'package:aid_diary/utils/zip_utils.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
@@ -109,17 +111,19 @@ Future<OperationOutcome> importFromDaylio(PickedFile selectedFile,
       final mappedMood =
           mood != null ? moodValueMapping[mood.clamp(1, 5)] : null;
 
-      if (!EntriesProvider.instance.hasEntryAtTimestamp(datetime)) {
-        final addedEntry = await EntriesProvider.instance.add(
-            Entry(
-              title: title,
-              text: note.isEmpty ? '' : html2md.convert(note),
-              mood: mappedMood,
-              timeCreate: datetime,
-              timeModified: datetime,
-            ),
-            skipUpdate: true);
-
+      final syncId = importedTimeSyncId(datetime);
+      final addedEntry = EntriesProvider.instance.hasEntryAtTimestamp(datetime)
+          ? null
+          : await addImportedEntry(
+              Entry(
+                title: title,
+                text: note.isEmpty ? '' : html2md.convert(note),
+                mood: mappedMood,
+                timeCreate: datetime,
+                timeModified: datetime,
+              ),
+              syncId);
+      if (addedEntry != null) {
         final assetIds = (entry['assets'] as List?)?.cast<int>() ?? [];
         for (final assetId in assetIds) {
           final asset = assetById[assetId];
@@ -156,6 +160,7 @@ Future<OperationOutcome> importFromDaylio(PickedFile selectedFile,
             timeCreate: datetime,
           ));
         }
+        await EntryImageDao.deriveImportedSyncIds(addedEntry.id!, syncId);
       }
 
       processedEntries++;

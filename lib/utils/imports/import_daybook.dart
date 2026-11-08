@@ -6,6 +6,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:csv/csv.dart';
+import 'package:aid_diary/database/entry_image_dao.dart';
 import 'package:aid_diary/database/image_storage.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/models/image.dart';
@@ -15,6 +16,7 @@ import 'package:aid_diary/storage/local_file_store.dart';
 import 'package:aid_diary/storage/storage_picker.dart';
 import 'package:aid_diary/utils/imports/import_helpers.dart';
 import 'package:aid_diary/utils/operation_outcome.dart';
+import 'package:aid_diary/utils/sync_ids.dart';
 import 'package:aid_diary/utils/zip_utils.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:path/path.dart';
@@ -98,18 +100,19 @@ Future<OperationOutcome> importFromDaybook(PickedFile selectedFile,
       final text = entry['text'] as String;
       final imageFilenames = entry['images'] as List<String>;
 
-      if (!EntriesProvider.instance.hasEntryAtTimestamp(date)) {
-        final addedEntry = await EntriesProvider.instance.add(
-          Entry(
-            title: title,
-            text: text,
-            mood: null,
-            timeCreate: date,
-            timeModified: date,
-          ),
-          skipUpdate: true,
-        );
-
+      final syncId = importedTimeSyncId(date);
+      final addedEntry = EntriesProvider.instance.hasEntryAtTimestamp(date)
+          ? null
+          : await addImportedEntry(
+              Entry(
+                title: title,
+                text: text,
+                mood: null,
+                timeCreate: date,
+                timeModified: date,
+              ),
+              syncId);
+      if (addedEntry != null) {
         int rank = 0;
         for (final filename in imageFilenames) {
           final bytes = await extractedFiles.read(filename);
@@ -128,6 +131,7 @@ Future<OperationOutcome> importFromDaybook(PickedFile selectedFile,
             );
           }
         }
+        await EntryImageDao.deriveImportedSyncIds(addedEntry.id!, syncId);
       }
 
       processedEntries++;

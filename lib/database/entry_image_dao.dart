@@ -4,6 +4,8 @@
 
 import 'package:aid_diary/database/app_database.dart';
 import 'package:aid_diary/models/image.dart';
+import 'package:aid_diary/sync/sync_schema.dart';
+import 'package:aid_diary/utils/sync_ids.dart';
 import 'package:sqflite/sqflite.dart';
 
 class EntryImageDao {
@@ -35,6 +37,24 @@ class EntryImageDao {
         .insert(imagesTable, entryImage.toJson());
 
     return entryImage.copy(id: id);
+  }
+
+  /// Gives the attachments of the imported entry [entryId] the sync ids every
+  /// device derives from [entrySyncId] and their order, so two imports of one
+  /// file hold the same attachments.
+  static Future<void> deriveImportedSyncIds(
+      int entryId, String entrySyncId) async {
+    final db = AppDatabase.instance.database!;
+    final rows = await db.query(imagesTable,
+        columns: [EntryImageFields.id],
+        where: '${EntryImageFields.entryId} = ?',
+        whereArgs: [entryId],
+        orderBy: '${EntryImageFields.imgRank}, ${EntryImageFields.id}');
+    for (final (index, row) in rows.indexed) {
+      await db.update(
+          imagesTable, {syncIdColumn: importedImageSyncId(entrySyncId, index)},
+          where: '${EntryImageFields.id} = ?', whereArgs: [row['id']]);
+    }
   }
 
   static Future<void> remove(EntryImage entryImage,

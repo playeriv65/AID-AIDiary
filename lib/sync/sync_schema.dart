@@ -143,6 +143,36 @@ BEGIN
 END''');
 }
 
+/// [id] while no row of [table] has it, else null: the new row then gets a
+/// random id.
+Future<String?> freeSyncId(
+        DatabaseExecutor db, String table, String id) async =>
+    (await db.query(table,
+                columns: ['id'],
+                where: '$syncIdColumn = ?',
+                whereArgs: [id],
+                limit: 1))
+            .isEmpty
+        ? id
+        : null;
+
+/// Records item [id] of [kind] as changed now, for a change no trigger sees:
+/// an id a row gave up then goes out as a deletion.
+Future<void> recordChange(DatabaseExecutor db, SyncKind kind, String id) =>
+    db.rawInsert(
+        'INSERT OR REPLACE INTO $syncChangesTable '
+        '(kind, $syncIdColumn, changed_at) VALUES (?, ?, $_nowMs)',
+        [kind.name, id]);
+
+/// Forgets the change recorded for item [id] of [kind] when this device never
+/// sent or received the item, for a write undone before it synced.
+Future<void> forgetUnsentChange(
+        DatabaseExecutor db, SyncKind kind, String id) =>
+    db.delete(syncChangesTable,
+        where: 'kind = ? AND $syncIdColumn = ? AND NOT EXISTS (SELECT 1 FROM '
+            '$syncItemsTable i WHERE i.kind = ? AND i.$syncIdColumn = ?)',
+        whereArgs: [kind.name, id, kind.name, id]);
+
 Future<void> addSyncItemsTable(DatabaseExecutor db) => db.execute('''
 CREATE TABLE $syncItemsTable (
   kind TEXT NOT NULL,
@@ -201,13 +231,21 @@ JOIN $syncChangesTable c ON c.kind = ? AND c.$syncIdColumn = e.$syncIdColumn''',
         row['id'] as int,
     };
 
-/// Forgets what was synced where, for a diary that leaves its space.
-Future<void> clearSyncState(DatabaseExecutor db) async {
-  await db.delete(syncChangesTable);
+/// Forgets what was synced where, for a diary that leaves its space or joins
+/// another. Changes not sent yet stay and go to the next space, so an entry
+/// erased or given another id meanwhile is not brought back from it.
+Future<void> forgetSpace(DatabaseExecutor db) async {
   await db.delete(syncSeenTable);
   await db.delete(syncItemsTable);
   await db.delete('sync_media_tasks');
   await db.delete('sync_media_objects');
+}
+
+/// [forgetSpace] and the changes not sent yet too, for a diary that takes
+/// another device's as it is (nearby transfer).
+Future<void> clearSyncState(DatabaseExecutor db) async {
+  await db.delete(syncChangesTable);
+  await forgetSpace(db);
 }
 
 /// Transfer state belongs to the diary, not to a connection or a process.

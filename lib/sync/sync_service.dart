@@ -1127,7 +1127,7 @@ class SyncService with ChangeNotifier {
     await _stop();
     _pendingJoin = null;
     final db = AppDatabase.instance.database!;
-    await clearSyncState(db);
+    await forgetSpace(db);
     await markAllChanged(db);
     _cachedLogin = login;
     await _save(
@@ -1218,7 +1218,7 @@ class SyncService with ChangeNotifier {
   /// Stops syncing on this device; the space and the diary stay as they are.
   Future<void> disconnect() async {
     await _stop();
-    await clearSyncState(AppDatabase.instance.database!);
+    await forgetSpace(AppDatabase.instance.database!);
     await ConfigProvider.instance.set(Settings.syncTarget, '');
     await ConfigProvider.instance.set(Settings.syncSecrets, '');
     await ConfigProvider.instance.set(Settings.lastSync, '');
