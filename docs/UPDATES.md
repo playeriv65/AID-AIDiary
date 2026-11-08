@@ -129,7 +129,8 @@ the builds.
 
 - **Checking**: when the app opens, at most every `updates.checkHours`, if
   "Check for updates automatically" is on (About). "Check for updates" asks
-  at once. `aid update.check` does the same.
+  at once. `aid update.check` does the same, and also reports a version the
+  user skipped, marked `skipped: true`.
 - **Asking**: a dialog with the commit lines: Skip this version, Later,
   Update. Update downloads with progress and installs.
 - **Silently** ("Install updates without asking", off by default): the app

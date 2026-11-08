@@ -294,7 +294,8 @@ For local multi-device sync without a phone/cloud account, start the Go service
 from `server/` (`go run ./cmd/aid-sync adduser NAME`, then `serve`) and hidden
 Windows app instances with separate `AID_DATA_DIR` and `AID_API_INFO` paths.
 These scratch instances use isolated file-backed preferences/secrets. Drive
-`sync.connect_webdav`, `sync.pair_offer` and `sync.pair_accept` through `aid`.
+`sync.connect_webdav` (then `sync.create_space` on the first instance),
+`sync.pair_offer` and `sync.pair_accept` through `aid`.
 Android can reach a local test port with `adb reverse tcp:PORT tcp:PORT`; debug
 and profile builds permit localhost HTTP for this. Physical route checks use
 the isolated procedure above, not ordinary diary data.

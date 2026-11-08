@@ -101,8 +101,9 @@ asks again. Dates are when it was settled. Ideas not built yet are in
 ## Layout and look
 
 - 2026-10-22: Replace the top app branding with a calendar shortcut. Calendar
-  opens over the current section and returns there on Back; it is no longer a
-  bottom-bar or rail destination. Keep everyday navigation to four sections.
+  is no longer a bottom-bar or rail destination. Keep everyday navigation to
+  four sections. Since 2026-11-08 the shortcut opens the journal's in-place
+  calendar from any section (Journal and editor details).
 
 - Diary-day wording (2026-10-22): the editor's date control is labeled
   "Diary day" (Chinese: "日记日"). Its picker says that creation time stays
@@ -160,7 +161,8 @@ asks again. Dates are when it was settled. Ideas not built yet are in
   - New entries start from a round button with a quill, no text label.
   - The journal's calendar button unfolds a calendar in place below the
     search card; tapping a day turns the list to that day (or the nearest
-    earlier one) instead of opening entries.
+    earlier one) instead of opening entries. Since 2026-11-08 it is the only
+    calendar (below).
   - Journal cards name their tags; the favorite tag shows as a heart.
   - The editor title is the diary day as a date only. The creation date and
     time appear in small print only when they fall on another day. The
@@ -168,6 +170,31 @@ asks again. Dates are when it was settled. Ideas not built yet are in
     creation time. The mood button sits beside the tags button.
   - Hiding an entry shows a passing notice saying where to show it again.
   - Weather uses the colour Meteocons set rather than monochrome glyphs.
+- Consistency (2026-11-08, owner), settling what was left after merging
+  duplicated UI:
+  - The journal's in-place calendar is the only calendar. The calendar
+    button on the media, map and coach tabs opens it on the journal; the
+    separate calendar page is gone. Holding or right-clicking a day up to
+    today writes an entry for that day.
+  - Hide images applies to every entry list.
+  - Deleting or hiding an entry while paging or in a random walk closes
+    only that entry; the page shows the next one and closes once none is
+    left.
+  - The hidden diary's Recently deleted is the same page as the diary's,
+    permanent delete included.
+  - One day picker (Gregorian or Persian), one confirm-dialog family, option
+    lists as bottom sheets, one section heading (`SectionLabel`).
+  - New passwords are typed twice through one component with a minimum
+    from configuration: app lock 4 (a device-only guard, often a PIN, like
+    the shortest screen-lock PIN), backup and sync recovery 8 (they protect
+    data that can be attacked offline).
+  - Labels say what each action does: Restore from backup (not Restore),
+    Copy this diary to a new device (nearby) and Approve a device for sync
+    (device keys) stay two actions: the nearby copy needs an empty device
+    on the same network and its code comes from the existing device, while
+    approval is for a device already in the sync space and its request
+    comes from the new device. One flow would need a new pairing protocol.
+    In Chinese, On This Day is 那年今日 everywhere.
 - Map (2026-10-23): every point is a counted circle, even for one entry. A
   point with several entries opens them as a list of their own; zooming is
   left to the fingers. A pinch does not rotate the map unless clearly

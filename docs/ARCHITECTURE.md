@@ -106,29 +106,37 @@ Consequences for structure:
 
 | Concept | Component | Switches |
 | --- | --- | --- |
-| An entry in any list (journal, calendar, timeline, search, Recently deleted, hidden entries, replies, citation picker) | `EntryCard` (`widgets/entry_card.dart`) inside `EntryDayGroup` when grouped by day | `showDate`, `showDetails`, `highlight` (search words), `label`, `trailing`, `images`, `selected` |
-| Picking tags (editor, templates, statistics, search filter, tag export) | `TagPicker` / `TagPickerDialog` (`widgets/tag_picker_dialog.dart`), chips are `TagChip` | `mode` (attach, single, filter), `hideFavorite`, `tagTypeFilter` |
+| An entry in any list (journal, timeline, search, Recently deleted, hidden entries, replies, citation picker) | `EntryCard` (`widgets/entry_card.dart`) inside `EntryDayGroup` when grouped by day; it applies the Hide images setting itself | `showDate`, `showDetails`, `highlight` (search words), `label`, `trailing`, `images`, `selected` |
+| A month calendar (the journal's, opened from any tab's calendar button or `ui.navigate to=calendar`) | `MonthCalendar` (`widgets/month_calendar.dart`) | `onWriteDay`, `todayButtonBottom` |
+| Picking a day (diary day, time-capsule opening day, the day to add shared content to) | `showDayPicker` / `DayPicker` (`widgets/day_picker.dart`), Gregorian or Persian by `TimeManager.isJalaliCalendar` | `note`, `confirm`, `onCancel` |
+| Recently deleted entries (the diary's and the hidden diary's) | `RecentlyDeletedPage`; the `HiddenDiaryScope` it opens in decides which entries | |
+| Picking tags (editor, templates, statistics, search filter, tag export) | `TagPicker` / `TagPickerDialog` (`widgets/tag_picker_dialog.dart`), chips are `TagChip`; every mode offers Manage tags | `mode` (attach, single, filter), `hideFavorite`, `tagTypeFilter` |
 | Picking a mood (editor, check-in, search, mood associations) | `MoodPicker.single` / `.multi` (`widgets/mood_picker.dart`); names from `moodName` | `clearable`, `size`, `spread` |
-| Asking yes or no | `showConfirmDialog` / `showDeleteConfirmDialog` (`widgets/confirm_dialog.dart`) | `destructive`, `content`, `confirmKey` |
+| Asking yes or no, or one of two ways on (leaving the editor) | `showConfirmDialog` / `showConfirmOrDeclineDialog` / `showDeleteConfirmDialog` (`widgets/confirm_dialog.dart`) | `destructive`, `content`, `confirmKey`, `phrase` (typed to confirm), `askSetting` (Don't ask again), `decline` |
+| Typing a new password twice (app lock, backup password, sync recovery password) | `NewPasswordFields` (`widgets/new_password_fields.dart`); the minimum comes from `app_config.json` per use | `minLength`, `label`, `repeatLabel`, `obscure` |
+| Asking for a fingerprint, face or the screen lock | `authenticateOnDevice` (`widgets/auth_popup.dart`) | `biometricOnly` |
 | Asking for a piece of text (device name, place name, recovery code, authorization request, nearby invitation) | `showTextInputDialog` (`widgets/text_input_dialog.dart`) | `hint`/`label`, `validate`, `maxLength`, `maxLines`, `trim`, `plain`, `scan` |
-| Picking one of a few options (attachment kind, block to insert, share format, deleted-entry action) | `showChoiceSheet` (`widgets/choice_sheet.dart`) | `title` |
+| Picking one of a few options (attachment kind, block to insert, heading level, share, import and export format, deleted-entry action, an entry on a shared day, pairing or recovery code) | `showChoiceSheet` (`widgets/choice_sheet.dart`) | `title`, `message`, an `icon` per choice |
 | Choosing between two versions of a synced entry (after a sync, on start, from Settings > Sync) | `resolveSyncConflicts`, one `showSyncConflictDialog` per conflict (`widgets/sync_conflict_dialog.dart`) | `skip` |
 | Deleting an entry (reader and editor) | `deleteEntryAfterAsking` (`widgets/hidden_diary_scope.dart`) | |
 | Showing a QR code for another device | `QrCodeBox` (`widgets/qr_code_box.dart`) | |
 | Scanning a sync QR code (pairing, nearby, device authorization) | `SyncScanNavigation.open` (`routing/sync_scan_navigation.dart`) | `kind` |
 | One emoji as an icon (moods, tag icons) | `EmojiInputBox` (`widgets/emoji_input_box.dart`) | |
 | Saving or sharing some tags or templates | `ShareSelectionPage` (`widgets/share_selection_page.dart`) | |
-| A settings row | `SettingsRow` (`widgets/settings_row.dart`), under `SettingsToggle`, `SettingsDropdown`, `SettingsIconAction`, `SettingsCategory` | `icon`, `hint`, `trailing` |
+| Saving bytes to a file the user picks | `saveToFile` (`widgets/save_to_file.dart`) | `fileName`, `mimeType` |
+| Android photo and folder permissions | `requestPhotoAccess`, `requestFolderAccess`, `requestPhotoLocations` (`services/media_permissions.dart`) | |
+| An entry, mood days or counts by month on a story slide | `StoryEntryCard`, `StoryMoodDays`, `StoryBarChart` (`widgets/story_cards.dart`) | `heading`, `open` / `days` / `labels`, `series` |
+| A settings row; one that opens a place is a `SettingsCategory` | `SettingsRow` (`widgets/settings_row.dart`), under `SettingsToggle`, `SettingsDropdown`, `SettingsIconAction`, `SettingsCategory` | `icon`, `hint`, `trailing`, `busy` |
 | A statistics card | `StatCard`, `StatNoData` (`widgets/stat_card.dart`) | `hasData`, `action` |
 | A section title in a list | `SectionLabel` (`widgets/list_detail_layout.dart`) | `trailing` |
 | A tap on something that paints itself (photo, map marker); a card takes an `InkWell` inside itself | `InkOverlay` (`widgets/ink_overlay.dart`) | `shape`, `label` |
-| The icon and name at the top of the tag and category editors | `IconNameRow` (`widgets/icon_name_row.dart`) | |
+| The tag and category editors' frame (icon and name, color, delete, OK) | `TagLookDialog` (`widgets/tag_look_dialog.dart`) with `IconNameRow` | `title`, `fields`, `delete` |
 | Text on a colored swatch | `contrastingTextColor` (`utils/color_utils.dart`) | |
 | Nothing to show | `EmptyState` | |
 | An operation behind a progress dialog, and its failure whether reported or thrown | `runOperation` (`widgets/progress_dialog.dart`), failure shown by `showFailureDialog` | `failureDescription` |
 | A fact with an icon (place, weather) on cards, the entry page and share pictures | `IconLabel` (`widgets/icon_label.dart`) | `icon` or `glyph`, `size`, `color` |
 | A day's weather | `WeatherProvider.of`/`ofEntry`, edited with `showWeatherDialog` | |
-| A note or a failure the user can simply retry | `showSnackMessage` / `runWithFailureSnack` (`widgets/snack_message.dart`) | `failure` |
+| A note or a failure the user can simply retry | `showSnackMessage` / `runWithFailureSnack` (`widgets/snack_message.dart`) | `action`, `failure` |
 
 ### Reporting failures
 
@@ -194,18 +202,20 @@ rebuild path. The editor's `MenuAnchor` owns the local mood popup; its six
 accessible choices report directly to the view model, with no staged selection.
 
 The editor labels its date control "Diary day" and explains that choosing a
-date changes grouping rather than creation time. `TimeManager.pickDate` forwards
-the optional contextual header to both calendar implementations. The save/cancel
+date changes grouping rather than creation time. The picker is `showDayPicker`,
+in either calendar system, with when the entry was written as its note. The save/cancel
 flows are covered by `test/pages/editor_diary_day_test.dart`, including retained
 creation timestamps, UTC offsets and body text in an isolated store.
 
 ### UI work and shared state
 
 The shell retains four lazily built sections: journal, media, atlas and coach.
-The shared top card opens `calendar` as an ordinary named route, also reached
-by `ui.navigate to=calendar`. Its month/day selection survives layout changes
-while open; Back returns to the section beneath it. Calendar owns its compact
-new-entry button; wide layouts retain the shell's rail action.
+There is one calendar, the journal's. The shared top card's calendar button and
+`ui.navigate to=calendar` switch to the journal and unfold it
+(`journalCalendar` in `routing/destinations.dart`); the same button, Back and
+leaving the journal fold it, and `ui.screen` reports `calendar` while it shows.
+Tapping a day turns the journal to it; holding or right-clicking a day up to
+today writes an entry for that day.
 
 Pages stay alive and may rebuild on each diary change. Keep per-entry work out
 of build loops: use store indexes (`EntryStore.getEntriesForDate`,
@@ -281,8 +291,10 @@ same things:
 
 - GUI buttons call `AppActions.instance.run(id, args)` for one-step
   operations (deleting, restoring, syncing now, stopping sync). Multi-step
-  flows with dialogs, such as connecting sync, call the same service
-  methods the action calls, so the logic still exists once.
+  flows run one action per step and ask in between: connecting sync runs
+  `sync.connect_webdav` or `sync.connect_google`, then, by the `space` it
+  returns, `sync.create_space`, pairing or `sync.unlock`; none of them
+  waits for the first sync. `sync.sign_in_again` renews a Google sign-in.
 - The command palette (Ctrl+K, or Settings → Command line → All commands)
   lists every action and runs it through a form.
 - The agent API (`actions/agent_api.dart`) serves the actions over HTTP on
@@ -304,7 +316,7 @@ when it opens, not its text.
 Places: every screen, item or dialog the GUI opens is a `Destination` in
 `lib/routing/` (`destinations.dart` gathers them), opened by taps through
 the same code `ui.navigate` uses, with typed parameters (`ui.navigate
-to=entry id=12`, `to=day day=2026-10-21`). Routes are named after their
+to=entry id=12`, `to=calendar`). Routes are named after their
 place, so `ui.screen` reports `entry/12`; `ui.back` closes the top one.
 Dialogs and sheets are places as well (`showPlaceDialog`, `showPlaceSheet`:
 `tag`, `check_in`, `commands`), and so are the stories (`story from=coach`,

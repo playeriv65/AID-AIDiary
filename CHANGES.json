@@ -100,5 +100,89 @@
     "en": "When two devices change the same entry before either change syncs, the app shows both versions and you choose: this device's, the other's, or both as two entries. You can decide later from the sync settings; nothing goes to Recently deleted on its own.",
     "zh": "两台设备在同步之前都改了同一篇日记时，应用会列出两个版本，由你选择保留本机的、另一台的，还是都保留成两篇日记。也可以稍后在同步设置里再选；不会再自动把某个版本放进“最近删除”。",
     "zh_Hant": "兩台裝置在同步之前都改了同一篇日記時，應用程式會列出兩個版本，由你選擇保留本機的、另一台的，還是都保留成兩篇日記。也可以稍後在同步設定裡再選；不會再自動把某個版本放進「最近刪除」。"
+  },
+  {
+    "id": "2026-11-08-calendar-on-every-tab",
+    "en": "The calendar button on every tab opens the journal's calendar. Hold or right-click a day to write an entry for it.",
+    "zh": "每个标签页的日历按钮都会打开日记页的日历。长按或右键某一天即可为那天写日记。",
+    "zh_Hant": "每個分頁的日曆按鈕都會開啟日記頁的日曆。長按或按右鍵某一天即可為那天寫日記。"
+  },
+  {
+    "id": "2026-11-08-hide-images-everywhere",
+    "en": "Hide images now applies to every list of entries: search, timelines, Recently deleted and the hidden diary too.",
+    "zh": "“隐藏图片”现在作用于所有日记列表，包括搜索、时间线、最近删除和隐藏日记。",
+    "zh_Hant": "「隱藏圖片」現在作用於所有日記清單，包括搜尋、時間線、最近刪除和隱藏日記。"
+  },
+  {
+    "id": "2026-11-08-delete-keeps-page",
+    "en": "Deleting or hiding an entry while paging through entries or in a random walk shows the next entry instead of closing the page.",
+    "zh": "翻阅日记或随机漫步时删除或隐藏一篇，会显示下一篇，不再关闭页面。",
+    "zh_Hant": "翻閱日記或隨機漫步時刪除或隱藏一篇，會顯示下一篇，不再關閉頁面。"
+  },
+  {
+    "id": "2026-11-08-hidden-recently-deleted",
+    "en": "The hidden diary's Recently deleted can delete entries for good and be emptied, like the diary's.",
+    "zh": "隐藏日记的最近删除也能永久删除和清空，与普通日记的一样。",
+    "zh_Hant": "隱藏日記的最近刪除也能永久刪除和清空，與一般日記的一樣。"
+  },
+  {
+    "id": "2026-11-08-one-day-picker",
+    "en": "Choosing a day looks the same everywhere: the diary day, a time capsule's opening day and the day to add shared content to. A day that already has entries then offers them in a list.",
+    "zh": "选日期的方式统一了：日记日、时间胶囊开启日和分享内容要加入的日子都用同一个日历。选中的日子已有日记时，会在列表中列出供选择。",
+    "zh_Hant": "選日期的方式統一了：日記日、時間膠囊開啟日和分享內容要加入的日子都用同一個日曆。選中的日子已有日記時，會在清單中列出供選擇。"
+  },
+  {
+    "id": "2026-11-08-choices-as-sheets",
+    "en": "Import and export formats, heading levels and joining a sync space with pairing or a recovery code are chosen from a list at the bottom of the screen.",
+    "zh": "导入导出格式、标题级别，以及加入同步时选择配对或恢复码，都改为从屏幕底部的列表中选择。",
+    "zh_Hant": "匯入匯出格式、標題層級，以及加入同步時選擇配對或恢復碼，都改為從螢幕底部的清單中選擇。"
+  },
+  {
+    "id": "2026-11-08-password-minimums",
+    "en": "A new app lock password needs at least 4 characters and a new backup password at least 8; every new password is typed twice the same way.",
+    "zh": "新的应用锁密码至少 4 个字符，新的备份密码至少 8 个字符；所有新密码都以同样的方式输入两次。",
+    "zh_Hant": "新的應用程式鎖密碼至少 4 個字元，新的備份密碼至少 8 個字元；所有新密碼都以同樣的方式輸入兩次。"
+  },
+  {
+    "id": "2026-11-08-sync-connect-flow",
+    "en": "Connecting sync no longer waits for the first sync. An incomplete server address is reported, and sign-in problems show a dialog you close yourself.",
+    "zh": "连接同步不再等待第一次同步完成。服务器地址不完整时会提示，登录问题会以对话框显示，直到你关闭它。",
+    "zh_Hant": "連接同步不再等待第一次同步完成。伺服器位址不完整時會提示，登入問題會以對話框顯示，直到你關閉它。"
+  },
+  {
+    "id": "2026-11-08-device-revoke-warning",
+    "en": "Revoking a device asks with a red button, like other steps that cannot simply be undone.",
+    "zh": "撤销设备时会用红色按钮确认，与其他无法简单撤销的操作一致。",
+    "zh_Hant": "撤銷裝置時會用紅色按鈕確認，與其他無法簡單撤銷的操作一致。"
+  },
+  {
+    "id": "2026-11-08-clearer-labels",
+    "en": "Buttons say what they do: Restore from backup, Copy this diary to a new device and Approve a device for sync.",
+    "zh": "按钮名称直接说明作用：从备份恢复、把日记复制到新设备、允许新设备同步。“那年今日”在各处名称一致。",
+    "zh_Hant": "按鈕名稱直接說明作用：從備份還原、把日記複製到新裝置、允許新裝置同步。「那年今日」在各處名稱一致。"
+  },
+  {
+    "id": "2026-11-08-place-star-by-name",
+    "en": "Places known only by their name can be saved in the location picker too.",
+    "zh": "位置选择里只有名称的地点也能收藏。",
+    "zh_Hant": "位置選擇裡只有名稱的地點也能收藏。"
+  },
+  {
+    "id": "2026-11-08-story-cards-unified",
+    "en": "In stories, mood days show weekday columns, the year shows month names and throwbacks show the mood.",
+    "zh": "故事里的心情日历按星期排列，年度回顾显示月份名称，往日回顾显示心情。",
+    "zh_Hant": "故事裡的心情日曆按星期排列，年度回顧顯示月份名稱，往日回顧顯示心情。"
+  },
+  {
+    "id": "2026-11-08-save-file-dialog",
+    "en": "Saving tags, templates, a shared picture or a photo uses the system's save dialog and says when the file is saved.",
+    "zh": "保存标签、模板、分享图片或照片时使用系统保存对话框，并提示文件已保存。",
+    "zh_Hant": "儲存標籤、範本、分享圖片或照片時使用系統儲存對話框，並提示檔案已儲存。"
+  },
+  {
+    "id": "2026-11-08-same-editors-and-pickers",
+    "en": "The category editor looks like the tag editor, choosing a tag in statistics offers Manage tags, and the coach tab has the same search button as the other tabs.",
+    "zh": "分类编辑器与标签编辑器样式一致，统计中选择标签时也可以管理标签，引导页与其他页面一样有搜索按钮。",
+    "zh_Hant": "分類編輯器與標籤編輯器樣式一致，統計中選擇標籤時也可以管理標籤，引導頁與其他頁面一樣有搜尋按鈕。"
   }
 ]

@@ -47,7 +47,7 @@ matches the frame colors to the app theme; see [Windows setup](docs/SETUP.md#win
 - **Reviews**: the week or the year as story slides: counts, mood (a 7-day row, or the year in pixels), most frequent tags and places, photos, entries per month and a highlight.
 - **Quick check-in**: a mood and a line of text, saved as an entry in two taps.
 - **Time capsules**: seal an entry until a date; until then it shows locked and stays out of search, throwbacks, random walk, media and the map. It can be opened early.
-- **Calendar**: the journal's calendar button unfolds scrolling months in place; tapping a day turns the list to that day. The calendar page (tablets, `ui.navigate`) shows the selected day beside the months.
+- **Calendar**: the calendar button on every tab unfolds the journal's scrolling months in place; tapping a day turns the list to that day, and holding or right-clicking a day writes an entry for it.
 - **Media**: every attached photo, video and voice note.
 - **Atlas**: entries with a location on an OpenStreetMap map, each point a numbered circle; a point with several entries opens them as a list. A pinch does not rotate the map unless clearly turned, and a slightly turned map returns to north.
 - **Comments and citations**: in an entry from an earlier day, select text to keep the passage or comment on it, or comment on the whole entry. A comment is an entry of today citing what it answers, written in a few lines or expanded into the full editor; any entry can cite others found by search, and an entry lists the entries answering it. Kept passages are listed together. Editing a past entry asks first (with "don't ask again").
