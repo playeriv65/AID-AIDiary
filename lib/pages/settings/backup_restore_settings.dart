@@ -17,6 +17,7 @@ import 'package:aid_diary/utils/export_utils.dart';
 import 'package:aid_diary/utils/password_store.dart';
 import 'package:aid_diary/widgets/auth_popup.dart';
 import 'package:aid_diary/widgets/auto_backup_settings_dialog.dart';
+import 'package:aid_diary/widgets/choice_sheet.dart';
 import 'package:aid_diary/widgets/confirm_dialog.dart';
 import 'package:aid_diary/routing/destinations.dart';
 import 'package:aid_diary/widgets/progress_dialog.dart';
@@ -39,44 +40,21 @@ class _BackupRestoreSettingsState extends State<BackupRestoreSettings> {
     super.initState();
   }
 
-  /// Asks which of [options] to use; null when the dialog is dismissed.
-  Future<T?> _chooseFormat<T>(
-      String description, List<(T, String, Key)> options) {
-    return showDialog<T>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(AppLocalizations.of(context)!.logFormatTitle),
-          content: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(description),
-                const Divider(),
-                for (final (value, name, key) in options)
-                  ListTile(
-                      key: key,
-                      title: Text(name),
-                      onTap: () => Navigator.of(context).pop(value)),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
   Future<void> _showImportSelectionPopup() async {
     final localizations = AppLocalizations.of(context)!;
-    final option = await _chooseFormat(localizations.logFormatDescription, [
-      for (final option in ImportRegistry.instance.options)
-        (
-          option,
-          option.name(localizations),
-          ValueKey('import-${option.format.name}')
-        ),
-    ]);
+    final option = await showChoiceSheet(
+        context,
+        [
+          for (final option in ImportRegistry.instance.options)
+            (
+              value: option,
+              icon: null,
+              label: option.name(localizations),
+              key: ValueKey('import-${option.format.name}')
+            ),
+        ],
+        title: localizations.logFormatTitle,
+        message: localizations.logFormatDescription);
     if (option == null || !mounted) return;
     final file = await StoragePicker.pickFile(
         allowedExtensions: option.extensions, mimeTypes: option.mimeTypes);
@@ -88,15 +66,19 @@ class _BackupRestoreSettingsState extends State<BackupRestoreSettings> {
 
   Future<void> _showExportSelectionPopup() async {
     final localizations = AppLocalizations.of(context)!;
-    final option =
-        await _chooseFormat(localizations.settingsExportFormatDescription, [
-      for (final option in ExportRegistry.instance.options)
-        (
-          option,
-          option.name(localizations),
-          ValueKey('export-${option.format.name}')
-        ),
-    ]);
+    final option = await showChoiceSheet(
+        context,
+        [
+          for (final option in ExportRegistry.instance.options)
+            (
+              value: option,
+              icon: null,
+              label: option.name(localizations),
+              key: ValueKey('export-${option.format.name}')
+            ),
+        ],
+        title: localizations.logFormatTitle,
+        message: localizations.settingsExportFormatDescription);
     if (option == null || !mounted) return;
     final folder = await StoragePicker.pickDirectory();
     if (folder == null || !mounted) return;

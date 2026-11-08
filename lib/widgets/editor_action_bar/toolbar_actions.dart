@@ -114,21 +114,17 @@ Future<void> _insertBlock(
 
 Future<void> _insertHeader(
     BuildContext context, TextEditingController controller) async {
-  final level = await showDialog<int>(
-    context: context,
-    builder: (context) => AlertDialog(
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          for (var level = 1; level <= 6; level++)
-            ListTile(
-              title: Text('H$level',
-                  style: TextStyle(fontSize: 28 - 2 * level.toDouble())),
-              onTap: () => Navigator.pop(context, level),
-            ),
-        ],
-      ),
-    ),
-  );
+  final level = await showChoiceSheet(
+      context,
+      [
+        for (var level = 1; level <= 6; level++)
+          (
+            value: level,
+            icon: null,
+            label: 'H$level',
+            key: ValueKey('heading-$level')
+          ),
+      ],
+      title: AppLocalizations.of(context)!.toolbarHeading);
   if (level != null) insertLinePrefix(controller, '#' * level);
 }
