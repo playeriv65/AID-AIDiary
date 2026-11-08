@@ -10,6 +10,8 @@ import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
 /// Swipes through [getEntries] starting at [index]; the arrows step too.
+/// An entry deleted or hidden here leaves its neighbour showing; the page
+/// closes once none are left.
 class EntriesListPage extends StatefulWidget {
   final int index;
   final List<Entry> Function() getEntries;
@@ -29,9 +31,24 @@ class _EntriesListPageState extends State<EntriesListPage> {
       PageController(initialPage: widget.index);
 
   @override
+  void initState() {
+    super.initState();
+    EntriesProvider.instance.addListener(_closeWhenEmpty);
+  }
+
+  @override
   void dispose() {
+    EntriesProvider.instance.removeListener(_closeWhenEmpty);
     _pageController.dispose();
     super.dispose();
+  }
+
+  bool _closing = false;
+
+  void _closeWhenEmpty() {
+    if (_closing || !mounted || widget.getEntries().isNotEmpty) return;
+    _closing = true;
+    Navigator.of(context).maybePop();
   }
 
   void _go(int page) => _pageController.animateToPage(page,

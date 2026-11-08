@@ -74,6 +74,12 @@ void main() {
     expect(find.byType(EntriesListPage), findsOneWidget);
     expect(find.text('第三篇'), findsOneWidget);
     expect(EntryStore.instance.entries.single.text, '第三篇');
+
+    // Nothing left to show: the pager closes.
+    await deleteShown(tester, 0);
+    await DiaryAppHarness.pumpUntil(
+        tester, () => find.byType(EntriesListPage).evaluate().isEmpty);
+    expect(find.text('home'), findsOneWidget);
     await tester.pumpWidget(const SizedBox.shrink());
   });
 
