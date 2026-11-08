@@ -1470,12 +1470,6 @@ abstract class AppLocalizations {
   /// **'Choose a log'**
   String get shareAddToLogPickerTitle;
 
-  /// No description provided for @adaptiveEmptyDay.
-  ///
-  /// In en, this message translates to:
-  /// **'No entries for this day yet'**
-  String get adaptiveEmptyDay;
-
   /// No description provided for @adaptiveNewEntry.
   ///
   /// In en, this message translates to:

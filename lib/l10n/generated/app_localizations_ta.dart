@@ -814,9 +814,6 @@ class AppLocalizationsTa extends AppLocalizations {
   String get shareAddToLogPickerTitle => 'ஒரு நாட்குறிப்பைத் தேர்ந்தெடுக்கவும்';
 
   @override
-  String get adaptiveEmptyDay => 'இந்த நாளுக்கான பதிவுகள் எதுவும் இல்லை';
-
-  @override
   String get adaptiveNewEntry => 'ஒரு பதிவை எழுதுங்கள்';
 
   @override

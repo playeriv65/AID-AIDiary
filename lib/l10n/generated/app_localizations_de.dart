@@ -807,9 +807,6 @@ class AppLocalizationsDe extends AppLocalizations {
   String get shareAddToLogPickerTitle => 'Wählen Sie einen Tagebucheintrag';
 
   @override
-  String get adaptiveEmptyDay => 'Für diesen Tag gibt es noch keine Einträge';
-
-  @override
   String get adaptiveNewEntry => 'Schreiben Sie einen Eintrag';
 
   @override

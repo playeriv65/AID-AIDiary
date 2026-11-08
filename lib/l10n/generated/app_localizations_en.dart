@@ -799,9 +799,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get shareAddToLogPickerTitle => 'Choose a log';
 
   @override
-  String get adaptiveEmptyDay => 'No entries for this day yet';
-
-  @override
   String get adaptiveNewEntry => 'Write an entry';
 
   @override

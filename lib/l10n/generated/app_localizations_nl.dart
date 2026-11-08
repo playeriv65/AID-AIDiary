@@ -809,9 +809,6 @@ class AppLocalizationsNl extends AppLocalizations {
   String get shareAddToLogPickerTitle => 'Kies een dagboekaantekening';
 
   @override
-  String get adaptiveEmptyDay => 'Er zijn nog geen aanmeldingen voor deze dag';
-
-  @override
   String get adaptiveNewEntry => 'Schrijf een vermelding';
 
   @override

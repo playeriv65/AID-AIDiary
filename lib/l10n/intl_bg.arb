@@ -217,7 +217,6 @@
     "labelCoverageLabel": "Покритие",
     "chartDistributionTitle": "{tag} Разпределение",
     "shareAddToLogPickerTitle": "Изберете запис в дневника",
-    "adaptiveEmptyDay": "Все още няма записи за този ден",
     "adaptiveNewEntry": "Напишете запис",
     "pageJournalTitle": "Журнал",
     "coachPrompt1": "Какво ви накара да се усмихнете днес?",

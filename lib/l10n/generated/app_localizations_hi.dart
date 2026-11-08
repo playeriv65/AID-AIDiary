@@ -804,9 +804,6 @@ class AppLocalizationsHi extends AppLocalizations {
   String get shareAddToLogPickerTitle => 'एक डायरी प्रविष्टि चुनें';
 
   @override
-  String get adaptiveEmptyDay => 'इस दिन के लिए अभी तक कोई प्रविष्टि नहीं';
-
-  @override
   String get adaptiveNewEntry => 'एक प्रविष्टि लिखें';
 
   @override

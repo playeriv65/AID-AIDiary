@@ -810,9 +810,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get shareAddToLogPickerTitle => 'اختر إدخال اليوميات';
 
   @override
-  String get adaptiveEmptyDay => 'لا توجد إدخالات لهذا اليوم حتى الآن';
-
-  @override
   String get adaptiveNewEntry => 'اكتب إدخالا';
 
   @override

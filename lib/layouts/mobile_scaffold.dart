@@ -28,6 +28,7 @@ class MobileScaffold extends StatefulWidget {
 
 class _MobileScaffoldState extends State<MobileScaffold>
     implements ActionScreen {
+  static const _journalIndex = 0;
   static const _coachIndex = 3;
   static const _tabs = ['journal', 'media', 'atlas', 'coach'];
 
@@ -39,6 +40,7 @@ class _MobileScaffoldState extends State<MobileScaffold>
   void initState() {
     super.initState();
     AppActions.instance.screen = this;
+    places.journalCalendar.addListener(_showCalendar);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final context = _navigatorKey.currentContext;
       if (context != null) AppUpdatePrompt.instance.start(context);
@@ -48,13 +50,26 @@ class _MobileScaffoldState extends State<MobileScaffold>
 
   @override
   void dispose() {
+    places.journalCalendar.removeListener(_showCalendar);
     if (AppActions.instance.screen == this) AppActions.instance.screen = null;
     SyncConflictPrompt.instance.stop();
     super.dispose();
   }
 
+  /// The journal's calendar unfolds on the journal, from whichever tab.
+  void _showCalendar() {
+    if (places.journalCalendar.value && currentIndex != _journalIndex) {
+      _switchPage(_journalIndex);
+    }
+  }
+
   @override
-  String get current => rootRoutes.top ?? _routes.top ?? _tabs[currentIndex];
+  String get current =>
+      rootRoutes.top ??
+      _routes.top ??
+      (currentIndex == _journalIndex && places.journalCalendar.value
+          ? 'calendar'
+          : _tabs[currentIndex]);
 
   @override
   List<ScreenDestination> get destinations => [
@@ -79,7 +94,9 @@ class _MobileScaffoldState extends State<MobileScaffold>
       await navigator.maybePop();
       return routes.depth < before;
     }
-    return false;
+    if (!places.journalCalendar.value) return false;
+    places.journalCalendar.value = false;
+    return true;
   }
 
   @override
@@ -90,7 +107,10 @@ class _MobileScaffoldState extends State<MobileScaffold>
       if (!mounted || !await back()) return;
     }
     final tab = _tabs.indexOf(destination);
-    if (tab >= 0) return _switchPage(tab);
+    if (tab >= 0) {
+      places.journalCalendar.value = false;
+      return _switchPage(tab);
+    }
     final context = _navigatorKey.currentContext;
     if (context == null || !context.mounted) return;
     // The place's future ends when it is closed: answer once it is showing.
@@ -112,6 +132,8 @@ class _MobileScaffoldState extends State<MobileScaffold>
 
   void _switchPage(int index) {
     if (index != currentIndex) Haptics.selection();
+    // The calendar belongs to the journal: leaving it folds the calendar.
+    if (index != _journalIndex) places.journalCalendar.value = false;
     FocusManager.instance.primaryFocus?.unfocus();
     setState(() {
       currentIndex = index;

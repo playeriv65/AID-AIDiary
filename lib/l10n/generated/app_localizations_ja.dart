@@ -791,9 +791,6 @@ class AppLocalizationsJa extends AppLocalizations {
   String get shareAddToLogPickerTitle => '日記エントリを選択してください';
 
   @override
-  String get adaptiveEmptyDay => 'この日のエントリーはまだありません';
-
-  @override
   String get adaptiveNewEntry => 'エントリーを書く';
 
   @override

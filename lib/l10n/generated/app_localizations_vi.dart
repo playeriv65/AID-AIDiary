@@ -805,9 +805,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get shareAddToLogPickerTitle => 'Chọn một mục nhật ký';
 
   @override
-  String get adaptiveEmptyDay => 'Chưa có mục nào cho ngày này';
-
-  @override
   String get adaptiveNewEntry => 'Viết một mục';
 
   @override

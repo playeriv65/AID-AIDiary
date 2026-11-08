@@ -26,7 +26,7 @@ import 'package:aid_diary/providers/entry_images_provider.dart';
 import 'package:aid_diary/time_manager.dart';
 import 'package:material_ui/material_ui.dart';
 
-/// Routes shared by the Today, Journal and Calendar pages.
+/// Routes to entries, shared by the pages that list them.
 class EntryNavigation {
   static Future<void> edit(BuildContext context, Entry? entry,
       {bool openCamera = false,
@@ -79,19 +79,6 @@ class EntryNavigation {
             (_) => EntriesListPage(
                 index: index < 0 ? 0 : index, getEntries: getEntries)));
   }
-
-  /// Every entry of [date], newest first.
-  static Future<void> day(BuildContext context, DateTime date) => pushPlace(
-      context,
-      'day',
-      id: DiaryDay.format(date),
-      (context) => EntryTimelinePage(
-            header: TimeManager.formatDate(date, context),
-            getEntries: () => EntriesProvider.instance.getEntriesForDate(date),
-            labelBuilder: (context, entry) => TimeManager.localizedTimeFormat(
-                    context, TimeManager.currentLocale(context))
-                .format(entry.timeCreate),
-          ));
 
   /// A batch of entries picked out together, such as one point on the map,
   /// as a list of their own under [header].
@@ -208,9 +195,6 @@ Entry _openEntry(ActionArgs args) {
   return entry;
 }
 
-const _dayParam =
-    ActionParam('day', ParamType.string, 'The diary day, yyyy-MM-dd');
-
 /// The entry screens, for `ui.navigate`.
 final List<Destination> entryDestinations = [
   Destination(
@@ -247,11 +231,6 @@ final List<Destination> entryDestinations = [
         initialMood: intArg(args, 'mood'),
         template: template);
   }),
-  Destination(
-      'day',
-      'Every entry of one diary day',
-      params: const [_dayParam],
-      (context, args) => EntryNavigation.day(context, dateArg(args, 'day')!)),
   Destination('entries',
       'Some entries as a list of their own, as a point on the map opens them',
       params: const [

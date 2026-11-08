@@ -834,9 +834,6 @@ class AppLocalizationsBe extends AppLocalizations {
   String get shareAddToLogPickerTitle => 'Выберыце дзённікавы запіс';
 
   @override
-  String get adaptiveEmptyDay => 'Запісаў на гэты дзень пакуль няма';
-
-  @override
   String get adaptiveNewEntry => 'Напісаць запіс';
 
   @override

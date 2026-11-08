@@ -800,9 +800,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get shareAddToLogPickerTitle => 'Bir günlük girişi seçin';
 
   @override
-  String get adaptiveEmptyDay => 'Bu gün için henüz giriş yok';
-
-  @override
   String get adaptiveNewEntry => 'Bir giriş yazın';
 
   @override

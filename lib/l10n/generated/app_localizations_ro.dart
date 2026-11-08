@@ -820,10 +820,6 @@ class AppLocalizationsRo extends AppLocalizations {
   String get shareAddToLogPickerTitle => 'Alegeți o înregistrare în jurnal';
 
   @override
-  String get adaptiveEmptyDay =>
-      'Încă nu există înregistrări pentru această zi';
-
-  @override
   String get adaptiveNewEntry => 'Scrieți o intrare';
 
   @override

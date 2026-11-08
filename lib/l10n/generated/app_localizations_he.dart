@@ -811,9 +811,6 @@ class AppLocalizationsHe extends AppLocalizations {
   String get shareAddToLogPickerTitle => 'בחר ערך ביומן';
 
   @override
-  String get adaptiveEmptyDay => 'אין עדיין רשומות ליום זה';
-
-  @override
   String get adaptiveNewEntry => 'כתוב ערך';
 
   @override

@@ -814,9 +814,6 @@ class AppLocalizationsPl extends AppLocalizations {
   String get shareAddToLogPickerTitle => 'Wybierz wpis w dzienniku';
 
   @override
-  String get adaptiveEmptyDay => 'Nie ma jeszcze żadnych wpisów na ten dzień';
-
-  @override
   String get adaptiveNewEntry => 'Napisz wpis';
 
   @override

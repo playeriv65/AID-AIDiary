@@ -20,7 +20,6 @@ import 'package:aid_diary/models/template.dart';
 import 'package:aid_diary/pages/edit_entry_page.dart';
 import 'package:aid_diary/pages/entries_list_page.dart';
 import 'package:aid_diary/pages/entry_share_page.dart';
-import 'package:aid_diary/pages/entry_timeline_page.dart';
 import 'package:aid_diary/pages/random_review_page.dart';
 import 'package:aid_diary/providers/entry_images_provider.dart';
 import 'package:aid_diary/providers/tags_provider.dart';
@@ -89,10 +88,6 @@ void main() {
         await navigate(tester, 'entry', {'id': entry.id}), 'entry/${entry.id}');
     expect(find.byType(EntriesListPage), findsOneWidget);
     expect(find.text('今天去了公园'), findsWidgets);
-
-    expect(
-        await navigate(tester, 'day', {'day': '2026-10-18'}), 'day/2026-10-18');
-    expect(find.byType(EntryTimelinePage), findsOneWidget);
 
     expect(await navigate(tester, 'entry_share', {'id': entry.id}),
         'entry_share/${entry.id}');

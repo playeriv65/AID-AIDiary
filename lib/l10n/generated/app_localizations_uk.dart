@@ -810,9 +810,6 @@ class AppLocalizationsUk extends AppLocalizations {
   String get shareAddToLogPickerTitle => 'Виберіть запис у щоденнику';
 
   @override
-  String get adaptiveEmptyDay => 'На цей день ще немає записів';
-
-  @override
   String get adaptiveNewEntry => 'Напишіть запис';
 
   @override

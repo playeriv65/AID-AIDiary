@@ -795,9 +795,6 @@ class AppLocalizationsCs extends AppLocalizations {
   String get shareAddToLogPickerTitle => 'Vyberte záznam v deníku';
 
   @override
-  String get adaptiveEmptyDay => 'Pro tento den zatím nejsou žádné záznamy';
-
-  @override
   String get adaptiveNewEntry => 'Napište záznam';
 
   @override

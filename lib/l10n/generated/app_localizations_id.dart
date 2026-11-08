@@ -795,9 +795,6 @@ class AppLocalizationsId extends AppLocalizations {
   String get shareAddToLogPickerTitle => 'Pilih entri buku harian';
 
   @override
-  String get adaptiveEmptyDay => 'Belum ada entri untuk hari ini';
-
-  @override
   String get adaptiveNewEntry => 'Tulis entri';
 
   @override

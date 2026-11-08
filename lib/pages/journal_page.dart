@@ -55,9 +55,6 @@ class _JournalPageState extends State<JournalPage>
     with AutomaticKeepAliveClientMixin {
   int? _selectedId;
 
-  /// The calendar unfolded under the search card.
-  bool _calendarOpen = false;
-
   /// The day groups as last built, and the sliver holding them.
   List<(DateTime, List<Entry>)> _groups = const [];
   final _entriesKey = GlobalKey();
@@ -75,6 +72,7 @@ class _JournalPageState extends State<JournalPage>
   @override
   void initState() {
     super.initState();
+    journalCalendar.addListener(_calendarChanged);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       _checkForLaunchIntent();
@@ -105,6 +103,9 @@ class _JournalPageState extends State<JournalPage>
 
   @override
   void dispose() {
+    journalCalendar.removeListener(_calendarChanged);
+    // The calendar folds with the journal; the next one starts folded.
+    journalCalendar.value = false;
     _shareSubscription?.cancel();
     _widgetTapSubscription?.cancel();
     _newEntryTapSubscription?.cancel();
@@ -230,12 +231,12 @@ class _JournalPageState extends State<JournalPage>
     };
   }
 
-  void _toggleCalendar() => setState(() => _calendarOpen = !_calendarOpen);
+  void _calendarChanged() => setState(() {});
 
   /// Folds the calendar and turns the list to [day]: that day's entries, or
   /// the nearest earlier day that has some, else the nearest later one.
   Future<void> _turnTo(DateTime day) async {
-    setState(() => _calendarOpen = false);
+    journalCalendar.value = false;
     final groups = _groups;
     if (groups.isEmpty) return;
     var index = -1;
@@ -369,7 +370,7 @@ class _JournalPageState extends State<JournalPage>
               scrollCacheExtent:
                   metrics == null ? null : const ScrollCacheExtent.pixels(0),
               slivers: [
-                PinnedSearchHeader(onCalendar: _toggleCalendar),
+                const PinnedSearchHeader(),
                 SliverPadding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   sliver: SliverToBoxAdapter(
@@ -445,7 +446,8 @@ class _JournalPageState extends State<JournalPage>
             )),
         // The calendar unfolds over the list, below the search card it came
         // from; a tap beside it folds it again.
-        if (_calendarOpen) Positioned.fill(child: _calendarPanel(context)),
+        if (journalCalendar.value)
+          Positioned.fill(child: _calendarPanel(context)),
       ]),
     );
   }
@@ -457,7 +459,7 @@ class _JournalPageState extends State<JournalPage>
         top: PinnedSearchHeader.extent,
         child: GestureDetector(
           key: const ValueKey('journal-calendar-scrim'),
-          onTap: _toggleCalendar,
+          onTap: () => journalCalendar.value = false,
           child: ColoredBox(color: cs.scrim.withValues(alpha: .08)),
         ),
       ),
@@ -478,6 +480,10 @@ class _JournalPageState extends State<JournalPage>
               child: MonthCalendar(
                 todayButtonBottom: 12,
                 onDayTap: (_, day) => _turnTo(day),
+                onWriteDay: (day) {
+                  journalCalendar.value = false;
+                  EntryNavigation.addForDay(context, day);
+                },
               ),
             ),
           );

@@ -807,9 +807,6 @@ class AppLocalizationsIt extends AppLocalizations {
   String get shareAddToLogPickerTitle => 'Scegli una voce del diario';
 
   @override
-  String get adaptiveEmptyDay => 'Ancora nessuna voce per questo giorno';
-
-  @override
   String get adaptiveNewEntry => 'Scrivi una voce';
 
   @override

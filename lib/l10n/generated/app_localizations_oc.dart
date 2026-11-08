@@ -810,9 +810,6 @@ class AppLocalizationsOc extends AppLocalizations {
   String get shareAddToLogPickerTitle => 'Causissètz una entrada de jornal';
 
   @override
-  String get adaptiveEmptyDay => 'Cap d\'intrada per aqueste jorn encara';
-
-  @override
   String get adaptiveNewEntry => 'Escriure una entrada';
 
   @override

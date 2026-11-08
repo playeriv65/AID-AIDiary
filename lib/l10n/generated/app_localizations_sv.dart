@@ -809,9 +809,6 @@ class AppLocalizationsSv extends AppLocalizations {
   String get shareAddToLogPickerTitle => 'Välj en dagboksanteckning';
 
   @override
-  String get adaptiveEmptyDay => 'Inga anmälningar för denna dag än';
-
-  @override
   String get adaptiveNewEntry => 'Skriv ett inlägg';
 
   @override

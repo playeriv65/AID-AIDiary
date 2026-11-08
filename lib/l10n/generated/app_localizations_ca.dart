@@ -808,9 +808,6 @@ class AppLocalizationsCa extends AppLocalizations {
   String get shareAddToLogPickerTitle => 'Trieu una entrada al diari';
 
   @override
-  String get adaptiveEmptyDay => 'Encara no hi ha entrades per a aquest dia';
-
-  @override
   String get adaptiveNewEntry => 'Escriu una entrada';
 
   @override

@@ -789,9 +789,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get shareAddToLogPickerTitle => '选择日志';
 
   @override
-  String get adaptiveEmptyDay => '这一天还没有日记';
-
-  @override
   String get adaptiveNewEntry => '写一篇日记';
 
   @override
@@ -3564,9 +3561,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get shareAddToLogPickerTitle => '選擇一個紀錄';
-
-  @override
-  String get adaptiveEmptyDay => '這一天還沒有日記';
 
   @override
   String get adaptiveNewEntry => '寫一篇日記';

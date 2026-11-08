@@ -800,9 +800,6 @@ class AppLocalizationsDa extends AppLocalizations {
   String get shareAddToLogPickerTitle => 'Vælg en dagbogsoptegnelse';
 
   @override
-  String get adaptiveEmptyDay => 'Ingen tilmeldinger for denne dag endnu';
-
-  @override
   String get adaptiveNewEntry => 'Skriv et indlæg';
 
   @override

@@ -825,9 +825,6 @@ class AppLocalizationsLt extends AppLocalizations {
   String get shareAddToLogPickerTitle => 'Pasirinkite dienoraščio įrašą';
 
   @override
-  String get adaptiveEmptyDay => 'Šiai dienai dar nėra įrašų';
-
-  @override
   String get adaptiveNewEntry => 'Parašykite įrašą';
 
   @override

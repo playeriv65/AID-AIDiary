@@ -210,7 +210,6 @@
     "encryptingBackupStatus": "正在加密備份… {percent}%",
     "decryptingBackupStatus": "正在解密備份… {percent}%",
     "shareAddToLogPickerTitle": "選擇一個紀錄",
-    "adaptiveEmptyDay": "這一天還沒有日記",
     "adaptiveNewEntry": "寫一篇日記",
     "pageJournalTitle": "日記",
     "coachPrompt1": "今天有什麼讓你會心一笑的事？",

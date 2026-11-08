@@ -797,9 +797,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get shareAddToLogPickerTitle => 'یک دفترچه خاطرات را انتخاب کنید';
 
   @override
-  String get adaptiveEmptyDay => 'هنوز هیچ ورودی برای این روز وجود ندارد';
-
-  @override
   String get adaptiveNewEntry => 'یک ورودی بنویسید';
 
   @override

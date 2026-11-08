@@ -217,7 +217,6 @@
     "labelCoverageLabel": "Покриття",
     "chartDistributionTitle": "Розподіл {tag}",
     "shareAddToLogPickerTitle": "Виберіть запис у щоденнику",
-    "adaptiveEmptyDay": "На цей день ще немає записів",
     "adaptiveNewEntry": "Напишіть запис",
     "pageJournalTitle": "журнал",
     "coachPrompt1": "Що змусило тебе посміхнутися сьогодні?",

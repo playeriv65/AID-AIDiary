@@ -7,7 +7,9 @@ library;
 
 import 'package:aid_diary/database/entry_store.dart';
 import 'package:aid_diary/models/entry.dart';
+import 'package:aid_diary/pages/edit_entry_page.dart';
 import 'package:aid_diary/pages/journal_page.dart';
+import 'package:aid_diary/utils/diary_day.dart';
 import 'package:aid_diary/widgets/entry_card.dart';
 import 'package:aid_diary/widgets/top_search_card.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -71,4 +73,41 @@ void main() {
           findsOneWidget);
     });
   }
+
+  // Leaving the editor saves a draft on real IO, so this ends on the editor.
+  testWidgets('holding a past day writes an entry for it; future days not',
+      (tester) async {
+    DiaryAppHarness.size(tester, const Size(390, 844));
+    await tester.pumpWidget(harness.app(const Scaffold(body: JournalPage())));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const ValueKey('journal-calendar')));
+    await tester.pumpAndSettle();
+
+    Finder cell(DateTime day) => find
+        .byKey(ValueKey('calendar-day-${day.year}-${day.month}-${day.day}'));
+    final today = DiaryDay.today();
+    final tomorrow = DateTime(today.year, today.month, today.day + 1);
+    // On the last day of a month, tomorrow is a month further down.
+    if (tomorrow.month == today.month) {
+      await tester.longPress(cell(tomorrow));
+      await tester.pumpAndSettle();
+      expect(find.byType(AddEditEntryPage), findsNothing);
+    }
+
+    final day = DateTime(today.year, today.month, today.day - 3);
+    await tester.scrollUntilVisible(cell(day), -100,
+        scrollable: find
+            .descendant(
+                of: find.byKey(const ValueKey('journal-calendar-panel')),
+                matching: find.byType(Scrollable))
+            .first);
+    await tester.pumpAndSettle();
+    await tester.longPress(cell(day));
+    await tester.pumpAndSettle();
+    expect(
+        tester.widget<AddEditEntryPage>(find.byType(AddEditEntryPage)).diaryDay,
+        day);
+    expect(find.byKey(const ValueKey('journal-calendar-panel')), findsNothing);
+    await tester.pumpWidget(const SizedBox.shrink());
+  });
 }

@@ -790,9 +790,6 @@ class AppLocalizationsKo extends AppLocalizations {
   String get shareAddToLogPickerTitle => '일기 항목을 선택하세요';
 
   @override
-  String get adaptiveEmptyDay => '오늘은 아직 항목이 없습니다.';
-
-  @override
   String get adaptiveNewEntry => '항목 작성';
 
   @override

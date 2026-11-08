@@ -803,9 +803,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get shareAddToLogPickerTitle => 'Elija una entrada del diario';
 
   @override
-  String get adaptiveEmptyDay => 'Aún no hay entradas para este día.';
-
-  @override
   String get adaptiveNewEntry => 'Escribe una entrada';
 
   @override

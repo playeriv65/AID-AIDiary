@@ -818,9 +818,6 @@ class AppLocalizationsRu extends AppLocalizations {
   String get shareAddToLogPickerTitle => 'Выберите запись в дневнике';
 
   @override
-  String get adaptiveEmptyDay => 'Записей на этот день пока нет';
-
-  @override
   String get adaptiveNewEntry => 'Написать запись';
 
   @override

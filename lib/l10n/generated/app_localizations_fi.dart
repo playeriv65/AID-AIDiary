@@ -805,9 +805,6 @@ class AppLocalizationsFi extends AppLocalizations {
   String get shareAddToLogPickerTitle => 'Valitse päiväkirjamerkintä';
 
   @override
-  String get adaptiveEmptyDay => 'Ei vielä merkintöjä tälle päivälle';
-
-  @override
   String get adaptiveNewEntry => 'Kirjoita merkintä';
 
   @override

@@ -3,18 +3,15 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'package:aid_diary/routing/app_navigation.dart';
+import 'package:aid_diary/routing/destinations.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// The list scrolls beneath an opaque, stationary search surface.
 class PinnedSearchHeader extends StatelessWidget {
-  const PinnedSearchHeader(
-      {super.key, this.showSearch = true, this.onCalendar});
+  const PinnedSearchHeader({super.key, this.showSearch = true});
 
   final bool showSearch;
-
-  /// See [TopSearchCard.onCalendar].
-  final VoidCallback? onCalendar;
 
   /// Its height, the search card and the gap around it.
   static const double extent = 84;
@@ -22,15 +19,14 @@ class PinnedSearchHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) => SliverPersistentHeader(
         pinned: true,
-        delegate: _SearchHeaderDelegate(showSearch, onCalendar),
+        delegate: _SearchHeaderDelegate(showSearch),
       );
 }
 
 class _SearchHeaderDelegate extends SliverPersistentHeaderDelegate {
-  _SearchHeaderDelegate(this.showSearch, this.onCalendar);
+  _SearchHeaderDelegate(this.showSearch);
 
   final bool showSearch;
-  final VoidCallback? onCalendar;
 
   @override
   double get minExtent => PinnedSearchHeader.extent;
@@ -44,30 +40,30 @@ class _SearchHeaderDelegate extends SliverPersistentHeaderDelegate {
         color: Theme.of(context).scaffoldBackgroundColor,
         child: Padding(
           padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-          child: TopSearchCard(showSearch: showSearch, onCalendar: onCalendar),
+          child: TopSearchCard(showSearch: showSearch),
         ),
       );
 
   @override
   bool shouldRebuild(_SearchHeaderDelegate oldDelegate) =>
-      showSearch != oldDelegate.showSearch ||
-      onCalendar != oldDelegate.onCalendar;
+      showSearch != oldDelegate.showSearch;
 }
 
-/// Floating calendar shortcut, search and menu, or back from the calendar.
+/// Floating calendar shortcut, search and menu.
 class TopSearchCard extends StatelessWidget {
-  const TopSearchCard(
-      {super.key,
-      this.showSearch = true,
-      this.calendarPage = false,
-      this.onCalendar});
+  const TopSearchCard({super.key, this.showSearch = true});
 
   final bool showSearch;
-  final bool calendarPage;
 
-  /// What the calendar button does: the journal unfolds a calendar in place;
-  /// elsewhere it opens the calendar page.
-  final VoidCallback? onCalendar;
+  /// Unfolds the journal's calendar, from any tab; on the journal, where it
+  /// is showing, the same button folds it.
+  void _calendar(BuildContext context) {
+    if (journalCalendar.value) {
+      journalCalendar.value = false;
+    } else {
+      AppNavigation.calendar(Navigator.of(context));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,24 +80,13 @@ class TopSearchCard extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8),
           child: Row(children: [
-            if (calendarPage) ...[
-              const BackButton(),
-              Expanded(
-                child: Text(l10n.pageCalendarTitle,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: theme.textTheme.titleMedium),
-              ),
-            ] else ...[
-              IconButton(
-                key: const ValueKey('journal-calendar'),
-                tooltip: l10n.pageCalendarTitle,
-                icon: const Icon(Icons.calendar_today_rounded),
-                onPressed: onCalendar ??
-                    () => AppNavigation.calendar(Navigator.of(context)),
-              ),
-              const Spacer(),
-            ],
+            IconButton(
+              key: const ValueKey('journal-calendar'),
+              tooltip: l10n.pageCalendarTitle,
+              icon: const Icon(Icons.calendar_today_rounded),
+              onPressed: () => _calendar(context),
+            ),
+            const Spacer(),
             if (showSearch) ...[
               const VerticalDivider(indent: 16, endIndent: 16),
               IconButton(

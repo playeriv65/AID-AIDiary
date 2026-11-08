@@ -47,13 +47,16 @@ class MonthCalendar extends StatefulWidget {
   const MonthCalendar({
     super.key,
     required this.onDayTap,
-    this.selectedDate,
+    this.onWriteDay,
     this.todayButtonBottom = 16,
     this.monthsAhead = 12,
   });
 
   final void Function(BuildContext dayContext, DateTime day) onDayTap;
-  final DateTime? selectedDate;
+
+  /// Starts a new entry for a day up to today, on a long press or a right
+  /// click on it.
+  final ValueChanged<DateTime>? onWriteDay;
 
   /// Keeps the jump-to-today button clear of other floating buttons.
   final double todayButtonBottom;
@@ -108,8 +111,8 @@ class _MonthCalendarState extends State<MonthCalendar> {
           month: CalendarMonth.around(now, offset, jalali: jalali),
           jalali: jalali,
           firstDayIndex: firstDay,
-          selectedDate: widget.selectedDate,
           onDayTap: widget.onDayTap,
+          onWriteDay: widget.onWriteDay,
         );
 
     return WindowsWheelScrollScope(
@@ -175,20 +178,21 @@ class _MonthGrid extends StatelessWidget {
     required this.month,
     required this.jalali,
     required this.firstDayIndex,
-    required this.selectedDate,
     required this.onDayTap,
+    required this.onWriteDay,
   });
 
   final CalendarMonth month;
   final bool jalali;
   final int firstDayIndex;
-  final DateTime? selectedDate;
   final void Function(BuildContext, DateTime) onDayTap;
+  final ValueChanged<DateTime>? onWriteDay;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final cs = theme.colorScheme;
+    final writeHint = AppLocalizations.of(context)!.adaptiveNewEntry;
     final entries = EntriesProvider.instance;
     // At 1:00 the diary is still on the day before.
     final today = DiaryDay.today();
@@ -204,49 +208,52 @@ class _MonthGrid extends StatelessWidget {
       final day = month.day(dayIndex);
       final hasEntries = entries.getEntriesForDate(day).isNotEmpty;
       final isToday = TimeManager.isSameDay(day, today);
-      final selected =
-          selectedDate != null && TimeManager.isSameDay(day, selectedDate!);
       final future = day.isAfter(today) && !isToday;
-      final color = selected
-          ? cs.onPrimary
-          : isToday
-              ? cs.primary
-              : future
-                  ? cs.outline
-                  : cs.onSurface;
+      final color = isToday
+          ? cs.primary
+          : future
+              ? cs.outline
+              : cs.onSurface;
+      final write =
+          onWriteDay == null || future ? null : () => onWriteDay!(day);
       return Builder(
-        builder: (dayContext) => InkResponse(
-          key: ValueKey('calendar-day-${day.year}-${day.month}-${day.day}'),
-          radius: 22,
-          onTap: future && !hasEntries ? null : () => onDayTap(dayContext, day),
-          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Container(
-              width: 34,
-              height: 34,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: selected ? cs.primary : null,
-                border: isToday && !selected
-                    ? Border.all(color: cs.primary, width: 1.5)
-                    : null,
-              ),
-              child: Text('${month.label(dayIndex, jalali: jalali)}',
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                      color: color,
-                      fontWeight: isToday || selected
-                          ? FontWeight.w700
-                          : FontWeight.w400)),
-            ),
-            const SizedBox(height: 2),
-            Container(
-              width: 5,
-              height: 5,
-              decoration: BoxDecoration(
+        builder: (dayContext) => Semantics(
+          onLongPressHint: write == null ? null : writeHint,
+          child: InkResponse(
+            key: ValueKey('calendar-day-${day.year}-${day.month}-${day.day}'),
+            radius: 22,
+            onTap:
+                future && !hasEntries ? null : () => onDayTap(dayContext, day),
+            onLongPress: write,
+            onSecondaryTap: write,
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Container(
+                width: 34,
+                height: 34,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: hasEntries ? cs.primary : Colors.transparent),
-            ),
-          ]),
+                  border: isToday
+                      ? Border.all(color: cs.primary, width: 1.5)
+                      : null,
+                ),
+                child: Text('${month.label(dayIndex, jalali: jalali)}',
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                        color: color,
+                        fontWeight:
+                            isToday ? FontWeight.w700 : FontWeight.w400)),
+              ),
+              const SizedBox(height: 2),
+              Container(
+                width: 5,
+                height: 5,
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: hasEntries ? cs.primary : Colors.transparent),
+              ),
+            ]),
+          ),
         ),
       );
     }

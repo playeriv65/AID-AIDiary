@@ -217,7 +217,6 @@
     "labelCoverageLabel": "Kattavuus",
     "chartDistributionTitle": "{tag} Jakelu",
     "shareAddToLogPickerTitle": "Valitse päiväkirjamerkintä",
-    "adaptiveEmptyDay": "Ei vielä merkintöjä tälle päivälle",
     "adaptiveNewEntry": "Kirjoita merkintä",
     "pageJournalTitle": "Päiväkirja",
     "coachPrompt1": "Mikä sai sinut hymyilemään tänään?",

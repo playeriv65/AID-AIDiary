@@ -749,9 +749,6 @@ class AppLocalizationsMs extends AppLocalizations {
   String get shareAddToLogPickerTitle => 'Pilih catatan diari';
 
   @override
-  String get adaptiveEmptyDay => 'Tiada penyertaan untuk hari ini';
-
-  @override
   String get adaptiveNewEntry => 'Tulis entri';
 
   @override

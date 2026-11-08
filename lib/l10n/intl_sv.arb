@@ -217,7 +217,6 @@
     "labelCoverageLabel": "Täckning",
     "chartDistributionTitle": "{tag} Distribution",
     "shareAddToLogPickerTitle": "Välj en dagboksanteckning",
-    "adaptiveEmptyDay": "Inga anmälningar för denna dag än",
     "adaptiveNewEntry": "Skriv ett inlägg",
     "pageJournalTitle": "Dagbok",
     "coachPrompt1": "Vad fick dig att le idag?",

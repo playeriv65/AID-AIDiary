@@ -809,9 +809,6 @@ class AppLocalizationsPt extends AppLocalizations {
   String get shareAddToLogPickerTitle => 'Escolha uma entrada do diário';
 
   @override
-  String get adaptiveEmptyDay => 'Ainda não há entradas para este dia';
-
-  @override
   String get adaptiveNewEntry => 'Escrever uma entrada';
 
   @override
@@ -3711,9 +3708,6 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
 
   @override
   String get shareAddToLogPickerTitle => 'Escolha uma entrada do diário';
-
-  @override
-  String get adaptiveEmptyDay => 'Ainda não há entradas para este dia';
 
   @override
   String get adaptiveNewEntry => 'Escreva uma entrada';

@@ -810,9 +810,6 @@ class AppLocalizationsNb extends AppLocalizations {
   String get shareAddToLogPickerTitle => 'Velg en dagbokoppføring';
 
   @override
-  String get adaptiveEmptyDay => 'Ingen påmeldinger for denne dagen ennå';
-
-  @override
   String get adaptiveNewEntry => 'Skriv en oppføring';
 
   @override
