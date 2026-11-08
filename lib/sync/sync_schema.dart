@@ -212,13 +212,25 @@ Future<T> withoutRecording<T>(
   });
 }
 
-/// Records every item as changed now, so the next sync sends them all: for
-/// a diary that starts syncing to a space.
+/// Records every item as changed, so the next sync sends them all: for a
+/// diary that starts syncing to a space. Being marked is no edit, so each
+/// item keeps the time it last changed: an edit not sent yet keeps its own,
+/// an item sent or taken in before keeps that version's (an erased one goes
+/// out as a deletion again), and an item of unknown age gets 0, so any
+/// version the space has wins over it.
 Future<void> markAllChanged(DatabaseExecutor db) async {
   for (final kind in SyncKind.values) {
     await db.execute('''
-INSERT OR REPLACE INTO $syncChangesTable (kind, $syncIdColumn, changed_at)
-SELECT '${kind.name}', $syncIdColumn, $_nowMs FROM ${kind.table}''');
+INSERT OR IGNORE INTO $syncChangesTable (kind, $syncIdColumn, changed_at)
+SELECT '${kind.name}', t.$syncIdColumn, COALESCE(i.modified, 0)
+FROM ${kind.table} t LEFT JOIN $syncItemsTable i
+  ON i.kind = '${kind.name}' AND i.$syncIdColumn = t.$syncIdColumn
+WHERE t.$syncIdColumn IS NOT NULL''');
+    await db.execute('''
+INSERT OR IGNORE INTO $syncChangesTable (kind, $syncIdColumn, changed_at)
+SELECT kind, $syncIdColumn, modified FROM $syncItemsTable i
+WHERE kind = '${kind.name}' AND NOT EXISTS
+  (SELECT 1 FROM ${kind.table} t WHERE t.$syncIdColumn = i.$syncIdColumn)''');
   }
 }
 
@@ -233,18 +245,20 @@ JOIN $syncChangesTable c ON c.kind = ? AND c.$syncIdColumn = e.$syncIdColumn''',
 
 /// Forgets what was synced where, for a diary that leaves its space or joins
 /// another. Changes not sent yet stay and go to the next space, so an entry
-/// erased or given another id meanwhile is not brought back from it.
+/// erased or given another id meanwhile is not brought back from it. When
+/// each item last changed stays too: it belongs to the diary, and
+/// [markAllChanged] sends items with it.
 Future<void> forgetSpace(DatabaseExecutor db) async {
   await db.delete(syncSeenTable);
-  await db.delete(syncItemsTable);
   await db.delete('sync_media_tasks');
   await db.delete('sync_media_objects');
 }
 
-/// [forgetSpace] and the changes not sent yet too, for a diary that takes
-/// another device's as it is (nearby transfer).
+/// [forgetSpace], the changes not sent yet and the item versions too, for a
+/// diary that takes another device's as it is (nearby transfer).
 Future<void> clearSyncState(DatabaseExecutor db) async {
   await db.delete(syncChangesTable);
+  await db.delete(syncItemsTable);
   await forgetSpace(db);
 }
 

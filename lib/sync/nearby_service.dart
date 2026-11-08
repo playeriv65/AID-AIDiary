@@ -352,7 +352,9 @@ class NearbyService extends ChangeNotifier {
             if (generation != _generation) {
               throw StateError('Nearby operation cancelled');
             }
-            await clearSyncState(txn);
+            // The items keep the versions they came with, so the space's
+            // later edits still win when this device joins it.
+            await forgetSpace(txn);
             await markAllChanged(txn);
             await config.set(
                 Settings.nearbyMigration,

@@ -172,7 +172,7 @@ void main() {
           grant: hosted.grant,
           identity: identity);
       // As the recipient does once content and identity have committed.
-      await clearSyncState(newDevice.db);
+      await forgetSpace(newDevice.db);
       await markAllChanged(newDevice.db);
       await hosted.close();
     }

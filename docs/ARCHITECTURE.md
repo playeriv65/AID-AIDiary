@@ -505,7 +505,20 @@ recovery code, a space started over), nearby transfer (the same engine over a
 temporary snapshot) and restoring a backup (the database file keeps its ids).
 Joining or leaving a space forgets what was synced where (`forgetSpace`) but
 keeps the changes not sent yet, so an entry erased while no space was
-connected is not brought back from it.
+connected is not brought back from it, and keeps when each item last changed
+(`sync_items`).
+
+Joining a space (`markAllChanged`, also after a nearby transfer) marks every
+item to send, but being marked is no edit: each item keeps its own time. An
+edit not sent yet keeps the time it was made; an item sent or taken in before
+keeps that version's time, and an erased one goes out as a deletion again; an
+item of unknown age gets 0, so the space's version wins over it. The usual
+rule then settles each item. The later change wins, so an edit another device
+made while this one was away is taken in, and an erasure on either side
+stays. A local edit not sent yet that loses is kept in Recently deleted; a
+version this device already had and did not edit is replaced without a copy.
+Where the space already has the version, nothing is sent or written, and
+items only this device has are sent.
 
 What a person writes on one device gets a random id. What two devices can
 make on their own from the same input gets an id derived from that input

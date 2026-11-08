@@ -212,10 +212,17 @@ class SyncEngine {
     };
     final pending = await _pending();
     final toApply = <SyncRecord>[];
+    // Items marked on joining the space whose version it already has.
+    final alreadyThere = <_Pending>[];
     for (final record in incoming.values) {
       final key = _key(record.kind, record.id);
-      if (record.modified <= (known[key] ?? -1)) continue;
       final local = pending[key];
+      if (record.modified <= (known[key] ?? -1)) {
+        if (local != null && local.changedAt == record.modified) {
+          alreadyThere.add(local);
+        }
+        continue;
+      }
       if (local != null && local.changedAt > record.modified) continue;
       toApply.add(record);
     }
@@ -249,8 +256,15 @@ class SyncEngine {
 
     final losers = <SyncRecord>[];
     for (final record in ready) {
-      final local = pending[_key(record.kind, record.id)];
-      if (local == null || record.kind != SyncKind.entry) continue;
+      final key = _key(record.kind, record.id);
+      final local = pending[key];
+      // An item marked on joining a space with the version this device
+      // already had was not edited here, so nothing of it is lost.
+      if (local == null ||
+          local.changedAt == known[key] ||
+          record.kind != SyncKind.entry) {
+        continue;
+      }
       final mine =
           await exportRecord(db, local.kind, record.id, local.changedAt);
       if (!mine.deleted && !_sameEntry(mine, record)) losers.add(mine);
@@ -277,6 +291,9 @@ class SyncEngine {
         if (pending[_key(record.kind, record.id)] case final local?) {
           await _clearChange(txn, local);
         }
+      }
+      for (final local in alreadyThere) {
+        await _clearChange(txn, local);
       }
       for (final path in read) {
         await _see(txn, path);

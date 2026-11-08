@@ -82,5 +82,11 @@
     "en": "Confirmations, text boxes, option lists, QR codes and empty lists look and work the same wherever they appear. Deleting an attachment puts Cancel on the left like every other question.",
     "zh": "确认框、输入框、选项列表、二维码和空列表在各处的样子和用法都一致了。删除附件时，“取消”也和其他询问一样放在左边。",
     "zh_Hant": "確認框、輸入框、選項清單、QR 碼和空清單在各處的樣子和用法都一致了。刪除附件時，「取消」也和其他詢問一樣放在左邊。"
+  },
+  {
+    "id": "2026-11-08-rejoin-keeps-edits",
+    "en": "A device that reconnects to sync no longer overwrites edits other devices made while it was away. The later edit wins, and an earlier one not yet synced is kept in Recently deleted.",
+    "zh": "设备重新连接同步时，不会再覆盖其他设备在它离线期间做的修改。以较晚的修改为准，尚未同步的较早修改会保留在“最近删除”里。",
+    "zh_Hant": "裝置重新連線同步時，不會再覆蓋其他裝置在它離線期間做的修改。以較晚的修改為準，尚未同步的較早修改會保留在「最近刪除」裡。"
   }
 ]

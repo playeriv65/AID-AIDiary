@@ -199,39 +199,149 @@ void main() {
     });
   });
 
-  test('a device that leaves its space and joins again keeps one of each',
-      () async {
-    await phone.write('kept');
-    await phone.write('erased while apart');
-    await phone.sync(cloud);
-    await laptop.sync(cloud);
+  group('leaving a space and joining it again', () {
+    /// What joining a space does to the diary (`SyncService._connect`).
+    Future<void> join(Device device) async {
+      await forgetSpace(device.db);
+      await markAllChanged(device.db);
+    }
 
-    // The laptop leaves the space; both go on writing.
-    await forgetSpace(laptop.db);
-    await phone.write('from the phone meanwhile');
-    await laptop.write('from the laptop meanwhile');
-    await later();
-    await laptop.db.delete(entriesTable,
-        where: '${EntryFields.text} = ?', whereArgs: ['erased while apart']);
+    Future<void> erase(Device device, String text) =>
+        device.db.delete(entriesTable,
+            where: '${EntryFields.text} = ?', whereArgs: [text]);
 
-    // Joining again, twice over, as pairing again would.
-    for (var join = 0; join < 2; join++) {
-      await forgetSpace(laptop.db);
-      await markAllChanged(laptop.db);
+    Future<void> expectBoth(List<String> texts, List<String> deleted) async {
+      for (final device in [phone, laptop]) {
+        expect(await device.texts(), texts);
+        expect(await device.texts(deleted: true), deleted);
+      }
+    }
+
+    setUp(() async {
+      await phone.write('plan');
+      await phone.write('kept');
+      await phone.sync(cloud);
       await laptop.sync(cloud);
       await phone.sync(cloud);
-    }
-    await laptop.sync(cloud);
+    });
 
-    const all = [
-      'from the laptop meanwhile',
-      'from the phone meanwhile',
-      'kept'
-    ];
-    expect(await phone.texts(), all);
-    expect(await laptop.texts(), all);
-    expect(await phone.texts(deleted: true), isEmpty);
-    expect(await laptop.texts(deleted: true), isEmpty);
+    test('keeps one of each', () async {
+      await phone.write('erased while apart');
+      await phone.sync(cloud);
+      await laptop.sync(cloud);
+
+      // The laptop leaves the space; both go on writing.
+      await forgetSpace(laptop.db);
+      await phone.write('from the phone meanwhile');
+      await laptop.write('from the laptop meanwhile');
+      await later();
+      await erase(laptop, 'erased while apart');
+
+      // Joining again, twice over, as pairing again would.
+      for (var round = 0; round < 2; round++) {
+        await join(laptop);
+        await laptop.sync(cloud);
+        await phone.sync(cloud);
+      }
+      await laptop.sync(cloud);
+
+      await expectBoth([
+        'from the laptop meanwhile',
+        'from the phone meanwhile',
+        'kept',
+        'plan'
+      ], []);
+    });
+
+    test('takes in the edits and erasures made while apart', () async {
+      await forgetSpace(laptop.db);
+      await later();
+      await phone.edit('plan', 'plan from the phone');
+      await erase(phone, 'kept');
+      await phone.sync(cloud);
+
+      await join(laptop);
+      await laptop.sync(cloud);
+      await phone.sync(cloud);
+
+      await expectBoth(['plan from the phone'], []);
+    });
+
+    test('a later edit made by the device that stayed wins', () async {
+      await forgetSpace(laptop.db);
+      await later();
+      await laptop.edit('plan', 'plan from the laptop');
+      await later();
+      await phone.edit('plan', 'plan from the phone');
+      await phone.sync(cloud);
+
+      await join(laptop);
+      await laptop.sync(cloud);
+      await phone.sync(cloud);
+
+      await expectBoth(
+          ['kept', 'plan from the phone'], ['plan from the laptop']);
+    });
+
+    test('a later edit made by the joining device wins', () async {
+      await forgetSpace(laptop.db);
+      await later();
+      await phone.edit('plan', 'plan from the phone');
+      await later();
+      await laptop.edit('plan', 'plan from the laptop');
+
+      await join(laptop);
+      await laptop.sync(cloud);
+      await phone.sync(cloud);
+      await laptop.sync(cloud);
+
+      await expectBoth(
+          ['kept', 'plan from the laptop'], ['plan from the phone']);
+    });
+
+    test('sends what was written while apart', () async {
+      await forgetSpace(laptop.db);
+      await laptop.write('from the laptop meanwhile');
+
+      await join(laptop);
+      await laptop.sync(cloud);
+      await phone.sync(cloud);
+
+      await expectBoth(['from the laptop meanwhile', 'kept', 'plan'], []);
+    });
+
+    test('with nothing changed, neither side writes', () async {
+      final files = cloud.files.length;
+      await forgetSpace(laptop.db);
+
+      await join(laptop);
+      final joined = await laptop.sync(cloud);
+      final stayed = await phone.sync(cloud);
+
+      expect(joined.received, 0);
+      expect(joined.sent, 0);
+      expect(stayed.received, 0);
+      expect(cloud.files, hasLength(files));
+      await expectBoth(['kept', 'plan'], []);
+    });
+
+    test('a space started over gets the diary with its versions', () async {
+      await later();
+      await phone.edit('plan', 'plan from the phone');
+      await phone.sync(cloud);
+      await laptop.sync(cloud);
+
+      // The laptop starts the space over; the phone joins it.
+      cloud = MemorySyncBackend();
+      await join(laptop);
+      await laptop.sync(cloud);
+      await join(phone);
+      final report = await phone.sync(cloud);
+
+      expect(report.received, 0);
+      expect(report.sent, 0);
+      await expectBoth(['kept', 'plan from the phone'], []);
+    });
   });
 
   test('a sync that fails after keeping a conflict copy keeps it once',
