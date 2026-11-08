@@ -61,13 +61,18 @@ class _StorageSettingsState extends State<StorageSettings> {
   Future<void> _compressExisting() async {
     final l10n = AppLocalizations.of(context)!;
     final locale = Localizations.localeOf(context).toString();
-    final count = (await AppActions.instance.run('media.photo_count', {}))!
-        as Map<String, Object?>;
-    if (!mounted) return;
+    Map<String, Object?>? count;
+    await runOperation(context, (_) async {
+      count = (await AppActions.instance.run('media.photo_count', {}))!
+          as Map<String, Object?>;
+      return const OperationOutcome.succeeded();
+    }, failureDescription: l10n.compressExistingTitle);
+    final photos = count;
+    if (photos == null || !mounted) return;
     final sure = await showConfirmDialog(context,
         title: l10n.compressExistingTitle,
-        message: l10n.compressExistingBody(count['photos'] as int,
-            formatCloudTrafficBytes(count['bytes'] as int, locale)),
+        message: l10n.compressExistingBody(photos['photos'] as int,
+            formatCloudTrafficBytes(photos['bytes'] as int, locale)),
         confirm: l10n.compressExistingAction,
         confirmKey: const ValueKey('compress-existing-confirm'));
     if (!sure || !mounted) return;
@@ -164,13 +169,24 @@ class _StorageSettingsState extends State<StorageSettings> {
   }
 
   Future<void> _deleteAllLogs(BuildContext context) async {
-    // The dialog above asked the person; the action wants it said again.
-    await runWithProgress(
-        context,
-        (update) => AppActions.instance.run(
-            'entry.erase_all', {'confirm': eraseAllPhrase},
-            confirmed: true, progress: update));
+    await runOperation(context, (update) async {
+      // The dialog above asked the person; the action wants it said again.
+      await AppActions.instance.run(
+          'entry.erase_all', {'confirm': eraseAllPhrase},
+          confirmed: true, progress: update);
+      return const OperationOutcome.succeeded();
+    },
+        failureDescription:
+            AppLocalizations.of(context)!.settingsDeleteAllLogsTitle);
   }
+
+  /// Keeps the diary ([target] `database`) or its photos (`images`) on the
+  /// device only again.
+  Future<void> _resetFolder(String target, String failureDescription) =>
+      runOperation(context, (_) async {
+        await AppActions.instance.run('storage.reset', {'target': target});
+        return const OperationOutcome.succeeded();
+      }, failureDescription: failureDescription);
 
   @override
   Widget build(BuildContext context) {
@@ -217,8 +233,10 @@ class _StorageSettingsState extends State<StorageSettings> {
                       }
                       await _showChangeLogFolderWarning();
                     },
-                    onSecondaryPressed: () => AppActions.instance
-                        .run('storage.reset', {'target': 'database'}),
+                    onSecondaryPressed: () => _resetFolder(
+                        'database',
+                        AppLocalizations.of(context)!
+                            .logFolderErrorDescription),
                   );
                 }
                 return const SizedBox();
@@ -244,8 +262,10 @@ class _StorageSettingsState extends State<StorageSettings> {
                       }
                       await _attemptImageFolderChange();
                     },
-                    onSecondaryPressed: () => AppActions.instance
-                        .run('storage.reset', {'target': 'images'}),
+                    onSecondaryPressed: () => _resetFolder(
+                        'images',
+                        AppLocalizations.of(context)!
+                            .imageFolderErrorDescription),
                   );
                 }
                 return const SizedBox();

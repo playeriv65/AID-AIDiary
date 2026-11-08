@@ -2572,9 +2572,6 @@ class AppLocalizationsMs extends AppLocalizations {
   String get onboardNewDiary => 'Mulakan di sini';
 
   @override
-  String get onboardConnect => 'Sambung ke peranti sedia ada';
-
-  @override
   String get onboardFailed =>
       'Persediaan tidak dapat diselesaikan. Diari anda selamat; sila cuba lagi.';
 

@@ -2426,8 +2426,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get nearbySend => 'Autorisieren Sie ein anderes Gerät';
 
   @override
-  String get nearbyReceive =>
-      'Stellen Sie eine Verbindung zu einem vorhandenen Gerät her';
+  String get nearbyReceive => 'Mit vorhandenem Gerät verbinden';
 
   @override
   String get nearbyInstructions =>
@@ -2639,9 +2638,6 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get onboardNewDiary => 'Beginnen Sie hier';
-
-  @override
-  String get onboardConnect => 'Mit vorhandenem Gerät verbinden';
 
   @override
   String get onboardFailed =>

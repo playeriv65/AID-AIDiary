@@ -2349,7 +2349,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get nearbySend => '別のデバイスを認証する';
 
   @override
-  String get nearbyReceive => '既存のデバイスに接続する';
+  String get nearbyReceive => '既存のデバイスに接続';
 
   @override
   String get nearbyInstructions =>
@@ -2545,9 +2545,6 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get onboardNewDiary => 'ここから始めましょう';
-
-  @override
-  String get onboardConnect => '既存のデバイスに接続';
 
   @override
   String get onboardFailed => 'セットアップを完了できませんでした。あなたの日記は安全です。もう一度試してください。';

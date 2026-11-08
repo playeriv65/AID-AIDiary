@@ -699,7 +699,7 @@
             }
         }
     },
-    "nearbyTitle": "连接已有设备",
+    "nearbyTitle": "连接设备",
     "nearbySend": "授权另一台设备",
     "nearbyReceive": "连接已有设备",
     "nearbyInstructions": "两台设备连接同一 Wi-Fi，或连接对方热点。在已有设备上确认授权后，两台设备都能继续使用，无需互联网。",
@@ -786,7 +786,6 @@
         }
     },
     "onboardNewDiary": "从这里开始",
-    "onboardConnect": "连接已有设备",
     "onboardFailed": "暂时未能完成设置，日记内容未受影响，请重试。",
     "tutorialTitle": "使用教程",
     "tutorialWriteTitle": "写下第一篇日记",

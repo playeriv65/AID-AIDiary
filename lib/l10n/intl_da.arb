@@ -763,7 +763,6 @@
     "syncCopyChecked": "Sidst bekræftet {time}",
     "cloudTrafficSummary": "Dataoverførsel tilbage denne måned: {remaining} / {limit}",
     "onboardNewDiary": "Start her",
-    "onboardConnect": "Opret forbindelse til en eksisterende enhed",
     "onboardFailed": "Opsætningen kunne ikke fuldføres. Din dagbog er sikker; prøv venligst igen.",
     "tutorialTitle": "Sådan bruger du dagbogen",
     "tutorialWriteTitle": "Skriv dit første dagbogsindlæg",

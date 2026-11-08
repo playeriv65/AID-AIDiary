@@ -622,7 +622,7 @@
             }
         }
     },
-    "nearbyTitle": "連接現有裝置",
+    "nearbyTitle": "連接裝置",
     "nearbySend": "授權另一台裝置",
     "nearbyReceive": "連接現有裝置",
     "nearbyInstructions": "兩台裝置連接相同 Wi-Fi，或連接對方熱點。在現有裝置確認授權後，兩台裝置都能繼續使用，不需要網際網路。",
@@ -709,7 +709,6 @@
         }
     },
     "onboardNewDiary": "從這裡開始",
-    "onboardConnect": "連接現有裝置",
     "onboardFailed": "暫時無法完成設定，日記內容未受影響，請重試。",
     "tutorialTitle": "使用教學",
     "tutorialWriteTitle": "寫下第一篇日記",

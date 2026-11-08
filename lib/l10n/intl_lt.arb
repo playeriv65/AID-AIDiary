@@ -763,7 +763,6 @@
     "syncCopyChecked": "Paskutinį kartą patvirtintas {time}",
     "cloudTrafficSummary": "Šį mėnesį likęs duomenų perdavimas: {remaining} / {limit}",
     "onboardNewDiary": "Pradėkite čia",
-    "onboardConnect": "Prisijunkite prie esamo įrenginio",
     "onboardFailed": "Nepavyko užbaigti sąrankos. Jūsų dienoraštis yra saugus; pabandykite dar kartą.",
     "tutorialTitle": "Kaip naudotis dienoraščiu",
     "tutorialWriteTitle": "Parašykite savo pirmąjį įrašą dienoraštyje",

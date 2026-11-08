@@ -763,7 +763,6 @@
     "syncCopyChecked": "Son onaylanan {time}",
     "cloudTrafficSummary": "Bu ay kalan veri aktarımı: {remaining} / {limit}",
     "onboardNewDiary": "Buradan başlayın",
-    "onboardConnect": "Mevcut bir cihaza bağlanın",
     "onboardFailed": "Kurulum tamamlanamadı. Günlüğünüz güvende; lütfen tekrar deneyin.",
     "tutorialTitle": "Günlük nasıl kullanılır?",
     "tutorialWriteTitle": "İlk günlük girişinizi yazın",

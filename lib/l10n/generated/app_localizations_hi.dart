@@ -2609,9 +2609,6 @@ class AppLocalizationsHi extends AppLocalizations {
   String get onboardNewDiary => 'यहां से प्रारंभ करें';
 
   @override
-  String get onboardConnect => 'किसी मौजूदा डिवाइस से कनेक्ट करें';
-
-  @override
   String get onboardFailed =>
       'सेटअप पूरा नहीं किया जा सका. आपकी डायरी सुरक्षित है; कृपया पुन: प्रयास करें।';
 

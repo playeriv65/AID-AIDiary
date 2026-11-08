@@ -2629,9 +2629,6 @@ class AppLocalizationsPt extends AppLocalizations {
   String get onboardNewDiary => 'Comece aqui';
 
   @override
-  String get onboardConnect => 'Ligue-se a um dispositivo existente';
-
-  @override
   String get onboardFailed =>
       'A configuração não pôde ser concluída. O seu diário está seguro; por favor tente novamente.';
 
@@ -5502,9 +5499,6 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
 
   @override
   String get onboardNewDiary => 'Comece aqui';
-
-  @override
-  String get onboardConnect => 'Conecte-se a um dispositivo existente';
 
   @override
   String get onboardFailed =>

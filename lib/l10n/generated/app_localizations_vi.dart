@@ -2623,9 +2623,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get onboardNewDiary => 'Bắt đầu ở đây';
 
   @override
-  String get onboardConnect => 'Kết nối với thiết bị hiện có';
-
-  @override
   String get onboardFailed =>
       'Không thể hoàn tất quá trình thiết lập. Nhật ký của bạn được an toàn; vui lòng thử lại.';
 

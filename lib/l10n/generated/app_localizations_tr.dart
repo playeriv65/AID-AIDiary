@@ -2610,9 +2610,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get onboardNewDiary => 'Buradan başlayın';
 
   @override
-  String get onboardConnect => 'Mevcut bir cihaza bağlanın';
-
-  @override
   String get onboardFailed =>
       'Kurulum tamamlanamadı. Günlüğünüz güvende; lütfen tekrar deneyin.';
 

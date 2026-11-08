@@ -2613,9 +2613,6 @@ class AppLocalizationsNb extends AppLocalizations {
   String get onboardNewDiary => 'Start her';
 
   @override
-  String get onboardConnect => 'Koble til en eksisterende enhet';
-
-  @override
   String get onboardFailed =>
       'Konfigurasjonen kunne ikke fullføres. Dagboken din er trygg; vennligst prøv igjen.';
 

@@ -763,7 +763,6 @@
     "syncCopyChecked": "آخرین تایید {time}",
     "cloudTrafficSummary": "انتقال داده های باقی مانده در این ماه: {remaining} / {limit}",
     "onboardNewDiary": "از اینجا شروع کنید",
-    "onboardConnect": "به یک دستگاه موجود متصل شوید",
     "onboardFailed": "راه اندازی کامل نشد. دفتر خاطرات شما امن است. لطفا دوباره امتحان کنید",
     "tutorialTitle": "نحوه استفاده از دفترچه خاطرات",
     "tutorialWriteTitle": "اولین مدخل خاطرات خود را بنویسید",

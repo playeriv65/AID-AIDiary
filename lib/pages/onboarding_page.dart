@@ -118,7 +118,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                     icon: const Icon(Icons.move_to_inbox_outlined),
                     label: Padding(
                         padding: const EdgeInsets.all(14),
-                        child: Text(l10n.onboardConnect)),
+                        child: Text(l10n.nearbyReceive)),
                   ),
                 ),
               ]),

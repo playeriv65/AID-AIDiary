@@ -763,7 +763,6 @@
     "syncCopyChecked": "آخر تأكيد {time}",
     "cloudTrafficSummary": "المتبقي من نقل البيانات هذا الشهر: {remaining} / {limit}",
     "onboardNewDiary": "ابدأ هنا",
-    "onboardConnect": "الاتصال بجهاز موجود",
     "onboardFailed": "لا يمكن إكمال الإعداد. يومياتك آمنة. يرجى المحاولة مرة أخرى.",
     "tutorialTitle": "كيفية استخدام اليوميات",
     "tutorialWriteTitle": "اكتب أول تدوينة",

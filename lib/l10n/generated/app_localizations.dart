@@ -4746,12 +4746,6 @@ abstract class AppLocalizations {
   /// **'Start here'**
   String get onboardNewDiary;
 
-  /// No description provided for @onboardConnect.
-  ///
-  /// In en, this message translates to:
-  /// **'Connect to an existing device'**
-  String get onboardConnect;
-
   /// No description provided for @onboardFailed.
   ///
   /// In en, this message translates to:

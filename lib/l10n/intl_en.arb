@@ -1523,8 +1523,6 @@
   },
   "onboardNewDiary": "Start here",
   "@onboardNewDiary": {},
-  "onboardConnect": "Connect to an existing device",
-  "@onboardConnect": {},
   "onboardFailed": "Setup could not be completed. Your diary is safe; please try again.",
   "@onboardFailed": {},
   "tutorialTitle": "How to use the diary",

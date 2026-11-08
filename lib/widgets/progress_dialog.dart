@@ -49,12 +49,17 @@ Future<T> runWithProgress<T>(BuildContext context,
   }
 }
 
-/// [runWithProgress] for an operation that reports its outcome; a failure
-/// is shown with [failureDescription].
+/// [runWithProgress] for an operation that reports its outcome; a failure,
+/// reported or thrown, is shown with [failureDescription].
 Future<OperationOutcome> runOperation(BuildContext context,
     Future<OperationOutcome> Function(StatusCallback update) task,
     {required String failureDescription}) async {
-  final outcome = await runWithProgress(context, task);
+  OperationOutcome outcome;
+  try {
+    outcome = await runWithProgress(context, task);
+  } catch (error) {
+    outcome = OperationOutcome.failed(error);
+  }
   if (outcome.failed && context.mounted) {
     await showFailureDialog(context,
         description: failureDescription, error: outcome.error);

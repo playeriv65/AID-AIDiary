@@ -2635,9 +2635,6 @@ class AppLocalizationsPl extends AppLocalizations {
   String get onboardNewDiary => 'Zacznij tutaj';
 
   @override
-  String get onboardConnect => 'Połącz się z istniejącym urządzeniem';
-
-  @override
   String get onboardFailed =>
       'Nie można ukończyć konfiguracji. Twój pamiętnik jest bezpieczny; spróbuj ponownie.';
 

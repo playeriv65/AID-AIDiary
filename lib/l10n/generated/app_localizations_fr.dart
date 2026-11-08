@@ -2647,9 +2647,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String get onboardNewDiary => 'Commencez ici';
 
   @override
-  String get onboardConnect => 'Connectez-vous à un appareil existant';
-
-  @override
   String get onboardFailed =>
       'La configuration n\'a pas pu être terminée. Votre journal est en sécurité ; veuillez réessayer.';
 

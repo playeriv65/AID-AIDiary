@@ -2614,9 +2614,6 @@ class AppLocalizationsSv extends AppLocalizations {
   String get onboardNewDiary => 'Börja här';
 
   @override
-  String get onboardConnect => 'Anslut till en befintlig enhet';
-
-  @override
   String get onboardFailed =>
       'Installationen kunde inte slutföras. Din dagbok är säker; försök igen.';
 

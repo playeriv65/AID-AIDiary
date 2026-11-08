@@ -2633,9 +2633,6 @@ class AppLocalizationsOc extends AppLocalizations {
   String get onboardNewDiary => 'Començatz aicí';
 
   @override
-  String get onboardConnect => 'Connectar-se a un periferic existent';
-
-  @override
   String get onboardFailed =>
       'La configuracion a pas pogut èsser completada. Vòstre jornal es segur; ensajatz de nòu.';
 

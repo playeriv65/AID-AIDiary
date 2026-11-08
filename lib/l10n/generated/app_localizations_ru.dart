@@ -2421,7 +2421,7 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
-  String get nearbyTitle => 'Подключайте устройства';
+  String get nearbyTitle => 'Подключение устройств';
 
   @override
   String get nearbySend => 'Авторизовать другое устройство';
@@ -2638,9 +2638,6 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get onboardNewDiary => 'Начните здесь';
-
-  @override
-  String get onboardConnect => 'Подключиться к существующему устройству';
 
   @override
   String get onboardFailed =>

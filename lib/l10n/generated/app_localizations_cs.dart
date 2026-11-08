@@ -2604,9 +2604,6 @@ class AppLocalizationsCs extends AppLocalizations {
   String get onboardNewDiary => 'Začněte zde';
 
   @override
-  String get onboardConnect => 'Připojte se ke stávajícímu zařízení';
-
-  @override
   String get onboardFailed =>
       'Nastavení nebylo možné dokončit. Váš deník je v bezpečí; zkuste to prosím znovu.';
 

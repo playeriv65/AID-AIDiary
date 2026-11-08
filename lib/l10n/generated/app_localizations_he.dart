@@ -2588,9 +2588,6 @@ class AppLocalizationsHe extends AppLocalizations {
   String get onboardNewDiary => 'התחל כאן';
 
   @override
-  String get onboardConnect => 'התחבר למכשיר קיים';
-
-  @override
   String get onboardFailed =>
       'לא ניתן היה להשלים את ההגדרה. היומן שלך בטוח; אנא נסה שוב.';
 

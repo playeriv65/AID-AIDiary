@@ -763,7 +763,6 @@
     "syncCopyChecked": "Ostatnio potwierdzony {time}",
     "cloudTrafficSummary": "Transfer danych pozostały w tym miesiącu: {remaining} / {limit}",
     "onboardNewDiary": "Zacznij tutaj",
-    "onboardConnect": "Połącz się z istniejącym urządzeniem",
     "onboardFailed": "Nie można ukończyć konfiguracji. Twój pamiętnik jest bezpieczny; spróbuj ponownie.",
     "tutorialTitle": "Jak korzystać z pamiętnika",
     "tutorialWriteTitle": "Napisz swój pierwszy wpis do pamiętnika",

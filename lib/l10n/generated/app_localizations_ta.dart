@@ -2647,9 +2647,6 @@ class AppLocalizationsTa extends AppLocalizations {
   String get onboardNewDiary => 'இங்கே தொடங்குங்கள்';
 
   @override
-  String get onboardConnect => 'ஏற்கனவே உள்ள சாதனத்துடன் இணைக்கவும்';
-
-  @override
   String get onboardFailed =>
       'அமைவை முடிக்க முடியவில்லை. உங்கள் நாட்குறிப்பு பாதுகாப்பாக உள்ளது; மீண்டும் முயற்சிக்கவும்.';
 

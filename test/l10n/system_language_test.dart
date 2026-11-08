@@ -25,7 +25,7 @@ void main() {
           ...appLocalizationsDelegates,
         ],
         home: Builder(builder: (context) {
-          return Text(AppLocalizations.of(context)!.onboardConnect);
+          return Text(AppLocalizations.of(context)!.nearbyReceive);
         }),
       );
     }));

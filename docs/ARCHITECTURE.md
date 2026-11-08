@@ -110,7 +110,7 @@ Consequences for structure:
 | Picking tags (editor, templates, statistics, search filter, tag export) | `TagPicker` / `TagPickerDialog` (`widgets/tag_picker_dialog.dart`), chips are `TagChip` | `mode` (attach, single, filter), `hideFavorite`, `tagTypeFilter` |
 | Picking a mood (editor, check-in, search, mood associations) | `MoodPicker.single` / `.multi` (`widgets/mood_picker.dart`); names from `moodName` | `clearable`, `size`, `spread` |
 | Asking yes or no | `showConfirmDialog` / `showDeleteConfirmDialog` (`widgets/confirm_dialog.dart`) | `destructive`, `content`, `confirmKey` |
-| Asking for a piece of text (device name, place name, recovery code, authorization request) | `showTextInputDialog` (`widgets/text_input_dialog.dart`) | `hint`/`label`, `validate`, `maxLength`, `maxLines`, `trim`, `plain`, `scan` |
+| Asking for a piece of text (device name, place name, recovery code, authorization request, nearby invitation) | `showTextInputDialog` (`widgets/text_input_dialog.dart`) | `hint`/`label`, `validate`, `maxLength`, `maxLines`, `trim`, `plain`, `scan` |
 | Picking one of a few options (attachment kind, block to insert, share format, deleted-entry action) | `showChoiceSheet` (`widgets/choice_sheet.dart`) | `title` |
 | Deleting an entry (reader and editor) | `deleteEntryAfterAsking` (`widgets/hidden_diary_scope.dart`) | |
 | Showing a QR code for another device | `QrCodeBox` (`widgets/qr_code_box.dart`) | |
@@ -124,6 +124,7 @@ Consequences for structure:
 | The icon and name at the top of the tag and category editors | `IconNameRow` (`widgets/icon_name_row.dart`) | |
 | Text on a colored swatch | `contrastingTextColor` (`utils/color_utils.dart`) | |
 | Nothing to show | `EmptyState` | |
+| An operation behind a progress dialog, and its failure whether reported or thrown | `runOperation` (`widgets/progress_dialog.dart`), failure shown by `showFailureDialog` | `failureDescription` |
 | A fact with an icon (place, weather) on cards, the entry page and share pictures | `IconLabel` (`widgets/icon_label.dart`) | `icon` or `glyph`, `size`, `color` |
 | A day's weather | `WeatherProvider.of`/`ofEntry`, edited with `showWeatherDialog` | |
 

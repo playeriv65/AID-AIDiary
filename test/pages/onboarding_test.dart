@@ -80,14 +80,20 @@ void main() {
     await tester.tap(find.byKey(const ValueKey('onboard-nearby-receive')));
     await tester.pumpAndSettle();
     expectNearbyChoices();
+    expect(
+        find.descendant(of: find.byType(AppBar), matching: find.text('连接设备')),
+        findsOneWidget);
     await tester.tap(find.byKey(const ValueKey('nearby-receive')));
     await tester.pumpAndSettle();
     expect(find.byKey(const ValueKey('nearby-invitation')), findsOneWidget);
     expect(
         find.descendant(
             of: find.byKey(const ValueKey('nearby-accept')),
-            matching: find.text('连接')),
+            matching: find.text('连接已有设备')),
         findsOneWidget);
+    await tester.tap(find.text('取消'));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const ValueKey('nearby-invitation')), findsNothing);
     expect(EntryStore.instance.entries, isEmpty);
     await tester.tap(find.byType(BackButton));
     await tester.pumpAndSettle();
@@ -135,6 +141,11 @@ void main() {
     NearbyService.instance.state = NearbyState.complete;
     NearbyService.instance.notifyListeners();
     await tester.pumpAndSettle();
+    expect(
+        find.descendant(
+            of: find.byKey(const ValueKey('nearby-done')),
+            matching: find.text('关闭')),
+        findsOneWidget);
     await DiaryAppHarness.runUntil(
         tester,
         () => tester.tap(find.byKey(const ValueKey('nearby-done'))),

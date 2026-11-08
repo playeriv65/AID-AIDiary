@@ -2625,9 +2625,6 @@ class AppLocalizationsBg extends AppLocalizations {
   String get onboardNewDiary => 'Започнете тук';
 
   @override
-  String get onboardConnect => 'Свържете се със съществуващо устройство';
-
-  @override
   String get onboardFailed =>
       'Настройката не можа да бъде завършена. Вашият дневник е в безопасност; моля опитайте отново.';
 

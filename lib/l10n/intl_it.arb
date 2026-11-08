@@ -763,7 +763,6 @@
     "syncCopyChecked": "Ultimo {time} confermato",
     "cloudTrafficSummary": "Trasferimento dati rimanente questo mese: {remaining} / {limit}",
     "onboardNewDiary": "Inizia qui",
-    "onboardConnect": "Connettiti a un dispositivo esistente",
     "onboardFailed": "Impossibile completare l'installazione. Il tuo diario è al sicuro; per favore riprova.",
     "tutorialTitle": "Come utilizzare il diario",
     "tutorialWriteTitle": "Scrivi la tua prima voce nel diario",

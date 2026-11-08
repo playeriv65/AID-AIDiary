@@ -763,7 +763,6 @@
     "syncCopyChecked": "Darrièr confirmat {time}",
     "cloudTrafficSummary": "Transferiment de donadas restants aqueste mes : {remaining} / {limit}",
     "onboardNewDiary": "Començatz aicí",
-    "onboardConnect": "Connectar-se a un periferic existent",
     "onboardFailed": "La configuracion a pas pogut èsser completada. Vòstre jornal es segur; ensajatz de nòu.",
     "tutorialTitle": "Cossí utilizar lo jornal",
     "tutorialWriteTitle": "Escrivètz vòstre primièr jornal",

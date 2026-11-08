@@ -2602,9 +2602,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get onboardNewDiary => 'از اینجا شروع کنید';
 
   @override
-  String get onboardConnect => 'به یک دستگاه موجود متصل شوید';
-
-  @override
   String get onboardFailed =>
       'راه اندازی کامل نشد. دفتر خاطرات شما امن است. لطفا دوباره امتحان کنید';
 

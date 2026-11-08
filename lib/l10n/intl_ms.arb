@@ -763,7 +763,6 @@
     "syncCopyChecked": "Terakhir disahkan {time}",
     "cloudTrafficSummary": "Pemindahan data yang tinggal pada bulan ini: {remaining} / {limit}",
     "onboardNewDiary": "Mulakan di sini",
-    "onboardConnect": "Sambung ke peranti sedia ada",
     "onboardFailed": "Persediaan tidak dapat diselesaikan. Diari anda selamat; sila cuba lagi.",
     "tutorialTitle": "Cara menggunakan diari",
     "tutorialWriteTitle": "Tulis catatan diari pertama anda",

@@ -763,7 +763,6 @@
     "syncCopyChecked": "Naposledy potvrzeno {time}",
     "cloudTrafficSummary": "Přenos dat zbývající tento měsíc: {remaining} / {limit}",
     "onboardNewDiary": "Začněte zde",
-    "onboardConnect": "Připojte se ke stávajícímu zařízení",
     "onboardFailed": "Nastavení nebylo možné dokončit. Váš deník je v bezpečí; zkuste to prosím znovu.",
     "tutorialTitle": "Jak používat deník",
     "tutorialWriteTitle": "Napište svůj první záznam do deníku",

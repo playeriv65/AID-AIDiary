@@ -763,7 +763,6 @@
     "syncCopyChecked": "Última confirmació {time}",
     "cloudTrafficSummary": "Transferència de dades que queden aquest mes: {remaining} / {limit}",
     "onboardNewDiary": "Comenceu aquí",
-    "onboardConnect": "Connecteu-vos a un dispositiu existent",
     "onboardFailed": "No s'ha pogut completar la configuració. El teu diari està segur; si us plau, torna-ho a provar.",
     "tutorialTitle": "Com utilitzar el diari",
     "tutorialWriteTitle": "Escriu la teva primera entrada al diari",

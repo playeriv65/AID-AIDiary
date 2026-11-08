@@ -2316,7 +2316,7 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get nearbyTitle => '连接已有设备';
+  String get nearbyTitle => '连接设备';
 
   @override
   String get nearbySend => '授权另一台设备';
@@ -2512,9 +2512,6 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get onboardNewDiary => '从这里开始';
-
-  @override
-  String get onboardConnect => '连接已有设备';
 
   @override
   String get onboardFailed => '暂时未能完成设置，日记内容未受影响，请重试。';
@@ -5065,7 +5062,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   }
 
   @override
-  String get nearbyTitle => '連接現有裝置';
+  String get nearbyTitle => '連接裝置';
 
   @override
   String get nearbySend => '授權另一台裝置';
@@ -5261,9 +5258,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get onboardNewDiary => '從這裡開始';
-
-  @override
-  String get onboardConnect => '連接現有裝置';
 
   @override
   String get onboardFailed => '暫時無法完成設定，日記內容未受影響，請重試。';

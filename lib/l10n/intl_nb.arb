@@ -763,7 +763,6 @@
     "syncCopyChecked": "Sist bekreftet {time}",
     "cloudTrafficSummary": "Gjenstående dataoverføring denne måneden: {remaining} / {limit}",
     "onboardNewDiary": "Start her",
-    "onboardConnect": "Koble til en eksisterende enhet",
     "onboardFailed": "Konfigurasjonen kunne ikke fullføres. Dagboken din er trygg; vennligst prøv igjen.",
     "tutorialTitle": "Hvordan bruke dagboken",
     "tutorialWriteTitle": "Skriv din første dagbokoppføring",

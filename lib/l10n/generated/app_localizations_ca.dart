@@ -2631,9 +2631,6 @@ class AppLocalizationsCa extends AppLocalizations {
   String get onboardNewDiary => 'Comenceu aquí';
 
   @override
-  String get onboardConnect => 'Connecteu-vos a un dispositiu existent';
-
-  @override
   String get onboardFailed =>
       'No s\'ha pogut completar la configuració. El teu diari està segur; si us plau, torna-ho a provar.';
 

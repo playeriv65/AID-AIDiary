@@ -763,7 +763,6 @@
     "syncCopyChecked": "{time} được xác nhận lần cuối",
     "cloudTrafficSummary": "Truyền dữ liệu còn lại trong tháng này: {remaining} / {limit}",
     "onboardNewDiary": "Bắt đầu ở đây",
-    "onboardConnect": "Kết nối với thiết bị hiện có",
     "onboardFailed": "Không thể hoàn tất quá trình thiết lập. Nhật ký của bạn được an toàn; vui lòng thử lại.",
     "tutorialTitle": "Cách sử dụng nhật ký",
     "tutorialWriteTitle": "Viết mục nhật ký đầu tiên của bạn",

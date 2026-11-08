@@ -763,7 +763,6 @@
     "syncCopyChecked": "Ultima confirmare {time}",
     "cloudTrafficSummary": "Transfer de date rămas în această lună: {remaining} / {limit}",
     "onboardNewDiary": "Începeți de aici",
-    "onboardConnect": "Conectați-vă la un dispozitiv existent",
     "onboardFailed": "Configurarea nu a putut fi finalizată. Jurnalul tău este în siguranță; vă rugăm să încercați din nou.",
     "tutorialTitle": "Cum se folosește jurnalul",
     "tutorialWriteTitle": "Scrieți prima intrare în jurnal",

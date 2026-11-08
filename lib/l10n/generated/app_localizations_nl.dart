@@ -2405,7 +2405,7 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
-  String get nearbyTitle => 'Sluit apparaten aan';
+  String get nearbyTitle => 'Apparaten verbinden';
 
   @override
   String get nearbySend => 'Autoriseer een ander apparaat';
@@ -2624,9 +2624,6 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get onboardNewDiary => 'Begin hier';
-
-  @override
-  String get onboardConnect => 'Maak verbinding met een bestaand apparaat';
 
   @override
   String get onboardFailed =>

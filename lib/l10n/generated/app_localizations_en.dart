@@ -2594,9 +2594,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onboardNewDiary => 'Start here';
 
   @override
-  String get onboardConnect => 'Connect to an existing device';
-
-  @override
   String get onboardFailed =>
       'Setup could not be completed. Your diary is safe; please try again.';
 

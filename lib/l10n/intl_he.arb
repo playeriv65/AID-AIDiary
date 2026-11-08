@@ -780,7 +780,6 @@
     "syncCopyChecked": "אושר לאחרונה {time}",
     "cloudTrafficSummary": "העברת נתונים שנותרה החודש: {remaining} / {limit}",
     "onboardNewDiary": "התחל כאן",
-    "onboardConnect": "התחבר למכשיר קיים",
     "onboardFailed": "לא ניתן היה להשלים את ההגדרה. היומן שלך בטוח; אנא נסה שוב.",
     "tutorialTitle": "כיצד להשתמש ביומן",
     "tutorialWriteTitle": "כתוב את הערך הראשון שלך ביומן",

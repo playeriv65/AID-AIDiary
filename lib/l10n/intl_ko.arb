@@ -763,7 +763,6 @@
     "syncCopyChecked": "마지막으로 확인된 {time}",
     "cloudTrafficSummary": "이번달 남은 데이터 전송량 : {remaining} / {limit}",
     "onboardNewDiary": "여기서 시작하세요",
-    "onboardConnect": "기존 장치에 연결",
     "onboardFailed": "설정을 완료할 수 없습니다. 귀하의 일기장은 안전합니다. 다시 시도해 주세요.",
     "tutorialTitle": "다이어리 사용법",
     "tutorialWriteTitle": "첫 일기 쓰기",

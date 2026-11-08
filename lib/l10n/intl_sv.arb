@@ -763,7 +763,6 @@
     "syncCopyChecked": "Senast bekräftad {time}",
     "cloudTrafficSummary": "Dataöverföring kvar denna månad: {remaining} / {limit}",
     "onboardNewDiary": "Börja här",
-    "onboardConnect": "Anslut till en befintlig enhet",
     "onboardFailed": "Installationen kunde inte slutföras. Din dagbok är säker; försök igen.",
     "tutorialTitle": "Hur man använder dagboken",
     "tutorialWriteTitle": "Skriv ditt första dagboksinlägg",

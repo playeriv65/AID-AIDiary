@@ -2648,9 +2648,6 @@ class AppLocalizationsBe extends AppLocalizations {
   String get onboardNewDiary => 'Пачаць тут';
 
   @override
-  String get onboardConnect => 'Падключыцеся да існуючай прылады';
-
-  @override
   String get onboardFailed =>
       'Не ўдалося завяршыць наладку. Ваш дзённік у бяспецы; паспрабуйце яшчэ раз.';
 

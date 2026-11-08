@@ -763,7 +763,6 @@
     "syncCopyChecked": "Terakhir dikonfirmasi {time}",
     "cloudTrafficSummary": "Sisa transfer data bulan ini: {remaining} / {limit}",
     "onboardNewDiary": "Mulai di sini",
-    "onboardConnect": "Hubungkan ke perangkat yang ada",
     "onboardFailed": "Penyiapan tidak dapat diselesaikan. Buku harian Anda aman; silakan coba lagi.",
     "tutorialTitle": "Cara menggunakan buku harian",
     "tutorialWriteTitle": "Tulis entri buku harian pertama Anda",

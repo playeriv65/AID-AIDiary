@@ -2639,9 +2639,6 @@ class AppLocalizationsLt extends AppLocalizations {
   String get onboardNewDiary => 'Pradėkite čia';
 
   @override
-  String get onboardConnect => 'Prisijunkite prie esamo įrenginio';
-
-  @override
   String get onboardFailed =>
       'Nepavyko užbaigti sąrankos. Jūsų dienoraštis yra saugus; pabandykite dar kartą.';
 

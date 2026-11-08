@@ -2604,9 +2604,6 @@ class AppLocalizationsDa extends AppLocalizations {
   String get onboardNewDiary => 'Start her';
 
   @override
-  String get onboardConnect => 'Opret forbindelse til en eksisterende enhed';
-
-  @override
   String get onboardFailed =>
       'Opsætningen kunne ikke fuldføres. Din dagbog er sikker; prøv venligst igen.';
 

@@ -765,7 +765,6 @@
     "syncCopyChecked": "Апошні раз пацверджаны {time}",
     "cloudTrafficSummary": "Перадача дадзеных засталася ў гэтым месяцы: {remaining} / {limit}",
     "onboardNewDiary": "Пачаць тут",
-    "onboardConnect": "Падключыцеся да існуючай прылады",
     "onboardFailed": "Не ўдалося завяршыць наладку. Ваш дзённік у бяспецы; паспрабуйце яшчэ раз.",
     "tutorialTitle": "Як карыстацца дзённікам",
     "tutorialWriteTitle": "Напішыце свой першы дзённікавы запіс",

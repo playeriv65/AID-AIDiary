@@ -763,7 +763,6 @@
     "syncCopyChecked": "Dernier {time} confirmé",
     "cloudTrafficSummary": "Transfert de données restant ce mois-ci : {remaining} / {limit}",
     "onboardNewDiary": "Commencez ici",
-    "onboardConnect": "Connectez-vous à un appareil existant",
     "onboardFailed": "La configuration n'a pas pu être terminée. Votre journal est en sécurité ; veuillez réessayer.",
     "tutorialTitle": "Comment utiliser le journal",
     "tutorialWriteTitle": "Écrivez votre première entrée de journal",

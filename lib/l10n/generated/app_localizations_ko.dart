@@ -2547,9 +2547,6 @@ class AppLocalizationsKo extends AppLocalizations {
   String get onboardNewDiary => '여기서 시작하세요';
 
   @override
-  String get onboardConnect => '기존 장치에 연결';
-
-  @override
   String get onboardFailed => '설정을 완료할 수 없습니다. 귀하의 일기장은 안전합니다. 다시 시도해 주세요.';
 
   @override

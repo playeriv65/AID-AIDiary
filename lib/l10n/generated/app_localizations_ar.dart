@@ -2605,9 +2605,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get onboardNewDiary => 'ابدأ هنا';
 
   @override
-  String get onboardConnect => 'الاتصال بجهاز موجود';
-
-  @override
   String get onboardFailed =>
       'لا يمكن إكمال الإعداد. يومياتك آمنة. يرجى المحاولة مرة أخرى.';
 

@@ -763,7 +763,6 @@
     "syncCopyChecked": "Viimeksi vahvistettu {time}",
     "cloudTrafficSummary": "Tiedonsiirto jäljellä tässä kuussa: {remaining} / {limit}",
     "onboardNewDiary": "Aloita tästä",
-    "onboardConnect": "Yhdistä olemassa olevaan laitteeseen",
     "onboardFailed": "Asennusta ei voitu suorittaa loppuun. Päiväkirjasi on turvassa; yritä uudelleen.",
     "tutorialTitle": "Kuinka käyttää päiväkirjaa",
     "tutorialWriteTitle": "Kirjoita ensimmäinen päiväkirjamerkintäsi",

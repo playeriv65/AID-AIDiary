@@ -2617,9 +2617,6 @@ class AppLocalizationsId extends AppLocalizations {
   String get onboardNewDiary => 'Mulai di sini';
 
   @override
-  String get onboardConnect => 'Hubungkan ke perangkat yang ada';
-
-  @override
   String get onboardFailed =>
       'Penyiapan tidak dapat diselesaikan. Buku harian Anda aman; silakan coba lagi.';
 

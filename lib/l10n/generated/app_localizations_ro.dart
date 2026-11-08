@@ -2639,9 +2639,6 @@ class AppLocalizationsRo extends AppLocalizations {
   String get onboardNewDiary => 'Începeți de aici';
 
   @override
-  String get onboardConnect => 'Conectați-vă la un dispozitiv existent';
-
-  @override
   String get onboardFailed =>
       'Configurarea nu a putut fi finalizată. Jurnalul tău este în siguranță; vă rugăm să încercați din nou.';
 

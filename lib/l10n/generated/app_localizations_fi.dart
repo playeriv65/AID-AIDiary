@@ -2616,9 +2616,6 @@ class AppLocalizationsFi extends AppLocalizations {
   String get onboardNewDiary => 'Aloita tästä';
 
   @override
-  String get onboardConnect => 'Yhdistä olemassa olevaan laitteeseen';
-
-  @override
   String get onboardFailed =>
       'Asennusta ei voitu suorittaa loppuun. Päiväkirjasi on turvassa; yritä uudelleen.';
 

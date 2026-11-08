@@ -2635,9 +2635,6 @@ class AppLocalizationsIt extends AppLocalizations {
   String get onboardNewDiary => 'Inizia qui';
 
   @override
-  String get onboardConnect => 'Connettiti a un dispositivo esistente';
-
-  @override
   String get onboardFailed =>
       'Impossibile completare l\'installazione. Il tuo diario è al sicuro; per favore riprova.';
 
