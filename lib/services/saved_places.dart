@@ -19,10 +19,6 @@ class SavedPlaces {
 
   static bool contains(EntryLocation place) => all().contains(place);
 
-  /// Stars [place], or unstars it when already saved.
-  static Future<void> toggle(EntryLocation place) =>
-      contains(place) ? unsave(place) : save(place);
-
   /// Stars [place] as the newest, unless it already is.
   static Future<void> save(EntryLocation place) async {
     if (!contains(place)) await _write([place, ...all()]);

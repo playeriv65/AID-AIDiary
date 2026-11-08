@@ -13,7 +13,10 @@ import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/actions/entry_actions.dart';
 import 'package:aid_diary/database/entry_store.dart';
 import 'package:aid_diary/database/image_storage.dart';
+import 'package:aid_diary/l10n/shown_language.dart';
 import 'package:aid_diary/models/tag.dart';
+import 'package:aid_diary/time_manager.dart';
+import 'package:aid_diary/utils/mood_emoji.dart';
 import 'package:aid_diary/utils/generated/tag_icon_registry.dart';
 import 'package:aid_diary/models/template.dart';
 import 'package:aid_diary/providers/tags_provider.dart';
@@ -366,7 +369,13 @@ void main() {
     final text = File('${folder.path}/entry.txt');
     await run(
         'entry.export', {'id': '$id', 'format': 'text', 'path': text.path});
-    expect(await text.readAsString(), endsWith('\n# Title\nBody *here*'));
+    final exported = await text.readAsString();
+    expect(exported, endsWith('\n# Title\nBody *here*'));
+    // Headed by the mood and the day as shared from the entry page, in the
+    // app's language.
+    final entry = EntryStore.instance.entries.firstWhere((e) => e.id == id);
+    expect(exported.split('\n').first,
+        '${moodEmoji(1)} ${TimeManager.formatDateWithWeekdayIn(entry.day, shownLocale())}');
 
     final html = File('${folder.path}/entry.html');
     await run(

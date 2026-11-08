@@ -4,21 +4,32 @@
 
 import 'dart:convert';
 import 'dart:typed_data';
+import 'dart:ui' show Locale;
 
 import 'package:archive/archive.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/models/image.dart';
+import 'package:aid_diary/time_manager.dart';
 import 'package:aid_diary/utils/mood_emoji.dart';
+import 'package:intl/intl.dart';
 import 'package:markdown/markdown.dart' as md;
 
-/// One entry as plain text, an HTML page or a ZIP with its original media.
-/// [heading] is the line above the text, e.g. the mood and date.
+/// One entry as plain text, an HTML page or a ZIP with its original media,
+/// whether shared from the GUI or exported by `entry.export`. [heading] is
+/// the line above the text, from [EntryShare.heading].
 class EntryShare {
-  /// The line above the text: the mood's emoji, if any, and [date].
-  static String heading(Entry entry, String date) {
+  /// The line above the text: the mood's emoji, if any, and the diary day
+  /// with its weekday, as [locale] writes dates.
+  static String heading(Entry entry, Locale locale) {
     final mood = moodEmoji(entry.mood);
+    final date = TimeManager.formatDateWithWeekdayIn(entry.day, locale);
     return '${mood.isEmpty ? '' : '$mood '}$date';
   }
+
+  /// The name, without an extension, of a file made from [entry]: when it
+  /// was written, to the minute.
+  static String fileName(Entry entry) =>
+      'aid-diary-${DateFormat('yyyy-MM-dd-HHmm').format(entry.timeCreate)}';
 
   static String plainText(Entry entry, String heading) =>
       '$heading\n${entry.markdown}';

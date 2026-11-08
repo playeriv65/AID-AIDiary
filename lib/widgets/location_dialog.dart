@@ -4,6 +4,7 @@
 
 import 'dart:math';
 
+import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/layouts/adaptive_diary_shell.dart';
@@ -268,7 +269,14 @@ class _PlacePickerState extends State<_PlacePicker> {
   }
 
   Future<void> _toggleSaved(EntryLocation place) async {
-    await SavedPlaces.toggle(place);
+    await AppActions.instance
+        .run(_saved.contains(place) ? 'place.unsave' : 'place.save', {
+      if (place.name case final name?) 'name': name,
+      if (place.hasCoordinates) ...{
+        'latitude': place.latitude,
+        'longitude': place.longitude,
+      },
+    });
     if (mounted) setState(() => _saved = SavedPlaces.all());
   }
 
@@ -285,15 +293,11 @@ class _PlacePickerState extends State<_PlacePicker> {
       subtitle: detail == null
           ? null
           : Text(detail, maxLines: 2, overflow: TextOverflow.ellipsis),
-      trailing: place.hasCoordinates
-          ? IconButton(
-              tooltip:
-                  saved ? l10n.locationUnsavePlace : l10n.locationSavePlace,
-              icon:
-                  Icon(saved ? Icons.star_rounded : Icons.star_outline_rounded),
-              onPressed: () => _toggleSaved(place),
-            )
-          : null,
+      trailing: IconButton(
+        tooltip: saved ? l10n.locationUnsavePlace : l10n.locationSavePlace,
+        icon: Icon(saved ? Icons.star_rounded : Icons.star_outline_rounded),
+        onPressed: () => _toggleSaved(place),
+      ),
       onTap: () => _choose(place),
     );
   }

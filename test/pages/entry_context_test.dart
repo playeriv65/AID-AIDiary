@@ -3,13 +3,16 @@ library;
 
 import 'dart:convert';
 
+import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/models/day_weather.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/pages/entry_view_page.dart';
 import 'package:aid_diary/services/location_service.dart';
+import 'package:aid_diary/services/saved_places.dart';
 import 'package:aid_diary/services/weather_service.dart';
 import 'package:aid_diary/widgets/context_dialogs.dart';
 import 'package:aid_diary/widgets/location_dialog.dart';
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
@@ -160,6 +163,33 @@ void main() {
     await tester.pumpAndSettle();
     expect(choice, isNotNull);
     expect(choice!.location, isNull);
+  });
+
+  testWidgets('a place known only by its name can be starred and unstarred',
+      (tester) async {
+    // Starred from the command line, as the picker would.
+    await tester
+        .runAsync(() => AppActions.instance.run('place.save', {'name': '外婆家'}));
+    expect(SavedPlaces.all(), [const EntryLocation(name: '外婆家')]);
+
+    DiaryAppHarness.size(tester, const Size(390, 844));
+    await tester.pumpWidget(harness.app(const Scaffold(body: SizedBox())));
+    final context = tester.element(find.byType(SizedBox).first);
+    showLocationDialog(context, null);
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const ValueKey('location-pick')));
+    await tester.pumpAndSettle();
+    final unstar = find.descendant(
+        of: find.byKey(const ValueKey('location-saved-0')),
+        matching: find.byTooltip('取消收藏'));
+    expect(unstar, findsOneWidget);
+    await tester.tap(unstar);
+    await DiaryAppHarness.pumpUntil(tester, () => SavedPlaces.all().isEmpty);
+    expect(find.byKey(const ValueKey('location-saved-0')), findsNothing);
+    Navigator.of(context).popUntil((route) => route.isFirst);
+    await tester.pumpAndSettle();
+    // The settings file write waits a second; the test has no file to keep.
+    EasyDebounce.cancel('save-config');
   });
 
   testWidgets('entry details show the title and the day\'s weather',

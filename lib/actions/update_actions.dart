@@ -11,8 +11,9 @@ final updateActions = [
   AppAction(
       id: 'update.check',
       describe: 'Asks the release manifest for a build newer than this app; '
-          'shows nothing to the user. Android builds outside F-Droid and '
-          'the installed Windows app only.',
+          'shows nothing to the user. A build the user chose to skip is '
+          'still reported, marked skipped. Android builds outside F-Droid '
+          'and the installed Windows app only.',
       risk: ActionRisk.read,
       run: (_, __) async {
         final updates = AppUpdates.instance;
@@ -27,7 +28,9 @@ final updateActions = [
             'build':
                 int.tryParse(DeviceInfoService().appInfo?.buildNumber ?? ''),
           },
-          'update': update?.toJson(),
+          'update': update == null
+              ? null
+              : {...update.toJson(), 'skipped': update.skipped},
         };
       }),
   AppAction(

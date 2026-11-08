@@ -42,6 +42,10 @@ class AppUpdate {
   /// build number tells them apart.
   String get label => '$version ($build)';
 
+  /// Whether the user chose to skip this build when it was offered.
+  bool get skipped =>
+      build == ConfigProvider.instance.get(Settings.skippedUpdate);
+
   /// The notes in [locale]'s language: with its script or region when the
   /// manifest has them, else the language, else English.
   List<String> notesFor(Locale locale) {
@@ -258,11 +262,7 @@ class AppUpdates {
     }
     try {
       final update = await check();
-      if (update == null ||
-          update.build == settings.get(Settings.skippedUpdate)) {
-        return null;
-      }
-      return update;
+      return update == null || update.skipped ? null : update;
     } catch (error, stackTrace) {
       _logger.info('Update check failed', error, stackTrace);
       return null;

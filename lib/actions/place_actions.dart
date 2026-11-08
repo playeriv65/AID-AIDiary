@@ -35,10 +35,39 @@ const _coordinates = [
   ActionParam('longitude', ParamType.number, 'Degrees east, from -180 to 180'),
 ];
 
-EntryLocation _located(ActionArgs args) => EntryLocation(
-    name: args['name'] as String?,
-    latitude: degreesArg(args, 'latitude', 90),
-    longitude: degreesArg(args, 'longitude', 180));
+/// What `place.save` and `place.unsave` take: a name, a position or both,
+/// as the location picker stars them.
+const _starredPlace = [
+  ActionParam('name', ParamType.string, 'What the place is called',
+      required: false),
+  ActionParam('latitude', ParamType.number,
+      'Degrees north, from -90 to 90; goes with longitude',
+      required: false),
+  ActionParam('longitude', ParamType.number,
+      'Degrees east, from -180 to 180; goes with latitude',
+      required: false),
+];
+
+/// The place [_starredPlace] describes.
+EntryLocation _starred(ActionArgs args) {
+  final name = (args['name'] as String?)?.trim();
+  final latitude =
+      args['latitude'] == null ? null : degreesArg(args, 'latitude', 90);
+  final longitude =
+      args['longitude'] == null ? null : degreesArg(args, 'longitude', 180);
+  if ((latitude == null) != (longitude == null)) {
+    throw const ActionException(
+        'bad_args', 'latitude and longitude go together');
+  }
+  final place = EntryLocation(
+      name: name == null || name.isEmpty ? null : name,
+      latitude: latitude,
+      longitude: longitude);
+  if (place.isEmpty) {
+    throw const ActionException('bad_args', 'Give a name or a position');
+  }
+  return place;
+}
 
 /// The places and weather actions, over the services that look them up;
 /// tests pass services that answer without the network.
@@ -117,15 +146,12 @@ List<AppAction> buildPlaceActions(
     ),
     AppAction(
       id: 'place.save',
-      describe: 'Stars a place for the location picker.',
+      describe: 'Stars a place for the location picker: a name, a position '
+          'or both.',
       risk: ActionRisk.write,
-      params: const [
-        ..._coordinates,
-        ActionParam('name', ParamType.string, 'What to call the place',
-            required: false),
-      ],
+      params: _starredPlace,
       run: (context, args) async {
-        final place = _located(args);
+        final place = _starred(args);
         await SavedPlaces.save(place);
         return {'saved': _place(place), 'count': SavedPlaces.all().length};
       },
@@ -135,13 +161,9 @@ List<AppAction> buildPlaceActions(
       describe: 'Removes a place from the starred ones, given as '
           'place.saved lists it.',
       risk: ActionRisk.write,
-      params: const [
-        ..._coordinates,
-        ActionParam('name', ParamType.string, 'The name it was saved under',
-            required: false),
-      ],
+      params: _starredPlace,
       run: (context, args) async {
-        final place = _located(args);
+        final place = _starred(args);
         if (!SavedPlaces.contains(place)) {
           throw const ActionException('not_found', 'That place is not saved');
         }

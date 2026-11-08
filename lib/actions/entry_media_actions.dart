@@ -9,6 +9,7 @@ import 'package:aid_diary/actions/app_action.dart';
 import 'package:aid_diary/actions/entry_access.dart';
 import 'package:aid_diary/database/entry_store.dart';
 import 'package:aid_diary/database/image_storage.dart';
+import 'package:aid_diary/l10n/shown_language.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/models/image.dart';
 import 'package:aid_diary/providers/entry_images_provider.dart';
@@ -17,7 +18,6 @@ import 'package:aid_diary/services/media_import.dart';
 import 'package:aid_diary/services/photo_compression.dart';
 import 'package:aid_diary/utils/entry_share.dart';
 import 'package:image/image.dart' as img;
-import 'package:intl/intl.dart';
 
 const String _exportText = 'text';
 const String _exportHtml = 'html';
@@ -296,8 +296,7 @@ final List<AppAction> entryMediaActions = [
     run: (context, args) async {
       final entry = await openEntryOf(args);
       final format = args['format'] as String;
-      final heading =
-          EntryShare.heading(entry, DateFormat.yMMMEd().format(entry.day));
+      final heading = EntryShare.heading(entry, shownLocale());
       final List<int> bytes = switch (format) {
         _exportText => utf8.encode(EntryShare.plainText(entry, heading)),
         _exportHtml => utf8.encode(EntryShare.html(entry, heading)),

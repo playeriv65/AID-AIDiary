@@ -217,8 +217,12 @@ class TimeManager {
           isJalali: isJalaliCalendar(context));
 
   static String formatDateWithWeekday(DateTime date, BuildContext context) =>
-      _formatDateWithWeekday(date, currentLocale(context),
-          isJalali: isJalaliCalendar(context));
+      formatDateWithWeekdayIn(date, Localizations.localeOf(context));
+
+  /// [formatDateWithWeekday] in [locale], for code without a context.
+  static String formatDateWithWeekdayIn(DateTime date, Locale locale) =>
+      _formatDateWithWeekday(date, dateLocaleName(locale),
+          isJalali: isJalaliCalendarFor(locale));
 
   static String formatMonthDay(DateTime date, BuildContext context) =>
       _formatMonthDay(date, currentLocale(context),

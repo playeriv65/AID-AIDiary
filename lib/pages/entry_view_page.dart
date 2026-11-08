@@ -320,10 +320,8 @@ class EntryViewPage extends StatelessWidget {
         ],
         title: l10n.shareAs);
     if (choice == null || !context.mounted) return;
-    final heading = EntryShare.heading(
-        entry, TimeManager.formatDateWithWeekday(entry.day, context));
-    final name =
-        'aid-diary-${DateFormat('yyyy-MM-dd-HHmm').format(entry.timeCreate)}';
+    final heading = EntryShare.heading(entry, Localizations.localeOf(context));
+    final name = EntryShare.fileName(entry);
     Future<void> shareFile(List<int> bytes, String mimeType, String file) =>
         SharePlus.instance.share(ShareParams(files: [
           XFile.fromData(Uint8List.fromList(bytes), mimeType: mimeType)

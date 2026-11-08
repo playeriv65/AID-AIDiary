@@ -87,6 +87,15 @@ void main() {
         isNull);
   });
 
+  test('a build the user skipped is marked skipped', () async {
+    final update = AppUpdate.from(_manifest(),
+        source: Uri.parse(_server), package: 'android', installed: 261028090)!;
+    expect(update.skipped, isFalse);
+    await ConfigProvider.instance.set(Settings.skippedUpdate, update.build);
+    expect(update.skipped, isTrue);
+    await ConfigProvider.instance.set(Settings.skippedUpdate, 0);
+  });
+
   test('notes come in the app language, else English', () {
     final manifest = _manifest()
       ..['notesByLanguage'] = {

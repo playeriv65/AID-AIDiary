@@ -148,6 +148,18 @@ void main() {
     expect((await run('place.saved'))['places'], hasLength(1));
   });
 
+  test('a place known only by its name is starred too', () async {
+    expect(
+        (await run('place.save', {'name': ' 外婆家 '}))['saved'], {'name': '外婆家'});
+    expect((await run('place.saved'))['places'], [
+      {'name': '外婆家'}
+    ]);
+    expect(() => run('place.save', {'name': ' '}), refused('bad_args'));
+    expect(() => run('place.save', {'name': 'Half', 'latitude': '1'}),
+        refused('bad_args'));
+    expect((await run('place.unsave', {'name': '外婆家'}))['count'], 0);
+  });
+
   test('the device position needs location to be on', () async {
     // The harness answers that location services are off.
     expect(() => run('place.current'), refused('location_off'));
