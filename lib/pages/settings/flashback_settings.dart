@@ -4,7 +4,7 @@
 
 import 'package:aid_diary/actions/settings_actions.dart';
 import 'package:aid_diary/config_provider.dart';
-import 'package:aid_diary/widgets/settings_header.dart';
+import 'package:aid_diary/widgets/list_detail_layout.dart';
 import 'package:aid_diary/widgets/settings_toggle.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
@@ -64,8 +64,7 @@ class _FlashbackSettingsPageState extends State<FlashbackSettings> {
     return [
       Padding(
         padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-        child:
-            SettingsHeader(text: AppLocalizations.of(context)!.flashbacksTitle),
+        child: SectionLabel(AppLocalizations.of(context)!.flashbacksTitle),
       ),
       Padding(
         padding: const EdgeInsets.only(left: 8.0, right: 8.0),

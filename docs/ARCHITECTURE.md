@@ -128,6 +128,17 @@ Consequences for structure:
 | An operation behind a progress dialog, and its failure whether reported or thrown | `runOperation` (`widgets/progress_dialog.dart`), failure shown by `showFailureDialog` | `failureDescription` |
 | A fact with an icon (place, weather) on cards, the entry page and share pictures | `IconLabel` (`widgets/icon_label.dart`) | `icon` or `glyph`, `size`, `color` |
 | A day's weather | `WeatherProvider.of`/`ofEntry`, edited with `showWeatherDialog` | |
+| A note or a failure the user can simply retry | `showSnackMessage` / `runWithFailureSnack` (`widgets/snack_message.dart`) | `failure` |
+
+### Reporting failures
+
+A failure the user can simply try again, or a note about what happened
+(a sync account could not be reached, a name was not saved), is a snack bar
+through `showSnackMessage`, or `runWithFailureSnack` around an action. A
+failure the user has to act on before going on (a restore or export that
+did not finish, a wrong password for a backup) is the failure dialog:
+`runOperation` for an operation behind a progress dialog, otherwise
+`showFailureDialog`. Pages do not keep their own snack-bar helpers.
 
 ## UI code rules
 

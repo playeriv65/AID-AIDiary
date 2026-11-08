@@ -13,7 +13,7 @@ import 'package:aid_diary/widgets/diary_wallpaper.dart';
 import 'package:aid_diary/widgets/emoji_input_box.dart';
 import 'package:aid_diary/widgets/mood_icon.dart';
 import 'package:aid_diary/widgets/settings_dropdown.dart';
-import 'package:aid_diary/widgets/settings_header.dart';
+import 'package:aid_diary/widgets/list_detail_layout.dart';
 import 'package:aid_diary/widgets/settings_icon_action.dart';
 import 'package:aid_diary/widgets/settings_toggle.dart';
 import 'package:material_ui/material_ui.dart';
@@ -217,7 +217,7 @@ class _AppearanceSettingsPageState extends State<AppearanceSettings> {
   Widget _section(String key, String title) => Padding(
       key: ValueKey(key),
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
-      child: SettingsHeader(text: title));
+      child: SectionLabel(title));
 
   List<Widget> _typographySettings(
       BuildContext context, ConfigProvider configProvider) {
@@ -488,9 +488,8 @@ class _AppearanceSettingsPageState extends State<AppearanceSettings> {
                   const Divider(height: 32),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: SettingsHeader(
-                        text:
-                            AppLocalizations.of(context)!.settingsAutoAddTitle),
+                    child: SectionLabel(
+                        AppLocalizations.of(context)!.settingsAutoAddTitle),
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(16, 4, 16, 0),
