@@ -5,13 +5,14 @@
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/database/entry_store.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
-import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/providers/entries_provider.dart';
 import 'package:aid_diary/routing/entry_navigation.dart';
 import 'package:aid_diary/providers/entry_images_provider.dart';
 import 'package:aid_diary/widgets/entry_card.dart';
 import 'package:aid_diary/widgets/auth_popup.dart';
 import 'package:aid_diary/widgets/hidden_diary_scope.dart';
+import 'package:aid_diary/widgets/settings_category.dart';
+import 'package:aid_diary/widgets/snack_message.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:aid_diary/widgets/list_detail_layout.dart';
@@ -29,20 +30,6 @@ class HiddenEntriesPage extends StatefulWidget {
 class _HiddenEntriesPageState extends State<HiddenEntriesPage> {
   final _session = HiddenDiarySession();
   bool _authenticating = false;
-  List<DeletedEntry> _deleted = const [];
-
-  Future<void> _reloadDeleted() async {
-    final deleted = await EntryStore.instance.deleted(includeHidden: true);
-    if (mounted) {
-      setState(() =>
-          _deleted = deleted.where((item) => item.entry.isHidden).toList());
-    }
-  }
-
-  Future<void> _restore(Entry entry) async {
-    await _session.restore(entry);
-    await _reloadDeleted();
-  }
 
   @override
   void dispose() {
@@ -84,12 +71,9 @@ class _HiddenEntriesPageState extends State<HiddenEntriesPage> {
     if (!mounted) return;
     setState(() => _authenticating = false);
     if (success) {
-      await _reloadDeleted();
-      if (!mounted) return;
       _session.unlock();
     } else {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(l10n.hiddenDiaryAuthHint)));
+      showSnackMessage(context, l10n.hiddenDiaryAuthHint);
     }
   }
 
@@ -126,30 +110,17 @@ class _HiddenEntriesPageState extends State<HiddenEntriesPage> {
                           images:
                               EntryImagesProvider.instance.getForEntry(entry),
                           showDate: true,
-                          onTap: () async {
-                            await EntryNavigation.view(context, entry,
-                                entries: () =>
-                                    EntryStore.instance.hiddenEntries);
-                            await _reloadDeleted();
-                          },
+                          onTap: () => EntryNavigation.view(context, entry,
+                              entries: () => EntryStore.instance.hiddenEntries),
                         ),
-                      if (_deleted.isNotEmpty) ...[
-                        const Divider(),
-                        Text(l10n.deletedTitle,
-                            style: Theme.of(context).textTheme.titleMedium),
-                        for (final item in _deleted)
-                          EntryCard(
-                            entry: item.entry,
-                            images: EntryImagesProvider.instance
-                                .getForEntry(item.entry),
-                            showDate: true,
-                            label: l10n.deletedDaysLeft(item.daysLeft),
-                            trailing: TextButton(
-                                onPressed: () => _restore(item.entry),
-                                child: Text(l10n.deletedRestore)),
-                            onTap: () => _restore(item.entry),
-                          ),
-                      ],
+                      const Divider(),
+                      // The same page as the diary's, holding the hidden
+                      // diary's deleted entries.
+                      SettingsCategory(
+                          key: const ValueKey('hidden-deleted'),
+                          title: l10n.deletedTitle,
+                          icon: Icons.delete_outline_rounded,
+                          destination: 'recently_deleted'),
                     ],
                   ),
           );

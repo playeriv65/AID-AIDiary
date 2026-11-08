@@ -46,9 +46,26 @@ class HiddenDiarySession extends ChangeNotifier with WidgetsBindingObserver {
     await EntryStore.instance.delete(entry);
   }
 
+  /// The hidden entries in Recently deleted.
+  Future<List<DeletedEntry>> deleted() async {
+    if (!_unlocked) {
+      throw StateError('This operation requires an unlocked hidden diary.');
+    }
+    return [
+      for (final item in await EntryStore.instance.deleted(includeHidden: true))
+        if (item.entry.isHidden) item,
+    ];
+  }
+
   Future<void> restore(Entry entry) async {
     _requireAccess(entry);
     await EntryStore.instance.restore(entry);
+  }
+
+  /// Erases hidden [entries] in Recently deleted for good.
+  Future<void> erase(List<Entry> entries) async {
+    entries.forEach(_requireAccess);
+    await EntryStore.instance.eraseMany(entries);
   }
 
   Future<void> unseal(Entry entry) async {

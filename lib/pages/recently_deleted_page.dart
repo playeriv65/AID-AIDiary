@@ -10,11 +10,14 @@ import 'package:aid_diary/database/entry_store.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/providers/entry_images_provider.dart';
 import 'package:aid_diary/widgets/entry_card.dart';
+import 'package:aid_diary/widgets/hidden_diary_scope.dart';
 import 'package:aid_diary/widgets/list_detail_layout.dart';
 import 'package:aid_diary/widgets/choice_sheet.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// Deleted entries waiting out the retention period; restore or erase them.
+/// Opened in the hidden diary, it holds the hidden diary's deleted entries,
+/// else the rest.
 class RecentlyDeletedPage extends StatefulWidget {
   const RecentlyDeletedPage({super.key});
 
@@ -31,9 +34,38 @@ class _RecentlyDeletedPageState extends State<RecentlyDeletedPage> {
     _reload();
   }
 
+  /// The hidden diary this page was opened in, or null.
+  HiddenDiarySession? get _hidden =>
+      context.getInheritedWidgetOfExactType<HiddenDiaryScope>()?.notifier;
+
   Future<void> _reload() async {
-    final items = await EntryStore.instance.deleted();
+    final items = await (_hidden?.deleted() ?? EntryStore.instance.deleted());
     if (mounted) setState(() => _items = items);
+  }
+
+  Future<void> _restore(Entry entry) async {
+    if (_hidden case final hidden?) {
+      await hidden.restore(entry);
+    } else {
+      await AppActions.instance.run('entry.restore', {'id': entry.id});
+    }
+  }
+
+  Future<void> _erase(Entry entry) async {
+    if (_hidden case final hidden?) {
+      await hidden.erase([entry]);
+    } else {
+      await AppActions.instance
+          .run('entry.erase', {'id': entry.id}, confirmed: true);
+    }
+  }
+
+  Future<void> _eraseAll(List<DeletedEntry> items) async {
+    if (_hidden case final hidden?) {
+      await hidden.erase([for (final item in items) item.entry]);
+    } else {
+      await AppActions.instance.run('entry.empty_deleted', {}, confirmed: true);
+    }
   }
 
   Future<bool> _confirm(String title, String message) async {
@@ -64,21 +96,20 @@ class _RecentlyDeletedPageState extends State<RecentlyDeletedPage> {
     ]);
     if (restore == null) return;
     if (restore) {
-      await AppActions.instance.run('entry.restore', {'id': item.entry.id});
+      await _restore(item.entry);
     } else if (await _confirm(
         l10n.deletedDeleteForever, l10n.deletedDeleteForeverDescription)) {
-      await AppActions.instance
-          .run('entry.erase', {'id': item.entry.id}, confirmed: true);
+      await _erase(item.entry);
     }
     await _reload();
   }
 
-  Future<void> _emptyAll() async {
+  Future<void> _emptyAll(List<DeletedEntry> items) async {
     final l10n = AppLocalizations.of(context)!;
     if (!await _confirm(l10n.deletedEmpty, l10n.deletedEmptyDescription)) {
       return;
     }
-    await AppActions.instance.run('entry.empty_deleted', {}, confirmed: true);
+    await _eraseAll(items);
     await _reload();
   }
 
@@ -91,10 +122,10 @@ class _RecentlyDeletedPageState extends State<RecentlyDeletedPage> {
       appBar: AppBar(
         title: Text(l10n.deletedTitle),
         actions: [
-          if (items?.isNotEmpty ?? false)
+          if (items != null && items.isNotEmpty)
             TextButton(
               key: const ValueKey('deleted-empty'),
-              onPressed: _emptyAll,
+              onPressed: () => _emptyAll(items),
               child: Text(l10n.deletedEmpty),
             ),
         ],

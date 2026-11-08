@@ -121,6 +121,37 @@ void main() {
         .runAsync(() => Future<void>.delayed(const Duration(milliseconds: 20)));
   });
 
+  testWidgets('its Recently deleted erases hidden entries for good',
+      (tester) async {
+    final entry = await open(tester);
+    await tester.runAsync(() => EntryStore.instance.delete(entry));
+    authenticated = true;
+    await tester.tap(find.byKey(const ValueKey('hidden-unlock')));
+    await DiaryAppHarness.pumpUntil(
+        tester,
+        () =>
+            find.byKey(const ValueKey('hidden-deleted')).evaluate().isNotEmpty);
+    expect(find.text('Private title'), findsNothing);
+    await tester.tap(find.byKey(const ValueKey('hidden-deleted')));
+    await DiaryAppHarness.pumpUntil(
+        tester, () => find.text('Private title').evaluate().isNotEmpty);
+
+    await tester.tap(find.text('Private title'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const ValueKey('deleted-erase')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const ValueKey('deleted-confirm')));
+    await DiaryAppHarness.pumpUntil(
+        tester, () => find.text('没有最近删除的日记').evaluate().isNotEmpty);
+    expect(
+        await tester
+            .runAsync(() => EntryStore.instance.deleted(includeHidden: true)),
+        isEmpty);
+    await tester.pumpWidget(const SizedBox.shrink());
+    await tester
+        .runAsync(() => Future<void>.delayed(const Duration(milliseconds: 20)));
+  });
+
   testWidgets('unhide requires the local section and restores normal views',
       (tester) async {
     final entry = await open(tester);

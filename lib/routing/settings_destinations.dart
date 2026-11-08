@@ -33,6 +33,7 @@ import 'package:aid_diary/pages/tutorial_page.dart';
 import 'package:aid_diary/routing/destination.dart';
 import 'package:aid_diary/widgets/auto_backup_settings_dialog.dart';
 import 'package:aid_diary/widgets/command_palette.dart';
+import 'package:aid_diary/widgets/hidden_diary_scope.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// Search, statistics and every page of the settings.
@@ -86,8 +87,15 @@ final List<Destination> settingsDestinations = [
           (_) => const AutoBackupSettingsDialog())),
   pageDestination('settings/storage', 'Where the diary and media are stored',
       (_) => const StorageSettings()),
-  pageDestination('recently_deleted', 'Entries deleted in the last days',
-      (_) => const RecentlyDeletedPage()),
+  Destination(
+      'recently_deleted',
+      'Entries deleted in the last days',
+      (context, args) => pushPlace(
+          context,
+          'recently_deleted',
+          // In the hidden diary, the hidden diary's own.
+          HiddenDiaryScope.protectRoute(
+              context, (_) => const RecentlyDeletedPage()))),
   pageDestination('hidden_entries', 'Hidden entries; requires local unlock',
       (_) => const HiddenEntriesPage()),
   pageDestination('settings/stories', 'Flashbacks and stories',
