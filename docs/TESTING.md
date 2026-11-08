@@ -103,7 +103,7 @@ analysis and formatting accompany source changes; they are not behavior tests.
 | Action, view model or service | Owning tests plus caller behavior; use real local dependencies where the contract requires them | Work crosses GUI/CLI, storage or sync boundaries |
 | Files, config persistence, SQLite, backup/import/export | Relevant host integration; round trips, failures and retained data | Schema, archive format, shared stores or migrations change: full app offline regression |
 | Sync, crypto, pairing, media queues or traffic policy | Relevant sync integration, malformed/authentication failures and interrupted/retried operations | Shared wire format, trust or routing semantics change: full app offline regression; add Go checks if its contract is affected |
-| Native plugin, permissions, keys, IME, widgets or networking | Owning host tests plus the affected Windows/Android build and native behavior | Platform wiring changes: smoke the affected platform; mocks cannot verify it |
+| Native plugin, permissions, keys, IME, widgets or networking | Owning host tests plus the affected Windows/Android build and native behavior (Android on the test tablet; a local Windows build only when the change is Windows-native) | Platform wiring changes: smoke the affected platform; mocks cannot verify it |
 | CLI | `test-cli` (the suite is currently small), plus affected action/API tests if shared behavior changes | API changes: check both producer and consumer |
 | Go server | `test-server`; policy changes cover limits off and on | Concurrency/socket/accounting changes: `go test -race ./...` from `server/` on a supported configured toolchain; wire changes also need Flutter protocol tests |
 | SDK/dependencies, shared test harness, startup or broad refactor | Full offline suite of each affected component | Native dependency/runner changes also need platform builds and relevant device smoke |
@@ -127,7 +127,7 @@ rate. A whole Go suite does not imply the client was tested either.
 | Finishing a cross-module feature/refactor, or uncertain impact | One full offline run per affected component after focused checks; include the end-to-end critical flow the change affects |
 | Safety net during active development | Once at the intentional end of a day containing app code changes, run full offline Flutter unless the same final app/test/dependency state already has a passing full run. Intermediate commits do not wait for this. No run is needed on documentation-only days |
 | Dependency/SDK, shared harness/runtime, schema or sync-format change | Full affected component suite before considering the change complete; targeted tests remain the first feedback loop |
-| App release candidate | Full offline Flutter, affected bundled CLI checks, successful intended Windows/Android builds, and release-build smoke of the critical journeys below. Review all relevant phone/wide views |
+| App release candidate | Full offline Flutter, affected bundled CLI checks, successful intended Windows/Android builds (the Nightly's; Windows is not packaged locally), and release-build smoke of the critical journeys below. Review all relevant phone/wide views |
 | Server deployment | Full Go tests and vet, race checks for the server candidate, then isolated preflight and deployed HTTPS/policy/WebSocket/data round trips as applicable; unchanged client code does not require an unrelated full Flutter rerun |
 
 The daily safety net is a manual workflow rule, not a newly installed schedule
@@ -189,13 +189,13 @@ existing profile/native measurement; screenshots and debug timing cannot prove i
 
 ### Repeatable Android smoke checks
 
-Use an emulator or the development app on the test tablet. Follow the
+Use the development app on the test tablet; there are no emulators. Follow the
 [isolated workspace procedure](SETUP.md#isolated-physical-network-checks)
 and record the source revision, APK build number, package, Android version
 and workspace name. Seed a small scratch diary before exercising a journey
-that must preserve existing data. Start upgrade cases from a disposable
-emulator snapshot or an existing eligible development installation. Never
-downgrade an installed package to prepare the fixture.
+that must preserve existing data. Start upgrade cases from an existing
+eligible development installation. Never downgrade an installed package to
+prepare the fixture.
 
 | Changed boundary | Procedure | Evidence |
 |---|---|---|

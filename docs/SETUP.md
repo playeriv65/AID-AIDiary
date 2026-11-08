@@ -16,7 +16,7 @@ Development happens natively on Windows (no WSL). Versions in use on
 | JDK | 23.0.1 locally | Nightly Android builds use JDK 21 in the [workflow](../.github/workflows/nightly.yml). `android/build.gradle` aligns Kotlin's JVM target with Java for plugins that leave it unset. |
 | Android SDK | platform android-37, build-tools 36.0.0 | `compileSdk` 37; min and target SDK come from Flutter. |
 | Visual Studio Build Tools | 2022 (17.14), Windows 10 SDK 10.0.26100 | For the Windows build. |
-| Rust | stable 1.99 via rustup, with targets `aarch64-linux-android`, `armv7-linux-androideabi` and `x86_64-linux-android` (a debug APK holds all three) | The agent's shell (`rust/`, bashkit). App builds compile it through cargokit; `dev.ps1` test targets run `cargo build --release` first, since host tests load that library. `RUSTUP_HOME`/`CARGO_HOME` come from `dev.env`; bindings regenerate with `flutter_rust_bridge_codegen generate` (2.13.0, `cargo install`). |
+| Rust | stable 1.99 via rustup, with target `aarch64-linux-android` (every Android build, debug included, is arm64 only) | The agent's shell (`rust/`, bashkit). App builds compile it through cargokit; `dev.ps1` test targets run `cargo build --release` first, since host tests load that library. `RUSTUP_HOME`/`CARGO_HOME` come from `dev.env`; bindings regenerate with `flutter_rust_bridge_codegen generate` (2.13.0, `cargo install`). |
 | Go | 1.26.0 for `server/` | `server/go.mod` selects this toolchain; the installed 1.25.6 launcher selects it automatically with `GOTOOLCHAIN=auto`. |
 | Native WebRTC plugin | `flutter_webrtc` 1.6.2+hotfix.4 | Pinned Flutter dependency for Windows/Android ICE data channels; resolved by `dev.ps1 pub`. No TURN service is configured. |
 | uv (Python) | 0.11 | Local Python tooling, such as `tool/icon/export_icon.py`. |
@@ -27,11 +27,23 @@ Development happens natively on Windows (no WSL). Versions in use on
 Use `scripts/dev.ps1` for Flutter builds, tests, screenshots, initialization
 and analysis. They share a workspace lock because native test DLLs cannot be
 replaced while another test process is using them. Focused checks accept
-`./scripts/dev.ps1 test -TestFiles test/sync/copy_status_test.dart`; use another
-worktree for independent concurrent Flutter work. [TESTING.md](TESTING.md)
+`./scripts/dev.ps1 test -TestFiles test/sync/copy_status_test.dart`.
+[TESTING.md](TESTING.md)
 defines the change-to-test matrix, daily/completion/release gates and reporting;
 full offline regression is the explicit `test-all` target, not the default for
 each commit. Native and live checks have separate environments and claims.
+
+Development policy:
+
+- No Android emulators. Android work is built and debugged on the test
+  tablet only (the owner's phone only when asked); debug builds target
+  arm64 only.
+- No local Windows packaging. The Windows app comes from the Nightly
+  installer. Build Windows locally only for a Windows-native change that
+  cannot be checked otherwise; host `flutter test` is unaffected.
+- One active task worktree at a time. When its branch is merged or
+  abandoned, remove the worktree with its `build/` and `.dart_tool/`
+  caches; an unmerged branch stays a branch, not a worktree with caches.
 
 1. Clone `playeriv65/AID-AIDiary` (public).
 2. Copy `scripts/dev.env.example` to `scripts/dev.env` and set this
@@ -42,13 +54,15 @@ each commit. Native and live checks have separate environments and claims.
    disposable task worktrees before using `windows-stage`; keep test diary
    data elsewhere. `AID_GOOGLE_DESKTOP_SECRET` (from the owner, never
    committed) lets desktop builds sign in to Google Drive
-   ([GOOGLE_DRIVE.md](GOOGLE_DRIVE.md)).
+   ([GOOGLE_DRIVE.md](GOOGLE_DRIVE.md)). `DEV_ANDROID_DEVICE` is the test
+   tablet's adb serial ([Test devices](#test-devices)), the default
+   `-Device` of the `android`, `profile` and `frame-rate` targets.
 3. `flutter config --android-sdk <ANDROID_HOME>`, so Flutter and Gradle use
    the same SDK. Point the tools' own folders off a small system drive with
    user environment variables too, not only `dev.env`: the Dart plugin, other
    checkouts and anything run outside `dev.ps1` read only those. On the
    development PC: `PUB_CACHE`, `GRADLE_USER_HOME`, `ANDROID_USER_HOME`,
-   `ANDROID_AVD_HOME`, `RUSTUP_HOME` and `CARGO_HOME` (the same folders as
+   `RUSTUP_HOME` and `CARGO_HOME` (the same folders as
    `dev.env`), plus `ANALYZER_STATE_LOCATION_OVERRIDE` (the Dart analyzer's
    cache, gigabytes), `DART_DATA_HOME` (`dart install` bundles such as the
    Dart MCP server) and `NUGET_PACKAGES` (Windows plugin builds). adb reads
@@ -97,13 +111,12 @@ personal installation or ordinary diary data was modified. This is host and
 Windows-build evidence, not a fresh Android-device installation or performance
 measurement.
 
-
-`./scripts/dev.ps1 windows-release-build` builds a release bundle without
-launching or installing anything. Keep the entire
-`build/windows/x64/runner/Release` directory together when installing it at
-a permanent path outside disposable build/worktree folders; DLLs and `data/`
-are required. This target does not build or install Android APKs. Do not use
-the Android `release` target as a Windows build command.
+The personal installation comes from the Nightly's Windows installer; it is
+not packaged locally. `./scripts/dev.ps1 windows-release-build` builds a
+release bundle without launching or installing anything, for a Windows-native
+change that only a release build can check. This target does not build or
+install Android APKs. Do not use the Android `release` target as a Windows
+build command.
 
 An app lock and the platform secret store do not encrypt a plain SQLite
 database by themselves. Windows OS filesystem encryption, a database's own
@@ -286,9 +299,10 @@ Android can reach a local test port with `adb reverse tcp:PORT tcp:PORT`; debug
 and profile builds permit localhost HTTP for this. Physical route checks use
 the isolated procedure above, not ordinary diary data.
 
-Use widget tests, headless screenshots and an Android emulator with `-no-window`
-for routine visual checks. Only open a visible Windows app when the owner wants
-to inspect it. `./scripts/dev.ps1 windows-background` uses a nearly transparent,
+Use widget tests and headless screenshots for routine visual checks, and the
+test tablet for Android-specific ones (there are no emulators). Only open a
+visible Windows app when the owner wants to inspect it.
+`./scripts/dev.ps1 windows-background` uses a nearly transparent,
 click-through, unfocused on-screen window rather than an off-screen window
 (which has no usable vsync). It enables Flutter Driver and logs the DTD URI.
 This default debug launch uses the real Windows data directory: back it up
@@ -302,13 +316,21 @@ drive the app. Restart for changes to startup, `initState` or static state.
 Turn driver frame synchronization off while a blinking text field holds focus;
 search inspector output rather than dumping the entire tree. Without that
 integration, use the configured Flutter CLI and `aid`; do not claim MCP checks
-ran. Android development launches use `./scripts/dev.ps1 android -Device <id>`;
-`adb exec-out screencap` can capture device output.
+ran. Android development launches use `./scripts/dev.ps1 android` (the tablet
+from `DEV_ANDROID_DEVICE`, or `-Device <serial>`); `adb exec-out screencap`
+can capture device output.
 
-For home-screen widget cold-launch checks, prefer `am kill` to `am force-stop`:
+Home-screen widget and alarm checks run on the tablet. For widget cold-launch
+checks, prefer `am kill` to `am force-stop`:
 force-stop cancels widget taps until the next update. `flutter drive` can
 uninstall the app on completion unless `--keep-app-running` is set; follow the
 signing/data safeguards below.
+
+Known gap: an alarm can only be fired by waiting for its time. The rootable
+emulator moved the clock with `adb root` and `date`; the tablet has no root.
+Its `adb shell cmd alarm set-time` is untried here, and would change the
+tablet's clock, which is a device setting: use it only with the owner's
+consent, and restore automatic time afterwards.
 
 ### App icon
 
@@ -325,7 +347,7 @@ Native Flutter run/build targets take an exclusive per-checkout file lock.
 Windows and Android builds share Flutter asset staging and must not run
 concurrently in the same checkout: this can produce an APK without its Dart
 kernel. `./scripts/dev.ps1 windows-build` builds without opening a window;
-use another worktree for concurrent platform builds. An existing lock file
+run platform builds one after another. An existing lock file
 does not block a build when its owning process has closed it.
 
 Every Android build, debug and profile included, is signed with the
@@ -357,9 +379,8 @@ either flavor, clear its data or change its signing key without authorization.
 | Device | Role | How it is reached |
 | --- | --- | --- |
 | Windows PC (16 threads, 23 GB RAM, small C: drive) | Day-to-day development; hidden app windows for tests (`dev.ps1 windows-background`, `AID_DATA_DIR`) | Local. Builds share RAM with many other programs: `dev.ps1` stops Gradle after Android builds. |
-| Xiaomi Pad 7 (2410CRP4CC, Snapdragon 7+ Gen 3, Android 16 / HyperOS, 3200×2136 at 120 Hz) | The test device: profile builds, frame rate, touch, camera, OEM behaviour | adb over TCP, `adb connect 100.79.141.50:5555` (Tailscale name `xiaomi-pad-7`). |
+| Xiaomi Pad 7 (2410CRP4CC, Snapdragon 7+ Gen 3, Android 16 / HyperOS, 3200×2136 at 120 Hz) | The only Android test device: debug and profile builds, frame rate, touch, camera, home-screen widget, alarms, OEM behaviour | adb over TCP, `adb connect 100.79.141.50:5555` (Tailscale name `xiaomi-pad-7`); that serial is `DEV_ANDROID_DEVICE` in `dev.env`. |
 | Redmi K80 (HyperOS) | The owner's own phone: test only when asked | Tailscale `100.124.182.51:5555`. Its dev app holds test data only. |
-| Emulators `diary_api36` (headless, `-no-window`) and `journey_tablet` (rootable) | Home-screen widget checks; `journey_tablet` can fire alarms with `adb root` and `date` | `ANDROID_AVD_HOME` from `dev.env`. |
 | Nubia Z17 (LineageOS, rooted) | Planned as an unrestricted development phone | Not set up yet. |
 
 Connecting the tablet:

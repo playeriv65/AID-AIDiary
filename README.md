@@ -93,7 +93,7 @@ for matching rules, translation maintenance and validation.
 
 ## Development
 
-Windows is the main development environment (no WSL, no SDK submodule). Start with the [documentation index](docs/INDEX.md) and [maintainer handoff](docs/HANDOFF.md): they route setup, architecture, product decisions, testing and subsystem questions to their owning guides and identify the latest dated checkpoint. [Engineering principles](docs/ENGINEERING.md) explain how we adapt Flutter/Google guidance, review changes and maintain documentation. [Setup](docs/SETUP.md) covers a new computer, local toolchain configuration, signing and test devices.
+Windows is the main development environment (no WSL, no SDK submodule). Start with the [documentation index](docs/INDEX.md) and [maintainer handoff](docs/HANDOFF.md): they route setup, architecture, product decisions, testing and subsystem questions to their owning guides and identify the latest dated checkpoint. [Engineering principles](docs/ENGINEERING.md) explain how we adapt Flutter/Google guidance, review changes and maintain documentation. [Setup](docs/SETUP.md) covers a new computer, local toolchain configuration, signing and test devices. Android is built and debugged on the test tablet only (no emulators, arm64 debug builds); the Windows app comes from the Nightly installer, and local Windows builds are only for Windows-native changes. Keep one active task worktree at a time.
 
 ```powershell
 ./scripts/dev.ps1 pub          # resolve app and CLI dependencies on a new checkout
@@ -109,8 +109,8 @@ Windows is the main development environment (no WSL, no SDK submodule). Start wi
 ./scripts/dev.ps1 windows-profile-stage # stage the profile bundle at the same fixed path
 ./scripts/windows_scroll.ps1 -Label current # verified scrollbar traversal and frame timelines
 ./scripts/windows_scroll.ps1 -Label wheel -WheelOnly # mouse-wheel animation and frame pacing
-./scripts/dev.ps1 android      # run on the emulator
-./scripts/dev.ps1 apk          # build the debug APK (dev flavor)
+./scripts/dev.ps1 android      # run on the test tablet (DEV_ANDROID_DEVICE)
+./scripts/dev.ps1 apk          # build the arm64 debug APK (dev flavor)
 ./scripts/dev.ps1 profile -Device <serial>     # install the dev app in profile mode
 ./scripts/dev.ps1 frame-rate -Device <serial>  # frame rate of it with a 4000-entry diary
 ./scripts/dev.ps1 frame-rate -Device windows   # the same here, hidden, on scratch data

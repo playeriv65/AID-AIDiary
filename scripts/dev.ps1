@@ -1,8 +1,9 @@
 param(
   [ValidateSet('windows','windows-build','windows-profile-build','windows-release-build','windows-stage','windows-profile-stage','windows-background','windows-driver','android','apk','profile','release','test','test-all','test-unit','test-widget','test-integration','test-live','test-server','cli','test-cli','frame-rate','analyze','pub','l10n','screenshots')][string]$Target='windows',
-  # Flutter device id for 'android', e.g. a wireless adb serial from `flutter devices`;
-  # for 'release', the one device to install on.
-  [string]$Device='emulator-5554',
+  # adb serial for 'android', 'profile' and 'frame-rate' (or 'windows' for
+  # frame-rate); defaults to DEV_ANDROID_DEVICE from scripts/dev.env.
+  # For 'release', the one device to install on.
+  [string]$Device='',
   # Files or directories; required for test, optional for layers/screenshots.
   [string[]]$TestFiles=@()
 )
@@ -33,9 +34,15 @@ foreach ($required in 'FLUTTER_ROOT', 'PUB_CACHE', 'JAVA_HOME', 'ANDROID_HOME',
   }
 }
 foreach ($name in 'FLUTTER_ROOT', 'PUB_CACHE', 'JAVA_HOME', 'ANDROID_HOME',
-    'RUSTUP_HOME', 'CARGO_HOME', 'ANDROID_USER_HOME', 'ANDROID_AVD_HOME',
-    'GRADLE_USER_HOME') {
+    'RUSTUP_HOME', 'CARGO_HOME', 'ANDROID_USER_HOME', 'GRADLE_USER_HOME') {
   if ($tools[$name]) { Set-Item "env:$name" $tools[$name] }
+}
+# Android work runs on the test tablet; there are no emulators.
+$deviceGiven = $PSBoundParameters.ContainsKey('Device')
+if (-not $Device) { $Device = $tools['DEV_ANDROID_DEVICE'] }
+if ($Target -in 'android', 'profile', 'frame-rate' -and -not $Device) {
+  Write-Error 'No device: pass -Device <adb serial> or set DEV_ANDROID_DEVICE in scripts/dev.env (docs/SETUP.md, "Test devices").'
+  exit 1
 }
 $env:Path = (Join-Path $env:FLUTTER_ROOT 'bin') + ';' +
   (Join-Path $env:ANDROID_HOME 'platform-tools') + ';' +
@@ -94,7 +101,7 @@ if ($Target -in 'windows', 'windows-build', 'windows-profile-build', 'windows-re
     $buildLock = [System.IO.File]::Open($lockPath, [System.IO.FileMode]::OpenOrCreate,
       [System.IO.FileAccess]::ReadWrite, [System.IO.FileShare]::None)
   } catch [System.IO.IOException] {
-    Write-Error "Cannot acquire the Flutter workspace lock. Stop the other build/test/run in this checkout, or use another worktree. $($_.Exception.Message)"
+    Write-Error "Cannot acquire the Flutter workspace lock. Wait for or stop the other build/test/run in this checkout. $($_.Exception.Message)"
     exit 1
   }
 }
@@ -148,10 +155,10 @@ switch ($Target) {
   'windows-driver' { flutter run -d windows -t test_driver/app.dart }
   # Prints the DTD URI so the Dart MCP server can attach for hot reload.
   'android' { flutter run -d $Device --flavor dev --build-number $buildNumber --print-dtd; Stop-Gradle }
-  'apk' { flutter build apk --debug --flavor dev --build-number $buildNumber; $code = $LASTEXITCODE; Stop-Gradle; exit $code }
+  # Phones and tablets here are arm64: Android builds compile that ABI only.
+  'apk' { flutter build apk --debug --flavor dev --target-platform android-arm64 --build-number $buildNumber; $code = $LASTEXITCODE; Stop-Gradle; exit $code }
   # The dev app in profile mode (compiled as release is, so frame rates
   # mean something), installed over the existing one with its data kept.
-  # Phones and tablets here are arm64: one AOT compile instead of three.
   'profile' {
     flutter build apk --profile --flavor dev --target-platform android-arm64 --build-number $buildNumber
     $code = $LASTEXITCODE
@@ -181,10 +188,10 @@ switch ($Target) {
   # (AGENTS.md, "Versions"): a device already on it or a newer one, say from
   # a nightly built later, stops the build before it starts.
   'release' {
-    $serials = if ($PSBoundParameters.ContainsKey('Device')) { @($Device) } else {
+    $serials = if ($deviceGiven) { @($Device) } else {
       foreach ($line in (adb devices | Select-Object -Skip 1)) {
         $serial, $state = $line -split '\s+'
-        if ($state -eq 'device' -and $serial -notlike 'emulator-*') { $serial }
+        if ($state -eq 'device') { $serial }
       }
     }
     foreach ($serial in $serials) {
