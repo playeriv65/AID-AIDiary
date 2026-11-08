@@ -17,6 +17,7 @@ import 'package:aid_diary/sync/webdav_backend.dart';
 import 'package:aid_diary/widgets/failure_dialog.dart';
 import 'package:aid_diary/widgets/new_password_fields.dart';
 import 'package:aid_diary/widgets/progress_dialog.dart';
+import 'package:aid_diary/widgets/choice_sheet.dart';
 import 'package:aid_diary/widgets/cloud_traffic_notice.dart';
 import 'package:aid_diary/widgets/device_name_tile.dart';
 import 'package:aid_diary/widgets/settings_row.dart';
@@ -152,23 +153,24 @@ class _SyncSettingsState extends State<SyncSettings> {
   /// open it with the recovery code.
   Future<void> _askForKey() async {
     final l10n = AppLocalizations.of(context)!;
-    final choice = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(l10n.syncJoinTitle),
-        content: Text(l10n.syncJoinNeedsKey),
-        actions: [
-          TextButton(
-              key: const ValueKey('sync-use-recovery'),
-              onPressed: () => Navigator.of(context).pop(false),
-              child: Text(l10n.syncUseRecoveryCode)),
-          FilledButton(
-              key: const ValueKey('sync-pair'),
-              onPressed: () => Navigator.of(context).pop(true),
-              child: Text(l10n.syncPairDevice)),
+    final choice = await showChoiceSheet<bool>(
+        context,
+        [
+          (
+            value: true,
+            icon: Icons.devices_rounded,
+            label: l10n.syncPairDevice,
+            key: const ValueKey('sync-pair'),
+          ),
+          (
+            value: false,
+            icon: Icons.key_rounded,
+            label: l10n.syncUseRecoveryCode,
+            key: const ValueKey('sync-use-recovery'),
+          ),
         ],
-      ),
-    );
+        title: l10n.syncJoinTitle,
+        message: l10n.syncJoinNeedsKey);
     if (choice == null || !mounted) return;
     choice ? await _pair() : await _useRecoveryCode();
   }
@@ -381,18 +383,15 @@ class _SyncSettingsState extends State<SyncSettings> {
     return ListView(
       children: [
         const CloudTrafficNotice(key: ValueKey('sync-cloud-traffic-connected')),
-        ListTile(
-          leading: syncing
-              ? const SizedBox.square(
-                  dimension: 24,
-                  child: CircularProgressIndicator(strokeWidth: 2.5))
-              : Icon(locked
-                  ? Icons.lock_rounded
-                  : _service.state == SyncState.failed
-                      ? Icons.sync_problem_rounded
-                      : Icons.sync_rounded),
-          title: Text(_status(l10n), key: const ValueKey('sync-status')),
-          trailing: const Icon(Icons.chevron_right_rounded),
+        SettingsRow(
+          key: const ValueKey('sync-status'),
+          busy: syncing,
+          icon: locked
+              ? Icons.lock_rounded
+              : _service.state == SyncState.failed
+                  ? Icons.sync_problem_rounded
+                  : Icons.sync_rounded,
+          title: _status(l10n),
           onTap: () => openPlace(context, 'settings/sync/copies'),
         ),
         if (_service.pendingConflicts > 0)

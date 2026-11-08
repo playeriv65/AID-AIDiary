@@ -17,6 +17,7 @@ import 'package:aid_diary/widgets/list_detail_layout.dart';
 import 'package:aid_diary/widgets/top_search_card.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:aid_diary/widgets/snack_message.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -57,7 +58,6 @@ class _AtlasPageState extends State<AtlasPage>
   /// Finds the device; [report] says why it failed, for an explicit tap.
   Future<void> _locate({required bool move, required bool report}) async {
     final l10n = AppLocalizations.of(context)!;
-    final messenger = ScaffoldMessenger.of(context);
     String? error;
     try {
       final here = await LocationService().position();
@@ -74,8 +74,8 @@ class _AtlasPageState extends State<AtlasPage>
       // No location support on this platform.
       error = l10n.locationUnavailable;
     }
-    if (report && error != null) {
-      messenger.showSnackBar(SnackBar(content: Text(error)));
+    if (report && error != null && mounted) {
+      showSnackMessage(context, error);
     }
   }
 

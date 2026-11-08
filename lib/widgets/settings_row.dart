@@ -15,6 +15,7 @@ class SettingsRow extends StatelessWidget {
     this.icon,
     this.trailing,
     this.onTap,
+    this.busy = false,
   });
 
   final String title;
@@ -23,6 +24,10 @@ class SettingsRow extends StatelessWidget {
   final Widget? trailing;
   final VoidCallback? onTap;
 
+  /// Shows a progress spinner in place of [icon] while what the row
+  /// describes is under way.
+  final bool busy;
+
   @override
   Widget build(BuildContext context) {
     return ListTile(
@@ -30,7 +35,11 @@ class SettingsRow extends StatelessWidget {
           ? null
           : Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Icon(icon),
+              child: busy
+                  ? const SizedBox.square(
+                      dimension: 24,
+                      child: CircularProgressIndicator(strokeWidth: 2.5))
+                  : Icon(icon),
             ),
       title: Text(title),
       subtitle: hint == null ? null : Text(hint!),

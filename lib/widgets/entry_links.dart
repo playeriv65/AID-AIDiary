@@ -17,6 +17,7 @@ import 'package:aid_diary/time_manager.dart';
 import 'package:aid_diary/utils/diary_day.dart';
 import 'package:aid_diary/utils/entry_filter.dart';
 import 'package:aid_diary/widgets/entry_card.dart';
+import 'package:aid_diary/widgets/snack_message.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// An entry about an earlier day: read and answered rather than rewritten.
@@ -44,11 +45,10 @@ class _NotedEntryTextState extends State<NotedEntryText> {
   String _selected = '';
 
   Future<void> _keep(String quote) async {
-    final messenger = ScaffoldMessenger.of(context);
     final l10n = AppLocalizations.of(context)!;
     await AppActions.instance
         .run('passage.keep', {'id': widget.entry.id, 'quote': quote});
-    messenger.showSnackBar(SnackBar(content: Text(l10n.noteKept)));
+    if (mounted) showSnackMessage(context, l10n.noteKept);
   }
 
   @override

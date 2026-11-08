@@ -48,6 +48,7 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:aid_diary/widgets/weather_icon.dart';
 import 'package:aid_diary/widgets/choice_sheet.dart';
+import 'package:aid_diary/widgets/snack_message.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
@@ -697,14 +698,12 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
   }
 
   Future<void> _pickFromGallery() {
-    final messenger = ScaffoldMessenger.of(context);
     final tooLarge = AppLocalizations.of(context)!.mediaTooLarge;
     return EntryImageActions.pickFromGallery(_model.addAttachments,
         onMetadata: _offerPhotoMetadata,
         onVideo: (file) => MediaActions.addPickedVideo(
             file, _model.addAttachments,
-            onTooLarge: () =>
-                messenger.showSnackBar(SnackBar(content: Text(tooLarge)))));
+            onTooLarge: () => showSnackMessage(context, tooLarge)));
   }
 
   /// Everything an entry can hold: from the gallery, the camera (phones

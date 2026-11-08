@@ -15,8 +15,10 @@ import 'package:aid_diary/storage/storage_picker.dart';
 import 'package:aid_diary/utils/operation_outcome.dart';
 import 'package:aid_diary/widgets/cloud_traffic_notice.dart'
     show formatCloudTrafficBytes;
+import 'package:aid_diary/widgets/settings_row.dart';
 import 'package:aid_diary/widgets/settings_toggle.dart';
 import 'package:aid_diary/widgets/settings_icon_action.dart';
+import 'package:aid_diary/widgets/snack_message.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:provider/provider.dart';
@@ -73,9 +75,10 @@ class _StorageSettingsState extends State<StorageSettings> {
     }, failureDescription: l10n.compressExistingTitle);
     final done = result;
     if (done == null || !mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(l10n.compressExistingDone(done['compressed'] as int,
-            formatCloudTrafficBytes(done['savedBytes'] as int, locale)))));
+    showSnackMessage(
+        context,
+        l10n.compressExistingDone(done['compressed'] as int,
+            formatCloudTrafficBytes(done['savedBytes'] as int, locale)));
   }
 
   Future<void> _attemptImageFolderChange() async {
@@ -134,10 +137,9 @@ class _StorageSettingsState extends State<StorageSettings> {
             setting: Settings.compressPhotos,
             onChanged: (value) => changeSetting(Settings.compressPhotos, value),
           ),
-          ListTile(
+          SettingsRow(
             key: const ValueKey('settings-compress-existing'),
-            title: Text(AppLocalizations.of(context)!.compressExistingTitle),
-            trailing: const Icon(Icons.chevron_right_rounded),
+            title: AppLocalizations.of(context)!.compressExistingTitle,
             onTap: _compressExisting,
           ),
           FutureBuilder(

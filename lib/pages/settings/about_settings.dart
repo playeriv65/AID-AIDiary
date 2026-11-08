@@ -9,7 +9,6 @@ import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/routing/destinations.dart';
 import 'package:aid_diary/services/app_updates.dart';
 import 'package:aid_diary/widgets/app_update_prompt.dart';
-import 'package:aid_diary/widgets/settings_icon_action.dart';
 import 'package:aid_diary/widgets/settings_row.dart';
 import 'package:aid_diary/widgets/settings_toggle.dart';
 import 'package:aid_diary/widgets/snack_message.dart';
@@ -40,16 +39,14 @@ class AboutSettings extends StatelessWidget {
             subtitle: Text(version),
           ),
           const _UpdateSettings(),
-          SettingsIconAction(
+          SettingsRow(
               key: const ValueKey('about-license'),
               title: l10n.settingsLicense,
               hint: l10n.licenseGPLv3,
-              icon: const Icon(Icons.chevron_right_rounded),
-              onPressed: () => openPlace(context, 'settings/license')),
-          SettingsIconAction(
+              onTap: () => openPlace(context, 'settings/license')),
+          SettingsRow(
               title: l10n.settingsOpenSourceLicenses,
-              icon: const Icon(Icons.chevron_right_rounded),
-              onPressed: () => openPlace(context, 'settings/licenses')),
+              onTap: () => openPlace(context, 'settings/licenses')),
         ],
       ),
     );
