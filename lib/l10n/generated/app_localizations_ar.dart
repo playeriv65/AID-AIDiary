@@ -579,7 +579,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get settingsBackup => 'النسخ الاحتياطي';
 
   @override
-  String get settingsRestore => 'الاستعادة';
+  String get settingsRestore => 'الاستعادة من نسخة احتياطية';
 
   @override
   String get settingsRestorePromptDescription =>
@@ -2391,7 +2391,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get nearbyTitle => 'توصيل الأجهزة';
 
   @override
-  String get nearbySend => 'تخويل جهاز آخر';
+  String get nearbySend => 'نسخ هذه اليوميات إلى جهاز جديد';
 
   @override
   String get nearbyReceive => 'الاتصال بجهاز موجود';
@@ -2458,7 +2458,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get syncDeviceRequest => 'أظهر هذا التفويض QR لجهاز معتمد';
 
   @override
-  String get syncDeviceAuthorize => 'تخويل جهاز';
+  String get syncDeviceAuthorize => 'الموافقة على جهاز للمزامنة';
 
   @override
   String get syncDeviceAuthorizeDescription =>

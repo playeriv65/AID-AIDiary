@@ -575,7 +575,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get settingsBackup => 'Sao lưu';
 
   @override
-  String get settingsRestore => 'Khôi phục';
+  String get settingsRestore => 'Khôi phục từ bản sao lưu';
 
   @override
   String get settingsRestorePromptDescription =>
@@ -2406,7 +2406,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get nearbyTitle => 'Kết nối thiết bị';
 
   @override
-  String get nearbySend => 'Ủy quyền cho thiết bị khác';
+  String get nearbySend => 'Sao chép nhật ký này sang thiết bị mới';
 
   @override
   String get nearbyReceive => 'Kết nối với thiết bị hiện có';
@@ -2476,7 +2476,7 @@ class AppLocalizationsVi extends AppLocalizations {
       'Hiển thị mã QR ủy quyền này cho thiết bị được phê duyệt';
 
   @override
-  String get syncDeviceAuthorize => 'Ủy quyền cho một thiết bị';
+  String get syncDeviceAuthorize => 'Cho phép thiết bị đồng bộ';
 
   @override
   String get syncDeviceAuthorizeDescription =>

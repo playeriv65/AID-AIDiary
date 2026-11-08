@@ -578,7 +578,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get settingsBackup => 'Sauvegarde';
 
   @override
-  String get settingsRestore => 'Restauration';
+  String get settingsRestore => 'Restaurer une sauvegarde';
 
   @override
   String get settingsRestorePromptDescription =>
@@ -2428,7 +2428,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get nearbyTitle => 'Connecter des appareils';
 
   @override
-  String get nearbySend => 'Autoriser un autre appareil';
+  String get nearbySend => 'Copier ce journal sur un nouvel appareil';
 
   @override
   String get nearbyReceive => 'Connectez-vous à un appareil existant';
@@ -2498,7 +2498,8 @@ class AppLocalizationsFr extends AppLocalizations {
       'Afficher ce QR d\'autorisation à un appareil approuvé';
 
   @override
-  String get syncDeviceAuthorize => 'Autoriser un appareil';
+  String get syncDeviceAuthorize =>
+      'Approuver un appareil pour la synchronisation';
 
   @override
   String get syncDeviceAuthorizeDescription =>

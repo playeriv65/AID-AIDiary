@@ -568,7 +568,7 @@ class AppLocalizationsDa extends AppLocalizations {
   String get settingsBackup => 'Sikkerhedskopiér';
 
   @override
-  String get settingsRestore => 'Gendan';
+  String get settingsRestore => 'Gendan fra sikkerhedskopi';
 
   @override
   String get settingsRestorePromptDescription =>
@@ -2388,7 +2388,7 @@ class AppLocalizationsDa extends AppLocalizations {
   String get nearbyTitle => 'Tilslut enheder';
 
   @override
-  String get nearbySend => 'Godkend en anden enhed';
+  String get nearbySend => 'Kopiér denne dagbog til en ny enhed';
 
   @override
   String get nearbyReceive => 'Opret forbindelse til en eksisterende enhed';
@@ -2458,7 +2458,7 @@ class AppLocalizationsDa extends AppLocalizations {
       'Vis denne autorisations-QR til en godkendt enhed';
 
   @override
-  String get syncDeviceAuthorize => 'Godkend en enhed';
+  String get syncDeviceAuthorize => 'Godkend en enhed til synkronisering';
 
   @override
   String get syncDeviceAuthorizeDescription =>

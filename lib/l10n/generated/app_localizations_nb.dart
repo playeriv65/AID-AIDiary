@@ -579,7 +579,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get settingsBackup => 'Sikkerhetskopiering';
 
   @override
-  String get settingsRestore => 'Gjenopprett';
+  String get settingsRestore => 'Gjenopprett fra sikkerhetskopi';
 
   @override
   String get settingsRestorePromptDescription =>
@@ -2396,7 +2396,7 @@ class AppLocalizationsNb extends AppLocalizations {
   String get nearbyTitle => 'Koble til enheter';
 
   @override
-  String get nearbySend => 'Autoriser en annen enhet';
+  String get nearbySend => 'Kopier denne dagboken til en ny enhet';
 
   @override
   String get nearbyReceive => 'Koble til en eksisterende enhet';
@@ -2466,7 +2466,7 @@ class AppLocalizationsNb extends AppLocalizations {
       'Vis denne autorisasjons-QR-en til en godkjent enhet';
 
   @override
-  String get syncDeviceAuthorize => 'Autoriser en enhet';
+  String get syncDeviceAuthorize => 'Godkjenn en enhet for synkronisering';
 
   @override
   String get syncDeviceAuthorizeDescription =>

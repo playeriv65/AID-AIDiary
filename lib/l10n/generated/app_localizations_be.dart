@@ -603,7 +603,7 @@ class AppLocalizationsBe extends AppLocalizations {
   String get settingsBackup => 'Рэзервовае капіраванне';
 
   @override
-  String get settingsRestore => 'Аднавіць';
+  String get settingsRestore => 'Аднавіць з рэзервовай копіі';
 
   @override
   String get settingsRestorePromptDescription =>
@@ -2430,7 +2430,7 @@ class AppLocalizationsBe extends AppLocalizations {
   String get nearbyTitle => 'Падключыце прылады';
 
   @override
-  String get nearbySend => 'Аўтарызаваць іншую прыладу';
+  String get nearbySend => 'Скапіраваць гэты дзённік на новую прыладу';
 
   @override
   String get nearbyReceive => 'Падключыцеся да існуючай прылады';
@@ -2500,7 +2500,7 @@ class AppLocalizationsBe extends AppLocalizations {
       'Пакажыце гэты QR аўтарызацыі на зацверджанай прыладзе';
 
   @override
-  String get syncDeviceAuthorize => 'Аўтарызаваць прыладу';
+  String get syncDeviceAuthorize => 'Дазволіць прыладзе сінхранізацыю';
 
   @override
   String get syncDeviceAuthorizeDescription =>

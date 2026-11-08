@@ -588,7 +588,7 @@ class AppLocalizationsRo extends AppLocalizations {
   String get settingsBackup => 'Backup';
 
   @override
-  String get settingsRestore => 'Restaurați';
+  String get settingsRestore => 'Restaurați din copia de rezervă';
 
   @override
   String get settingsRestorePromptDescription =>
@@ -2421,7 +2421,7 @@ class AppLocalizationsRo extends AppLocalizations {
   String get nearbyTitle => 'Conectați dispozitive';
 
   @override
-  String get nearbySend => 'Autorizați un alt dispozitiv';
+  String get nearbySend => 'Copiați acest jurnal pe un dispozitiv nou';
 
   @override
   String get nearbyReceive => 'Conectați-vă la un dispozitiv existent';
@@ -2491,7 +2491,8 @@ class AppLocalizationsRo extends AppLocalizations {
       'Afișați acest QR de autorizare pe un dispozitiv aprobat';
 
   @override
-  String get syncDeviceAuthorize => 'Autorizați un dispozitiv';
+  String get syncDeviceAuthorize =>
+      'Aprobați un dispozitiv pentru sincronizare';
 
   @override
   String get syncDeviceAuthorizeDescription =>

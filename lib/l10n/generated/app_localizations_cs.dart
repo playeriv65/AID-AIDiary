@@ -566,7 +566,7 @@ class AppLocalizationsCs extends AppLocalizations {
   String get settingsBackup => 'Zálohovat';
 
   @override
-  String get settingsRestore => 'Obnovit';
+  String get settingsRestore => 'Obnovit ze zálohy';
 
   @override
   String get settingsRestorePromptDescription =>
@@ -2387,7 +2387,7 @@ class AppLocalizationsCs extends AppLocalizations {
   String get nearbyTitle => 'Připojte zařízení';
 
   @override
-  String get nearbySend => 'Autorizujte další zařízení';
+  String get nearbySend => 'Zkopírovat deník do nového zařízení';
 
   @override
   String get nearbyReceive => 'Připojte se ke stávajícímu zařízení';
@@ -2457,7 +2457,7 @@ class AppLocalizationsCs extends AppLocalizations {
       'Ukažte tento autorizační QR na schváleném zařízení';
 
   @override
-  String get syncDeviceAuthorize => 'Autorizujte zařízení';
+  String get syncDeviceAuthorize => 'Schválit zařízení pro synchronizaci';
 
   @override
   String get syncDeviceAuthorizeDescription =>

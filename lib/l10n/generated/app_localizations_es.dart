@@ -571,7 +571,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get settingsBackup => 'Respaldo';
 
   @override
-  String get settingsRestore => 'Restauración';
+  String get settingsRestore => 'Restaurar desde una copia de seguridad';
 
   @override
   String get settingsRestorePromptDescription =>
@@ -2405,7 +2405,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get nearbyTitle => 'Conectar dispositivos';
 
   @override
-  String get nearbySend => 'Autorizar otro dispositivo';
+  String get nearbySend => 'Copiar este diario a un dispositivo nuevo';
 
   @override
   String get nearbyReceive => 'Conectarse a un dispositivo existente';
@@ -2475,7 +2475,7 @@ class AppLocalizationsEs extends AppLocalizations {
       'Muestra este QR de autorización a un dispositivo aprobado';
 
   @override
-  String get syncDeviceAuthorize => 'Autorizar un dispositivo';
+  String get syncDeviceAuthorize => 'Aprobar un dispositivo para sincronizar';
 
   @override
   String get syncDeviceAuthorizeDescription =>

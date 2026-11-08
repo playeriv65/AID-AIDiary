@@ -575,7 +575,7 @@ class AppLocalizationsCa extends AppLocalizations {
   String get settingsBackup => 'Còpia de seguretat';
 
   @override
-  String get settingsRestore => 'Restaura';
+  String get settingsRestore => 'Restaura des d\'una còpia de seguretat';
 
   @override
   String get settingsRestorePromptDescription =>
@@ -2410,7 +2410,7 @@ class AppLocalizationsCa extends AppLocalizations {
   String get nearbyTitle => 'Connecteu dispositius';
 
   @override
-  String get nearbySend => 'Autoritzar un altre dispositiu';
+  String get nearbySend => 'Copia aquest diari a un dispositiu nou';
 
   @override
   String get nearbyReceive => 'Connecteu-vos a un dispositiu existent';
@@ -2481,7 +2481,7 @@ class AppLocalizationsCa extends AppLocalizations {
       'Mostra aquest QR d\'autorització a un dispositiu aprovat';
 
   @override
-  String get syncDeviceAuthorize => 'Autoritzar un dispositiu';
+  String get syncDeviceAuthorize => 'Aprova un dispositiu per sincronitzar';
 
   @override
   String get syncDeviceAuthorizeDescription =>

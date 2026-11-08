@@ -577,7 +577,7 @@ class AppLocalizationsTa extends AppLocalizations {
   String get settingsBackup => 'காப்புப்பிரதி';
 
   @override
-  String get settingsRestore => 'மீட்டமை';
+  String get settingsRestore => 'காப்புப்பிரதியிலிருந்து மீட்டமை';
 
   @override
   String get settingsRestorePromptDescription =>
@@ -2429,7 +2429,7 @@ class AppLocalizationsTa extends AppLocalizations {
   String get nearbyTitle => 'சாதனங்களை இணைக்கவும்';
 
   @override
-  String get nearbySend => 'மற்றொரு சாதனத்தை அங்கீகரிக்கவும்';
+  String get nearbySend => 'இந்த நாட்குறிப்பைப் புதிய சாதனத்திற்கு நகலெடு';
 
   @override
   String get nearbyReceive => 'ஏற்கனவே உள்ள சாதனத்துடன் இணைக்கவும்';
@@ -2499,7 +2499,7 @@ class AppLocalizationsTa extends AppLocalizations {
       'அங்கீகரிக்கப்பட்ட சாதனத்தில் இந்த அங்கீகார QRஐக் காட்டு';
 
   @override
-  String get syncDeviceAuthorize => 'ஒரு சாதனத்தை அங்கீகரிக்கவும்';
+  String get syncDeviceAuthorize => 'ஒத்திசைவுக்கு ஒரு சாதனத்தை அனுமதி';
 
   @override
   String get syncDeviceAuthorizeDescription =>

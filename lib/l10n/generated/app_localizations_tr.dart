@@ -571,7 +571,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get settingsBackup => 'Yedekle';
 
   @override
-  String get settingsRestore => 'Geri yükleme';
+  String get settingsRestore => 'Yedekten geri yükle';
 
   @override
   String get settingsRestorePromptDescription =>
@@ -2392,7 +2392,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get nearbyTitle => 'Cihazları bağlayın';
 
   @override
-  String get nearbySend => 'Başka bir cihazı yetkilendirin';
+  String get nearbySend => 'Bu günlüğü yeni bir cihaza kopyala';
 
   @override
   String get nearbyReceive => 'Mevcut bir cihaza bağlanın';
@@ -2462,7 +2462,7 @@ class AppLocalizationsTr extends AppLocalizations {
       'Bu yetkilendirme QR\'sini onaylanmış bir cihaza göster';
 
   @override
-  String get syncDeviceAuthorize => 'Bir cihazı yetkilendirin';
+  String get syncDeviceAuthorize => 'Bir cihazı eşitleme için onayla';
 
   @override
   String get syncDeviceAuthorizeDescription =>

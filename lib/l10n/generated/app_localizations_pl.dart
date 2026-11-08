@@ -582,7 +582,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get settingsBackup => 'Kopia zapasowa';
 
   @override
-  String get settingsRestore => 'Przywróć';
+  String get settingsRestore => 'Przywróć z kopii zapasowej';
 
   @override
   String get settingsRestorePromptDescription =>
@@ -2416,7 +2416,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get nearbyTitle => 'Podłącz urządzenia';
 
   @override
-  String get nearbySend => 'Autoryzuj kolejne urządzenie';
+  String get nearbySend => 'Skopiuj ten dziennik na nowe urządzenie';
 
   @override
   String get nearbyReceive => 'Połącz się z istniejącym urządzeniem';
@@ -2487,7 +2487,7 @@ class AppLocalizationsPl extends AppLocalizations {
       'Pokaż ten autoryzacyjny kod QR zatwierdzonemu urządzeniu';
 
   @override
-  String get syncDeviceAuthorize => 'Autoryzuj urządzenie';
+  String get syncDeviceAuthorize => 'Zatwierdź urządzenie do synchronizacji';
 
   @override
   String get syncDeviceAuthorizeDescription =>

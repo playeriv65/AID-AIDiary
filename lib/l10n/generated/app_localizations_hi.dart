@@ -574,7 +574,7 @@ class AppLocalizationsHi extends AppLocalizations {
   String get settingsBackup => 'बैकअप';
 
   @override
-  String get settingsRestore => 'रीस्टोर';
+  String get settingsRestore => 'बैकअप से रीस्टोर करें';
 
   @override
   String get settingsRestorePromptDescription =>
@@ -2391,7 +2391,7 @@ class AppLocalizationsHi extends AppLocalizations {
   String get nearbyTitle => 'डिवाइस कनेक्ट करें';
 
   @override
-  String get nearbySend => 'किसी अन्य डिवाइस को अधिकृत करें';
+  String get nearbySend => 'यह डायरी नए डिवाइस पर कॉपी करें';
 
   @override
   String get nearbyReceive => 'किसी मौजूदा डिवाइस से कनेक्ट करें';
@@ -2461,7 +2461,7 @@ class AppLocalizationsHi extends AppLocalizations {
       'इस प्राधिकरण QR को किसी स्वीकृत डिवाइस पर दिखाएं';
 
   @override
-  String get syncDeviceAuthorize => 'किसी डिवाइस को अधिकृत करें';
+  String get syncDeviceAuthorize => 'सिंक के लिए डिवाइस को मंज़ूरी दें';
 
   @override
   String get syncDeviceAuthorizeDescription =>

@@ -99,7 +99,7 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get flashbackOnThisDay => '在这一天';
+  String get flashbackOnThisDay => '那年今日';
 
   @override
   String get searchLogsHint => '搜索日记…';
@@ -563,7 +563,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settingsBackup => '备份数据';
 
   @override
-  String get settingsRestore => '恢复数据';
+  String get settingsRestore => '从备份恢复';
 
   @override
   String get settingsRestorePromptDescription => '恢复备份将覆盖您现有的数据！';
@@ -2316,7 +2316,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get nearbyTitle => '连接设备';
 
   @override
-  String get nearbySend => '授权另一台设备';
+  String get nearbySend => '把日记复制到新设备';
 
   @override
   String get nearbyReceive => '连接已有设备';
@@ -2378,7 +2378,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get syncDeviceRequest => '向已授权设备展示此授权二维码';
 
   @override
-  String get syncDeviceAuthorize => '授权新设备';
+  String get syncDeviceAuthorize => '允许新设备同步';
 
   @override
   String get syncDeviceAuthorizeDescription => '扫描或粘贴新设备的授权请求。';
@@ -2873,7 +2873,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   }
 
   @override
-  String get flashbackOnThisDay => '在這一天';
+  String get flashbackOnThisDay => '那年今日';
 
   @override
   String get searchLogsHint => '搜尋紀錄…';
@@ -3337,7 +3337,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get settingsBackup => '備份';
 
   @override
-  String get settingsRestore => '還原';
+  String get settingsRestore => '從備份還原';
 
   @override
   String get settingsRestorePromptDescription => '還原備份將覆蓋您現有的資料！';
@@ -5093,7 +5093,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get nearbyTitle => '連接裝置';
 
   @override
-  String get nearbySend => '授權另一台裝置';
+  String get nearbySend => '把日記複製到新裝置';
 
   @override
   String get nearbyReceive => '連接現有裝置';
@@ -5155,7 +5155,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get syncDeviceRequest => '向已授權裝置展示此授權 QR 碼';
 
   @override
-  String get syncDeviceAuthorize => '授權新裝置';
+  String get syncDeviceAuthorize => '允許新裝置同步';
 
   @override
   String get syncDeviceAuthorizeDescription => '掃描或貼上新裝置的授權請求。';

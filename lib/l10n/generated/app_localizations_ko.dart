@@ -563,7 +563,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get settingsBackup => '백업';
 
   @override
-  String get settingsRestore => '복원';
+  String get settingsRestore => '백업에서 복원';
 
   @override
   String get settingsRestorePromptDescription =>
@@ -2344,7 +2344,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get nearbyTitle => '장치 연결';
 
   @override
-  String get nearbySend => '다른 장치 승인';
+  String get nearbySend => '이 일기를 새 기기로 복사';
 
   @override
   String get nearbyReceive => '기존 장치에 연결';
@@ -2407,7 +2407,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get syncDeviceRequest => '승인된 장치에 이 승인 QR을 표시하세요.';
 
   @override
-  String get syncDeviceAuthorize => '장치 승인';
+  String get syncDeviceAuthorize => '기기 동기화 승인';
 
   @override
   String get syncDeviceAuthorizeDescription => '새 기기의 인증 요청을 스캔하거나 붙여넣으세요.';

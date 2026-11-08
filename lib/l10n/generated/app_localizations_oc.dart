@@ -576,7 +576,7 @@ class AppLocalizationsOc extends AppLocalizations {
   String get settingsBackup => 'Salvagardar';
 
   @override
-  String get settingsRestore => 'Restaurar';
+  String get settingsRestore => 'Restaurar a partir d\'una salvagarda';
 
   @override
   String get settingsRestorePromptDescription =>
@@ -2412,7 +2412,7 @@ class AppLocalizationsOc extends AppLocalizations {
   String get nearbyTitle => 'Connectar los periferics';
 
   @override
-  String get nearbySend => 'Autorizar un autre periferic';
+  String get nearbySend => 'Copiar aqueste jornal sus un periferic novèl';
 
   @override
   String get nearbyReceive => 'Connectar-se a un periferic existent';
@@ -2483,7 +2483,8 @@ class AppLocalizationsOc extends AppLocalizations {
       'Afichar aqueste QR d\'autorizacion a un periferic aprovat';
 
   @override
-  String get syncDeviceAuthorize => 'Autorizar un periferic';
+  String get syncDeviceAuthorize =>
+      'Aprovar un periferic per la sincronizacion';
 
   @override
   String get syncDeviceAuthorizeDescription =>

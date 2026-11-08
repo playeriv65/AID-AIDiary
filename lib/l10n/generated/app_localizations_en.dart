@@ -570,7 +570,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsBackup => 'Backup';
 
   @override
-  String get settingsRestore => 'Restore';
+  String get settingsRestore => 'Restore from backup';
 
   @override
   String get settingsRestorePromptDescription =>
@@ -2380,7 +2380,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get nearbyTitle => 'Connect devices';
 
   @override
-  String get nearbySend => 'Authorize another device';
+  String get nearbySend => 'Copy this diary to a new device';
 
   @override
   String get nearbyReceive => 'Connect to an existing device';
@@ -2449,7 +2449,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Show this authorization QR to an approved device';
 
   @override
-  String get syncDeviceAuthorize => 'Authorize a device';
+  String get syncDeviceAuthorize => 'Approve a device for sync';
 
   @override
   String get syncDeviceAuthorizeDescription =>

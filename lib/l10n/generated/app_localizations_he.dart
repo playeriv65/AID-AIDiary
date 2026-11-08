@@ -583,7 +583,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get settingsBackup => 'גיבוי';
 
   @override
-  String get settingsRestore => 'שחזר';
+  String get settingsRestore => 'שחזור מגיבוי';
 
   @override
   String get settingsRestorePromptDescription =>
@@ -2376,7 +2376,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get nearbyTitle => 'חבר מכשירים';
 
   @override
-  String get nearbySend => 'אשר מכשיר אחר';
+  String get nearbySend => 'העתקת היומן למכשיר חדש';
 
   @override
   String get nearbyReceive => 'התחבר למכשיר קיים';
@@ -2442,7 +2442,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get syncDeviceRequest => 'הצג את QR האישור הזה למכשיר מאושר';
 
   @override
-  String get syncDeviceAuthorize => 'אשר מכשיר';
+  String get syncDeviceAuthorize => 'אישור מכשיר לסנכרון';
 
   @override
   String get syncDeviceAuthorizeDescription =>

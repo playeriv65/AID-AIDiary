@@ -576,7 +576,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get settingsBackup => 'Backup';
 
   @override
-  String get settingsRestore => 'Restaurar';
+  String get settingsRestore => 'Restaurar a partir de cópia de segurança';
 
   @override
   String get settingsRestorePromptDescription =>
@@ -2410,7 +2410,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get nearbyTitle => 'Conectar dispositivos';
 
   @override
-  String get nearbySend => 'Autorizar outro dispositivo';
+  String get nearbySend => 'Copiar este diário para um novo dispositivo';
 
   @override
   String get nearbyReceive => 'Ligue-se a um dispositivo existente';
@@ -2480,7 +2480,7 @@ class AppLocalizationsPt extends AppLocalizations {
       'Mostrar este QR de autorização para um dispositivo aprovado';
 
   @override
-  String get syncDeviceAuthorize => 'Autorizar um dispositivo';
+  String get syncDeviceAuthorize => 'Aprovar um dispositivo para sincronizar';
 
   @override
   String get syncDeviceAuthorizeDescription =>
@@ -3481,7 +3481,7 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
   String get settingsBackup => 'Backup';
 
   @override
-  String get settingsRestore => 'Restaurar';
+  String get settingsRestore => 'Restaurar do backup';
 
   @override
   String get settingsRestorePromptDescription =>
@@ -5315,7 +5315,7 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
   String get nearbyTitle => 'Conectar dispositivos';
 
   @override
-  String get nearbySend => 'Autorizar outro dispositivo';
+  String get nearbySend => 'Copiar este diário para um novo dispositivo';
 
   @override
   String get nearbyReceive => 'Conecte-se a um dispositivo existente';
@@ -5385,7 +5385,7 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
       'Mostre este QR de autorização para um dispositivo aprovado';
 
   @override
-  String get syncDeviceAuthorize => 'Autorizar um dispositivo';
+  String get syncDeviceAuthorize => 'Aprovar um dispositivo para sincronizar';
 
   @override
   String get syncDeviceAuthorizeDescription =>

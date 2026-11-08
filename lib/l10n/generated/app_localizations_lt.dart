@@ -593,7 +593,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get settingsBackup => 'Daryti atsarginę kopiją';
 
   @override
-  String get settingsRestore => 'Atkurti';
+  String get settingsRestore => 'Atkurti iš atsarginės kopijos';
 
   @override
   String get settingsRestorePromptDescription =>
@@ -2420,7 +2420,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get nearbyTitle => 'Prijunkite įrenginius';
 
   @override
-  String get nearbySend => 'Įgaliokite kitą įrenginį';
+  String get nearbySend => 'Kopijuoti šį dienoraštį į naują įrenginį';
 
   @override
   String get nearbyReceive => 'Prisijunkite prie esamo įrenginio';
@@ -2490,7 +2490,7 @@ class AppLocalizationsLt extends AppLocalizations {
       'Parodykite šį prieigos teisės QR patvirtintą įrenginį';
 
   @override
-  String get syncDeviceAuthorize => 'Įgaliokite įrenginį';
+  String get syncDeviceAuthorize => 'Patvirtinti įrenginį sinchronizavimui';
 
   @override
   String get syncDeviceAuthorizeDescription =>

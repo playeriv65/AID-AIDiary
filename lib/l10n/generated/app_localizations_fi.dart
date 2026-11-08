@@ -574,7 +574,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get settingsBackup => 'Varmuuskopioi';
 
   @override
-  String get settingsRestore => 'Palauta';
+  String get settingsRestore => 'Palauta varmuuskopiosta';
 
   @override
   String get settingsRestorePromptDescription =>
@@ -2399,7 +2399,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get nearbyTitle => 'Yhdistä laitteet';
 
   @override
-  String get nearbySend => 'Valtuuta toinen laite';
+  String get nearbySend => 'Kopioi tämä päiväkirja uudelle laitteelle';
 
   @override
   String get nearbyReceive => 'Yhdistä olemassa olevaan laitteeseen';
@@ -2469,7 +2469,7 @@ class AppLocalizationsFi extends AppLocalizations {
       'Näytä tämä valtuutuksen QR hyväksytylle laitteelle';
 
   @override
-  String get syncDeviceAuthorize => 'Valtuuta laite';
+  String get syncDeviceAuthorize => 'Hyväksy laite synkronointiin';
 
   @override
   String get syncDeviceAuthorizeDescription =>

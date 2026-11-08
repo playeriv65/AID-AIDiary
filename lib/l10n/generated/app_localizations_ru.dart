@@ -588,7 +588,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get settingsBackup => 'Резервная копия';
 
   @override
-  String get settingsRestore => 'Восстановить';
+  String get settingsRestore => 'Восстановить из резервной копии';
 
   @override
   String get settingsRestorePromptDescription =>
@@ -2422,7 +2422,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get nearbyTitle => 'Подключение устройств';
 
   @override
-  String get nearbySend => 'Авторизовать другое устройство';
+  String get nearbySend => 'Скопировать дневник на новое устройство';
 
   @override
   String get nearbyReceive => 'Подключиться к существующему устройству';
@@ -2492,7 +2492,7 @@ class AppLocalizationsRu extends AppLocalizations {
       'Покажите этот QR-код авторизации одобренному устройству.';
 
   @override
-  String get syncDeviceAuthorize => 'Авторизация устройства';
+  String get syncDeviceAuthorize => 'Разрешить устройству синхронизацию';
 
   @override
   String get syncDeviceAuthorizeDescription =>

@@ -580,7 +580,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get settingsBackup => 'Резервна копія';
 
   @override
-  String get settingsRestore => 'Відновити резервну копію';
+  String get settingsRestore => 'Відновити з резервної копії';
 
   @override
   String get settingsRestorePromptDescription =>
@@ -2405,7 +2405,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get nearbyTitle => 'Підключення пристроїв';
 
   @override
-  String get nearbySend => 'Авторизуйте інший пристрій';
+  String get nearbySend => 'Скопіювати щоденник на новий пристрій';
 
   @override
   String get nearbyReceive => 'Підключіться до існуючого пристрою';
@@ -2475,7 +2475,7 @@ class AppLocalizationsUk extends AppLocalizations {
       'Покажіть цей авторизаційний QR на затвердженому пристрої';
 
   @override
-  String get syncDeviceAuthorize => 'Авторизувати пристрій';
+  String get syncDeviceAuthorize => 'Дозволити пристрою синхронізацію';
 
   @override
   String get syncDeviceAuthorizeDescription =>

@@ -577,7 +577,7 @@ class AppLocalizationsBg extends AppLocalizations {
   String get settingsBackup => 'Архивиране';
 
   @override
-  String get settingsRestore => 'Възстановяване';
+  String get settingsRestore => 'Възстановяване от резервно копие';
 
   @override
   String get settingsRestorePromptDescription =>
@@ -2406,7 +2406,7 @@ class AppLocalizationsBg extends AppLocalizations {
   String get nearbyTitle => 'Свързване на устройства';
 
   @override
-  String get nearbySend => 'Упълномощаване на друго устройство';
+  String get nearbySend => 'Копиране на дневника на ново устройство';
 
   @override
   String get nearbyReceive => 'Свържете се със съществуващо устройство';
@@ -2476,7 +2476,8 @@ class AppLocalizationsBg extends AppLocalizations {
       'Покажете този QR за оторизация на одобрено устройство';
 
   @override
-  String get syncDeviceAuthorize => 'Упълномощаване на устройство';
+  String get syncDeviceAuthorize =>
+      'Одобряване на устройство за синхронизиране';
 
   @override
   String get syncDeviceAuthorizeDescription =>

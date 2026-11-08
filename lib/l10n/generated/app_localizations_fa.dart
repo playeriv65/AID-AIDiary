@@ -568,7 +568,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get settingsBackup => 'پشتیبان گیری';
 
   @override
-  String get settingsRestore => 'بازنشانی';
+  String get settingsRestore => 'بازیابی از پشتیبان';
 
   @override
   String get settingsRestorePromptDescription =>
@@ -2387,7 +2387,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get nearbyTitle => 'دستگاه ها را وصل کنید';
 
   @override
-  String get nearbySend => 'مجوز دستگاه دیگری را صادر کنید';
+  String get nearbySend => 'کپی این دفتر خاطرات در دستگاه جدید';
 
   @override
   String get nearbyReceive => 'به یک دستگاه موجود متصل شوید';
@@ -2455,7 +2455,7 @@ class AppLocalizationsFa extends AppLocalizations {
       'این QR مجوز را به یک دستگاه تأیید شده نشان دهید';
 
   @override
-  String get syncDeviceAuthorize => 'مجوز یک دستگاه';
+  String get syncDeviceAuthorize => 'تأیید دستگاه برای همگام‌سازی';
 
   @override
   String get syncDeviceAuthorizeDescription =>

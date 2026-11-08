@@ -1059,7 +1059,7 @@ abstract class AppLocalizations {
   /// No description provided for @settingsRestore.
   ///
   /// In en, this message translates to:
-  /// **'Restore'**
+  /// **'Restore from backup'**
   String get settingsRestore;
 
   /// No description provided for @settingsRestorePromptDescription.
@@ -4371,7 +4371,7 @@ abstract class AppLocalizations {
   /// No description provided for @nearbySend.
   ///
   /// In en, this message translates to:
-  /// **'Authorize another device'**
+  /// **'Copy this diary to a new device'**
   String get nearbySend;
 
   /// No description provided for @nearbyReceive.
@@ -4491,7 +4491,7 @@ abstract class AppLocalizations {
   /// No description provided for @syncDeviceAuthorize.
   ///
   /// In en, this message translates to:
-  /// **'Authorize a device'**
+  /// **'Approve a device for sync'**
   String get syncDeviceAuthorize;
 
   /// No description provided for @syncDeviceAuthorizeDescription.

@@ -576,7 +576,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get settingsBackup => 'Back-up';
 
   @override
-  String get settingsRestore => 'Herstellen';
+  String get settingsRestore => 'Herstellen uit back-up';
 
   @override
   String get settingsRestorePromptDescription =>
@@ -2406,7 +2406,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get nearbyTitle => 'Apparaten verbinden';
 
   @override
-  String get nearbySend => 'Autoriseer een ander apparaat';
+  String get nearbySend => 'Dit dagboek naar een nieuw apparaat kopiëren';
 
   @override
   String get nearbyReceive => 'Maak verbinding met een bestaand apparaat';
@@ -2476,7 +2476,7 @@ class AppLocalizationsNl extends AppLocalizations {
       'Toon deze autorisatie-QR aan een goedgekeurd apparaat';
 
   @override
-  String get syncDeviceAuthorize => 'Autoriseer een apparaat';
+  String get syncDeviceAuthorize => 'Apparaat goedkeuren voor synchronisatie';
 
   @override
   String get syncDeviceAuthorizeDescription =>

@@ -520,7 +520,7 @@ class AppLocalizationsMs extends AppLocalizations {
   String get settingsBackup => 'Sandarkan';
 
   @override
-  String get settingsRestore => 'Pulihkan';
+  String get settingsRestore => 'Pulihkan daripada sandaran';
 
   @override
   String get settingsRestorePromptDescription =>
@@ -2354,7 +2354,7 @@ class AppLocalizationsMs extends AppLocalizations {
   String get nearbyTitle => 'Sambungkan peranti';
 
   @override
-  String get nearbySend => 'Benarkan peranti lain';
+  String get nearbySend => 'Salin diari ini ke peranti baharu';
 
   @override
   String get nearbyReceive => 'Sambung ke peranti sedia ada';
@@ -2424,7 +2424,7 @@ class AppLocalizationsMs extends AppLocalizations {
       'Tunjukkan QR kebenaran ini kepada peranti yang diluluskan';
 
   @override
-  String get syncDeviceAuthorize => 'Benarkan peranti';
+  String get syncDeviceAuthorize => 'Luluskan peranti untuk penyegerakan';
 
   @override
   String get syncDeviceAuthorizeDescription =>

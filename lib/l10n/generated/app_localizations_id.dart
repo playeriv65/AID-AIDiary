@@ -566,7 +566,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get settingsBackup => 'Cadangan';
 
   @override
-  String get settingsRestore => 'Pulihkan';
+  String get settingsRestore => 'Pulihkan dari cadangan';
 
   @override
   String get settingsRestorePromptDescription =>
@@ -2398,7 +2398,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get nearbyTitle => 'Hubungkan perangkat';
 
   @override
-  String get nearbySend => 'Otorisasi perangkat lain';
+  String get nearbySend => 'Salin buku harian ini ke perangkat baru';
 
   @override
   String get nearbyReceive => 'Hubungkan ke perangkat yang ada';
@@ -2468,7 +2468,7 @@ class AppLocalizationsId extends AppLocalizations {
       'Tunjukkan QR otorisasi ini ke perangkat yang disetujui';
 
   @override
-  String get syncDeviceAuthorize => 'Otorisasi perangkat';
+  String get syncDeviceAuthorize => 'Setujui perangkat untuk sinkronisasi';
 
   @override
   String get syncDeviceAuthorizeDescription =>

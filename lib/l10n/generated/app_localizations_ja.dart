@@ -565,7 +565,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get settingsBackup => 'バックアップ';
 
   @override
-  String get settingsRestore => '復元';
+  String get settingsRestore => 'バックアップから復元';
 
   @override
   String get settingsRestorePromptDescription => 'これにより現在の設定が上書きされます！';
@@ -2343,7 +2343,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get nearbyTitle => 'デバイスを接続する';
 
   @override
-  String get nearbySend => '別のデバイスを認証する';
+  String get nearbySend => 'この日記を新しいデバイスにコピー';
 
   @override
   String get nearbyReceive => '既存のデバイスに接続';
@@ -2407,7 +2407,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get syncDeviceRequest => 'この認証 QR を承認されたデバイスに表示します';
 
   @override
-  String get syncDeviceAuthorize => 'デバイスを認証する';
+  String get syncDeviceAuthorize => 'デバイスの同期を許可';
 
   @override
   String get syncDeviceAuthorizeDescription => '新しいデバイスの認証リクエストをスキャンまたは貼り付けます。';
