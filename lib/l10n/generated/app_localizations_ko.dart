@@ -2649,7 +2649,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get editPastBody => '이 일기는 지난 날의 것입니다. 답하고 싶다면 글을 선택해 보관하거나 댓글을 남기세요.';
 
   @override
-  String get editPastDontAsk => '다시 묻지 않기';
+  String get dontAskAgain => '다시 묻지 않기';
 
   @override
   String get editPastEdit => '그래도 편집';

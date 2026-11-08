@@ -2741,7 +2741,7 @@ class AppLocalizationsOc extends AppLocalizations {
       'Aquesta nòta es d’un jorn anterior. Per i respondre, seleccionatz de tèxte per lo gardar o lo comentar.';
 
   @override
-  String get editPastDontAsk => 'Pas mai demandar';
+  String get dontAskAgain => 'Pas mai demandar';
 
   @override
   String get editPastEdit => 'Modificar çaquelà';

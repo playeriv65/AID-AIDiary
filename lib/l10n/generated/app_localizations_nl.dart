@@ -2733,7 +2733,7 @@ class AppLocalizationsNl extends AppLocalizations {
       'Dit bericht is van een eerdere dag. Om erop te reageren, selecteer je tekst om te bewaren of erop te reageren.';
 
   @override
-  String get editPastDontAsk => 'Niet meer vragen';
+  String get dontAskAgain => 'Niet meer vragen';
 
   @override
   String get editPastEdit => 'Toch bewerken';

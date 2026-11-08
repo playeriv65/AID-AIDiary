@@ -2709,7 +2709,7 @@ class AppLocalizationsFa extends AppLocalizations {
       'این یادداشت مربوط به روزی پیش‌تر است. برای پاسخ به آن، متن را انتخاب کنید تا نگه دارید یا نظر بدهید.';
 
   @override
-  String get editPastDontAsk => 'دیگر نپرس';
+  String get dontAskAgain => 'دیگر نپرس';
 
   @override
   String get editPastEdit => 'با این حال ویرایش کن';

@@ -2756,7 +2756,7 @@ class AppLocalizationsBe extends AppLocalizations {
       'Гэты запіс зроблены ў мінулым. Каб адказаць на яго, вылучыце тэкст і захавайце або пракаментуйце яго.';
 
   @override
-  String get editPastDontAsk => 'Больш не пытацца';
+  String get dontAskAgain => 'Больш не пытацца';
 
   @override
   String get editPastEdit => 'Усё роўна змяніць';

@@ -794,7 +794,7 @@
   "noteDeleteConfirm": "यह नोट हटाएँ?",
   "editPastTitle": "किसी पुरानी याद को संपादित करें?",
   "editPastBody": "यह प्रविष्टि पहले के दिन की है। जवाब देने के लिए पाठ चुनकर सहेजें या टिप्पणी करें।",
-  "editPastDontAsk": "फिर न पूछें",
+  "dontAskAgain": "फिर न पूछें",
   "editPastEdit": "फिर भी संपादित करें",
   "noteOnEntry": "{date} की प्रविष्टि पर",
   "settingsConfirmEditPast": "पुरानी प्रविष्टियाँ संपादित करने से पहले पूछें",

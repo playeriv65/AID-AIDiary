@@ -2730,7 +2730,7 @@ class AppLocalizationsUk extends AppLocalizations {
       'Цей запис зроблено в минулому. Щоб відповісти на нього, виділіть текст і збережіть або прокоментуйте його.';
 
   @override
-  String get editPastDontAsk => 'Більше не питати';
+  String get dontAskAgain => 'Більше не питати';
 
   @override
   String get editPastEdit => 'Усе одно змінити';

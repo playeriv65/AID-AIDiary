@@ -2746,7 +2746,7 @@ class AppLocalizationsLt extends AppLocalizations {
       'Šis įrašas yra iš ankstesnės dienos. Norėdami į jį atsakyti, pažymėkite tekstą ir išsaugokite arba pakomentuokite.';
 
   @override
-  String get editPastDontAsk => 'Daugiau neklausti';
+  String get dontAskAgain => 'Daugiau neklausti';
 
   @override
   String get editPastEdit => 'Vis tiek redaguoti';

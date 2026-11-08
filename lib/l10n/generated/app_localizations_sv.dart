@@ -2721,7 +2721,7 @@ class AppLocalizationsSv extends AppLocalizations {
       'Det här inlägget är från en tidigare dag. Markera text för att spara eller kommentera den om du vill svara.';
 
   @override
-  String get editPastDontAsk => 'Fråga inte igen';
+  String get dontAskAgain => 'Fråga inte igen';
 
   @override
   String get editPastEdit => 'Redigera ändå';

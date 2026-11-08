@@ -2730,7 +2730,7 @@ class AppLocalizationsVi extends AppLocalizations {
       'Bài này viết từ ngày trước. Để phản hồi, hãy chọn chữ để lưu hoặc bình luận.';
 
   @override
-  String get editPastDontAsk => 'Không hỏi lại';
+  String get dontAskAgain => 'Không hỏi lại';
 
   @override
   String get editPastEdit => 'Vẫn sửa';

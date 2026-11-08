@@ -2716,7 +2716,7 @@ class AppLocalizationsTr extends AppLocalizations {
       'Bu kayıt önceki bir güne ait. Yanıt vermek için metni seçip saklayabilir ya da yorum yapabilirsin.';
 
   @override
-  String get editPastDontAsk => 'Bir daha sorma';
+  String get dontAskAgain => 'Bir daha sorma';
 
   @override
   String get editPastEdit => 'Yine de düzenle';

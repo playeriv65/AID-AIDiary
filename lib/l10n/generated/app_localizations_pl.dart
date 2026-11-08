@@ -2742,7 +2742,7 @@ class AppLocalizationsPl extends AppLocalizations {
       'Ten wpis pochodzi z wcześniejszego dnia. Aby na niego odpowiedzieć, zaznacz tekst i zachowaj go lub skomentuj.';
 
   @override
-  String get editPastDontAsk => 'Nie pytaj ponownie';
+  String get dontAskAgain => 'Nie pytaj ponownie';
 
   @override
   String get editPastEdit => 'Edytuj mimo to';

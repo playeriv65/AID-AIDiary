@@ -111,8 +111,8 @@ void main() {
     await openPast(tester, '旧日记');
     await tester.tap(find.byKey(const ValueKey('diary-entry-edit')));
     await tester.pumpAndSettle();
-    expect(find.byKey(const ValueKey('edit-past-dialog')), findsOneWidget);
-    await tester.tap(find.byKey(const ValueKey('edit-past-dont-ask')));
+    expect(find.byKey(const ValueKey('edit-past-confirm')), findsOneWidget);
+    await tester.tap(find.byKey(const ValueKey('confirm-dont-ask')));
     await tester.pump();
     await tester.tap(find.byKey(const ValueKey('edit-past-confirm')));
     await editorOpens(tester);

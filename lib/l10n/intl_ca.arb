@@ -794,7 +794,7 @@
   "noteDeleteConfirm": "Vols suprimir aquesta nota?",
   "editPastTitle": "Vols editar un record passat?",
   "editPastBody": "Aquesta entrada és d’un dia anterior. Per respondre-la, selecciona text per desar-lo o comentar-lo.",
-  "editPastDontAsk": "No ho tornis a preguntar",
+  "dontAskAgain": "No ho tornis a preguntar",
   "editPastEdit": "Edita igualment",
   "noteOnEntry": "Sobre l’entrada del {date}",
   "settingsConfirmEditPast": "Pregunta abans d’editar entrades passades",

@@ -794,7 +794,7 @@
   "noteDeleteConfirm": "Xóa ghi chú này?",
   "editPastTitle": "Sửa một kỷ niệm cũ?",
   "editPastBody": "Bài này viết từ ngày trước. Để phản hồi, hãy chọn chữ để lưu hoặc bình luận.",
-  "editPastDontAsk": "Không hỏi lại",
+  "dontAskAgain": "Không hỏi lại",
   "editPastEdit": "Vẫn sửa",
   "noteOnEntry": "Về bài ngày {date}",
   "settingsConfirmEditPast": "Hỏi trước khi sửa bài cũ",

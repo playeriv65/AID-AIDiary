@@ -825,7 +825,7 @@
   "noteDeleteConfirm": "刪除這則？",
   "editPastTitle": "要編輯過去的記憶嗎？",
   "editPastBody": "這篇日記寫於過去。想回應它的話，選取文字就能收藏或評論。",
-  "editPastDontAsk": "不再提示",
+  "dontAskAgain": "不再提示",
   "editPastEdit": "仍要編輯",
   "noteOnEntry": "回看 {date} 的日記",
   "settingsConfirmEditPast": "編輯過去的日記前先確認",

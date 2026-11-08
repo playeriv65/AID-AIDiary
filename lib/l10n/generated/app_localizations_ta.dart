@@ -2757,7 +2757,7 @@ class AppLocalizationsTa extends AppLocalizations {
       'இந்தப் பதிவு முந்தைய நாளுடையது. பதிலளிக்க, உரையைத் தேர்ந்தெடுத்து சேமிக்கவும் அல்லது கருத்திடவும்.';
 
   @override
-  String get editPastDontAsk => 'மீண்டும் கேட்காதே';
+  String get dontAskAgain => 'மீண்டும் கேட்காதே';
 
   @override
   String get editPastEdit => 'இருந்தாலும் திருத்து';

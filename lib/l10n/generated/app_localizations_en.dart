@@ -2701,7 +2701,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'This entry is from an earlier day. To answer it, select its text to keep or comment on a passage.';
 
   @override
-  String get editPastDontAsk => 'Don\'t ask again';
+  String get dontAskAgain => 'Don\'t ask again';
 
   @override
   String get editPastEdit => 'Edit anyway';

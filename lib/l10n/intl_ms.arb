@@ -794,7 +794,7 @@
   "noteDeleteConfirm": "Padam nota ini?",
   "editPastTitle": "Sunting kenangan lalu?",
   "editPastBody": "Catatan ini dari hari terdahulu. Untuk membalasnya, pilih teks untuk disimpan atau dikomen.",
-  "editPastDontAsk": "Jangan tanya lagi",
+  "dontAskAgain": "Jangan tanya lagi",
   "editPastEdit": "Sunting juga",
   "noteOnEntry": "Tentang catatan {date}",
   "settingsConfirmEditPast": "Tanya sebelum menyunting catatan lama",

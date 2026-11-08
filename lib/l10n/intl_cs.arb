@@ -794,7 +794,7 @@
   "noteDeleteConfirm": "Smazat tuto poznámku?",
   "editPastTitle": "Upravit minulou vzpomínku?",
   "editPastBody": "Tento záznam je z dřívějšího dne. Chcete-li na něj odpovědět, označte text a uložte nebo okomentujte jej.",
-  "editPastDontAsk": "Už se neptat",
+  "dontAskAgain": "Už se neptat",
   "editPastEdit": "Přesto upravit",
   "noteOnEntry": "K záznamu z {date}",
   "settingsConfirmEditPast": "Ptát se před úpravou minulých záznamů",

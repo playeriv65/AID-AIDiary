@@ -2732,7 +2732,7 @@ class AppLocalizationsBg extends AppLocalizations {
       'Този запис е от по-ранен ден. За да му отговорите, маркирайте текст, за да го запазите или коментирате.';
 
   @override
-  String get editPastDontAsk => 'Не питай отново';
+  String get dontAskAgain => 'Не питай отново';
 
   @override
   String get editPastEdit => 'Редактирай въпреки това';

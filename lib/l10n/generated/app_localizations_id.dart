@@ -2724,7 +2724,7 @@ class AppLocalizationsId extends AppLocalizations {
       'Catatan ini dari hari sebelumnya. Untuk menanggapinya, pilih teks untuk disimpan atau dikomentari.';
 
   @override
-  String get editPastDontAsk => 'Jangan tanya lagi';
+  String get dontAskAgain => 'Jangan tanya lagi';
 
   @override
   String get editPastEdit => 'Tetap edit';

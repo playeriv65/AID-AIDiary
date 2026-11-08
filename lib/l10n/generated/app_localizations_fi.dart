@@ -2723,7 +2723,7 @@ class AppLocalizationsFi extends AppLocalizations {
       'Tämä merkintä on aiemmalta päivältä. Vastataksesi siihen valitse tekstiä ja säilytä tai kommentoi sitä.';
 
   @override
-  String get editPastDontAsk => 'Älä kysy uudelleen';
+  String get dontAskAgain => 'Älä kysy uudelleen';
 
   @override
   String get editPastEdit => 'Muokkaa silti';

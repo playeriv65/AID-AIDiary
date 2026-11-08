@@ -2613,7 +2613,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get editPastBody => '这篇日记写于过去。想回应它的话，选中文字就能收藏或评论。';
 
   @override
-  String get editPastDontAsk => '不再提示';
+  String get dontAskAgain => '不再提示';
 
   @override
   String get editPastEdit => '仍要编辑';
@@ -5390,7 +5390,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get editPastBody => '這篇日記寫於過去。想回應它的話，選取文字就能收藏或評論。';
 
   @override
-  String get editPastDontAsk => '不再提示';
+  String get dontAskAgain => '不再提示';
 
   @override
   String get editPastEdit => '仍要編輯';

@@ -795,7 +795,7 @@
   "noteDeleteConfirm": "¿Eliminar esta nota?",
   "editPastTitle": "¿Editar un recuerdo pasado?",
   "editPastBody": "Esta entrada es de un día anterior. Para responderla, selecciona texto para guardarlo o comentarlo.",
-  "editPastDontAsk": "No volver a preguntar",
+  "dontAskAgain": "No volver a preguntar",
   "editPastEdit": "Editar de todos modos",
   "noteOnEntry": "Sobre la entrada del {date}",
   "settingsConfirmEditPast": "Preguntar antes de editar entradas pasadas",

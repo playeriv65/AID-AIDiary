@@ -794,7 +794,7 @@
   "noteDeleteConfirm": "این یادداشت حذف شود؟",
   "editPastTitle": "خاطره‌ای از گذشته ویرایش شود؟",
   "editPastBody": "این یادداشت مربوط به روزی پیش‌تر است. برای پاسخ به آن، متن را انتخاب کنید تا نگه دارید یا نظر بدهید.",
-  "editPastDontAsk": "دیگر نپرس",
+  "dontAskAgain": "دیگر نپرس",
   "editPastEdit": "با این حال ویرایش کن",
   "noteOnEntry": "درباره یادداشت {date}",
   "settingsConfirmEditPast": "پیش از ویرایش یادداشت‌های گذشته بپرس",

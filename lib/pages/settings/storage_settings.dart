@@ -95,80 +95,19 @@ class _StorageSettingsState extends State<StorageSettings> {
             AppLocalizations.of(context)!.imageFolderErrorDescription);
   }
 
-  void _showDeleteAllLogsDialog(
-      BuildContext context, String requiredText, VoidCallback onConfirm) {
-    ThemeData theme = Theme.of(context);
-    final TextEditingController controller = TextEditingController();
-    final ValueNotifier<bool> isButtonEnabled = ValueNotifier(false);
-
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text(AppLocalizations.of(context)!.settingsDeleteAllLogsTitle),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(AppLocalizations.of(context)!
-                  .settingsDeleteAllLogsDescription),
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: Text(AppLocalizations.of(context)!
-                    .settingsDeleteAllLogsPrompt(requiredText)),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: Card(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                    child: TextField(
-                      decoration: InputDecoration(
-                          hintStyle: TextStyle(fontStyle: FontStyle.italic),
-                          hintText: requiredText,
-                          border: InputBorder.none),
-                      controller: controller,
-                      onChanged: (value) {
-                        isButtonEnabled.value = value.toLowerCase().trim() ==
-                            requiredText.toLowerCase().trim();
-                      },
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
-            ),
-            ValueListenableBuilder<bool>(
-              valueListenable: isButtonEnabled,
-              builder: (context, isEnabled, child) {
-                return TextButton(
-                  onPressed: isEnabled
-                      ? () {
-                          Navigator.of(context).pop();
-                          onConfirm();
-                        }
-                      : null,
-                  child: Text(
-                      style: TextStyle(
-                          color: isEnabled ? null : theme.disabledColor),
-                      MaterialLocalizations.of(context).deleteButtonTooltip),
-                );
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
+  /// Erases every entry once the person has typed the dialog's title.
   Future<void> _deleteAllLogs(BuildContext context) async {
+    final l10n = AppLocalizations.of(context)!;
+    final phrase = l10n.settingsDeleteAllLogsTitle;
+    final confirmed = await showConfirmDialog(context,
+        title: phrase,
+        message: '${l10n.settingsDeleteAllLogsDescription}\n'
+            '${l10n.settingsDeleteAllLogsPrompt(phrase)}',
+        confirm: MaterialLocalizations.of(context).deleteButtonTooltip,
+        destructive: true,
+        confirmKey: const ValueKey('delete-all-logs-confirm'),
+        phrase: phrase);
+    if (!confirmed || !context.mounted) return;
     await runOperation(context, (update) async {
       // The dialog above asked the person; the action wants it said again.
       await AppActions.instance.run(
@@ -273,10 +212,7 @@ class _StorageSettingsState extends State<StorageSettings> {
           SettingsIconAction(
               title: AppLocalizations.of(context)!.settingsDeleteAllLogsTitle,
               icon: Icon(Icons.delete_forever_rounded),
-              onPressed: () => _showDeleteAllLogsDialog(
-                  context,
-                  AppLocalizations.of(context)!.settingsDeleteAllLogsTitle,
-                  () => _deleteAllLogs(context))),
+              onPressed: () => _deleteAllLogs(context)),
         ],
       ),
     );

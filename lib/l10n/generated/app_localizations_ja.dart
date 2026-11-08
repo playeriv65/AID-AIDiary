@@ -2649,7 +2649,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get editPastBody => 'この日記は以前の日のものです。応えるなら、文字を選んで保存やコメントができます。';
 
   @override
-  String get editPastDontAsk => '今後表示しない';
+  String get dontAskAgain => '今後表示しない';
 
   @override
   String get editPastEdit => '編集する';

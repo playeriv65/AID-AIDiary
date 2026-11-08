@@ -794,7 +794,7 @@
   "noteDeleteConfirm": "Diese Notiz löschen?",
   "editPastTitle": "Eine vergangene Erinnerung bearbeiten?",
   "editPastBody": "Dieser Eintrag stammt von einem früheren Tag. Um darauf zu antworten, markiere Text und behalte oder kommentiere ihn.",
-  "editPastDontAsk": "Nicht mehr fragen",
+  "dontAskAgain": "Nicht mehr fragen",
   "editPastEdit": "Trotzdem bearbeiten",
   "noteOnEntry": "Zum Eintrag vom {date}",
   "settingsConfirmEditPast": "Vor dem Bearbeiten vergangener Einträge fragen",

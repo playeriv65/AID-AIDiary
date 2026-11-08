@@ -4932,11 +4932,11 @@ abstract class AppLocalizations {
   /// **'This entry is from an earlier day. To answer it, select its text to keep or comment on a passage.'**
   String get editPastBody;
 
-  /// No description provided for @editPastDontAsk.
+  /// No description provided for @dontAskAgain.
   ///
   /// In en, this message translates to:
   /// **'Don\'t ask again'**
-  String get editPastDontAsk;
+  String get dontAskAgain;
 
   /// No description provided for @editPastEdit.
   ///

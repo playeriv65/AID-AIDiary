@@ -794,7 +794,7 @@
   "noteDeleteConfirm": "Eliminare questa nota?",
   "editPastTitle": "Modificare un ricordo passato?",
   "editPastBody": "Questa voce è di un giorno precedente. Per rispondere, seleziona il testo per conservarlo o commentarlo.",
-  "editPastDontAsk": "Non chiedere più",
+  "dontAskAgain": "Non chiedere più",
   "editPastEdit": "Modifica comunque",
   "noteOnEntry": "Sulla voce del {date}",
   "settingsConfirmEditPast": "Chiedi prima di modificare voci passate",

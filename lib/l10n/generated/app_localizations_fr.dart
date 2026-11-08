@@ -2755,7 +2755,7 @@ class AppLocalizationsFr extends AppLocalizations {
       'Cette entrée date d’un jour précédent. Pour y répondre, sélectionnez du texte pour le garder ou le commenter.';
 
   @override
-  String get editPastDontAsk => 'Ne plus demander';
+  String get dontAskAgain => 'Ne plus demander';
 
   @override
   String get editPastEdit => 'Modifier quand même';

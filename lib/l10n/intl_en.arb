@@ -1579,7 +1579,7 @@
   "noteDeleteConfirm": "Delete this note?",
   "editPastTitle": "Edit a past memory?",
   "editPastBody": "This entry is from an earlier day. To answer it, select its text to keep or comment on a passage.",
-  "editPastDontAsk": "Don't ask again",
+  "dontAskAgain": "Don't ask again",
   "editPastEdit": "Edit anyway",
   "noteOnEntry": "On the entry of {date}",
   "@noteOnEntry": {

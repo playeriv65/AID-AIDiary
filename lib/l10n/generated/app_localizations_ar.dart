@@ -2712,7 +2712,7 @@ class AppLocalizationsAr extends AppLocalizations {
       'هذه التدوينة من يوم سابق. للرد عليها، حدّد النص للاحتفاظ به أو التعليق عليه.';
 
   @override
-  String get editPastDontAsk => 'لا تسأل مجددًا';
+  String get dontAskAgain => 'لا تسأل مجددًا';
 
   @override
   String get editPastEdit => 'تعديل على أي حال';

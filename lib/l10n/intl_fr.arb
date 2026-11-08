@@ -794,7 +794,7 @@
   "noteDeleteConfirm": "Supprimer cette note ?",
   "editPastTitle": "Modifier un souvenir passé ?",
   "editPastBody": "Cette entrée date d’un jour précédent. Pour y répondre, sélectionnez du texte pour le garder ou le commenter.",
-  "editPastDontAsk": "Ne plus demander",
+  "dontAskAgain": "Ne plus demander",
   "editPastEdit": "Modifier quand même",
   "noteOnEntry": "Sur l’entrée du {date}",
   "settingsConfirmEditPast": "Demander avant de modifier une entrée passée",

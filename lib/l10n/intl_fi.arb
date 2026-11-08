@@ -794,7 +794,7 @@
   "noteDeleteConfirm": "Poistetaanko tämä merkintä?",
   "editPastTitle": "Muokataanko mennyttä muistoa?",
   "editPastBody": "Tämä merkintä on aiemmalta päivältä. Vastataksesi siihen valitse tekstiä ja säilytä tai kommentoi sitä.",
-  "editPastDontAsk": "Älä kysy uudelleen",
+  "dontAskAgain": "Älä kysy uudelleen",
   "editPastEdit": "Muokkaa silti",
   "noteOnEntry": "Päivän {date} merkinnästä",
   "settingsConfirmEditPast": "Kysy ennen menneiden merkintöjen muokkaamista",

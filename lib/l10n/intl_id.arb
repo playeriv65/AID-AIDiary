@@ -794,7 +794,7 @@
   "noteDeleteConfirm": "Hapus catatan ini?",
   "editPastTitle": "Edit kenangan masa lalu?",
   "editPastBody": "Catatan ini dari hari sebelumnya. Untuk menanggapinya, pilih teks untuk disimpan atau dikomentari.",
-  "editPastDontAsk": "Jangan tanya lagi",
+  "dontAskAgain": "Jangan tanya lagi",
   "editPastEdit": "Tetap edit",
   "noteOnEntry": "Tentang catatan {date}",
   "settingsConfirmEditPast": "Tanya sebelum mengedit catatan lama",

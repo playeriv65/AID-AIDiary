@@ -2710,7 +2710,7 @@ class AppLocalizationsDa extends AppLocalizations {
       'Dette indlæg er fra en tidligere dag. Vil du svare på det, så markér tekst for at gemme eller kommentere den.';
 
   @override
-  String get editPastDontAsk => 'Spørg ikke igen';
+  String get dontAskAgain => 'Spørg ikke igen';
 
   @override
   String get editPastEdit => 'Redigér alligevel';

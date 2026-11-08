@@ -2694,7 +2694,7 @@ class AppLocalizationsHe extends AppLocalizations {
       'הרשומה הזו מיום קודם. כדי להגיב לה, בחרו טקסט לשמירה או לתגובה.';
 
   @override
-  String get editPastDontAsk => 'אל תשאל שוב';
+  String get dontAskAgain => 'אל תשאל שוב';
 
   @override
   String get editPastEdit => 'לערוך בכל זאת';

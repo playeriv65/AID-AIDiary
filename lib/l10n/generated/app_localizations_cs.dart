@@ -2711,7 +2711,7 @@ class AppLocalizationsCs extends AppLocalizations {
       'Tento záznam je z dřívějšího dne. Chcete-li na něj odpovědět, označte text a uložte nebo okomentujte jej.';
 
   @override
-  String get editPastDontAsk => 'Už se neptat';
+  String get dontAskAgain => 'Už se neptat';
 
   @override
   String get editPastEdit => 'Přesto upravit';

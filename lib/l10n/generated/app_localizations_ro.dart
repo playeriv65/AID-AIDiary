@@ -2746,7 +2746,7 @@ class AppLocalizationsRo extends AppLocalizations {
       'Această însemnare este dintr-o zi anterioară. Ca să-i răspunzi, selectează text pentru a-l păstra sau comenta.';
 
   @override
-  String get editPastDontAsk => 'Nu mai întreba';
+  String get dontAskAgain => 'Nu mai întreba';
 
   @override
   String get editPastEdit => 'Editează oricum';

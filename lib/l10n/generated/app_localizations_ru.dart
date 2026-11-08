@@ -2748,7 +2748,7 @@ class AppLocalizationsRu extends AppLocalizations {
       'Эта запись сделана в прошлом. Чтобы ответить на неё, выделите текст и сохраните или прокомментируйте его.';
 
   @override
-  String get editPastDontAsk => 'Больше не спрашивать';
+  String get dontAskAgain => 'Больше не спрашивать';
 
   @override
   String get editPastEdit => 'Всё равно изменить';

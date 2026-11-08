@@ -794,7 +794,7 @@
   "noteDeleteConfirm": "حذف هذه الملاحظة؟",
   "editPastTitle": "تعديل ذكرى ماضية؟",
   "editPastBody": "هذه التدوينة من يوم سابق. للرد عليها، حدّد النص للاحتفاظ به أو التعليق عليه.",
-  "editPastDontAsk": "لا تسأل مجددًا",
+  "dontAskAgain": "لا تسأل مجددًا",
   "editPastEdit": "تعديل على أي حال",
   "noteOnEntry": "حول تدوينة {date}",
   "settingsConfirmEditPast": "السؤال قبل تعديل التدوينات السابقة",

@@ -202,25 +202,13 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
 
   /// Asks whether to keep the changes when going back over them.
   Future<void> _confirmLeave() async {
-    final l10n = AppLocalizations.of(context)!;
-    final save = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(l10n.editorLeaveTitle),
-        actions: [
-          TextButton(
-              key: const ValueKey('editor-leave-discard'),
-              onPressed: () => Navigator.of(context).pop(false),
-              child: Text(l10n.editorLeaveDiscard)),
-          TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text(MaterialLocalizations.of(context).cancelButtonLabel)),
-          FilledButton(
-              key: const ValueKey('editor-leave-save'),
-              onPressed: () => Navigator.of(context).pop(true),
-              child: Text(MaterialLocalizations.of(context).saveButtonLabel)),
-        ],
-      ),
+    final save = await showConfirmOrDeclineDialog(
+      context,
+      title: AppLocalizations.of(context)!.editorLeaveTitle,
+      confirm: MaterialLocalizations.of(context).saveButtonLabel,
+      confirmKey: const ValueKey('editor-leave-save'),
+      decline: AppLocalizations.of(context)!.editorLeaveDiscard,
+      declineKey: const ValueKey('editor-leave-discard'),
     );
     if (save == null || !mounted) return;
     if (!save) {

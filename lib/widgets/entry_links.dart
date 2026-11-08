@@ -5,7 +5,6 @@
 import 'package:aid_diary/widgets/confirm_dialog.dart';
 import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/actions/link_actions.dart';
-import 'package:aid_diary/actions/settings_actions.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/database/entry_store.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
@@ -432,60 +431,12 @@ class _EntryPickerState extends State<_EntryPicker> {
 /// Asks before rewriting a past entry, unless the user said not to ask;
 /// true to go on.
 Future<bool> confirmEditPast(BuildContext context, Entry entry) async {
-  if (!isPastEntry(entry) ||
-      !ConfigProvider.instance.get(Settings.confirmEditPast)) {
-    return true;
-  }
-  final result = await showDialog<(bool, bool)>(
-    context: context,
-    builder: (context) => const _EditPastDialog(),
-  );
-  if (result == null || !result.$1) return false;
-  if (result.$2) await changeSetting(Settings.confirmEditPast, false);
-  return true;
-}
-
-class _EditPastDialog extends StatefulWidget {
-  const _EditPastDialog();
-
-  @override
-  State<_EditPastDialog> createState() => _EditPastDialogState();
-}
-
-class _EditPastDialogState extends State<_EditPastDialog> {
-  bool _dontAsk = false;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    return AlertDialog(
-      key: const ValueKey('edit-past-dialog'),
-      title: Text(l10n.editPastTitle),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(l10n.editPastBody),
-          const SizedBox(height: 8),
-          CheckboxListTile(
-            key: const ValueKey('edit-past-dont-ask'),
-            contentPadding: EdgeInsets.zero,
-            controlAffinity: ListTileControlAffinity.leading,
-            value: _dontAsk,
-            onChanged: (value) => setState(() => _dontAsk = value ?? false),
-            title: Text(l10n.editPastDontAsk),
-          ),
-        ],
-      ),
-      actions: [
-        TextButton(
-            onPressed: () => Navigator.of(context).pop((false, false)),
-            child: Text(MaterialLocalizations.of(context).cancelButtonLabel)),
-        TextButton(
-            key: const ValueKey('edit-past-confirm'),
-            onPressed: () => Navigator.of(context).pop((true, _dontAsk)),
-            child: Text(l10n.editPastEdit)),
-      ],
-    );
-  }
+  if (!isPastEntry(entry)) return true;
+  final l10n = AppLocalizations.of(context)!;
+  return showConfirmDialog(context,
+      title: l10n.editPastTitle,
+      message: l10n.editPastBody,
+      confirm: l10n.editPastEdit,
+      confirmKey: const ValueKey('edit-past-confirm'),
+      askSetting: Settings.confirmEditPast);
 }

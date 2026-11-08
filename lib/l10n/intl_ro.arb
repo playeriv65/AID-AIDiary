@@ -794,7 +794,7 @@
   "noteDeleteConfirm": "Ștergi această notă?",
   "editPastTitle": "Editezi o amintire din trecut?",
   "editPastBody": "Această însemnare este dintr-o zi anterioară. Ca să-i răspunzi, selectează text pentru a-l păstra sau comenta.",
-  "editPastDontAsk": "Nu mai întreba",
+  "dontAskAgain": "Nu mai întreba",
   "editPastEdit": "Editează oricum",
   "noteOnEntry": "Despre însemnarea din {date}",
   "settingsConfirmEditPast": "Întreabă înainte de a edita însemnări trecute",

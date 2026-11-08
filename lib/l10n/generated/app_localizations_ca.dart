@@ -2738,7 +2738,7 @@ class AppLocalizationsCa extends AppLocalizations {
       'Aquesta entrada és d’un dia anterior. Per respondre-la, selecciona text per desar-lo o comentar-lo.';
 
   @override
-  String get editPastDontAsk => 'No ho tornis a preguntar';
+  String get dontAskAgain => 'No ho tornis a preguntar';
 
   @override
   String get editPastEdit => 'Edita igualment';

@@ -2736,7 +2736,7 @@ class AppLocalizationsPt extends AppLocalizations {
       'Esta entrada é de um dia anterior. Para lhe responder, seleciona texto para o guardar ou comentar.';
 
   @override
-  String get editPastDontAsk => 'Não perguntar outra vez';
+  String get dontAskAgain => 'Não perguntar outra vez';
 
   @override
   String get editPastEdit => 'Editar mesmo assim';
@@ -5640,7 +5640,7 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
       'Esta entrada é de um dia anterior. Para respondê-la, selecione o texto para guardar ou comentar.';
 
   @override
-  String get editPastDontAsk => 'Não perguntar novamente';
+  String get dontAskAgain => 'Não perguntar novamente';
 
   @override
   String get editPastEdit => 'Editar mesmo assim';

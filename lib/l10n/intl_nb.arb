@@ -794,7 +794,7 @@
   "noteDeleteConfirm": "Slette dette notatet?",
   "editPastTitle": "Redigere et tidligere minne?",
   "editPastBody": "Dette innlegget er fra en tidligere dag. Vil du svare på det, marker tekst for å lagre eller kommentere den.",
-  "editPastDontAsk": "Ikke spør igjen",
+  "dontAskAgain": "Ikke spør igjen",
   "editPastEdit": "Rediger likevel",
   "noteOnEntry": "Om innlegget fra {date}",
   "settingsConfirmEditPast": "Spør før tidligere innlegg redigeres",

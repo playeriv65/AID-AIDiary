@@ -794,7 +794,7 @@
   "noteDeleteConfirm": "Deze notitie verwijderen?",
   "editPastTitle": "Een herinnering van vroeger bewerken?",
   "editPastBody": "Dit bericht is van een eerdere dag. Om erop te reageren, selecteer je tekst om te bewaren of erop te reageren.",
-  "editPastDontAsk": "Niet meer vragen",
+  "dontAskAgain": "Niet meer vragen",
   "editPastEdit": "Toch bewerken",
   "noteOnEntry": "Bij het bericht van {date}",
   "settingsConfirmEditPast": "Vragen voor het bewerken van eerdere berichten",

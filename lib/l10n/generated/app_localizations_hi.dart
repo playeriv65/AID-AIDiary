@@ -2716,7 +2716,7 @@ class AppLocalizationsHi extends AppLocalizations {
       'यह प्रविष्टि पहले के दिन की है। जवाब देने के लिए पाठ चुनकर सहेजें या टिप्पणी करें।';
 
   @override
-  String get editPastDontAsk => 'फिर न पूछें';
+  String get dontAskAgain => 'फिर न पूछें';
 
   @override
   String get editPastEdit => 'फिर भी संपादित करें';

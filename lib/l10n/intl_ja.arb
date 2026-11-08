@@ -794,7 +794,7 @@
   "noteDeleteConfirm": "このメモを削除しますか？",
   "editPastTitle": "過去の記憶を編集しますか？",
   "editPastBody": "この日記は以前の日のものです。応えるなら、文字を選んで保存やコメントができます。",
-  "editPastDontAsk": "今後表示しない",
+  "dontAskAgain": "今後表示しない",
   "editPastEdit": "編集する",
   "noteOnEntry": "{date} の日記について",
   "settingsConfirmEditPast": "過去の日記を編集する前に確認",

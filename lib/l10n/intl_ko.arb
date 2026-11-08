@@ -794,7 +794,7 @@
   "noteDeleteConfirm": "이 메모를 삭제할까요?",
   "editPastTitle": "지난 기억을 편집할까요?",
   "editPastBody": "이 일기는 지난 날의 것입니다. 답하고 싶다면 글을 선택해 보관하거나 댓글을 남기세요.",
-  "editPastDontAsk": "다시 묻지 않기",
+  "dontAskAgain": "다시 묻지 않기",
   "editPastEdit": "그래도 편집",
   "noteOnEntry": "{date} 일기에 대해",
   "settingsConfirmEditPast": "지난 일기를 편집하기 전에 확인",

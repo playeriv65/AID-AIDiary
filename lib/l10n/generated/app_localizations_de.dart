@@ -2748,7 +2748,7 @@ class AppLocalizationsDe extends AppLocalizations {
       'Dieser Eintrag stammt von einem früheren Tag. Um darauf zu antworten, markiere Text und behalte oder kommentiere ihn.';
 
   @override
-  String get editPastDontAsk => 'Nicht mehr fragen';
+  String get dontAskAgain => 'Nicht mehr fragen';
 
   @override
   String get editPastEdit => 'Trotzdem bearbeiten';

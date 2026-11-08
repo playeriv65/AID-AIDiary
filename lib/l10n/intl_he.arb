@@ -811,7 +811,7 @@
   "noteDeleteConfirm": "למחוק את ההערה?",
   "editPastTitle": "לערוך זיכרון מהעבר?",
   "editPastBody": "הרשומה הזו מיום קודם. כדי להגיב לה, בחרו טקסט לשמירה או לתגובה.",
-  "editPastDontAsk": "אל תשאל שוב",
+  "dontAskAgain": "אל תשאל שוב",
   "editPastEdit": "לערוך בכל זאת",
   "noteOnEntry": "על הרשומה מ־{date}",
   "settingsConfirmEditPast": "לשאול לפני עריכת רשומות קודמות",

@@ -794,7 +794,7 @@
   "noteDeleteConfirm": "Usunąć tę notatkę?",
   "editPastTitle": "Edytować dawne wspomnienie?",
   "editPastBody": "Ten wpis pochodzi z wcześniejszego dnia. Aby na niego odpowiedzieć, zaznacz tekst i zachowaj go lub skomentuj.",
-  "editPastDontAsk": "Nie pytaj ponownie",
+  "dontAskAgain": "Nie pytaj ponownie",
   "editPastEdit": "Edytuj mimo to",
   "noteOnEntry": "O wpisie z {date}",
   "settingsConfirmEditPast": "Pytaj przed edycją dawnych wpisów",

@@ -794,7 +794,7 @@
   "noteDeleteConfirm": "Ištrinti šią pastabą?",
   "editPastTitle": "Redaguoti praeities prisiminimą?",
   "editPastBody": "Šis įrašas yra iš ankstesnės dienos. Norėdami į jį atsakyti, pažymėkite tekstą ir išsaugokite arba pakomentuokite.",
-  "editPastDontAsk": "Daugiau neklausti",
+  "dontAskAgain": "Daugiau neklausti",
   "editPastEdit": "Vis tiek redaguoti",
   "noteOnEntry": "Apie {date} įrašą",
   "settingsConfirmEditPast": "Klausti prieš redaguojant senus įrašus",
