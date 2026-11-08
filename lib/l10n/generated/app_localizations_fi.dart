@@ -265,9 +265,6 @@ class AppLocalizationsFi extends AppLocalizations {
   String get titleHint => 'Otsikko…';
 
   @override
-  String get deleteLogTitle => 'Poista loki';
-
-  @override
   String get deleteLogDescription => 'Haluatko poistaa tämän lokin?';
 
   @override
@@ -1839,9 +1836,6 @@ class AppLocalizationsFi extends AppLocalizations {
   String get channelReminders => 'Muistutukset';
 
   @override
-  String get channelOnThisDay => 'Tänä päivänä';
-
-  @override
   String get channelCoach => 'Valmentaja kehottaa';
 
   @override
@@ -2127,9 +2121,6 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get syncUseRecoveryCode => 'Käytä palautuskoodia';
-
-  @override
-  String get syncAddDevice => 'Lisää laite';
 
   @override
   String get syncChangeRecoveryCode => 'Vaihda palautuskoodi';

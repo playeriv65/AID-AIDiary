@@ -262,9 +262,6 @@ class AppLocalizationsDa extends AppLocalizations {
   String get titleHint => 'Titel…';
 
   @override
-  String get deleteLogTitle => 'Slet log';
-
-  @override
   String get deleteLogDescription => 'Vil du slette denne log?';
 
   @override
@@ -1829,9 +1826,6 @@ class AppLocalizationsDa extends AppLocalizations {
   String get channelReminders => 'Påmindelser';
 
   @override
-  String get channelOnThisDay => 'På denne dag';
-
-  @override
   String get channelCoach => 'Coach opfordrer';
 
   @override
@@ -2117,9 +2111,6 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String get syncUseRecoveryCode => 'Brug gendannelseskoden';
-
-  @override
-  String get syncAddDevice => 'Tilføj en enhed';
 
   @override
   String get syncChangeRecoveryCode => 'Skift gendannelseskoden';

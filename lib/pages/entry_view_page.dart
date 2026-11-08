@@ -35,6 +35,7 @@ import 'package:aid_diary/widgets/scaled_markdown.dart';
 import 'package:aid_diary/widgets/tag_chip.dart';
 import 'package:intl/intl.dart';
 import 'package:aid_diary/widgets/weather_icon.dart';
+import 'package:aid_diary/widgets/choice_sheet.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
@@ -286,19 +287,12 @@ class EntryViewPage extends StatelessWidget {
         .run('entry.seal', {'id': entry.id, 'opens': DiaryDay.format(day)});
   }
 
-  Future<void> _delete(BuildContext context, Entry entry) async {
+  Future<void> _delete(BuildContext context, Entry entry) {
     final navigator = Navigator.of(context);
-    final hiddenSession = HiddenDiaryScope.of(context);
-    final confirmed = await showDeleteConfirmDialog(context,
-        message: AppLocalizations.of(context)!.deleteLogDescription);
-    if (!confirmed) return;
-    if (!embedded && navigator.canPop()) navigator.pop();
-    if (entry.isHidden) {
-      await hiddenSession!.delete(entry);
-    } else {
-      await AppActions.instance
-          .run('entry.delete', {'id': entry.id}, confirmed: true);
-    }
+    return deleteEntryAfterAsking(context, () {
+      if (!embedded && navigator.canPop()) navigator.pop();
+      return entry;
+    });
   }
 
   /// "Share as…": the picture card, a ZIP with the original
@@ -306,36 +300,23 @@ class EntryViewPage extends StatelessWidget {
   Future<void> _share(
       BuildContext context, Entry entry, List<EntryImage> images) async {
     final l10n = AppLocalizations.of(context)!;
-    final choice = await showModalBottomSheet<_ShareAs>(
-      context: context,
-      showDragHandle: true,
-      builder: (context) => SafeArea(
-        child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(24, 0, 24, 8),
-                child: Text(l10n.shareAs,
-                    style: Theme.of(context).textTheme.titleLarge),
-              ),
-              for (final (option, icon, label) in [
-                (_ShareAs.image, Icons.image_outlined, l10n.shareAsImage),
-                (_ShareAs.zip, Icons.folder_zip_outlined, l10n.shareAsZip),
-                (_ShareAs.text, Icons.notes_rounded, l10n.shareAsPlainText),
-                (_ShareAs.html, Icons.code_rounded, l10n.shareAsHtml),
-              ])
-                ListTile(
-                  key: ValueKey('share-as-${option.name}'),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 24),
-                  leading: Icon(icon),
-                  title: Text(label),
-                  onTap: () => Navigator.of(context).pop(option),
-                ),
-              const SizedBox(height: 8),
-            ]),
-      ),
-    );
+    final choice = await showChoiceSheet(
+        context,
+        [
+          for (final (option, icon, label) in [
+            (_ShareAs.image, Icons.image_outlined, l10n.shareAsImage),
+            (_ShareAs.zip, Icons.folder_zip_outlined, l10n.shareAsZip),
+            (_ShareAs.text, Icons.notes_rounded, l10n.shareAsPlainText),
+            (_ShareAs.html, Icons.code_rounded, l10n.shareAsHtml),
+          ])
+            (
+              value: option,
+              icon: icon,
+              label: label,
+              key: ValueKey('share-as-${option.name}')
+            ),
+        ],
+        title: l10n.shareAs);
     if (choice == null || !context.mounted) return;
     final heading = EntryShare.heading(
         entry, TimeManager.formatDateWithWeekday(entry.day, context));

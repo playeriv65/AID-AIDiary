@@ -267,9 +267,6 @@ class AppLocalizationsNb extends AppLocalizations {
   String get titleHint => 'Tittel...';
 
   @override
-  String get deleteLogTitle => 'Slett dagbokoppføring';
-
-  @override
   String get deleteLogDescription =>
       'Oppføringen flyttes til Nylig slettet, hvor du kan gjenopprette den.';
 
@@ -1840,9 +1837,6 @@ class AppLocalizationsNb extends AppLocalizations {
   String get channelReminders => 'Påminnelser';
 
   @override
-  String get channelOnThisDay => 'På denne dagen';
-
-  @override
   String get channelCoach => 'Trener spør';
 
   @override
@@ -2125,9 +2119,6 @@ class AppLocalizationsNb extends AppLocalizations {
 
   @override
   String get syncUseRecoveryCode => 'Bruk gjenopprettingskoden';
-
-  @override
-  String get syncAddDevice => 'Legg til en enhet';
 
   @override
   String get syncChangeRecoveryCode => 'Endre gjenopprettingskoden';

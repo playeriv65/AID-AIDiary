@@ -4,6 +4,7 @@
 
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/routing/destinations.dart';
+import 'package:aid_diary/widgets/list_detail_layout.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// Help: frequently asked questions, the privacy note, then
@@ -23,11 +24,8 @@ class HelpPage extends StatelessWidget {
       (l10n.helpFaq5Q, l10n.helpFaq5A),
     ];
     Widget header(String text) => Padding(
-          padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
-          child: Text(text.toUpperCase(),
-              style: theme.textTheme.labelMedium?.copyWith(
-                  letterSpacing: 1.4, color: theme.colorScheme.primary)),
-        );
+        padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+        child: SectionLabel(text));
     return Scaffold(
       appBar: AppBar(title: Text(l10n.settingsHelpTitle)),
       body: ListView(padding: const EdgeInsets.only(bottom: 24), children: [

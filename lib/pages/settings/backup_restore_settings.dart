@@ -16,6 +16,8 @@ import 'package:aid_diary/utils/imports/import_registry.dart';
 import 'package:aid_diary/utils/export_utils.dart';
 import 'package:aid_diary/utils/password_store.dart';
 import 'package:aid_diary/widgets/auth_popup.dart';
+import 'package:aid_diary/widgets/auto_backup_settings_dialog.dart';
+import 'package:aid_diary/widgets/confirm_dialog.dart';
 import 'package:aid_diary/routing/destinations.dart';
 import 'package:aid_diary/widgets/progress_dialog.dart';
 import 'package:aid_diary/widgets/settings_icon_action.dart';
@@ -148,36 +150,13 @@ class _BackupRestoreSettingsState extends State<BackupRestoreSettings> {
   }
 
   Future<void> _showRestoreWarning() async {
-    bool confirmed = false;
-    await showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(AppLocalizations.of(context)!.warningTitle),
-          content: Text(
-              AppLocalizations.of(context)!.settingsRestorePromptDescription),
-          actions: [
-            TextButton(
-              child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
-              onPressed: () async {
-                Navigator.pop(context);
-              },
-            ),
-            TextButton(
-              child: Text(MaterialLocalizations.of(context).okButtonLabel),
-              onPressed: () async {
-                confirmed = true;
-                Navigator.pop(context);
-              },
-            ),
-          ],
-        );
-      },
-    );
-    if (confirmed) {
-      if (!mounted) return;
-      await _restoreData(context);
-    }
+    final l10n = AppLocalizations.of(context)!;
+    final confirmed = await showConfirmDialog(context,
+        title: l10n.warningTitle,
+        message: l10n.settingsRestorePromptDescription,
+        confirm: l10n.settingsRestore);
+    if (!confirmed || !mounted) return;
+    await _restoreData(context);
   }
 
   String _lastBackupText(String lastBackup) {
@@ -254,11 +233,9 @@ class _BackupRestoreSettingsState extends State<BackupRestoreSettings> {
               onChanged: (value) async {
                 if (value) {
                   if (configProvider.get(Settings.autoBackupLocationUri) ==
-                      '') {
-                    final directory = await StoragePicker.pickDirectory();
-                    if (directory == null) return;
-                    await changeSetting(
-                        Settings.autoBackupLocationUri, directory.uri);
+                          '' &&
+                      !await AutoBackupSettingsDialog.pickLocation()) {
+                    return;
                   }
                   if (!await changeSetting(Settings.autoBackupEnabled, true)) {
                     return;

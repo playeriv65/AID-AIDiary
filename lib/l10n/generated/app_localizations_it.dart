@@ -263,9 +263,6 @@ class AppLocalizationsIt extends AppLocalizations {
   String get titleHint => 'Titolo…';
 
   @override
-  String get deleteLogTitle => 'Elimina l\'entrata del diario';
-
-  @override
   String get deleteLogDescription =>
       'Vuoi davvero eliminare questa entrata del diario?';
 
@@ -1852,9 +1849,6 @@ class AppLocalizationsIt extends AppLocalizations {
   String get channelReminders => 'Promemoria';
 
   @override
-  String get channelOnThisDay => 'In questo giorno';
-
-  @override
   String get channelCoach => 'L\'allenatore suggerisce';
 
   @override
@@ -2140,9 +2134,6 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get syncUseRecoveryCode => 'Utilizza il codice di ripristino';
-
-  @override
-  String get syncAddDevice => 'Aggiungi un dispositivo';
 
   @override
   String get syncChangeRecoveryCode => 'Cambia il codice di ripristino';

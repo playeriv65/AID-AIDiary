@@ -6,13 +6,13 @@ import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/models/tag.dart';
 import 'package:aid_diary/models/tag_category.dart';
 import 'package:aid_diary/providers/tags_provider.dart';
-import 'package:aid_diary/widgets/progress_dialog.dart';
+import 'package:aid_diary/widgets/share_selection_page.dart';
 import 'package:aid_diary/utils/tag_category_visuals.dart';
-import 'package:aid_diary/utils/templates_tags_transfer.dart';
 import 'package:aid_diary/routing/organize_destinations.dart';
 import 'package:aid_diary/widgets/expressive_fab_menu.dart';
 import 'package:aid_diary/widgets/tag_chip.dart';
 import 'package:aid_diary/widgets/tag_icon_glyph.dart';
+import 'package:aid_diary/widgets/list_detail_layout.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:provider/provider.dart';
@@ -41,12 +41,6 @@ class TagsSettings extends StatefulWidget {
 class _TagsSettingsState extends State<TagsSettings> {
   final Set<int?> _manuallyCollapsedIds = {};
   bool _isDraggingCategory = false;
-
-  Future<void> _importFile(BuildContext context) async {
-    await runOperation(context, TemplatesTagsTransfer.importTransferFile,
-        failureDescription:
-            AppLocalizations.of(context)!.importErrorDescription);
-  }
 
   void _toggleCollapse(int? categoryId) {
     setState(() {
@@ -270,7 +264,7 @@ class _TagsSettingsState extends State<TagsSettings> {
         actions: [
           IconButton(
             icon: const Icon(Icons.file_open_outlined),
-            onPressed: () => _importFile(context),
+            onPressed: () => importTransferFile(context),
           ),
           IconButton(
             icon: const Icon(Icons.share_rounded),
@@ -289,12 +283,10 @@ class _TagsSettingsState extends State<TagsSettings> {
             onTap: () => OrganizeNavigation.editTag(context, null)),
       ]),
       body: isEmpty
-          ? Center(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 48),
-                child: Text(l10n.noResults),
-              ),
-            )
+          ? Align(
+              alignment: Alignment.topCenter,
+              child: EmptyState(
+                  icon: Icons.local_offer_outlined, title: l10n.noResults))
           : Builder(builder: (context) {
               final allItems = _buildFlatItems(provider);
               // Keep the uncategorized header out of the reorderable range so

@@ -7,14 +7,14 @@ import 'dart:io';
 import 'package:aid_diary/actions/app_action.dart';
 import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
+import 'package:aid_diary/routing/sync_scan_navigation.dart';
 import 'package:aid_diary/sync/pairing.dart';
 import 'package:aid_diary/sync/sync_service.dart';
 import 'package:aid_diary/widgets/haptics.dart';
 import 'package:aid_diary/widgets/device_name_tile.dart';
+import 'package:aid_diary/widgets/qr_code_box.dart';
 import 'package:flutter/services.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 
 /// Pairs this device with another of the user's, the same on both: either
 /// shows a code and the other types or scans it, and the master key goes
@@ -90,8 +90,7 @@ class _PairingDialogState extends State<PairingDialog> {
   }
 
   Future<void> _scan() async {
-    final scanned = await showDialog<String>(
-        context: context, builder: (_) => const _ScanDialog());
+    final scanned = await SyncScanNavigation.open(context, kind: 'pairing');
     if (scanned == null || !mounted) return;
     _code.text = scanned;
     await _accept(scanned);
@@ -201,13 +200,7 @@ class _PairingDialogState extends State<PairingDialog> {
       Text(l10n.syncPairShowHint),
       const SizedBox(height: 16),
       if (code != null && waiting) ...[
-        Center(
-          child: Container(
-            color: Colors.white,
-            padding: const EdgeInsets.all(8),
-            child: QrImageView(data: code.scannable, size: 200),
-          ),
-        ),
+        QrCodeBox(code.scannable),
         const SizedBox(height: 12),
         Center(
           child: SelectableText(code.typed,
@@ -270,41 +263,4 @@ class _PairingDialogState extends State<PairingDialog> {
                 child: Text(l10n.syncPairStart)),
         ]),
       ];
-}
-
-/// The camera, until it sees a pairing code.
-class _ScanDialog extends StatefulWidget {
-  const _ScanDialog();
-
-  @override
-  State<_ScanDialog> createState() => _ScanDialogState();
-}
-
-class _ScanDialogState extends State<_ScanDialog> {
-  var _done = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return Dialog.fullscreen(
-      child: Stack(children: [
-        MobileScanner(
-          onDetect: (capture) {
-            final value = capture.barcodes.firstOrNull?.rawValue;
-            if (_done || value == null || !PairingCode.isScanned(value)) {
-              return;
-            }
-            _done = true;
-            Navigator.of(context).pop(value);
-          },
-        ),
-        SafeArea(
-          child: IconButton.filledTonal(
-            tooltip: MaterialLocalizations.of(context).closeButtonTooltip,
-            icon: const Icon(Icons.close_rounded),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-        ),
-      ]),
-    );
-  }
 }

@@ -264,9 +264,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get titleHint => 'Tiêu đề…';
 
   @override
-  String get deleteLogTitle => 'Xóa mục nhật ký';
-
-  @override
   String get deleteLogDescription =>
       'Mục nhập sẽ chuyển đến Đã xóa gần đây, nơi bạn có thể khôi phục nó.';
 
@@ -1846,9 +1843,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get channelReminders => 'Lời nhắc';
 
   @override
-  String get channelOnThisDay => 'Vào ngày này';
-
-  @override
   String get channelCoach => 'Lời nhắc của huấn luyện viên';
 
   @override
@@ -2135,9 +2129,6 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get syncUseRecoveryCode => 'Sử dụng mã khôi phục';
-
-  @override
-  String get syncAddDevice => 'Thêm thiết bị';
 
   @override
   String get syncChangeRecoveryCode => 'Thay đổi mã khôi phục';

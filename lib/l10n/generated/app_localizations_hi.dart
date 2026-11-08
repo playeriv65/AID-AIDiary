@@ -267,9 +267,6 @@ class AppLocalizationsHi extends AppLocalizations {
   String get titleHint => 'शीर्षक…';
 
   @override
-  String get deleteLogTitle => 'लॉग हटाएं';
-
-  @override
   String get deleteLogDescription => 'क्या आप इस लॉग को हटाना चाहते हैं?';
 
   @override
@@ -1832,9 +1829,6 @@ class AppLocalizationsHi extends AppLocalizations {
   String get channelReminders => 'अनुस्मारक';
 
   @override
-  String get channelOnThisDay => 'इस दिन';
-
-  @override
   String get channelCoach => 'कोच संकेत देता है';
 
   @override
@@ -2120,9 +2114,6 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get syncUseRecoveryCode => 'पुनर्प्राप्ति कोड का उपयोग करें';
-
-  @override
-  String get syncAddDevice => 'एक उपकरण जोड़ें';
 
   @override
   String get syncChangeRecoveryCode => 'पुनर्प्राप्ति कोड बदलें';

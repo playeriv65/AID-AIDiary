@@ -266,9 +266,6 @@ class AppLocalizationsSv extends AppLocalizations {
   String get titleHint => 'Titel...';
 
   @override
-  String get deleteLogTitle => 'Ta bort dagboksinlägg';
-
-  @override
   String get deleteLogDescription =>
       'Posten flyttas till Nyligen raderad, där du kan återställa den.';
 
@@ -1840,9 +1837,6 @@ class AppLocalizationsSv extends AppLocalizations {
   String get channelReminders => 'Påminnelser';
 
   @override
-  String get channelOnThisDay => 'På denna dag';
-
-  @override
   String get channelCoach => 'Coach uppmaningar';
 
   @override
@@ -2127,9 +2121,6 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get syncUseRecoveryCode => 'Använd återställningskoden';
-
-  @override
-  String get syncAddDevice => 'Lägg till en enhet';
 
   @override
   String get syncChangeRecoveryCode => 'Ändra återställningskoden';

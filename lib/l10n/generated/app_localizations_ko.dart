@@ -260,9 +260,6 @@ class AppLocalizationsKo extends AppLocalizations {
   String get titleHint => '제목…';
 
   @override
-  String get deleteLogTitle => '기록 삭제';
-
-  @override
   String get deleteLogDescription => '이 기록을 삭제하시겠습니까?';
 
   @override
@@ -1801,9 +1798,6 @@ class AppLocalizationsKo extends AppLocalizations {
   String get channelReminders => '알림';
 
   @override
-  String get channelOnThisDay => '이날';
-
-  @override
   String get channelCoach => '코치 프롬프트';
 
   @override
@@ -2083,9 +2077,6 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get syncUseRecoveryCode => '복구 코드 사용';
-
-  @override
-  String get syncAddDevice => '장치 추가';
 
   @override
   String get syncChangeRecoveryCode => '복구 코드 변경';

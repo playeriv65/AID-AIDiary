@@ -498,12 +498,6 @@ abstract class AppLocalizations {
   /// **'Title…'**
   String get titleHint;
 
-  /// No description provided for @deleteLogTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Delete Log'**
-  String get deleteLogTitle;
-
   /// No description provided for @deleteLogDescription.
   ///
   /// In en, this message translates to:
@@ -3354,12 +3348,6 @@ abstract class AppLocalizations {
   /// **'Reminders'**
   String get channelReminders;
 
-  /// No description provided for @channelOnThisDay.
-  ///
-  /// In en, this message translates to:
-  /// **'On this day'**
-  String get channelOnThisDay;
-
   /// No description provided for @channelCoach.
   ///
   /// In en, this message translates to:
@@ -3875,12 +3863,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Use the recovery code'**
   String get syncUseRecoveryCode;
-
-  /// No description provided for @syncAddDevice.
-  ///
-  /// In en, this message translates to:
-  /// **'Add a device'**
-  String get syncAddDevice;
 
   /// No description provided for @syncChangeRecoveryCode.
   ///

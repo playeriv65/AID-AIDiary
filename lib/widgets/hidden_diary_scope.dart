@@ -2,9 +2,13 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'dart:async';
+
+import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/database/entry_store.dart';
 import 'package:aid_diary/models/entry.dart';
+import 'package:aid_diary/widgets/confirm_dialog.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// A local, short-lived authorization; never exposed to actions or settings.
@@ -61,6 +65,25 @@ class HiddenDiarySession extends ChangeNotifier with WidgetsBindingObserver {
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
+  }
+}
+
+/// Asks, then moves an entry to Recently deleted: the one way the reader
+/// and the editor delete. [leave] runs once confirmed, closes the screens
+/// showing the entry and returns the entry to delete. A hidden entry goes
+/// through the session that shows it, any other through `entry.delete`.
+Future<void> deleteEntryAfterAsking(
+    BuildContext context, FutureOr<Entry> Function() leave) async {
+  final session = HiddenDiaryScope.of(context);
+  final confirmed = await showDeleteConfirmDialog(context,
+      message: AppLocalizations.of(context)!.deleteLogDescription);
+  if (!confirmed) return;
+  final entry = await leave();
+  if (entry.isHidden) {
+    await session!.delete(entry);
+  } else {
+    await AppActions.instance
+        .run('entry.delete', {'id': entry.id}, confirmed: true);
   }
 }
 

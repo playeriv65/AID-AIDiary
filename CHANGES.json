@@ -76,5 +76,11 @@
     "en": "Entries no longer appear twice when a device reconnects to sync or when the same file is imported on two devices. Copies of earlier imports merge after every device updates.",
     "zh": "设备重新连接同步，或在两台设备上导入同一个文件时，日记不会再出现重复。之前重复导入的日记会在所有设备更新后合并。",
     "zh_Hant": "裝置重新連線同步，或在兩台裝置上匯入同一個檔案時，日記不會再出現重複。之前重複匯入的日記會在所有裝置更新後合併。"
+  },
+  {
+    "id": "2026-11-08-one-way-everywhere",
+    "en": "Confirmations, text boxes, option lists, QR codes and empty lists look and work the same wherever they appear. Deleting an attachment puts Cancel on the left like every other question.",
+    "zh": "确认框、输入框、选项列表、二维码和空列表在各处的样子和用法都一致了。删除附件时，“取消”也和其他询问一样放在左边。",
+    "zh_Hant": "確認框、輸入框、選項清單、QR 碼和空清單在各處的樣子和用法都一致了。刪除附件時，「取消」也和其他詢問一樣放在左邊。"
   }
 ]

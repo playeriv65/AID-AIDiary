@@ -10,6 +10,7 @@ import 'package:aid_diary/services/wallpaper_service.dart';
 import 'package:aid_diary/time_manager.dart';
 import 'package:aid_diary/widgets/color_picker_dialog.dart';
 import 'package:aid_diary/widgets/diary_wallpaper.dart';
+import 'package:aid_diary/widgets/emoji_input_box.dart';
 import 'package:aid_diary/widgets/mood_icon.dart';
 import 'package:aid_diary/widgets/settings_dropdown.dart';
 import 'package:aid_diary/widgets/settings_header.dart';
@@ -17,7 +18,6 @@ import 'package:aid_diary/widgets/settings_icon_action.dart';
 import 'package:aid_diary/widgets/settings_toggle.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:aid_diary/theme_mode_provider.dart';
 import 'package:aid_diary/widgets/theme_color_presets.dart';
@@ -85,42 +85,8 @@ class _AppearanceSettingsPageState extends State<AppearanceSettings> {
               },
             ),
           ],
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                AppLocalizations.of(context)!.moodIconPrompt,
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              const SizedBox(height: 16),
-              Card.filled(
-                color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                child: SizedBox(
-                  width: 96,
-                  height: 96,
-                  child: Center(
-                    child: TextField(
-                      autofocus: true,
-                      textAlign: TextAlign.center,
-                      textAlignVertical: TextAlignVertical.center,
-                      style: Theme.of(context).textTheme.headlineLarge,
-                      inputFormatters: [
-                        LengthLimitingTextInputFormatter(
-                            1), // Limit to one character
-                      ],
-                      onChanged: (value) {
-                        newEmoji = value;
-                      },
-                      decoration: const InputDecoration(
-                        hintText: '?',
-                        border: InputBorder.none,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
+          content: EmojiInputBox(
+              autofocus: true, onChanged: (value) => newEmoji = value),
         );
       },
     );

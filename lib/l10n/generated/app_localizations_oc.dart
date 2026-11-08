@@ -263,9 +263,6 @@ class AppLocalizationsOc extends AppLocalizations {
   String get titleHint => 'Títol…';
 
   @override
-  String get deleteLogTitle => 'Suprimir l’entrada ?';
-
-  @override
   String get deleteLogDescription =>
       'L\'entrada se desplaça cap a Recentament suprimit, ont la podètz restablir.';
 
@@ -1851,9 +1848,6 @@ class AppLocalizationsOc extends AppLocalizations {
   String get channelReminders => 'Rapèls';
 
   @override
-  String get channelOnThisDay => 'En aquest dia';
-
-  @override
   String get channelCoach => 'Instruccions de l\'entraïnaire';
 
   @override
@@ -2141,9 +2135,6 @@ class AppLocalizationsOc extends AppLocalizations {
 
   @override
   String get syncUseRecoveryCode => 'Utilizar lo còde de recuperacion';
-
-  @override
-  String get syncAddDevice => 'Apondre un periferic';
 
   @override
   String get syncChangeRecoveryCode => 'Cambiatz lo còde de recuperacion';

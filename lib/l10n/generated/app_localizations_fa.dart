@@ -263,9 +263,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get titleHint => 'عنوان…';
 
   @override
-  String get deleteLogTitle => 'حذف تاریخچه';
-
-  @override
   String get deleteLogDescription => 'ایا میخواهید این تاریچه را پاک کنید؟';
 
   @override
@@ -1829,9 +1826,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get channelReminders => 'یادآوری ها';
 
   @override
-  String get channelOnThisDay => 'در این روز';
-
-  @override
   String get channelCoach => 'مربی می گوید';
 
   @override
@@ -2116,9 +2110,6 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get syncUseRecoveryCode => 'از کد بازیابی استفاده کنید';
-
-  @override
-  String get syncAddDevice => 'یک دستگاه اضافه کنید';
 
   @override
   String get syncChangeRecoveryCode => 'کد بازیابی را تغییر دهید';

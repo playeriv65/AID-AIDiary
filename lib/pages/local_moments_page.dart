@@ -14,6 +14,7 @@ import 'package:aid_diary/routing/entry_navigation.dart';
 import 'package:aid_diary/widgets/haptics.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:aid_diary/widgets/list_detail_layout.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
@@ -165,9 +166,9 @@ class _LocalMomentsPageState extends State<LocalMomentsPage> {
                         padding: EdgeInsets.all(20),
                         child: LinearProgressIndicator()),
                   if (scanned && cards.isEmpty && !busy)
-                    Padding(
-                        padding: const EdgeInsets.all(24),
-                        child: Text(l10n.momentsEmpty)),
+                    EmptyState(
+                        icon: Icons.photo_library_outlined,
+                        title: l10n.momentsEmpty),
                   for (final card in cards)
                     Card(
                         key: ValueKey('moment-card-${card['id']}'),

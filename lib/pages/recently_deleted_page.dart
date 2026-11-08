@@ -3,7 +3,6 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'package:aid_diary/widgets/confirm_dialog.dart';
-import 'package:aid_diary/widgets/haptics.dart';
 import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/config/app_config.dart';
@@ -12,6 +11,7 @@ import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/providers/entry_images_provider.dart';
 import 'package:aid_diary/widgets/entry_card.dart';
 import 'package:aid_diary/widgets/list_detail_layout.dart';
+import 'package:aid_diary/widgets/choice_sheet.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// Deleted entries waiting out the retention period; restore or erase them.
@@ -38,7 +38,6 @@ class _RecentlyDeletedPageState extends State<RecentlyDeletedPage> {
 
   Future<bool> _confirm(String title, String message) async {
     final l10n = AppLocalizations.of(context)!;
-    Haptics.warning();
     return showConfirmDialog(context,
         title: title,
         message: message,
@@ -49,26 +48,20 @@ class _RecentlyDeletedPageState extends State<RecentlyDeletedPage> {
 
   Future<void> _actions(DeletedEntry item) async {
     final l10n = AppLocalizations.of(context)!;
-    final restore = await showModalBottomSheet<bool>(
-      context: context,
-      showDragHandle: true,
-      builder: (context) => SafeArea(
-        child: Column(mainAxisSize: MainAxisSize.min, children: [
-          ListTile(
-            key: const ValueKey('deleted-restore'),
-            leading: const Icon(Icons.restore_rounded),
-            title: Text(l10n.deletedRestore),
-            onTap: () => Navigator.pop(context, true),
-          ),
-          ListTile(
-            key: const ValueKey('deleted-erase'),
-            leading: const Icon(Icons.delete_forever_rounded),
-            title: Text(l10n.deletedDeleteForever),
-            onTap: () => Navigator.pop(context, false),
-          ),
-        ]),
+    final restore = await showChoiceSheet(context, [
+      (
+        value: true,
+        icon: Icons.restore_rounded,
+        label: l10n.deletedRestore,
+        key: const ValueKey('deleted-restore')
       ),
-    );
+      (
+        value: false,
+        icon: Icons.delete_forever_rounded,
+        label: l10n.deletedDeleteForever,
+        key: const ValueKey('deleted-erase')
+      ),
+    ]);
     if (restore == null) return;
     if (restore) {
       await AppActions.instance.run('entry.restore', {'id': item.entry.id});

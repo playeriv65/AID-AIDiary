@@ -268,9 +268,6 @@ class AppLocalizationsUk extends AppLocalizations {
   String get titleHint => 'Назва…';
 
   @override
-  String get deleteLogTitle => 'Видалити запис';
-
-  @override
   String get deleteLogDescription => 'Точно хочете видалити цей запис?';
 
   @override
@@ -1846,9 +1843,6 @@ class AppLocalizationsUk extends AppLocalizations {
   String get channelReminders => 'Нагадування';
 
   @override
-  String get channelOnThisDay => 'У цей день';
-
-  @override
   String get channelCoach => 'Тренер підказує';
 
   @override
@@ -2134,9 +2128,6 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get syncUseRecoveryCode => 'Використовуйте код відновлення';
-
-  @override
-  String get syncAddDevice => 'Додайте пристрій';
 
   @override
   String get syncChangeRecoveryCode => 'Змініть код відновлення';

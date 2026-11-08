@@ -264,9 +264,6 @@ class AppLocalizationsNl extends AppLocalizations {
   String get titleHint => 'Titel…';
 
   @override
-  String get deleteLogTitle => 'Verwijder log';
-
-  @override
   String get deleteLogDescription =>
       'Weet je zeker dat je deze log wil verwijderen?';
 
@@ -1849,9 +1846,6 @@ class AppLocalizationsNl extends AppLocalizations {
   String get channelReminders => 'Herinneringen';
 
   @override
-  String get channelOnThisDay => 'Op deze dag';
-
-  @override
   String get channelCoach => 'Coach vraagt';
 
   @override
@@ -2135,9 +2129,6 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get syncUseRecoveryCode => 'Gebruik de herstelcode';
-
-  @override
-  String get syncAddDevice => 'Voeg een apparaat toe';
 
   @override
   String get syncChangeRecoveryCode => 'Wijzig de herstelcode';

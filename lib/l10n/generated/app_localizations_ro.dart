@@ -276,9 +276,6 @@ class AppLocalizationsRo extends AppLocalizations {
   String get titleHint => 'Titlu…';
 
   @override
-  String get deleteLogTitle => 'Șterge Logul';
-
-  @override
   String get deleteLogDescription => 'Dorești să ștergi acest log?';
 
   @override
@@ -1863,9 +1860,6 @@ class AppLocalizationsRo extends AppLocalizations {
   String get channelReminders => 'Mementouri';
 
   @override
-  String get channelOnThisDay => 'În această zi';
-
-  @override
   String get channelCoach => 'Antrenorul solicită';
 
   @override
@@ -2151,9 +2145,6 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get syncUseRecoveryCode => 'Utilizați codul de recuperare';
-
-  @override
-  String get syncAddDevice => 'Adăugați un dispozitiv';
 
   @override
   String get syncChangeRecoveryCode => 'Schimbați codul de recuperare';

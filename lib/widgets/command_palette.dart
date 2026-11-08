@@ -37,11 +37,11 @@ class _CommandPaletteState extends State<CommandPalette> {
     if (args == null || !mounted) return;
     final l10n = AppLocalizations.of(context)!;
     if (action.risk == ActionRisk.destructive) {
-      Haptics.warning();
       final go = await showConfirmDialog(context,
           title: action.id,
           message: l10n.commandPaletteConfirm,
-          confirm: l10n.commandPaletteRun);
+          confirm: l10n.commandPaletteRun,
+          destructive: true);
       if (!go || !mounted) return;
     }
     Object? result;

@@ -265,9 +265,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String get titleHint => 'Titre…';
 
   @override
-  String get deleteLogTitle => 'Supprimer le souvenir';
-
-  @override
   String get deleteLogDescription => 'Voulez-vous supprimer ce souvenir ?';
 
   @override
@@ -1865,9 +1862,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String get channelReminders => 'Rappels';
 
   @override
-  String get channelOnThisDay => 'Ce jour-là';
-
-  @override
   String get channelCoach => 'Invites de l\'entraîneur';
 
   @override
@@ -2156,9 +2150,6 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get syncUseRecoveryCode => 'Utilisez le code de récupération';
-
-  @override
-  String get syncAddDevice => 'Ajouter un appareil';
 
   @override
   String get syncChangeRecoveryCode => 'Changer le code de récupération';

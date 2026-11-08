@@ -265,9 +265,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get titleHint => 'Başlık…';
 
   @override
-  String get deleteLogTitle => 'Kaydı Sil';
-
-  @override
   String get deleteLogDescription => 'Bu kaydı silmek istiyor musunuz?';
 
   @override
@@ -1833,9 +1830,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get channelReminders => 'Hatırlatıcılar';
 
   @override
-  String get channelOnThisDay => 'Bu günde';
-
-  @override
   String get channelCoach => 'Koç istemleri';
 
   @override
@@ -2121,9 +2115,6 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get syncUseRecoveryCode => 'Kurtarma kodunu kullanın';
-
-  @override
-  String get syncAddDevice => 'Cihaz ekle';
 
   @override
   String get syncChangeRecoveryCode => 'Kurtarma kodunu değiştirin';

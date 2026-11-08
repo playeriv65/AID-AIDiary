@@ -268,9 +268,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get titleHint => 'عنوان…';
 
   @override
-  String get deleteLogTitle => 'احذف السجل';
-
-  @override
   String get deleteLogDescription => 'هل تريد حذف هذا السجل؟';
 
   @override
@@ -1837,9 +1834,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get channelReminders => 'تذكيرات';
 
   @override
-  String get channelOnThisDay => 'في هذا اليوم';
-
-  @override
   String get channelCoach => 'يطالب المدرب';
 
   @override
@@ -2122,9 +2116,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get syncUseRecoveryCode => 'استخدم رمز الاسترداد';
-
-  @override
-  String get syncAddDevice => 'أضف جهازًا';
 
   @override
   String get syncChangeRecoveryCode => 'تغيير رمز الاسترداد';

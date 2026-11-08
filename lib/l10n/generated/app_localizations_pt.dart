@@ -267,9 +267,6 @@ class AppLocalizationsPt extends AppLocalizations {
   String get titleHint => 'Título…';
 
   @override
-  String get deleteLogTitle => 'Apagar Registo';
-
-  @override
   String get deleteLogDescription => 'Quer apagar este registo?';
 
   @override
@@ -1849,9 +1846,6 @@ class AppLocalizationsPt extends AppLocalizations {
   String get channelReminders => 'Lembretes';
 
   @override
-  String get channelOnThisDay => 'Neste dia';
-
-  @override
   String get channelCoach => 'Solicitações do treinador';
 
   @override
@@ -2139,9 +2133,6 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get syncUseRecoveryCode => 'Utilize o código de recuperação';
-
-  @override
-  String get syncAddDevice => 'Adicionar um dispositivo';
 
   @override
   String get syncChangeRecoveryCode => 'Alterar o código de recuperação';
@@ -3149,9 +3140,6 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
 
   @override
   String get titleHint => 'Título…';
-
-  @override
-  String get deleteLogTitle => 'Apagar Registro';
 
   @override
   String get deleteLogDescription => 'Você quer apagar este registro?';
@@ -4733,9 +4721,6 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
   String get channelReminders => 'Lembretes';
 
   @override
-  String get channelOnThisDay => 'Neste dia';
-
-  @override
   String get channelCoach => 'Solicitações do treinador';
 
   @override
@@ -5023,9 +5008,6 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
 
   @override
   String get syncUseRecoveryCode => 'Use o código de recuperação';
-
-  @override
-  String get syncAddDevice => 'Adicionar um dispositivo';
 
   @override
   String get syncChangeRecoveryCode => 'Alterar o código de recuperação';

@@ -16,10 +16,11 @@ import 'package:provider/provider.dart';
 class AutoBackupSettingsDialog extends StatelessWidget {
   const AutoBackupSettingsDialog({super.key});
 
-  Future<void> _pickLocation() async {
+  /// Picks the folder automatic backups go to; false when none was picked.
+  static Future<bool> pickLocation() async {
     final directory = await StoragePicker.pickDirectory();
-    if (directory == null) return;
-    await changeSetting(Settings.autoBackupLocationUri, directory.uri);
+    if (directory == null) return false;
+    return changeSetting(Settings.autoBackupLocationUri, directory.uri);
   }
 
   @override
@@ -39,7 +40,7 @@ class AutoBackupSettingsDialog extends StatelessWidget {
               title: AppLocalizations.of(context)!.settingsAutoBackupLocation,
               hint: StoragePicker.displayName(locationUri),
               icon: Icon(Icons.folder_rounded),
-              onPressed: _pickLocation,
+              onPressed: pickLocation,
             ),
             SettingsDropdown<String>(
               title: AppLocalizations.of(context)!.settingsAutoBackupInterval,

@@ -261,9 +261,6 @@ class AppLocalizationsJa extends AppLocalizations {
   String get titleHint => 'タイトル…';
 
   @override
-  String get deleteLogTitle => '記録を削除';
-
-  @override
   String get deleteLogDescription => 'この記録を削除してもよろしいですか？';
 
   @override
@@ -1800,9 +1797,6 @@ class AppLocalizationsJa extends AppLocalizations {
   String get channelReminders => 'リマインダー';
 
   @override
-  String get channelOnThisDay => 'この日は';
-
-  @override
   String get channelCoach => 'コーチのプロンプト';
 
   @override
@@ -2082,9 +2076,6 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get syncUseRecoveryCode => 'リカバリーコードを使用する';
-
-  @override
-  String get syncAddDevice => 'デバイスを追加する';
 
   @override
   String get syncChangeRecoveryCode => 'リカバリーコードを変更する';

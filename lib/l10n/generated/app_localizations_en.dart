@@ -263,9 +263,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get titleHint => 'Title…';
 
   @override
-  String get deleteLogTitle => 'Delete Log';
-
-  @override
   String get deleteLogDescription =>
       'The entry moves to Recently deleted, where you can restore it.';
 
@@ -1825,9 +1822,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get channelReminders => 'Reminders';
 
   @override
-  String get channelOnThisDay => 'On this day';
-
-  @override
   String get channelCoach => 'Coach prompts';
 
   @override
@@ -2110,9 +2104,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get syncUseRecoveryCode => 'Use the recovery code';
-
-  @override
-  String get syncAddDevice => 'Add a device';
 
   @override
   String get syncChangeRecoveryCode => 'Change the recovery code';

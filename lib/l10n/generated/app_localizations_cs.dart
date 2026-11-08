@@ -257,9 +257,6 @@ class AppLocalizationsCs extends AppLocalizations {
   String get titleHint => 'Název…';
 
   @override
-  String get deleteLogTitle => 'Smazat záznam';
-
-  @override
   String get deleteLogDescription => 'Chcete smazat tento záznam?';
 
   @override
@@ -1828,9 +1825,6 @@ class AppLocalizationsCs extends AppLocalizations {
   String get channelReminders => 'Připomenutí';
 
   @override
-  String get channelOnThisDay => 'V tento den';
-
-  @override
   String get channelCoach => 'Trenér nabádá';
 
   @override
@@ -2116,9 +2110,6 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String get syncUseRecoveryCode => 'Použijte obnovovací kód';
-
-  @override
-  String get syncAddDevice => 'Přidejte zařízení';
 
   @override
   String get syncChangeRecoveryCode => 'Změňte kód pro obnovení';

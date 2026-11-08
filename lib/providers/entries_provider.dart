@@ -29,9 +29,6 @@ class EntriesProvider with ChangeNotifier {
   Future<Entry> add(Entry entry, {bool skipUpdate = false, String? syncId}) =>
       _store.add(entry, skipUpdate: skipUpdate, syncId: syncId);
 
-  Future<void> deleteAll(Function(String) updateStatus) =>
-      _store.deleteAll(updateStatus);
-
   int getIndexOfEntry(int entryId) => _store.getIndexOfEntry(entryId);
 
   Entry? getEntryForToday() => _store.getEntryForToday();

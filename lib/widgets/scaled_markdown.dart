@@ -13,7 +13,6 @@ class ScaledMarkdown extends StatelessWidget {
   final String data;
   final int? maxCharacters;
   final double scaleFactor;
-  final bool compact;
   final bool selectable;
 
   /// Entry font, size and line spacing; null keeps the markdown defaults.
@@ -24,7 +23,6 @@ class ScaledMarkdown extends StatelessWidget {
     required this.data,
     this.maxCharacters,
     this.scaleFactor = 1,
-    this.compact = false,
     this.selectable = true,
     this.typography,
   });
@@ -81,9 +79,7 @@ class ScaledMarkdown extends StatelessWidget {
                 : _WithTextScalar(child: child);
           });
         },
-        linesMargin: compact
-            ? EdgeInsets.zero
-            : const EdgeInsets.only(bottom: 8, top: 2),
+        linesMargin: const EdgeInsets.only(bottom: 8, top: 2),
       ),
       data: text,
     );

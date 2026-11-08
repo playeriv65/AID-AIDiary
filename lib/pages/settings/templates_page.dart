@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-import 'package:aid_diary/actions/app_actions.dart';
+import 'package:aid_diary/actions/settings_actions.dart';
 import 'package:aid_diary/routing/organize_destinations.dart';
-import 'package:aid_diary/widgets/progress_dialog.dart';
-import 'package:aid_diary/utils/templates_tags_transfer.dart';
+import 'package:aid_diary/widgets/share_selection_page.dart';
+import 'package:aid_diary/widgets/list_detail_layout.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/providers/templates_provider.dart';
@@ -20,12 +20,6 @@ class TemplateSettings extends StatefulWidget {
 }
 
 class _TemplateSettingsState extends State<TemplateSettings> {
-  Future<void> _importFile(BuildContext context) async {
-    await runOperation(context, TemplatesTagsTransfer.importTransferFile,
-        failureDescription:
-            AppLocalizations.of(context)!.importErrorDescription);
-  }
-
   Widget _templateList(BuildContext context) {
     final templatesProvider = Provider.of<TemplatesProvider>(context);
     final configProvider = Provider.of<ConfigProvider>(context);
@@ -33,15 +27,9 @@ class _TemplateSettingsState extends State<TemplateSettings> {
     final defaultTemplateId = configProvider.get(Settings.defaultTemplate);
 
     if (templates.isEmpty) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 16.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(AppLocalizations.of(context)!.noTemplatesDescription),
-          ],
-        ),
-      );
+      return EmptyState(
+          icon: Icons.description_outlined,
+          title: AppLocalizations.of(context)!.noTemplatesDescription);
     }
 
     return ListView.builder(
@@ -68,12 +56,8 @@ class _TemplateSettingsState extends State<TemplateSettings> {
                 icon: Icon(
                   isDefault ? Icons.star_rounded : Icons.star_outline_rounded,
                 ),
-                onPressed: () async {
-                  await AppActions.instance.run('settings.set', {
-                    'key': Settings.defaultTemplate.key,
-                    'value': '${isDefault ? -1 : template.id}',
-                  });
-                },
+                onPressed: () => changeSetting(
+                    Settings.defaultTemplate, isDefault ? -1 : template.id!),
               ),
               IconButton(
                 icon: const Icon(Icons.edit),
@@ -98,7 +82,7 @@ class _TemplateSettingsState extends State<TemplateSettings> {
         actions: [
           IconButton(
             icon: const Icon(Icons.file_open_outlined),
-            onPressed: () => _importFile(context),
+            onPressed: () => importTransferFile(context),
           ),
           IconButton(
             icon: const Icon(Icons.share_rounded),

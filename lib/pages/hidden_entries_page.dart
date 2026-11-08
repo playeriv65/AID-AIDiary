@@ -8,13 +8,13 @@ import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/providers/entries_provider.dart';
 import 'package:aid_diary/routing/entry_navigation.dart';
-import 'package:aid_diary/time_manager.dart';
 import 'package:aid_diary/providers/entry_images_provider.dart';
 import 'package:aid_diary/widgets/entry_card.dart';
 import 'package:aid_diary/widgets/auth_popup.dart';
 import 'package:aid_diary/widgets/hidden_diary_scope.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:aid_diary/widgets/list_detail_layout.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
@@ -37,6 +37,11 @@ class _HiddenEntriesPageState extends State<HiddenEntriesPage> {
       setState(() =>
           _deleted = deleted.where((item) => item.entry.isHidden).toList());
     }
+  }
+
+  Future<void> _restore(Entry entry) async {
+    await _session.restore(entry);
+    await _reloadDeleted();
   }
 
   @override
@@ -110,7 +115,10 @@ class _HiddenEntriesPageState extends State<HiddenEntriesPage> {
                 : ListView(
                     padding: const EdgeInsets.all(16),
                     children: [
-                      if (entries.isEmpty) Text(l10n.hiddenDiaryEmpty),
+                      if (entries.isEmpty)
+                        EmptyState(
+                            icon: Icons.visibility_off_outlined,
+                            title: l10n.hiddenDiaryEmpty),
                       for (final entry in entries)
                         EntryCard(
                           key: ValueKey('hidden-entry-${entry.id}'),
@@ -130,16 +138,16 @@ class _HiddenEntriesPageState extends State<HiddenEntriesPage> {
                         Text(l10n.deletedTitle,
                             style: Theme.of(context).textTheme.titleMedium),
                         for (final item in _deleted)
-                          ListTile(
-                            title: Text(TimeManager.formatDate(
-                                item.entry.day, context)),
-                            subtitle: Text(l10n.deletedDaysLeft(item.daysLeft)),
+                          EntryCard(
+                            entry: item.entry,
+                            images: EntryImagesProvider.instance
+                                .getForEntry(item.entry),
+                            showDate: true,
+                            label: l10n.deletedDaysLeft(item.daysLeft),
                             trailing: TextButton(
-                                onPressed: () async {
-                                  await _session.restore(item.entry);
-                                  await _reloadDeleted();
-                                },
+                                onPressed: () => _restore(item.entry),
                                 child: Text(l10n.deletedRestore)),
+                            onTap: () => _restore(item.entry),
                           ),
                       ],
                     ],

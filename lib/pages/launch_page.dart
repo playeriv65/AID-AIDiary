@@ -133,7 +133,7 @@ class _LaunchPageState extends State<LaunchPage> {
         ),
         ('tranferStatusTemplate', l10n.tranferStatus('{percent}')),
         (channelNameKey(reminderChannelId), l10n.channelReminders),
-        (channelNameKey(onThisDayChannelId), l10n.channelOnThisDay),
+        (channelNameKey(onThisDayChannelId), l10n.flashbackOnThisDay),
         (channelNameKey(coachChannelId), l10n.channelCoach),
         (channelNameKey(nudgeChannelId), l10n.channelNudges),
         (channelNameKey(quickWriteChannelId), l10n.channelQuickWrite),
@@ -156,7 +156,7 @@ class _LaunchPageState extends State<LaunchPage> {
     if (!Platform.isAndroid) return;
     await NotificationManager.instance.createChannels(
         reminders: l10n.channelReminders,
-        onThisDay: l10n.channelOnThisDay,
+        onThisDay: l10n.flashbackOnThisDay,
         coach: l10n.channelCoach,
         nudges: l10n.channelNudges,
         quickWrite: l10n.channelQuickWrite,

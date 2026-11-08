@@ -264,9 +264,6 @@ class AppLocalizationsCa extends AppLocalizations {
   String get titleHint => 'Títol…';
 
   @override
-  String get deleteLogTitle => 'Suprimeix el registre';
-
-  @override
   String get deleteLogDescription => 'Voleu suprimir aquest registre?';
 
   @override
@@ -1848,9 +1845,6 @@ class AppLocalizationsCa extends AppLocalizations {
   String get channelReminders => 'Recordatoris';
 
   @override
-  String get channelOnThisDay => 'En aquest dia';
-
-  @override
   String get channelCoach => 'Instruccions de l\'entrenador';
 
   @override
@@ -2139,9 +2133,6 @@ class AppLocalizationsCa extends AppLocalizations {
 
   @override
   String get syncUseRecoveryCode => 'Utilitzeu el codi de recuperació';
-
-  @override
-  String get syncAddDevice => 'Afegeix un dispositiu';
 
   @override
   String get syncChangeRecoveryCode => 'Canvia el codi de recuperació';

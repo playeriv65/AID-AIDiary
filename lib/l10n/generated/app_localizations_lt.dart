@@ -278,9 +278,6 @@ class AppLocalizationsLt extends AppLocalizations {
   String get titleHint => 'Pavadinimas…';
 
   @override
-  String get deleteLogTitle => 'Ištrinti žurnalo įrašą';
-
-  @override
   String get deleteLogDescription => 'Ar norite ištrinti šį žurnalo įrašą?';
 
   @override
@@ -1863,9 +1860,6 @@ class AppLocalizationsLt extends AppLocalizations {
   String get channelReminders => 'Priminimai';
 
   @override
-  String get channelOnThisDay => 'Šią dieną';
-
-  @override
   String get channelCoach => 'Treneris ragina';
 
   @override
@@ -2149,9 +2143,6 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String get syncUseRecoveryCode => 'Naudokite atkūrimo kodą';
-
-  @override
-  String get syncAddDevice => 'Pridėkite įrenginį';
 
   @override
   String get syncChangeRecoveryCode => 'Pakeiskite atkūrimo kodą';

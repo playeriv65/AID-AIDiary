@@ -8,7 +8,6 @@ import 'package:aid_diary/widgets/confirm_dialog.dart';
 import 'package:aid_diary/widgets/entry_links.dart';
 import 'package:aid_diary/actions/link_actions.dart';
 import 'package:aid_diary/widgets/haptics.dart';
-import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/models/entry_link.dart';
@@ -48,6 +47,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:aid_diary/widgets/weather_icon.dart';
+import 'package:aid_diary/widgets/choice_sheet.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
@@ -237,24 +237,13 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
       navigator.pop();
       return;
     }
-    final l10n = AppLocalizations.of(context)!;
-    final hiddenSession = HiddenDiaryScope.of(context);
-    final sure = await showConfirmDialog(context,
-        title: l10n.deleteLogTitle,
-        message: l10n.deleteLogDescription,
-        confirm: MaterialLocalizations.of(context).deleteButtonTooltip,
-        destructive: true);
-    if (!sure) return;
-    final entryToDelete = await _model.prepareDelete();
-    // The editor, then the entry it was opened from.
-    navigator.pop();
-    if (!_model.isNew && navigator.canPop()) navigator.pop();
-    if (entryToDelete.isHidden) {
-      await hiddenSession!.delete(entryToDelete);
-    } else {
-      await AppActions.instance
-          .run('entry.delete', {'id': entryToDelete.id}, confirmed: true);
-    }
+    await deleteEntryAfterAsking(context, () async {
+      final entry = await _model.prepareDelete();
+      // The editor, then the entry it was opened from.
+      navigator.pop();
+      if (!_model.isNew && navigator.canPop()) navigator.pop();
+      return entry;
+    });
   }
 
   @override
@@ -707,21 +696,15 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
   /// Offers ways to add an attachment, then runs the chosen one.
   Future<void> _chooseAttachment(
       List<(IconData, String, Future<void> Function())> options) async {
-    final chosen = await showModalBottomSheet<Future<void> Function()>(
-      context: context,
-      showDragHandle: true,
-      builder: (context) => SafeArea(
-        child: Column(mainAxisSize: MainAxisSize.min, children: [
-          for (final (icon, label, action) in options)
-            ListTile(
-              key: ValueKey('attachment-$label'),
-              leading: Icon(icon),
-              title: Text(label),
-              onTap: () => Navigator.of(context).pop(action),
-            ),
-        ]),
-      ),
-    );
+    final chosen = await showChoiceSheet(context, [
+      for (final (icon, label, action) in options)
+        (
+          value: action,
+          icon: icon,
+          label: label,
+          key: ValueKey('attachment-$label')
+        ),
+    ]);
     await chosen?.call();
   }
 

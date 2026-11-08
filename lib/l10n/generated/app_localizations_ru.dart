@@ -272,9 +272,6 @@ class AppLocalizationsRu extends AppLocalizations {
   String get titleHint => 'Название…';
 
   @override
-  String get deleteLogTitle => 'Удалить запись';
-
-  @override
   String get deleteLogDescription => 'Вы хотите удалить эту запись?';
 
   @override
@@ -1862,9 +1859,6 @@ class AppLocalizationsRu extends AppLocalizations {
   String get channelReminders => 'Напоминания';
 
   @override
-  String get channelOnThisDay => 'В этот день';
-
-  @override
   String get channelCoach => 'Тренер подсказывает';
 
   @override
@@ -2151,9 +2145,6 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get syncUseRecoveryCode => 'Используйте код восстановления';
-
-  @override
-  String get syncAddDevice => 'Добавить устройство';
 
   @override
   String get syncChangeRecoveryCode => 'Изменить код восстановления';

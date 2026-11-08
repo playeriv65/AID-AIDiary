@@ -7,6 +7,7 @@ import 'dart:async';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/utils/text_editing.dart';
 import 'package:aid_diary/widgets/icons/svg_icon.dart';
+import 'package:aid_diary/widgets/choice_sheet.dart';
 import 'package:material_ui/material_ui.dart';
 
 @immutable
@@ -98,21 +99,15 @@ List<(IconData, String, String, int)> _blocks(AppLocalizations l10n) => [
 Future<void> _insertBlock(
     BuildContext context, TextEditingController controller) async {
   final l10n = AppLocalizations.of(context)!;
-  final chosen = await showModalBottomSheet<(String, int)>(
-    context: context,
-    showDragHandle: true,
-    builder: (context) => SafeArea(
-      child: Column(mainAxisSize: MainAxisSize.min, children: [
-        for (final (icon, label, block, cursor) in _blocks(l10n))
-          ListTile(
-            key: ValueKey('insert-$label'),
-            leading: Icon(icon),
-            title: Text(label),
-            onTap: () => Navigator.pop(context, (block, cursor)),
-          ),
-      ]),
-    ),
-  );
+  final chosen = await showChoiceSheet(context, [
+    for (final (icon, label, block, cursor) in _blocks(l10n))
+      (
+        value: (block, cursor),
+        icon: icon,
+        label: label,
+        key: ValueKey('insert-$label')
+      ),
+  ]);
   if (chosen == null) return;
   insertBlock(controller, chosen.$1, cursorOffset: chosen.$2);
 }

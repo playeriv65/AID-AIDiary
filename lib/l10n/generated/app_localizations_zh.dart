@@ -260,9 +260,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get titleHint => '标题…';
 
   @override
-  String get deleteLogTitle => '删除日记';
-
-  @override
   String get deleteLogDescription => '删除后会移到「最近删除」，在那里可以恢复。';
 
   @override
@@ -1784,9 +1781,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get channelReminders => '写日记提醒';
 
   @override
-  String get channelOnThisDay => '那年今日';
-
-  @override
   String get channelCoach => '写作计划';
 
   @override
@@ -2061,9 +2055,6 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get syncUseRecoveryCode => '使用恢复码';
-
-  @override
-  String get syncAddDevice => '添加设备';
 
   @override
   String get syncChangeRecoveryCode => '更改恢复码';
@@ -3013,9 +3004,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get titleHint => '標題…';
-
-  @override
-  String get deleteLogTitle => '刪除紀錄';
 
   @override
   String get deleteLogDescription => '刪除後會移到「最近刪除」，在那裡可以恢復。';
@@ -4539,9 +4527,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get channelReminders => '寫日記提醒';
 
   @override
-  String get channelOnThisDay => '那年今日';
-
-  @override
   String get channelCoach => '寫作計畫';
 
   @override
@@ -4818,9 +4803,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get syncUseRecoveryCode => '使用恢復程式碼';
-
-  @override
-  String get syncAddDevice => '新增設備';
 
   @override
   String get syncChangeRecoveryCode => '更改恢復程式碼';

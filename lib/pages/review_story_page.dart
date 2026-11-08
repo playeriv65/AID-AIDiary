@@ -17,6 +17,7 @@ import 'package:aid_diary/widgets/mood_icon.dart';
 import 'package:aid_diary/widgets/story_player.dart';
 import 'package:aid_diary/widgets/year_pixels.dart';
 import 'package:intl/intl.dart';
+import 'package:aid_diary/widgets/list_detail_layout.dart';
 import 'package:material_ui/material_ui.dart';
 
 export 'package:aid_diary/stats/period_review.dart' show ReviewSpan;
@@ -110,13 +111,8 @@ class _Overview extends StatelessWidget {
     final theme = Theme.of(context);
     if (review.entries.isEmpty) {
       return Center(
-        child: Column(mainAxisSize: MainAxisSize.min, children: [
-          Icon(Icons.edit_note_rounded,
-              size: 72, color: theme.colorScheme.primary),
-          const SizedBox(height: 12),
-          Text(l10n.reviewEmpty, style: theme.textTheme.titleLarge),
-        ]),
-      );
+          child: EmptyState(
+              icon: Icons.edit_note_rounded, title: l10n.reviewEmpty));
     }
     final average = review.averageMood;
     final numbers = [

@@ -36,77 +36,24 @@ class _StorageSettingsState extends State<StorageSettings> {
     super.initState();
   }
 
-  Future<bool> requestStoragePermission() async {
-    DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
-    AndroidDeviceInfo androidInfo = await deviceInfoPlugin.androidInfo;
-    if (androidInfo.version.sdkInt < 33) {
-      //Legacy Permission
-      var status = await Permission.storage.status;
-      if (!status.isGranted) {
-        status = await Permission.storage.request();
-      }
-      if (status.isGranted) {
-        return true;
-      }
-      return false;
-    }
-
-    //Modern Permission
-    return true;
-  }
-
-  Future<bool> requestPhotosPermission() async {
-    DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
-    AndroidDeviceInfo androidInfo = await deviceInfoPlugin.androidInfo;
-    if (androidInfo.version.sdkInt < 33) {
-      //Legacy Permission
-      var status = await Permission.storage.status;
-      if (!status.isGranted) {
-        status = await Permission.storage.request();
-      }
-      if (status.isGranted) {
-        return true;
-      }
-      return false;
-    } else {
-      //Modern Photos Permission
-      return true;
-    }
+  /// Storage access for picking a folder, which Android before 13 asks
+  /// for; newer versions grant it through the folder picker.
+  Future<bool> _requestStoragePermission() async {
+    final androidInfo = await DeviceInfoPlugin().androidInfo;
+    if (androidInfo.version.sdkInt >= 33) return true;
+    final status = await Permission.storage.status;
+    return status.isGranted || (await Permission.storage.request()).isGranted;
   }
 
   Future<void> _showChangeLogFolderWarning() async {
-    bool confirmed = false;
-    await showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(AppLocalizations.of(context)!.warningTitle),
-          content:
-              Text(AppLocalizations.of(context)!.logFolderWarningDescription),
-          actions: [
-            TextButton(
-              child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
-              onPressed: () async {
-                Navigator.pop(context);
-              },
-            ),
-            TextButton(
-              child: Text(MaterialLocalizations.of(context).okButtonLabel),
-              onPressed: () async {
-                confirmed = true;
-                Navigator.pop(context);
-              },
-            ),
-          ],
-        );
-      },
-    );
-    if (confirmed) {
-      if (!mounted) return;
-      await runOperation(context, AppDatabase.instance.selectExternalLocation,
-          failureDescription:
-              AppLocalizations.of(context)!.logFolderErrorDescription);
-    }
+    final l10n = AppLocalizations.of(context)!;
+    final confirmed = await showConfirmDialog(context,
+        title: l10n.warningTitle,
+        message: l10n.logFolderWarningDescription,
+        confirm: MaterialLocalizations.of(context).okButtonLabel);
+    if (!confirmed || !mounted) return;
+    await runOperation(context, AppDatabase.instance.selectExternalLocation,
+        failureDescription: l10n.logFolderErrorDescription);
   }
 
   /// Compresses the photos already in the diary, once, after saying that
@@ -265,14 +212,13 @@ class _StorageSettingsState extends State<StorageSettings> {
                     secondaryIcon: Icon(Icons.refresh_rounded),
                     onPressed: () async {
                       if (Platform.isAndroid &&
-                          !await requestStoragePermission()) {
+                          !await _requestStoragePermission()) {
                         return;
                       }
                       await _showChangeLogFolderWarning();
                     },
-                    onSecondaryPressed: () async {
-                      await AppDatabase.instance.resetExternalLocation();
-                    },
+                    onSecondaryPressed: () => AppActions.instance
+                        .run('storage.reset', {'target': 'database'}),
                   );
                 }
                 return const SizedBox();
@@ -293,14 +239,13 @@ class _StorageSettingsState extends State<StorageSettings> {
                     secondaryIcon: Icon(Icons.refresh_rounded),
                     onPressed: () async {
                       if (Platform.isAndroid &&
-                          !await requestPhotosPermission()) {
+                          !await _requestStoragePermission()) {
                         return;
                       }
                       await _attemptImageFolderChange();
                     },
-                    onSecondaryPressed: () async {
-                      await ImageStorage.instance.resetImageFolderLocation();
-                    },
+                    onSecondaryPressed: () => AppActions.instance
+                        .run('storage.reset', {'target': 'images'}),
                   );
                 }
                 return const SizedBox();

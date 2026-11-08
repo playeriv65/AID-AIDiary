@@ -87,7 +87,6 @@ class _SyncCopySettingsState extends State<SyncCopySettings> {
                 child: ListView(children: [
                   if (_loading) const LinearProgressIndicator(),
                   if (_failed) ListTile(title: Text(l10n.syncCopyUnavailable)),
-                  if (data?['local'] == null) const DeviceNameTile(),
                   if (data != null) ...[
                     if (data['local'] case final Map local)
                       _device(local, local: true),

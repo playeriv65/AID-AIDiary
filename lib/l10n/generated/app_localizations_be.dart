@@ -287,9 +287,6 @@ class AppLocalizationsBe extends AppLocalizations {
   String get titleHint => 'Назва…';
 
   @override
-  String get deleteLogTitle => 'Выдаліць дзённікавы запіс';
-
-  @override
   String get deleteLogDescription =>
       'Запіс перамяшчаецца ў Нядаўна выдаленыя, дзе вы можаце аднавіць яго.';
 
@@ -1871,9 +1868,6 @@ class AppLocalizationsBe extends AppLocalizations {
   String get channelReminders => 'Напаміны';
 
   @override
-  String get channelOnThisDay => 'У гэты дзень';
-
-  @override
   String get channelCoach => 'Трэнер падказвае';
 
   @override
@@ -2159,9 +2153,6 @@ class AppLocalizationsBe extends AppLocalizations {
 
   @override
   String get syncUseRecoveryCode => 'Выкарыстоўвайце код аднаўлення';
-
-  @override
-  String get syncAddDevice => 'Дадайце прыладу';
 
   @override
   String get syncChangeRecoveryCode => 'Зменіце код аднаўлення';

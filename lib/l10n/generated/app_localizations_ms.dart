@@ -213,9 +213,6 @@ class AppLocalizationsMs extends AppLocalizations {
   String get titleHint => 'Tajuk…';
 
   @override
-  String get deleteLogTitle => 'Padam Log';
-
-  @override
   String get deleteLogDescription => 'Adakah anda ingin memadam log ini?';
 
   @override
@@ -1792,9 +1789,6 @@ class AppLocalizationsMs extends AppLocalizations {
   String get channelReminders => 'Peringatan';
 
   @override
-  String get channelOnThisDay => 'Pada hari ini';
-
-  @override
   String get channelCoach => 'Gesaan jurulatih';
 
   @override
@@ -2082,9 +2076,6 @@ class AppLocalizationsMs extends AppLocalizations {
 
   @override
   String get syncUseRecoveryCode => 'Gunakan kod pemulihan';
-
-  @override
-  String get syncAddDevice => 'Tambahkan peranti';
 
   @override
   String get syncChangeRecoveryCode => 'Tukar kod pemulihan';

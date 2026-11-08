@@ -267,9 +267,6 @@ class AppLocalizationsBg extends AppLocalizations {
   String get titleHint => 'Заглавие…';
 
   @override
-  String get deleteLogTitle => 'Изтриване на запис в дневника';
-
-  @override
   String get deleteLogDescription =>
       'Записът се премества в Наскоро изтрити, където можете да го възстановите.';
 
@@ -1846,9 +1843,6 @@ class AppLocalizationsBg extends AppLocalizations {
   String get channelReminders => 'Напомняния';
 
   @override
-  String get channelOnThisDay => 'На този ден';
-
-  @override
   String get channelCoach => 'Треньор подсказва';
 
   @override
@@ -2135,9 +2129,6 @@ class AppLocalizationsBg extends AppLocalizations {
 
   @override
   String get syncUseRecoveryCode => 'Използвайте кода за възстановяване';
-
-  @override
-  String get syncAddDevice => 'Добавяне на устройство';
 
   @override
   String get syncChangeRecoveryCode => 'Променете кода за възстановяване';

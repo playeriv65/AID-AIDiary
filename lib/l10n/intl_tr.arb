@@ -1,7 +1,6 @@
 {
     "themeLight": "Aydınlık",
     "settingsUseSystemAccentColor": "Sistem Vurgu Rengini Kullan",
-    "deleteLogTitle": "Kaydı Sil",
     "flashbackMonth": "{count, plural, one{{count} ay önce} other{{count} ay önce}}",
     "appTitle": "AID Diary",
     "sortOrderDescendingTitle": "Azalan",
@@ -531,7 +530,6 @@
     "nudgeSunday": "Bitmeden önceki haftaya dönüp bakın.",
     "photoWidgetEmpty": "Girişlere eklediğiniz fotoğraflar burada gösterilir.",
     "channelReminders": "Hatırlatıcılar",
-    "channelOnThisDay": "Bu günde",
     "channelCoach": "Koç istemleri",
     "channelNudges": "Sessiz günlerin ardından dürtmeler",
     "channelQuickWrite": "Hızlı yazma",
@@ -618,7 +616,6 @@
     "syncJoinNeedsKey": "Bu senkronize edilmiş günlük diğer cihazlarınıza aittir. Bunlardan biriyle eşleştirin veya kurtarma kodunu kullanın. Bu cihazdaki girişler ona eklenecektir.",
     "syncPairDevice": "Bir cihazla eşleştirin",
     "syncUseRecoveryCode": "Kurtarma kodunu kullanın",
-    "syncAddDevice": "Cihaz ekle",
     "syncChangeRecoveryCode": "Kurtarma kodunu değiştirin",
     "syncChangeRecoveryDescription": "Yeni bir kod, çalışmayı durduran mevcut kodun yerini alır. Verileriniz ve diğer cihazlarınız oldukları gibi kalır.",
     "syncNewRandomCode": "Yeni rastgele kod",

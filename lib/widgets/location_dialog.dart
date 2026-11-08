@@ -12,6 +12,8 @@ import 'package:aid_diary/providers/entries_provider.dart';
 import 'package:aid_diary/services/location_service.dart';
 import 'package:aid_diary/services/saved_places.dart';
 import 'package:aid_diary/time_manager.dart';
+import 'package:aid_diary/widgets/text_input_dialog.dart';
+import 'package:aid_diary/widgets/list_detail_layout.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// The dialog's answer; a null [location] removes the entry's location.
@@ -100,8 +102,13 @@ class _LocationSheetState extends State<_LocationSheet> {
       Navigator.of(context).pop<LocationChoice>((location: location));
 
   Future<void> _rename(EntryLocation current) async {
-    final name = await showDialog<String>(
-        context: context, builder: (_) => _RenameDialog(name: current.name));
+    final name = await showTextInputDialog(context,
+        title: AppLocalizations.of(context)!.locationRename,
+        confirm: MaterialLocalizations.of(context).okButtonLabel,
+        initial: current.name ?? '',
+        hint: AppLocalizations.of(context)!.locationPlacesHint,
+        fieldKey: const ValueKey('location-rename-field'),
+        confirmKey: const ValueKey('location-rename-ok'));
     if (name == null || !mounted) return;
     _choose(EntryLocation(
         latitude: current.latitude,
@@ -336,20 +343,20 @@ class _PlacePickerState extends State<_PlacePicker> {
             onTap: () => _choose(EntryLocation(name: query)),
           ),
         if (here != null) ...[
-          _Header(l10n.locationCurrent),
+          _SectionHeader(l10n.locationCurrent),
           _place(here,
               key: const ValueKey('location-here'),
               icon: Icons.my_location_rounded),
         ],
         if (_saved.isNotEmpty) ...[
-          _Header(l10n.locationSaved),
+          _SectionHeader(l10n.locationSaved),
           for (final (index, place) in _saved.indexed)
             _place(place,
                 key: ValueKey('location-saved-$index'),
                 icon: Icons.star_rounded),
         ],
         if (_matches case final matches?) ...[
-          _Header(l10n.locationSearchResults),
+          _SectionHeader(l10n.locationSearchResults),
           if (matches.isEmpty)
             ListTile(title: Text(l10n.locationSearchEmpty))
           else
@@ -360,7 +367,7 @@ class _PlacePickerState extends State<_PlacePicker> {
                   detail: match.detail),
         ],
         if (_nearby case final nearby? when nearby.isNotEmpty) ...[
-          _Header(l10n.locationNearby),
+          _SectionHeader(l10n.locationNearby),
           for (final (index, match) in nearby.indexed)
             _place(match.location,
                 key: ValueKey('location-nearby-$index'),
@@ -368,7 +375,7 @@ class _PlacePickerState extends State<_PlacePicker> {
                 detail: match.detail),
         ],
         if (_recent.isNotEmpty) ...[
-          _Header(l10n.locationRecent),
+          _SectionHeader(l10n.locationRecent),
           for (final (index, place) in _recent.indexed)
             _place(place,
                 key: ValueKey('location-recent-$index'),
@@ -379,61 +386,12 @@ class _PlacePickerState extends State<_PlacePicker> {
   }
 }
 
-class _Header extends StatelessWidget {
-  const _Header(this.text);
+class _SectionHeader extends StatelessWidget {
+  const _SectionHeader(this.text);
   final String text;
 
   @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
-      child: Text(text.toUpperCase(),
-          style: theme.textTheme.labelMedium
-              ?.copyWith(letterSpacing: 1.4, color: theme.colorScheme.primary)),
-    );
-  }
-}
-
-class _RenameDialog extends StatefulWidget {
-  const _RenameDialog({required this.name});
-  final String? name;
-
-  @override
-  State<_RenameDialog> createState() => _RenameDialogState();
-}
-
-class _RenameDialogState extends State<_RenameDialog> {
-  late final _name = TextEditingController(text: widget.name ?? '');
-
-  @override
-  void dispose() {
-    _name.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    final material = MaterialLocalizations.of(context);
-    return AlertDialog(
-      title: Text(l10n.locationRename),
-      content: TextField(
-        key: const ValueKey('location-rename-field'),
-        controller: _name,
-        autofocus: true,
-        decoration: InputDecoration(hintText: l10n.locationPlacesHint),
-        onSubmitted: (value) => Navigator.of(context).pop(value.trim()),
-      ),
-      actions: [
-        TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text(material.cancelButtonLabel)),
-        FilledButton(
-            key: const ValueKey('location-rename-ok'),
-            onPressed: () => Navigator.of(context).pop(_name.text.trim()),
-            child: Text(material.okButtonLabel)),
-      ],
-    );
-  }
+  Widget build(BuildContext context) => Padding(
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+      child: SectionLabel(text));
 }

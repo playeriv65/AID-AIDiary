@@ -8,6 +8,7 @@
 
 import 'dart:io';
 
+import 'package:aid_diary/actions/app_action.dart';
 import 'package:aid_diary/routing/destinations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
@@ -73,6 +74,21 @@ void main() {
       }
     }
     expect(unknown, isEmpty);
+  });
+
+  // One feature, one implementation (docs/ARCHITECTURE.md, "Shared
+  // components"): a place's arguments say what to show, never switch parts
+  // of the page on or off for one entry point.
+  test('places take no on/off switches', () {
+    final switches = [
+      for (final place in destinations)
+        for (final param in place.params)
+          if (param.type == ParamType.boolean) '${place.name} ${param.name}',
+    ];
+    expect(switches, isEmpty,
+        reason: 'A flag that shows part of a place to some callers makes '
+            'two features out of one page: open the same page from every '
+            'entry point, or give the other content its own place.');
   });
 
   test('the rule sees the ways to push a route', () {

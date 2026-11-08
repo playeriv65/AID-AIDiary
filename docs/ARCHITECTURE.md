@@ -84,10 +84,25 @@ there is no exception list.
 
 ## Shared components
 
-The owner's rule (2026-10-25): one component per concept, used everywhere,
-with switches for what a place leaves out — never a second way to draw the
-same thing. Before writing UI, look here; when a place needs something these
-cannot do, extend the shared one.
+The owner's rules (2026-10-25, 2026-11-08): one component per concept, used
+everywhere, never a second way to draw the same thing; and one feature, one
+implementation ([Decisions](DECISIONS.md#engineering-and-documentation)).
+Before writing UI, look here and search `lib/`; when a place needs something
+these cannot do, extend the shared one.
+
+Consequences for structure:
+
+- A feature is one page or widget behind one `Destination` and one set of
+  actions. Onboarding, settings, dialogs and `ui.navigate` open that same
+  place with the same arguments that select *what* to show (an entry id, a
+  day), never *how much* of the feature to show. A route parameter that
+  hides or re-labels part of a page is a second feature in disguise: split
+  it into its own named place or drop it.
+- A component's switches describe its container or its value domain (a list
+  already grouped by day omits the date; an accent colour cannot be
+  "none"), not who opened it.
+- One label, one action: the ARB key names the action, and two controls
+  that do different things use different keys.
 
 | Concept | Component | Switches |
 | --- | --- | --- |
@@ -95,6 +110,13 @@ cannot do, extend the shared one.
 | Picking tags (editor, templates, statistics, search filter, tag export) | `TagPicker` / `TagPickerDialog` (`widgets/tag_picker_dialog.dart`), chips are `TagChip` | `mode` (attach, single, filter), `hideFavorite`, `tagTypeFilter` |
 | Picking a mood (editor, check-in, search, mood associations) | `MoodPicker.single` / `.multi` (`widgets/mood_picker.dart`); names from `moodName` | `clearable`, `size`, `spread` |
 | Asking yes or no | `showConfirmDialog` / `showDeleteConfirmDialog` (`widgets/confirm_dialog.dart`) | `destructive`, `content`, `confirmKey` |
+| Asking for a piece of text (device name, place name, recovery code, authorization request) | `showTextInputDialog` (`widgets/text_input_dialog.dart`) | `hint`/`label`, `validate`, `maxLength`, `maxLines`, `trim`, `plain`, `scan` |
+| Picking one of a few options (attachment kind, block to insert, share format, deleted-entry action) | `showChoiceSheet` (`widgets/choice_sheet.dart`) | `title` |
+| Deleting an entry (reader and editor) | `deleteEntryAfterAsking` (`widgets/hidden_diary_scope.dart`) | |
+| Showing a QR code for another device | `QrCodeBox` (`widgets/qr_code_box.dart`) | |
+| Scanning a sync QR code (pairing, nearby, device authorization) | `SyncScanNavigation.open` (`routing/sync_scan_navigation.dart`) | `kind` |
+| One emoji as an icon (moods, tag icons) | `EmojiInputBox` (`widgets/emoji_input_box.dart`) | |
+| Saving or sharing some tags or templates | `ShareSelectionPage` (`widgets/share_selection_page.dart`) | |
 | A settings row | `SettingsRow` (`widgets/settings_row.dart`), under `SettingsToggle`, `SettingsDropdown`, `SettingsIconAction`, `SettingsCategory` | `icon`, `hint`, `trailing` |
 | A statistics card | `StatCard`, `StatNoData` (`widgets/stat_card.dart`) | `hasData`, `action` |
 | A section title in a list | `SectionLabel` (`widgets/list_detail_layout.dart`) | `trailing` |

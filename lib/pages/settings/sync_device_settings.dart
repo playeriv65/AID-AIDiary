@@ -10,10 +10,11 @@ import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/sync/device_auth.dart';
 import 'package:aid_diary/sync/local_device.dart';
 import 'package:aid_diary/widgets/device_name_tile.dart';
+import 'package:aid_diary/widgets/text_input_dialog.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 import 'package:aid_diary/routing/sync_scan_navigation.dart';
-import 'package:qr_flutter/qr_flutter.dart';
+import 'package:aid_diary/widgets/qr_code_box.dart';
 
 class SyncDeviceSettings extends StatefulWidget {
   const SyncDeviceSettings({super.key});
@@ -100,39 +101,15 @@ class _SyncDeviceSettingsState extends State<SyncDeviceSettings> {
 
   Future<void> _authorize() async {
     final l10n = AppLocalizations.of(context)!;
-    final controller = TextEditingController();
-    final result = await showDialog<String>(
-        context: context,
-        builder: (context) => AlertDialog(
-                title: Text(l10n.syncDeviceAuthorize),
-                content: TextField(
-                    controller: controller,
-                    decoration: InputDecoration(
-                        labelText: l10n.syncDeviceAuthorizeDescription),
-                    maxLines: 3,
-                    autocorrect: false,
-                    enableSuggestions: false),
-                actions: [
-                  if (Platform.isAndroid || Platform.isIOS)
-                    TextButton(
-                        onPressed: () async {
-                          final scanned = await SyncScanNavigation.open(context,
-                              kind: 'device');
-                          if (scanned != null && context.mounted) {
-                            Navigator.pop(context, scanned);
-                          }
-                        },
-                        child: const Icon(Icons.qr_code_scanner)),
-                  TextButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: Text(
-                          MaterialLocalizations.of(context).cancelButtonLabel)),
-                  FilledButton(
-                      onPressed: () =>
-                          Navigator.pop(context, controller.text.trim()),
-                      child: Text(l10n.syncDeviceAuthorize)),
-                ]));
-    controller.dispose();
+    final result = await showTextInputDialog(context,
+        title: l10n.syncDeviceAuthorize,
+        confirm: l10n.syncDeviceAuthorize,
+        label: l10n.syncDeviceAuthorizeDescription,
+        maxLines: 3,
+        plain: true,
+        scan: Platform.isAndroid || Platform.isIOS
+            ? (context) => SyncScanNavigation.open(context, kind: 'device')
+            : null);
     if (result == null || !mounted) return;
     try {
       final uri = Uri.parse(result);
@@ -222,11 +199,7 @@ class _SyncDeviceSettingsState extends State<SyncDeviceSettings> {
                     if (_request case final request?) ...[
                       const SizedBox(height: 16),
                       Text(l10n.syncDeviceRequest),
-                      Center(
-                          child: Container(
-                              color: Colors.white,
-                              padding: const EdgeInsets.all(12),
-                              child: QrImageView(data: request, size: 300))),
+                      QrCodeBox(request),
                       TextButton.icon(
                           onPressed: () =>
                               Clipboard.setData(ClipboardData(text: request)),

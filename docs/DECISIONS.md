@@ -353,6 +353,20 @@ implementation boundaries and verification results belong in
 
 ## Engineering and documentation
 
+- One feature, one implementation (2026-11-08, owner): a feature is one
+  page or widget and one action, whichever entry point opens it
+  (onboarding, settings, a dialog, the CLI or agent API, a deep link).
+  Entry points pass no flags that hide or re-label parts of it; content an
+  entry point truly needs to differ is a different feature with its own
+  name. Shared pieces (tiles, dialogs, pickers, forms, confirmations, list
+  items, empty states, error messages) live in `lib/widgets` and are
+  reused, never copied. The same label means the same action, and two
+  controls that do different things never share a label. Why: copies
+  drift. The nearby pairing page opened from onboarding hid "Authorize
+  another device" behind a `receive` flag, so one feature looked and
+  behaved differently depending on where it was opened, and fixes to one
+  copy kept missing the other.
+
 - Versions (2026-10-25, owner): the app is 0.x until its first real
   release, which becomes 1.0.0; every release raises the version. It was
   Daily You's 3.6.1 until then; the build number moved to a date

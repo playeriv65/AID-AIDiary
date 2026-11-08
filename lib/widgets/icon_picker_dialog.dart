@@ -5,8 +5,8 @@
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/models/tag_icon_type.dart';
 import 'package:aid_diary/utils/generated/tag_icon_registry.dart';
+import 'package:aid_diary/widgets/emoji_input_box.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:flutter/services.dart';
 
 /// Result of [IconPickerDialog]: either a curated material icon (identified
 /// by its stable registry key) or a free-typed character/emoji.
@@ -103,7 +103,7 @@ class _IconPickerDialogState extends State<IconPickerDialog>
                 controller: _tabController,
                 children: [
                   _buildIconsTab(context, l10n, groups),
-                  _buildCustomTab(context, l10n),
+                  _buildCustomTab(),
                 ],
               ),
             ),
@@ -197,39 +197,12 @@ class _IconPickerDialogState extends State<IconPickerDialog>
     );
   }
 
-  Widget _buildCustomTab(BuildContext context, AppLocalizations l10n) {
+  Widget _buildCustomTab() {
     return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            l10n.moodIconPrompt,
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
-          const SizedBox(height: 16),
-          Card.filled(
-            color: Theme.of(context).colorScheme.surfaceContainerHighest,
-            child: SizedBox(
-              width: 96,
-              height: 96,
-              child: Center(
-                child: TextField(
-                  controller: _customController,
-                  focusNode: _customFocusNode,
-                  textAlign: TextAlign.center,
-                  textAlignVertical: TextAlignVertical.center,
-                  style: Theme.of(context).textTheme.headlineLarge,
-                  inputFormatters: [LengthLimitingTextInputFormatter(1)],
-                  onSubmitted: (_) => _confirmCustom(),
-                  decoration: const InputDecoration(
-                    hintText: '?',
-                    border: InputBorder.none,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
+      child: EmojiInputBox(
+        controller: _customController,
+        focusNode: _customFocusNode,
+        onSubmitted: (_) => _confirmCustom(),
       ),
     );
   }

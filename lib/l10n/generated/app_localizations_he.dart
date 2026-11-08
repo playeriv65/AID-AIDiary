@@ -275,9 +275,6 @@ class AppLocalizationsHe extends AppLocalizations {
   String get titleHint => 'כותרת…';
 
   @override
-  String get deleteLogTitle => 'מחק את רשומת היומן';
-
-  @override
   String get deleteLogDescription =>
       'הערך עובר ל\'נמחק לאחרונה\', שם תוכל לשחזר אותו.';
 
@@ -1827,9 +1824,6 @@ class AppLocalizationsHe extends AppLocalizations {
   String get channelReminders => 'תזכורות';
 
   @override
-  String get channelOnThisDay => 'ביום הזה';
-
-  @override
   String get channelCoach => 'המאמן מבקש';
 
   @override
@@ -2110,9 +2104,6 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String get syncUseRecoveryCode => 'השתמש בקוד השחזור';
-
-  @override
-  String get syncAddDevice => 'הוסף מכשיר';
 
   @override
   String get syncChangeRecoveryCode => 'שנה את קוד השחזור';

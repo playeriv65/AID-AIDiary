@@ -19,6 +19,7 @@ import 'package:aid_diary/sync/webdav_backend.dart';
 import 'package:aid_diary/widgets/progress_dialog.dart';
 import 'package:aid_diary/widgets/cloud_traffic_notice.dart';
 import 'package:aid_diary/widgets/device_name_tile.dart';
+import 'package:aid_diary/widgets/text_input_dialog.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:material_ui/material_ui.dart';
@@ -164,10 +165,16 @@ class _SyncSettingsState extends State<SyncSettings> {
   Future<void> _recoverWith(Future<void> Function(String code) open) async {
     while (true) {
       if (!mounted) return;
-      final code = await showDialog<String>(
-          context: context, builder: (_) => const _RecoveryCodeInputDialog());
-      if (code == null || !mounted) return;
       final l10n = AppLocalizations.of(context)!;
+      final code = await showTextInputDialog(context,
+          title: l10n.syncUseRecoveryCode,
+          confirm: l10n.syncUnlock,
+          label: l10n.syncRecoveryCode,
+          trim: false,
+          plain: true,
+          fieldKey: const ValueKey('sync-recovery-input'),
+          confirmKey: const ValueKey('sync-unlock-confirm'));
+      if (code == null || !mounted) return;
       try {
         await runWithProgress(context, (update) => open(code));
         return;
@@ -191,8 +198,7 @@ class _SyncSettingsState extends State<SyncSettings> {
       builder: (_) => _RecoveryCodeDialog(code));
 
   Future<bool> _confirm(String title, String description, String action,
-      {bool destructive = false}) async {
-    if (destructive) Haptics.warning();
+      {bool destructive = false}) {
     return showConfirmDialog(context,
         title: title,
         message: description,
@@ -275,17 +281,8 @@ class _SyncSettingsState extends State<SyncSettings> {
               if (target != null) return _connected(l10n, target);
               return Column(children: [
                 const DeviceNameTile(),
-                ListTile(
-                    key: const ValueKey('nearby-migration-settings'),
-                    leading: const Icon(Icons.phonelink),
-                    title: Text(l10n.nearbyTitle),
-                    onTap: () => openPlace(context, 'settings/sync/nearby')),
-                if (DeviceAuthManager.instance.registrations.isNotEmpty)
-                  ListTile(
-                      key: const ValueKey('sync-device-settings'),
-                      leading: const Icon(Icons.verified_user),
-                      title: Text(l10n.syncDevicesTitle),
-                      onTap: () => openPlace(context, 'settings/sync/devices')),
+                const _NearbyTile(),
+                const _DevicesTile(),
                 Expanded(child: _signIn(l10n)),
               ]);
             },
@@ -386,13 +383,7 @@ class _SyncSettingsState extends State<SyncSettings> {
           onTap: () => openPlace(context, 'settings/sync/copies'),
         ),
         const Divider(),
-        if (DeviceAuthManager.instance.registrations.isNotEmpty)
-          ListTile(
-            key: const ValueKey('sync-device-settings'),
-            leading: const Icon(Icons.verified_user),
-            title: Text(l10n.syncDevicesTitle),
-            onTap: () => openPlace(context, 'settings/sync/devices'),
-          ),
+        const _DevicesTile(),
         if (_service.error is GoogleSignInNeeded)
           ListTile(
             key: const ValueKey('sync-sign-in-again'),
@@ -401,21 +392,7 @@ class _SyncSettingsState extends State<SyncSettings> {
             onTap: () => _attempt(() =>
                 _service.signInAgain(doneMessage: l10n.syncGoogleSignedIn)),
           ),
-        if (locked) ...[
-          ListTile(
-            key: const ValueKey('sync-pair'),
-            leading: const Icon(Icons.devices_rounded),
-            title: Text(l10n.syncPairDevice),
-            onTap: _pair,
-          ),
-          ListTile(
-            key: const ValueKey('sync-use-recovery'),
-            leading: const Icon(Icons.key_rounded),
-            title: Text(l10n.syncUseRecoveryCode),
-            onTap: () => _recoverWith((code) =>
-                AppActions.instance.run('sync.unlock', {'recoveryCode': code})),
-          ),
-        ] else ...[
+        if (!locked)
           ListTile(
             key: const ValueKey('sync-now'),
             leading: const Icon(Icons.sync_rounded),
@@ -428,23 +405,26 @@ class _SyncSettingsState extends State<SyncSettings> {
                   : Haptics.success();
             },
           ),
+        ListTile(
+          key: const ValueKey('sync-pair'),
+          leading: const Icon(Icons.devices_rounded),
+          title: Text(l10n.syncPairDevice),
+          onTap: _pair,
+        ),
+        if (locked)
           ListTile(
-            key: const ValueKey('sync-add-device'),
-            leading: const Icon(Icons.devices_rounded),
-            title: Text(l10n.syncAddDevice),
-            onTap: _pair,
+            key: const ValueKey('sync-use-recovery'),
+            leading: const Icon(Icons.key_rounded),
+            title: Text(l10n.syncUseRecoveryCode),
+            onTap: () => _recoverWith((code) =>
+                AppActions.instance.run('sync.unlock', {'recoveryCode': code})),
           ),
-        ],
         ExpansionTile(
             key: const ValueKey('sync-more'),
             title: Text(l10n.syncMore),
             children: [
               const DeviceNameTile(),
-              ListTile(
-                  key: const ValueKey('nearby-migration-settings'),
-                  leading: const Icon(Icons.phonelink),
-                  title: Text(l10n.nearbyTitle),
-                  onTap: () => openPlace(context, 'settings/sync/nearby')),
+              const _NearbyTile(),
               ListTile(
                 title: Text(target.server?.host ?? l10n.syncGoogleDrive),
                 subtitle: Text('${target.username} · ${l10n.syncEncrypted}'),
@@ -615,7 +595,7 @@ class _NewSpaceDialog extends StatelessWidget {
     return _RecoveryChoice(
         title: l10n.syncNewSpaceTitle,
         description: l10n.syncNewSpaceDescription,
-        action: l10n.syncConnect);
+        action: l10n.syncNewSpaceTitle);
   }
 }
 
@@ -630,51 +610,6 @@ class _ChangeRecoveryDialog extends StatelessWidget {
         title: l10n.syncChangeRecoveryCode,
         description: l10n.syncChangeRecoveryDescription,
         action: l10n.syncChangeRecoveryCode);
-  }
-}
-
-/// The recovery code, or the recovery password, of a space.
-class _RecoveryCodeInputDialog extends StatefulWidget {
-  const _RecoveryCodeInputDialog();
-
-  @override
-  State<_RecoveryCodeInputDialog> createState() =>
-      _RecoveryCodeInputDialogState();
-}
-
-class _RecoveryCodeInputDialogState extends State<_RecoveryCodeInputDialog> {
-  final _code = TextEditingController();
-
-  @override
-  void dispose() {
-    _code.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    return AlertDialog(
-      title: Text(l10n.syncUseRecoveryCode),
-      content: TextField(
-        key: const ValueKey('sync-recovery-input'),
-        controller: _code,
-        autocorrect: false,
-        decoration: InputDecoration(
-            labelText: l10n.syncRecoveryCode,
-            border: const OutlineInputBorder()),
-        onSubmitted: (code) => Navigator.of(context).pop(code),
-      ),
-      actions: [
-        TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text(MaterialLocalizations.of(context).cancelButtonLabel)),
-        FilledButton(
-            key: const ValueKey('sync-unlock-confirm'),
-            onPressed: () => Navigator.of(context).pop(_code.text),
-            child: Text(l10n.syncUnlock)),
-      ],
-    );
   }
 }
 
@@ -748,4 +683,31 @@ class _RecoveryCodeDialogState extends State<_RecoveryCodeDialog> {
       ),
     );
   }
+}
+
+/// Opens nearby pairing and transfer; the same tile signed in or out.
+class _NearbyTile extends StatelessWidget {
+  const _NearbyTile();
+
+  @override
+  Widget build(BuildContext context) => ListTile(
+      key: const ValueKey('nearby-migration-settings'),
+      leading: const Icon(Icons.phonelink),
+      title: Text(AppLocalizations.of(context)!.nearbyTitle),
+      onTap: () => openPlace(context, 'settings/sync/nearby'));
+}
+
+/// Opens the authorized devices, once this device has a registration.
+class _DevicesTile extends StatelessWidget {
+  const _DevicesTile();
+
+  @override
+  Widget build(BuildContext context) =>
+      DeviceAuthManager.instance.registrations.isEmpty
+          ? const SizedBox.shrink()
+          : ListTile(
+              key: const ValueKey('sync-device-settings'),
+              leading: const Icon(Icons.verified_user),
+              title: Text(AppLocalizations.of(context)!.syncDevicesTitle),
+              onTap: () => openPlace(context, 'settings/sync/devices'));
 }

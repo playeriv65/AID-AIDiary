@@ -264,9 +264,6 @@ class AppLocalizationsTa extends AppLocalizations {
   String get titleHint => 'தலைப்பு…';
 
   @override
-  String get deleteLogTitle => 'பதிவை நீக்கு';
-
-  @override
   String get deleteLogDescription => 'இந்தப் பதிவை நீக்க வேண்டுமா?';
 
   @override
@@ -1863,9 +1860,6 @@ class AppLocalizationsTa extends AppLocalizations {
   String get channelReminders => 'நினைவூட்டல்கள்';
 
   @override
-  String get channelOnThisDay => 'இந்த நாளில்';
-
-  @override
   String get channelCoach => 'பயிற்சியாளர் கேட்கிறார்';
 
   @override
@@ -2154,9 +2148,6 @@ class AppLocalizationsTa extends AppLocalizations {
 
   @override
   String get syncUseRecoveryCode => 'மீட்புக் குறியீட்டைப் பயன்படுத்தவும்';
-
-  @override
-  String get syncAddDevice => 'சாதனத்தைச் சேர்க்கவும்';
 
   @override
   String get syncChangeRecoveryCode => 'மீட்பு குறியீட்டை மாற்றவும்';

@@ -260,9 +260,6 @@ class AppLocalizationsId extends AppLocalizations {
   String get titleHint => 'Judul…';
 
   @override
-  String get deleteLogTitle => 'Hapus Log';
-
-  @override
   String get deleteLogDescription => 'Apakah Anda ingin menghapus log ini?';
 
   @override
@@ -1837,9 +1834,6 @@ class AppLocalizationsId extends AppLocalizations {
   String get channelReminders => 'Pengingat';
 
   @override
-  String get channelOnThisDay => 'Pada hari ini';
-
-  @override
   String get channelCoach => 'Pelatih meminta';
 
   @override
@@ -2126,9 +2120,6 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get syncUseRecoveryCode => 'Gunakan kode pemulihan';
-
-  @override
-  String get syncAddDevice => 'Tambahkan perangkat';
 
   @override
   String get syncChangeRecoveryCode => 'Ubah kode pemulihan';

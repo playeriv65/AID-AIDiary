@@ -22,38 +22,18 @@ class NotificationSettings extends StatefulWidget {
   @override
   State<NotificationSettings> createState() => _NotificationSettingsState();
 
-  static Future<void> _selectTime(BuildContext context) async {
-    final TimeOfDay? picked = await showTimePicker(
-      context: context,
-      initialTime: TimeManager.scheduledReminderTime(),
-    );
+  /// The time of day kept in [hour] and [minute].
+  static TimeOfDay _timeOf(Setting<int> hour, Setting<int> minute) => TimeOfDay(
+      hour: ConfigProvider.instance.get(hour),
+      minute: ConfigProvider.instance.get(minute));
 
+  /// Picks a new time of day for [hour] and [minute].
+  static Future<void> _pickTime(
+      BuildContext context, Setting<int> hour, Setting<int> minute) async {
+    final picked = await showTimePicker(
+        context: context, initialTime: _timeOf(hour, minute));
     if (picked != null) {
-      await changeSettings({
-        Settings.scheduledReminderHour: picked.hour,
-        Settings.scheduledReminderMinute: picked.minute,
-      });
-    }
-  }
-
-  static TimeOfDay _onThisDayNotificationTime() {
-    return TimeOfDay(
-      hour: ConfigProvider.instance.get(Settings.onThisDayNotificationHour),
-      minute: ConfigProvider.instance.get(Settings.onThisDayNotificationMinute),
-    );
-  }
-
-  static Future<void> _selectOnThisDayTime(BuildContext context) async {
-    final TimeOfDay? picked = await showTimePicker(
-      context: context,
-      initialTime: _onThisDayNotificationTime(),
-    );
-
-    if (picked != null) {
-      await changeSettings({
-        Settings.onThisDayNotificationHour: picked.hour,
-        Settings.onThisDayNotificationMinute: picked.minute,
-      });
+      await changeSettings({hour: picked.hour, minute: picked.minute});
     }
   }
 
@@ -111,9 +91,10 @@ class NotificationSettings extends StatefulWidget {
                 hint: TimeManager.timeOfDayString(
                     context, TimeManager.scheduledReminderTime()),
                 icon: Icon(Icons.schedule_rounded),
-                onPressed: () async {
-                  _selectTime(context);
-                })
+                onPressed: () => _pickTime(
+                    context,
+                    Settings.scheduledReminderHour,
+                    Settings.scheduledReminderMinute))
             : SettingsIconAction(
                 title: AppLocalizations.of(context)!.settingsReminderTime,
                 hint: TimeManager.timeRangeString(
@@ -148,11 +129,14 @@ class NotificationSettings extends StatefulWidget {
         SettingsIconAction(
             title: AppLocalizations.of(context)!.settingsReminderTime,
             hint: TimeManager.timeOfDayString(
-                context, NotificationSettings._onThisDayNotificationTime()),
+                context,
+                _timeOf(Settings.onThisDayNotificationHour,
+                    Settings.onThisDayNotificationMinute)),
             icon: Icon(Icons.schedule_rounded),
-            onPressed: () async {
-              NotificationSettings._selectOnThisDayTime(context);
-            }),
+            onPressed: () => _pickTime(
+                context,
+                Settings.onThisDayNotificationHour,
+                Settings.onThisDayNotificationMinute)),
     ];
   }
 }

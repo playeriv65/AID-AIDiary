@@ -5,6 +5,7 @@
 import 'dart:ui';
 
 import 'package:aid_diary/models/image.dart';
+import 'package:aid_diary/widgets/confirm_dialog.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 
@@ -27,32 +28,14 @@ class EntryImageEditableList extends StatefulWidget {
 class _EntryImageEditableListState extends State<EntryImageEditableList> {
   late List<EntryImage> _images;
 
-  void _showDeleteImagePopup(int index) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(AppLocalizations.of(context)!.deletePhotoTitle),
-          actions: [
-            TextButton(
-              child:
-                  Text(MaterialLocalizations.of(context).deleteButtonTooltip),
-              onPressed: () {
-                _deleteImage(index);
-                Navigator.pop(context);
-              },
-            ),
-            TextButton(
-              child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
-              onPressed: () async {
-                Navigator.pop(context);
-              },
-            )
-          ],
-          content: Text(AppLocalizations.of(context)!.deletePhotoDescription),
-        );
-      },
-    );
+  Future<void> _showDeleteImagePopup(int index) async {
+    final l10n = AppLocalizations.of(context)!;
+    final confirmed = await showConfirmDialog(context,
+        title: l10n.deletePhotoTitle,
+        message: l10n.deletePhotoDescription,
+        confirm: MaterialLocalizations.of(context).deleteButtonTooltip,
+        destructive: true);
+    if (confirmed && mounted) _deleteImage(index);
   }
 
   @override
