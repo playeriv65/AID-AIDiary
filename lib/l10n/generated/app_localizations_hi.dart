@@ -2855,4 +2855,39 @@ class AppLocalizationsHi extends AppLocalizations {
   @override
   String get updateSilentHint =>
       'बैकग्राउंड में डाउनलोड करता है और ऐप छोड़ने पर इंस्टॉल करता है। पहली बार Android एक बार पूछता है।';
+
+  @override
+  String get syncConflictTitle => 'इस प्रविष्टि के दो संस्करण हैं';
+
+  @override
+  String get syncConflictMessage =>
+      'बदलाव सिंक होने से पहले दो उपकरणों ने यह प्रविष्टि बदली। चुनें कि कौन-सा संस्करण रखना है; दोनों रखने पर दो प्रविष्टियाँ बनेंगी।';
+
+  @override
+  String syncConflictCount(int index, int total) {
+    return '$total में से $index';
+  }
+
+  @override
+  String get syncConflictThisVersion => 'इस उपकरण पर';
+
+  @override
+  String get syncConflictOtherVersion => 'दूसरे उपकरण पर';
+
+  @override
+  String get syncConflictKeepThis => 'इस उपकरण वाला रखें';
+
+  @override
+  String get syncConflictKeepOther => 'दूसरा रखें';
+
+  @override
+  String get syncConflictKeepBoth => 'दोनों रखें';
+
+  @override
+  String get syncConflictLater => 'बाद में';
+
+  @override
+  String syncConflicts(int count) {
+    return 'दो संस्करणों वाली प्रविष्टियाँ: $count';
+  }
 }

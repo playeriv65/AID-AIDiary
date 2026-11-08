@@ -2862,4 +2862,39 @@ class AppLocalizationsFi extends AppLocalizations {
   @override
   String get updateSilentHint =>
       'Lataa taustalla ja asentaa, kun poistut sovelluksesta. Android kysyy kerran, ensimmäisellä kerralla.';
+
+  @override
+  String get syncConflictTitle => 'Tällä merkinnällä on kaksi versiota';
+
+  @override
+  String get syncConflictMessage =>
+      'Kaksi laitetta muutti tätä merkintää ennen kuin muutokset synkronoitiin. Valitse, kumpi versio säilytetään; jos säilytät molemmat, niistä tulee kaksi merkintää.';
+
+  @override
+  String syncConflictCount(int index, int total) {
+    return '$index/$total';
+  }
+
+  @override
+  String get syncConflictThisVersion => 'Tässä laitteessa';
+
+  @override
+  String get syncConflictOtherVersion => 'Toisessa laitteessa';
+
+  @override
+  String get syncConflictKeepThis => 'Säilytä tämän laitteen';
+
+  @override
+  String get syncConflictKeepOther => 'Säilytä toinen';
+
+  @override
+  String get syncConflictKeepBoth => 'Säilytä molemmat';
+
+  @override
+  String get syncConflictLater => 'Myöhemmin';
+
+  @override
+  String syncConflicts(int count) {
+    return 'Merkinnät, joilla on kaksi versiota: $count';
+  }
 }

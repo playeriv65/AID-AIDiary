@@ -2745,6 +2745,40 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get updateSilentHint => '在后台下载，离开应用时安装。第一次更新时安卓会询问一次。';
+
+  @override
+  String get syncConflictTitle => '这篇日记有两个版本';
+
+  @override
+  String get syncConflictMessage => '两台设备都改了这篇日记，改动还没同步。选择保留哪一个；都保留会成为两篇日记。';
+
+  @override
+  String syncConflictCount(int index, int total) {
+    return '第 $index 篇，共 $total 篇';
+  }
+
+  @override
+  String get syncConflictThisVersion => '本机的版本';
+
+  @override
+  String get syncConflictOtherVersion => '另一台设备的版本';
+
+  @override
+  String get syncConflictKeepThis => '保留本机的';
+
+  @override
+  String get syncConflictKeepOther => '保留另一台的';
+
+  @override
+  String get syncConflictKeepBoth => '都保留';
+
+  @override
+  String get syncConflictLater => '稍后';
+
+  @override
+  String syncConflicts(int count) {
+    return '有两个版本的日记：$count 篇';
+  }
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -5491,4 +5525,38 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get updateSilentHint => '在背景下載，離開應用程式時安裝。第一次更新時 Android 會詢問一次。';
+
+  @override
+  String get syncConflictTitle => '這篇日記有兩個版本';
+
+  @override
+  String get syncConflictMessage => '兩台裝置都改了這篇日記，改動還沒同步。選擇保留哪一個；都保留會成為兩篇日記。';
+
+  @override
+  String syncConflictCount(int index, int total) {
+    return '第 $index 篇，共 $total 篇';
+  }
+
+  @override
+  String get syncConflictThisVersion => '本機的版本';
+
+  @override
+  String get syncConflictOtherVersion => '另一台裝置的版本';
+
+  @override
+  String get syncConflictKeepThis => '保留本機的';
+
+  @override
+  String get syncConflictKeepOther => '保留另一台的';
+
+  @override
+  String get syncConflictKeepBoth => '都保留';
+
+  @override
+  String get syncConflictLater => '稍後';
+
+  @override
+  String syncConflicts(int count) {
+    return '有兩個版本的日記：$count 篇';
+  }
 }

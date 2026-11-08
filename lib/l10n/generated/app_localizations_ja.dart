@@ -2785,4 +2785,39 @@ class AppLocalizationsJa extends AppLocalizations {
   @override
   String get updateSilentHint =>
       'バックグラウンドでダウンロードし、アプリを離れたときにインストールします。初回だけ Android が確認します。';
+
+  @override
+  String get syncConflictTitle => 'この日記には2つのバージョンがあります';
+
+  @override
+  String get syncConflictMessage =>
+      '変更が同期される前に、2台のデバイスでこの日記が変更されました。残すバージョンを選んでください。両方残すと2つの日記になります。';
+
+  @override
+  String syncConflictCount(int index, int total) {
+    return '$index / $total';
+  }
+
+  @override
+  String get syncConflictThisVersion => 'このデバイスのバージョン';
+
+  @override
+  String get syncConflictOtherVersion => 'もう一方のデバイスのバージョン';
+
+  @override
+  String get syncConflictKeepThis => 'このデバイスの方を残す';
+
+  @override
+  String get syncConflictKeepOther => 'もう一方を残す';
+
+  @override
+  String get syncConflictKeepBoth => '両方残す';
+
+  @override
+  String get syncConflictLater => '後で';
+
+  @override
+  String syncConflicts(int count) {
+    return '2つのバージョンがある日記: $count';
+  }
 }

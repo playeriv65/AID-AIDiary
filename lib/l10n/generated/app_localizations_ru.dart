@@ -2887,4 +2887,39 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get updateSilentHint =>
       'Загружает в фоне и устанавливает, когда вы выходите из приложения. Android спросит один раз, в первый раз.';
+
+  @override
+  String get syncConflictTitle => 'У этой записи две версии';
+
+  @override
+  String get syncConflictMessage =>
+      'Два устройства изменили эту запись до того, как изменения синхронизировались. Выберите, какую версию оставить; если оставить обе, получится две записи.';
+
+  @override
+  String syncConflictCount(int index, int total) {
+    return '$index из $total';
+  }
+
+  @override
+  String get syncConflictThisVersion => 'На этом устройстве';
+
+  @override
+  String get syncConflictOtherVersion => 'На другом устройстве';
+
+  @override
+  String get syncConflictKeepThis => 'Оставить с этого устройства';
+
+  @override
+  String get syncConflictKeepOther => 'Оставить другую';
+
+  @override
+  String get syncConflictKeepBoth => 'Оставить обе';
+
+  @override
+  String get syncConflictLater => 'Позже';
+
+  @override
+  String syncConflicts(int count) {
+    return 'Записи с двумя версиями: $count';
+  }
 }

@@ -2816,4 +2816,39 @@ class AppLocalizationsMs extends AppLocalizations {
   @override
   String get updateSilentHint =>
       'Memuat turun di latar belakang dan memasang apabila anda meninggalkan apl. Android bertanya sekali, kali pertama.';
+
+  @override
+  String get syncConflictTitle => 'Catatan ini ada dua versi';
+
+  @override
+  String get syncConflictMessage =>
+      'Dua peranti mengubah catatan ini sebelum perubahannya disegerakkan. Pilih versi yang hendak disimpan; menyimpan kedua-duanya menjadikannya dua catatan.';
+
+  @override
+  String syncConflictCount(int index, int total) {
+    return '$index daripada $total';
+  }
+
+  @override
+  String get syncConflictThisVersion => 'Pada peranti ini';
+
+  @override
+  String get syncConflictOtherVersion => 'Pada peranti lain';
+
+  @override
+  String get syncConflictKeepThis => 'Simpan milik peranti ini';
+
+  @override
+  String get syncConflictKeepOther => 'Simpan yang lain';
+
+  @override
+  String get syncConflictKeepBoth => 'Simpan kedua-duanya';
+
+  @override
+  String get syncConflictLater => 'Kemudian';
+
+  @override
+  String syncConflicts(int count) {
+    return 'Catatan dengan dua versi: $count';
+  }
 }

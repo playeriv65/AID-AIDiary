@@ -864,5 +864,15 @@
   "updateNewest": "已是最新版本。",
   "updateAutoCheck": "自动检查更新",
   "updateSilent": "不询问直接安装更新",
-  "updateSilentHint": "在后台下载，离开应用时安装。第一次更新时安卓会询问一次。"
+  "updateSilentHint": "在后台下载，离开应用时安装。第一次更新时安卓会询问一次。",
+  "syncConflictTitle": "这篇日记有两个版本",
+  "syncConflictMessage": "两台设备都改了这篇日记，改动还没同步。选择保留哪一个；都保留会成为两篇日记。",
+  "syncConflictCount": "第 {index} 篇，共 {total} 篇",
+  "syncConflictThisVersion": "本机的版本",
+  "syncConflictOtherVersion": "另一台设备的版本",
+  "syncConflictKeepThis": "保留本机的",
+  "syncConflictKeepOther": "保留另一台的",
+  "syncConflictKeepBoth": "都保留",
+  "syncConflictLater": "稍后",
+  "syncConflicts": "有两个版本的日记：{count} 篇"
 }

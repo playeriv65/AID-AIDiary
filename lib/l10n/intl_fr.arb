@@ -833,5 +833,15 @@
   "updateNewest": "Vous avez la dernière version.",
   "updateAutoCheck": "Rechercher les mises à jour automatiquement",
   "updateSilent": "Installer les mises à jour sans demander",
-  "updateSilentHint": "Télécharge en arrière-plan et installe quand vous quittez l'application. Android demande une fois, la première fois."
+  "updateSilentHint": "Télécharge en arrière-plan et installe quand vous quittez l'application. Android demande une fois, la première fois.",
+  "syncConflictTitle": "Cette entrée a deux versions",
+  "syncConflictMessage": "Deux appareils ont modifié cette entrée avant que les modifications soient synchronisées. Choisissez la version à garder ; garder les deux en fait deux entrées.",
+  "syncConflictCount": "{index} sur {total}",
+  "syncConflictThisVersion": "Sur cet appareil",
+  "syncConflictOtherVersion": "Sur l'autre appareil",
+  "syncConflictKeepThis": "Garder celle de cet appareil",
+  "syncConflictKeepOther": "Garder l'autre",
+  "syncConflictKeepBoth": "Garder les deux",
+  "syncConflictLater": "Plus tard",
+  "syncConflicts": "Entrées en deux versions : {count}"
 }

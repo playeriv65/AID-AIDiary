@@ -2875,6 +2875,41 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get updateSilentHint =>
       'Transfere em segundo plano e instala quando sai da app. O Android pergunta uma vez, na primeira.';
+
+  @override
+  String get syncConflictTitle => 'Esta entrada tem duas versões';
+
+  @override
+  String get syncConflictMessage =>
+      'Dois dispositivos alteraram esta entrada antes de as alterações serem sincronizadas. Escolha que versão manter; manter as duas cria duas entradas.';
+
+  @override
+  String syncConflictCount(int index, int total) {
+    return '$index de $total';
+  }
+
+  @override
+  String get syncConflictThisVersion => 'Neste dispositivo';
+
+  @override
+  String get syncConflictOtherVersion => 'No outro dispositivo';
+
+  @override
+  String get syncConflictKeepThis => 'Manter a deste dispositivo';
+
+  @override
+  String get syncConflictKeepOther => 'Manter a outra';
+
+  @override
+  String get syncConflictKeepBoth => 'Manter as duas';
+
+  @override
+  String get syncConflictLater => 'Mais tarde';
+
+  @override
+  String syncConflicts(int count) {
+    return 'Entradas com duas versões: $count';
+  }
 }
 
 /// The translations for Portuguese, as used in Brazil (`pt_BR`).
@@ -5747,4 +5782,39 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
   @override
   String get updateSilentHint =>
       'Baixa em segundo plano e instala quando você sai do app. O Android pergunta uma vez, na primeira.';
+
+  @override
+  String get syncConflictTitle => 'Esta entrada tem duas versões';
+
+  @override
+  String get syncConflictMessage =>
+      'Dois dispositivos alteraram esta entrada antes de as alterações serem sincronizadas. Escolha qual versão manter; manter as duas cria duas entradas.';
+
+  @override
+  String syncConflictCount(int index, int total) {
+    return '$index de $total';
+  }
+
+  @override
+  String get syncConflictThisVersion => 'Neste dispositivo';
+
+  @override
+  String get syncConflictOtherVersion => 'No outro dispositivo';
+
+  @override
+  String get syncConflictKeepThis => 'Manter a deste dispositivo';
+
+  @override
+  String get syncConflictKeepOther => 'Manter a outra';
+
+  @override
+  String get syncConflictKeepBoth => 'Manter as duas';
+
+  @override
+  String get syncConflictLater => 'Mais tarde';
+
+  @override
+  String syncConflicts(int count) {
+    return 'Entradas com duas versões: $count';
+  }
 }

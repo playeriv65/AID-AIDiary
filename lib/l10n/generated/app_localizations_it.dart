@@ -2881,4 +2881,39 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get updateSilentHint =>
       'Scarica in background e installa quando esci dall\'app. Android chiede una volta, la prima.';
+
+  @override
+  String get syncConflictTitle => 'Questa voce ha due versioni';
+
+  @override
+  String get syncConflictMessage =>
+      'Due dispositivi hanno modificato questa voce prima che le modifiche venissero sincronizzate. Scegli quale versione tenere; tenendole entrambe diventano due voci.';
+
+  @override
+  String syncConflictCount(int index, int total) {
+    return '$index di $total';
+  }
+
+  @override
+  String get syncConflictThisVersion => 'Su questo dispositivo';
+
+  @override
+  String get syncConflictOtherVersion => 'Sull\'altro dispositivo';
+
+  @override
+  String get syncConflictKeepThis => 'Tieni quella di questo dispositivo';
+
+  @override
+  String get syncConflictKeepOther => 'Tieni l\'altra';
+
+  @override
+  String get syncConflictKeepBoth => 'Tienile entrambe';
+
+  @override
+  String get syncConflictLater => 'Più tardi';
+
+  @override
+  String syncConflicts(int count) {
+    return 'Voci con due versioni: $count';
+  }
 }

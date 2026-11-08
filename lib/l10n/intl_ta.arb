@@ -833,5 +833,15 @@
   "updateNewest": "இதுவே சமீபத்திய பதிப்பு.",
   "updateAutoCheck": "புதுப்பிப்புகளைத் தானாகச் சரிபார்",
   "updateSilent": "கேட்காமல் புதுப்பிப்புகளை நிறுவு",
-  "updateSilentHint": "பின்னணியில் பதிவிறக்கி, ஆப்பை விட்டு வெளியேறும்போது நிறுவும். முதல் முறை Android ஒருமுறை கேட்கும்."
+  "updateSilentHint": "பின்னணியில் பதிவிறக்கி, ஆப்பை விட்டு வெளியேறும்போது நிறுவும். முதல் முறை Android ஒருமுறை கேட்கும்.",
+  "syncConflictTitle": "இந்தப் பதிவுக்கு இரண்டு பதிப்புகள் உள்ளன",
+  "syncConflictMessage": "மாற்றங்கள் ஒத்திசைவதற்கு முன் இரண்டு சாதனங்கள் இந்தப் பதிவை மாற்றின. எந்தப் பதிப்பை வைத்திருப்பது என்று தேர்ந்தெடுக்கவும்; இரண்டையும் வைத்தால் இரண்டு பதிவுகள் ஆகும்.",
+  "syncConflictCount": "{total} இல் {index}",
+  "syncConflictThisVersion": "இந்த சாதனத்தில்",
+  "syncConflictOtherVersion": "மற்ற சாதனத்தில்",
+  "syncConflictKeepThis": "இந்த சாதனத்தினுடையதை வை",
+  "syncConflictKeepOther": "மற்றதை வை",
+  "syncConflictKeepBoth": "இரண்டையும் வை",
+  "syncConflictLater": "பிறகு",
+  "syncConflicts": "இரண்டு பதிப்புகள் உள்ள பதிவுகள்: {count}"
 }

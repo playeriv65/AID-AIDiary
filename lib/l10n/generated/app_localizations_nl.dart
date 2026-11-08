@@ -2872,4 +2872,39 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String get updateSilentHint =>
       'Downloadt op de achtergrond en installeert als je de app verlaat. Android vraagt het de eerste keer één keer.';
+
+  @override
+  String get syncConflictTitle => 'Dit item heeft twee versies';
+
+  @override
+  String get syncConflictMessage =>
+      'Twee apparaten hebben dit item gewijzigd voordat de wijzigingen gesynchroniseerd waren. Kies welke versie je bewaart; als je beide bewaart, worden het twee items.';
+
+  @override
+  String syncConflictCount(int index, int total) {
+    return '$index van $total';
+  }
+
+  @override
+  String get syncConflictThisVersion => 'Op dit apparaat';
+
+  @override
+  String get syncConflictOtherVersion => 'Op het andere apparaat';
+
+  @override
+  String get syncConflictKeepThis => 'Die van dit apparaat bewaren';
+
+  @override
+  String get syncConflictKeepOther => 'De andere bewaren';
+
+  @override
+  String get syncConflictKeepBoth => 'Beide bewaren';
+
+  @override
+  String get syncConflictLater => 'Later';
+
+  @override
+  String syncConflicts(int count) {
+    return 'Items met twee versies: $count';
+  }
 }

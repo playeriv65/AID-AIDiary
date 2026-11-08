@@ -833,5 +833,15 @@
   "updateNewest": "Dit is de nieuwste versie.",
   "updateAutoCheck": "Automatisch controleren op updates",
   "updateSilent": "Updates installeren zonder te vragen",
-  "updateSilentHint": "Downloadt op de achtergrond en installeert als je de app verlaat. Android vraagt het de eerste keer één keer."
+  "updateSilentHint": "Downloadt op de achtergrond en installeert als je de app verlaat. Android vraagt het de eerste keer één keer.",
+  "syncConflictTitle": "Dit item heeft twee versies",
+  "syncConflictMessage": "Twee apparaten hebben dit item gewijzigd voordat de wijzigingen gesynchroniseerd waren. Kies welke versie je bewaart; als je beide bewaart, worden het twee items.",
+  "syncConflictCount": "{index} van {total}",
+  "syncConflictThisVersion": "Op dit apparaat",
+  "syncConflictOtherVersion": "Op het andere apparaat",
+  "syncConflictKeepThis": "Die van dit apparaat bewaren",
+  "syncConflictKeepOther": "De andere bewaren",
+  "syncConflictKeepBoth": "Beide bewaren",
+  "syncConflictLater": "Later",
+  "syncConflicts": "Items met twee versies: {count}"
 }

@@ -833,5 +833,15 @@
   "updateNewest": "Tai naujausia versija.",
   "updateAutoCheck": "Tikrinti atnaujinimus automatiškai",
   "updateSilent": "Diegti atnaujinimus neklausiant",
-  "updateSilentHint": "Atsisiunčia fone ir įdiegia, kai išeinate iš programos. Android paklausia vieną kartą, pirmą kartą."
+  "updateSilentHint": "Atsisiunčia fone ir įdiegia, kai išeinate iš programos. Android paklausia vieną kartą, pirmą kartą.",
+  "syncConflictTitle": "Šis įrašas turi dvi versijas",
+  "syncConflictMessage": "Du prietaisai pakeitė šį įrašą, kol pakeitimai dar nebuvo sinchronizuoti. Pasirinkite, kurią versiją palikti; palikus abi, bus du įrašai.",
+  "syncConflictCount": "{index} iš {total}",
+  "syncConflictThisVersion": "Šiame prietaise",
+  "syncConflictOtherVersion": "Kitame prietaise",
+  "syncConflictKeepThis": "Palikti šio prietaiso",
+  "syncConflictKeepOther": "Palikti kitą",
+  "syncConflictKeepBoth": "Palikti abi",
+  "syncConflictLater": "Vėliau",
+  "syncConflicts": "Įrašai su dviem versijomis: {count}"
 }

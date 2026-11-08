@@ -833,5 +833,15 @@
   "updateNewest": "هذا هو أحدث إصدار.",
   "updateAutoCheck": "التحقق من التحديثات تلقائيًا",
   "updateSilent": "تثبيت التحديثات دون سؤال",
-  "updateSilentHint": "ينزّل في الخلفية ويثبّت عند مغادرتك التطبيق. يسأل أندرويد مرة واحدة في المرة الأولى."
+  "updateSilentHint": "ينزّل في الخلفية ويثبّت عند مغادرتك التطبيق. يسأل أندرويد مرة واحدة في المرة الأولى.",
+  "syncConflictTitle": "لهذا الإدخال نسختان",
+  "syncConflictMessage": "غيّر جهازان هذا الإدخال قبل مزامنة التغييرات. اختر النسخة التي تريد الاحتفاظ بها؛ الاحتفاظ بالاثنتين ينشئ إدخالين.",
+  "syncConflictCount": "{index} من {total}",
+  "syncConflictThisVersion": "على هذا الجهاز",
+  "syncConflictOtherVersion": "على الجهاز الآخر",
+  "syncConflictKeepThis": "الاحتفاظ بنسخة هذا الجهاز",
+  "syncConflictKeepOther": "الاحتفاظ بالأخرى",
+  "syncConflictKeepBoth": "الاحتفاظ بالاثنتين",
+  "syncConflictLater": "لاحقًا",
+  "syncConflicts": "إدخالات لها نسختان: {count}"
 }

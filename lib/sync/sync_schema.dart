@@ -14,14 +14,16 @@ import 'package:sqflite/sqflite.dart';
 /// What syncs as one item. An entry carries its photos, tag values and
 /// citations, and a template its tags, so each item is whole on its own. A
 /// kept passage points at its entry, so it comes after entries. A day's
-/// weather stands alone.
+/// weather stands alone. A conflict holds two versions of one entry until
+/// the user picks (`sync_conflicts.dart`).
 enum SyncKind {
   category(tagCategoriesTable),
   tag(tagsTable),
   template(templatesTable),
   entry(entriesTable),
   passage(passagesTable),
-  weather(dayWeatherTable);
+  weather(dayWeatherTable),
+  conflict(syncConflictsTable);
 
   const SyncKind(this.table);
 
@@ -43,8 +45,15 @@ const String syncChangesTable = 'sync_changes';
 const String syncSeenTable = 'sync_seen';
 
 /// When each item last changed, as of the version this device sent or
-/// took in; deleted items stay, so a deletion outlives the packs it came in.
+/// took in, and the device that made that version; deleted items stay, so a
+/// deletion outlives the packs it came in. This version is the base a local
+/// edit starts from: a remote version newer than it while the item has a
+/// local edit means both sides changed it.
 const String syncItemsTable = 'sync_items';
+
+/// Entries edited on two devices before either edit synced, with both
+/// versions, until the user picks one (`sync_conflicts.dart`).
+const String syncConflictsTable = 'sync_conflicts';
 
 /// One row; while its flag is set, writes are not recorded as changes. Set
 /// while remote items are written into the database.
@@ -180,6 +189,25 @@ CREATE TABLE $syncItemsTable (
   modified INTEGER NOT NULL,
   PRIMARY KEY (kind, $syncIdColumn)
 )''');
+
+/// Database version 19: the device that made each known version, and the
+/// conflicts table, an item kind of its own. `held_by` is the device id
+/// that found the conflict and holds its own version back; `held` and
+/// `synced` are that version and the one the space has, as sync records in
+/// JSON.
+Future<void> addConflictSchema(DatabaseExecutor db) async {
+  await db.execute('ALTER TABLE $syncItemsTable ADD COLUMN device TEXT');
+  await db.execute('''
+CREATE TABLE $syncConflictsTable (
+  id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  $syncIdColumn TEXT,
+  entry TEXT NOT NULL,
+  held_by TEXT NOT NULL,
+  held TEXT NOT NULL,
+  synced TEXT NOT NULL
+)''');
+  await addItemTableSync(db, SyncKind.conflict);
+}
 
 Future<void> _changeTriggers(DatabaseExecutor db, String table, SyncKind kind,
     {required String Function(String row) idOf}) async {

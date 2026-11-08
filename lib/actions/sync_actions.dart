@@ -33,7 +33,6 @@ Map<String, Object?> syncStatus() {
       'lastReport': {
         'received': report.received,
         'sent': report.sent,
-        'keptConflicts': report.keptConflicts,
         'pendingMedia': report.pendingMedia,
         'mediaCompleted': report.mediaCompleted,
         'mediaFailures': report.mediaFailures,
@@ -46,6 +45,7 @@ Map<String, Object?> syncStatus() {
         'total': progress.total,
       },
     if (_sync.error case final error?) 'error': '$error',
+    if (_sync.pendingConflicts > 0) 'conflicts': _sync.pendingConflicts,
     'unsyncedEntries': _sync.unsyncedEntryIds.length,
     // The ids the journal marks as waiting to go up.
     'unsyncedIds': _sync.unsyncedEntryIds.toList()..sort(),

@@ -9,6 +9,7 @@ import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/models/image.dart';
 import 'package:aid_diary/sync/identity.dart';
 import 'package:aid_diary/sync/sync_backend.dart';
+import 'package:aid_diary/sync/sync_conflicts.dart';
 import 'package:aid_diary/sync/sync_crypto.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -129,15 +130,20 @@ void liveSyncScenarios(SyncBackend Function() backend, {Object? skip}) {
     await laptop.sync(backend(), cipher: cipher);
     expect(await laptop.texts(), contains('plan'));
 
-    // Both change it; the later edit wins and the other is kept.
+    // Both change it: each keeps its own until one picks.
     await laptop.edit('plan', 'plan from the laptop');
-    await Future<void>.delayed(const Duration(milliseconds: 20));
     await phone.edit('plan', 'plan from the phone');
     await phone.sync(cloud, cipher: cipher);
-    final report = await laptop.sync(backend(), cipher: cipher);
-    expect(report.keptConflicts, 1);
+    await laptop.sync(backend(), cipher: cipher);
+    await phone.sync(cloud, cipher: cipher);
+    expect(await laptop.texts(), contains('plan from the laptop'));
+    expect(await laptop.conflicts(), hasLength(1));
+    expect(await phone.conflicts(), hasLength(1));
+    await laptop.resolve('plan from the laptop', ConflictKeep.other);
+    await laptop.sync(backend(), cipher: cipher);
+    await phone.sync(cloud, cipher: cipher);
     expect(await laptop.texts(), contains('plan from the phone'));
-    expect(await laptop.texts(deleted: true), ['plan from the laptop']);
+    expect(await phone.conflicts(), isEmpty);
 
     await phone.db.delete(entriesTable,
         where: '${EntryFields.text} = ?', whereArgs: ['plan from the phone']);

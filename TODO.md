@@ -198,9 +198,6 @@ Remaining work:
   broader NAT/carrier matrix remain unverified. The external IPv6/TCP
   probe timed out, so local global-address success must not be presented as
   cross-WAN success.
-- Conflict handling beyond newer-wins with the losing local entry kept in
-  Recently deleted. Field merging and a hybrid logical clock remain open
-  product decisions.
 
 ## Android package name (owner to do)
 The Android package `dev.aid.diary` reads as the domain `aid.dev`, which

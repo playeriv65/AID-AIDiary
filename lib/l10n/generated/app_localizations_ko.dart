@@ -2785,4 +2785,39 @@ class AppLocalizationsKo extends AppLocalizations {
   @override
   String get updateSilentHint =>
       '백그라운드에서 다운로드하고 앱을 떠날 때 설치합니다. 처음 한 번은 Android가 확인을 요청합니다.';
+
+  @override
+  String get syncConflictTitle => '이 일기에는 두 가지 버전이 있습니다';
+
+  @override
+  String get syncConflictMessage =>
+      '변경 사항이 동기화되기 전에 두 장치에서 이 일기를 수정했습니다. 남길 버전을 선택하세요. 둘 다 남기면 일기 두 개가 됩니다.';
+
+  @override
+  String syncConflictCount(int index, int total) {
+    return '$index/$total';
+  }
+
+  @override
+  String get syncConflictThisVersion => '이 장치의 버전';
+
+  @override
+  String get syncConflictOtherVersion => '다른 장치의 버전';
+
+  @override
+  String get syncConflictKeepThis => '이 장치의 것 유지';
+
+  @override
+  String get syncConflictKeepOther => '다른 것 유지';
+
+  @override
+  String get syncConflictKeepBoth => '둘 다 유지';
+
+  @override
+  String get syncConflictLater => '나중에';
+
+  @override
+  String syncConflicts(int count) {
+    return '두 버전이 있는 일기: $count';
+  }
 }

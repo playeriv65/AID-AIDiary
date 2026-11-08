@@ -833,5 +833,15 @@
   "updateNewest": "Това е най-новата версия.",
   "updateAutoCheck": "Автоматична проверка за актуализации",
   "updateSilent": "Инсталиране на актуализации без питане",
-  "updateSilentHint": "Изтегля във фонов режим и инсталира, когато излезете от приложението. Android пита веднъж, първия път."
+  "updateSilentHint": "Изтегля във фонов режим и инсталира, когато излезете от приложението. Android пита веднъж, първия път.",
+  "syncConflictTitle": "Този запис има две версии",
+  "syncConflictMessage": "Две устройства са променили този запис, преди промените да се синхронизират. Изберете коя версия да запазите; ако запазите и двете, ще станат два записа.",
+  "syncConflictCount": "{index} от {total}",
+  "syncConflictThisVersion": "На това устройство",
+  "syncConflictOtherVersion": "На другото устройство",
+  "syncConflictKeepThis": "Запази от това устройство",
+  "syncConflictKeepOther": "Запази другата",
+  "syncConflictKeepBoth": "Запази и двете",
+  "syncConflictLater": "По-късно",
+  "syncConflicts": "Записи с две версии: {count}"
 }

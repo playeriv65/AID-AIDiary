@@ -6,7 +6,6 @@
 library;
 
 import 'dart:convert';
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:aid_diary/database/app_database.dart';
@@ -94,7 +93,8 @@ void main() {
             backend: cloud,
             photos:
                 FileStorePhotos(await ImageStorage.instance.internalStore()),
-            limits: testLimits)
+            limits: testLimits,
+            device: device.device)
         .sync();
 
     final written = DateTime(2025, 8, 15, 21, 30);
@@ -139,13 +139,14 @@ void main() {
       await later();
       await on(laptop, () => addImportedEntries(exportFile(), (_) {}));
 
-      // The laptop's newer import goes up first; the phone's own copy loses
-      // to it without anything to keep.
+      // The laptop's import goes up first; the phone's own copy says the
+      // same, so there is nothing to choose.
       await sync(laptop);
-      final report = await sync(phone);
+      await sync(phone);
       await sync(laptop);
 
-      expect(report.keptConflicts, 0);
+      expect(await phone.conflicts(), isEmpty);
+      expect(await laptop.conflicts(), isEmpty);
       await expectOneCopy(phone);
       await expectOneCopy(laptop);
       for (final table in [entriesTable, imagesTable, tagsTable]) {
@@ -267,38 +268,6 @@ void main() {
       await expectBoth(['plan from the phone'], []);
     });
 
-    test('a later edit made by the device that stayed wins', () async {
-      await forgetSpace(laptop.db);
-      await later();
-      await laptop.edit('plan', 'plan from the laptop');
-      await later();
-      await phone.edit('plan', 'plan from the phone');
-      await phone.sync(cloud);
-
-      await join(laptop);
-      await laptop.sync(cloud);
-      await phone.sync(cloud);
-
-      await expectBoth(
-          ['kept', 'plan from the phone'], ['plan from the laptop']);
-    });
-
-    test('a later edit made by the joining device wins', () async {
-      await forgetSpace(laptop.db);
-      await later();
-      await phone.edit('plan', 'plan from the phone');
-      await later();
-      await laptop.edit('plan', 'plan from the laptop');
-
-      await join(laptop);
-      await laptop.sync(cloud);
-      await phone.sync(cloud);
-      await laptop.sync(cloud);
-
-      await expectBoth(
-          ['kept', 'plan from the laptop'], ['plan from the phone']);
-    });
-
     test('sends what was written while apart', () async {
       await forgetSpace(laptop.db);
       await laptop.write('from the laptop meanwhile');
@@ -342,37 +311,6 @@ void main() {
       expect(report.sent, 0);
       await expectBoth(['kept', 'plan from the phone'], []);
     });
-  });
-
-  test('a sync that fails after keeping a conflict copy keeps it once',
-      () async {
-    await phone.write('plan');
-    await phone.sync(cloud);
-    await laptop.sync(cloud);
-    await laptop.edit('plan', 'plan from the laptop');
-    await later();
-    await phone.edit('plan', 'plan from the phone');
-    await phone.sync(cloud);
-
-    // A pack the laptop cannot write sits beside the phone's edit.
-    final broken = SpaceLayout.pack('${SpaceLayout.packPrefix}broken');
-    await cloud.write(
-        broken,
-        Uint8List.fromList(gzip.encode(utf8.encode(jsonEncode({
-          'records': [
-            {'kind': 'entry', 'id': 'broken', 'modified': 1, 'data': {}},
-          ],
-        })))));
-    for (var attempt = 0; attempt < 2; attempt++) {
-      await expectLater(laptop.sync(cloud), throwsA(anything));
-    }
-    await cloud.delete(broken);
-    await laptop.sync(cloud);
-
-    expect(await laptop.texts(), ['plan from the phone']);
-    expect(await laptop.texts(deleted: true), ['plan from the laptop']);
-    await phone.sync(cloud);
-    expect(await phone.texts(deleted: true), ['plan from the laptop']);
   });
 
   group('entries imported before version 18', () {

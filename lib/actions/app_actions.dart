@@ -20,6 +20,7 @@ import 'package:aid_diary/actions/screen_actions.dart';
 import 'package:aid_diary/actions/settings_actions.dart';
 import 'package:aid_diary/actions/sql_actions.dart';
 import 'package:aid_diary/actions/sync_actions.dart';
+import 'package:aid_diary/actions/sync_conflict_actions.dart';
 import 'package:aid_diary/actions/tag_actions.dart';
 import 'package:aid_diary/actions/template_actions.dart';
 import 'package:aid_diary/actions/update_actions.dart';
@@ -52,6 +53,7 @@ class AppActions {
     ...photoSuggestionActions,
     ...dataActions,
     ...syncActions,
+    ...syncConflictActions,
     ...deviceSyncActions,
     ...screenActions,
     ...perfActions,

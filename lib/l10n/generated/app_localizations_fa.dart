@@ -2847,4 +2847,39 @@ class AppLocalizationsFa extends AppLocalizations {
   @override
   String get updateSilentHint =>
       'در پس‌زمینه دانلود و هنگام خروج از برنامه نصب می‌شود. اندروید بار اول یک بار می‌پرسد.';
+
+  @override
+  String get syncConflictTitle => 'این یادداشت دو نسخه دارد';
+
+  @override
+  String get syncConflictMessage =>
+      'دو دستگاه این یادداشت را پیش از همگام‌سازی تغییرات ویرایش کرده‌اند. انتخاب کنید کدام نسخه بماند؛ اگر هر دو را نگه دارید، دو یادداشت می‌شوند.';
+
+  @override
+  String syncConflictCount(int index, int total) {
+    return '$index از $total';
+  }
+
+  @override
+  String get syncConflictThisVersion => 'در این دستگاه';
+
+  @override
+  String get syncConflictOtherVersion => 'در دستگاه دیگر';
+
+  @override
+  String get syncConflictKeepThis => 'نگه‌داشتن نسخهٔ این دستگاه';
+
+  @override
+  String get syncConflictKeepOther => 'نگه‌داشتن دیگری';
+
+  @override
+  String get syncConflictKeepBoth => 'نگه‌داشتن هر دو';
+
+  @override
+  String get syncConflictLater => 'بعداً';
+
+  @override
+  String syncConflicts(int count) {
+    return 'یادداشت‌های دارای دو نسخه: $count';
+  }
 }

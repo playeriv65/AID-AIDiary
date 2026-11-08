@@ -35,10 +35,17 @@ String tagSyncId(String name) => _derived(['tag', _nameKey(name)]);
 /// A tag category named [name], like [tagSyncId].
 String categorySyncId(String name) => _derived(['category', _nameKey(name)]);
 
-/// The copy kept of the local version of entry [entrySyncId], changed at
-/// [changedAt], that lost to a newer one. A sync that keeps it again after
-/// an interruption writes the same copy rather than a second one.
-String conflictCopySyncId(String entrySyncId, int changedAt) =>
-    _derived(['conflict', entrySyncId, changedAt]);
+/// The conflict between the version of entry [entrySyncId] a device held
+/// back, changed at [heldModified], and the space's, changed at
+/// [syncedModified]. Finding the same pair again keeps one conflict.
+String conflictSyncId(
+        String entrySyncId, int heldModified, int syncedModified) =>
+    _derived(['conflict', entrySyncId, heldModified, syncedModified]);
+
+/// The second entry made when both versions of a conflict are kept: the
+/// held-back version of entry [entrySyncId], changed at [heldModified].
+/// Keeping both on two devices makes one second entry.
+String conflictBothSyncId(String entrySyncId, int heldModified) =>
+    _derived(['both', entrySyncId, heldModified]);
 
 String _nameKey(String name) => name.trim().toLowerCase();

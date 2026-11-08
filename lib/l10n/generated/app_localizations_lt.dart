@@ -2885,4 +2885,39 @@ class AppLocalizationsLt extends AppLocalizations {
   @override
   String get updateSilentHint =>
       'Atsisiunčia fone ir įdiegia, kai išeinate iš programos. Android paklausia vieną kartą, pirmą kartą.';
+
+  @override
+  String get syncConflictTitle => 'Šis įrašas turi dvi versijas';
+
+  @override
+  String get syncConflictMessage =>
+      'Du prietaisai pakeitė šį įrašą, kol pakeitimai dar nebuvo sinchronizuoti. Pasirinkite, kurią versiją palikti; palikus abi, bus du įrašai.';
+
+  @override
+  String syncConflictCount(int index, int total) {
+    return '$index iš $total';
+  }
+
+  @override
+  String get syncConflictThisVersion => 'Šiame prietaise';
+
+  @override
+  String get syncConflictOtherVersion => 'Kitame prietaise';
+
+  @override
+  String get syncConflictKeepThis => 'Palikti šio prietaiso';
+
+  @override
+  String get syncConflictKeepOther => 'Palikti kitą';
+
+  @override
+  String get syncConflictKeepBoth => 'Palikti abi';
+
+  @override
+  String get syncConflictLater => 'Vėliau';
+
+  @override
+  String syncConflicts(int count) {
+    return 'Įrašai su dviem versijomis: $count';
+  }
 }

@@ -278,6 +278,19 @@ current implementation. Decided along the way:
   the AID server uses device keys and short-lived tokens after initial
   account bootstrap.
 
+### Sync conflicts
+
+- 2026-11-08 (owner, replaces newer-wins with the loser in Recently
+  deleted): the diary is one person's, not a multi-user database, so sync
+  is not engineered for races or concurrent writers. A real conflict is
+  rare: one entry edited on two devices with neither edit synced before the
+  other was made. Then no winner is picked silently. A dialog shows both
+  versions (device, time, text) and the user keeps this device's, the other
+  device's, or both as two entries; "later" is allowed and the conflict
+  waits, on every device, until it is settled on one. When only one side
+  changed an entry, the newer version is taken in without asking, as
+  before. How it works: [Architecture](ARCHITECTURE.md#conflicts).
+
 ### Automatic paths and bounded media (2026-10-22)
 
 - Daily sync is best effort: discover, probe paths together, start work on
@@ -403,9 +416,6 @@ implementation boundaries and verification results belong in
 - Whether the default sync service is for users mainly in China or
   abroad: it decides where the AID server runs and how much Google Drive
   matters.
-- Conflicts: today the newer edit of an entry wins and the other goes to
-  Recently deleted. Merging by field with a hybrid logical clock is
-  proposed, not decided.
 - Whether `ui.navigate to=entry` should follow the layout as a tap does
   (detail pane on wide windows) instead of always pushing a page.
 - How the in-app agent reaches the app: one generic command tool over the

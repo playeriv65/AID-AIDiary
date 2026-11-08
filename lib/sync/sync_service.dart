@@ -27,6 +27,7 @@ import 'package:aid_diary/sync/device_auth.dart';
 import 'package:aid_diary/sync/nearby_receipt.dart';
 import 'package:aid_diary/sync/pairing.dart';
 import 'package:aid_diary/sync/sync_backend.dart';
+import 'package:aid_diary/sync/sync_conflicts.dart';
 import 'package:aid_diary/sync/sync_crypto.dart';
 import 'package:aid_diary/sync/sync_diagnostics.dart';
 import 'package:aid_diary/sync/sync_engine.dart';
@@ -267,6 +268,40 @@ class SyncService with ChangeNotifier {
   /// marked, and a change waiting a few seconds for its turn is not either.
   Set<int> unsyncedEntryIds = const {};
 
+  /// How many entries have two versions to choose from
+  /// (`sync_conflicts.dart`), as of the last sync or choice.
+  int pendingConflicts = 0;
+
+  Future<SyncDevice> _device() async =>
+      (id: await LocalDevice.id(), name: LocalDevice.name);
+
+  /// The conflicts of this device's entries, oldest first.
+  Future<List<SyncConflict>> conflicts() async {
+    final db = AppDatabase.instance.database;
+    if (db == null) return const [];
+    final found = (await storedConflicts(db)).isEmpty
+        ? const <SyncConflict>[]
+        : await listConflicts(db, await _device());
+    if (found.length != pendingConflicts) {
+      pendingConflicts = found.length;
+      notifyListeners();
+    }
+    return found;
+  }
+
+  /// Keeps [keep] of the conflict of the entry with local id [entry], then
+  /// syncs so other devices take the choice in.
+  Future<void> resolveConflict(int entry, ConflictKeep keep) async {
+    await resolveEntryConflict(AppDatabase.instance.database!,
+        photos: const ImageStoragePhotos(),
+        device: await _device(),
+        entry: entry,
+        keep: keep);
+    await _reload();
+    await conflicts();
+    syncSoon();
+  }
+
   Future<void>? _running;
   bool _again = false;
   bool _stopping = false;
@@ -432,6 +467,7 @@ class SyncService with ChangeNotifier {
   /// and every so often.
   void start() {
     unawaited(NearbyReceiptQueue.instance.flush());
+    unawaited(conflicts());
     for (final provider in <ChangeNotifier>[
       EntriesProvider.instance,
       TagsProvider.instance,
@@ -607,6 +643,7 @@ class SyncService with ChangeNotifier {
           db: AppDatabase.instance.database!,
           backend: routed,
           photos: const ImageStoragePhotos(),
+          device: await _device(),
           limits: SyncLimits(
               packBytes: AppConfig.instance.syncPackBytes,
               compactAfter: AppConfig.instance.syncCompactAfterPacks,
@@ -654,6 +691,7 @@ class SyncService with ChangeNotifier {
       progress = null;
       lastReport = report;
       if (report.changedLocally) await _reload();
+      await conflicts();
       // Copy confirmations are optional metadata, never a sync acknowledgement.
       try {
         if (await _copyStore() case (:final store, :final space)) {

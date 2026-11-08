@@ -2848,4 +2848,39 @@ class AppLocalizationsDa extends AppLocalizations {
   @override
   String get updateSilentHint =>
       'Downloader i baggrunden og installerer, når du forlader appen. Android spørger én gang, første gang.';
+
+  @override
+  String get syncConflictTitle => 'Dette indlæg har to versioner';
+
+  @override
+  String get syncConflictMessage =>
+      'To enheder ændrede dette indlæg, før ændringerne blev synkroniseret. Vælg, hvilken version du vil beholde; beholder du begge, bliver det to indlæg.';
+
+  @override
+  String syncConflictCount(int index, int total) {
+    return '$index af $total';
+  }
+
+  @override
+  String get syncConflictThisVersion => 'På denne enhed';
+
+  @override
+  String get syncConflictOtherVersion => 'På den anden enhed';
+
+  @override
+  String get syncConflictKeepThis => 'Behold denne enheds';
+
+  @override
+  String get syncConflictKeepOther => 'Behold den anden';
+
+  @override
+  String get syncConflictKeepBoth => 'Behold begge';
+
+  @override
+  String get syncConflictLater => 'Senere';
+
+  @override
+  String syncConflicts(int count) {
+    return 'Indlæg med to versioner: $count';
+  }
 }

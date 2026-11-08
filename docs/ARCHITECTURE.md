@@ -112,6 +112,7 @@ Consequences for structure:
 | Asking yes or no | `showConfirmDialog` / `showDeleteConfirmDialog` (`widgets/confirm_dialog.dart`) | `destructive`, `content`, `confirmKey` |
 | Asking for a piece of text (device name, place name, recovery code, authorization request, nearby invitation) | `showTextInputDialog` (`widgets/text_input_dialog.dart`) | `hint`/`label`, `validate`, `maxLength`, `maxLines`, `trim`, `plain`, `scan` |
 | Picking one of a few options (attachment kind, block to insert, share format, deleted-entry action) | `showChoiceSheet` (`widgets/choice_sheet.dart`) | `title` |
+| Choosing between two versions of a synced entry (after a sync, on start, from Settings > Sync) | `resolveSyncConflicts`, one `showSyncConflictDialog` per conflict (`widgets/sync_conflict_dialog.dart`) | `skip` |
 | Deleting an entry (reader and editor) | `deleteEntryAfterAsking` (`widgets/hidden_diary_scope.dart`) | |
 | Showing a QR code for another device | `QrCodeBox` (`widgets/qr_code_box.dart`) | |
 | Scanning a sync QR code (pairing, nearby, device authorization) | `SyncScanNavigation.open` (`routing/sync_scan_navigation.dart`) | `kind` |
@@ -430,7 +431,8 @@ The data layer separates these owners:
 | `relay_packets.dart` | Ordered, bounded reassembly and fragmentation sized for the server's JSON frame cap |
 | `peer_object_link.dart` / `sync_object_paths.dart` | Session-bound encrypted object RPC shared by ICE and relay, replay/order checks, safe paths and object limits |
 | `routed_backend.dart` | One metadata backend across authenticated peers, shared storage and a persistent ciphertext outbox; require remote acknowledgements |
-| `sync_engine.dart` | Merge versioned packs and snapshots first, queue missing attachments and retain conflict copies |
+| `sync_engine.dart` | Merge versioned packs and snapshots first, queue missing attachments and hold back entries edited on both sides |
+| `sync_conflicts.dart` | Conflicts: both versions of an entry edited on two devices, listed and resolved by `sync.conflicts` and `sync.resolve_conflict` |
 | `media_transfer.dart` | Encrypted immutable chunks/manifests, integrity checks, per-route allowances and resumable transfers |
 | `local_device.dart`, `copy_status.dart` | Device-local editable names/stable IDs; encrypted last-confirmed inventories bound to a space and device path, with dataset revisions and media presence |
 | `sync_schema.dart` | SQLite change/version state, media task queue and ciphertext vault |
@@ -514,12 +516,11 @@ item to send, but being marked is no edit: each item keeps its own time. An
 edit not sent yet keeps the time it was made; an item sent or taken in before
 keeps that version's time, and an erased one goes out as a deletion again; an
 item of unknown age gets 0, so the space's version wins over it. The usual
-rule then settles each item. The later change wins, so an edit another device
-made while this one was away is taken in, and an erasure on either side
-stays. A local edit not sent yet that loses is kept in Recently deleted; a
-version this device already had and did not edit is replaced without a copy.
-Where the space already has the version, nothing is sent or written, and
-items only this device has are sent.
+rules ([Conflicts](#conflicts)) then settle each item: an edit another device
+made while this one was away is taken in, a version this device already had
+and did not edit is replaced, and an entry edited on both sides while apart
+becomes a conflict. Where the space already has the version, nothing is sent
+or written, and items only this device has are sent.
 
 What a person writes on one device gets a random id. What two devices can
 make on their own from the same input gets an id derived from that input
@@ -531,17 +532,19 @@ make on their own from the same input gets an id derived from that input
 | Its attachments | The entry's id and their order |
 | Tag, tag category | The name, ignoring case; a second one of that name on one device gets a random id |
 | Day weather | Day, place and source |
-| Conflict copy | The entry and the local version that lost, so a retried sync keeps one copy |
+| Conflict | The entry and the times of its two versions, so finding the same pair again keeps one conflict |
+| Second entry when both versions of a conflict are kept | The entry and the time of the held-back version, so keeping both on two devices makes one second entry |
 | Favorite tag, default templates | Fixed built-in ids (`sync/builtin_ids.dart`) |
 
 An import skips an entry whose id the diary already has, also hidden, in
 Recently deleted or received from a device that imported it first. A changed
 source revision is a separate entry. When two devices made the same entry,
-the usual rule settles its content: the later change wins, and a local
-version that differs and was not sent yet is kept in Recently deleted; when
-each was last saved is no difference. Within one batch of received records,
-deletions apply after the rest, so an attachment or kept passage that moved
-to another item moves before its old item goes.
+the usual rules settle its content: the same content is one entry whenever
+each was saved, and different content not sent yet is a conflict. Within one
+batch of received records, deletions apply after the rest, so an attachment
+or kept passage that moved to another item moves before its old item goes;
+an attachment that moves to an entry written after the one it left keeps its
+file too.
 
 Database version 18 gives entries imported before it their derived ids. Unlike
 other upgrades it records the change for sync (the old id as a deletion, the
@@ -551,6 +554,62 @@ and synced. A copy whose derived id already arrived from another device goes
 to Recently deleted. Tags of the same name made before version 18 stay
 separate. Nearby transfer still requires an empty diary on the receiving
 device.
+
+### Conflicts
+
+The owner's rule (2026-11-08, [Decisions](DECISIONS.md#sync-conflicts)): a
+diary is one person's, so a real conflict is rare, and when it happens the
+user picks; sync never picks a winner silently.
+
+**Base.** Each item's row in `sync_items` is the version this device last
+sent or took in (its time in `modified`, the device that made it in
+`device`), and a row in `sync_changes` is an edit here not sent yet. That
+version is the base the edit starts from; nothing more is needed, because
+one device's edits to an item reach the space as one version per sync and a
+device takes in what the space has before it sends. When a newer version of
+an item arrives:
+
+- with no edit here since the base (none, being marked on joining a space,
+  or this device's own version coming back), the newer version is taken in
+  without asking, as for every kind of item;
+- with an edit here as well, both sides changed it. For any kind but an
+  entry, and for an entry when either side erased it, the later change
+  stays. Two entry versions that say the same (`_sameEntry`: attachments by
+  id, when each was saved aside) are one; otherwise it is a conflict.
+
+**Holding.** The device that finds a conflict keeps its entry as it is and
+holds its edit back: `_push` skips the entry, and later edits there go into
+the conflict instead. It records a conflict (`sync_conflicts`, database
+version 19), an item kind of its own: the entry's id, the device id that
+holds it (`held_by`) and both versions in full as sync records, attachment
+references included. Every other device keeps the space's version and
+receives the conflict like any item, so each device shows the same
+conflict: "this device's version" is what its own entry shows, the other is
+the stored one. Its id is derived from the entry and the two versions'
+times, so finding the same pair again keeps one conflict. A newer space
+version arriving while the edit is held updates the conflict; an erasure of
+the entry on another device ends it. The held-back attachments are queued to
+send so whichever device picks them can fetch them.
+
+**Resolving.** `sync.conflicts` lists them and `sync.resolve_conflict`
+(`entry`, `keep=this|other|both`) settles one; the GUI's dialog runs the same
+actions. Each choice writes a new change newer than both versions and removes
+the conflict, which removes it on every device; the holding device then lets
+its held edit go and takes in the choice.
+
+- `this`: this device's version, written again;
+- `other`: the other version, written into the entry; attachments it has
+  that this device lacks are fetched by the next sync;
+- `both`: the entry gets the space's version and a second entry, with an id
+  derived from the entry and the held version's time, gets the held-back
+  version with its attachments. On every device but the holder this keeps
+  the local entry as it is; on the holder its text moves to the second
+  entry. Choosing both on two devices therefore writes the same two entries.
+
+The dialog (`widgets/sync_conflict_dialog.dart`) opens when the app starts
+and after a sync, one conflict after another; "later" puts the rest off until
+the app starts again or a new conflict arrives, and Settings > Sync lists the
+count and opens it again.
 
 ## Citations, comments and kept passages
 

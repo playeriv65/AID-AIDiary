@@ -833,5 +833,15 @@
   "updateNewest": "Це найновіша версія.",
   "updateAutoCheck": "Перевіряти оновлення автоматично",
   "updateSilent": "Встановлювати оновлення без запитань",
-  "updateSilentHint": "Завантажує у фоні та встановлює, коли ви виходите із застосунку. Android запитає один раз, уперше."
+  "updateSilentHint": "Завантажує у фоні та встановлює, коли ви виходите із застосунку. Android запитає один раз, уперше.",
+  "syncConflictTitle": "Цей запис має дві версії",
+  "syncConflictMessage": "Два пристрої змінили цей запис до того, як зміни синхронізувалися. Виберіть, яку версію залишити; якщо залишити обидві, буде два записи.",
+  "syncConflictCount": "{index} з {total}",
+  "syncConflictThisVersion": "На цьому пристрої",
+  "syncConflictOtherVersion": "На іншому пристрої",
+  "syncConflictKeepThis": "Залишити з цього пристрою",
+  "syncConflictKeepOther": "Залишити іншу",
+  "syncConflictKeepBoth": "Залишити обидві",
+  "syncConflictLater": "Пізніше",
+  "syncConflicts": "Записи з двома версіями: {count}"
 }

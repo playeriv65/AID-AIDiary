@@ -76,6 +76,7 @@ void main() {
               backend: cloud,
               photos: FileStorePhotos(device.photos),
               limits: testLimits,
+              device: device.device,
               mediaChunkBytes: chunkBytes,
               mediaAllowance: route,
               cipher: cipher)

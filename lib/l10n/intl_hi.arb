@@ -833,5 +833,15 @@
   "updateNewest": "यह सबसे नया वर्शन है।",
   "updateAutoCheck": "अपडेट अपने-आप जाँचें",
   "updateSilent": "बिना पूछे अपडेट इंस्टॉल करें",
-  "updateSilentHint": "बैकग्राउंड में डाउनलोड करता है और ऐप छोड़ने पर इंस्टॉल करता है। पहली बार Android एक बार पूछता है।"
+  "updateSilentHint": "बैकग्राउंड में डाउनलोड करता है और ऐप छोड़ने पर इंस्टॉल करता है। पहली बार Android एक बार पूछता है।",
+  "syncConflictTitle": "इस प्रविष्टि के दो संस्करण हैं",
+  "syncConflictMessage": "बदलाव सिंक होने से पहले दो उपकरणों ने यह प्रविष्टि बदली। चुनें कि कौन-सा संस्करण रखना है; दोनों रखने पर दो प्रविष्टियाँ बनेंगी।",
+  "syncConflictCount": "{total} में से {index}",
+  "syncConflictThisVersion": "इस उपकरण पर",
+  "syncConflictOtherVersion": "दूसरे उपकरण पर",
+  "syncConflictKeepThis": "इस उपकरण वाला रखें",
+  "syncConflictKeepOther": "दूसरा रखें",
+  "syncConflictKeepBoth": "दोनों रखें",
+  "syncConflictLater": "बाद में",
+  "syncConflicts": "दो संस्करणों वाली प्रविष्टियाँ: {count}"
 }

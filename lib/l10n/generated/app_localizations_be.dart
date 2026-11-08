@@ -2894,4 +2894,39 @@ class AppLocalizationsBe extends AppLocalizations {
   @override
   String get updateSilentHint =>
       'Спампоўвае ў фоне і ўсталёўвае, калі вы выходзіце з праграмы. Android спытае адзін раз, упершыню.';
+
+  @override
+  String get syncConflictTitle => 'У гэтага запісу дзве версіі';
+
+  @override
+  String get syncConflictMessage =>
+      'Дзве прылады змянілі гэты запіс да таго, як змены сінхранізаваліся. Выберыце, якую версію пакінуць; калі пакінуць абедзве, будзе два запісы.';
+
+  @override
+  String syncConflictCount(int index, int total) {
+    return '$index з $total';
+  }
+
+  @override
+  String get syncConflictThisVersion => 'На гэтай прыладзе';
+
+  @override
+  String get syncConflictOtherVersion => 'На іншай прыладзе';
+
+  @override
+  String get syncConflictKeepThis => 'Пакінуць з гэтай прылады';
+
+  @override
+  String get syncConflictKeepOther => 'Пакінуць іншую';
+
+  @override
+  String get syncConflictKeepBoth => 'Пакінуць абедзве';
+
+  @override
+  String get syncConflictLater => 'Пазней';
+
+  @override
+  String syncConflicts(int count) {
+    return 'Запісы з дзвюма версіямі: $count';
+  }
 }

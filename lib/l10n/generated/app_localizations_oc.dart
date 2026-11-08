@@ -2880,4 +2880,39 @@ class AppLocalizationsOc extends AppLocalizations {
   @override
   String get updateSilentHint =>
       'Telecarga en rèire-plan e installa quand quitatz l\'aplicacion. Android demanda un còp, la primièra.';
+
+  @override
+  String get syncConflictTitle => 'Aquesta entrada a doas versions';
+
+  @override
+  String get syncConflictMessage =>
+      'Dos periferics an modificat aquesta entrada abans que las modificacions se sincronizèsson. Causissètz quina version gardar ; se gardatz las doas, faràn doas entradas.';
+
+  @override
+  String syncConflictCount(int index, int total) {
+    return '$index sus $total';
+  }
+
+  @override
+  String get syncConflictThisVersion => 'Sus aqueste periferic';
+
+  @override
+  String get syncConflictOtherVersion => 'Sus l\'autre periferic';
+
+  @override
+  String get syncConflictKeepThis => 'Gardar la d\'aqueste periferic';
+
+  @override
+  String get syncConflictKeepOther => 'Gardar l\'autra';
+
+  @override
+  String get syncConflictKeepBoth => 'Gardar las doas';
+
+  @override
+  String get syncConflictLater => 'Mai tard';
+
+  @override
+  String syncConflicts(int count) {
+    return 'Entradas amb doas versions : $count';
+  }
 }

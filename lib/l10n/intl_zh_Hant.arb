@@ -864,5 +864,15 @@
   "updateNewest": "已是最新版本。",
   "updateAutoCheck": "自動檢查更新",
   "updateSilent": "不詢問直接安裝更新",
-  "updateSilentHint": "在背景下載，離開應用程式時安裝。第一次更新時 Android 會詢問一次。"
+  "updateSilentHint": "在背景下載，離開應用程式時安裝。第一次更新時 Android 會詢問一次。",
+  "syncConflictTitle": "這篇日記有兩個版本",
+  "syncConflictMessage": "兩台裝置都改了這篇日記，改動還沒同步。選擇保留哪一個；都保留會成為兩篇日記。",
+  "syncConflictCount": "第 {index} 篇，共 {total} 篇",
+  "syncConflictThisVersion": "本機的版本",
+  "syncConflictOtherVersion": "另一台裝置的版本",
+  "syncConflictKeepThis": "保留本機的",
+  "syncConflictKeepOther": "保留另一台的",
+  "syncConflictKeepBoth": "都保留",
+  "syncConflictLater": "稍後",
+  "syncConflicts": "有兩個版本的日記：{count} 篇"
 }

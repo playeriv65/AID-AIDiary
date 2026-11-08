@@ -2868,4 +2868,39 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get updateSilentHint =>
       'Tải xuống ở chế độ nền và cài khi bạn rời ứng dụng. Android hỏi một lần, lần đầu tiên.';
+
+  @override
+  String get syncConflictTitle => 'Mục này có hai phiên bản';
+
+  @override
+  String get syncConflictMessage =>
+      'Hai thiết bị đã sửa mục này trước khi thay đổi được đồng bộ. Chọn phiên bản cần giữ; giữ cả hai sẽ thành hai mục.';
+
+  @override
+  String syncConflictCount(int index, int total) {
+    return '$index/$total';
+  }
+
+  @override
+  String get syncConflictThisVersion => 'Trên thiết bị này';
+
+  @override
+  String get syncConflictOtherVersion => 'Trên thiết bị kia';
+
+  @override
+  String get syncConflictKeepThis => 'Giữ bản của thiết bị này';
+
+  @override
+  String get syncConflictKeepOther => 'Giữ bản kia';
+
+  @override
+  String get syncConflictKeepBoth => 'Giữ cả hai';
+
+  @override
+  String get syncConflictLater => 'Để sau';
+
+  @override
+  String syncConflicts(int count) {
+    return 'Mục có hai phiên bản: $count';
+  }
 }

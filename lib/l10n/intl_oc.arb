@@ -833,5 +833,15 @@
   "updateNewest": "Aquò es la version mai recenta.",
   "updateAutoCheck": "Verificar automaticament las mesas a jorn",
   "updateSilent": "Installar las mesas a jorn sens demandar",
-  "updateSilentHint": "Telecarga en rèire-plan e installa quand quitatz l'aplicacion. Android demanda un còp, la primièra."
+  "updateSilentHint": "Telecarga en rèire-plan e installa quand quitatz l'aplicacion. Android demanda un còp, la primièra.",
+  "syncConflictTitle": "Aquesta entrada a doas versions",
+  "syncConflictMessage": "Dos periferics an modificat aquesta entrada abans que las modificacions se sincronizèsson. Causissètz quina version gardar ; se gardatz las doas, faràn doas entradas.",
+  "syncConflictCount": "{index} sus {total}",
+  "syncConflictThisVersion": "Sus aqueste periferic",
+  "syncConflictOtherVersion": "Sus l'autre periferic",
+  "syncConflictKeepThis": "Gardar la d'aqueste periferic",
+  "syncConflictKeepOther": "Gardar l'autra",
+  "syncConflictKeepBoth": "Gardar las doas",
+  "syncConflictLater": "Mai tard",
+  "syncConflicts": "Entradas amb doas versions : {count}"
 }

@@ -2871,4 +2871,39 @@ class AppLocalizationsBg extends AppLocalizations {
   @override
   String get updateSilentHint =>
       'Изтегля във фонов режим и инсталира, когато излезете от приложението. Android пита веднъж, първия път.';
+
+  @override
+  String get syncConflictTitle => 'Този запис има две версии';
+
+  @override
+  String get syncConflictMessage =>
+      'Две устройства са променили този запис, преди промените да се синхронизират. Изберете коя версия да запазите; ако запазите и двете, ще станат два записа.';
+
+  @override
+  String syncConflictCount(int index, int total) {
+    return '$index от $total';
+  }
+
+  @override
+  String get syncConflictThisVersion => 'На това устройство';
+
+  @override
+  String get syncConflictOtherVersion => 'На другото устройство';
+
+  @override
+  String get syncConflictKeepThis => 'Запази от това устройство';
+
+  @override
+  String get syncConflictKeepOther => 'Запази другата';
+
+  @override
+  String get syncConflictKeepBoth => 'Запази и двете';
+
+  @override
+  String get syncConflictLater => 'По-късно';
+
+  @override
+  String syncConflicts(int count) {
+    return 'Записи с две версии: $count';
+  }
 }

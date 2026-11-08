@@ -2880,4 +2880,39 @@ class AppLocalizationsPl extends AppLocalizations {
   @override
   String get updateSilentHint =>
       'Pobiera w tle i instaluje, gdy opuścisz aplikację. Android zapyta raz, za pierwszym razem.';
+
+  @override
+  String get syncConflictTitle => 'Ten wpis ma dwie wersje';
+
+  @override
+  String get syncConflictMessage =>
+      'Dwa urządzenia zmieniły ten wpis, zanim zmiany się zsynchronizowały. Wybierz, którą wersję zachować; zachowanie obu utworzy dwa wpisy.';
+
+  @override
+  String syncConflictCount(int index, int total) {
+    return '$index z $total';
+  }
+
+  @override
+  String get syncConflictThisVersion => 'Na tym urządzeniu';
+
+  @override
+  String get syncConflictOtherVersion => 'Na drugim urządzeniu';
+
+  @override
+  String get syncConflictKeepThis => 'Zachowaj z tego urządzenia';
+
+  @override
+  String get syncConflictKeepOther => 'Zachowaj drugą';
+
+  @override
+  String get syncConflictKeepBoth => 'Zachowaj obie';
+
+  @override
+  String get syncConflictLater => 'Później';
+
+  @override
+  String syncConflicts(int count) {
+    return 'Wpisy w dwóch wersjach: $count';
+  }
 }

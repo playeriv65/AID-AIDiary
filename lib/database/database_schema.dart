@@ -23,7 +23,7 @@ import 'package:aid_diary/utils/sync_ids.dart';
 import 'package:crypto/crypto.dart';
 import 'package:sqflite/sqflite.dart';
 
-const int currentVersion = 18;
+const int currentVersion = 19;
 
 /// Creates the current schema without adding starter data.
 Future<void> createSchema(Database db) async {
@@ -32,6 +32,7 @@ Future<void> createSchema(Database db) async {
   await _addHiddenAndImportSchema(db);
   await _addLinksSchema(db);
   await _upgradeToVersion17(db);
+  await addConflictSchema(db);
 }
 
 /// The tables as they were before sync.
@@ -283,6 +284,9 @@ DROP TABLE old_entries;
   if (oldVersion < 18 && newVersion >= 18) {
     await _importedEntrySyncIds(db);
   }
+  if (oldVersion < 19 && newVersion >= 19) {
+    await addConflictSchema(db);
+  }
 }
 
 /// Database version 18: an entry imported before gives up its random sync
@@ -308,8 +312,8 @@ FROM import_sources s JOIN $entriesTable e ON e.id = s.entry_id''');
         .firstOrNull?['id'] as int?;
     if (holder != null) {
       // Another device's copy came first under the shared id. This copy
-      // goes to Recently deleted, as a sync conflict's loser would, and the
-      // source now points at the shared one.
+      // goes to Recently deleted and the source now points at the shared
+      // one.
       await db.update(entriesTable,
           {EntryFields.deletedAt: DateTime.now().toIso8601String()},
           where: 'id = ? AND ${EntryFields.deletedAt} IS NULL',

@@ -833,5 +833,15 @@
   "updateNewest": "Aquesta és la versió més recent.",
   "updateAutoCheck": "Cerca actualitzacions automàticament",
   "updateSilent": "Instal·la les actualitzacions sense preguntar",
-  "updateSilentHint": "Es baixa en segon pla i s'instal·la quan surts de l'app. Android ho pregunta una vegada, la primera."
+  "updateSilentHint": "Es baixa en segon pla i s'instal·la quan surts de l'app. Android ho pregunta una vegada, la primera.",
+  "syncConflictTitle": "Aquesta entrada té dues versions",
+  "syncConflictMessage": "Dos dispositius han canviat aquesta entrada abans que els canvis se sincronitzessin. Tria quina versió vols conservar; si conserves totes dues, seran dues entrades.",
+  "syncConflictCount": "{index} de {total}",
+  "syncConflictThisVersion": "En aquest dispositiu",
+  "syncConflictOtherVersion": "En l'altre dispositiu",
+  "syncConflictKeepThis": "Conserva la d'aquest dispositiu",
+  "syncConflictKeepOther": "Conserva l'altra",
+  "syncConflictKeepBoth": "Conserva-les totes dues",
+  "syncConflictLater": "Més tard",
+  "syncConflicts": "Entrades amb dues versions: {count}"
 }

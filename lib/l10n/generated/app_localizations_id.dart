@@ -2862,4 +2862,39 @@ class AppLocalizationsId extends AppLocalizations {
   @override
   String get updateSilentHint =>
       'Mengunduh di latar belakang dan memasang saat Anda meninggalkan aplikasi. Android bertanya sekali, pertama kali.';
+
+  @override
+  String get syncConflictTitle => 'Entri ini punya dua versi';
+
+  @override
+  String get syncConflictMessage =>
+      'Dua perangkat mengubah entri ini sebelum perubahannya tersinkron. Pilih versi yang disimpan; menyimpan keduanya menjadikannya dua entri.';
+
+  @override
+  String syncConflictCount(int index, int total) {
+    return '$index dari $total';
+  }
+
+  @override
+  String get syncConflictThisVersion => 'Di perangkat ini';
+
+  @override
+  String get syncConflictOtherVersion => 'Di perangkat lain';
+
+  @override
+  String get syncConflictKeepThis => 'Simpan milik perangkat ini';
+
+  @override
+  String get syncConflictKeepOther => 'Simpan yang lain';
+
+  @override
+  String get syncConflictKeepBoth => 'Simpan keduanya';
+
+  @override
+  String get syncConflictLater => 'Nanti';
+
+  @override
+  String syncConflicts(int count) {
+    return 'Entri dengan dua versi: $count';
+  }
 }

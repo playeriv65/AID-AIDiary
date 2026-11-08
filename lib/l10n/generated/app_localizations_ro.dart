@@ -2886,4 +2886,39 @@ class AppLocalizationsRo extends AppLocalizations {
   @override
   String get updateSilentHint =>
       'Descarcă în fundal și instalează când părăsești aplicația. Android întreabă o dată, prima dată.';
+
+  @override
+  String get syncConflictTitle => 'Această intrare are două versiuni';
+
+  @override
+  String get syncConflictMessage =>
+      'Două dispozitive au modificat această intrare înainte ca modificările să se sincronizeze. Alege ce versiune păstrezi; dacă le păstrezi pe amândouă, devin două intrări.';
+
+  @override
+  String syncConflictCount(int index, int total) {
+    return '$index din $total';
+  }
+
+  @override
+  String get syncConflictThisVersion => 'Pe acest dispozitiv';
+
+  @override
+  String get syncConflictOtherVersion => 'Pe celălalt dispozitiv';
+
+  @override
+  String get syncConflictKeepThis => 'Păstrează-o pe a acestui dispozitiv';
+
+  @override
+  String get syncConflictKeepOther => 'Păstrează-o pe cealaltă';
+
+  @override
+  String get syncConflictKeepBoth => 'Păstrează-le pe amândouă';
+
+  @override
+  String get syncConflictLater => 'Mai târziu';
+
+  @override
+  String syncConflicts(int count) {
+    return 'Intrări cu două versiuni: $count';
+  }
 }

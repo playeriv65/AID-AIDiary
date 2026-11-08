@@ -2857,4 +2857,39 @@ class AppLocalizationsNb extends AppLocalizations {
   @override
   String get updateSilentHint =>
       'Laster ned i bakgrunnen og installerer når du forlater appen. Android spør én gang, første gang.';
+
+  @override
+  String get syncConflictTitle => 'Dette innlegget har to versjoner';
+
+  @override
+  String get syncConflictMessage =>
+      'To enheter endret dette innlegget før endringene ble synkronisert. Velg hvilken versjon du vil beholde; beholder du begge, blir det to innlegg.';
+
+  @override
+  String syncConflictCount(int index, int total) {
+    return '$index av $total';
+  }
+
+  @override
+  String get syncConflictThisVersion => 'På denne enheten';
+
+  @override
+  String get syncConflictOtherVersion => 'På den andre enheten';
+
+  @override
+  String get syncConflictKeepThis => 'Behold denne enhetens';
+
+  @override
+  String get syncConflictKeepOther => 'Behold den andre';
+
+  @override
+  String get syncConflictKeepBoth => 'Behold begge';
+
+  @override
+  String get syncConflictLater => 'Senere';
+
+  @override
+  String syncConflicts(int count) {
+    return 'Innlegg med to versjoner: $count';
+  }
 }

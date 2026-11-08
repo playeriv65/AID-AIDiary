@@ -833,5 +833,15 @@
   "updateNewest": "Toto je nejnovější verze.",
   "updateAutoCheck": "Kontrolovat aktualizace automaticky",
   "updateSilent": "Instalovat aktualizace bez ptaní",
-  "updateSilentHint": "Stahuje na pozadí a instaluje, když aplikaci opustíte. Android se poprvé jednou zeptá."
+  "updateSilentHint": "Stahuje na pozadí a instaluje, když aplikaci opustíte. Android se poprvé jednou zeptá.",
+  "syncConflictTitle": "Tento záznam má dvě verze",
+  "syncConflictMessage": "Dvě zařízení změnila tento záznam dřív, než se změny synchronizovaly. Vyberte, kterou verzi ponechat; ponecháním obou vzniknou dva záznamy.",
+  "syncConflictCount": "{index} z {total}",
+  "syncConflictThisVersion": "V tomto zařízení",
+  "syncConflictOtherVersion": "V druhém zařízení",
+  "syncConflictKeepThis": "Ponechat z tohoto zařízení",
+  "syncConflictKeepOther": "Ponechat druhou",
+  "syncConflictKeepBoth": "Ponechat obě",
+  "syncConflictLater": "Později",
+  "syncConflicts": "Záznamy se dvěma verzemi: {count}"
 }

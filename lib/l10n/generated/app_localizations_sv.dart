@@ -2859,4 +2859,39 @@ class AppLocalizationsSv extends AppLocalizations {
   @override
   String get updateSilentHint =>
       'Hämtar i bakgrunden och installerar när du lämnar appen. Android frågar en gång, första gången.';
+
+  @override
+  String get syncConflictTitle => 'Det här inlägget har två versioner';
+
+  @override
+  String get syncConflictMessage =>
+      'Två enheter ändrade det här inlägget innan ändringarna synkroniserades. Välj vilken version som ska behållas; behåller du båda blir det två inlägg.';
+
+  @override
+  String syncConflictCount(int index, int total) {
+    return '$index av $total';
+  }
+
+  @override
+  String get syncConflictThisVersion => 'På den här enheten';
+
+  @override
+  String get syncConflictOtherVersion => 'På den andra enheten';
+
+  @override
+  String get syncConflictKeepThis => 'Behåll den här enhetens';
+
+  @override
+  String get syncConflictKeepOther => 'Behåll den andra';
+
+  @override
+  String get syncConflictKeepBoth => 'Behåll båda';
+
+  @override
+  String get syncConflictLater => 'Senare';
+
+  @override
+  String syncConflicts(int count) {
+    return 'Inlägg med två versioner: $count';
+  }
 }

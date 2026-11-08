@@ -19,6 +19,8 @@ import 'package:aid_diary/sync/webdav_backend.dart';
 import 'package:aid_diary/widgets/progress_dialog.dart';
 import 'package:aid_diary/widgets/cloud_traffic_notice.dart';
 import 'package:aid_diary/widgets/device_name_tile.dart';
+import 'package:aid_diary/widgets/settings_row.dart';
+import 'package:aid_diary/widgets/sync_conflict_dialog.dart';
 import 'package:aid_diary/widgets/text_input_dialog.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -382,6 +384,13 @@ class _SyncSettingsState extends State<SyncSettings> {
           trailing: const Icon(Icons.chevron_right_rounded),
           onTap: () => openPlace(context, 'settings/sync/copies'),
         ),
+        if (_service.pendingConflicts > 0)
+          SettingsRow(
+            key: const ValueKey('sync-conflicts'),
+            icon: Icons.call_split_rounded,
+            title: l10n.syncConflicts(_service.pendingConflicts),
+            onTap: () => resolveSyncConflicts(context),
+          ),
         const Divider(),
         const _DevicesTile(),
         if (_service.error is GoogleSignInNeeded)

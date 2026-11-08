@@ -2895,4 +2895,39 @@ class AppLocalizationsTa extends AppLocalizations {
   @override
   String get updateSilentHint =>
       'பின்னணியில் பதிவிறக்கி, ஆப்பை விட்டு வெளியேறும்போது நிறுவும். முதல் முறை Android ஒருமுறை கேட்கும்.';
+
+  @override
+  String get syncConflictTitle => 'இந்தப் பதிவுக்கு இரண்டு பதிப்புகள் உள்ளன';
+
+  @override
+  String get syncConflictMessage =>
+      'மாற்றங்கள் ஒத்திசைவதற்கு முன் இரண்டு சாதனங்கள் இந்தப் பதிவை மாற்றின. எந்தப் பதிப்பை வைத்திருப்பது என்று தேர்ந்தெடுக்கவும்; இரண்டையும் வைத்தால் இரண்டு பதிவுகள் ஆகும்.';
+
+  @override
+  String syncConflictCount(int index, int total) {
+    return '$total இல் $index';
+  }
+
+  @override
+  String get syncConflictThisVersion => 'இந்த சாதனத்தில்';
+
+  @override
+  String get syncConflictOtherVersion => 'மற்ற சாதனத்தில்';
+
+  @override
+  String get syncConflictKeepThis => 'இந்த சாதனத்தினுடையதை வை';
+
+  @override
+  String get syncConflictKeepOther => 'மற்றதை வை';
+
+  @override
+  String get syncConflictKeepBoth => 'இரண்டையும் வை';
+
+  @override
+  String get syncConflictLater => 'பிறகு';
+
+  @override
+  String syncConflicts(int count) {
+    return 'இரண்டு பதிப்புகள் உள்ள பதிவுகள்: $count';
+  }
 }

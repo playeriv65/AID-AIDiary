@@ -11,13 +11,14 @@ import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/models/image.dart';
 import 'package:aid_diary/sync/media_transfer.dart';
 import 'package:aid_diary/sync/sync_backend.dart';
+import 'package:aid_diary/sync/sync_conflicts.dart';
 import 'package:aid_diary/sync/sync_crypto.dart';
 import 'package:aid_diary/sync/sync_records.dart';
 import 'package:aid_diary/sync/sync_schema.dart';
 import 'package:aid_diary/sync/sync_photos.dart';
-import 'package:aid_diary/utils/sync_ids.dart';
 import 'package:sqflite/sqflite.dart';
 
+export 'sync_conflicts.dart' show SyncDevice;
 export 'sync_photos.dart';
 
 /// What one sync did.
@@ -25,7 +26,6 @@ class SyncReport {
   const SyncReport(
       {this.received = 0,
       this.sent = 0,
-      this.keptConflicts = 0,
       this.pendingMedia = 0,
       this.mediaCompleted = 0,
       this.mediaFailures = 0,
@@ -41,13 +41,8 @@ class SyncReport {
   /// Local items sent to the space.
   final int sent;
 
-  /// Local entries that lost to a newer remote version and were kept in
-  /// Recently deleted.
-  final int keptConflicts;
-
   /// Whether the diary on this device changed.
-  bool get changedLocally =>
-      received > 0 || keptConflicts > 0 || mediaCompleted > 0;
+  bool get changedLocally => received > 0 || mediaCompleted > 0;
 }
 
 /// How far a sync is: [done] of [total] files received, or sent.
@@ -75,17 +70,21 @@ class SyncLimits {
 ///
 /// A sync reads the packs and snapshots it has not read yet, takes in what
 /// is newer than what the diary has, and sends its own changes as one new
-/// pack. Items are compared by the time they last changed: the newer side
-/// wins, whatever order packs arrive in, and a local entry that loses is kept
-/// in Recently deleted rather than dropped. Attachment rows travel with the
-/// diary; their independently encrypted blocks follow through a persistent
-/// queue according to the current route and its transfer allowance.
+/// pack. Items are compared by the time they last changed: when only one
+/// side changed an item since the version both had, the newer version
+/// wins, whatever order packs arrive in. When both sides changed an entry,
+/// this device keeps its version and holds it back, and the two wait in a
+/// conflict for the user to choose (`sync_conflicts.dart`). Attachment rows
+/// travel with the diary; their independently encrypted blocks follow
+/// through a persistent queue according to the current route and its
+/// transfer allowance.
 class SyncEngine {
   SyncEngine(
       {required this.db,
       required this.backend,
       required this.photos,
       required this.limits,
+      this.device,
       this.cipher,
       this.mediaAllowance,
       this.mediaFallback,
@@ -96,10 +95,15 @@ class SyncEngine {
       this.onProgress,
       this.stopped,
       DateTime Function()? now})
-      : _now = now ?? DateTime.now;
+      : assert(receiveOnly || device != null),
+        _now = now ?? DateTime.now;
 
   final Database db;
   final SyncBackend backend;
+
+  /// This device, which names the versions it sends and holds back its
+  /// edits in conflicts; null only to receive into an empty diary.
+  final SyncDevice? device;
 
   /// Where photo files live on this device.
   final SyncPhotos photos;
@@ -143,22 +147,21 @@ class SyncEngine {
     // newer one; that waits for a sync that reads everything.
     if (received == null) return const SyncReport();
     final sent = receiveOnly ? 0 : await _push();
-    if (received.applied > 0 || received.kept > 0) await onMetadata?.call();
+    if (received > 0) await onMetadata?.call();
     if (!_stopped && !receiveOnly) await _compact();
     final media = await _media.run();
     return SyncReport(
-        received: received.applied,
+        received: received,
         sent: sent,
-        keptConflicts: received.kept,
         pendingMedia: media.pending,
         mediaCompleted: media.completed,
         mediaFailures: media.failures,
         waitingForPeer: media.waitingForPeer);
   }
 
-  /// Takes in the packs and snapshots not read yet; null when it could not
-  /// read or apply all of them.
-  Future<({int applied, int kept})?> _receive() async {
+  /// Takes in the packs and snapshots not read yet and returns how many
+  /// items it wrote; null when it could not read or apply all of them.
+  Future<int?> _receive() async {
     final seen = await _seen();
     final unread = [
       for (final path in (await backend.list(SpaceLayout.packs)).keys)
@@ -204,27 +207,94 @@ class SyncEngine {
     });
     if (_stopped) return null;
 
-    // The newer side wins; a local entry that loses is kept.
+    // The version this device last sent or took in of each item is the
+    // base its own edits start from.
     final known = {
       for (final row in await db.query(syncItemsTable))
         _key(SyncKind.byName(row['kind'] as String),
             row[syncIdColumn] as String): row['modified'] as int,
     };
     final pending = await _pending();
+    final held = await heldConflicts(db, device);
+    // Entries whose held-back edit this device lets go: the conflict was
+    // resolved on another device, or the entry erased there.
+    final letGo = <String>{};
+    final ended = <StoredConflict>[];
+    final resolvedElsewhere = {
+      for (final record in incoming.values)
+        if (record.kind == SyncKind.conflict && record.deleted) record.id,
+    };
+    for (final conflict in [...held.values]) {
+      final key = _key(SyncKind.conflict, conflict.id);
+      final local = pending[key];
+      final deletion = incoming[key];
+      if (!resolvedElsewhere.contains(conflict.id) ||
+          deletion!.modified <= (known[key] ?? -1) ||
+          (local != null && local.changedAt > deletion.modified)) {
+        continue;
+      }
+      held.remove(conflict.entry);
+      letGo.add(conflict.entry);
+      pending.remove(_key(SyncKind.entry, conflict.entry));
+    }
+
     final toApply = <SyncRecord>[];
     // Items marked on joining the space whose version it already has.
     final alreadyThere = <_Pending>[];
+    final found = <({SyncRecord mine, SyncRecord theirs})>[];
+    final moved = <({StoredConflict conflict, SyncRecord theirs})>[];
     for (final record in incoming.values) {
       final key = _key(record.kind, record.id);
       final local = pending[key];
-      if (record.modified <= (known[key] ?? -1)) {
+      final base = known[key];
+      if (record.modified <= (base ?? -1)) {
         if (local != null && local.changedAt == record.modified) {
           alreadyThere.add(local);
         }
         continue;
       }
-      if (local != null && local.changedAt > record.modified) continue;
-      toApply.add(record);
+      if (record.kind != SyncKind.entry) {
+        if (local != null && local.changedAt > record.modified) continue;
+        toApply.add(record);
+        continue;
+      }
+      if (held[record.id] case final conflict?) {
+        if (record.deleted) {
+          // Erased on another device: the conflict ends with the entry.
+          ended.add(conflict);
+          letGo.add(record.id);
+          pending.remove(key);
+          toApply.add(record);
+        } else {
+          // The space's version moved on; this device still holds its own.
+          moved.add((conflict: conflict, theirs: record));
+        }
+        continue;
+      }
+      // An edit here since the base, other than marking on joining a space
+      // (the base's own time, or 0 for an item of unknown age) and other
+      // than this device's own version coming back.
+      final edited = local != null &&
+          local.changedAt != (base ?? 0) &&
+          local.changedAt != record.modified;
+      if (!edited) {
+        toApply.add(record);
+        continue;
+      }
+      final mine = await exportRecord(
+          db, record.kind, record.id, local.changedAt,
+          device: device?.name);
+      if (mine.deleted || record.deleted) {
+        // An erasure is no version to choose: the later change stays.
+        if (record.modified > local.changedAt) toApply.add(record);
+        continue;
+      }
+      if (_sameEntry(mine, record)) {
+        toApply.add(record);
+        continue;
+      }
+      // Both sides changed the entry since the version they shared.
+      found.add((mine: mine, theirs: record));
     }
 
     // Attachment rows describe the diary even while their bytes are absent.
@@ -254,25 +324,6 @@ class SyncEngine {
     }
     final ready = toApply..sort((a, b) => a.kind.index.compareTo(b.kind.index));
 
-    final losers = <SyncRecord>[];
-    for (final record in ready) {
-      final key = _key(record.kind, record.id);
-      final local = pending[key];
-      // An item marked on joining a space with the version this device
-      // already had was not edited here, so nothing of it is lost.
-      if (local == null ||
-          local.changedAt == known[key] ||
-          record.kind != SyncKind.entry) {
-        continue;
-      }
-      final mine =
-          await exportRecord(db, local.kind, record.id, local.changedAt);
-      if (!mine.deleted && !_sameEntry(mine, record)) losers.add(mine);
-    }
-    for (final loser in losers) {
-      await db.transaction((txn) => keepLosingEntry(
-          txn, loser, conflictCopySyncId(loser.id, loser.modified), _now()));
-    }
     // Deletions go last, children before parents: an attachment or kept
     // passage that moved to another item in the same batch moves first.
     final ordered = [
@@ -285,11 +336,36 @@ class SyncEngine {
         await _media.queue(fetch.id, fetch.name,
             sending: false, transaction: txn);
       }
+      for (final entry in letGo) {
+        await txn.delete(syncChangesTable,
+            where: 'kind = ? AND $syncIdColumn = ?',
+            whereArgs: [SyncKind.entry.name, entry]);
+      }
+      for (final conflict in ended) {
+        await dropConflict(txn, conflict);
+      }
       for (final record in ordered) {
         await writer.apply(record);
         await _know(txn, record);
         if (pending[_key(record.kind, record.id)] case final local?) {
           await _clearChange(txn, local);
+        }
+      }
+      for (final (:conflict, :theirs) in moved) {
+        await holdConflict(txn,
+            device: device!,
+            mine: conflict.held,
+            theirs: theirs,
+            held: conflict);
+        await _know(txn, theirs);
+      }
+      for (final (:mine, :theirs) in found) {
+        await holdConflict(txn, device: device!, mine: mine, theirs: theirs);
+        await _know(txn, theirs);
+        // The held-back attachments are there for whoever picks this one.
+        for (final photo in mine.photos) {
+          await _media.queue(photo.id, photo.file,
+              sending: true, transaction: txn);
         }
       }
       for (final local in alreadyThere) {
@@ -303,18 +379,23 @@ class SyncEngine {
     for (final file in unused) {
       await photos.delete(file);
     }
-    return (applied: ready.length, kept: losers.length);
+    return ready.length;
   }
 
   /// Publishes diary changes before any potentially expensive media transfer.
   Future<int> _push() async {
-    final pending = (await _pending()).values.toList();
+    final heldBack = await _holdBack();
+    final pending = [
+      for (final local in (await _pending()).values)
+        if (local.kind != SyncKind.entry || !heldBack.contains(local.id)) local,
+    ];
     if (pending.isEmpty || _stopped) return 0;
     final changes = <_Change>[
       for (final local in pending)
         (
           local: local,
-          record: await exportRecord(db, local.kind, local.id, local.changedAt)
+          record: await exportRecord(db, local.kind, local.id, local.changedAt,
+              device: device?.name)
         ),
     ];
     for (final change in changes) {
@@ -345,6 +426,37 @@ class SyncEngine {
       sent += pack.length;
     }
     return sent;
+  }
+
+  /// The entries whose edits this device holds back for a conflict, by sync
+  /// id. An edit made here since goes into the conflict as the held
+  /// version; erasing the entry here ends the conflict and sends the
+  /// erasure.
+  Future<Set<String>> _holdBack() async {
+    final pending = await _pending();
+    final heldBack = <String>{};
+    for (final conflict in (await heldConflicts(db, device)).values) {
+      final local = pending[_key(SyncKind.entry, conflict.entry)];
+      if (local == null) continue;
+      final mine = await exportRecord(
+          db, SyncKind.entry, conflict.entry, local.changedAt,
+          device: device?.name);
+      if (mine.deleted) {
+        await withoutRecording(db, (txn) => dropConflict(txn, conflict));
+        continue;
+      }
+      if (mine.modified != conflict.held.modified) {
+        await withoutRecording(
+            db,
+            (txn) => holdConflict(txn,
+                device: device!,
+                mine: mine,
+                theirs: conflict.synced,
+                held: conflict));
+      }
+      heldBack.add(conflict.entry);
+    }
+    return heldBack;
   }
 
   /// Splits [changes] into packs of about [SyncLimits.packBytes] each.
@@ -382,7 +494,8 @@ class SyncEngine {
     final items = [
       for (final row in await db.query(syncItemsTable))
         await exportRecord(db, SyncKind.byName(row['kind'] as String),
-            row[syncIdColumn] as String, row['modified'] as int),
+            row[syncIdColumn] as String, row['modified'] as int,
+            device: row['device'] as String?),
     ];
     final path = SpaceLayout.pack(_newName(SpaceLayout.snapshotPrefix));
     await backend.write(path, await _sealPack(path, items, covers));
@@ -447,18 +560,22 @@ class SyncEngine {
           where: 'kind = ? AND $syncIdColumn = ? AND changed_at = ?',
           whereArgs: [local.kind.name, local.id, local.changedAt]);
 
-  /// Keeps the newest version of an item this device has.
-  Future<void> _know(DatabaseExecutor txn, SyncRecord record) => txn.rawInsert(
-          'INSERT OR REPLACE INTO $syncItemsTable (kind, $syncIdColumn, modified) '
-          'VALUES (?, ?, MAX(?, COALESCE((SELECT modified FROM $syncItemsTable '
-          'WHERE kind = ? AND $syncIdColumn = ?), 0)))',
-          [
-            record.kind.name,
-            record.id,
-            record.modified,
-            record.kind.name,
-            record.id,
-          ]);
+  /// Keeps the newest version of an item this device has, and who made it.
+  Future<void> _know(DatabaseExecutor txn, SyncRecord record) =>
+      txn.rawInsert('''
+INSERT OR REPLACE INTO $syncItemsTable (kind, $syncIdColumn, modified, device)
+SELECT ?, ?, MAX(?, COALESCE(i.modified, 0)),
+       CASE WHEN i.modified IS NULL OR ? >= i.modified THEN ? ELSE i.device END
+FROM (SELECT 1) LEFT JOIN $syncItemsTable i
+  ON i.kind = ? AND i.$syncIdColumn = ?''', [
+        record.kind.name,
+        record.id,
+        record.modified,
+        record.modified,
+        record.device,
+        record.kind.name,
+        record.id,
+      ]);
 
   Future<void> _see(DatabaseExecutor txn, String path) =>
       txn.insert(syncSeenTable, {'path': path, 'version': ''},

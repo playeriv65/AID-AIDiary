@@ -833,5 +833,15 @@
   "updateNewest": "Dette er den nyeste version.",
   "updateAutoCheck": "Søg automatisk efter opdateringer",
   "updateSilent": "Installer opdateringer uden at spørge",
-  "updateSilentHint": "Downloader i baggrunden og installerer, når du forlader appen. Android spørger én gang, første gang."
+  "updateSilentHint": "Downloader i baggrunden og installerer, når du forlader appen. Android spørger én gang, første gang.",
+  "syncConflictTitle": "Dette indlæg har to versioner",
+  "syncConflictMessage": "To enheder ændrede dette indlæg, før ændringerne blev synkroniseret. Vælg, hvilken version du vil beholde; beholder du begge, bliver det to indlæg.",
+  "syncConflictCount": "{index} af {total}",
+  "syncConflictThisVersion": "På denne enhed",
+  "syncConflictOtherVersion": "På den anden enhed",
+  "syncConflictKeepThis": "Behold denne enheds",
+  "syncConflictKeepOther": "Behold den anden",
+  "syncConflictKeepBoth": "Behold begge",
+  "syncConflictLater": "Senere",
+  "syncConflicts": "Indlæg med to versioner: {count}"
 }

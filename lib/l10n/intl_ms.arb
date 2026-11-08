@@ -833,5 +833,15 @@
   "updateNewest": "Ini versi terbaharu.",
   "updateAutoCheck": "Semak kemas kini secara automatik",
   "updateSilent": "Pasang kemas kini tanpa bertanya",
-  "updateSilentHint": "Memuat turun di latar belakang dan memasang apabila anda meninggalkan apl. Android bertanya sekali, kali pertama."
+  "updateSilentHint": "Memuat turun di latar belakang dan memasang apabila anda meninggalkan apl. Android bertanya sekali, kali pertama.",
+  "syncConflictTitle": "Catatan ini ada dua versi",
+  "syncConflictMessage": "Dua peranti mengubah catatan ini sebelum perubahannya disegerakkan. Pilih versi yang hendak disimpan; menyimpan kedua-duanya menjadikannya dua catatan.",
+  "syncConflictCount": "{index} daripada {total}",
+  "syncConflictThisVersion": "Pada peranti ini",
+  "syncConflictOtherVersion": "Pada peranti lain",
+  "syncConflictKeepThis": "Simpan milik peranti ini",
+  "syncConflictKeepOther": "Simpan yang lain",
+  "syncConflictKeepBoth": "Simpan kedua-duanya",
+  "syncConflictLater": "Kemudian",
+  "syncConflicts": "Catatan dengan dua versi: {count}"
 }

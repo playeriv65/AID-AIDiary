@@ -2868,4 +2868,39 @@ class AppLocalizationsUk extends AppLocalizations {
   @override
   String get updateSilentHint =>
       'Завантажує у фоні та встановлює, коли ви виходите із застосунку. Android запитає один раз, уперше.';
+
+  @override
+  String get syncConflictTitle => 'Цей запис має дві версії';
+
+  @override
+  String get syncConflictMessage =>
+      'Два пристрої змінили цей запис до того, як зміни синхронізувалися. Виберіть, яку версію залишити; якщо залишити обидві, буде два записи.';
+
+  @override
+  String syncConflictCount(int index, int total) {
+    return '$index з $total';
+  }
+
+  @override
+  String get syncConflictThisVersion => 'На цьому пристрої';
+
+  @override
+  String get syncConflictOtherVersion => 'На іншому пристрої';
+
+  @override
+  String get syncConflictKeepThis => 'Залишити з цього пристрою';
+
+  @override
+  String get syncConflictKeepOther => 'Залишити іншу';
+
+  @override
+  String get syncConflictKeepBoth => 'Залишити обидві';
+
+  @override
+  String get syncConflictLater => 'Пізніше';
+
+  @override
+  String syncConflicts(int count) {
+    return 'Записи з двома версіями: $count';
+  }
 }

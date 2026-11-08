@@ -2831,4 +2831,39 @@ class AppLocalizationsHe extends AppLocalizations {
   @override
   String get updateSilentHint =>
       'מוריד ברקע ומתקין כשאתם יוצאים מהאפליקציה. אנדרואיד שואל פעם אחת, בפעם הראשונה.';
+
+  @override
+  String get syncConflictTitle => 'לרשומה הזו יש שתי גרסאות';
+
+  @override
+  String get syncConflictMessage =>
+      'שני מכשירים שינו את הרשומה הזו לפני שהשינויים סונכרנו. בחרו איזו גרסה לשמור; שמירת שתיהן תיצור שתי רשומות.';
+
+  @override
+  String syncConflictCount(int index, int total) {
+    return '$index מתוך $total';
+  }
+
+  @override
+  String get syncConflictThisVersion => 'במכשיר הזה';
+
+  @override
+  String get syncConflictOtherVersion => 'במכשיר האחר';
+
+  @override
+  String get syncConflictKeepThis => 'לשמור את של המכשיר הזה';
+
+  @override
+  String get syncConflictKeepOther => 'לשמור את האחרת';
+
+  @override
+  String get syncConflictKeepBoth => 'לשמור את שתיהן';
+
+  @override
+  String get syncConflictLater => 'מאוחר יותר';
+
+  @override
+  String syncConflicts(int count) {
+    return 'רשומות עם שתי גרסאות: $count';
+  }
 }

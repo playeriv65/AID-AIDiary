@@ -833,5 +833,15 @@
   "updateNewest": "To najnowsza wersja.",
   "updateAutoCheck": "Automatycznie sprawdzaj aktualizacje",
   "updateSilent": "Instaluj aktualizacje bez pytania",
-  "updateSilentHint": "Pobiera w tle i instaluje, gdy opuścisz aplikację. Android zapyta raz, za pierwszym razem."
+  "updateSilentHint": "Pobiera w tle i instaluje, gdy opuścisz aplikację. Android zapyta raz, za pierwszym razem.",
+  "syncConflictTitle": "Ten wpis ma dwie wersje",
+  "syncConflictMessage": "Dwa urządzenia zmieniły ten wpis, zanim zmiany się zsynchronizowały. Wybierz, którą wersję zachować; zachowanie obu utworzy dwa wpisy.",
+  "syncConflictCount": "{index} z {total}",
+  "syncConflictThisVersion": "Na tym urządzeniu",
+  "syncConflictOtherVersion": "Na drugim urządzeniu",
+  "syncConflictKeepThis": "Zachowaj z tego urządzenia",
+  "syncConflictKeepOther": "Zachowaj drugą",
+  "syncConflictKeepBoth": "Zachowaj obie",
+  "syncConflictLater": "Później",
+  "syncConflicts": "Wpisy w dwóch wersjach: {count}"
 }

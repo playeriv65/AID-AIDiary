@@ -833,5 +833,15 @@
   "updateNewest": "Đây là phiên bản mới nhất.",
   "updateAutoCheck": "Tự động kiểm tra cập nhật",
   "updateSilent": "Cài bản cập nhật mà không hỏi",
-  "updateSilentHint": "Tải xuống ở chế độ nền và cài khi bạn rời ứng dụng. Android hỏi một lần, lần đầu tiên."
+  "updateSilentHint": "Tải xuống ở chế độ nền và cài khi bạn rời ứng dụng. Android hỏi một lần, lần đầu tiên.",
+  "syncConflictTitle": "Mục này có hai phiên bản",
+  "syncConflictMessage": "Hai thiết bị đã sửa mục này trước khi thay đổi được đồng bộ. Chọn phiên bản cần giữ; giữ cả hai sẽ thành hai mục.",
+  "syncConflictCount": "{index}/{total}",
+  "syncConflictThisVersion": "Trên thiết bị này",
+  "syncConflictOtherVersion": "Trên thiết bị kia",
+  "syncConflictKeepThis": "Giữ bản của thiết bị này",
+  "syncConflictKeepOther": "Giữ bản kia",
+  "syncConflictKeepBoth": "Giữ cả hai",
+  "syncConflictLater": "Để sau",
+  "syncConflicts": "Mục có hai phiên bản: {count}"
 }

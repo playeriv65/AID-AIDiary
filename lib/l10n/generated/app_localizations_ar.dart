@@ -2850,4 +2850,39 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get updateSilentHint =>
       'ينزّل في الخلفية ويثبّت عند مغادرتك التطبيق. يسأل أندرويد مرة واحدة في المرة الأولى.';
+
+  @override
+  String get syncConflictTitle => 'لهذا الإدخال نسختان';
+
+  @override
+  String get syncConflictMessage =>
+      'غيّر جهازان هذا الإدخال قبل مزامنة التغييرات. اختر النسخة التي تريد الاحتفاظ بها؛ الاحتفاظ بالاثنتين ينشئ إدخالين.';
+
+  @override
+  String syncConflictCount(int index, int total) {
+    return '$index من $total';
+  }
+
+  @override
+  String get syncConflictThisVersion => 'على هذا الجهاز';
+
+  @override
+  String get syncConflictOtherVersion => 'على الجهاز الآخر';
+
+  @override
+  String get syncConflictKeepThis => 'الاحتفاظ بنسخة هذا الجهاز';
+
+  @override
+  String get syncConflictKeepOther => 'الاحتفاظ بالأخرى';
+
+  @override
+  String get syncConflictKeepBoth => 'الاحتفاظ بالاثنتين';
+
+  @override
+  String get syncConflictLater => 'لاحقًا';
+
+  @override
+  String syncConflicts(int count) {
+    return 'إدخالات لها نسختان: $count';
+  }
 }

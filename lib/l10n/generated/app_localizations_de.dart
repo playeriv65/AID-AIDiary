@@ -2887,4 +2887,39 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get updateSilentHint =>
       'Lädt im Hintergrund und installiert, wenn du die App verlässt. Android fragt beim ersten Mal einmal nach.';
+
+  @override
+  String get syncConflictTitle => 'Dieser Eintrag hat zwei Versionen';
+
+  @override
+  String get syncConflictMessage =>
+      'Zwei Geräte haben diesen Eintrag geändert, bevor die Änderungen synchronisiert wurden. Wähle, welche Version bleibt; behältst du beide, werden es zwei Einträge.';
+
+  @override
+  String syncConflictCount(int index, int total) {
+    return '$index von $total';
+  }
+
+  @override
+  String get syncConflictThisVersion => 'Auf diesem Gerät';
+
+  @override
+  String get syncConflictOtherVersion => 'Auf dem anderen Gerät';
+
+  @override
+  String get syncConflictKeepThis => 'Die dieses Geräts behalten';
+
+  @override
+  String get syncConflictKeepOther => 'Die andere behalten';
+
+  @override
+  String get syncConflictKeepBoth => 'Beide behalten';
+
+  @override
+  String get syncConflictLater => 'Später';
+
+  @override
+  String syncConflicts(int count) {
+    return 'Einträge mit zwei Versionen: $count';
+  }
 }

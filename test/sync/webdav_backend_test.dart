@@ -323,6 +323,7 @@ void main() {
             backend: backendFor(server),
             photos: FileStorePhotos(InMemoryFileStore()),
             limits: testLimits,
+            device: (id: '${identityHashCode(db)}', name: 'Device'),
             cipher: ItemCipher(keys))
         .sync();
 

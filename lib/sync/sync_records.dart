@@ -22,7 +22,7 @@ import 'package:sqflite/sqflite.dart';
 /// sends them along and one that knows fewer ignores the rest. Local row ids
 /// never leave the device; references are item ids.
 class SyncRecord {
-  const SyncRecord(this.kind, this.id, this.modified, this.data);
+  const SyncRecord(this.kind, this.id, this.modified, this.data, {this.device});
 
   final SyncKind kind;
   final String id;
@@ -33,12 +33,16 @@ class SyncRecord {
   /// Null for a deleted item.
   final Map<String, Object?>? data;
 
+  /// The name of the device that made this version, when known.
+  final String? device;
+
   bool get deleted => data == null;
 
   Map<String, Object?> toJson() => {
         'kind': kind.name,
         'id': id,
         'modified': modified,
+        if (device != null) 'device': device,
         if (data != null) 'data': data,
       };
 
@@ -46,7 +50,8 @@ class SyncRecord {
       SyncKind.byName(json['kind'] as String),
       json['id'] as String,
       json['modified'] as int,
-      (json['data'] as Map?)?.cast<String, Object?>());
+      (json['data'] as Map?)?.cast<String, Object?>(),
+      device: json['device'] as String?);
 
   /// The photos of an entry record, as (id, file name).
   List<({String id, String file})> get photos => [
@@ -61,19 +66,20 @@ const String _category = 'category';
 const String _entry = 'entry';
 const String _refs = 'refs';
 
-/// Reads the item [id] of [kind] as a record stamped [modified]; a deleted
-/// record when there is no such item.
+/// Reads the item [id] of [kind] as a record stamped [modified], made on
+/// [device]; a deleted record when there is no such item.
 Future<SyncRecord> exportRecord(
-    DatabaseExecutor db, SyncKind kind, String id, int modified) async {
+    DatabaseExecutor db, SyncKind kind, String id, int modified,
+    {String? device}) async {
   final rows = await db.query(kind.table,
       where: '$syncIdColumn = ?', whereArgs: [id], limit: 1);
-  if (rows.isEmpty) return SyncRecord(kind, id, modified, null);
+  if (rows.isEmpty) return SyncRecord(kind, id, modified, null, device: device);
   final row = rows.single;
   final rowId = row['id'] as int;
   final data = _ownFields(row);
 
   switch (kind) {
-    case SyncKind.category || SyncKind.weather:
+    case SyncKind.category || SyncKind.weather || SyncKind.conflict:
       break;
     case SyncKind.passage:
       data.remove(PassageFields.entryId);
@@ -133,7 +139,7 @@ WHERE l.${EntryTagFields.entryId} = ? ORDER BY l.id''', [rowId]))
           },
       ];
   }
-  return SyncRecord(kind, id, modified, data);
+  return SyncRecord(kind, id, modified, data, device: device);
 }
 
 Map<String, Object?> _ownFields(Map<String, Object?> row) =>
@@ -164,6 +170,10 @@ class RecordWriter {
   final Set<String> orphanedFiles = {};
   final Map<String, Set<String>> _columns = {};
 
+  /// Files of the photos removed so far, by photo id: a photo that moves to
+  /// an entry written after the one it left keeps its file.
+  final Map<String, String> _removed = {};
+
   /// Records must come categories first, then tags, templates and entries,
   /// so references find what they point to.
   Future<void> apply(SyncRecord record) async {
@@ -187,7 +197,8 @@ class RecordWriter {
       case SyncKind.category ||
             SyncKind.tag ||
             SyncKind.passage ||
-            SyncKind.weather:
+            SyncKind.weather ||
+            SyncKind.conflict:
         break;
       case SyncKind.template:
         await db.delete(templateTagsTable,
@@ -303,13 +314,15 @@ class RecordWriter {
             ...fields,
             syncIdColumn: id,
             EntryImageFields.entryId: entryRow,
-            EntryImageFields.imgPath: fileOf(id),
+            EntryImageFields.imgPath: _removed[id] ?? fileOf(id),
           });
         }
       }
     }
     for (final row in existing.values) {
       await db.delete(imagesTable, where: 'id = ?', whereArgs: [row['id']]);
+      _removed[row[syncIdColumn] as String] =
+          row[EntryImageFields.imgPath] as String;
       orphanedFiles.add(row[EntryImageFields.imgPath] as String);
     }
   }
@@ -329,7 +342,7 @@ class RecordWriter {
       case SyncKind.template:
         await db.delete(templateTagsTable,
             where: '${TemplateTagFields.templateId} = ?', whereArgs: [rowId]);
-      case SyncKind.passage || SyncKind.weather:
+      case SyncKind.passage || SyncKind.weather || SyncKind.conflict:
         break;
       case SyncKind.entry:
         await db.delete(entryTagsTable,
@@ -340,6 +353,8 @@ class RecordWriter {
             where: '${PassageFields.entryId} = ?', whereArgs: [rowId]);
         for (final image in await db.query(imagesTable,
             where: '${EntryImageFields.entryId} = ?', whereArgs: [rowId])) {
+          _removed[image[syncIdColumn] as String] =
+              image[EntryImageFields.imgPath] as String;
           orphanedFiles.add(image[EntryImageFields.imgPath] as String);
         }
         await db.delete(imagesTable,
@@ -359,26 +374,6 @@ class RecordWriter {
               .isEmpty)
             file,
       ];
-}
-
-/// Keeps a local entry that lost to a newer remote version as a new entry
-/// in Recently deleted, sharing its photo files, so no writing is lost.
-Future<void> keepLosingEntry(
-    DatabaseExecutor db, SyncRecord local, String newId, DateTime now) async {
-  final data = local.data!;
-  final copy = SyncRecord(SyncKind.entry, newId, local.modified, {
-    ...data,
-    EntryFields.deletedAt: now.toIso8601String(),
-    _images: [
-      for (final (index, image) in local.photos.indexed)
-        {'id': '$newId-$index', 'file': image.file, 'rank': index},
-    ],
-  });
-  final files = {
-    for (final (index, image) in local.photos.indexed)
-      '$newId-$index': image.file,
-  };
-  await RecordWriter(db, fileOf: (id) => files[id]!).apply(copy);
 }
 
 /// Where to keep a remote photo locally: its own name, unless another photo

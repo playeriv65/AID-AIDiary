@@ -2849,4 +2849,39 @@ class AppLocalizationsCs extends AppLocalizations {
   @override
   String get updateSilentHint =>
       'Stahuje na pozadí a instaluje, když aplikaci opustíte. Android se poprvé jednou zeptá.';
+
+  @override
+  String get syncConflictTitle => 'Tento záznam má dvě verze';
+
+  @override
+  String get syncConflictMessage =>
+      'Dvě zařízení změnila tento záznam dřív, než se změny synchronizovaly. Vyberte, kterou verzi ponechat; ponecháním obou vzniknou dva záznamy.';
+
+  @override
+  String syncConflictCount(int index, int total) {
+    return '$index z $total';
+  }
+
+  @override
+  String get syncConflictThisVersion => 'V tomto zařízení';
+
+  @override
+  String get syncConflictOtherVersion => 'V druhém zařízení';
+
+  @override
+  String get syncConflictKeepThis => 'Ponechat z tohoto zařízení';
+
+  @override
+  String get syncConflictKeepOther => 'Ponechat druhou';
+
+  @override
+  String get syncConflictKeepBoth => 'Ponechat obě';
+
+  @override
+  String get syncConflictLater => 'Později';
+
+  @override
+  String syncConflicts(int count) {
+    return 'Záznamy se dvěma verzemi: $count';
+  }
 }

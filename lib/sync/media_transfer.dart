@@ -74,6 +74,29 @@ class MediaVault implements SyncBackend {
       db.delete('sync_media_objects', where: 'path = ?', whereArgs: [path]);
 }
 
+/// Queues the attachment [id], kept locally as [name], to be sent or
+/// fetched by the next sync; a task already queued for it stays.
+Future<void> queueMedia(DatabaseExecutor db, String id, String name,
+    {required bool sending}) async {
+  if (id.isEmpty ||
+      id.length > 128 ||
+      id.contains(RegExp(r'[^a-zA-Z0-9_-]')) ||
+      name.isEmpty ||
+      name.contains(RegExp(r'[<>:"/\\|?*\x00-\x1f]')) ||
+      name.endsWith('.') ||
+      name.endsWith(' ')) {
+    throw const FormatException('Invalid attachment id or file name');
+  }
+  await db.insert(
+      'sync_media_tasks',
+      {
+        'id': id,
+        'name': name,
+        'sending': sending ? 1 : 0,
+      },
+      conflictAlgorithm: ConflictAlgorithm.ignore);
+}
+
 class MediaTransferReport {
   const MediaTransferReport(
       {required this.pending,
@@ -123,25 +146,8 @@ class MediaTransfers {
   }
 
   Future<void> queue(String id, String name,
-      {required bool sending, DatabaseExecutor? transaction}) async {
-    if (id.isEmpty ||
-        id.length > 128 ||
-        id.contains(RegExp(r'[^a-zA-Z0-9_-]')) ||
-        name.isEmpty ||
-        name.contains(RegExp(r'[<>:"/\\|?*\x00-\x1f]')) ||
-        name.endsWith('.') ||
-        name.endsWith(' ')) {
-      throw const FormatException('Invalid attachment id or file name');
-    }
-    await (transaction ?? db).insert(
-        'sync_media_tasks',
-        {
-          'id': id,
-          'name': name,
-          'sending': sending ? 1 : 0,
-        },
-        conflictAlgorithm: ConflictAlgorithm.ignore);
-  }
+          {required bool sending, DatabaseExecutor? transaction}) =>
+      queueMedia(transaction ?? db, id, name, sending: sending);
 
   Future<MediaTransferReport> run() async {
     var completed = 0;

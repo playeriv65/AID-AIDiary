@@ -5171,6 +5171,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Downloads in the background and installs when you leave the app. Android asks once, the first time.'**
   String get updateSilentHint;
+
+  /// No description provided for @syncConflictTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'This entry has two versions'**
+  String get syncConflictTitle;
+
+  /// No description provided for @syncConflictMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Two devices changed this entry before their changes synced. Choose which version to keep; keeping both makes two entries.'**
+  String get syncConflictMessage;
+
+  /// No description provided for @syncConflictCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{index} of {total}'**
+  String syncConflictCount(int index, int total);
+
+  /// No description provided for @syncConflictThisVersion.
+  ///
+  /// In en, this message translates to:
+  /// **'On this device'**
+  String get syncConflictThisVersion;
+
+  /// No description provided for @syncConflictOtherVersion.
+  ///
+  /// In en, this message translates to:
+  /// **'On the other device'**
+  String get syncConflictOtherVersion;
+
+  /// No description provided for @syncConflictKeepThis.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep this device\'s'**
+  String get syncConflictKeepThis;
+
+  /// No description provided for @syncConflictKeepOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep the other'**
+  String get syncConflictKeepOther;
+
+  /// No description provided for @syncConflictKeepBoth.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep both'**
+  String get syncConflictKeepBoth;
+
+  /// No description provided for @syncConflictLater.
+  ///
+  /// In en, this message translates to:
+  /// **'Later'**
+  String get syncConflictLater;
+
+  /// No description provided for @syncConflicts.
+  ///
+  /// In en, this message translates to:
+  /// **'Entries with two versions: {count}'**
+  String syncConflicts(int count);
 }
 
 class _AppLocalizationsDelegate

@@ -833,5 +833,15 @@
   "updateNewest": "Aceasta este cea mai nouă versiune.",
   "updateAutoCheck": "Caută actualizări automat",
   "updateSilent": "Instalează actualizările fără să întrebe",
-  "updateSilentHint": "Descarcă în fundal și instalează când părăsești aplicația. Android întreabă o dată, prima dată."
+  "updateSilentHint": "Descarcă în fundal și instalează când părăsești aplicația. Android întreabă o dată, prima dată.",
+  "syncConflictTitle": "Această intrare are două versiuni",
+  "syncConflictMessage": "Două dispozitive au modificat această intrare înainte ca modificările să se sincronizeze. Alege ce versiune păstrezi; dacă le păstrezi pe amândouă, devin două intrări.",
+  "syncConflictCount": "{index} din {total}",
+  "syncConflictThisVersion": "Pe acest dispozitiv",
+  "syncConflictOtherVersion": "Pe celălalt dispozitiv",
+  "syncConflictKeepThis": "Păstrează-o pe a acestui dispozitiv",
+  "syncConflictKeepOther": "Păstrează-o pe cealaltă",
+  "syncConflictKeepBoth": "Păstrează-le pe amândouă",
+  "syncConflictLater": "Mai târziu",
+  "syncConflicts": "Intrări cu două versiuni: {count}"
 }

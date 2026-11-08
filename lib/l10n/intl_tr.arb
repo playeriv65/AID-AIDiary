@@ -833,5 +833,15 @@
   "updateNewest": "Bu en yeni sürüm.",
   "updateAutoCheck": "Güncellemeleri otomatik denetle",
   "updateSilent": "Güncellemeleri sormadan yükle",
-  "updateSilentHint": "Arka planda indirir ve uygulamadan çıktığınızda yükler. Android ilk seferde bir kez sorar."
+  "updateSilentHint": "Arka planda indirir ve uygulamadan çıktığınızda yükler. Android ilk seferde bir kez sorar.",
+  "syncConflictTitle": "Bu girdinin iki sürümü var",
+  "syncConflictMessage": "Değişiklikler senkronize edilmeden önce iki cihaz bu girdiyi değiştirdi. Hangi sürümün kalacağını seçin; ikisini de tutarsanız iki girdi olur.",
+  "syncConflictCount": "{index}/{total}",
+  "syncConflictThisVersion": "Bu cihazda",
+  "syncConflictOtherVersion": "Diğer cihazda",
+  "syncConflictKeepThis": "Bu cihazınkini tut",
+  "syncConflictKeepOther": "Diğerini tut",
+  "syncConflictKeepBoth": "İkisini de tut",
+  "syncConflictLater": "Daha sonra",
+  "syncConflicts": "İki sürümü olan girdiler: {count}"
 }

@@ -833,5 +833,15 @@
   "updateNewest": "این جدیدترین نسخه است.",
   "updateAutoCheck": "بررسی خودکار به‌روزرسانی",
   "updateSilent": "نصب به‌روزرسانی بدون پرسش",
-  "updateSilentHint": "در پس‌زمینه دانلود و هنگام خروج از برنامه نصب می‌شود. اندروید بار اول یک بار می‌پرسد."
+  "updateSilentHint": "در پس‌زمینه دانلود و هنگام خروج از برنامه نصب می‌شود. اندروید بار اول یک بار می‌پرسد.",
+  "syncConflictTitle": "این یادداشت دو نسخه دارد",
+  "syncConflictMessage": "دو دستگاه این یادداشت را پیش از همگام‌سازی تغییرات ویرایش کرده‌اند. انتخاب کنید کدام نسخه بماند؛ اگر هر دو را نگه دارید، دو یادداشت می‌شوند.",
+  "syncConflictCount": "{index} از {total}",
+  "syncConflictThisVersion": "در این دستگاه",
+  "syncConflictOtherVersion": "در دستگاه دیگر",
+  "syncConflictKeepThis": "نگه‌داشتن نسخهٔ این دستگاه",
+  "syncConflictKeepOther": "نگه‌داشتن دیگری",
+  "syncConflictKeepBoth": "نگه‌داشتن هر دو",
+  "syncConflictLater": "بعداً",
+  "syncConflicts": "یادداشت‌های دارای دو نسخه: {count}"
 }

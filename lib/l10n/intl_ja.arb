@@ -833,5 +833,15 @@
   "updateNewest": "最新バージョンです。",
   "updateAutoCheck": "アップデートを自動で確認",
   "updateSilent": "確認せずにアップデートをインストール",
-  "updateSilentHint": "バックグラウンドでダウンロードし、アプリを離れたときにインストールします。初回だけ Android が確認します。"
+  "updateSilentHint": "バックグラウンドでダウンロードし、アプリを離れたときにインストールします。初回だけ Android が確認します。",
+  "syncConflictTitle": "この日記には2つのバージョンがあります",
+  "syncConflictMessage": "変更が同期される前に、2台のデバイスでこの日記が変更されました。残すバージョンを選んでください。両方残すと2つの日記になります。",
+  "syncConflictCount": "{index} / {total}",
+  "syncConflictThisVersion": "このデバイスのバージョン",
+  "syncConflictOtherVersion": "もう一方のデバイスのバージョン",
+  "syncConflictKeepThis": "このデバイスの方を残す",
+  "syncConflictKeepOther": "もう一方を残す",
+  "syncConflictKeepBoth": "両方残す",
+  "syncConflictLater": "後で",
+  "syncConflicts": "2つのバージョンがある日記: {count}"
 }

@@ -6,6 +6,7 @@
 library;
 
 import 'package:aid_diary/database/app_database.dart';
+import 'package:aid_diary/database/database_schema.dart' show currentVersion;
 import 'package:aid_diary/models/day_weather.dart';
 import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/models/entry_link.dart';
@@ -209,7 +210,7 @@ void main() {
         options: OpenDatabaseOptions(singleInstance: false));
     addTearDown(fresh.close);
     await AppDatabase.instance.createSchema(fresh);
-    await AppDatabase.instance.upgradeSchema(db, 16, 17);
+    await AppDatabase.instance.upgradeSchema(db, 16, currentVersion);
     AppDatabase.instance.database = db;
 
     Future<List<String>> schema(Database of) async => [

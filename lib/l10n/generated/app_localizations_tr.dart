@@ -2855,4 +2855,39 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get updateSilentHint =>
       'Arka planda indirir ve uygulamadan çıktığınızda yükler. Android ilk seferde bir kez sorar.';
+
+  @override
+  String get syncConflictTitle => 'Bu girdinin iki sürümü var';
+
+  @override
+  String get syncConflictMessage =>
+      'Değişiklikler senkronize edilmeden önce iki cihaz bu girdiyi değiştirdi. Hangi sürümün kalacağını seçin; ikisini de tutarsanız iki girdi olur.';
+
+  @override
+  String syncConflictCount(int index, int total) {
+    return '$index/$total';
+  }
+
+  @override
+  String get syncConflictThisVersion => 'Bu cihazda';
+
+  @override
+  String get syncConflictOtherVersion => 'Diğer cihazda';
+
+  @override
+  String get syncConflictKeepThis => 'Bu cihazınkini tut';
+
+  @override
+  String get syncConflictKeepOther => 'Diğerini tut';
+
+  @override
+  String get syncConflictKeepBoth => 'İkisini de tut';
+
+  @override
+  String get syncConflictLater => 'Daha sonra';
+
+  @override
+  String syncConflicts(int count) {
+    return 'İki sürümü olan girdiler: $count';
+  }
 }

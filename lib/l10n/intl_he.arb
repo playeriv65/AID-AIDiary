@@ -850,5 +850,15 @@
   "updateNewest": "זו הגרסה העדכנית ביותר.",
   "updateAutoCheck": "בדיקת עדכונים אוטומטית",
   "updateSilent": "התקנת עדכונים בלי לשאול",
-  "updateSilentHint": "מוריד ברקע ומתקין כשאתם יוצאים מהאפליקציה. אנדרואיד שואל פעם אחת, בפעם הראשונה."
+  "updateSilentHint": "מוריד ברקע ומתקין כשאתם יוצאים מהאפליקציה. אנדרואיד שואל פעם אחת, בפעם הראשונה.",
+  "syncConflictTitle": "לרשומה הזו יש שתי גרסאות",
+  "syncConflictMessage": "שני מכשירים שינו את הרשומה הזו לפני שהשינויים סונכרנו. בחרו איזו גרסה לשמור; שמירת שתיהן תיצור שתי רשומות.",
+  "syncConflictCount": "{index} מתוך {total}",
+  "syncConflictThisVersion": "במכשיר הזה",
+  "syncConflictOtherVersion": "במכשיר האחר",
+  "syncConflictKeepThis": "לשמור את של המכשיר הזה",
+  "syncConflictKeepOther": "לשמור את האחרת",
+  "syncConflictKeepBoth": "לשמור את שתיהן",
+  "syncConflictLater": "מאוחר יותר",
+  "syncConflicts": "רשומות עם שתי גרסאות: {count}"
 }

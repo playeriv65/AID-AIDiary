@@ -833,5 +833,15 @@
   "updateNewest": "Tämä on uusin versio.",
   "updateAutoCheck": "Tarkista päivitykset automaattisesti",
   "updateSilent": "Asenna päivitykset kysymättä",
-  "updateSilentHint": "Lataa taustalla ja asentaa, kun poistut sovelluksesta. Android kysyy kerran, ensimmäisellä kerralla."
+  "updateSilentHint": "Lataa taustalla ja asentaa, kun poistut sovelluksesta. Android kysyy kerran, ensimmäisellä kerralla.",
+  "syncConflictTitle": "Tällä merkinnällä on kaksi versiota",
+  "syncConflictMessage": "Kaksi laitetta muutti tätä merkintää ennen kuin muutokset synkronoitiin. Valitse, kumpi versio säilytetään; jos säilytät molemmat, niistä tulee kaksi merkintää.",
+  "syncConflictCount": "{index}/{total}",
+  "syncConflictThisVersion": "Tässä laitteessa",
+  "syncConflictOtherVersion": "Toisessa laitteessa",
+  "syncConflictKeepThis": "Säilytä tämän laitteen",
+  "syncConflictKeepOther": "Säilytä toinen",
+  "syncConflictKeepBoth": "Säilytä molemmat",
+  "syncConflictLater": "Myöhemmin",
+  "syncConflicts": "Merkinnät, joilla on kaksi versiota: {count}"
 }

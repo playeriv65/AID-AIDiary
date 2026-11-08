@@ -17,6 +17,7 @@ import 'package:flutter/services.dart';
 import 'package:aid_diary/routing/entry_navigation.dart';
 import 'package:aid_diary/widgets/app_update_prompt.dart';
 import 'package:aid_diary/widgets/new_entry_button.dart';
+import 'package:aid_diary/widgets/sync_conflict_dialog.dart';
 import 'package:material_ui/material_ui.dart';
 
 class MobileScaffold extends StatefulWidget {
@@ -41,12 +42,14 @@ class _MobileScaffoldState extends State<MobileScaffold>
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final context = _navigatorKey.currentContext;
       if (context != null) AppUpdatePrompt.instance.start(context);
+      SyncConflictPrompt.instance.start(() => _navigatorKey.currentContext);
     });
   }
 
   @override
   void dispose() {
     if (AppActions.instance.screen == this) AppActions.instance.screen = null;
+    SyncConflictPrompt.instance.stop();
     super.dispose();
   }
 

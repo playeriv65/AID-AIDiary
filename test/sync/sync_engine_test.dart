@@ -218,44 +218,6 @@ JOIN $entriesTable e ON e.id = l.${EntryTagFields.entryId}''');
     ]);
   });
 
-  test('of two edits the newer wins and the other is kept', () async {
-    await phone.write('plan');
-    await phone.sync(cloud);
-    await laptop.sync(cloud);
-
-    await laptop.edit('plan', 'plan from the laptop');
-    await later();
-    await phone.edit('plan', 'plan from the phone');
-    await phone.sync(cloud);
-
-    final report = await laptop.sync(cloud);
-
-    expect(report.keptConflicts, 1);
-    expect(await laptop.texts(), ['plan from the phone']);
-    expect(await laptop.texts(deleted: true), ['plan from the laptop']);
-    // The kept version reaches the phone too.
-    await phone.sync(cloud);
-    expect(await phone.texts(deleted: true), ['plan from the laptop']);
-  });
-
-  test('a newer local edit is sent instead of taking the remote one', () async {
-    await phone.write('plan');
-    await phone.sync(cloud);
-    await laptop.sync(cloud);
-
-    await phone.edit('plan', 'older');
-    await phone.sync(cloud);
-    await later();
-    await laptop.edit('plan', 'newer');
-
-    final report = await laptop.sync(cloud);
-    await phone.sync(cloud);
-
-    expect(report.keptConflicts, 0);
-    expect(await laptop.texts(), ['newer']);
-    expect(await phone.texts(), ['newer']);
-  });
-
   test('an encrypted space holds no readable text', () async {
     final keys = newDataKey();
     final cipher = ItemCipher(keys);
@@ -321,6 +283,7 @@ JOIN $entriesTable e ON e.id = l.${EntryTagFields.entryId}''');
           backend: cloud,
           photos: FileStorePhotos(device.photos),
           limits: limits,
+          device: device.device,
           onProgress: onProgress,
           stopped: stopped);
 
@@ -414,15 +377,24 @@ JOIN $entriesTable e ON e.id = l.${EntryTagFields.entryId}''');
     await laptop.sync(cloud);
 
     // The tablet reads both edits at once, the newer one in the older pack.
-    await laptop.edit('plan', 'plan from the laptop');
     await later();
     await phone.edit('plan', 'plan from the phone');
     await phone.sync(cloud);
     await laptop.sync(cloud);
+    await later();
+    await laptop.edit('plan from the phone', 'plan from the laptop');
+    await laptop.sync(cloud);
+    final packs = filesIn(SpaceLayout.packs)..sort();
+    final [older, newer] = [
+      for (final name in packs.sublist(packs.length - 2))
+        SpaceLayout.pack(name),
+    ];
+    final first = cloud.files[older]!;
+    cloud.files[older] = cloud.files[newer]!;
+    cloud.files[newer] = first;
     await tablet.sync(cloud);
 
-    expect(await tablet.texts(), ['plan from the phone']);
-    expect(await tablet.texts(deleted: true), ['plan from the laptop']);
+    expect(await tablet.texts(), ['plan from the laptop']);
   });
 
   test('a snapshot folds the packs and still carries deletions', () async {

@@ -833,5 +833,15 @@
   "updateNewest": "Det här är den senaste versionen.",
   "updateAutoCheck": "Sök efter uppdateringar automatiskt",
   "updateSilent": "Installera uppdateringar utan att fråga",
-  "updateSilentHint": "Hämtar i bakgrunden och installerar när du lämnar appen. Android frågar en gång, första gången."
+  "updateSilentHint": "Hämtar i bakgrunden och installerar när du lämnar appen. Android frågar en gång, första gången.",
+  "syncConflictTitle": "Det här inlägget har två versioner",
+  "syncConflictMessage": "Två enheter ändrade det här inlägget innan ändringarna synkroniserades. Välj vilken version som ska behållas; behåller du båda blir det två inlägg.",
+  "syncConflictCount": "{index} av {total}",
+  "syncConflictThisVersion": "På den här enheten",
+  "syncConflictOtherVersion": "På den andra enheten",
+  "syncConflictKeepThis": "Behåll den här enhetens",
+  "syncConflictKeepOther": "Behåll den andra",
+  "syncConflictKeepBoth": "Behåll båda",
+  "syncConflictLater": "Senare",
+  "syncConflicts": "Inlägg med två versioner: {count}"
 }

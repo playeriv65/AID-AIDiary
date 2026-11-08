@@ -85,14 +85,20 @@
   },
   {
     "id": "2026-11-08-rejoin-keeps-edits",
-    "en": "A device that reconnects to sync no longer overwrites edits other devices made while it was away. The later edit wins, and an earlier one not yet synced is kept in Recently deleted.",
-    "zh": "设备重新连接同步时，不会再覆盖其他设备在它离线期间做的修改。以较晚的修改为准，尚未同步的较早修改会保留在“最近删除”里。",
-    "zh_Hant": "裝置重新連線同步時，不會再覆蓋其他裝置在它離線期間做的修改。以較晚的修改為準，尚未同步的較早修改會保留在「最近刪除」裡。"
+    "en": "A device that reconnects to sync no longer overwrites edits other devices made while it was away.",
+    "zh": "设备重新连接同步时，不会再覆盖其他设备在它离线期间做的修改。",
+    "zh_Hant": "裝置重新連線同步時，不會再覆蓋其他裝置在它離線期間做的修改。"
   },
   {
     "id": "2026-11-08-connect-devices-page",
     "en": "The Connect devices page asks for the other device's invitation in a dialog you can paste into or scan, and closes with Close once done. Storage settings now say when compressing photos, resetting a folder or deleting all logs fails.",
     "zh": "“连接设备”页面改用对话框输入另一台设备的邀请，可以粘贴或扫码；完成后用“关闭”退出。存储设置里压缩照片、恢复默认目录或删除全部日记失败时，现在会提示出错。",
     "zh_Hant": "「連接裝置」頁面改用對話框輸入另一台裝置的邀請，可以貼上或掃描；完成後用「關閉」離開。儲存設定裡壓縮照片、恢復預設目錄或刪除所有紀錄失敗時，現在會提示出錯。"
+  },
+  {
+    "id": "2026-11-08-choose-sync-conflict",
+    "en": "When two devices change the same entry before either change syncs, the app shows both versions and you choose: this device's, the other's, or both as two entries. You can decide later from the sync settings; nothing goes to Recently deleted on its own.",
+    "zh": "两台设备在同步之前都改了同一篇日记时，应用会列出两个版本，由你选择保留本机的、另一台的，还是都保留成两篇日记。也可以稍后在同步设置里再选；不会再自动把某个版本放进“最近删除”。",
+    "zh_Hant": "兩台裝置在同步之前都改了同一篇日記時，應用程式會列出兩個版本，由你選擇保留本機的、另一台的，還是都保留成兩篇日記。也可以稍後在同步設定裡再選；不會再自動把某個版本放進「最近刪除」。"
   }
 ]

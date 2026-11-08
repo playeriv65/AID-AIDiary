@@ -12,11 +12,14 @@ import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/database/app_database.dart';
+import 'package:aid_diary/models/entry.dart';
 import 'package:aid_diary/sync/device_auth.dart';
 import 'package:aid_diary/sync/identity.dart';
 import 'package:aid_diary/sync/pairing.dart';
 import 'package:aid_diary/sync/sync_backend.dart';
 import 'package:aid_diary/sync/sync_crypto.dart';
+import 'package:aid_diary/sync/sync_records.dart';
+import 'package:aid_diary/sync/sync_schema.dart';
 import 'package:aid_diary/sync/sync_service.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -51,6 +54,61 @@ void main() {
   tearDown(() async {
     sync.unsyncedEntryIds = const {};
     await sync.disconnect();
+  });
+
+  test('conflicts are listed and resolved through actions', () async {
+    final db = AppDatabase.instance.database!;
+    final row = await db.insert(entriesTable, {
+      EntryFields.text: 'Lunch at the pier.',
+      EntryFields.timeCreate: '2026-03-14T12:00:00.000',
+      EntryFields.timeModified: '2026-03-14T12:00:00.000',
+    });
+    final id = (await db.query(entriesTable, where: 'id = ?', whereArgs: [row]))
+        .single[syncIdColumn] as String;
+    final mine =
+        await exportRecord(db, SyncKind.entry, id, 1000, device: 'Phone');
+    final theirs = SyncRecord(SyncKind.entry, id, 2000,
+        {...mine.data!, EntryFields.text: 'Lunch at the harbor.'},
+        device: 'Laptop');
+    // Another device found the conflict and holds its version back.
+    await db.insert(syncConflictsTable, {
+      syncIdColumn: 'conflict',
+      'entry': id,
+      'held_by': 'another-device',
+      'held': jsonEncode(theirs.toJson()),
+      'synced': jsonEncode(mine.toJson()),
+    });
+
+    final listed = (await actions.run('sync.conflicts', {}) as List).single
+        as Map<String, Object?>;
+    expect(listed['entry'], row);
+    expect(
+        listed['this'],
+        allOf(containsPair('text', 'Lunch at the pier.'),
+            containsPair('device', 'Phone')));
+    expect(
+        listed['other'],
+        allOf(containsPair('text', 'Lunch at the harbor.'),
+            containsPair('device', 'Laptop')));
+    expect(sync.pendingConflicts, 1);
+
+    final resolve = {'entry': row, 'keep': 'other'};
+    await expectLater(actions.run('sync.resolve_conflict', resolve),
+        refused('needs_confirmation'));
+    await expectLater(
+        actions.run('sync.resolve_conflict', {'entry': row, 'keep': 'neither'},
+            confirmed: true),
+        refused('bad_args'));
+    expect(await actions.run('sync.resolve_conflict', resolve, confirmed: true),
+        isEmpty);
+    expect(
+        (await db.query(entriesTable, where: 'id = ?', whereArgs: [row]))
+            .single[EntryFields.text],
+        'Lunch at the harbor.');
+    expect(sync.pendingConflicts, 0);
+    await expectLater(
+        actions.run('sync.resolve_conflict', resolve, confirmed: true),
+        refused('not_found'));
   });
 
   test('the status names the entries still waiting to go up', () async {
