@@ -6,6 +6,7 @@ import 'package:aid_diary/actions/app_action.dart';
 import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/sync/google_auth.dart';
 import 'package:aid_diary/sync/pairing.dart';
+import 'package:aid_diary/sync/sync_backend.dart';
 import 'package:aid_diary/sync/sync_crypto.dart';
 import 'package:aid_diary/sync/sync_service.dart';
 import 'package:aid_diary/sync/connection_manager.dart';
@@ -89,42 +90,30 @@ Map<String, Object?> _paired(PairingStatus status) {
   return {'pairing': pairingStatus(status), ...syncStatus()};
 }
 
-/// Starts a space at [login], or joins the one there: directly when this
-/// device holds its key, else with a recovery or pairing code. Without
-/// either, the space waits for the key from `sync.pair_offer` or
-/// `sync.pair_accept`. Then waits for the first sync.
-Future<Map<String, Object?>> _open(SyncLogin login, ActionArgs args) async {
-  final recoveryCode = args['recoveryCode'] as String?;
-  final pairCode = args['pairCode'] as String?;
+/// The sign-in of the last connect that did not finish: there was no space
+/// yet (`sync.create_space` goes on from it), or the space there belongs to
+/// other devices (`sync.unlock` goes on from it).
+({SyncLogin login, SpaceInfo? space})? _signedIn;
+
+/// Signs in at [login] and joins the space there when this device holds
+/// its key; the first sync then runs on without being waited for. `space`
+/// in the result says how it went: `joined`; `none`, when there is no
+/// space yet; or `needs_key`, when the space belongs to other devices.
+/// Both of the latter keep the sign-in for the step that follows.
+Future<Map<String, Object?>> openSyncSpace(SyncLogin login) async {
+  _signedIn = null;
   final space = await _sync.probe(login);
-  String? newRecoveryCode;
   if (space == null) {
-    newRecoveryCode = await _withKey(() =>
-        _sync.createSpace(login, chosen: args['recoveryPassword'] as String?));
-  } else if (recoveryCode != null) {
-    await _withKey(() => _sync.recover(login, space, recoveryCode));
-  } else {
-    try {
-      await _sync.joinSpace(login, space);
-    } on NeedsKeyException {
-      if (pairCode == null) {
-        throw const ActionException(
-            'needs_key',
-            'This space belongs to other devices. Pair with one: run '
-                'sync.pair_offer here and type the code there, or give '
-                'pairCode from sync.pair_offer there; or give recoveryCode.');
-      }
-      _paired(await _acceptPairing(pairCode));
-    }
+    _signedIn = (login: login, space: null);
+    return {'space': 'none', ...syncStatus()};
   }
-  final stopwatch = Stopwatch()..start();
-  await _sync.syncNow();
-  return {
-    'created': space == null,
-    if (newRecoveryCode != null) 'recoveryCode': newRecoveryCode,
-    'firstSyncMs': stopwatch.elapsedMilliseconds,
-    ...syncStatus(),
-  };
+  try {
+    await _sync.joinSpace(login, space);
+  } on NeedsKeyException {
+    _signedIn = (login: login, space: space);
+    return {'space': 'needs_key', ...syncStatus()};
+  }
+  return {'space': 'joined', ...syncStatus()};
 }
 
 Future<PairingStatus> _acceptPairing(String code) async {
@@ -136,26 +125,10 @@ Future<PairingStatus> _acceptPairing(String code) async {
   }
 }
 
-const _joinParams = [
-  ActionParam(
-      'recoveryCode',
-      ParamType.string,
-      "Joins a space this device has no key for with the space's recovery "
-          'code',
-      required: false),
-  ActionParam(
-      'pairCode',
-      ParamType.string,
-      'Joins a space this device has no key for with the code another '
-          'device of the space shows (sync.pair_offer there)',
-      required: false),
-  ActionParam(
-      'recoveryPassword',
-      ParamType.string,
-      'For a new space, a recovery password of your own instead of a '
-          'random code',
-      required: false),
-];
+/// What a connect action does after signing in, for its description.
+const _connectSteps = 'joins the space there if this device holds its key. '
+    'Returns space: joined; none (then sync.create_space); or needs_key '
+    '(then pair, or sync.unlock with the recovery code).';
 
 final List<AppAction> syncActions = [
   AppAction(
@@ -243,36 +216,32 @@ final List<AppAction> syncActions = [
   ),
   AppAction(
     id: 'sync.connect_webdav',
-    describe: 'Starts syncing with a WebDAV server: makes an encrypted space '
-        'there, returning its recovery code, or joins the one there, then '
-        'syncs.',
+    describe: 'Signs in to a WebDAV server and $_connectSteps',
     risk: ActionRisk.write,
     params: const [
-      ActionParam('server', ParamType.string, 'The WebDAV address'),
+      ActionParam('server', ParamType.string,
+          'The full WebDAV address, such as https://dav.example.com/'),
       ActionParam('username', ParamType.string, 'The account name'),
       ActionParam('password', ParamType.string, 'The account password'),
-      ..._joinParams,
     ],
     run: (context, args) async {
-      final server = Uri.tryParse(args['server'] as String);
+      final server = Uri.tryParse((args['server'] as String).trim());
       if (server == null || !server.hasScheme || server.host.isEmpty) {
-        throw const ActionException('bad_args', 'server must be a URL');
+        throw const ActionException('bad_address',
+            'server must be a full address, such as https://dav.example.com/');
       }
-      return _open(
-          WebDavLogin(
-              server: server,
-              username: args['username'] as String,
-              password: args['password'] as String),
-          args);
+      return openSyncSpace(WebDavLogin(
+          server: server,
+          username: (args['username'] as String).trim(),
+          password: args['password'] as String));
     },
   ),
   AppAction(
     id: 'sync.connect_google',
-    describe: "Starts syncing with the user's Google Drive, as "
-        "sync.connect_webdav does. Google's account chooser appears on the "
-        'device and needs a person to pick an account.',
+    describe: "Signs in to the user's Google Drive and $_connectSteps "
+        "Google's account chooser appears on the device and needs a person "
+        'to pick an account.',
     risk: ActionRisk.write,
-    params: _joinParams,
     run: (context, args) async {
       if (!GoogleAuth.available) {
         throw const ActionException(
@@ -281,7 +250,49 @@ final List<AppAction> syncActions = [
       final auth = GoogleAuth.forPlatform();
       final account = await auth.signIn(
           doneMessage: shownLocalizations().syncGoogleSignedIn);
-      return _open(GoogleDriveLogin(username: account, auth: auth), args);
+      return openSyncSpace(GoogleDriveLogin(username: account, auth: auth));
+    },
+  ),
+  AppAction(
+    id: 'sync.create_space',
+    describe: 'Makes an encrypted space with this diary in it where the last '
+        'sync.connect_webdav or sync.connect_google found none, and starts '
+        'syncing it. Returns the recovery code to keep: a random one, or '
+        'the password given.',
+    risk: ActionRisk.write,
+    params: const [
+      ActionParam('password', ParamType.string,
+          'A recovery password of your own instead of a random code',
+          required: false),
+    ],
+    run: (context, args) async {
+      final signedIn = _signedIn;
+      if (signedIn == null || signedIn.space != null || _sync.target != null) {
+        throw const ActionException(
+            'not_signed_in',
+            'Sign in first with sync.connect_webdav or sync.connect_google '
+                'where there is no space yet');
+      }
+      final code = await _withKey(() => _sync.createSpace(signedIn.login,
+          chosen: args['password'] as String?));
+      _signedIn = null;
+      return {'recoveryCode': code, ...syncStatus()};
+    },
+  ),
+  AppAction(
+    id: 'sync.sign_in_again',
+    describe: 'Signs in to Google Drive again after Google asked for it '
+        '(sync.status shows the error), keeping the space and its key, then '
+        "syncs. Google's account chooser appears on the device.",
+    risk: ActionRisk.write,
+    run: (context, args) async {
+      if (_sync.target?.provider != SyncProvider.googleDrive) {
+        throw const ActionException(
+            'not_connected', 'This device does not sync with Google Drive');
+      }
+      await _sync.signInAgain(
+          doneMessage: shownLocalizations().syncGoogleSignedIn);
+      return syncStatus();
     },
   ),
   AppAction(
@@ -325,19 +336,27 @@ final List<AppAction> syncActions = [
   ),
   AppAction(
     id: 'sync.unlock',
-    describe: 'Opens the space this device syncs again with its recovery '
-        'code, after it was started over elsewhere, then syncs.',
+    describe: 'Opens a space with its recovery code: the one this device '
+        'syncs, after it was started over elsewhere, or else the one the '
+        'last sync.connect_webdav or sync.connect_google found belonging to '
+        'other devices. The sync that follows runs on (sync.status).',
     risk: ActionRisk.write,
     params: const [
       ActionParam(
           'recoveryCode', ParamType.string, "The space's recovery code"),
     ],
     run: (context, args) async {
-      if (_sync.target == null) {
+      final code = args['recoveryCode'] as String;
+      final signedIn = _signedIn;
+      if (_sync.target != null) {
+        await _withKey(() => _sync.unlock(code));
+      } else if (signedIn != null && signedIn.space != null) {
+        await _withKey(
+            () => _sync.recover(signedIn.login, signedIn.space!, code));
+        _signedIn = null;
+      } else {
         throw const ActionException('not_connected', 'Sync is not set up');
       }
-      await _withKey(() => _sync.unlock(args['recoveryCode'] as String));
-      await _sync.syncNow();
       return syncStatus();
     },
   ),

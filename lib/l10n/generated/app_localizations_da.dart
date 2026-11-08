@@ -1996,6 +1996,10 @@ class AppLocalizationsDa extends AppLocalizations {
   String get syncServer => 'Serveradresse';
 
   @override
+  String get syncServerInvalid =>
+      'Angiv hele serveradressen, startende med https://';
+
+  @override
   String get syncUsername => 'Brugernavn';
 
   @override
@@ -2076,12 +2080,9 @@ class AppLocalizationsDa extends AppLocalizations {
   String get syncRecoveryPasswordRepeat => 'Gentag gendannelsesadgangskoden';
 
   @override
-  String syncRecoveryPasswordTooShort(int min) {
+  String passwordTooShort(int min) {
     return 'Brug mindst $min tegn';
   }
-
-  @override
-  String get syncRecoveryPasswordMismatch => 'Adgangskoderne er forskellige';
 
   @override
   String get syncRecoveryCode => 'Gendannelseskode';

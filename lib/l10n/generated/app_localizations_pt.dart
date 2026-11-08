@@ -2016,6 +2016,10 @@ class AppLocalizationsPt extends AppLocalizations {
   String get syncServer => 'Endereço do servidor';
 
   @override
+  String get syncServerInvalid =>
+      'Introduza o endereço completo do servidor, a começar por https://';
+
+  @override
   String get syncUsername => 'Nome de utilizador';
 
   @override
@@ -2098,12 +2102,9 @@ class AppLocalizationsPt extends AppLocalizations {
       'Repita a palavra-passe de recuperação';
 
   @override
-  String syncRecoveryPasswordTooShort(int min) {
+  String passwordTooShort(int min) {
     return 'Utilize pelo menos caracteres $min';
   }
-
-  @override
-  String get syncRecoveryPasswordMismatch => 'As palavras-passe diferem';
 
   @override
   String get syncRecoveryCode => 'Código de recuperação';
@@ -4921,6 +4922,10 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
   String get syncServer => 'Endereço do servidor';
 
   @override
+  String get syncServerInvalid =>
+      'Digite o endereço completo do servidor, começando com https://';
+
+  @override
   String get syncUsername => 'Nome de usuário';
 
   @override
@@ -5002,12 +5007,9 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
   String get syncRecoveryPasswordRepeat => 'Repita a senha de recuperação';
 
   @override
-  String syncRecoveryPasswordTooShort(int min) {
+  String passwordTooShort(int min) {
     return 'Use pelo menos caracteres $min';
   }
-
-  @override
-  String get syncRecoveryPasswordMismatch => 'As senhas diferem';
 
   @override
   String get syncRecoveryCode => 'Código de recuperação';

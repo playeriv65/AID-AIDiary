@@ -1964,6 +1964,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get syncServer => '서버 주소';
 
   @override
+  String get syncServerInvalid => 'https://로 시작하는 전체 서버 주소를 입력하세요';
+
+  @override
   String get syncUsername => '사용자 이름';
 
   @override
@@ -2042,12 +2045,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get syncRecoveryPasswordRepeat => '복구 비밀번호를 반복하세요';
 
   @override
-  String syncRecoveryPasswordTooShort(int min) {
+  String passwordTooShort(int min) {
     return '최소한 $min 문자를 사용하세요';
   }
-
-  @override
-  String get syncRecoveryPasswordMismatch => '비밀번호가 다릅니다';
 
   @override
   String get syncRecoveryCode => '복구 코드';

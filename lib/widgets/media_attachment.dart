@@ -9,6 +9,7 @@ import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/database/image_storage.dart';
 import 'package:aid_diary/services/media_import.dart';
 import 'package:aid_diary/widgets/entry_image_actions.dart';
+import 'package:aid_diary/widgets/snack_message.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/models/image.dart';
 import 'package:file_picker/file_picker.dart';
@@ -52,15 +53,14 @@ class MediaActions {
   static Future<void> pickVideo(
       BuildContext context, ValueChanged<List<String>> onAdded,
       {bool camera = false}) async {
-    final messenger = ScaffoldMessenger.maybeOf(context);
     final tooLarge = AppLocalizations.of(context)!.mediaTooLarge;
     final picked = await ImagePicker().pickVideo(
         source: camera ? ImageSource.camera : ImageSource.gallery,
         maxDuration: AppConfig.instance.maxVideoDuration);
     if (picked == null) return;
-    await addPickedVideo(picked, onAdded,
-        onTooLarge: () =>
-            messenger?.showSnackBar(SnackBar(content: Text(tooLarge))));
+    await addPickedVideo(picked, onAdded, onTooLarge: () {
+      if (context.mounted) showSnackMessage(context, tooLarge);
+    });
   }
 
   /// Stores a video a picker handed over, unless it is too large.
@@ -83,7 +83,6 @@ class MediaActions {
   /// like gallery ones, and a video over the size limit is left out.
   static Future<void> pickFiles(
       BuildContext context, ValueChanged<List<String>> onAdded) async {
-    final messenger = ScaffoldMessenger.maybeOf(context);
     final tooLarge = AppLocalizations.of(context)!.mediaTooLarge;
     final config = AppConfig.instance;
     final result =
@@ -115,7 +114,7 @@ class MediaActions {
           try {
             _added(await MediaImport.storeVideo(path), name, onAdded);
           } on MediaTooLargeException {
-            messenger?.showSnackBar(SnackBar(content: Text(tooLarge)));
+            if (context.mounted) showSnackMessage(context, tooLarge);
           }
         case MediaKind.audio:
           _added(await MediaImport.storeAudio(path), name, onAdded);

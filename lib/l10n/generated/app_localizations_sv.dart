@@ -2005,6 +2005,10 @@ class AppLocalizationsSv extends AppLocalizations {
   String get syncServer => 'Serveradress';
 
   @override
+  String get syncServerInvalid =>
+      'Ange hela serveradressen, som börjar med https://';
+
+  @override
   String get syncUsername => 'Användarnamn';
 
   @override
@@ -2086,12 +2090,9 @@ class AppLocalizationsSv extends AppLocalizations {
   String get syncRecoveryPasswordRepeat => 'Upprepa återställningslösenordet';
 
   @override
-  String syncRecoveryPasswordTooShort(int min) {
+  String passwordTooShort(int min) {
     return 'Använd minst $min-tecken';
   }
-
-  @override
-  String get syncRecoveryPasswordMismatch => 'Lösenorden skiljer sig åt';
 
   @override
   String get syncRecoveryCode => 'Återställningskod';

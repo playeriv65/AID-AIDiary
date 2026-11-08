@@ -2000,6 +2000,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String get syncServer => 'Sunucu adresi';
 
   @override
+  String get syncServerInvalid =>
+      'https:// ile başlayan tam sunucu adresini girin';
+
+  @override
   String get syncUsername => 'Kullanıcı adı';
 
   @override
@@ -2080,12 +2084,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get syncRecoveryPasswordRepeat => 'Kurtarma şifresini tekrarlayın';
 
   @override
-  String syncRecoveryPasswordTooShort(int min) {
+  String passwordTooShort(int min) {
     return 'En az $min karakter kullanın';
   }
-
-  @override
-  String get syncRecoveryPasswordMismatch => 'Şifreler farklı';
 
   @override
   String get syncRecoveryCode => 'Kurtarma kodu';

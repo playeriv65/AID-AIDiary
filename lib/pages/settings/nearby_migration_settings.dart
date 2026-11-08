@@ -9,6 +9,7 @@ import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/sync/nearby_service.dart';
 import 'package:aid_diary/widgets/device_name_tile.dart';
 import 'package:aid_diary/widgets/qr_code_box.dart';
+import 'package:aid_diary/widgets/snack_message.dart';
 import 'package:aid_diary/widgets/text_input_dialog.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
@@ -32,17 +33,10 @@ class _NearbyMigrationSettingsState extends State<NearbyMigrationSettings> {
     super.dispose();
   }
 
-  Future<void> _run(String action,
-      [Map<String, Object?> args = const {}]) async {
-    try {
-      await AppActions.instance.run(action, args, confirmed: true);
-    } catch (_) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(AppLocalizations.of(context)!.nearbyFailed)));
-      }
-    }
-  }
+  Future<void> _run(String action, [Map<String, Object?> args = const {}]) =>
+      runWithFailureSnack(
+          context, () => AppActions.instance.run(action, args, confirmed: true),
+          failure: AppLocalizations.of(context)!.nearbyFailed);
 
   /// Takes the existing device's invitation, pasted or scanned, and
   /// connects to that device.

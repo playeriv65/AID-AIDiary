@@ -2013,6 +2013,10 @@ class AppLocalizationsVi extends AppLocalizations {
   String get syncServer => 'Địa chỉ máy chủ';
 
   @override
+  String get syncServerInvalid =>
+      'Nhập địa chỉ máy chủ đầy đủ, bắt đầu bằng https://';
+
+  @override
   String get syncUsername => 'Tên người dùng';
 
   @override
@@ -2094,12 +2098,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get syncRecoveryPasswordRepeat => 'Lặp lại mật khẩu khôi phục';
 
   @override
-  String syncRecoveryPasswordTooShort(int min) {
+  String passwordTooShort(int min) {
     return 'Sử dụng ít nhất ký tự $min';
   }
-
-  @override
-  String get syncRecoveryPasswordMismatch => 'Mật khẩu khác nhau';
 
   @override
   String get syncRecoveryCode => 'Mã khôi phục';

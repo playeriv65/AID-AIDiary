@@ -2028,6 +2028,10 @@ class AppLocalizationsRo extends AppLocalizations {
   String get syncServer => 'Adresa serverului';
 
   @override
+  String get syncServerInvalid =>
+      'Introduceți adresa completă a serverului, care începe cu https://';
+
+  @override
   String get syncUsername => 'Nume de utilizator';
 
   @override
@@ -2109,12 +2113,9 @@ class AppLocalizationsRo extends AppLocalizations {
   String get syncRecoveryPasswordRepeat => 'Repetați parola de recuperare';
 
   @override
-  String syncRecoveryPasswordTooShort(int min) {
+  String passwordTooShort(int min) {
     return 'Utilizați cel puțin caractere $min';
   }
-
-  @override
-  String get syncRecoveryPasswordMismatch => 'Parolele diferă';
 
   @override
   String get syncRecoveryCode => 'Cod de recuperare';

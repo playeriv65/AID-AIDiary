@@ -1995,6 +1995,10 @@ class AppLocalizationsFa extends AppLocalizations {
   String get syncServer => 'آدرس سرور';
 
   @override
+  String get syncServerInvalid =>
+      'نشانی کامل سرور را وارد کنید که با https:// شروع می‌شود';
+
+  @override
   String get syncUsername => 'نام کاربری';
 
   @override
@@ -2075,12 +2079,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get syncRecoveryPasswordRepeat => 'رمز بازیابی را تکرار کنید';
 
   @override
-  String syncRecoveryPasswordTooShort(int min) {
+  String passwordTooShort(int min) {
     return 'حداقل از کاراکترهای $min استفاده کنید';
   }
-
-  @override
-  String get syncRecoveryPasswordMismatch => 'رمزهای عبور متفاوت است';
 
   @override
   String get syncRecoveryCode => 'کد بازیابی';

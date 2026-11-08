@@ -2012,6 +2012,10 @@ class AppLocalizationsUk extends AppLocalizations {
   String get syncServer => 'Адреса сервера';
 
   @override
+  String get syncServerInvalid =>
+      'Введіть повну адресу сервера, що починається з https://';
+
+  @override
   String get syncUsername => 'Ім\'я користувача';
 
   @override
@@ -2093,12 +2097,9 @@ class AppLocalizationsUk extends AppLocalizations {
   String get syncRecoveryPasswordRepeat => 'Повторіть пароль відновлення';
 
   @override
-  String syncRecoveryPasswordTooShort(int min) {
+  String passwordTooShort(int min) {
     return 'Використовуйте принаймні $min символів';
   }
-
-  @override
-  String get syncRecoveryPasswordMismatch => 'Паролі відрізняються';
 
   @override
   String get syncRecoveryCode => 'Код відновлення';

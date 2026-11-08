@@ -12,6 +12,7 @@ import 'package:aid_diary/widgets/app_update_prompt.dart';
 import 'package:aid_diary/widgets/settings_icon_action.dart';
 import 'package:aid_diary/widgets/settings_row.dart';
 import 'package:aid_diary/widgets/settings_toggle.dart';
+import 'package:aid_diary/widgets/snack_message.dart';
 import 'package:flutter/services.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -78,19 +79,17 @@ class _UpdateSettingsState extends State<_UpdateSettings> {
 
   Future<void> _checkNow() async {
     final l10n = AppLocalizations.of(context)!;
-    final messenger = ScaffoldMessenger.of(context);
     setState(() => _checking = true);
     try {
       final update = await AppUpdates.instance.check();
       if (!mounted) return;
       if (update == null) {
-        messenger.showSnackBar(SnackBar(content: Text(l10n.updateNewest)));
+        showSnackMessage(context, l10n.updateNewest);
       } else {
         await showUpdateDialog(context, update);
       }
     } catch (error) {
-      messenger
-          .showSnackBar(SnackBar(content: Text(l10n.updateFailed('$error'))));
+      if (mounted) showSnackMessage(context, l10n.updateFailed('$error'));
     } finally {
       if (mounted) setState(() => _checking = false);
     }

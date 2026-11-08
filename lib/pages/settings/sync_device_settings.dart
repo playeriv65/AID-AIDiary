@@ -10,6 +10,7 @@ import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/sync/device_auth.dart';
 import 'package:aid_diary/sync/local_device.dart';
 import 'package:aid_diary/widgets/device_name_tile.dart';
+import 'package:aid_diary/widgets/snack_message.dart';
 import 'package:aid_diary/widgets/text_input_dialog.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
@@ -76,27 +77,30 @@ class _SyncDeviceSettingsState extends State<SyncDeviceSettings> {
     }
   }
 
-  Future<bool> _confirm(String title, String body) async =>
-      showConfirmDialog(context,
-          title: title,
-          message: body,
-          confirm: MaterialLocalizations.of(context).okButtonLabel);
+  /// Runs [action] for the selected account, then shows the devices again.
   Future<void> _run(String action,
       [Map<String, Object?> args = const {}]) async {
     setState(() => _busy = true);
-    try {
-      await AppActions.instance
-          .run(action, {..._accountArgs, ...args}, confirmed: true);
-    } catch (_) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content:
-                Text(AppLocalizations.of(context)!.syncDeviceUnavailable)));
-      }
-    } finally {
-      if (mounted) setState(() => _busy = false);
+    await runWithFailureSnack(
+        context,
+        () => AppActions.instance
+            .run(action, {..._accountArgs, ...args}, confirmed: true),
+        failure: AppLocalizations.of(context)!.syncDeviceUnavailable);
+    if (!mounted) return;
+    setState(() => _busy = false);
+    await _load();
+  }
+
+  Future<void> _revoke(String device) async {
+    final l10n = AppLocalizations.of(context)!;
+    if (await showConfirmDialog(context,
+            title: l10n.syncDeviceRevoke,
+            message: l10n.syncDevicesDescription,
+            confirm: l10n.syncDeviceRevoke,
+            destructive: true) &&
+        mounted) {
+      await _run('sync.devices_revoke', {'device': device});
     }
-    if (mounted) await _load();
   }
 
   Future<void> _authorize() async {
@@ -125,15 +129,16 @@ class _SyncDeviceSettingsState extends State<SyncDeviceSettings> {
           publicKeySpki: spki,
           hardwareBacked: false,
           provider: '');
-      if (await _confirm(l10n.syncDeviceAuthorize,
-          '${l10n.nearbyCompare}\n\n${candidate.fingerprint}')) {
+      if (await showConfirmDialog(context,
+              title: l10n.syncDeviceAuthorize,
+              message: '${l10n.nearbyCompare}\n\n${candidate.fingerprint}',
+              confirm: l10n.syncDeviceAuthorize) &&
+          mounted) {
         await _run('sync.devices_authorize', {'request': result});
       }
     } catch (_) {
-      if (mounted) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(l10n.syncDeviceUnavailable)));
-      }
+      // Not an authorization request: the user can paste or scan again.
+      if (mounted) showSnackMessage(context, l10n.syncDeviceUnavailable);
     }
   }
 
@@ -224,16 +229,7 @@ class _SyncDeviceSettingsState extends State<SyncDeviceSettings> {
                                 TextButton(
                                     onPressed: _busy
                                         ? null
-                                        : () async {
-                                            if (await _confirm(
-                                                l10n.syncDeviceRevoke,
-                                                l10n.syncDevicesDescription)) {
-                                              await _run(
-                                                  'sync.devices_revoke', {
-                                                'device': device['id'] as String
-                                              });
-                                            }
-                                          },
+                                        : () => _revoke(device['id'] as String),
                                     child: Text(l10n.syncDeviceRevoke))
                             ]),
                       const SizedBox(height: 12),

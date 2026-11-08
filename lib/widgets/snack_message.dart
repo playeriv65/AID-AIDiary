@@ -7,11 +7,12 @@ import 'package:material_ui/material_ui.dart';
 /// Says [message] in a snack bar: a note, or a failure the user can simply
 /// try again. A failure the user has to act on goes to `showFailureDialog`
 /// (or `runOperation`) instead; see docs/ARCHITECTURE.md, "Reporting
-/// failures".
-void showSnackMessage(BuildContext context, String message) {
+/// failures". [action] offers one step that follows from it.
+void showSnackMessage(BuildContext context, String message,
+    {SnackBarAction? action}) {
   if (!context.mounted) return;
   ScaffoldMessenger.maybeOf(context)
-      ?.showSnackBar(SnackBar(content: Text(message)));
+      ?.showSnackBar(SnackBar(content: Text(message), action: action));
 }
 
 /// Runs [task]; when it throws, says [failure] with [showSnackMessage] and

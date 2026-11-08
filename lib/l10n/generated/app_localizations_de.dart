@@ -2022,6 +2022,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get syncServer => 'Serveradresse';
 
   @override
+  String get syncServerInvalid =>
+      'Geben Sie die vollständige Serveradresse ein, beginnend mit https://';
+
+  @override
   String get syncUsername => 'Benutzername';
 
   @override
@@ -2104,13 +2108,9 @@ class AppLocalizationsDe extends AppLocalizations {
       'Wiederholen Sie das Wiederherstellungskennwort';
 
   @override
-  String syncRecoveryPasswordTooShort(int min) {
+  String passwordTooShort(int min) {
     return 'Verwenden Sie mindestens $min-Zeichen';
   }
-
-  @override
-  String get syncRecoveryPasswordMismatch =>
-      'Die Passwörter sind unterschiedlich';
 
   @override
   String get syncRecoveryCode => 'Wiederherstellungscode';

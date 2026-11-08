@@ -2012,6 +2012,10 @@ class AppLocalizationsBg extends AppLocalizations {
   String get syncServer => 'Адрес на сървъра';
 
   @override
+  String get syncServerInvalid =>
+      'Въведете пълния адрес на сървъра, започващ с https://';
+
+  @override
   String get syncUsername => 'Потребителско име';
 
   @override
@@ -2094,12 +2098,9 @@ class AppLocalizationsBg extends AppLocalizations {
       'Повторете паролата за възстановяване';
 
   @override
-  String syncRecoveryPasswordTooShort(int min) {
+  String passwordTooShort(int min) {
     return 'Използвайте поне $min знаци';
   }
-
-  @override
-  String get syncRecoveryPasswordMismatch => 'Паролите се различават';
 
   @override
   String get syncRecoveryCode => 'Код за възстановяване';

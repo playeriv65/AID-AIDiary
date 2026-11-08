@@ -1989,6 +1989,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get syncServer => 'Server address';
 
   @override
+  String get syncServerInvalid =>
+      'Enter the full server address, starting with https://';
+
+  @override
   String get syncUsername => 'Username';
 
   @override
@@ -2069,12 +2073,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get syncRecoveryPasswordRepeat => 'Repeat the recovery password';
 
   @override
-  String syncRecoveryPasswordTooShort(int min) {
+  String passwordTooShort(int min) {
     return 'Use at least $min characters';
   }
-
-  @override
-  String get syncRecoveryPasswordMismatch => 'The passwords differ';
 
   @override
   String get syncRecoveryCode => 'Recovery code';

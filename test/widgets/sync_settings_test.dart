@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/pages/settings/sync_settings.dart';
+import 'package:aid_diary/widgets/failure_dialog.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 import '../support/diary_app_harness.dart';
@@ -36,6 +37,22 @@ void main() {
     expect(find.textContaining('storage-account'), findsOneWidget);
     expect(find.byKey(const ValueKey('nearby-migration-settings')),
         findsOneWidget);
+    await tester.pumpWidget(const SizedBox.shrink());
+  });
+
+  testWidgets('a server address that is not whole is reported', (tester) async {
+    DiaryAppHarness.size(tester, const Size(800, 1000));
+    await DiaryAppHarness.setSetting(Settings.syncTarget, '');
+    await tester.pumpWidget(harness.app(const SyncSettings()));
+    await tester.pumpAndSettle();
+    final l10n =
+        AppLocalizations.of(tester.element(find.byType(SyncSettings)))!;
+    await tester.enterText(
+        find.byKey(const ValueKey('sync-server')), 'dav.example.com');
+    await tester.tap(find.byKey(const ValueKey('sync-connect')));
+    await tester.pumpAndSettle();
+    expect(find.byType(FailureDialog), findsOneWidget);
+    expect(find.text(l10n.syncServerInvalid), findsOneWidget);
     await tester.pumpWidget(const SizedBox.shrink());
   });
 }

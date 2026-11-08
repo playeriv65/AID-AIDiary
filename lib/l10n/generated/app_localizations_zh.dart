@@ -1946,6 +1946,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get syncServer => '服务器地址';
 
   @override
+  String get syncServerInvalid => '请输入完整的服务器地址，以 https:// 开头';
+
+  @override
   String get syncUsername => '用户名';
 
   @override
@@ -2021,12 +2024,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get syncRecoveryPasswordRepeat => '再次输入恢复密码';
 
   @override
-  String syncRecoveryPasswordTooShort(int min) {
+  String passwordTooShort(int min) {
     return '至少 $min 个字符';
   }
-
-  @override
-  String get syncRecoveryPasswordMismatch => '两次输入的密码不一致';
 
   @override
   String get syncRecoveryCode => '恢复码';
@@ -4720,6 +4720,9 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get syncServer => '伺服器位址';
 
   @override
+  String get syncServerInvalid => '請輸入完整的伺服器位址，以 https:// 開頭';
+
+  @override
   String get syncUsername => '使用者名稱';
 
   @override
@@ -4796,12 +4799,9 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get syncRecoveryPasswordRepeat => '重複恢復密碼';
 
   @override
-  String syncRecoveryPasswordTooShort(int min) {
+  String passwordTooShort(int min) {
     return '至少使用 $min 字符';
   }
-
-  @override
-  String get syncRecoveryPasswordMismatch => '密碼不同';
 
   @override
   String get syncRecoveryCode => '恢復碼';

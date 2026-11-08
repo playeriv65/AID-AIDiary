@@ -1998,6 +1998,10 @@ class AppLocalizationsHi extends AppLocalizations {
   String get syncServer => 'सर्वर पता';
 
   @override
+  String get syncServerInvalid =>
+      'पूरा सर्वर पता दर्ज करें, जो https:// से शुरू हो';
+
+  @override
   String get syncUsername => 'उपयोगकर्ता नाम';
 
   @override
@@ -2079,12 +2083,9 @@ class AppLocalizationsHi extends AppLocalizations {
   String get syncRecoveryPasswordRepeat => 'पुनर्प्राप्ति पासवर्ड दोहराएँ';
 
   @override
-  String syncRecoveryPasswordTooShort(int min) {
+  String passwordTooShort(int min) {
     return 'कम से कम $min वर्णों का उपयोग करें';
   }
-
-  @override
-  String get syncRecoveryPasswordMismatch => 'पासवर्ड अलग-अलग हैं';
 
   @override
   String get syncRecoveryCode => 'पुनर्प्राप्ति कोड';

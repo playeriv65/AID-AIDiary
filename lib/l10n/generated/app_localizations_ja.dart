@@ -1963,6 +1963,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get syncServer => 'サーバーアドレス';
 
   @override
+  String get syncServerInvalid => 'https:// から始まるサーバーの完全なアドレスを入力してください';
+
+  @override
   String get syncUsername => 'ユーザー名';
 
   @override
@@ -2041,12 +2044,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get syncRecoveryPasswordRepeat => '回復パスワードを繰り返します';
 
   @override
-  String syncRecoveryPasswordTooShort(int min) {
+  String passwordTooShort(int min) {
     return '少なくとも $min 文字を使用してください';
   }
-
-  @override
-  String get syncRecoveryPasswordMismatch => 'パスワードが異なります';
 
   @override
   String get syncRecoveryCode => 'リカバリーコード';

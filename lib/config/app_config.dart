@@ -185,6 +185,16 @@ class AppConfig {
   int get launchFirstScreenEntries =>
       _section('launch')['firstScreenEntries'] as int;
 
+  /// The shortest app lock password: it guards the app on this device only,
+  /// so a four-digit PIN like the system's screen lock is enough.
+  int get appLockMinPasswordLength =>
+      _section('passwords')['appLockMinLength'] as int;
+
+  /// The shortest backup password: it encrypts a file that may be copied
+  /// anywhere and tried offline, like the sync recovery password.
+  int get backupMinPasswordLength =>
+      _section('passwords')['backupMinLength'] as int;
+
   /// Tail of a Windows mouse-wheel burst; zero disables smoothing.
   Duration get wheelScrollDuration =>
       Duration(milliseconds: _section('scrolling')['wheelDurationMs'] as int);

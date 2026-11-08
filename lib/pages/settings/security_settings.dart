@@ -11,8 +11,6 @@ import 'package:aid_diary/widgets/settings_toggle.dart';
 import 'package:aid_diary/routing/destinations.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
-import 'package:flutter/services.dart';
-import 'package:local_auth/local_auth.dart';
 import 'package:provider/provider.dart';
 
 /// Keeps the backup password's switch in step with the password: on when
@@ -42,7 +40,6 @@ class SecuritySettingsPageState extends State<SecuritySettings> {
   @override
   Widget build(BuildContext context) {
     final configProvider = Provider.of<ConfigProvider>(context);
-    final LocalAuthentication auth = LocalAuthentication();
 
     return Scaffold(
       appBar: AppBar(
@@ -119,6 +116,8 @@ class SecuritySettingsPageState extends State<SecuritySettings> {
                     .settingsSecurityBiometricUnlock,
                 setting: Settings.biometricUnlock,
                 onChanged: (value) async {
+                  final reason = AppLocalizations.of(context)!.unlockAppPrompt;
+                  var unlocked = false;
                   await showDialog(
                       context: context,
                       builder: (context) => AuthPopup(
@@ -127,30 +126,13 @@ class SecuritySettingsPageState extends State<SecuritySettings> {
                                 .settingsSecurityEnterPassword,
                             showBiometrics: false,
                             dismissable: true,
-                            onSuccess: (_) async {
-                              bool success = true;
-                              // Only require biometric authentication when enabling biometric unlock
-                              if (value == true) {
-                                try {
-                                  final bool didAuthenticate =
-                                      await auth.authenticate(
-                                          persistAcrossBackgrounding: false,
-                                          biometricOnly: true,
-                                          localizedReason:
-                                              AppLocalizations.of(context)!
-                                                  .unlockAppPrompt);
-                                  success = didAuthenticate;
-                                } on PlatformException {
-                                  success = false;
-                                }
-                              }
-
-                              if (success) {
-                                configProvider.set(
-                                    Settings.biometricUnlock, value);
-                              }
-                            },
+                            onSuccess: (_) => unlocked = true,
                           ));
+                  // Turning biometric unlock on checks the biometrics too.
+                  if (unlocked &&
+                      (!value || await authenticateOnDevice(reason: reason))) {
+                    await configProvider.set(Settings.biometricUnlock, value);
+                  }
                 }),
         ],
       ),

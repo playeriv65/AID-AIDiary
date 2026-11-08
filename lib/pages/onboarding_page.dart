@@ -8,6 +8,7 @@ import 'package:aid_diary/pages/tutorial_page.dart';
 import 'package:aid_diary/routing/destinations.dart';
 import 'package:aid_diary/sync/nearby_service.dart';
 import 'package:aid_diary/widgets/app_logo.dart';
+import 'package:aid_diary/widgets/snack_message.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// First launch chooses a new diary or the existing nearby migration flow.
@@ -25,23 +26,17 @@ class _OnboardingPageState extends State<OnboardingPage> {
   bool _receiving = false;
   bool get _busy => _finishing || _receiving;
 
-  void _failed() {
-    if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(AppLocalizations.of(context)!.onboardFailed)),
-    );
-  }
-
   Future<void> _finish() async {
     if (_finishing) return;
     setState(() => _finishing = true);
+    final failure = AppLocalizations.of(context)!.onboardFailed;
     try {
       await AppActions.instance.run('app.finish_onboarding', {});
       if (!mounted) return;
       await Navigator.of(context).pushReplacement(MaterialPageRoute(
           allowSnapshotting: false, builder: (_) => widget.next));
     } catch (_) {
-      _failed();
+      if (mounted) showSnackMessage(context, failure);
     } finally {
       if (mounted) setState(() => _finishing = false);
     }
@@ -50,13 +45,14 @@ class _OnboardingPageState extends State<OnboardingPage> {
   Future<void> _receive() async {
     if (_busy) return;
     setState(() => _receiving = true);
+    final failure = AppLocalizations.of(context)!.onboardFailed;
     try {
       await openPlace(context, 'settings/sync/nearby');
       if (mounted && NearbyService.instance.state == NearbyState.complete) {
         await _finish();
       }
     } catch (_) {
-      _failed();
+      if (mounted) showSnackMessage(context, failure);
     } finally {
       if (mounted) setState(() => _receiving = false);
     }

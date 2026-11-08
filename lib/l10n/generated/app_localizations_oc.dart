@@ -2018,6 +2018,10 @@ class AppLocalizationsOc extends AppLocalizations {
   String get syncServer => 'Adreça del servidor';
 
   @override
+  String get syncServerInvalid =>
+      'Picatz l\'adreça completa del servidor, que comença per https://';
+
+  @override
   String get syncUsername => 'Nom d\'utilizaire';
 
   @override
@@ -2099,12 +2103,9 @@ class AppLocalizationsOc extends AppLocalizations {
   String get syncRecoveryPasswordRepeat => 'Repetir lo senhal de recuperacion';
 
   @override
-  String syncRecoveryPasswordTooShort(int min) {
+  String passwordTooShort(int min) {
     return 'Utilizar al mens de caractèrs $min';
   }
-
-  @override
-  String get syncRecoveryPasswordMismatch => 'Los senhals diferís';
 
   @override
   String get syncRecoveryCode => 'Còde de recuperacion';

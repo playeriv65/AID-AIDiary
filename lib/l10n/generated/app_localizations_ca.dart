@@ -2016,6 +2016,10 @@ class AppLocalizationsCa extends AppLocalizations {
   String get syncServer => 'Adreça del servidor';
 
   @override
+  String get syncServerInvalid =>
+      'Introduïu l\'adreça completa del servidor, començant per https://';
+
+  @override
   String get syncUsername => 'Nom d\'usuari';
 
   @override
@@ -2098,12 +2102,9 @@ class AppLocalizationsCa extends AppLocalizations {
       'Repetiu la contrasenya de recuperació';
 
   @override
-  String syncRecoveryPasswordTooShort(int min) {
+  String passwordTooShort(int min) {
     return 'Utilitzeu almenys caràcters $min';
   }
-
-  @override
-  String get syncRecoveryPasswordMismatch => 'Les contrasenyes són diferents';
 
   @override
   String get syncRecoveryCode => 'Codi de recuperació';

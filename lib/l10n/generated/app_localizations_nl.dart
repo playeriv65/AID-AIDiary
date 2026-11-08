@@ -2014,6 +2014,10 @@ class AppLocalizationsNl extends AppLocalizations {
   String get syncServer => 'Serveradres';
 
   @override
+  String get syncServerInvalid =>
+      'Voer het volledige serveradres in, beginnend met https://';
+
+  @override
   String get syncUsername => 'Gebruikersnaam';
 
   @override
@@ -2094,12 +2098,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get syncRecoveryPasswordRepeat => 'Herhaal het herstelwachtwoord';
 
   @override
-  String syncRecoveryPasswordTooShort(int min) {
+  String passwordTooShort(int min) {
     return 'Gebruik minimaal $min-tekens';
   }
-
-  @override
-  String get syncRecoveryPasswordMismatch => 'De wachtwoorden verschillen';
 
   @override
   String get syncRecoveryCode => 'Herstelcode';

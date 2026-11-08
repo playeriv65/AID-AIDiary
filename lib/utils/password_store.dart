@@ -5,6 +5,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/utils/crypto_utils.dart';
 
@@ -12,6 +13,9 @@ abstract class PasswordStore {
   const PasswordStore();
 
   bool get isPin => false;
+
+  /// The fewest characters a new password of this kind may have.
+  int get minLength;
 
   Future<bool> validate(String password);
 
@@ -23,6 +27,9 @@ class AppPasswordStore extends PasswordStore {
 
   @override
   bool get isPin => ConfigProvider.instance.get(Settings.passwordIsPin);
+
+  @override
+  int get minLength => AppConfig.instance.appLockMinPasswordLength;
 
   @override
   Future<bool> validate(String password) async {
@@ -50,6 +57,9 @@ class BackupPasswordStore extends PasswordStore {
   static bool get isEnabled =>
       ConfigProvider.instance.get(Settings.backupPasswordEnabled) &&
       password.isNotEmpty;
+
+  @override
+  int get minLength => AppConfig.instance.backupMinPasswordLength;
 
   @override
   Future<bool> validate(String password) async => constantTimeEquals(

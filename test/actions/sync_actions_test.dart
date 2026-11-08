@@ -9,6 +9,7 @@ import 'dart:convert';
 
 import 'package:aid_diary/actions/app_action.dart';
 import 'package:aid_diary/actions/app_actions.dart';
+import 'package:aid_diary/actions/sync_actions.dart';
 import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/database/app_database.dart';
@@ -170,6 +171,8 @@ void main() {
   test('keys and pairing need a space this device is set up with', () async {
     expect(() => run('sync.unlock', {'recoveryCode': 'a'}),
         refused('not_connected'));
+    expect(() => run('sync.create_space'), refused('not_signed_in'));
+    expect(() => run('sync.sign_in_again'), refused('not_connected'));
     expect(() => run('sync.recovery_code', {}, true), refused('needs_key'));
     expect(() => run('sync.reset_space', {}, true), refused('not_connected'));
     expect(() => run('sync.pair_offer'), refused('not_connected'));
@@ -302,5 +305,57 @@ void main() {
     expect(now.userId, owner.userId);
     expect(now.masterKey, owner.masterKey);
     expect(await sync.holdsKey(changed), isTrue);
+  });
+
+  test('a server that is not a full address is refused', () async {
+    await expectLater(
+        run('sync.connect_webdav',
+            {'server': 'dav.example.com', 'username': 'u', 'password': 'p'}),
+        refused('bad_address'));
+    expect(sync.target, isNull);
+  });
+
+  test('connecting where there is no space waits until one is made', () async {
+    final storage = MemorySyncBackend();
+    expect(await openSyncSpace(MemoryLogin(storage)),
+        containsPair('space', 'none'));
+    expect(sync.target, isNull);
+    expect(await storage.read(SpaceLayout.info), isNull);
+
+    await expectLater(
+        run('sync.create_space', {'password': 'short'}), refused('bad_args'));
+    final created =
+        await run('sync.create_space', {'password': 'a password of mine'});
+    expect(created['recoveryCode'], 'a password of mine');
+    final space = SpaceInfo.fromBytes((await storage.read(SpaceLayout.info))!);
+    expect(sync.target?.spaceId, space.id);
+    await expectLater(run('sync.create_space'), refused('not_signed_in'));
+  });
+
+  test('a space of other devices opens with its recovery code', () async {
+    final storage = MemorySyncBackend();
+    final login = MemoryLogin(storage);
+    final owner = await DiaryIdentity.current();
+    await openSyncSpace(login);
+    await run('sync.create_space', {'password': 'the recovery password'});
+
+    // Another device: a user of its own, so the space is not its yet.
+    await sync.disconnect();
+    await DiaryIdentity.create().keep();
+    expect(
+        await openSyncSpace(login),
+        allOf(containsPair('space', 'needs_key'),
+            containsPair('waitingForKey', true)));
+    expect(sync.target, isNull);
+    await expectLater(run('sync.unlock', {'recoveryCode': 'a wrong password'}),
+        refused('wrong_key'));
+    await run('sync.unlock', {'recoveryCode': 'the recovery password'});
+    expect(sync.target, isNotNull);
+    expect(sync.pendingSpace, isNull);
+    expect((await DiaryIdentity.current()).masterKey, owner.masterKey);
+
+    // Holding the key now, connecting again joins at once.
+    await sync.disconnect();
+    expect(await openSyncSpace(login), containsPair('space', 'joined'));
   });
 }

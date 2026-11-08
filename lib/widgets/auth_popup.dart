@@ -4,9 +4,33 @@
 
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/utils/password_store.dart';
+import 'package:aid_diary/widgets/new_password_fields.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
+
+/// Asks the platform whether the person at the device is its owner, with
+/// [reason] on the prompt: a fingerprint or face, or with [biometricOnly]
+/// off also the screen lock. False when they are not, or when this device
+/// cannot ask.
+Future<bool> authenticateOnDevice(
+    {required String reason, bool biometricOnly = true}) async {
+  try {
+    final auth = LocalAuthentication();
+    if (biometricOnly && !await auth.canCheckBiometrics) return false;
+    return await auth.authenticate(
+      localizedReason: reason,
+      biometricOnly: biometricOnly,
+      persistAcrossBackgrounding: false,
+    );
+  } on PlatformException {
+    return false;
+  } on LocalAuthException {
+    return false;
+  } on MissingPluginException {
+    return false;
+  }
+}
 
 enum AuthPopupMode { unlock, enterPassword, setPassword, changePassword }
 
@@ -100,28 +124,6 @@ class _AuthPopupState extends State<AuthPopup> {
     super.dispose();
   }
 
-  Future<bool> authenticateWithBiometrics() async {
-    final auth = LocalAuthentication();
-    final canCheck = await auth.canCheckBiometrics;
-    if (!canCheck) return false;
-    if (!mounted) return false;
-
-    bool success = false;
-    try {
-      final bool didAuthenticate = await auth.authenticate(
-        persistAcrossBackgrounding: false,
-        biometricOnly: true,
-        localizedReason: AppLocalizations.of(context)!.unlockAppPrompt,
-      );
-      success = didAuthenticate;
-    } on PlatformException {
-      success = false;
-    } on LocalAuthException {
-      success = false;
-    }
-    return success;
-  }
-
   void _succeed(String password) {
     if (!mounted) return;
     widget.onSuccess?.call(password);
@@ -161,13 +163,6 @@ class _AuthPopupState extends State<AuthPopup> {
             );
             break;
           }
-          if (_passwordController.text != _confirmController.text) {
-            setState(
-              () => _error = AppLocalizations.of(context)!
-                  .settingsSecurityPasswordsDoNotMatch,
-            );
-            break;
-          }
           await widget.store.save(_passwordController.text);
           _succeed(_passwordController.text);
           break;
@@ -178,13 +173,34 @@ class _AuthPopupState extends State<AuthPopup> {
   }
 
   void _handleBiometric() async {
-    if (await authenticateWithBiometrics()) {
-      _succeed('');
-    }
+    final reason = AppLocalizations.of(context)!.unlockAppPrompt;
+    if (await authenticateOnDevice(reason: reason)) _succeed('');
   }
+
+  /// A password the user already has: the current one, or one to open
+  /// something with.
+  Widget _passwordField({
+    required TextEditingController controller,
+    required String label,
+    FocusNode? focusNode,
+    TextInputType keyboardType = TextInputType.text,
+  }) =>
+      TextFormField(
+        controller: controller,
+        focusNode: focusNode,
+        obscureText: !_showPassword,
+        autocorrect: false,
+        enableSuggestions: false,
+        keyboardType: keyboardType,
+        decoration: InputDecoration(
+            labelText: label, border: const OutlineInputBorder()),
+        validator: (v) =>
+            v!.isEmpty ? AppLocalizations.of(context)!.requiredPrompt : null,
+      );
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     if (widget.showBiometrics && !_biometricsPrompted) {
       _biometricsPrompted = true;
       _handleBiometric();
@@ -218,65 +234,36 @@ class _AuthPopupState extends State<AuthPopup> {
               if (widget.mode == AuthPopupMode.changePassword) ...[
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: TextFormField(
+                  child: _passwordField(
                     controller: _oldController,
-                    obscureText: !_showPassword,
-                    autocorrect: false,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                      ),
-                      labelText: AppLocalizations.of(context)!
-                          .settingsSecurityOldPassword,
-                    ),
-                    validator: (v) => v!.isEmpty
-                        ? AppLocalizations.of(context)!.requiredPrompt
-                        : null,
+                    label: l10n.settingsSecurityOldPassword,
                   ),
                 ),
                 Divider(),
               ],
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                  controller: _passwordController,
-                  focusNode: _passwordFocusNode,
-                  obscureText: !_showPassword,
-                  autocorrect: false,
-                  keyboardType: widget.mode == AuthPopupMode.unlock && _isPin
-                      ? TextInputType.number
-                      : TextInputType.text,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                    ),
-                    labelText:
-                        AppLocalizations.of(context)!.settingsSecurityPassword,
-                  ),
-                  validator: (v) => v!.isEmpty
-                      ? AppLocalizations.of(context)!.requiredPrompt
-                      : null,
-                ),
-              ),
-              if (_asksForNewPassword)
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextFormField(
-                    controller: _confirmController,
-                    obscureText: !_showPassword,
-                    autocorrect: false,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                child: _asksForNewPassword
+                    ? NewPasswordFields(
+                        password: _passwordController,
+                        repeat: _confirmController,
+                        minLength: widget.store.minLength,
+                        label: l10n.settingsSecurityPassword,
+                        repeatLabel: l10n.settingsSecurityConfirmPassword,
+                        obscure: !_showPassword,
+                        fieldKey: const ValueKey('auth-new-password'),
+                        repeatKey: const ValueKey('auth-repeat-password'),
+                      )
+                    : _passwordField(
+                        controller: _passwordController,
+                        label: l10n.settingsSecurityPassword,
+                        focusNode: _passwordFocusNode,
+                        keyboardType:
+                            widget.mode == AuthPopupMode.unlock && _isPin
+                                ? TextInputType.number
+                                : TextInputType.text,
                       ),
-                      labelText: AppLocalizations.of(context)!
-                          .settingsSecurityConfirmPassword,
-                    ),
-                    validator: (v) => v!.isEmpty
-                        ? AppLocalizations.of(context)!.requiredPrompt
-                        : null,
-                  ),
-                ),
+              ),
               if (_error != null)
                 Padding(
                   padding: const EdgeInsets.all(8),

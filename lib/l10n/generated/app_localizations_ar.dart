@@ -2002,6 +2002,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get syncServer => 'عنوان الخادم';
 
   @override
+  String get syncServerInvalid => 'أدخل عنوان الخادم كاملاً، بدءاً بـ https://';
+
+  @override
   String get syncUsername => 'اسم المستخدم';
 
   @override
@@ -2081,12 +2084,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get syncRecoveryPasswordRepeat => 'كرر كلمة مرور الاسترداد';
 
   @override
-  String syncRecoveryPasswordTooShort(int min) {
+  String passwordTooShort(int min) {
     return 'استخدم أحرف $min على الأقل';
   }
-
-  @override
-  String get syncRecoveryPasswordMismatch => 'تختلف كلمات المرور';
 
   @override
   String get syncRecoveryCode => 'رمز الاسترداد';

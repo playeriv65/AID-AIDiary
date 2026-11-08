@@ -2004,6 +2004,10 @@ class AppLocalizationsNb extends AppLocalizations {
   String get syncServer => 'Serveradresse';
 
   @override
+  String get syncServerInvalid =>
+      'Skriv inn hele serveradressen, som starter med https://';
+
+  @override
   String get syncUsername => 'Brukernavn';
 
   @override
@@ -2084,12 +2088,9 @@ class AppLocalizationsNb extends AppLocalizations {
   String get syncRecoveryPasswordRepeat => 'Gjenta gjenopprettingspassordet';
 
   @override
-  String syncRecoveryPasswordTooShort(int min) {
+  String passwordTooShort(int min) {
     return 'Bruk minst $min tegn';
   }
-
-  @override
-  String get syncRecoveryPasswordMismatch => 'Passordene er forskjellige';
 
   @override
   String get syncRecoveryCode => 'Gjenopprettingskode';

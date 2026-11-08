@@ -8,6 +8,7 @@ import 'package:aid_diary/actions/settings_actions.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/services/app_updates.dart';
+import 'package:aid_diary/widgets/snack_message.dart';
 import 'package:logging/logging.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -28,12 +29,10 @@ class AppUpdatePrompt with WidgetsBindingObserver {
     final installed = await updates.justInstalled();
     if (installed != null && context.mounted) {
       final l10n = AppLocalizations.of(context)!;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(l10n.updatedTo(installed.label)),
-        action: SnackBarAction(
-            label: l10n.updateWhatsNew,
-            onPressed: () => showUpdateNotes(context, installed)),
-      ));
+      showSnackMessage(context, l10n.updatedTo(installed.label),
+          action: SnackBarAction(
+              label: l10n.updateWhatsNew,
+              onPressed: () => showUpdateNotes(context, installed)));
     }
     final update = await updates.due();
     if (update == null || !context.mounted) return;

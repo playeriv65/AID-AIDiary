@@ -2037,6 +2037,10 @@ class AppLocalizationsBe extends AppLocalizations {
   String get syncServer => 'Адрас сервера';
 
   @override
+  String get syncServerInvalid =>
+      'Увядзіце поўны адрас сервера, які пачынаецца з https://';
+
+  @override
   String get syncUsername => 'Імя карыстальніка';
 
   @override
@@ -2118,12 +2122,9 @@ class AppLocalizationsBe extends AppLocalizations {
   String get syncRecoveryPasswordRepeat => 'Паўтарыце пароль аднаўлення';
 
   @override
-  String syncRecoveryPasswordTooShort(int min) {
+  String passwordTooShort(int min) {
     return 'Выкарыстоўвайце як мінімум сімвалы $min';
   }
-
-  @override
-  String get syncRecoveryPasswordMismatch => 'Паролі адрозніваюцца';
 
   @override
   String get syncRecoveryCode => 'Код аднаўлення';

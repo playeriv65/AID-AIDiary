@@ -2003,6 +2003,10 @@ class AppLocalizationsId extends AppLocalizations {
   String get syncServer => 'Alamat server';
 
   @override
+  String get syncServerInvalid =>
+      'Masukkan alamat server lengkap, diawali dengan https://';
+
+  @override
   String get syncUsername => 'Nama pengguna';
 
   @override
@@ -2085,12 +2089,9 @@ class AppLocalizationsId extends AppLocalizations {
   String get syncRecoveryPasswordRepeat => 'Ulangi kata sandi pemulihan';
 
   @override
-  String syncRecoveryPasswordTooShort(int min) {
+  String passwordTooShort(int min) {
     return 'Gunakan setidaknya karakter $min';
   }
-
-  @override
-  String get syncRecoveryPasswordMismatch => 'Kata sandinya berbeda';
 
   @override
   String get syncRecoveryCode => 'Kode pemulihan';

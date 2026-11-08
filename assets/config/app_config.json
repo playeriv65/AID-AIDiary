@@ -122,6 +122,10 @@
   "launch": {
     "firstScreenEntries": 60
   },
+  "passwords": {
+    "appLockMinLength": 4,
+    "backupMinLength": 8
+  },
   "agentApi": {
     "port": 47819
   },

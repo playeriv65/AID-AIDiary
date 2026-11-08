@@ -2006,6 +2006,10 @@ class AppLocalizationsFi extends AppLocalizations {
   String get syncServer => 'Palvelimen osoite';
 
   @override
+  String get syncServerInvalid =>
+      'Anna palvelimen koko osoite, alkaen https://';
+
+  @override
   String get syncUsername => 'Käyttäjätunnus';
 
   @override
@@ -2086,12 +2090,9 @@ class AppLocalizationsFi extends AppLocalizations {
   String get syncRecoveryPasswordRepeat => 'Toista palautussalasana';
 
   @override
-  String syncRecoveryPasswordTooShort(int min) {
+  String passwordTooShort(int min) {
     return 'Käytä vähintään $min-merkkejä';
   }
-
-  @override
-  String get syncRecoveryPasswordMismatch => 'Salasanat ovat erilaisia';
 
   @override
   String get syncRecoveryCode => 'Palautuskoodi';

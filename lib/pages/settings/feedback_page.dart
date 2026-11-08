@@ -5,6 +5,7 @@
 import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/services/feedback_service.dart';
+import 'package:aid_diary/widgets/snack_message.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -31,9 +32,6 @@ class _FeedbackPageState extends State<FeedbackPage> {
     super.dispose();
   }
 
-  void _tell(String message) => ScaffoldMessenger.of(context)
-      .showSnackBar(SnackBar(content: Text(message)));
-
   Future<void> _send() async {
     final l10n = AppLocalizations.of(context)!;
     setState(() => _busy = true);
@@ -42,7 +40,8 @@ class _FeedbackPageState extends State<FeedbackPage> {
     if (!mounted) return;
     setState(() => _busy = false);
     if (sent) _text.clear();
-    _tell(sent ? l10n.feedbackSent : l10n.feedbackSendFailed);
+    showSnackMessage(
+        context, sent ? l10n.feedbackSent : l10n.feedbackSendFailed);
   }
 
   Future<void> _open(bool email) async {
@@ -71,7 +70,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
     } finally {
       if (mounted) setState(() => _busy = false);
     }
-    if (!opened && mounted) _tell(l10n.feedbackOpenFailed);
+    if (!opened && mounted) showSnackMessage(context, l10n.feedbackOpenFailed);
   }
 
   @override

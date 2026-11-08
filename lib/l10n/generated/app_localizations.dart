@@ -3660,6 +3660,12 @@ abstract class AppLocalizations {
   /// **'Server address'**
   String get syncServer;
 
+  /// No description provided for @syncServerInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the full server address, starting with https://'**
+  String get syncServerInvalid;
+
   /// No description provided for @syncUsername.
   ///
   /// In en, this message translates to:
@@ -3798,17 +3804,11 @@ abstract class AppLocalizations {
   /// **'Repeat the recovery password'**
   String get syncRecoveryPasswordRepeat;
 
-  /// No description provided for @syncRecoveryPasswordTooShort.
+  /// No description provided for @passwordTooShort.
   ///
   /// In en, this message translates to:
   /// **'Use at least {min} characters'**
-  String syncRecoveryPasswordTooShort(int min);
-
-  /// No description provided for @syncRecoveryPasswordMismatch.
-  ///
-  /// In en, this message translates to:
-  /// **'The passwords differ'**
-  String get syncRecoveryPasswordMismatch;
+  String passwordTooShort(int min);
 
   /// No description provided for @syncRecoveryCode.
   ///

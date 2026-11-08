@@ -13,8 +13,6 @@ import 'package:aid_diary/widgets/auth_popup.dart';
 import 'package:aid_diary/widgets/hidden_diary_scope.dart';
 import 'package:aid_diary/widgets/settings_category.dart';
 import 'package:aid_diary/widgets/snack_message.dart';
-import 'package:flutter/services.dart';
-import 'package:local_auth/local_auth.dart';
 import 'package:aid_diary/widgets/list_detail_layout.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
@@ -43,30 +41,19 @@ class _HiddenEntriesPageState extends State<HiddenEntriesPage> {
     var success = false;
     final config = ConfigProvider.instance;
     final l10n = AppLocalizations.of(context)!;
-    try {
-      if (config.get(Settings.requirePassword)) {
-        await showDialog<void>(
-            context: context,
-            builder: (_) => AuthPopup(
-                  mode: AuthPopupMode.unlock,
-                  title: l10n.hiddenDiaryTitle,
-                  showBiometrics: config.get(Settings.biometricUnlock),
-                  dismissable: true,
-                  onSuccess: (_) => success = true,
-                ));
-      } else {
-        success = await LocalAuthentication().authenticate(
-          localizedReason: l10n.hiddenDiaryUnlock,
-          biometricOnly: false,
-          persistAcrossBackgrounding: false,
-        );
-      }
-    } on PlatformException {
-      success = false;
-    } on LocalAuthException {
-      success = false;
-    } on MissingPluginException {
-      success = false;
+    if (config.get(Settings.requirePassword)) {
+      await showDialog<void>(
+          context: context,
+          builder: (_) => AuthPopup(
+                mode: AuthPopupMode.unlock,
+                title: l10n.hiddenDiaryTitle,
+                showBiometrics: config.get(Settings.biometricUnlock),
+                dismissable: true,
+                onSuccess: (_) => success = true,
+              ));
+    } else {
+      success = await authenticateOnDevice(
+          reason: l10n.hiddenDiaryUnlock, biometricOnly: false);
     }
     if (!mounted) return;
     setState(() => _authenticating = false);

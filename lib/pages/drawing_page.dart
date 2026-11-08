@@ -8,6 +8,7 @@ import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/widgets/drawing_canvas.dart';
 import 'package:aid_diary/widgets/haptics.dart';
+import 'package:aid_diary/widgets/snack_message.dart';
 import 'package:material_ui/material_ui.dart';
 
 class DrawingPage extends StatefulWidget {
@@ -84,8 +85,7 @@ class _DrawingPageState extends State<DrawingPage> {
     } catch (_) {
       if (!mounted) return;
       setState(() => saving = false);
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(AppLocalizations.of(context)!.drawingSaveError)));
+      showSnackMessage(context, AppLocalizations.of(context)!.drawingSaveError);
     }
   }
 

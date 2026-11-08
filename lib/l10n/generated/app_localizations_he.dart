@@ -1990,6 +1990,10 @@ class AppLocalizationsHe extends AppLocalizations {
   String get syncServer => 'כתובת שרת';
 
   @override
+  String get syncServerInvalid =>
+      'יש להזין את כתובת השרת המלאה, שמתחילה ב-https://';
+
+  @override
   String get syncUsername => 'שם משתמש';
 
   @override
@@ -2069,12 +2073,9 @@ class AppLocalizationsHe extends AppLocalizations {
   String get syncRecoveryPasswordRepeat => 'חזור על סיסמת השחזור';
 
   @override
-  String syncRecoveryPasswordTooShort(int min) {
+  String passwordTooShort(int min) {
     return 'השתמש לפחות בתווים $min';
   }
-
-  @override
-  String get syncRecoveryPasswordMismatch => 'הסיסמאות שונות';
 
   @override
   String get syncRecoveryCode => 'קוד שחזור';

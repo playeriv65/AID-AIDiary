@@ -12,14 +12,15 @@ import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/sync/google_auth.dart';
 import 'package:aid_diary/sync/device_auth.dart';
 import 'package:aid_diary/sync/google_drive_backend.dart';
-import 'package:aid_diary/sync/sync_backend.dart';
-import 'package:aid_diary/sync/sync_crypto.dart';
 import 'package:aid_diary/sync/sync_service.dart';
 import 'package:aid_diary/sync/webdav_backend.dart';
+import 'package:aid_diary/widgets/failure_dialog.dart';
+import 'package:aid_diary/widgets/new_password_fields.dart';
 import 'package:aid_diary/widgets/progress_dialog.dart';
 import 'package:aid_diary/widgets/cloud_traffic_notice.dart';
 import 'package:aid_diary/widgets/device_name_tile.dart';
 import 'package:aid_diary/widgets/settings_row.dart';
+import 'package:aid_diary/widgets/snack_message.dart';
 import 'package:aid_diary/widgets/sync_conflict_dialog.dart';
 import 'package:aid_diary/widgets/text_input_dialog.dart';
 import 'package:flutter/services.dart';
@@ -47,94 +48,109 @@ class _SyncSettingsState extends State<SyncSettings> {
     super.dispose();
   }
 
-  void _say(String message) => ScaffoldMessenger.of(context)
-      .showSnackBar(SnackBar(content: Text(message)));
-
-  String _describe(Object error, AppLocalizations l10n) => switch (error) {
-        WebDavException(unauthorized: true) => l10n.syncSignInFailed,
-        GoogleSignInNeeded() ||
-        GoogleDriveException(unauthorized: true) =>
-          l10n.syncGoogleSignInAgain,
-        GoogleDriveNotAllowed() => l10n.syncGoogleDriveNotAllowed,
-        WrongKeyException() => l10n.syncWrongKey,
-        DeviceAuthorizationNeeded() => l10n.syncDeviceUnavailable,
-        ActionException(:final message) => message,
-        _ => l10n.syncConnectionProblem,
+  /// What went wrong, and whether the user has to change something before
+  /// trying again (docs/ARCHITECTURE.md, "Reporting failures").
+  ({String message, bool needsAction}) _describe(
+          Object error, AppLocalizations l10n) =>
+      switch (error) {
+        WebDavException(unauthorized: true) => (
+            message: l10n.syncSignInFailed,
+            needsAction: true
+          ),
+        GoogleSignInNeeded() || GoogleDriveException(unauthorized: true) => (
+            message: l10n.syncGoogleSignInAgain,
+            needsAction: true
+          ),
+        GoogleDriveNotAllowed() => (
+            message: l10n.syncGoogleDriveNotAllowed,
+            needsAction: true
+          ),
+        ActionException(code: 'bad_address') => (
+            message: l10n.syncServerInvalid,
+            needsAction: true
+          ),
+        ActionException(code: 'wrong_key') => (
+            message: l10n.syncWrongKey,
+            needsAction: false
+          ),
+        DeviceAuthorizationNeeded() => (
+            message: l10n.syncDeviceUnavailable,
+            needsAction: false
+          ),
+        ActionException(:final message) => (
+            message: message,
+            needsAction: false
+          ),
+        _ => (message: l10n.syncConnectionProblem, needsAction: false),
       };
+
+  /// Shows [error]: the failure dialog when the user has to change
+  /// something, else a snack bar.
+  Future<void> _report(Object error) async {
+    if (!mounted) return;
+    final (:message, :needsAction) =
+        _describe(error, AppLocalizations.of(context)!);
+    if (needsAction) {
+      await showFailureDialog(context, description: message);
+    } else {
+      showSnackMessage(context, message);
+    }
+  }
 
   /// Runs [task] behind a progress dialog and reports a failure; null then,
   /// and also when the user called a sign-in off.
   Future<T?> _attempt<T>(Future<T> Function() task) async {
-    final l10n = AppLocalizations.of(context)!;
     try {
       return await runWithProgress(context, (update) => task());
     } on DeviceAuthorizationNeeded {
       if (mounted) await openPlace(context, 'settings/sync/devices');
-      return null;
     } on GoogleSignInException catch (error) {
-      if (error.code != GoogleSignInExceptionCode.canceled && mounted) {
-        _say(_describe(error, l10n));
+      if (error.code != GoogleSignInExceptionCode.canceled) {
+        await _report(error);
       }
-      return null;
     } catch (error) {
-      if (mounted) _say(_describe(error, l10n));
-      return null;
+      await _report(error);
+    }
+    return null;
+  }
+
+  Future<void> _connect() => _open('sync.connect_webdav', {
+        'server': _server.text,
+        'username': _username.text,
+        'password': _password.text,
+      });
+
+  Future<void> _connectGoogleDrive() => _open('sync.connect_google');
+
+  /// Signs in with the connect [action], then starts a space or asks how
+  /// to join the one there, as its result says.
+  Future<void> _open(String action,
+      [Map<String, Object?> args = const {}]) async {
+    final result = await _attempt(() => AppActions.instance.run(action, args));
+    if (result is! Map || !mounted) return;
+    switch (result['space']) {
+      case 'none':
+        await _startSpace();
+      case 'needs_key':
+        await _askForKey();
     }
   }
 
-  Future<void> _connect() async {
-    final server = Uri.tryParse(_server.text.trim());
-    if (server == null || !server.hasScheme || server.host.isEmpty) return;
-    await _open(WebDavLogin(
-        server: server,
-        username: _username.text.trim(),
-        password: _password.text));
-  }
-
-  Future<void> _connectGoogleDrive() async {
-    final doneMessage = AppLocalizations.of(context)!.syncGoogleSignedIn;
-    final auth = GoogleAuth.forPlatform();
-    final login = await _attempt(() async => GoogleDriveLogin(
-        username: await auth.signIn(doneMessage: doneMessage), auth: auth));
-    if (login != null && mounted) await _open(login);
-  }
-
-  /// Starts a space at [login], or joins the one already there.
-  Future<void> _open(SyncLogin login) async {
-    var probed = false;
-    final space = await _attempt(() async {
-      final space = await _service.probe(login);
-      probed = true;
-      return space;
-    });
-    if (!probed || !mounted) return;
-    if (space == null) {
-      await _startSpace(login);
-      return;
-    }
-    try {
-      await runWithProgress(context, (_) => _service.joinSpace(login, space));
-    } on NeedsKeyException {
-      if (mounted) await _askForKey(login, space);
-    } catch (error) {
-      if (mounted) _say(_describe(error, AppLocalizations.of(context)!));
-    }
-  }
-
-  Future<void> _startSpace(SyncLogin login) async {
+  Future<void> _startSpace() async {
     final choice = await showDialog<({String? password})>(
         context: context, builder: (_) => const _NewSpaceDialog());
     if (choice == null || !mounted) return;
-    final code = await _attempt(
-        () => _service.createSpace(login, chosen: choice.password));
-    if (code != null && choice.password == null && mounted) {
-      await _showRecoveryCode(code);
+    final result = await _attempt(() => AppActions.instance.run(
+        'sync.create_space',
+        {if (choice.password case final password?) 'password': password}));
+    if (result is Map && choice.password == null && mounted) {
+      await _showRecoveryCode(result['recoveryCode'] as String);
     }
   }
 
   /// The space belongs to the user's other devices: pair with one, or
   /// open it with the recovery code.
-  Future<void> _askForKey(SyncLogin login, SpaceInfo space) async {
+  Future<void> _askForKey() async {
     final l10n = AppLocalizations.of(context)!;
     final choice = await showDialog<bool>(
       context: context,
@@ -154,17 +170,14 @@ class _SyncSettingsState extends State<SyncSettings> {
       ),
     );
     if (choice == null || !mounted) return;
-    if (choice) {
-      await _pair();
-    } else {
-      await _recoverWith((code) => _service.recover(login, space, code));
-    }
+    choice ? await _pair() : await _useRecoveryCode();
   }
 
   Future<void> _pair() => openPlace(context, 'sync/pairing');
 
-  /// Asks for the recovery code until one opens the space.
-  Future<void> _recoverWith(Future<void> Function(String code) open) async {
+  /// Asks for the recovery code until one opens the space: the one this
+  /// device syncs, or the one it signed in to (sync.unlock).
+  Future<void> _useRecoveryCode() async {
     while (true) {
       if (!mounted) return;
       final l10n = AppLocalizations.of(context)!;
@@ -178,18 +191,16 @@ class _SyncSettingsState extends State<SyncSettings> {
           confirmKey: const ValueKey('sync-unlock-confirm'));
       if (code == null || !mounted) return;
       try {
-        await runWithProgress(context, (update) => open(code));
+        await runWithProgress(
+            context,
+            (update) =>
+                AppActions.instance.run('sync.unlock', {'recoveryCode': code}));
         return;
-      } on WrongKeyException {
-        Haptics.error();
-        if (mounted) _say(l10n.syncWrongKey);
-      } on ActionException catch (error) {
-        Haptics.error();
-        if (mounted) _say(_describe(error, l10n));
-        if (error.code != 'wrong_key') return;
       } catch (error) {
-        if (mounted) _say(_describe(error, l10n));
-        return;
+        Haptics.error();
+        await _report(error);
+        // A wrong code is asked for again.
+        if (error is! ActionException || error.code != 'wrong_key') return;
       }
     }
   }
@@ -221,7 +232,7 @@ class _SyncSettingsState extends State<SyncSettings> {
     if (choice.password == null) {
       await _showRecoveryCode(result['recoveryCode'] as String);
     } else {
-      _say(l10n.syncRecoveryCodeChanged);
+      showSnackMessage(context, l10n.syncRecoveryCodeChanged);
     }
   }
 
@@ -398,8 +409,8 @@ class _SyncSettingsState extends State<SyncSettings> {
             key: const ValueKey('sync-sign-in-again'),
             leading: const Icon(Icons.login_rounded),
             title: Text(l10n.syncSignInAgain),
-            onTap: () => _attempt(() =>
-                _service.signInAgain(doneMessage: l10n.syncGoogleSignedIn)),
+            onTap: () => _attempt(
+                () => AppActions.instance.run('sync.sign_in_again', {})),
           ),
         if (!locked)
           ListTile(
@@ -425,8 +436,7 @@ class _SyncSettingsState extends State<SyncSettings> {
             key: const ValueKey('sync-use-recovery'),
             leading: const Icon(Icons.key_rounded),
             title: Text(l10n.syncUseRecoveryCode),
-            onTap: () => _recoverWith((code) =>
-                AppActions.instance.run('sync.unlock', {'recoveryCode': code})),
+            onTap: _useRecoveryCode,
           ),
         ExpansionTile(
             key: const ValueKey('sync-more'),
@@ -465,54 +475,6 @@ class _SyncSettingsState extends State<SyncSettings> {
   }
 }
 
-/// A recovery password of the user's own, typed twice.
-class _RecoveryPasswordFields extends StatelessWidget {
-  const _RecoveryPasswordFields(
-      {required this.password, required this.repeat, this.showErrors = false});
-
-  final TextEditingController password;
-  final TextEditingController repeat;
-  final bool showErrors;
-
-  static String? problem(
-      String password, String repeat, AppLocalizations l10n) {
-    final min = AppConfig.instance.recoveryMinPasswordLength;
-    return password.trim().length < min
-        ? l10n.syncRecoveryPasswordTooShort(min)
-        : password != repeat
-            ? l10n.syncRecoveryPasswordMismatch
-            : null;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    final error = showErrors ? problem(password.text, repeat.text, l10n) : null;
-    return Column(mainAxisSize: MainAxisSize.min, children: [
-      TextField(
-        key: const ValueKey('sync-recovery-password'),
-        controller: password,
-        obscureText: true,
-        autocorrect: false,
-        decoration: InputDecoration(
-            labelText: l10n.syncRecoveryPassword,
-            border: const OutlineInputBorder()),
-      ),
-      const SizedBox(height: 12),
-      TextField(
-        key: const ValueKey('sync-recovery-password-repeat'),
-        controller: repeat,
-        obscureText: true,
-        autocorrect: false,
-        decoration: InputDecoration(
-            labelText: l10n.syncRecoveryPasswordRepeat,
-            errorText: error,
-            border: const OutlineInputBorder()),
-      ),
-    ]);
-  }
-}
-
 /// A random recovery code, or a password of the user's own: the choice a
 /// new space and a changed code both make. Pops `(password: null)` for a
 /// random code.
@@ -529,10 +491,10 @@ class _RecoveryChoice extends StatefulWidget {
 }
 
 class _RecoveryChoiceState extends State<_RecoveryChoice> {
+  final _form = GlobalKey<FormState>();
   final _password = TextEditingController();
   final _repeat = TextEditingController();
   var _own = false;
-  var _showErrors = false;
 
   @override
   void dispose() {
@@ -542,13 +504,7 @@ class _RecoveryChoiceState extends State<_RecoveryChoice> {
   }
 
   void _done() {
-    final l10n = AppLocalizations.of(context)!;
-    if (_own &&
-        _RecoveryPasswordFields.problem(_password.text, _repeat.text, l10n) !=
-            null) {
-      setState(() => _showErrors = true);
-      return;
-    }
+    if (_own && !_form.currentState!.validate()) return;
     Navigator.of(context).pop((password: _own ? _password.text : null));
   }
 
@@ -572,10 +528,17 @@ class _RecoveryChoiceState extends State<_RecoveryChoice> {
             ),
             if (_own) ...[
               const SizedBox(height: 8),
-              _RecoveryPasswordFields(
-                  password: _password,
-                  repeat: _repeat,
-                  showErrors: _showErrors),
+              Form(
+                key: _form,
+                child: NewPasswordFields(
+                    password: _password,
+                    repeat: _repeat,
+                    minLength: AppConfig.instance.recoveryMinPasswordLength,
+                    label: l10n.syncRecoveryPassword,
+                    repeatLabel: l10n.syncRecoveryPasswordRepeat,
+                    fieldKey: const ValueKey('sync-recovery-password'),
+                    repeatKey: const ValueKey('sync-recovery-password-repeat')),
+              ),
             ],
           ],
         ),
@@ -669,8 +632,7 @@ class _RecoveryCodeDialogState extends State<_RecoveryCodeDialog> {
                   await Clipboard.setData(ClipboardData(text: widget.code));
                   Haptics.success();
                   if (context.mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(l10n.syncRecoveryCodeCopied)));
+                    showSnackMessage(context, l10n.syncRecoveryCodeCopied);
                   }
                 },
               ),

@@ -1960,6 +1960,10 @@ class AppLocalizationsMs extends AppLocalizations {
   String get syncServer => 'Alamat pelayan';
 
   @override
+  String get syncServerInvalid =>
+      'Masukkan alamat pelayan penuh, bermula dengan https://';
+
+  @override
   String get syncUsername => 'Nama pengguna';
 
   @override
@@ -2041,12 +2045,9 @@ class AppLocalizationsMs extends AppLocalizations {
   String get syncRecoveryPasswordRepeat => 'Ulang kata laluan pemulihan';
 
   @override
-  String syncRecoveryPasswordTooShort(int min) {
+  String passwordTooShort(int min) {
     return 'Gunakan sekurang-kurangnya $min aksara';
   }
-
-  @override
-  String get syncRecoveryPasswordMismatch => 'Kata laluan berbeza';
 
   @override
   String get syncRecoveryCode => 'Kod pemulihan';

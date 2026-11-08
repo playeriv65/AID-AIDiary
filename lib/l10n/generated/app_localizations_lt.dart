@@ -2028,6 +2028,10 @@ class AppLocalizationsLt extends AppLocalizations {
   String get syncServer => 'Serverio adresas';
 
   @override
+  String get syncServerInvalid =>
+      'Įveskite visą serverio adresą, prasidedantį https://';
+
+  @override
   String get syncUsername => 'Vartotojo vardas';
 
   @override
@@ -2108,12 +2112,9 @@ class AppLocalizationsLt extends AppLocalizations {
   String get syncRecoveryPasswordRepeat => 'Pakartokite atkūrimo slaptažodį';
 
   @override
-  String syncRecoveryPasswordTooShort(int min) {
+  String passwordTooShort(int min) {
     return 'Naudokite bent $min simbolius';
   }
-
-  @override
-  String get syncRecoveryPasswordMismatch => 'Slaptažodžiai skiriasi';
 
   @override
   String get syncRecoveryCode => 'Atkūrimo kodas';

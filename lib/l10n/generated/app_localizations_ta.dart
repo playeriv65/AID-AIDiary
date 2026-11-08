@@ -2030,6 +2030,10 @@ class AppLocalizationsTa extends AppLocalizations {
   String get syncServer => 'சேவையக முகவரி';
 
   @override
+  String get syncServerInvalid =>
+      'https:// என்று தொடங்கும் முழு சேவையக முகவரியை உள்ளிடவும்';
+
+  @override
   String get syncUsername => 'பயனர் பெயர்';
 
   @override
@@ -2112,12 +2116,9 @@ class AppLocalizationsTa extends AppLocalizations {
       'மீட்பு கடவுச்சொல்லை மீண்டும் செய்யவும்';
 
   @override
-  String syncRecoveryPasswordTooShort(int min) {
+  String passwordTooShort(int min) {
     return 'குறைந்தது $min எழுத்துகளைப் பயன்படுத்தவும்';
   }
-
-  @override
-  String get syncRecoveryPasswordMismatch => 'கடவுச்சொற்கள் வேறுபடுகின்றன';
 
   @override
   String get syncRecoveryCode => 'மீட்பு குறியீடு';

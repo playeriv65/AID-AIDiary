@@ -1995,6 +1995,10 @@ class AppLocalizationsCs extends AppLocalizations {
   String get syncServer => 'Adresa serveru';
 
   @override
+  String get syncServerInvalid =>
+      'Zadejte úplnou adresu serveru začínající https://';
+
+  @override
   String get syncUsername => 'Uživatelské jméno';
 
   @override
@@ -2075,12 +2079,9 @@ class AppLocalizationsCs extends AppLocalizations {
   String get syncRecoveryPasswordRepeat => 'Opakujte heslo pro obnovení';
 
   @override
-  String syncRecoveryPasswordTooShort(int min) {
+  String passwordTooShort(int min) {
     return 'Použijte alespoň $min znaků';
   }
-
-  @override
-  String get syncRecoveryPasswordMismatch => 'Hesla se liší';
 
   @override
   String get syncRecoveryCode => 'Obnovovací kód';
