@@ -46,5 +46,11 @@
     "en": "Database upgrades now wait for a verified backup. Update downloads keep using the package for the version you checked.",
     "zh": "数据库升级前会先生成并验证备份。下载更新时会继续使用检查更新时对应的安装包。",
     "zh_Hant": "資料庫升級前會先建立並驗證備份。下載更新時會繼續使用檢查更新時對應的安裝套件。"
+  },
+  {
+    "id": "2026-11-08-recovery-password-8",
+    "en": "A sync recovery password needs at least 8 characters instead of 12.",
+    "zh": "同步恢复密码最短从 12 位改为 8 位。",
+    "zh_Hant": "同步復原密碼最短從 12 位改為 8 位。"
   }
 ]

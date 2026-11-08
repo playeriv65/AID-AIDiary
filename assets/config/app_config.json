@@ -183,7 +183,7 @@
     },
     "recovery": {
       "codeBytes": 20,
-      "minPasswordLength": 12,
+      "minPasswordLength": 8,
       "argon2MemoryKiB": 65536,
       "argon2Iterations": 3
     },
