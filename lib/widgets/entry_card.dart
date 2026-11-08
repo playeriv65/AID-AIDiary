@@ -4,6 +4,7 @@
 
 import 'dart:math' as math;
 
+import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/widgets/icon_label.dart';
 import 'package:aid_diary/providers/weather_provider.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
@@ -19,6 +20,7 @@ import 'package:aid_diary/widgets/mood_icon.dart';
 import 'package:intl/intl.dart';
 import 'package:aid_diary/widgets/weather_icon.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:provider/provider.dart';
 
 /// Predictable desktop preview slots let scrollbar jumps skip unseen days
 /// without shaping and laying out thousands of intervening entry widgets.
@@ -71,7 +73,6 @@ class EntryCard extends StatelessWidget {
     required this.onTap,
     this.images = const [],
     this.selected = false,
-    this.hideImage = false,
     this.label,
     this.showDate = false,
     this.showDetails = true,
@@ -83,7 +84,6 @@ class EntryCard extends StatelessWidget {
   final List<EntryImage> images;
   final VoidCallback onTap;
   final bool selected;
-  final bool hideImage;
 
   /// Replaces the time, e.g. "1 year ago" in a throwback list.
   final String? label;
@@ -107,8 +107,11 @@ class EntryCard extends StatelessWidget {
     final cs = theme.colorScheme;
     final l10n = AppLocalizations.of(context)!;
     final sealed = entry.isSealed;
+    // "Hide images" in the settings applies to every list.
+    final hideImages = context.select<ConfigProvider, bool>(
+        (config) => config.get(Settings.hideImagesInGallery));
     final thumbnail =
-        images.isNotEmpty && !hideImage && !sealed ? images.first : null;
+        images.isNotEmpty && !hideImages && !sealed ? images.first : null;
     final muted = theme.textTheme.bodyMedium?.copyWith(
       color: cs.onSurfaceVariant,
     );

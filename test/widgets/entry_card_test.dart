@@ -5,9 +5,12 @@
 @Tags(['widget'])
 library;
 
+import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/models/entry.dart';
+import 'package:aid_diary/models/image.dart';
 import 'package:aid_diary/pages/search_page.dart';
 import 'package:aid_diary/widgets/entry_card.dart';
+import 'package:aid_diary/widgets/local_image_loader.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -99,6 +102,25 @@ void main() {
     expect(find.byKey(const ValueKey('restore')), findsOneWidget);
     expect(find.textContaining('09:05'), findsOneWidget);
     expect(find.text('09:05'), findsNothing, reason: 'the date comes first');
+  });
+
+  testWidgets('"Hide images" takes the thumbnail off every card',
+      (tester) async {
+    final entry = Entry(text: '湖边', timeCreate: time, timeModified: time);
+    final photo = EntryImage(
+        entryId: 1, imgPath: 'lake.jpg', imgRank: 0, timeCreate: time);
+    DiaryAppHarness.size(tester, const Size(390, 844));
+    await tester.pumpWidget(harness.app(Scaffold(
+        body: EntryCard(entry: entry, images: [photo], onTap: () {}))));
+    await tester.pump();
+    expect(find.byType(LocalImageLoader), findsOneWidget);
+
+    addTearDown(
+        () => DiaryAppHarness.setSetting(Settings.hideImagesInGallery, false));
+    await DiaryAppHarness.setSetting(Settings.hideImagesInGallery, true);
+    await tester.pump();
+    expect(find.byType(LocalImageLoader), findsNothing);
+    await tester.pumpWidget(const SizedBox.shrink());
   });
 
   testWidgets('search results mark what was searched for', (tester) async {

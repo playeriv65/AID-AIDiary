@@ -323,13 +323,12 @@ class _JournalPageState extends State<JournalPage>
   Widget build(BuildContext context) {
     super.build(context);
     final l10n = AppLocalizations.of(context)!;
-    final config = context.watch<ConfigProvider>();
+    context.watch<ConfigProvider>();
     context.watch<EntriesProvider>();
     final images = context.watch<EntryImagesProvider>();
     final ordered = _ordered();
     final groups = groupEntriesByDay(ordered,
         timeOf: _sort == 'updated' ? (e) => e.timeModified : null);
-    final hideImages = config.get(Settings.hideImagesInGallery);
     final metrics = switch (Theme.of(context).platform) {
       TargetPlatform.windows ||
       TargetPlatform.linux ||
@@ -350,7 +349,6 @@ class _JournalPageState extends State<JournalPage>
             EntryCard(
               entry: entry,
               images: images.getForEntry(entry),
-              hideImage: hideImages,
               selected: split && entry.id == _selectedId,
               onTap: () => _open(entry, split),
             ),
