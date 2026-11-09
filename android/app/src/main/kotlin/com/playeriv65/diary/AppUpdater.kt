@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-package dev.aid.diary
+package com.playeriv65.diary
 
 import android.app.Activity
 import android.app.PendingIntent
@@ -34,7 +34,7 @@ class AppUpdater(private val activity: Activity, messenger: BinaryMessenger) {
   private class Rejected(val code: String, message: String) : Exception(message)
 
   init {
-    MethodChannel(messenger, "aid.updates").setMethodCallHandler { call, result ->
+    MethodChannel(messenger, "$NAMESPACE/updates").setMethodCallHandler { call, result ->
       try {
         when (call.method) {
           // F-Droid's client updates its builds, signed with F-Droid's key.

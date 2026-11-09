@@ -1,9 +1,8 @@
-package dev.aid.diary
+package com.playeriv65.diary
 
 import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.SharedPreferences
-import android.net.Uri
 import android.view.View
 import android.widget.RemoteViews
 import es.antonborri.home_widget.HomeWidgetLaunchIntent
@@ -46,11 +45,11 @@ abstract class JournalWidgetProvider(private val kind: String) : HomeWidgetProvi
         currentStreak?.takeIf { it.isNotEmpty() } ?: data.getString("widget_streak_zero", context.getString(R.string.widget_write_default))
       }
       views.setTextViewText(R.id.journal_widget_text, text)
-      val uri = if (kind == "prompt") "aiddiary://prompt?index=$index" else "aiddiary://write"
-      views.setOnClickPendingIntent(R.id.journal_widget_root, HomeWidgetLaunchIntent.getActivity(context, MainActivity::class.java, Uri.parse(uri)))
+      val link = appLink(if (kind == "prompt") "prompt?index=$index" else "write")
+      views.setOnClickPendingIntent(R.id.journal_widget_root, HomeWidgetLaunchIntent.getActivity(context, MainActivity::class.java, link))
       val moodIds = intArrayOf(R.id.widget_mood_low, R.id.widget_mood_down, R.id.widget_mood_neutral, R.id.widget_mood_good, R.id.widget_mood_great)
       for ((i, view) in moodIds.withIndex()) {
-        views.setOnClickPendingIntent(view, HomeWidgetLaunchIntent.getActivity(context, MainActivity::class.java, Uri.parse("aiddiary://mood?value=${i - 2}")))
+        views.setOnClickPendingIntent(view, HomeWidgetLaunchIntent.getActivity(context, MainActivity::class.java, appLink("mood?value=${i - 2}")))
       }
       manager.updateAppWidget(id, views)
     }

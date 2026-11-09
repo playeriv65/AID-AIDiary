@@ -18,12 +18,12 @@ const int quickWriteNotificationId = 5;
 
 // Notification channels. Android lists each under its localized name,
 // stored in SharedPreferences at startup so background isolates have it.
-const String reminderChannelId = 'aid_diary_reminder';
-const String onThisDayChannelId = 'aid_diary_on_this_day';
-const String coachChannelId = 'aid_diary_coach';
-const String nudgeChannelId = 'aid_diary_nudge';
-const String quickWriteChannelId = 'aid_diary_quick_write';
-const String backupNotificationChannelId = 'aid_diary_backup';
+const String reminderChannelId = 'reminder';
+const String onThisDayChannelId = 'on_this_day';
+const String coachChannelId = 'coach';
+const String nudgeChannelId = 'nudge';
+const String quickWriteChannelId = 'quick_write';
+const String backupNotificationChannelId = 'backup';
 
 /// SharedPreferences as stored now, for alarm and backup callbacks. Their
 /// isolate lives on between runs, and getInstance keeps serving the values

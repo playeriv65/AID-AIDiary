@@ -2,12 +2,11 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-package dev.aid.diary
+package com.playeriv65.diary
 
 import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.SharedPreferences
-import android.net.Uri
 import android.view.View
 import android.widget.RemoteViews
 import es.antonborri.home_widget.HomeWidgetLaunchIntent
@@ -45,9 +44,9 @@ class DiaryWidgetProvider : HomeWidgetProvider() {
     val streak = widgetData.getString("widget_streak", "").orEmpty()
 
     val open =
-      HomeWidgetLaunchIntent.getActivity(context, MainActivity::class.java, Uri.parse("aiddiary://open"))
+      HomeWidgetLaunchIntent.getActivity(context, MainActivity::class.java, appLink("open"))
     val write =
-      HomeWidgetLaunchIntent.getActivity(context, MainActivity::class.java, Uri.parse("aiddiary://write"))
+      HomeWidgetLaunchIntent.getActivity(context, MainActivity::class.java, appLink("write"))
 
     for (id in appWidgetIds) {
       val views =

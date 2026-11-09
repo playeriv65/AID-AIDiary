@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-package dev.aid.diary.backup_crypto
+package com.playeriv65.diary.backup_crypto
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
@@ -33,7 +33,7 @@ class BackupCryptoPlugin :
     private val cancelledRequests = ConcurrentHashMap<String, AtomicBoolean>()
 
     override fun onAttachedToEngine(binding: FlutterPlugin.FlutterPluginBinding) {
-        channel = MethodChannel(binding.binaryMessenger, "backup_crypto")
+        channel = MethodChannel(binding.binaryMessenger, "com.playeriv65.diary/backup_crypto")
         channel.setMethodCallHandler(this)
     }
 

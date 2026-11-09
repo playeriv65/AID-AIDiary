@@ -95,7 +95,7 @@ void Integer(Bytes& der, const BYTE* value) {
 
 std::unique_ptr<flutter::MethodChannel<Value>> RegisterDeviceKeys(flutter::BinaryMessenger* messenger) {
   auto channel = std::make_unique<flutter::MethodChannel<Value>>(
-      messenger, "aid.device_keys", &flutter::StandardMethodCodec::GetInstance());
+      messenger, APPLICATION_ID "/device_keys", &flutter::StandardMethodCodec::GetInstance());
   channel->SetMethodCallHandler([](const auto& call, auto result) {
     try {
       const auto* args = std::get_if<Map>(call.arguments());
@@ -165,7 +165,7 @@ std::unique_ptr<flutter::MethodChannel<Value>> RegisterDeviceKeys(flutter::Binar
 
 std::unique_ptr<flutter::MethodChannel<Value>> RegisterNearbySettings(flutter::BinaryMessenger* messenger) {
   auto channel = std::make_unique<flutter::MethodChannel<Value>>(
-      messenger, "aid.nearby", &flutter::StandardMethodCodec::GetInstance());
+      messenger, APPLICATION_ID "/nearby", &flutter::StandardMethodCodec::GetInstance());
   channel->SetMethodCallHandler([](const auto& call, auto result) {
     const wchar_t* uri = nullptr;
     if (call.method_name() == "openWifiSettings") uri = L"ms-settings:network-wifi";

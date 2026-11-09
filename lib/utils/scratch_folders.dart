@@ -5,6 +5,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/storage/secret_store.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
@@ -25,7 +26,7 @@ String? scratchFolder;
 Future<void> useScratchFolders() async {
   var folder = Platform.environment['AID_DATA_DIR'];
   if (Platform.isAndroid) {
-    folder = await const MethodChannel('aid.dev/workspace')
+    folder = await const MethodChannel('$appNamespace/workspace')
         .invokeMethod<String>('workspace');
   }
   if (folder == null || folder.isEmpty) return;

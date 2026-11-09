@@ -9,7 +9,8 @@ project owned by the developer. That registration is what the IDs in
 ## What the app asks for
 
 Only `drive.file`: the app sees the files it made itself, in an `AID Diary`
-folder in the user's Drive, and nothing else. It is a non-sensitive scope, so
+folder in the user's Drive (`sync.spaceFolder`, an identifier that stays
+when the app's name changes), and nothing else. It is a non-sensitive scope, so
 Google does not review the app for it. `openid` and `email` show which
 account is connected.
 
@@ -39,12 +40,16 @@ account is connected.
    - Data access: `drive.file`, `openid`, `userinfo.email`.
 4. Clients:
    - Web application `AID Diary Android sign-in` → `webClientId`.
-   - Android `AID Diary`, package `dev.aid.diary`, and `AID Diary Android
-     Beta`, package `dev.aid.diary.beta` (the dev flavor), both with the
-     release key's SHA-1 (`keytool -list -v -keystore <storeFile> -alias
-     <keyAlias>`): every local build is signed with that key. The client for
-     the dev flavor's former package `dev.aid.diary.dev` is no longer used
-     (`docs/REFRESH_RATE.md`).
+   - Android `AID Diary`, package `com.playeriv65.diary` (the independent
+     flavor), and `AID Diary Android Beta`, package
+     `com.playeriv65.diary.beta` (the dev flavor), both with the release
+     key's SHA-1, `A8:75:4A:EE:D0:65:35:BD:D8:DE:56:D7:34:59:44:37:EF:6F:38:77`
+     (`keytool -list -v -keystore <storeFile> -alias <keyAlias>`, from
+     `android/key.properties`): every local and nightly build is signed with
+     that key. The app holds no Android client ID: Google matches the
+     package and SHA-1 to these clients, and the app names only the web
+     client. Clients for earlier packages (`dev.aid.diary`,
+     `dev.aid.diary.beta`, `dev.aid.diary.dev`) are no longer used.
    - Desktop app `AID Diary Windows` → `desktopClientId`. Its client
      secret is kept out of the public repository: `AID_GOOGLE_DESKTOP_SECRET`
      in `scripts/dev.env`, which `scripts/dev.ps1` gives to desktop builds as

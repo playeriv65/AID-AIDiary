@@ -14,5 +14,5 @@ flutter:
   plugin:
     platforms:
       android:
-        package: dev.aid.diary.share_receiver
+        package: com.playeriv65.diary.share_receiver
         pluginClass: ShareReceiverPlugin

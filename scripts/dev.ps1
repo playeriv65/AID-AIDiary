@@ -194,8 +194,9 @@ switch ($Target) {
         if ($state -eq 'device') { $serial }
       }
     }
+    $package = (Select-String -Path (Join-Path $PSScriptRoot '..\android\app\build.gradle') -Pattern 'applicationId "([^"]+)"').Matches[0].Groups[1].Value
     foreach ($serial in $serials) {
-      $installed = adb -s $serial shell dumpsys package dev.aid.diary |
+      $installed = adb -s $serial shell dumpsys package $package |
         Select-String -Pattern 'versionCode=(\d+)' | Select-Object -First 1
       if ($installed -and [long]$installed.Matches[0].Groups[1].Value -ge [long]$buildNumber) {
         Write-Error "$serial already has version code $($installed.Matches[0].Groups[1].Value), not older than this build ($buildNumber)."

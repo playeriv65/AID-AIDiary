@@ -190,5 +190,11 @@
     "en": "Messages with a button, such as \"Updated to\" after an update, go away by themselves after a few seconds.",
     "zh": "带按钮的提示（例如更新后的“已更新到”）会在几秒后自动消失。",
     "zh_Hant": "帶按鈕的提示（例如更新後的「已更新至」）會在幾秒後自動消失。"
+  },
+  {
+    "id": "2026-11-09-new-app-identity",
+    "en": "On Android, AID Diary is now a new app (com.playeriv65.diary): install it from the nightly release beside the old one, which no longer updates. Move your diary over with Pair devices or Restore from backup, then uninstall the old app. On Windows the app updates as before but keeps the diary in a new folder, com.playeriv65.diary in %APPDATA%: with the app closed, move the contents of AID Diary\\AID Diary in %APPDATA% there.",
+    "zh": "Android 上的 AID Diary 现在是一个新应用（com.playeriv65.diary）：请从 nightly 发布页安装，它与旧应用并存，旧应用不再更新。用“配对设备”或“从备份恢复”把日记移过去，然后卸载旧应用。Windows 版照常更新，但日记改存在 %APPDATA% 下的新文件夹 com.playeriv65.diary：关闭应用后，把 %APPDATA% 下 AID Diary\\AID Diary 的内容移过去。",
+    "zh_Hant": "Android 上的 AID Diary 現在是一個新應用程式（com.playeriv65.diary）：請從 nightly 發布頁安裝，它與舊應用程式並存，舊應用程式不再更新。用「配對裝置」或「從備份還原」把日記移過去，然後解除安裝舊應用程式。Windows 版照常更新，但日記改存在 %APPDATA% 下的新資料夾 com.playeriv65.diary：關閉應用程式後，把 %APPDATA% 下 AID Diary\\AID Diary 的內容移過去。"
   }
 ]

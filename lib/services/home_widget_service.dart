@@ -6,6 +6,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/database/image_storage.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
 import 'package:aid_diary/models/entry.dart';
@@ -115,8 +116,8 @@ List<PhotoWidgetChoice> photoCandidates(List<Entry> entries,
 
 /// Keeps the Android widgets in step with the diary and reports their taps.
 class HomeWidgetService {
-  static const _provider = 'dev.aid.diary.DiaryWidgetProvider';
-  static const _photoProvider = 'dev.aid.diary.PhotoWidgetProvider';
+  static const _provider = '$appNamespace.DiaryWidgetProvider';
+  static const _photoProvider = '$appNamespace.PhotoWidgetProvider';
   static const _writeHost = 'write';
   static const _newEntryHost = 'new';
   static const _entryHost = 'entry';
@@ -135,7 +136,7 @@ class HomeWidgetService {
     if (mapEquals(data, _pushed)) return;
     if (await _save(data, _provider, 'Home widget', additionalProviders: [
       for (final kind in ['Streak', 'Prompt', 'Mood'])
-        'dev.aid.diary.${kind}WidgetProvider'
+        '$appNamespace.${kind}WidgetProvider'
     ])) {
       _pushed = data;
     }

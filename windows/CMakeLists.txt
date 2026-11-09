@@ -5,6 +5,10 @@ project(aid_diary LANGUAGES CXX)
 # The name of the executable created for the application. Change this to change
 # the on-disk name of your application.
 set(BINARY_NAME "aid_diary")
+# The app's permanent identity, as on Android and Linux. It names the data
+# folder, %APPDATA%\<APPLICATION_ID> (Runner.rc), and never follows the
+# display name (docs/ARCHITECTURE.md#app-identity).
+set(APPLICATION_ID "com.playeriv65.diary")
 
 # Explicitly opt in to modern CMake behaviors to avoid warnings with recent
 # versions of CMake.

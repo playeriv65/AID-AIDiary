@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-package dev.aid.diary
+package com.playeriv65.diary
 
 import android.Manifest
 import android.content.ContentResolver
@@ -27,7 +27,7 @@ class LocalPhotos(private val context: Context, messenger: BinaryMessenger) {
   init {
     MethodChannel(
       messenger,
-      "aid.local_photos",
+      "$NAMESPACE/local_photos",
       StandardMethodCodec.INSTANCE,
       messenger.makeBackgroundTaskQueue(),
     ).setMethodCallHandler { call, result ->

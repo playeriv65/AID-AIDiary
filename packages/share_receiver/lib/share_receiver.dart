@@ -50,7 +50,7 @@ class ShareReceiver {
   static final ShareReceiver instance = ShareReceiver._internal();
   ShareReceiver._internal();
 
-  static const _channel = MethodChannel('share_receiver');
+  static const _channel = MethodChannel('com.playeriv65.diary/share_receiver');
 
   late final _controller =
       StreamController<SharePayload>.broadcast(onListen: _start);

@@ -33,7 +33,7 @@ class WebDavBackend implements SyncBackend {
       required String password,
       this.authorizationProvider,
       this.deviceIdProvider,
-      this.folder = defaultFolder,
+      required this.folder,
       http.Client? client})
       : _server = server.path.endsWith('/')
             ? server
@@ -42,10 +42,10 @@ class WebDavBackend implements SyncBackend {
             'Basic ${base64.encode(utf8.encode('$username:$password'))}',
         _client = client ?? http.Client();
 
-  /// The folder the space lives in, inside the server's address.
-  static const String defaultFolder = 'AID Diary';
-
   final Uri _server;
+
+  /// The folder the space lives in, inside the server's address
+  /// (`AppConfig.syncSpaceFolder`).
   final String folder;
   final String _authorization;
   final Future<String> Function()? authorizationProvider;

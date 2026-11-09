@@ -9,7 +9,8 @@ class BackupCryptoCancelledException implements Exception {}
 class BackupCryptoDecryptionFailedException implements Exception {}
 
 class BackupCrypto {
-  static const MethodChannel _channel = MethodChannel('backup_crypto');
+  static const MethodChannel _channel =
+      MethodChannel('com.playeriv65.diary/backup_crypto');
   static final Map<String, void Function(double percent)> _progressCallbacks =
       {};
   static bool _isListening = false;

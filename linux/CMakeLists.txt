@@ -5,9 +5,11 @@ project(runner LANGUAGES CXX)
 # The name of the executable created for the application. Change this to change
 # the on-disk name of your application.
 set(BINARY_NAME "aid_diary")
-# The unique GTK application identifier for this application. See:
+# The unique GTK application identifier: the app's permanent identity, as on
+# Android and Windows. It names the data folder (~/.local/share/<id>) and
+# never follows the display name (docs/ARCHITECTURE.md#app-identity). See:
 # https://wiki.gnome.org/HowDoI/ChooseApplicationID
-set(APPLICATION_ID "dev.aid.diary")
+set(APPLICATION_ID "com.playeriv65.diary")
 
 # Explicitly opt in to modern CMake behaviors to avoid warnings with recent
 # versions of CMake.

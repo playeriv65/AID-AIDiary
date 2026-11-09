@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-package dev.aid.diary.share_receiver
+package com.playeriv65.diary.share_receiver
 
 import android.content.Context
 import android.content.Intent
@@ -38,7 +38,7 @@ class ShareReceiverPlugin :
 
     override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         context = flutterPluginBinding.applicationContext
-        channel = MethodChannel(flutterPluginBinding.binaryMessenger, "share_receiver")
+        channel = MethodChannel(flutterPluginBinding.binaryMessenger, "com.playeriv65.diary/share_receiver")
         channel.setMethodCallHandler(this)
     }
 

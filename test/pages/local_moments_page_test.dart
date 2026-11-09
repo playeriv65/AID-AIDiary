@@ -5,6 +5,7 @@
 @Tags(['widget'])
 library;
 
+import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/pages/local_moments_page.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/l10n/generated/app_localizations.dart';
@@ -20,7 +21,7 @@ void main() {
       (tester) async {
     DiaryAppHarness.size(tester, const Size(360, 800));
     final calls = <MethodCall>[];
-    const channel = MethodChannel('aid.local_photos');
+    const channel = MethodChannel('$appNamespace/local_photos');
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(channel, (call) async {
       calls.add(call);

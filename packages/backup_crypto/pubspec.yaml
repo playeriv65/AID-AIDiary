@@ -15,5 +15,5 @@ flutter:
   plugin:
     platforms:
       android:
-        package: dev.aid.diary.backup_crypto
+        package: com.playeriv65.diary.backup_crypto
         pluginClass: BackupCryptoPlugin

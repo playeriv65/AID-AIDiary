@@ -66,7 +66,7 @@ that syncs itself (Google Photos, OneDrive, a NAS) shows the same day on
 every device, and the diary holds only what was added.
 
 Assessed 2026-10-25:
-- Android: easy, the parts exist. `LocalPhotos.kt` (`aid.local_photos`,
+- Android: easy, the parts exist. `LocalPhotos.kt` (`com.playeriv65.diary/local_photos`,
   used by Photo moments) already queries MediaStore by date and copies one
   photo for import. Needed: a day range (start and end from `DiaryDay`), a
   thumbnail call (`ContentResolver.loadThumbnail`), the strip in the entry
@@ -203,23 +203,21 @@ Remaining work:
   probe timed out, so local global-address success must not be presented as
   cross-WAN success.
 
-## Android package name (owner to do)
-The Android package `dev.aid.diary` reads as the domain `aid.dev`, which
-someone else has registered and serves a site on. Nothing breaks today
-(Android does not check domains), but a store or a developer registry
-gives a package name to whoever claims it first. Move to a prefix from the
-owner's own domain, e.g. `com.playeriv65.aiddiary` and `.beta` for the dev
-flavor (2026-10-23, proposed; the owner will carry it out):
+## App identity move (owner to do)
+The app is `com.playeriv65.diary` from 2026-11-09 (docs/ARCHITECTURE.md#app-identity);
+the code carries no migration from `dev.aid.diary`:
 
-- `applicationId` in `android/app/build.gradle` (the Kotlin `namespace` may
-  stay), the CLI's default package in `cli/lib/aid_cli.dart`, and the
-  package names in docs and scripts.
-- Google Cloud: Android OAuth clients for both new packages with the same
-  SHA-1 (`docs/GOOGLE_DRIVE.md`).
-- The owner's diary: install the renamed release beside the old app (a new
+- Google Cloud: Android OAuth clients for `com.playeriv65.diary` and
+  `com.playeriv65.diary.beta` with the release key's SHA-1
+  (`docs/GOOGLE_DRIVE.md`); delete the clients of the old packages after.
+- Android devices: install the new release beside the old app (a new
   package needs the HyperOS confirmation on the device), bring the diary
   over with "Connect to an existing device" or a full backup and restore,
   check it, then uninstall the old app.
+- Windows: the installed app updates in place (same installer AppId) and
+  then opens with an empty diary, in `%APPDATA%\com.playeriv65.diary`. With
+  the app closed, move the contents of `%APPDATA%\AID Diary\AID Diary`
+  there, replacing what the new build made.
 
 ## Decided against for now
 - Duplicate-entry action: removed at the owner's request (2026-10-23); save as template remains.

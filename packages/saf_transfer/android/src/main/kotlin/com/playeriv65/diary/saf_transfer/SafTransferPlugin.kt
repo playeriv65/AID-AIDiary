@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-package dev.aid.diary.saf_transfer
+package com.playeriv65.diary.saf_transfer
 
 import android.content.Context
 import androidx.core.net.toUri
@@ -29,7 +29,7 @@ class SafTransferPlugin :
 
     override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         context = flutterPluginBinding.applicationContext
-        channel = MethodChannel(flutterPluginBinding.binaryMessenger, "saf_transfer")
+        channel = MethodChannel(flutterPluginBinding.binaryMessenger, "com.playeriv65.diary/saf_transfer")
         channel.setMethodCallHandler(this)
     }
 

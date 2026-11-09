@@ -212,6 +212,7 @@ void main() {
       api: FakeDrive.api,
       upload: FakeDrive.upload,
       token: drive.token,
+      folder: 'space',
       client: drive.client);
 
   test('files are written into made folders, listed, read and deleted',
@@ -221,8 +222,7 @@ void main() {
 
     await backend.write('items/abc', Uint8List.fromList([1, 2]));
 
-    expect(
-        drive.paths, ['AID Diary', 'AID Diary/items', 'AID Diary/items/abc']);
+    expect(drive.paths, ['space', 'space/items', 'space/items/abc']);
     expect((await backend.list('items')).keys, ['items/abc']);
     expect(await backend.read('items/abc'), [1, 2]);
     expect(await backend.read('items/missing'), isNull);
@@ -288,12 +288,12 @@ void main() {
       () async {
     final drive = FakeDrive();
     drive.items
-      ..add(DriveItem('first', 'AID Diary', 'root', folder: true))
-      ..add(DriveItem('second', 'AID Diary', 'root', folder: true));
+      ..add(DriveItem('first', 'space', 'root', folder: true))
+      ..add(DriveItem('second', 'space', 'root', folder: true));
 
     await backendFor(drive).write('items/a', Uint8List.fromList([1]));
 
-    expect(drive.paths, contains('AID Diary/items/a'));
+    expect(drive.paths, contains('space/items/a'));
     expect(
         drive.items.firstWhere((item) => item.name == 'items').parent, 'first');
   });
@@ -314,7 +314,7 @@ void main() {
     ]);
 
     expect(drive.items.where((item) => item.folder).map(drive.pathOf),
-        ['AID Diary', 'AID Diary/blobs']);
+        ['space', 'space/blobs']);
     // Looking for the two folders and one listing; new files in a listed
     // folder need no search of their own.
     expect(drive.requests.where((r) => r.startsWith('GET /drive/v3/files')),
@@ -327,7 +327,7 @@ void main() {
 
     await backendFor(drive).write('packs/one', Uint8List.fromList([1]));
 
-    expect(drive.paths, contains('AID Diary/packs/one'));
+    expect(drive.paths, contains('space/packs/one'));
   });
 
   test('two devices sync an encrypted diary through Google Drive', () async {

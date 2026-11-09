@@ -238,7 +238,7 @@ class _AtlasPageState extends State<AtlasPage>
                 children: [
                   TileLayer(
                     urlTemplate: config.tileUrlTemplate,
-                    userAgentPackageName: config.userAgentPackageName,
+                    userAgentPackageName: appNamespace,
                     tileProvider: AtlasPage.tileProviderOverride,
                   ),
                   // Reads the camera, so clusters regroup as the map zooms.

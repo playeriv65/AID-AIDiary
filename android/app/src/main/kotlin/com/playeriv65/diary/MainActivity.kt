@@ -2,13 +2,22 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-package dev.aid.diary
+package com.playeriv65.diary
 
 import android.content.Intent
+import android.net.Uri
 import io.flutter.embedding.android.FlutterFragmentActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import java.io.File
+
+/** The app's fixed namespace (its Kotlin package): the prefix of the
+ * platform channels to Dart and the scheme of [appLink]. */
+internal const val NAMESPACE = "com.playeriv65.diary"
+
+/** A link widgets and the quick-write notification open the app with. The
+ * app reads its host and query (HomeWidgetService), not its scheme. */
+internal fun appLink(target: String): Uri = Uri.parse("$NAMESPACE://$target")
 
 class MainActivity : FlutterFragmentActivity() {
   override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
@@ -18,7 +27,7 @@ class MainActivity : FlutterFragmentActivity() {
     DeviceKeys(flutterEngine.dartExecutor.binaryMessenger, "$packageName.$scope")
     LocalPhotos(applicationContext, flutterEngine.dartExecutor.binaryMessenger)
     AppUpdater(this, flutterEngine.dartExecutor.binaryMessenger)
-    MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "aid.nearby")
+    MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "$NAMESPACE/nearby")
       .setMethodCallHandler { call, result ->
         val action = when (call.method) {
           "openWifiSettings" -> android.provider.Settings.ACTION_WIFI_SETTINGS
@@ -40,7 +49,7 @@ class MainActivity : FlutterFragmentActivity() {
           }
         }
       }
-    MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "aid.dev/workspace")
+    MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "$NAMESPACE/workspace")
       .setMethodCallHandler { call, result ->
         if (call.method != "workspace") {
           result.notImplemented()

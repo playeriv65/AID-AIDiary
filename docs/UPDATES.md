@@ -15,7 +15,8 @@ app imports and the `aid` command line. It adds "AID Diary" to the Start menu (a
 Search), an uninstaller in Settings > Apps, and optionally a desktop
 shortcut and the install folder on the user's PATH. A newer installer
 replaces the installed app in place and keeps those choices. Uninstalling
-removes the installed files only; the diary in `%APPDATA%` stays.
+removes the installed files only; the diary in `%APPDATA%\com.playeriv65.diary`
+(docs/ARCHITECTURE.md#app-identity) stays.
 
 The ZIP stays a portable download. A copy run from it, or from a build
 folder, has no uninstaller beside it and does not update itself.
@@ -165,6 +166,15 @@ until it has a reputation.
 
 The F-Droid build has no update permission and checks nothing: F-Droid's
 client updates it, signed with F-Droid's key.
+
+The manifest names packages by role (`android`, `android-dev`), and an
+Android app takes `android-dev` when its package ends in `.beta`. Since
+2026-11-09 those files are `com.playeriv65.diary` and
+`com.playeriv65.diary.beta`. Installs of the old packages, `dev.aid.diary`
+and `dev.aid.diary.beta`, still find and download them, and `AppUpdater.kt`
+refuses each as another app (`wrong_app`): they no longer update. Their
+owner installs the new app beside the old one and moves the diary over
+(TODO.md, "App identity move").
 
 ## Database upgrades
 

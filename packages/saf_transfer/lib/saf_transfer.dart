@@ -6,7 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:uuid/uuid.dart';
 
 class SafTransfer {
-  static const MethodChannel _channel = MethodChannel('saf_transfer');
+  static const MethodChannel _channel =
+      MethodChannel('com.playeriv65.diary/saf_transfer');
 
   // A map to hold active progress callbacks referenced by their transfer ID
   static final Map<String, Function(double)> _progressCallbacks = {};

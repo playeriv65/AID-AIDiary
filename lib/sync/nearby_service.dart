@@ -418,7 +418,7 @@ class NearbyService extends ChangeNotifier {
     }
   }
 
-  static const _nearby = MethodChannel('aid.nearby');
+  static const _nearby = MethodChannel('$appNamespace/nearby');
   Future<void> openWifiSettings() =>
       _nearby.invokeMethod<void>('openWifiSettings');
   Future<void> openHotspotSettings() =>

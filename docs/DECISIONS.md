@@ -10,6 +10,14 @@ asks again. Dates are when it was settled. Ideas not built yet are in
   iOS and macOS come later, when there is an Apple account to sign with
   (TODO "Build automation"); web stays out (below).
 
+- App identity (2026-11-09, owner): the app's permanent identity is
+  `com.playeriv65.diary` (Android `.beta` for the dev flavor), on the owner's
+  own domain, and never changes again. The display name "AID Diary" is a
+  brand that may change at any time without breaking installs, updates,
+  data folders or sync ([Architecture](ARCHITECTURE.md#app-identity)). The
+  move from `dev.aid.diary` has no migration code: the new Android package is
+  a new app, and the owner moves the diary on each device by hand.
+
 - Debugging tools (2026-10-23): do not use Computer Use for debugging or
   verification. Use the existing CLI and Flutter tools, with explicit native
   frame verification limits. Setup and Testing own the procedures.
@@ -50,9 +58,10 @@ asks again. Dates are when it was settled. Ideas not built yet are in
   timezone evidence; do not expand the migration into forensic research.
 
 - Personal-use boundary (2026-10-22): the owner is starting real use and
-  importing personal entries into the Android release app (`dev.aid.diary`,
-  displayed as AID Diary). Preserve its data, keys, preferences and live sync
-  space. Development and validation use AID Diary Dev (`dev.aid.diary.beta`)
+  importing personal entries into the Android release app
+  (`com.playeriv65.diary`, before 2026-11-09 `dev.aid.diary`; displayed as AID
+  Diary). Preserve its data, keys, preferences and live sync space.
+  Development and validation use AID Diary Dev (`com.playeriv65.diary.beta`)
   with isolated scratch data and sync namespaces. Separate Android packages
   isolate local stores; they do not isolate a shared sync space. Never attach
   test data to the owner's live space. A release installation/update, import,

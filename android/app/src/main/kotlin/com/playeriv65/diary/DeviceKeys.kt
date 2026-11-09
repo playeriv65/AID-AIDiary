@@ -1,7 +1,7 @@
 // Copyright (C) 2026 Demizo and contributors
 // SPDX-License-Identifier: GPL-3.0-only
 
-package dev.aid.diary
+package com.playeriv65.diary
 
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyInfo
@@ -19,7 +19,7 @@ import java.security.spec.ECGenParameterSpec
 /** Device authentication keys never leave the Android Keystore. */
 class DeviceKeys(messenger: BinaryMessenger, private val namespace: String) {
   init {
-    MethodChannel(messenger, "aid.device_keys").setMethodCallHandler { call, result ->
+    MethodChannel(messenger, "$NAMESPACE/device_keys").setMethodCallHandler { call, result ->
       try {
         val alias = call.argument<String>("alias")
         require(alias != null && Regex("^[A-Za-z0-9_-]{1,128}$").matches(alias))

@@ -29,7 +29,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace = "dev.aid.diary"
+    namespace = "com.playeriv65.diary"
     compileSdkVersion 37
     ndkVersion = flutter.ndkVersion
 
@@ -49,7 +49,9 @@ android {
     }
 
     defaultConfig {
-        applicationId "dev.aid.diary"
+        // The app's permanent identity; never changes with the display name
+        // (docs/ARCHITECTURE.md#app-identity). The F-Droid flavor shares it.
+        applicationId "com.playeriv65.diary"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
         minSdkVersion flutter.minSdkVersion

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-package dev.aid.diary
+package com.playeriv65.diary
 
 import android.appwidget.AppWidgetManager
 import android.content.Context
@@ -11,7 +11,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.media.ExifInterface
-import android.net.Uri
 import android.view.View
 import android.widget.RemoteViews
 import es.antonborri.home_widget.HomeWidgetLaunchIntent
@@ -43,11 +42,11 @@ class PhotoWidgetProvider : HomeWidgetProvider() {
       HomeWidgetLaunchIntent.getActivity(
         context,
         MainActivity::class.java,
-        Uri.parse(
+        appLink(
           if (choice != null) {
-            "aiddiary://entry?id=${choice.getInt("entry")}"
+            "entry?id=${choice.getInt("entry")}"
           } else {
-            "aiddiary://open"
+            "open"
           },
         ),
       )

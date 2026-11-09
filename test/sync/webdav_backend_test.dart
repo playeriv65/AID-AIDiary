@@ -145,6 +145,7 @@ void main() {
         server: Uri.parse('https://own.example/dav/'),
         username: 'diary',
         password: 'test',
+        folder: 'space',
         client: client);
     addTearDown(backend.close);
     expect((await backend.mediaPolicy())!['cacheTtlSeconds'], 60);
@@ -157,6 +158,7 @@ void main() {
         server: Uri.parse('https://own.example/dav/'),
         username: 'diary',
         password: 'test',
+        folder: 'space',
         client: MockClient((_) async {
           calls++;
           return http.Response('', 404);
@@ -174,6 +176,7 @@ void main() {
         server: Uri.parse('https://own.example/dav/'),
         username: 'diary',
         password: 'test',
+        folder: 'space',
         client: MockClient((_) async => http.Response(
             jsonEncode({
               'operatorLimited': limited,
@@ -202,6 +205,7 @@ void main() {
         server: Uri.parse('https://own.example/dav/'),
         username: 'diary',
         password: 'test',
+        folder: 'space',
         client: MockClient((_) async => http.Response(
             jsonEncode({
               'media': {'cacheTtlSeconds': 60},
@@ -223,6 +227,7 @@ void main() {
           server: Uri.parse('https://dav.example/dav'),
           username: 'diary',
           password: password,
+          folder: 'space',
           client: server.client);
 
   test('files are written into made folders, listed, read and deleted',
@@ -232,8 +237,7 @@ void main() {
 
     await dav.write('items/abc', Uint8List.fromList([1, 2]));
 
-    expect(server.folders,
-        containsAll(['/dav/AID Diary/', '/dav/AID Diary/items/']));
+    expect(server.folders, containsAll(['/dav/space/', '/dav/space/items/']));
     final listed = await dav.list('items');
     expect(listed.keys, ['items/abc']);
     expect(await dav.read('items/abc'), [1, 2]);

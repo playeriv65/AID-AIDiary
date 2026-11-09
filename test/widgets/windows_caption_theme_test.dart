@@ -5,6 +5,7 @@
 @Tags(['widget'])
 library;
 
+import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/widgets/windows_caption_theme.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -12,7 +13,7 @@ import 'package:material_ui/material_ui.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
-  const channel = MethodChannel('aid/window_chrome');
+  const channel = MethodChannel('$appNamespace/window_chrome');
   final calls = <MethodCall>[];
   setUp(() {
     calls.clear();

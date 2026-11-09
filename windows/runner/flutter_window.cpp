@@ -31,7 +31,7 @@ bool FlutterWindow::OnCreate() {
       RegisterNearbySettings(flutter_controller_->engine()->messenger());
   window_chrome_ =
       std::make_unique<flutter::MethodChannel<flutter::EncodableValue>>(
-          flutter_controller_->engine()->messenger(), "aid/window_chrome",
+          flutter_controller_->engine()->messenger(), APPLICATION_ID "/window_chrome",
           &flutter::StandardMethodCodec::GetInstance());
   window_chrome_->SetMethodCallHandler(
       [this](const flutter::MethodCall<flutter::EncodableValue> &call,

@@ -7,6 +7,12 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart' show visibleForTesting;
 import 'package:flutter/services.dart';
 
+/// The app's fixed namespace, which is also its Android package and release
+/// application ID: the prefix of the platform channels to the native side
+/// and of the Android widget classes. It never follows the display name
+/// (docs/ARCHITECTURE.md#app-identity).
+const String appNamespace = 'com.playeriv65.diary';
+
 /// Network endpoints and map settings from `assets/config/app_config.json`.
 class AppConfig {
   AppConfig._(this._json);
@@ -39,8 +45,6 @@ class AppConfig {
   String get tileUrlTemplate => _section('map')['tileUrlTemplate'] as String;
   String get mapAttribution => _section('map')['attribution'] as String;
   String get mapAttributionUrl => _section('map')['attributionUrl'] as String;
-  String get userAgentPackageName =>
-      _section('map')['userAgentPackageName'] as String;
   double get mapDefaultZoom =>
       (_section('map')['defaultZoom'] as num).toDouble();
   double get mapEntryZoom => (_section('map')['entryZoom'] as num).toDouble();
@@ -283,6 +287,12 @@ class AppConfig {
 
   Map<String, dynamic> get syncTransfer =>
       (_section('sync')['transfer'] as Map).cast<String, dynamic>();
+
+  /// The folder a sync space lives in, at the top of the user's Google Drive
+  /// or inside the WebDAV address. An identifier, not a display name: each
+  /// device finds its existing space by this name, so it stays as it is when
+  /// the app's name changes (docs/ARCHITECTURE.md#app-identity).
+  String get syncSpaceFolder => _section('sync')['spaceFolder'] as String;
 
   /// The AID sync server's WebDAV address (server/ in this repository).
   String get syncOfficialServer => _section('sync')['officialServer'] as String;

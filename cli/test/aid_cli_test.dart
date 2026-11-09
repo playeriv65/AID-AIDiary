@@ -215,7 +215,7 @@ void main() {
       0,
       1,
       '',
-      'cat: /sdcard/Android/data/dev.aid.diary/files/agent_api.json: '
+      'cat: /sdcard/Android/data/com.playeriv65.diary/files/agent_api.json: '
           'No such file or directory',
     );
 
@@ -223,7 +223,7 @@ void main() {
       ['-d', 'phone', 'app.status'],
       client: () => AidClient(
         device: 'phone',
-        package: 'dev.aid.diary',
+        package: 'com.playeriv65.diary',
         run: adb,
         launch: false,
       ),

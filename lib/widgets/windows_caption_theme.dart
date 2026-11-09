@@ -4,6 +4,7 @@
 
 import 'dart:async';
 
+import 'package:aid_diary/config/app_config.dart';
 import 'package:flutter/services.dart';
 import 'package:logging/logging.dart';
 import 'package:material_ui/material_ui.dart';
@@ -19,7 +20,7 @@ class WindowsCaptionTheme extends StatefulWidget {
 }
 
 class _WindowsCaptionThemeState extends State<WindowsCaptionTheme> {
-  static const _channel = MethodChannel('aid/window_chrome');
+  static const _channel = MethodChannel('$appNamespace/window_chrome');
   static final _logger = Logger('WindowsCaptionTheme');
   (int, int, bool)? _palette;
 

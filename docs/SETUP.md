@@ -213,11 +213,11 @@ fresh dev-app process to select the new stores. Scratch launches do not
 schedule or cancel the regular app's Workmanager background tasks.
 
 For CLI access, privately copy that workspace's `agent_api.json` with
-`adb run-as dev.aid.diary.beta`, forward the API's port to the matching local
+`adb run-as com.playeriv65.diary.beta`, forward the API's port to the matching local
 port, and point `AID_API_INFO` at the copied file. The ordinary `aid -d`
 lookup uses the normal app location and does not discover this scratch
 file automatically. Do not clear app data, reinstall with a different key
-or use the owner's everyday `dev.aid.diary` package to obtain isolation.
+or use the owner's everyday `com.playeriv65.diary` package to obtain isolation.
 
 Development-only `aid sync.network_paths paths=ice,cache stunOnly=true`
 restricts a test without changing persistent settings. Valid path names are
@@ -284,7 +284,7 @@ checks reject missing or empty translations and lost dynamic arguments.
 Use `aid guide` and shared app actions before manual taps when checking behavior.
 Build the CLI with `./scripts/dev.ps1 cli`; `build/cli/aid.exe` can reach an
 Android app over adb with `aid -d <serial> app.status` (the development flavor
-by default, `--package dev.aid.diary` for the everyday app). It reads the
+by default, `--package com.playeriv65.diary` for the everyday app). It reads the
 token from `/sdcard/Android/data/<package>/files/agent_api.json`, which adb
 can read for release builds too, and starts the app when necessary. Release
 builds serve the API only after Settings > Command line enables it. Keep
@@ -368,9 +368,9 @@ device's data, and a prompt on the device.
   owner's installs, and Google Drive sign-in needs the new key's SHA-1
   registered (`docs/GOOGLE_DRIVE.md`).
 
-`./scripts/dev.ps1 apk` builds the development flavor (`dev.aid.diary.beta`,
-not the older `.dev` package). `./scripts/dev.ps1 release` builds the
-`independent` flavor (`dev.aid.diary`) and installs it with `adb install -r` on
+`./scripts/dev.ps1 apk` builds the development flavor
+(`com.playeriv65.diary.beta`). `./scripts/dev.ps1 release` builds the
+`independent` flavor (`com.playeriv65.diary`) and installs it with `adb install -r` on
 connected devices; this is the owner's ordinary app, not an isolated test
 workspace. Do not use that target as a harmless build-only check, uninstall
 either flavor, clear its data or change its signing key without authorization.
@@ -400,8 +400,9 @@ HyperOS behaviour that shapes testing:
 - A new install asks for confirmation on the device; updates signed with
   the same key do not. Never tap that prompt remotely: the person at the
   device does.
-- The dev flavor is `dev.aid.diary.beta`, never `.dev`: HyperOS put that
-  package name on its 60 Hz game list for good (`docs/REFRESH_RATE.md`).
+- The dev flavor's suffix is `.beta`, never `.dev`: HyperOS put the earlier
+  `dev.aid.diary.dev` on its 60 Hz game list for good
+  (`docs/REFRESH_RATE.md`).
 - Turning on any accessibility service turns on Flutter's semantics tree,
   which costs frame time; measure with them off.
 - To check phone layouts on the tablet: `wm size 1080x2400`,

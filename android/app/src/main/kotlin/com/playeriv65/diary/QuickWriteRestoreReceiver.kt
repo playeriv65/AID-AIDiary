@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
-package dev.aid.diary
+package com.playeriv65.diary
 
 import android.app.Notification
 import android.app.NotificationChannel
@@ -10,7 +10,6 @@ import android.app.NotificationManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import es.antonborri.home_widget.HomeWidgetLaunchIntent
 
@@ -54,7 +53,7 @@ class QuickWriteRestoreReceiver : BroadcastReceiver() {
         .setContentText(text)
         .setOngoing(true)
         .setShowWhen(false)
-        .setContentIntent(HomeWidgetLaunchIntent.getActivity(context, MainActivity::class.java, Uri.parse("aiddiary://new")))
+        .setContentIntent(HomeWidgetLaunchIntent.getActivity(context, MainActivity::class.java, appLink("new")))
         .build()
     manager.notify(NOTIFICATION_ID, notification)
   }
@@ -65,7 +64,7 @@ class QuickWriteRestoreReceiver : BroadcastReceiver() {
     const val PREFIX = "flutter."
 
     // Must match quickWriteChannelId and quickWriteNotificationId in Dart.
-    const val CHANNEL = "aid_diary_quick_write"
+    const val CHANNEL = "quick_write"
     const val NOTIFICATION_ID = 5
   }
 }

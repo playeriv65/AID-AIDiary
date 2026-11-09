@@ -6,6 +6,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/sync/local_device.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:crypto/crypto.dart';
@@ -28,7 +29,7 @@ abstract interface class DeviceKeyStore {
 /// exists. The provider reports hardware support rather than assuming it.
 class NativeDeviceKeys implements DeviceKeyStore {
   const NativeDeviceKeys();
-  static const _channel = MethodChannel('aid.device_keys');
+  static const _channel = MethodChannel('$appNamespace/device_keys');
   @override
   Future<Map<String, Object?>> ensure(String alias) async => (await _channel
       .invokeMapMethod<String, Object?>('ensure', {'alias': alias}))!;

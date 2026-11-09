@@ -1,4 +1,4 @@
-group = 'dev.aid.diary.backup_crypto'
+group = 'com.playeriv65.diary.backup_crypto'
 version = '1.0'
 
 apply plugin: 'com.android.library'
@@ -8,7 +8,7 @@ if (project.findProperty("android.builtInKotlin")?.toString() != "true") {
 }
 
 android {
-    namespace = 'dev.aid.diary.backup_crypto'
+    namespace = 'com.playeriv65.diary.backup_crypto'
     compileSdkVersion 36
 
     compileOptions {

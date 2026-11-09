@@ -3,6 +3,7 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'dart:io';
+import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/database/entry_store.dart';
 import 'package:aid_diary/database/image_storage.dart';
@@ -22,7 +23,7 @@ abstract interface class LocalPhotoSource {
 }
 
 class DevicePhotoSource implements LocalPhotoSource {
-  static const _channel = MethodChannel('aid.local_photos');
+  static const _channel = MethodChannel('$appNamespace/local_photos');
   static const maxPhotoBytes = 32 * 1024 * 1024;
   final _scannedFiles = <String>{};
   @override

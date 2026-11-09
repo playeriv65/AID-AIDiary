@@ -15,5 +15,5 @@ flutter:
   plugin:
     platforms:
       android:
-        package: dev.aid.diary.saf_transfer
+        package: com.playeriv65.diary.saf_transfer
         pluginClass: SafTransferPlugin

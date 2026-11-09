@@ -34,14 +34,13 @@ class GoogleDriveBackend implements SyncBackend {
       {required Uri api,
       required Uri upload,
       required DriveToken token,
-      this.folder = defaultFolder,
+      required this.folder,
       http.Client? client})
       : _api = api,
         _upload = upload,
         _token = token,
         _client = client ?? http.Client();
 
-  static const String defaultFolder = 'AID Diary';
   static const String scope = 'https://www.googleapis.com/auth/drive.file';
 
   final Uri _api;
@@ -52,6 +51,7 @@ class GoogleDriveBackend implements SyncBackend {
   /// with their metadata.
   static const int _simpleUploadLimit = 5 << 20;
 
+  /// The space's folder at the top of the Drive (`AppConfig.syncSpaceFolder`).
   final String folder;
   final DriveToken _token;
   final http.Client _client;

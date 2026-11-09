@@ -185,7 +185,7 @@ class AppUpdates {
         os = os ?? Platform.operatingSystem;
 
   static final instance = AppUpdates();
-  static const _channel = MethodChannel('aid.updates');
+  static const _channel = MethodChannel('$appNamespace/updates');
   static final _logger = Logger('AppUpdates');
 
   final http.Client _client;

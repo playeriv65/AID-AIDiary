@@ -89,13 +89,17 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "AID Diary" "\0"
+            // No CompanyName, and ProductName is the app's ID: path_provider
+            // and the plugins that keep files (shared_preferences, secure
+            // storage) put them in %APPDATA%\<CompanyName>\<ProductName>, so
+            // the data folder is %APPDATA%\com.playeriv65.diary whatever the
+            // display name (FileDescription) is.
             VALUE "FileDescription", "AID Diary" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "aid_diary" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2026 Demizo and contributors. GPL-3.0-only." "\0"
             VALUE "OriginalFilename", "aid_diary.exe" "\0"
-            VALUE "ProductName", "AID Diary" "\0"
+            VALUE "ProductName", APPLICATION_ID "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

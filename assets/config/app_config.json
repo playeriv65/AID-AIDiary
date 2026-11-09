@@ -3,7 +3,6 @@
     "tileUrlTemplate": "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
     "attribution": "© OpenStreetMap contributors",
     "attributionUrl": "https://www.openstreetmap.org/copyright",
-    "userAgentPackageName": "dev.aid.diary",
     "defaultZoom": 3.0,
     "entryZoom": 13.0,
     "maxZoom": 18.0,
@@ -179,6 +178,7 @@
       "switchImprovement": 0.2,
       "mdnsType": "_aid-diary._tcp"
     },
+    "spaceFolder": "AID Diary",
     "officialServer": "https://aid.playeriv65.com/dav/",
     "exampleServer": "https://dav.jianguoyun.com/dav/",
     "googleDrive": {

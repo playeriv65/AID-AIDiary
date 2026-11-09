@@ -62,7 +62,7 @@ void main() {
     });
     DeviceInfoService().appInfo = PackageInfo(
         appName: 'AID Diary',
-        packageName: 'dev.aid.diary',
+        packageName: 'com.playeriv65.diary',
         version: '0.1.0',
         buildNumber: '261028090');
   });
@@ -145,8 +145,8 @@ void main() {
 
   test('the development app takes its own package', () {
     final android = AppUpdates(os: 'android');
-    expect(android.packageKey('dev.aid.diary.beta'), 'android-dev');
-    expect(android.packageKey('dev.aid.diary'), 'android');
+    expect(android.packageKey('com.playeriv65.diary.beta'), 'android-dev');
+    expect(android.packageKey('com.playeriv65.diary'), 'android');
     expect(AppUpdates(os: 'windows').packageKey('aid_diary'), 'windows');
   });
 
@@ -290,7 +290,7 @@ void main() {
     expect(await AppUpdates().justInstalled(), isNull);
     DeviceInfoService().appInfo = PackageInfo(
         appName: 'AID Diary',
-        packageName: 'dev.aid.diary',
+        packageName: 'com.playeriv65.diary',
         version: '0.1.0',
         buildNumber: '261029183');
     expect((await AppUpdates().justInstalled())!.build, 261029183);

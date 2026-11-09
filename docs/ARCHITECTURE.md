@@ -270,7 +270,7 @@ the typed message. Failed submissions and launches retain the draft.
 
 Windows keeps the standard Win32 title bar, icon, title and caption buttons.
 `WindowsCaptionTheme` sends the resolved Flutter background, foreground and
-brightness over `aid/window_chrome`; the runner applies DWM caption, text and
+brightness over `com.playeriv65.diary/window_chrome`; the runner applies DWM caption, text and
 border colors. Theme changes update the palette without reserving Flutter
 space or replacing native window interactions. Windows high-contrast mode
 retains system caption colors. Exact caption colors require Windows 11; older
@@ -789,6 +789,42 @@ installation check.
 
 References: [Flutter internationalization](https://docs.flutter.dev/ui/internationalization)
 and [locale resolution](https://api.flutter.dev/flutter/widgets/basicLocaleListResolution.html).
+
+## App identity
+
+The display name, "AID Diary", is a brand that may change at any time
+(the ARB `appTitle`, Android's `app_name`, the Windows `FileDescription`
+and window title, the Linux window title, the installer's `Name` and
+`Publisher`). Nothing that installs, updates, stores or syncs data is
+derived from it ([decision](DECISIONS.md)). These identifiers are fixed:
+
+| Identifier | Value | Defined in |
+|---|---|---|
+| Android application ID | `com.playeriv65.diary` (independent and F-Droid flavors), `com.playeriv65.diary.beta` (dev flavor) | `android/app/build.gradle` |
+| Kotlin package and namespace; platform channel prefix; Android widget class names; widget link scheme | `com.playeriv65.diary` (plugins `com.playeriv65.diary.<plugin>`) | Kotlin `NAMESPACE` (`MainActivity.kt`), Dart `appNamespace` (`lib/config/app_config.dart`), Windows `APPLICATION_ID` |
+| Windows data folder | `%APPDATA%\com.playeriv65.diary` | `APPLICATION_ID` in `windows/CMakeLists.txt` |
+| Linux application ID and data folder | `com.playeriv65.diary`, `~/.local/share/com.playeriv65.diary` | `APPLICATION_ID` in `linux/CMakeLists.txt` |
+| Windows installer AppId | the GUID in `installer.ini` | `windows/installer/installer.ini` |
+| Sync space folder in Google Drive and WebDAV | `AID Diary` | `sync.spaceFolder` in `assets/config/app_config.json` |
+
+The Windows data folder is fixed through the executable's version
+resource: path_provider, shared_preferences and flutter_secure_storage
+each name their folder `%APPDATA%\<CompanyName>\<ProductName>` from it, in
+Dart and in native code, so `windows/runner/Runner.rc` has no `CompanyName`
+and gives `APPLICATION_ID` as `ProductName`. An upgrade by the installer
+keeps its install folder, which Inno Setup finds by the AppId.
+
+The sync space folder is spelled like the first display name but is an
+identifier: every device finds its existing space by that name, so it never
+follows a renamed brand. Formats and protocols keep the names they were
+created with for the same reason; renaming one breaks existing data or the
+devices already paired: the database file `aid_diary.db`, the space header
+(`"app": "aid_diary"`), export and backup file types and name prefixes
+(`aid_diary_tags`, `aid_diary_backup_`, ...), the pairing and SPAKE2
+contexts (`aid-diary-pair-v1`), the LAN service type `_aid-diary._tcp`, the
+QR link schemes `aid-device:` and `aid-nearby:`, and the Windows CNG names
+of the non-exportable device keys (`AID.Diary.device.*`). Notification
+channel IDs (`reminder`, `backup`, ...) carry no app name.
 
 ## Dependencies
 

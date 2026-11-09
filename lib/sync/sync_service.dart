@@ -85,6 +85,7 @@ class WebDavLogin implements SyncLogin {
       server: server!,
       username: username,
       password: password,
+      folder: AppConfig.instance.syncSpaceFolder,
       authorizationProvider:
           DeviceAuthManager.instance.registration(server!, username) == null
               ? null
@@ -113,7 +114,10 @@ class GoogleDriveLogin implements SyncLogin {
   GoogleDriveBackend backend() {
     final config = AppConfig.instance.googleDrive;
     return GoogleDriveBackend(
-        api: config.apiUrl, upload: config.uploadUrl, token: auth.token);
+        api: config.apiUrl,
+        upload: config.uploadUrl,
+        token: auth.token,
+        folder: AppConfig.instance.syncSpaceFolder);
   }
 }
 
