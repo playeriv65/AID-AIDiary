@@ -136,7 +136,7 @@ Consequences for structure:
 | An operation behind a progress dialog, and its failure whether reported or thrown | `runOperation` (`widgets/progress_dialog.dart`), failure shown by `showFailureDialog` | `failureDescription` |
 | A fact with an icon (place, weather) on cards, the entry page and share pictures | `IconLabel` (`widgets/icon_label.dart`) | `icon` or `glyph`, `size`, `color` |
 | A day's weather | `WeatherProvider.of`/`ofEntry`, edited with `showWeatherDialog` | |
-| A note or a failure the user can simply retry | `showSnackMessage` / `runWithFailureSnack` (`widgets/snack_message.dart`) | `action`, `failure` |
+| A note or a failure the user can simply retry; it goes away by itself, later when it has an action | `showSnackMessage` / `runWithFailureSnack` (`widgets/snack_message.dart`) | `action`, `leading`, `failure` |
 
 ### Reporting failures
 

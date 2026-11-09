@@ -16,6 +16,7 @@ import 'package:aid_diary/routing/entry_navigation.dart';
 import 'package:aid_diary/widgets/coach_widgets.dart';
 import 'package:aid_diary/widgets/list_detail_layout.dart';
 import 'package:aid_diary/widgets/scaled_markdown.dart';
+import 'package:aid_diary/widgets/snack_message.dart';
 import 'package:aid_diary/widgets/top_search_card.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
@@ -280,27 +281,18 @@ class CoachProgramDetail extends StatelessWidget {
 
   Future<void> _enroll(BuildContext context) async {
     final l10n = AppLocalizations.of(context)!;
-    final messenger = ScaffoldMessenger.of(context);
     final goTo = AdaptiveDiaryShell.selectorOf(context);
     await AppActions.instance.run('coach.enroll', {'program': program.id});
     if (!context.mounted) return;
-    messenger.showSnackBar(SnackBar(
-      key: const ValueKey('coach-enrolled-tip'),
-      behavior: SnackBarBehavior.floating,
-      duration: const Duration(seconds: 8),
-      content: Row(children: [
-        const CoachAvatar(),
-        const SizedBox(width: 16),
-        Expanded(child: Text(l10n.coachEnrolledTip)),
-      ]),
-      action: SnackBarAction(
-        label: l10n.coachGoToStories,
-        onPressed: () {
-          goTo?.call(0);
-          onBack?.call();
-        },
-      ),
-    ));
+    showSnackMessage(context, l10n.coachEnrolledTip,
+        leading: const CoachAvatar(),
+        action: SnackBarAction(
+          label: l10n.coachGoToStories,
+          onPressed: () {
+            goTo?.call(0);
+            onBack?.call();
+          },
+        ));
   }
 
   @override

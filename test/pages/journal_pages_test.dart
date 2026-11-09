@@ -136,7 +136,7 @@ void main() {
     EasyDebounce.cancel('save-config');
     await tester.pumpAndSettle();
     expect(find.byKey(const ValueKey('coach-end')), findsOneWidget);
-    expect(find.byKey(const ValueKey('coach-enrolled-tip')), findsOneWidget);
+    expect(find.text('好了！之后的问题会出现在“故事”里。'), findsOneWidget);
 
     // Day 1 waits in the stories; its prompt is answered in place.
     await tester.pumpWidget(harness.app(const Scaffold(body: JournalPage())));

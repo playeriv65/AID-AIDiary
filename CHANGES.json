@@ -184,5 +184,11 @@
     "en": "The category editor looks like the tag editor, choosing a tag in statistics offers Manage tags, and the coach tab has the same search button as the other tabs.",
     "zh": "分类编辑器与标签编辑器样式一致，统计中选择标签时也可以管理标签，引导页与其他页面一样有搜索按钮。",
     "zh_Hant": "分類編輯器與標籤編輯器樣式一致，統計中選擇標籤時也可以管理標籤，引導頁與其他頁面一樣有搜尋按鈕。"
+  },
+  {
+    "id": "2026-11-08-messages-close-themselves",
+    "en": "Messages with a button, such as \"Updated to\" after an update, go away by themselves after a few seconds.",
+    "zh": "带按钮的提示（例如更新后的“已更新到”）会在几秒后自动消失。",
+    "zh_Hant": "帶按鈕的提示（例如更新後的「已更新至」）會在幾秒後自動消失。"
   }
 ]
