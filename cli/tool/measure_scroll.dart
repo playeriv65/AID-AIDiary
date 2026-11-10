@@ -246,6 +246,6 @@ Future<void> main(List<String> args) async {
       await cpuService.setFlag('profiler', 'false');
     }
     await cpuService?.dispose();
-    await client.close();
+    client.close();
   }
 }

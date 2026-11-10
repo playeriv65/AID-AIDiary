@@ -290,7 +290,10 @@ Build the CLI with `./scripts/dev.ps1 cli`; `build/cli/aid.exe` can reach an
 Android app over adb with `aid -d <serial> app.status` (the development flavor
 by default, `--package com.playeriv65.diary` for the everyday app). It reads the
 token from `/sdcard/Android/data/<package>/files/agent_api.json`, which adb
-can read for release builds too, and starts the app when necessary. Release
+can read for release builds too, and starts the app when necessary. It
+reaches the app through one `adb forward` per device and app port, which
+stays and is reused by later and parallel calls; a forward to an app that no
+longer answers is removed. Release
 builds serve the API only after Settings > Command line enables it. Keep
 tokens and API-info files private.
 

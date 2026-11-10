@@ -85,7 +85,6 @@ class AidClient {
   final http.Client _client;
   final Map<String, String> _environment;
   Endpoint? _endpoint;
-  String? _forwarded;
 
   String get _adb => _environment['ADB'] ?? 'adb';
 
@@ -129,25 +128,66 @@ class AidClient {
   Future<Endpoint?> _connect() async {
     final info = await _readInfo();
     if (info == null) return null;
-    var port = info.port;
-    if (device != null) {
-      final local = await _adbOut(['forward', 'tcp:0', 'tcp:$port']);
-      _forwarded = 'tcp:${local.trim()}';
-      port = int.parse(local.trim());
-    }
+    final port = device == null ? info.port : await _forward(info.port);
     final endpoint = (
       base: Uri.parse('http://127.0.0.1:$port/v1/'),
       token: info.token,
     );
-    // A file left by an app that has since stopped points at nothing.
     try {
       await _get(endpoint, 'actions');
       return endpoint;
     } on SocketException {
-      return null;
+      // A file left by an app that has since stopped points at nothing.
     } on http.ClientException {
-      return null;
+      // So does a forward to it: adb accepts, then closes the connection.
     }
+    if (device != null) {
+      await _run(_adb, ['-s', device!, 'forward', '--remove', 'tcp:$port']);
+    }
+    return null;
+  }
+
+  /// A local port that adb forwards to [remote] on [device]. The forward
+  /// stays after the call and later calls reuse it, so each device keeps
+  /// one per app port, however many calls ran, failed or were killed.
+  Future<int> _forward(int remote) => _forwardLock(() async {
+    final target = 'tcp:$remote';
+    // adb lists the forwards of every device: "<serial> tcp:<local> <target>".
+    for (final line in LineSplitter.split(
+      await _adbOut(['forward', '--list']),
+    )) {
+      if (line.trim().split(RegExp(r'\s+')) case [
+        final serial,
+        final local,
+        final to,
+      ] when serial == device && to == target && local.startsWith('tcp:')) {
+        return int.parse(local.substring('tcp:'.length));
+      }
+    }
+    return int.parse((await _adbOut(['forward', 'tcp:0', target])).trim());
+  });
+
+  static const _forwardLockName = 'aid_adb_forward.lock';
+  static Future<void> _forwardQueue = Future.value();
+
+  /// Runs [body] while no other `aid` looks up or adds a forward, so
+  /// parallel calls share one instead of each adding its own: a queue
+  /// within this process, a file lock across processes.
+  static Future<T> _forwardLock<T>(Future<T> Function() body) {
+    final result = _forwardQueue.then((_) async {
+      final lock = await File(
+        '${Directory.systemTemp.path}${Platform.pathSeparator}'
+        '$_forwardLockName',
+      ).open(mode: FileMode.append);
+      try {
+        await lock.lock(FileLock.blockingExclusive);
+        return await body();
+      } finally {
+        await lock.close();
+      }
+    });
+    _forwardQueue = result.then<void>((_) {}, onError: (_) {});
+    return result;
   }
 
   Future<Endpoint> _ensureEndpoint() async {
@@ -232,13 +272,7 @@ class AidClient {
       );
     }
     var uri = Uri.parse(address);
-    if (device != null) {
-      final local = (await _adbOut([
-        'forward', 'tcp:0', 'tcp:${uri.port}', //
-      ])).trim();
-      _vmForwarded = 'tcp:$local';
-      uri = uri.replace(port: int.parse(local));
-    }
+    if (device != null) uri = uri.replace(port: await _forward(uri.port));
     return _connectVm(uri);
   }
 
@@ -248,8 +282,6 @@ class AidClient {
       uri.replace(scheme: 'ws', path: '${path}ws').toString(),
     );
   }
-
-  String? _vmForwarded;
 
   static const _traceStreams = ['Dart', 'Embedder', 'GC'];
 
@@ -327,12 +359,7 @@ class AidClient {
     }
   }
 
-  Future<void> close() async {
-    for (final forwarded in [?_forwarded, ?_vmForwarded]) {
-      await _run(_adb, ['-s', device!, 'forward', '--remove', forwarded]);
-    }
-    _client.close();
-  }
+  void close() => _client.close();
 }
 
 ArgParser buildParser() => ArgParser()
@@ -454,6 +481,6 @@ Future<int> runAid(
     );
     return 1;
   } finally {
-    await aid.close();
+    aid.close();
   }
 }

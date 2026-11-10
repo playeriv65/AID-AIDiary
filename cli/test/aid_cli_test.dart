@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -53,7 +54,104 @@ class FakeApp {
     });
   }
 
-  String info() => jsonEncode({'port': server.port, 'token': token});
+  String info({int? port}) =>
+      jsonEncode({'port': port ?? server.port, 'token': token});
+}
+
+/// adb as far as the CLI uses it: one app per device serial, and a forward
+/// table like the adb server's that every client in a test shares. A
+/// forward is a real local port that carries connections to the device's
+/// app while it [FakeDevice.answering].
+class FakeAdb {
+  FakeAdb(this.devices);
+
+  /// The port the app listens on inside each device, as on real devices.
+  static const devicePort = 47819;
+
+  final Map<String, FakeDevice> devices;
+  final forwards = <({String serial, int local, int remote})>[];
+  final _listeners = <int, ServerSocket>{};
+  final calls = <List<String>>[];
+
+  int created(String serial) => calls
+      .where(
+        (call) => call.length > 3 && call[1] == serial && call[3] == 'tcp:0',
+      )
+      .length;
+
+  Future<ProcessResult> call(String executable, List<String> arguments) async {
+    calls.add(arguments);
+    // Slow enough that parallel callers interleave.
+    await Future<void>.delayed(const Duration(milliseconds: 5));
+    final [_, serial, ...command] = arguments;
+    final device = devices[serial]!;
+    switch (command) {
+      case ['exec-out', 'cat', _]:
+        return ProcessResult(0, 0, device.app.info(port: devicePort), '');
+      case ['forward', '--list']:
+        return ProcessResult(
+          0,
+          0,
+          [
+            for (final f in forwards)
+              '${f.serial} tcp:${f.local} tcp:${f.remote}\n',
+          ].join(),
+          '',
+        );
+      case ['forward', 'tcp:0', final remote]:
+        final listener = await ServerSocket.bind(
+          InternetAddress.loopbackIPv4,
+          0,
+        );
+        listener.listen((client) => _carry(client, device));
+        _listeners[listener.port] = listener;
+        forwards.add((
+          serial: serial,
+          local: listener.port,
+          remote: int.parse(remote.substring(4)),
+        ));
+        return ProcessResult(0, 0, '${listener.port}\n', '');
+      case ['forward', '--remove', final local]:
+        final port = int.parse(local.substring(4));
+        final listener = _listeners.remove(port);
+        if (listener == null) {
+          return ProcessResult(0, 1, '', "listener '$local' not found");
+        }
+        await listener.close();
+        forwards.removeWhere((f) => f.local == port);
+        return ProcessResult(0, 0, '', '');
+      case ['shell', 'monkey', ...]:
+        device.launched++;
+        return ProcessResult(0, 0, '', '');
+    }
+    return ProcessResult(0, 1, '', 'unexpected adb $arguments');
+  }
+
+  Future<void> _carry(Socket client, FakeDevice device) async {
+    if (!device.answering) {
+      client.destroy();
+      return;
+    }
+    final app = await Socket.connect(
+      InternetAddress.loopbackIPv4,
+      device.app.server.port,
+    );
+    unawaited(client.cast<List<int>>().pipe(app));
+    unawaited(app.cast<List<int>>().pipe(client));
+  }
+
+  Future<void> close() async {
+    for (final listener in _listeners.values) {
+      await listener.close();
+    }
+  }
+}
+
+class FakeDevice {
+  FakeDevice(this.app);
+  final FakeApp app;
+  bool answering = true;
+  int launched = 0;
 }
 
 void main() {
@@ -162,50 +260,121 @@ void main() {
     );
   });
 
-  test(
-    'reaches a phone over adb: reads the token, forwards, cleans up',
-    () async {
-      final calls = <List<String>>[];
-      Future<ProcessResult> adb(
-        String executable,
-        List<String> arguments,
-      ) async {
-        calls.add(arguments);
-        final stdout = switch (arguments) {
-          [_, _, 'exec-out', 'cat', _] => app.info(),
-          [_, _, 'forward', 'tcp:0', _] => '${app.server.port}\n',
-          _ => '',
-        };
-        return ProcessResult(0, 0, stdout, '');
+  group('over adb', () {
+    late FakeApp tabletApp;
+    late FakeAdb adb;
+
+    setUp(() async {
+      tabletApp = FakeApp();
+      await tabletApp.start();
+      adb = FakeAdb({
+        'phone': FakeDevice(app),
+        'tablet': FakeDevice(tabletApp),
+      });
+    });
+
+    tearDown(() async {
+      await adb.close();
+      await tabletApp.server.close(force: true);
+    });
+
+    Future<int> call(
+      String serial, {
+      bool launch = false,
+      Duration waitForApp = const Duration(seconds: 30),
+    }) async => (await aid(
+      ['-d', serial, 'sync.now'],
+      client: () => AidClient(
+        device: serial,
+        run: adb.call,
+        launch: launch,
+        waitForApp: waitForApp,
+      ),
+    )).$1;
+
+    test(
+      'reads the token and keeps one forward that later calls reuse',
+      () async {
+        for (var i = 0; i < 5; i++) {
+          expect(await call('phone'), 0);
+        }
+
+        expect(adb.calls.first, [
+          '-s', 'phone', 'exec-out', 'cat', //
+          '/sdcard/Android/data/${AidClient.defaultPackage}/files/agent_api.json',
+        ]);
+        expect(adb.created('phone'), 1);
+        expect(adb.forwards, [
+          (serial: 'phone', local: adb.forwards.single.local, remote: 47819),
+        ]);
+        expect(app.runs, hasLength(5));
+      },
+    );
+
+    test('two devices get one forward each, to their own app', () async {
+      for (var i = 0; i < 3; i++) {
+        expect(await call('phone'), 0);
+        expect(await call('tablet'), 0);
       }
 
-      final (code, _) = await aid([
-        '-d',
-        'phone',
-        'sync.now',
-      ], client: () => AidClient(device: 'phone', run: adb, launch: false));
-
-      expect(code, 0);
-      expect(calls.first, [
-        '-s', 'phone', 'exec-out', 'cat', //
-        '/sdcard/Android/data/${AidClient.defaultPackage}/files/agent_api.json',
-      ]);
       expect(
-        calls,
-        contains(
-          equals(['-s', 'phone', 'forward', 'tcp:0', 'tcp:${app.server.port}']),
-        ),
+        adb.forwards.map((f) => f.serial),
+        unorderedEquals(['phone', 'tablet']),
       );
-      expect(calls.last, [
-        '-s',
-        'phone',
-        'forward',
-        '--remove',
-        'tcp:${app.server.port}',
+      expect(app.runs, hasLength(3));
+      expect(tabletApp.runs, hasLength(3));
+    });
+
+    test('parallel calls share one forward per device', () async {
+      final codes = await Future.wait([
+        for (var i = 0; i < 8; i++) call(i.isEven ? 'phone' : 'tablet'),
       ]);
-      expect(app.runs.single['action'], 'sync.now');
-    },
-  );
+
+      expect(codes, everyElement(0));
+      expect(
+        adb.forwards.map((f) => f.serial),
+        unorderedEquals(['phone', 'tablet']),
+      );
+      expect(app.runs, hasLength(4));
+      expect(tabletApp.runs, hasLength(4));
+    });
+
+    test('a call that cannot reach the app leaves no forward', () async {
+      final phone = adb.devices['phone']!;
+      expect(await call('tablet'), 0);
+      expect(await call('phone'), 0);
+      // The phone's app stops; its forward from the earlier call is stale.
+      phone.answering = false;
+
+      expect(await call('phone'), 2);
+      expect(
+        await call(
+          'phone',
+          launch: true,
+          waitForApp: const Duration(milliseconds: 1200),
+        ),
+        2,
+      );
+
+      expect(phone.launched, 1);
+      expect(adb.forwards.map((f) => f.serial), ['tablet']);
+      expect(app.runs, hasLength(1));
+    });
+
+    test(
+      'an app that starts while the call waits leaves one forward',
+      () async {
+        final phone = adb.devices['phone']!..answering = false;
+        Timer(const Duration(milliseconds: 1200), () => phone.answering = true);
+
+        expect(await call('phone', launch: true), 0);
+
+        expect(phone.launched, 1);
+        expect(adb.forwards.map((f) => f.serial), ['phone']);
+        expect(app.runs, hasLength(1));
+      },
+    );
+  });
 
   test('a release build without the command line on is explained', () async {
     Future<ProcessResult> adb(
