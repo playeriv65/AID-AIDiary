@@ -69,7 +69,8 @@ internal object SemanticsGate {
           .setFlutterJNIFactory(object : FlutterJNI.Factory() {
             override fun provideFlutterJNI(): FlutterJNI = GatedFlutterJNI()
           })
-          .build())
+          .build(),
+      )
     } catch (error: IllegalStateException) {
       // Something read the injector first; Flutter then keeps its own
       // behavior, semantics on with any service.
@@ -79,10 +80,12 @@ internal object SemanticsGate {
     installed = true
     val main = Handler(Looper.getMainLooper())
     app.contentResolver.registerContentObserver(
-      Settings.Secure.getUriFor(Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES), false,
+      Settings.Secure.getUriFor(Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES),
+      false,
       object : ContentObserver(main) {
         override fun onChange(selfChange: Boolean) = changed()
-      })
+      },
+    )
     // Both call back on the main thread, as the JNI requires.
     manager.addAccessibilityStateChangeListener { changed() }
     manager.addTouchExplorationStateChangeListener { changed() }
@@ -98,6 +101,7 @@ internal object SemanticsGate {
     methods.setMethodCallHandler { call, result ->
       when (call.method) {
         "services" -> result.success(services())
+
         "hold" -> {
           val judged = call.arguments<List<String>>()
           // A set that changed while Dart judged it is judged again.
@@ -108,6 +112,7 @@ internal object SemanticsGate {
           }
           result.success(held)
         }
+
         else -> result.notImplemented()
       }
     }
@@ -133,8 +138,7 @@ internal object SemanticsGate {
     engines.add(engine)
   }
 
-  internal fun features(flags: Int): Int =
-    if (allowsSemantics()) flags else flags and ACCESSIBLE_NAVIGATION.inv()
+  internal fun features(flags: Int): Int = if (allowsSemantics()) flags else flags and ACCESSIBLE_NAVIGATION.inv()
 
   private fun changed() {
     reapply()
@@ -149,8 +153,7 @@ internal object SemanticsGate {
   /** The enabled services as full component names, sorted: the services
    * the user enabled in settings and those the system reports enabled. */
   private fun services(): List<String> {
-    val configured = Settings.Secure.getString(
-      app.contentResolver, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES)
+    val configured = Settings.Secure.getString(app.contentResolver, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES)
       .orEmpty().split(':').filter { it.isNotBlank() }
       .map { ComponentName.unflattenFromString(it)?.flattenToString() ?: it }
     val running = manager

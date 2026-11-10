@@ -192,6 +192,7 @@ analysis and formatting accompany source changes; they are not behavior tests.
 | Action, view model or service | Owning tests plus caller behavior; use real local dependencies where the contract requires them | Work crosses GUI/CLI, storage or sync boundaries |
 | Files, config persistence, SQLite, backup/import/export | Relevant host integration; round trips, failures and retained data | Schema, archive format, shared stores or migrations change: full app offline regression |
 | Sync, crypto, pairing, media queues or traffic policy | Relevant sync integration, malformed/authentication failures and interrupted/retried operations | Shared wire format, trust or routing semantics change: full app offline regression; add Go checks if its contract is affected |
+| Kotlin sources (`*.kt`) | `ktlint` before commit, as CI's kotlin job runs it; `ktlint-format` rewrites what ktlint can fix | Behavior changes follow the native plugin row below |
 | Native plugin, permissions, keys, IME, widgets or networking | Owning host tests first, then one check of the affected Windows/Android build and native behavior (Android on the test tablet; a local Windows build only when the change is Windows-native) | Platform wiring changes: smoke the affected platform; mocks cannot verify it |
 | Device installs in `scripts/android_device.ps1` | `pwsh scripts/test_android_device.ps1` (fake adb, no device) | One real install on the tablet, without a prompt, once the script tests pass |
 | CLI | `test-cli` (the suite is currently small), plus affected action/API tests if shared behavior changes | API changes: check both producer and consumer |
@@ -370,6 +371,9 @@ Two workflows run on GitHub's runners:
   changes to `main` on Linux. It runs Dart and Go formatting checks,
   `flutter analyze`, CLI analysis and tests, the offline Flutter suite,
   Go vet and tests, Rust formatting and Clippy, ktlint, and actionlint.
+  The kotlin job's `KTLINT_VERSION` and `KTLINT_SHA256` are the only copy
+  of the ktlint pin: `dev.ps1 ktlint` reads them and downloads that release
+  into `DEV_KTLINT_DIR`, so the local check matches CI.
   It builds the Rust library loaded by the host tests. Pushes limited to
   Markdown and `docs/` skip it. A burst of pushes runs only for the latest.
 - `.github/workflows/nightly.yml` packages once a day (09:00 UTC) and on

@@ -101,6 +101,8 @@ Windows is the main development environment (no WSL, no SDK submodule). Start wi
 ./scripts/dev.ps1 test -TestFiles test/sync/local_device_test.dart # affected files/directories
 ./scripts/dev.ps1 test-all     # deliberate full offline regression
 ./scripts/dev.ps1 analyze      # static analysis
+./scripts/dev.ps1 ktlint       # Kotlin lint with the ktlint version CI pins
+./scripts/dev.ps1 ktlint-format # rewrite Kotlin to that style, then report what remains
 ./scripts/dev.ps1 screenshots  # regenerate artifacts/ui-*.png headlessly
 ./scripts/dev.ps1 windows      # run the Windows app
 ./scripts/dev.ps1 windows-build # build Windows without opening a window

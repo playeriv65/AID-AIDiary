@@ -51,7 +51,9 @@ Development policy:
 2. Copy `scripts/dev.env.example` to `scripts/dev.env` and set this
    computer's paths. `scripts/dev.ps1` reads it for every target and stops
    when it is missing. `DEV_TEMP` keeps Flutter's temp folders off a small
-   system drive (interrupted runs leave gigabytes behind). Set
+   system drive (interrupted runs leave gigabytes behind). `DEV_KTLINT_DIR`
+   holds the ktlint release the `ktlint` targets download, the version CI
+   pins ([Testing](TESTING.md#continuous-integration)). Set
    `DEV_WINDOWS_RUNTIME` to one permanent absolute runtime directory outside
    disposable task worktrees before using `windows-stage`; keep test diary
    data elsewhere. `AID_GOOGLE_DESKTOP_SECRET` (from the owner, never

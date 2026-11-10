@@ -1,5 +1,5 @@
 param(
-  [ValidateSet('windows','windows-build','windows-profile-build','windows-release-build','windows-stage','windows-profile-stage','windows-background','windows-driver','android','apk','profile','release','test','test-all','test-unit','test-widget','test-integration','test-live','test-server','cli','test-cli','frame-rate','analyze','pub','l10n','screenshots')][string]$Target='windows',
+  [ValidateSet('windows','windows-build','windows-profile-build','windows-release-build','windows-stage','windows-profile-stage','windows-background','windows-driver','android','apk','profile','release','test','test-all','test-unit','test-widget','test-integration','test-live','test-server','cli','test-cli','frame-rate','analyze','ktlint','ktlint-format','pub','l10n','screenshots')][string]$Target='windows',
   # adb serial for 'android', 'profile' and 'frame-rate' (or 'windows' for
   # frame-rate); defaults to DEV_ANDROID_DEVICE from scripts/dev.env.
   # For 'release', the one device to install on.
@@ -63,6 +63,31 @@ $buildNumber = $now.ToString('yyMMddHH') + [Math]::Floor($now.Minute / 10)
 function Build-AgentShell {
   cargo build --release --manifest-path rust/Cargo.toml
   if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+}
+# The ktlint release CI runs: its version and checksum come from the kotlin
+# job in .github/workflows/ci.yml, the one place they are kept. Downloaded
+# once into DEV_KTLINT_DIR.
+function Get-Ktlint {
+  $ci = Get-Content -Raw (Join-Path $PSScriptRoot '..\.github\workflows\ci.yml')
+  $version = [regex]::Match($ci, 'KTLINT_VERSION:\s*"([^"]+)"').Groups[1].Value
+  $sha256 = [regex]::Match($ci, 'KTLINT_SHA256:\s*([0-9a-f]{64})').Groups[1].Value
+  if (-not $version -or -not $sha256) {
+    throw 'KTLINT_VERSION or KTLINT_SHA256 is missing from the kotlin job in .github/workflows/ci.yml.'
+  }
+  $dir = $tools['DEV_KTLINT_DIR']
+  if (-not $dir) { throw 'Set DEV_KTLINT_DIR in scripts/dev.env to a folder for the ktlint download (docs/SETUP.md).' }
+  $jar = Join-Path $dir "ktlint-$version.jar"
+  if (-not (Test-Path $jar)) {
+    New-Item -ItemType Directory -Force $dir | Out-Null
+    $partial = "$jar.partial"
+    Invoke-WebRequest "https://github.com/ktlint/ktlint/releases/download/$version/ktlint" -OutFile $partial
+    if ((Get-FileHash -Algorithm SHA256 $partial).Hash -ne $sha256) {
+      Remove-Item $partial
+      throw "The downloaded ktlint $version does not match KTLINT_SHA256 in .github/workflows/ci.yml."
+    }
+    Move-Item -Force $partial $jar
+  }
+  return $jar
 }
 # Flutter leaves a temp folder per test or build run that is interrupted;
 # DEV_TEMP keeps them off a small system drive.
@@ -286,6 +311,14 @@ switch ($Target) {
     try { dart pub get } finally { Pop-Location }
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
     flutter analyze
+  }
+  # Kotlin sources as the CI kotlin job checks them; ktlint-format rewrites
+  # what ktlint can fix and reports the rest.
+  { $_ -in 'ktlint', 'ktlint-format' } {
+    $jar = Get-Ktlint
+    $format = @(if ($Target -eq 'ktlint-format') { '--format' })
+    $sources = @(git ls-files -- '*.kt')
+    & (Join-Path $env:JAVA_HOME 'bin\java') -jar $jar @format @sources
   }
   # Renders artifacts/ui-*.png in widget tests; no window opens.
   'screenshots' {
