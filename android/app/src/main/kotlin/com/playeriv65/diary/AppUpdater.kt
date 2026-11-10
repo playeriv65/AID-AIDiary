@@ -15,16 +15,25 @@ import android.content.pm.PackageInstaller
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import android.provider.Settings
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.MethodChannel
 import java.io.File
 import java.security.MessageDigest
+import java.util.concurrent.FutureTask
+import java.util.concurrent.TimeUnit
+import java.util.concurrent.TimeoutException
+import kotlin.concurrent.thread
 
-/** Installs a downloaded build of this app over itself (docs/UPDATES.md).
- * Only a package with this app's name, signed with this app's key and of a
- * newer version reaches the system installer. */
+/** Installs a downloaded build of this app over itself (docs/UPDATES.md):
+ * with the system installer, or with `pm` as root when the user granted
+ * this app root. Only a package with this app's name, signed with this
+ * app's key and of a newer version reaches either. */
 class AppUpdater(private val activity: Activity, messenger: BinaryMessenger) {
   private val context: Context = activity.applicationContext
   private val packageName: String = context.packageName
@@ -45,6 +54,18 @@ class AppUpdater(private val activity: Activity, messenger: BinaryMessenger) {
           "silentSupported" -> result.success(Build.VERSION.SDK_INT >= 31 && !xiaomi)
 
           "install" -> install(File(call.argument<String>("path") ?: ""), result)
+
+          "rootId" -> {
+            val timeoutMs = call.argument<Number>("timeoutMs")?.toLong() ?: 0
+            if (timeoutMs <= 0) throw Rejected("bad_args", "No probe timeout")
+            background(result) { rootId(timeoutMs) }
+          }
+
+          "installAsRoot" -> installAsRoot(
+            File(call.argument<String>("path") ?: ""),
+            call.argument<String>("stagingDir") ?: throw Rejected("bad_args", "No staging folder"),
+            result,
+          )
 
           else -> result.notImplemented()
         }
@@ -69,7 +90,7 @@ class AppUpdater(private val activity: Activity, messenger: BinaryMessenger) {
   /** HyperOS (and MIUI) refuse an install session that asks for no user
    * action from any app Xiaomi has not listed, with INSTALL_FAILED_ABORTED
    * "Permission denied" (PKMSImpl.assertCallerAndPackage); there the system
-   * always asks. */
+   * always asks, unless the app installs as root. */
   private val xiaomi = Build.MANUFACTURER.equals("Xiaomi", ignoreCase = true)
 
   /** Android 12 lets an app replace itself unasked once it is the one that
@@ -161,6 +182,110 @@ class AppUpdater(private val activity: Activity, messenger: BinaryMessenger) {
       session.commit(PendingIntent.getBroadcast(context, id, status, flags).intentSender)
     }
   }
+
+  private val main = Handler(Looper.getMainLooper())
+
+  /** Runs [work] off the main thread and answers [result] on it. */
+  private fun background(result: MethodChannel.Result, work: () -> Any?) {
+    thread(name = "AppUpdater") {
+      val answer = runCatching(work)
+      main.post {
+        answer.fold(
+          { result.success(it) },
+          { error ->
+            if (error is Rejected) {
+              result.error(error.code, error.message, null)
+            } else {
+              result.error("install_failed", error.message, null)
+            }
+          },
+        )
+      }
+    }
+  }
+
+  /** The `su` on this app's PATH: none on an unrooted device, so nothing
+   * runs there. KernelSU never asks: for an app it has not granted root,
+   * running su fails. */
+  private fun su(): String? {
+    val folders = System.getenv("PATH").orEmpty().split(':').filter { it.isNotEmpty() }
+    return folders.map { File(it, "su") }.firstOrNull { it.exists() }?.path
+  }
+
+  /** Runs [script] in a root shell: its exit code and output, or null when
+   * it has not finished after [timeoutMs] (0 waits for it). A shell that
+   * became root cannot be stopped by this app, so it is left behind. */
+  private fun runAsRoot(su: String, script: String, timeoutMs: Long): Pair<Int, String>? {
+    val process = ProcessBuilder(su, "-c", script).redirectErrorStream(true).start()
+    process.outputStream.close()
+    val run = FutureTask {
+      val output = process.inputStream.bufferedReader().use { it.readText() }
+      process.waitFor() to output
+    }
+    thread(name = "AppUpdater su") { run.run() }
+    return try {
+      if (timeoutMs > 0) run.get(timeoutMs, TimeUnit.MILLISECONDS) else run.get()
+    } catch (_: TimeoutException) {
+      process.destroy()
+      null
+    }
+  }
+
+  /** What `su -c id` answered within [timeoutMs], for Dart to judge
+   * (AppUpdates.canInstallAsRoot); null without su, when su could not
+   * start, or when it did not answer in time. */
+  private fun rootId(timeoutMs: Long): Map<String, Any>? {
+    val su = su() ?: return null
+    val (code, output) = try {
+      runAsRoot(su, "id", timeoutMs)
+    } catch (_: Exception) {
+      null
+    } ?: return null
+    return mapOf("code" to code, "output" to output)
+  }
+
+  /** Installs [file] with `pm` as root, so no system confirmation appears.
+   * The app is replaced (and so closed) before pm answers; it opens again
+   * when the user was in it. A failure answers "root_failed" with pm's
+   * output, and the caller falls back to the system installer. */
+  private fun installAsRoot(file: File, stagingDir: String, result: MethodChannel.Result) {
+    check(file)
+    val su = su() ?: throw Rejected("root_failed", "su is not available")
+    val state = (activity as? LifecycleOwner)?.lifecycle?.currentState
+    val inApp = state?.isAtLeast(Lifecycle.State.RESUMED) == true
+    val launch = context.packageManager.getLaunchIntentForPackage(packageName)?.component?.flattenToShortString()
+    val script = rootInstallScript(file.canonicalPath, stagingDir, launch.takeIf { inApp })
+    background(result) {
+      val (code, output) = try {
+        runAsRoot(su, script, 0)!!
+      } catch (error: Exception) {
+        throw Rejected("root_failed", error.message ?: "su failed")
+      }
+      if (code != 0) throw Rejected("root_failed", output.trim().ifEmpty { "pm install failed ($code)" })
+      "started"
+    }
+  }
+
+  /** The root shell's steps. The shell first leaves the app's process
+   * group: replacing the app kills every process in it, and the shell still
+   * removes the staged copy and opens the app again. pm writes to a file, as
+   * the app's end of the pipe is gone once pm succeeds. */
+  private fun rootInstallScript(path: String, stagingDir: String, launch: String?): String {
+    val staged = quote("$stagingDir/$packageName.update.apk")
+    val log = quote("$stagingDir/$packageName.update.log")
+    return listOfNotNull(
+      "for group in /sys/fs/cgroup /acct; do echo \$\$ > \$group/cgroup.procs; done 2>/dev/null",
+      "cp ${quote(path)} $staged && chmod 644 $staged && pm install -r -i $packageName $staged > $log 2>&1",
+      "status=\$?",
+      "rm -f $staged",
+      launch?.let { "[ \$status = 0 ] && am start -n $it > /dev/null 2>&1" },
+      "[ \$status = 0 ] || cat $log",
+      "rm -f $log",
+      "exit \$status",
+    ).joinToString("; ")
+  }
+
+  private fun quote(value: String) = "'" + value.replace("'", "'\\''") + "'"
 
   private val statusAction = "$packageName.UPDATE_STATUS"
 

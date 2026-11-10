@@ -116,7 +116,8 @@ class _UpdateSettingsState extends State<_UpdateSettings> {
                   setting: Settings.updateChecks,
                   onChanged: (value) =>
                       changeSetting(Settings.updateChecks, value)),
-              // HyperOS and MIUI always ask before an install.
+              // HyperOS and MIUI always ask before an install, unless the
+              // app has been granted root.
               if (snapshot.data!.silent)
                 SettingsToggle(
                     title: l10n.updateSilent,

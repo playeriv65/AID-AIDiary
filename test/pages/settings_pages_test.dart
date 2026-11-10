@@ -7,9 +7,12 @@ library;
 
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/language_option.dart';
+import 'package:aid_diary/pages/settings/about_settings.dart';
 import 'package:aid_diary/pages/settings/appearance_settings.dart';
 import 'package:aid_diary/pages/settings/flashback_settings.dart';
+import 'package:aid_diary/services/app_updates.dart';
 import 'package:easy_debounce/easy_debounce.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -94,4 +97,41 @@ void main() {
       await tester.pumpWidget(const SizedBox.shrink());
     });
   }
+
+  group('the silent update switch', () {
+    const channel = MethodChannel('test/updates');
+    late AppUpdates original;
+    setUp(() => original = AppUpdates.instance);
+    tearDown(() {
+      AppUpdates.instance = original;
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, null);
+    });
+
+    // An Android build that updates itself on HyperOS, which never lets an
+    // app install unasked: only root makes the switch worth showing.
+    for (final granted in [true, false]) {
+      testWidgets(granted ? 'shows with root' : 'hides without root',
+          (tester) async {
+        TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+            .setMockMethodCallHandler(
+                channel,
+                (call) async => switch (call.method) {
+                      'enabled' => true,
+                      'rootId' => granted
+                          ? {'code': 0, 'output': 'uid=0(root) gid=0(root)'}
+                          : null,
+                      _ => false,
+                    });
+        AppUpdates.instance = AppUpdates(os: 'android', channel: channel);
+        DiaryAppHarness.size(tester, const Size(390, 844));
+        await tester.pumpWidget(harness.app(const AboutSettings()));
+        await tester.pumpAndSettle();
+        expect(
+            find.byKey(const ValueKey('about-check-update')), findsOneWidget);
+        expect(find.byKey(const ValueKey('silentUpdates-switch')),
+            granted ? findsOneWidget : findsNothing);
+      });
+    }
+  });
 }

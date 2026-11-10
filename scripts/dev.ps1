@@ -80,6 +80,16 @@ function Stop-Gradle {
     & .\android\gradlew.bat -p android --stop --quiet | Out-Null
   }
 }
+# Every install on a device goes through Install-AndroidApk: as root when
+# the device has it, so HyperOS shows no prompt.
+. (Join-Path $PSScriptRoot 'android_device.ps1')
+# The Android package of a flavor, from android/app/build.gradle.
+function Get-AndroidPackage([string]$Flavor) {
+  $gradle = Get-Content -Raw (Join-Path $PSScriptRoot '..\android\app\build.gradle')
+  $package = [regex]::Match($gradle, 'applicationId "([^"]+)"').Groups[1].Value
+  $suffix = [regex]::Match($gradle, "(?s)\b$Flavor\s*\{[^}]*?applicationIdSuffix ""([^""]+)""").Groups[1].Value
+  return $package + $suffix
+}
 # Android builds sign with the release key when android/key.properties is
 # there, so they install over each other. It is kept out of git: a new
 # worktree has none, and would build an app the devices refuse.
@@ -153,8 +163,20 @@ switch ($Target) {
     flutter run -d windows --print-dtd -t test_driver/app.dart
   }
   'windows-driver' { flutter run -d windows -t test_driver/app.dart }
-  # Prints the DTD URI so the Dart MCP server can attach for hot reload.
-  'android' { flutter run -d $Device --flavor dev --build-number $buildNumber --print-dtd; Stop-Gradle }
+  # Builds and installs the dev app itself, as root where it can, then
+  # attaches: flutter run would install with adb install, which HyperOS
+  # stops for a tap, and after a failed install it uninstalls the app with
+  # its data. Prints the DTD URI so the Dart MCP server can attach for hot
+  # reload.
+  'android' {
+    flutter build apk --debug --flavor dev --target-platform android-arm64 --build-number $buildNumber
+    $code = $LASTEXITCODE
+    Stop-Gradle
+    if ($code -ne 0) { exit $code }
+    if (-not (Install-AndroidApk $Device build\app\outputs\flutter-apk\app-dev-debug.apk)) { exit 1 }
+    $vmService = Start-AndroidDebugApp $Device (Get-AndroidPackage dev)
+    flutter attach -d $Device --debug-url $vmService --print-dtd
+  }
   # Phones and tablets here are arm64: Android builds compile that ABI only.
   'apk' { flutter build apk --debug --flavor dev --target-platform android-arm64 --build-number $buildNumber; $code = $LASTEXITCODE; Stop-Gradle; exit $code }
   # The dev app in profile mode (compiled as release is, so frame rates
@@ -164,7 +186,7 @@ switch ($Target) {
     $code = $LASTEXITCODE
     Stop-Gradle
     if ($code -ne 0) { exit $code }
-    adb -s $Device install -r build\app\outputs\flutter-apk\app-dev-profile.apk
+    if (-not (Install-AndroidApk $Device build\app\outputs\flutter-apk\app-dev-profile.apk)) { exit 1 }
   }
   # Frame rate with a 4000-entry diary (scripts/frame_rate.ps1): of the
   # installed app on that phone or tablet, or with -Device windows of a
@@ -194,7 +216,7 @@ switch ($Target) {
         if ($state -eq 'device') { $serial }
       }
     }
-    $package = (Select-String -Path (Join-Path $PSScriptRoot '..\android\app\build.gradle') -Pattern 'applicationId "([^"]+)"').Matches[0].Groups[1].Value
+    $package = Get-AndroidPackage independent
     foreach ($serial in $serials) {
       $installed = adb -s $serial shell dumpsys package $package |
         Select-String -Pattern 'versionCode=(\d+)' | Select-Object -First 1
@@ -210,12 +232,10 @@ switch ($Target) {
     $apk = 'build\app\outputs\flutter-apk\app-independent-release.apk'
     $failed = @()
     foreach ($serial in $serials) {
-      Write-Host "Installing on $serial"
-      adb -s $serial install -r $apk
-      if ($LASTEXITCODE -ne 0) { $failed += $serial }
+      if (-not (Install-AndroidApk $serial $apk)) { $failed += $serial }
     }
-    # HyperOS asks on the device before each adb install; a missed prompt
-    # fails with INSTALL_FAILED_USER_RESTRICTED.
+    # Without root, HyperOS asks on the device before each adb install; a
+    # missed prompt fails with INSTALL_FAILED_USER_RESTRICTED.
     if ($failed) { Write-Error "Install failed on: $($failed -join ', ')"; exit 1 }
   }
   'l10n' { flutter gen-l10n }

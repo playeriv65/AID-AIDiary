@@ -184,7 +184,8 @@ class AppUpdates {
       : _client = client ?? http.Client(),
         os = os ?? Platform.operatingSystem;
 
-  static final instance = AppUpdates();
+  /// The app's updater; tests put one with a fake platform in its place.
+  static AppUpdates instance = AppUpdates();
   static const _channel = MethodChannel('$appNamespace/updates');
   static final _logger = Logger('AppUpdates');
 
@@ -313,24 +314,46 @@ class AppUpdates {
     return file;
   }
 
-  /// Whether this device can ever install updates without asking: Android
-  /// 12 or later, and not HyperOS or MIUI, which always ask. Windows asks
-  /// each time: a desktop app is not paused when the user leaves it.
+  /// Whether this Android app has been granted root, so `pm` installs
+  /// updates with no system confirmation: `su -c id` answered uid 0 in
+  /// time. Unrooted devices have no `su` to run, and KernelSU never asks:
+  /// without the grant, running `su` fails.
+  Future<bool> canInstallAsRoot() async {
+    if (os != 'android') return false;
+    final id = await channel.invokeMapMethod<String, Object?>('rootId', {
+      'timeoutMs': AppConfig.instance.updateRootProbeTimeout.inMilliseconds,
+    });
+    return id != null &&
+        id['code'] == 0 &&
+        '${id['output']}'.startsWith('uid=0(');
+  }
+
+  /// Whether this device can ever install updates without asking: with
+  /// root, or on Android 12 or later but not HyperOS or MIUI, which always
+  /// ask. Windows asks each time: a desktop app is not paused when the user
+  /// leaves it.
   Future<bool> silentSupported() async =>
       os == 'android' &&
-      (await channel.invokeMethod<bool>('silentSupported') ?? false);
+      (await canInstallAsRoot() ||
+          (await channel.invokeMethod<bool>('silentSupported') ?? false));
 
-  /// Whether Android lets this app replace itself without asking: it
-  /// installed itself before and may install apps.
+  /// Whether this app can replace itself now without asking: with root, or
+  /// because Android lets it, as it installed itself before and may
+  /// install apps.
   Future<bool> canInstallSilently() async =>
       os == 'android' &&
-      (await channel.invokeMethod<bool>('canInstallSilently') ?? false);
+      (await canInstallAsRoot() ||
+          (await channel.invokeMethod<bool>('canInstallSilently') ?? false));
 
-  /// Hands [file] of [update] to the system installer, after the native side
-  /// has checked it is this app, signed with this app's key, and newer. On
+  /// Installs [file] of [update], after the native side has checked it is
+  /// this app, signed with this app's key, and newer: as root when the app
+  /// has it, else (or when that fails) with the system installer. On
   /// Windows, runs the installer instead.
   Future<UpdateInstall> install(AppUpdate update, File file) async {
     if (os == 'windows') return _runSetup(update, file);
+    if (await canInstallAsRoot() && await _installAsRoot(update, file)) {
+      return UpdateInstall.started;
+    }
     final String? result;
     try {
       result =
@@ -344,6 +367,29 @@ class AppUpdates {
           .set(Settings.installingUpdate, jsonEncode(update.toJson()));
     }
     return outcome;
+  }
+
+  /// Installs [file] with `pm` as root. `pm` replaces the app before it
+  /// answers, so the "updated" note is saved first. False when the root
+  /// install failed and the system installer should take over.
+  Future<bool> _installAsRoot(AppUpdate update, File file) async {
+    final settings = ConfigProvider.instance;
+    await settings.set(Settings.installingUpdate, jsonEncode(update.toJson()));
+    await settings.flushConfig();
+    try {
+      await channel.invokeMethod<String>('installAsRoot', {
+        'path': file.path,
+        'stagingDir': AppConfig.instance.updateRootStagingDir,
+      });
+      return true;
+    } on PlatformException catch (error) {
+      await settings.set(Settings.installingUpdate, '');
+      if (error.code != 'root_failed') {
+        throw UpdateException(error.code, error.message ?? 'Install failed');
+      }
+      _logger.warning('Root install failed: ${error.message}');
+      return false;
+    }
   }
 
   /// Starts the downloaded Windows installer silently and closes the app;

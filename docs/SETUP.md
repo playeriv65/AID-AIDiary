@@ -322,7 +322,14 @@ search inspector output rather than dumping the entire tree. Without that
 integration, use the configured Flutter CLI and `aid`; do not claim MCP checks
 ran. Android development launches use `./scripts/dev.ps1 android` (the tablet
 from `DEV_ANDROID_DEVICE`, or `-Device <serial>`); `adb exec-out screencap`
-can capture device output.
+can capture device output. That target does not use `flutter run`, which
+installs with `adb install` (HyperOS stops it for a tap) and after a failed
+install uninstalls the app, data included, to try again; `--use-application-binary`
+still installs that way. It builds the debug APK, installs it as described
+under [Test devices](#test-devices), starts the launcher activity, reads
+that process's Dart VM service address from its log and runs
+`flutter attach --debug-url <address> --print-dtd`, which gives the same
+hot reload and DTD URI.
 
 Home-screen widget and alarm checks run on the tablet. For widget cold-launch
 checks, prefer `am kill` to `am force-stop`:
@@ -330,10 +337,9 @@ force-stop cancels widget taps until the next update. `flutter drive` can
 uninstall the app on completion unless `--keep-app-running` is set; follow the
 signing/data safeguards below.
 
-Known gap: an alarm can only be fired by waiting for its time. The tablet
-has no root, so `adb root` and `date` cannot move its clock.
-Its `adb shell cmd alarm set-time` is untried here, and would change the
-tablet's clock, which is a device setting: use it only with the owner's
+Known gap: an alarm can only be fired by waiting for its time. The tablet's
+`adb shell cmd alarm set-time` (or `date` under its `su`) is untried here,
+and would change the tablet's clock, which is a device setting: use it only with the owner's
 consent, and restore automatic time afterwards.
 
 ### App icon
@@ -357,10 +363,9 @@ does not block a build when its owning process has closed it.
 Every Android build, debug and profile included, is signed with the
 release key whenever `android/key.properties` exists (template:
 `android/key.properties.example`; git ignores the real one). That is what
-lets any build install over any other on the owner's devices; HyperOS asks
-on the device before every new install and before any install whose key
-changed, so a build signed differently means uninstalling, with the
-device's data, and a prompt on the device.
+lets any build install over any other on the owner's devices. A build
+signed differently cannot replace an installed app at all, even as root:
+it means uninstalling, with the device's data.
 
 - The keystore is the owner's, kept at `D:\software\keys` on the
   development PC and never committed or shared in chat. A worktree has no
@@ -373,8 +378,8 @@ device's data, and a prompt on the device.
 
 `./scripts/dev.ps1 apk` builds the development flavor
 (`com.playeriv65.diary.beta`). `./scripts/dev.ps1 release` builds the
-`independent` flavor (`com.playeriv65.diary`) and installs it with `adb install -r` on
-connected devices; this is the owner's ordinary app, not an isolated test
+`independent` flavor (`com.playeriv65.diary`) and installs it over the existing
+app on connected devices ([Test devices](#test-devices)); this is the owner's ordinary app, not an isolated test
 workspace. Do not use that target as a harmless build-only check, uninstall
 either flavor, clear its data or change its signing key without authorization.
 
@@ -383,8 +388,8 @@ either flavor, clear its data or change its signing key without authorization.
 | Device | Role | How it is reached |
 | --- | --- | --- |
 | Windows PC (16 threads, 23 GB RAM, small C: drive) | Day-to-day development; hidden app windows for tests (`dev.ps1 windows-background`, `AID_DATA_DIR`) | Local. Builds share RAM with many other programs: `dev.ps1` stops Gradle after Android builds. |
-| Xiaomi Pad 7 (2410CRP4CC, Snapdragon 7+ Gen 3, Android 16 / HyperOS, 3200×2136 at 120 Hz) | The only Android test device: debug and profile builds, frame rate, touch, camera, home-screen widget, alarms, OEM behaviour | adb over TCP, `adb connect 100.79.141.50:5555` (Tailscale name `xiaomi-pad-7`); that serial is `DEV_ANDROID_DEVICE` in `dev.env`. |
-| Redmi K80 (HyperOS) | The owner's daily phone, not a test device: never used for tests, measurements or debugging; only for an explicit job on the owner's own data that the owner requested | Tailscale `100.124.182.51:5555`. |
+| Xiaomi Pad 7 (2410CRP4CC, Snapdragon 7+ Gen 3, Android 16 / HyperOS OS3.0.306.0, 3200×2136 at 120 Hz), rooted with KernelSU | The only Android test device: debug and profile builds, frame rate, touch, camera, home-screen widget, alarms, OEM behaviour | adb over TCP, `adb connect 100.79.141.50:5555` (Tailscale name `xiaomi-pad-7`); that serial is `DEV_ANDROID_DEVICE` in `dev.env`. Its adb shell is uid 2000; `su -c` gives root. |
+| Redmi K80 (HyperOS OS3.0.309.0), rooted with KernelSU | The owner's daily phone, not a test device: never used for tests, measurements or debugging; only for an explicit job on the owner's own data that the owner requested | Tailscale `100.124.182.51:5555`. Its adb shell already runs as root. |
 
 Connecting the tablet:
 
@@ -397,11 +402,25 @@ Connecting the tablet:
   `adb-53e18407-…_adb-tls-connect._tcp`; from elsewhere, scan
   100.79.141.50 ports 30000–50000 for the wireless-debugging port.
 
+Installing on the devices:
+
+- Every `dev.ps1` target that installs (`android`, `profile`, `release`)
+  goes through `Install-AndroidApk` in `scripts/android_device.ps1`. When
+  the device's adb shell is root (`id` says uid 0) or `su -c id` gives uid
+  0, it pushes the APK to `/data/local/tmp`, runs
+  `pm install -r -i com.android.shell` as root and removes the copy; HyperOS
+  shows no prompt. Otherwise it runs `adb install -r`. Both keep the app's
+  data. `pwsh scripts/test_android_device.ps1` checks the commands it
+  builds against a fake adb, without a device.
+- The self-update path on rooted devices is in
+  [Updates](UPDATES.md#rooted-android-devices).
+
 HyperOS behaviour that shapes testing:
 
-- A new install asks for confirmation on the device; updates signed with
-  the same key do not. Never tap that prompt remotely: the person at the
-  device does.
+- Without root, every adb install asks for confirmation on the device and
+  fails with `INSTALL_FAILED_USER_RESTRICTED` when nobody taps. Never tap
+  that prompt remotely: the person at the device does. With root,
+  `dev.ps1` installs without it.
 - The dev flavor's suffix is `.beta`, never `.dev`: HyperOS put the earlier
   `dev.aid.diary.dev` on its 60 Hz game list for good
   (`docs/REFRESH_RATE.md`).

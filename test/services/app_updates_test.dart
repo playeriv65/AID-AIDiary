@@ -58,6 +58,7 @@ void main() {
         'checkHours': 6,
         'timeoutSeconds': 5,
         'downloadTimeoutMinutes': 1,
+        'androidRoot': {'probeTimeoutMs': 1500, 'stagingDir': '/staging'},
       },
     });
     DeviceInfoService().appInfo = PackageInfo(
@@ -279,6 +280,148 @@ void main() {
         updates.download(update),
         throwsA(
             isA<UpdateException>().having((e) => e.code, 'code', 'corrupt')));
+  });
+
+  group('Android root installs', () {
+    const channel = MethodChannel('test/updates');
+    final update = AppUpdate(
+        version: '0.1.0',
+        build: 261029183,
+        notes: const {},
+        url: Uri.parse('https://aid.example/updates/aid-diary.apk'),
+        sha256: '00',
+        size: 1);
+    late List<MethodCall> calls;
+
+    /// What `su -c id` answers when the app has root.
+    const rootId = {
+      'code': 0,
+      'output': 'uid=0(root) gid=0(root) context=u:r:ksu:s0\n',
+    };
+
+    /// A platform side whose `su -c id` gave [id] (null: no su visible, or
+    /// no answer in time), like HyperOS otherwise (no silent installs of
+    /// its own); [answers] overrides a method.
+    AppUpdates platform(
+        {required Map<String, Object?>? id,
+        Map<String, Object? Function(MethodCall)> answers = const {}}) {
+      calls = [];
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, (call) async {
+        calls.add(call);
+        if (answers[call.method] case final answer?) return answer(call);
+        return switch (call.method) {
+          'rootId' => id,
+          'silentSupported' || 'canInstallSilently' => false,
+          'install' => 'confirming',
+          'installAsRoot' => 'started',
+          _ => throw MissingPluginException(),
+        };
+      });
+      return AppUpdates(os: 'android', channel: channel);
+    }
+
+    tearDown(() => TestDefaultBinaryMessengerBinding
+        .instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(channel, null));
+
+    test('root is uid 0 from su, asked with the configured timeout', () async {
+      expect(await platform(id: rootId).canInstallAsRoot(), isTrue);
+      expect(calls.single.arguments, {'timeoutMs': 1500});
+      final notRoot = {
+        'no su visible, or no answer in time': null,
+        'su denied': {'code': 1, 'output': 'Permission denied\n'},
+        'su that stays the app': {
+          'code': 0,
+          'output': 'uid=10234(u0_a234) gid=10234(u0_a234)\n',
+        },
+        'uid 0 with a failed exit': {'code': 1, 'output': 'uid=0(root)\n'},
+      };
+      for (final MapEntry(:key, :value) in notRoot.entries) {
+        expect(await platform(id: value).canInstallAsRoot(), isFalse,
+            reason: key);
+      }
+      // Windows asks nothing.
+      calls.clear();
+      expect(
+          await AppUpdates(os: 'windows', channel: channel).canInstallAsRoot(),
+          isFalse);
+      expect(calls, isEmpty);
+    });
+
+    test('root makes silent installs possible where the system always asks',
+        () async {
+      final rooted = platform(id: rootId);
+      expect(await rooted.silentSupported(), isTrue);
+      expect(await rooted.canInstallSilently(), isTrue);
+      final xiaomi = platform(id: null);
+      expect(await xiaomi.silentSupported(), isFalse);
+      expect(await xiaomi.canInstallSilently(), isFalse);
+      // Without root, the system's own answer decides as before.
+      final android12 = platform(id: null, answers: {
+        'silentSupported': (_) => true,
+        'canInstallSilently': (_) => true,
+      });
+      expect(await android12.silentSupported(), isTrue);
+      expect(await android12.canInstallSilently(), isTrue);
+    });
+
+    test('with root, pm installs the update and the note is saved first',
+        () async {
+      final config = ConfigProvider.instance;
+      await config.set(Settings.installingUpdate, '');
+      final file = File(p.join(temp.path, 'update-261029183.apk'));
+      String? savedBeforeInstall;
+      final updates = platform(id: rootId, answers: {
+        'installAsRoot': (_) {
+          savedBeforeInstall = File(config.configFilePath).readAsStringSync();
+          return 'started';
+        },
+      });
+      expect(await updates.install(update, file), UpdateInstall.started);
+      expect(calls.map((call) => call.method), ['rootId', 'installAsRoot']);
+      expect(
+          calls.last.arguments, {'path': file.path, 'stagingDir': '/staging'});
+      // pm closes the app before it answers: the note is on disk already.
+      final saved = jsonDecode(savedBeforeInstall!) as Map<String, dynamic>;
+      expect(saved[Settings.installingUpdate.key], contains('261029183'));
+    });
+
+    test('a failed root install falls back to the system installer', () async {
+      final updates = platform(id: rootId, answers: {
+        'installAsRoot': (_) => throw PlatformException(
+            code: 'root_failed', message: 'Failure [INSTALL_FAILED_ABORTED]'),
+      });
+      final file = File(p.join(temp.path, 'update-261029183.apk'));
+      expect(await updates.install(update, file), UpdateInstall.confirming);
+      expect(calls.map((call) => call.method),
+          ['rootId', 'installAsRoot', 'install']);
+      expect(ConfigProvider.instance.get(Settings.installingUpdate),
+          contains('261029183'));
+    });
+
+    test('without root, only the system installer is used', () async {
+      final updates = platform(id: null);
+      final file = File(p.join(temp.path, 'update-261029183.apk'));
+      expect(await updates.install(update, file), UpdateInstall.confirming);
+      expect(calls.map((call) => call.method), ['rootId', 'install']);
+    });
+
+    test('a package the app refuses is not retried with the system installer',
+        () async {
+      final config = ConfigProvider.instance;
+      await config.set(Settings.installingUpdate, '');
+      final updates = platform(id: rootId, answers: {
+        'installAsRoot': (_) => throw PlatformException(
+            code: 'wrong_key', message: 'Not signed with this app\'s key'),
+      });
+      await expectLater(
+          updates.install(update, File(p.join(temp.path, 'update.apk'))),
+          throwsA(isA<UpdateException>()
+              .having((e) => e.code, 'code', 'wrong_key')));
+      expect(calls.map((call) => call.method), ['rootId', 'installAsRoot']);
+      expect(config.get(Settings.installingUpdate), isEmpty);
+    });
   });
 
   test('after an install the update is reported once', () async {

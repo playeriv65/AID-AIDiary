@@ -56,6 +56,10 @@
       "uninstaller": "unins000.exe",
       "arguments": ["/VERYSILENT", "/SUPPRESSMSGBOXES", "/NORESTART", "/LOG", "/RELAUNCH=1"],
       "exitDelayMs": 1000
+    },
+    "androidRoot": {
+      "probeTimeoutMs": 3000,
+      "stagingDir": "/data/local/tmp"
     }
   },
   "diaryDay": {

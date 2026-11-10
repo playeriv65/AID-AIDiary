@@ -37,9 +37,10 @@ final updateActions = [
       id: 'update.install',
       describe: 'Downloads the newer build and checks its size and hash. '
           'Android checks its name, signing key and version and installs '
-          'it, and may ask on the device first. Windows runs the installer '
-          'silently and opens the app again. The app closes while it '
-          'installs.',
+          'it, and may ask on the device first; an app granted root '
+          'installs as root without asking, and closes before it answers. '
+          'Windows runs the installer silently and opens the app again. '
+          'The app closes while it installs.',
       risk: ActionRisk.write,
       run: (context, __) async {
         final updates = AppUpdates.instance;
