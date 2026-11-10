@@ -797,6 +797,7 @@
   "dontAskAgain": "Spørg ikke igen",
   "editPastEdit": "Redigér alligevel",
   "noteOnEntry": "Om indlægget fra {date}",
+  "attachmentFrom": "Vedhæftning fra {date}",
   "settingsConfirmEditPast": "Spørg før tidligere indlæg redigeres",
   "settingsCompressPhotos": "Komprimér nye fotos",
   "settingsCompressPhotosHint": "Gem nye fotos som WebP på cirka 1 MB. Slået fra beholdes originalerne.",

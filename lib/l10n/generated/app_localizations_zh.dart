@@ -2624,6 +2624,11 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
+  String attachmentFrom(String date) {
+    return '$date的附件';
+  }
+
+  @override
   String get settingsConfirmEditPast => '编辑过去的日记前先确认';
 
   @override
@@ -5398,6 +5403,11 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   @override
   String noteOnEntry(String date) {
     return '回看 $date 的日記';
+  }
+
+  @override
+  String attachmentFrom(String date) {
+    return '$date的附件';
   }
 
   @override

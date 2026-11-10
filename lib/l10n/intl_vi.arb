@@ -797,6 +797,7 @@
   "dontAskAgain": "Không hỏi lại",
   "editPastEdit": "Vẫn sửa",
   "noteOnEntry": "Về bài ngày {date}",
+  "attachmentFrom": "Tệp đính kèm ngày {date}",
   "settingsConfirmEditPast": "Hỏi trước khi sửa bài cũ",
   "settingsCompressPhotos": "Nén ảnh mới",
   "settingsCompressPhotosHint": "Lưu ảnh mới dạng WebP khoảng 1 MB. Khi tắt sẽ giữ ảnh gốc.",

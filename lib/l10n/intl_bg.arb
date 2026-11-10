@@ -797,6 +797,7 @@
   "dontAskAgain": "Не питай отново",
   "editPastEdit": "Редактирай въпреки това",
   "noteOnEntry": "За записа от {date}",
+  "attachmentFrom": "Прикачен файл от {date}",
   "settingsConfirmEditPast": "Питай преди редактиране на минали записи",
   "settingsCompressPhotos": "Компресиране на новите снимки",
   "settingsCompressPhotosHint": "Новите снимки се пазят като WebP от около 1 MB. Изключено пази оригиналите.",

@@ -797,6 +797,7 @@
   "dontAskAgain": "Fråga inte igen",
   "editPastEdit": "Redigera ändå",
   "noteOnEntry": "Om inlägget från {date}",
+  "attachmentFrom": "Bilaga från {date}",
   "settingsConfirmEditPast": "Fråga innan tidigare inlägg redigeras",
   "settingsCompressPhotos": "Komprimera nya foton",
   "settingsCompressPhotosHint": "Spara nya foton som WebP på ungefär 1 MB. Av behåller originalen.",

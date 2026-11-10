@@ -2754,6 +2754,11 @@ class AppLocalizationsOc extends AppLocalizations {
   }
 
   @override
+  String attachmentFrom(String date) {
+    return 'Pèça junta del $date';
+  }
+
+  @override
   String get settingsConfirmEditPast =>
       'Demandar abans de modificar las nòtas passadas';
 

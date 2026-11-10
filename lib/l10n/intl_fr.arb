@@ -797,6 +797,7 @@
   "dontAskAgain": "Ne plus demander",
   "editPastEdit": "Modifier quand même",
   "noteOnEntry": "Sur l’entrée du {date}",
+  "attachmentFrom": "Pièce jointe du {date}",
   "settingsConfirmEditPast": "Demander avant de modifier une entrée passée",
   "settingsCompressPhotos": "Compresser les nouvelles photos",
   "settingsCompressPhotosHint": "Enregistrer les nouvelles photos en WebP d’environ 1 Mo. Désactivé, les originaux sont gardés.",

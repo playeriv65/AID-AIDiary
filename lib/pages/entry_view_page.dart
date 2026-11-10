@@ -370,6 +370,8 @@ class _PhotosState extends State<_Photos> {
           onPageChanged: (page) => setState(() => _page = page),
           itemBuilder: (context, index) => InkOverlay(
             key: ValueKey('entry-attachment-$index'),
+            label: AppLocalizations.of(context)!.attachmentFrom(
+                TimeManager.formatDate(widget.entry.day, context)),
             onTap: () =>
                 EntryNavigation.attachment(context, widget.entry, index),
             child: SizedBox.expand(

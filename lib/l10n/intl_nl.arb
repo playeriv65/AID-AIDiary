@@ -797,6 +797,7 @@
   "dontAskAgain": "Niet meer vragen",
   "editPastEdit": "Toch bewerken",
   "noteOnEntry": "Bij het bericht van {date}",
+  "attachmentFrom": "Bijlage van {date}",
   "settingsConfirmEditPast": "Vragen voor het bewerken van eerdere berichten",
   "settingsCompressPhotos": "Nieuwe foto's comprimeren",
   "settingsCompressPhotosHint": "Nieuwe foto's opslaan als WebP van ongeveer 1 MB. Uit bewaart de originelen.",

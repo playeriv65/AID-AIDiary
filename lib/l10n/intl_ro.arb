@@ -797,6 +797,7 @@
   "dontAskAgain": "Nu mai întreba",
   "editPastEdit": "Editează oricum",
   "noteOnEntry": "Despre însemnarea din {date}",
+  "attachmentFrom": "Atașament din {date}",
   "settingsConfirmEditPast": "Întreabă înainte de a edita însemnări trecute",
   "settingsCompressPhotos": "Comprimă fotografiile noi",
   "settingsCompressPhotosHint": "Salvează fotografiile noi ca WebP de aproximativ 1 MB. Dezactivat păstrează originalele.",

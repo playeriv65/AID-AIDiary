@@ -2735,6 +2735,11 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
+  String attachmentFrom(String date) {
+    return 'Liite päivältä $date';
+  }
+
+  @override
   String get settingsConfirmEditPast =>
       'Kysy ennen menneiden merkintöjen muokkaamista';
 

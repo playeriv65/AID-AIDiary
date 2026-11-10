@@ -2690,6 +2690,11 @@ class AppLocalizationsMs extends AppLocalizations {
   }
 
   @override
+  String attachmentFrom(String date) {
+    return 'Lampiran dari $date';
+  }
+
+  @override
   String get settingsConfirmEditPast => 'Tanya sebelum menyunting catatan lama';
 
   @override

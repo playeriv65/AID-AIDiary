@@ -2742,6 +2742,11 @@ class AppLocalizationsUk extends AppLocalizations {
   }
 
   @override
+  String attachmentFrom(String date) {
+    return 'Вкладення від $date';
+  }
+
+  @override
   String get settingsConfirmEditPast => 'Питати перед зміною минулих записів';
 
   @override

@@ -797,6 +797,7 @@
   "dontAskAgain": "لا تسأل مجددًا",
   "editPastEdit": "تعديل على أي حال",
   "noteOnEntry": "حول تدوينة {date}",
+  "attachmentFrom": "مرفق من {date}",
   "settingsConfirmEditPast": "السؤال قبل تعديل التدوينات السابقة",
   "settingsCompressPhotos": "ضغط الصور الجديدة",
   "settingsCompressPhotosHint": "حفظ الصور الجديدة بصيغة WebP بحجم 1 ميغابايت تقريبًا. عند الإيقاف تُحفظ الأصلية.",

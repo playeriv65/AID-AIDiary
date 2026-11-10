@@ -797,6 +797,7 @@
   "dontAskAgain": "फिर न पूछें",
   "editPastEdit": "फिर भी संपादित करें",
   "noteOnEntry": "{date} की प्रविष्टि पर",
+  "attachmentFrom": "{date} का अटैचमेंट",
   "settingsConfirmEditPast": "पुरानी प्रविष्टियाँ संपादित करने से पहले पूछें",
   "settingsCompressPhotos": "नई फ़ोटो संपीड़ित करें",
   "settingsCompressPhotosHint": "नई फ़ोटो को लगभग 1 MB के WebP के रूप में रखें। बंद होने पर मूल फ़ोटो रखी जाती हैं।",

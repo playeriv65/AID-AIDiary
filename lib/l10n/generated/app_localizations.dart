@@ -4950,6 +4950,12 @@ abstract class AppLocalizations {
   /// **'On the entry of {date}'**
   String noteOnEntry(String date);
 
+  /// No description provided for @attachmentFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'Attachment from {date}'**
+  String attachmentFrom(String date);
+
   /// No description provided for @settingsConfirmEditPast.
   ///
   /// In en, this message translates to:

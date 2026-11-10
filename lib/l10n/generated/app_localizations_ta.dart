@@ -2769,6 +2769,11 @@ class AppLocalizationsTa extends AppLocalizations {
   }
 
   @override
+  String attachmentFrom(String date) {
+    return '$date இணைப்பு';
+  }
+
+  @override
   String get settingsConfirmEditPast => 'பழைய பதிவுகளைத் திருத்தும் முன் கேள்';
 
   @override

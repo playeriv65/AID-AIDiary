@@ -2728,6 +2728,11 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
+  String attachmentFrom(String date) {
+    return '$date tarihli ek';
+  }
+
+  @override
   String get settingsConfirmEditPast =>
       'Geçmiş kayıtları düzenlemeden önce sor';
 

@@ -2733,6 +2733,11 @@ class AppLocalizationsSv extends AppLocalizations {
   }
 
   @override
+  String attachmentFrom(String date) {
+    return 'Bilaga från $date';
+  }
+
+  @override
   String get settingsConfirmEditPast => 'Fråga innan tidigare inlägg redigeras';
 
   @override

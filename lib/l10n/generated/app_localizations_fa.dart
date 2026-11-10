@@ -2721,6 +2721,11 @@ class AppLocalizationsFa extends AppLocalizations {
   }
 
   @override
+  String attachmentFrom(String date) {
+    return 'پیوست از $date';
+  }
+
+  @override
   String get settingsConfirmEditPast => 'پیش از ویرایش یادداشت‌های گذشته بپرس';
 
   @override

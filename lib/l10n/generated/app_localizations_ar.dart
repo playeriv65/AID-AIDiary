@@ -2723,6 +2723,11 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
+  String attachmentFrom(String date) {
+    return 'مرفق من $date';
+  }
+
+  @override
   String get settingsConfirmEditPast => 'السؤال قبل تعديل التدوينات السابقة';
 
   @override

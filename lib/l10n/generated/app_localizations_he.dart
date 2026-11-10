@@ -2706,6 +2706,11 @@ class AppLocalizationsHe extends AppLocalizations {
   }
 
   @override
+  String attachmentFrom(String date) {
+    return 'קובץ מצורף מ־$date';
+  }
+
+  @override
   String get settingsConfirmEditPast => 'לשאול לפני עריכת רשומות קודמות';
 
   @override

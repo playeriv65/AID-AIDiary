@@ -2755,6 +2755,11 @@ class AppLocalizationsIt extends AppLocalizations {
   }
 
   @override
+  String attachmentFrom(String date) {
+    return 'Allegato del $date';
+  }
+
+  @override
   String get settingsConfirmEditPast =>
       'Chiedi prima di modificare voci passate';
 

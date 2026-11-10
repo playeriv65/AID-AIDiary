@@ -2742,6 +2742,11 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String attachmentFrom(String date) {
+    return 'Adjunto del $date';
+  }
+
+  @override
   String get settingsConfirmEditPast =>
       'Preguntar antes de editar entradas pasadas';
 

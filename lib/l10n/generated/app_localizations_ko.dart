@@ -2660,6 +2660,11 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
+  String attachmentFrom(String date) {
+    return '$date의 첨부 파일';
+  }
+
+  @override
   String get settingsConfirmEditPast => '지난 일기를 편집하기 전에 확인';
 
   @override

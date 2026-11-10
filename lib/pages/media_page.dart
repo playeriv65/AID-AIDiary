@@ -9,6 +9,8 @@ import 'package:aid_diary/pages/entry_view_page.dart';
 import 'package:aid_diary/providers/entries_provider.dart';
 import 'package:aid_diary/providers/entry_images_provider.dart';
 import 'package:aid_diary/routing/entry_navigation.dart';
+import 'package:aid_diary/time_manager.dart';
+import 'package:aid_diary/widgets/ink_overlay.dart';
 import 'package:aid_diary/widgets/list_detail_layout.dart';
 import 'package:aid_diary/widgets/local_image_loader.dart';
 import 'package:aid_diary/widgets/top_search_card.dart';
@@ -91,18 +93,18 @@ class _MediaPageState extends State<MediaPage>
                 return ClipRRect(
                   key: ValueKey('media-${image.id ?? image.imgPath}'),
                   borderRadius: BorderRadius.circular(8),
-                  child: Stack(fit: StackFit.expand, children: [
-                    LocalImageLoader(imagePath: image.imgPath, cacheSize: 300),
-                    Material(
-                      type: MaterialType.transparency,
-                      child: InkWell(
-                        onTap: () => split
-                            ? setState(() => _selectedId = entry.id)
-                            : EntryNavigation.view(context, entry,
-                                entries: _entriesWithMedia),
-                      ),
+                  child: InkOverlay(
+                    label: l10n.attachmentFrom(
+                        TimeManager.formatDate(entry.day, context)),
+                    onTap: () => split
+                        ? setState(() => _selectedId = entry.id)
+                        : EntryNavigation.view(context, entry,
+                            entries: _entriesWithMedia),
+                    child: SizedBox.expand(
+                      child: LocalImageLoader(
+                          imagePath: image.imgPath, cacheSize: 300),
                     ),
-                  ]),
+                  ),
                 );
               },
             ),

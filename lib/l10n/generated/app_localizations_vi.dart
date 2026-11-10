@@ -2742,6 +2742,11 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
+  String attachmentFrom(String date) {
+    return 'Tệp đính kèm ngày $date';
+  }
+
+  @override
   String get settingsConfirmEditPast => 'Hỏi trước khi sửa bài cũ';
 
   @override

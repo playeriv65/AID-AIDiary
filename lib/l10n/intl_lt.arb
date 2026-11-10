@@ -797,6 +797,7 @@
   "dontAskAgain": "Daugiau neklausti",
   "editPastEdit": "Vis tiek redaguoti",
   "noteOnEntry": "Apie {date} įrašą",
+  "attachmentFrom": "Priedas iš {date}",
   "settingsConfirmEditPast": "Klausti prieš redaguojant senus įrašus",
   "settingsCompressPhotos": "Glaudinti naujas nuotraukas",
   "settingsCompressPhotosHint": "Naujas nuotraukas saugoti kaip maždaug 1 MB WebP. Išjungus saugomi originalai.",

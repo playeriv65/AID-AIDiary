@@ -2723,6 +2723,11 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
+  String attachmentFrom(String date) {
+    return 'Příloha z $date';
+  }
+
+  @override
   String get settingsConfirmEditPast => 'Ptát se před úpravou minulých záznamů';
 
   @override

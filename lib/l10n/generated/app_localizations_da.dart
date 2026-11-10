@@ -2722,6 +2722,11 @@ class AppLocalizationsDa extends AppLocalizations {
   }
 
   @override
+  String attachmentFrom(String date) {
+    return 'Vedhæftning fra $date';
+  }
+
+  @override
   String get settingsConfirmEditPast => 'Spørg før tidligere indlæg redigeres';
 
   @override

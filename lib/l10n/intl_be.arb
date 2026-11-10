@@ -799,6 +799,7 @@
   "dontAskAgain": "Больш не пытацца",
   "editPastEdit": "Усё роўна змяніць",
   "noteOnEntry": "Пра запіс ад {date}",
+  "attachmentFrom": "Укладанне ад {date}",
   "settingsConfirmEditPast": "Пытацца перад зменай мінулых запісаў",
   "settingsCompressPhotos": "Сціскаць новыя фота",
   "settingsCompressPhotosHint": "Захоўваць новыя фота як WebP каля 1 МБ. Калі выключана, захоўваюцца арыгіналы.",

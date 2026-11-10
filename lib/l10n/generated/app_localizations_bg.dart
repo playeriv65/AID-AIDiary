@@ -2745,6 +2745,11 @@ class AppLocalizationsBg extends AppLocalizations {
   }
 
   @override
+  String attachmentFrom(String date) {
+    return 'Прикачен файл от $date';
+  }
+
+  @override
   String get settingsConfirmEditPast =>
       'Питай преди редактиране на минали записи';
 

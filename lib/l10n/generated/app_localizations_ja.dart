@@ -2660,6 +2660,11 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
+  String attachmentFrom(String date) {
+    return '$dateの添付ファイル';
+  }
+
+  @override
   String get settingsConfirmEditPast => '過去の日記を編集する前に確認';
 
   @override

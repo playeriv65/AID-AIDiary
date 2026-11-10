@@ -797,6 +797,7 @@
   "dontAskAgain": "Jangan tanya lagi",
   "editPastEdit": "Sunting juga",
   "noteOnEntry": "Tentang catatan {date}",
+  "attachmentFrom": "Lampiran dari {date}",
   "settingsConfirmEditPast": "Tanya sebelum menyunting catatan lama",
   "settingsCompressPhotos": "Mampatkan foto baharu",
   "settingsCompressPhotosHint": "Simpan foto baharu sebagai WebP kira-kira 1 MB. Jika dimatikan, foto asal disimpan.",

@@ -814,6 +814,7 @@
   "dontAskAgain": "אל תשאל שוב",
   "editPastEdit": "לערוך בכל זאת",
   "noteOnEntry": "על הרשומה מ־{date}",
+  "attachmentFrom": "קובץ מצורף מ־{date}",
   "settingsConfirmEditPast": "לשאול לפני עריכת רשומות קודמות",
   "settingsCompressPhotos": "דחיסת תמונות חדשות",
   "settingsCompressPhotosHint": "שמירת תמונות חדשות כ‑WebP בגודל כ‑1 MB. כשכבוי נשמרים המקוריים.",

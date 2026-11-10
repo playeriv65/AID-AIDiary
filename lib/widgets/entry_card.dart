@@ -176,204 +176,210 @@ class EntryCard extends StatelessWidget {
     );
 
     // Keep one readable semantics node per card, including its details.
+    // A button, as a ListTile with onTap is; selected in the split view.
     return MergeSemantics(
-      child: ColoredBox(
-        color: selected ? cs.secondaryContainer : Colors.transparent,
-        // Ink paints on this transparent Material, above the selection.
-        child: Material(
-          type: MaterialType.transparency,
-          child: InkWell(
-            key: ValueKey('journal-entry-${entry.id}'),
-            onTap: onTap,
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 14, 12, 14),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            if (!sealed && preview.title != null) ...[
-                              Expanded(
-                                child: Text.rich(
+      child: Semantics(
+        button: true,
+        selected: selected,
+        child: ColoredBox(
+          color: selected ? cs.secondaryContainer : Colors.transparent,
+          // Ink paints on this transparent Material, above the selection.
+          child: Material(
+            type: MaterialType.transparency,
+            child: InkWell(
+              key: ValueKey('journal-entry-${entry.id}'),
+              onTap: onTap,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 14, 12, 14),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              if (!sealed && preview.title != null) ...[
+                                Expanded(
+                                  child: Text.rich(
+                                    TextSpan(
+                                      children: highlightSpans(
+                                        preview.title!,
+                                        highlight,
+                                        marked,
+                                      ),
+                                    ),
+                                    key: const ValueKey('entry-card-title'),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style:
+                                        theme.textTheme.titleMedium?.copyWith(
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                                when,
+                              ] else
+                                Expanded(
+                                  child: Align(
+                                    alignment: AlignmentDirectional.centerStart,
+                                    child: when,
+                                  ),
+                                ),
+                            ],
+                          ),
+                          const SizedBox(height: 4),
+                          // A sealed capsule shows nothing of what is inside.
+                          if (sealed)
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.lock_clock_rounded,
+                                  size: 16,
+                                  color: cs.primary,
+                                ),
+                                const SizedBox(width: 6),
+                                Expanded(
+                                  child: Text(
+                                    l10n.capsuleOpensOn(
+                                      TimeManager.formatDate(
+                                        entry.openAt!,
+                                        context,
+                                      ),
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: muted,
+                                  ),
+                                ),
+                              ],
+                            )
+                          else ...[
+                            // Text is shaped in full before it is cut to its
+                            // lines, and that is most of what a card costs as
+                            // it scrolls in: lay out only what its lines can
+                            // hold of the narrowest letters (about half the
+                            // font size wide each).
+                            LayoutBuilder(
+                              builder: (context, constraints) {
+                                final letter = MediaQuery.textScalerOf(context)
+                                        .scale(muted?.fontSize ?? 14) /
+                                    2;
+                                final text = preview.snippet.isEmpty &&
+                                        preview.title == null
+                                    ? l10n.writeSomethingHint
+                                    : cutSnippet(
+                                        preview.snippet,
+                                        (constraints.maxWidth /
+                                                letter *
+                                                entryCardLines)
+                                            .ceil(),
+                                      );
+                                return Text.rich(
                                   TextSpan(
                                     children: highlightSpans(
-                                      preview.title!,
+                                      text,
                                       highlight,
                                       marked,
                                     ),
                                   ),
-                                  key: const ValueKey('entry-card-title'),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: theme.textTheme.titleMedium?.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              when,
-                            ] else
-                              Expanded(
-                                child: Align(
-                                  alignment: AlignmentDirectional.centerStart,
-                                  child: when,
-                                ),
-                              ),
-                          ],
-                        ),
-                        const SizedBox(height: 4),
-                        // A sealed capsule shows nothing of what is inside.
-                        if (sealed)
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.lock_clock_rounded,
-                                size: 16,
-                                color: cs.primary,
-                              ),
-                              const SizedBox(width: 6),
-                              Expanded(
-                                child: Text(
-                                  l10n.capsuleOpensOn(
-                                    TimeManager.formatDate(
-                                      entry.openAt!,
-                                      context,
-                                    ),
-                                  ),
-                                  maxLines: 1,
+                                  key: const ValueKey('entry-card-snippet'),
+                                  maxLines: entryCardLines,
                                   overflow: TextOverflow.ellipsis,
                                   style: muted,
+                                );
+                              },
+                            ),
+                            if (showDetails &&
+                                (hasMood ||
+                                    location != null ||
+                                    entry.id != null)) ...[
+                              const SizedBox(height: 6),
+                              SizedBox(
+                                height: 18,
+                                child: Row(
+                                  children: [
+                                    if (hasMood) ...[
+                                      MoodIcon(moodValue: entry.mood, size: 14),
+                                      const SizedBox(width: 6),
+                                    ],
+                                    if (location != null) ...[
+                                      Flexible(
+                                        child: IconLabel(
+                                            icon: Icons.place_rounded,
+                                            label: location.label,
+                                            size: 14),
+                                      ),
+                                      const SizedBox(width: 6),
+                                    ],
+                                    ListenableBuilder(
+                                      listenable: WeatherProvider.instance,
+                                      builder: (context, _) => switch (
+                                          WeatherProvider.instance
+                                              .ofEntry(entry)) {
+                                        final weather? => Padding(
+                                            padding: const EdgeInsetsDirectional
+                                                .only(
+                                              end: 6,
+                                            ),
+                                            child: WeatherIcon(
+                                              weather.code,
+                                              size: 14,
+                                            ),
+                                          ),
+                                        null => const SizedBox.shrink(),
+                                      },
+                                    ),
+                                    // It answers another entry: a comment.
+                                    if (entry.id case final id?
+                                        when LinksProvider.instance
+                                            .refsOf(id)
+                                            .isNotEmpty) ...[
+                                      Icon(
+                                        Icons.format_quote_rounded,
+                                        key: ValueKey('journal-cites-$id'),
+                                        size: 14,
+                                        color: cs.primary,
+                                      ),
+                                      const SizedBox(width: 6),
+                                    ],
+                                    Expanded(
+                                      child: Align(
+                                        alignment:
+                                            AlignmentDirectional.centerStart,
+                                        child: EntryTagNames(entryId: entry.id),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],
-                          )
-                        else ...[
-                          // Text is shaped in full before it is cut to its
-                          // lines, and that is most of what a card costs as
-                          // it scrolls in: lay out only what its lines can
-                          // hold of the narrowest letters (about half the
-                          // font size wide each).
-                          LayoutBuilder(
-                            builder: (context, constraints) {
-                              final letter = MediaQuery.textScalerOf(context)
-                                      .scale(muted?.fontSize ?? 14) /
-                                  2;
-                              final text = preview.snippet.isEmpty &&
-                                      preview.title == null
-                                  ? l10n.writeSomethingHint
-                                  : cutSnippet(
-                                      preview.snippet,
-                                      (constraints.maxWidth /
-                                              letter *
-                                              entryCardLines)
-                                          .ceil(),
-                                    );
-                              return Text.rich(
-                                TextSpan(
-                                  children: highlightSpans(
-                                    text,
-                                    highlight,
-                                    marked,
-                                  ),
-                                ),
-                                key: const ValueKey('entry-card-snippet'),
-                                maxLines: entryCardLines,
-                                overflow: TextOverflow.ellipsis,
-                                style: muted,
-                              );
-                            },
-                          ),
-                          if (showDetails &&
-                              (hasMood ||
-                                  location != null ||
-                                  entry.id != null)) ...[
-                            const SizedBox(height: 6),
-                            SizedBox(
-                              height: 18,
-                              child: Row(
-                                children: [
-                                  if (hasMood) ...[
-                                    MoodIcon(moodValue: entry.mood, size: 14),
-                                    const SizedBox(width: 6),
-                                  ],
-                                  if (location != null) ...[
-                                    Flexible(
-                                      child: IconLabel(
-                                          icon: Icons.place_rounded,
-                                          label: location.label,
-                                          size: 14),
-                                    ),
-                                    const SizedBox(width: 6),
-                                  ],
-                                  ListenableBuilder(
-                                    listenable: WeatherProvider.instance,
-                                    builder: (context, _) => switch (
-                                        WeatherProvider.instance
-                                            .ofEntry(entry)) {
-                                      final weather? => Padding(
-                                          padding:
-                                              const EdgeInsetsDirectional.only(
-                                            end: 6,
-                                          ),
-                                          child: WeatherIcon(
-                                            weather.code,
-                                            size: 14,
-                                          ),
-                                        ),
-                                      null => const SizedBox.shrink(),
-                                    },
-                                  ),
-                                  // It answers another entry: a comment.
-                                  if (entry.id case final id?
-                                      when LinksProvider.instance
-                                          .refsOf(id)
-                                          .isNotEmpty) ...[
-                                    Icon(
-                                      Icons.format_quote_rounded,
-                                      key: ValueKey('journal-cites-$id'),
-                                      size: 14,
-                                      color: cs.primary,
-                                    ),
-                                    const SizedBox(width: 6),
-                                  ],
-                                  Expanded(
-                                    child: Align(
-                                      alignment:
-                                          AlignmentDirectional.centerStart,
-                                      child: EntryTagNames(entryId: entry.id),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
                           ],
                         ],
-                      ],
-                    ),
-                  ),
-                  if (thumbnail != null) ...[
-                    const SizedBox(width: 12),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: SizedBox(
-                        width: 84,
-                        height: 84,
-                        child: LocalImageLoader(
-                          imagePath: thumbnail.imgPath,
-                          cacheSize: 250,
-                        ),
                       ),
                     ),
+                    if (thumbnail != null) ...[
+                      const SizedBox(width: 12),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: SizedBox(
+                          width: 84,
+                          height: 84,
+                          child: LocalImageLoader(
+                            imagePath: thumbnail.imgPath,
+                            cacheSize: 250,
+                          ),
+                        ),
+                      ),
+                    ],
+                    if (trailing != null) ...[
+                      const SizedBox(width: 8),
+                      trailing!,
+                    ],
                   ],
-                  if (trailing != null) ...[
-                    const SizedBox(width: 8),
-                    trailing!,
-                  ],
-                ],
+                ),
               ),
             ),
           ),
@@ -441,6 +447,8 @@ class EntryDayGroup extends StatelessWidget {
         ),
         Card.filled(
           margin: EdgeInsets.zero,
+          // The rows are the items; the card around them is only a look.
+          semanticContainer: false,
           color: cs.surfaceContainer,
           clipBehavior: Clip.antiAlias,
           shape: RoundedRectangleBorder(

@@ -2759,6 +2759,11 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
+  String attachmentFrom(String date) {
+    return 'Atașament din $date';
+  }
+
+  @override
   String get settingsConfirmEditPast =>
       'Întreabă înainte de a edita însemnări trecute';
 

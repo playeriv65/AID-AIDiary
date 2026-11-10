@@ -2768,6 +2768,11 @@ class AppLocalizationsBe extends AppLocalizations {
   }
 
   @override
+  String attachmentFrom(String date) {
+    return 'Укладанне ад $date';
+  }
+
+  @override
   String get settingsConfirmEditPast => 'Пытацца перад зменай мінулых запісаў';
 
   @override

@@ -797,6 +797,7 @@
   "dontAskAgain": "Už se neptat",
   "editPastEdit": "Přesto upravit",
   "noteOnEntry": "K záznamu z {date}",
+  "attachmentFrom": "Příloha z {date}",
   "settingsConfirmEditPast": "Ptát se před úpravou minulých záznamů",
   "settingsCompressPhotos": "Komprimovat nové fotky",
   "settingsCompressPhotosHint": "Ukládat nové fotky jako WebP o velikosti asi 1 MB. Vypnuto zachová originály.",

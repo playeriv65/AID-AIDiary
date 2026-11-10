@@ -2748,6 +2748,11 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
+  String attachmentFrom(String date) {
+    return 'Anexo de $date';
+  }
+
+  @override
   String get settingsConfirmEditPast =>
       'Perguntar antes de editar entradas passadas';
 
@@ -5650,6 +5655,11 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
   @override
   String noteOnEntry(String date) {
     return 'Sobre a entrada de $date';
+  }
+
+  @override
+  String attachmentFrom(String date) {
+    return 'Anexo de $date';
   }
 
   @override

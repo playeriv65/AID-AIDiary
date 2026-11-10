@@ -828,6 +828,7 @@
   "dontAskAgain": "不再提示",
   "editPastEdit": "仍要编辑",
   "noteOnEntry": "回看 {date} 的日记",
+  "attachmentFrom": "{date}的附件",
   "settingsConfirmEditPast": "编辑过去的日记前先确认",
   "settingsCompressPhotos": "压缩新加的照片",
   "settingsCompressPhotosHint": "新加的照片存为约 1 MB 的 WebP。关闭时保存原图。",

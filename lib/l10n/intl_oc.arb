@@ -797,6 +797,7 @@
   "dontAskAgain": "Pas mai demandar",
   "editPastEdit": "Modificar çaquelà",
   "noteOnEntry": "Sus la nòta del {date}",
+  "attachmentFrom": "Pèça junta del {date}",
   "settingsConfirmEditPast": "Demandar abans de modificar las nòtas passadas",
   "settingsCompressPhotos": "Compressar las fòtos novèlas",
   "settingsCompressPhotosHint": "Enregistrar las fòtos novèlas en WebP d’environ 1 Mo. Desactivat, los originals son gardats.",

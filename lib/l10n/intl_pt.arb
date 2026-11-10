@@ -797,6 +797,7 @@
   "dontAskAgain": "Não perguntar outra vez",
   "editPastEdit": "Editar mesmo assim",
   "noteOnEntry": "Sobre a entrada de {date}",
+  "attachmentFrom": "Anexo de {date}",
   "settingsConfirmEditPast": "Perguntar antes de editar entradas passadas",
   "settingsCompressPhotos": "Comprimir fotos novas",
   "settingsCompressPhotosHint": "Guardar as fotos novas como WebP de cerca de 1 MB. Desligado mantém os originais.",

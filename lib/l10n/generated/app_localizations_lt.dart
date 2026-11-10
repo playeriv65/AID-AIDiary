@@ -2758,6 +2758,11 @@ class AppLocalizationsLt extends AppLocalizations {
   }
 
   @override
+  String attachmentFrom(String date) {
+    return 'Priedas iš $date';
+  }
+
+  @override
   String get settingsConfirmEditPast =>
       'Klausti prieš redaguojant senus įrašus';
 

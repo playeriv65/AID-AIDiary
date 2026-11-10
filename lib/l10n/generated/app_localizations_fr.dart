@@ -2768,6 +2768,11 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String attachmentFrom(String date) {
+    return 'Pièce jointe du $date';
+  }
+
+  @override
   String get settingsConfirmEditPast =>
       'Demander avant de modifier une entrée passée';
 

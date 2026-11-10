@@ -2759,6 +2759,11 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String attachmentFrom(String date) {
+    return 'Anhang vom $date';
+  }
+
+  @override
   String get settingsConfirmEditPast =>
       'Vor dem Bearbeiten vergangener Einträge fragen';
 

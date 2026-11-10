@@ -2728,6 +2728,11 @@ class AppLocalizationsHi extends AppLocalizations {
   }
 
   @override
+  String attachmentFrom(String date) {
+    return '$date का अटैचमेंट';
+  }
+
+  @override
   String get settingsConfirmEditPast =>
       'पुरानी प्रविष्टियाँ संपादित करने से पहले पूछें';
 

@@ -2713,6 +2713,11 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String attachmentFrom(String date) {
+    return 'Attachment from $date';
+  }
+
+  @override
   String get settingsConfirmEditPast => 'Ask before editing past entries';
 
   @override

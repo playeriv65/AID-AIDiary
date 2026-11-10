@@ -1585,6 +1585,10 @@
   "@noteOnEntry": {
     "placeholders": {"date": {"type": "String"}}
   },
+  "attachmentFrom": "Attachment from {date}",
+  "@attachmentFrom": {
+    "placeholders": {"date": {"type": "String"}}
+  },
   "settingsConfirmEditPast": "Ask before editing past entries",
   "settingsCompressPhotos": "Compress new photos",
   "settingsCompressPhotosHint": "Store new photos as WebP of about 1 MB. Off keeps the originals.",

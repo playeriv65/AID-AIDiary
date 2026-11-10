@@ -2745,6 +2745,11 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
+  String attachmentFrom(String date) {
+    return 'Bijlage van $date';
+  }
+
+  @override
   String get settingsConfirmEditPast =>
       'Vragen voor het bewerken van eerdere berichten';
 

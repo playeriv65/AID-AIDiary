@@ -797,6 +797,7 @@
   "dontAskAgain": "மீண்டும் கேட்காதே",
   "editPastEdit": "இருந்தாலும் திருத்து",
   "noteOnEntry": "{date} பதிவைப் பற்றி",
+  "attachmentFrom": "{date} இணைப்பு",
   "settingsConfirmEditPast": "பழைய பதிவுகளைத் திருத்தும் முன் கேள்",
   "settingsCompressPhotos": "புதிய படங்களைச் சுருக்கு",
   "settingsCompressPhotosHint": "புதிய படங்களை சுமார் 1 MB WebP ஆகச் சேமி. அணைத்தால் அசல் படங்கள் சேமிக்கப்படும்.",

@@ -797,6 +797,7 @@
   "dontAskAgain": "Больше не спрашивать",
   "editPastEdit": "Всё равно изменить",
   "noteOnEntry": "О записи от {date}",
+  "attachmentFrom": "Вложение от {date}",
   "settingsConfirmEditPast": "Спрашивать перед изменением прошлых записей",
   "settingsCompressPhotos": "Сжимать новые фото",
   "settingsCompressPhotosHint": "Сохранять новые фото как WebP около 1 МБ. Если выключено, сохраняются оригиналы.",
