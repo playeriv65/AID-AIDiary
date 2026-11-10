@@ -121,6 +121,16 @@
   "launch": {
     "firstScreenEntries": 60
   },
+  "accessibility": {
+    "noContentServices": [
+      "com.wpengapp.lightstart/com.wpengapp.lightstart.service.AccService",
+      "com.wpengapp.lightstart/com.wpengapp.lightstart.service.AccService24",
+      "com.clicker.automatic/com.clicker.automatic.service.AppAccessibilityService",
+      "li.songe.gkd/com.google.android.accessibility.selecttospeak.SelectToSpeakService",
+      "li.songe.gkd/com.google.android.accessibility.selecttospeak.SelectToSpeakServicePrivileged",
+      "li.songe.gkd/com.google.android.accessibility.selecttospeak.SelectToSpeakServiceCompanion"
+    ]
+  },
   "passwords": {
     "appLockMinLength": 4,
     "backupMinLength": 8

@@ -287,6 +287,20 @@ asks again. Dates are when it was settled. Ideas not built yet are in
   opting out to Skia, whose opt-out is deprecated (2026-10-21).
 - Windows renders with Skia: Impeller costs about a second at every start
   there and draws edges jagged (2026-10-20).
+- Ad skippers and auto-clickers do not make Android builds compile
+  semantics (2026-11-09). With any service on, Flutter compiles the whole
+  semantics tree every frame (about 2.7 ms of a slow frame on the tablet,
+  against 8.3 ms at 120 Hz), and the owner's phone runs two such services.
+  The app keeps semantics off only while every enabled service is on a
+  config list of tools that never need this app's content; anything else,
+  unknown services included, keeps them on, so a screen reader never meets
+  an empty app. The hook is a `FlutterJNI` subclass given through
+  `FlutterInjector`, both public embedding API, instead of a forked engine
+  or a listener racing the AccessibilityBridge
+  ([Architecture](ARCHITECTURE.md#semantics-gate)). The list names whole
+  components: GKD names its services after Google's Select to Speak.
+  李跳跳 (`cn.litiaotiao.app`) is closed source and not on the list until
+  its service name is read from an installed copy.
 
 ## Sync and encryption
 

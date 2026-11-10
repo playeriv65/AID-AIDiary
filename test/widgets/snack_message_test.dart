@@ -6,8 +6,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
 void main() {
-  Future<void> show(WidgetTester tester, {SnackBarAction? action}) async {
+  Future<void> show(WidgetTester tester,
+      {SnackBarAction? action, bool accessibleNavigation = false}) async {
     await tester.pumpWidget(MaterialApp(
+        builder: (context, child) => MediaQuery(
+            data: MediaQuery.of(context)
+                .copyWith(accessibleNavigation: accessibleNavigation),
+            child: child!),
         home: Scaffold(
             body: Builder(
                 builder: (context) => TextButton(
@@ -34,6 +39,19 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Updated'), findsOneWidget);
     await tester.pump(snackActionDuration - snackMessageDuration);
+    await tester.pumpAndSettle();
+    expect(find.text('Updated'), findsNothing);
+  });
+
+  // Android's embedding sets accessibleNavigation for the rest of the
+  // session once any accessibility service queries a node, ad skippers too.
+  testWidgets(
+      'a message with an action still goes away under accessible '
+      'navigation', (tester) async {
+    await show(tester,
+        action: SnackBarAction(label: "What's new", onPressed: () {}),
+        accessibleNavigation: true);
+    await tester.pump(snackActionDuration);
     await tester.pumpAndSettle();
     expect(find.text('Updated'), findsNothing);
   });

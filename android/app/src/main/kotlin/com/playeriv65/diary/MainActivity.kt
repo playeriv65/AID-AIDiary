@@ -27,6 +27,7 @@ class MainActivity : FlutterFragmentActivity() {
     DeviceKeys(flutterEngine.dartExecutor.binaryMessenger, "$packageName.$scope")
     LocalPhotos(applicationContext, flutterEngine.dartExecutor.binaryMessenger)
     AppUpdater(this, flutterEngine.dartExecutor.binaryMessenger)
+    SemanticsGate.attach(flutterEngine.dartExecutor.binaryMessenger)
     MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "$NAMESPACE/nearby")
       .setMethodCallHandler { call, result ->
         val action = when (call.method) {
@@ -65,6 +66,11 @@ class MainActivity : FlutterFragmentActivity() {
         }
       }
   }
+  override fun cleanUpFlutterEngine(flutterEngine: FlutterEngine) {
+    SemanticsGate.detach(flutterEngine.dartExecutor.binaryMessenger)
+    super.cleanUpFlutterEngine(flutterEngine)
+  }
+
   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
     super.onActivityResult(requestCode, resultCode, data)
   }

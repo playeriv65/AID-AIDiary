@@ -174,6 +174,47 @@ apply it to code you touch.
 - Tests wait on conditions with `DiaryAppHarness.pumpUntil`/`runUntil`,
   which draw frames and fail loudly after 15 s; a wait that silently gives
   up hides bugs.
+- Every node of the semantics tree costs frame time while any
+  accessibility service is on. Decoration adds none: a `Card` grouping rows
+  sets `semanticContainer: false`, gaps between list items are separators
+  (`ListView.separated`), art behind text is in `ExcludeSemantics`. A row a
+  screen reader reads as one item is one `MergeSemantics` node, and a
+  picture that is a button says what it shows through `InkOverlay.label`
+  (`test/layouts/screen_reader_test.dart`).
+
+## Semantics gate
+
+Android tells an app only that some accessibility service is on. Flutter's
+AccessibilityBridge then turns semantics on, and the framework compiles the
+whole tree every frame, even when the services are ad skippers or
+auto-clickers that never need this app's content (they look for a "skip"
+button in apps with ads; this app has none, so they find nothing here).
+The gate keeps semantics off while every enabled service is one of those.
+
+- `SemanticsGate.kt` (Android host) installs a `FlutterInjector` whose
+  `FlutterJNI` factory returns `GatedFlutterJNI`, from
+  `DiaryApplication.onCreate` before any engine or `FlutterLoader` exists.
+  Every path that turns semantics on (the bridge, `FlutterView`,
+  `FlutterRenderer`) ends in `FlutterJNI.setSemanticsEnabled`; the subclass
+  passes `false` instead of `true` while the gate holds, and remembers what
+  Flutter asked for so a change of the gate applies at once. It also clears
+  `accessibleNavigation` while the gate holds: the bridge sets that flag
+  for the rest of the session the first time any service queries a node.
+- The judgement is Dart's (`lib/services/semantics_gate.dart`) with the list
+  `accessibility.noContentServices` in `assets/config/app_config.json`, as
+  whole `package/full.ClassName` components. Over the
+  `com.playeriv65.diary/semantics` channel Dart asks for the enabled
+  services and sends back `hold` with the exact set it judged; the host
+  accepts it only if that is still the current set.
+- The host recomputes the enabled set from `enabled_accessibility_services`
+  and `AccessibilityManager.getEnabledAccessibilityServiceList` whenever the
+  setting, the accessibility state, touch exploration or (API 33+) the
+  services' state change. Any set other than the one held, such as one with
+  TalkBack, Switch Access, Voice Access or an unknown service added, turns
+  semantics on in the same callback on the main thread, before Dart hears
+  of it. A service the system names no component for counts as unknown.
+- If something reads the injector before `DiaryApplication` sets it, the
+  host logs a warning and Flutter keeps its own behavior.
 
 ## View models
 

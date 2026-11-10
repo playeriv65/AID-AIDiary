@@ -189,6 +189,18 @@ class AppConfig {
   int get launchFirstScreenEntries =>
       _section('launch')['firstScreenEntries'] as int;
 
+  /// Android accessibility services, as `package/full.ClassName`, that
+  /// never need this app's content: ad skippers and auto-clickers. While
+  /// every enabled service is one of them, Android builds keep Flutter's
+  /// semantics tree off, which otherwise costs frame time every frame
+  /// (docs/ARCHITECTURE.md, "Semantics gate"). Match whole components: GKD
+  /// names its services after Google's Select to Speak, a real reader.
+  Set<String> get noContentAccessibilityServices => {
+        for (final name
+            in _section('accessibility')['noContentServices'] as List)
+          name as String
+      };
+
   /// The shortest app lock password: it guards the app on this device only,
   /// so a four-digit PIN like the system's screen lock is enough.
   int get appLockMinPasswordLength =>

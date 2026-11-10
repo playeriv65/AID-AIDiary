@@ -7,6 +7,7 @@ import 'dart:ui';
 
 import 'package:aid_diary/actions/app_action.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter/semantics.dart';
 
 /// The frames the engine reports between [start] and [stop]: how long each
 /// took to build and to rasterize, and when its vsync came.
@@ -81,6 +82,9 @@ class FrameMeter {
       'rasterWorstMs': round(raster.lastOrNull ?? 0),
       'missed': missed,
       'missedShare': share(missed, _timings.length),
+      // Whether frames also compiled the semantics tree (docs/
+      // ARCHITECTURE.md, "Semantics gate").
+      'semantics': SemanticsBinding.instance.semanticsEnabled,
     };
   }
 }
@@ -111,8 +115,8 @@ final List<AppAction> perfActions = [
     id: 'perf.stop',
     describe: 'Stops counting frames and reports them: build and raster '
         'times (median, 90th and 99th percentile, worst), frames over the '
-        'budget of the target rate, and refreshes skipped while something '
-        'moved.',
+        'budget of the target rate, refreshes skipped while something '
+        'moved, and whether the semantics tree was on.',
     risk: ActionRisk.read,
     params: const [
       ActionParam('hz', ParamType.number,

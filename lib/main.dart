@@ -36,6 +36,7 @@ import 'package:aid_diary/l10n/locale_resolution.dart';
 import 'package:aid_diary/background/background_work.dart';
 import 'package:aid_diary/layouts/mobile_scaffold.dart';
 import 'package:aid_diary/routing/route_names.dart';
+import 'package:aid_diary/services/semantics_gate.dart';
 import 'package:aid_diary/theme_mode_provider.dart';
 import 'package:aid_diary/theme_palette.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
@@ -78,6 +79,7 @@ void main() async {
   // Notification only supported on android
   if (Platform.isAndroid) {
     await FlutterDisplayMode.setHighRefreshRate();
+    unawaited(SemanticsGate.start());
     await NotificationManager.instance.init();
 
     if (scratchFolder == null) {
