@@ -204,22 +204,6 @@ Remaining work:
   probe timed out, so local global-address success must not be presented as
   cross-WAN success.
 
-## App identity move (owner to do)
-The app is `com.playeriv65.diary` from 2026-11-09 (docs/ARCHITECTURE.md#app-identity);
-the code carries no migration from `dev.aid.diary`:
-
-- Google Cloud: Android OAuth clients for `com.playeriv65.diary` and
-  `com.playeriv65.diary.beta` with the release key's SHA-1
-  (`docs/GOOGLE_DRIVE.md`); delete the clients of the old packages after.
-- Android devices: install the new release beside the old app (a new
-  package needs the HyperOS confirmation on the device), bring the diary
-  over with "Connect to an existing device" or a full backup and restore,
-  check it, then uninstall the old app.
-- Windows: the installed app updates in place (same installer AppId) and
-  then opens with an empty diary, in `%APPDATA%\com.playeriv65.diary`. With
-  the app closed, move the contents of `%APPDATA%\AID Diary\AID Diary`
-  there, replacing what the new build made.
-
 ## Decided against for now
 - Duplicate-entry action: removed at the owner's request (2026-10-23); save as template remains.
 - Automatic Wi-Fi Direct/hotspot creation: the implemented Wi-Fi/hotspot

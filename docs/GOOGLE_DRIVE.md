@@ -40,16 +40,16 @@ account is connected.
    - Data access: `drive.file`, `openid`, `userinfo.email`.
 4. Clients:
    - Web application `AID Diary Android sign-in` → `webClientId`.
-   - Android `AID Diary`, package `com.playeriv65.diary` (the independent
-     flavor), and `AID Diary Android Beta`, package
-     `com.playeriv65.diary.beta` (the dev flavor), both with the release
+   - Android `AID Diary Android com.playeriv65.diary` (the independent
+     flavor) and `AID Diary Android com.playeriv65.diary.beta` (the dev
+     flavor), both with the release
      key's SHA-1, `A8:75:4A:EE:D0:65:35:BD:D8:DE:56:D7:34:59:44:37:EF:6F:38:77`
      (`keytool -list -v -keystore <storeFile> -alias <keyAlias>`, from
      `android/key.properties`): every local and nightly build is signed with
      that key. The app holds no Android client ID: Google matches the
      package and SHA-1 to these clients, and the app names only the web
-     client. Clients for earlier packages (`dev.aid.diary`,
-     `dev.aid.diary.beta`, `dev.aid.diary.dev`) are no longer used.
+     client. The clients of the earlier packages (`dev.aid.diary`,
+     `dev.aid.diary.beta`, `dev.aid.diary.dev`) were deleted on 2026-11-09.
    - Desktop app `AID Diary Windows` → `desktopClientId`. Its client
      secret is kept out of the public repository: `AID_GOOGLE_DESKTOP_SECRET`
      in `scripts/dev.env`, which `scripts/dev.ps1` gives to desktop builds as
