@@ -202,11 +202,5 @@
     "en": "On Android, ad skippers and auto-clickers no longer slow down scrolling. Screen readers such as TalkBack work as before, and photos in the media list and on entries now say what they are.",
     "zh": "在 Android 上，跳过广告和自动点击类的无障碍服务不再拖慢滚动。TalkBack 等读屏软件照常使用，媒体列表和日记里的照片也能读出说明了。",
     "zh_Hant": "在 Android 上，跳過廣告和自動點擊類的無障礙服務不再拖慢捲動。TalkBack 等讀屏軟體照常使用，媒體列表和日記裡的照片也能讀出說明了。"
-  },
-  {
-    "id": "2026-11-09-root-updates",
-    "en": "On a rooted Android device, grant root to AID Diary once in KernelSU or Magisk: updates then install without the system asking, and \"Install updates without asking\" is offered, HyperOS included.",
-    "zh": "在已 root 的 Android 设备上，在 KernelSU 或 Magisk 里给 AID Diary 授予一次 root 权限后，更新安装时系统不再弹出确认，并且可以开启“不询问直接安装更新”，HyperOS 也一样。",
-    "zh_Hant": "在已 root 的 Android 裝置上，在 KernelSU 或 Magisk 裡給 AID Diary 授予一次 root 權限後，更新安裝時系統不再彈出確認，並且可以開啟「不詢問直接安裝更新」，HyperOS 也一樣。"
   }
 ]

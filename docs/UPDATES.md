@@ -135,54 +135,23 @@ the builds.
 - **Asking**: a dialog with the commit lines: Skip this version, Later,
   Update. Update downloads with progress and installs.
 - **Silently** ("Install updates without asking", off by default): the app
-  downloads in the background and installs when the user leaves it. With
-  root it always can. Android 12 and later allow that only once the app
-  installed itself; until then,
+  downloads in the background and installs when the user leaves it. Android
+  12 and later allow that only once the app installed itself; until then,
   and on older Android, the dialog asks instead. HyperOS and MIUI never
   allow it: they refuse an install session that asks for no user action
   from an app Xiaomi has not listed (`INSTALL_FAILED_ABORTED: Permission
   denied`, from `PKMSImpl.assertCallerAndPackage`), so on Xiaomi devices
   the session always asks, HyperOS shows its own confirmation, and the
-  switch is not offered (tested on the Xiaomi Pad 7, 2026-10-29), unless
-  the app has root (below). Windows does not offer it either: a desktop app
-  is not paused when the user leaves it, so the dialog always asks.
+  switch is not offered (tested on the Xiaomi Pad 7, 2026-10-29). Windows
+  does not offer it either: a desktop app is not paused when the user
+  leaves it, so the dialog always asks.
 - **After an update** the app says so once, with the notes.
-
-### Rooted Android devices
-
-On a rooted device, grant root to AID Diary once in the root manager:
-KernelSU's Superuser tab (or Magisk's). From then on updates install with
-no system prompt, from the dialog and silently, and the switch above is
-offered, HyperOS included.
-
-The app checks for root without asking anyone. It looks for a `su` on its
-`PATH`; on an unrooted device there is none and nothing runs. When `su` is
-there, `su -c id` must answer uid 0 within
-`updates.androidRoot.probeTimeoutMs` (`app_config.json`); a failed start,
-a denial or a slower answer counts as no root. KernelSU never asks: for an
-app without the grant, running `su` fails (on the Xiaomi Pad 7, KernelSU
-4.2, the dev app could see `/system/bin/su`, and running it failed with "No
-such file or directory"; 2026-11-09). Magisk shows `su` to every app and asks
-its own question the first time the app runs it: on Magisk that question
-is the grant, and it comes when the About page or an update first checks.
-
-As root, `AppUpdater.kt` copies the checked package to
-`updates.androidRoot.stagingDir` (`/data/local/tmp`, which the system
-installer can read) and runs `pm install -r -i <this app>`, so the app
-stays its own installer. Replacing the app closes it before `pm` answers,
-so the app saves the "updated" note before it starts. The root shell first
-leaves the app's process group, which Android ends with the app; it then
-removes the copy and, when the user was in the app, opens it again. After
-a silent update it stays closed, as on other Android devices. If the root
-install fails, the app logs `pm`'s message and hands the package to the
-system installer as before. `update.install` gets no answer on success: the
-app is gone before it can reply.
 
 Before it installs, the app checks the download's size and SHA-256 against
 the manifest; the Android side (`AppUpdater.kt`) checks that the package is
 this app, signed with this app's key, and newer. Android's installer does
-the rest (or `pm`, with root); the app closes while it installs. Without
-root, the first install asks the user to allow AID Diary to install apps.
+the rest; the app closes while it installs. The first install asks the user
+to allow AID Diary to install apps.
 
 On Windows the app starts the downloaded installer with the arguments in
 `app_config.json` (`updates.windowsSetup`: `/VERYSILENT /SUPPRESSMSGBOXES

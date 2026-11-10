@@ -412,8 +412,9 @@ Installing on the devices:
   shows no prompt. Otherwise it runs `adb install -r`. Both keep the app's
   data. `pwsh scripts/test_android_device.ps1` checks the commands it
   builds against a fake adb, without a device.
-- The self-update path on rooted devices is in
-  [Updates](UPDATES.md#rooted-android-devices).
+- Root installs are a `dev.ps1` convenience only. The app itself never uses
+  root: its self-update always goes through the system installer
+  ([Updates](UPDATES.md)).
 
 HyperOS behaviour that shapes testing:
 

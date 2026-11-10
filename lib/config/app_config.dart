@@ -266,17 +266,6 @@ class AppConfig {
   Duration get updateWindowsExitDelay =>
       Duration(milliseconds: _windowsSetup['exitDelayMs'] as int);
 
-  Map<String, dynamic> get _androidRoot =>
-      _section('updates')['androidRoot'] as Map<String, dynamic>;
-
-  /// How long `su -c id` may take before the app takes it for no root.
-  Duration get updateRootProbeTimeout =>
-      Duration(milliseconds: _androidRoot['probeTimeoutMs'] as int);
-
-  /// Where the root shell copies an update for `pm install`, a folder the
-  /// system installer can read.
-  String get updateRootStagingDir => _androidRoot['stagingDir'] as String;
-
   /// Hours before which a new entry may count for the day before; 0 never.
   List<int> get dayStartHourChoices =>
       (_section('diaryDay')['startHourChoices'] as List).cast<int>();
