@@ -1,10 +1,97 @@
 # Testing
 
-This is the project's testing policy, researched and adopted on 2026-10-22.
-It applies to Flutter, the Go sync server, the CLI and native-device checks.
-The developer making a change owns its test selection, failures and evidence.
-Use `scripts/dev.ps1` for Flutter operations so native test assets cannot race
+This is the project's testing policy, adopted on 2026-10-22; the test pyramid
+below was added on 2026-11-09. It applies to Flutter, the Go sync server, the
+CLI and native-device checks, and to people and AI agents alike. The developer
+making a change owns its test selection, failures and evidence. Use
+`scripts/dev.ps1` for Flutter operations so native test assets cannot race
 with another build in the same checkout.
+
+## Test pyramid
+
+Testing goes layer by layer, from the bottom up. Most checks run on the PC in
+seconds; a device run comes last, once, and only for what the PC cannot show.
+This follows the guidance in [Research behind this policy](#research-behind-this-policy):
+many small tests, fewer integration tests, very few end-to-end tests, and
+each check at the lowest layer that can catch the failure.
+
+| Layer, bottom to top | Runs on | Rough share | What belongs here | AID examples |
+|---|---|---|---|---|
+| Unit: pure Dart logic | PC, `./scripts/dev.ps1 test-unit` | Most cases | Rules, validation, parsing, formats, crypto, calculations, architecture contracts. No database, files, sockets or widget tree | `test/utils/diary_day_test.dart`, `test/sync/spake2_test.dart`, `test/sync/sync_crypto_test.dart`, `test/utils/formats/one_diary_format_test.dart`, `test/architecture/layer_boundaries_test.dart`, `test/l10n/catalog_test.dart` |
+| Widget: UI behaviour with fakes | PC, `test-widget`; headless `screenshots` | Many | A page or component: state, taps, text entry, layout, semantics, phone/wide renders. Stores and services are fakes or `DiaryAppHarness` | `test/widgets/device_name_tile_test.dart`, `test/widgets/entry_card_test.dart`, `test/widgets/app_update_prompt_test.dart`, `test/pages/onboarding_test.dart`, `test/pages/home_widget_launch_test.dart`, `tool/screenshots/phone_screenshots_test.dart` |
+| Host integration (`integration` tag) | PC, `test-integration`, `test-cli` | Fewer | Real SQLite and files, schema upgrades, the sync engine between in-process devices over in-memory or loopback transports, the Rust shell, the agent API the CLI calls | `test/database/entry_store_test.dart`, `test/database/version17_upgrade_test.dart`, `test/sync/sync_engine_test.dart`, `test/sync/lan_transport_test.dart`, `test/sync/nearby_receipt_test.dart`, `test/agent/aid_shell_test.dart`, `test/actions/app_actions_test.dart`, `cli/test/aid_cli_test.dart` |
+| Device end-to-end | The test tablet; the native Windows app on the PC only for Windows-native changes | A short list per release | Frame rate, platform channels without host fakes, install/update, OS behaviour | `./scripts/dev.ps1 frame-rate`, [Repeatable Android smoke checks](#repeatable-android-smoke-checks), [REFRESH_RATE.md](REFRESH_RATE.md) |
+
+The shares are a guide, not a gate. Google suggests 70/20/10 for unit,
+integration and end-to-end as a first guess, and about 80/15/5 in its book.
+On 2026-11-09 the host suite held about 320 unit, 160 widget and 500
+integration cases, so our integration layer is heavier than that. Most of it
+covers sync and storage, where real SQLite and sockets are the contract. When
+an integration test only checks a pure rule, move that rule to a unit test.
+
+### The debugging rule
+
+Develop and debug at the lowest layer that can reproduce the problem.
+
+1. A bug seen on a device is first reproduced in a PC test: unit if it is a
+   rule, widget if it is the UI, host integration if it needs storage, sync
+   or the CLI. Then fix it there, with that test failing first and passing
+   after.
+2. A device run is the final, one-time verification after the PC tests pass.
+   It is never an iteration loop. Do not edit, reinstall and retry on a
+   device until a symptom goes away.
+3. When the problem is OS behaviour that no host test can reproduce, collect
+   the device evidence in one planned session (logcat, `dumpsys`, a timeline
+   trace), then work from that evidence on the PC. The logic around the OS
+   boundary still gets PC tests.
+4. If an end-to-end check finds a bug and no lower test fails, add the lower
+   test before fixing it.
+
+### Devices
+
+- Only the test tablet (Xiaomi Pad 7, `DEV_ANDROID_DEVICE`) and the PC are
+  used for testing, measuring and debugging. See [Setup](SETUP.md#test-devices).
+- The owner's phone is the owner's daily device. Never use it for tests,
+  measurements or debugging. Touch it only for an explicit job on the
+  owner's own data that the owner requested.
+- No emulators.
+
+### No invented scenarios
+
+Test and fix only the scenarios real users hit. Nearby transfer, for
+example, means two people's devices side by side, each app in the
+foreground. A failure that appears only in a setup you built yourself, such as
+two copies of the app on one device, an app the OS froze in the background,
+or a quirk of the test harness, means fixing the setup, not adding product
+code. If you are unsure whether a scenario is real, ask the owner.
+
+### Only on a device
+
+Keep this list short; everything else is checked on the PC.
+
+- Real OS behaviour: HyperOS prompts and limits, permission dialogs,
+  Keystore, OEM refresh-rate classification.
+- Install and update prompts, signing and package identity.
+- Refresh rate and frame timing, measured in profile mode.
+- Platform channels without host fakes: home-screen widget, MediaStore,
+  camera, alarms, IME.
+
+Even then, the logic around them gets PC tests, for example
+`test/services/app_updates_test.dart` for updates and
+`test/services/home_widget_service_test.dart` for the home-screen widget.
+
+### Anti-patterns
+
+- The ice-cream cone: many end-to-end or manual device checks over few unit
+  and widget tests. The hourglass, many unit and end-to-end tests with too
+  few integration tests, also leaves failures to the slowest layer.
+- The same assertion repeated across layers. Put each permutation at the
+  lowest layer that can check it; higher layers check only the wiring the
+  lower ones cannot.
+- Flaky end-to-end runs as the safety net. A device run that passes on retry
+  proves nothing; a device-only failure needs a PC reproduction.
+
+## Working rules
 
 Debugging and verification must not use Computer Use (owner decision,
 2026-10-23). Use `aid` for shared actions/state, Flutter/driver tools for a live
@@ -57,6 +144,8 @@ whole suite. `test-all` rejects paths: use `test` for a scoped run.
 
 ## Layers and triggers
 
+The commands for each layer of the [test pyramid](#test-pyramid):
+
 | Layer / command | What it verifies | When to use it |
 |---|---|---|
 | Untagged / `test-unit` | Logic and source contracts, without app, database, file-store or socket fixtures | Rules, validation, transformations; use affected files first |
@@ -66,8 +155,8 @@ whole suite. `test-all` rejects paths: use `test` for a scoped run.
 | `test-server` | Go server vet and tests | Server implementation or policy changes |
 | `test-cli` | CLI analysis and tests | CLI parsing, protocol and command changes |
 | `screenshots` | Headless visual artifacts | Appearance changes to the affected screens |
-| Native Windows / Android checks | Plugins, OS permissions, hardware keys, device networking, IME and OEM behavior | Changes involving those capabilities; host tests cannot establish them |
-| `frame-rate` | Profile-mode timing on seeded data | A requested performance pass, not routine UI iteration |
+| Native Windows / Android checks | Plugins, OS permissions, hardware keys, device networking, IME and OEM behavior | Changes involving those capabilities, once, after the host tests pass; host tests cannot establish them |
+| `frame-rate` | Profile-mode timing on seeded data, on the test tablet or `-Device windows` | A requested performance pass, not routine UI iteration |
 
 Layer commands without paths run that entire layer. They are useful for broad
 changes, but are not mandatory checkpoints for an unrelated edit. Mixed files
@@ -103,7 +192,7 @@ analysis and formatting accompany source changes; they are not behavior tests.
 | Action, view model or service | Owning tests plus caller behavior; use real local dependencies where the contract requires them | Work crosses GUI/CLI, storage or sync boundaries |
 | Files, config persistence, SQLite, backup/import/export | Relevant host integration; round trips, failures and retained data | Schema, archive format, shared stores or migrations change: full app offline regression |
 | Sync, crypto, pairing, media queues or traffic policy | Relevant sync integration, malformed/authentication failures and interrupted/retried operations | Shared wire format, trust or routing semantics change: full app offline regression; add Go checks if its contract is affected |
-| Native plugin, permissions, keys, IME, widgets or networking | Owning host tests plus the affected Windows/Android build and native behavior (Android on the test tablet; a local Windows build only when the change is Windows-native) | Platform wiring changes: smoke the affected platform; mocks cannot verify it |
+| Native plugin, permissions, keys, IME, widgets or networking | Owning host tests first, then one check of the affected Windows/Android build and native behavior (Android on the test tablet; a local Windows build only when the change is Windows-native) | Platform wiring changes: smoke the affected platform; mocks cannot verify it |
 | CLI | `test-cli` (the suite is currently small), plus affected action/API tests if shared behavior changes | API changes: check both producer and consumer |
 | Go server | `test-server`; policy changes cover limits off and on | Concurrency/socket/accounting changes: `go test -race ./...` from `server/` on a supported configured toolchain; wire changes also need Flutter protocol tests |
 | SDK/dependencies, shared test harness, startup or broad refactor | Full offline suite of each affected component | Native dependency/runner changes also need platform builds and relevant device smoke |
@@ -189,7 +278,9 @@ existing profile/native measurement; screenshots and debug timing cannot prove i
 
 ### Repeatable Android smoke checks
 
-Use the development app on the test tablet; there are no emulators. Follow the
+These are the top of the [test pyramid](#test-pyramid): run them once, after
+the PC tests for the change pass. Use the development app on the test tablet;
+there are no emulators, and the owner's phone is not a test device. Follow the
 [isolated workspace procedure](SETUP.md#isolated-physical-network-checks)
 and record the source revision, APK build number, package, Android version
 and workspace name. Seed a small scratch diary before exercising a journey
@@ -201,7 +292,7 @@ prepare the fixture.
 |---|---|---|
 | Update and signing | Install an older development APK, then use About to check and install a newer APK of the same package and signer. Cancel the installer once before accepting the update. On HyperOS, the operator confirms the system prompt. | The cancelled attempt leaves the build and scratch entries intact. The accepted attempt advances the build number and preserves the same entry IDs and attachment bytes. Check signer and package identity when preparing the APKs. |
 | SQLite migration | Open a scratch store using the oldest fixture affected by the change. Upgrade in place with the candidate development APK and reopen the same workspace. | Compare the affected fields and media hashes before and after. Verify the pre-upgrade snapshot exists and restores into a separate workspace. |
-| Keystore and trust | Pair two scratch devices, restart the Android app, then connect again with the existing identity. When changing revocation or rotation, test the retired identity against the scratch peer or service. | The existing key works after restart. A revoked identity is rejected, and the trusted peer still reads the same synced entry. |
+| Keystore and trust | Pair the tablet's scratch workspace with a scratch Windows instance on the PC, restart the Android app, then connect again with the existing identity. When changing revocation or rotation, test the retired identity against the scratch peer or service. | The existing key works after restart. A revoked identity is rejected, and the trusted peer still reads the same synced entry. |
 | Runtime permission or native UI | Exercise the affected action with permission denied, grant it through the system prompt, then repeat after background/resume. Rotate or resize if it affects the flow. | Denial preserves the current entry and shows a usable path forward. The granted action works and survives the affected lifecycle transition. |
 
 Use the CLI to compare the scratch data before and after each case. For
@@ -322,12 +413,15 @@ not targets, so CI does not package them.
 ## Research behind this policy
 
 The run matrix and daily cadence above are project decisions, not universal
-requirements copied from a framework. Primary guidance consulted on 2026-10-22:
+requirements copied from a framework. Primary guidance consulted on 2026-10-22
+and checked again for the test pyramid on 2026-11-09:
 
-- [Android testing strategies](https://developer.android.com/training/testing/fundamentals/strategies): choose scope, environment and execution stage together, starting with the lowest layer that provides useful confidence.
-- [Flutter testing overview](https://docs.flutter.dev/testing/overview) and [native integration tests](https://docs.flutter.dev/testing/integration-tests): combine unit/widget coverage with important application flows and real platform execution.
+- [Android testing strategies](https://developer.android.com/training/testing/fundamentals/strategies): most apps should have many small tests and relatively few big tests, forming a pyramid; big tests have more fidelity (closeness to production) but are slower and harder to maintain. Use the lowest layer that gives the right feedback. A bug a unit test catches is fixed in minutes; an end-to-end test may take days to find it.
+- [Flutter testing overview](https://docs.flutter.dev/testing/overview) and [native integration tests](https://docs.flutter.dev/testing/integration-tests): unit, widget and integration tests trade confidence against maintenance cost, dependencies and speed (integration is the slowest). A well-tested app has many unit and widget tests plus enough integration tests to cover the important use cases.
+- [Just Say No to More End-to-End Tests](https://testing.googleblog.com/2015/04/just-say-no-to-more-end-to-end-tests.html), Mike Wacker, Google Testing Blog, 2015: a good feedback loop is fast, reliable and isolates failures, which end-to-end tests are not. Google suggests 70/20/10 unit/integration/end-to-end as a first guess, and warns against the inverted pyramid (ice-cream cone) and the hourglass.
+- [Software Engineering at Google, chapter 11: Testing Overview](https://abseil.io/resources/swe-book/html/ch11.html), Adam Bender: small tests run in one process without disk or network, medium tests may use several processes and `localhost`, large tests span machines. It aims for about 80% unit, 15% integration and 5% end-to-end tests, and names the ice-cream cone and hourglass anti-patterns.
 - [Google Test Sizes](https://testing.googleblog.com/2010/12/test-sizes.html): define test boundaries by dependencies such as disk, local sockets and external systems, not ambiguous names alone. Its historical timeout values are not our thresholds.
-- [The Practical Test Pyramid](https://martinfowler.com/articles/practical-test-pyramid.html), Ham Vocke: organize feedback by speed/scope and avoid duplicating the same assertions across layers.
+- [The Practical Test Pyramid](https://martinfowler.com/articles/practical-test-pyramid.html), Ham Vocke, 2018: write tests with different granularity, fewer the higher they go; push tests as far down the pyramid as you can and do not duplicate them across layers; when a higher-level test finds an error and no lower-level test fails, write a lower-level test.
 - [Google on flaky tests](https://testing.googleblog.com/2016/05/flaky-tests-at-google-and-how-we.html): retries/quarantine have tradeoffs and can hide real faults; this project requires visible diagnosis and tracking.
 - [Go race detector](https://go.dev/doc/articles/race_detector): race detection is dynamic and covers only executed paths, so relevant concurrent scenarios still matter.
 

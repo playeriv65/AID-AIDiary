@@ -93,7 +93,7 @@
 ./scripts/dev.ps1 windows-profile-stage # 把 profile 构建放到同一固定路径
 ./scripts/windows_scroll.ps1 -Label current # 验证滚动条遍历和帧时间线
 ./scripts/windows_scroll.ps1 -Label wheel -WheelOnly # 鼠标滚轮动画和帧节奏
-./scripts/dev.ps1 android      # 在模拟器上运行
+./scripts/dev.ps1 android      # 在测试平板上运行（DEV_ANDROID_DEVICE）
 ./scripts/dev.ps1 apk          # 构建调试 APK（dev 风味）
 ./scripts/dev.ps1 profile -Device <serial>     # 以 profile 模式安装 dev 应用
 ./scripts/dev.ps1 frame-rate -Device <serial>  # 在 4000 篇日记下测它的帧率

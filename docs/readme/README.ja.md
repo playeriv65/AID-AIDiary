@@ -93,7 +93,7 @@ Flutter で作られた、Windows、Android、Linux 向けのプライベート�
 ./scripts/dev.ps1 windows-profile-stage # profile バンドルを同じ固定パスに配置
 ./scripts/windows_scroll.ps1 -Label current # スクロールバー操作とフレームのタイムラインを検証
 ./scripts/windows_scroll.ps1 -Label wheel -WheelOnly # マウスホイールのアニメーションとフレーム間隔
-./scripts/dev.ps1 android      # エミュレーターで実行
+./scripts/dev.ps1 android      # テスト用タブレットで実行（DEV_ANDROID_DEVICE）
 ./scripts/dev.ps1 apk          # デバッグ APK（dev フレーバー）をビルド
 ./scripts/dev.ps1 profile -Device <serial>     # dev アプリを profile モードでインストール
 ./scripts/dev.ps1 frame-rate -Device <serial>  # 4000 件の日記でそのフレームレートを計測

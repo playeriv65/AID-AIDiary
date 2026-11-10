@@ -93,7 +93,7 @@ Flutter로 만든 Windows·Android·Linux용 개인 일기 앱입니다.
 ./scripts/dev.ps1 windows-profile-stage # profile 번들을 같은 고정 경로에 배치
 ./scripts/windows_scroll.ps1 -Label current # 스크롤바 이동과 프레임 타임라인 검증
 ./scripts/windows_scroll.ps1 -Label wheel -WheelOnly # 마우스 휠 애니메이션과 프레임 간격
-./scripts/dev.ps1 android      # 에뮬레이터에서 실행
+./scripts/dev.ps1 android      # 테스트 태블릿에서 실행(DEV_ANDROID_DEVICE)
 ./scripts/dev.ps1 apk          # 디버그 APK(dev 플레이버) 빌드
 ./scripts/dev.ps1 profile -Device <serial>     # dev 앱을 profile 모드로 설치
 ./scripts/dev.ps1 frame-rate -Device <serial>  # 일기 4000개로 그 프레임 속도 측정

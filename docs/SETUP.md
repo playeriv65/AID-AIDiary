@@ -35,8 +35,10 @@ each commit. Native and live checks have separate environments and claims.
 
 Development policy:
 
-- No Android emulators. Android work is built and debugged on the test
-  tablet only (the owner's phone only when asked); debug builds target
+- Test and debug on the PC first, by the
+  [test pyramid](TESTING.md#test-pyramid); a device run is the final,
+  one-time check. Only the test tablet and the PC are used: no Android
+  emulators, and never the owner's phone. Android debug builds target
   arm64 only.
 - No local Windows packaging. The Windows app comes from the Nightly
   installer. Build Windows locally only for a Windows-native change that
@@ -301,7 +303,8 @@ and profile builds permit localhost HTTP for this. Physical route checks use
 the isolated procedure above, not ordinary diary data.
 
 Use widget tests and headless screenshots for routine visual checks, and the
-test tablet for Android-specific ones (there are no emulators). Only open a
+test tablet only for the Android-specific final check (there are no
+emulators). Only open a
 visible Windows app when the owner wants to inspect it.
 `./scripts/dev.ps1 windows-background` uses a nearly transparent,
 click-through, unfocused on-screen window rather than an off-screen window
@@ -327,8 +330,8 @@ force-stop cancels widget taps until the next update. `flutter drive` can
 uninstall the app on completion unless `--keep-app-running` is set; follow the
 signing/data safeguards below.
 
-Known gap: an alarm can only be fired by waiting for its time. The rootable
-emulator moved the clock with `adb root` and `date`; the tablet has no root.
+Known gap: an alarm can only be fired by waiting for its time. The tablet
+has no root, so `adb root` and `date` cannot move its clock.
 Its `adb shell cmd alarm set-time` is untried here, and would change the
 tablet's clock, which is a device setting: use it only with the owner's
 consent, and restore automatic time afterwards.
@@ -381,8 +384,7 @@ either flavor, clear its data or change its signing key without authorization.
 | --- | --- | --- |
 | Windows PC (16 threads, 23 GB RAM, small C: drive) | Day-to-day development; hidden app windows for tests (`dev.ps1 windows-background`, `AID_DATA_DIR`) | Local. Builds share RAM with many other programs: `dev.ps1` stops Gradle after Android builds. |
 | Xiaomi Pad 7 (2410CRP4CC, Snapdragon 7+ Gen 3, Android 16 / HyperOS, 3200×2136 at 120 Hz) | The only Android test device: debug and profile builds, frame rate, touch, camera, home-screen widget, alarms, OEM behaviour | adb over TCP, `adb connect 100.79.141.50:5555` (Tailscale name `xiaomi-pad-7`); that serial is `DEV_ANDROID_DEVICE` in `dev.env`. |
-| Redmi K80 (HyperOS) | The owner's own phone: test only when asked | Tailscale `100.124.182.51:5555`. Its dev app holds test data only. |
-| Nubia Z17 (LineageOS, rooted) | Planned as an unrestricted development phone | Not set up yet. |
+| Redmi K80 (HyperOS) | The owner's daily phone, not a test device: never used for tests, measurements or debugging; only for an explicit job on the owner's own data that the owner requested | Tailscale `100.124.182.51:5555`. |
 
 Connecting the tablet:
 

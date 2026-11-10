@@ -441,8 +441,10 @@ implementation boundaries and verification results belong in
   or native capabilities. Reuse results for an unchanged tested state; report
   deferred or missing validation separately. The next performance pass and
   cross-network checks remain deferred.
-- The Xiaomi Pad 7 is the test device; the owner's phone only when asked
-  (`docs/SETUP.md`).
+- The Xiaomi Pad 7 and the PC are the only test devices; the owner's phone
+  is never used for tests, measurements or debugging (2026-11-09). Testing
+  follows the test pyramid: bugs are reproduced and fixed in PC tests, and a
+  device run is the final check (`docs/TESTING.md#test-pyramid`).
 - Windows test runs never show or focus a window; they run hidden.
 - Reference apps are installed only from official stores on the owner's
   devices and pulled with adb, never from third-party sites.
