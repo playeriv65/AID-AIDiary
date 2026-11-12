@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
+import 'dart:async';
+
 import 'package:aid_diary/actions/settings_actions.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/device_info_service.dart';
@@ -78,11 +80,15 @@ class _UpdateSettingsState extends State<_UpdateSettings> {
     final l10n = AppLocalizations.of(context)!;
     setState(() => _checking = true);
     try {
-      final update = await AppUpdates.instance.check();
+      final updates = AppUpdates.instance;
+      final update = await updates.check();
       if (!mounted) return;
       if (update == null) {
         showSnackMessage(context, l10n.updateNewest);
       } else {
+        // Asked for, so the dialog comes at once; the package downloads
+        // meanwhile, and Update waits only for what is left of it.
+        unawaited(updates.prefetch(update));
         await showUpdateDialog(context, update);
       }
     } catch (error) {

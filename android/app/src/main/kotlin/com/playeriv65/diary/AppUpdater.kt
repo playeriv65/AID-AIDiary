@@ -13,6 +13,7 @@ import android.content.IntentFilter
 import android.content.pm.PackageInfo
 import android.content.pm.PackageInstaller
 import android.content.pm.PackageManager
+import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
@@ -43,6 +44,11 @@ class AppUpdater(private val activity: Activity, messenger: BinaryMessenger) {
           "canInstallSilently" -> result.success(canInstallSilently())
 
           "silentSupported" -> result.success(Build.VERSION.SDK_INT >= 31 && !xiaomi)
+
+          // True without a network too: nothing downloads then.
+          "metered" -> result.success(
+            context.getSystemService(ConnectivityManager::class.java)?.isActiveNetworkMetered ?: true,
+          )
 
           "install" -> install(File(call.argument<String>("path") ?: ""), result)
 

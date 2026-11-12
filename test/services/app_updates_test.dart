@@ -1,6 +1,7 @@
 @Tags(['integration'])
 library;
 
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:ui' show Locale;
@@ -279,6 +280,209 @@ void main() {
         updates.download(update),
         throwsA(
             isA<UpdateException>().having((e) => e.code, 'code', 'corrupt')));
+  });
+
+  group('background download', () {
+    final big = List<int>.generate(1000, (i) => i % 251);
+
+    /// An update of [bytes] as build [build].
+    AppUpdate release(List<int> bytes, {int build = 261029183}) => AppUpdate(
+          version: '0.1.0',
+          build: build,
+          notes: const {},
+          url: Uri.parse('https://aid.example/updates/aid-$build.apk'),
+          sha256: '${sha256.convert(bytes)}',
+          size: bytes.length,
+        );
+
+    Directory folder() => Directory(p.join(temp.path, 'updates'));
+    List<String> files() =>
+        [for (final file in folder().listSync()) p.basename(file.path)]..sort();
+
+    test('a verified package is kept for the next run, not fetched again',
+        () async {
+      final update = release(big);
+      var requests = 0;
+      final client = MockClient((_) async {
+        requests++;
+        return http.Response.bytes(big, 200);
+      });
+      final first = AppUpdates(client: client);
+      final file = await first.download(update);
+      expect(first.downloadState.value!.ready, isTrue);
+      expect(files(), ['update-261029183.apk', 'update.json']);
+
+      // The app was closed and opened again.
+      final next = AppUpdates(client: client);
+      expect((await next.pending())!.build, update.build);
+      expect(next.downloadState.value!.file!.path, file.path);
+      expect((await next.download(update)).path, file.path);
+      expect(requests, 1);
+    });
+
+    test('a download cut off continues where it stopped', () async {
+      final update = release(big);
+      // The first run gets 400 bytes, then the connection drops.
+      Stream<List<int>> cutOff() async* {
+        yield big.sublist(0, 400);
+        throw const SocketException('reset');
+      }
+
+      final cut = AppUpdates(
+          client: MockClient.streaming(
+              (_, __) async => http.StreamedResponse(cutOff(), 200)));
+      await expectLater(cut.download(update), throwsA(isA<SocketException>()));
+      expect(cut.downloadState.value, isNull);
+      expect(files(), ['update-261029183.apk.part', 'update.json']);
+
+      final ranges = <String?>[];
+      final next = AppUpdates(client: MockClient((request) async {
+        ranges.add(request.headers['Range']);
+        return http.Response.bytes(big.sublist(400), 206,
+            headers: {'content-range': 'bytes 400-999/1000'});
+      }));
+      final progress = <double>[];
+      final file = await next.download(update, progress: progress.add);
+      expect(ranges, ['bytes=400-']);
+      // From where the first run stopped.
+      expect(progress.where((done) => done > 0).first, 0.4);
+      expect(await file.readAsBytes(), big);
+      expect(files(), ['update-261029183.apk', 'update.json']);
+    });
+
+    test('a server without ranges sends the whole package again', () async {
+      final update = release(big);
+      await folder().create();
+      await File(p.join(folder().path, 'update.json'))
+          .writeAsString(jsonEncode(update.toJson()));
+      await File(p.join(folder().path, 'update-261029183.apk.part'))
+          .writeAsBytes(big.sublist(0, 300));
+      final file = await AppUpdates(
+              client: MockClient((_) async => http.Response.bytes(big, 200)))
+          .download(update);
+      expect(await file.readAsBytes(), big);
+    });
+
+    test('a package that does not match is removed, and tried again later',
+        () async {
+      final update = release(big);
+      final updates = AppUpdates(
+          client: MockClient((_) async =>
+              http.Response.bytes(List.filled(big.length, 7), 200)));
+      await expectLater(
+          updates.download(update),
+          throwsA(
+              isA<UpdateException>().having((e) => e.code, 'code', 'corrupt')));
+      expect(updates.downloadState.value, isNull);
+      expect(files(), ['update.json']);
+    });
+
+    test('a newer build replaces the download under way', () async {
+      final older = release(big, build: 261029183);
+      final newer = release(_apk, build: 261030090);
+      final stalled = StreamController<List<int>>();
+      final updates = AppUpdates(
+          client: MockClient.streaming((request, _) async =>
+              request.url == older.url
+                  ? http.StreamedResponse(stalled.stream, 200)
+                  : http.StreamedResponse(Stream.value(_apk), 200)));
+      final first = updates.download(older);
+      stalled.add(big.sublist(0, 100));
+      while (updates.downloadState.value!.received == 0) {
+        await Future<void>.delayed(const Duration(milliseconds: 10));
+      }
+      expect(updates.downloadState.value!.update.build, older.build);
+
+      final file = await updates.download(newer);
+      await expectLater(
+          first,
+          throwsA(isA<UpdateException>()
+              .having((e) => e.code, 'code', 'superseded')));
+      expect(await file.readAsBytes(), _apk);
+      expect(updates.downloadState.value!.update.build, newer.build);
+      expect(files(), ['update-261030090.apk', 'update.json']);
+      // Nobody listens to it any more.
+      unawaited(stalled.close());
+    });
+
+    test('two callers share one download', () async {
+      final update = release(big);
+      var requests = 0;
+      final updates = AppUpdates(client: MockClient((_) async {
+        requests++;
+        return http.Response.bytes(big, 200);
+      }));
+      final both = await Future.wait(
+          [updates.download(update), updates.download(update)]);
+      expect(both[0].path, both[1].path);
+      expect(requests, 1);
+    });
+
+    test('the package goes once the app runs its build', () async {
+      final update = release(big);
+      await AppUpdates(
+              client: MockClient((_) async => http.Response.bytes(big, 200)))
+          .download(update);
+      DeviceInfoService().appInfo = PackageInfo(
+          appName: 'AID Diary',
+          packageName: 'com.playeriv65.diary',
+          version: '0.1.0',
+          buildNumber: '${update.build}');
+      expect(await AppUpdates().pending(), isNull);
+      expect(files(), isEmpty);
+    });
+
+    test('a skipped build\'s package goes', () async {
+      final update = release(big);
+      await AppUpdates(
+              client: MockClient((_) async => http.Response.bytes(big, 200)))
+          .download(update);
+      await ConfigProvider.instance.set(Settings.skippedUpdate, update.build);
+      expect(await AppUpdates().pending(), isNull);
+      expect(files(), isEmpty);
+      await ConfigProvider.instance.set(Settings.skippedUpdate, 0);
+    });
+
+    test('a manifest without a newer build drops the package', () async {
+      final update = release(big);
+      final updates = AppUpdates(
+          os: 'android',
+          client: MockClient((request) async => request.url == update.url
+              ? http.Response.bytes(big, 200)
+              : http.Response(jsonEncode(_manifest(build: 261028090)), 200)));
+      await updates.download(update);
+      expect(await updates.check(), isNull);
+      expect(updates.downloadState.value, isNull);
+      expect(files(), isEmpty);
+    });
+
+    test('nothing downloads in the background on a metered network', () async {
+      const channel = MethodChannel('test/metered');
+      for (final metered in [true, false]) {
+        TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+            .setMockMethodCallHandler(channel, (_) async => metered);
+        var requests = 0;
+        final updates = AppUpdates(
+            os: 'android',
+            channel: channel,
+            client: MockClient((_) async {
+              requests++;
+              return http.Response.bytes(big, 200);
+            }));
+        final file = await updates.prefetch(release(big));
+        expect(file == null, metered);
+        expect(requests, metered ? 0 : 1);
+      }
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, null);
+    });
+
+    test('a failed background download is logged, not thrown', () async {
+      final updates = AppUpdates(
+          client: MockClient((_) async => http.Response('gone', 404)));
+      expect(await updates.prefetch(release(big)), isNull);
+      expect(updates.downloadState.value, isNull);
+    });
   });
 
   group('Android installs', () {

@@ -11,6 +11,7 @@ import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/device_info_service.dart';
 import 'package:crypto/crypto.dart';
+import 'package:flutter/foundation.dart' show ValueNotifier;
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
@@ -166,6 +167,31 @@ enum UpdateInstall {
   needsPermission,
 }
 
+/// The package of [update], while it downloads and once it is verified.
+class UpdateDownload {
+  const UpdateDownload(this.update, {this.received = 0, this.file});
+
+  final AppUpdate update;
+
+  /// Bytes on disk so far.
+  final int received;
+
+  /// The verified package; null while it downloads.
+  final File? file;
+
+  bool get ready => file != null;
+
+  /// 0 to 1.
+  double get progress => received / update.size;
+
+  Map<String, Object?> toJson() => {
+        'build': update.build,
+        'state': ready ? 'ready' : 'downloading',
+        'received': received,
+        'size': update.size,
+      };
+}
+
 /// Why an update did not download or install; [code] is stable for scripts.
 class UpdateException implements Exception {
   const UpdateException(this.code, this.message);
@@ -184,7 +210,9 @@ class AppUpdates {
       : _client = client ?? http.Client(),
         os = os ?? Platform.operatingSystem;
 
-  static final instance = AppUpdates();
+  /// The app's one instance; widget tests put one with a fake network and
+  /// platform in its place.
+  static AppUpdates instance = AppUpdates();
   static const _channel = MethodChannel('$appNamespace/updates');
   static final _logger = Logger('AppUpdates');
 
@@ -243,6 +271,9 @@ class AppUpdates {
       }
       await ConfigProvider.instance
           .set(Settings.lastUpdateCheck, DateTime.now().toIso8601String());
+      // The manifest offers nothing newer, as after a rollback: a package
+      // downloaded for an earlier answer is no longer wanted.
+      if (update == null) await discard();
       return update;
     }
     throw UpdateException('unavailable', failures.join('; '));
@@ -269,48 +300,278 @@ class AppUpdates {
     }
   }
 
-  /// Downloads [update] into the cache and checks its size and SHA-256;
-  /// [progress] gets 0 to 1.
+  /// The package of the update found last, while it downloads and once it
+  /// is verified; null when there is none. One package at a time.
+  final downloadState = ValueNotifier<UpdateDownload?>(null);
+
+  /// The update whose package the cache folder holds or is filling.
+  AppUpdate? _pending;
+  Future<void>? _loaded;
+  _Download? _running;
+
+  static const _record = 'update.json';
+
+  /// The app's own cache: Android's cache directory, which the native
+  /// installer accepts packages from, and on Windows
+  /// `%LOCALAPPDATA%\<app id>`.
+  Future<Directory> _folder() async =>
+      Directory(p.join((await getApplicationCacheDirectory()).path, 'updates'));
+
+  File _package(Directory folder, AppUpdate update) => File(p.join(folder.path,
+      'update-${update.build}${p.url.extension(update.url.path)}'));
+
+  int get _installed =>
+      int.tryParse(DeviceInfoService().appInfo?.buildNumber ?? '') ?? 0;
+
+  /// The update an earlier run found and downloaded, or began to: newer
+  /// than this app and not skipped. Everything else in the folder, such
+  /// as the package this app was installed from, is removed.
+  Future<AppUpdate?> pending() async {
+    await (_loaded ??= _load());
+    return _pending;
+  }
+
+  Future<void> _load() async {
+    final folder = await _folder();
+    AppUpdate? update;
+    try {
+      update = AppUpdate.fromJson(
+          jsonDecode(await File(p.join(folder.path, _record)).readAsString())
+              as Map<String, dynamic>);
+    } on Exception {
+      // No record, or an unreadable one: nothing to resume.
+    }
+    if (update == null || update.build <= _installed || update.skipped) {
+      await _clear(folder);
+      return;
+    }
+    final package = _package(folder, update);
+    final keep = {_record, p.basename(package.path), _partName(package)};
+    await for (final entity in folder.list()) {
+      if (!keep.contains(p.basename(entity.path))) await _delete(entity);
+    }
+    _pending = update;
+    if (!await package.exists()) return;
+    if (await _matches(package, update)) {
+      downloadState.value =
+          UpdateDownload(update, received: update.size, file: package);
+    } else {
+      await _delete(package);
+    }
+  }
+
+  /// Downloads [update] into the app's cache, or continues the download
+  /// already under way or left by an earlier run, and checks the package's
+  /// size and SHA-256 against the manifest. A verified package is returned
+  /// at once. A download of another build stops and its files go:
+  /// whichever build the caller asks for replaces it. [progress] gets 0
+  /// to 1.
   Future<File> download(AppUpdate update,
       {void Function(double done)? progress}) async {
-    final folder =
-        Directory(p.join((await getTemporaryDirectory()).path, 'updates'));
-    if (await folder.exists()) await folder.delete(recursive: true);
-    await folder.create(recursive: true);
-    final file = File(p.join(folder.path,
-        'update-${update.build}${p.url.extension(update.url.path)}'));
-    final response = await _client
-        .send(http.Request('GET', update.url))
-        .timeout(AppConfig.instance.updateTimeout);
-    if (response.statusCode != 200) {
+    // Under way from the start, for whoever looks at once.
+    if (downloadState.value?.update.build != update.build) {
+      downloadState.value = UpdateDownload(update);
+    }
+    await pending();
+    final running = _running;
+    if (running != null && running.update.build != update.build) {
+      await _stop();
+    }
+    final current = downloadState.value;
+    if (current != null &&
+        current.update.build == update.build &&
+        current.file != null) {
+      if (await current.file!.exists()) return current.file!;
+      downloadState.value = null;
+    }
+    final job = _running ??= _Download(update)..start(_fetch);
+    if (progress == null) return job.done;
+    void report() {
+      final state = downloadState.value;
+      if (state != null && state.update.build == update.build) {
+        progress(state.progress);
+      }
+    }
+
+    downloadState.addListener(report);
+    try {
+      report();
+      return await job.done;
+    } finally {
+      downloadState.removeListener(report);
+    }
+  }
+
+  /// [download] in the background, as the app does once it finds an
+  /// update: not on a metered network, where Android apps leave large
+  /// downloads to the user. The verified package, or null when the network
+  /// is metered or the download failed. A failure is logged, not shown:
+  /// the next check tries again.
+  Future<File?> prefetch(AppUpdate update) async {
+    if (await metered()) return null;
+    try {
+      return await download(update);
+    } on Exception catch (error, stackTrace) {
+      _logger.info('Background update download failed', error, stackTrace);
+      return null;
+    }
+  }
+
+  /// Whether the network costs the user per byte: Android's metered
+  /// networks, and none at all. Windows counts as unmetered.
+  Future<bool> metered() async =>
+      os == 'android' && (await channel.invokeMethod<bool>('metered') ?? true);
+
+  /// Stops any download and removes its files: the user skipped the
+  /// build, or the manifest no longer offers one.
+  Future<void> discard() async {
+    await pending();
+    await _stop();
+    _pending = null;
+    downloadState.value = null;
+    await _clear(await _folder());
+  }
+
+  Future<void> _stop() async {
+    final running = _running;
+    if (running == null) return;
+    running.cancel();
+    try {
+      await running.done;
+    } on Exception {
+      // Stopped on purpose.
+    }
+  }
+
+  /// Fills [job]'s package, from where an earlier attempt stopped when the
+  /// server can serve the rest (an HTTP range request).
+  Future<File> _fetch(_Download job) async {
+    final update = job.update;
+    final folder = await _folder();
+    try {
+      if (_pending?.build != update.build) {
+        await _clear(folder);
+        await folder.create(recursive: true);
+        await File(p.join(folder.path, _record))
+            .writeAsString(jsonEncode(update.toJson()));
+        _pending = update;
+      }
+      final package = _package(folder, update);
+      final part = File(p.join(folder.path, _partName(package)));
+      var offset = await part.exists() ? await part.length() : 0;
+      if (offset > update.size) {
+        await _delete(part);
+        offset = 0;
+      }
+      _report(update, offset);
+      if (offset < update.size) {
+        offset = await _transfer(job, part, offset);
+      }
+      if (offset != update.size || !await _matches(part, update)) {
+        await _delete(part);
+        throw const UpdateException(
+            'corrupt', 'Download does not match the release manifest');
+      }
+      final file = await part.rename(package.path);
+      downloadState.value =
+          UpdateDownload(update, received: update.size, file: file);
+      return file;
+    } catch (_) {
+      if (downloadState.value?.update.build == update.build) {
+        downloadState.value = null;
+      }
+      rethrow;
+    } finally {
+      if (_running == job) _running = null;
+    }
+  }
+
+  /// Appends the rest of [job]'s package to [part], which holds [offset]
+  /// bytes; returns the size it reached.
+  Future<int> _transfer(_Download job, File part, int offset) async {
+    final update = job.update;
+    final config = AppConfig.instance;
+    final request = http.Request('GET', update.url);
+    if (offset > 0) request.headers['Range'] = 'bytes=$offset-';
+    final response = await _client.send(request).timeout(config.updateTimeout);
+    if (job.cancelled) throw _Download.stopped;
+    var received = offset;
+    if (response.statusCode == 200) {
+      received = 0;
+    } else if (response.statusCode != 206 ||
+        !(response.headers['content-range'] ?? '')
+            .startsWith('bytes $offset-')) {
+      if (response.statusCode == 206) await _delete(part);
       throw UpdateException(
           'unavailable', 'Download: HTTP ${response.statusCode}');
     }
-    final sink = file.openWrite();
-    final digest = _DigestSink();
-    final hasher = sha256.startChunkedConversion(digest);
-    var received = 0;
+    final sink =
+        part.openWrite(mode: received == 0 ? FileMode.write : FileMode.append);
+    final finished = Completer<void>();
+    late final StreamSubscription<List<int>> subscription;
+    void fail(Object error, [StackTrace? stackTrace]) {
+      if (finished.isCompleted) return;
+      subscription.cancel();
+      finished.completeError(error, stackTrace);
+    }
+
+    subscription = response.stream.timeout(config.updateDownloadTimeout).listen(
+        (chunk) {
+          received += chunk.length;
+          if (received > update.size) {
+            fail(const UpdateException('corrupt', 'Download is too large'));
+            return;
+          }
+          sink.add(chunk);
+          _report(update, received);
+        },
+        onError: fail,
+        onDone: () {
+          if (!finished.isCompleted) finished.complete();
+        },
+        cancelOnError: true);
+    job.abort = () => fail(_Download.stopped);
     try {
-      await for (final chunk in response.stream
-          .timeout(AppConfig.instance.updateDownloadTimeout)) {
-        received += chunk.length;
-        if (received > update.size) {
-          throw const UpdateException('corrupt', 'Download is too large');
-        }
-        sink.add(chunk);
-        hasher.add(chunk);
-        progress?.call(received / update.size);
-      }
+      await finished.future;
     } finally {
+      job.abort = null;
       await sink.close();
     }
-    hasher.close();
-    if (received != update.size || '${digest.value}' != update.sha256) {
-      await file.delete();
-      throw const UpdateException(
-          'corrupt', 'Download does not match the release manifest');
+    return received;
+  }
+
+  /// Notes [received] bytes of [update], when the whole percent changes.
+  void _report(AppUpdate update, int received) {
+    final state = downloadState.value;
+    if (state != null &&
+        state.update.build == update.build &&
+        state.received * 100 ~/ update.size == received * 100 ~/ update.size) {
+      return;
     }
-    return file;
+    downloadState.value = UpdateDownload(update, received: received);
+  }
+
+  static String _partName(File package) => '${p.basename(package.path)}.part';
+
+  static Future<bool> _matches(File file, AppUpdate update) async =>
+      await file.length() == update.size &&
+      '${await sha256.bind(file.openRead()).first}' == update.sha256;
+
+  Future<void> _clear(Directory folder) async {
+    if (!await folder.exists()) return;
+    await for (final entity in folder.list()) {
+      await _delete(entity);
+    }
+  }
+
+  /// Deletes [entity]; one still open, such as the Windows installer while
+  /// it finishes, goes on a later start.
+  Future<void> _delete(FileSystemEntity entity) async {
+    try {
+      await entity.delete(recursive: true);
+    } on FileSystemException catch (error) {
+      _logger.info('Could not remove ${entity.path}', error);
+    }
   }
 
   /// Whether this device can ever install updates without asking: Android
@@ -383,12 +644,24 @@ class AppUpdates {
   }
 }
 
-class _DigestSink implements Sink<Digest> {
-  Digest? value;
+/// One package download, which a download of another build stops.
+class _Download {
+  _Download(this.update);
 
-  @override
-  void add(Digest data) => value = data;
+  static const stopped = UpdateException(
+      'superseded', 'A download of another build replaced this one');
 
-  @override
-  void close() {}
+  final AppUpdate update;
+  late final Future<File> done;
+  bool cancelled = false;
+
+  /// Ends the transfer under way.
+  void Function()? abort;
+
+  void start(Future<File> Function(_Download job) run) => done = run(this);
+
+  void cancel() {
+    cancelled = true;
+    abort?.call();
+  }
 }

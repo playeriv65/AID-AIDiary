@@ -131,11 +131,26 @@ the builds.
 - **Checking**: when the app opens, at most every `updates.checkHours`, if
   "Check for updates automatically" is on (About). "Check for updates" asks
   at once. `aid update.check` does the same, and also reports a version the
-  user skipped, marked `skipped: true`.
-- **Asking**: a dialog with the commit lines: Skip this version, Later,
-  Update. Update downloads with progress and installs.
+  user skipped, marked `skipped: true`, and the package's download state.
+- **Downloading**: a build the check finds, unless the user skipped it,
+  downloads in the background (`AppUpdates.prefetch`) while the app is
+  open, on an unmetered network only: Android's
+  `ConnectivityManager.isActiveNetworkMetered`, as Android apps leave large
+  downloads on mobile data to the user. Windows counts as unmetered. A
+  failed download is logged, not shown; the next start or check tries
+  again. `aid update.download` starts the same download on any network
+  (`wait` returns once it is verified).
+- **Asking**: once the package is downloaded and verified, a dialog with
+  the notes: Skip this version, Later, Update. Update goes straight to the
+  installer. On a metered network the dialog comes at once and Update
+  downloads with progress first; "Check for updates" also shows it at
+  once, with the download under way, and Update shows what is left of it.
+  Skip drops the package; Later keeps it, and the dialog comes again with
+  the next due check. `aid update.install` installs the downloaded package
+  when it is still the newest (or the check fails), else downloads first.
 - **Silently** ("Install updates without asking", off by default): the app
-  downloads in the background and installs when the user leaves it. Android
+  installs the downloaded package when the user leaves it. On a metered
+  network the dialog asks instead. Android
   12 and later allow that only once the app installed itself; until then,
   and on older Android, the dialog asks instead. HyperOS and MIUI never
   allow it: they refuse an install session that asks for no user action
@@ -146,6 +161,20 @@ the builds.
   does not offer it either: a desktop app is not paused when the user
   leaves it, so the dialog always asks.
 - **After an update** the app says so once, with the notes.
+
+The package lives in the app's cache folder, `updates/` under Android's
+cache directory (the only place `AppUpdater.kt` installs from) and
+`%LOCALAPPDATA%\com.playeriv65.diary` on Windows, one build at a time:
+`update.json` (the manifest entry), `update-<build>.<ext>.part` while it
+downloads and `update-<build>.<ext>` once its size and SHA-256 match. A
+download cut off, for example when the app is closed, continues on the
+next start with an HTTP range request; a server that answers with the
+whole file starts it again. A newer build replaces the package and stops
+its download, as does an older one the manifest offers again after a
+rollback; a manifest with nothing newer removes it. On start the app
+checks a kept package again and removes the files of a build that is
+installed, skipped or older. Android may clear the cache when storage runs
+low; the package then downloads again.
 
 Before it installs, the app checks the download's size and SHA-256 against
 the manifest; the Android side (`AppUpdater.kt`) checks that the package is

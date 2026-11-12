@@ -202,5 +202,11 @@
     "en": "On Android, ad skippers and auto-clickers no longer slow down scrolling. Screen readers such as TalkBack work as before, and photos in the media list and on entries now say what they are.",
     "zh": "在 Android 上，跳过广告和自动点击类的无障碍服务不再拖慢滚动。TalkBack 等读屏软件照常使用，媒体列表和日记里的照片也能读出说明了。",
     "zh_Hant": "在 Android 上，跳過廣告和自動點擊類的無障礙服務不再拖慢捲動。TalkBack 等讀屏軟體照常使用，媒體列表和日記裡的照片也能讀出說明了。"
+  },
+  {
+    "id": "2026-11-11-update-downloads-ahead",
+    "en": "A new version now downloads in the background on Wi-Fi or another unmetered network, and AID Diary offers it once it is ready: Update goes straight to the installer. On mobile data it asks first, as before.",
+    "zh": "新版本现在会在 Wi-Fi 等不计流量的网络下后台下载，下载好后才提示更新：点“更新”直接进入安装。使用移动数据时仍先询问，和以前一样。",
+    "zh_Hant": "新版本現在會在 Wi-Fi 等不計流量的網路下於背景下載，下載好後才提示更新：點「更新」直接進入安裝。使用行動數據時仍先詢問，和以前一樣。"
   }
 ]

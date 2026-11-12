@@ -12,8 +12,10 @@ import 'package:aid_diary/widgets/snack_message.dart';
 import 'package:logging/logging.dart';
 import 'package:material_ui/material_ui.dart';
 
-/// Offers newer builds when the app opens (docs/UPDATES.md): a dialog, or
-/// with silent updates on, an install when the user leaves the app. After
+/// Offers newer builds when the app opens (docs/UPDATES.md). It downloads
+/// one in the background and, once the package is verified, asks with a
+/// dialog or, with silent updates on, installs when the user leaves the
+/// app. On a metered network it asks at once, and Update downloads. After
 /// an update it says so once.
 class AppUpdatePrompt with WidgetsBindingObserver {
   AppUpdatePrompt._();
@@ -34,16 +36,33 @@ class AppUpdatePrompt with WidgetsBindingObserver {
               label: l10n.updateWhatsNew,
               onPressed: () => showUpdateNotes(context, installed)));
     }
-    final update = await updates.due();
-    if (update == null || !context.mounted) return;
+    var update = await updates.due();
+    if (update == null) {
+      // A download an earlier run did not finish carries on and is offered
+      // once verified; a verified one was offered when it finished.
+      final pending = await updates.pending();
+      if (pending == null || updates.downloadState.value?.ready == true) {
+        return;
+      }
+      update = pending;
+    }
+    if (context.mounted) await _offer(context, update);
+  }
+
+  /// Downloads [update] in the background, then asks, or with silent
+  /// updates on, installs when the user leaves the app.
+  Future<void> _offer(BuildContext context, AppUpdate update) async {
+    final updates = AppUpdates.instance;
+    if (await updates.metered()) {
+      if (context.mounted) await showUpdateDialog(context, update);
+      return;
+    }
+    final file = await updates.prefetch(update);
+    if (file == null) return;
     if (ConfigProvider.instance.get(Settings.silentUpdates) &&
         await updates.canInstallSilently()) {
-      try {
-        _ready = (update: update, file: await updates.download(update));
-        WidgetsBinding.instance.addObserver(this);
-      } catch (error, stackTrace) {
-        _logger.info('Background update download failed', error, stackTrace);
-      }
+      if (_ready == null) WidgetsBinding.instance.addObserver(this);
+      _ready = (update: update, file: file);
       return;
     }
     if (context.mounted) await showUpdateDialog(context, update);
@@ -127,8 +146,12 @@ class _UpdateDialogState extends State<_UpdateDialog> {
   Future<void> _install() async {
     final l10n = AppLocalizations.of(context)!;
     final updates = AppUpdates.instance;
+    final state = updates.downloadState.value;
     setState(() {
-      _progress = 0;
+      // Usually downloaded already; else the background download's
+      // progress so far.
+      _progress =
+          state?.update.build == widget.update.build ? state!.progress : 0;
       _message = null;
     });
     try {
@@ -145,18 +168,21 @@ class _UpdateDialogState extends State<_UpdateDialog> {
       } else {
         Navigator.pop(context);
       }
-    } on UpdateException catch (error) {
+    } on Exception catch (error) {
       if (mounted) {
         setState(() {
           _progress = null;
-          _message = l10n.updateFailed(error.message);
+          _message = l10n.updateFailed(
+              error is UpdateException ? error.message : '$error');
         });
       }
     }
   }
 
+  /// Skips this build and drops its package.
   Future<void> _skip() async {
     await changeSetting(Settings.skippedUpdate, widget.update.build);
+    await AppUpdates.instance.discard();
     if (mounted) Navigator.pop(context);
   }
 
