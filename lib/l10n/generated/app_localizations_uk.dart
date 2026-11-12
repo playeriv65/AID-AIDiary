@@ -2906,4 +2906,52 @@ class AppLocalizationsUk extends AppLocalizations {
   String syncConflicts(int count) {
     return 'Записи з двома версіями: $count';
   }
+
+  @override
+  String get mcpServerToggle => 'MCP-сервер';
+
+  @override
+  String get mcpServerToggleHint =>
+      'Дає змогу MCP-клієнтам, як-от ChatGPT і Codex, читати щоденник і шукати в ньому через локальну адресу цього пристрою. Вони можуть лише читати, а капсули часу лишаються запечатаними.';
+
+  @override
+  String get mcpToken => 'Токен MCP';
+
+  @override
+  String get mcpTokenHint =>
+      'MCP-клієнти надсилають його, щоб отримати доступ; сервер запускається, коли токен задано.';
+
+  @override
+  String get mcpTokenIsSet => 'Задано. Торкніться, щоб замінити.';
+
+  @override
+  String get mcpTokenSet => 'Задати токен';
+
+  @override
+  String mcpListening(String address) {
+    return 'Очікує з’єднань на $address';
+  }
+
+  @override
+  String mcpNotRunning(String reason) {
+    return 'Не запущено: $reason';
+  }
+
+  @override
+  String get mcpTokenSaveFailed =>
+      'Не вдалося зберегти токен. Спробуйте ще раз.';
+
+  @override
+  String get mcpAllowedHosts => 'Дозволені імена хостів';
+
+  @override
+  String get mcpAllowedHostsHint =>
+      'Лише цей пристрій. Додайте імена, які надсилає проксі перед сервером, наприклад адресу Tailscale.';
+
+  @override
+  String get mcpAllowedHostsInvalid =>
+      'Введіть лише імена хостів, без http:// і порту, через кому.';
+
+  @override
+  String get mcpAllowedHostsSave => 'Зберегти';
 }

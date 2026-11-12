@@ -19,7 +19,7 @@ the current checkout before using this snapshot.
   localized notes, artifact verification and HyperOS confirmation.
 - The CLI provides `sql.query`, `sql.execute` and `actions.batch`. Entry
   timestamp arguments require an explicit UTC offset. See
-  [shared actions](ARCHITECTURE.md#agent-native-actions-shared-by-the-gui-and-the-cli).
+  [shared actions](ARCHITECTURE.md#agent-native-one-action-list-every-surface).
 - Desktop Google Drive configuration takes its client secret from build
   configuration. See [Google Drive](GOOGLE_DRIVE.md).
 - The MapLibre atlas trial is on the local `task/maplibre-map` branch

@@ -2885,4 +2885,51 @@ class AppLocalizationsFa extends AppLocalizations {
   String syncConflicts(int count) {
     return 'یادداشت‌های دارای دو نسخه: $count';
   }
+
+  @override
+  String get mcpServerToggle => 'سرور MCP';
+
+  @override
+  String get mcpServerToggleHint =>
+      'به کلاینت‌های MCP مانند ChatGPT و Codex اجازه می‌دهد از طریق یک نشانی محلی روی این دستگاه، دفترچه خاطرات را بخوانند و در آن جست‌وجو کنند. آن‌ها فقط می‌توانند بخوانند و کپسول‌های زمان مهروموم می‌مانند.';
+
+  @override
+  String get mcpToken => 'توکن MCP';
+
+  @override
+  String get mcpTokenHint =>
+      'کلاینت‌های MCP آن را می‌فرستند تا اجازهٔ ورود بگیرند؛ سرور پس از تنظیم آن شروع می‌شود.';
+
+  @override
+  String get mcpTokenIsSet => 'تنظیم شده است. برای جایگزینی ضربه بزنید.';
+
+  @override
+  String get mcpTokenSet => 'تنظیم توکن';
+
+  @override
+  String mcpListening(String address) {
+    return 'در حال گوش دادن روی $address';
+  }
+
+  @override
+  String mcpNotRunning(String reason) {
+    return 'در حال اجرا نیست: $reason';
+  }
+
+  @override
+  String get mcpTokenSaveFailed => 'ذخیرهٔ توکن ممکن نشد. دوباره تلاش کنید.';
+
+  @override
+  String get mcpAllowedHosts => 'نام‌های میزبان مجاز';
+
+  @override
+  String get mcpAllowedHostsHint =>
+      'فقط همین دستگاه. نام‌هایی را که یک پراکسی جلوی سرور می‌فرستد اضافه کنید، مثلاً نشانی Tailscale.';
+
+  @override
+  String get mcpAllowedHostsInvalid =>
+      'فقط نام میزبان وارد کنید، بدون http:// یا درگاه، جدا شده با ویرگول.';
+
+  @override
+  String get mcpAllowedHostsSave => 'ذخیره';
 }

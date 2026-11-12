@@ -13,10 +13,11 @@ Two commands reach the diary:
   `aid entry.list limit=5` runs one. Arguments are `key=value`; destructive
   actions also need `--yes`. Results are JSON:
   `{"ok": true, "result": ...}` or `{"ok": false, "error": ...}`.
-- `sql` reads the diary database: `sql --schema` shows its tables,
+- `sql` reads the diary database: `sql --schema` shows its tables and how
+  their values are written (read it before the first query),
   `sql "SELECT ..."` prints the rows as a JSON array (at most {sqlRows}
   rows), and a query may also come on standard input. It cannot change
-  anything; changes go through `aid`.
+  anything, and sealed time capsules stay sealed; changes go through `aid`.
 
 Look things up before answering, combine commands with pipes and jq, and
 keep outputs small (LIMIT, jq, head). Answer in the language the user

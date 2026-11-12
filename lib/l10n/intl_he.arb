@@ -860,5 +860,18 @@
   "syncConflictKeepOther": "לשמור את האחרת",
   "syncConflictKeepBoth": "לשמור את שתיהן",
   "syncConflictLater": "מאוחר יותר",
-  "syncConflicts": "רשומות עם שתי גרסאות: {count}"
+  "syncConflicts": "רשומות עם שתי גרסאות: {count}",
+  "mcpServerToggle": "שרת MCP",
+  "mcpServerToggleHint": "מאפשר ללקוחות MCP כמו ChatGPT ו-Codex לקרוא ביומן ולחפש בו דרך כתובת מקומית במכשיר הזה. הם יכולים רק לקרוא, וקפסולות זמן נשארות חתומות.",
+  "mcpToken": "אסימון MCP",
+  "mcpTokenHint": "לקוחות MCP שולחים אותו כדי להיכנס; השרת מתחיל לפעול אחרי שהוא מוגדר.",
+  "mcpTokenIsSet": "מוגדר. הקישו כדי להחליף אותו.",
+  "mcpTokenSet": "הגדרת אסימון",
+  "mcpListening": "מאזין בכתובת {address}",
+  "mcpNotRunning": "לא פועל: {reason}",
+  "mcpTokenSaveFailed": "לא ניתן היה לשמור את האסימון. נסו שוב.",
+  "mcpAllowedHosts": "שמות מארחים מותרים",
+  "mcpAllowedHostsHint": "רק המכשיר הזה. הוסיפו את השמות ששולח שרת proxy שמול השרת, למשל כתובת Tailscale.",
+  "mcpAllowedHostsInvalid": "הזינו שמות מארחים בלבד, בלי http:// או פורט, מופרדים בפסיקים.",
+  "mcpAllowedHostsSave": "שמירה"
 }

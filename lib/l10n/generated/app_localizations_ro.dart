@@ -2924,4 +2924,52 @@ class AppLocalizationsRo extends AppLocalizations {
   String syncConflicts(int count) {
     return 'Intrări cu două versiuni: $count';
   }
+
+  @override
+  String get mcpServerToggle => 'Server MCP';
+
+  @override
+  String get mcpServerToggleHint =>
+      'Permite clienților MCP precum ChatGPT și Codex să citească și să caute în jurnal printr-o adresă locală a acestui dispozitiv. Pot doar să citească, iar capsulele timpului rămân sigilate.';
+
+  @override
+  String get mcpToken => 'Token MCP';
+
+  @override
+  String get mcpTokenHint =>
+      'Clienții MCP îl trimit pentru a fi lăsați să intre; serverul pornește după ce este setat.';
+
+  @override
+  String get mcpTokenIsSet => 'Setat. Atinge pentru a-l înlocui.';
+
+  @override
+  String get mcpTokenSet => 'Setează tokenul';
+
+  @override
+  String mcpListening(String address) {
+    return 'Ascultă pe $address';
+  }
+
+  @override
+  String mcpNotRunning(String reason) {
+    return 'Nu rulează: $reason';
+  }
+
+  @override
+  String get mcpTokenSaveFailed =>
+      'Tokenul nu a putut fi salvat. Încearcă din nou.';
+
+  @override
+  String get mcpAllowedHosts => 'Nume de gazdă permise';
+
+  @override
+  String get mcpAllowedHostsHint =>
+      'Doar acest dispozitiv. Adăugați numele trimise de un proxy din fața serverului, de exemplu o adresă Tailscale.';
+
+  @override
+  String get mcpAllowedHostsInvalid =>
+      'Introduceți doar nume de gazdă, fără http:// sau port, separate prin virgule.';
+
+  @override
+  String get mcpAllowedHostsSave => 'Salvați';
 }

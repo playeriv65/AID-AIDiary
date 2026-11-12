@@ -2893,4 +2893,52 @@ class AppLocalizationsHi extends AppLocalizations {
   String syncConflicts(int count) {
     return 'दो संस्करणों वाली प्रविष्टियाँ: $count';
   }
+
+  @override
+  String get mcpServerToggle => 'MCP सर्वर';
+
+  @override
+  String get mcpServerToggleHint =>
+      'ChatGPT और Codex जैसे MCP क्लाइंट को इस डिवाइस के स्थानीय पते से डायरी पढ़ने और खोजने देता है। वे केवल पढ़ सकते हैं, और टाइम कैप्सूल सीलबंद रहते हैं।';
+
+  @override
+  String get mcpToken => 'MCP टोकन';
+
+  @override
+  String get mcpTokenHint =>
+      'MCP क्लाइंट अंदर आने के लिए इसे भेजते हैं; इसे सेट करने पर सर्वर शुरू होता है।';
+
+  @override
+  String get mcpTokenIsSet => 'सेट है। बदलने के लिए टैप करें।';
+
+  @override
+  String get mcpTokenSet => 'टोकन सेट करें';
+
+  @override
+  String mcpListening(String address) {
+    return '$address पर सुन रहा है';
+  }
+
+  @override
+  String mcpNotRunning(String reason) {
+    return 'नहीं चल रहा: $reason';
+  }
+
+  @override
+  String get mcpTokenSaveFailed =>
+      'टोकन सहेजा नहीं जा सका। कृपया फिर से कोशिश करें।';
+
+  @override
+  String get mcpAllowedHosts => 'अनुमत होस्ट नाम';
+
+  @override
+  String get mcpAllowedHostsHint =>
+      'केवल यह डिवाइस। सर्वर के आगे लगा प्रॉक्सी जो नाम भेजता है, उन्हें जोड़ें, जैसे Tailscale पता।';
+
+  @override
+  String get mcpAllowedHostsInvalid =>
+      'केवल होस्ट नाम दर्ज करें, http:// या पोर्ट के बिना, अल्पविराम से अलग करके।';
+
+  @override
+  String get mcpAllowedHostsSave => 'सहेजें';
 }

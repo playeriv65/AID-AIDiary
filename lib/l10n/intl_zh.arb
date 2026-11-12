@@ -874,5 +874,18 @@
   "syncConflictKeepOther": "保留另一台的",
   "syncConflictKeepBoth": "都保留",
   "syncConflictLater": "稍后",
-  "syncConflicts": "有两个版本的日记：{count} 篇"
+  "syncConflicts": "有两个版本的日记：{count} 篇",
+  "mcpServerToggle": "MCP 服务器",
+  "mcpServerToggleHint": "让 ChatGPT、Codex 等 MCP 客户端通过本设备的本地地址阅读和搜索日记。它们只能读取，时间胶囊保持密封。",
+  "mcpToken": "MCP 令牌",
+  "mcpTokenHint": "MCP 客户端凭它接入；设置后服务器才会启动。",
+  "mcpTokenIsSet": "已设置。点按可替换。",
+  "mcpTokenSet": "设置令牌",
+  "mcpListening": "正在 {address} 上监听",
+  "mcpNotRunning": "未运行：{reason}",
+  "mcpTokenSaveFailed": "无法保存令牌，请重试。",
+  "mcpAllowedHosts": "允许的主机名",
+  "mcpAllowedHostsHint": "仅限本设备。添加服务器前面的代理发来的主机名，例如 Tailscale 地址。",
+  "mcpAllowedHostsInvalid": "只填主机名，不带 http:// 和端口，用逗号分隔。",
+  "mcpAllowedHostsSave": "保存"
 }

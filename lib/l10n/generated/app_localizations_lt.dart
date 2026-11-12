@@ -2923,4 +2923,52 @@ class AppLocalizationsLt extends AppLocalizations {
   String syncConflicts(int count) {
     return 'Įrašai su dviem versijomis: $count';
   }
+
+  @override
+  String get mcpServerToggle => 'MCP serveris';
+
+  @override
+  String get mcpServerToggleHint =>
+      'Leidžia MCP klientams, pavyzdžiui, ChatGPT ir Codex, skaityti dienoraštį ir jame ieškoti per vietinį šio įrenginio adresą. Jie gali tik skaityti, o laiko kapsulės lieka užantspauduotos.';
+
+  @override
+  String get mcpToken => 'MCP prieigos raktas';
+
+  @override
+  String get mcpTokenHint =>
+      'MCP klientai jį siunčia, kad būtų įleisti; serveris paleidžiamas, kai jis nustatytas.';
+
+  @override
+  String get mcpTokenIsSet => 'Nustatytas. Bakstelėkite, kad pakeistumėte.';
+
+  @override
+  String get mcpTokenSet => 'Nustatyti raktą';
+
+  @override
+  String mcpListening(String address) {
+    return 'Klausosi adresu $address';
+  }
+
+  @override
+  String mcpNotRunning(String reason) {
+    return 'Neveikia: $reason';
+  }
+
+  @override
+  String get mcpTokenSaveFailed =>
+      'Nepavyko išsaugoti prieigos rakto. Bandykite dar kartą.';
+
+  @override
+  String get mcpAllowedHosts => 'Leidžiami pagrindinio kompiuterio vardai';
+
+  @override
+  String get mcpAllowedHostsHint =>
+      'Tik šis įrenginys. Pridėkite vardus, kuriuos siunčia priešais serverį esantis tarpinis serveris, pvz., Tailscale adresą.';
+
+  @override
+  String get mcpAllowedHostsInvalid =>
+      'Įveskite tik pagrindinio kompiuterio vardus be http:// ir prievado, atskirtus kableliais.';
+
+  @override
+  String get mcpAllowedHostsSave => 'Išsaugoti';
 }

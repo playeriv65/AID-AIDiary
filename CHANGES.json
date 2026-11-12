@@ -208,5 +208,11 @@
     "en": "A new version now downloads in the background on Wi-Fi or another unmetered network, and AID Diary offers it once it is ready: Update goes straight to the installer. On mobile data it asks first, as before.",
     "zh": "新版本现在会在 Wi-Fi 等不计流量的网络下后台下载，下载好后才提示更新：点“更新”直接进入安装。使用移动数据时仍先询问，和以前一样。",
     "zh_Hant": "新版本現在會在 Wi-Fi 等不計流量的網路下於背景下載，下載好後才提示更新：點「更新」直接進入安裝。使用行動數據時仍先詢問，和以前一樣。"
+  },
+  {
+    "id": "2026-11-12-mcp-server",
+    "en": "Settings → Command line has an MCP server: MCP clients such as ChatGPT and Codex can read and search the diary with a token you set. They can only read, and time capsules stay sealed.",
+    "zh": "设置 → 命令行新增 MCP 服务器：ChatGPT、Codex 等 MCP 客户端凭你设置的令牌阅读和搜索日记。它们只能读取，时间胶囊保持密封。",
+    "zh_Hant": "設定 → 命令列新增 MCP 伺服器：ChatGPT、Codex 等 MCP 用戶端憑你設定的權杖閱讀和搜尋日記。它們只能讀取，時間膠囊保持密封。"
   }
 ]

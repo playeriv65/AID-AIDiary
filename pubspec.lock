@@ -1206,7 +1206,7 @@ packages:
     source: hosted
     version: "1.5.0"
   mcp_dart:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: mcp_dart
       sha256: af0b2e25412f70440c881314a0b70a56ef87fd090b3eb71f31c356313096e6f5
@@ -1842,7 +1842,7 @@ packages:
     source: hosted
     version: "2.4.2"
   sqlite3:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: sqlite3
       sha256: cc62d72dbf16bb1f6ae8954b238016de1473e53df060ed0c332eed0a41dd1848

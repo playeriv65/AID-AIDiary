@@ -209,7 +209,7 @@ class Entry {
   String get markdown => title.isEmpty ? text : '# $title\n$text';
 
   /// Whether this is a time capsule that has not opened yet.
-  bool get isSealed => openAt?.isAfter(DateTime.now()) ?? false;
+  bool get isSealed => isSealedUntil(openAt);
 
   static const _unset = Object();
 
@@ -286,6 +286,10 @@ class Entry {
         EntryFields.isHidden: isHidden ? 1 : 0,
       };
 }
+
+/// Whether a time capsule that opens at [openAt] is still sealed.
+bool isSealedUntil(DateTime? openAt) =>
+    openAt?.isAfter(DateTime.now()) ?? false;
 
 /// An entry in Recently deleted and when it went there.
 typedef DeletedEntry = ({Entry entry, DateTime deletedAt});

@@ -843,5 +843,18 @@
   "syncConflictKeepOther": "Păstrează-o pe cealaltă",
   "syncConflictKeepBoth": "Păstrează-le pe amândouă",
   "syncConflictLater": "Mai târziu",
-  "syncConflicts": "Intrări cu două versiuni: {count}"
+  "syncConflicts": "Intrări cu două versiuni: {count}",
+  "mcpServerToggle": "Server MCP",
+  "mcpServerToggleHint": "Permite clienților MCP precum ChatGPT și Codex să citească și să caute în jurnal printr-o adresă locală a acestui dispozitiv. Pot doar să citească, iar capsulele timpului rămân sigilate.",
+  "mcpToken": "Token MCP",
+  "mcpTokenHint": "Clienții MCP îl trimit pentru a fi lăsați să intre; serverul pornește după ce este setat.",
+  "mcpTokenIsSet": "Setat. Atinge pentru a-l înlocui.",
+  "mcpTokenSet": "Setează tokenul",
+  "mcpListening": "Ascultă pe {address}",
+  "mcpNotRunning": "Nu rulează: {reason}",
+  "mcpTokenSaveFailed": "Tokenul nu a putut fi salvat. Încearcă din nou.",
+  "mcpAllowedHosts": "Nume de gazdă permise",
+  "mcpAllowedHostsHint": "Doar acest dispozitiv. Adăugați numele trimise de un proxy din fața serverului, de exemplu o adresă Tailscale.",
+  "mcpAllowedHostsInvalid": "Introduceți doar nume de gazdă, fără http:// sau port, separate prin virgule.",
+  "mcpAllowedHostsSave": "Salvați"
 }

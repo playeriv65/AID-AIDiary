@@ -2887,4 +2887,51 @@ class AppLocalizationsAr extends AppLocalizations {
   String syncConflicts(int count) {
     return 'إدخالات لها نسختان: $count';
   }
+
+  @override
+  String get mcpServerToggle => 'خادم MCP';
+
+  @override
+  String get mcpServerToggleHint =>
+      'يتيح لعملاء MCP مثل ChatGPT وCodex قراءة اليوميات والبحث فيها عبر عنوان محلي على هذا الجهاز. يمكنهم القراءة فقط، وتبقى كبسولات الزمن مختومة.';
+
+  @override
+  String get mcpToken => 'رمز MCP';
+
+  @override
+  String get mcpTokenHint =>
+      'يرسله عملاء MCP ليُسمح لهم بالدخول؛ يبدأ الخادم بعد تعيينه.';
+
+  @override
+  String get mcpTokenIsSet => 'مُعيَّن. انقر لاستبداله.';
+
+  @override
+  String get mcpTokenSet => 'تعيين الرمز';
+
+  @override
+  String mcpListening(String address) {
+    return 'يستمع على $address';
+  }
+
+  @override
+  String mcpNotRunning(String reason) {
+    return 'لا يعمل: $reason';
+  }
+
+  @override
+  String get mcpTokenSaveFailed => 'تعذّر حفظ الرمز. حاول مرة أخرى.';
+
+  @override
+  String get mcpAllowedHosts => 'أسماء المضيفين المسموح بها';
+
+  @override
+  String get mcpAllowedHostsHint =>
+      'هذا الجهاز فقط. أضف الأسماء التي يرسلها وكيل أمام الخادم، مثل عنوان Tailscale.';
+
+  @override
+  String get mcpAllowedHostsInvalid =>
+      'أدخل أسماء المضيفين فقط، دون http:// أو منفذ، مفصولة بفواصل.';
+
+  @override
+  String get mcpAllowedHostsSave => 'حفظ';
 }

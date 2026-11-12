@@ -843,5 +843,18 @@
   "syncConflictKeepOther": "Simpan yang lain",
   "syncConflictKeepBoth": "Simpan kedua-duanya",
   "syncConflictLater": "Kemudian",
-  "syncConflicts": "Catatan dengan dua versi: {count}"
+  "syncConflicts": "Catatan dengan dua versi: {count}",
+  "mcpServerToggle": "Pelayan MCP",
+  "mcpServerToggleHint": "Membenarkan klien MCP seperti ChatGPT dan Codex membaca dan mencari dalam diari melalui alamat setempat peranti ini. Mereka hanya boleh membaca, dan kapsul masa kekal dimeterai.",
+  "mcpToken": "Token MCP",
+  "mcpTokenHint": "Klien MCP menghantarnya untuk dibenarkan masuk; pelayan bermula setelah token ditetapkan.",
+  "mcpTokenIsSet": "Sudah ditetapkan. Ketik untuk menggantikannya.",
+  "mcpTokenSet": "Tetapkan token",
+  "mcpListening": "Mendengar di {address}",
+  "mcpNotRunning": "Tidak berjalan: {reason}",
+  "mcpTokenSaveFailed": "Tidak dapat menyimpan token. Sila cuba lagi.",
+  "mcpAllowedHosts": "Nama hos yang dibenarkan",
+  "mcpAllowedHostsHint": "Peranti ini sahaja. Tambah nama yang dihantar oleh proksi di hadapan pelayan, seperti alamat Tailscale.",
+  "mcpAllowedHostsInvalid": "Masukkan nama hos sahaja, tanpa http:// atau port, dipisahkan dengan koma.",
+  "mcpAllowedHostsSave": "Simpan"
 }

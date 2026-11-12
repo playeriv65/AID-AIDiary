@@ -2918,4 +2918,52 @@ class AppLocalizationsPl extends AppLocalizations {
   String syncConflicts(int count) {
     return 'Wpisy w dwóch wersjach: $count';
   }
+
+  @override
+  String get mcpServerToggle => 'Serwer MCP';
+
+  @override
+  String get mcpServerToggleHint =>
+      'Pozwala klientom MCP, takim jak ChatGPT i Codex, czytać i przeszukiwać dziennik przez lokalny adres tego urządzenia. Mogą tylko czytać, a kapsuły czasu pozostają zapieczętowane.';
+
+  @override
+  String get mcpToken => 'Token MCP';
+
+  @override
+  String get mcpTokenHint =>
+      'Klienci MCP wysyłają go, aby uzyskać dostęp; serwer uruchamia się po jego ustawieniu.';
+
+  @override
+  String get mcpTokenIsSet => 'Ustawiony. Dotknij, aby go zastąpić.';
+
+  @override
+  String get mcpTokenSet => 'Ustaw token';
+
+  @override
+  String mcpListening(String address) {
+    return 'Nasłuchuje na $address';
+  }
+
+  @override
+  String mcpNotRunning(String reason) {
+    return 'Nie działa: $reason';
+  }
+
+  @override
+  String get mcpTokenSaveFailed =>
+      'Nie udało się zapisać tokena. Spróbuj ponownie.';
+
+  @override
+  String get mcpAllowedHosts => 'Dozwolone nazwy hostów';
+
+  @override
+  String get mcpAllowedHostsHint =>
+      'Tylko to urządzenie. Dodaj nazwy wysyłane przez serwer proxy przed serwerem, np. adres Tailscale.';
+
+  @override
+  String get mcpAllowedHostsInvalid =>
+      'Wpisz tylko nazwy hostów, bez http:// i portu, oddzielone przecinkami.';
+
+  @override
+  String get mcpAllowedHostsSave => 'Zapisz';
 }

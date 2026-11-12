@@ -14,6 +14,7 @@ import 'package:aid_diary/actions/entry_media_actions.dart';
 import 'package:aid_diary/actions/flashback_actions.dart';
 import 'package:aid_diary/actions/perf_actions.dart';
 import 'package:aid_diary/actions/link_actions.dart';
+import 'package:aid_diary/actions/mcp_actions.dart';
 import 'package:aid_diary/actions/place_actions.dart';
 import 'package:aid_diary/actions/photo_suggestion_actions.dart';
 import 'package:aid_diary/actions/screen_actions.dart';
@@ -61,6 +62,7 @@ class AppActions {
     ...updateActions,
     ...batchActions,
     ...sqlActions,
+    ...mcpActions,
   ];
 
   final List<AppAction> _actions;

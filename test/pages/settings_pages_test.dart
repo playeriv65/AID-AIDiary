@@ -8,6 +8,7 @@ library;
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/language_option.dart';
 import 'package:aid_diary/pages/settings/appearance_settings.dart';
+import 'package:aid_diary/pages/settings/command_line_settings.dart';
 import 'package:aid_diary/pages/settings/flashback_settings.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -44,6 +45,31 @@ void main() {
         tester, find.byKey(const ValueKey('showFlashbacks-switch')));
     expect(ConfigProvider.instance.get(Settings.showFlashbacks), isFalse);
     expect(yearsAgo, findsNothing);
+  });
+
+  testWidgets('the MCP server takes the host names a proxy sends',
+      (tester) async {
+    await DiaryAppHarness.setSetting(Settings.mcpServer, true);
+    DiaryAppHarness.size(tester, const Size(390, 844));
+    await tester.pumpWidget(harness.app(const CommandLineSettings()));
+    await tester.pumpAndSettle();
+    final hosts = find.byKey(const ValueKey('mcp-hosts'));
+    await tester.tap(hosts);
+    await tester.pumpAndSettle();
+
+    final save = find.byKey(const ValueKey('mcp-hosts-save'));
+    await tester.enterText(find.byType(TextField), 'https://x.example');
+    await tester.tap(save);
+    await tester.pumpAndSettle();
+    expect(find.textContaining('不带 http://'), findsOneWidget);
+
+    await tester.enterText(
+        find.byType(TextField), 'PC.example.ts.net, chatgpt.com');
+    await tester.pumpAndSettle();
+    await tapAndSettle(tester, save);
+    expect(ConfigProvider.instance.get(Settings.mcpAllowedHosts),
+        ['pc.example.ts.net', 'chatgpt.com']);
+    expect(find.text('pc.example.ts.net, chatgpt.com'), findsOneWidget);
   });
 
   testWidgets('a mood icon is reset to its own default', (tester) async {

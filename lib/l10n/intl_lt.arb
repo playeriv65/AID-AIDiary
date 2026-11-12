@@ -843,5 +843,18 @@
   "syncConflictKeepOther": "Palikti kitą",
   "syncConflictKeepBoth": "Palikti abi",
   "syncConflictLater": "Vėliau",
-  "syncConflicts": "Įrašai su dviem versijomis: {count}"
+  "syncConflicts": "Įrašai su dviem versijomis: {count}",
+  "mcpServerToggle": "MCP serveris",
+  "mcpServerToggleHint": "Leidžia MCP klientams, pavyzdžiui, ChatGPT ir Codex, skaityti dienoraštį ir jame ieškoti per vietinį šio įrenginio adresą. Jie gali tik skaityti, o laiko kapsulės lieka užantspauduotos.",
+  "mcpToken": "MCP prieigos raktas",
+  "mcpTokenHint": "MCP klientai jį siunčia, kad būtų įleisti; serveris paleidžiamas, kai jis nustatytas.",
+  "mcpTokenIsSet": "Nustatytas. Bakstelėkite, kad pakeistumėte.",
+  "mcpTokenSet": "Nustatyti raktą",
+  "mcpListening": "Klausosi adresu {address}",
+  "mcpNotRunning": "Neveikia: {reason}",
+  "mcpTokenSaveFailed": "Nepavyko išsaugoti prieigos rakto. Bandykite dar kartą.",
+  "mcpAllowedHosts": "Leidžiami pagrindinio kompiuterio vardai",
+  "mcpAllowedHostsHint": "Tik šis įrenginys. Pridėkite vardus, kuriuos siunčia priešais serverį esantis tarpinis serveris, pvz., Tailscale adresą.",
+  "mcpAllowedHostsInvalid": "Įveskite tik pagrindinio kompiuterio vardus be http:// ir prievado, atskirtus kableliais.",
+  "mcpAllowedHostsSave": "Išsaugoti"
 }

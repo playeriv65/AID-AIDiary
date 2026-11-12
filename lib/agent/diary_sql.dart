@@ -3,43 +3,31 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:aid_diary/agent/native/api/shell.dart';
-import 'package:aid_diary/database/read_only_sql.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:aid_diary/database/diary_sql_reader.dart';
 
-/// `sql` inside the agent's shell: queries on the diary through a
-/// connection of its own that is read-only, so whatever an agent writes in
-/// SQL fails, and changes go through `aid` and its actions.
+/// `sql` inside the agent's shell: read-only queries on the diary, through
+/// [readDiarySql] as `sql.query` runs them, so sealed time capsules stay
+/// sealed and changes go through `aid` and its actions.
 ///
 ///     sql "SELECT ..."     rows as a JSON array
-///     sql --schema [name]  the tables, indexes and views
+///     sql --schema         the tables, indexes and views
 ///     sql --limit N ...    at most N rows instead of [rowLimit]
 ///     ... | sql            the query from standard input
 class DiarySql {
-  DiarySql(this._open, {required this.rowLimit});
+  DiarySql(this.databasePath, {required this.rowLimit, required this.timeout});
 
-  /// Opens the diary read-only.
-  final Future<Database> Function() _open;
-
+  final String databasePath;
   final int rowLimit;
-  Database? _database;
+  final Duration timeout;
 
   static const usage = '''
 sql "SELECT ..."     rows as a JSON array
-sql --schema [name]  the tables, indexes and views
+sql --schema         the tables, indexes and views, and what their values mean
 sql --limit N ...    at most N rows
 ... | sql            the query from standard input
 ''';
-
-  Future<Database> get _db async {
-    final open = _database;
-    if (open != null) return open;
-    final database = await _open();
-    await database.execute('PRAGMA query_only = ON');
-    return _database = database;
-  }
 
   Future<ShellOutput> run(List<String> args, String stdin) async {
     var limit = rowLimit;
@@ -60,61 +48,30 @@ sql --limit N ...    at most N rows
       }
     }
     try {
-      if (schema) return await _schema(words.firstOrNull);
+      if (schema) {
+        final items = await diarySchema(databasePath, timeout: timeout);
+        return ShellOutput(
+            stdout: '$sqlConventions\n'
+                '${items.map((item) => '${item.sql};').join('\n')}\n',
+            stderr: '',
+            exitCode: 0);
+      }
       final query = words.isEmpty ? stdin.trim() : words.join(' ');
       if (query.isEmpty) return _fail(usage);
-      final command = databaseFileCommand(query);
-      if (command != null) {
-        return _fail('$command is not allowed: only the diary can be read');
-      }
-      final rows = await (await _db).rawQuery(query);
-      final shown = rows.take(limit).map(_plain).toList();
+      final result = await readDiarySql(databasePath, query,
+          limit: limit, timeout: timeout);
       return ShellOutput(
-          stdout: '${jsonEncode(shown)}\n',
-          stderr: rows.length > limit
-              ? 'Showing the first $limit of ${rows.length} rows; '
+          stdout: '${jsonEncode(result.rows)}\n',
+          stderr: result.total > limit
+              ? 'Showing the first $limit of ${result.total} rows; '
                   'narrow the query or use LIMIT/OFFSET.\n'
               : '',
           exitCode: 0);
-    } on DatabaseException catch (error) {
-      return _fail(_reason(error));
+    } on DiarySqlException catch (error) {
+      return _fail(error.message);
     }
   }
 
-  /// SQLite's own words, without the driver's wrapping and the file path.
-  static String _reason(DatabaseException error) =>
-      RegExp(r'SqliteException\(\d+\): ([^\n]+)')
-          .firstMatch('$error')
-          ?.group(1) ??
-      '$error';
-
-  Future<ShellOutput> _schema(String? name) async {
-    final rows = await (await _db).rawQuery(
-        "SELECT sql FROM sqlite_master WHERE sql IS NOT NULL "
-        "AND name NOT LIKE 'sqlite_%'"
-        "${name == null ? '' : ' AND (name = ? OR tbl_name = ?)'} "
-        "ORDER BY CASE type WHEN 'table' THEN 0 WHEN 'view' THEN 1 "
-        "WHEN 'index' THEN 2 ELSE 3 END, name",
-        [
-          if (name != null) ...[name, name]
-        ]);
-    return ShellOutput(
-        stdout: '${rows.map((row) => '${row['sql']};').join('\n')}\n',
-        stderr: '',
-        exitCode: 0);
-  }
-
-  static Map<String, Object?> _plain(Map<String, Object?> row) => {
-        for (final MapEntry(:key, :value) in row.entries)
-          key: value is Uint8List ? '<${value.length} bytes>' : value,
-      };
-
   static ShellOutput _fail(String message) =>
       ShellOutput(stdout: '', stderr: '$message\n', exitCode: 1);
-
-  Future<void> close() async {
-    final database = _database;
-    _database = null;
-    await database?.close();
-  }
 }

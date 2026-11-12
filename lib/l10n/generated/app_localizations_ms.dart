@@ -2854,4 +2854,52 @@ class AppLocalizationsMs extends AppLocalizations {
   String syncConflicts(int count) {
     return 'Catatan dengan dua versi: $count';
   }
+
+  @override
+  String get mcpServerToggle => 'Pelayan MCP';
+
+  @override
+  String get mcpServerToggleHint =>
+      'Membenarkan klien MCP seperti ChatGPT dan Codex membaca dan mencari dalam diari melalui alamat setempat peranti ini. Mereka hanya boleh membaca, dan kapsul masa kekal dimeterai.';
+
+  @override
+  String get mcpToken => 'Token MCP';
+
+  @override
+  String get mcpTokenHint =>
+      'Klien MCP menghantarnya untuk dibenarkan masuk; pelayan bermula setelah token ditetapkan.';
+
+  @override
+  String get mcpTokenIsSet => 'Sudah ditetapkan. Ketik untuk menggantikannya.';
+
+  @override
+  String get mcpTokenSet => 'Tetapkan token';
+
+  @override
+  String mcpListening(String address) {
+    return 'Mendengar di $address';
+  }
+
+  @override
+  String mcpNotRunning(String reason) {
+    return 'Tidak berjalan: $reason';
+  }
+
+  @override
+  String get mcpTokenSaveFailed =>
+      'Tidak dapat menyimpan token. Sila cuba lagi.';
+
+  @override
+  String get mcpAllowedHosts => 'Nama hos yang dibenarkan';
+
+  @override
+  String get mcpAllowedHostsHint =>
+      'Peranti ini sahaja. Tambah nama yang dihantar oleh proksi di hadapan pelayan, seperti alamat Tailscale.';
+
+  @override
+  String get mcpAllowedHostsInvalid =>
+      'Masukkan nama hos sahaja, tanpa http:// atau port, dipisahkan dengan koma.';
+
+  @override
+  String get mcpAllowedHostsSave => 'Simpan';
 }

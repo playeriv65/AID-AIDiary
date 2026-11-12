@@ -15,6 +15,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
+import '../support/diary_file.dart';
+
 import 'aid_shell_test.dart' show builtLibrary;
 
 /// Answers with [script]ed messages in turn, and keeps what it was sent.
@@ -81,23 +83,17 @@ void main() {
   setUp(() async {
     folder = await Directory.systemTemp.createTemp('diary_agent_test');
     final path = p.join(folder.path, 'diary.db');
-    final db = await databaseFactoryFfi.openDatabase(path);
-    await db
-        .execute('CREATE TABLE entries (id INTEGER PRIMARY KEY, text TEXT)');
-    await db.insert('entries', {'id': 1, 'text': 'a long walk by the river'});
-    await db.close();
+    await writeDiaryFile(path, entries: [
+      {'id': 1, 'text': 'a long walk by the river'},
+    ]);
     shell = await AidShell.open(
       aid: AidCommand(() => AppActions(devBuild: true, actions: const [])),
-      sql: DiarySql(
-          () => databaseFactoryFfi.openDatabase(path,
-              options:
-                  OpenDatabaseOptions(readOnly: true, singleInstance: false)),
-          rowLimit: 100),
+      sql: DiarySql(path, rowLimit: 100, timeout: const Duration(seconds: 5)),
     );
   });
 
   tearDown(() async {
-    await shell.close();
+    shell.close();
     await folder.delete(recursive: true);
   });
 

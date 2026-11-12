@@ -2913,6 +2913,54 @@ class AppLocalizationsPt extends AppLocalizations {
   String syncConflicts(int count) {
     return 'Entradas com duas versões: $count';
   }
+
+  @override
+  String get mcpServerToggle => 'Servidor MCP';
+
+  @override
+  String get mcpServerToggleHint =>
+      'Permite que clientes MCP como o ChatGPT e o Codex leiam e pesquisem o diário através de um endereço local deste dispositivo. Só podem ler, e as cápsulas do tempo continuam seladas.';
+
+  @override
+  String get mcpToken => 'Token MCP';
+
+  @override
+  String get mcpTokenHint =>
+      'Os clientes MCP enviam-no para entrar; o servidor arranca quando estiver definido.';
+
+  @override
+  String get mcpTokenIsSet => 'Definido. Toque para o substituir.';
+
+  @override
+  String get mcpTokenSet => 'Definir token';
+
+  @override
+  String mcpListening(String address) {
+    return 'À escuta em $address';
+  }
+
+  @override
+  String mcpNotRunning(String reason) {
+    return 'Não está a funcionar: $reason';
+  }
+
+  @override
+  String get mcpTokenSaveFailed =>
+      'Não foi possível guardar o token. Tente novamente.';
+
+  @override
+  String get mcpAllowedHosts => 'Nomes de anfitrião permitidos';
+
+  @override
+  String get mcpAllowedHostsHint =>
+      'Apenas este dispositivo. Adicione os nomes que um proxy à frente do servidor envia, como um endereço Tailscale.';
+
+  @override
+  String get mcpAllowedHostsInvalid =>
+      'Introduza apenas nomes de anfitrião, sem http:// nem porta, separados por vírgulas.';
+
+  @override
+  String get mcpAllowedHostsSave => 'Guardar';
 }
 
 /// The translations for Portuguese, as used in Brazil (`pt_BR`).
@@ -5823,4 +5871,52 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
   String syncConflicts(int count) {
     return 'Entradas com duas versões: $count';
   }
+
+  @override
+  String get mcpServerToggle => 'Servidor MCP';
+
+  @override
+  String get mcpServerToggleHint =>
+      'Permite que clientes MCP como o ChatGPT e o Codex leiam e pesquisem o diário por um endereço local deste dispositivo. Eles só podem ler, e as cápsulas do tempo continuam seladas.';
+
+  @override
+  String get mcpToken => 'Token MCP';
+
+  @override
+  String get mcpTokenHint =>
+      'Os clientes MCP o enviam para entrar; o servidor inicia quando ele estiver definido.';
+
+  @override
+  String get mcpTokenIsSet => 'Definido. Toque para substituí-lo.';
+
+  @override
+  String get mcpTokenSet => 'Definir token';
+
+  @override
+  String mcpListening(String address) {
+    return 'Escutando em $address';
+  }
+
+  @override
+  String mcpNotRunning(String reason) {
+    return 'Não está em execução: $reason';
+  }
+
+  @override
+  String get mcpTokenSaveFailed =>
+      'Não foi possível salvar o token. Tente novamente.';
+
+  @override
+  String get mcpAllowedHosts => 'Nomes de host permitidos';
+
+  @override
+  String get mcpAllowedHostsHint =>
+      'Somente este dispositivo. Adicione os nomes que um proxy na frente do servidor envia, como um endereço Tailscale.';
+
+  @override
+  String get mcpAllowedHostsInvalid =>
+      'Digite apenas nomes de host, sem http:// nem porta, separados por vírgulas.';
+
+  @override
+  String get mcpAllowedHostsSave => 'Salvar';
 }

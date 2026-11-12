@@ -322,28 +322,37 @@ and `test/config_settings_test.dart` checks the registry. Photos, videos and
 voice notes share attachment storage; `MediaKind` distinguishes their type,
 so backup/sync must preserve them through the same ownership path.
 
-## Agent-native: actions shared by the GUI and the CLI
+## Agent-native: one action list, every surface
 
 Everything the app does is an action defined once (`AppAction`: an id such
 as `entry.create`, a one-sentence description, typed parameters, a risk
-level and a `run` function) and listed in `AppActions`. The surfaces are
-derived from that list, so the GUI and the command line always offer the
-same things:
+level and a `run` function) and listed in `AppActions`. Every surface
+offers that same list and stays in step with it by construction: an action
+implemented once appears in all of them, with nothing to register per
+surface.
 
-- GUI buttons call `AppActions.instance.run(id, args)` for one-step
-  operations (deleting, restoring, syncing now, stopping sync). Multi-step
-  flows run one action per step and ask in between: connecting sync runs
-  `sync.connect_webdav` or `sync.connect_google`, then, by the `space` it
-  returns, `sync.create_space`, pairing or `sync.unlock`; none of them
-  waits for the first sync. `sync.sign_in_again` renews a Google sign-in.
-- The command palette (Ctrl+K, or Settings → Command line → All commands)
-  lists every action and runs it through a form.
-- The agent API (`actions/agent_api.dart`) serves the actions over HTTP on
-  the loopback address with a token per start; the `aid` CLI under `cli/`
-  talks to it, on this computer or over adb on a phone or tablet. It is
-  always on in development builds and behind the "Command line interface"
-  setting in others.
-- `aid guide` is written from the actions themselves.
+| Surface | For | How it reaches the actions |
+|---|---|---|
+| GUI and command palette | People | In process: buttons call `AppActions.instance.run(id, args)`; the palette (Ctrl+K, or Settings → Command line → All commands) lists every action and runs it through a form |
+| In-app agent | A model the user chose, inside the app | In process: its shell's `aid` command runs the actions ([In-app agent](#in-app-agent)) |
+| Agent API (`actions/agent_api.dart`) | Local programs and scripts: the app's HTTP API | HTTP JSON on the loopback address with a token per start; always on in development builds, behind the "Command line interface" setting in others |
+| `aid` CLI (`cli/`) | Shells, scripts, local coding agents, and a phone or tablet over adb | A client of the agent API, not a server of its own; `aid guide` is written from the actions themselves |
+| MCP server (`actions/mcp_api.dart`) | MCP clients, including remote ones such as ChatGPT through a reverse proxy | Streamable HTTP on the loopback address with a bearer token ([MCP](#mcp)); read-only for now |
+
+Per surface only two things are written by hand: its transport and
+authentication, and for MCP its policy of which actions it offers (those
+that only read and are listed in `mcp.tools`). No surface has logic of its
+own or its own copy of an action. Tests keep them in step:
+`test/widgets/command_palette_test.dart` checks the palette offers every
+action, `test/actions/app_actions_test.dart` and `cli/test/` run actions
+through the agent API and the CLI, and `test/actions/mcp_api_test.dart`
+derives the expected MCP tool list from `AppActions` and compares it with
+what the server lists.
+
+Multi-step GUI flows run one action per step and ask in between: connecting
+sync runs `sync.connect_webdav` or `sync.connect_google`, then, by the
+`space` it returns, `sync.create_space`, pairing or `sync.unlock`; none of
+them waits for the first sync. `sync.sign_in_again` renews a Google sign-in.
 
 The command line covers the GUI: whatever a person can do or open in the
 GUI, an action does or `ui.navigate` opens. It may do more (bulk work,
@@ -414,9 +423,9 @@ Rules that keep it so:
   lists the few flows that are not places, with why), and every place
   opened by name exists.
 - Bulk changes to diary data go through SQL rather than one action per row
-  (`sql_actions.dart`): `sql.query` returns rows through a separate
-  read-only connection and rejects `ATTACH` and `VACUUM` to keep it within
-  the diary database. `sql.execute` runs one
+  (`sql_actions.dart`): `sql.query` returns rows, read as described in
+  [Read-only SQL](#read-only-sql), and `sql.schema` the tables with the
+  conventions their values follow. `sql.execute` runs one
   statement or a JSON file of them in one transaction (destructive, so
   `--yes`), keeps a copy of the database in `before-sql/` beside it first
   (`agent.sqlSnapshots` copies), then reloads the stores. The sync triggers
@@ -429,6 +438,73 @@ Rules that keep it so:
   HTTP; `test/widgets/command_palette_test.dart` checks the palette offers
   every action; `test/routing/` opens the places through `ui.navigate` in
   a running app shell; `cli/test/` covers the CLI, adb included.
+
+### MCP
+
+The MCP server (`actions/mcp_api.dart`) lets MCP clients such as ChatGPT
+and Codex read the diary. It is `mcp_dart`'s `StreamableMcpServer`
+(Streamable HTTP, JSON responses rather than SSE where the exchange allows
+it). That library owns the protocol: JSON-RPC, `initialize` and version
+negotiation (MCP 2026-07-28 requests run statelessly, older clients get a
+session with `Mcp-Session-Id`), tool argument validation against the
+schema, and the Host/Origin check. Ours is only the policy and the wiring:
+
+- Tools are generated from `AppActions`: an action is offered when its id
+  is in `mcp.tools` (`app_config.json`) and its risk is `read`; a listed
+  action this build lacks (`entry.search`, `search.status` until search
+  lands) is left out. The tool name is the id with `_` for `.`; the
+  description is the action's; parameters become the JSON schema
+  (`additionalProperties: false`); annotations say `readOnlyHint`. A Map
+  result is returned as `structuredContent` and as its JSON text, any other
+  result as JSON text; an `ActionException` is a tool error carrying its
+  code and message. `mcpInstructions` tells the client how the tools fit
+  together.
+- It listens only on the loopback address (`mcp.host`, `mcp.port`,
+  `mcp.path`); other machines reach it through a reverse proxy on this one
+  (`tailscale serve`, nginx). Before any MCP message is read, `Host` must be
+  a loopback name or one of the `mcpAllowedHosts` setting, and an `Origin`,
+  when sent, must have one of those hosts (DNS rebinding). The host names
+  belong to the machine, so they are a setting changed with `settings.set`,
+  never configuration in the repository. Then the request needs
+  `Authorization: Bearer <token>`, compared in constant time; the token is a
+  secret-store setting set with `mcp.set_token` (at least
+  `mcp.minTokenLength` characters). A refused token gets `mcp_dart`'s
+  `403 Forbidden`: the library answers `401` only together with OAuth
+  protected-resource metadata, which would announce an OAuth server that
+  does not exist.
+- `McpSwitch` starts it while the `mcpServer` setting is on and a token is
+  set, and restarts it when the allowed hosts change; `SettingsService`
+  calls it, so the settings page (Settings → Command line) and
+  `settings.set` behave the same. `mcp.status` shows whether it runs, where,
+  the allowed hosts, the tools and why it is not running (a taken port).
+  From the command line: `aid settings.set key=mcpServer value=true`,
+  `aid mcp.set_token token=...` and, behind a proxy,
+  `aid settings.set key=mcpAllowedHosts value='["pc.example.ts.net"]'`.
+- It runs wherever the app does. On Android it serves only the device
+  itself (or `adb forward`) and stops answering while Android freezes the
+  app in the background; there is no proxy on the device, so it is meant
+  for the computer.
+- Sessions stay until the client deletes them or the server stops;
+  `mcp_dart` has no idle expiry.
+
+Tests: `test/actions/mcp_api_test.dart` runs the server on port 0 with a
+real HTTP client: initialize, the tool list compared with the one derived
+from `AppActions`, each tool, sealed capsules, tool errors, and refused
+tokens, hosts and origins.
+
+### Read-only SQL
+
+`sql.query`, `sql.schema` and the in-app agent's `sql` share
+`database/diary_sql_reader.dart`. A query runs in an isolate of its own,
+stopped after `agent.sqlTimeoutSeconds`, on an in-memory copy of the diary
+made for it from a read-only attachment of the file. The copy leaves out what
+sealed time capsules hold (`SqlCopy` says how for every table; a table
+missing there is not copied): their `entries` row keeps only its id, uuid,
+times, day, `open_at`, `deleted_at` and `is_hidden`, and their tags,
+attachments, kept passages, citations, quotes of them and weather only they
+share are gone. The copy is then `query_only`; one statement per query,
+`ATTACH` and `VACUUM` are refused, and at most `agent.sqlMaxRows` rows come
+back, with the total. `sqlConventions` explains how values are written.
 
 ## In-app agent
 
@@ -454,9 +530,9 @@ authorization is designed (TODO.md, "In-app agent"):
   `app_config.json` (Claude, Codex, Gemini through their ACP adapters) in an
   `agent/` folder of the app's data whose `AGENTS.md`/`CLAUDE.md`/`GEMINI.md`
   (`assets/agent/workspace.md`) tell it to use the `aid` command line;
-  `AID_API_INFO` points that `aid` at this app. No MCP server is offered:
-  the agent's own shell runs `aid`. Its permission requests take the first
-  allow-once option for now.
+  `AID_API_INFO` points that `aid` at this app. These agents use their
+  own shell's `aid`, not the [MCP server](#mcp). Their permission requests
+  take the first allow-once option for now.
 
 Prompts are assets (`assets/agent/`). Tests: `test/agent/` covers the `aid`
 grammar, read-only SQL, the Rust shell (loading the library

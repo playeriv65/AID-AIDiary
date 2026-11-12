@@ -843,5 +843,18 @@
   "syncConflictKeepOther": "Conserva l'altra",
   "syncConflictKeepBoth": "Conserva-les totes dues",
   "syncConflictLater": "Més tard",
-  "syncConflicts": "Entrades amb dues versions: {count}"
+  "syncConflicts": "Entrades amb dues versions: {count}",
+  "mcpServerToggle": "Servidor MCP",
+  "mcpServerToggleHint": "Permet que clients MCP com ChatGPT i Codex llegeixin i cerquin el diari mitjançant una adreça local d’aquest dispositiu. Només poden llegir, i les càpsules del temps continuen segellades.",
+  "mcpToken": "Testimoni MCP",
+  "mcpTokenHint": "Els clients MCP l’envien per entrar; el servidor s’inicia quan està definit.",
+  "mcpTokenIsSet": "Definit. Toca per substituir-lo.",
+  "mcpTokenSet": "Defineix el testimoni",
+  "mcpListening": "Escoltant a {address}",
+  "mcpNotRunning": "No s’està executant: {reason}",
+  "mcpTokenSaveFailed": "No s’ha pogut desar el testimoni. Torna-ho a provar.",
+  "mcpAllowedHosts": "Noms d’amfitrió permesos",
+  "mcpAllowedHostsHint": "Només aquest dispositiu. Afegeix els noms que envia un servidor intermediari davant del servidor, com ara una adreça de Tailscale.",
+  "mcpAllowedHostsInvalid": "Escriu només noms d’amfitrió, sense http:// ni port, separats per comes.",
+  "mcpAllowedHostsSave": "Desa"
 }

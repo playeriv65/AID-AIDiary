@@ -843,5 +843,18 @@
   "syncConflictKeepOther": "الاحتفاظ بالأخرى",
   "syncConflictKeepBoth": "الاحتفاظ بالاثنتين",
   "syncConflictLater": "لاحقًا",
-  "syncConflicts": "إدخالات لها نسختان: {count}"
+  "syncConflicts": "إدخالات لها نسختان: {count}",
+  "mcpServerToggle": "خادم MCP",
+  "mcpServerToggleHint": "يتيح لعملاء MCP مثل ChatGPT وCodex قراءة اليوميات والبحث فيها عبر عنوان محلي على هذا الجهاز. يمكنهم القراءة فقط، وتبقى كبسولات الزمن مختومة.",
+  "mcpToken": "رمز MCP",
+  "mcpTokenHint": "يرسله عملاء MCP ليُسمح لهم بالدخول؛ يبدأ الخادم بعد تعيينه.",
+  "mcpTokenIsSet": "مُعيَّن. انقر لاستبداله.",
+  "mcpTokenSet": "تعيين الرمز",
+  "mcpListening": "يستمع على {address}",
+  "mcpNotRunning": "لا يعمل: {reason}",
+  "mcpTokenSaveFailed": "تعذّر حفظ الرمز. حاول مرة أخرى.",
+  "mcpAllowedHosts": "أسماء المضيفين المسموح بها",
+  "mcpAllowedHostsHint": "هذا الجهاز فقط. أضف الأسماء التي يرسلها وكيل أمام الخادم، مثل عنوان Tailscale.",
+  "mcpAllowedHostsInvalid": "أدخل أسماء المضيفين فقط، دون http:// أو منفذ، مفصولة بفواصل.",
+  "mcpAllowedHostsSave": "حفظ"
 }

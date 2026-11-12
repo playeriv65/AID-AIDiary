@@ -843,5 +843,18 @@
   "syncConflictKeepOther": "Запази другата",
   "syncConflictKeepBoth": "Запази и двете",
   "syncConflictLater": "По-късно",
-  "syncConflicts": "Записи с две версии: {count}"
+  "syncConflicts": "Записи с две версии: {count}",
+  "mcpServerToggle": "MCP сървър",
+  "mcpServerToggleHint": "Позволява на MCP клиенти като ChatGPT и Codex да четат и търсят в дневника през локален адрес на това устройство. Те могат само да четат, а капсулите на времето остават запечатани.",
+  "mcpToken": "MCP токен",
+  "mcpTokenHint": "MCP клиентите го изпращат, за да получат достъп; сървърът стартира, след като е зададен.",
+  "mcpTokenIsSet": "Зададен. Докоснете, за да го замените.",
+  "mcpTokenSet": "Задаване на токен",
+  "mcpListening": "Слуша на {address}",
+  "mcpNotRunning": "Не работи: {reason}",
+  "mcpTokenSaveFailed": "Токенът не можа да бъде запазен. Опитайте отново.",
+  "mcpAllowedHosts": "Разрешени имена на хостове",
+  "mcpAllowedHostsHint": "Само това устройство. Добавете имената, които изпраща прокси пред сървъра, например адрес на Tailscale.",
+  "mcpAllowedHostsInvalid": "Въведете само имена на хостове, без http:// или порт, разделени със запетаи.",
+  "mcpAllowedHostsSave": "Запазване"
 }

@@ -12,10 +12,9 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 /// system, no processes, host files or network. Its only way to the diary
 /// is the two commands answered here, `aid` and `sql`.
 class AidShell {
-  AidShell._(this._shell, this._sql);
+  AidShell._(this._shell);
 
   final AgentShell _shell;
-  final DiarySql _sql;
 
   static Future<void>? _loaded;
 
@@ -35,14 +34,11 @@ class AidShell {
             stdout: '', stderr: '$name: not a command\n', exitCode: 127),
       },
     );
-    return AidShell._(shell, sql);
+    return AidShell._(shell);
   }
 
   /// Runs [script]; files and variables it leaves stay for the next one.
   Future<ShellOutput> run(String script) => _shell.exec(script: script);
 
-  Future<void> close() async {
-    await _sql.close();
-    _shell.dispose();
-  }
+  void close() => _shell.dispose();
 }

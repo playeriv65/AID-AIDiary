@@ -843,5 +843,18 @@
   "syncConflictKeepOther": "もう一方を残す",
   "syncConflictKeepBoth": "両方残す",
   "syncConflictLater": "後で",
-  "syncConflicts": "2つのバージョンがある日記: {count}"
+  "syncConflicts": "2つのバージョンがある日記: {count}",
+  "mcpServerToggle": "MCP サーバー",
+  "mcpServerToggleHint": "ChatGPT や Codex などの MCP クライアントが、このデバイスのローカルアドレスから日記を読み、検索できるようにします。読み取りのみで、タイムカプセルは封印されたままです。",
+  "mcpToken": "MCP トークン",
+  "mcpTokenHint": "MCP クライアントは接続にこれを送ります。設定するとサーバーが起動します。",
+  "mcpTokenIsSet": "設定済み。タップして置き換えます。",
+  "mcpTokenSet": "トークンを設定",
+  "mcpListening": "{address} でリッスンしています",
+  "mcpNotRunning": "実行されていません: {reason}",
+  "mcpTokenSaveFailed": "トークンを保存できませんでした。もう一度お試しください。",
+  "mcpAllowedHosts": "許可するホスト名",
+  "mcpAllowedHostsHint": "このデバイスのみ。サーバーの前に置いたプロキシが送る名前（Tailscale のアドレスなど）を追加します。",
+  "mcpAllowedHostsInvalid": "ホスト名のみを、http:// やポートを付けずにカンマ区切りで入力してください。",
+  "mcpAllowedHostsSave": "保存"
 }

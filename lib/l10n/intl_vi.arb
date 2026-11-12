@@ -843,5 +843,18 @@
   "syncConflictKeepOther": "Giữ bản kia",
   "syncConflictKeepBoth": "Giữ cả hai",
   "syncConflictLater": "Để sau",
-  "syncConflicts": "Mục có hai phiên bản: {count}"
+  "syncConflicts": "Mục có hai phiên bản: {count}",
+  "mcpServerToggle": "Máy chủ MCP",
+  "mcpServerToggleHint": "Cho phép các ứng dụng khách MCP như ChatGPT và Codex đọc và tìm kiếm nhật ký qua một địa chỉ cục bộ trên thiết bị này. Chúng chỉ có thể đọc, và các viên nang thời gian vẫn được niêm phong.",
+  "mcpToken": "Mã thông báo MCP",
+  "mcpTokenHint": "Ứng dụng khách MCP gửi mã này để được vào; máy chủ khởi động khi mã đã được đặt.",
+  "mcpTokenIsSet": "Đã đặt. Chạm để thay thế.",
+  "mcpTokenSet": "Đặt mã thông báo",
+  "mcpListening": "Đang lắng nghe tại {address}",
+  "mcpNotRunning": "Không chạy: {reason}",
+  "mcpTokenSaveFailed": "Không thể lưu mã thông báo. Vui lòng thử lại.",
+  "mcpAllowedHosts": "Tên máy chủ được phép",
+  "mcpAllowedHostsHint": "Chỉ thiết bị này. Thêm các tên mà proxy đặt trước máy chủ gửi đến, chẳng hạn địa chỉ Tailscale.",
+  "mcpAllowedHostsInvalid": "Chỉ nhập tên máy chủ, không có http:// hay cổng, phân tách bằng dấu phẩy.",
+  "mcpAllowedHostsSave": "Lưu"
 }

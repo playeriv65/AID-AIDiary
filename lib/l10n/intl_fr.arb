@@ -843,5 +843,18 @@
   "syncConflictKeepOther": "Garder l'autre",
   "syncConflictKeepBoth": "Garder les deux",
   "syncConflictLater": "Plus tard",
-  "syncConflicts": "Entrées en deux versions : {count}"
+  "syncConflicts": "Entrées en deux versions : {count}",
+  "mcpServerToggle": "Serveur MCP",
+  "mcpServerToggleHint": "Permet aux clients MCP comme ChatGPT et Codex de lire et de rechercher le journal via une adresse locale de cet appareil. Ils peuvent seulement lire, et les capsules temporelles restent scellées.",
+  "mcpToken": "Jeton MCP",
+  "mcpTokenHint": "Les clients MCP l’envoient pour être admis ; le serveur démarre une fois qu’il est défini.",
+  "mcpTokenIsSet": "Défini. Touchez pour le remplacer.",
+  "mcpTokenSet": "Définir le jeton",
+  "mcpListening": "À l’écoute sur {address}",
+  "mcpNotRunning": "Arrêté : {reason}",
+  "mcpTokenSaveFailed": "Impossible d’enregistrer le jeton. Veuillez réessayer.",
+  "mcpAllowedHosts": "Noms d’hôte autorisés",
+  "mcpAllowedHostsHint": "Cet appareil uniquement. Ajoutez les noms qu’envoie un proxy placé devant le serveur, comme une adresse Tailscale.",
+  "mcpAllowedHostsInvalid": "Saisissez uniquement des noms d’hôte, sans http:// ni port, séparés par des virgules.",
+  "mcpAllowedHostsSave": "Enregistrer"
 }

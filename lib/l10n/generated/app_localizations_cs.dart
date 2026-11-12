@@ -2887,4 +2887,52 @@ class AppLocalizationsCs extends AppLocalizations {
   String syncConflicts(int count) {
     return 'Záznamy se dvěma verzemi: $count';
   }
+
+  @override
+  String get mcpServerToggle => 'Server MCP';
+
+  @override
+  String get mcpServerToggleHint =>
+      'Umožní klientům MCP, jako jsou ChatGPT a Codex, číst deník a hledat v něm přes místní adresu tohoto zařízení. Mohou jen číst a časové kapsle zůstávají zapečetěné.';
+
+  @override
+  String get mcpToken => 'Token MCP';
+
+  @override
+  String get mcpTokenHint =>
+      'Klienti MCP ho posílají, aby byli vpuštěni; server se spustí, jakmile je nastaven.';
+
+  @override
+  String get mcpTokenIsSet => 'Nastaven. Klepnutím ho nahradíte.';
+
+  @override
+  String get mcpTokenSet => 'Nastavit token';
+
+  @override
+  String mcpListening(String address) {
+    return 'Naslouchá na $address';
+  }
+
+  @override
+  String mcpNotRunning(String reason) {
+    return 'Neběží: $reason';
+  }
+
+  @override
+  String get mcpTokenSaveFailed =>
+      'Token se nepodařilo uložit. Zkuste to znovu.';
+
+  @override
+  String get mcpAllowedHosts => 'Povolené názvy hostitelů';
+
+  @override
+  String get mcpAllowedHostsHint =>
+      'Jen toto zařízení. Přidejte názvy, které posílá proxy před serverem, například adresu Tailscale.';
+
+  @override
+  String get mcpAllowedHostsInvalid =>
+      'Zadejte jen názvy hostitelů bez http:// a portu, oddělené čárkami.';
+
+  @override
+  String get mcpAllowedHostsSave => 'Uložit';
 }

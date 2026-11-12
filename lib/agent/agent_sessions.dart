@@ -19,7 +19,6 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
-import 'package:sqflite/sqflite.dart';
 
 /// The agent conversations open in the app: in-app ones by id, each with
 /// its own shell, and agents started over ACP by name. They live in memory;
@@ -68,9 +67,9 @@ class AgentSessions {
     final path = await AppDatabase.instance.getInternalPath();
     final shell = await AidShell.open(
       aid: AidCommand(() => AppActions.instance),
-      sql: DiarySql(
-          () => openDatabase(path, readOnly: true, singleInstance: false),
-          rowLimit: AppConfig.instance.agentSqlRows),
+      sql: DiarySql(path,
+          rowLimit: AppConfig.instance.agentSqlRows,
+          timeout: AppConfig.instance.sqlTimeout),
     );
     return (made, _shells[made] = shell);
   }
@@ -97,7 +96,7 @@ class AgentSessions {
 
   Future<void> close(String id) async {
     _agents.remove(id);
-    await _shells.remove(id)?.close();
+    _shells.remove(id)?.close();
   }
 
   /// The ACP agent called [name], started on first use; [fresh] starts a

@@ -9,6 +9,7 @@ import 'package:flutter/foundation.dart'
     show LicenseEntryWithLineBreaks, LicenseRegistry;
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:aid_diary/actions/agent_api.dart';
+import 'package:aid_diary/actions/mcp_api.dart';
 import 'package:aid_diary/actions/app_actions.dart';
 import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/config_provider.dart';
@@ -115,6 +116,7 @@ void main() async {
 
   // After the first frame is on its way; the command line can wait that long.
   unawaited(AgentApiSwitch.instance.apply());
+  unawaited(McpSwitch.instance.apply());
 }
 
 class MainApp extends StatefulWidget {

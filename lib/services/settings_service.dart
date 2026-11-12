@@ -5,6 +5,7 @@
 import 'dart:io';
 
 import 'package:aid_diary/actions/agent_api.dart';
+import 'package:aid_diary/actions/mcp_api.dart';
 import 'package:aid_diary/background/background_work.dart';
 import 'package:aid_diary/config_provider.dart';
 import 'package:aid_diary/database/entry_store.dart';
@@ -29,6 +30,9 @@ enum _Effect {
 
   /// The command line server starts or stops.
   agentApi,
+
+  /// The MCP server starts, stops or restarts with other allowed hosts.
+  mcp,
 }
 
 /// Changes settings the way the settings pages do: stores the value, then
@@ -62,6 +66,8 @@ class SettingsService {
     Settings.autoBackupInterval: _Effect.autoBackup,
     Settings.autoBackupRequireCharging: _Effect.autoBackup,
     Settings.agentApi: _Effect.agentApi,
+    Settings.mcpServer: _Effect.mcp,
+    Settings.mcpAllowedHosts: _Effect.mcp,
   };
 
   /// Turning these on shows notifications, so Android must allow them.
@@ -116,6 +122,8 @@ class SettingsService {
         EntryStore.instance.applyDiaryDaySettings();
       case _Effect.agentApi:
         await AgentApiSwitch.instance.apply();
+      case _Effect.mcp:
+        await McpSwitch.instance.apply();
       // The rest are Android's: the notification and background services
       // exist nowhere else, and the settings pages hide them there.
       case _ when !Platform.isAndroid:

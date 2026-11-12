@@ -845,5 +845,18 @@
   "syncConflictKeepOther": "Пакінуць іншую",
   "syncConflictKeepBoth": "Пакінуць абедзве",
   "syncConflictLater": "Пазней",
-  "syncConflicts": "Запісы з дзвюма версіямі: {count}"
+  "syncConflicts": "Запісы з дзвюма версіямі: {count}",
+  "mcpServerToggle": "MCP-сервер",
+  "mcpServerToggleHint": "Дазваляе MCP-кліентам, напрыклад ChatGPT і Codex, чытаць дзённік і шукаць у ім праз лакальны адрас гэтай прылады. Яны могуць толькі чытаць, а капсулы часу застаюцца запячатанымі.",
+  "mcpToken": "Токен MCP",
+  "mcpTokenHint": "MCP-кліенты адпраўляюць яго, каб атрымаць доступ; сервер запускаецца, калі токен зададзены.",
+  "mcpTokenIsSet": "Зададзены. Націсніце, каб замяніць.",
+  "mcpTokenSet": "Задаць токен",
+  "mcpListening": "Чакае злучэнняў на {address}",
+  "mcpNotRunning": "Не запушчаны: {reason}",
+  "mcpTokenSaveFailed": "Не ўдалося захаваць токен. Паспрабуйце яшчэ раз.",
+  "mcpAllowedHosts": "Дазволеныя імёны хостаў",
+  "mcpAllowedHostsHint": "Толькі гэта прылада. Дадайце імёны, якія адпраўляе проксі перад серверам, напрыклад адрас Tailscale.",
+  "mcpAllowedHostsInvalid": "Увядзіце толькі імёны хостаў, без http:// і порта, праз коску.",
+  "mcpAllowedHostsSave": "Захаваць"
 }

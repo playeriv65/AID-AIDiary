@@ -2900,4 +2900,52 @@ class AppLocalizationsFi extends AppLocalizations {
   String syncConflicts(int count) {
     return 'Merkinnät, joilla on kaksi versiota: $count';
   }
+
+  @override
+  String get mcpServerToggle => 'MCP-palvelin';
+
+  @override
+  String get mcpServerToggleHint =>
+      'Antaa MCP-asiakkaiden, kuten ChatGPT:n ja Codexin, lukea päiväkirjaa ja hakea siitä tämän laitteen paikallisen osoitteen kautta. Ne voivat vain lukea, ja aikakapselit pysyvät sinetöityinä.';
+
+  @override
+  String get mcpToken => 'MCP-tunnus';
+
+  @override
+  String get mcpTokenHint =>
+      'MCP-asiakkaat lähettävät tämän päästäkseen sisään; palvelin käynnistyy, kun se on asetettu.';
+
+  @override
+  String get mcpTokenIsSet => 'Asetettu. Korvaa napauttamalla.';
+
+  @override
+  String get mcpTokenSet => 'Aseta tunnus';
+
+  @override
+  String mcpListening(String address) {
+    return 'Kuuntelee osoitteessa $address';
+  }
+
+  @override
+  String mcpNotRunning(String reason) {
+    return 'Ei käynnissä: $reason';
+  }
+
+  @override
+  String get mcpTokenSaveFailed =>
+      'Tunnusta ei voitu tallentaa. Yritä uudelleen.';
+
+  @override
+  String get mcpAllowedHosts => 'Sallitut isäntänimet';
+
+  @override
+  String get mcpAllowedHostsHint =>
+      'Vain tämä laite. Lisää nimet, jotka palvelimen edessä oleva välityspalvelin lähettää, esimerkiksi Tailscale-osoite.';
+
+  @override
+  String get mcpAllowedHostsInvalid =>
+      'Anna vain isäntänimiä ilman http://-alkua tai porttia, pilkuilla erotettuina.';
+
+  @override
+  String get mcpAllowedHostsSave => 'Tallenna';
 }

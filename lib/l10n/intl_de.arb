@@ -843,5 +843,18 @@
   "syncConflictKeepOther": "Die andere behalten",
   "syncConflictKeepBoth": "Beide behalten",
   "syncConflictLater": "Später",
-  "syncConflicts": "Einträge mit zwei Versionen: {count}"
+  "syncConflicts": "Einträge mit zwei Versionen: {count}",
+  "mcpServerToggle": "MCP-Server",
+  "mcpServerToggleHint": "Lässt MCP-Clients wie ChatGPT und Codex das Tagebuch über eine lokale Adresse dieses Geräts lesen und durchsuchen. Sie können nur lesen, und Zeitkapseln bleiben versiegelt.",
+  "mcpToken": "MCP-Token",
+  "mcpTokenHint": "MCP-Clients senden dies, um Zugang zu erhalten; der Server startet, sobald es gesetzt ist.",
+  "mcpTokenIsSet": "Gesetzt. Tippen zum Ersetzen.",
+  "mcpTokenSet": "Token setzen",
+  "mcpListening": "Lauscht auf {address}",
+  "mcpNotRunning": "Läuft nicht: {reason}",
+  "mcpTokenSaveFailed": "Das Token konnte nicht gespeichert werden. Bitte erneut versuchen.",
+  "mcpAllowedHosts": "Erlaubte Hostnamen",
+  "mcpAllowedHostsHint": "Nur dieses Gerät. Namen hinzufügen, die ein Proxy vor dem Server sendet, etwa eine Tailscale-Adresse.",
+  "mcpAllowedHostsInvalid": "Nur Hostnamen eingeben, ohne http:// oder Port, durch Kommas getrennt.",
+  "mcpAllowedHostsSave": "Speichern"
 }

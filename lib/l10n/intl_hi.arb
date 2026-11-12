@@ -843,5 +843,18 @@
   "syncConflictKeepOther": "दूसरा रखें",
   "syncConflictKeepBoth": "दोनों रखें",
   "syncConflictLater": "बाद में",
-  "syncConflicts": "दो संस्करणों वाली प्रविष्टियाँ: {count}"
+  "syncConflicts": "दो संस्करणों वाली प्रविष्टियाँ: {count}",
+  "mcpServerToggle": "MCP सर्वर",
+  "mcpServerToggleHint": "ChatGPT और Codex जैसे MCP क्लाइंट को इस डिवाइस के स्थानीय पते से डायरी पढ़ने और खोजने देता है। वे केवल पढ़ सकते हैं, और टाइम कैप्सूल सीलबंद रहते हैं।",
+  "mcpToken": "MCP टोकन",
+  "mcpTokenHint": "MCP क्लाइंट अंदर आने के लिए इसे भेजते हैं; इसे सेट करने पर सर्वर शुरू होता है।",
+  "mcpTokenIsSet": "सेट है। बदलने के लिए टैप करें।",
+  "mcpTokenSet": "टोकन सेट करें",
+  "mcpListening": "{address} पर सुन रहा है",
+  "mcpNotRunning": "नहीं चल रहा: {reason}",
+  "mcpTokenSaveFailed": "टोकन सहेजा नहीं जा सका। कृपया फिर से कोशिश करें।",
+  "mcpAllowedHosts": "अनुमत होस्ट नाम",
+  "mcpAllowedHostsHint": "केवल यह डिवाइस। सर्वर के आगे लगा प्रॉक्सी जो नाम भेजता है, उन्हें जोड़ें, जैसे Tailscale पता।",
+  "mcpAllowedHostsInvalid": "केवल होस्ट नाम दर्ज करें, http:// या पोर्ट के बिना, अल्पविराम से अलग करके।",
+  "mcpAllowedHostsSave": "सहेजें"
 }

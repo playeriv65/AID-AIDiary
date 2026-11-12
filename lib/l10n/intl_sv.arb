@@ -843,5 +843,18 @@
   "syncConflictKeepOther": "Behåll den andra",
   "syncConflictKeepBoth": "Behåll båda",
   "syncConflictLater": "Senare",
-  "syncConflicts": "Inlägg med två versioner: {count}"
+  "syncConflicts": "Inlägg med två versioner: {count}",
+  "mcpServerToggle": "MCP-server",
+  "mcpServerToggleHint": "Låter MCP-klienter som ChatGPT och Codex läsa och söka i dagboken via en lokal adress på den här enheten. De kan bara läsa, och tidskapslar förblir förseglade.",
+  "mcpToken": "MCP-token",
+  "mcpTokenHint": "MCP-klienter skickar den för att släppas in; servern startar när den är angiven.",
+  "mcpTokenIsSet": "Angiven. Tryck för att ersätta den.",
+  "mcpTokenSet": "Ange token",
+  "mcpListening": "Lyssnar på {address}",
+  "mcpNotRunning": "Körs inte: {reason}",
+  "mcpTokenSaveFailed": "Det gick inte att spara token. Försök igen.",
+  "mcpAllowedHosts": "Tillåtna värdnamn",
+  "mcpAllowedHostsHint": "Bara den här enheten. Lägg till namnen som en proxy framför servern skickar, till exempel en Tailscale-adress.",
+  "mcpAllowedHostsInvalid": "Ange bara värdnamn, utan http:// eller port, åtskilda med kommatecken.",
+  "mcpAllowedHostsSave": "Spara"
 }

@@ -843,5 +843,18 @@
   "syncConflictKeepOther": "نگه‌داشتن دیگری",
   "syncConflictKeepBoth": "نگه‌داشتن هر دو",
   "syncConflictLater": "بعداً",
-  "syncConflicts": "یادداشت‌های دارای دو نسخه: {count}"
+  "syncConflicts": "یادداشت‌های دارای دو نسخه: {count}",
+  "mcpServerToggle": "سرور MCP",
+  "mcpServerToggleHint": "به کلاینت‌های MCP مانند ChatGPT و Codex اجازه می‌دهد از طریق یک نشانی محلی روی این دستگاه، دفترچه خاطرات را بخوانند و در آن جست‌وجو کنند. آن‌ها فقط می‌توانند بخوانند و کپسول‌های زمان مهروموم می‌مانند.",
+  "mcpToken": "توکن MCP",
+  "mcpTokenHint": "کلاینت‌های MCP آن را می‌فرستند تا اجازهٔ ورود بگیرند؛ سرور پس از تنظیم آن شروع می‌شود.",
+  "mcpTokenIsSet": "تنظیم شده است. برای جایگزینی ضربه بزنید.",
+  "mcpTokenSet": "تنظیم توکن",
+  "mcpListening": "در حال گوش دادن روی {address}",
+  "mcpNotRunning": "در حال اجرا نیست: {reason}",
+  "mcpTokenSaveFailed": "ذخیرهٔ توکن ممکن نشد. دوباره تلاش کنید.",
+  "mcpAllowedHosts": "نام‌های میزبان مجاز",
+  "mcpAllowedHostsHint": "فقط همین دستگاه. نام‌هایی را که یک پراکسی جلوی سرور می‌فرستد اضافه کنید، مثلاً نشانی Tailscale.",
+  "mcpAllowedHostsInvalid": "فقط نام میزبان وارد کنید، بدون http:// یا درگاه، جدا شده با ویرگول.",
+  "mcpAllowedHostsSave": "ذخیره"
 }

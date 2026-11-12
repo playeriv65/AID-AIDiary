@@ -843,5 +843,18 @@
   "syncConflictKeepOther": "Ponechat druhou",
   "syncConflictKeepBoth": "Ponechat obě",
   "syncConflictLater": "Později",
-  "syncConflicts": "Záznamy se dvěma verzemi: {count}"
+  "syncConflicts": "Záznamy se dvěma verzemi: {count}",
+  "mcpServerToggle": "Server MCP",
+  "mcpServerToggleHint": "Umožní klientům MCP, jako jsou ChatGPT a Codex, číst deník a hledat v něm přes místní adresu tohoto zařízení. Mohou jen číst a časové kapsle zůstávají zapečetěné.",
+  "mcpToken": "Token MCP",
+  "mcpTokenHint": "Klienti MCP ho posílají, aby byli vpuštěni; server se spustí, jakmile je nastaven.",
+  "mcpTokenIsSet": "Nastaven. Klepnutím ho nahradíte.",
+  "mcpTokenSet": "Nastavit token",
+  "mcpListening": "Naslouchá na {address}",
+  "mcpNotRunning": "Neběží: {reason}",
+  "mcpTokenSaveFailed": "Token se nepodařilo uložit. Zkuste to znovu.",
+  "mcpAllowedHosts": "Povolené názvy hostitelů",
+  "mcpAllowedHostsHint": "Jen toto zařízení. Přidejte názvy, které posílá proxy před serverem, například adresu Tailscale.",
+  "mcpAllowedHostsInvalid": "Zadejte jen názvy hostitelů bez http:// a portu, oddělené čárkami.",
+  "mcpAllowedHostsSave": "Uložit"
 }

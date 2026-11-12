@@ -135,6 +135,13 @@
     "appLockMinLength": 4,
     "backupMinLength": 8
   },
+  "mcp": {
+    "host": "127.0.0.1",
+    "port": 18530,
+    "path": "/mcp",
+    "minTokenLength": 32,
+    "tools": ["entry.search", "entry.list", "entry.get", "sql.query", "sql.schema", "app.status", "search.status"]
+  },
   "agentApi": {
     "port": 47819
   },
@@ -144,6 +151,8 @@
     "maxTurns": 30,
     "outputChars": 16000,
     "sqlRows": 500,
+    "sqlMaxRows": 5000,
+    "sqlTimeoutSeconds": 10,
     "sqlSnapshots": 5,
     "acpAgents": {
       "claude": {

@@ -329,6 +329,25 @@ class AppConfig {
   /// The most rows one `sql` query prints.
   int get agentSqlRows => _section('agent')['sqlRows'] as int;
 
+  /// The most rows one `sql.query` may return, whatever limit it asks for.
+  int get sqlMaxRows => _section('agent')['sqlMaxRows'] as int;
+
+  /// How long one read-only query may run before it is stopped.
+  Duration get sqlTimeout =>
+      Duration(seconds: _section('agent')['sqlTimeoutSeconds'] as int);
+
+  /// The MCP server (docs/ARCHITECTURE.md, "MCP"): the loopback address it
+  /// listens on, its endpoint path and the read-only actions it offers as
+  /// tools.
+  String get mcpHost => _section('mcp')['host'] as String;
+  int get mcpPort => _section('mcp')['port'] as int;
+  String get mcpPath => _section('mcp')['path'] as String;
+  List<String> get mcpTools =>
+      (_section('mcp')['tools'] as List).cast<String>();
+
+  /// The shortest token `mcp.set_token` takes.
+  int get mcpMinTokenLength => _section('mcp')['minTokenLength'] as int;
+
   /// How many copies of the diary from before an `sql.execute` stay.
   int get sqlSnapshots => _section('agent')['sqlSnapshots'] as int;
 

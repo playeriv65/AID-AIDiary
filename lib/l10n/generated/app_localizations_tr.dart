@@ -2893,4 +2893,52 @@ class AppLocalizationsTr extends AppLocalizations {
   String syncConflicts(int count) {
     return 'İki sürümü olan girdiler: $count';
   }
+
+  @override
+  String get mcpServerToggle => 'MCP sunucusu';
+
+  @override
+  String get mcpServerToggleHint =>
+      'ChatGPT ve Codex gibi MCP istemcilerinin bu cihazın yerel adresi üzerinden günlüğü okumasına ve aramasına izin verir. Yalnızca okuyabilirler; zaman kapsülleri mühürlü kalır.';
+
+  @override
+  String get mcpToken => 'MCP belirteci';
+
+  @override
+  String get mcpTokenHint =>
+      'MCP istemcileri içeri alınmak için bunu gönderir; ayarlandığında sunucu başlar.';
+
+  @override
+  String get mcpTokenIsSet => 'Ayarlandı. Değiştirmek için dokunun.';
+
+  @override
+  String get mcpTokenSet => 'Belirteci ayarla';
+
+  @override
+  String mcpListening(String address) {
+    return '$address üzerinde dinleniyor';
+  }
+
+  @override
+  String mcpNotRunning(String reason) {
+    return 'Çalışmıyor: $reason';
+  }
+
+  @override
+  String get mcpTokenSaveFailed =>
+      'Belirteç kaydedilemedi. Lütfen tekrar deneyin.';
+
+  @override
+  String get mcpAllowedHosts => 'İzin verilen ana makine adları';
+
+  @override
+  String get mcpAllowedHostsHint =>
+      'Yalnızca bu cihaz. Sunucunun önündeki bir proxy\'nin gönderdiği adları ekleyin, örneğin bir Tailscale adresi.';
+
+  @override
+  String get mcpAllowedHostsInvalid =>
+      'Yalnızca ana makine adlarını http:// veya bağlantı noktası olmadan, virgülle ayırarak girin.';
+
+  @override
+  String get mcpAllowedHostsSave => 'Kaydet';
 }

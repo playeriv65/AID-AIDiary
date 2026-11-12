@@ -843,5 +843,18 @@
   "syncConflictKeepOther": "Simpan yang lain",
   "syncConflictKeepBoth": "Simpan keduanya",
   "syncConflictLater": "Nanti",
-  "syncConflicts": "Entri dengan dua versi: {count}"
+  "syncConflicts": "Entri dengan dua versi: {count}",
+  "mcpServerToggle": "Server MCP",
+  "mcpServerToggleHint": "Memungkinkan klien MCP seperti ChatGPT dan Codex membaca dan mencari di buku harian melalui alamat lokal perangkat ini. Mereka hanya bisa membaca, dan kapsul waktu tetap tersegel.",
+  "mcpToken": "Token MCP",
+  "mcpTokenHint": "Klien MCP mengirimkannya agar diizinkan masuk; server mulai setelah token diatur.",
+  "mcpTokenIsSet": "Sudah diatur. Ketuk untuk menggantinya.",
+  "mcpTokenSet": "Atur token",
+  "mcpListening": "Mendengarkan di {address}",
+  "mcpNotRunning": "Tidak berjalan: {reason}",
+  "mcpTokenSaveFailed": "Tidak dapat menyimpan token. Coba lagi.",
+  "mcpAllowedHosts": "Nama host yang diizinkan",
+  "mcpAllowedHostsHint": "Hanya perangkat ini. Tambahkan nama yang dikirim proxy di depan server, misalnya alamat Tailscale.",
+  "mcpAllowedHostsInvalid": "Masukkan nama host saja, tanpa http:// atau port, dipisahkan koma.",
+  "mcpAllowedHostsSave": "Simpan"
 }

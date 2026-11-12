@@ -843,5 +843,18 @@
   "syncConflictKeepOther": "다른 것 유지",
   "syncConflictKeepBoth": "둘 다 유지",
   "syncConflictLater": "나중에",
-  "syncConflicts": "두 버전이 있는 일기: {count}"
+  "syncConflicts": "두 버전이 있는 일기: {count}",
+  "mcpServerToggle": "MCP 서버",
+  "mcpServerToggleHint": "ChatGPT, Codex 같은 MCP 클라이언트가 이 기기의 로컬 주소를 통해 일기를 읽고 검색할 수 있게 합니다. 읽기만 가능하며 타임캡슐은 봉인된 채로 유지됩니다.",
+  "mcpToken": "MCP 토큰",
+  "mcpTokenHint": "MCP 클라이언트는 접속할 때 이것을 보냅니다. 설정하면 서버가 시작됩니다.",
+  "mcpTokenIsSet": "설정됨. 탭하여 바꿉니다.",
+  "mcpTokenSet": "토큰 설정",
+  "mcpListening": "{address}에서 수신 중",
+  "mcpNotRunning": "실행 중이 아님: {reason}",
+  "mcpTokenSaveFailed": "토큰을 저장하지 못했습니다. 다시 시도하세요.",
+  "mcpAllowedHosts": "허용된 호스트 이름",
+  "mcpAllowedHostsHint": "이 기기만. 서버 앞의 프록시가 보내는 이름(예: Tailscale 주소)을 추가하세요.",
+  "mcpAllowedHostsInvalid": "http:// 나 포트 없이 호스트 이름만 쉼표로 구분해 입력하세요.",
+  "mcpAllowedHostsSave": "저장"
 }

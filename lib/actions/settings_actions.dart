@@ -8,6 +8,7 @@ import 'dart:io';
 
 import 'package:aid_diary/actions/app_action.dart';
 import 'package:aid_diary/actions/app_actions.dart';
+import 'package:aid_diary/actions/mcp_api.dart';
 import 'package:aid_diary/actions/sync_actions.dart';
 import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/config_provider.dart';
@@ -163,6 +164,14 @@ void _check(Setting<Object?> setting, Object? value) {
       }
     case Settings.autoBackupMaxCount when (value as int) < 0:
       throw _badValue(setting, '0 (keep all) or more');
+    case Settings.mcpAllowedHosts
+        when value is! List ||
+            value.length > McpApi.maxAllowedHosts ||
+            value.any((host) => host is! String || !McpApi.isHostName(host)):
+      throw _badValue(
+          setting,
+          'a JSON list of at most ${McpApi.maxAllowedHosts} host names '
+          'without scheme or port, such as ["pc.example.ts.net"]');
     default:
       break;
   }

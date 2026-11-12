@@ -874,5 +874,18 @@
   "syncConflictKeepOther": "保留另一台的",
   "syncConflictKeepBoth": "都保留",
   "syncConflictLater": "稍後",
-  "syncConflicts": "有兩個版本的日記：{count} 篇"
+  "syncConflicts": "有兩個版本的日記：{count} 篇",
+  "mcpServerToggle": "MCP 伺服器",
+  "mcpServerToggleHint": "讓 ChatGPT、Codex 等 MCP 用戶端透過本裝置的本機位址閱讀和搜尋日記。它們只能讀取，時間膠囊保持密封。",
+  "mcpToken": "MCP 權杖",
+  "mcpTokenHint": "MCP 用戶端憑它接入；設定後伺服器才會啟動。",
+  "mcpTokenIsSet": "已設定。點按可替換。",
+  "mcpTokenSet": "設定權杖",
+  "mcpListening": "正在 {address} 上監聽",
+  "mcpNotRunning": "未執行：{reason}",
+  "mcpTokenSaveFailed": "無法儲存權杖，請再試一次。",
+  "mcpAllowedHosts": "允許的主機名稱",
+  "mcpAllowedHostsHint": "僅限本裝置。新增伺服器前方代理傳來的主機名稱，例如 Tailscale 位址。",
+  "mcpAllowedHostsInvalid": "只填主機名稱，不含 http:// 與連接埠，以逗號分隔。",
+  "mcpAllowedHostsSave": "儲存"
 }

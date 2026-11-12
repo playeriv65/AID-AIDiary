@@ -843,5 +843,18 @@
   "syncConflictKeepOther": "Diğerini tut",
   "syncConflictKeepBoth": "İkisini de tut",
   "syncConflictLater": "Daha sonra",
-  "syncConflicts": "İki sürümü olan girdiler: {count}"
+  "syncConflicts": "İki sürümü olan girdiler: {count}",
+  "mcpServerToggle": "MCP sunucusu",
+  "mcpServerToggleHint": "ChatGPT ve Codex gibi MCP istemcilerinin bu cihazın yerel adresi üzerinden günlüğü okumasına ve aramasına izin verir. Yalnızca okuyabilirler; zaman kapsülleri mühürlü kalır.",
+  "mcpToken": "MCP belirteci",
+  "mcpTokenHint": "MCP istemcileri içeri alınmak için bunu gönderir; ayarlandığında sunucu başlar.",
+  "mcpTokenIsSet": "Ayarlandı. Değiştirmek için dokunun.",
+  "mcpTokenSet": "Belirteci ayarla",
+  "mcpListening": "{address} üzerinde dinleniyor",
+  "mcpNotRunning": "Çalışmıyor: {reason}",
+  "mcpTokenSaveFailed": "Belirteç kaydedilemedi. Lütfen tekrar deneyin.",
+  "mcpAllowedHosts": "İzin verilen ana makine adları",
+  "mcpAllowedHostsHint": "Yalnızca bu cihaz. Sunucunun önündeki bir proxy'nin gönderdiği adları ekleyin, örneğin bir Tailscale adresi.",
+  "mcpAllowedHostsInvalid": "Yalnızca ana makine adlarını http:// veya bağlantı noktası olmadan, virgülle ayırarak girin.",
+  "mcpAllowedHostsSave": "Kaydet"
 }

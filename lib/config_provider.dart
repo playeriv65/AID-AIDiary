@@ -237,6 +237,15 @@ class Settings {
   // anyway.
   static const agentApi = Setting<bool>("agentApi", false);
 
+  // The MCP server for MCP clients such as ChatGPT and Codex, and the token
+  // they must send (docs/ARCHITECTURE.md, "MCP").
+  static const mcpServer = Setting<bool>("mcpServer", false);
+  static const mcpToken =
+      Setting<String>("mcpToken", "", secure: true, secretStore: true);
+  // Host names beyond the loopback ones that requests may name, for a
+  // reverse proxy in front of the MCP server; they belong to this machine.
+  static const mcpAllowedHosts = Setting<List<dynamic>>("mcpAllowedHosts", []);
+
   // The in-app agent's model: an OpenAI-compatible service address and model
   // name (empty: the defaults in app_config.json), and its key.
   static const agentBaseUrl = Setting<String>("agentBaseUrl", "");
@@ -357,6 +366,9 @@ class Settings {
     pendingDeviceApprovals,
     lastSync,
     agentApi,
+    mcpServer,
+    mcpToken,
+    mcpAllowedHosts,
     agentBaseUrl,
     agentModel,
     agentApiKey,

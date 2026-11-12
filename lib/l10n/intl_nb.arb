@@ -843,5 +843,18 @@
   "syncConflictKeepOther": "Behold den andre",
   "syncConflictKeepBoth": "Behold begge",
   "syncConflictLater": "Senere",
-  "syncConflicts": "Innlegg med to versjoner: {count}"
+  "syncConflicts": "Innlegg med to versjoner: {count}",
+  "mcpServerToggle": "MCP-server",
+  "mcpServerToggleHint": "Lar MCP-klienter som ChatGPT og Codex lese og søke i dagboken via en lokal adresse på denne enheten. De kan bare lese, og tidskapsler forblir forseglet.",
+  "mcpToken": "MCP-token",
+  "mcpTokenHint": "MCP-klienter sender det for å bli sluppet inn; serveren starter når det er angitt.",
+  "mcpTokenIsSet": "Angitt. Trykk for å erstatte det.",
+  "mcpTokenSet": "Angi token",
+  "mcpListening": "Lytter på {address}",
+  "mcpNotRunning": "Kjører ikke: {reason}",
+  "mcpTokenSaveFailed": "Kunne ikke lagre tokenet. Prøv igjen.",
+  "mcpAllowedHosts": "Tillatte vertsnavn",
+  "mcpAllowedHostsHint": "Bare denne enheten. Legg til navnene en mellomtjener foran serveren sender, for eksempel en Tailscale-adresse.",
+  "mcpAllowedHostsInvalid": "Skriv bare vertsnavn, uten http:// eller port, skilt med komma.",
+  "mcpAllowedHostsSave": "Lagre"
 }

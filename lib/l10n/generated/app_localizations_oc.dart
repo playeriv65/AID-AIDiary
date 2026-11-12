@@ -2919,4 +2919,52 @@ class AppLocalizationsOc extends AppLocalizations {
   String syncConflicts(int count) {
     return 'Entradas amb doas versions : $count';
   }
+
+  @override
+  String get mcpServerToggle => 'Servidor MCP';
+
+  @override
+  String get mcpServerToggleHint =>
+      'Permet als clients MCP coma ChatGPT e Codex de legir e de cercar dins lo jornal via una adreça locala d’aqueste aparelh. Pòdon pas que legir, e las capsulas del temps demòran sageladas.';
+
+  @override
+  String get mcpToken => 'Geton MCP';
+
+  @override
+  String get mcpTokenHint =>
+      'Los clients MCP lo mandan per èsser admeses ; lo servidor aviá un còp definit.';
+
+  @override
+  String get mcpTokenIsSet => 'Definit. Tocatz per lo remplaçar.';
+
+  @override
+  String get mcpTokenSet => 'Definir lo geton';
+
+  @override
+  String mcpListening(String address) {
+    return 'En escota sus $address';
+  }
+
+  @override
+  String mcpNotRunning(String reason) {
+    return 'S’executa pas : $reason';
+  }
+
+  @override
+  String get mcpTokenSaveFailed =>
+      'Impossible d’enregistrar lo geton. Tornatz ensajar.';
+
+  @override
+  String get mcpAllowedHosts => 'Noms d’òste autorizats';
+
+  @override
+  String get mcpAllowedHostsHint =>
+      'Sonque aqueste aparelh. Ajustatz los noms que manda un proxy davant lo servidor, coma una adreça Tailscale.';
+
+  @override
+  String get mcpAllowedHostsInvalid =>
+      'Picatz sonque de noms d’òste, sens http:// ni pòrt, separats per de virgulas.';
+
+  @override
+  String get mcpAllowedHostsSave => 'Enregistrar';
 }

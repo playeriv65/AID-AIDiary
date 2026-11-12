@@ -843,5 +843,18 @@
   "syncConflictKeepOther": "Оставить другую",
   "syncConflictKeepBoth": "Оставить обе",
   "syncConflictLater": "Позже",
-  "syncConflicts": "Записи с двумя версиями: {count}"
+  "syncConflicts": "Записи с двумя версиями: {count}",
+  "mcpServerToggle": "MCP-сервер",
+  "mcpServerToggleHint": "Позволяет MCP-клиентам, например ChatGPT и Codex, читать дневник и искать в нём через локальный адрес этого устройства. Они могут только читать, а капсулы времени остаются запечатанными.",
+  "mcpToken": "Токен MCP",
+  "mcpTokenHint": "MCP-клиенты отправляют его, чтобы получить доступ; сервер запускается, когда токен задан.",
+  "mcpTokenIsSet": "Задан. Нажмите, чтобы заменить.",
+  "mcpTokenSet": "Задать токен",
+  "mcpListening": "Ожидает подключений на {address}",
+  "mcpNotRunning": "Не запущен: {reason}",
+  "mcpTokenSaveFailed": "Не удалось сохранить токен. Попробуйте ещё раз.",
+  "mcpAllowedHosts": "Разрешённые имена хостов",
+  "mcpAllowedHostsHint": "Только это устройство. Добавьте имена, которые отправляет прокси перед сервером, например адрес Tailscale.",
+  "mcpAllowedHostsInvalid": "Введите только имена хостов, без http:// и порта, через запятую.",
+  "mcpAllowedHostsSave": "Сохранить"
 }

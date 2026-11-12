@@ -843,5 +843,18 @@
   "syncConflictKeepOther": "Säilytä toinen",
   "syncConflictKeepBoth": "Säilytä molemmat",
   "syncConflictLater": "Myöhemmin",
-  "syncConflicts": "Merkinnät, joilla on kaksi versiota: {count}"
+  "syncConflicts": "Merkinnät, joilla on kaksi versiota: {count}",
+  "mcpServerToggle": "MCP-palvelin",
+  "mcpServerToggleHint": "Antaa MCP-asiakkaiden, kuten ChatGPT:n ja Codexin, lukea päiväkirjaa ja hakea siitä tämän laitteen paikallisen osoitteen kautta. Ne voivat vain lukea, ja aikakapselit pysyvät sinetöityinä.",
+  "mcpToken": "MCP-tunnus",
+  "mcpTokenHint": "MCP-asiakkaat lähettävät tämän päästäkseen sisään; palvelin käynnistyy, kun se on asetettu.",
+  "mcpTokenIsSet": "Asetettu. Korvaa napauttamalla.",
+  "mcpTokenSet": "Aseta tunnus",
+  "mcpListening": "Kuuntelee osoitteessa {address}",
+  "mcpNotRunning": "Ei käynnissä: {reason}",
+  "mcpTokenSaveFailed": "Tunnusta ei voitu tallentaa. Yritä uudelleen.",
+  "mcpAllowedHosts": "Sallitut isäntänimet",
+  "mcpAllowedHostsHint": "Vain tämä laite. Lisää nimet, jotka palvelimen edessä oleva välityspalvelin lähettää, esimerkiksi Tailscale-osoite.",
+  "mcpAllowedHostsInvalid": "Anna vain isäntänimiä ilman http://-alkua tai porttia, pilkuilla erotettuina.",
+  "mcpAllowedHostsSave": "Tallenna"
 }

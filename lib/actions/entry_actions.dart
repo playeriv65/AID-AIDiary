@@ -386,10 +386,19 @@ Future<({String text, List<int> tagIds})> _templateOf(String id) async {
   );
 }
 
-/// The entries `entry.list` shows: of one [day] when given, and, when any
-/// filter is set, those that match it.
+/// The entries `entry.list` shows: of one `day` or the days `from` to `to`
+/// when given, and, when any filter is set, those that match it.
 List<Entry> _matching(ActionArgs args) {
   final day = _dayOf(args['day']);
+  final from = _dayOf(args['from']);
+  final to = _dayOf(args['to']);
+  if (day != null && (from != null || to != null)) {
+    throw _bad('Give either day or from/to');
+  }
+  bool inRange(Entry entry) =>
+      (day == null || entry.day == day) &&
+      (from == null || !entry.day.isBefore(from)) &&
+      (to == null || !entry.day.isAfter(to));
   final filter = EntryFilter(
     query: args['search'] as String? ?? '',
     tagIds: _tagIds(args['tags']),
@@ -399,23 +408,30 @@ List<Entry> _matching(ActionArgs args) {
   );
   return [
     for (final entry in _store.entries)
-      if ((day == null || entry.day == day) &&
-          (!filter.isActive || filter.matches(entry)))
-        entry,
+      if (inRange(entry) && (!filter.isActive || filter.matches(entry))) entry,
   ];
 }
 
 final List<AppAction> entryActions = [
   AppAction(
     id: 'entry.list',
-    describe: 'Lists entries, newest first, optionally of one day or '
-        'narrowed down like the search screen does. Time capsules that have '
-        'not opened show only that they are sealed, and never match a filter.',
+    describe: 'Lists entries, newest first, each with its id, diary day, '
+        'time, title and the start of its text, with how many match in all; '
+        'optionally of one day or a range of days, or narrowed down like the '
+        'search screen does. entry.get shows one in full. Time capsules that '
+        'have not opened show only that they are sealed, and never match a '
+        'filter.',
     risk: ActionRisk.read,
     params: [
       ..._pageParams,
       const ActionParam(
           'day', ParamType.string, 'Only this diary day, yyyy-MM-dd',
+          required: false),
+      const ActionParam('from', ParamType.string,
+          'Only diary days from this one on, yyyy-MM-dd (inclusive)',
+          required: false),
+      const ActionParam('to', ParamType.string,
+          'Only diary days up to this one, yyyy-MM-dd (inclusive)',
           required: false),
       const ActionParam('search', ParamType.string,
           'Only entries with this text or in a place of this name',
@@ -440,7 +456,10 @@ final List<AppAction> entryActions = [
   ),
   AppAction(
     id: 'entry.get',
-    describe: 'Shows one entry in full.',
+    describe: 'Shows one entry in full by its id: title, text (Markdown), '
+        'diary day, time and UTC offset, mood, place, the weather of its day, '
+        'tags, star, number of attachments and citations. A time capsule '
+        'that has not opened shows only when it opens.',
     risk: ActionRisk.read,
     params: const [entryIdParam],
     run: (context, args) async => _details(await entryOf(args)),

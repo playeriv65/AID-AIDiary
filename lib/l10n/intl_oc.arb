@@ -843,5 +843,18 @@
   "syncConflictKeepOther": "Gardar l'autra",
   "syncConflictKeepBoth": "Gardar las doas",
   "syncConflictLater": "Mai tard",
-  "syncConflicts": "Entradas amb doas versions : {count}"
+  "syncConflicts": "Entradas amb doas versions : {count}",
+  "mcpServerToggle": "Servidor MCP",
+  "mcpServerToggleHint": "Permet als clients MCP coma ChatGPT e Codex de legir e de cercar dins lo jornal via una adreça locala d’aqueste aparelh. Pòdon pas que legir, e las capsulas del temps demòran sageladas.",
+  "mcpToken": "Geton MCP",
+  "mcpTokenHint": "Los clients MCP lo mandan per èsser admeses ; lo servidor aviá un còp definit.",
+  "mcpTokenIsSet": "Definit. Tocatz per lo remplaçar.",
+  "mcpTokenSet": "Definir lo geton",
+  "mcpListening": "En escota sus {address}",
+  "mcpNotRunning": "S’executa pas : {reason}",
+  "mcpTokenSaveFailed": "Impossible d’enregistrar lo geton. Tornatz ensajar.",
+  "mcpAllowedHosts": "Noms d’òste autorizats",
+  "mcpAllowedHostsHint": "Sonque aqueste aparelh. Ajustatz los noms que manda un proxy davant lo servidor, coma una adreça Tailscale.",
+  "mcpAllowedHostsInvalid": "Picatz sonque de noms d’òste, sens http:// ni pòrt, separats per de virgulas.",
+  "mcpAllowedHostsSave": "Enregistrar"
 }

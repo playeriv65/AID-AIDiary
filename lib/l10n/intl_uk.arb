@@ -843,5 +843,18 @@
   "syncConflictKeepOther": "Залишити іншу",
   "syncConflictKeepBoth": "Залишити обидві",
   "syncConflictLater": "Пізніше",
-  "syncConflicts": "Записи з двома версіями: {count}"
+  "syncConflicts": "Записи з двома версіями: {count}",
+  "mcpServerToggle": "MCP-сервер",
+  "mcpServerToggleHint": "Дає змогу MCP-клієнтам, як-от ChatGPT і Codex, читати щоденник і шукати в ньому через локальну адресу цього пристрою. Вони можуть лише читати, а капсули часу лишаються запечатаними.",
+  "mcpToken": "Токен MCP",
+  "mcpTokenHint": "MCP-клієнти надсилають його, щоб отримати доступ; сервер запускається, коли токен задано.",
+  "mcpTokenIsSet": "Задано. Торкніться, щоб замінити.",
+  "mcpTokenSet": "Задати токен",
+  "mcpListening": "Очікує з’єднань на {address}",
+  "mcpNotRunning": "Не запущено: {reason}",
+  "mcpTokenSaveFailed": "Не вдалося зберегти токен. Спробуйте ще раз.",
+  "mcpAllowedHosts": "Дозволені імена хостів",
+  "mcpAllowedHostsHint": "Лише цей пристрій. Додайте імена, які надсилає проксі перед сервером, наприклад адресу Tailscale.",
+  "mcpAllowedHostsInvalid": "Введіть лише імена хостів, без http:// і порту, через кому.",
+  "mcpAllowedHostsSave": "Зберегти"
 }

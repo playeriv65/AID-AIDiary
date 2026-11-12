@@ -14,6 +14,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
+import '../support/diary_file.dart';
+
 /// The library `cargo build --release` makes in rust/; dev.ps1 builds it
 /// before tests, CI before its test step.
 ExternalLibrary builtLibrary() {
@@ -44,12 +46,10 @@ void main() {
     created.clear();
     folder = await Directory.systemTemp.createTemp('aid_shell_test');
     final path = p.join(folder.path, 'diary.db');
-    final db = await databaseFactoryFfi.openDatabase(path);
-    await db
-        .execute('CREATE TABLE entries (id INTEGER PRIMARY KEY, text TEXT)');
-    await db.insert('entries', {'id': 1, 'text': 'met Wang at the park'});
-    await db.insert('entries', {'id': 2, 'text': 'rainy, stayed in'});
-    await db.close();
+    await writeDiaryFile(path, entries: [
+      {'id': 1, 'text': 'met Wang at the park'},
+      {'id': 2, 'text': 'rainy, stayed in'},
+    ]);
     final actions = AppActions(devBuild: true, actions: [
       AppAction(
         id: 'entry.create',
@@ -64,16 +64,12 @@ void main() {
     ]);
     shell = await AidShell.open(
       aid: AidCommand(() => actions),
-      sql: DiarySql(
-          () => databaseFactoryFfi.openDatabase(path,
-              options:
-                  OpenDatabaseOptions(readOnly: true, singleInstance: false)),
-          rowLimit: 100),
+      sql: DiarySql(path, rowLimit: 100, timeout: const Duration(seconds: 5)),
     );
   });
 
   tearDown(() async {
-    await shell.close();
+    shell.close();
     await folder.delete(recursive: true);
   });
 

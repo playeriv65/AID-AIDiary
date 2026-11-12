@@ -843,5 +843,18 @@
   "syncConflictKeepOther": "De andere bewaren",
   "syncConflictKeepBoth": "Beide bewaren",
   "syncConflictLater": "Later",
-  "syncConflicts": "Items met twee versies: {count}"
+  "syncConflicts": "Items met twee versies: {count}",
+  "mcpServerToggle": "MCP-server",
+  "mcpServerToggleHint": "Laat MCP-clients zoals ChatGPT en Codex het dagboek lezen en doorzoeken via een lokaal adres van dit apparaat. Ze kunnen alleen lezen, en tijdcapsules blijven verzegeld.",
+  "mcpToken": "MCP-token",
+  "mcpTokenHint": "MCP-clients sturen dit om toegelaten te worden; de server start zodra het is ingesteld.",
+  "mcpTokenIsSet": "Ingesteld. Tik om het te vervangen.",
+  "mcpTokenSet": "Token instellen",
+  "mcpListening": "Luistert op {address}",
+  "mcpNotRunning": "Niet actief: {reason}",
+  "mcpTokenSaveFailed": "Kan het token niet opslaan. Probeer het opnieuw.",
+  "mcpAllowedHosts": "Toegestane hostnamen",
+  "mcpAllowedHostsHint": "Alleen dit apparaat. Voeg de namen toe die een proxy vóór de server stuurt, zoals een Tailscale-adres.",
+  "mcpAllowedHostsInvalid": "Voer alleen hostnamen in, zonder http:// of poort, gescheiden door komma’s.",
+  "mcpAllowedHostsSave": "Opslaan"
 }

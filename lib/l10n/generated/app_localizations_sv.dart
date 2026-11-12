@@ -2897,4 +2897,52 @@ class AppLocalizationsSv extends AppLocalizations {
   String syncConflicts(int count) {
     return 'Inlägg med två versioner: $count';
   }
+
+  @override
+  String get mcpServerToggle => 'MCP-server';
+
+  @override
+  String get mcpServerToggleHint =>
+      'Låter MCP-klienter som ChatGPT och Codex läsa och söka i dagboken via en lokal adress på den här enheten. De kan bara läsa, och tidskapslar förblir förseglade.';
+
+  @override
+  String get mcpToken => 'MCP-token';
+
+  @override
+  String get mcpTokenHint =>
+      'MCP-klienter skickar den för att släppas in; servern startar när den är angiven.';
+
+  @override
+  String get mcpTokenIsSet => 'Angiven. Tryck för att ersätta den.';
+
+  @override
+  String get mcpTokenSet => 'Ange token';
+
+  @override
+  String mcpListening(String address) {
+    return 'Lyssnar på $address';
+  }
+
+  @override
+  String mcpNotRunning(String reason) {
+    return 'Körs inte: $reason';
+  }
+
+  @override
+  String get mcpTokenSaveFailed =>
+      'Det gick inte att spara token. Försök igen.';
+
+  @override
+  String get mcpAllowedHosts => 'Tillåtna värdnamn';
+
+  @override
+  String get mcpAllowedHostsHint =>
+      'Bara den här enheten. Lägg till namnen som en proxy framför servern skickar, till exempel en Tailscale-adress.';
+
+  @override
+  String get mcpAllowedHostsInvalid =>
+      'Ange bara värdnamn, utan http:// eller port, åtskilda med kommatecken.';
+
+  @override
+  String get mcpAllowedHostsSave => 'Spara';
 }

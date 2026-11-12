@@ -2877,4 +2877,52 @@ class AppLocalizationsEn extends AppLocalizations {
   String syncConflicts(int count) {
     return 'Entries with two versions: $count';
   }
+
+  @override
+  String get mcpServerToggle => 'MCP server';
+
+  @override
+  String get mcpServerToggleHint =>
+      'Lets MCP clients such as ChatGPT and Codex read and search the diary through a local address on this device. They can only read, and time capsules stay sealed.';
+
+  @override
+  String get mcpToken => 'MCP token';
+
+  @override
+  String get mcpTokenHint =>
+      'MCP clients send this to be let in; the server starts once it is set.';
+
+  @override
+  String get mcpTokenIsSet => 'Set. Tap to replace it.';
+
+  @override
+  String get mcpTokenSet => 'Set token';
+
+  @override
+  String mcpListening(String address) {
+    return 'Listening on $address';
+  }
+
+  @override
+  String mcpNotRunning(String reason) {
+    return 'Not running: $reason';
+  }
+
+  @override
+  String get mcpTokenSaveFailed =>
+      'Could not save the token. Please try again.';
+
+  @override
+  String get mcpAllowedHosts => 'Allowed host names';
+
+  @override
+  String get mcpAllowedHostsHint =>
+      'Only this device. Add the host names a proxy in front of the server sends, such as a Tailscale address.';
+
+  @override
+  String get mcpAllowedHostsInvalid =>
+      'Enter host names only, without http:// or a port, separated by commas.';
+
+  @override
+  String get mcpAllowedHostsSave => 'Save';
 }

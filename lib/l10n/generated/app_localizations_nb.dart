@@ -2895,4 +2895,51 @@ class AppLocalizationsNb extends AppLocalizations {
   String syncConflicts(int count) {
     return 'Innlegg med to versjoner: $count';
   }
+
+  @override
+  String get mcpServerToggle => 'MCP-server';
+
+  @override
+  String get mcpServerToggleHint =>
+      'Lar MCP-klienter som ChatGPT og Codex lese og søke i dagboken via en lokal adresse på denne enheten. De kan bare lese, og tidskapsler forblir forseglet.';
+
+  @override
+  String get mcpToken => 'MCP-token';
+
+  @override
+  String get mcpTokenHint =>
+      'MCP-klienter sender det for å bli sluppet inn; serveren starter når det er angitt.';
+
+  @override
+  String get mcpTokenIsSet => 'Angitt. Trykk for å erstatte det.';
+
+  @override
+  String get mcpTokenSet => 'Angi token';
+
+  @override
+  String mcpListening(String address) {
+    return 'Lytter på $address';
+  }
+
+  @override
+  String mcpNotRunning(String reason) {
+    return 'Kjører ikke: $reason';
+  }
+
+  @override
+  String get mcpTokenSaveFailed => 'Kunne ikke lagre tokenet. Prøv igjen.';
+
+  @override
+  String get mcpAllowedHosts => 'Tillatte vertsnavn';
+
+  @override
+  String get mcpAllowedHostsHint =>
+      'Bare denne enheten. Legg til navnene en mellomtjener foran serveren sender, for eksempel en Tailscale-adresse.';
+
+  @override
+  String get mcpAllowedHostsInvalid =>
+      'Skriv bare vertsnavn, uten http:// eller port, skilt med komma.';
+
+  @override
+  String get mcpAllowedHostsSave => 'Lagre';
 }

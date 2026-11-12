@@ -4,12 +4,12 @@
 
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
+import 'dart:math';
 
 import 'package:aid_diary/actions/app_action.dart';
 import 'package:aid_diary/config/app_config.dart';
 import 'package:aid_diary/database/app_database.dart';
-import 'package:aid_diary/database/read_only_sql.dart';
+import 'package:aid_diary/database/diary_sql_reader.dart';
 import 'package:path/path.dart' as p;
 import 'package:sqflite/sqflite.dart';
 
@@ -21,25 +21,61 @@ const beforeSqlFolder = 'before-sql';
 final sqlActions = [
   AppAction(
     id: 'sql.query',
-    describe: 'Runs one read-only SQL query and returns its rows. '
-        'The schema is in sqlite_master.',
+    describe: 'Runs one read-only SQLite query (a single SELECT, WITH or '
+        'PRAGMA statement) on the diary database and returns its rows as '
+        'JSON objects, with how many rows it had in all. sql.schema shows '
+        'the tables and how their values are written. Sealed time capsules '
+        'read as rows without their text, title, mood or place. A query '
+        'that runs too long is stopped.',
     risk: ActionRisk.read,
     params: const [
-      ActionParam('query', ParamType.string, 'The SQL query'),
+      ActionParam('query', ParamType.string,
+          'The SQL query, one statement; use ? for values'),
       ActionParam('args', ParamType.string,
           'Values for its ? placeholders, as a JSON array',
           required: false),
-      ActionParam('limit', ParamType.integer,
-          'At most this many rows; the configured limit by default',
+      ActionParam(
+          'limit',
+          ParamType.integer,
+          'At most this many rows; the configured default when left out, '
+              'never more than the configured maximum',
           required: false),
     ],
     run: (_, args) async {
-      final limit = args['limit'] as int? ?? AppConfig.instance.agentSqlRows;
-      final query = args['query'] as String;
-      final rows = await _guarded(() => _read(query, _values(args['args'])));
+      final config = AppConfig.instance;
+      final limit =
+          min(args['limit'] as int? ?? config.agentSqlRows, config.sqlMaxRows);
+      if (limit < 1) {
+        throw const ActionException('bad_args', 'limit must be at least 1');
+      }
+      final result = await _reading(() => readDiarySql(
+          _database.path, args['query'] as String,
+          args: _values(args['args']),
+          limit: limit,
+          timeout: config.sqlTimeout));
       return {
-        'total': rows.length,
-        'rows': [for (final row in rows.take(limit)) _plain(row)],
+        'total': result.total,
+        'rows': result.rows,
+        if (result.total > result.rows.length) 'truncated': true,
+      };
+    },
+  ),
+  AppAction(
+    id: 'sql.schema',
+    describe: 'Describes the diary database for writing sql.query queries: '
+        'every table, index and view as its CREATE statement, and the '
+        'conventions its values follow (times, days, places, weather, tags, '
+        'deleted, hidden and sealed entries).',
+    risk: ActionRisk.read,
+    run: (_, args) async {
+      final schema = await _reading(() =>
+          diarySchema(_database.path, timeout: AppConfig.instance.sqlTimeout));
+      return {
+        'conventions': sqlConventions,
+        'schema': [
+          for (final item in schema)
+            {'type': item.type, 'name': item.name, 'sql': item.sql},
+        ],
       };
     },
   ),
@@ -86,20 +122,13 @@ Database get _database =>
     AppDatabase.instance.database ??
     (throw const ActionException('unavailable', 'The diary is not open'));
 
-Future<List<Map<String, Object?>>> _read(
-    String query, List<Object?> values) async {
-  final command = databaseFileCommand(query);
-  if (command != null) {
-    throw ActionException('sql_error', '$command is not allowed in sql.query');
-  }
-  // A cached connection for this path may be the app's writable handle.
-  final reader =
-      await openReadOnlyDatabase(_database.path, singleInstance: false);
+/// A read-only query's failure as the action's error.
+Future<T> _reading<T>(Future<T> Function() read) async {
   try {
-    await reader.execute('PRAGMA query_only = ON');
-    return await reader.rawQuery(query, values);
-  } finally {
-    await reader.close();
+    return await read();
+  } on DiarySqlException catch (error) {
+    throw ActionException(
+        error.timedOut ? 'timeout' : 'sql_error', error.message);
   }
 }
 
@@ -171,8 +200,3 @@ Future<String> _keepCopy() async {
   }
   return copy;
 }
-
-Map<String, Object?> _plain(Map<String, Object?> row) => {
-      for (final MapEntry(:key, :value) in row.entries)
-        key: value is Uint8List ? '<${value.length} bytes>' : value,
-    };

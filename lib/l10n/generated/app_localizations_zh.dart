@@ -2781,6 +2781,50 @@ class AppLocalizationsZh extends AppLocalizations {
   String syncConflicts(int count) {
     return '有两个版本的日记：$count 篇';
   }
+
+  @override
+  String get mcpServerToggle => 'MCP 服务器';
+
+  @override
+  String get mcpServerToggleHint =>
+      '让 ChatGPT、Codex 等 MCP 客户端通过本设备的本地地址阅读和搜索日记。它们只能读取，时间胶囊保持密封。';
+
+  @override
+  String get mcpToken => 'MCP 令牌';
+
+  @override
+  String get mcpTokenHint => 'MCP 客户端凭它接入；设置后服务器才会启动。';
+
+  @override
+  String get mcpTokenIsSet => '已设置。点按可替换。';
+
+  @override
+  String get mcpTokenSet => '设置令牌';
+
+  @override
+  String mcpListening(String address) {
+    return '正在 $address 上监听';
+  }
+
+  @override
+  String mcpNotRunning(String reason) {
+    return '未运行：$reason';
+  }
+
+  @override
+  String get mcpTokenSaveFailed => '无法保存令牌，请重试。';
+
+  @override
+  String get mcpAllowedHosts => '允许的主机名';
+
+  @override
+  String get mcpAllowedHostsHint => '仅限本设备。添加服务器前面的代理发来的主机名，例如 Tailscale 地址。';
+
+  @override
+  String get mcpAllowedHostsInvalid => '只填主机名，不带 http:// 和端口，用逗号分隔。';
+
+  @override
+  String get mcpAllowedHostsSave => '保存';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -5563,4 +5607,48 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String syncConflicts(int count) {
     return '有兩個版本的日記：$count 篇';
   }
+
+  @override
+  String get mcpServerToggle => 'MCP 伺服器';
+
+  @override
+  String get mcpServerToggleHint =>
+      '讓 ChatGPT、Codex 等 MCP 用戶端透過本裝置的本機位址閱讀和搜尋日記。它們只能讀取，時間膠囊保持密封。';
+
+  @override
+  String get mcpToken => 'MCP 權杖';
+
+  @override
+  String get mcpTokenHint => 'MCP 用戶端憑它接入；設定後伺服器才會啟動。';
+
+  @override
+  String get mcpTokenIsSet => '已設定。點按可替換。';
+
+  @override
+  String get mcpTokenSet => '設定權杖';
+
+  @override
+  String mcpListening(String address) {
+    return '正在 $address 上監聽';
+  }
+
+  @override
+  String mcpNotRunning(String reason) {
+    return '未執行：$reason';
+  }
+
+  @override
+  String get mcpTokenSaveFailed => '無法儲存權杖，請再試一次。';
+
+  @override
+  String get mcpAllowedHosts => '允許的主機名稱';
+
+  @override
+  String get mcpAllowedHostsHint => '僅限本裝置。新增伺服器前方代理傳來的主機名稱，例如 Tailscale 位址。';
+
+  @override
+  String get mcpAllowedHostsInvalid => '只填主機名稱，不含 http:// 與連接埠，以逗號分隔。';
+
+  @override
+  String get mcpAllowedHostsSave => '儲存';
 }

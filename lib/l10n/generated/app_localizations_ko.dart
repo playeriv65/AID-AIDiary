@@ -2822,4 +2822,49 @@ class AppLocalizationsKo extends AppLocalizations {
   String syncConflicts(int count) {
     return '두 버전이 있는 일기: $count';
   }
+
+  @override
+  String get mcpServerToggle => 'MCP 서버';
+
+  @override
+  String get mcpServerToggleHint =>
+      'ChatGPT, Codex 같은 MCP 클라이언트가 이 기기의 로컬 주소를 통해 일기를 읽고 검색할 수 있게 합니다. 읽기만 가능하며 타임캡슐은 봉인된 채로 유지됩니다.';
+
+  @override
+  String get mcpToken => 'MCP 토큰';
+
+  @override
+  String get mcpTokenHint => 'MCP 클라이언트는 접속할 때 이것을 보냅니다. 설정하면 서버가 시작됩니다.';
+
+  @override
+  String get mcpTokenIsSet => '설정됨. 탭하여 바꿉니다.';
+
+  @override
+  String get mcpTokenSet => '토큰 설정';
+
+  @override
+  String mcpListening(String address) {
+    return '$address에서 수신 중';
+  }
+
+  @override
+  String mcpNotRunning(String reason) {
+    return '실행 중이 아님: $reason';
+  }
+
+  @override
+  String get mcpTokenSaveFailed => '토큰을 저장하지 못했습니다. 다시 시도하세요.';
+
+  @override
+  String get mcpAllowedHosts => '허용된 호스트 이름';
+
+  @override
+  String get mcpAllowedHostsHint =>
+      '이 기기만. 서버 앞의 프록시가 보내는 이름(예: Tailscale 주소)을 추가하세요.';
+
+  @override
+  String get mcpAllowedHostsInvalid => 'http:// 나 포트 없이 호스트 이름만 쉼표로 구분해 입력하세요.';
+
+  @override
+  String get mcpAllowedHostsSave => '저장';
 }

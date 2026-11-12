@@ -2933,4 +2933,52 @@ class AppLocalizationsTa extends AppLocalizations {
   String syncConflicts(int count) {
     return 'இரண்டு பதிப்புகள் உள்ள பதிவுகள்: $count';
   }
+
+  @override
+  String get mcpServerToggle => 'MCP சேவையகம்';
+
+  @override
+  String get mcpServerToggleHint =>
+      'ChatGPT, Codex போன்ற MCP கிளையன்ட்கள் இந்தச் சாதனத்தின் உள்ளூர் முகவரி வழியாக நாட்குறிப்பைப் படிக்கவும் தேடவும் அனுமதிக்கிறது. அவை படிக்க மட்டுமே முடியும்; கால கேப்ஸ்யூல்கள் மூடியபடியே இருக்கும்.';
+
+  @override
+  String get mcpToken => 'MCP டோக்கன்';
+
+  @override
+  String get mcpTokenHint =>
+      'MCP கிளையன்ட்கள் உள்ளே அனுமதிக்கப்பட இதை அனுப்புகின்றன; இது அமைக்கப்பட்டதும் சேவையகம் தொடங்கும்.';
+
+  @override
+  String get mcpTokenIsSet => 'அமைக்கப்பட்டது. மாற்ற தட்டவும்.';
+
+  @override
+  String get mcpTokenSet => 'டோக்கனை அமை';
+
+  @override
+  String mcpListening(String address) {
+    return '$address இல் கேட்கிறது';
+  }
+
+  @override
+  String mcpNotRunning(String reason) {
+    return 'இயங்கவில்லை: $reason';
+  }
+
+  @override
+  String get mcpTokenSaveFailed =>
+      'டோக்கனைச் சேமிக்க முடியவில்லை. மீண்டும் முயலவும்.';
+
+  @override
+  String get mcpAllowedHosts => 'அனுமதிக்கப்பட்ட ஹோஸ்ட் பெயர்கள்';
+
+  @override
+  String get mcpAllowedHostsHint =>
+      'இந்தச் சாதனம் மட்டும். சேவையகத்தின் முன் உள்ள ப்ராக்ஸி அனுப்பும் பெயர்களைச் சேர்க்கவும், எ.கா. Tailscale முகவரி.';
+
+  @override
+  String get mcpAllowedHostsInvalid =>
+      'http:// அல்லது போர்ட் இல்லாமல், காற்புள்ளிகளால் பிரித்து ஹோஸ்ட் பெயர்களை மட்டும் உள்ளிடவும்.';
+
+  @override
+  String get mcpAllowedHostsSave => 'சேமி';
 }

@@ -2915,4 +2915,52 @@ class AppLocalizationsCa extends AppLocalizations {
   String syncConflicts(int count) {
     return 'Entrades amb dues versions: $count';
   }
+
+  @override
+  String get mcpServerToggle => 'Servidor MCP';
+
+  @override
+  String get mcpServerToggleHint =>
+      'Permet que clients MCP com ChatGPT i Codex llegeixin i cerquin el diari mitjançant una adreça local d’aquest dispositiu. Només poden llegir, i les càpsules del temps continuen segellades.';
+
+  @override
+  String get mcpToken => 'Testimoni MCP';
+
+  @override
+  String get mcpTokenHint =>
+      'Els clients MCP l’envien per entrar; el servidor s’inicia quan està definit.';
+
+  @override
+  String get mcpTokenIsSet => 'Definit. Toca per substituir-lo.';
+
+  @override
+  String get mcpTokenSet => 'Defineix el testimoni';
+
+  @override
+  String mcpListening(String address) {
+    return 'Escoltant a $address';
+  }
+
+  @override
+  String mcpNotRunning(String reason) {
+    return 'No s’està executant: $reason';
+  }
+
+  @override
+  String get mcpTokenSaveFailed =>
+      'No s’ha pogut desar el testimoni. Torna-ho a provar.';
+
+  @override
+  String get mcpAllowedHosts => 'Noms d’amfitrió permesos';
+
+  @override
+  String get mcpAllowedHostsHint =>
+      'Només aquest dispositiu. Afegeix els noms que envia un servidor intermediari davant del servidor, com ara una adreça de Tailscale.';
+
+  @override
+  String get mcpAllowedHostsInvalid =>
+      'Escriu només noms d’amfitrió, sense http:// ni port, separats per comes.';
+
+  @override
+  String get mcpAllowedHostsSave => 'Desa';
 }

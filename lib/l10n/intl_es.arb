@@ -844,5 +844,18 @@
   "syncConflictKeepOther": "Conservar la otra",
   "syncConflictKeepBoth": "Conservar ambas",
   "syncConflictLater": "Más tarde",
-  "syncConflicts": "Entradas con dos versiones: {count}"
+  "syncConflicts": "Entradas con dos versiones: {count}",
+  "mcpServerToggle": "Servidor MCP",
+  "mcpServerToggleHint": "Permite que clientes MCP como ChatGPT y Codex lean y busquen en el diario mediante una dirección local de este dispositivo. Solo pueden leer y las cápsulas del tiempo siguen selladas.",
+  "mcpToken": "Token MCP",
+  "mcpTokenHint": "Los clientes MCP lo envían para entrar; el servidor se inicia cuando está definido.",
+  "mcpTokenIsSet": "Definido. Toca para reemplazarlo.",
+  "mcpTokenSet": "Definir token",
+  "mcpListening": "Escuchando en {address}",
+  "mcpNotRunning": "No está en marcha: {reason}",
+  "mcpTokenSaveFailed": "No se pudo guardar el token. Inténtalo de nuevo.",
+  "mcpAllowedHosts": "Nombres de host permitidos",
+  "mcpAllowedHostsHint": "Solo este dispositivo. Añade los nombres que envía un proxy delante del servidor, como una dirección de Tailscale.",
+  "mcpAllowedHostsInvalid": "Escribe solo nombres de host, sin http:// ni puerto, separados por comas.",
+  "mcpAllowedHostsSave": "Guardar"
 }

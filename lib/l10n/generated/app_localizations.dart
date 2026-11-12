@@ -5231,6 +5231,84 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Entries with two versions: {count}'**
   String syncConflicts(int count);
+
+  /// No description provided for @mcpServerToggle.
+  ///
+  /// In en, this message translates to:
+  /// **'MCP server'**
+  String get mcpServerToggle;
+
+  /// No description provided for @mcpServerToggleHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Lets MCP clients such as ChatGPT and Codex read and search the diary through a local address on this device. They can only read, and time capsules stay sealed.'**
+  String get mcpServerToggleHint;
+
+  /// No description provided for @mcpToken.
+  ///
+  /// In en, this message translates to:
+  /// **'MCP token'**
+  String get mcpToken;
+
+  /// No description provided for @mcpTokenHint.
+  ///
+  /// In en, this message translates to:
+  /// **'MCP clients send this to be let in; the server starts once it is set.'**
+  String get mcpTokenHint;
+
+  /// No description provided for @mcpTokenIsSet.
+  ///
+  /// In en, this message translates to:
+  /// **'Set. Tap to replace it.'**
+  String get mcpTokenIsSet;
+
+  /// No description provided for @mcpTokenSet.
+  ///
+  /// In en, this message translates to:
+  /// **'Set token'**
+  String get mcpTokenSet;
+
+  /// No description provided for @mcpListening.
+  ///
+  /// In en, this message translates to:
+  /// **'Listening on {address}'**
+  String mcpListening(String address);
+
+  /// No description provided for @mcpNotRunning.
+  ///
+  /// In en, this message translates to:
+  /// **'Not running: {reason}'**
+  String mcpNotRunning(String reason);
+
+  /// No description provided for @mcpTokenSaveFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save the token. Please try again.'**
+  String get mcpTokenSaveFailed;
+
+  /// No description provided for @mcpAllowedHosts.
+  ///
+  /// In en, this message translates to:
+  /// **'Allowed host names'**
+  String get mcpAllowedHosts;
+
+  /// No description provided for @mcpAllowedHostsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Only this device. Add the host names a proxy in front of the server sends, such as a Tailscale address.'**
+  String get mcpAllowedHostsHint;
+
+  /// No description provided for @mcpAllowedHostsInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter host names only, without http:// or a port, separated by commas.'**
+  String get mcpAllowedHostsInvalid;
+
+  /// No description provided for @mcpAllowedHostsSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get mcpAllowedHostsSave;
 }
 
 class _AppLocalizationsDelegate

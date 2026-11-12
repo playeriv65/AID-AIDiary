@@ -270,6 +270,17 @@ asks again. Dates are when it was settled. Ideas not built yet are in
   prompts stay with the person.
 - Sealed time capsules stay sealed for the CLI as in the GUI.
 - Tag and category names are unique, in the GUI as in the CLI.
+- MCP for outside clients (owner, 2026-11-12): the app serves its own
+  read-only MCP server so ChatGPT and Codex can query the diary, and the
+  diary, its search and any model stay on the owner's PC; a server only
+  forwards traffic. It runs inside the app, not as a separate `aid mcp`
+  process, so it needs the app running. Its tools are the listed read-only
+  actions; nothing it offers can change the diary or its settings, and
+  sealed time capsules stay sealed, `sql.query` included. The protocol comes from the
+  community `mcp_dart` package (Streamable HTTP server on the Dart VM);
+  the official `dart_mcp` speaks only stdio, which a remote client cannot
+  reach. The server listens on loopback only; host names a proxy sends
+  are a per-machine setting, never in the repository.
 
 ## Performance
 

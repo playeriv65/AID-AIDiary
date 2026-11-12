@@ -2869,4 +2869,51 @@ class AppLocalizationsHe extends AppLocalizations {
   String syncConflicts(int count) {
     return 'רשומות עם שתי גרסאות: $count';
   }
+
+  @override
+  String get mcpServerToggle => 'שרת MCP';
+
+  @override
+  String get mcpServerToggleHint =>
+      'מאפשר ללקוחות MCP כמו ChatGPT ו-Codex לקרוא ביומן ולחפש בו דרך כתובת מקומית במכשיר הזה. הם יכולים רק לקרוא, וקפסולות זמן נשארות חתומות.';
+
+  @override
+  String get mcpToken => 'אסימון MCP';
+
+  @override
+  String get mcpTokenHint =>
+      'לקוחות MCP שולחים אותו כדי להיכנס; השרת מתחיל לפעול אחרי שהוא מוגדר.';
+
+  @override
+  String get mcpTokenIsSet => 'מוגדר. הקישו כדי להחליף אותו.';
+
+  @override
+  String get mcpTokenSet => 'הגדרת אסימון';
+
+  @override
+  String mcpListening(String address) {
+    return 'מאזין בכתובת $address';
+  }
+
+  @override
+  String mcpNotRunning(String reason) {
+    return 'לא פועל: $reason';
+  }
+
+  @override
+  String get mcpTokenSaveFailed => 'לא ניתן היה לשמור את האסימון. נסו שוב.';
+
+  @override
+  String get mcpAllowedHosts => 'שמות מארחים מותרים';
+
+  @override
+  String get mcpAllowedHostsHint =>
+      'רק המכשיר הזה. הוסיפו את השמות ששולח שרת proxy שמול השרת, למשל כתובת Tailscale.';
+
+  @override
+  String get mcpAllowedHostsInvalid =>
+      'הזינו שמות מארחים בלבד, בלי http:// או פורט, מופרדים בפסיקים.';
+
+  @override
+  String get mcpAllowedHostsSave => 'שמירה';
 }

@@ -2906,4 +2906,52 @@ class AppLocalizationsVi extends AppLocalizations {
   String syncConflicts(int count) {
     return 'Mục có hai phiên bản: $count';
   }
+
+  @override
+  String get mcpServerToggle => 'Máy chủ MCP';
+
+  @override
+  String get mcpServerToggleHint =>
+      'Cho phép các ứng dụng khách MCP như ChatGPT và Codex đọc và tìm kiếm nhật ký qua một địa chỉ cục bộ trên thiết bị này. Chúng chỉ có thể đọc, và các viên nang thời gian vẫn được niêm phong.';
+
+  @override
+  String get mcpToken => 'Mã thông báo MCP';
+
+  @override
+  String get mcpTokenHint =>
+      'Ứng dụng khách MCP gửi mã này để được vào; máy chủ khởi động khi mã đã được đặt.';
+
+  @override
+  String get mcpTokenIsSet => 'Đã đặt. Chạm để thay thế.';
+
+  @override
+  String get mcpTokenSet => 'Đặt mã thông báo';
+
+  @override
+  String mcpListening(String address) {
+    return 'Đang lắng nghe tại $address';
+  }
+
+  @override
+  String mcpNotRunning(String reason) {
+    return 'Không chạy: $reason';
+  }
+
+  @override
+  String get mcpTokenSaveFailed =>
+      'Không thể lưu mã thông báo. Vui lòng thử lại.';
+
+  @override
+  String get mcpAllowedHosts => 'Tên máy chủ được phép';
+
+  @override
+  String get mcpAllowedHostsHint =>
+      'Chỉ thiết bị này. Thêm các tên mà proxy đặt trước máy chủ gửi đến, chẳng hạn địa chỉ Tailscale.';
+
+  @override
+  String get mcpAllowedHostsInvalid =>
+      'Chỉ nhập tên máy chủ, không có http:// hay cổng, phân tách bằng dấu phẩy.';
+
+  @override
+  String get mcpAllowedHostsSave => 'Lưu';
 }
