@@ -281,6 +281,13 @@ asks again. Dates are when it was settled. Ideas not built yet are in
   the official `dart_mcp` speaks only stdio, which a remote client cannot
   reach. The server listens on loopback only; host names a proxy sends
   are a per-machine setting, never in the repository.
+- No separate REST API (owner, 2026-11-12): the agent API (`POST /v1/run`
+  with an action id and its arguments) is the app's HTTP API. Most actions
+  are operations with rules (Recently deleted, sealing, sync), not plain
+  create/read/update/delete on a record, so mapping them to resources would
+  be a second, hand-written copy of the action list. If a client that only
+  takes REST appears, generate an adapter (or an OpenAPI description) from
+  `AppActions` rather than writing endpoints by hand.
 
 ## Performance
 
