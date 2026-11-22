@@ -22,6 +22,11 @@ the current evidence and what would close it.
   the broader performance pass and the Android package rename.
 
 ## Layout and features
+- Tag placement on the entry page (owner 2026-11-21, approach not decided;
+  do not start without the owner): tags chosen for an entry appear at the
+  very bottom of the entry page instead of where the tag control is. Settle
+  one position for picking and showing tags.
+
 Probably skip (they need cloud services or add little): Google Fit, rate dialog, live chat, external-link warning, automatic media categories (an image classifier), an in-app media picker.
 
 ## Appearance (owner request 2026-10-23)
