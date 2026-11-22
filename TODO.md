@@ -26,6 +26,17 @@ the current evidence and what would close it.
   do not start without the owner): tags chosen for an entry appear at the
   very bottom of the entry page instead of where the tag control is. Settle
   one position for picking and showing tags.
+- Zoomable calendar (owner 2026-11-22): pinch out of the month view to a
+  year view, pinch in to a week view, in the journal calendar
+  (`widgets/month_calendar.dart`) and the day picker
+  (`widgets/day_picker.dart`) alike. No package fits (checked 2026-11-22):
+  kalender, infinite_calendar_view and Syncfusion zoom only the hour scale
+  of day/week views and have no year view; voo_calendar lists year view and
+  "pinch-to-zoom" without saying what the pinch does, and none of them
+  supports the Jalali calendar this app offers. Plan: extend our own
+  calendar with a `ScaleGestureRecognizer` (touch pinch and Windows
+  trackpad pinch), Ctrl+wheel and visible buttons for a mouse. Open: what
+  the week view shows per day.
 
 Probably skip (they need cloud services or add little): Google Fit, rate dialog, live chat, external-link warning, automatic media categories (an image classifier), an in-app media picker.
 
